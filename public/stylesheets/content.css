@@ -1,0 +1,730 @@
+/*	
+	-----------------------------------------------------------------------------
+	Freie Universitaet Berlin:
+	Stilvorlagen fuer spezielle Elemente im Contentbereich
+
+	Autor: CeDiS, http://www.cedis.fu-berlin.de, cms@cedis.fu-berlin.de	
+	Datum: 27.03.2007
+
+	Aktualisiert 02.11.2007: Padding bei expand_arrow
+	Aktualisiert 31.08.2007: Bildpositionierung mit Untertitel im Inhaltsbereich
+        Aktualisiert 30.10.2007: Bilder in der Mitarbeiterliste
+        Aktualisiert 26.09.2008: Teaser im Inhaltsbereich
+        Aktualisiert 14.11.2008: contentImage100, Bilder in den Listen DC und Abschlussarbeiten, Auszeichnungen fuer Organigramme
+        Aktualisiert 12.12.2008: contentImage550, contentGallery und  für Content-Galerie
+        Aktualisiert 19.12.2008: BUGFIX chartTable
+        Aktualisiert 14.01.2009: Content-Galerie, Update der Formatierungen fuer Galerie im Inhaltsbereich und fuer Galerie-Miniaturansicht mit 100px breiten Bildern
+
+	-----------------------------------------------------------------------------
+*/
+
+/* 	
+	-----------------------------------------------------------------------------
+	Stilvorlagen fuer spezielle Elemente im Contentbereich
+   	-----------------------------------------------------------------------------
+*/
+
+/*	Kontaktdaten und Anschrift des Institut  */
+
+.institution {
+	background-color: #e6ecf2; 
+	border: none;
+	margin: 16px 0 12px 0;
+	padding: 8px;
+}
+
+.institution td {
+	padding: 2px 8px 2px 8px;
+}
+
+.clear {
+	clear: both;
+}
+
+.bIcons {
+	float:left;
+	margin: 8px 4px 4px 0;
+}
+
+.institution strong {
+	color: #333;
+}
+
+.fuImgPosition {
+	margin: 4px 0 4px 0;
+}
+
+/*
+	Layout fuCourseBody und fuCourseList -  Kurse und Kursuebersicht
+-------------------------------------------------------------------------------
+*/
+
+.kurs {
+	width: 550px;
+	margin: 10px 0 8px 0;
+}
+
+.baseLabel {
+	font-weight: bold;
+	color: #666;
+}
+
+/* 
+	Sitemap 
+------------------------------------------------------------------------------------
+*/
+
+.baseSitemap {
+	font-size: 100%;
+	line-height: 140%;
+	font-weight: normal;
+	color: #333;
+	list-style-image: none; 
+} 
+
+#baseContent ul li .baseSitemapLink {
+	font-size: 100%;
+	line-height: 140%;
+	list-style-image: none; 
+}
+
+.baseSitemapLevel_00 {
+	font-size: 95%;
+	padding: 2px 0 2px 0;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	list-style-image: none;
+	margin: 0 0 2px 0;
+}
+
+.baseSitemapLevel_01 {
+	font-size: 95%;
+	font-weight: normal;
+	margin: 2px 0 0 24px;
+	padding: 2px 0 2px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.baseSitemapLevel_02 {
+	font-size: 95%;
+	font-weight: normal;
+	margin: 0 0 0 48px;
+	padding: 2px 0 2px 0;
+}
+
+.baseSitemapLevel_03 {
+	font-size: 95%;
+	font-weight: normal;
+	margin: 0 0 0 72px;
+	padding: 2px 0 2px 0;
+}
+
+.baseSitemapLevel_04 {
+	font-size: 95%;
+	font-weight: normal;
+	margin: 0 0 0 96px;
+	padding: 2px 0 2px 0;
+}
+
+/* 
+	neue Sitemap (Tabelle)
+------------------------------------------------------------------------------------
+*/
+
+.baseSitemapLevel_00_a {
+	font-size: 80%;
+	padding: 2px 0 2px 5px;
+	font-weight: normal;
+	border-bottom: 1px solid #fff;
+	list-style-image: none;
+	margin: 0 0 2px 0;
+	width: 170px;
+	background-color: #dedede;
+}
+
+.baseSitemapLevel_01_a {
+	font-size: 80%;
+	font-weight: normal;
+	margin: 0 0 0 24px;
+	padding: 2px 0 2px 5px;
+	border-bottom: 1px solid #fff;
+	background-color: #f1f1f1;
+}
+
+.baseSitemapLevel_02_a {
+	font-size: 80%;
+	font-weight: normal;
+	margin: 0 0 0 48px;
+	padding: 2px 0 2px 5px;
+	border-bottom: 1px solid #fff;
+	background-color: #f6f6f6;
+}
+
+.ohne {
+	border-bottom: none;
+	border-left: none;
+	background-color: transparent;
+}
+
+.leer_00_a {
+	border-bottom: none;
+	border-left: none;
+	background-color: #dedede;
+}
+
+.leer_01_a {
+	border-bottom: none;
+	border-left: none;
+	background-color: #f1f1f1;
+}
+
+.baseSitemapAbstand {
+	margin: 0px;
+	line-height: 70%;
+}
+
+/* 
+	Bildergalerie
+------------------------------------------------------------------------------------
+*/
+
+.floatleft {
+	float: left;
+	margin: 0 6px 6px 0;
+	border: 1px solid #e2e2e2;
+	padding: 1px;
+}
+
+.imageContainer { 
+	display: block; 
+	margin: 0;
+	width: 557px;
+	clear: both;
+}
+
+
+
+
+.start a:link {
+	color: #666;
+}
+
+.start a:hover {
+	text-decoration: none;
+	color: #666;
+}
+
+.uebersicht {
+	display:inline;
+    margin: 0;
+    float: left;
+}
+
+.zurueck-galerie {
+	display:inline;
+	margin: 0 0 0 10px;
+	float: left;
+}
+
+.vor-galerie {
+	display:inline;
+    margin: 0 0 0 10px;
+	float: left;
+}
+
+.grossbild {
+	border: 1px solid #e2e2e2;
+	padding: 3px;
+}
+
+hr.divider {
+	display: none;
+}
+
+.skip, .info {
+	position: absolute;
+	left: -1000px;
+	top: -1000px;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	display: inline;
+}
+
+img {
+	border: none;
+}
+
+
+/* 
+	Mitarbeiterseiten
+------------------------------------------------------------------------------------
+*/
+
+.imgStaffRight{
+float:right;
+margin:12px 12px 12px 0;
+padding:0;
+}
+
+.imgStaffRight img{
+border:0px;
+background-color: #f4f4f4;
+padding:2px;
+}
+
+.imgStaffLeft{
+float:left;
+margin:12px 0 12px 12px;
+padding:0;
+}
+
+.imgStaffLeft img{
+border:0px;
+background-color: #f4f4f4;
+padding:2px;
+}
+
+/*
+Spezielle Anweisungen fuer Mitarbeiterliste mit Bildern
+-------------------------------------------------------------------------------------------------------------
+*/
+
+.staffItem {
+	border-bottom: 1px solid #ccc; 
+	padding: 10px 0 10px 0;
+}
+
+.staffItemImage {
+	width: 100px;
+	border: 1px solid #ccc;
+	padding: 1px;
+}
+
+.staffItemImage img {
+	display: block;		
+}
+
+.staffItemText {
+	width: 420px;
+}
+
+.alignLeft {
+	float: left;
+}
+
+.alignRight {
+	float: right;
+}
+
+/* 
+	Expand
+------------------------------------------------------------------------------------
+*/
+
+.expand_wrapper {
+	background: #f6f6f6;
+	padding: 10px;
+}
+
+.expand_title {
+	position:relative;
+	border: 1px solid #ccc;
+	background: #fff;
+	height: 21px;
+	margin-top:5px;
+	cursor:pointer;
+}
+
+.expand_arrow {
+	float: left;
+	padding: 2px 6px 2px 6px;
+}
+
+.expand_label {
+	color: #333;
+	font-weight: normal;
+	padding: 3px 0 0 12px;
+	margin: 0 0 0 0;
+}
+
+.expand_block {
+	position:relative;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	margin: 0;
+	padding: 10px;
+	background: #fff;
+	cursor:auto;
+}
+
+/*
+alte Auszeichnungen fuer Publikationslisten nach Dublin Core Metadata (neu dcItem... s.u.)
+*/
+
+.listItemTitle {
+/* deprecated */
+	width: 450px;
+}
+
+.listItem {
+/* deprecated */
+	padding-top: 12px;
+	min-height: 100px;
+}
+
+
+/*
+Spezielle Anweisungen fur die Positionierung von Bildern im Inhaltsbereich
+auch fuer Bildergalerie
+-------------------------------------------------------------------------------------------------------------
+*/
+
+.contentImagesRight {
+	float:right;
+        margin:6px 0px 8px 12px;
+}
+
+.contentImagesLeft {
+	float:left;
+	margin:6px 12px 8px 0px;
+}
+
+
+.contentImage550 img, .contentImage300 img,.contentImage200 img,.contentImage150 img,.contentImage100 img {
+	padding:1px;
+	border:1px solid #ccc;
+}
+
+.contentImage550 {
+	margin:0 0 12px 0;
+	background-color:#f4f4f4;
+	padding:4px;
+	width:554px;
+	overflow:hidden;
+}
+
+.contentImage550 h6 {
+	width:550px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage300 {
+	margin:0 0 12px 0;
+	background-color:#f4f4f4;
+	padding:4px;
+	width:304px;
+	overflow:hidden;
+}
+
+.contentImage300 h6 {
+	width:300px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage200 {
+	margin:0 0 12px 0;
+	background-color:#f4f4f4;
+	padding:4px;
+	width:204px;
+	overflow:hidden;
+}
+
+.contentImage200 h6 {
+	width:200px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage150 {
+	margin:0 0 12px 0;
+	background-color:#f4f4f4;
+	padding:4px;
+	width:154px;
+	overflow:hidden;
+}
+
+.contentImage150 h6 {
+	width:150px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage100 {
+	margin:0 0 12px 0;
+	background-color:#f4f4f4;
+	padding:4px;
+	width:104px;
+	overflow:hidden;
+}
+
+.contentImage100 h6 {
+	width:100px;
+	margin:4px 0 4px 0;
+}
+
+/* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
+
+.contentGallery{ 
+	display: block; 
+	width: 97%;
+	clear: both;
+	margin: 16px 0;
+	padding: 12px 12px 6px 12px;
+	background: #f4f4f4;
+}
+
+.contentGallery .contentGalleryThumbnail { 
+	float: left;
+	height: 100px;
+	overflow: hidden;
+	margin: 0 12px 6px 0;
+	border: 1px solid #fff;
+	display: block;
+}
+
+.contentGallery h6 {	
+	margin: 6px 12px 6px 0;	
+}
+
+a.startGallery:link, a.startGallery:visited {
+	color: #999;
+	font-size: 90%;
+	clear: both;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+a.startGallery:hover, a.startGallery:active {
+	text-decoration: none;
+	color: #999;
+	font-size: 90%;
+	clear: both;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+/* Formatierungen fuer Galerie-Miniaturansicht: Bilder mit 100px Breite */
+.GalleryThumbnail { 
+	float: left;
+	height: 65px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	margin: 0px 6px 6px 0;
+	display: block;
+}
+
+/* 
+ Textformatierung Abstract (Anzeige in Normalgröße und fett egal was gesetzt ist)
+ ------------------------------------------------------------------------------
+*/
+
+.abstract p{
+	color:#333;
+	font-weight:bold;
+}
+
+.abstract p,.abstract p strong,.abstract p b,.abstract td strong,.abstract td b,.abstract td,.abstract ul,.abstract ol{
+	color:#333;
+	font-weight:bold;
+}
+
+.abstract h1 {
+	font-size: 100%;
+	margin: 12px 0 4px 0;
+}
+
+.abstract h2 {
+	font-size: 100%;
+}
+
+.abstract h3 {
+	color:#333;
+	font-size: 100%;
+}
+
+.abstract h4 {
+	font-size:100%;
+	font-weight: bold;
+	color: #333;
+}
+
+.abstract h5 {
+	font-size: 100%;
+	font-weight: bold;
+	padding:0px;
+	background-color: transparent;
+	color: #333;
+}
+
+.abstract h6 {
+	font-size: 100%;
+	line-height: 140%;
+	font-weight: bold;
+	color: #333;
+}
+
+
+/* 
+	Mediaplayer
+------------------------------------------------------------------------------------
+*/
+
+#playerContainer {
+	padding: 12px;
+	background-color: #f4f4f4;
+	width: 520px;
+	border: 1px solid #ccc;
+	overflow: hidden;
+
+}
+
+#playerContainer embed {
+	overflow: hidden;
+
+}
+
+
+/* Mitarbeiter Listen */
+
+p.alphabeticalList{
+	margin: 16px 0 0px 0;
+}
+
+h2.alphabeticalBlock{
+	border-bottom: 1px solid #999;
+	font-size: 120%;
+	margin: 16px 0 4px 0;
+}
+
+ul#alphabeticalStaffList{
+	font-weight: bold;
+}
+
+ul#alphabeticalStaffList li{
+	margin: 0;
+	background-image: none;
+	padding: 0px 0 8px 0;
+}
+
+ul#alphabeticalStaffList ul{
+	font-weight: normal;
+}
+
+ul#alphabeticalStaffList ul li{
+	margin: 0;
+	background-image: none;
+	padding: 0;
+}
+
+/* Formatierungen fuer Teaser im Inhaltsbereich */
+
+.textBlockRight{
+float:right;
+margin:4px 0 8px 12px;
+border:1px solid #cccccc;
+padding:0 0 0 10px;
+width:230px;
+}
+
+p.textBlockHeader{
+font-weight:bold;
+color:#fff;
+background-color:#ababab;
+margin-left:-10px;
+padding:1px 3px 2px 10px;
+}
+
+.textBlockRight h2{
+font-weight:bold;
+color:#fff;
+background-color:#ababab;
+margin:0 0px 3px -10px;
+padding:1px 3px 2px 10px;
+}
+
+
+/*
+Auszeichnungen fuer Publikationslisten nach Dublin Core Metadata (sowie fuer Abschlussarbeiten)
+*/
+
+.dcItem {
+	padding-top: 10px;
+	min-height: 100px;
+}
+
+.dcItem h2{
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.dcItemImage {
+	/* border: 1px solid #ccc; */
+	margin-top: 2px;
+	float:right;
+}
+
+.dcItemTitle {
+	width: 430px;
+}
+
+pre.dcBibtex {
+font-size:120%;
+overflow-x:scroll;
+width:410px;
+margin-bottom:0px;
+}
+
+
+/*
+Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
+*/
+
+.chartTable2{
+	border: 0;
+	width: 550px;
+	cellpadding: 0;
+	cellspacing: 0;
+}
+
+.chartTable2 table{
+	border-collapse: separate;
+	border-spacing: 2px;
+	cell-padding: 4px;
+	margin: 4px 4px;
+}	
+
+.chartTable2 table tr th {
+	border: 0;
+	background-color: #c5d2e4;	
+	padding: 4px;
+	text-align: left;
+	/* color: #333; */
+	/* font-weight: normal; */
+}	
+
+.chartTable2 table tr td, .chartTable2 table tr td a {
+      border: 0;
+      background-color: #f4f4f4;
+      padding: 4px;
+      color: #333;;
+}
+
+/* Formatierungen fuer Galerie-Ansicht 100px-Miniaturen- Neu: 14.01.2008 */
+.GalleryThumbnail{ 
+	float: left;
+	height: 65px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	margin: 6px 6px 0px 0;
+	padding: 0px;
+}
+
+.image {
+	display: block;
+} 
+
+.imageCropped {	
+	display: block;
+}

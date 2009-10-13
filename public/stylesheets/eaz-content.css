@@ -1,0 +1,417 @@
+/*	
+	-----------------------------------------------------------------------------
+	Freie Universitaet Berlin:
+	Stilvorlagen fuer spezielle Elemente im Contentbereich
+
+	Autor: CeDiS, http://www.cedis.fu-berlin.de, cms@cedis.fu-berlin.de	
+	Datum: 02.06.2008
+	-----------------------------------------------------------------------------
+
+
+	Update 12.01.2009: Expand-Klasse fuer Ausklapp-Elemente bei Interviews
+	Update 19.01.2009: Klassen fuer Archiv Metadaten, abstract Klasse 
+*/
+
+
+/* 
+	Mitarbeiterseiten
+------------------------------------------------------------------------------------
+*/
+
+.imgStaffRight{
+	float:right;
+	margin:12px 12px 12px 0;
+	padding:0;
+}
+
+.imgStaffRight img{
+	border:0px;
+	background-color: #e6e6dc;
+	padding:2px;
+}
+
+.imgStaffLeft{
+	float:left;
+	margin:12px 0 12px 12px;
+	padding:0;width: 713px;
+}
+
+.imgStaffLeft img{
+	border:0px;
+	background-color: #e6e6dc;
+	padding:2px;
+}
+
+/*
+Spezielle Anweisungen fur die Positionierung von Bildern im Inhaltsbereich 
+-------------------------------------------------------------------------------------------------------------
+*/
+
+
+.contentImagesRight {
+	float:right;
+        margin:6px 0px 8px 12px;
+}
+
+.contentImagesLeft {
+	float:left;
+	margin:6px 12px 8px 0px;
+}
+
+
+.contentImage300 img,.contentImage200 img,.contentImage150 img {
+	padding:1px;
+	border:1px solid #ccc;
+}
+
+.contentImage300 {
+	margin:0 0 12px 0;
+	background-color: #e6e6dc;
+	padding:4px;
+	width:304px;
+	overflow:hidden;
+}
+
+.contentImage300 h6 {
+	width:300px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage200 {
+	margin:0 0 12px 0;
+	background-color: #e6e6dc;
+	padding:4px;
+	width:204px;
+	overflow:hidden;
+}
+
+.contentImage200 h6 {
+	width:200px;
+	margin:4px 0 4px 0;
+}
+
+.contentImage150 {
+	margin:0 0 12px 0;
+	background-color: #e6e6dc;
+	padding:4px;
+	width:154px;
+	overflow:hidden;
+}
+
+.contentImage150 h6 {
+	width:150px;
+	margin:4px 0 4px 0;
+}
+
+h5 {
+	margin: 8px 0 4px 0px;
+	background: #e6e6dc;
+	padding: 4px 8px 4px 8px;
+	width: 97%;
+}
+
+/*  Expand-Klasse fuer Ausklapp-Elemente bei Interviews*/
+
+.fragmentTitle {
+	cursor: pointer;
+}
+
+#baseContent .fragmentTitle{
+	color: #666666;
+	padding: 0;
+	margin: 0;
+}
+
+#baseContent .fragmentTitle h2{
+	color: #666666;
+	background: #e6e6dc;
+	padding: 4px 8px 4px 4px;
+	border-top: 1px solid #ac3131;
+	width: 660px;
+}
+
+#baseContent .fragmentTitle img {
+	padding: 0px 10px 0 0;
+}
+
+/*  End Expand */
+
+
+/* Styling Tabs */
+
+#tabsVideo ul li {
+	border: 1px solid #ac3131;
+	width: 189px;
+	padding:0 0 0 10px;
+	height: 22px;
+	float: left;
+	background-color: #8b0f09;
+	cursor: pointer;
+	font-size:95%;
+	list-style: none;
+	background-image:none;
+}
+
+#tabsVideo li p{
+	padding:2px 0 0 0;
+	color: #999;
+}
+
+#tabsVideo li:hover {
+	background-color: #fff;
+	color: #8b0f09;
+}
+
+#tabsVideo li:hover p{
+	color: #8b0f09;
+}
+
+#tabsVideo li.active {
+	background-color: #8b0f09;
+	color: #fff;
+}
+
+#tabsVideo li.active p {
+	color: #fff;
+}
+
+#tabsVideo  p {
+	color: #999;
+}
+
+.containerVideo {
+	clear:both;
+	padding: 0px;
+	border: 1px solid #8b0f09;
+	width:400px;
+	float: left;
+	margin-right: 10px;
+}
+
+/* End Tabs */
+
+/* Biographie Container */
+
+#fragmentBiography {
+	float: left;
+	width: 280px;
+	padding: 0 10px 0 10px;
+	margin: -22px 0 0 0;
+}
+
+#fragmentBiography h1{
+	padding: 0px;
+	margin: 0px;
+}
+
+#fragmentBiography table{
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+#fragmentBiography th{
+	padding: 8px 0 0 0;
+}
+
+#fragmentBiography td{
+	padding: 0;
+}
+
+#fragmentBiography td ul{
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+/* weitere Informationen Container */
+
+#fragment1 table{
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+#fragment1 th{
+	padding: 8px 0 0 0;
+}
+
+#fragment1 td{
+	padding: 0;
+}
+
+#fragment1 td ul{
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+/* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
+
+.contentGallery{ 
+	display: block; 
+	/*width: 388px;*/
+	width: 660px;
+	clear: both;
+	margin: 6px 0 0 0;
+	padding: 6px 6px 6px 6px;
+	background: #e4e4da;
+	border-top: 1px solid #8b0f09;
+}
+
+.contentGallery .contentGalleryThumbnail { 
+	float: left;
+	height: 100px;
+	overflow: hidden;
+	margin: 0 6px 6px 0;
+	border: 1px solid #e4e4da;
+	display: block;
+}
+
+.contentGallery h6 {	
+	color: #666;
+	margin: 6px 12px 6px 0;	
+}
+
+a.startGallery:link, a.startGallery:visited {
+	color: #666;
+	font-size: 90%;
+	clear: both;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+a.startGallery:hover, a.startGallery:active {
+	text-decoration: none;
+	color: #999;
+	font-size: 90%;
+	clear: both;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+/* Formatierungen fuer Galerie-Miniaturansicht: Bilder mit 100px Breite */
+.GalleryThumbnail { 
+	float: left;
+	height: 65px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	margin: 0px 6px 6px 0;
+	display: block;
+}
+
+/* Formatierung fuer Listenausgaben */
+.teaserList {
+	width: 729px;
+	padding: 0px;
+	overflow: hidden;
+	clear: left;
+}
+
+.teaserList h1{
+	clear: both;
+	margin-bottom: 12px;
+}
+
+.baseContainerTeaser{
+	width: 240px;
+	overflow: hidden;
+	float:left;
+}
+
+.baseContainerTeaserImage{
+	width: 100px;
+	height: 75px;
+	margin-right: 8px;
+	overflow: hidden;
+	float: left;
+	border:1px solid #000;
+}
+
+.baseContainerTeaserText{
+	width: 120px;
+	height: 110px;
+	overflow: hidden;
+	float: left;
+}
+
+.baseContainerTeaserText h3, .baseContainerTeaserText ul{
+	font-size:95%;
+	margin:0px;
+	padding:0px;
+}
+
+#baseContent .baseContainerTeaserText li{
+	margin:0px;
+	padding:0px;
+	background-image:none;
+}
+
+.baseContainerTeaserText span{
+       font-size:90%;
+       line-height:130%;
+}
+
+/* 
+ Textformatierung Abstract (Anzeige in Normalgroesse und fett egal was gesetzt ist)
+ ------------------------------------------------------------------------------
+*/
+
+.abstract p{
+	color:#000;
+	font-weight:bold;
+}
+
+.abstract p,.abstract p strong,.abstract p b,.abstract td strong,.abstract td b,.abstract td,.abstract ul,.abstract ol{
+	color:#000;
+	font-weight:bold;
+}
+
+.abstract h1 {
+	font-size: 100%;
+	margin: 12px 0 4px 0;
+}
+
+.abstract h2 {
+	font-size: 100%;
+}
+
+.abstract h3 {
+	color:#000;
+	font-size: 100%;
+}
+
+.abstract h4 {
+	font-size:100%;
+	font-weight: bold;
+	color: #000;
+}
+
+.abstract h5 {
+	font-size: 100%;
+	font-weight: bold;
+	padding:0px;
+	background-color: transparent;
+	color: #000;
+}
+
+.abstract h6 {
+	font-size: 100%;
+	line-height: 140%;
+	font-weight: bold;
+	color: #000;
+}
+
+/* Formatierung playerContainer fuer Videos in der Website */
+
+#playerContainer {
+	background-color:transparent;
+	border-top:1px solid #000;
+	border-left:1px solid #000;
+	border-right:1px solid #000;
+	border-bottom:1px solid #000;
+	overflow:hidden;
+	padding:0px;
+	width:360px;
+	height:260px;
+	margin:20px 0 0 0;
+}
+
