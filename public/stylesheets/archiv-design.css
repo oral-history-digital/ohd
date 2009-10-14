@@ -6,12 +6,12 @@
    Aktualisiert: 07.12.2008
    ----------------------------------------------------------------------------
    - Verknuepfte Dateien 
-   ../img/bg_body.gif
-   ../img/suchpfeil_blau.gif
-   ../img/quicklinks_icon.gif
-   ../img/pfeil_navi.gif
-   ../img/bg_mainWrapper_navi.gif
-   ../img/rechteck_gr_liste.gif
+   /images/bg_body.gif
+   /images/suchpfeil_blau.gif
+   /images/quicklinks_icon.gif
+   /images/pfeil_navi.gif
+   /images/bg_mainWrapper_navi.gif
+   /images/rechteck_gr_liste.gif
    ---------------------------------------------------------------------------
 */
 
@@ -22,7 +22,7 @@
 
 body {
 	position:relative;
-	background: #f1f1eb url(../img/archiv_bg_body.gif) top repeat-x;
+	background: #f1f1eb url(/images/archiv_bg_body.gif) top repeat-x;
 	margin: 0;
 	/* das Hintergrundbild muss entsprechend der Hoehe des Identitaetsbereichs angepasst werden, es enthaelt die gruene Linie und den grauen Hintergrundstreifen*/
 }
@@ -249,7 +249,7 @@ body {
 .quickLinksNoScript {
 	margin: 0;
 	padding: 0 0 0 24px;
-	background: url(../img/quicklinks_icon.gif) no-repeat;
+	background: url(/images/quicklinks_icon.gif) no-repeat;
 	background-position: 0 2px;
 }
 
@@ -273,7 +273,7 @@ body {
 	padding: 0;
 	/*width: 996px; *//* der IE6 braucht hier 977px statt 974px */
 	width: 996px;
-	background:#f1f1eb url(../img/archiv_mainWrapper_bg.gif) left repeat-y;
+	background:#f1f1eb url(/images/archiv_mainWrapper_bg.gif) left repeat-y;
 	/*border-right:1px solid #fff;*/
 	border-bottom:1px solid #fff;
 }
@@ -661,7 +661,7 @@ body {
 	color: #333;
 	margin: 6px 0 0 0;
 	padding: 0 0 0 10px;
-	background-image: url(../img/pfeil_rot_liste.gif);
+	background-image: url(/images/pfeil_rot_liste.gif);
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
@@ -729,7 +729,7 @@ body {
 	line-height: 130%;
   	margin: 0;
 	padding: 0 0 0 22px;
-	background-image: url(../img/pfeil_rot_liste.gif);
+	background-image: url(/images/pfeil_rot_liste.gif);
 	background-repeat: no-repeat;
 	background-position: 10px 4px;
 }

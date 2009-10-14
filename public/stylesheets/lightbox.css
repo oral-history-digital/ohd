@@ -45,13 +45,13 @@
 #prevLink, #nextLink{
 	width: 49%;
 	height: 100%;
-	background: transparent url(http://www.cms.fu-berlin.de/base/01/bildergalerieV2/media/images/blank.gif) no-repeat; /* Trick IE into showing hover */
+	background: transparent url(/images/blank.gif) no-repeat; /* Trick IE into showing hover */
 	display: block;
 	}
 #prevLink { left: 0; float: left;}
 #nextLink { right: 0; float: right;}
-#prevLink:hover, #prevLink:visited:hover { background: url(http://www.cms.fu-berlin.de/base/01/bildergalerieV2/media/images/prev.gif) left 15% no-repeat; }
-#nextLink:hover, #nextLink:visited:hover { background: url(http://www.cms.fu-berlin.de/base/01/bildergalerieV2/media/images/next.gif) right 15% no-repeat; }
+#prevLink:hover, #prevLink:visited:hover { background: url(/images/prev.gif) left 15% no-repeat; }
+#nextLink:hover, #nextLink:visited:hover { background: url(/images/next.gif) right 15% no-repeat; }
 
 
 #imageDataContainer{

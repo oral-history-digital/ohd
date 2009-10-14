@@ -1,0 +1,198 @@
+.portlet fieldset {
+	/*background: #eee;*/
+	border: none;
+	padding: 0px;
+	margin: 10px 0 10px 0;
+}
+
+.portlet input.checkbox {
+	float: left;
+	padding: 3px 0px 3px 5px;
+	margin-right: 5px;
+}
+
+.portlet input.radio {
+	float: left;
+	padding: 3px 0px 3px 5px;
+	margin-right: 5px;
+}
+
+.portlet input.text {
+	float: right;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	width: 360px;
+	padding: 3px 0px 3px 5px;
+	margin-bottom: 6px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+}
+
+.portlet input.text_row {
+	float: left;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	width: 360px;
+	padding: 3px 0px 3px 5px;
+	margin-bottom: 6px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+}
+
+.portlet input.text:hover, #pmDefaultForm input.text:focus {
+	border: 1px solid #999;
+}
+
+.portlet label {
+	float: left;
+	margin: 2px 0 0 0;
+	width: 177px;
+}
+
+.portlet label.checkbox_row {
+	float: left;
+	margin: 2px 0 0 0;
+	width: 500px;
+}
+
+.portlet label.radio_row {
+	float: left;
+	margin: 2px 0 0 0;
+	width: 30px;
+}
+
+.portlet label.row {
+	float: left;
+	margin: 2px 0 0 0;
+	width: 500px;
+}
+
+.portlet legend {
+	display: none;
+}
+
+.portlet optgroup, option {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	font-style: normal;
+}
+
+.portlet p {
+	margin: 0 0 6px 0;
+	padding: 0;
+}
+
+.portlet select {
+	float: left;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	width: 200px;
+	padding: 3px 3px 3px 5px;
+	margin-bottom: 6px;
+	margin-right: 6px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+}
+
+.portlet select:hover, textarea:focus {
+	border: 1px solid #999;
+}
+
+.portlet textarea {
+	/*float: right;*/
+	background-color: #fff;
+	border: 1px solid #ccc;
+	width: 536px;
+	padding: 3px 0px 3px 5px;
+	margin-bottom: 6px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+}
+
+.portlet textarea:hover, textarea:focus {
+	border: 1px solid #999;
+}
+
+.portlet .clear {
+	clear: both;
+}
+
+.portlet .required {
+	color: #c00;
+	font-weight: bold;
+}
+
+.portlet #reset {
+	float: left;
+	width: 270px;
+	background-color: #666;
+	border: none;
+	color: #fff;
+	text-align: left;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	padding: 4px 0px 3px 5px;
+}
+
+.portlet #reset:hover, #reset:focus {
+	background-color: #333;
+}
+
+.portlet #submit {
+   float: left;
+	width: 146px;
+	background-color: #b2afa1;
+	border: none;
+	color: #fff;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	padding: 4px 0px 3px 4px;
+	margin: 0 0 0 0px;
+}
+
+.portlet #submit:hover, #submit:focus {
+	background-color: #8b0f09;
+}
+
+/*
+ * ChangePasswordPortlet specifics
+ */
+
+.changePasswordPortlet input.text {
+    width: 260px;
+}
+
+.changePasswordPortlet fieldset {
+    width: 450px;
+    padding: 8px;
+}
+
+.changePasswordPortlet #submit {
+    width: 110px;
+}
+
+.changePasswordPortlet p.message {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+
+/*
+ * LogoutPortlet specifics
+ */
+
+.logoutPortlet {
+	padding-left: 0px;
+}
+
+.logoutPortlet fieldset {
+	width: 224px;
+	padding: 0 0 10px 0;
+}
+
+.logoutPortlet #submit {
+	width: 150px;
+}
+
