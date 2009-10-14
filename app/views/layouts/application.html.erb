@@ -10,20 +10,17 @@
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
 
-    <script type="text/javascript" src="javascripts/default.js"></script>
-    <link href="stylesheets/archiv-standard.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/archiv-design.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/content.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/eaz-content.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print.css" type="text/css" rel="stylesheet" media="print" />
+    <%= stylesheet_link_tag 'archiv-standard' %>
+    <%= stylesheet_link_tag 'archiv-design' %>
+    <%= stylesheet_link_tag 'content' %>
+    <%= stylesheet_link_tag 'eaz-content' %>
+    <%= stylesheet_link_tag 'lightbox' %>
+    <%= stylesheet_link_tag 'archiv-portlet' %>
 
-    <!-- HACK FÜR zwangsarbeit-archiv : js etc immer dabei!-->
-    <link rel="stylesheet" href="stylesheets/lightbox.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="javascripts/prototype.js"></script>
-    <script type="text/javascript" src="javascripts/scriptaculous.js?load=effects"></script>
-    <script type="text/javascript" src="javascripts/lightbox.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/archiv-portlet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" media="print" />
+    <%= javascript_include_tag 'default' %>
+    <%= javascript_include_tag 'prototype' %>
+    <%= javascript_include_tag 'scriptaculous' %>
+    <%= javascript_include_tag 'lightbox' %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -39,18 +36,13 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="../index.html" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <img src="images/zwar_logo_de.gif" class="baseHeaderLogo" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" />
+          <img src="/images/zwar_logo_de.gif" class="baseHeaderLogo" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" />
         </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
         <hr class="divider" />
         <p class="skip">
-          <em>
-            Springe direkt zu:
-          </em>
-          <a href="#inhalt">
-            Inhalt
-          </a>
+          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
         </p>
 
         <hr class="divider" />
@@ -61,7 +53,7 @@
           <ul>
             <li><a href="../index.html" accesskey="0" title="Zur Startseite">Home</a></li>
             <li>Archiv</li>
-            <li><a href="/collections" title="Geografische Verteilung der Teilsammlungen">Karte</a></li>
+            <li><a href="archiv/index.html" title="Geografische Verteilung der Teilsammlungen">Karte</a></li>
             <li><a href="nutzungsbedingungen/index.html" title="">Nutzungsbedingungen</a></li>
             <li><a href="kontakt/index.html" accesskey="9" title="Kontaktdaten (Adresse, Telefon, Email, ...)">Kontakt</a></li>
             <li><a href="impressum/index.html" accesskey="1" title="">Impressum</a></li>
@@ -87,7 +79,7 @@
             <input type="hidden" name="_executeSearch" value="true"/>
             <input type="hidden" name="language" value="de"/>
             <input value="" type="text" title="Suchbegriff bitte hier eingeben" class="baseInputSearch" name="searchInput" id="searchInput" />
-            <input title="Suchanfrage starten" class="buttonText" src="images/suchpfeil_weiss.gif" name="searchButton" alt="" type="image">
+            <input title="Suchanfrage starten" class="buttonText" src="/images/suchpfeil_weiss.gif" name="searchButton" alt="" type="image">
           </form>
         </div>
       </div>
@@ -116,49 +108,21 @@
 
       <!-- index_begin:content -->
 
-        <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
-
-        <div class="contentImagesLeft">
-          <div class="contentImage150">
-            <img src="images/180_DolezalMiroslavPhot09_150.jpg" alt="Doležal, Miroslav" title="" />
-            <h6>Doležal, Miroslav</h6>
-          </div>
-          <div class="contentImage150">
-            <img src="images/ZA007_03_150.jpg" alt="Poleschtschuk, Anna Iwanowna" title="" />
-            <h6>Poleschtschuk, Anna Iwanowna</h6>
-          </div>
-        </div>
-
-        <p> </p>
-
-        <p>Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern, die während der Zeit des Nationalsozialismus Zwangsarbeit geleistet haben. Das Archiv setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden, finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;, in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt. Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.</p>
-
-        <h2> </h2>
-        <h2>Recherchemöglichkeiten</h2>
-        <p>Der Einstieg in eine Recherche in dem Archiv ist über die folgenden drei Wege möglich:<br /><br /></p>
-        <hr />
-        <p>Inhaltliche Kategorien (rechts in der Navigation) für einen thematisch strukturierten Zugang<br /><strong><a href="hilfe/suche/recherchemoeglichkeiten.html" title="Welche Recherchemöglichkeiten gibt es?">mehr zu den Kategorien »</a><br /></strong></p>
-        <hr />
-        <p>Karte der geographischen Verteilung der Teilsammlungen für einen regionalen Zugang<br /><strong><a href="/collections" title="Karte">Karte »</a><br /><a href="../sammlung/teilsammlungen/index.html" target="_blank" title="Teilsammlungen">mehr zu den Teilsammlungen »</a><br /></strong></p>
-        <hr />
-        <p>Volltextsuche für einen breiten und intuitiven Zugang<br /><strong><a href="suche/index.html" title="Suche in den Interviews">Volltextsuche »</a><br /><a href="hilfe/suche/suche-allgemein.html" title="Wie kann ich die Volltextsuche nutzen?">mehr zur Suche »</a></strong></p>
-        <hr />
-        <h2 class="clear">Fragen und Antworten</h2>
-        <p>Über die <a href="hilfe/index.html" title="Hilfe">Hilfe</a> auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs. Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">mail@zwangsarbeit-archiv.de</a></p>
+      <%= yield %>
 
       <!-- index_end:content -->
 
       <!-- noindex -->
 
         <br class="clear" />
-        <a href="#seitenanfang" title="Zum Seitenanfang"><img src="images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+        <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
         <br class="clear" />
 
         <div id="baseContainerNavigationToRoot">
           <div class="baseNavigationToRoot">
             <p class="info"><em>Navigationspfad:</em></p>
             <a href="../index.html" title="Startseite Zwangsarbeit 1939-1945">Home</a>
-            &raquo;Archiv
+            &raquo; Archiv
           </div>
         </div>
 
@@ -193,8 +157,8 @@
         <h2 class="baseListBoxTitle">Interviews geordnet nach:</h2>
         <div class="fragmentTitle" onclick="Element.toggle('container36536032');Element.toggle('pfeilRechts36536032');Element.toggle('pfeilUnten36536032')">
           <h2>
-            <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts36536032" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten36536032" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36536032" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36536032" alt="Pfeil unten" />
             Namen der Interviewten
           </h2>
         </div>
@@ -214,8 +178,8 @@
 
         <div class="fragmentTitle" onclick="Element.toggle('container36527858');Element.toggle('pfeilRechts36527858');Element.toggle('pfeilUnten36527858')">
           <h2>
-            <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts36527858" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten36527858" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36527858" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36527858" alt="Pfeil unten" />
             Gruppe
           </h2>
         </div>
@@ -247,8 +211,8 @@
                   <div class="fragmentTitle" onclick="Element.toggle('container35767687');Element.toggle('pfeilRechts35767687');Element.toggle('pfeilUnten35767687')">
 
                     <h2>
-                    <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts35767687" alt="Pfeil rechts" />
-                    <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten35767687" alt="Pfeil unten" />
+                    <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts35767687" alt="Pfeil rechts" />
+                    <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten35767687" alt="Pfeil unten" />
                     Einsatzbereich
                     </h2>
                   </div>
@@ -497,8 +461,8 @@
 
                   <div class="fragmentTitle" onclick="Element.toggle('container36527900');Element.toggle('pfeilRechts36527900');Element.toggle('pfeilUnten36527900')">
                     <h2>
-                    <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts36527900" alt="Pfeil rechts" />
-                    <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten36527900" alt="Pfeil unten" />
+                    <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36527900" alt="Pfeil rechts" />
+                    <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36527900" alt="Pfeil unten" />
 
                     Unterbringung / Inhaftierung
                     </h2>
@@ -669,8 +633,8 @@
                   <div class="fragmentTitle" onclick="Element.toggle('container36527872');Element.toggle('pfeilRechts36527872');Element.toggle('pfeilUnten36527872')">
 
                     <h2>
-                    <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts36527872" alt="Pfeil rechts" />
-                    <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten36527872" alt="Pfeil unten" />
+                    <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36527872" alt="Pfeil rechts" />
+                    <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36527872" alt="Pfeil unten" />
                     Sprache
                     </h2>
                   </div>
@@ -1108,8 +1072,8 @@
                   <div class="fragmentTitle" onclick="Element.toggle('container36527886');Element.toggle('pfeilRechts36527886');Element.toggle('pfeilUnten36527886')">
 
                     <h2>
-                    <img title="" src="images/pfeil_rot_rechts.gif" id="pfeilRechts36527886" alt="Pfeil rechts" />
-                    <img title="" style="display:none" src="images/pfeil_rot_unten.gif" id="pfeilUnten36527886" alt="Pfeil unten" />
+                    <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36527886" alt="Pfeil rechts" />
+                    <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36527886" alt="Pfeil unten" />
                     Wohnort (Land)
                     </h2>
                   </div>
@@ -1498,13 +1462,10 @@
 
     <div id="printlogo">
       <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-      <img src="images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+      <img src="/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
     </div>
 
     <!-- /noindex -->
 
   </body>
 </html>
-
-
-
