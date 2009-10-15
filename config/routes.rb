@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :collections
+  map.resources :interviews
+
+  map.home 'home/:action.html', :controller => 'home'
+  map.root :controller => 'home', :action => 'archive'
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

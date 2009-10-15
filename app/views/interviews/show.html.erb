@@ -1,0 +1,950 @@
+<!--<div id="leftColumn">-->
+<div id="tabsVideo">
+	<ul>
+    <li id="tabAudio" class="active"><p>Audio</p></li>
+	</ul>
+</div>
+
+<br class="clear" />
+
+<div id="containerAudio" class="containerVideo">
+  <div class="playerContainer">
+    <div id="mediaspace36267112" class="player">
+      <h4>Der Medien-Player konnte nicht geladen werden!</h4><noscript><p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p></noscript><script type="text/javascript">document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');</script>
+    </div>
+	</div>
+
+  <script type="text/javascript">
+    /* <![CDATA[ */
+      var s1 = new SWFObject('http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/player.swf','player36267112','400','414','9');
+      s1.addParam('allowfullscreen','true');
+      s1.addParam('allowscriptaccess','always');
+      s1.addParam('wmode','opaque');
+      s1.addParam('flashvars','file=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/archiv/belarus_aachen/za004/audio/index.xml&streamer=rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv&link=http://www.zwangsarbeit-archiv.de&skin=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/stylish.swf&backcolor=990000&frontcolor=999999&lightcolor=ffffff&playlist=bottom&stretching=none&repeat=list&playlistsize=80');
+      s1.write('mediaspace36267112');
+    /* ]]> */
+  </script>
+</div>
+<!-- </div> -->
+<!-- /noindex -->
+
+<div id="fragmentBiography">
+  <h1><%= @interview.full_title %></h1>
+  <table class="archivTableBiography">
+    <tr>
+      <td align="left" valign="top">
+        <%= @interview.gender ? 'männlich' : 'weiblich' %>
+        <br />
+        geboren <%= @interview.date_of_birth %> in ORT
+      </td>
+    </tr>
+		<tr>
+			<th align="left" valign="top">
+				<%= @interview.video ? 'Videointerview' : 'Audiointerview' %>
+	    </th>
+		</tr>
+		<tr>
+     	<td align="left" valign="top">
+        <%= @interview.language.name %>,	<%= @interview.duration %>
+				<br />
+   	   	<%= @interview.translated ? 'Übersetzung ins Deutsche vorhanden' : 'keine Übersetzung vorhanden' %>
+      </td>
+		</tr>
+		<tr>
+			<th align="left" valign="top">
+        Gruppe
+      </th>
+		</tr>
+		<tr>
+      <td align="left" valign="top">
+			 	<ul>
+          <% @interview.forced_labor_groups.each do |forced_labor_group| %>
+            <li><%= forced_labor_group.name %></li>
+          <% end %>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th align="left" valign="top">
+        Einsatzbereiche
+	    </th>
+		</tr>
+		<tr>
+		  <td align="left" valign="top">
+        <ul>
+					...
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th align="left" valign="top">
+        Lager und Einsatzorte
+      </th>
+		</tr>
+		<tr>
+      <td align="left" valign="top">
+	    	<%= @interview.forced_labor_location %>
+			</td>
+		</tr>
+    <tr>
+      <th align="left" valign="top">
+        Archiv-ID
+      </th>
+    </tr>
+    <tr>
+      <td align="left" valign="top">
+        <%= @interview.archive_id %>
+      </td>
+    </tr>
+    <tr>
+      <th align="left" valign="top">
+        Begleitmaterialien
+      </th>
+    </tr>
+    <tr>
+      <td align="left" valign="top">
+        <ul>
+          <li>
+            <a href="za004_bg.pdf" target="_blank">
+              Biographie zu <%= @interview.full_title %> (pdf)
+						</a>
+					</li>
+          <li>
+            <a href="za004_tr.pdf" target="_blank">
+              Transkript zu <%= @interview.full_title %> (pdf)
+            </a>
+          </li>
+          <li>
+            <a href="za004_tr.pdf" target="_blank">
+              Übersetzung zu <%= @interview.full_title %> (pdf)
+            </a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- noindex -->
+<div class="clear">&nbsp;</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="contentGallery">
+
+		<a href="bild_ZA004_01/ZA004_01_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Marija Grachowskaja am Interviewtag in ihrem Wohnzimmer">
+
+	<!-- The first (up to three) (small) images for the slideshow -->
+
+
+
+
+
+
+
+
+
+				<div class="contentGalleryThumbnail">
+					<img src="bild_ZA004_01/ZA004_01_150.jpeg" alt="" height="100" title="" />
+
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+				<div class="contentGalleryThumbnail">
+					<img src="bild_ZA004_02/ZA004_02_150.jpeg" alt="" height="100" title="" />
+				</div>
+
+
+
+
+
+
+
+
+
+
+				<div class="contentGalleryThumbnail">
+						<img src="bild_ZA004_03/ZA004_03_150.jpeg" alt="" title="" />
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+				<div class="contentGalleryThumbnail">
+						<img src="bild_ZA004_04/ZA004_04_150.jpeg" alt="" title="" />
+				</div>
+
+
+
+
+
+			<h6 class="clear startGallery">
+
+				<!-- Link "Bildergalerie starten" -->
+				Bildergalerie starten
+
+					(6 Bilder) &raquo;
+
+			</h6>
+		</a>
+
+<noscript>
+	<h4>
+
+            JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
+            Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
+
+	</h4>
+</noscript>
+</div>
+
+	<!-- Links to further (i.e. No 2 and up) images for the slideshow -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+									<a href="bild_ZA004_02/ZA004_02_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Marija Grachowskaja am Interviewtag in ihrem Wohnzimmer"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+									<a href="bild_ZA004_03/ZA004_03_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Frau Grachowskaja mit ihrer Tochter und dem Vertreter der Romavereinigung, Alexander"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+									<a href="bild_ZA004_04/ZA004_04_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+									<a href="bild_ZA004_05/ZA004_05_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+									<a href="bild_ZA004_06/ZA004_06_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
+
+
+
+
+
+
+<div class="clear">&nbsp;</div>
+
+<div class="fragmentTitle" onclick="Element.toggle('fragment1');Element.toggle('pfeilUnten1');Element.toggle('pfeilRechts1')"><h2><img src="../../../../layout_1_3/img/pfeil_rot_rechts.gif" id="pfeilRechts1" title="" alt="Pfeil rechts" /><img src="../../../../layout_1_3/img/pfeil_rot_unten.gif" id="pfeilUnten1" title="" style="display:none" alt="Pfeil unten" />weitere Informationen zum Interview</h2></div>
+<div id="fragment1" style="display:none">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table class="archivTable1">
+
+
+		<tr>
+			<th align="left" valign="top">
+				Herkunft
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Belarus
+			</td>
+		</tr>
+
+
+
+		<tr>
+			<th align="left" valign="top">
+				Herkunft – weitere Angaben
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Gebiet Witebsk, Lepel
+			</td>
+		</tr>
+
+
+		<tr>
+
+			<th align="left" valign="top">
+				Staatsangehörigkeit
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Belarus
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+
+				Datum der Deportation/Verhaftung
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+	    		01/1941
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Ort der Deportation/Verhaftung
+	    	</th>
+
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+	    		Belarus
+			</td>
+		</tr>
+
+
+
+		<tr>
+			<th align="left" valign="top">
+				Einsatzbereich – weitere Angaben
+	    	</th>
+		</tr>
+
+		<tr>
+      		<td align="left" valign="top">
+	    		Küche, Forstwirtschaft
+
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Unterbringung / Inhaftierung
+	    	</th>
+		</tr>
+		<tr>
+
+	      	<td align="left" valign="top">
+			 	<ul>
+					<li>zu Hause</li><li>Lager</li>
+				</ul>
+			</td>
+		</tr>
+
+
+
+
+
+		<tr>
+			<th align="left" valign="top">
+				Strafmaßnahmen
+	    	</th>
+
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+		    	Holzeinschlagstelle im Wald
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Datum der Befreiung/Entlassung
+	    	</th>
+		</tr>
+
+		<tr>
+      		<td align="left" valign="top">
+		    	01/1943
+			</td>
+		</tr>
+
+</table>
+</div>
+<!-- /noindex -->
+<noscript>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table class="archivTable1">
+
+
+		<tr>
+			<th align="left" valign="top">
+				Herkunft
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Belarus
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Herkunft – weitere Angaben
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Gebiet Witebsk, Lepel
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Staatsangehörigkeit
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+		    	Belarus
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Datum der Deportation/Verhaftung
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+	    		01/1941
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Ort der Deportation/Verhaftung
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+	    		Belarus
+			</td>
+		</tr>
+
+
+
+		<tr>
+			<th align="left" valign="top">
+				Einsatzbereich – weitere Angaben
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+	    		Küche, Forstwirtschaft
+
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Unterbringung / Inhaftierung
+	    	</th>
+		</tr>
+		<tr>
+	      	<td align="left" valign="top">
+			 	<ul>
+					<li>zu Hause</li><li>Lager</li>
+				</ul>
+			</td>
+		</tr>
+
+
+
+
+
+		<tr>
+			<th align="left" valign="top">
+				Strafmaßnahmen
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+		    	Holzeinschlagstelle im Wald
+			</td>
+		</tr>
+
+
+		<tr>
+			<th align="left" valign="top">
+				Datum der Befreiung/Entlassung
+	    	</th>
+		</tr>
+		<tr>
+      		<td align="left" valign="top">
+		    	01/1943
+			</td>
+		</tr>
+
+</table>
+</noscript>
+
+
+<div class="clear">&nbsp;</div>
+
+

@@ -1,0 +1,15 @@
+<h1>Geografische Verteilung der Teilsammlungen</h1>
+
+<div class="abstract">Das Archiv umfasst 32 Teilsammlungen von Interviews. Diese von verschiedenen Interview-Projekten in 26 Ländern erarbeiteten Teilsammlungen bilden die Grundstruktur des Archivs. Über die Karte können diese angewählt werden.</div>
+
+<h2>Übersicht über die Teilsammlungen</h2>
+
+<ul>
+
+  <% @collections.each do |collection| %>
+
+    <li><%= link_to collection.name, :action => "show", :id => collection.id %></li>
+
+  <% end %>
+
+</ul>

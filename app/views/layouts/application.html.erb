@@ -35,7 +35,7 @@
 
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="../index.html" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
+        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
           <img src="/images/zwar_logo_de.gif" class="baseHeaderLogo" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" />
         </a>
 
@@ -51,13 +51,13 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><a href="../index.html" accesskey="0" title="Zur Startseite">Home</a></li>
+            <li><%= link_to "Home", :root, :accesskey => "0" %></li>
             <li>Archiv</li>
-            <li><a href="archiv/index.html" title="Geografische Verteilung der Teilsammlungen">Karte</a></li>
-            <li><a href="nutzungsbedingungen/index.html" title="">Nutzungsbedingungen</a></li>
-            <li><a href="kontakt/index.html" accesskey="9" title="Kontaktdaten (Adresse, Telefon, Email, ...)">Kontakt</a></li>
-            <li><a href="impressum/index.html" accesskey="1" title="">Impressum</a></li>
-            <li><a href="hilfe/index.html" title="Fragen und Antworten zur Nutzung des Archivs">Hilfe</a></li>
+            <li><%= link_to "Karte", collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to "Nutzungsbedingungen", "/home/terms_of_use" %></li>
+            <li><%= link_to "Kontakt", "/home/contact", :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
+            <li><%= link_to "Impressum", "/home/impressum", :accesskey => "1" %></li>
+            <li><%= link_to "Hilfe", "/home/help", :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
       </div>

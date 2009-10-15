@@ -1,0 +1,39 @@
+<h1>Teilsammlung &quot;<%= @collection.name %>&quot;</h1>
+
+<p>
+  <strong>Interviews in:</strong>
+  <br />
+  <%= @collection.countries %>
+</p>
+
+<p>
+  <strong>durchgeführt von:</strong>
+  <br />
+  <%= @collection.institution %>
+</p>
+
+<p>
+  <strong>Verantwortliche:</strong>
+  <br />
+  <%= @collection.responsibles %>
+</p>
+
+<p>
+  <strong>Weitere Anmerkungen:</strong>
+  <br />
+  <%= @collection.notes %>
+</p>
+
+<p>
+  <strong>Interviewende:</strong>
+  <br />
+  <%= @collection.interviewers %>
+</p>
+
+<h2>Interviewte</h2>
+
+<ul>
+  <% @collection.interviews.each do |interview| %>
+    <li><%= link_to interview.full_title, interview_url(interview) %></li>
+  <% end %>
+</ul>
