@@ -1,9 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :collections
-  map.resources :interviews
+  map.resources :collections, :path_prefix => ':locale'
+  map.resources :interviews, :path_prefix => ':locale', :collection => { :playlist => :get }
 
-  map.home 'home/:action.html', :controller => 'home'
-  map.root :controller => 'home', :action => 'archive'
+  map.home 'home/:action.html', :controller => 'home', :path_prefix => ':locale'
+  map.root :controller => 'home', :action => 'archive', :locale => 'de'
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -44,6 +44,6 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  map.connect ':locale/:controller/:action/:id'
+  map.connect ':locale/:controller/:action/:id.:format'
 end

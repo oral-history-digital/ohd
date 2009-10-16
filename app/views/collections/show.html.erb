@@ -34,6 +34,6 @@
 
 <ul>
   <% @collection.interviews.each do |interview| %>
-    <li><%= link_to interview.full_title, interview_url(interview) %></li>
+    <li><%= link_to interview.full_title, interview_path(:id => interview.id) %></li>
   <% end %>
 </ul>

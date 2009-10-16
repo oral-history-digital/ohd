@@ -1,2 +1,8 @@
 de:
-  hello: "Hallo Welt!"
+  home: "Startseite"
+  archive: "Archiv"
+  map: "Karte"
+  terms_of_use: "Nutzungsbedingungen"
+  contact: "Kontakt"
+  legal_notice: "Impressum"
+  faq: "Hilfe"

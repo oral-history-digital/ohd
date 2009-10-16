@@ -16,11 +16,15 @@
     <%= stylesheet_link_tag 'eaz-content' %>
     <%= stylesheet_link_tag 'lightbox' %>
     <%= stylesheet_link_tag 'archiv-portlet' %>
+    
+    <%# Stylesheet Umstellung von 1.0 auf 2.0 %>
+    <%= stylesheet_link_tag 'transfer' %>
 
     <%= javascript_include_tag 'default' %>
     <%= javascript_include_tag 'prototype' %>
     <%= javascript_include_tag 'scriptaculous' %>
     <%= javascript_include_tag 'lightbox' %>
+    <%= javascript_include_tag 'swfobject' %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -36,7 +40,7 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <img src="/images/zwar_logo_de.gif" class="baseHeaderLogo" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" />
+          <%= image_tag("/images/zwar_logo_#{I18n.locale}.gif", :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
         </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
@@ -51,13 +55,20 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to "Home", :root, :accesskey => "0" %></li>
-            <li>Archiv</li>
-            <li><%= link_to "Karte", collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
-            <li><%= link_to "Nutzungsbedingungen", "/home/terms_of_use" %></li>
-            <li><%= link_to "Kontakt", "/home/contact", :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
-            <li><%= link_to "Impressum", "/home/impressum", :accesskey => "1" %></li>
-            <li><%= link_to "Hilfe", "/home/help", :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+            <li><%= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :accesskey => "0" %></li>
+            <li>
+              <% if I18n.locale == "de" %>
+                <%= link_to "English", "/en/home/archive", :title => "English version" %>
+              <% else %>
+                <%= link_to "Deutsch", :root, :title => "Deutsche Version" %>
+              <% end %>
+            </li>
+            <li><%= link_to (t :archive), :root, :title => "Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot;" %></li>
+            <li><%= link_to (t :map), collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to (t :terms_of_use), home_path(:action => "terms_of_use") %></li>
+            <li><%= link_to (t :contact), home_path(:action => "contact"), :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
+            <li><%= link_to (t :legal_notice), home_path(:action => "impressum"), :accesskey => "1" %></li>
+            <li><%= link_to (t :faq), home_path(:action => "faq_index"), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
       </div>

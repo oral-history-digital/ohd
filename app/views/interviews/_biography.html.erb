@@ -1,0 +1,43 @@
+<div id="containerBiography" style="border: 1px solid #8b0f09; padding: 5px;">
+  <table class="archivTableBiography">
+		<tr><th align="left" valign="top"><%= @interview.video ? 'Videointerview' : 'Audiointerview' %> </th></tr>
+		<tr>
+      <td align="left" valign="top">
+        <%= @interview.language.name %>,	<%= @interview.duration %>
+				<br />
+   	   	<%= @interview.translated ? 'Übersetzung ins Deutsche vorhanden' : 'keine Übersetzung vorhanden' %>
+      </td>
+		</tr>
+		<tr><th align="left" valign="top">Gruppe</th></tr>
+		<tr><td align="left" valign="top">
+			 	<ul>
+          <% @interview.forced_labor_groups.each do |forced_labor_group| %>
+            <li><%= forced_labor_group.name %></li>
+          <% end %>
+				</ul>
+			</td>
+		</tr>
+		<tr><th align="left" valign="top">Einsatzbereiche</th></tr>
+		<tr>
+		  <td align="left" valign="top">
+        <ul>
+					...
+				</ul>
+			</td>
+		</tr>
+		<tr><th align="left" valign="top">Lager und Einsatzorte</th></tr>
+		<tr><td align="left" valign="top"><%= @interview.forced_labor_location %></td></tr>
+    <tr><th align="left" valign="top">Archiv-ID</th></tr>
+    <tr><td align="left" valign="top"><%= @interview.archive_id %></td></tr>
+    <tr><th align="left" valign="top">Begleitmaterialien</th></tr>
+    <tr>
+      <td align="left" valign="top">
+        <ul>
+          <li><a href="za004_bg.pdf" target="_blank">Biographie zu <%= @interview.full_title %> (pdf)</a></li>
+          <li><a href="za004_tr.pdf" target="_blank">Transkript zu <%= @interview.full_title %> (pdf)</a></li>
+          <li><a href="za004_tr.pdf" target="_blank">Übersetzung zu <%= @interview.full_title %> (pdf)</a></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
