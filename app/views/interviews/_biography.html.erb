@@ -3,7 +3,7 @@
 		<tr><th align="left" valign="top"><%= @interview.video ? 'Videointerview' : 'Audiointerview' %> </th></tr>
 		<tr>
       <td align="left" valign="top">
-        <%= @interview.language.name %>,	<%= @interview.duration %>
+        <%= @interview.language.name unless @interview.language === nil %>,	<%= @interview.duration %>
 				<br />
    	   	<%= @interview.translated ? 'Übersetzung ins Deutsche vorhanden' : 'keine Übersetzung vorhanden' %>
       </td>

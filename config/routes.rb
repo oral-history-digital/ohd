@@ -1,9 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :collections, :path_prefix => ':locale'
-  map.resources :interviews, :path_prefix => ':locale', :collection => { :playlist => :get }
+  map.resources :collections
+  map.resources :interviews, :collection => { :playlist => :get }
 
-  map.home 'home/:action.html', :controller => 'home', :path_prefix => ':locale'
-  map.root :controller => 'home', :action => 'archive', :locale => 'de'
+  map.home 'home/:action.html', :controller => 'home'
+  map.root :controller => 'home', :action => 'archive'
   
   # The priority is based upon order of creation: first created -> highest priority.
 

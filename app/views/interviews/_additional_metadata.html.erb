@@ -4,24 +4,23 @@
 
 <div id="fragment1" style="display:none">
   <table class="archivTable1">
-  	<tr><th align="left" valign="top">Herkunft</th></tr>
-		<tr><td align="left" valign="top">Belarus</td></tr>
 		<tr><th align="left" valign="top">Herkunft – weitere Angaben</th></tr>
-		<tr><td align="left" valign="top">Gebiet Witebsk, Lepel</td></tr>
+		<tr><td align="left" valign="top"><%= @interview.country_of_origin %></td></tr>
 		<tr><th align="left" valign="top">Staatsangehörigkeit</th></tr>
-		<tr><td align="left" valign="top">Belarus</td></tr>
+		<tr><td align="left" valign="top">-</td></tr>
     <tr><th align="left" valign="top">Datum der Deportation/Verhaftung</th></tr>
-    <tr><td align="left" valign="top">01/1941</td></tr>
+    <tr><td align="left" valign="top"><%= @interview.deportation_date %></td></tr>
 		<tr><th align="left" valign="top">Ort der Deportation/Verhaftung</th></tr>
-		<tr><td align="left" valign="top">Belarus</td></tr>
+		<tr><td align="left" valign="top"><%= @interview.deportation_location %></td></tr>
 		<tr><th align="left" valign="top">Einsatzbereich – weitere Angaben</th></tr>
-		<tr><td align="left" valign="top">Küche, Forstwirtschaft</td></tr>
+		<tr><td align="left" valign="top"><%= @interview.forced_labor_details %></td></tr>
 		<tr><th align="left" valign="top">Unterbringung / Inhaftierung</th></tr>
 		<tr>
       <td align="left" valign="top">
 			 	<ul>
-					<li>zu Hause</li>
-          <li>Lager</li>
+          <% @interview.forced_labor_habitations.each do |forced_labor_habitation| %>
+            <li><%= forced_labor_habitation.name %></li>
+          <% end %>
 				</ul>
 			</td>
 		</tr>

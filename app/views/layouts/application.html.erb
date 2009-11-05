@@ -104,6 +104,19 @@
 
       <!-- Anfang Content -->
       <div id="baseContent">
+
+        <div id="baseContainerNavigationToRoot">
+          <div class="baseNavigationToRoot">
+            <p class="info"><em>Navigationspfad:</em></p>
+            <%= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :title => "Startseite Zwangsarbeit 1939-1945" %> &raquo;
+            <%= link_to (t :archive), :root, :title => "Startseite Archiv" %>
+          </div>
+        </div>
+
+        <hr class="divider" />
+        <br class="clear" />
+        <hr class="divider" />
+        
       <!-- noindex -->
       <!-- Sprungmarke "inhalt" -->
         <a name="inhalt" accesskey="I"></a>
@@ -128,16 +141,6 @@
         <br class="clear" />
         <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
         <br class="clear" />
-
-        <div id="baseContainerNavigationToRoot">
-          <div class="baseNavigationToRoot">
-            <p class="info"><em>Navigationspfad:</em></p>
-            <a href="../index.html" title="Startseite Zwangsarbeit 1939-1945">Home</a>
-            &raquo; Archiv
-          </div>
-        </div>
-
-        <hr class="divider" />
       <!-- /noindex -->
 
         <div class="clear"></div>

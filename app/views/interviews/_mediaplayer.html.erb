@@ -1,4 +1,4 @@
-<%= javascript_include_tag "jwplayer_access" %>
+<%= javascript_include_tag "/jw_player/lib/jwplayer_access" %>
 <!--<div id="leftColumn">-->
 <div id="tabsVideo">
 	<ul>
@@ -33,14 +33,18 @@
     </div>
 
     <script type="text/javascript">
-      /* <![CDATA[ */
-        var s1 = new SWFObject('http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/player.swf','player_high','400','414','9');
-        s1.addParam('allowfullscreen','true');
-        s1.addParam('allowscriptaccess','always');
-        s1.addParam('wmode','opaque');
-        s1.addParam('flashvars',"file=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/archiv/bosnien/za046/high/index.xml&streamer=rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv&link=http://www.zwangsarbeit-archiv.de&skin=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/stylish.swf&backcolor=990000&frontcolor=999999&lightcolor=ffffff&playlist=bottom&stretching=none&repeat=list&playlistsize=80");
-        s1.write('mediaspace_high');
-      /* ]]> */
+
+      new Player("ZA221_04_01.flv", {
+        jwplayer_file:            '/jw_player/lib/player-4.6.535.swf',
+        captions_plugin_file:     '/jw_player/lib/captions-10',
+        skin:                     '/jw_player/skins/zwar.swf',
+        backcolor:                '990000',
+        frontcolor:               '999999',
+        lightcolor:               'ffffff',
+        player_id:                'player_high',
+        content_id:               'mediaspace_high'
+      });
+      
     </script>
 	</div>
 

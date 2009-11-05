@@ -50,7 +50,7 @@ class CreateInterviews < ActiveRecord::Migration
     end
 
     create_table :languages do |t|
-      t.string :name
+      t.string :name, :null => false
     end
 
     create_table :home_locations do |t|
