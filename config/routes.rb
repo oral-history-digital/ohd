@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
                 :collection => { :playlist_high => :get },
                 :member => { :transcript => :get }
 
-  map.home 'home/:action.html', :controller => 'home'
+  map.home ':page.html', :controller => 'home', :action => :show
   map.root :controller => 'home', :action => 'archive'
   
   # The priority is based upon order of creation: first created -> highest priority.
