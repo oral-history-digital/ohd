@@ -33,6 +33,9 @@ namespace :import do
 
         interview ||= Interview.create :archive_id => row.field('Archiv-ID')
 
+        language = Language.find_by_name row.field('Sprache')
+        language ||= Language.create :name => row.field('Sprache')
+
         interview.update_attributes   :full_title => row.field('Zeitzeuge/Zeitzeugin'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
@@ -54,8 +57,10 @@ namespace :import do
         end
 
 
+        interview.language_id = language.id
         interview.collection_id = collection.id
 
+        language.save!
         interview.save!
         collection.save!
 
@@ -95,6 +100,41 @@ namespace :import do
       end
 
       puts "#{interview.archive_id}" unless interview == nil
+
+    end
+
+  end
+
+  desc "Import von Sgementen"
+  task :segments => :environment do
+    csv_file = ENV['file']
+    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+    puts "csv file = #{csv_file}"
+    require 'fastercsv'
+
+    FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
+
+      archive_id = row.field('Media-ID')[/^ZA\d{3}/i].downcase
+      tape_media_id = row.field('Media-ID').gsub(/_\d{4}$/, '')
+
+      # lösche alle bisher gespeicherten Segmente
+      # Segment.delete_all(["media_id LIKE '#{archive_id}%'"])
+
+      interview = Interview.find_by_archive_id archive_id
+      tape = Tape.find_by_media_id tape_media_id
+
+      unless interview == nil or tape == nil
+        segment = Segment.create  :tape_id => tape.id,
+                                  :media_id => row.field('Media-ID'),
+                                  :timecode => row.field('Timecode'),
+                                  :transcript => row.field('Transcript'),
+                                  :translation => row.field('Translation')
+
+        puts "Segment Nr. #{segment.id} für Interview #{segment.tape.interview.archive_id}"
+                      
+      end
+
+      
 
     end
 

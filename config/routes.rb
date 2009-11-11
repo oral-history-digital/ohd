@@ -1,6 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :collections
-  map.resources :interviews, :collection => { :playlist => :get }
+  map.resources :interviews
+
+  map.resources :tapes,
+                :path_prefix => 'interviews/:interview_id',
+                :collection => { :playlist_high => :get },
+                :member => { :transcript => :get }
 
   map.home 'home/:action.html', :controller => 'home'
   map.root :controller => 'home', :action => 'archive'

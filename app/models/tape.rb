@@ -1,5 +1,7 @@
 class Tape < ActiveRecord::Base
 
+  belongs_to :interview
+
   has_many  :headings
   has_many  :segments
 

@@ -35,9 +35,18 @@
 
 <div class="clear">&nbsp;</div>
 
-<div id="captions" style="float: left; width:400px; height: 125px;">
+<div style="float: left; width:400px; height: 125px;">
 
-  <%= render :partial => "transcript" %>
+  <div id="captions" class="captions_original" style="height: 100px;">
+
+    <%= render :partial => "transcript" %>
+
+  </div>
+
+  <div id="language_select" style="padding-top: 5px; height: 20px;">
+    <div style="float: left;"><input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language.name %></div>
+    <div><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+  </div>
 
 </div>
 

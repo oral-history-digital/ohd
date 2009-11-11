@@ -1,6 +1,13 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
+<?xml version="1.0" encoding="utf-8"?>
+<tt xmlns="http://www.w3.org/2006/10/ttaf1">
+  <body>
+    <div xml:id="captions">
 
-<%= "transcript.xml" %>
+      <% @tape.segments.each do |segment| %>
+
+        <%= "<p begin='#{segment.timecode}'><span class='caption_original'>#{segment.transcript}</span><span class='caption_translation'>#{segment.translation}</span></p>" %>
+
+      <% end %>
+    </div>
+  </body>
+</tt>
