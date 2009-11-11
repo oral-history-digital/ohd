@@ -74,4 +74,30 @@ namespace :import do
 
   end
 
+  desc "Import von Tapes"
+  task :tapes => :environment do
+    csv_file = ENV['file']
+    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+    puts "csv file = #{csv_file}"
+    require 'fastercsv'
+
+    FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
+
+      interview = Interview.find_by_archive_id row.field('Media-ID')[/^ZA\d{3}/i].downcase
+
+      unless interview == nil
+        tape = Tape.find_by_media_id row.field('Media-ID')
+        tape ||= Tape.create :media_id => row.field('Media-ID')
+        tape.interview_id = interview.id
+        tape.media_id = row.field('Media-ID')
+        tape.save!
+
+      end
+
+      puts "#{interview.archive_id}" unless interview == nil
+
+    end
+
+  end
+
 end
