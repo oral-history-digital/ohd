@@ -6,7 +6,7 @@
     <% @tapes.each do |tape| -%>
       <track>
         <location><%= tape.media_id %></location>
-        <meta rel="captions"><%= transcript_tape_path(:id => tape.id, :format => :xml) %></meta>
+        <meta rel="captions"><%= transcript_interview_tape_path(:id => tape.id, :format => :xml) %></meta>
         <meta rel="start">10</meta>
       </track>
     <% end -%>

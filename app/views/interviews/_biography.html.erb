@@ -21,12 +21,14 @@
 		<tr>
 		  <td align="left" valign="top">
         <ul>
-					...
+          <% @interview.forced_labor_fields.each do |forced_labor_field| %>
+            <li><%= forced_labor_field.name %></li>
+          <% end %>
 				</ul>
 			</td>
 		</tr>
 		<tr><th align="left" valign="top">Lager und Einsatzorte</th></tr>
-		<tr><td align="left" valign="top"><%= @interview.forced_labor_location %></td></tr>
+		<tr><td align="left" valign="top"><%= @interview.forced_labor_location || "&mdash;" %></td></tr>
     <tr><th align="left" valign="top">Archiv-ID</th></tr>
     <tr><td align="left" valign="top"><%= @interview.archive_id %></td></tr>
     <tr><th align="left" valign="top">Begleitmaterialien</th></tr>

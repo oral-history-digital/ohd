@@ -53,7 +53,25 @@ namespace :import do
         row.field("Gruppen").split("; ").each do |group|
           forced_labor_group = ForcedLaborGroup.find_by_name group
           forced_labor_group ||= ForcedLaborGroup.create :name => group
-          forced_labor_group.interviews << interview
+          unless forced_labor_group.interviews.include?(interview)
+            forced_labor_group.interviews << interview
+          end
+        end
+
+        row.field("Einsatzbereiche").split("; ").each do |field|
+          forced_labor_field = ForcedLaborField.find_by_name field
+          forced_labor_field ||= ForcedLaborField.create :name => field
+          unless forced_labor_field.interviews.include?(interview)
+            forced_labor_field.interviews << interview
+          end
+        end
+
+        row.field("Unterbringung").split("; ").each do |habitation|
+          forced_labor_habitation = ForcedLaborHabitation.find_by_name habitation
+          forced_labor_habitation ||= ForcedLaborHabitation.create :name => habitation
+          unless forced_labor_habitation.interviews.include?(interview)
+            forced_labor_habitation.interviews << interview
+          end
         end
 
 
