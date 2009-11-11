@@ -2,10 +2,10 @@ class CreateHeadings < ActiveRecord::Migration
   def self.up
     create_table :headings do |t|
       t.references :tape
-      t.string :media_id
-      t.string :timecode
-      t.boolean :mainheading
-      t.string :title
+      t.string :media_id, :null => :false
+      t.string :timecode, :null => :false
+      t.boolean :mainheading, :null => :false
+      t.string :title, :null => :false
       t.timestamps
     end
   end

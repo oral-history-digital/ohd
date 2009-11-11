@@ -2,8 +2,8 @@ class CreateTapes < ActiveRecord::Migration
   def self.up
     create_table :tapes do |t|
       t.references :interview
-      t.string :media_id
-      t.string :duration
+      t.string :media_id, :null => :false
+      t.string :duration, :null => :false
       t.timestamps
     end
   end
