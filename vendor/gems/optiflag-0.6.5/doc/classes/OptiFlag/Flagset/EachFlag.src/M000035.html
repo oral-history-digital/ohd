@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>value_matches (OptiFlag::Flagset::EachFlag)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File optiflag.rb, line 219</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">value_matches</span>(<span class="ruby-identifier">desc_regexp_pair</span>,<span class="ruby-identifier">arg_position</span>=<span class="ruby-value">0</span>)
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">desc_regexp_pair</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Regexp</span>
+          <span class="ruby-identifier">desc_regexp_pair</span> = [<span class="ruby-node">&quot;This value does not match the pattern: #{ desc_regexp_pair.source }&quot;</span>,
+                              <span class="ruby-identifier">desc_regexp_pair</span>]
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-ivar">@position_validator</span>[<span class="ruby-identifier">arg_position</span>] = <span class="ruby-identifier">desc_regexp_pair</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

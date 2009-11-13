@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>handle_errors_and_help (OptiFlag::Flagset)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File optiflag.rb, line 682</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">handle_errors_and_help</span>(<span class="ruby-identifier">level</span>=<span class="ruby-identifier">:not_strict</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@all_flags</span>
+      <span class="ruby-identifier">usage_flag</span> <span class="ruby-value str">&quot;h&quot;</span>,<span class="ruby-value str">&quot;?&quot;</span>  <span class="ruby-comment cmt"># make this part of the standard config</span>
+      <span class="ruby-identifier">properties</span> <span class="ruby-value str">&quot;h&quot;</span>, <span class="ruby-identifier">:long_form=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">&quot;help&quot;</span>
+      <span class="ruby-identifier">parse</span>(<span class="ruby-constant">ARGV</span>,<span class="ruby-keyword kw">false</span>)
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">help_requested?</span> 
+        <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">help_requested_on</span>
+          <span class="ruby-identifier">show_help</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">the_on</span> = <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">help_requested_on</span>
+          <span class="ruby-identifier">show_individual_extended_help</span>(<span class="ruby-identifier">the_on</span>.<span class="ruby-identifier">to_sym</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">extended_help_requested?</span>
+        <span class="ruby-identifier">show_extended_help</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">errors?</span>
+        <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">divulge_problems</span>
+        <span class="ruby-identifier">show_help</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">warnings?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:with_no_warnings</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;In strict warning handling mode.  Warnings will cause process to exit.&quot;</span>
+        <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">warnings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+           <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;   #{ x  }&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Please fix these warnings and try again.&quot;</span>
+        <span class="ruby-identifier">exit</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-comment cmt"># the next three lines augment the </span>
+      <span class="ruby-comment cmt"># name of the module that the user</span>
+      <span class="ruby-comment cmt"># has declared... not just ARGV.</span>
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">extend</span> <span class="ruby-constant">NewInterface</span>
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">flag_value</span> = <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">flag_value</span>
+      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span> = <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">errors</span>
+      <span class="ruby-constant">ARGV</span>  
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

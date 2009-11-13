@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>character_flag (OptiFlag::Flagset)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File optiflag.rb, line 409</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">character_flag</span>(<span class="ruby-identifier">switch</span>,<span class="ruby-identifier">group</span>=<span class="ruby-value str">&quot;default&quot;</span>,<span class="ruby-operator">&amp;</span><span class="ruby-identifier">the_block</span>)
+      <span class="ruby-identifier">throw</span> <span class="ruby-value str">&quot;Character switches can only be 1 character long&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">switch</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">flag</span>(<span class="ruby-identifier">switch</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-operator">&amp;</span><span class="ruby-identifier">the_block</span>)
+      <span class="ruby-ivar">@group</span> <span class="ruby-operator">||=</span> {}
+      <span class="ruby-identifier">the_flag_we_just_added</span> = <span class="ruby-ivar">@all_flags</span>[<span class="ruby-identifier">switch</span>.<span class="ruby-identifier">to_sym</span>]
+
+      <span class="ruby-identifier">key</span> = [<span class="ruby-identifier">group</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-identifier">the_flag_we_just_added</span>.<span class="ruby-identifier">the_dash_symbol</span>]
+<span class="ruby-comment cmt">#      puts &quot;#{ key.join(',')  }&quot;</span>
+      <span class="ruby-ivar">@group</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">||=</span> []
+      <span class="ruby-ivar">@group</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">the_flag_we_just_added</span>
+      <span class="ruby-comment cmt"># re-assert ourselves</span>
+      <span class="ruby-identifier">flag</span> [<span class="ruby-identifier">switch</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">switch</span>] <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">optional</span>
+        <span class="ruby-identifier">arity</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">compresses</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

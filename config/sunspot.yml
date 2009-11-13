@@ -1,0 +1,19 @@
+# Sunspot Solr configuration
+
+defaults: &defaults
+  solr:
+    hostname: localhost
+    port: 8985
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+  solr:
+    port: 8986
+
+production:
+  <<: *defaults
+  solr:
+    port: 8984

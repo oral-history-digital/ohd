@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>parse (OptiFlag::Flagset)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File optiflag-parse.rb, line 3</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">args</span>,<span class="ruby-identifier">clone</span>=<span class="ruby-keyword kw">true</span>)
+      <span class="ruby-identifier">init_help_bundle</span>()
+      <span class="ruby-identifier">safe_args</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">clone</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">clone</span>
+      <span class="ruby-identifier">safe_args</span> = <span class="ruby-identifier">args</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span> <span class="ruby-identifier">clone</span>
+      <span class="ruby-comment cmt"># the following 10 lines were changed so</span>
+      <span class="ruby-comment cmt"># that a module could reparse a command-line</span>
+      <span class="ruby-comment cmt"># and not have a global-state change for</span>
+      <span class="ruby-comment cmt"># everyone... I had mulled just mandating that</span>
+      <span class="ruby-comment cmt"># a SomeArgModule::parse(ARGV) statement </span>
+      <span class="ruby-comment cmt"># could only occur once, but since everything else</span>
+      <span class="ruby-comment cmt"># is getting ugly, might as well allow this</span>
+      <span class="ruby-comment cmt"># --D.O.E 5/30/2006</span>
+      <span class="ruby-identifier">new_self</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">clone</span>
+      <span class="ruby-identifier">new_flags</span> = {} 
+      <span class="ruby-ivar">@all_flags</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">val</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">val</span>.<span class="ruby-identifier">clone</span>
+        <span class="ruby-identifier">new_flags</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">val</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">new_self</span>.<span class="ruby-identifier">module_eval</span> <span class="ruby-keyword kw">do</span>
+        <span class="ruby-ivar">@all_flags</span> = <span class="ruby-identifier">new_flags</span>
+        <span class="ruby-identifier">safe_args</span> = <span class="ruby-identifier">search_for_missing_character_switches</span>(<span class="ruby-identifier">safe_args</span>) 
+
+        <span class="ruby-identifier">safe_args</span> = <span class="ruby-identifier">create_api</span>(<span class="ruby-identifier">safe_args</span>)
+
+        <span class="ruby-identifier">safe_args</span> = <span class="ruby-identifier">search_for_missing_flags</span>(<span class="ruby-identifier">safe_args</span>) 
+        <span class="ruby-identifier">populate_values</span>(<span class="ruby-identifier">safe_args</span>)
+        <span class="ruby-identifier">now_populate_hash</span>(<span class="ruby-ivar">@all_flags</span>,<span class="ruby-identifier">safe_args</span>)
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">safe_args</span>
+     <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
