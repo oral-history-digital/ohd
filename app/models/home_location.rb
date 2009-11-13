@@ -1,2 +1,5 @@
-class HomeLocation < ActiveRecord::Base
+class HomeLocations
+
+  belongs_to :interview
+  
 end

@@ -5,17 +5,11 @@ class Interview < ActiveRecord::Base
 
   has_many :tapes
 
-  has_many :interview_forced_labor_groups
-  has_many  :forced_labor_groups,
-            :through => :interview_forced_labor_groups
+  Category::ARCHIVE_CATEGORIES.each do |category|
+    send :is_categorized_by, category.first, category.last
+  end
 
-  has_many :interview_forced_labor_habitations
-  has_many  :forced_labor_habitations,
-            :through => :interview_forced_labor_habitations
-          
-  has_many :interview_forced_labor_fields
-  has_many  :forced_labor_fields,
-            :through => :interview_forced_labor_fields
+  belongs_to :home_location
 
   validates_associated :collection
   validates_presence_of :full_title, :archive_id

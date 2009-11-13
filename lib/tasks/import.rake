@@ -50,27 +50,12 @@ namespace :import do
         collection = Collection.find_by_name row.field('Projekt')
         collection ||= Collection.create :name => row.field('Projekt')
 
-        row.field("Gruppen").split("; ").each do |group|
-          forced_labor_group = ForcedLaborGroup.find_by_name group
-          forced_labor_group ||= ForcedLaborGroup.create :name => group
-          unless forced_labor_group.interviews.include?(interview)
-            forced_labor_group.interviews << interview
-          end
-        end
-
-        row.field("Einsatzbereiche").split("; ").each do |field|
-          forced_labor_field = ForcedLaborField.find_by_name field
-          forced_labor_field ||= ForcedLaborField.create :name => field
-          unless forced_labor_field.interviews.include?(interview)
-            forced_labor_field.interviews << interview
-          end
-        end
-
-        row.field("Unterbringung").split("; ").each do |habitation|
-          forced_labor_habitation = ForcedLaborHabitation.find_by_name habitation
-          forced_labor_habitation ||= ForcedLaborHabitation.create :name => habitation
-          unless forced_labor_habitation.interviews.include?(interview)
-            forced_labor_habitation.interviews << interview
+        Category::ARCHIVE_CATEGORIES.each do |category_class|
+          category_field = category_class.last
+          (row.field(category_field) || '').split(';').each do |classification|
+            category = Category.find_by_name_and_category_type classification, category_field
+            category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
+            interview.send(category_class.first) << category
           end
         end
 
