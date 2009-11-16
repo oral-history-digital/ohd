@@ -21,4 +21,8 @@ class Interview < ActiveRecord::Base
     archive_id
   end
 
+  def duration
+    @duration ||= Timecode.new read_attribute(:duration)
+  end
+
 end
