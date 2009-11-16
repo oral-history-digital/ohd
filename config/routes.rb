@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :collections
+
   map.resources :interviews do |interview|
 
     interview.resources :tapes,

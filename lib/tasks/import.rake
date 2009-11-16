@@ -55,10 +55,12 @@ namespace :import do
           (row.field(category_field) || '').split(';').each do |classification|
             category = Category.find_by_name_and_category_type classification, category_field
             category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
-            interview.send(category_class.first) << category
+            interview.send(category_class.first.to_s + "_categorizations").create do |categorization|
+              categorization.category_type = category.category_type
+              categorization.category_id = category.id
+            end
           end
         end
-
 
         interview.language_id = language.id
         interview.collection_id = collection.id

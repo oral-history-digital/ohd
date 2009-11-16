@@ -15,4 +15,10 @@ class Interview < ActiveRecord::Base
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
 
+
+  # referenced by archive_id
+  def to_param
+    archive_id
+  end
+
 end
