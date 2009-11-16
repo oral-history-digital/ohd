@@ -3,10 +3,18 @@ class Interview < ActiveRecord::Base
   belongs_to :collection
   belongs_to :language
 
-  has_many :tapes
+  has_many  :tapes
+
+  has_many  :segments,
+            :through => :tapes
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
+    self.class_eval <<DEF
+    def #{category.first.to_s.singularize}_ids
+      #{category.first.to_s}_categorizations.map{|c| c.category_id }
+    end
+DEF
   end
 
   belongs_to :home_location
@@ -14,6 +22,14 @@ class Interview < ActiveRecord::Base
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
+
+  searchable do
+    text :full_title
+    Category::ARCHIVE_CATEGORIES.each do |category|
+      integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true)
+    end
+    integer :language_id
+  end
 
 
   # referenced by archive_id

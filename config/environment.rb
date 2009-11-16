@@ -24,6 +24,8 @@ Rails::Initializer.run do |config|
   config.gem 'rsolr-ext'
   config.gem 'escape'
   config.gem 'optiflag', :version => '0.6.5'
+  config.gem 'outoftime-sunspot', :lib => 'sunspot'
+  config.gem 'outoftime-sunspot_rails', :lib => 'sunspot/rails'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
