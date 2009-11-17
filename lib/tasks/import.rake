@@ -53,6 +53,7 @@ namespace :import do
         Category::ARCHIVE_CATEGORIES.each do |category_class|
           category_field = category_class.last
           (row.field(category_field) || '').split(';').each do |classification|
+            classification.strip!
             category = Category.find_by_name_and_category_type classification, category_field
             category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
             interview.send(category_class.first.to_s + "_categorizations").create do |categorization|

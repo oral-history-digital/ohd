@@ -23,7 +23,7 @@ DEF
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
 
-  searchable do
+  searchable :auto_index => false do
     text :full_title
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true)
