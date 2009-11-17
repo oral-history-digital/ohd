@@ -8,10 +8,10 @@
                                 :id => "search_facets" } do |f| %>
 
     <h2 class="baseListBoxTitle">Interviews geordnet nach:</h2>
-    <div class="fragmentTitle" onclick="Element.toggle('person_name_query');Element.toggle('person_name_closed');Element.toggle(person_name_open);">
+    <div class="fragmentTitle" onclick="toggleCategory('person_name_query');">
       <h2>
-        <img title="" src="/images/pfeil_rot_rechts.gif" id="person_name_closed" alt="Pfeil rechts" />
-        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="person_name_open" alt="Pfeil unten" />
+        <img title="" src="/images/pfeil_rot_rechts.gif" id="person_name_query_closed" alt="Pfeil rechts" />
+        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="person_name_query_open" alt="Pfeil unten" />
         Namen der Interviewten
       </h2>
     </div>
@@ -19,7 +19,7 @@
       <%# Field for name query %>
     </div>
 
-    <div class="fragmentTitle" onclick="Element.toggle('group_query');Element.toggle('group_query_closed');Element.toggle('group_query_open')">
+    <div class="fragmentTitle" onclick="toggleCategory('group_query');">
       <h2>
         <img title="" src="/images/pfeil_rot_rechts.gif" id="group_query_closed" alt="Pfeil rechts" />
         <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="group_query_open" alt="Pfeil unten" />
@@ -34,7 +34,7 @@
      </ul>
     </div>
 
-    <div class="fragmentTitle" onclick="Element.toggle('field_query');Element.toggle('field_query_closed');Element.toggle('field_query_open')">
+    <div class="fragmentTitle" onclick="toggleCategory('field_query');">
 
         <h2>
             <img title="" src="/images/pfeil_rot_rechts.gif" id="field_query_closed" alt="Pfeil rechts" />
@@ -50,7 +50,7 @@
         </ul>
     </div>
 
-    <div class="fragmentTitle" onclick="Element.toggle('habitation_query');Element.toggle('habitation_query_closed');Element.toggle('habitation_query_open')">
+    <div class="fragmentTitle" onclick="toggleCategory('habitation_query');">
         <h2>
             <img title="" src="/images/pfeil_rot_rechts.gif" id="habitation_query_closed" alt="Pfeil rechts" />
             <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="habitation_query_open" alt="Pfeil unten" />
@@ -67,7 +67,7 @@
         </ul>
     </div>
 
-    <div class="fragmentTitle" onclick="Element.toggle('language_query');Element.toggle('language_query_closed');Element.toggle('language_query_open')">
+    <div class="fragmentTitle" onclick="toggleCategory('language_query');">
 
         <h2>
             <img title="" src="/images/pfeil_rot_rechts.gif" id="language_query_closed" alt="Pfeil rechts" />
@@ -85,15 +85,15 @@
     </div>
 
 
-    <div class="fragmentTitle" onclick="Element.toggle('container36527886');Element.toggle('pfeilRechts36527886');Element.toggle('pfeilUnten36527886')">
+    <div class="fragmentTitle" onclick="toggleCategory('country_query');">
 
         <h2>
-            <img title="" src="/images/pfeil_rot_rechts.gif" id="pfeilRechts36527886" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="pfeilUnten36527886" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="country_query_closed" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="country_query_open" alt="Pfeil unten" />
             Wohnort (Land)
         </h2>
     </div>
-    <div style="display:none" id="container36527886">
+    <div style="display:none" id="country_query">
         <ul>
             <li>
                 <a href="http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/listen/wohnort/belarus.html">
@@ -107,7 +107,28 @@
 
   <%# merge both search forms - search_input and search_facets %>
   <% javascript_tag do %>
-
+      
+    var blindStatus = [ 0,0,0,0,0,0 ];
+    var catElems = $$('.fragmentTitle + div');
+    function toggleCategory(id) {
+      var cat_index;
+      for(var i=0; i< catElems.length; i++) {
+        if (id == catElems[i].id) {
+            cat_index = i;
+        }
+      }
+      if(cat_index) {
+        if(blindStatus[cat_index] == 0) {
+            Effect.BlindDown(id, { duration: 0.5 });
+            blindStatus[cat_index] = 1;
+        } else {
+            Effect.BlindUp(id, { duration: 0.5 });
+            blindStatus[cat_index] = 0;
+        }
+        Element.toggle(id + '_closed');
+        Element.toggle(id + '_open');
+      }
+    };
 
   <% end %>
 
