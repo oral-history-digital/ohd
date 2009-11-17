@@ -715,6 +715,10 @@ body {
 	text-decoration: underline;
 }
 
+.baseListBox fieldset {
+    border: none;
+}
+
 .baseListItemDate {
 	font-size: 90%;
 	color: #666;

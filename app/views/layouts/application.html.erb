@@ -100,10 +100,17 @@
           <h3 class="info">Suche im Archiv </h3>
           <% remote_form_for :search,
                              :url => searches_path,
+                             :before => 'applyFacets();',
                              :html => { :action => searches_path,
                                         :name => "searchForm",
                                         :id => "search_form" } do |f| %>
             <%= f.text_field :fulltext, :title => "Suchbegriff bitte hier eingeben", :class => "baseInputSearch", :id => "searchInput" %>
+            <%= f.hidden_field :person_name, :id => 'search_form_person_name' %>
+            <%= hidden_field_tag 'search[forced_labor_groups][]', nil, :id => "search_form_forced_labor_groups", :class => 'forced_labor_groups' %>
+            <%= hidden_field_tag 'search[forced_labor_fields][]', nil, :id => "search_form_forced_labor_fields", :class => 'forced_labor_fields' %>
+            <%= hidden_field_tag 'search[forced_labor_habitations][]', nil, :id => "search_form_forced_labor_habitations", :class => 'forced_labor_habitations' %>
+            <%= hidden_field_tag 'search[languages][]', nil, :id => "search_form_languages", :class => 'languages' %>
+            <%= hidden_field_tag 'search[countries][]', nil, :id => "search_form_countries", :class => 'countries' %>
             <input title="Suchanfrage starten" class="buttonText" src="/images/suchpfeil_weiss.gif" name="searchButton" alt="" type="image">
           <% end %>
         </div>

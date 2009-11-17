@@ -3,97 +3,98 @@
 
   <% remote_form_for :search,
                      :url => searches_path,
+                     :before => 'applyFulltext();',
                      :html => { :action => searches_path,
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |f| %>
 
     <h2 class="baseListBoxTitle">Interviews geordnet nach:</h2>
-    <div class="fragmentTitle" onclick="toggleCategory('person_name_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('person_names_query');">
       <h2>
-        <img title="" src="/images/pfeil_rot_rechts.gif" id="person_name_query_closed" alt="Pfeil rechts" />
-        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="person_name_query_open" alt="Pfeil unten" />
+        <img title="" src="/images/pfeil_rot_rechts.gif" id="person_names_query_closed" alt="Pfeil rechts" />
+        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="person_names_query_open" alt="Pfeil unten" />
         Namen der Interviewten
       </h2>
     </div>
-    <div style="display:none" id="person_name_query">
+    <div style="display:none" id="person_names_query">
       <%# Field for name query %>
     </div>
 
-    <div class="fragmentTitle" onclick="toggleCategory('group_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('forced_labor_groups_query');">
       <h2>
-        <img title="" src="/images/pfeil_rot_rechts.gif" id="group_query_closed" alt="Pfeil rechts" />
-        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="group_query_open" alt="Pfeil unten" />
+        <img title="" src="/images/pfeil_rot_rechts.gif" id="forced_labor_groups_query_closed" alt="Pfeil rechts" />
+        <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="forced_labor_groups_query_open" alt="Pfeil unten" />
         Gruppe
       </h2>
     </div>
-    <div style="display:none" id="group_query">
+    <fieldset style="display:none" id="forced_labor_groups_query">
       <ul>
         <% Category::FORCED_LABOR_GROUPS.each do |category| %>
-        <li><%= f.check_box 'forced_labor_groups[]', { :id => "group_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
+        <li><%= f.check_box 'forced_labor_groups[]', { :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %><%= category.name %></li>
         <% end %>
      </ul>
-    </div>
+    </fieldset>
 
-    <div class="fragmentTitle" onclick="toggleCategory('field_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('forced_labor_fields_query');">
 
         <h2>
-            <img title="" src="/images/pfeil_rot_rechts.gif" id="field_query_closed" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="field_query_open" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="forced_labor_fields_query_closed" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="forced_labor_fields_query_open" alt="Pfeil unten" />
             Einsatzbereich
         </h2>
     </div>
-    <div style="display:none" id="field_query">
+    <fieldset style="display:none" id="forced_labor_fields_query">
         <ul>
           <% Category::FORCED_LABOR_FIELDS.each do |category| %>
-          <li><%= f.check_box 'forced_labor_fields[]', { :id => "field_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
+          <li><%= f.check_box 'forced_labor_fields[]', { :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %><%= category.name %></li>
           <% end %>
         </ul>
-    </div>
+    </fieldset>
 
-    <div class="fragmentTitle" onclick="toggleCategory('habitation_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('forced_labor_habitations_query');">
         <h2>
-            <img title="" src="/images/pfeil_rot_rechts.gif" id="habitation_query_closed" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="habitation_query_open" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="forced_labor_habitations_query_closed" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="forced_labor_habitations_query_open" alt="Pfeil unten" />
 
             Unterbringung / Inhaftierung
         </h2>
     </div>
 
-    <div style="display:none" id="habitation_query">
+    <fieldset style="display:none" id="forced_labor_habitations_query">
         <ul>
           <% Category::FORCED_LABOR_HABITATIONS.each do |category| %>
-          <li><%= f.check_box 'forced_labor_habitations[]', { :id => "habitation_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
+          <li><%= f.check_box 'forced_labor_habitations[]', { :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %><%= category.name %></li>
           <% end %>
         </ul>
-    </div>
+    </fieldset>
 
-    <div class="fragmentTitle" onclick="toggleCategory('language_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('languages_query');">
 
         <h2>
-            <img title="" src="/images/pfeil_rot_rechts.gif" id="language_query_closed" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="language_query_open" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="languages_query_closed" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="languages_query_open" alt="Pfeil unten" />
             Sprache
         </h2>
     </div>
 
-    <div style="display:none" id="language_query">
+    <fieldset style="display:none" id="languages_query">
         <ul>
           <% Language::CATEGORIES.each do |language| %>
-          <li><%= f.check_box 'languages[]', { :id => "language_#{language[:id]}" }, language[:id], nil %><%= language.name %></li>
+          <li><%= f.check_box 'languages[]', { :id => "language_#{language[:id]}", :class => 'languages' }, language[:id], 0 %><%= language.name %></li>
           <% end %>
         </ul>
-    </div>
+    </fieldset>
 
 
-    <div class="fragmentTitle" onclick="toggleCategory('country_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('countries_query');">
 
         <h2>
-            <img title="" src="/images/pfeil_rot_rechts.gif" id="country_query_closed" alt="Pfeil rechts" />
-            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="country_query_open" alt="Pfeil unten" />
+            <img title="" src="/images/pfeil_rot_rechts.gif" id="countries_query_closed" alt="Pfeil rechts" />
+            <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="countries_query_open" alt="Pfeil unten" />
             Wohnort (Land)
         </h2>
     </div>
-    <div style="display:none" id="country_query">
+    <fieldset style="display:none" id="countries_query">
         <ul>
             <li>
                 <a href="http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/listen/wohnort/belarus.html">
@@ -101,28 +102,56 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </fieldset>
+
+    <fieldset style="display:none">
+      <%= f.hidden_field :fulltext, :id => 'search_facets_fulltext' %>
+    </fieldset>
 
   <% end %>
 
   <%# merge both search forms - search_input and search_facets %>
   <% javascript_tag do %>
-      
-    var blindStatus = [ 0,0,0,0,0,0 ];
-    var catElems = $$('.fragmentTitle + div');
+
+    var categoryElems = $$('.fragmentTitle + fieldset');
+
+    // apply the facet parameters to the fulltext search
+    function applyFacets() {
+      for(var cat=0; cat < categoryElems.length; cat++) {
+        var id = categoryElems[cat].id.sub(/_query$/,'');
+        if(id == 'person_name') next;
+        var categories = $$('.' + id);
+        var category_ids = [];
+        for(var i=0; i < categories.length; i++) {
+            if(categories[i].checked) {
+                category_ids.push(categories[i].value);
+            }
+        }
+        alert(id + ': ' + category_ids);
+        $('search_form_' + id).value = category_ids;
+      }
+    };
+
+    // apply the fulltext parameter to the facets search
+    function applyFulltext() {
+      $('search_facets_fulltext').value = $('searchInput').value;
+    };
+
+    // blind effect for category facets
+    var blindStatus = new Array(categoryElems.length);
     function toggleCategory(id) {
       var cat_index;
-      for(var i=0; i< catElems.length; i++) {
-        if (id == catElems[i].id) {
+      for(var i=0; i< categoryElems.length; i++) {
+        if (id == categoryElems[i].id) {
             cat_index = i;
         }
       }
       if(cat_index) {
-        if(blindStatus[cat_index] == 0) {
-            Effect.BlindDown(id, { duration: 0.5 });
+        if(blindStatus[cat_index] != 1) {
+            Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
             blindStatus[cat_index] = 1;
         } else {
-            Effect.BlindUp(id, { duration: 0.5 });
+            Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
             blindStatus[cat_index] = 0;
         }
         Element.toggle(id + '_closed');
