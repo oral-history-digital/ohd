@@ -16,9 +16,9 @@
         Namen der Interviewten
       </h2>
     </div>
-    <div style="display:none" id="person_names_query">
+    <fieldset style="display:none" id="person_names_query">
       <%# Field for name query %>
-    </div>
+    </fieldset>
 
     <div class="fragmentTitle" onclick="toggleCategory('forced_labor_groups_query');">
       <h2>
@@ -144,13 +144,13 @@
     // blind effect for category facets
     var blindStatus = new Array(categoryElems.length);
     function toggleCategory(id) {
-      var cat_index;
+      var cat_index = -1;
       for(var i=0; i< categoryElems.length; i++) {
         if (id == categoryElems[i].id) {
             cat_index = i;
         }
       }
-      if(cat_index) {
+      if(cat_index > -1) {
         if(blindStatus[cat_index] != 1) {
             Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
             blindStatus[cat_index] = 1;
