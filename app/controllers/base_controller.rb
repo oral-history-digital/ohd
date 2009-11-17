@@ -7,10 +7,18 @@ class BaseController < ResourceController::Base
 
   before_filter :set_locale
 
+  before_filter :current_search
+
+  private
+
   def set_locale
     locale = params[:locale] || 'de'
     I18n.locale = locale
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
+  end
+
+  def current_search
+    @current_search = Search.from_params(params[:search])
   end
   
 end

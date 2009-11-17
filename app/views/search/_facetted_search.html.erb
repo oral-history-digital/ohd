@@ -1,6 +1,12 @@
 <div class="baseListBox">
     <noscript><h4>Bitte aktivieren Sie JavaScript, um die navigatorischen Elemente auf der rechten Seite nutzen zu können.</h4></noscript>
 
+  <% remote_form_for :search,
+                     :url => searches_path,
+                     :html => { :action => searches_path,
+                                :name => "searchFacets",
+                                :id => "search_facets" } do |f| %>
+
     <h2 class="baseListBoxTitle">Interviews geordnet nach:</h2>
     <div class="fragmentTitle" onclick="Element.toggle('person_name_query');Element.toggle('person_name_closed');Element.toggle(person_name_open);">
       <h2>
@@ -23,7 +29,7 @@
     <div style="display:none" id="group_query">
       <ul>
         <% Category::FORCED_LABOR_GROUPS.each do |category| %>
-        <li><%= check_box_tag :forced_labor_groups %><%= category.name %></li>
+        <li><%= f.check_box 'forced_labor_groups[]', { :id => "group_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
         <% end %>
      </ul>
     </div>
@@ -39,7 +45,7 @@
     <div style="display:none" id="field_query">
         <ul>
           <% Category::FORCED_LABOR_FIELDS.each do |category| %>
-          <li><%= check_box_tag :forced_labor_fields %><%= category.name %></li>
+          <li><%= f.check_box 'forced_labor_fields[]', { :id => "field_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
           <% end %>
         </ul>
     </div>
@@ -56,7 +62,7 @@
     <div style="display:none" id="habitation_query">
         <ul>
           <% Category::FORCED_LABOR_HABITATIONS.each do |category| %>
-          <li><%= check_box_tag :forced_labor_habitations %><%= category.name %></li>
+          <li><%= f.check_box 'forced_labor_habitations[]', { :id => "habitation_#{category[:id]}" }, category[:id], nil %><%= category.name %></li>
           <% end %>
         </ul>
     </div>
@@ -73,7 +79,7 @@
     <div style="display:none" id="language_query">
         <ul>
           <% Language::CATEGORIES.each do |language| %>
-          <li><%= check_box_tag :languages %><%= language.name %></li>
+          <li><%= f.check_box 'languages[]', { :id => "language_#{language[:id]}" }, language[:id], nil %><%= language.name %></li>
           <% end %>
         </ul>
     </div>
@@ -97,6 +103,12 @@
         </ul>
     </div>
 
-  
+  <% end %>
+
+  <%# merge both search forms - search_input and search_facets %>
+  <% javascript_tag do %>
+
+
+  <% end %>
 
 </div>

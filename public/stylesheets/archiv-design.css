@@ -161,6 +161,19 @@ body {
 	border:1px solid #333;*/
 }
 
+
+#baseLogout {
+    position: absolute;
+    top: 52px;
+    right:249px;
+}
+
+#baseLogout #submit {
+    background-color:#840F09;
+    cursor:pointer;
+}
+
+
 /* Layout fuHeaderSearch
    -----------------------------------------------------------------------------
 */
@@ -629,7 +642,7 @@ body {
 .baseListBox {
 	line-height: 130%;
 	width: 219px;
-	margin: 0 0 10px 0;
+	margin: 10px 0 10px 0;
 	padding: 0;
 	color: #666;
 	/* overflow: hidden; */ /* optional */
@@ -728,8 +741,8 @@ body {
 .baseListBox ul li {
 	line-height: 130%;
   	margin: 0;
-	padding: 0 0 0 22px;
-	background-image: url(/images/pfeil_rot_liste.gif);
+	padding: 0 0 0 12px;
+    color:#990000;
 	background-repeat: no-repeat;
 	background-position: 10px 4px;
 }

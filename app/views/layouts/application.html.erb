@@ -80,18 +80,32 @@
 
       <!-- Ende Identitätsbereich -->
 
+      <div id="baseLogout" class="portlet logoutPortlet">
+          <form action="/PM/zwangsarbeit-archiv/PM/index.html/0/000000037400092f706f72746c6574737400066c6f676f75747400222f7a77616e67736172626569742d6172636869762f504d2f696e6465782e68746d6c/-/-/com.infopark.pm.portlet.request.ActionUrl" method="post">
+            <fieldset>
+              <legend>Abmelden</legend>
+              <p id="logoutUserLogin">Benutzername</p>
+              <input type="hidden" name="com.infopark.action" value="logout" />
+              <input type="hidden" name="edu.cedis.logoutRedirect" value="http://www.zwangsarbeit-archiv.de/" />
+              <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+            </fieldset>
+          </form>
+      </div>
+
       <div id="baseServices">
         <h2 class="info">Service-Funktionen</h2>
         <p>Suche in den Interviews</p>
 
         <div id="baseHeaderSearch">
           <h3 class="info">Suche im Archiv </h3>
-          <form action="/PM/zwangsarbeit-archiv/PM/index.html/0/000000037400092f706f72746c65747374000d72656d6f7465436f6e74726f6c74000a65617a44656661756c74/-/-/com.infopark.pm.portlet.request.ActionUrl?targetUrl=%2Fzwangsarbeit-archiv%2FPM%2Fsuche" method="post" name="searchForm">
-            <input type="hidden" name="_executeSearch" value="true"/>
-            <input type="hidden" name="language" value="de"/>
-            <input value="" type="text" title="Suchbegriff bitte hier eingeben" class="baseInputSearch" name="searchInput" id="searchInput" />
+          <% remote_form_for :search,
+                             :url => searches_path,
+                             :html => { :action => searches_path,
+                                        :name => "searchForm",
+                                        :id => "search_form" } do |f| %>
+            <%= f.text_field :fulltext, :title => "Suchbegriff bitte hier eingeben", :class => "baseInputSearch", :id => "searchInput" %>
             <input title="Suchanfrage starten" class="buttonText" src="/images/suchpfeil_weiss.gif" name="searchButton" alt="" type="image">
-          </form>
+          <% end %>
         </div>
       </div>
       <hr class="divider" />
@@ -153,17 +167,6 @@
       <!-- noindex -->
 
       <div id="baseContainerRight">
-        <div class="portlet logoutPortlet">
-          <form action="/PM/zwangsarbeit-archiv/PM/index.html/0/000000037400092f706f72746c6574737400066c6f676f75747400222f7a77616e67736172626569742d6172636869762f504d2f696e6465782e68746d6c/-/-/com.infopark.pm.portlet.request.ActionUrl" method="post">
-            <fieldset>
-              <legend>Abmelden</legend>
-              <p id="logoutUserLogin">Benutzername</p>
-              <input type="hidden" name="com.infopark.action" value="logout" />
-              <input type="hidden" name="edu.cedis.logoutRedirect" value="http://www.zwangsarbeit-archiv.de/" />
-              <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
-            </fieldset>
-          </form>
-        </div>
 
         <%= render :partial => 'search/facetted_search' %>
 

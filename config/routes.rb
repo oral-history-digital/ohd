@@ -8,7 +8,9 @@ ActionController::Routing::Routes.draw do |map|
                         :member => { :transcript => :get }
   end
 
-  map.home ':page.html', :controller => 'home', :action => :show
+  map.resources :searches
+
+  map.home ':page', :controller => 'home', :action => :show
   map.root :controller => 'home', :action => 'archive'
   
   # The priority is based upon order of creation: first created -> highest priority.
