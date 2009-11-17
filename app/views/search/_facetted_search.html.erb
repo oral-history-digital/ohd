@@ -119,16 +119,20 @@
     function applyFacets() {
       for(var cat=0; cat < categoryElems.length; cat++) {
         var id = categoryElems[cat].id.sub(/_query$/,'');
-        if(id == 'person_name') next;
-        var categories = $$('.' + id);
-        var category_ids = [];
-        for(var i=0; i < categories.length; i++) {
-            if(categories[i].checked) {
-                category_ids.push(categories[i].value);
-            }
+        if(id == 'person_name') {
+            $('search_form_person_name').value = $('person_name_query').value;
+        } else {
+            var categories = $$('.' + id);
+            // delete the existing search form elems
+            $$('#search_form .' + id).each(function(el) { el.remove(); });
+            // copy the checked elems over to the search form as hidden fields
+            $$('.' + id).each(function(el) {
+                if(el.checked) {
+                    var hiddenElem = new Element('input', { type: 'hidden', name: 'search['+id+'][]', value: el.value, class: id });
+                    $('search_form').insert(hiddenElem);
+                }
+            });
         }
-        alert(id + ': ' + category_ids);
-        $('search_form_' + id).value = category_ids;
       }
     };
 
