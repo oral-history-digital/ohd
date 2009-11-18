@@ -56,11 +56,17 @@ DEF
       query_params[query_param] = self.send(query_param)
     end
     search = Sunspot.search Interview do
-      unless query_params['fulltext'].blank?
-        self.adjust_solr_params do |params|
-          params[:q] += ' ' + query_params['fulltext']
-        end
-      end
+#      adjust_solr_params do |params|
+#        unless query_params['fulltext'].blank?
+#          if params[:q].blank?
+#            params[:q] = '' + query_params['fulltext'].to_s
+#          else
+#            params[:q] += ' ' + query_params['fulltext'].to_s
+#          end
+#        end
+#        params[:defType] = nil
+#      end
+      keywords query_params['fulltext']
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
         self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
       end
@@ -68,18 +74,18 @@ DEF
       # with(:country_id).any_of query_params[:countries] unless query_params[:countries].blank?
       self.with :full_title, query_params['person_name'] unless query_params['person_name'].blank?
       paginate :page => query_params['page'] || 1, :per_page => RESULTS_PER_PAGE
-      # order_by :full_title, :asc
-#      facet :person_name,
-#            :forced_labor_group_ids,
-#            :forced_labor_field_ids,
-#            :forced_labor_habitation_ids,
-#            :language_id,
+      order_by :person_name, :asc
+      facet :person_name,
+            :forced_labor_group_ids,
+            :forced_labor_field_ids,
+            :forced_labor_habitation_ids,
+            :language_id
 #            :country_id
     end
     @hits = search.total
     @query = search.query.to_params
     @results = search.results
-    puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.map{|r| r.class.name + ': ' + r[:id].to_s }.join(', ')}\n@@@@@\n\n"
+    puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
   end
 
   

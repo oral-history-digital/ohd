@@ -25,13 +25,13 @@ DEF
 
   searchable :auto_index => false do
     integer :id
-    string :archive_id
+    string :archive_id, :stored => true
     text :full_title
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true)
     end
-    string :full_title
-    integer :language_id
+    string :person_name, :using => :full_title, :stored => true
+    integer :language_id, :stored => true, :references => Language
     # integer :country_id
   end
 
