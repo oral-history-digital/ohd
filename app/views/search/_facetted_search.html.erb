@@ -9,7 +9,7 @@
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |f| %>
 
-    <h2 class="baseListBoxTitle">Interviews geordnet nach:</h2>
+    <h2 class="baseListBoxTitle">Interviews suchen nach:</h2>
     <div class="fragmentTitle" onclick="toggleCategory('person_names_query');">
       <h2>
         <img title="" src="/images/pfeil_rot_rechts.gif" id="person_names_query_closed" alt="Pfeil rechts" />
@@ -31,7 +31,7 @@
     <fieldset style="display:none" id="forced_labor_groups_query">
       <ul>
         <% Category::FORCED_LABOR_GROUPS.each do |category| %>
-        <li><%= f.check_box 'forced_labor_groups[]', { :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %><%= category.name %></li>
+        <li><%= f.check_box :forced_labor_groups, { :name => 'forced_labor_groups[]', :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %><%= category.name %></li>
         <% end %>
      </ul>
     </fieldset>
@@ -47,7 +47,7 @@
     <fieldset style="display:none" id="forced_labor_fields_query">
         <ul>
           <% Category::FORCED_LABOR_FIELDS.each do |category| %>
-          <li><%= f.check_box 'forced_labor_fields[]', { :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %><%= category.name %></li>
+          <li><%= f.check_box :forced_labor_fields, { :name => 'forced_labor_fields[]', :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %><%= category.name %></li>
           <% end %>
         </ul>
     </fieldset>
@@ -64,7 +64,7 @@
     <fieldset style="display:none" id="forced_labor_habitations_query">
         <ul>
           <% Category::FORCED_LABOR_HABITATIONS.each do |category| %>
-          <li><%= f.check_box 'forced_labor_habitations[]', { :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %><%= category.name %></li>
+          <li><%= f.check_box :forced_labor_habitations, { :name => 'forced_labor_habitations[]', :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %><%= category.name %></li>
           <% end %>
         </ul>
     </fieldset>
@@ -81,7 +81,7 @@
     <fieldset style="display:none" id="languages_query">
         <ul>
           <% Language::CATEGORIES.each do |language| %>
-          <li><%= f.check_box 'languages[]', { :id => "language_#{language[:id]}", :class => 'languages' }, language[:id], 0 %><%= language.name %></li>
+          <li><%= f.check_box :languages, { :name => 'languages[]', :id => "language_#{language[:id]}", :class => 'languages' }, language[:id], 0 %><%= language.name %></li>
           <% end %>
         </ul>
     </fieldset>

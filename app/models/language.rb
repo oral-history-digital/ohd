@@ -4,4 +4,8 @@ class Language < ActiveRecord::Base
 
   has_many :interviews
 
+  def to_s
+    name
+  end
+
 end

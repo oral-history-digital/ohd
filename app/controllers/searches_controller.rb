@@ -5,13 +5,17 @@ class SearchesController < BaseController
   new_action do
     before do
       @search.search!
+      @current_search = @search
       @interviews = @search.results
     end
     wants.js do
-      render :nothing => true
+      html = render_to_string({ :template => '/interviews/index.html', :layout => false })
+      render :update do |page|
+        page.replace_html 'innerContent', html
+      end
     end
     wants.html do
-      render :nothing => true
+      render :template => '/interviews/index.html'
     end
   end
   

@@ -28,7 +28,7 @@ DEF
     string :archive_id, :stored => true
     text :full_title
     Category::ARCHIVE_CATEGORIES.each do |category|
-      integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true)
+      integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :references => Category )
     end
     string :person_name, :using => :full_title, :stored => true
     integer :language_id, :stored => true, :references => Language
@@ -46,7 +46,15 @@ DEF
   end
 
   def short_title
-    full_title[/^(.*), ([A-Z])/] + "."
+    @short_title ||= full_title[/^(.*), ([A-Z])/] + "."
+  end
+
+  def video
+    read_attribute(:video) ? 'Videointerview' : 'Audiointerview'
+  end
+
+  def translated
+    read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
   end
 
 end

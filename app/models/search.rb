@@ -39,6 +39,7 @@ DEF
   def results
     @results ||= read_attribute :results
     @results = YAML.load(@results) if @results.is_a?(String)
+    @results
   end
 
   def hits
@@ -86,6 +87,7 @@ DEF
     @query = search.query.to_params
     @results = search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
+    search
   end
 
   
