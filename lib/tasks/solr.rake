@@ -12,8 +12,12 @@ namespace :solr do
   desc "delete the index"
   task :delete => :connect do
 
+    puts "\nDeleting index..."
+
     # clear the index
     SOLR.delete_by_query '*:*'
+
+    puts "done"
 
   end
 
@@ -24,14 +28,23 @@ namespace :solr do
     offset=0
     total = Interview.count :all
 
+    puts "\nReindexing #{total} interviews..."
+
     while(offset<total)
 
       Interview.find(:all, :limit => "#{offset},#{BATCH}").each do |interview|
         interview.index
       end
 
+      STDOUT.printf '.'
+      STDOUT::flush
+
       offset += BATCH
     end
+
+    Sunspot.commit
+
+    puts "\nReindexing complete."
 
   end
 
