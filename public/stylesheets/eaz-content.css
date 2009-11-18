@@ -257,7 +257,7 @@ h5 {
 
 .contentGallery .contentGalleryThumbnail { 
 	float: left;
-	height: 100px;
+	height: 80px;
 	overflow: hidden;
 	margin: 0 6px 6px 0;
 	border: 1px solid #e4e4da;

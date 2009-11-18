@@ -5,9 +5,7 @@
   <table class="archivTableBiography">
     <tr>
       <td align="left" valign="top">
-        <%= @interview.gender ? 'männlich' : 'weiblich' %>
-        <br />
-        geboren <%= @interview.date_of_birth %> in <%= @interview.country_of_origin %>
+        <%= @interview.gender ? 'männlich' : 'weiblich' %>, geb. <%= @interview.date_of_birth %> in <%= @interview.country_of_origin %>
       </td>
     </tr>
   </table>
@@ -35,7 +33,9 @@
 
 <div class="clear">&nbsp;</div>
 
-<div style="float: left; width:400px; height: 125px;">
+<!--
+
+<div style="float: left; width:400px; height: 100px;">
 
   <div id="captions" class="captions_original" style="height: 100px;">
 
@@ -43,14 +43,11 @@
 
   </div>
 
-  <div id="language_select" style="padding-top: 5px; height: 20px;">
-    <div style="float: left;"><input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language.name %></div>
-    <div><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
-  </div>
-
 </div>
 
-<div class="contentGallery" style="clear: none; float: left; width: 260px; height: 125px; margin: 0 25px 0 0;">
+-->
+
+<div class="contentGallery" style="clear: none; width: 260px; height: 99px; margin: 0 0 0 25px;">
 
   <%= render :partial => "gallery" %>
 
@@ -58,4 +55,15 @@
 
 <div class="clear">&nbsp;</div>
 
-<%= render :partial => "additional_metadata" %>
+<div class="fragmentTitle" onclick="Element.toggle('fragment1');Element.toggle('pfeilUnten1');Element.toggle('pfeilRechts1')">
+  <h2><%= image_tag("pfeil_rot_rechts.gif", :id => "pfeilRechts1", :title => "", :alt => "Pfeil rechts") %><%= image_tag("pfeil_rot_unten.gif", :id => "pfeilUnten1", :title => "", :alt => "Pfeil unten", :style => "display: none;") %>weitere Informationen zum Interview</h2>
+</div>
+
+<div id="fragment1" style="display:none">
+  <%= render :partial => "additional_metadata" %>
+</div>
+<noscript>
+  <%= render :partial => "additional_metadata" %>
+</noscript>
+
+<div class="clear">&nbsp;</div>

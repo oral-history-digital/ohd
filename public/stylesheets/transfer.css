@@ -68,6 +68,13 @@
 	color: #999;
 }
 
+#captions {
+  background-color: #e4e4da;
+  border-bottom: solid 1px #ac3131;
+  padding: 6px;
+  text-align: justify;
+}
+
 div.captions_original span.caption_original { display: inline-block; }
 div.captions_original span.caption_translation { display: none; }
 div.captions_translation span.caption_original { display: none; }

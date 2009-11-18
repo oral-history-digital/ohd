@@ -1,14 +1,19 @@
 <%= javascript_include_tag "/jw_player/lib/jwplayer_access" %>
 <!--<div id="leftColumn">-->
+
+<div style="float: left;">
+
 <div id="tabsVideo">
 	<ul>
     <% if @interview.video %>
       <li id="tabHigh" class="active">
         <p onclick="Element.show('containerHigh'); Element.hide('containerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
 			</li>
+      <!--
 			<li id="tabLow">
         <p onclick="Element.show('containerLow'); Element.addClassName('tabLow', 'active'); Element.hide('containerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
 			</li>
+      -->
     <% else %>
       <li id="tabAudio" class="active"><p>Audio</p></li>
     <% end %>
@@ -32,6 +37,26 @@
       </div>
     </div>
 
+    <div id="captions" class="captions_original" style="height: 100px;"></div>
+    
+    <table style="width: 401px; height: 28px; margin-top: 0; margin-left: 1px;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="font-size: 8pt; padding: 2px;"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language.name %>, <%= "#{@interview.duration.minimal}" %></td>
+        <td style="text-align: right; padding: 2px;">
+                Band: <select id="player_high_item" name="player_high_item" style="font-size: 8pt;" onChange="current_player.changeItem(this.value);">
+            <% @interview.tapes.count.times do |item| %>
+              <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
+            <% end %>
+                </select>
+        </td>
+      </tr>
+    </table>
+
+    <div id="language_select" style="padding: 2px; height: 20px; font-size: 8pt;">
+      <div style="float: left;"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language.name %></div>
+      <div><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+    </div>
+
     <script type="text/javascript">
 
       new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
@@ -47,6 +72,8 @@
       
     </script>
 	</div>
+
+  <!--
 
   <div id="containerLow" class="containerVideo" style="display:none">
     <div class="playerContainer">
@@ -73,6 +100,8 @@
     </script>
 	</div>
 
+  -->
+
 <% else %>
 
   <div id="containerAudio" class="containerVideo">
@@ -97,3 +126,5 @@
 <% end %>
 <!-- </div> -->
 <!-- /noindex -->
+
+</div>

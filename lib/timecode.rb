@@ -1,5 +1,4 @@
 class Timecode
-
   # encapsulates Timecode-Formats and operations
 
   def initialize(time=nil)
@@ -41,7 +40,11 @@ class Timecode
   end
 
   def to_s
-    Timecode::format_duration(@time, true)
+    (estimate? ? '~' : '') + timecode
+  end
+
+  def minimal
+    (estimate? ? '~' : '') + timecode[0..1].gsub(/^0(.+)/, '\1') + "h " + timecode[3..4] + "min"
   end
 
   # yields the time in seconds from a timecode
@@ -53,28 +56,12 @@ class Timecode
   end
 
   # yields the formatted timecode from a duration in secs
-  def self.format_duration(time, verbose = false)
+  def self.format_duration(time)
     frames = ((time % 1) * 25).to_i
     hours = (time / 3600).to_i
     mins = ((time - hours * 3600) / 60).to_i
     secs = (time - hours * 3600 - mins * 60).to_i
-    if verbose
-      verbose_format(hours, mins, secs)
-    else
-      standard_format(hours, mins, secs, frames)
-    end
-  end
-
-  def self.standard_format(hours, mins, secs, frames)
     "#{hours.to_s.rjust(2,'0')}:#{mins.to_s.rjust(2,'0')}:#{secs.to_s.rjust(2,'0')}.#{frames.to_s.rjust(2,'0')}"
-  end
-
-  def self.verbose_format(hours, mins, secs)
-    time_display = ''
-    time_display << hours.to_s + ' h ' unless hours == 0
-    time_display << mins.to_s + ' min ' unless mins == 0 && hours == 0
-    time_display << secs.to_s + ' s' unless secs == 0 && (mins != 0 || hours != 0)
-    time_display
   end
 
 end

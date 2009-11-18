@@ -45,4 +45,8 @@ DEF
     @duration ||= Timecode.new read_attribute(:duration)
   end
 
+  def short_title
+    full_title[/^(.*), ([A-Z])/] + "."
+  end
+
 end
