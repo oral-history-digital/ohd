@@ -18,7 +18,9 @@ class BaseController < ResourceController::Base
   end
 
   def current_search
-    @search = Search.from_params(params[:search])
+    query = params[:search]
+    query[:page] = params[:page] unless query.nil? || params[:page].nil?
+    @search = Search.from_params(query)
   end
   
 end
