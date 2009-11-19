@@ -1,5 +1,5 @@
 # Controller for "static" pages in app/view/home
-class HomeController < ApplicationController
+class HomeController < BaseController
 
   STATIC_PAGES = (Dir.entries(File.join(RAILS_ROOT, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
