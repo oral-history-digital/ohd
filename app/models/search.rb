@@ -123,7 +123,7 @@ DEF
 
   def self.from_params(query_params=nil)
     if query_params.blank?
-      @@default_search ||= Search.new{|base| begin base.search!; rescue Exception; end }
+      @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
     else
       Search.new do |search|
         Search.accessible_attributes.each do |attr|
