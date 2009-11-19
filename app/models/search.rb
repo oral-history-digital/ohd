@@ -65,9 +65,10 @@ DEF
     @hits ||= 0
   end
 
-  # The parametrized search query for Solr.
+  # The query parameters used to initialize the search. This represents
+  # the current facets for the search.
   def query
-    @query
+    @query || {}
   end
 
   # The facet method returns an array of facet rows in the
@@ -121,7 +122,7 @@ DEF
 #            :country_id
     end
     @hits = @search.total
-    @query = @search.query.to_params
+    @query = query_params.select{|k,v| !v.nil? }
     @results = @search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search

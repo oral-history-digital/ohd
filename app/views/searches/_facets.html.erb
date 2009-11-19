@@ -1,5 +1,9 @@
 <div class="baseListBox">
-    <noscript><h4>Bitte aktivieren Sie JavaScript, um die navigatorischen Elemente auf der rechten Seite nutzen zu können.</h4></noscript>
+  <noscript><h4>Bitte aktivieren Sie JavaScript, um die navigatorischen Elemente auf der rechten Seite nutzen zu können.</h4></noscript>
+
+  <% javascript_tag do %>
+    var checkedCategories = [];
+  <% end %>
 
   <% remote_form_for facets,
                      :url => searches_path,
@@ -11,6 +15,13 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <h2 class="baseListBoxTitle">Interviews suchen nach:</h2>
+
+    <% query_facets = facets.query.select{|f| !f.is_a?(Array) || f.first != 'fulltext' } %>
+
+    <% query_facets.each do |facet| %>
+    <%= render :partial => 'active_facet', :object => facet.first, :locals => { :query => facet.last } %>
+    <% end %>
+
     <div class="fragmentTitle" onclick="toggleCategory('person_names_query');">
       <h2>
         <img title="" src="/images/pfeil_rot_rechts.gif" id="person_names_query_closed" alt="Pfeil rechts" />
@@ -35,7 +46,7 @@
         <% facets.facet(:forced_labor_group_ids).each do |f| %>
             <% category = f.first %>
         <li>
-            <%= search_facets.check_box :forced_labor_groups, { :name => 'forced_labor_groups[]', :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %>
+            <%= search_facets.check_box :forced_labor_groups, { :name => 'forced_labor_groups[]', :id => "forced_labor_group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %>
             <span class="facet-name"><%= category.name %></span>
             <span class="facet-count">(<%= f.last %>)</span>
         </li>
@@ -58,7 +69,7 @@
           <% facets.facet(:forced_labor_field_ids).each do |f| %>
             <% category = f.first %>
             <li>
-                <%= search_facets.check_box :forced_labor_fields, { :name => 'forced_labor_fields[]', :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %>
+                <%= search_facets.check_box :forced_labor_fields, { :name => 'forced_labor_fields[]', :id => "forced_labor_field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %>
                 <span class="facet-name"><%= category.name %></span>
             <span class="facet-count">(<%= f.last %>)</span>
             </li>
@@ -82,7 +93,7 @@
           <% facets.facet(:forced_labor_habitation_ids).each do |f| %>
             <% category = f.first %>
             <li>
-                <%= search_facets.check_box :forced_labor_habitations, { :name => 'forced_labor_habitations[]', :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %>
+                <%= search_facets.check_box :forced_labor_habitations, { :name => 'forced_labor_habitations[]', :id => "forced_labor_habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %>
                 <span class="facet-name"><%= category.name %></span>
                 <span class="facet-count">(<%= f.last %>)</span>
             </li>
@@ -140,60 +151,70 @@
 
   <% end %>
 
-  <%# merge both search forms - search_input and search_facets %>
-  <% javascript_tag do %>
+    <% javascript_tag do %>
 
-    var categoryElems = $$('fieldset.facet-field');
+        var categoryElems = $$('fieldset.facet-field');
 
-    // apply the facet parameters to the fulltext search
-    function applyFacets() {
-      for(var cat=0; cat < categoryElems.length; cat++) {
-        var id = categoryElems[cat].id.sub(/_query$/,'');
-        if(id == 'person_name') {
-            $('search_form_person_name').value = $('person_name_query').value;
-        } else {
-            var categories = $$('.' + id);
-            // delete the existing search form elems
-            $$('#search_form .' + id).each(function(el) { el.remove(); });
-            // copy the checked elems over to the search form as hidden fields
-            $$('.' + id).each(function(el) {
-                if(el.checked) {
-                    var elemName = 'search['+id+'][]';
-                    var hiddenElem = new Element('input', { type: 'hidden', name: elemName, value: el.value, class: id });
-                    $('search_form').insert(hiddenElem);
-                }
-            });
-        }
-      }
-    };
+        // apply the facet parameters to the fulltext search
+        function applyFacets() {
+          for(var cat=0; cat < categoryElems.length; cat++) {
+            var id = categoryElems[cat].id.sub(/_query$/,'');
+            if(id == 'person_name') {
+                $('search_form_person_name').value = $('person_name_query').value;
+            } else {
+                var categories = $$('.' + id);
+                // delete the existing search form elems
+                $$('#search_form .' + id).each(function(el) { el.remove(); });
+                // copy the checked elems over to the search form as hidden fields
+                $$('.' + id).each(function(el) {
+                    if(el.checked) {
+                        var elemName = 'search['+id+'][]';
+                        var hiddenElem = new Element('input', { type: 'hidden', name: elemName, value: el.value, class: id });
+                        $('search_form').insert(hiddenElem);
+                    }
+                });
+            }
+          }
+        };
 
-    // apply the fulltext parameter to the facets search
-    function applyFulltext() {
-      $('search_facets_fulltext').value = $('searchInput').value;
-    };
+        // apply the fulltext parameter to the facets search
+        function applyFulltext() {
+          $('search_facets_fulltext').value = $('searchInput').value;
+        };
 
-    // blind effect for category facets
-    var blindStatus = new Array(categoryElems.length);
-    function toggleCategory(id) {
-      var cat_index = -1;
-      for(var i=0; i< categoryElems.length; i++) {
-        if (id == categoryElems[i].id) {
-            cat_index = i;
-        }
-      }
-      if(cat_index > -1) {
-        if(blindStatus[cat_index] != 1) {
-            Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
-            blindStatus[cat_index] = 1;
-        } else {
-            Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
-            blindStatus[cat_index] = 0;
-        }
-        Element.toggle(id + '_closed');
-        Element.toggle(id + '_open');
-      }
-    };
+        // blind effect for category facets
+        var blindStatus = new Array(categoryElems.length);
+        function toggleCategory(id) {
+          var cat_index = -1;
+          for(var i=0; i< categoryElems.length; i++) {
+            if (id == categoryElems[i].id) {
+                cat_index = i;
+            }
+          }
+          if(cat_index > -1) {
+            if(blindStatus[cat_index] != 1) {
+                Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+                blindStatus[cat_index] = 1;
+            } else {
+                Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+                blindStatus[cat_index] = 0;
+            }
+            Element.toggle(id + '_closed');
+            Element.toggle(id + '_open');
+          }
+        };
 
-  <% end %>
+        function categoryState(id, state) {
+            var checkbox = $(id);
+            if(checkbox) {
+                checkbox.checked = state;
+            }
+        };
+
+        checkedCategories.each(function(id) {
+            categoryState(id, true);
+        });
+
+    <% end %>
 
 </div>

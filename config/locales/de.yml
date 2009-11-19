@@ -8,3 +8,10 @@ de:
   faq: "Hilfe"
   previous: 'vor'
   next: 'nächste'
+
+  forced_labor_group: 'Gruppe'
+  forced_labor_field: 'Einsatzbereich'
+  forced_labor_habitation: 'Unterbringung'
+  person_name: 'Name der Interviewten'
+  language: 'Sprache'
+  country: 'Wohnort (Land)'

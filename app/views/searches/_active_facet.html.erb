@@ -1,0 +1,26 @@
+<% facet_dom_id = "selected_#{active_facet}" %>
+<% query = query.to_a unless query.is_a?(Array) %>
+<div id="<%= facet_dom_id %>" class="active-facet">
+  <span class="facet-name"><%= t(active_facet.singularize) %>:</span>
+  <ul>
+    <% query.each do |category| %>
+        <% category = (active_facet[/^forced_/].blank? ? active_facet.singularize.camelize.constantize : Category).find(category) if category.to_i != 0 %>
+    <li><%= category %></li>
+    <% end %>
+  </ul>
+  <%= link_to_function 'entfernen', :class=>'facet-remove' do |page|
+      page[facet_dom_id].visual_effect :switch_off
+      query.each do |category|
+        next if category.to_i == 0
+        page << "categoryState('#{active_facet.singularize + '_' + category.to_s}', false);"
+      end
+      page << 'applyFulltext();'
+      page[:search_facets].request
+  end %>
+
+  <% javascript_tag do %>
+    <% query.select{|c| c.to_i != 0}.each do |category| %>
+      checkedCategories.push('<%= active_facet.singularize + '_' + category.to_s %>');
+    <% end %>
+  <% end %>
+</div>

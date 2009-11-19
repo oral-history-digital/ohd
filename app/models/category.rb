@@ -25,5 +25,8 @@ DEF
   has_many :interviews,
            :through => :categorizations
 
+  def to_s
+    name
+  end
 
 end
