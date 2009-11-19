@@ -3,11 +3,11 @@
   <% form_for search,
                      :url => new_search_path,
                      :method => :get,
-                     :before => 'applyFacets();',
                      :html => { :action => searches_path,
                                 :method => :get,
                                 :name => "searchForm",
-                                :id => "search_form" } do |f| %>
+                                :id => "search_form",
+                                :onsubmit => 'applyFacets();' } do |f| %>
     <%= f.text_field :fulltext, :title => "Suchbegriff bitte hier eingeben", :class => "baseInputSearch", :id => "searchInput" %>
     <%= f.submit 'Suchanfrage starten', :title => 'Suchanfrage starten', :class => 'buttonText', :src => "/images/suchpfeil_weiss.gif", :name => 'searchButton', :type => 'image' %>
   <% end %>
