@@ -2,6 +2,7 @@
 
   <% if defined?(@search) && !@search.hits.blank? %>
   <h2><%= @search.hits %> Einträge</h2>
+  <%= will_paginate @interviews %>
   <% end %>
 
   <% (@interviews || []).each do |interview| %>
@@ -20,6 +21,10 @@
         </div>
     </div>
 
+  <% end %>
+
+  <% if defined?(@search) && !@search.hits.blank? %>
+  <%= will_paginate @interviews %>
   <% end %>
 
 </div>
