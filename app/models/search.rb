@@ -1,12 +1,24 @@
+# The Search class is used to encapsulate Solr searches in a
+# resource-oriented manner. This allows a user session to
+# carry a state across the application. The base state is
+# the default search over all records, and this is cached in
+# a class variable Search#@@default_search.
+#
+# The Search#RESULTS_PER_PAGE constant sets the pagination
+# default number of hits per page.
+#
+# A Search can be constructed from a params hash using
+# the class method Search#from_params.
+#
+# The search query is run against Solr by calling the
+# Search#search! method. This instantiates all the
+# result-based variables (hits, results, facets).
+
 class Search < ActiveRecord::Base
 
   require 'yaml'
 
   RESULTS_PER_PAGE = 12
-
-  def self.from_params(query_params=nil)
-    Search.new
-  end
 
   attr_accessible :fulltext,
                   :person_name,
@@ -17,10 +29,12 @@ class Search < ActiveRecord::Base
                   :countries,
                   :page
 
-  # accessors for each query param *except fulltext*
-  # (fulltext is actually the keywords search DB column
+  # Accessors for each query param *except* *fulltext*
+  # (fulltext is actually the keywords search DB column.
   (self.accessible_attributes - [ 'fulltext' ]).each do |query_param|
     class_eval <<DEF
+    # This is the generated setter for accessing the
+    # #{query_param} query conditions.
     def #{query_param}=(#{query_param}_query)
       @#{query_param}=#{query_param}_query
     end
@@ -36,18 +50,35 @@ DEF
     write_attribute :results, @results.to_yaml
   end
 
+  # Returns the Sunspot::Search#results of any queries
+  # performed via Search#search!.
   def results
     @results ||= read_attribute :results
     @results = YAML.load(@results) if @results.is_a?(String)
     @results
   end
 
+  # The total number of records matching the query criteria
+  # as returned by Solr. Defaults to zero if Search#search!
+  # hasn't been called.
   def hits
     @hits ||= 0
   end
 
+  # The parametrized search query for Solr.
   def query
     @query
+  end
+
+  
+  def facet(name)
+    if @search.is_a?(Sunspot::Search)
+      facet = @search.facet(name.to_sym)
+      unless facet.blank? || facet.rows.blank?
+        facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
+      end
+    end
+    @search.facet(name.to_sym)
   end
 
   # query Solr for matching interviews
@@ -56,7 +87,7 @@ DEF
     Search.accessible_attributes.each do |query_param|
       query_params[query_param] = self.send(query_param)
     end
-    search = Sunspot.search Interview do
+    @search = Sunspot.search Interview do
 #      adjust_solr_params do |params|
 #        unless query_params['fulltext'].blank?
 #          if params[:q].blank?
@@ -83,13 +114,23 @@ DEF
             :language_id
 #            :country_id
     end
-    @hits = search.total
-    @query = search.query.to_params
-    @results = search.results
+    @hits = @search.total
+    @query = @search.query.to_params
+    @results = @search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
-    search
+    @search
   end
 
-  
+  def self.from_params(query_params=nil)
+    if query_params.blank?
+      @@default_search ||= Search.new{|base| begin base.search!; rescue Exception; end }
+    else
+      Search.new do |search|
+        Search.accessible_attributes.each do |attr|
+          search.send(attr, query_params[attr.to_s]) unless query_params[attr.to_s].blank?
+        end
+      end
+    end
+  end
 
 end
