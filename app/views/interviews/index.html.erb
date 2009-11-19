@@ -1,10 +1,10 @@
 <div class='teaserList'>
 
-  <% if defined?(@current_search) && !@current_search.hits.blank? %>
-  <h2><%= @current_search.hits %> Einträge</h2>
+  <% if defined?(@search) && !@search.hits.blank? %>
+  <h2><%= @search.hits %> Einträge</h2>
   <% end %>
 
-  <% (@interviews || interviews || []).each do |interview| %>
+  <% (@interviews || []).each do |interview| %>
 
     <div class="beaseContainerTeaser">
         <div class="baseContainerTeaserImage">

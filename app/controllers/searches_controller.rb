@@ -5,7 +5,6 @@ class SearchesController < BaseController
   new_action do
     before do
       @search.search!
-      @current_search = @search
       @interviews = @search.results
     end
     wants.js do

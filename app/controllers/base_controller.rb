@@ -18,7 +18,7 @@ class BaseController < ResourceController::Base
   end
 
   def current_search
-    @current_search = Search.from_params(params[:search])
+    @search = Search.from_params(params[:search])
   end
   
 end
