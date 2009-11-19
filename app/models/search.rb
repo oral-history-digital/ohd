@@ -127,7 +127,7 @@ DEF
     else
       Search.new do |search|
         Search.accessible_attributes.each do |attr|
-          search.send(attr, query_params[attr.to_s]) unless query_params[attr.to_s].blank?
+          search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
         end
       end
     end
