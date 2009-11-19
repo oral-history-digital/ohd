@@ -70,15 +70,21 @@ DEF
     @query
   end
 
-  
+  # The facet method returns an array of facet rows in the
+  # format: <tt>[ category_instance, count ]</tt>.
   def facet(name)
+    @facets ||= {}
+    @facets[name.to_sym] ||= \
     if @search.is_a?(Sunspot::Search)
       facet = @search.facet(name.to_sym)
-      unless facet.blank? || facet.rows.blank?
+      if facet.blank? || facet.rows.blank?
+        []
+      else
         facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
       end
+    else
+      []
     end
-    @search.facet(name.to_sym)
   end
 
   # query Solr for matching interviews
@@ -127,6 +133,7 @@ DEF
     else
       Search.new do |search|
         Search.accessible_attributes.each do |attr|
+          puts "Assigning #{attr}: #{(query_params[attr.to_s] || {}).inspect} blank? => #{query_params[attr.to_s].blank?}"
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
         end
       end

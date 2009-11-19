@@ -700,6 +700,15 @@ body {
 	text-decoration: underline;
 }
 
+.baseListBox .facet-field {
+    padding: 0;
+}
+
+.baseListBox .facet-count {
+    color:#666666;
+    font-size:80%;
+}
+
 .baseListBox li a:link {
 	color: #990000;
 	text-decoration: none;

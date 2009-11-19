@@ -1,13 +1,14 @@
 <div class="baseListBox">
     <noscript><h4>Bitte aktivieren Sie JavaScript, um die navigatorischen Elemente auf der rechten Seite nutzen zu können.</h4></noscript>
 
-  <% remote_form_for :search,
+  <% remote_form_for facets,
                      :url => searches_path,
                      :method => :get,
                      :before => 'applyFulltext();',
                      :html => { :action => new_search_path,
+                                :method => :get,
                                 :name => "searchFacets",
-                                :id => "search_facets" } do |f| %>
+                                :id => "search_facets" } do |search_facets| %>
 
     <h2 class="baseListBoxTitle">Interviews suchen nach:</h2>
     <div class="fragmentTitle" onclick="toggleCategory('person_names_query');">
@@ -17,7 +18,7 @@
         Namen der Interviewten
       </h2>
     </div>
-    <fieldset style="display:none" id="person_names_query">
+    <fieldset style="display:none" id="person_names_query" class="facet-field">
       <%# Field for name query %>
     </fieldset>
 
@@ -28,12 +29,19 @@
         Gruppe
       </h2>
     </div>
-    <fieldset style="display:none" id="forced_labor_groups_query">
+    <fieldset style="display:none" id="forced_labor_groups_query" class="facet-field">
+      <% unless facets.facet(:forced_labor_group_ids).empty? %>
       <ul>
-        <% Category::FORCED_LABOR_GROUPS.each do |category| %>
-        <li><%= f.check_box :forced_labor_groups, { :name => 'forced_labor_groups[]', :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %><%= category.name %></li>
+        <% facets.facet(:forced_labor_group_ids).each do |f| %>
+            <% category = f.first %>
+        <li>
+            <%= search_facets.check_box :forced_labor_groups, { :name => 'forced_labor_groups[]', :id => "group_#{category[:id]}", :class => 'forced_labor_groups' }, category[:id], 0 %>
+            <span class="facet-name"><%= category.name %></span>
+            <span class="facet-count">(<%= f.last %>)</span>
+        </li>
         <% end %>
      </ul>
+     <% end %>
     </fieldset>
 
     <div class="fragmentTitle" onclick="toggleCategory('forced_labor_fields_query');">
@@ -44,12 +52,19 @@
             Einsatzbereich
         </h2>
     </div>
-    <fieldset style="display:none" id="forced_labor_fields_query">
+    <fieldset style="display:none" id="forced_labor_fields_query" class="facet-field">
+        <% unless facets.facet(:forced_labor_field_ids).empty? %>
         <ul>
-          <% Category::FORCED_LABOR_FIELDS.each do |category| %>
-          <li><%= f.check_box :forced_labor_fields, { :name => 'forced_labor_fields[]', :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %><%= category.name %></li>
+          <% facets.facet(:forced_labor_field_ids).each do |f| %>
+            <% category = f.first %>
+            <li>
+                <%= search_facets.check_box :forced_labor_fields, { :name => 'forced_labor_fields[]', :id => "field_#{category[:id]}", :class => 'forced_labor_fields' }, category[:id], 0 %>
+                <span class="facet-name"><%= category.name %></span>
+            <span class="facet-count">(<%= f.last %>)</span>
+            </li>
           <% end %>
         </ul>
+        <% end %>
     </fieldset>
 
     <div class="fragmentTitle" onclick="toggleCategory('forced_labor_habitations_query');">
@@ -61,15 +76,22 @@
         </h2>
     </div>
 
-    <fieldset style="display:none" id="forced_labor_habitations_query">
+    <fieldset style="display:none" id="forced_labor_habitations_query" class="facet-field">
+        <% unless facets.facet(:forced_labor_habitation_ids).empty? %>
         <ul>
-          <% Category::FORCED_LABOR_HABITATIONS.each do |category| %>
-          <li><%= f.check_box :forced_labor_habitations, { :name => 'forced_labor_habitations[]', :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %><%= category.name %></li>
+          <% facets.facet(:forced_labor_habitation_ids).each do |f| %>
+            <% category = f.first %>
+            <li>
+                <%= search_facets.check_box :forced_labor_habitations, { :name => 'forced_labor_habitations[]', :id => "habitation_#{category[:id]}", :class => 'forced_labor_habitations' }, category[:id], 0 %>
+                <span class="facet-name"><%= category.name %></span>
+                <span class="facet-count">(<%= f.last %>)</span>
+            </li>
           <% end %>
         </ul>
+        <% end %>
     </fieldset>
 
-    <div class="fragmentTitle" onclick="toggleCategory('languages_query');">
+    <div class="fragmentTitle" onclick="toggleCategory('languages_query');" class="facet-field">
 
         <h2>
             <img title="" src="/images/pfeil_rot_rechts.gif" id="languages_query_closed" alt="Pfeil rechts" />
@@ -78,12 +100,19 @@
         </h2>
     </div>
 
-    <fieldset style="display:none" id="languages_query">
+    <fieldset style="display:none" id="languages_query" class="facet-field">
+        <% unless facets.facet(:language_id).empty? %>
         <ul>
-          <% Language::CATEGORIES.each do |language| %>
-          <li><%= f.check_box :languages, { :name => 'languages[]', :id => "language_#{language[:id]}", :class => 'languages' }, language[:id], 0 %><%= language.name %></li>
+          <% facets.facet(:language_id).each do |f| %>
+            <% category = f.first %>
+            <li>
+                <%= search_facets.check_box :languages, { :name => 'languages[]', :id => "language_#{category[:id]}", :class => 'languages' }, category[:id], 0 %>
+                <span class="facet-name"><%= category.name %></span>
+                <span class="facet-count">(<%= f.last %>)</span>
+            </li>
           <% end %>
         </ul>
+        <% end %>
     </fieldset>
 
 
@@ -95,7 +124,7 @@
             Wohnort (Land)
         </h2>
     </div>
-    <fieldset style="display:none" id="countries_query">
+    <fieldset style="display:none" id="countries_query" class="facet-field">
         <ul>
             <li>
                 <a href="http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/listen/wohnort/belarus.html">
@@ -106,7 +135,7 @@
     </fieldset>
 
     <fieldset style="display:none">
-      <%= f.hidden_field :fulltext, :id => 'search_facets_fulltext' %>
+      <%= search_facets.hidden_field :fulltext, :id => 'search_facets_fulltext' %>
     </fieldset>
 
   <% end %>
@@ -114,7 +143,7 @@
   <%# merge both search forms - search_input and search_facets %>
   <% javascript_tag do %>
 
-    var categoryElems = $$('.fragmentTitle + fieldset');
+    var categoryElems = $$('fieldset.facet-field');
 
     // apply the facet parameters to the fulltext search
     function applyFacets() {
@@ -129,7 +158,8 @@
             // copy the checked elems over to the search form as hidden fields
             $$('.' + id).each(function(el) {
                 if(el.checked) {
-                    var hiddenElem = new Element('input', { type: 'hidden', name: 'search['+id+'][]', value: el.value, class: id });
+                    var elemName = 'search['+id+'][]';
+                    var hiddenElem = new Element('input', { type: 'hidden', name: elemName, value: el.value, class: id });
                     $('search_form').insert(hiddenElem);
                 }
             });
