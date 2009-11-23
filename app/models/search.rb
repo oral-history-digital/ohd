@@ -94,7 +94,7 @@ DEF
     Search.accessible_attributes.each do |query_param|
       query_params[query_param] = self.send(query_param)
     end
-    @search = Sunspot.search Interview do
+    @search = Sunspot.search [ Interview, Segment ] do
       keywords query_params['fulltext']
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
         self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
