@@ -95,16 +95,6 @@ DEF
       query_params[query_param] = self.send(query_param)
     end
     @search = Sunspot.search Interview do
-#      adjust_solr_params do |params|
-#        unless query_params['fulltext'].blank?
-#          if params[:q].blank?
-#            params[:q] = '' + query_params['fulltext'].to_s
-#          else
-#            params[:q] += ' ' + query_params['fulltext'].to_s
-#          end
-#        end
-#        params[:defType] = nil
-#      end
       keywords query_params['fulltext']
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
         self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
@@ -120,6 +110,9 @@ DEF
             :forced_labor_habitation_ids,
             :language_id
 #            :country_id
+      adjust_solr_params do |params|
+        params.delete(:defType)
+      end
     end
     @hits = @search.total
     @query = query_params.select{|k,v| !v.nil? }
