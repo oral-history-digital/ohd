@@ -20,6 +20,8 @@ class Search < ActiveRecord::Base
 
   RESULTS_PER_PAGE = 12
 
+  facet_fields = []
+
   attr_accessible :fulltext,
                   :person_name,
                   :forced_labor_groups,
@@ -42,8 +44,12 @@ class Search < ActiveRecord::Base
     def #{query_param}
       @#{query_param}
     end
+
+    facet_fields << :#{query_param} unless :#{query_param} == :page
 DEF
   end
+
+  FACET_FIELDS = facet_fields
 
   def results=(solr_result)
     @results = solr_result
@@ -71,6 +77,16 @@ DEF
     @query || {}
   end
 
+  # Returns an array of facets that are actively filtered on in the current query.
+  def query_facets
+    @query_facets ||= query.select{|f| !f.is_a?(Array) || f.first != 'fulltext' }
+  end
+
+  # Returns an array of facets that are not specified in the current query.
+  def unqueried_facets
+    (FACET_FIELDS - query_facets.map{|f| f.first.to_sym }).map{|f| [ f, facet(f) ] }
+  end
+
   # The facet method returns an array of facet rows in the
   # format: <tt>[ category_instance, count ]</tt>.
   def facet(name)
@@ -78,9 +94,14 @@ DEF
     @facets[name.to_sym] ||= \
     if @search.is_a?(Sunspot::Search)
       facet = @search.facet(name.to_sym)
+      puts "FACET NAME: #{name}  => #{facet}"
       if facet.blank? || facet.rows.blank?
         []
+      elsif facet.rows.first.instance.nil?
+        # non-category facet - return an array of all values and counts
+        facet.rows.map{|f| [ f.value, f.count ]}
       else
+        # category facet - return an array of all instances with number of corresponding hits
         facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
       end
     else
@@ -101,7 +122,7 @@ DEF
       end
       self.with(:language_id).any_of query_params['languages'] unless query_params['languages'].blank?
       # with(:country_id).any_of query_params[:countries] unless query_params[:countries].blank?
-      self.with :full_title, query_params['person_name'] unless query_params['person_name'].blank?
+      self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
       paginate :page => query_params['page'] || 1, :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
       facet :person_name,
@@ -116,6 +137,8 @@ DEF
     end
     @hits = @search.total
     @query = query_params.select{|k,v| !v.nil? }
+    @query_facets = nil
+    @facets = nil
     @results = @search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search

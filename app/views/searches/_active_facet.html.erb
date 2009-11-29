@@ -8,7 +8,7 @@
     <li><%= category %></li>
     <% end %>
   </ul>
-  <%= link_to_function 'entfernen', :class=>'facet-remove' do |page|
+  <%= link_to_function 'entfernen', :class=>'facet-remove', :title => 'entfernen' do |page|
       page[facet_dom_id].visual_effect :switch_off
       query.each do |category|
         next if category.to_i == 0
