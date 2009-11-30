@@ -1,7 +1,8 @@
 class Interview < ActiveRecord::Base
 
+  NUMBER_OF_INTERVIEWS = Interview.count :all
+
   belongs_to :collection
-  belongs_to :language
 
   has_many  :tapes
 
@@ -26,13 +27,18 @@ DEF
   searchable :auto_index => false do
     string :archive_id, :stored => true
     string :media_id, :stored => true
-    text :full_title
+    text :full_title do
+      str = full_title
+      segments.each do |segment|
+        str << " " + segment.transcript
+        str << " " + segment.translation
+      end
+      str
+    end
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
     string :person_name, :using => :full_title, :stored => true
-    integer :language_id, :stored => true, :references => Language
-    # integer :country_id
   end
 
 
@@ -43,6 +49,11 @@ DEF
 
   def media_id
     nil
+  end
+
+  # Compatibility for old singular language association
+  def language
+    languages.join('/')
   end
 
   def duration

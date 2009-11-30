@@ -42,7 +42,7 @@
       %str debug
     <useCompoundFile>false</useCompoundFile>
 
-    <mergeFactor>10</mergeFactor>
+    <mergeFactor>5</mergeFactor>
     <!--
      If both ramBufferSizeMB and maxBufferedDocs is set, then Lucene will flush based on whichever limit is hit first.
 
@@ -56,7 +56,7 @@
     -->
     <ramBufferSizeMB>32</ramBufferSizeMB>
     <maxMergeDocs>2147483647</maxMergeDocs>
-    <maxFieldLength>10000</maxFieldLength>
+    <maxFieldLength>1000000</maxFieldLength>
     <writeLockTimeout>1000</writeLockTimeout>
     <commitLockTimeout>10000</commitLockTimeout>
 
@@ -106,11 +106,11 @@
     <!-- options specific to the main on-disk lucene index -->
     <useCompoundFile>false</useCompoundFile>
     <ramBufferSizeMB>32</ramBufferSizeMB>
-    <mergeFactor>10</mergeFactor>
+    <mergeFactor>5</mergeFactor>
     <!-- Deprecated -->
     <!--<maxBufferedDocs>1000</maxBufferedDocs>-->
     <maxMergeDocs>2147483647</maxMergeDocs>
-    <maxFieldLength>10000</maxFieldLength>
+    <maxFieldLength>1000000</maxFieldLength>
 
     <!-- If true, unlock any held write or commit locks on startup. 
          This defeats the locking mechanism that allows multiple

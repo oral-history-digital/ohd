@@ -20,16 +20,22 @@ class Search < ActiveRecord::Base
 
   RESULTS_PER_PAGE = 12
 
-  facet_fields = []
+  FACET_FIELDS = [
+                      :person_name,
+                      :forced_labor_groups,
+                      :forced_labor_fields,
+                      :forced_labor_habitations,
+                      :languages,
+                      :countries
+  ]
 
-  attr_accessible :fulltext,
-                  :person_name,
-                  :forced_labor_groups,
-                  :forced_labor_fields,
-                  :forced_labor_habitations,
-                  :languages,
-                  :countries,
-                  :page
+  class_eval <<ATTR
+    attr_accessible :#{(FACET_FIELDS \
+                            + [
+                                :fulltext,
+                                :page
+                              ]).join(', :')}
+ATTR
 
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
@@ -45,11 +51,9 @@ class Search < ActiveRecord::Base
       @#{query_param}
     end
 
-    facet_fields << :#{query_param} unless :#{query_param} == :page
 DEF
   end
 
-  FACET_FIELDS = facet_fields
 
   def results=(solr_result)
     @results = solr_result
@@ -91,12 +95,21 @@ DEF
   # format: <tt>[ category_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    @facets[name.to_sym] ||= \
+    facet_name = name
+    facet_name = (name.to_s.singularize << "_ids") unless Category::ARCHIVE_CATEGORIES.assoc(name.to_sym).nil?
+    @facets[facet_name.to_sym] ||= \
     if @search.is_a?(Sunspot::Search)
-      facet = @search.facet(name.to_sym)
-      puts "FACET NAME: #{name}  => #{facet}"
-      if facet.blank? || facet.rows.blank?
+      facet = @search.facet(facet_name.to_sym)
+      puts "FACET NAME: #{facet_name}  => #{facet}"
+      if facet.blank?
         []
+      elsif facet.rows.blank?
+        if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
+          # yield all categories with a count of zero
+          Category.send(name).map{|c| [ c, 0 ]}
+        else
+          []
+        end
       elsif facet.rows.first.instance.nil?
         # non-category facet - return an array of all values and counts
         facet.rows.map{|f| [ f.value, f.count ]}
@@ -115,7 +128,7 @@ DEF
     Search.accessible_attributes.each do |query_param|
       query_params[query_param] = self.send(query_param)
     end
-    @search = Sunspot.search [ Interview, Segment ] do
+    @search = Sunspot.search Interview do
       keywords query_params['fulltext']
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
         self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
@@ -129,8 +142,8 @@ DEF
             :forced_labor_group_ids,
             :forced_labor_field_ids,
             :forced_labor_habitation_ids,
-            :language_id
-#            :country_id
+            :language_ids,
+            :country_ids
       adjust_solr_params do |params|
         params.delete(:defType)
       end

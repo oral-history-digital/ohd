@@ -27,7 +27,6 @@ DEF
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
     string :person_name, :using => :full_title, :stored => true
-    integer :language_id, :stored => true, :references => Language
   end
 
   def interview_id

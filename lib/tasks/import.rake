@@ -1,9 +1,9 @@
 namespace :import do
 
   desc "Import der Teilsammlungen"
-  task :collections => :environment do
-    csv_file = ENV['file']
-    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+  task :collections, [ :file ] => :environment do |task, args|
+    csv_file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 
@@ -19,9 +19,10 @@ namespace :import do
   end
 
   desc "Import der Interviewdaten"
-  task :metadata => :environment do
-    csv_file = ENV['file']
-    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+  task :metadata, [ :file ] => :environment do |task, args|
+    puts "ARGUMENTS: #{args.inspect}"
+    csv_file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 
@@ -32,9 +33,6 @@ namespace :import do
       unless row.field('Online veröffentlicht') == "nicht online"
 
         interview ||= Interview.create :archive_id => row.field('Archiv-ID')
-
-        language = Language.find_by_name row.field('Sprache')
-        language ||= Language.create :name => row.field('Sprache')
 
         interview.update_attributes   :full_title => row.field('Zeitzeuge/Zeitzeugin'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
@@ -63,10 +61,8 @@ namespace :import do
           end
         end
 
-        interview.language_id = language.id
         interview.collection_id = collection.id
 
-        language.save!
         interview.save!
         collection.save!
 
@@ -86,9 +82,9 @@ namespace :import do
   end
 
   desc "Import von Tapes"
-  task :tapes => :environment do
-    csv_file = ENV['file']
-    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+  task :tapes, [ :file ] => :environment do |task, args|
+    csv_file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 
@@ -112,9 +108,9 @@ namespace :import do
   end
 
   desc "Import von Sgementen"
-  task :segments => :environment do
-    csv_file = ENV['file']
-    raise "no csv file provided (file= ), aborting." if csv_file.nil?
+  task :segments, [ :file ] => :environment do |task, args|
+    csv_file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 

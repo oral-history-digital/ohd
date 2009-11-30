@@ -4,10 +4,13 @@ This is the web application for Zwangsarbeit-Archiv 2.0.
 == Application Setup
 1. generate the database.yml and setup the databases (<tt>rake db:create</tt> or <tt>rake db:create:all</tt>)
 2. run the migrations: <tt>rake db:migrate</tt>
-3. import the data:
-3.1. <tt>rake import:metadata file=./db/import_files/interviews.csv</tt>
-3.2. <tt>rake import:tapes file=./db/import_files/tapes.csv</tt>
-3.3. <tt>rake import:segments file=./db/import_files/segments.csv</tt> (this might take a while)
+3. import the data: <tt>rake data:setup</tt>
+
+If you need to import the data partially or via the individual steps, the last part
+breaks down into these tasks:
+a) <tt>rake import:metadata ./db/import_files/interviews.csv</tt>
+b) <tt>rake import:tapes ./db/import_files/tapes.csv</tt>
+c) <tt>rake import:segments ./db/import_files/segments.csv</tt> (this might take a while)
 
 == Solr Setup and Indexing
 Try to start the Solr server in the Jetty container by running:

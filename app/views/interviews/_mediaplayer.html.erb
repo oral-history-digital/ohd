@@ -41,7 +41,7 @@
     
     <table style="width: 401px; height: 28px; margin-top: 0; margin-left: 1px;" cellpadding="0" cellspacing="0">
       <tr>
-        <td style="font-size: 8pt; padding: 2px;"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language.name %>, <%= "#{@interview.duration.minimal}" %></td>
+        <td style="font-size: 8pt; padding: 2px;"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
         <td style="text-align: right; padding: 2px;">
                 Band: <select id="player_high_item" name="player_high_item" style="font-size: 8pt;" onChange="current_player.changeItem(this.value);">
             <% @interview.tapes.count.times do |item| %>
@@ -53,7 +53,7 @@
     </table>
 
     <div id="language_select" style="padding: 2px; height: 20px; font-size: 8pt;">
-      <div style="float: left;"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language.name %></div>
+      <div style="float: left;"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
       <div><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
     </div>
 

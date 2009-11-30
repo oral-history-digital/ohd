@@ -13,7 +13,7 @@ class CreateCategories < ActiveRecord::Migration
       t.integer :interview_id, :null => false
       t.string :category_type
     end
-    add_index :categorizations, [ :category_id, :interview_id ]
+    add_index :categorizations, [ :category_type, :interview_id ]
 
     drop_table :interview_forced_labor_groups
     drop_table :interview_forced_labor_fields

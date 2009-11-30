@@ -58,6 +58,7 @@ namespace :solr do
   desc "reindex the archive contents for Solr search"
   task :reindex => :delete do
 
+    # Interviews
     BATCH=25
     offset=0
     total = Interview.count :all
@@ -68,6 +69,26 @@ namespace :solr do
 
       Interview.find(:all, :limit => "#{offset},#{BATCH}").each do |interview|
         interview.index
+      end
+
+      STDOUT.printf '.'
+      STDOUT::flush
+
+      offset += BATCH
+    end
+
+    Sunspot.commit
+
+    # Segments
+    offset=0
+    total = Segment.count :all
+
+    puts "\nReindexing #{total} segments..."
+
+    while(offset<total)
+
+      Segment.find(:all, :limit => "#{offset},#{BATCH}").each do |segment|
+        segment.index
       end
 
       STDOUT.printf '.'

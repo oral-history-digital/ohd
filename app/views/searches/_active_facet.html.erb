@@ -23,4 +23,10 @@
       checkedCategories.push('<%= active_facet.singularize + '_' + category.to_s %>');
     <% end %>
   <% end %>
+
+  <fieldset style="display:none" id="<%= active_facet %>_query" class="facet-field">
+    <% query.each do |category| %>
+      <%= hidden_field_tag "search[#{active_facet}][]", category[:id], { :id => "#{active_facet}_#{category[:id]}"} %>
+    <% end %>
+  </fieldset>
 </div>

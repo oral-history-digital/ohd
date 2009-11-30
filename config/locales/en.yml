@@ -6,3 +6,10 @@ en:
   contact: "Contact"
   legal_notice: "Legal notice"
   faq: "FAQ"
+
+  forced_labor_group: 'Gruppe'
+  forced_labor_field: 'Einsatzbereich'
+  forced_labor_habitation: 'Unterbringung / Inhaftierung'
+  person_name: 'Name der Interviewten'
+  language: 'Sprache'
+  country: 'Wohnort (Land)'
