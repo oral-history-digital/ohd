@@ -17,7 +17,7 @@
         <span class="searchString">Volltextsuche</span>
         <% search_facets.object.fulltext ||= t('search_term') %>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil.gif' %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil_rund.gif' %>
     </div>
 
     <noscript>
