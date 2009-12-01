@@ -7,15 +7,15 @@
   <% remote_form_for facets,
                      :url => new_search_path,
                      :method => :get,
-                     :before => 'applyFulltext();',
                      :html => { :action => new_search_path,
                                 :method => :get,
+                                :before => "clearFulltextField('searchInput');",
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
         <span class="searchString">Volltextsuche</span>
-        <%= search_facets.text_field :fulltext, :value => 'Suchbegriff', :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben' %>
+        <%= search_facets.text_field :fulltext, :value => 'Suchbegriff', :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
         <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil.gif' %>
     </div>
 
@@ -43,32 +43,17 @@
 
         var categoryElems = $$('fieldset.facet-field');
 
-        // apply the facet parameters to the fulltext search
-        function applyFacets() {
-          for(var cat=0; cat < categoryElems.length; cat++) {
-            var id = categoryElems[cat].id.sub(/_query$/,'');
-            if(id == 'person_name') {
-                $('search_form_person_name').value = $('person_name_query').value;
-            } else {
-                var categories = $$('.' + id);
-                // delete the existing search form elems
-                $$('#search_form .' + id).each(function(el) { el.remove(); });
-                // copy the checked elems over to the search form as hidden fields
-                $$('.' + id).each(function(el) {
-                    if(el.checked) {
-                        var elemName = 'search['+id+'][]';
-                        var hiddenElem = new Element('input', { type: 'hidden', name: elemName, value: el.value, class: id });
-                        $('search_form').insert(hiddenElem);
-                    }
-                });
+        var test = '';
+
+        // clearing the fulltext field before submission or editing
+        function clearFulltextField(id) {
+          var elem = $(id);
+          if(elem) {
+            if(elem.value == '<%= t('search_term') %>') {
+              elem.value = '';
             }
           }
-        };
-
-        // apply the fulltext parameter to the facets search
-        function applyFulltext() {
-          $('search_facets_fulltext').value = $('searchInput').value;
-        };
+        }
 
         // blind effect for category facets
         var blindStatus = new Array(categoryElems.length);
@@ -81,22 +66,26 @@
           }
           if(cat_index > -1) {
             if(blindStatus[cat_index] != 1) {
+              // show
               if(blindToggle) {
                 Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
                 blindStatus[cat_index] = 1;
               } else {
-                Element.toggle(id);
+                Element.show(id);
               }
+              Element.hide(id + '_closed');
+              Element.show(id + '_open');
             } else {
+              // hide
               if(blindToggle) {
                 Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
                 blindStatus[cat_index] = 0;
               } else {
-                Element.toggle(id);
+                Element.hide(id);
               }
+              Element.show(id + '_closed');
+              Element.hide(id + '_open');
             }
-            Element.toggle(id + '_closed');
-            Element.toggle(id + '_open');
           }
         };
 

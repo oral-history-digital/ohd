@@ -1,6 +1,6 @@
 class SearchesController < BaseController
 
-  actions :new, :create
+  actions :new, :index
 
   new_action do
     before do
@@ -19,7 +19,7 @@ class SearchesController < BaseController
     end
   end
 
-  create do
+  index do
     before do
       @search.search!
       @interviews = @search.results

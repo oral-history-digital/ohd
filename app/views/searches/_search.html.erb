@@ -4,7 +4,7 @@
 
   <span class="hits">
     <% if search.hits > 0 %>
-      <%= link_to search.hits.to_s + '&nbsp;Interviews' + image_tag('/images/suchpfeil.gif', :id => 'searchButton', :alt => 'zur Auswahl'), searches_path(@search.query_params.merge({ :method => :post })) %>
+      <%= link_to search.hits.to_s + '&nbsp;Interviews', searches_path(:search => @search.query_params) %>
     <% else %>
       keine&nbsp;Interviews
     <% end %>
@@ -12,8 +12,9 @@
 </div>
 
 <div id="searchReset">
-  <a href="<%= request.path %>">
-    <span>zur&uuml;cksetzen</span>
-    <img src="/images/suche_reset.gif" alt="" title="" />
-  </a>
+  <% if search.hits < Interview::NUMBER_OF_INTERVIEWS %>
+    <%# reload the complete page if we are in the search result view %>
+    <% reset_path = (request.path == searches_path) ? searches_path : new_search_path  %>
+    <%= link_to_remote(content_tag('span', 'zur&uuml;cksetzen') + image_tag('/images/suche_reset.gif'), { :url => reset_path, :method => :get }) %>
+  <% end %>
 </div>

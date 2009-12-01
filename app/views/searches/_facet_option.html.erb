@@ -4,7 +4,7 @@
 <% fulltext_list = !category_facet && facet_entries.size < 13 %>
 
   <div class="fragmentTitle">
-    <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= !fulltext_list %>);">
+    <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || fulltext_list %>);">
       <img title="" src="/images/pfeil_rot_rechts.gif" id="<%= facet_name %>_query_closed" alt="Pfeil rechts" />
       <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="<%= facet_name %>_query_open" alt="Pfeil unten" />
       <%= t facet_name.to_s.singularize %>

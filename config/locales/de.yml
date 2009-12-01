@@ -8,6 +8,7 @@ de:
   faq: "Hilfe"
   previous: 'vor'
   next: 'nächste'
+  search_term: 'Suchbegriff'
 
   forced_labor_group: 'Gruppe'
   forced_labor_field: 'Einsatzbereich'
