@@ -106,7 +106,13 @@ span.hits a:hover {
 	font-size: 110%;
 }
 
+.searchString {
+    color: #840f09;
+}
 
+#searchInput {
+	width: 200px;
+}
 
 
 
