@@ -18,7 +18,7 @@
   <span class="hits">
 	<a href="#">
     <% if search.hits > 0 %>
-      <%= search.hits %> Interviews<%= search.hits < Interview::NUMBER_OF_INTERVIEWS ? ' in der Auswahl' : ''%>
+      <%= search.hits %> Interviews<%= search.hits < Interview::NUMBER_OF_INTERVIEWS ? '' : ''%>
     <% else %>
       keine Interviews in der Auswahl
     <% end %>

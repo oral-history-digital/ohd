@@ -14,8 +14,8 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
-        <span class="searchString">Suchbegriff (Volltextsuche)</span>
-        <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben' %>
+        <span class="searchString">Volltextsuche</span>
+        <%= search_facets.text_field :fulltext, :value => 'Suchbegriff', :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben' %>
         <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil.gif' %>
     </div>
 
