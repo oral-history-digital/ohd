@@ -15,7 +15,7 @@
 
   <%# end %>
 
-  <span class="hits" style="color:#fff;">
+  <span class="hits">
     <% if search.hits > 0 %>
       <%= search.hits %> Interviews<%= search.hits < Interview::NUMBER_OF_INTERVIEWS ? ' in der Auswahl' : ''%>
     <% else %>
@@ -23,7 +23,7 @@
     <% end %>
   </span>
 
-  <div id="searchReset" style="float: right;">
+  <div id="searchReset">
     <a href="<%= new_search_path %>">
       <span>zur&uuml;cksetzen</span>
       <img src="/images/suche_reset.gif" alt="" title="" />
