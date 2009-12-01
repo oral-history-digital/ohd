@@ -49,59 +49,6 @@
     width: 16px;
 }
 
-/* @override http://10.211.55.3:3000/stylesheets/search.css?1259576339 */
-
-/* Facetted Search */
-#search_facets .active-facet {
-    display: block;
-    position: relative;
-    background: #999281;
-    color: #990000;
-    padding: 0.25em;
-    margin-bottom: 4px;
-}
-
-/* spacing */
-.baseListBox #search_facets h2 {
-    margin-bottom: 0;
-}
-.baseListBox #search_facets h2.baseListBoxTitle {
-    margin-bottom: 4px;
-}
-#search_facets .fragmentTitle {
-    margin-top: 4px;
-}
-
-.active-facet ul,
-.active-facet ul li {
-    padding:0;
-    margin:0;
-}
-
-#search_facets .active-facet li {
-    width: auto;
-    display: inline;
-    border-left: 1px solid #F1F1EB;
-    padding-left: 4px;
-    color: #F1F1EB;
-}
-
-#search_facets .active-facet li:first-child {
-    border-left: 0px none;
-    padding-left: 0;
-}
-
-.active-facet .facet-remove {
-    position: absolute;
-    top: 0.25em;
-    right: 0.25em;
-    text-indent: -3000px;
-    overflow: hidden;
-    background: transparent url(/images/close.png) top right no-repeat;
-    height: 16px;
-    width: 16px;
-}
-
 /* fbeier */
 
 #baseHeaderSearch {
@@ -125,6 +72,20 @@ span.hits {
 	height: 19px;
 }
 
+span.hits a {
+	display: block;
+	background: url(/images/suchpfeil.gif) top right no-repeat;
+	background-position: 103px 4px;
+	padding: 0 12px 0 0;
+	width: 108px;
+	height: 19px;
+	text-decoration: none;	
+}
+
+span.hits a:hover {
+	text-decoration: none;	
+}
+
 #searchReset {
 	position: absolute;
 	top: 34px;  
@@ -134,6 +95,10 @@ span.hits {
 #searchReset a {
 	color: #fff;
 	font-size: 85%;
+}
+
+#searchReset a:hover {
+	text-decoration: none;
 }
 
 #baseServices p {
