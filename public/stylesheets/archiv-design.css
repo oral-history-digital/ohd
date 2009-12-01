@@ -1,4 +1,7 @@
-/* @override http://10.211.55.3:3000/stylesheets/archiv-design.css?1259576339 */
+/* @override 
+	http://10.211.55.3:3000/stylesheets/archiv-design.css?1259576339
+	http://10.211.55.3:3000/stylesheets/archiv-design.css?1259668737
+*/
 
 /* Freie Universitaet Berlin
    Designvorgaben Version 1_3.1
@@ -628,15 +631,17 @@ body {
 #baseContainerRight {
 	float: left;
 	margin: 0;
-	padding: 0px 10px 0 10px;
+	/*padding: 0px 10px 0 10px;*/
+	padding: 0;
 	overflow: hidden;
-	width: 229px;
+	width: 249px;
 }
 
 .baseListBox {
 	line-height: 130%;
-	width: 219px;
-	margin: 10px 0 10px 0;
+	/*width: 219px;*/
+	/*margin: 10px 0 10px 0;*/
+	margin: 0;
 	padding: 0;
 	color: #666;
 	/* overflow: hidden; */ /* optional */

@@ -108,10 +108,16 @@ span.hits a:hover {
 
 .searchString {
     color: #840f09;
+    font-weight: bold;
 }
 
 #searchInput {
 	width: 200px;
+}
+
+.fragmentTitle {
+	border-bottom: 1px solid #f1f1eb;
+	padding: 5px 10px;
 }
 
 
