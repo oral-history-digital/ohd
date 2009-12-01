@@ -149,7 +149,76 @@
 
       <div id="baseContainerRight">
 
+        <% javascript_tag do %>
+          var checkedCategories = [];
+        <% end %>
+
         <%= render :partial => 'searches/facets', :object => @search %>
+
+        <% javascript_tag do %>
+
+          var categoryElems = $$('fieldset.facet-field');
+
+          var test = '';
+
+          // clearing the fulltext field before submission or editing
+          function clearFulltextField(id) {
+            var elem = $(id);
+            if(elem) {
+              if(elem.value == '<%= t('search_term') %>') {
+                elem.value = '';
+              }
+            }
+          }
+
+          // blind effect for category facets
+          var blindStatus = new Array(categoryElems.length);
+          function toggleCategory(id, blindToggle) {
+            var cat_index = -1;
+            for(var i=0; i< categoryElems.length; i++) {
+              if (id == categoryElems[i].id) {
+                  cat_index = i;
+              }
+            }
+            if(cat_index > -1) {
+              if(blindStatus[cat_index] != 1) {
+                // show
+                if(blindToggle) {
+                  Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+                  blindStatus[cat_index] = 1;
+                } else {
+                  Element.show(id);
+                }
+                Element.hide(id + '_closed');
+                Element.show(id + '_open');
+              } else {
+                // hide
+                if(blindToggle) {
+                  Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+                  blindStatus[cat_index] = 0;
+                } else {
+                  Element.hide(id);
+                }
+                Element.show(id + '_closed');
+                Element.hide(id + '_open');
+              }
+            }
+          };
+
+          function categoryState(id, state, checkbox) {
+              var input = $(id);
+              if(checkbox) {
+                  input.checked = state;
+              } else {
+                  input.value = '';
+              }
+          };
+
+          checkedCategories.each(function(id) {
+              categoryState(id, true);
+          });
+
+      <% end %>
 
       </div>
       <!-- Ende rechter Container -->

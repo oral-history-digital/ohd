@@ -2,6 +2,8 @@ class SearchesController < BaseController
 
   actions :new, :index
 
+  before_filter :remove_search_term_from_params
+
   new_action do
     before do
       @search.search!
@@ -36,6 +38,17 @@ class SearchesController < BaseController
     end
     wants.html do
       render :template => '/interviews/index.html'
+    end
+  end
+
+
+  private
+
+  # This method clears the default search field contents from the query
+  # on the server-side, in case this is missed by the JS client code.
+  def remove_search_term_from_params
+    unless object_params.blank? || object_params[:fulltext].blank?
+      object_params.delete(:fulltext) if object_params[:fulltext] == t('search_term')
     end
   end
   

@@ -27,7 +27,7 @@
       if is_category
         query.each do |category|
           next unless category.is_a?(Category)
-          page << "Element.remove('#{active_facet.singularize + '_' + category[:id].to_s}');"
+          page << "Element.remove('#{active_facet + '_' + category[:id].to_s}');"
         end
       else
         page << "Element.remove('#{active_facet.singularize}');";

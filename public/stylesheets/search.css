@@ -43,6 +43,12 @@
     width: 14px;
 }
 
+/* empty facets */
+#search_facets .fragmentTitle .disabled {
+    color: #9a9a9a;
+    cursor: default;
+}
+
 /* fbeier */
 
 #baseHeaderSearch {

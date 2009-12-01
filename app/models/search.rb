@@ -87,7 +87,7 @@ DEF
 
   # Returns an array of facets that are actively filtered on in the current query.
   def query_facets
-    @query_facets ||= query.select{|f| !f.is_a?(Array) || f.first != 'fulltext' }
+    @query_facets ||= query.select{|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym) }
   end
 
   # Returns an array of facets that are not specified in the current query.
@@ -141,7 +141,7 @@ DEF
     @search = Sunspot.search Interview do
 
       # fulltext search
-      keywords query_params['fulltext']
+      keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
 
       # category facets
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
