@@ -16,6 +16,7 @@
     <div class="fragmentTitle">
         <span class="searchString">Suchbegriff (Volltextsuche)</span>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben' %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil.gif' %>
     </div>
 
     <noscript>
@@ -71,7 +72,7 @@
 
         // blind effect for category facets
         var blindStatus = new Array(categoryElems.length);
-        function toggleCategory(id) {
+        function toggleCategory(id, blindToggle) {
           var cat_index = -1;
           for(var i=0; i< categoryElems.length; i++) {
             if (id == categoryElems[i].id) {
@@ -80,21 +81,31 @@
           }
           if(cat_index > -1) {
             if(blindStatus[cat_index] != 1) {
+              if(blindToggle) {
                 Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
                 blindStatus[cat_index] = 1;
+              } else {
+                Element.toggle(id);
+              }
             } else {
+              if(blindToggle) {
                 Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
                 blindStatus[cat_index] = 0;
+              } else {
+                Element.toggle(id);
+              }
             }
             Element.toggle(id + '_closed');
             Element.toggle(id + '_open');
           }
         };
 
-        function categoryState(id, state) {
-            var checkbox = $(id);
+        function categoryState(id, state, checkbox) {
+            var input = $(id);
             if(checkbox) {
-                checkbox.checked = state;
+                input.checked = state;
+            } else {
+                input.value = '';
             }
         };
 

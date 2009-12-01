@@ -21,6 +21,8 @@ DEF
   FORCED_LABOR_GROUPS = Category.forced_labor_groups
   FORCED_LABOR_FIELDS = Category.forced_labor_fields
   FORCED_LABOR_HABITATIONS = Category.forced_labor_habitations
+  LANGUAGES = Category.languages
+  COUNTRIES = Category.countries
 
   has_many :categorizations
 
@@ -29,6 +31,10 @@ DEF
 
   def to_s
     name
+  end
+
+  def self.is_category?(category_name)
+    !ARCHIVE_CATEGORIES.assoc(category_name.to_s.pluralize.underscore.to_sym).blank?
   end
 
 end
