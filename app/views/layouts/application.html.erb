@@ -159,8 +159,6 @@
 
           var categoryElems = $$('fieldset.facet-field');
 
-          var test = '';
-
           // clearing the fulltext field before submission or editing
           function clearFulltextField(id) {
             var elem = $(id);
@@ -214,8 +212,12 @@
               }
           };
 
+          function resetBlindStatus() {
+              blindStatus = new Array(categoryElems.length);
+          };
+
           checkedCategories.each(function(id) {
-              categoryState(id, true);
+              categoryState(id, true, true);
           });
 
       <% end %>
