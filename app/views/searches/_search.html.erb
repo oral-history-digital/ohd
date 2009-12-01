@@ -16,11 +16,14 @@
   <%# end %>
 
   <span class="hits">
+	<a href="#">
     <% if search.hits > 0 %>
       <%= search.hits %> Interviews<%= search.hits < Interview::NUMBER_OF_INTERVIEWS ? ' in der Auswahl' : ''%>
     <% else %>
       keine Interviews in der Auswahl
     <% end %>
+	<img id="searchButton" src="/images/suchpfeil.gif" title="" alt="" />
+	</a>
   </span>
 </div>
 
