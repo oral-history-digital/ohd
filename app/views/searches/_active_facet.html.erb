@@ -8,8 +8,9 @@
   <ul>
   <% if is_category %>
 
+    <% query = query.map{|c| c.to_i != 0 ? Category.find(c) : nil }.compact %>
+
     <% query.each do |category| %>
-        <% category = Category.find(category) if category.to_i != 0 %>
     <li><%= category %></li>
     <% end %>
 
@@ -25,8 +26,8 @@
       page[facet_dom_id].visual_effect :switch_off
       if is_category
         query.each do |category|
-          next if category.to_i == 0
-          page << "categoryState('#{active_facet.singularize + '_' + category.to_s}', false, true);"
+          next unless category.is_a?(Category)
+          page << "Element.remove('#{active_facet.singularize + '_' + category.to_s}');"
         end
       else
         page << "Element.remove('#{active_facet.singularize}');";
@@ -34,15 +35,15 @@
       page[:search_facets].request
   end %>
 
-  <% javascript_tag do %>
-    <% query.select{|c| c.to_i != 0}.each do |category| %>
-      checkedCategories.push('<%= active_facet.singularize + '_' + category.to_s %>');
-    <% end %>
-  <% end %>
-
   <fieldset style="display:none" id="<%= active_facet %>_query" class="facet-field">
 
     <% if is_category %>
+
+      <%# javascript_tag do %>
+        <%# query.select{|c| c.to_i != 0}.each do |category| %>
+          <%# checkedCategories.push('<%= active_facet.singularize + '_' + category.to_s %>'); %>
+        <%# end %>
+      <%# end %>
 
       <% query.each do |category| %>
         <%= hidden_field_tag "search[#{active_facet}][]", category[:id], { :id => "#{active_facet}_#{category[:id]}"} %>

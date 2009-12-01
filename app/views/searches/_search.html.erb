@@ -1,34 +1,18 @@
 <h2 class="info">Service-Funktionen</h2>
 <p>Suche in den Interviews</p>
 <div id="baseHeaderSearch">
-  <%# form_for search,
-                     :url => new_search_path,
-                     :method => :get,
-                     :html => { :action => searches_path,
-                                :method => :get,
-                                :name => "searchForm",
-                                :id => "search_form",
-                                :onsubmit => 'applyFacets();' } do |f| %>
-    <%#= f.text_field :fulltext, :title => "Suchbegriff bitte hier eingeben", :class => "baseInputSearch", :id => "searchInput" %>
-
-    <%#= f.submit 'Suchanfrage starten', :title => 'Suchanfrage starten', :class => 'buttonText', :src => "/images/suchpfeil_weiss.gif", :name => 'searchButton', :type => 'image' %>
-
-  <%# end %>
 
   <span class="hits">
-	<a href="#">
     <% if search.hits > 0 %>
-      <%= search.hits %> Interviews<%= search.hits < Interview::NUMBER_OF_INTERVIEWS ? '' : ''%>
+      <%= link_to search.hits.to_s + '&nbsp;Interviews' + image_tag('/images/suchpfeil.gif', :id => 'searchButton', :alt => 'zur Auswahl'), searches_path(@search.query_params.merge({ :method => :post })) %>
     <% else %>
-      keine Interviews
+      keine&nbsp;Interviews
     <% end %>
-	<!-- <img id="searchButton" src="/images/suchpfeil.gif" title="" alt="" /> -->
-	</a>
   </span>
 </div>
 
 <div id="searchReset">
-  <a href="<%= new_search_path %>">
+  <a href="<%= request.path %>">
     <span>zur&uuml;cksetzen</span>
     <img src="/images/suche_reset.gif" alt="" title="" />
   </a>

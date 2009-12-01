@@ -44,7 +44,11 @@ ATTR
     # This is the generated setter for accessing the
     # #{query_param} query conditions.
     def #{query_param}=(#{query_param}_query)
-      @#{query_param}=#{query_param}_query
+      if #{query_param}_query.blank?
+        @#{query_param}= nil
+      else
+        @#{query_param}=#{query_param}_query
+      end
     end
 
     def #{query_param}
@@ -122,12 +126,18 @@ DEF
     end
   end
 
-  # query Solr for matching interviews
-  def search!
+  # Returns the query params - this is needed for link generation from a given query, for instance.
+  def query_params
     query_params = {}
     Search.accessible_attributes.each do |query_param|
       query_params[query_param] = self.send(query_param)
     end
+    query_params
+  end
+
+  # query Solr for matching interviews
+  def search!
+    query_params = self.query_params
     @search = Sunspot.search Interview do
 
       # fulltext search
@@ -170,7 +180,6 @@ DEF
     else
       Search.new do |search|
         Search.accessible_attributes.each do |attr|
-          puts "Assigning #{attr}: #{(query_params[attr.to_s] || {}).inspect} blank? => #{query_params[attr.to_s].blank?}"
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
         end
       end

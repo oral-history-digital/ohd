@@ -1,8 +1,25 @@
 class SearchesController < BaseController
 
-  actions :new
+  actions :new, :create
 
   new_action do
+    before do
+      @search.search!
+    end
+    wants.js do
+      service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
+      search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
+      render :update do |page|
+        page.replace_html 'baseServices', service_html
+        page.replace_html 'baseContainerRight', search_facets_html
+      end
+    end
+    wants.html do
+      render :nothing => true
+    end
+  end
+
+  create do
     before do
       @search.search!
       @interviews = @search.results
