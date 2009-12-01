@@ -1,3 +1,5 @@
+/* @override http://10.211.55.3:3000/stylesheets/archiv-design.css?1259576339 */
+
 /* Freie Universitaet Berlin
    Designvorgaben Version 1_3.1
       
@@ -195,15 +197,7 @@ body {
 }
 
 #baseHeaderSearch{
-	position: absolute;
-	top: 34px;  
-	left: 10px; 
-	margin: 0;
-	padding: 0;
-	font-size: 95%;
-	color: #666;
-	width: 14em;
-	height: 1.6em;
+	/* definiert in search.css */
 }
 
 #baseHeaderSearch .baseInputSearch { /* input */
