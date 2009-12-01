@@ -10,8 +10,8 @@
 
     <% query = query.map{|c| c.to_i != 0 ? Category.find(c) : nil }.compact %>
 
-    <% query.each do |category| %>
-    <li><%= category %></li>
+    <% query.each_with_index do |category, index| %>
+    <li><%= (index == 0) ? '' : '/ '-%><%= category -%></li>
     <% end %>
 
   <% else %>
@@ -27,7 +27,7 @@
       if is_category
         query.each do |category|
           next unless category.is_a?(Category)
-          page << "Element.remove('#{active_facet.singularize + '_' + category.to_s}');"
+          page << "Element.remove('#{active_facet.singularize + '_' + category[:id].to_s}');"
         end
       else
         page << "Element.remove('#{active_facet.singularize}');";

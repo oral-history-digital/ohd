@@ -28,14 +28,7 @@
 #search_facets .active-facet li {
     width: auto;
     display: inline;
-    border-left: 1px solid #F1F1EB;
-    padding-left: 4px;
     color: #F1F1EB;
-}
-
-#search_facets .active-facet li:first-child {
-    border-left: 0px none;
-    padding-left: 0;
 }
 
 .active-facet .facet-remove {

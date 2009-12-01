@@ -15,7 +15,8 @@
 
     <div class="fragmentTitle">
         <span class="searchString">Volltextsuche</span>
-        <%= search_facets.text_field :fulltext, :value => 'Suchbegriff', :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
+        <% search_facets.object.fulltext ||= t('search_term') %>
+        <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
         <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil.gif' %>
     </div>
 
@@ -32,10 +33,6 @@
     <% facets.unqueried_facets.each do |facet| %>
     <%= render :partial => '/searches/facet_option', :object => facet, :locals => { :search_facets => search_facets, :category_facet => facets.send(facet.first).is_a?(Array)} %>
     <% end %>
-
-    <fieldset style="display:none">
-      <%= search_facets.hidden_field :fulltext, :id => 'search_facets_fulltext' %>
-    </fieldset>
 
   <% end %>
 

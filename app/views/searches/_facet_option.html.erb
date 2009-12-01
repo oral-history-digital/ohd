@@ -8,10 +8,10 @@
       <img title="" src="/images/pfeil_rot_rechts.gif" id="<%= facet_name %>_query_closed" alt="Pfeil rechts" />
       <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="<%= facet_name %>_query_open" alt="Pfeil unten" />
       <%= t facet_name.to_s.singularize %>
+      <%= search_facets.submit 'aktualisieren', :style => 'display: none;', :id => "#{facet_name}_submit" %>
     </h2>
     <fieldset style="display:none" id="<%= facet_name %>_query" class="facet-field">
       <% unless facet_entries.empty? %>
-        <% facet_selection = search_facets.object.send(facet_name.to_sym) || [] %>
 
         <% if category_facet %>
           <%# Category Facet %>
@@ -22,7 +22,7 @@
             <% category = f.first %>
 
             <li>
-                <%= check_box_tag "search[#{facet_name}][]", category[:id], facet_selection.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name } %>
+                <%= check_box_tag "search[#{facet_name}][]", category[:id], false, { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "Element.show('#{facet_name}_submit');" } %>
                 <span class="facet-name"><%= category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
