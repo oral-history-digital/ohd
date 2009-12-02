@@ -3,15 +3,15 @@ module ApplicationHelper
 
   # Formats attributes for display
   def format_value(value)
+    # when matching with Array class doesn't work
+    return value.map{|v| v.to_s }.join(', ') if value.is_a?(Array)
     case value
     when Timecode
       value.minimal
-    when Array
-      value.map{|v| v.to_s }.join(', ')
     when Hash
-      value.values.map{|v| v.to_s}.join(', ')
+      return value.values.map{|v| v.to_s}.join(', ')
     when Numeric
-      value.to_s.rjust(3, ' ')
+      return value.to_s.rjust(3, ' ')
     else
       value.to_s
     end

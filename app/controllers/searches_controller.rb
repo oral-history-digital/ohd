@@ -24,7 +24,9 @@ class SearchesController < BaseController
   index do
     before do
       @search.search!
+      #@search.segment_search!
       @interviews = @search.results
+
     end
     wants.js do
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })

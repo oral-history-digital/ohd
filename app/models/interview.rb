@@ -65,7 +65,16 @@ DEF
   end
 
   def video
-    read_attribute(:video) ? 'Videointerview' : 'Audiointerview'
+    read_attribute(:video) ? 'Video' : 'Audio'
+  end
+
+  # This is an enumeration of matched segments during a search
+  def matching_segments
+    @matching_segments ||= []
+  end
+
+  def add_matching_segment(segment)
+    @matching_segments << segment if segment.interview_id == self[:id]
   end
 
   # this should be handled by the view

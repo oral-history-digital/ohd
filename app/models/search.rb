@@ -175,6 +175,39 @@ DEF
     @search
   end
 
+
+  def segment_search!
+    fulltext = self.query_params['fulltext']
+
+    interview_ids = @results.map{|i| i.archive_id }
+    unless fulltext.blank? || interview_ids.empty?
+      subsearch = Sunspot.search Segment do
+
+        # keyword search on fulltext only
+        keywords fulltext.downcase
+
+        with(:archive_id).any_of interview_ids
+
+        adjust_solr_params do |params|
+          params.delete(:defType)
+        end
+      end
+
+      puts "\nSEGMENT SUBSEARCH: found #{subsearch.total} segments."
+
+      puts "SEGMENTS: #{subsearch.results.inspect}"
+
+      subsearch.results.each do |segment|
+        interview = @results.select{|i| i.id == segment.archive_id }.first
+        unless interview.nil?
+          interview.matching_segments
+          interview.add_matching_segment(segment)
+        end
+      end
+
+    end
+  end
+
   def self.from_params(query_params=nil)
     if query_params.blank?
       @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;

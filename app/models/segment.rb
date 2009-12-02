@@ -34,7 +34,11 @@ DEF
   end
 
   def archive_id
-    interview.archive_id
+    @archive_id || interview.archive_id
+  end
+
+  def archive_id=(code)
+    @archive_id = code
   end
 
   def language_id
