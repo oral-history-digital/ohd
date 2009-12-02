@@ -161,4 +161,8 @@ position: relative;
 	right: 8px;
 }
 
-
+.spinner_search {
+	position: absolute;
+	top: 60px;
+	left: 113px;
+}
