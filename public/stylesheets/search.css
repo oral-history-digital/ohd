@@ -155,5 +155,10 @@ left: 223px;
 position: relative;
 }
 
+.facet_refresh {
+	position: absolute;
+	top: 4px;
+	right: 8px;
+}
 
 
