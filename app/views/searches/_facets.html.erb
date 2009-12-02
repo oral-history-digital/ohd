@@ -5,7 +5,8 @@
                      :method => :get,
                      :html => { :action => new_search_path,
                                 :method => :get,
-                                :before => "clearFulltextField('searchInput');",
+                                :before => "clearFulltextField('searchInput');$('search_facets_overlay').show();$('search_header_overlay').show();",
+                                :complete => "$('search_header_overlay').hide();$('search_facets_overlay').hide();",
                                 :success => "resetBlindStatus();",
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |search_facets| %>

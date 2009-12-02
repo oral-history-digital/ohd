@@ -88,6 +88,8 @@
         <%= render :partial => 'searches/search', :object => @search %>
         
       </div>
+      <div id="search_header_overlay" class="overlay" style="display: none;"></div>
+
       <hr class="divider" />
     </div><!-- Ende headerIdentityWrapper -->
 
@@ -154,6 +156,8 @@
         <% end %>
 
         <%= render :partial => 'searches/facets', :object => @search %>
+
+        <div id="search_facets_overlay" class="overlay" style="display: none;"></div>
 
         <% javascript_tag do %>
 
