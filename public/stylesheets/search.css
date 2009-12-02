@@ -8,6 +8,32 @@
     margin-bottom: 4px;
 }
 
+/* overlays */
+.overlay {
+    opacity: 0.8;
+    background-color: #F1F1EB;
+}
+
+#search_header_overlay {
+    height:64px;
+    position:absolute;
+    right:0;
+    top:52px;
+    width:249px;
+}
+
+#search_facets_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#baseContainerRight {
+    position: relative;
+}
+
 /* spacing */
 .baseListBox #search_facets h2 {
     margin-bottom: 0;
