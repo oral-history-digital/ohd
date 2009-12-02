@@ -68,8 +68,9 @@ DEF
     read_attribute(:video) ? 'Videointerview' : 'Audiointerview'
   end
 
-  def translated
-    read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
-  end
+  # this should be handled by the view
+  # def translated
+  #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
+  # end
 
 end

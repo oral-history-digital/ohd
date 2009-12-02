@@ -130,7 +130,8 @@ DEF
   def query_params
     query_params = {}
     Search.accessible_attributes.each do |query_param|
-      query_params[query_param] = self.send(query_param)
+      query_value = self.send(query_param)
+      query_params[query_param] = query_value unless query_value.nil?
     end
     query_params
   end
