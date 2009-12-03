@@ -333,6 +333,12 @@ a.startGallery:hover, a.startGallery:active {
 	float: left;
 }
 
+.baseContainerTeaserText .label {
+    font-weight: bold;
+    font-size: 80%;
+    font-family: Arial, Helvetica, sans;
+}
+
 .baseContainerTeaserExcerpts {
     height: 160px;
 }

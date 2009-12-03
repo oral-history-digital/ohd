@@ -10,6 +10,16 @@ en:
   more: 'more'
   translated: 'übersetzt'
 
+  activerecord:
+
+    attributes:
+      interview:
+        person_name: 'Name'
+        forced_labor_groups: 'Group'
+        forced_labor_fields: 'Forced Labor Field'
+        forced_labor_habitations: 'Unterbringung / Inhaftierung'
+        countries: 'Wohnort (Land)'
+
   forced_labor_group: 'Gruppe'
   forced_labor_field: 'Einsatzbereich'
   forced_labor_habitation: 'Unterbringung / Inhaftierung'

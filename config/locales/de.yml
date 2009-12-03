@@ -17,6 +17,14 @@ de:
       one: 'Band'
       other: 'Bänder'
 
+    attributes:
+      interview:
+        person_name: 'Name'
+        forced_labor_groups: 'Gruppe'
+        forced_labor_fields: 'Einsatzbereich'
+        forced_labor_habitations: 'Unterbringung / Inhaftierung'
+        countries: 'Wohnort (Land)'
+
   forced_labor_group: 'Gruppe'
   forced_labor_field: 'Einsatzbereich'
   forced_labor_habitation: 'Unterbringung / Inhaftierung'
