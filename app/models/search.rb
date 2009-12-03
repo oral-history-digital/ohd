@@ -175,6 +175,18 @@ DEF
     @search
   end
 
+  def search_for_keyword(word)
+    Sunspot.search Interview do
+
+      keywords word.downcase
+
+      adjust_solr_params do |p|
+        p.delete(:defType)
+      end
+
+    end
+  end
+
 
   def segment_search!
     fulltext = self.query_params['fulltext']
@@ -198,7 +210,7 @@ DEF
       puts "SEGMENTS: #{subsearch.results.inspect}"
 
       subsearch.results.each do |segment|
-        interview = @results.select{|i| i.id == segment.archive_id }.first
+        interview = @results.select{|i| i.archive_id == segment.archive_id }.first
         unless interview.nil?
           interview.matching_segments
           interview.add_matching_segment(segment)

@@ -24,7 +24,7 @@ class SearchesController < BaseController
   index do
     before do
       @search.search!
-      #@search.segment_search!
+      @search.segment_search!
       @interviews = @search.results
 
     end

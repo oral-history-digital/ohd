@@ -27,8 +27,8 @@ DEF
   searchable :auto_index => false do
     string :archive_id, :stored => true
     string :media_id, :stored => true
-    text :full_title do
-      str = full_title
+    text :transcript, :boost => 10 do
+      str = ''
       segments.each do |segment|
         str << " " + segment.transcript
         str << " " + segment.translation
@@ -74,7 +74,9 @@ DEF
   end
 
   def add_matching_segment(segment)
-    @matching_segments << segment if segment.interview_id == self[:id]
+    if segment.interview_id == self[:id]
+      @matching_segments << segment
+    end
   end
 
   # this should be handled by the view

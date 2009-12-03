@@ -55,53 +55,101 @@ namespace :solr do
 
   end
 
-  desc "reindex the archive contents for Solr search"
-  task :reindex => :delete do
+  namespace :reindex do
 
-    # Interviews
-    BATCH=25
-    offset=0
-    total = Interview.count :all
+    desc "reindex the archive contents for Solr search"
+    task :all => :connect do
 
-    puts "\nReindexing #{total} interviews..."
+      Rake::Task['solr:reindex:interviews'].execute
 
-    while(offset<total)
+      Rake::Task['solr:reindex:segments'].execute
 
-      Interview.find(:all, :limit => "#{offset},#{BATCH}").each do |interview|
-        interview.index
-      end
+      puts "Reindexing complete."
 
-      STDOUT.printf '.'
-      STDOUT::flush
-
-      offset += BATCH
     end
 
-    Sunspot.commit
 
-    # Segments
-    offset=0
-    total = Segment.count :all
+    desc "reindex interviews"
+    task :interviews => :delete_interviews do
 
-    puts "\nReindexing #{total} segments..."
+      # Interviews
+      BATCH=25
+      offset=0
+      total = Interview.count :all
 
-    while(offset<total)
+      puts "\nReindexing #{total} interviews..."
 
-      Segment.find(:all, :limit => "#{offset},#{BATCH}").each do |segment|
-        segment.index
+      while(offset<total)
+
+        Interview.find(:all, :limit => "#{offset},#{BATCH}").each do |interview|
+          interview.index
+        end
+
+        STDOUT.printf '.'
+        STDOUT::flush
+
+        offset += BATCH
       end
 
-      STDOUT.printf '.'
-      STDOUT::flush
+      Sunspot.commit
 
-      offset += BATCH
+      puts
+
     end
 
-    Sunspot.commit
 
-    puts "\nReindexing complete."
+    desc "reindex segments"
+    task :segments => :delete_segments do
+
+      # Segments
+      offset=0
+      total = Segment.count :all
+
+      puts "\nReindexing #{total} segments..."
+
+      while(offset<total)
+
+        Segment.find(:all, :limit => "#{offset},#{BATCH}").each do |segment|
+          segment.index
+        end
+
+        STDOUT.printf '.'
+        STDOUT::flush
+
+        offset += BATCH
+      end
+
+      Sunspot.commit
+
+      puts
+
+    end
+
+    desc "delete the index for interviews"
+    task :delete_interviews => :connect do
+
+      puts "\nDeleting index for interviews..."
+
+      # clear the index
+      SOLR.delete_by_query 'type:Interview'
+
+      puts "done"
+
+    end
+
+
+    desc "delete the index for segments"
+    task :delete_segments => :connect do
+
+      puts "\nDeleting index for segments..."
+
+      # clear the index
+      SOLR.delete_by_query 'type:Segment'
+
+      puts "done"
+
+    end
 
   end
-
 
 end
