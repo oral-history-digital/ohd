@@ -24,4 +24,4 @@ In case of problems, there's a test rake task for starting up the Solr server wi
 <tt>rake solr:start</tt>
 
 When the Solr server is running, you can index the data:
-<tt>rake solr:reindex</tt>
+<tt>rake solr:reindex:all</tt>
