@@ -196,7 +196,9 @@ DEF
       subsearch = Sunspot.search Segment do
 
         # keyword search on fulltext only
-        keywords fulltext.downcase
+        keywords fulltext.downcase do
+          highlight :transcript, :translation
+        end
 
         with(:archive_id).any_of interview_ids
 
@@ -209,7 +211,9 @@ DEF
 
       puts "SEGMENTS: #{subsearch.results.inspect}"
 
-      subsearch.results.each do |segment|
+      subsearch.hits.each do |segment_result|
+        segment = segment_result.instance
+        puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
         interview = @results.select{|i| i.archive_id == segment.archive_id }.first
         unless interview.nil?
           interview.matching_segments

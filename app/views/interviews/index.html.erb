@@ -22,19 +22,32 @@
             </ul>
         </div>
       <% if @search.query_params.keys.include?('fulltext') %>
-      <div class="baseContainerTeaserExcerpts" style="clear: left;">
-        <h5><%= interview.matching_segments.size %> Ausschnitte</h5>
-        <ul>
-          <li class="current"><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-        </ul>
-        <div id="interview_<%= interview.archive_id %>_segment_1" class="segment">
-          Unsere Lagerleitung hatte angeblich Berlin angerufen, weil 
-          <span class="highlight" style="color:#990000">Auschwitz</span> überfüllt war, sie hätten uns nirgendwo mehr unterbringen können.
+      <div id="interview_<%= interview.archive_id %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
+        
+        <h5><%= interview.matching_segments.size == 0 ? 'keine' : interview.matching_segments.size %> Ausschnitte
+          <ul class="segment_pagination">
+            <% interview.matching_segments[0..8].each_with_index do |segment, index| %>
+              <li>
+                <%= link_to_function (index+1).to_s, "$$('#interview_#{interview.archive_id}_segments .segment').each(function(el){ el.removeClassName('visible'); }); $('#{segment.media_id}').addClassName('visible');" %>
+              </li>
+            <% end %>
+            <% if interview.matching_segments.size > 9 %>
+              <li>
+                <%= link_to t(:more), interview_path(interview) %>
+              </li>
+            <% end %>
+          </ul>
+        </h5>
+
+        <% interview.matching_segments[0..9].each_with_index do |segment, index| %>
+        <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? " visible" : '' %>"">
+          <span class="timecode"><%= segment.timecode %></span>
+          <span class="tape"> <%= Tape.human_name + ' ' + segment.tape.number.to_s %></span>
+          <p class="transcript">&ldquo;<%= segment.translation || segment.transcript || 'keine Transkription vorhanden.'  %>&rdquo;</p>
+          <%= link_to 'zum Interview-Ausschnitt', interview_path(interview) %>
         </div>
+        <% end %>
+
       </div>
     <% end %>
     </div>

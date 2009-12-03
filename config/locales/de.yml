@@ -8,8 +8,14 @@ de:
   faq: "Hilfe"
   previous: 'vor'
   next: 'nächste'
+  more: 'mehr'
   search_term: 'Suchbegriff'
   translated: 'übersetzt'
+
+  activerecord:
+    tape:
+      one: 'Band'
+      other: 'Bänder'
 
   forced_labor_group: 'Gruppe'
   forced_labor_field: 'Einsatzbereich'

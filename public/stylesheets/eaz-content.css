@@ -312,14 +312,14 @@ a.startGallery:hover, a.startGallery:active {
 }
 
 .baseContainerTeaser{
-	width: 240px;
+	width: 360px;
 	overflow: hidden;
 	float:left;
 }
 
 .baseContainerTeaserImage{
-	width: 100px;
-	height: 75px;
+	width: 150px;
+	height: 110px;
 	margin-right: 8px;
 	overflow: hidden;
 	float: left;
@@ -327,10 +327,19 @@ a.startGallery:hover, a.startGallery:active {
 }
 
 .baseContainerTeaserText{
-	width: 120px;
-	height: 110px;
+	width: 200px;
+	height: 120px;
 	overflow: hidden;
 	float: left;
+}
+
+.baseContainerTeaserExcerpts {
+    height: 160px;
+}
+
+.baseContainerTeaserExcerpts p,
+.baseContainerTeaserExcerpts a {
+    font-size: 90%;
 }
 
 .baseContainerTeaserText h3, .baseContainerTeaserText ul{

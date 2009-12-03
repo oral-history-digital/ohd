@@ -49,6 +49,20 @@ DEF
     interview.full_title
   end
 
+  def transcript
+    filter_annotation read_attribute(:transcript)
+  end
+
+  def translation
+    filter_annotation read_attribute(:translation)
+  end
+
+  private
+
+  # remove workflow comments
+  def filter_annotation(text)
+    text.gsub(/\{[^{}]+\}/,'')
+  end
 
 
 end

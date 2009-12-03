@@ -75,6 +75,35 @@
     cursor: default;
 }
 
+/* transcript excerpts and segment selection */
+.baseContainerTeaserExcerpts .segment {
+    display: none;
+}
+.baseContainerTeaserExcerpts .segment.visible {
+    display: block;
+}
+
+/* segment selection pagination */
+#innerContent .baseContainerTeaserExcerpts .segment_pagination {
+    float: right;
+    padding: 0;
+    margin: 0 8px 0 0;
+}
+
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li {
+    list-style-type: none;
+    background-image: none;
+    float: left;
+    clear: none;
+}
+
+.baseContainerTeaserExcerpts .segment .timecode,
+.baseContainerTeaserExcerpts .segment .tape
+{
+    font-weight: bold;
+    font-size: 80%;
+}
+
 /* fbeier */
 
 #baseHeaderSearch {
