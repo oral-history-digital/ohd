@@ -5,8 +5,7 @@
                      :method => :get,
                      :html => { :action => new_search_path,
                                 :method => :get,
-                                :before => "clearFulltextField('searchInput');$('search_facets_overlay').show();$('search_header_overlay').show();",
-                                :complete => "$('search_header_overlay').hide();$('search_facets_overlay').hide();",
+                                :complete => "afterResponse();",
                                 :success => "resetBlindStatus();",
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |search_facets| %>
@@ -15,7 +14,7 @@
         <span class="searchString">Volltextsuche</span>
         <% search_facets.object.fulltext ||= t('search_term') %>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil_rund.gif' %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil_rund.gif', :onclick => "submitViaAjax(); false;" %>
     </div>
 
     <noscript>
@@ -33,5 +32,7 @@
     <% end %>
 
   <% end %>
+
+  <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="/images/spinner.gif" title="" alt="" /></div>
 
 </div>

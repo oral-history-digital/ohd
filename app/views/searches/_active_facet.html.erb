@@ -32,7 +32,7 @@
       else
         page << "Element.remove('#{active_facet.singularize}');";
       end
-      page[:search_facets].request
+      page << "submitViaAjax();"
   end %>
 
   <fieldset style="display:none" id="<%= active_facet %>_query" class="facet-field">

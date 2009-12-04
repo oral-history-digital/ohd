@@ -15,11 +15,11 @@
 }
 
 #search_header_overlay {
-    height:64px;
-    position:absolute;
-    right:0;
-    top:52px;
-    width:249px;
+    height: 64px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 249px;
 }
 
 #search_facets_overlay {
@@ -27,7 +27,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 150%;
 }
 
 #baseContainerRight {

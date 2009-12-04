@@ -88,7 +88,6 @@
         <%= render :partial => 'searches/search', :object => @search %>
         
       </div>
-      <div id="search_header_overlay" class="overlay" style="display: none;"><!-- <img class="spinner_search" src="/images/spinner.gif" title="" alt="" /> --></div>
 
       <hr class="divider" />
     </div><!-- Ende headerIdentityWrapper -->
@@ -157,8 +156,6 @@
 
         <%= render :partial => 'searches/facets', :object => @search %>
 
-        <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="/images/spinner.gif" title="" alt="" /></div>
-
         <% javascript_tag do %>
 
           var categoryElems = $$('fieldset.facet-field');
@@ -223,6 +220,22 @@
           checkedCategories.each(function(id) {
               categoryState(id, true, true);
           });
+
+          function submitViaAjax(){
+            beforeSubmit();
+            Form.request('search_facets');
+          };
+
+          function beforeSubmit() {
+            clearFulltextField('searchInput');
+            $('search_facets_overlay').show();
+            $('search_header_overlay').show();
+          };
+
+          function afterResponse() {
+            $('search_header_overlay').hide();
+            $('search_facets_overlay').hide();
+          };
 
       <% end %>
 
