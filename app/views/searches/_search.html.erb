@@ -15,7 +15,7 @@
   <% if search.hits < Interview::NUMBER_OF_INTERVIEWS %>
     <%# reload the complete page if we are in the search result view %>
     <% reset_path = (request.path == searches_path) ? searches_path : new_search_path  %>
-    <%= link_to_remote(content_tag('span', 'zur&uuml;cksetzen') + image_tag('/images/suche_reset.gif'), { :url => reset_path, :method => :get }) %>
+    <%= link_to_remote(content_tag('span', 'zur&uuml;cksetzen') + image_tag('/images/suche_reset.gif'), { :url => reset_path, :method => :get, :onclick => "beforeSubmit();" }) %>
   <% end %>
 </div>
 

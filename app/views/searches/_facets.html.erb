@@ -1,9 +1,11 @@
 <div class="baseListBox">
 
+  <% form_action = @search_update_contents ? searches_path : new_search_path %>
+
   <% remote_form_for facets,
-                     :url => new_search_path,
+                     :url => form_action,
                      :method => :get,
-                     :html => { :action => new_search_path,
+                     :html => { :action => form_action,
                                 :method => :get,
                                 :complete => "afterResponse();",
                                 :success => "resetBlindStatus();",
