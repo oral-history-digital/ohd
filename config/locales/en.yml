@@ -9,6 +9,7 @@ en:
   search_term: 'search term'
   more: 'more'
   translated: 'übersetzt'
+  all: 'all'
 
   activerecord:
 

@@ -11,6 +11,7 @@ de:
   more: 'mehr'
   search_term: 'Suchbegriff'
   translated: 'übersetzt'
+  all: 'alle'
 
   activerecord:
     tape:
