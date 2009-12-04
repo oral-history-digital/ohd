@@ -7,6 +7,7 @@ class SearchesController < BaseController
   new_action do
     before do
       @search.search!
+      reinstate_category_state
     end
     wants.js do
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
@@ -24,6 +25,7 @@ class SearchesController < BaseController
   index do
     before do
       @search.search!
+      reinstate_category_state
       @search.segment_search!
       @interviews = @search.results
 
@@ -51,6 +53,27 @@ class SearchesController < BaseController
   def remove_search_term_from_params
     unless object_params.blank? || object_params[:fulltext].blank?
       object_params.delete(:fulltext) if object_params[:fulltext] == t('search_term')
+    end
+  end
+
+  # This method parses the reinstate[] parameter (array) to set the
+  # category settings on the current search (preferrably after conducting the search).
+  def reinstate_category_state
+    unless params[:reinstate].blank? || !params[:reinstate].is_a?(Array)
+
+      params[:reinstate].each do |category_param|
+
+        category = category_param.sub(/_\d+$/,'')
+        id = category_param[/\d+$/].to_i
+
+        if @search.respond_to?(category)
+
+          @search.send("#{category}=", (@search.send(category) || []) << id)
+
+        end
+
+      end
+
     end
   end
   

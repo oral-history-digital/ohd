@@ -69,6 +69,21 @@
     width: 14px;
 }
 
+/* facet toggle */
+.closed .fragmentTitle,
+.closed fieldset.facet-field,
+.closed.fragmentTitle .arrow-open {
+    display: none;
+}
+
+.open.fragmentTitle .arrow-open {
+    display: inline-block;
+}
+
+.open.fragmentTitle .arrow-closed {
+    display: none;
+}
+
 /* empty facets */
 #search_facets .fragmentTitle .disabled {
     color: #9a9a9a;

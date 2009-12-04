@@ -171,7 +171,6 @@
           }
 
           // blind effect for category facets
-          var blindStatus = new Array(categoryElems.length);
           function toggleCategory(id, blindToggle) {
             var cat_index = -1;
             for(var i=0; i< categoryElems.length; i++) {
@@ -180,26 +179,25 @@
               }
             }
             if(cat_index > -1) {
-              if(blindStatus[cat_index] != 1) {
+              var parent = $(id.sub(/_query$/,''));
+              if(parent.hasClassName('closed')) {
                 // show
                 if(blindToggle) {
                   Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
-                  blindStatus[cat_index] = 1;
                 } else {
                   Element.show(id);
                 }
-                Element.hide(id + '_closed');
-                Element.show(id + '_open');
+                parent.removeClassName('closed');
+                parent.addClassName('open');
               } else {
                 // hide
                 if(blindToggle) {
                   Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
-                  blindStatus[cat_index] = 0;
                 } else {
                   Element.hide(id);
                 }
-                Element.show(id + '_closed');
-                Element.hide(id + '_open');
+                parent.removeClassName('open');
+                parent.addClassName('closed');
               }
             }
           };
@@ -211,10 +209,6 @@
               } else {
                   input.value = '';
               }
-          };
-
-          function resetBlindStatus() {
-              blindStatus = new Array(categoryElems.length);
           };
 
           checkedCategories.each(function(id) {

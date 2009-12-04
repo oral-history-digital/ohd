@@ -3,7 +3,7 @@
 <% category_facet = Category.is_category?(facet_name) %>
 <% fulltext_list = !category_facet && (facet_entries.size < 13) %>
 
-  <div class="fragmentTitle">
+  <div id="<%= facet_name %>"class="fragmentTitle <%= (search_facets.object.send(facet_name) || []).empty? ? 'closed' : 'open'%>">
 
     <% if category_facet && facet_entries.empty? %>
 
@@ -15,15 +15,17 @@
     <% else %>
 
     <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || fulltext_list %>);" class="<%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
-      <img title="" src="/images/pfeil_rot_rechts.gif" id="<%= facet_name %>_query_closed" alt="Pfeil rechts" />
-      <img title="" style="display:none" src="/images/pfeil_rot_unten.gif" id="<%= facet_name %>_query_open" alt="Pfeil unten" />
+      <img title="" src="/images/pfeil_rot_rechts.gif" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="Pfeil rechts" />
+      <img title="" src="/images/pfeil_rot_unten.gif" id="<%= facet_name %>_query_open" class="arrow-open" alt="Pfeil unten" />
       <%= t facet_name.to_s.singularize %>
       <%= search_facets.submit 'aktualisieren', :style => 'display: none;', :type => 'image', :src => '/images/refresh.gif', :class => 'facet_refresh', :id => "#{facet_name}_submit", :onclick => "submitViaAjax();false;" %>
     </h2>
-    <fieldset style="display:none" id="<%= facet_name %>_query" class="facet-field">
+    <fieldset style="<%= (search_facets.object.send(facet_name) || []).empty? ? 'display: none;' : ''%>" id="<%= facet_name %>_query" class="facet-field">
 
         <% if category_facet %>
           <%# Category Facet %>
+
+          <% current_categories = search_facets.object.send(facet_name) || [] %>
 
         <ul>
           <% facet_entries.each do |f| %>
@@ -31,8 +33,8 @@
             <% category = f.first %>
 
             <li>
-                <%= check_box_tag "search[#{facet_name}][]", category[:id], false, { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "Element.show('#{facet_name}_submit');" } %>
-                <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;" ><%= category.name %></span>
+                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "Element.show('#{facet_name}_submit');" } %>
+                <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;Element.show('<%=  "#{facet_name}_submit" %>');" ><%= category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
                 <% end %>

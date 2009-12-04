@@ -28,6 +28,7 @@
         query.each do |category|
           next unless category.is_a?(Category)
           page << "Element.remove('#{active_facet + '_' + category[:id].to_s}');"
+          page << "$('search_facets').insert(new Element('input', { type: 'hidden', name: 'reinstate[]', value: '#{active_facet + '_' + category[:id].to_s}' }));"
         end
       else
         page << "Element.remove('#{active_facet.singularize}');";
@@ -54,5 +55,6 @@
       <%= hidden_field_tag "search[#{active_facet}]", query, :id => "#{active_facet.singularize}" %>
     
     <% end %>
+
   </fieldset>
 </div>
