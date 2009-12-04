@@ -73,7 +73,7 @@ namespace :solr do
     task :interviews => :delete_interviews do
 
       # Interviews
-      BATCH=25
+      batch=25
       offset=0
       total = Interview.count :all
 
@@ -81,14 +81,14 @@ namespace :solr do
 
       while(offset<total)
 
-        Interview.find(:all, :limit => "#{offset},#{BATCH}").each do |interview|
+        Interview.find(:all, :limit => "#{offset},#{batch}").each do |interview|
           interview.index
         end
 
         STDOUT.printf '.'
         STDOUT::flush
 
-        offset += BATCH
+        offset += batch
       end
 
       Sunspot.commit
@@ -102,6 +102,7 @@ namespace :solr do
     task :segments => :delete_segments do
 
       # Segments
+      batch=25
       offset=0
       total = Segment.count :all
 
@@ -109,14 +110,14 @@ namespace :solr do
 
       while(offset<total)
 
-        Segment.find(:all, :limit => "#{offset},#{BATCH}").each do |segment|
+        Segment.find(:all, :limit => "#{offset},#{batch}").each do |segment|
           segment.index
         end
 
         STDOUT.printf '.'
         STDOUT::flush
 
-        offset += BATCH
+        offset += batch
       end
 
       Sunspot.commit
