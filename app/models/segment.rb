@@ -22,11 +22,11 @@ DEF
   searchable :auto_index => false do
     string :archive_id, :stored => true
     string :media_id, :stored => true
-    text :transcript, :translation
+    text :transcript, :translation, :stored => true
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
-    string :person_name, :using => :full_title, :stored => true
+    string :person_name, :using => :full_title, :stored => false
   end
 
   def interview_id
