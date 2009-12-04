@@ -6,7 +6,7 @@
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
       <%= link_to t(:all) + '&nbsp;Interviews', searches_path(:search => @search.query_params) %>
     <% elsif search.hits > 0 %>
-      <%= link_to search.hits.to_s + '&nbsp;Interviews', searches_path(:search => @search.query_params) %>
+      <%= link_to pluralize(search.hits, Interview.human_name), searches_path(:search => @search.query_params) %>
     <% else %>
       keine&nbsp;Interviews
     <% end %>

@@ -12,6 +12,12 @@ en:
   all: 'all'
 
   activerecord:
+    interview:
+      one: 'Interview'
+      other: 'Interviews'
+    tape:
+      one: 'Tape'
+      other: 'Tapes'
 
     attributes:
       interview:
