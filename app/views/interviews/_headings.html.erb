@@ -1,3 +1,32 @@
-<div id="containerHeadings" style="display: none;">
-  Für dieses Interview sind keine Überschriften vorhanden.
+<div id="containerHeadings" style="height: 300px; overflow-y: scroll; overflow-x: hidden; display: none;">
+  <% if @interview.has_headings %>
+    <ul>
+      <li id="heading_0_15">
+        Einleitung
+      </li>
+      <li id="heading_0_40">
+        <a href="javascript:$('subheadings_for_0_40').toggle();$('0_40_opened').toggleClassName('invisible');$('0_40_closed').toggleClassName('invisible');"><img id="0_40_opened" src="/images/pfeil_rot_rechts.gif" /><img id="0_40_closed" src="/images/pfeil_rot_unten.gif" class="invisible" /></a>
+        Frühe Kindheit
+        <ul id="subheadings_for_0_40">
+          <li id="heading_0_58">Geburtsort</li>
+          <li id="heading_0_156">Schulzeit</li>
+          <li id="heading_0_481">Freizeitaktivitäten</li>
+        </ul>
+      </li>
+      <li id="heading_1_31">
+        <a href="javascript:$('subheadings_for_1_31').toggle();$('1_31_opened').toggleClassName('invisible');$('1_31_closed').toggleClassName('invisible');"><img id="1_31_opened" src="/images/pfeil_rot_rechts.gif" /><img id="1_31_closed" src="/images/pfeil_rot_unten.gif" class="invisible" /></a>
+        Ausbildung
+        <ul id="subheadings_for_1_31">
+          <li id="heading_1_66">
+            Lehre
+          </li>
+          <li id="heading_1_487">
+            Studium
+          </li>
+        </ul>
+      </li>
+    </ul>
+  <% else %>
+    Für dieses Interview sind keine Überschriften vorhanden.
+  <% end %>
 </div>

@@ -79,3 +79,20 @@ div.captions_original span.caption_original { display: inline-block; }
 div.captions_original span.caption_translation { display: none; }
 div.captions_translation span.caption_original { display: none; }
 div.captions_translation span.caption_translation { display: inline-block; }
+
+#containerHeadings ul {
+  list-style-type: none;
+}
+
+#containerHeadings ul li {
+  margin-left: 20px;
+  text-indent: -20px;
+}
+
+#containerHeadings img.invisible {
+  display: none;
+}
+
+#containerHeadings li.marked_heading {
+  font-weight: bold;
+}

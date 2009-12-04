@@ -79,6 +79,10 @@ DEF
     end
   end
 
+  def has_headings
+    tapes.count > 0 ? true : false
+  end
+
   # this should be handled by the view
   # def translated
   #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'

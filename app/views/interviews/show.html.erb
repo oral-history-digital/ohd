@@ -16,7 +16,7 @@
       <li id="tabBiography" class="active">
         <p onclick="Element.show('containerBiography'); Element.hide('containerHeadings'); Element.addClassName('tabBiography', 'active'); Element.removeClassName('tabHeadings', 'active');">Biografie</p>
       </li>
-      <li id="tabHeadings">
+      <li id="tabHeadings"<%= @interview.has_headings ? "" : " style=\"display: none;\"" %>>
         <p onclick="Element.show('containerHeadings'); Element.addClassName('tabHeadings', 'active'); Element.hide('containerBiography'); Element.removeClassName('tabBiography', 'active');">Überschriften</p>
       </li>
     </ul>
