@@ -1,8 +1,46 @@
 <div id="containerHeadings" style="height: 300px; overflow-y: scroll; overflow-x: hidden; display: none;">
   <% if @interview.has_headings %>
+    <% last_heading_id = "" %>
+    <% main_open = list_open = false %>
+    <ul class="mainheadings">
     <% @interview.headings.each do |heading| %>
-      <div id="heading_<%= heading.tape_id.to_s + "_" + heading.timecode %>" class="<%= heading.mainheading ? "mainheading" : "subheading" %>"><a href="#"><%= heading.title %></a></div>
+      <% heading_item = (heading.tape.number-1).to_s %>
+      <% heading_pos = Timecode.new(heading.segment.timecode).time.to_i.to_s %>
+      <% heading_id = "heading_" + heading_item + "_" + heading_pos %>
+      <% heading_main = heading.mainheading %>
+
+      <% if main_open and !list_open and !heading_main %>
+        <ul id="<%= "subheadings_for_#{heading_id}" %>" class="subheadings">
+        <% list_open = true %>
+      <% end %>
+
+      <% if list_open and heading_main %>
+        </ul>
+        <% list_open = false %>
+      <% end %>
+
+      <% if main_open and heading_main %>
+        </li>
+        <% main_open = false %>
+      <% end %>
+
+      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>" style="font-weight: normal;"><a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);"><%= heading.title %></a>
+
+      <% if heading_main %>
+        <% main_open = true %>
+      <% else %>
+        </li>
+      <% end %>
+
+      <% last_heading_id = heading_id %>
     <% end %>
+    <% if list_open %>
+      </ul>
+    <% end %>
+    <% if main_open %>
+      </li>
+    <% end %>
+    </ul>
   <% else %>
     Für dieses Interview sind keine Überschriften vorhanden.
   <% end %>
