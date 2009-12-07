@@ -2,6 +2,9 @@ class SearchesController < BaseController
 
   actions :new, :index
 
+  skip_before_filter :current_query_params
+  skip_before_filter :init_search
+
   before_filter :remove_search_term_from_params
 
   new_action do
@@ -28,6 +31,8 @@ class SearchesController < BaseController
       reinstate_category_state
       @search.segment_search!
       @interviews = @search.results
+
+      session[:query] = @search.query_params
 
     end
     wants.js do

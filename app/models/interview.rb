@@ -30,7 +30,6 @@ DEF
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
-    string :media_id, :stored => true
     text :transcript, :boost => 10 do
       str = ''
       segments.each do |segment|

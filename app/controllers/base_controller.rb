@@ -7,7 +7,11 @@ class BaseController < ResourceController::Base
 
   before_filter :set_locale
 
+  before_filter :current_query_params
+
   before_filter :current_search
+
+  before_filter :init_search
 
   before_filter :set_search_update_mode
 
@@ -20,9 +24,15 @@ class BaseController < ResourceController::Base
   end
 
   def current_search
-    query = params[:search]
-    query[:page] = params[:page] unless query.nil? || params[:page].nil?
+    puts "\n\n@@@@ CURRENT_SEARCH\n@query_params = #{@query_params.inspect}"
+    query = @query_params || params[:search]
+    query[:page] = params[:page] unless query.nil? || !query[:page].nil? || params[:page].nil?
     @search = Search.from_params(query)
+  end
+
+  def init_search
+    @search.search!
+    @search.segment_search! if model_name == 'interview'
   end
 
   # Determine the search update mode: will only the search form be changed,
@@ -33,6 +43,12 @@ class BaseController < ResourceController::Base
     else
       @search_update_contents = false
     end
+  end
+
+  # This retrieves the query params of the current search from the session.
+  # It's important to deactivate this in all contexts that perform a new search.
+  def current_query_params
+    @query_params = session[:query] || {}
   end
   
 end
