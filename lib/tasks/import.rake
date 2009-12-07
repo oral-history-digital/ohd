@@ -107,7 +107,7 @@ namespace :import do
 
   end
 
-  desc "Import von Sgementen"
+  desc "Import von Segmenten"
   task :segments, [ :file ] => :environment do |task, args|
     csv_file = args[:file] || ENV['file']
     raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
@@ -137,6 +137,54 @@ namespace :import do
       end
 
       
+
+    end
+
+  end
+
+  desc "Import von Interview-Überschriften für einzelne Tapes"
+  task :headings, [ :file ] => :environment do |task, args|
+    file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if file.nil?
+    puts "csv file = #{file}"
+    require 'fastercsv'
+
+    filename = file.split('/').last
+
+    tape_media_id = filename.gsub(/.csv$/, '')
+
+    puts "#{tape_media_id}"
+
+    tape = Tape.find(:first, :conditions => {:media_id => tape_media_id})
+
+    unless tape == nil
+
+      FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+
+        unless row.field("Hauptüberschrift") == nil and row.field("Zwischenüberschrift") == nil
+          timecode = row.field("Timecode")
+          segment = Segment.find(:first, :conditions => "media_id LIKE '#{tape_media_id}%' AND timecode = '#{timecode}'")
+          unless segment == nil
+            puts "#{segment.media_id}"
+            heading = Heading.create  :tape_id => tape.id,
+                                      :media_id => segment.media_id,
+                                      :timecode => row.field("Timecode")
+
+
+            if row.field("Hauptüberschrift") == nil
+              heading.mainheading = false
+              heading.title = row.field("Zwischenüberschrift")
+            else
+              heading.mainheading = true
+              heading.title = row.field("Hauptüberschrift")
+            end
+
+            heading.save!
+
+          end
+        end
+
+      end
 
     end
 

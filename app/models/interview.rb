@@ -9,6 +9,10 @@ class Interview < ActiveRecord::Base
   has_many  :segments,
             :through => :tapes
 
+  has_many  :headings,
+            :through => :tapes,
+            :order => "media_id ASC"
+
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
     self.class_eval <<DEF
@@ -80,7 +84,7 @@ DEF
   end
 
   def has_headings
-    tapes.count > 0 ? true : false
+    headings.count > 0 ? true : false
   end
 
   # this should be handled by the view
