@@ -49,10 +49,10 @@ class Timecode
 
   # yields the time in seconds from a timecode
   def self.parse_timecode(time)
-    duration_in_secs =  time[/\d{2}$/].to_f / 25
-    duration_in_secs += time[/\d{2}(\.|,)\d{2}$/][/^\d{2}/].to_f
-    duration_in_secs += time[/^\d{2}:\d{2}/][/\d{2}$/].to_f * 60
-    duration_in_secs += time[/^\d{2}/].to_f * 3600
+    duration_in_secs =  (time[/\d{2}$/] || '').to_f / 25
+    duration_in_secs += ((time[/\d{2}(\.|,)\d{2}$/] || '')[/^\d{2}/]).to_f
+    duration_in_secs += ((time[/^\d{2}:\d{2}/] || '')[/\d{2}$/]).to_f * 60
+    duration_in_secs += (time[/^\d{2}/] || '').to_f * 3600
   end
 
   # yields the formatted timecode from a duration in secs

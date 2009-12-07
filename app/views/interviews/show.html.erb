@@ -14,11 +14,34 @@
 
     <ul>
       <li id="tabBiography" class="active">
-        <p onclick="Element.show('containerBiography'); Element.hide('containerHeadings'); Element.addClassName('tabBiography', 'active'); Element.removeClassName('tabHeadings', 'active');">Biografie</p>
+        <p onclick="showInterviewTab('tabBiography');">Biografie</p>
       </li>
       <li id="tabHeadings"<%= @interview.has_headings ? "" : " style=\"display: none;\"" %>>
-        <p onclick="Element.show('containerHeadings'); Element.addClassName('tabHeadings', 'active'); Element.hide('containerBiography'); Element.removeClassName('tabBiography', 'active');">Überschriften</p>
+        <p onclick="showInterviewTab('tabHeadings');">Überschriften</p>
       </li>
+      <%# if @search.results.include?(@interview) && !@interview.matching_segments.empty? %>
+      <li id="tabSegments"<%#= !@interview.matching_segments.empty? ? "" : " style=\"display: none;\"" %>>
+        <p onclick="showInterviewTab('tabSegments');">Ausschnitte</p>
+      </li>
+      <%# end %>
+      <% javascript_tag do %>
+
+        var interviewTabs = $$('#tabsOverview ul li');
+
+        function showInterviewTab(id) {
+          interviewTabs.each(function(tab) {
+            var container = $(tab.id.sub('tab','container'));
+            if(tab.id == id) {
+              tab.addClassName('active');
+              container.show();
+            } else {
+              tab.removeClassName('active');
+              container.hide();
+            }
+          });
+        };
+
+      <% end %>
     </ul>
 
   </div>
@@ -28,6 +51,8 @@
   <%= render :partial => "biography" %>
 
   <%= render :partial => "headings" %>
+
+  <%= render :partial => "segments" %>
 
 </div>
 

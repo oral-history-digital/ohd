@@ -41,6 +41,14 @@ DEF
     @archive_id = code
   end
 
+  def media_id=(id)
+    write_attribute :media_id, id.upcase
+  end
+
+  def media_id
+    (read_attribute(:media_id) || '').upcase
+  end
+
   def language_id
     interview.language_id
   end

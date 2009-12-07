@@ -88,22 +88,36 @@ namespace :import do
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 
+    tape_ids = []
+    previous_interview = 0
+
     FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
 
       interview = Interview.find_by_archive_id row.field('Media-ID')[/^ZA\d{3}/i].downcase
 
+      next if interview.nil?
+
+      if interview.id != previous_interview
+        puts "#{tape_ids.join(', ')}" unless tape_ids.empty?
+        tape_ids = []
+        previous_interview = interview.id
+      end
+
       unless interview == nil
-        tape = Tape.find_by_media_id row.field('Media-ID')
+        tape = Tape.find_by_media_id row.field('Media-ID').upcase
         tape ||= Tape.create :media_id => row.field('Media-ID')
         tape.interview_id = interview.id
         tape.media_id = row.field('Media-ID')
+        tape.duration = Timecode.new(row.field('Duration') || '').time
         tape.save!
+
+        tape_ids << tape.media_id
 
       end
 
-      puts "#{interview.archive_id}" unless interview == nil
-
     end
+
+    puts "#{tape_ids.join(', ')}" unless tape_ids.empty?
 
   end
 
@@ -155,7 +169,7 @@ namespace :import do
 
     puts "#{tape_media_id}"
 
-    tape = Tape.find(:first, :conditions => {:media_id => tape_media_id})
+    tape = Tape.find(:first, :conditions => { :media_id => tape_media_id.upcase })
 
     unless tape == nil
 

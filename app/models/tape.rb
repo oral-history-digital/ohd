@@ -11,4 +11,12 @@ class Tape < ActiveRecord::Base
     @number ||= interview.tapes.index(self) + 1
   end
 
+  def media_id=(id)
+    write_attribute :media_id, id.upcase
+  end
+
+  def media_id
+    (read_attribute(:media_id) || '').upcase
+  end
+
 end
