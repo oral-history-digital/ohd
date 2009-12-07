@@ -2,6 +2,8 @@ class Segment < ActiveRecord::Base
 
   belongs_to :tape
 
+  has_one :heading
+
   delegate  :interview,
             :to => :tape
 

@@ -10,8 +10,8 @@ class Interview < ActiveRecord::Base
             :through => :tapes
 
   has_many  :headings,
-            :through => :tapes,
-            :order => "media_id ASC"
+             :through => :tapes,
+             :order => "media_id ASC"
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
