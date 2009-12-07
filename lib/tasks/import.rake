@@ -164,11 +164,13 @@ namespace :import do
         unless row.field("Hauptüberschrift") == nil and row.field("Zwischenüberschrift") == nil
           timecode = row.field("Timecode")
           segment = Segment.find(:first, :conditions => "media_id LIKE '#{tape_media_id}%' AND timecode = '#{timecode}'")
+
+
           unless segment == nil
-            puts "#{segment.media_id}"
-            heading = Heading.create  :tape_id => tape.id,
-                                      :media_id => segment.media_id,
-                                      :timecode => row.field("Timecode")
+            heading = Heading.find(:first, :conditions => { :tape_id => tape.id, :media_id => segment.media_id})
+            heading ||= Heading.create  :tape_id => tape.id, :media_id => segment.media_id
+
+            heading.update_attributes :timecode => row.field("Timecode")
 
 
             if row.field("Hauptüberschrift") == nil
@@ -180,6 +182,7 @@ namespace :import do
             end
 
             heading.save!
+            puts "#{heading.media_id}"
 
           end
         end
