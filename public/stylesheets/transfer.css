@@ -80,13 +80,13 @@ div.captions_original span.caption_translation { display: none; }
 div.captions_translation span.caption_original { display: none; }
 div.captions_translation span.caption_translation { display: inline-block; }
 
-#containerHeadings div.mainheading {
-  
+#containerHeadings li.mainheading {
+  font-style: normal;
 }
 
-#containerHeadings div.subheading {
+#containerHeadings li.subheading {
   margin-left: 20px;
-  font-size: 75%;
+  font-style: normal;
 }
 
 #containerHeadings img.invisible {
