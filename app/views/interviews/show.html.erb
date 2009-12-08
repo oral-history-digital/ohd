@@ -9,17 +9,17 @@
   <div id="tabsOverview">
 
     <ul>
-      <li id="tabBiography" class="active">
+      <li id="tabBiography" class="<%= @interview.has_headings ? '' : 'active' %>">
         <p onclick="showInterviewTab('tabBiography');">Biografie</p>
       </li>
-      <li id="tabHeadings"<%= @interview.has_headings ? "" : " style=\"display: none;\"" %>>
+      <li id="tabHeadings"<%= @interview.has_headings ? " class='active'" : " style=\"display: none;\"" %>>
         <p onclick="showInterviewTab('tabHeadings');">Überschriften</p>
       </li>
-      <%# if @search.results.include?(@interview) && !@interview.matching_segments.empty? %>
-      <li id="tabSegments"<%#= !@interview.matching_segments.empty? ? "" : " style=\"display: none;\"" %>>
+      <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
+      <li id="tabSegments"<%= !@search.matching_segments_for(@interview.archive_id).empty? ? "" : " style=\"display: none;\"" %>>
         <p onclick="showInterviewTab('tabSegments');">Ausschnitte</p>
       </li>
-      <%# end %>
+      <% end %>
       <% javascript_tag do %>
 
         var interviewTabs = $$('#tabsOverview ul li');
@@ -48,7 +48,9 @@
 
   <%= render :partial => "headings" %>
 
+  <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
   <%= render :partial => "segments" %>
+  <% end %>
 
   <div class="contentGallery">
   
