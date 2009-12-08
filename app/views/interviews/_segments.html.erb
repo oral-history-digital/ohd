@@ -1,7 +1,9 @@
 <div id="containerSegments" style="height: 300px; overflow-y: scroll; overflow-x: hidden; display: none;">
   <% matching_segments = @search.matching_segments_for(@interview.archive_id) %>
   <% if matching_segments.empty? %>
-  <ul>
+    Für dieses Interview sind keine Treffer-Ausschnitte vorhanden.
+  <% else %>
+    <ul>
     <% matching_segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
         <a href="#">
@@ -11,7 +13,5 @@
       </li>
     <% end %>
   </ul>
-  <% else %>
-    Für dieses Interview sind keine Treffer-Ausschnitte vorhanden.
   <% end %>
 </div>
