@@ -47,7 +47,7 @@
         <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? " visible" : '' %>">
           <span class="timecode"><%= segment.timecode %></span>
           <span class="tape"> <%= Tape.human_name + ' ' + segment.tape.number.to_s %></span>
-          <p class="transcript">&ldquo;<%= segment.translation || segment.transcript || 'keine Transkription vorhanden.'  %>&rdquo;</p>
+          <p class="transcript">&ldquo;<%= truncate(segment.translation || segment.transcript || 'keine Transkription vorhanden.', :length => 300)  %>&rdquo;</p>
           <%= link_to 'zum Interview-Ausschnitt', interview_path(interview) %>
         </div>
         <% end %>
