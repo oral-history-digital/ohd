@@ -104,6 +104,11 @@ div.captions_translation span.caption_translation { display: inline-block; }
   display: none;
 }
 
-#containerHeadings li.marked_heading {
+#containerHeadings li.current {
   font-weight: bold;
 }
+
+#containerHeading li.current li {
+  font-weight: normal;
+}
+

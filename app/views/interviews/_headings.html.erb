@@ -24,7 +24,7 @@
         <% main_open = false %>
       <% end %>
 
-      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>" style="font-weight: normal;"><a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);"><%= heading.title %></a>
+      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>"><a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);"><%= heading.title %></a>
 
       <% if heading_main %>
         <% main_open = true %>
