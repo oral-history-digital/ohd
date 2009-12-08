@@ -22,9 +22,13 @@ namespace :solr do
 
     rescue Errno::ECONNREFUSED #not responding
       Dir.chdir(solr_path) do
-        pid = fork do
-          #STDERR.close
-          exec "java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
+        if RUBY_PLATFORM.include?('mswin32')
+          exec "start #{'"'}solr_#{ENV['RAILS_ENV']}_#{solr_port}#{'"'} /min java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
+        else
+          pid = fork do
+            #STDERR.close
+            exec "java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
+          end
         end
         sleep(5)
         File.open("#{log_dir}/#{ENV['RAILS_ENV']}_pid", "w"){ |f| f << pid}
