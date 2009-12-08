@@ -7,13 +7,11 @@
 	<ul>
     <% if @interview.video %>
       <li id="tabHigh" class="active">
-        <p onclick="Element.show('containerHigh'); Element.hide('containerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
+        <p onclick="current_player = players['player_high']; Element.show('containerHigh'); Element.hide('containerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
 			</li>
-      <!--
 			<li id="tabLow">
-        <p onclick="Element.show('containerLow'); Element.addClassName('tabLow', 'active'); Element.hide('containerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
+        <p onclick="current_player = players['player_low'];Element.show('containerLow'); Element.addClassName('tabLow', 'active'); Element.hide('containerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
 			</li>
-      -->
     <% else %>
       <li id="tabAudio" class="active"><p>Audio</p></li>
     <% end %>
@@ -37,13 +35,13 @@
       </div>
     </div>
 
-    <div id="captions" class="captions_original" style="height: 100px;"><%= render :partial => "transcript" %></div>
+    <div id="captions" class="captions_original"><%= render :partial => "transcript" %></div>
     
-    <table style="width: 401px; height: 28px; margin-top: 0; margin-left: 1px;" cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0">
       <tr>
-        <td style="font-size: 8pt; padding: 2px;"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
-        <td style="text-align: right; padding: 2px;">
-                Band: <select id="player_high_item" name="player_high_item" style="font-size: 8pt;" onChange="current_player.changeItem(this.value);">
+        <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
+        <td class="itemselection">
+                Band: <select id="player_high_item" name="player_high_item" onChange="current_player.changeItem(this.value);">
             <% @interview.tapes.count.times do |item| %>
               <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
             <% end %>
@@ -52,9 +50,9 @@
       </tr>
     </table>
 
-    <div id="language_select" style="padding: 2px; height: 20px; font-size: 8pt;">
-      <div style="float: left;"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
-      <div><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+    <div id="language_select">
+      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
+      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
     </div>
 
     <script type="text/javascript">
@@ -74,9 +72,7 @@
     </script>
 	</div>
 
-  <!--
-
-  <div id="containerLow" class="containerVideo" style="display:none">
+  <div id="containerLow" class="containerVideo" style="display: none;">
     <div class="playerContainer">
       <div id="mediaspace_low" class="player">
         <h4>Der Medien-Player konnte nicht geladen werden!</h4>
@@ -89,19 +85,42 @@
       </div>
     </div>
 
+    <div id="captions" class="captions_original"><%= render :partial => "transcript" %></div>
+
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
+        <td class="itemselection">
+                Band: <select id="player_low_item" name="player_low_item" onChange="current_player.changeItem(this.value);">
+            <% @interview.tapes.count.times do |item| %>
+              <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
+            <% end %>
+                </select>
+        </td>
+      </tr>
+    </table>
+
+    <div id="language_select">
+      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
+      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+    </div>
+
     <script type="text/javascript">
-      /* <![CDATA[ */
-        var s1 = new SWFObject('http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/player.swf','player_low','400','414','9');
-        s1.addParam('allowfullscreen','true');
-        s1.addParam('allowscriptaccess','always');
-        s1.addParam('wmode','opaque');
-        s1.addParam('flashvars','file=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/archiv/bosnien/za046/low/index.xml&streamer=rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv&link=http://www.zwangsarbeit-archiv.de&skin=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/stylish.swf&backcolor=990000&frontcolor=999999&lightcolor=ffffff&playlist=bottom&stretching=none&repeat=list&playlistsize=80');
-        s1.write('mediaspace_low');
-      /* ]]> */
+
+      new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
+        jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
+        captions_plugin_file:     '/jw_player/lib/captions-10',
+        skin:                     '/jw_player/skins/zwar.swf',
+        backcolor:                '990000',
+        frontcolor:               '999999',
+        lightcolor:               'ffffff',
+        player_id:                'player_low',
+        content_id:               'mediaspace_low',
+        call_position:            'markHeading(current_player.item, current_player.position);'
+      });
+
     </script>
 	</div>
-
-  -->
 
 <% else %>
 
@@ -129,3 +148,5 @@
 <!-- /noindex -->
 
 </div>
+
+<%= javascript_tag "current_player = players['player_high'];" %>
