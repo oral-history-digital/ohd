@@ -57,6 +57,10 @@ DEF
     "[#{tape.number}] #{read_attribute(:timecode)}"
   end
 
+  def raw_timecode
+    read_attribute :timecode
+  end
+
   def language_id
     interview.language_id
   end

@@ -5,7 +5,7 @@
 
       <% @tape.segments.each do |segment| %>
 
-        <%= "<p begin='#{segment.timecode}'><span class='caption_original'>#{segment.transcript}</span><span class='caption_translation'>#{segment.translation}</span></p>" %>
+        <%= "<p begin='#{segment.raw_timecode}'><span class='caption_original'>#{segment.transcript}</span><span class='caption_translation'>#{segment.translation}</span></p>" %>
 
       <% end %>
     </div>
