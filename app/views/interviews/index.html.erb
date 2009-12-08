@@ -26,13 +26,13 @@
         </div>
       <% if @search.query_params.keys.include?('fulltext') %>
       <% matching_segments = @search.matching_segments_for(interview.archive_id) %>
-      <div id="interview_<%= interview.archive_id %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
+      <div id="interview_<%= interview.archive_id.upcase %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
         
         <h5><%= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %>
           <ul class="segment_pagination">
             <% matching_segments[0..8].each_with_index do |segment, index| %>
-              <li>
-                <%= link_to_function (index+1).to_s, "$$('#interview_#{interview.archive_id}_segments .segment').each(function(el){ el.removeClassName('visible'); }); $('#{segment.media_id}').addClassName('visible');" %>
+              <li id="<%= segment.media_id %>_link" <%= index == 0 ? " class='current'" : '' %>>
+                <%= link_to_function (index+1).to_s, "showSegment('#{interview.archive_id.upcase}','#{segment.media_id}')" %>
               </li>
             <% end %>
             <% if matching_segments.size > 9 %>
@@ -60,6 +60,19 @@
 
   <% if defined?(@search) && !@search.hits.blank? %>
   <%= will_paginate @interviews %>
+  <% end %>
+
+  <% javascript_tag do %>
+    function showSegment(archiveID, mediaID) {
+      $$('#interview_' + archiveID + '_segments .segment').each(function(el){
+        el.removeClassName('visible');
+      });
+      $$('#interview_' + archiveID + '_segments .segment_pagination li').each(function(el) {
+        el.removeClassName('current');
+      });
+      $(mediaID).addClassName('visible');
+      $(mediaID + '_link').addClassName('current');
+    };
   <% end %>
 
 </div>

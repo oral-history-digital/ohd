@@ -13,6 +13,14 @@
 # The search query is run against Solr by calling the
 # Search#search! method. This instantiates all the
 # result-based variables (hits, results, facets).
+#
+#
+# The Search#segment_search! method runs a subsearch
+# for fulltext matching in segments, and populates the
+# matching_segments accordingly.
+#
+# Segment#matching_segments_for maps the matching segments per
+# archive_id.
 
 class Search < ActiveRecord::Base
 

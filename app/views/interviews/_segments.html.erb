@@ -1,7 +1,8 @@
 <div id="containerSegments" style="height: 300px; overflow-y: scroll; overflow-x: hidden; display: none;">
-  <% if !@interview.matching_segments.empty? %>
+  <% matching_segments = @search.matching_segments_for(@interview.archive_id) %>
+  <% if matching_segments.empty? %>
   <ul>
-    <% @interview.matching_segments.each do |segment| %>
+    <% matching_segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
         <a href="#">
           <span class="timecode">[<%= Tape.human_name.sub(/^([^AEIOU]{1})(\w+)([^aeiou]{1})[aeiou]*$/, '\1\3') + ".#{segment.tape.number}" %>] <%= segment.timecode %></span>
