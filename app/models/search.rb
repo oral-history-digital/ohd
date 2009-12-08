@@ -170,11 +170,13 @@ DEF
     @query = query_params.select{|k,v| !v.nil? }
     @query_facets = nil
     @facets = nil
+    @segments = {}
     @results = @search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
 
+  # this is for test purposes only
   def search_for_keyword(word)
     Sunspot.search Interview do
 
@@ -188,7 +190,15 @@ DEF
   end
 
 
+  def matching_segments_for(archive_id)
+    @segments[archive_id.upcase] || []
+  end
+
+
+  # Performs a sub-search for matching segments on the facetted search
+  # result set.
   def segment_search!
+    @segments = {}
     fulltext = self.query_params['fulltext']
 
     interview_ids = @results.map{|i| i.archive_id }
@@ -202,6 +212,10 @@ DEF
 
         with(:archive_id).any_of interview_ids
 
+        paginate :page => 1, :per_page => 120
+
+        order_by :timecode, :asc
+
         adjust_solr_params do |params|
           params.delete(:defType)
         end
@@ -209,16 +223,25 @@ DEF
 
       puts "\nSEGMENT SUBSEARCH: found #{subsearch.total} segments."
 
-      puts "SEGMENTS: #{subsearch.results.inspect}"
+      # iterate over results, not subsearch!
 
-      subsearch.hits.each do |segment_result|
-        segment = segment_result.instance
-        puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
-        interview = @results.select{|i| i.archive_id == segment.archive_id }.first
-        unless interview.nil?
-          interview.matching_segments
-          interview.add_matching_segment(segment)
+      @results.each do |interview|
+
+
+        subsearch.hits.select{|h| h.instance.archive_id == interview.archive_id }.each do |segment_result|
+
+          segment = segment_result.instance
+          puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
+
+           if @segments[interview.archive_id.upcase].is_a?(Array)
+             @segments[interview.archive_id.upcase] << segment
+           else
+             @segments[interview.archive_id.upcase] = [ segment ]
+           end
+
         end
+
+
       end
 
     end

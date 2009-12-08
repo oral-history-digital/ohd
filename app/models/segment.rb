@@ -25,6 +25,7 @@ DEF
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :heading, :stored => true
+    string :timecode
     text :transcript, :translation, :stored => true
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
@@ -50,6 +51,10 @@ DEF
 
   def media_id
     (read_attribute(:media_id) || '').upcase
+  end
+
+  def timecode
+    "[#{tape.number}] #{read_attribute(:timecode)}"
   end
 
   def language_id

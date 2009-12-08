@@ -71,20 +71,6 @@ DEF
     read_attribute(:video) ? 'Video' : 'Audio'
   end
 
-  # This is an enumeration of matched segments during a search
-  def matching_segments
-    unless @matching_segments.nil?
-      @matching_segments.sort!{|a,b| a.tape.number == b.tape.number ? a.timecode <=> b.timecode : a.tape.number <=> b.tape.number }
-    end
-    @matching_segments ||= []
-  end
-
-  def add_matching_segment(segment)
-    if segment.interview_id == self[:id]
-      @matching_segments << segment
-    end
-  end
-
   def has_headings
     headings.count > 0 ? true : false
   end

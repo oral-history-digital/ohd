@@ -25,16 +25,17 @@
             </ul>
         </div>
       <% if @search.query_params.keys.include?('fulltext') %>
+      <% matching_segments = @search.matching_segments_for(interview.archive_id) %>
       <div id="interview_<%= interview.archive_id %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
         
-        <h5><%= interview.matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(interview.matching_segments.size, 'Ausschnitt', 'Ausschnitte') %>
+        <h5><%= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %>
           <ul class="segment_pagination">
-            <% interview.matching_segments[0..8].each_with_index do |segment, index| %>
+            <% matching_segments[0..8].each_with_index do |segment, index| %>
               <li>
                 <%= link_to_function (index+1).to_s, "$$('#interview_#{interview.archive_id}_segments .segment').each(function(el){ el.removeClassName('visible'); }); $('#{segment.media_id}').addClassName('visible');" %>
               </li>
             <% end %>
-            <% if interview.matching_segments.size > 9 %>
+            <% if matching_segments.size > 9 %>
               <li>
                 <%= link_to t(:more), interview_path(interview) %>
               </li>
@@ -42,7 +43,7 @@
           </ul>
         </h5>
 
-        <% interview.matching_segments[0..9].each_with_index do |segment, index| %>
+        <% matching_segments[0..9].each_with_index do |segment, index| %>
         <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? " visible" : '' %>">
           <span class="timecode"><%= segment.timecode %></span>
           <span class="tape"> <%= Tape.human_name + ' ' + segment.tape.number.to_s %></span>
