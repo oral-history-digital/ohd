@@ -7,10 +7,10 @@
 	<ul>
     <% if @interview.video %>
       <li id="tabHigh" class="active">
-        <p onclick="current_player = players['player_high']; Element.show('containerHigh'); Element.hide('containerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
+        <p onclick="current_player = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
 			</li>
 			<li id="tabLow">
-        <p onclick="current_player = players['player_low'];Element.show('containerLow'); Element.addClassName('tabLow', 'active'); Element.hide('containerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
+        <p onclick="current_player = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
 			</li>
     <% else %>
       <li id="tabAudio" class="active"><p>Audio</p></li>
@@ -23,8 +23,21 @@
 <% if @interview.video %>
   
   <div id="containerHigh" class="containerVideo">
-    <div class="playerContainer">
+    
+    <div id="playerHigh" class="playerContainer">
       <div id="mediaspace_high" class="player">
+        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
+        <noscript>
+          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
+        </noscript>
+        <script type="text/javascript">
+          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
+        </script>
+      </div>
+    </div>
+
+    <div id="playerLow" class="playerContainer" style="display: none;">
+      <div id="mediaspace_low" class="player">
         <h4>Der Medien-Player konnte nicht geladen werden!</h4>
         <noscript>
           <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
@@ -41,11 +54,12 @@
       <tr>
         <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
         <td class="itemselection">
-                Band: <select id="player_high_item" name="player_high_item" onChange="players['player_high'].changeItem(this.value);">
-            <% @interview.tapes.count.times do |item| %>
-              <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
-            <% end %>
-                </select>
+          Band:
+          <select id="player_item" name="player_item" onChange="current_player.changeItem(this.value);">
+          <% @interview.tapes.count.times do |item| %>
+            <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
+          <% end %>
+          </select>
         </td>
       </tr>
     </table>
@@ -66,48 +80,11 @@
         lightcolor:               'ffffff',
         player_id:                'player_high',
         content_id:               'mediaspace_high',
+        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
         call_position:            'markHeading(current_player.item, current_player.position);',
         start_item:               <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         start_position:           <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
-      
-    </script>
-	</div>
-
-  <div id="containerLow" class="containerVideo" style="display: none;">
-    <div class="playerContainer">
-      <div id="mediaspace_low" class="player">
-        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
-        <noscript>
-          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
-        </noscript>
-        <script type="text/javascript">
-          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
-        </script>
-      </div>
-    </div>
-
-    <div id="captions" class="captions_original"><%= render :partial => "transcript" %></div>
-
-    <table cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
-        <td class="itemselection">
-                Band: <select id="player_low_item" name="player_low_item" onChange="players['player_low'].changeItem(this.value);">
-            <% @interview.tapes.count.times do |item| %>
-              <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
-            <% end %>
-                </select>
-        </td>
-      </tr>
-    </table>
-
-    <div id="language_select">
-      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
-      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
-    </div>
-
-    <script type="text/javascript">
 
       var player_low = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
         jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
@@ -118,6 +95,7 @@
         lightcolor:               'ffffff',
         player_id:                'player_low',
         content_id:               'mediaspace_low',
+        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
         call_position:            'markHeading(current_player.item, current_player.position);'
       });
 
