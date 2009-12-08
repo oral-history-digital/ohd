@@ -136,8 +136,18 @@ h5 {
 
 /*  End Expand */
 
+.intervieweeTitle {
+	width: 100%;
+	margin: 15px 0;
+}
+
 
 /* Styling Tabs */
+
+#tabsVideo ul {
+	margin: 0;
+	padding: 0;
+}
 
 #tabsVideo ul li {
 	border: 1px solid #ac3131;
@@ -191,15 +201,59 @@ h5 {
 .containerVideo table {
 	background: #d8d7d0;
 	border-top: 1px solid #b2afa1;
+	margin: 0;
+	width: 400px;
+}
+
+.containerVideo table td {
+	padding: 5px 10px;
+	color: #666;
+}
+
+.containerVideo table td b {
+	color: #666;
+}
+
+.containerVideo table td.itemselection {
+	text-align: right;	
 }
 
 #language_select {
-	background: #d8d7d0;	
+	background: #d8d7d0;
+	padding: 0 10px 7px 10px;
+	color: #666;
+}
+
+#language_select .captions_orig {
+	float: left;	
+	margin-right: 10px;
 }
 
 /* End Tabs */
 
+/* Segments Container */
+
+#containerSegments {
+	background: #fff;
+	padding: 10px;
+	height: 485px;
+}
+
+/* Headings Container */
+
+#containerHeadings {
+	background: #fff;
+	padding: 10px;
+	height: 485px;
+}
+
 /* Biographie Container */
+
+#containerBiography {
+	background: #fff;
+	padding: 10px;
+	height: 485px;
+}
 
 #fragmentBiography {
 	float: left;

@@ -2,7 +2,7 @@
 	float: left;
 	width: 280px;
 	padding: 0 10px 0 10px;
-	margin: -22px 0 0 0;
+	margin: 0;
 }
 
 #fragmentOverview h1{
@@ -28,9 +28,19 @@
 	margin-top: 0px;
 }
 
+#tabsOverview {
+	width: 280px;
+	margin: 0;
+	padding: 0;
+}
+
+#tabsOverview ul {
+	margin: 0;
+	padding: 0;	
+}
+
 #tabsOverview ul li {
 	border: 1px solid #ac3131;
-	width: 40%;
 	padding:0 0 0 10px;
 	height: 22px;
 	float: left;
@@ -66,6 +76,18 @@
 
 #tabsOverview  p {
 	color: #999;
+}
+
+#tabBiography {
+	width: 81px;	
+}
+
+#tabHeadings {
+	width: 81px;	
+}
+
+#tabSegments {
+	width: 81px;	
 }
 
 #captions {
@@ -104,11 +126,6 @@ div.captions_translation span.caption_translation { display: inline-block; }
   display: none;
 }
 
-#containerHeadings li.current {
+#containerHeadings li.marked_heading {
   font-weight: bold;
 }
-
-#containerHeading li.current li {
-  font-weight: normal;
-}
-
