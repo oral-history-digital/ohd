@@ -48,7 +48,7 @@
           <span class="timecode"><%= segment.timecode %></span>
           <span class="tape"> <%= Tape.human_name + ' ' + segment.tape.number.to_s %></span>
           <p class="transcript">&ldquo;<%= truncate(segment.translation || segment.transcript || 'keine Transkription vorhanden.', :length => 300)  %>&rdquo;</p>
-          <%= link_to 'zum Interview-Ausschnitt', interview_path(interview) %>
+          <%= link_to 'zum Interview-Ausschnitt', interview_path(interview), :params => { :item => segment.tape.number.id, :position => Timecode.new(segment.timecode).time.to_i} %>
         </div>
         <% end %>
 
