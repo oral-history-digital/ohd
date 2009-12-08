@@ -462,49 +462,6 @@ auch fuer Bildergalerie
 	margin:4px 0 4px 0;
 }
 
-/* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
-
-.contentGallery{ 
-	display: block; 
-	width: 97%;
-	clear: both;
-	margin: 16px 0;
-	padding: 12px 12px 6px 12px;
-	background: #f4f4f4;
-}
-
-.contentGallery .contentGalleryThumbnail { 
-	float: left;
-	height: 100px;
-	overflow: hidden;
-	margin: 0 12px 6px 0;
-	border: 1px solid #fff;
-	display: block;
-}
-
-.contentGallery h6 {	
-	margin: 6px 12px 6px 0;	
-}
-
-a.startGallery:link, a.startGallery:visited {
-	color: #999;
-	font-size: 90%;
-	clear: both;
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
-a.startGallery:hover, a.startGallery:active {
-	text-decoration: none;
-	color: #999;
-	font-size: 90%;
-	clear: both;
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
 /* Formatierungen fuer Galerie-Miniaturansicht: Bilder mit 100px Breite */
 .GalleryThumbnail { 
 	float: left;
