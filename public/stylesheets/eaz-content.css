@@ -182,10 +182,19 @@ h5 {
 .containerVideo {
 	clear:both;
 	padding: 0px;
-	border: 1px solid #8b0f09;
+	/*border: 1px solid #8b0f09;*/
 	width:400px;
 	float: left;
 	margin-right: 10px;
+}
+
+.containerVideo table {
+	background: #d8d7d0;
+	border-top: 1px solid #b2afa1;
+}
+
+#language_select {
+	background: #d8d7d0;	
 }
 
 /* End Tabs */

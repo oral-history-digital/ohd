@@ -69,10 +69,21 @@
 }
 
 #captions {
-  background-color: #e4e4da;
-  border-bottom: solid 1px #ac3131;
-  padding: 6px;
-  text-align: justify;
+  background-color: #fff;
+  padding: 10px;
+  text-align: left;
+  overflow: scroll;
+  overflow-x: hidden;
+  /*overflow-y: visible;*/
+}
+
+#captions {
+  background-color: #fff;
+  padding: 10px;
+  text-align: left;
+  overflow: scroll;
+  overflow-x: hidden;
+  /*overflow-y: visible;*/
 }
 
 div.captions_original span.caption_original { display: inline-block; }
