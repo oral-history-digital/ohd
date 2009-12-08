@@ -73,6 +73,9 @@ DEF
 
   # This is an enumeration of matched segments during a search
   def matching_segments
+    unless @matching_segments.nil?
+      @matching_segments.sort!{|a,b| a.tape.number == b.tape.number ? a.timecode <=> b.timecode : a.tape.number <=> b.tape.number }
+    end
     @matching_segments ||= []
   end
 

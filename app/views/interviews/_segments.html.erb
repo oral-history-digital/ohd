@@ -4,7 +4,7 @@
     <% @interview.matching_segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
         <a href="#">
-          <span class="timecode"><%= segment.timecode %></span>
+          <span class="timecode">[<%= Tape.human_name.sub(/^([^AEIOU]{1})(\w+)([^aeiou]{1})[aeiou]*$/, '\1\3') + ".#{segment.tape.number}" %>] <%= segment.timecode %></span>
           <%= segment.translation %>
         </a>
       </li>
