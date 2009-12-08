@@ -1,15 +1,11 @@
+<div class="intervieweeTitle">
+  <h1><%= @interview.full_title %></h1>
+  <p><%= @interview.gender ? 'männlich' : 'weiblich' %>, geb. <%= @interview.date_of_birth %> in <%= @interview.country_of_origin %></p>
+</div>
+
 <%= render :partial => "mediaplayer" %>
 
 <div id="fragmentOverview">
-  <h1><%= @interview.full_title %></h1>
-  <table class="archivTableBiography">
-    <tr>
-      <td align="left" valign="top">
-        <%= @interview.gender ? 'männlich' : 'weiblich' %>, geb. <%= @interview.date_of_birth %> in <%= @interview.country_of_origin %>
-      </td>
-    </tr>
-  </table>
-
   <div id="tabsOverview">
 
     <ul>
@@ -55,7 +51,6 @@
   <%= render :partial => "segments" %>
 
 </div>
-
 <div class="clear">&nbsp;</div>
 
 <div class="contentGallery" style="clear: none; width: 260px; height: 99px; margin: 0 0 0 25px;">

@@ -41,7 +41,7 @@
       <tr>
         <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
         <td class="itemselection">
-                Band: <select id="player_high_item" name="player_high_item" onChange="current_player.changeItem(this.value);">
+                Band: <select id="player_high_item" name="player_high_item" onChange="players['player_high'].changeItem(this.value);">
             <% @interview.tapes.count.times do |item| %>
               <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
             <% end %>
@@ -57,7 +57,7 @@
 
     <script type="text/javascript">
 
-      new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
+      var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
         jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
         captions_plugin_file:     '/jw_player/lib/captions-10',
         skin:                     '/jw_player/skins/zwar.swf',
@@ -66,7 +66,9 @@
         lightcolor:               'ffffff',
         player_id:                'player_high',
         content_id:               'mediaspace_high',
-        call_position:            'markHeading(current_player.item, current_player.position);'
+        call_position:            'markHeading(current_player.item, current_player.position);',
+        start_item:               <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
+        start_position:           <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
       
     </script>
@@ -91,7 +93,7 @@
       <tr>
         <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
         <td class="itemselection">
-                Band: <select id="player_low_item" name="player_low_item" onChange="current_player.changeItem(this.value);">
+                Band: <select id="player_low_item" name="player_low_item" onChange="players['player_low'].changeItem(this.value);">
             <% @interview.tapes.count.times do |item| %>
               <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
             <% end %>
@@ -107,7 +109,7 @@
 
     <script type="text/javascript">
 
-      new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
+      var player_low = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
         jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
         captions_plugin_file:     '/jw_player/lib/captions-10',
         skin:                     '/jw_player/skins/zwar.swf',
@@ -148,5 +150,3 @@
 <!-- /noindex -->
 
 </div>
-
-<%= javascript_tag "current_player = players['player_high'];" %>
