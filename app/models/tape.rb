@@ -2,7 +2,9 @@ class Tape < ActiveRecord::Base
 
   belongs_to :interview
           
-  has_many  :segments
+  has_many  :segments,
+              :order => 'media_id ASC'
+
   has_many :headings
 
   validates_uniqueness_of :media_id
