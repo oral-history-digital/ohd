@@ -30,7 +30,7 @@ module ApplicationHelper
       transcript_parts = original_transcript.strip.scan(scan_regexp)
       translation_parts = original_translation.strip.scan(scan_regexp)
 
-      # split by word if there are no
+      # split by word if there are no punctuation stops
       if transcript_parts.size < 2 || translation_parts.size < 2
         transcript_parts = original_transcript.strip.scan(/\S+/)
         translation_parts = original_translation.strip.scan(/\S+/)
