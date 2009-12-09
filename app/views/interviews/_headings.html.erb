@@ -5,7 +5,7 @@
     <% main_open = list_open = false %>
     <% chapter = 1 %>
     <% section = 1 %>
-    <ul class="mainheadings">
+    <span id="headings_begin"></span><ul class="mainheadings">
     <% @interview.headings.each do |heading| %>
       <% heading_item = (heading.tape.number-1).to_s %>
       <% heading_pos = Timecode.new(heading.segment.timecode).time.to_i.to_s %>
