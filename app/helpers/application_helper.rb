@@ -17,7 +17,7 @@ module ApplicationHelper
     end
   end
 
-  # Possibly splits segment transcripts into smaller parts.
+  # Conditionally splits segment transcripts into smaller parts.
   # This method returns an array of the format [ transcript, translation ], both
   # parts may be broken down into another 2-element array if the segment is split,
   # or just contain the original strings when no splitting takes place.

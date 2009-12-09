@@ -162,6 +162,8 @@
 
           var categoryElems = $$('fieldset.facet-field');
 
+          var categoryChange = false;
+
           // clearing the fulltext field before submission or editing
           function clearFulltextField(id) {
             var elem = $(id);
@@ -183,6 +185,7 @@
             if(cat_index > -1) {
               var parent = $(id.sub(/_query$/,''));
               if(parent.hasClassName('closed')) {
+                checkFormSubmission(parent.id);
                 // show
                 if(blindToggle) {
                   Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
@@ -194,14 +197,30 @@
               } else {
                 // hide
                 if(blindToggle) {
-                  Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+                  Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal, afterFinish: markClosed(parent) });
                 } else {
                   Element.hide(id);
+                  markClosed(parent);
                 }
-                parent.removeClassName('open');
-                parent.addClassName('closed');
               }
             }
+          };
+
+          // check for form submission
+          function checkFormSubmission(openCategory) {
+            if(categoryChange) {
+              if(openCategory) {
+                $('open_category').value = openCategory;
+              }
+              submitViaAjax();
+            }
+          };
+
+          // closing happens after the blind effect finishes...
+          function markClosed(elem) {
+            elem.removeClassName('open');
+            elem.addClassName('closed');
+            checkFormSubmission(false);
           };
 
           function categoryState(id, state, checkbox) {
@@ -223,6 +242,7 @@
           };
 
           function beforeSubmit() {
+            categoryChange = false;
             clearFulltextField('searchInput');
             $('search_facets_overlay').show();
             $('search_header_overlay').show();

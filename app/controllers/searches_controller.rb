@@ -11,8 +11,10 @@ class SearchesController < BaseController
     before do
       @search.search!
       reinstate_category_state
+      @search.open_category = params['search']['open_category'] unless params['search'].blank?
     end
     wants.js do
+      puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
       render :update do |page|
@@ -30,12 +32,14 @@ class SearchesController < BaseController
       @search.search!
       reinstate_category_state
       @search.segment_search!
+      @search.open_category = params['search']['open_category'] unless params['search'].blank?
       @interviews = @search.results
 
       session[:query] = @search.query_params
 
     end
     wants.js do
+      puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })

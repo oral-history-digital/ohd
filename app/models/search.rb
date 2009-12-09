@@ -37,8 +37,15 @@ class Search < ActiveRecord::Base
                       :countries
   ]
 
+  # This contains a list of accessible attributes that are not
+  # considered query params and will not be kept in a stored search.
+  NON_QUERY_ACCESSIBLES = [
+                      :open_category
+  ]
+
   class_eval <<ATTR
     attr_accessible :#{(FACET_FIELDS \
+                            + NON_QUERY_ACCESSIBLES \
                             + [
                                 :fulltext,
                                 :page
@@ -137,7 +144,7 @@ DEF
   # Returns the query params - this is needed for link generation from a given query, for instance.
   def query_params
     query_params = {}
-    Search.accessible_attributes.each do |query_param|
+    (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |query_param|
       query_value = self.send(query_param)
       query_params[query_param] = query_value unless query_value.nil?
     end
@@ -255,12 +262,13 @@ DEF
     end
   end
 
+
   def self.from_params(query_params=nil)
     if query_params.blank?
       @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
     else
       Search.new do |search|
-        Search.accessible_attributes.each do |attr|
+        (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |attr|
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
         end
       end

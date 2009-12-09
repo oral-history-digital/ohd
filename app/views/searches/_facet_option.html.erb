@@ -2,8 +2,9 @@
 <% facet_entries = facet_option.last %>
 <% category_facet = Category.is_category?(facet_name) %>
 <% fulltext_list = !category_facet && (facet_entries.size < 13) %>
+<% facet_closed = (search_facets.object.send(facet_name) || []).empty? && search_facets.object.open_category != facet_name %>
 
-  <div id="<%= facet_name %>"class="fragmentTitle <%= (search_facets.object.send(facet_name) || []).empty? ? 'closed' : 'open'%>">
+  <div id="<%= facet_name %>"class="fragmentTitle <%= facet_closed ? 'closed' : 'open'%>">
 
     <% if category_facet && facet_entries.empty? %>
 
@@ -20,7 +21,7 @@
       <%= t facet_name.to_s.singularize %>
       <%= search_facets.submit 'aktualisieren', :style => 'display: none;', :type => 'image', :src => '/images/refresh.gif', :class => 'facet_refresh', :id => "#{facet_name}_submit", :onclick => "submitViaAjax();false;" %>
     </h2>
-    <fieldset style="<%= (search_facets.object.send(facet_name) || []).empty? ? 'display: none;' : ''%>" id="<%= facet_name %>_query" class="facet-field">
+    <fieldset style="<%= facet_closed ? 'display: none;' : ''%>" id="<%= facet_name %>_query" class="facet-field">
 
         <% if category_facet %>
           <%# Category Facet %>
@@ -33,7 +34,7 @@
             <% category = f.first %>
 
             <li>
-                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "Element.show('#{facet_name}_submit');" } %>
+                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "categoryChange = true;Element.show('#{facet_name}_submit');" } %>
                 <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;Element.show('<%=  "#{facet_name}_submit" %>');" ><%= category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
