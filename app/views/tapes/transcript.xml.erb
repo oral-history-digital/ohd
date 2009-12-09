@@ -22,7 +22,7 @@
             <% if initial -%>
                 <% initial = false -%>
             <% else -%>
-      <p begin="<%= start_time.to_i -%>" end="<%= end_time.to_i -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= transcript.strip -%></span><span class="caption_translation"><%= translation.strip -%></span></p>
+                <p begin="<%= start_time.to_i -%>" end="<%= end_time.to_i -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= transcript.strip -%></span><span class="caption_translation"><%= translation.strip -%></span></p>
                 <% transcript = '' -%>
                 <% translation = '' -%>
             <% end -%>
