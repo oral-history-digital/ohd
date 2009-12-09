@@ -3,6 +3,8 @@
   <% if @interview.has_headings %>
     <% last_heading_id = "" %>
     <% main_open = list_open = false %>
+    <% chapter = 1 %>
+    <% section = 1 %>
     <ul class="mainheadings">
     <% @interview.headings.each do |heading| %>
       <% heading_item = (heading.tape.number-1).to_s %>
@@ -23,10 +25,15 @@
       <% if main_open and heading_main %>
         </li>
         <% main_open = false %>
+        <% chapter += 1 and section = 1 %>
       <% end %>
 
-      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>"><a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);"><%= heading.title %></a>
-
+      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>">
+        <a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);">
+        <%= heading_main ? "#{chapter}." : "#{chapter}.#{section}."  %>
+        <%= heading.title %>
+        </a>
+        <% heading_main ? nil : section += 1 %>
       <% if heading_main %>
         <% main_open = true %>
       <% else %>
