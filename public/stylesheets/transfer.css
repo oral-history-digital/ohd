@@ -1,3 +1,5 @@
+/* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
+
 #fragmentOverview {
 	float: left;
 	width: 280px;
@@ -94,18 +96,8 @@
   background-color: #fff;
   padding: 10px;
   text-align: left;
-  overflow: scroll;
-  overflow-x: hidden;
-  /*overflow-y: visible;*/
-}
-
-#captions {
-  background-color: #fff;
-  padding: 10px;
-  text-align: left;
-  overflow: scroll;
-  overflow-x: hidden;
-  /*overflow-y: visible;*/
+  height: 108px;
+  overflow: hidden;
 }
 
 div.captions_original span.caption_original { display: inline-block; }
@@ -118,7 +110,7 @@ div.captions_translation span.caption_translation { display: inline-block; }
 }
 
 #containerHeadings li.subheading {
-  margin-left: 20px;
+  margin-left: 10px;
   font-style: normal;
 }
 
@@ -132,4 +124,15 @@ div.captions_translation span.caption_translation { display: inline-block; }
 
 #containerHeadings li.current li {
   font-weight: normal;
+}
+
+#containerHeadings ul li {
+	background: none;
+	padding-left: 0;
+}
+
+#containerSegments ul li {
+	background: none;
+	font-size: 80%;
+	margin-bottom: 15px;
 }
