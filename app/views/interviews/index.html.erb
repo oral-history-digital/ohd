@@ -7,7 +7,7 @@
 
   <% (@interviews || []).each do |interview| %>
 
-    <div class="baseContainerTeaser">
+    <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
         <div class="baseContainerTeaserImage">
             <%#= link_to image_tag(interview.image_url) %>
         </div>
