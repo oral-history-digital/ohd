@@ -2,7 +2,7 @@
 <% facet_entries = facet_option.last %>
 <% category_facet = Category.is_category?(facet_name) %>
 <% fulltext_list = !category_facet && (facet_entries.size < 13) %>
-<% facet_closed = (search_facets.object.send(facet_name) || []).empty? && search_facets.object.open_category != facet_name %>
+<% facet_closed = (search_facets.object.send(facet_name) || []).empty? %> <%# && search_facets.object.open_category != facet_name %>
 
   <div id="<%= facet_name %>"class="fragmentTitle <%= facet_closed ? 'closed' : 'open'%>">
 

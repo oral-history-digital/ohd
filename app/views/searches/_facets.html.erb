@@ -36,6 +36,12 @@
 
   <% end %>
 
+  <% unless facets.open_category.blank? %>
+    <% javascript_tag do %>
+      toggleCategory('<%= facets.open_category%>_query', true);
+    <% end %>
+  <% end %>
+
   <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="/images/spinner.gif" title="" alt="" /></div>
 
 </div>
