@@ -80,13 +80,13 @@
         lightcolor:               'ffffff',
         player_id:                'player_high',
         content_id:               'mediaspace_high',
-        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
+        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;};',
         call_position:            'markHeading(current_player.item, current_player.position);',
         start_item:               <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         start_position:           <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
 
-      var player_low = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
+      var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", {
         jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
         captions_plugin_file:     '/jw_player/lib/captions-10',
         skin:                     '/jw_player/skins/zwar.swf',

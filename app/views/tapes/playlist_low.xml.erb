@@ -5,7 +5,7 @@
     <% unless @tapes == nil %>
       <% @tapes.each do |tape| -%>
         <track>
-          <location><%= tape.media_id + ".mp4" %></location>
+          <location><%= tape.media_id + ".flv" %></location>
           <meta rel="captions"><%= transcript_interview_tape_path(:id => tape.id, :format => :xml) %></meta>
           <meta rel="start">10</meta>
         </track>

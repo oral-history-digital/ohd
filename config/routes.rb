@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :interviews do |interview|
 
     interview.resources :tapes,
-                        :collection => { :playlist_high => :get },
+                        :collection => { :playlist_high => :get, :playlist_low => :get },
                         :member => { :transcript => :get }
   end
 
