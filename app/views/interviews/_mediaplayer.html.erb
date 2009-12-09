@@ -3,27 +3,27 @@
 
 <div style="float: left;">
 
-<div id="tabsVideo">
-	<ul>
-    <% if @interview.video %>
-      <li id="tabHigh" class="active">
-        <p onclick="current_player = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
-			</li>
-			<li id="tabLow">
-        <p onclick="current_player = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
-			</li>
-    <% else %>
-      <li id="tabAudio" class="active"><p>Audio</p></li>
-    <% end %>
-	</ul>
-</div>
+  <div id="tabsVideo">
+    <ul>
+      <% if @interview.video == 'Video' %>
+        <li id="tabHigh" class="active">
+          <p onclick="current_player = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
+        </li>
+        <li id="tabLow">
+          <p onclick="current_player = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
+        </li>
+      <% else %>
+        <li id="tabAudio" class="active"><p>Audio</p></li>
+      <% end %>
+    </ul>
+  </div>
 
-<br class="clear" />
-
-<% if @interview.video %>
+  <br class="clear" />
   
   <div id="containerHigh" class="containerVideo">
-    
+
+    <% if @interview.video == 'Video' %>
+
     <div id="playerHigh" class="playerContainer">
       <div id="mediaspace_high" class="player">
         <h4>Der Medien-Player konnte nicht geladen werden!</h4>
@@ -47,6 +47,22 @@
         </script>
       </div>
     </div>
+    
+    <% else %>
+
+    <div id="playerAudio" class="playerContainer">
+      <div id="mediaspace_audio" class="player">
+        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
+        <noscript>
+          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
+        </noscript>
+        <script type="text/javascript">
+          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
+        </script>
+      </div>
+    </div>
+
+    <% end %>
 
     <div id="captions" class="captions_original"><%= render :partial => "transcript" %></div>
     
@@ -70,6 +86,8 @@
     </div>
 
     <script type="text/javascript">
+
+    <% if @interview.video == 'Video' %>
 
       var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
         jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
@@ -99,32 +117,23 @@
         call_position:            'markHeading(current_player.item, current_player.position);'
       });
 
+    <% else %>
+
+      var player_audio = new Player("<%= playlist_audio_interview_tapes_path(@interview, :format => :xml) %>", {
+        jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
+        captions_plugin_file:     '/jw_player/lib/captions-10',
+        skin:                     '/jw_player/skins/zwar.swf',
+        backcolor:                '990000',
+        frontcolor:               '999999',
+        lightcolor:               'ffffff',
+        player_id:                'player_audio',
+        content_id:               'mediaspace_audio',
+        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
+        call_position:            'markHeading(current_player.item, current_player.position);'
+      });
+
+    <% end %>
+
     </script>
 	</div>
-
-<% else %>
-
-  <div id="containerAudio" class="containerVideo">
-    <div class="playerContainer">
-      <div id="mediaspace_audio" class="player">
-        <h4>Der Medien-Player konnte nicht geladen werden!</h4><noscript><p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p></noscript><script type="text/javascript">document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');</script>
-      </div>
-    </div>
-
-    <script type="text/javascript">
-      /* <![CDATA[ */
-        var s1 = new SWFObject('http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/player.swf','player_audio','400','414','9');
-        s1.addParam('allowfullscreen','true');
-        s1.addParam('allowscriptaccess','always');
-        s1.addParam('wmode','opaque');
-        s1.addParam('flashvars','file=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/archiv/belarus_aachen/za004/audio/index.xml&streamer=rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv&link=http://www.zwangsarbeit-archiv.de&skin=http://www.zwangsarbeit-archiv.de/PM/zwangsarbeit-archiv/PM/player/stylish.swf&backcolor=990000&frontcolor=999999&lightcolor=ffffff&playlist=bottom&stretching=none&repeat=list&playlistsize=80');
-        s1.write('mediaspace_audio');
-      /* ]]> */
-    </script>
-  </div>
-
-<% end %>
-<!-- </div> -->
-<!-- /noindex -->
-
 </div>

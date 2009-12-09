@@ -14,6 +14,8 @@ namespace :data do
 
     Rake::Task['import:segments'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'segments.csv')})
 
+    Rake::Task['import:all_headings'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'headings.csv')})
+
   end
 
 end
