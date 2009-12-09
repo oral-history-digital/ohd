@@ -8,6 +8,7 @@
       <% initial = true -%>
       <% transcript = '' -%>
       <% translation = '' -%>
+      <% right_to_left = @tape.interview.language == 'Hebräisch' ? true : false %>
 
       <% current_segment = nil -%>
       <% @tape.segments.each do |segment| -%>
@@ -21,7 +22,7 @@
             <% if initial -%>
                 <% initial = false -%>
             <% else -%>
-      <p begin="<%= start_time.to_i -%>" end="<%= end_time.to_i -%>"><span class="caption_original"><%= transcript.strip -%></span><span class="caption_translation"><%= translation.strip -%></span></p>
+      <p begin="<%= start_time.to_i -%>" end="<%= end_time.to_i -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= transcript.strip -%></span><span class="caption_translation"><%= translation.strip -%></span></p>
                 <% transcript = '' -%>
                 <% translation = '' -%>
             <% end -%>
@@ -34,7 +35,7 @@
         <% previous_time = time -%>
         <% current_segment = segment -%>
       <% end -%>
-      <p begin="<%= start_time.to_i -%>" end="<%= previous_time.to_i -%>"><span class="caption_original"><%= transcript.gsub(/\{.*\}/, "") -%></span><span class="caption_translation"><%= translation.gsub(/\{.*\}/, "") -%></span></p>
+      <p begin="<%= start_time.to_i -%>" end="<%= previous_time.to_i -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= transcript.gsub(/\{.*\}/, "") -%></span><span class="caption_translation"><%= translation.gsub(/\{.*\}/, "") -%></span></p>
     </div>
 
   </body>

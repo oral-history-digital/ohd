@@ -136,3 +136,8 @@ div.captions_translation span.caption_translation { display: inline-block; }
 	font-size: 80%;
 	margin-bottom: 15px;
 }
+
+.rtl {
+    writing-mode: tb-rl;
+    text-align: right;
+}
