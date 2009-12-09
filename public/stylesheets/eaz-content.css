@@ -1,3 +1,5 @@
+/* @override http://10.211.55.3:3000/stylesheets/eaz-content.css?1260354827 */
+
 /*	
 	-----------------------------------------------------------------------------
 	Freie Universitaet Berlin:
@@ -370,13 +372,14 @@ a.startGallery:hover, a.startGallery:active {
 }
 
 .baseContainerTeaser{
-	width: 360px;
+	width: 340px;
 	overflow: hidden;
 	float:left;
+	margin: 0 20px 20px 0;
 }
 
 .baseContainerTeaserImage{
-	width: 150px;
+	width: 140px;
 	height: 110px;
 	margin-right: 8px;
 	overflow: hidden;
@@ -385,7 +388,7 @@ a.startGallery:hover, a.startGallery:active {
 }
 
 .baseContainerTeaserText{
-	width: 200px;
+	width: 190px;
 	height: 120px;
 	overflow: hidden;
 	float: left;
@@ -398,12 +401,28 @@ a.startGallery:hover, a.startGallery:active {
 }
 
 .baseContainerTeaserExcerpts {
-    height: 160px;
+    /*height: 160px;*/
 }
 
 .baseContainerTeaserExcerpts p,
 .baseContainerTeaserExcerpts a {
     font-size: 90%;
+}
+
+.baseContainerTeaserExcerpts h5 {
+	background: none;
+	padding: 0;
+}
+
+.baseContainerTeaserExcerpts .transcript {
+	color: #666;
+	font-size: 85%;
+	line-height: 1.4em;	
+}
+
+.baseContainerTeaserExcerpts a {
+	font-size: 85%;
+	line-height: 1.4em;	
 }
 
 .baseContainerTeaserText h3, .baseContainerTeaserText ul{
