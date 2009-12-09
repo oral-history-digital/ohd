@@ -12,6 +12,11 @@ class TapesController < BaseController
     @tapes = @interview.tapes
   end
 
+  def playlist_audio
+    @interview = parent_object
+    @tapes = @interview.tapes
+  end
+
   def transcript
     @tape = object
   end
