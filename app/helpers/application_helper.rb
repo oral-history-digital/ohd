@@ -17,6 +17,19 @@ module ApplicationHelper
     end
   end
 
+  #
+  def link_to_segment(segment, show_segment_text=false)
+    interview = segment.interview
+    item = segment.tape.number
+    position = Timecode.new(segment.timecode).time.to_i
+    link_text = show_segment_text ? "#{segment.timecode} " + truncate(segment.translation || segment.transcript || 'keine Transkription vorhanden.', :length => 300) : "Zum Interview-Ausschnitt"
+    if @object.is_a?(Interview)
+      link_to link_text, "javascript:current_player.seek(#{item-1},#{position});"
+    else
+      link_to link_text, interview_path(interview, :item => item, :position => position)
+    end
+  end
+
   # Conditionally splits segment transcripts into smaller parts.
   # This method returns an array of the format [[ time, transcript, translation ], ...],
   # with multiple elements if splitting takes place.

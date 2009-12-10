@@ -3,13 +3,13 @@
   <% if matching_segments.empty? %>
     Für dieses Interview sind keine Treffer-Ausschnitte vorhanden.
   <% else %>
+
+    <!--<p><%#= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %> gefunden:</p>-->
+
     <ul>
     <% matching_segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
-        <a href="#">
-          <span class="timecode"><%= segment.timecode %></span>
-          <%= segment.translation %>
-        </a>
+        <%= link_to_segment segment, true %>
       </li>
     <% end %>
   </ul>
