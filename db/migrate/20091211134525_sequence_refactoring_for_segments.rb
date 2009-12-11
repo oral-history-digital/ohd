@@ -7,7 +7,7 @@ class SequenceRefactoringForSegments < ActiveRecord::Migration
       t.boolean :speaker_change, :default => false
       t.boolean :chapter_change, :default => false
       t.integer :previous_segment_id
-      t.integer :next_segment_id
+      t.integer :following_segment_id
     end
     
   end
@@ -19,7 +19,7 @@ class SequenceRefactoringForSegments < ActiveRecord::Migration
       t.remove :speaker_change
       t.remove :chapter_change
       t.remove :previous_segment_id
-      t.remove :next_segment_id
+      t.remove :following_segment_id
     end
 
   end

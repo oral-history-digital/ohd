@@ -4,6 +4,12 @@ class Segment < ActiveRecord::Base
 
   has_one :heading
 
+  has_one :previous_segment,
+          :class_name => 'Segment'
+
+  has_one :following_segment,
+          :class_name => 'Segment'
+
   delegate  :interview,
             :to => :tape
 
