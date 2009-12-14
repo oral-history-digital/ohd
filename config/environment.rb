@@ -27,6 +27,8 @@ Rails::Initializer.run do |config|
   config.gem 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot'
 
+  config.gem 'fastercsv'
+
   config.gem 'smurf'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
