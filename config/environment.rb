@@ -23,6 +23,7 @@ Rails::Initializer.run do |config|
   config.gem 'rsolr'
   config.gem 'rsolr-ext'
   config.gem 'escape'
+  config.gem 'daemons' # for sunspot
   config.gem 'sunspot'
   config.gem 'sunspot_rails', :lib => 'sunspot'
 
