@@ -22,8 +22,6 @@ class Interview < ActiveRecord::Base
 DEF
   end
 
-  belongs_to :home_location
-
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
