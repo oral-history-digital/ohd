@@ -16,4 +16,5 @@ test:
 production:
   <<: *defaults
   solr:
-    port: 8984
+    port: 8090
+    path: /solr_zwar_demo
