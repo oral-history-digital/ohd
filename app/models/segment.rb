@@ -67,6 +67,14 @@ DEF
     read_attribute :timecode
   end
 
+  def start_time
+    @time ||= Timecode.new(raw_timecode).time
+  end
+
+  def end_time
+    @time + duration 
+  end
+
   def language_id
     interview.language_id
   end

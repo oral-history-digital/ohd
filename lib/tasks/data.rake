@@ -12,7 +12,7 @@ namespace :data do
 
     Rake::Task['import:tapes'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'tapes.csv')})
 
-    Rake::Task['import:segments'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'segments.csv')})
+    Rake::Task['import:segments'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'captions.csv')})
 
     Rake::Task['data:segment_duration'].execute
 
@@ -62,6 +62,8 @@ namespace :data do
           previous_time = time
 
         end
+
+        maximum_duration = 1.5 * maximum_duration
 
         tape.segments.last.update_attribute :duration, maximum_duration
 
