@@ -8,7 +8,7 @@
     <span id="headings_begin"></span><ul class="mainheadings">
     <% @interview.headings.each do |heading| %>
       <% heading_item = (heading.tape.number-1).to_s %>
-      <% heading_pos = Timecode.new(heading.segment.timecode).time.to_i.to_s %>
+      <% heading_pos = heading.segment.start_time.round.to_s %>
       <% heading_id = "heading_" + heading_item + "_" + heading_pos %>
       <% heading_main = heading.mainheading %>
 
