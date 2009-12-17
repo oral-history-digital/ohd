@@ -31,7 +31,7 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <%= image_tag("/images/zwar_logo_#{I18n.locale}.gif", :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
+          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
         </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
@@ -137,7 +137,7 @@
       <!-- noindex -->
 
         <br class="clear" />
-        <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+        <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
         <br class="clear" />
       <!-- /noindex -->
 
@@ -287,7 +287,7 @@
 
     <div id="printlogo">
       <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-      <img src="/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+      <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
     </div>
 
     <!-- /noindex -->

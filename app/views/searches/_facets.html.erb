@@ -16,7 +16,7 @@
         <span class="searchString">Volltextsuche</span>
         <% search_facets.object.fulltext ||= t('search_term') %>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => '/images/suchpfeil_rund.gif', :onclick => "submitViaAjax(); false;" %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('suchpfeil_rund.gif'), :onclick => "submitViaAjax(); false;" %>
         <%= hidden_field_tag 'search[open_category]', '', :id => 'open_category' %>
     </div>
 
@@ -42,6 +42,6 @@
     <% end %>
   <% end %>
 
-  <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="/images/spinner.gif" title="" alt="" /></div>
+  <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="<%= image_path 'spinner.gif' %>" title="" alt="" /></div>
 
 </div>
