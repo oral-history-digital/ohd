@@ -246,4 +246,37 @@ namespace :import do
     end
   end
 
+  desc "Import der Credits für alle Interviews"
+  task :credits, [ :file ] => :environment do |task, args|
+    file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if file.nil?
+    puts "csv file = #{file}"
+    require 'fastercsv'
+
+    FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+
+      interview = Interview.find_by_archive_id(row.field('Archiv-ID'))
+      unless interview.nil?
+
+        { :interviewers => 'Interview',
+          :transcriptors => 'Transkription',
+          :translators => 'Übersetzung',
+          :researchers => 'Erschliessung',
+          :proofreaders => 'Lektorat',
+          :segmentators => 'Segmentierung' }.each do |attr, field_name|
+
+          interview.send(attr.to_s + '=', row.field(field_name)) unless row.field(field_name).blank?
+
+        end
+
+        puts interview.archive_id
+
+        interview.save!
+
+      end
+
+    end
+
+  end
+
 end

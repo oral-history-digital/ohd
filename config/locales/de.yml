@@ -28,6 +28,12 @@ de:
         forced_labor_fields: 'Einsatzbereich'
         forced_labor_habitations: 'Unterbringung / Inhaftierung'
         countries: 'Wohnort (Land)'
+        interviewers: 'Interview'
+        transcriptors: 'Transkription'
+        translators: 'Übersetzung'
+        researchers: 'Erschließung'
+        proofreaders: 'Lektorat'
+        segmentators: 'Segmentierung'
 
   forced_labor_group: 'Gruppe'
   forced_labor_field: 'Einsatzbereich'

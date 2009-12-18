@@ -1,6 +1,8 @@
 <div class="credits">
-  <p><strong>Interview:</strong> Filipkowski, Piotr</p>
-  <p><strong>Transkript:</strong> Marta Szymańska</p>
-  <p><strong>Übersetzung:</strong> k.A.</p>
-  <p><strong>Erschließung:</strong> Florentine Schmidtmann, Magda Wolska, Magdalena Zeman</p>
+  <% %w( interviewers transcriptors translators researchers proofreaders segmentators ).each_with_index do |attr, index| %>
+      <% value = transcript.send(attr) %>
+      <% unless index > 2 && value.blank? %>
+  <p><strong><%= Interview.human_attribute_name(attr) %>:</strong> <%= value || 'k.A.' %></p>
+      <% end %>
+  <% end %>
 </div>

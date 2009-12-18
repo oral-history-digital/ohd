@@ -43,7 +43,7 @@ namespace :solr do
 
     solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
 
-    SOLR = RSolr.connect :url => "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/solr"
+    SOLR = RSolr.connect :url => "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path']}"
 
   end
 

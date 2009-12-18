@@ -10,6 +10,8 @@ namespace :data do
 
     Rake::Task['import:metadata'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'interviews.csv')})
 
+    Rake::Task['import:credits'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'credits.csv')})
+
     Rake::Task['import:tapes'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'tapes.csv')})
 
     Rake::Task['import:segments'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'captions.csv')})

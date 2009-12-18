@@ -2,6 +2,12 @@ class TapesController < BaseController
 
   before_filter :parent_object
 
+  skip_before_filter :current_query_params
+
+  skip_before_filter :current_search
+
+  skip_before_filter :init_search
+
   def playlist_high
     @interview = parent_object
     @tapes = @interview.tapes
