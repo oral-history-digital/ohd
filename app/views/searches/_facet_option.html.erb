@@ -35,7 +35,7 @@
 
             <li>
                 <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "categoryChange = true;Element.show('#{facet_name}_submit');" } %>
-                <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;Element.show('<%=  "#{facet_name}_submit" %>');" ><%= category.name %></span>
+                <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;Element.show('<%=  "#{facet_name}_submit" %>');" ><%= category.is_a?(String) ? category : category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
                 <% end %>

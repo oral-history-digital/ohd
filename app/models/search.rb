@@ -154,39 +154,61 @@ DEF
   # query Solr for matching interviews
   def search!
     query_params = self.query_params
-    @search = Sunspot.search Interview do
-
-      # fulltext search
-      keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
-
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
+    if query_params.blank?
+      @search = nil
+      @hits = Interview::NUMBER_OF_INTERVIEWS
+      @results = Interview.find(:all)
+      # instantiate facets from the DB
+      @facets = {}
+      FACET_FIELDS.each do |facet|
+        facet_categories = Categorization.connection.execute <<SQL
+          SELECT categories.name, categories.id, count('id')
+          FROM categorizations
+          LEFT JOIN categories ON categories.id = categorizations.category_id
+          WHERE categorizations.category_type = '#{I18n.t(facet, :locale => :de)}'
+          GROUP BY categories.id
+          ORDER BY categories.name ASC
+SQL
+        facet_name = Category::ARCHIVE_CATEGORIES.assoc(facet.to_sym).nil? ? facet : (facet.to_s.singularize << "_ids")
+        @facets[facet_name.to_sym] = []
+        facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[1] ]}
       end
+    else
+      @search = Sunspot.search Interview do
 
-      # person name facet
-      self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
-      
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
+        # fulltext search
+        keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
 
-      paginate :page => query_params['page'] || 1, :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
+        # category facets
+        Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+          self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
+        end
 
-      adjust_solr_params do |params|
-        params.delete(:defType)
+        # person name facet
+        self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
+
+        facet :person_name,
+              :forced_labor_group_ids,
+              :forced_labor_field_ids,
+              :forced_labor_habitation_ids,
+              :language_ids,
+              :country_ids
+
+        paginate :page => query_params['page'] || 1, :per_page => RESULTS_PER_PAGE
+        order_by :person_name, :asc
+
+        adjust_solr_params do |params|
+          params.delete(:defType)
+        end
       end
+      @hits = @search.total
+      @results = @search.results
+      # facets are populated from the search lazily
+      @facets = nil
     end
-    @hits = @search.total
     @query = query_params.select{|k,v| !v.nil? }
     @query_facets = nil
-    @facets = nil
     @segments = {}
-    @results = @search.results
     puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
