@@ -62,7 +62,7 @@ DEF
   end
 
   def short_title
-    @short_title ||= full_title[/^(.*), ([A-Z])/] + "."
+    @short_title ||= full_title[/^[^,;]+, \w/] + "."
   end
 
   def video
