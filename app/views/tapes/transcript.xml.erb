@@ -10,6 +10,9 @@
     <p begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span class="caption_translation"><%= segment.translation.strip -%></span></p>
 
       <% end -%>
+      <% unless @tape.segments.empty? -%>
+    <p begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span class="caption_original">&nbsp;</span><span class="caption_translation">&nbsp;</span></p>
+      <% end -%>
     </div>
 
   </body>
