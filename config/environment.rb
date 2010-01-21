@@ -24,8 +24,8 @@ Rails::Initializer.run do |config|
   config.gem 'rsolr-ext'
   config.gem 'escape'
   config.gem 'daemons' # for sunspot
-  config.gem 'sunspot', :version => ">=0.10.8"
-  config.gem 'sunspot_rails', :version => ">=0.11.5"
+  config.gem 'sunspot', :lib => 'sunspot', :version => ">=0.10.8"
+  config.gem 'sunspot_rails', :lib => 'sunspot/rails', :version => ">=0.11.5"
 
   config.gem 'fastercsv'
 
