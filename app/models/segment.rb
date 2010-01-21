@@ -32,7 +32,8 @@ DEF
     string :media_id, :stored => true
     string :heading, :stored => true
     string :timecode
-    text :transcript, :translation, :stored => true
+    text :transcript, :stored => true
+    text :translation, :stored => true
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
