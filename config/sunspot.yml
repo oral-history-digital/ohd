@@ -4,6 +4,7 @@ defaults: &defaults
   solr:
     hostname: localhost
     port: 8985
+    path: /solr
 
 development:
   <<: *defaults

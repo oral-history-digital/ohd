@@ -151,13 +151,25 @@ DEF
     query_params
   end
 
-  # query Solr for matching interviews
+  # This method queries the Solr search server for matching
+  # instances of interviews/segments.
+  #
+  # Because of search index corruption on Passenger restarts
+  # (or due to other, unidentified problems) a refactoring is
+  # currently being done to instantiate the blank searches
+  # directly from the DB
   def search!
     query_params = self.query_params
+    #handle the page parameter separately
+    @page = (query_params.delete('page') || 1).to_i
+
     if query_params.blank?
+      # the blank or default query
       @search = nil
       @hits = Interview::NUMBER_OF_INTERVIEWS
-      @results = Interview.find(:all)
+      interviews = Interview.find(:all, :order => "full_title ASC", :limit => "#{(@page-1) * RESULTS_PER_PAGE},#{RESULTS_PER_PAGE}")
+      @results = WillPaginate::Collection.new(@page, RESULTS_PER_PAGE).replace(interviews)
+      @results.total_entries = Interview::NUMBER_OF_INTERVIEWS
       # instantiate facets from the DB
       @facets = {}
       FACET_FIELDS.each do |facet|
@@ -171,9 +183,11 @@ DEF
 SQL
         facet_name = Category::ARCHIVE_CATEGORIES.assoc(facet.to_sym).nil? ? facet : (facet.to_s.singularize << "_ids")
         @facets[facet_name.to_sym] = []
-        facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[1] ]}
+        facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[2] ]}
       end
+
     else
+      # SOLR query
       @search = Sunspot.search Interview do
 
         # fulltext search
@@ -194,7 +208,7 @@ SQL
               :language_ids,
               :country_ids
 
-        paginate :page => query_params['page'] || 1, :per_page => RESULTS_PER_PAGE
+        paginate :page => @page, :per_page => RESULTS_PER_PAGE
         order_by :person_name, :asc
 
         adjust_solr_params do |params|
@@ -203,6 +217,7 @@ SQL
       end
       @hits = @search.total
       @results = @search.results
+      
       # facets are populated from the search lazily
       @facets = nil
     end
@@ -243,9 +258,9 @@ SQL
       subsearch = Sunspot.search Segment do
 
         # keyword search on fulltext only
-        keywords fulltext.downcase do
-          highlight :transcript, :translation
-        end
+        keywords fulltext.downcase #do
+        #  highlight :transcript, :translation
+        #end
 
         with(:archive_id).any_of interview_ids
 
@@ -258,7 +273,11 @@ SQL
         end
       end
 
-      puts "\nSEGMENT SUBSEARCH: found #{subsearch.total} segments."
+      puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
+
+      puts "\n\n@@@@ RAW RESULTS:"
+      first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
+      puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
 
       # iterate over results, not subsearch!
 
@@ -268,7 +287,7 @@ SQL
         subsearch.hits.select{|h| h.instance.archive_id == interview.archive_id }.each do |segment_result|
 
           segment = segment_result.instance
-          puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
+          #puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
 
            if @segments[interview.archive_id.upcase].is_a?(Array)
              @segments[interview.archive_id.upcase] << segment

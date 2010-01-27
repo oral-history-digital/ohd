@@ -43,45 +43,72 @@ namespace :solr do
 
     solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
 
-    SOLR = RSolr.connect :url => "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path']}"
+    url = "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path'].strip.gsub(/^\//, '')}"
+    puts "Connecting to: '#{url}'"
+
+    SOLR = RSolr.connect :url => url
 
   end
 
-  desc "delete the index"
-  task :delete => :connect do
 
-    puts "\nDeleting index..."
 
-    # clear the index
-    SOLR.delete_by_query '*:*'
+  namespace :delete do
 
-    puts "done"
+    desc "fully delete the index"
+    task :all => 'solr:connect' do
 
-  end
+      puts "\nDeleting index..."
 
-  namespace :reindex do
+      # clear the index
+      SOLR.delete_by_query '*:*'
 
-    desc "reindex the archive contents for Solr search"
-    task :all => :connect do
+      puts "done"
 
-      Rake::Task['solr:reindex:interviews'].execute
+    end
 
-      Rake::Task['solr:reindex:segments'].execute
+    desc "delete the index for interviews"
+    task :interviews => 'solr:connect' do
 
-      puts "Reindexing complete."
+      puts "\nDeleting index for interviews..."
+
+      # clear the index
+      SOLR.delete_by_query 'type:Interview'
+
+      puts "done"
 
     end
 
 
-    desc "reindex interviews"
-    task :interviews => :delete_interviews do
+    desc "delete the index for segments"
+    task :segments => 'solr:connect' do
+
+      puts "\nDeleting index for segments..."
+
+      # clear the index
+      SOLR.delete_by_query 'type:Segment'
+
+      puts "done"
+
+    end
+
+  end
+
+
+
+  namespace :index do
+
+    desc "builds the index from a clean slate"
+    task :build => ['solr:index:interviews', 'solr:index:segments']
+
+    desc "builds the index for interviews"
+    task :interviews => :environment do
 
       # Interviews
       batch=25
       offset=0
       total = Interview.count :all
 
-      puts "\nReindexing #{total} interviews..."
+      puts "\nIndexing #{total} interviews..."
 
       while(offset<total)
 
@@ -101,16 +128,15 @@ namespace :solr do
 
     end
 
-
-    desc "reindex segments"
-    task :segments => :delete_segments do
+    desc "builds the index for segments"
+    task :segments => :environment do
 
       # Segments
       batch=25
       offset=0
       total = Segment.count :all
 
-      puts "\nReindexing #{total} segments..."
+      puts "\nIndexing #{total} segments..."
 
       while(offset<total)
 
@@ -130,29 +156,27 @@ namespace :solr do
 
     end
 
-    desc "delete the index for interviews"
-    task :delete_interviews => :connect do
+  end
 
-      puts "\nDeleting index for interviews..."
 
-      # clear the index
-      SOLR.delete_by_query 'type:Interview'
 
-      puts "done"
+  namespace :reindex do
 
+    desc "reindex the archive contents for Solr search"
+    task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments'] do
+      puts "Reindexing complete."
     end
 
 
-    desc "delete the index for segments"
-    task :delete_segments => :connect do
+    desc "reindex interviews"
+    task :interviews => ['solr:delete:interviews', 'solr:index:interviews'] do
+      puts "Reindexing interviews complete."
+    end
 
-      puts "\nDeleting index for segments..."
 
-      # clear the index
-      SOLR.delete_by_query 'type:Segment'
-
-      puts "done"
-
+    desc "reindex segments"
+    task :segments => ['solr:delete:segments', 'solr:index:segments'] do
+      puts "Reindexing segments complete."
     end
 
   end

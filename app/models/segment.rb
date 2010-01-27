@@ -32,13 +32,16 @@ DEF
     string :media_id, :stored => true
     string :heading, :stored => true
     string :timecode
-    text :transcript, :stored => true
-    text :translation, :stored => true
+    text :joined_transcript_and_translation
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
     string :person_name, :using => :full_title, :stored => false
   end
+
+  # use the MediaId Adapters
+  #Sunspot::Adapters::InstanceAdapter.register(ZWAR::Sunspot::Adapters::MediaIdInstanceAdapter, self)
+  #Sunspot::Adapters::DataAccessor.register(ZWAR::Sunspot::Adapters::MediaIdDataAccessor, self)
 
   def interview_id
     interview.id
@@ -90,6 +93,10 @@ DEF
 
   def translation
     filter_annotation read_attribute(:translation)
+  end
+
+  def joined_transcript_and_translation
+    ((transcript || '') + ' ' + (translation || '')).strip
   end
 
   private
