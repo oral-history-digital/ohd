@@ -3,8 +3,6 @@
   <p><%= @interview.gender ? 'männlich' : 'weiblich' %>, geb. <%= @interview.date_of_birth %> in <%= @interview.country_of_origin %></p>
 </div>
 
-<%= render :partial => "mediaplayer" %>
-
 <div id="fragmentOverview">
   <div id="tabsOverview">
 
@@ -52,16 +50,19 @@
   <%= render :partial => "segments" %>
   <% end %>
 
-  <div class="contentGallery">
-  
-    <%= render :partial => "gallery" %>
-  
-  </div>
-
 </div>
+
+<%= render :partial => "mediaplayer" %>
 
 <div class="clear">&nbsp;</div>
 
+<div class="contentGallery">
+
+    <%= render :partial => "gallery" %>
+
+</div>
+
+<!--
 <div class="fragmentTitle" onclick="Element.toggle('fragment1');Element.toggle('pfeilUnten1');Element.toggle('pfeilRechts1')">
   <h2><%= image_tag("pfeil_rot_rechts.gif", :id => "pfeilRechts1", :title => "", :alt => "Pfeil rechts") %><%= image_tag("pfeil_rot_unten.gif", :id => "pfeilUnten1", :title => "", :alt => "Pfeil unten", :style => "display: none;") %>weitere Informationen zum Interview</h2>
 </div>
@@ -72,5 +73,6 @@
 <noscript>
   <%= render :partial => "additional_metadata" %>
 </noscript>
+//-->
 
 <div class="clear">&nbsp;</div>
