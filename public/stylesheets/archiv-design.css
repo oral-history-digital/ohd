@@ -27,8 +27,9 @@
 
 body {
 	position:relative;
-	background: #f1f1eb url(/images/archiv_bg_body.gif) top repeat-x;
-	margin: 0;
+	/*background: #f1f1eb url(/images/archiv_bg_body.gif) top repeat-x;*/
+	background: #369 url(/images/archiv_bg_body.gif) top repeat-x;
+    margin: 0;
 	/* das Hintergrundbild muss entsprechend der Hoehe des Identitaetsbereichs angepasst werden, es enthaelt die gruene Linie und den grauen Hintergrundstreifen*/
 }
 
