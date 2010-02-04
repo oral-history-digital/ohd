@@ -20,6 +20,16 @@ task :production do
   role :db,  "fnf.cedis.fu-berlin.de", :primary => true
 end
 
+desc "prepare to act on the test environment"
+task :staging do
+  set :environment, :staging
+  set :deploy_to, "/home/ruby/archive_test"
+  set :user, "root"
+  role :app, "160.45.170.231"
+  role :web, "160.45.170.231"
+  role :db, "160.45.170.231", :primary => true
+end
+
 # deploy restart: restart apache
 namespace :deploy do
 
