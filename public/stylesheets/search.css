@@ -130,20 +130,20 @@
 /* fbeier */
 
 #baseHeaderSearch {
-	background: #fff url(/images/hits_bg_left.gif) top left no-repeat;
-	padding: 0 0 0 12px;
+	/*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
+	padding: 0;
 	position: absolute;
-	top: 34px;  
-	left: 10px; 
+	top: 26px;
+	left: 10px;
 	margin: 0;
 	font-size: 95%;
 	width: 120px;
 	height: 19px;
+
 }
 
 span.hits {
-    color: #840f09;
-	background: url(/images/hits_bg_right.gif) top right no-repeat;
+	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
 	display: block;
 	padding: 0 12px 0 0;
 	width: 108px;
@@ -151,22 +151,23 @@ span.hits {
 }
 
 span.hits a {
+	color: #fff;
 	display: block;
 	background: url(/images/suchpfeil.gif) top right no-repeat;
 	background-position: 103px 4px;
 	padding: 0 12px 0 0;
 	width: 108px;
 	height: 19px;
-	text-decoration: none;	
+	text-decoration: none;
 }
 
 span.hits a:hover {
-	text-decoration: none;	
+	text-decoration: none;
 }
 
 #searchReset {
 	position: absolute;
-	top: 34px;  
+	top: 34px;
 	right: 10px;
 }
 
