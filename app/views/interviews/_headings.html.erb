@@ -1,6 +1,3 @@
-<div id="containerHeadings" style="height: 405px; overflow-y: scroll; overflow-x: hidden;<%= @interview.has_headings ? '' : ' display: none;' %>">
-<!-- <div class="scroll_fade"><img src="<%= image_path 'scroll_fade.png' %>" title="" alt="" /></div> -->
-  <% if @interview.has_headings %>
     <% last_heading_id = "" %>
     <% main_open = list_open = false %>
     <% chapter = 1 %>
@@ -49,7 +46,3 @@
       </li>
     <% end %>
     </ul>
-  <% else %>
-    Für dieses Interview sind keine Überschriften vorhanden.
-  <% end %>
-</div>

@@ -81,7 +81,7 @@ DEF
     'keine Angabe'
   end
 
-  def has_headings
+  def has_headings?
     headings.count > 0 ? true : false
   end
 

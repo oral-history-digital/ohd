@@ -1,0 +1,36 @@
+<div id="interviewContentNavigation" class="baseListBox">
+
+  <% remote_form_for content,
+                     :url => '#',
+                     :method => :get,
+                     :html => { :action => '',
+                                :method => :get,
+                                :update => 'search-results',
+                                :complete => "$('search-results').show()",
+                                :name => "search-in-interview",
+                                :id => "search_in_interview" } do |search| %>
+
+    <div class="fragmentTitle">
+        <label for="fulltext">Suche im Interview</label>
+        <%= text_field_tag 'fulltext', t('search_term'), :id => "interview_fulltext" %>
+        <%= submit_tag 'suchen', :type => :image, :src => '/images/suchpfeil_rund.gif', :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
+        <%#= search.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
+    </div>
+
+  <% end %>
+
+  <div id="search-results-toggle" class="container-toggle" style="display:none;">Suchergebnisse</div>
+  <div id="search-results" class="container" style="display:none;">Keine passenden Ausschnitte gefunden.</div>
+
+  <% if content.has_headings? %>
+  <div id="headings-toggle" class="container-toggle">Inhaltsverzeichnis</div>
+  <div id="headings" class="container" style="overflow-y: scroll; overflow-x: hidden; height:480px;">
+    <%= render :partial => 'headings', :object => content %>
+  </div>
+  <% end %>
+
+  <div id="my-results-toggle" class="container-toggle">Meine Recherche</div>
+  <div id="my-results" class="container" style="display:none;">Noch keine Rechercheergebnisse gespeichert.</div>
+  
+
+</div>

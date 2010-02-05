@@ -1,8 +1,0 @@
-<div class="credits">
-  <% %w( interviewers transcriptors translators researchers proofreaders segmentators ).each_with_index do |attr, index| %>
-      <% value = transcript.send(attr) %>
-      <% unless index > 2 && value.blank? %>
-  <p><strong><%= Interview.human_attribute_name(attr) %>:</strong> <%= value || 'k.A.' %></p>
-      <% end %>
-  <% end %>
-</div>
