@@ -40,13 +40,13 @@
 #tabsOverview ul {
 	margin: 0;
 	padding: 0;
-    width: 270px;
+    width: 280px;
     background-color: #fff;
 }
 
 #tabsOverview ul li {
-	padding:0 20px;
-	height: 22px;
+	padding:3px 20px;
+	height: 21px;
 	float: left;
 	background-color: #e4e4da;
 	cursor: pointer;
@@ -57,6 +57,7 @@
 
 #tabsOverview #tabForcedLabor {
     float: right;
+    width:148px;
 }
 
 #tabsOverview li p{
