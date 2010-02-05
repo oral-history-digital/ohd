@@ -1,222 +1,866 @@
-/* Facetted Search */
-#search_facets .active-facet {
-    display: block;
-    position: relative;
-    background: #999281;
-    color: #990000;
-    padding: 5px 10px;
-    margin-bottom: 4px;
+/* @override
+	http://10.211.55.3:3000/stylesheets/archiv-design.css?1259576339
+	http://10.211.55.3:3000/stylesheets/archiv-design.css?1259668737
+*/
+
+/* Freie Universitaet Berlin
+   Designvorgaben Version 1_3.1
+
+   Autor: CeDiS, http://www.cedis.fu-berlin.de, cms@cedis.fu-berlin.de
+   Datum: 21.05.2008
+   Aktualisiert: 07.12.2008
+   ----------------------------------------------------------------------------
+   - Verknuepfte Dateien
+   /images/bg_body.gif
+   /images/suchpfeil_blau.gif
+   /images/quicklinks_icon.gif
+   /images/pfeil_navi.gif
+   /images/bg_mainWrapper_navi.gif
+   /images/rechteck_gr_liste.gif
+   ---------------------------------------------------------------------------
+*/
+
+/* -----------------------------------------------------------------------------
+	Layoutbereiche Mastertemplate
+   -----------------------------------------------------------------------------
+*/
+
+body {
+	position:relative;
+	background: #f1f1eb url(/images/archiv_bg_body.gif) top repeat-x;
+	    margin: 0;
+	/* das Hintergrundbild muss entsprechend der Hoehe des Identitaetsbereichs angepasst werden, es enthaelt die gruene Linie und den grauen Hintergrundstreifen*/
 }
 
-/* overlays */
-.overlay {
-    opacity: 0.8;
-    background-color: #F1F1EB;
+#printlogo { /* wird nur in der Druckversion angezeigt */
+	display:none;
 }
 
-#search_header_overlay {
-    height: 64px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 249px;
-}
+/* Layout fuHeader
+   -----------------------------------------------------------------------------
+*/
 
-#search_facets_overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 150%;
-}
-
-#baseContainerRight {
-    position: relative;
-}
-
-/* spacing */
-.baseListBox #search_facets h2 {
-    margin-bottom: 0;
-}
-.baseListBox #search_facets h2.baseListBoxTitle {
-    margin-bottom: 4px;
-}
-#search_facets .fragmentTitle {
-    margin-top: 4px;
-}
-
-.active-facet ul,
-.active-facet ul li {
-    padding:0;
-    margin:0;
-}
-
-#search_facets .active-facet li {
-    width: auto;
-    display: inline;
-    padding-right: 6px;
-    color: #F1F1EB;
-}
-
-.active-facet .facet-remove {
-    position: absolute;
-    top: 7px;
-    right: 10px;
-    text-indent: -3000px;
-    overflow: hidden;
-    background: transparent url(/images/close.png) top right no-repeat;
-    height: 14px;
-    width: 14px;
-}
-
-/* facet toggle */
-.closed .fragmentTitle,
-.closed fieldset.facet-field,
-.closed.fragmentTitle .arrow-open {
-    display: none;
-}
-
-.open.fragmentTitle .arrow-open {
-    display: inline-block;
-}
-
-.open.fragmentTitle .arrow-closed {
-    display: none;
-}
-
-/* empty facets */
-#search_facets .fragmentTitle .disabled {
-    color: #9a9a9a;
-    cursor: default;
-}
-
-/* transcript excerpts and segment selection */
-.baseContainerTeaserExcerpts .segment {
-    display: none;
-}
-.baseContainerTeaserExcerpts .segment.visible {
-    display: block;
-}
-
-/* segment selection pagination */
-#innerContent .baseContainerTeaserExcerpts .segment_pagination {
-    float: right;
-    padding: 0;
-    margin: 0 8px 0 0;
-}
-
-#innerContent .baseContainerTeaserExcerpts .segment_pagination li {
-    list-style-type: none;
-    background-image: none;
-    float: left;
-    clear: none;
-}
-
-#innerContent .baseContainerTeaserExcerpts .segment_pagination li.current a {
-    background-color: #990000;
-    color: #fff;
-    text-align: center;
-    padding: 0.1em 0.15em 0.1em 0.2em;
-    text-decoration: none;
-}
-
-.baseContainerTeaserExcerpts .segment .timecode,
-.baseContainerTeaserExcerpts .segment .tape
-{
-    font-weight: bold;
-    font-size: 80%;
-}
-
-/* fbeier */
-
-#baseHeaderSearch {
-	/*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
+#headerIdentityWrapper {
+	position: relative;
+	width: 996px;
+	margin: 0 auto;
 	padding: 0;
+	/*height: 77px;	 Hoehe Variable */
+}
+
+#baseHeader{
+	position: relative;
+	height: 116px;
+	margin: 0;
+	padding: 0;
+}
+
+.baseHeaderLogo {
 	position: absolute;
-	top: 26px;
+	top: 24px;
+	left: 10px;
+}
+
+#baseHeaderNavigation {
+	position: absolute;
+	top: 10px;
+	left: 300px;
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+}
+
+/* Layout fu#navigationTopFlexible
+	-----------------------------------------------------------------------------
+*/
+
+#navigationTopFlexible {
+	position: relative;
+	width: 996px;
+	/*background: #e6e6dc;*/
+	margin: 0;
+	padding: 0;
+	/*border-bottom: 16px solid #8e8976;*/
+}
+
+#navigationTopFlexible ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	font-size:95%;
+	font-weight: bold;
+	width: 996px;
+	border-left: 1px solid #e4e4da;
+}
+
+#navigationTopFlexible ul li {
+	margin: 0;
+	padding: 0;
+	line-height: 170%;
+	float: left;
+}
+
+#navigationTopFlexible ul li a {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 3px 41px 3px 10px;
+	color: #e4e4da;
+	border-right: 1px solid #e4e4da;
+	text-decoration: none;
+	height:22px;
+}
+
+#navigationTopFlexible ul li a:hover {
+	color: #ccc;
+	background-color: #660000;
+}
+
+#navigationTopFlexible ul li a.active {
+	color: #e4e4da;
+	background-color: #660000;
+}
+
+#navigationTopFlexible ul li .active {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 3px 41px 3px 10px;
+	text-decoration: none;
+	color: #e4e4da;
+	background-color: #660000;
+	border-right: 1px solid #e4e4da;
+	height:22px;
+}
+
+/* Layout fuIdentity
+   -----------------------------------------------------------------------------
+*/
+
+#baseIdentity {
+	/*position: relative;
+	margin: 0;
+	height: 180px;
+	width: 976px;
+	padding:16px 10px 18px 10px;*/
+	/*background-color: #8e8976;*/
+}
+
+/*.baseIdentityLeft {
+	position: absolute;
+	display: block;
+	top: 18px;
+	left: 10px;
+	/*height: 80px; Hoehe Variable
+	width: 180px;
+	margin: 0;
+	text-align: left;
+} */
+
+.baseIdentityRight {
+	/*position: absolute;
+	display: block;
+	top: 10px;
+	left: 0;
+	margin:0;
+	border:1px solid #333;*/
+}
+
+
+#baseLogout {
+    position: absolute;
+    top: 2px;
+    right:0px;
+    font-size:80%;
+    text-align:right;
+}
+
+#baseLogout #submit {
+    float:right;
+    width:50px;
+    padding-top: 2px;
+    color:#840f09;
+    cursor:pointer;
+}
+
+#baseLogout #submit:hover, #submit:focus {
+    color:#fff;
+    background-color:transparent;
+    cursor:pointer;
+}
+
+
+/* Layout fuHeaderSearch
+   -----------------------------------------------------------------------------
+*/
+
+#baseServices {
+	position: absolute;
+	top: 52px;  /* position Variable */
+	right: 0px;
+	width: 280px;
+	height: 64px;  /* Hoehe Variable */
+	background-color: #840f09;
+}
+
+#baseServices p{
+	color: #f1f1eb;
+	font-size: 95%;
+	margin: 8px 8px 8px 10px;
+	padding: 0;
+}
+
+#baseHeaderSearch{
+	/* definiert in search.css */
+}
+
+#baseHeaderSearch .baseInputSearch { /* input */
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0 0 0 3px;
+	height: 1.6em;
+	width: 12em;
+	background-color: #fff;
+	border: 1px solid #999;
+	font-size: 95%;
+}
+
+#baseHeaderSearch .buttonText {
+	position: absolute;
+	top: 0.3em;
+
+
+	right: 0;
+	border: none;
+}
+
+/* Layout fuQuickLinks
+   -----------------------------------------------------------------------------
+*/
+
+#baseQuickLinks {
+	position: absolute;
+	bottom: 16px;   /* position Variable */
+	right: 0;
 	left: 10px;
 	margin: 0;
+	padding: 0;
 	font-size: 95%;
-	width: 120px;
+	color: #666;
+	width: 170px;
 	height: 19px;
-
+	overflow: hidden;
 }
 
-span.hits {
-	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
-	display: block;
-	padding: 0 12px 0 0;
-	width: 108px;
-	height: 19px;
+#baseQuickLinks form {
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
 }
 
-span.hits a {
-	color: #fff;
-	display: block;
-	/*background: url(/images/suchpfeil.gif) top right no-repeat;*/
-	background-position: 103px 4px;
-	padding: 0 12px 0 0;
-	width: 108px;
-	height: 19px;
-	text-decoration: none;
+#baseQuickLinks .quick {
+	font-size: 95%;
+	margin: 0;
+	width: 124px;
 }
 
-span.hits a:hover {
-	text-decoration: none;
+.quickLinksNoScript {
+	margin: 0;
+	padding: 0 0 0 24px;
+	background: url(/images/quicklinks_icon.gif) no-repeat;
+	background-position: 0 2px;
 }
 
-#searchReset {
-	position: absolute;
-	top: 34px;
-	right: 10px;
+/* Layout mastertemplate
+   -----------------------------------------------------------------------------
+*/
+
+#mainWrapperBg {
+	position: relative;
+	margin:0;
+	padding: 0;
+	/*width: 996px; *//* der IE6 braucht hier 977px statt 974px */
+	/*background-color: #e4e4da;*/
+	/*border-right:1px solid #ccc;
+	border-bottom:1px solid #ccc;*/
 }
 
-#searchReset a {
-	color: #fff;
+#mainWrapper {
+	position: relative;
+	margin: 0 auto;
+	padding: 0;
+	/*width: 996px; *//* der IE6 braucht hier 977px statt 974px */
+	width: 996px;
+	background:#f1f1eb url(/images/archiv_mainWrapper_bg.gif) left repeat-y;
+	/*border-right:1px solid #fff;*/
+	border-bottom:1px solid #fff;
+}
+
+*html #mainWrapper { /* nur fuer IE 5.5 - 6.x */
+	height: 150px;  /* Mindesthoehe des Inhaltsbereichs */
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+#mainWrapperClear {
+	clear: both;
+	/* height: 0;
+	overflow: hidden; */ /* funktioniert nicht in Mozilla 1.3 und Netscape 6.3 */
+}
+
+/* Layout fuNavigationLeft
+   -----------------------------------------------------------------------------
+*/
+
+/*#baseNavigationContainer {
+	float: left;
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	line-height: 120%;
+	overflow: hidden;
+	width: 194px;
+}*/
+
+/* Layout fuContent
+   -----------------------------------------------------------------------------
+*/
+
+#baseContent {
+	margin: 0;
+	float: left;
+	margin: 0;
+	padding: 20px 15px 20px 6px;
+	background-color: transparent;  /* fuer benutzerdefinierte Bildschirmeinstellungen */
+	min-height: 333px;  /* regelt variabel die Mindesthoehe des Inhaltsbereichs */
+	overflow: hidden;
+	width: 695px;
+	/*border:1px solid red;*/
+	/*voice-family: "\"}\"";
+	voice-family: inherit;
+	width: 552px;*/
+}
+
+*html #baseContent { /* nur fuer IE 5.5 - 6.x */
+	height: 333px;  /* Mindesthoehe des Inhaltsbereichs */
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+.clear{
+	clear: both;
+}
+
+/* Layout fuFooter
+   -----------------------------------------------------------------------------
+*/
+
+#baseContainerFooter {
+	position: relative;
+	width: 996px;
+	margin: 0 auto;
+	color: #666;
+	padding: 0;
+	text-align: left;
 	font-size: 85%;
+	line-height: 130%;
+	height: 30px;
 }
 
-#searchReset a:hover {
+/* Copyright */
+#baseContainerFooter div.left {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 570px;
+	padding-bottom: 10px;
+}
+
+/* Datum */
+#baseContainerFooter div.right {
+	position: absolute;
+	top: 10px;
+	left: 690px;
+	width: 168px;
+	text-align: right;
+	padding-bottom: 10px;
+}
+
+/* -----------------------------------------------------------------------------
+   Spezielle- Stilanweisungen
+   -----------------------------------------------------------------------------
+*/
+
+/* Links im div baseHeaderNavigation (home,kontakt,etc)
+   -----------------------------------------------------------------------------
+*/
+
+#baseHeaderNavigation ul {
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+
+#baseHeaderNavigation ul li {
+	margin: 0;
+	padding: 1px 0px 1px 10px;
+	list-style: none;
+	display: inline;
+	color: #990000;
+	font-size:95%;
+}
+
+#baseHeaderNavigation ul li a {
+	color: #fff;
 	text-decoration: none;
 }
 
-#baseServices p {
+#baseHeaderNavigation ul li a:hover {
+	color: #990000;
+	text-decoration: none;
+}
+
+/*#baseHeaderNavigation ul li a:visited {
+	color: #fff;
+	text-decoration: none;
+}*/
+
+/* Punkt Englisch in der Service-Navigation ist hellgrau, wenn es keine englische Seite gibt*/
+#baseHeaderNavigation .langlnk{
+	color: #ccc;
+}
+
+/* Layout fuNavigationLeft
+   -----------------------------------------------------------------------------
+   Links im div baseNavigationContainer
+   -----------------------------------------------------------------------------
+*/
+
+#baseNavigationContainer ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#baseNavigationContainer ul li {
+
+	margin: 0;
+	padding: 0;
+	font-size: 95%;
+}
+
+#baseNavigationContainer ul li a:hover {
+	color: #333;
+	background-color: #ccc;
+	border-bottom: 1px solid #fff;
+}
+
+#baseNavigationContainer ul li a.active {
+	color: #333;
+	background-color: #ccc;
+	border-bottom: 1px solid #fff;
+}
+
+/* Erste Ebene */
+#baseNavigationContainer ul li a {
+	display:block;
+	color: #666;
+	text-decoration: none;
+	width: 174px;
+	padding: 4px 10px 4px 10px;
+	border-bottom: 1px solid #fff;
 	font-weight: bold;
-	font-size: 110%;
 }
 
-.searchString {
-    color: #840f09;
-    font-weight: bold;
+#baseNavigationContainer ul li .active {
+	display:block;
+	color: #333;
+	width: 174px;
+	padding: 4px 10px 4px 10px;
+	background-color: #ccc;
+	border-bottom: 1px solid #fff;
+	font-weight: bold;
 }
 
-#searchInput {
-	width: 200px;
-	margin: 3px 0 5px 0;
+/* Zweite Ebene */
+#baseNavigationContainer ul li li {
+	font-size:100%;
 }
 
-#searchButton {
-margin: 0;
-position: absolute;
-top: 23px;
-left: 223px;
+#baseNavigationContainer ul li li a {
+	width: 164px;
+	padding: 2px 10px 2px 20px;
+	font-weight: normal;
 }
 
-.fragmentTitle {
-	border-bottom: 1px solid #f1f1eb;
-	padding: 2px 10px;
-position: relative;
+ #baseNavigationContainer ul li li .active {
+	width: 164px;
+	padding: 2px 10px 2px 20px;
+	font-weight: normal;
+	color: #333;
+	background-color: #ccc;
 }
 
-.facet_refresh {
-	position: absolute;
-	top: 4px;
-	right: 8px;
+/* Dritte Ebene*/
+ #baseNavigationContainer ul li li li a {
+	width: 154px;
+	padding: 2px 10px 2px 30px;
 }
 
-.spinner_search {
-	position: absolute;
-	top: 60px;
-	left: 113px;
+ #baseNavigationContainer ul li li li .active {
+	width: 154px;
+	padding: 2px 10px 2px 30px;
+	color: #333;
+	font-weight: normal;
 }
-    
+
+/* Banner unterhalb der Hauptnavigation links */
+#baseBannerContainer {
+	margin: 60px 0 0 21px;
+}
+
+#baseBannerContainer a, #baseBannerContainer img {
+	margin: 30px 0 0 0;
+}
+
+#baseBannerContainer a img {
+	margin: 30px 0 0 0;
+}
+
+/* Layout fuContent
+   -----------------------------------------------------------------------------
+   Layout fuNavigationToRoot
+   -----------------------------------------------------------------------------
+*/
+
+#baseContainerNavigationToRoot {
+	float: left;
+	font-size:	90%;
+	line-height: 120%;
+	width: 720px;
+	padding: 0;
+	margin: 15px 0 0px 0;
+}
+
+/* Links im div baseNavigationToRoot
+   -----------------------------------------------------------------------------
+*/
+
+.baseNavigationToRoot {
+	color: #000;
+}
+
+.baseNavigationToRoot a {
+	color: #666;
+}
+
+.baseNavigationToRoot a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.baseNavigationToRoot a:visited {
+	color: #666;
+	text-decoration: none;
+}
+
+/* Icons: "Seite versenden" und "Seite drucken"
+   -----------------------------------------------------------------------------
+*/
+
+#baseIcons {
+	float: right;
+	margin: -2px 0 10px 10px;
+	padding: 0;
+}
+
+#baseIcons a:link, #baseIcons a:hover, #baseIcons a:active, #baseIcons a:visited {
+	text-decoration: none;
+}
+
+#baseIcons img.sendLink {
+	margin: 0 5px 0 0;
+}
+
+
+#basePrintPreview { /* dieses div wird nur in der druckvorschau angezeigt */
+	display:none;
+}
+
+/* zum Positionieren von Bildern im Content */
+.imgLeft {
+	float: left;
+	margin: 10px 20px 10px 0;
+	clear: both;
+}
+
+.imgRight {
+	float: right;
+	margin: 10px 0 10px 20px;
+	clear: both;
+}
+
+/*   Layout fuNewsList  - Anzeige der Vor- und Zurueck Links
+   -----------------------------------------------------------------------------
+*/
+
+.baseNewsNavigationPrevNext {
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+
+#vor {
+	float: right;
+}
+
+#zurueck{
+	float: left;
+}
+
+/* Links im div baseContainerFooter
+   -----------------------------------------------------------------------------
+*/
+
+#baseContainerFooter a:link {
+	color: #666;
+	text-decoration: none;
+}
+
+#baseContainerFooter a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+#baseContainerFooter a:visited {
+	color: #666;
+	text-decoration: none;
+}
+
+/* Anfang baseContainerRight */
+
+#baseContainerRight {
+	float: left;
+	margin: 0;
+	/*padding: 0px 10px 0 10px;*/
+	padding: 0;
+	overflow: hidden;
+	width: 280px;
+}
+
+.baseListBox {
+	line-height: 130%;
+	/*width: 219px;*/
+	/*margin: 10px 0 10px 0;*/
+	margin: 0;
+	padding: 0;
+	color: #666;
+	/* overflow: hidden; */ /* optional */
+}
+
+.baseListBox h2.baseListBoxTitle{
+	font-weight: bold;
+	font-size: 100%;
+	color: #666;
+	margin: 0px 0 8px 0;
+	/*border-bottom: 1px solid #ccc;*/
+	padding: 0 0 3px 0;
+	border-bottom: 1px solid #b2afa1;
+}
+
+.baseListBox h2 {
+	font-weight: bold;
+	font-size: 100%;
+	color: #8b0f09;
+	margin: 0px 0 4px 0;
+	/*border-bottom: 1px solid #ccc;*/
+	padding: 0 0 3px 0;
+}
+
+.baseListBox h3 {
+	font-weight: normal;
+	font-size: 90%;
+	line-height: 130%;
+	color: #333;
+	margin: 6px 0 0 0;
+	padding: 0 0 0 10px;
+	background-image: url(/images/pfeil_rot_liste.gif);
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+
+.baseListBox p{
+	color: #333;
+	font-size: 90%;
+	line-height: 130%;
+}
+
+.baseListBox h3 a:link {
+	color: #990000;
+	text-decoration: none;
+}
+
+.baseListBox h3 a:visited {
+	color: #990000;
+	text-decoration: none;
+}
+
+.baseListBox h3 a:hover {
+	color: #990000;
+	text-decoration: underline;
+}
+
+.baseListBox .facet-field {
+    padding: 0;
+}
+
+.baseListBox .facet-count {
+    color:#666666;
+    font-size:80%;
+}
+
+.baseListBox li a:link {
+	color: #990000;
+	text-decoration: none;
+}
+
+.baseListBox li a:visited {
+	color: #990000;
+	text-decoration: none;
+}
+
+.baseListBox li a:hover {
+	color: #990000;
+	text-decoration: underline;
+}
+
+.baseListBox fieldset {
+    border: none;
+}
+
+.baseListItemDate {
+	font-size: 90%;
+	color: #666;
+	font-weight: normal;
+	margin: 2px 0 10px 0;
+	padding: 0 0 0 10px;
+}
+
+.baseListItemAbstract {
+	margin: 4px 0 2px 0;
+	padding: 0 0 0 10px;
+}
+
+.baseListItemAbstract p {
+	margin: -4px 0 -3px 0;
+}
+
+.baseListBox ul {
+	margin: 0;
+	padding: 0px 0 8px 0;
+	width: 280px;
+}
+
+.baseListBox ul li {
+	line-height: 130%;
+  	margin: 0;
+	padding: 0 0 0 12px;
+    color:#990000;
+	background-repeat: no-repeat;
+	background-position: 10px 4px;
+}
+
+.baseListItemTermin {
+	font-weight: bold;
+	margin-top: 2px;
+	padding: 0 0 0 10px;
+	color: #666;
+}
+
+.weiter {
+	padding: 0 0 0 10px;
+	font-size: 90%;
+	line-height: 120%;
+}
+
+/* Ende baseContainerRight */
+
+.imgBlockRight{
+	float:right;
+	margin:8px 0 8px 20px;
+	padding:2px;
+/*border:1px solid #ccc;
+background-color: #f4f4f4;*/
+/*max-width: 200px;*/
+}
+.imgBlockRight h6{
+	width:180px;
+	color:#333;
+}
+.imgBlockRight img{
+	border:1px solid #ccc;
+	background-color: #f4f4f4;
+	padding:2px;
+}
+
+/*
+	Expand
+------------------------------------------------------------------------------------
+*/
+
+.expand_wrapper {
+	background: #f6f6f6;
+	padding: 10px;
+}
+
+.expand_title {
+	position:relative;
+	border: 1px solid #ccc;
+	background: #fff;
+	height: 21px;
+	margin-top:5px;
+	cursor:pointer;
+}
+
+.expand_arrow {
+	float: left;
+}
+
+.expand_label {
+	color: #333;
+	font-weight: normal;
+	padding: 3px 0 0 12px;
+	margin: 0 0 0 0;
+}
+
+.expand_block {
+	position:relative;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	margin: 0;
+	padding: 10px;
+	background: #fff;
+	cursor:auto;
+}
+
+/* Clearing floats without extra markup
+   Based on How To Clear Floats Without Structural Markup by PiE
+   [http://www.positioniseverything.net/easyclearing.html]
+ */
+
+.clearfix:after, .container:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix, .container {display: inline-block;}
+* html .clearfix,
+* html .container {height: 1%;}
+.clearfix, .container {display: block;}
+
+/* Regular clearing
+   apply to column that should drop below previous ones. */
