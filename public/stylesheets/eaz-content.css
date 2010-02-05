@@ -1,21 +1,21 @@
 /* @override http://10.211.55.3:3000/stylesheets/eaz-content.css?1260354827 */
 
-/*	
+/*
 	-----------------------------------------------------------------------------
 	Freie Universitaet Berlin:
 	Stilvorlagen fuer spezielle Elemente im Contentbereich
 
-	Autor: CeDiS, http://www.cedis.fu-berlin.de, cms@cedis.fu-berlin.de	
+	Autor: CeDiS, http://www.cedis.fu-berlin.de, cms@cedis.fu-berlin.de
 	Datum: 02.06.2008
 	-----------------------------------------------------------------------------
 
 
 	Update 12.01.2009: Expand-Klasse fuer Ausklapp-Elemente bei Interviews
-	Update 19.01.2009: Klassen fuer Archiv Metadaten, abstract Klasse 
+	Update 19.01.2009: Klassen fuer Archiv Metadaten, abstract Klasse
 */
 
 
-/* 
+/*
 	Mitarbeiterseiten
 ------------------------------------------------------------------------------------
 */
@@ -45,7 +45,7 @@
 }
 
 /*
-Spezielle Anweisungen fur die Positionierung von Bildern im Inhaltsbereich 
+Spezielle Anweisungen fur die Positionierung von Bildern im Inhaltsbereich
 -------------------------------------------------------------------------------------------------------------
 */
 
@@ -217,7 +217,7 @@ h5 {
 }
 
 .containerVideo table td.itemselection {
-	text-align: right;	
+	text-align: right;
 }
 
 #language_select {
@@ -227,7 +227,7 @@ h5 {
 }
 
 #language_select .captions_orig {
-	float: left;	
+	float: left;
 	margin-right: 10px;
 }
 
@@ -310,8 +310,8 @@ h5 {
 
 /* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
 
-.contentGallery { 
-	display: block; 
+.contentGallery {
+	display: block;
 	width: 100%;
 	margin: 0;
 	padding: 0;
@@ -320,15 +320,15 @@ h5 {
 	position: relative;
 }
 
-.contentGallery img {	
+.contentGallery img {
 	position: absolute;
 	bottom: 0;
 	left: 0;
 }
 
-.contentGallery h6 {	
+.contentGallery h6 {
 	color: #666;
-	margin: 0 0 5px 10px;	
+	margin: 0 0 5px 10px;
 }
 
 .contentGallery h6 a:link, .contentGallery h6 a:visited {
@@ -360,7 +360,7 @@ a.startGallery:hover, a.startGallery:active {
 
 /* Formatierung fuer Listenausgaben */
 .teaserList {
-	width: 729px;
+	width: 710px;
 	padding: 0px;
 	overflow: hidden;
 	clear: left;
@@ -375,7 +375,7 @@ a.startGallery:hover, a.startGallery:active {
 	width: 340px;
 	overflow: hidden;
 	float:left;
-	margin: 0 20px 20px 0;
+	margin: 0 15px 20px 0;
 }
 
 .baseContainerTeaserImage{
@@ -417,12 +417,12 @@ a.startGallery:hover, a.startGallery:active {
 .baseContainerTeaserExcerpts .transcript {
 	color: #666;
 	font-size: 85%;
-	line-height: 1.4em;	
+	line-height: 1.4em;
 }
 
 .baseContainerTeaserExcerpts a {
 	font-size: 85%;
-	line-height: 1.4em;	
+	line-height: 1.4em;
 }
 
 .baseContainerTeaserText h3, .baseContainerTeaserText ul{
@@ -442,7 +442,7 @@ a.startGallery:hover, a.startGallery:active {
        line-height:130%;
 }
 
-/* 
+/*
  Textformatierung Abstract (Anzeige in Normalgroesse und fett egal was gesetzt ist)
  ------------------------------------------------------------------------------
 */
