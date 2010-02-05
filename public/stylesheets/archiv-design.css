@@ -169,9 +169,10 @@ body {
 
 #baseLogout {
     position: absolute;
-    top: 50px;
-    right:200px;
+    top: 2px;
+    right:0px;
     font-size:80%;
+    text-align:right;
 }
 
 #baseLogout #submit {
