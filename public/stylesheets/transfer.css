@@ -2,8 +2,9 @@
 
 #fragmentOverview {
 	float: left;
-	width: 260px;
-	padding: 0 10px 0 10px;
+    clear: both;
+	width: 270px;
+	padding: 0 10px 0 0;
 	margin: 0;
 }
 
@@ -38,65 +39,49 @@
 
 #tabsOverview ul {
 	margin: 0;
-	padding: 0;	
+	padding: 0;
+    width: 270px;
+    background-color: #fff;
 }
 
 #tabsOverview ul li {
-	border: 1px solid #ac3131;
-	padding:0 0 0 10px;
+	padding:0 20px;
 	height: 22px;
 	float: left;
-	background-color: #8b0f09;
+	background-color: #e4e4da;
 	cursor: pointer;
 	font-size:95%;
 	list-style: none;
 	background-image:none;
 }
 
-#tabsOverview li p{
-	padding:2px 0 0 0;
-	color: #999;
+#tabsOverview #tabForcedLabor {
+    float: right;
 }
 
-#tabsOverview li:hover {
-	background-color: #fff;
-	color: #8b0f09;
+#tabsOverview li p{
+	padding:2px 0 0 0;
+	color: #9f1313;
+    font-weight: bold;
 }
 
 #tabsOverview li:hover p{
-	color: #8b0f09;
+	color: #990000;
 }
 
 #tabsOverview li.active {
-	background-color: #8b0f09;
-	color: #fff;
-}
-
-#tabsOverview li.active p {
-	color: #fff;
+	background-color: #fff;
 }
 
 #tabsOverview  p {
 	color: #999;
 }
 
-#tabBiography {
-	width: 81px;	
-}
-
-#tabHeadings {
-	width: 81px;	
-}
-
-#tabSegments {
-	width: 81px;	
-}
-
 #captions {
   background-color: #fff;
   padding: 10px;
   text-align: left;
-  height: 108px;
+  height: 113px;
   overflow: hidden;
 }
 

@@ -64,19 +64,22 @@
 
     <% end %>
 
-    <div id="language_select">
-      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
-      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
-      <div class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></div>
-      <div class="itemselection">
+    <div class="playerControl">
+        <div id="language_select">
+            <a class="captions_orig" href="javascript:current_player.translateCaptions(false);"><%= @interview.language.downcase %></a>
+            <a class="captions_trans" href="javascript:current_player.translateCaptions(true);">deutsch</a>
+        </div>
+        <div class="volume">:<| # # # # # #</div>
+
+        <div class="interviewinfo"><%= @interview.video ? 'Video' : 'Audio' %>: <%= "#{@interview.duration.minimal}" %></div>
+        <div class="itemselection">
           Band:
           <select id="player_item" name="player_item" onChange="current_player.changeItem(this.value);">
           <% @interview.tapes.count.times do |item| %>
             <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
           <% end %>
           </select>
-      </div>
-      <div class="volume">#</div>
+        </div>
     </div>
 
     <div id="captions" class="captions_original"></div>

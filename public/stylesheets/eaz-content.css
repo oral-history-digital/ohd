@@ -140,7 +140,18 @@ h5 {
 
 .intervieweeTitle {
 	width: 100%;
-	margin: 0 0 15px 0;
+    float: left;
+	margin: 0 0 20px 0;
+    vertical-align: bottom;
+}
+
+.intervieweeTitle * {
+    float: left;
+    width: auto !important;
+    margin-right: 0.33em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    line-height: 18px;
 }
 
 
@@ -219,15 +230,44 @@ h5 {
 	text-align: right;
 }
 
-#language_select {
-	background: #d8d7d0;
-	padding: 0 10px 7px 10px;
-	color: #666;
+.containerVideo .playerControl {
+    float: left;
+	background: #990000;
+	padding: 0;
+	color: #999;
+    width: 100%;
+    height: 20px;
+    font-size: 11px;
+}
+
+.playerControl div {
+    float: left;
+    display: inline-block;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 2px 0;
+}
+
+.playerControl a {
+    color: #fff;
 }
 
 #language_select .captions_orig {
 	float: left;
 	margin-right: 10px;
+}
+
+.playerControl .itemselection {
+    color: #fff;
+    float: right;
+}
+
+.playerControl select {
+    background-color: #990000;
+    color: #fff;
+    height: 1.4em;
+    font-size: 11px !important;
+    border: 1px solid #a31a1a !important;
 }
 
 /* End Tabs */
@@ -237,67 +277,18 @@ h5 {
 #fragmentOverview .container {
     background: #fff;
 	padding: 10px;
-	height: 405px;
+	height: 431px;
     display: none;
+    position: relative;
 }
 
 #fragmentOverview .container.active {
     display: block;
 }
 
-/* Segments Container */
-
-#containerSegments {
-	background: #fff;
-	padding: 10px;
-	height: 405px;
-}
-
-/* Headings Container */
-
-#containerHeadings {
-	/*position: relative;*/
-	background: #fff;
-	padding: 10px;
-	height: 405px;
-}
-
-/* Biographie Container */
-
-#containerBiography {
-	background: #fff;
-	padding: 10px;
-	height: 405px;
-}
-
-#fragmentBiography {
-	float: left;
-	width: 280px;
-	padding: 0 10px 0 10px;
-	margin: -22px 0 0 0;
-}
-
-#fragmentBiography h1{
-	padding: 0px;
-	margin: 0px;
-}
-
-#fragmentBiography table{
-	padding-top: 0px;
-	margin-top: 0px;
-}
-
-#fragmentBiography th{
-	padding: 8px 0 0 0;
-}
-
-#fragmentBiography td{
-	padding: 0;
-}
-
-#fragmentBiography td ul{
-	padding-top: 0px;
-	margin-top: 0px;
+.container #interviewDocuments {
+    position: absolute;
+    bottom: 25px;
 }
 
 /* weitere Informationen Container */

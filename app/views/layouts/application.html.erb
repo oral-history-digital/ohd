@@ -54,7 +54,6 @@
                 <%= link_to "Deutsch", :root, :title => "Deutsche Version" %>
               <% end %>
             </li>
-            <li><%= link_to (t :archive), :root, :title => "Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot;" %></li>
             <li><%= link_to (t :map), collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
             <li><%= link_to (t :terms_of_use), home_path(:page => "terms_of_use") %></li>
             <li><%= link_to (t :contact), home_path(:page => "contact"), :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
@@ -72,13 +71,13 @@
       <!-- Ende Identitätsbereich -->
 
       <div id="baseLogout" class="portlet logoutPortlet">
-          <form action="/PM/zwangsarbeit-archiv/PM/index.html/0/000000037400092f706f72746c6574737400066c6f676f75747400222f7a77616e67736172626569742d6172636869762f504d2f696e6465782e68746d6c/-/-/com.infopark.pm.portlet.request.ActionUrl" method="post">
+          <form action="" method="post">
             <fieldset>
               <legend>Abmelden</legend>
-              <p id="logoutUserLogin">Benutzername</p>
-              <input type="hidden" name="com.infopark.action" value="logout" />
-              <input type="hidden" name="edu.cedis.logoutRedirect" value="http://www.zwangsarbeit-archiv.de/" />
-              <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+              <p id="logoutUserLogin">
+                hahoffmann@cedis.fu-berlin.de
+                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+              </p>
             </fieldset>
           </form>
       </div>
