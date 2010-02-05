@@ -184,7 +184,7 @@ body {
     cursor:pointer;
 }
 
-#baseLogout #submit:hover, #submit:focus {
+#baseLogout #submit:hover,#baseLogout #submit:focus {
     color:#fff;
     background-color:transparent;
     cursor:pointer;
@@ -351,8 +351,8 @@ body {
 	overflow-y: visible;
 }
 
-.clear{
-	clear: both;
+.clear{ clear: both;
+	height:15px;
 }
 
 /* Layout fuFooter
