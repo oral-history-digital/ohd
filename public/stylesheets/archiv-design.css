@@ -176,8 +176,16 @@ body {
 }
 
 #baseLogout #submit {
+    float:right;
+    width:50px;
+    padding-top: 2px;
     color:#840f09;
-    /*background-color:#840F09;*/
+    cursor:pointer;
+}
+
+#baseLogout #submit:hover, #submit:focus {
+    color:#fff;
+    background-color:transparent;
     cursor:pointer;
 }
 
