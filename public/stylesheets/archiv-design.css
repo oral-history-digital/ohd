@@ -64,7 +64,7 @@ body {
 #baseHeaderNavigation {
 	position: absolute;
 	top: 10px;
-	right: 0;
+	left: 300px;
 	margin: 0;
 	padding: 0;
 	font-size: 100%;
@@ -169,12 +169,14 @@ body {
 
 #baseLogout {
     position: absolute;
-    top: 52px;
-    right:249px;
+    top: 50px;
+    right:200px;
+    font-size:80%;
 }
 
 #baseLogout #submit {
-    background-color:#840F09;
+    color:#840f09;
+    /*background-color:#840F09;*/
     cursor:pointer;
 }
 
@@ -399,6 +401,7 @@ body {
 	list-style: none;
 	display: inline;
 	color: #990000;
+	font-size:95%;
 }
 
 #baseHeaderNavigation ul li a {
