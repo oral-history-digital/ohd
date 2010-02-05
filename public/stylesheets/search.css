@@ -193,7 +193,7 @@ span.hits a:hover {
 #searchInput {
 	border:1px solid #666;
 	width: 200px;
-	margin: 20px 0 5px 0;
+	margin: 20px 0 11px 0;
 }
 
 #searchButton {
@@ -204,7 +204,6 @@ right: 25px;
 }
 
 .fragmentTitle {
-	height: 60px;
 	border-bottom: 1px solid #f1f1eb;
 	padding: 2px 10px;
 position: relative;
