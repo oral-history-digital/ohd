@@ -84,6 +84,24 @@
 	color: #999;
 }
 
+/*Textformatierung "Interview / Daten zur Zwangsarbeit" */
+
+#containerInterview ul.data li, #containerForcedLabor ul.data li {
+	padding:0 0 2px 10px;
+}
+
+#containerInterview ul.data{
+list-style-type:none;
+}
+
+.data li .label{
+	color:#999281;
+	display:block;
+	font-size:85%;
+	margin-bottom:-4px;
+}
+
+
 #captions {
   background-color: #fff;
   padding: 10px;
