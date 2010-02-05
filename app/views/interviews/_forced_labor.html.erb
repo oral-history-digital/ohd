@@ -1,3 +1,42 @@
 <div id="containerForcedLabor"  class="container">
-    <h1>hier kommen die Daten...</h1>
+    <ul class="data">
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:forced_labor_groups) %></span>
+        <span class="value"><%= forced_labor.forced_labor_groups.map{|f| t(f, :scope => 'categories.groups')}.join(', ') %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
+        <span class="value"><%= forced_labor.deportation_location %>&nbsp;<%= forced_labor.deportation_date %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
+        <span class="value"><%= forced_labor.forced_labor_fields.map{|f| t(f, :scope => 'categories.fields')}.join(', ') %></span>
+      </li>
+      <% unless forced_labor.forced_labor_details.blank? %>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
+        <span class="value"><%= t(forced_labor.forced_labor_details, :scope => 'categories.details') %></span>
+      </li>
+      <% end %>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:forced_labor_locations) %></span>
+        <span class="value"><%= forced_labor.forced_labor_locations.join(', ') %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
+        <span class="value"><%= forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.details')}.join(', ') %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:punishment) %></span>
+        <span class="value"><%= forced_labor.punishment || 'keine Angabe' %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
+        <span class="value"><%= forced_labor.liberation_date || 'unbekannt' %></span>
+      </li>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:return_location) %></span>
+        <span class="value"><%= forced_labor.return_location || 'unbekannt' %></span>
+      </li>
+    </ul>
 </div>

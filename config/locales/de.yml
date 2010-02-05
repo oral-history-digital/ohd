@@ -13,6 +13,18 @@ de:
   translated: 'übersetzt'
   all: 'alle'
 
+  tasks:
+    interviewers: 'Interviewf&uuml;hrung'
+    transcriptors: 'Transkription'
+    translators: '&Uuml;bersetzung'
+    proofreaders: 'Lektorat'
+    segmentators: 'Segmentierung'
+    researchers: 'Erschlie&szlig;ung'
+
+  status:
+    translated: '&Uuml;bersetzung ins Deutsche vorhanden'
+    not_translated: 'keine &Uuml;bersetzung vorhanden'
+
   activerecord:
     interview:
       one: 'Interview'
@@ -20,20 +32,34 @@ de:
     tape:
       one: 'Band'
       other: 'Bänder'
+    collection:
+      one: 'Teilsammlung'
+      other: 'Teilsammlungen'
 
     attributes:
       interview:
         person_name: 'Name'
+        archive_id: 'Archiv-ID'
         forced_labor_groups: 'Gruppe'
         forced_labor_fields: 'Einsatzbereich'
         forced_labor_habitations: 'Unterbringung / Inhaftierung'
+        forced_labor_locations: 'Orte der Zwangsarbeit'
+        deportation: 'Angaben zur Deportation'
+        punishment: 'Strafma&szlig;namen'
+        liberation_date: 'Datum der Befreiung'
+        return_location: 'R&uuml;ckkehr-Ort'
         countries: 'Wohnort (Land)'
-        interviewers: 'Interview'
+        interviewers: 'Interviewf&uuml;hrung'
         transcriptors: 'Transkription'
         translators: 'Übersetzung'
-        researchers: 'Erschließung'
+        researchers: 'Erschlie&szlig;ung'
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
+        language: 'Sprache'
+
+  categories:
+    groups:
+      'Ostarbeiter/Ostarbeiterin': 'Ostarbeiter/Ostarbeiterin'
 
   forced_labor_group: 'Gruppe'
   forced_labor_groups: 'Gruppen'
