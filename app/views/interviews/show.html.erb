@@ -7,10 +7,10 @@
   <div id="tabsOverview">
 
     <ul>
-      <li id="tabInterview" class="<%= @interview.has_headings ? '' : 'active' %>">
+      <li id="tabInterview" class="active">
         <p onclick="showInterviewTab('tabInterview');">Interview</p>
       </li>
-      <li id="tabForcedLabor"<%= @interview.has_headings ? " class='active'" : " style=\"display: none;\"" %>>
+      <li id="tabForcedLabor">
         <p onclick="showInterviewTab('tabForcedLabor');">Daten zur Zwangsarbeit</p>
       </li>
       <!--
