@@ -167,12 +167,12 @@ span.hits a:hover {
 
 #searchReset {
 	position: absolute;
-	top: 34px;
+	top: 4px;
 	right: 10px;
 }
 
 #searchReset a {
-	color: #fff;
+	color: #8b0f09;
 	font-size: 85%;
 }
 
@@ -191,18 +191,20 @@ span.hits a:hover {
 }
 
 #searchInput {
+	border:1px solid #666;
 	width: 200px;
-	margin: 3px 0 5px 0;
+	margin: 20px 0 5px 0;
 }
 
 #searchButton {
 margin: 0;
 position: absolute;
-top: 23px;
-left: 223px;
+top: 22px;
+right: 25px;
 }
 
 .fragmentTitle {
+	height: 60px;
 	border-bottom: 1px solid #f1f1eb;
 	padding: 2px 10px;
 position: relative;
