@@ -211,9 +211,9 @@ SQL
         paginate :page => @page, :per_page => RESULTS_PER_PAGE
         order_by :person_name, :asc
 
-        adjust_solr_params do |params|
-          params.delete(:defType)
-        end
+#        adjust_solr_params do |params|
+#          params.delete(:defType)
+#        end
       end
       @hits = @search.total
       @results = @search.results
@@ -268,9 +268,9 @@ SQL
 
         order_by :timecode, :asc
 
-        adjust_solr_params do |params|
-          params.delete(:defType)
-        end
+#        adjust_solr_params do |params|
+#          params.delete(:defType)
+#        end
       end
 
       puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."

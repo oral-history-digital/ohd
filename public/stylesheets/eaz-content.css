@@ -192,12 +192,11 @@ h5 {
 }
 
 .containerVideo {
-	clear:both;
 	padding: 0px;
 	/*border: 1px solid #8b0f09;*/
 	width:400px;
 	float: left;
-	margin-right: 10px;
+	/* margin-right: 10px; */
 }
 
 .containerVideo table {
@@ -232,6 +231,19 @@ h5 {
 }
 
 /* End Tabs */
+
+
+/* Container */
+#fragmentOverview .container {
+    background: #fff;
+	padding: 10px;
+	height: 405px;
+    display: none;
+}
+
+#fragmentOverview .container.active {
+    display: block;
+}
 
 /* Segments Container */
 

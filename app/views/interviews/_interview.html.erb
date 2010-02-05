@@ -1,0 +1,11 @@
+<div id="containerInterview" class="active container">
+  
+    <%= render :partial => "transcript", :object => @interview %>
+
+    <ul id="interviewDocuments">
+      <li><a href="za004_bg.pdf" target="_blank">Biographie zu <%= @interview.short_title %> (pdf)</a></li>
+      <li><a href="za004_tr.pdf" target="_blank">Transkript zu <%= @interview.short_title %> (pdf)</a></li>
+      <li><a href="za004_tr.pdf" target="_blank">Übersetzung zu <%= @interview.short_title %> (pdf)</a></li>
+    </ul>
+
+</div>

@@ -33,6 +33,8 @@ DEF
     string :heading, :stored => true
     string :timecode
     text :joined_transcript_and_translation
+    #text :transcript
+    #text :translation, :boost => 2
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end

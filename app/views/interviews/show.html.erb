@@ -7,17 +7,19 @@
   <div id="tabsOverview">
 
     <ul>
-      <li id="tabBiography" class="<%= @interview.has_headings ? '' : 'active' %>">
-        <p onclick="showInterviewTab('tabBiography');">Biografie</p>
+      <li id="tabInterview" class="<%= @interview.has_headings ? '' : 'active' %>">
+        <p onclick="showInterviewTab('tabInterview');">Interview</p>
       </li>
-      <li id="tabHeadings"<%= @interview.has_headings ? " class='active'" : " style=\"display: none;\"" %>>
-        <p onclick="showInterviewTab('tabHeadings');">Überschriften</p>
+      <li id="tabForcedLabor"<%= @interview.has_headings ? " class='active'" : " style=\"display: none;\"" %>>
+        <p onclick="showInterviewTab('tabForcedLabor');">Daten zur Zwangsarbeit</p>
       </li>
+      <!--
       <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
       <li id="tabSegments"<%= !@search.matching_segments_for(@interview.archive_id).empty? ? "" : " style=\"display: none;\"" %>>
         <p onclick="showInterviewTab('tabSegments');">Ausschnitte</p>
       </li>
       <% end %>
+      //-->
       <% javascript_tag do %>
 
         var interviewTabs = $$('#tabsOverview ul li');
@@ -27,10 +29,10 @@
             var container = $(tab.id.sub('tab','container'));
             if(tab.id == id) {
               tab.addClassName('active');
-              container.show();
+              container.addClassName('active');
             } else {
               tab.removeClassName('active');
-              container.hide();
+              container.removeClassName('active');
             }
           });
         };
@@ -42,9 +44,9 @@
 
   <br class="clear" />
 
-  <%= render :partial => "biography" %>
+  <%= render :partial => "interview" %>
 
-  <%= render :partial => "headings" %>
+  <%= render :partial => "forced_labor" %>
 
   <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
   <%= render :partial => "segments" %>

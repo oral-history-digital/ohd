@@ -1,8 +1,6 @@
 <%= javascript_include_tag "/jw_player/lib/jwplayer_access" %>
 <!--<div id="leftColumn">-->
 
-<div style="float: left;">
-
   <!--
   <div id="tabsVideo">
     <ul>
@@ -66,26 +64,22 @@
 
     <% end %>
 
-    <div id="captions" class="captions_original"><%= render :partial => "transcript", :object => @interview %></div>
-    
-    <table cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></td>
-        <td class="itemselection">
+    <div id="language_select">
+      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
+      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+      <div class="interviewinfo"><b><%= @interview.video ? 'Videointerview' : 'Audiointerview' %></b>, <%= @interview.language %>, <%= "#{@interview.duration.minimal}" %></div>
+      <div class="itemselection">
           Band:
           <select id="player_item" name="player_item" onChange="current_player.changeItem(this.value);">
           <% @interview.tapes.count.times do |item| %>
             <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
           <% end %>
           </select>
-        </td>
-      </tr>
-    </table>
-
-    <div id="language_select">
-      <div class="captions_orig"><strong>Transkript:</strong> <input name="langauge" value="original" type="radio" checked onClick="current_player.translateCaptions(false)" /> <%= @interview.language %></div>
-      <div class="captions_trans"><input name="langauge" value="translation" type="radio" onClick="current_player.translateCaptions(true)" /> Deutsche Übersetzung</div>
+      </div>
+      <div class="volume">#</div>
     </div>
+
+    <div id="captions" class="captions_original"></div>
 
     <script type="text/javascript">
 
@@ -138,4 +132,3 @@
 
     </script>
 	</div>
-</div>
