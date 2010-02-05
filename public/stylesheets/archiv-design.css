@@ -760,13 +760,14 @@ body {
 .baseListBox ul {
 	margin: 0;
 	padding: 0px 0 8px 0;
-	width: 280px;
+	width: 262px;
 }
 
 .baseListBox ul li {
+	text-indent:-24px;
 	line-height: 130%;
   	margin: 0;
-	padding: 0 0 0 12px;
+	padding: 0 0 0 32px;
     color:#990000;
 	background-repeat: no-repeat;
 	background-position: 10px 4px;
