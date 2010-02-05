@@ -2,9 +2,10 @@
 
 #fragmentOverview {
 	float: left;
-    clear: both;
-	width: 270px;
-	padding: 0 10px 0 0;
+	font-size:95%;
+	clear: both;
+	width: 280px;
+	padding: 0 15px 0 0;
 	margin: 0;
 }
 
@@ -45,19 +46,23 @@
 }
 
 #tabsOverview ul li {
-	padding:3px 20px;
+	padding:3px 0px;
+	text-indent:20px;
 	height: 21px;
 	float: left;
 	background-color: #e4e4da;
 	cursor: pointer;
-	font-size:95%;
 	list-style: none;
 	background-image:none;
 }
 
+#tabsOverview #tabInterview {
+	width:95px;
+}
+
 #tabsOverview #tabForcedLabor {
     float: right;
-    width:148px;
+    width:185px;
 }
 
 #tabsOverview li p{
