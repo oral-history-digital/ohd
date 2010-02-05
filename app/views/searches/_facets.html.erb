@@ -1,3 +1,11 @@
+<div id="searchReset">
+  <% if facets.hits < Interview::NUMBER_OF_INTERVIEWS %>
+    <%# reload the complete page if we are in the search result view %>
+    <% reset_path = (request.path == searches_path) ? searches_path : new_search_path  %>
+    <%= link_to_remote(content_tag('span', 'zur&uuml;cksetzen') + image_tag(image_path 'suche_reset1.gif'), { :url => reset_path, :method => :get, :onclick => "beforeSubmit();" }) %>
+  <% end %>
+</div>
+
 <div class="baseListBox">
 
   <% form_action = @search_update_contents ? searches_path : new_search_path %>
@@ -13,10 +21,9 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
-        <span class="searchString">Volltextsuche</span>
-        <% search_facets.object.fulltext ||= t('search_term') %>
+        <% search_facets.object.fulltext = t('search_term') if search_facets.object.fulltext.blank? %>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('suchpfeil_rund.gif'), :onclick => "submitViaAjax(); false;" %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('suchpfeil_quad.gif'), :onclick => "submitViaAjax(); false;" %>
         <%= hidden_field_tag 'search[open_category]', '', :id => 'open_category' %>
     </div>
 
