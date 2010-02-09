@@ -144,17 +144,20 @@
 
 span.hits {
 	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
-	float:left;
 	display: block;
-	padding: 15px 12px 0 0;
+	padding: 0 12px 0 0;
 	width: 108px;
 	height: 19px;
 }
 
 span.hits a {
 	color: #fff;
+	display: block;
 	background: url(/images/suchpfeil.gif) top right no-repeat;
 	background-position: 103px 4px;
+	padding: 0 12px 0 0;
+	width: 108px;
+	height: 19px;
 	text-decoration: none;
 }
 
@@ -164,7 +167,7 @@ span.hits a:hover {
 
 #submit_search {
 	float:right;
-	margin-right:10px;
+	margin:40px 10px 0 0;
 }
 
 #searchReset {
@@ -183,9 +186,7 @@ span.hits a:hover {
 }
 
 #baseServices p {
-	float:left;
 	font-weight: bold;
-	padding-top:18px;
 	font-size: 110%;
 }
 
@@ -224,11 +225,6 @@ position: relative;
 }
 
 /* Ebene Video */
-
-#back_to_search {
-	margin:40px 10px 0 0;
-	float:right;
-}
 
 #interviewContentNavigation {
 	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
@@ -270,5 +266,8 @@ position: relative;
 
 .mainheading .subheading{
 	font-size:80%;
-	padding-left:15px;
+}
+#back_to_search {
+	margin-right:10px;
+	float:right;
 }
