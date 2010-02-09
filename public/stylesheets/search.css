@@ -39,7 +39,7 @@
     margin-bottom: 0;
 }
 .baseListBox #search_facets h2.baseListBoxTitle {
-    margin-bottom: px;
+    margin-bottom:  0px;
 }
 #search_facets .fragmentTitle {
     margin-top: 4px;
@@ -219,42 +219,4 @@ position: relative;
 	position: absolute;
 	top: 60px;
 	left: 113px;
-}
-
-/* Ebene Video */
-
-#interviewContentNavigation {
-background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
-height: 600px;
-}
-
-#search_in_interview {
-padding:60px 0 0 0;
-
-}
-.fragmentTitle {
-padding-bottom:10px;
-}
-
-.fragmentTitle label {
-display:block;
-padding-top: 5px;
-color:#900;
-font-size:90%;
-font-weight:bold;
-}
-
-#interview_fulltext {
-margin-top:5px;
-width: 200px;
-border:1px solid #ccc;
-}
-
-#seach_in_interview_submit {
-float:right;
-margin:5px 30px 0 0;
-}
-
-#my-results-toggle {
-clear:right;
 }
