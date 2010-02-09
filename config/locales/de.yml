@@ -22,8 +22,13 @@ de:
     researchers: 'Erschlie&szlig;ung'
 
   status:
-    translated: '&Uuml;bersetzung ins Deutsche vorhanden'
-    not_translated: 'keine &Uuml;bersetzung vorhanden'
+    translated: '&uuml;bersetzt ins Deutsche'
+    not_translated: 'ohne &Uuml;bersetzung'
+
+  user_interface:
+    labels:
+      headings: 'Inhaltsverzeichnis'
+      my_search: 'Meine Recherche'
 
   activerecord:
     interview:
@@ -56,6 +61,7 @@ de:
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
         language: 'Sprache'
+        collection: 'Teilsammlung'
 
   categories:
     groups:

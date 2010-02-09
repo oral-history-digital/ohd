@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
     <%= render :partial => '/head' %>
-    <%= javascript_include_tag 'lightbox', :cache => true %>
-    <%= javascript_include_tag 'swfobject', :cache => true %>
+    <%= javascript_include_tag 'interview', 'lightbox', 'swfobject', :cache => true %>
 </head>
 
 <body>
@@ -52,6 +51,11 @@
 
         <div id="baseContainerRight">
             <%= render :partial => 'content', :object => @interview %>
+            <% javascript_tag do %>
+
+                var containerElems = $$('#baseContainerRight .container-toggle');
+
+            <% end %>
         </div>
 
         <div id="mainWrapperClear">&nbsp;</div>

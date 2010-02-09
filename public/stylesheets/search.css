@@ -265,6 +265,19 @@ position: relative;
 	border-bottom: 1px solid #F1F1EB;
 }
 
+#baseContainerRight .container {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#headings.container {
+    height: 480px;
+}
+
+#my-results.container {
+    height: 220px;
+}
+
 .mainheading {
 font-size:90%;
 }

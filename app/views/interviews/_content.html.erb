@@ -10,8 +10,8 @@
                                 :name => "search-in-interview",
                                 :id => "search_in_interview" } do |search| %>
 
-    <div class="fragmentTitle">
-        <label for="fulltext">Suche in &#145;<%= content %>&#146;</label>
+    <div id="interviewSearch">
+        <h2><label for="fulltext">Suche in &#145;<%= content %>&#146;</label></h2>
         <%= text_field_tag 'fulltext', t('search_term'), :id => "interview_fulltext" %>
         <%= submit_tag 'suchen', :type => :image, :src => '/images/pfeil_rot_rechts.gif', :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
         <%#= search.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
@@ -19,17 +19,23 @@
 
   <% end %>
 
+  <!--
   <div id="search-results-toggle" class="container-toggle" style="display:none;">Suchergebnisse</div>
   <div id="search-results" class="container" style="display:none;">Keine passenden Ausschnitte gefunden.</div>
+  //-->
 
   <% if content.has_headings? %>
-  <div id="headings-toggle" class="container-toggle">Inhaltsverzeichnis</div>
-  <div id="headings" class="container" style="overflow-y: scroll; overflow-x: hidden; height:480px;">
+  <div id="headings-toggle" class="open container-toggle" onclick="toggleContainer('headings-toggle', true);">
+    <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
+  </div>
+  <div id="headings" class="container">
     <%= render :partial => 'headings', :object => content %>
   </div>
   <% end %>
 
-  <div id="my-results-toggle" class="container-toggle">Meine Recherche</div>
+  <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle');">
+    <h2><%= t('my_search', :scope => 'user_interface.labels') %></h2>
+  </div>
   <div id="my-results" class="container" style="display:none;">Noch keine Rechercheergebnisse gespeichert.</div>
   
 
