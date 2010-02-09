@@ -66,12 +66,16 @@
 
     <div class="playerControl">
         <div id="language_select">
+          <% if @interview.language.downcase == 'deutsch' %>
+            <a id="original" class="captions_orig active" href="javascript:current_player.translateCaptions(false);"><%= @interview.language.downcase %></a>
+          <% else %>
             <a id="original" class="captions_orig active" href="javascript:current_player.translateCaptions(false);" onclick="$('original').addClassName('active');$('translated').removeClassName('active');"><%= @interview.language.downcase %></a>
             <% if @interview.translated? %>
             <a id="translated" class="captions_trans" href="javascript:current_player.translateCaptions(true);" onclick="$('original').removeClassName('active');$('translated').addClassName('active');">deutsch</a>
             <% else %>
             <a id="translated" class="captions_trans disabled" href="javascript:void(0);">deutsch</a>
             <% end %>
+          <% end %>
         </div>
         <div class="volume">:<| # # # # # #</div>
 

@@ -251,6 +251,7 @@ h5 {
 .playerControl a {
     color: #fff;
 	text-decoration:none;
+    outline-style: none;
 }
 
 #language_select .captions_orig, #language_select .captions_trans {
@@ -258,11 +259,20 @@ h5 {
 	padding: 0 6px;
 	background: url(/images/lang_btn_bg_n.gif);
 }
-#language_select .captions_orig:hover, #language_select .captions_trans:hover {
+#language_select .captions_orig:hover,
+#language_select .captions_trans:hover,
+#language_select .captions_orig.active,
+#language_select .captions_trans.active {
 	color:#8B0f09;
 	float: left;
 	padding: 0 6px;
 	background: url(/images/lang_btn_bg_a.gif);
+}
+
+#language_select .captions_orig.disabled,
+#language_select .captions_trans.disabled {
+    color: #999;
+    background: url(/images/lang_btn_bg_n.gif);
 }
 
 .playerControl .itemselection {
@@ -276,6 +286,7 @@ h5 {
     height: 1.4em;
     font-size: 11px !important;
     border: 1px solid #a31a1a !important;
+    outline-style: none;
 }
 
 /* End Tabs */
