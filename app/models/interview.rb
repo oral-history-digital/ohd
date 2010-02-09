@@ -48,6 +48,10 @@ DEF
     archive_id
   end
 
+  def to_s
+    short_title
+  end
+
   def media_id
     nil
   end
