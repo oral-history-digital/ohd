@@ -165,6 +165,11 @@ span.hits a:hover {
 	text-decoration: none;
 }
 
+#submit_search {
+	float:right;
+	margin-right:10px;
+}
+
 #searchReset {
 	position: absolute;
 	top: 4px;
@@ -197,10 +202,8 @@ span.hits a:hover {
 }
 
 #searchButton {
-margin: 0;
-position: absolute;
-top: 22px;
-right: 10px;
+	margin: 0 0 0 8px;
+
 }
 
 .fragmentTitle {
@@ -224,47 +227,47 @@ position: relative;
 /* Ebene Video */
 
 #interviewContentNavigation {
-background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
+	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
 
 }
 
 #search_in_interview {
-padding:60px 0 0 0;
+	padding:60px 0 0 0;
 
 }
 .fragmentTitle {
-padding-bottom:10px;
+	padding-bottom:10px;
 }
 
 .fragmentTitle label {
-display:block;
-padding-top: 5px;
-color:#8B0F09;
-font-size:90%;
-font-weight:bold;
+	display:block;
+	padding-top: 5px;
+	color:#8B0F09;
+	font-size:90%;
+	font-weight:bold;
 }
 
 #interview_fulltext {
-margin-top:5px;
-width: 200px;
-border:1px solid #ccc;
+	margin-top:5px;
+	width: 200px;
+	border:1px solid #ccc;
 }
 
 #seach_in_interview_submit {
-float:right;
-margin:5px 30px 0 0;
+	float:right;
+	margin:5px 30px 0 0;
 }
 
 .container-toggle {
-clear:right;
-height:26px;
-border-bottom: 1px solid #F1F1EB;
+	clear:right;
+	height:26px;
+	border-bottom: 1px solid #F1F1EB;
 }
 
 .mainheading .subheading{
-font-size:80%;
+	font-size:80%;
 }
 #back_to_search {
-padding-right:10px;
-float:right;
+	margin-right:10px;
+	float:right;
 }
