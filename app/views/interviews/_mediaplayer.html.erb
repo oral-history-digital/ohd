@@ -66,8 +66,8 @@
 
     <div class="playerControl">
         <div id="language_select">
-            <a class="captions_orig" href="javascript:current_player.translateCaptions(false);"><%= @interview.language.downcase %></a>
-            <a class="captions_trans" href="javascript:current_player.translateCaptions(true);">deutsch</a>
+            <a id="original" class="captions_orig" href="javascript:current_player.translateCaptions(false);" onclick="$('original').addClassName('active');$('translated').removeClassName('active');"><%= @interview.language.downcase %></a>
+            <a id="translated" class="captions_trans" href="javascript:current_player.translateCaptions(true);" onclick="$('original').removeClassName('active');$('translated').addClassName('active');">deutsch</a>
         </div>
         <div class="volume">:<| # # # # # #</div>
 
