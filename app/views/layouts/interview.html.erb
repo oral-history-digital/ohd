@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+    <%= render :partial => '/head' %>
+    <%= javascript_include_tag 'lightbox', :cache => true %>
+    <%= javascript_include_tag 'swfobject', :cache => true %>
+</head>
+
+<body>
+    <div id="headerIdentityWrapper">
+        <%= render :partial => '/header' %>
+
+        <div id="baseServices">
+            <%= render :partial => 'interviews/search', :object => @search %>
+        </div>
+
+        <hr class="divider" />
+    </div>
+
+    <div id="mainWrapper">
+
+        <div id="baseContent">
+
+            <!-- Move this to page bottom?
+            <div id="baseContainerNavigationToRoot">
+              <div class="baseNavigationToRoot">
+                <p class="info"><em>Navigationspfad:</em></p>
+                <%#= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :title => "Startseite Zwangsarbeit 1939-1945" %> &raquo;
+                <%#= link_to (t :archive), :root, :title => "Startseite Archiv" %>
+              </div>
+            </div>
+
+            <hr class="divider" />
+            <br class="clear" />
+            <hr class="divider" />
+            //-->
+
+            <a name="inhalt" accesskey="I"></a>
+
+            <div id="innerContent">
+                <%= yield %>
+            </div>
+
+            <br class="clear" />
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <br class="clear" />
+
+            <div class="clear"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div id="baseContainerRight">
+            <%= render :partial => 'content', :object => @interview %>
+        </div>
+
+        <div id="mainWrapperClear">&nbsp;</div>
+
+    </div>
+    <!-- Ende mainWrapper -->
+
+    <hr class="divider" />
+
+    <div id="baseContainerFooter">
+        <div class="left">Stand:20.01.2009</div>
+    </div>
+
+    <a name="seitenende" accesskey="u"></a>
+
+    <hr class="divider" />
+
+    <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
+
+    <div id="printlogo">
+        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
+        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+    </div>
+
+    <!-- /noindex -->
+
+</body>
+</html>

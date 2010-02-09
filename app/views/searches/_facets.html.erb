@@ -23,7 +23,7 @@
     <div class="fragmentTitle">
         <% search_facets.object.fulltext = t('search_term') if search_facets.object.fulltext.blank? %>
         <%= search_facets.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('suchpfeil_quad.gif'), :onclick => "submitViaAjax(); false;" %>
+        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts.gif'), :onclick => "submitViaAjax(); false;" %>
         <%= hidden_field_tag 'search[open_category]', '', :id => 'open_category' %>
     </div>
 

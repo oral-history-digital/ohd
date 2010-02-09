@@ -1,0 +1,48 @@
+      <div id="baseHeader">
+        <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
+        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
+          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
+        </a>
+
+        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <hr class="divider" />
+        <p class="skip">
+          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+        </p>
+
+        <hr class="divider" />
+        <h2 class="info">
+          Service-Navigation
+        </h2>
+        <div id="baseHeaderNavigation">
+          <ul>
+            <li><%= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :accesskey => "0" %></li>
+            <li>
+              <% if I18n.locale == "de" %>
+                <%= link_to "English", "/en/home/archive", :title => "English version" %>
+              <% else %>
+                <%= link_to "Deutsch", :root, :title => "Deutsche Version" %>
+              <% end %>
+            </li>
+            <li><%= link_to (t :map), collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to (t :terms_of_use), home_path(:page => "terms_of_use") %></li>
+            <li><%= link_to (t :contact), home_path(:page => "contact"), :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
+            <li><%= link_to (t :legal_notice), home_path(:page => "impressum"), :accesskey => "1" %></li>
+            <li><%= link_to (t :faq), home_path(:page => "faq_index"), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div id="baseLogout" class="portlet logoutPortlet">
+          <form action="" method="post">
+            <fieldset>
+              <legend>Abmelden</legend>
+              <p id="logoutUserLogin">
+                hahoffmann@cedis.fu-berlin.de
+                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+              </p>
+            </fieldset>
+          </form>
+      </div>

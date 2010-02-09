@@ -1,161 +1,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-  <head>
-    <meta name="generator" content="Infopark CMS Fiona; TE 6.6.1 (r17855); 0cc21e46242c142055c1cdf4136897e1c6836430654abd52" />
-    <!-- noindex -->
-    <title>Zwangsarbeit 1939-1945: Das Online-Archiv "Zwangsarbeit 1939-1945"</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
+<head>
+    <%= render :partial => '/head' %>
+</head>
 
-    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'content', 'eaz-content', 'lightbox', 'archiv-portlet', 'search', 'transfer', :cache => true %>
-    <%= stylesheet_link_tag 'print', :media => :print %>
-
-    <%= javascript_include_tag :defaults, :cache => true %>
-    <%= javascript_include_tag 'lightbox', :cache => true %>
-    <%= javascript_include_tag 'swfobject', :cache => true %>
-
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-  </head>
-
-  <body>
-    <!-- noindex -->
-
-    <!-- Anfang Identity-wrapper -->
+<body>
     <div id="headerIdentityWrapper">
-      <!-- Anfang Header -->
+        <%= render :partial => '/header' %>
 
-      <div id="baseHeader">
-        <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
-        </a>
-
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
-        <hr class="divider" />
-        <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
-        </p>
-
-        <hr class="divider" />
-        <h2 class="info">
-          Service-Navigation
-        </h2>
-        <div id="baseHeaderNavigation">
-          <ul>
-            <li><%= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :accesskey => "0" %></li>
-            <li>
-              <% if I18n.locale == "de" %>
-                <%= link_to "English", "/en/home/archive", :title => "English version" %>
-              <% else %>
-                <%= link_to "Deutsch", :root, :title => "Deutsche Version" %>
-              <% end %>
-            </li>
-            <li><%= link_to (t :map), collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
-            <li><%= link_to (t :terms_of_use), home_path(:page => "terms_of_use") %></li>
-            <li><%= link_to (t :contact), home_path(:page => "contact"), :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
-            <li><%= link_to (t :legal_notice), home_path(:page => "impressum"), :accesskey => "1" %></li>
-            <li><%= link_to (t :faq), home_path(:page => "faq_index"), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
-          </ul>
+        <div id="baseServices">
+            <%= render :partial => 'searches/search', :object => @search %>
         </div>
-      </div>
-      <hr class="divider" />
 
-      <!-- Ende Header -->
-
-      <!-- Anfang Identitätsbereich -->
-
-      <!-- Ende Identitätsbereich -->
-
-      <div id="baseLogout" class="portlet logoutPortlet">
-          <form action="" method="post">
-            <fieldset>
-              <legend>Abmelden</legend>
-              <p id="logoutUserLogin">
-                hahoffmann@cedis.fu-berlin.de
-                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
-              </p>
-            </fieldset>
-          </form>
-      </div>
-
-      <div id="baseServices">
-
-        <%= render :partial => 'searches/search', :object => @search %>
-        
-      </div>
-
-      <hr class="divider" />
-    </div><!-- Ende headerIdentityWrapper -->
-
-    <!-- /noindex -->
+        <hr class="divider" />
+    </div>
 
     <div id="mainWrapper">
 
+        <div id="baseContent">
 
-      <!-- Anfang Content -->
-      <div id="baseContent">
+            <!-- Move this to page bottom?
+            <div id="baseContainerNavigationToRoot">
+              <div class="baseNavigationToRoot">
+                <p class="info"><em>Navigationspfad:</em></p>
+                <%#= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :title => "Startseite Zwangsarbeit 1939-1945" %> &raquo;
+                <%#= link_to (t :archive), :root, :title => "Startseite Archiv" %>
+              </div>
+            </div>
 
-        <!-- Move this to page bottom?
-        <div id="baseContainerNavigationToRoot">
-          <div class="baseNavigationToRoot">
-            <p class="info"><em>Navigationspfad:</em></p>
-            <%#= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :title => "Startseite Zwangsarbeit 1939-1945" %> &raquo;
-            <%#= link_to (t :archive), :root, :title => "Startseite Archiv" %>
-          </div>
+            <hr class="divider" />
+            <br class="clear" />
+            <hr class="divider" />
+            //-->
+
+            <a name="inhalt" accesskey="I"></a>
+
+            <div id="innerContent">
+                <%= yield %>
+            </div>
+
+            <br class="clear" />
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <br class="clear" />
+
+            <div class="clear"></div>
         </div>
 
         <hr class="divider" />
-        <br class="clear" />
-        <hr class="divider" />
-        //-->
-        
-      <!-- noindex -->
-      <!-- Sprungmarke "inhalt" -->
-        <a name="inhalt" accesskey="I"></a>
-      <!-- /noindex -->
-      <!-- index:meta=index -->
-      <!-- index:unit=zwangsarbeit-archiv -->
-      <!-- index:id=34954474 -->
-      <!-- index:changed_at=200901201749 -->
-      <!-- index:url= -->
-      <!-- index:class=FuStartseitenOrdner -->
-      <!-- index:lang=de -->
-      <!-- index:title=	Das Online-Archiv "Zwangsarbeit 1939-1945" -->
 
-      <!-- index_begin:content -->
-      <div id="innerContent">
-      <%= yield %>
-      </div>
-
-      <!-- index_end:content -->
-
-      <!-- noindex -->
-
-        <br class="clear" />
-        <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
-        <br class="clear" />
-      <!-- /noindex -->
-
-        <div class="clear"></div>
-      </div>
-
-      <!-- Ende Content -->
-
-      <hr class="divider" />
-      <!-- Anfang rechter Container -->
-      <!-- noindex -->
-
-      <div id="baseContainerRight">
-
-        <% if controller_name == 'interviews' and action_name == 'show' and defined?(@interview) %>
-
-            <%= render :partial => 'content', :object => @interview %>
-
-        <% else %>
+        <div id="baseContainerRight">
 
             <% javascript_tag do %>
               var checkedCategories = [];
@@ -260,33 +153,18 @@
 
           <% end %>
 
-        <% end %>
+        </div>
 
-
-
-      </div>
-      <!-- Ende rechter Container -->
-
-      <div id="mainWrapperClear">&nbsp;</div>
-
-      <!-- /noindex -->
+        <div id="mainWrapperClear">&nbsp;</div>
 
     </div>
     <!-- Ende mainWrapper -->
 
-    <!-- noindex -->
-
     <hr class="divider" />
 
-    <!-- Anfang Footer -->
     <div id="baseContainerFooter">
-      <div class="left">Stand:20.01.2009</div>
+        <div class="left">Stand:20.01.2009</div>
     </div>
-    <!-- Ende Footer -->
-
-    <!-- /noindex -->
-
-    <!-- noindex -->
 
     <a name="seitenende" accesskey="u"></a>
 
@@ -295,11 +173,11 @@
     <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
 
     <div id="printlogo">
-      <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-      <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
+        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
     </div>
 
     <!-- /noindex -->
 
-  </body>
+</body>
 </html>

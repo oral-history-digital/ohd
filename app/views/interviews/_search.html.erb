@@ -13,8 +13,8 @@
   </span>
 </div>
 
-<div id="submit_search" class="action">
-  <%= submit_tag 'suchen', :type => :image, :src => 'suchpfeil_quad.gif', :onclick => 'submitViaAjax(); false;' %>
+<div id="back_to_search" class="action">
+  <%= link_to image_tag('/images/suchpfeil_weiss.gif', :title => 'zur Suche'), searches_path(:search => @search.query_params) %>
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>
