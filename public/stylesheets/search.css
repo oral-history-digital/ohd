@@ -264,3 +264,7 @@ border-bottom: 1px solid #F1F1EB;
 .mainheading .subheading{
 font-size:80%;
 }
+#back_to_search {
+padding-right:10px;
+float:right;
+}
