@@ -86,12 +86,14 @@
 
 /*Textformatierung "Interview / Daten zur Zwangsarbeit" */
 
-#containerInterview ul.data li, #containerForcedLabor ul.data li {
-	padding:0 0 2px 10px;
+#containerInterview .data li, #containerForcedLabor .data li{
+  	background-image: none;
+  	padding:0 0 2px 10px;
 }
 
 .data li{
-	list-style-image:none;
+	background-image: none;
+	list-style-type:none;
 }
 
 .data li .label{
@@ -104,9 +106,9 @@
 
 #captions {
   background-color: #fff;
-  padding: 10px;
+  padding: 20px 10px;
   text-align: left;
-  height: 118px;
+  height: 100px;
   overflow: hidden;
 }
 

@@ -265,8 +265,13 @@ position: relative;
 	border-bottom: 1px solid #F1F1EB;
 }
 
+.mainheading {
+font-size:90%;
+}
+
 .mainheading .subheading{
-	font-size:80%;
+padding-left:13px;
+	font-size:90%;
 }
 #back_to_search {
 	margin: 10px 10px 0 0;
