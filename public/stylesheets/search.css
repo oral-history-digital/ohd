@@ -186,6 +186,7 @@ span.hits a:hover {
 }
 
 #baseServices p {
+float:left;
 	font-weight: bold;
 	font-size: 110%;
 }
@@ -268,6 +269,6 @@ position: relative;
 	font-size:80%;
 }
 #back_to_search {
-	margin-right:10px;
+	margin: 10px 10px 0 0;
 	float:right;
 }
