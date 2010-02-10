@@ -1,6 +1,14 @@
-<h6 class="clear startGallery"><!-- Link "Bildergalerie starten" --><a href="#">Bildergalerie starten	(6 Bilder) &raquo;</a></h6>
+<% @interview.photos.each do |photo| %>
 
-<img src="<%= image_path 'gallery_dummy.gif' %>" title="" alt="" />
+  <%= image_tag photo.photo.url(:thumb), :style => "clear: both;" %>
+
+<% end %>
+
+<% unless @interview.photos.empty? %>
+
+  <h6 class="clear startGallery"><!-- Link "Bildergalerie starten" --><a href="#">Bildergalerie starten	(<%= "#{@interview.photos.count} Bild(er)" %>) &raquo;</a></h6>
+  
+<% end %>
 
 <noscript>
   <h4>
