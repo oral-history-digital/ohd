@@ -343,9 +343,8 @@ h5 {
 }
 
 .contentGallery img {
-	position: absolute;
-	bottom: 0;
-	left: 0;
+	float: left;
+    display: block;
 }
 
 .contentGallery h6 {
