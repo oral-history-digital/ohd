@@ -43,6 +43,9 @@ de:
     collection:
       one: 'Teilsammlung'
       other: 'Teilsammlungen'
+    photo:
+      one: 'Bild'
+      other: 'Bilder'
 
     attributes:
       interview:

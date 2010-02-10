@@ -6,7 +6,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= forced_labor.deportation_location %>&nbsp;<%= forced_labor.deportation_date %></span>
+        <span class="value"><%= forced_labor.deportation_location %><%= forced_labor.deportation_date.gsub(/\d{2}:\d{2}$/, '') || 'unbekannt' %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
