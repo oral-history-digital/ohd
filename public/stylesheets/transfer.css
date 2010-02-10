@@ -103,6 +103,10 @@
 	margin-bottom:-4px;
 }
 
+#captions_wrapper{
+position:relative;
+}
+
 .back a, .forward a {
 color: #999;
 text-decoration:none;
@@ -111,20 +115,22 @@ font-size:80%;
 
 
 }
-.back {
-margin-left:300px;
-background: url(/images/btn_caption_back.gif) no-repeat;
+.back, .forward {
+  position:absolute;
+  z-index:8;
+  top:20px;
+  width: 65px;
+  margin-left:300px;
+  background: url(/images/btn_caption_back.gif) no-repeat;
 }
 .forward {
-margin-left:300px;
-background: url(/images/btn_caption_forward.gif) no-repeat;
+  top:150px;
+  background: url(/images/btn_caption_forward.gif) no-repeat;
 }
 
 .back a:hover, .forward a:hover {
-color: #333;
+  color: #333;
 }
-
-
 
 #captions {
   background-color: #fff;
