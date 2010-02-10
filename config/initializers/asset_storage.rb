@@ -3,6 +3,7 @@
 
 if RAILS_ENV == 'production'
   ActiveRecord.path_to_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
+  ActiveRecord.path_to_photo_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/FOTO_MASTER'
 else
   # Mac OS X
   ActiveRecord.path_to_storage = '/Volumes/data/archiv_backup/archiv_dis'
