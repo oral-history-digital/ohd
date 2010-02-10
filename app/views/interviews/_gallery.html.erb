@@ -1,8 +1,10 @@
+<div id="image_row">
 <% @interview.photos.each do |photo| %>
 
   <%= image_tag photo.photo.url(:thumb) %>
 
 <% end %>
+</div>
 
 <% unless @interview.photos.empty? %>
 
