@@ -146,7 +146,7 @@ span.hits {
 	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
 	display: block;
 	padding: 0 12px 0 0;
-	width: 108px;
+	width: 140px;
 	height: 19px;
 }
 
@@ -156,7 +156,7 @@ span.hits a {
 	background: url(/images/suchpfeil.gif) top right no-repeat;
 	background-position: 103px 4px;
 	padding: 0 12px 0 0;
-	width: 108px;
+	width: 140px;
 	height: 19px;
 	text-decoration: none;
 }
