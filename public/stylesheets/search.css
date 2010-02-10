@@ -328,4 +328,11 @@ font-size:90%;
 	margin-left:10px;
 }
 
+#interview_headings .current > a {
+  background-color: #b2afa1;
+  color: #9F1313;
+  width: 100%;
+  display: block;
+}
+
 #my-results {padding:10px;}
