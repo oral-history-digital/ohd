@@ -1,331 +1,161 @@
-/* Facetted Search */
-#search_facets .active-facet {
-    display: block;
-    position: relative;
-    background: #999281;
-    color: #990000;
-    padding: 5px 10px;
-    margin-bottom: 1px;
-}
+/* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
 
-/* overlays */
-.overlay {
-    opacity: 0.8;
-    background-color: #F1F1EB;
-}
-
-#search_header_overlay {
-    height: 64px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 280px;
-}
-
-#search_facets_overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 150%;
-}
-
-#baseContainerRight {
-    position: relative;
-}
-
-/* spacing */
-.baseListBox #search_facets h2 {
-    margin-bottom: 0;
-}
-.baseListBox #search_facets h2.baseListBoxTitle {
-    margin-bottom:  0px;
-}
-#search_facets .fragmentTitle {
-    margin-top: 4px;
-}
-
-.active-facet ul,
-.active-facet ul li {
-    padding:0;
-    margin:0;
-}
-
-#search_facets .active-facet li {
-    width: auto;
-    display: inline;
-    padding-right: 6px;
-    color: #F1F1EB;
-}
-
-.active-facet .facet-remove {
-    position: absolute;
-    top: 7px;
-    right: 10px;
-    text-indent: -3000px;
-    overflow: hidden;
-    background: transparent url(/images/close.png) top right no-repeat;
-    height: 14px;
-    width: 14px;
-}
-
-/* facet toggle */
-.closed .fragmentTitle,
-.closed fieldset.facet-field,
-.closed.fragmentTitle .arrow-open {
-    display: none;
-}
-
-.open.fragmentTitle .arrow-open {
-    display: inline-block;
-}
-
-.open.fragmentTitle .arrow-closed {
-    display: none;
-}
-
-/* empty facets */
-#search_facets .fragmentTitle .disabled {
-    color: #9a9a9a;
-    cursor: default;
-}
-
-/* transcript excerpts and segment selection */
-.baseContainerTeaserExcerpts .segment {
-    display: none;
-}
-.baseContainerTeaserExcerpts .segment.visible {
-    display: block;
-}
-
-/* segment selection pagination */
-#innerContent .baseContainerTeaserExcerpts .segment_pagination {
-    float: right;
-    padding: 0;
-    margin: 0 8px 0 0;
-}
-
-#innerContent .baseContainerTeaserExcerpts .segment_pagination li {
-    list-style-type: none;
-    background-image: none;
-    float: left;
-    clear: none;
-}
-
-#innerContent .baseContainerTeaserExcerpts .segment_pagination li.current a {
-    background-color: #990000;
-    color: #fff;
-    text-align: center;
-    padding: 0.1em 0.15em 0.1em 0.2em;
-    text-decoration: none;
-}
-
-.baseContainerTeaserExcerpts .segment .timecode,
-.baseContainerTeaserExcerpts .segment .tape
-{
-    font-weight: bold;
-    font-size: 80%;
-}
-
-/* fbeier */
-
-#baseHeaderSearch {
-	/*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
-	padding: 0;
-	position: absolute;
-	top: 26px;
-	left: 10px;
+#fragmentOverview {
+	float: left;
+	font-size:95%;
+	clear: both;
+	width: 280px;
+	height:480px;
+	padding: 0 15px 0 0;
 	margin: 0;
-	font-size: 95%;
-	width: 120px;
-	height: 19px;
-
 }
 
-span.hits {
-	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
-	display: block;
-	padding: 0 12px 0 0;
-	width: 108px;
-	height: 19px;
+#fragmentOverview h1{
+	padding: 0px;
+	margin: 0px;
 }
 
-span.hits a {
-	color: #fff;
-	display: block;
-	background: url(/images/suchpfeil.gif) top right no-repeat;
-	background-position: 103px 4px;
-	padding: 0 12px 0 0;
-	width: 108px;
-	height: 19px;
-	text-decoration: none;
+#fragmentOverview table{
+	padding-top: 0px;
+	margin-top: 0px;
 }
 
-span.hits a:hover {
-	text-decoration: none;
+#fragmentOverview th{
+	padding: 8px 0 0 0;
 }
 
-#submit_search {
-	float:right;
-	margin:10px 10px 0 0;
+#fragmentOverview td{
+	padding: 0;
 }
 
-#searchReset {
-	position: absolute;
-	top: 4px;
-	right: 10px;
-    z-index: 10;
+#fragmentOverview td ul{
+	padding-top: 0px;
+	margin-top: 0px;
 }
 
-#searchReset a {
-	color: #8b0f09;
-	font-size: 85%;
+#tabsOverview {
+	width: 280px;
+	margin: 0;
+	padding: 0;
 }
 
-#searchReset a:hover {
-	text-decoration: none;
+#tabsOverview ul {
+	margin: 0;
+	padding: 0;
+    width: 280px;
+    background-color: #fff;
 }
 
-#baseServices p {
-float:left;
-	font-weight: bold;
-	font-size: 110%;
+#tabsOverview ul li {
+	padding:3px 0px;
+	text-indent:20px;
+	height: 21px;
+	float: left;
+	background-color: #e4e4da;
+	cursor: pointer;
+	list-style: none;
+	background-image:none;
 }
 
-.searchString {
-    color: #840f09;
+#tabsOverview #tabInterview {
+	width:95px;
+}
+
+#tabsOverview #tabForcedLabor {
+    float: right;
+    width:185px;
+}
+
+#tabsOverview li p{
+	padding:2px 0 0 0;
+	color: #9f1313;
     font-weight: bold;
 }
 
-#searchInput {
-	border:1px solid #666;
-	width: 200px;
-	margin: 20px 0 11px 0;
+#tabsOverview li:hover p{
+	color: #990000;
 }
 
-#searchButton {
-	margin: 0 0 0 8px;
-
+#tabsOverview li.active {
+	background-color: #fff;
 }
 
-.fragmentTitle {
-	border-bottom: 1px solid #f1f1eb;
-	padding: 2px 10px;
-position: relative;
+#tabsOverview  p {
+	color: #999;
 }
 
-.facet_refresh {
-	position: absolute;
-	top: 4px;
-	right: 8px;
+/*Textformatierung "Interview / Daten zur Zwangsarbeit" */
+
+#containerInterview .data li, #containerForcedLabor .data li{
+  	background-image: none;
+  	padding:0 0 2px 10px;
 }
 
-.spinner_search {
-	position: absolute;
-	top: 60px;
-	left: 113px;
+.data li{
+	background-image: none;
+	list-style-type:none;
 }
 
-/* Ebene Video */
-
-#interviewContentNavigation {
-	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
-
-}
-
-#search_in_interview {
-	padding:60px 0 0 0;
-border-bottom: 1px solid #F1F1EB;
-
-}
-.fragmentTitle {
-	padding-bottom:10px;
-}
-
-.fragmentTitle label {
+.data li .label{
+	color:#999281;
 	display:block;
-	padding-top: 5px;
-	color:#8B0F09;
-	font-size:90%;
-	font-weight:bold;
+	font-size:85%;
+	margin-bottom:-4px;
 }
 
-#interview_fulltext {
-
-	margin:5px 0 10px 0px;
-	width: 200px;
-	border:1px solid #ccc;
-}
-
-#seach_in_interview_submit {
-	position:absolute;
-	margin-left:5px;
-}
-
-.container-toggle {
-	clear:right;
-	height:20px;
-	text-indent: 22px;
-	padding-top: 6px;
-	border-bottom: 1px solid #F1F1EB;
-	cursor: pointer;
-}
-
-.container-toggle.open {
-	background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
-}
-
-.container-toggle.closed {
-	background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
-}
-
-#interviewSearch {
-	padding-left: 10px;
-}
-
-#interviewSearch h2 {
-    margin-top: 8px;
-    margin-bottom: 0;
-}
-
-#baseContainerRight .container {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-#my-results.container {
-    height: 220px;
+.back a, .forward a {
+color: #999;
+margin-left:350px;
+font-size:80%;
 }
 
 
-#back_to_search {
-	margin: 10px 10px 0 0;
-	float:right;
+#captions {
+  background-color: #fff;
+  padding: 20px 10px;
+  text-align: left;
+  height: 100px;
+  overflow: hidden;
 }
 
-#headings.container {
-    height: 420px;
-    background: #F8F8F5;
+div.captions_original span.caption_original { display: inline-block; }
+div.captions_original span.caption_translation { display: none; }
+div.captions_translation span.caption_original { display: none; }
+div.captions_translation span.caption_translation { display: inline-block; }
+
+#containerHeadings li.mainheading {
+  font-style: normal;
 }
 
-.section {
-color:#8b0f09;
-vertical-align:top;
-text-align:right;
+#containerHeadings li.subheading {
+  margin-left: 10px;
+  font-style: normal;
 }
 
-.mainheading {
-font-size:90%;
+#containerHeadings img.invisible {
+  display: none;
 }
 
-.mainheading .subheading{
-	padding-left:25px;
-	font-size:90%;
-	width:210px;
+#containerHeadings li.current {
+  font-weight: bold;
 }
 
-#interview_headings {
-	margin-left:10px;
+#containerHeadings li.current li {
+  font-weight: normal;
 }
 
-#my-results {padding:10px;}
+#containerHeadings ul li {
+	background: none;
+	padding-left: 0;
+}
+
+#containerSegments ul li {
+	background: none;
+	font-size: 80%;
+	margin-bottom: 15px;
+}
+
+.rtl {
+    writing-mode: tb-rl;
+    text-align: right;
+}
