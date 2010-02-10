@@ -29,6 +29,9 @@ de:
     labels:
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
+    player:
+      back: 'zur&uuml;ck'
+      forward: 'vor'
 
   activerecord:
     interview:

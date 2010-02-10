@@ -90,7 +90,14 @@
         </div>
     </div>
 
-    <div id="captions" class="captions_original"></div>
+    <div id="captions" class="captions_original">
+      <div class="back">
+        <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
+      </div>
+      <div class="forward">
+        <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
+      </div>
+    </div>
 
     <script type="text/javascript">
 
