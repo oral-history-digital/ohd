@@ -296,14 +296,7 @@ border-bottom: 1px solid #F1F1EB;
     height: 220px;
 }
 
-.mainheading {
-font-size:90%;
-}
 
-.mainheading .subheading{
-padding-left:13px;
-	font-size:90%;
-}
 #back_to_search {
 	margin: 10px 10px 0 0;
 	float:right;
@@ -314,3 +307,22 @@ padding-left:13px;
     background: #F8F8F5;
 }
 
+.section {
+color:#8b0f09;
+vertical-align:top;
+text-align:right;
+}
+
+.mainheading {
+font-size:90%;
+}
+
+.mainheading .subheading{
+	padding-left:25px;
+	font-size:90%;
+	width:210px;
+}
+
+#interview_headings {
+	margin-left:10px;
+}
