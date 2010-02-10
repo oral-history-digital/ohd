@@ -18,7 +18,7 @@ class Interview < ActiveRecord::Base
   has_attached_file :interview_still,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
                     :url => "/archive_images/stills/:basename_:style.:extension",
-                    :path => ":rails_root/public/archive_images/stills/:basename_still_:style.:extension"
+                    :path => ":rails_root#{ApplicationController.relative_url_root}/public/archive_images/stills/:basename_still_:style.:extension"
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last

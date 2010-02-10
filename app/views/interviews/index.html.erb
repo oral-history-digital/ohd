@@ -9,7 +9,7 @@
 
     <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
         <div class="baseContainerTeaserImage">
-            <%#= link_to image_tag(interview.image_url) %>
+            <%= link_to image_tag(interview.image_url) %>
         </div>
         <div class="baseContainerTeaserText">
             <h3><%= link_to interview.short_title, interview_path(interview), :title => interview.short_title %></h3>
