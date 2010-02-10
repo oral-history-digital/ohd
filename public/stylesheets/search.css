@@ -235,6 +235,7 @@ position: relative;
 
 #search_in_interview {
 	padding:60px 0 0 0;
+border-bottom: 1px solid #F1F1EB;
 
 }
 .fragmentTitle {
@@ -250,7 +251,7 @@ position: relative;
 }
 
 #interview_fulltext {
-	margin-top:5px;
+	margin:5px 0 10px -10px;
 	width: 200px;
 	border:1px solid #ccc;
 }
@@ -291,10 +292,6 @@ position: relative;
     overflow-x: hidden;
 }
 
-#headings.container {
-    height: 480px;
-}
-
 #my-results.container {
     height: 220px;
 }
@@ -311,3 +308,9 @@ padding-left:13px;
 	margin: 10px 10px 0 0;
 	float:right;
 }
+
+#headings.container {
+    height: 420px;
+    background: #F8F8F5;
+}
+
