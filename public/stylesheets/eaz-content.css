@@ -340,11 +340,13 @@ h5 {
 	background: #fff;
 	height: 80px;
 	position: relative;
+    overflow: hidden;
 }
 
 .contentGallery img {
 	float: left;
     display: block;
+    margin-right: 1px;
 }
 
 .contentGallery h6 {
