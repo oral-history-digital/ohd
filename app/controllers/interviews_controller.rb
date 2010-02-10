@@ -2,6 +2,8 @@ class InterviewsController < BaseController
 
   layout 'interview', :only => :show
 
+  helper :interview
+
   actions :show
 
   private

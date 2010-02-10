@@ -1,48 +1,26 @@
-    <% last_heading_id = "" %>
-    <% main_open = list_open = false %>
-    <% chapter = 1 %>
-    <% section = 1 %>
-    <span id="headings_begin"></span><ul class="mainheadings">
-    <% @interview.headings.each do |heading| %>
-      <% heading_item = (heading.tape.number-1).to_s %>
-      <% heading_pos = heading.segment.start_time.round.to_s %>
-      <% heading_id = "heading_" + heading_item + "_" + heading_pos %>
-      <% heading_main = heading.mainheading %>
-
-      <% if main_open and !list_open and !heading_main %>
-        <ul id="<%= "subheadings_for_#{heading_id}" %>" class="subheadings">
-        <% list_open = true %>
-      <% end %>
-
-      <% if list_open and heading_main %>
-        </ul>
-        <% list_open = false %>
-      <% end %>
-
-      <% if main_open and heading_main %>
-        </li>
-        <% main_open = false %>
-        <% chapter += 1 and section = 1 %>
-      <% end %>
-
-      <li id="<%= heading_id + (heading_id == last_heading_id ? "_sub" : "") %>" class="<%= heading_main ? "mainheading" : "subheading" %>">
-        <a href="javascript:current_player.seek(<%= heading_item + "," + heading_pos  %>);">
-        <%= heading_main ? "#{chapter}." : "#{chapter}.#{section}."  %>
-        <%= heading.title %>
-        </a>
-        <% heading_main ? nil : section += 1 %>
-      <% if heading_main %>
-        <% main_open = true %>
-      <% else %>
-        </li>
-      <% end %>
-
-      <% last_heading_id = heading_id %>
+<table id="interview_headings" class="mainheadings">
+  <tbody>
+    <% headings_hash = hashed_headings_from_array(@interview.headings) %>
+    <% headings_hash.keys.sort.each do |section| %>
+      <% mainheading = headings_hash[section] %>
+      <tr id="<%= mainheading[:id] %>" class="mainheading">
+        <td class="section"><%= section %>.</td>
+        <td class="heading">
+            <a href="javascript:current_player.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
+                <%= mainheading[:title] %>
+            </a>
+            <ul id="subheadings_for_<%= mainheading[:id] %>" class="subheadings">
+              <% mainheading[:subheadings].each_with_index do |subheading, index| %>
+                <li id="<%= subheading[:id] %>_sub" class="subheading">
+                    <a href="javascript:current_player.seek(<%= subheading[:item] + "," + subheading[:pos]  %>);">
+                        <%= "#{section}.#{index + 1}."  %>
+                        <%= subheading[:title] %>
+                    </a>
+                </li>
+              <% end %>
+            </ul>
+        </td>
+      </tr>
     <% end %>
-    <% if list_open %>
-      </ul>
-    <% end %>
-    <% if main_open %>
-      </li>
-    <% end %>
-    </ul>
+  </tbody>
+</table>
