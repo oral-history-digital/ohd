@@ -17,7 +17,7 @@
       if(parent.hasClassName('closed')) {
         // show
         if(blindToggle) {
-          new Effect.BlindDown(id, { duration: 0.4, transition: Effect.Transitions.sinoidal });
+          new Effect.BlindDown(id, { duration: 0.8, transition: Effect.Transitions.sinoidal });
         } else {
           Element.show(id);
         }
@@ -26,7 +26,7 @@
       } else {
         // hide
         if(blindToggle) {
-          new Effect.BlindUp(id, { duration: 0.4, transition: Effect.Transitions.sinoidal, afterFinish: markClosed(parent) });
+          new Effect.BlindUp(id, { duration: 0.5, transition: Effect.Transitions.sinoidal, afterFinish: markClosed(parent) });
         } else {
           Element.hide(id);
           markClosed(parent);
