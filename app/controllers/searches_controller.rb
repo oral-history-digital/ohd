@@ -12,6 +12,9 @@ class SearchesController < BaseController
       @search.search!
       reinstate_category_state
       @search.open_category = params['search']['open_category'] unless params['search'].blank?
+      @interviews = @search.results
+
+      session[:query] = @search.query_params
     end
     wants.js do
       puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
