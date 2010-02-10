@@ -3,7 +3,7 @@ class Photo < ActiveRecord::Base
   belongs_to :interview
   
   has_attached_file :photo,
-                    :styles => { :thumb => "240x60", :original => "500x500>" },
+                    :styles => { :thumb => "240x80", :original => "500x500>" },
                     :url => "/archive_images/gallery/:basename_:style.:extension",
                     :path => ":rails_root/public/archive_images/gallery/:basename_:style.:extension"
          
