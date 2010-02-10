@@ -103,6 +103,26 @@
 	margin-bottom:-4px;
 }
 
+.back a, .forward a {
+color: #999;
+text-decoration:none;
+margin-left:350px;
+font-size:80%;
+
+
+}
+. back {
+background: url(/images/btn_caption_back.gif) no-repeat;
+}
+. forward {
+background: url(/images/btn_caption_back.gif) no-repeat;
+}
+
+.back a:hover, .forward a:hover {
+color: #333;
+}
+
+
 
 #captions {
   background-color: #fff;
