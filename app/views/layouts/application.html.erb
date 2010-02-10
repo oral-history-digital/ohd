@@ -52,7 +52,23 @@
         <div id="baseContainerRight">
 
             <% javascript_tag do %>
+              var categoryChange = false;
               var checkedCategories = [];
+
+              // clearing the fulltext field before submission or editing
+              function clearFulltextField(id) {
+                var elem = $(id);
+                if(elem) {
+                  if(elem.value == '<%= t('search_term') %>') {
+                    elem.value = '';
+                  }
+                }
+              }
+
+              checkedCategories.each(function(id) {
+                  categoryState(id, true, true);
+              });
+              
             <% end %>
 
             <%= render :partial => 'searches/facets', :object => @search %>

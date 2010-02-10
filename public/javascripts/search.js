@@ -1,16 +1,4 @@
 
-  var categoryChange = false;
-
-  // clearing the fulltext field before submission or editing
-  function clearFulltextField(id) {
-    var elem = $(id);
-    if(elem) {
-      if(elem.value == '<%= t('search_term') %>') {
-        elem.value = '';
-      }
-    }
-  }
-
   // blind effect for category facets
   function toggleCategory(id, blindToggle) {
     var cat_index = -1;
@@ -69,11 +57,7 @@
       }
   }
 
-  checkedCategories.each(function(id) {
-      categoryState(id, true, true);
-  });
-
-  function submitViaAjax(){
+  function submitViaAjax() {
     beforeSubmit();
     Form.request('search_facets');
   }
