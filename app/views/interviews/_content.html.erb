@@ -13,7 +13,7 @@
     <div id="interviewSearch">
         <h2><label for="fulltext">Suche in &#145;<%= content %>&#146;</label></h2>
         <%= text_field_tag 'fulltext', t('search_term'), :id => "interview_fulltext" %>
-        <%= submit_tag 'suchen', :type => :image, :src => '/images/pfeil_rot_rechts_quad.gif', :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
+        <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
         <%#= search.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
     </div>
 
