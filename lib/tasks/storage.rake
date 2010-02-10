@@ -1,5 +1,91 @@
 namespace :storage do
 
+  desc "imports photos"
+  task :import_photos => :environment do
+    
+    batch = 25
+    offset = 0
+    total = Interview.count(:all)
+    
+    puts "Importing photos for #{total} interviews:"
+    
+    while(offset < total) do
+      
+      Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
+        
+        archive_id = interview.archive_id.upcase
+        
+        photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
+        
+        Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
+          
+          file_name = file.split("/").last
+          
+          if file_name.match(/^ZA\d{3}_\d{2}\.(png|jpg)$/i)
+            
+            photo = Photo.find_by_photo_file_name file_name
+            
+            if photo == nil
+              photo = Photo.new
+              photo.photo = File.open(file)
+              photo.interview_id = interview.id
+              photo.save!
+              puts "#{file_name} added"
+            end           
+            
+          end
+          
+        end
+        
+      end
+      
+      offset += batch
+      
+    end
+    
+  end
+  
+  desc "imports interview stills"
+  task :import_interview_stills => :environment do
+    
+    batch = 25
+    offset = 0
+    total = Interview.count(:all)
+    
+    puts "Importing interview stills for #{total} interviews:"
+    
+    while(offset < total) do
+      
+      Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
+        
+        archive_id = interview.archive_id.downcase
+        
+        photo_path = File.join(ActiveRecord.path_to_photo_storage, '400x300')
+        
+        Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
+          
+          file_name = file.split("/").last
+          
+          if file_name.match(/^za\d{3}\.(png|jpg)$/i)
+            
+            if interview.interview_still_file_name == nil
+              interview.interview_still = File.open(file)
+              interview.save!
+              puts "#{file_name} added"
+            end           
+            
+          end
+          
+        end
+        
+      end
+      
+      offset += batch
+      
+    end
+    
+  end
+
   desc "looks for tapes in the context"
   task :lookup_tapes => :environment do
 

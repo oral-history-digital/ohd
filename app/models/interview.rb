@@ -3,6 +3,8 @@ class Interview < ActiveRecord::Base
   NUMBER_OF_INTERVIEWS = Interview.count :all
 
   belongs_to :collection
+  
+  has_many  :photos
 
   has_many  :tapes
 
@@ -12,6 +14,11 @@ class Interview < ActiveRecord::Base
   has_many  :headings,
              :through => :tapes,
              :order => "media_id ASC"
+  
+  has_attached_file :interview_still,
+                    :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
+                    :url => "/public/archive_images/stills/:basename.:extension",
+                    :path => ":rails_root/public/archive_images/stills/:basename_still.:extension"
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
@@ -25,6 +32,7 @@ DEF
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
+  validates_attachment_content_type :interview_still, :content_type => ['image/jpeg', 'image/png']
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
