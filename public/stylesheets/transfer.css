@@ -106,16 +106,18 @@
 .back a, .forward a {
 color: #999;
 text-decoration:none;
-margin-left:350px;
+margin-left:10px;
 font-size:80%;
 
 
 }
-. back {
+.back {
+margin-left:300px;
 background: url(/images/btn_caption_back.gif) no-repeat;
 }
-. forward {
-background: url(/images/btn_caption_back.gif) no-repeat;
+.forward {
+margin-left:300px;
+background: url(/images/btn_caption_forward.gif) no-repeat;
 }
 
 .back a:hover, .forward a:hover {
