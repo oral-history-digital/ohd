@@ -9,9 +9,9 @@
             <a href="javascript:current_player.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
                 <%= mainheading[:title] %>
             </a>
-            <ul id="subheadings_for_<%= mainheading[:id] %>" class="subheadings">
+            <ul id="subheadings_for_<%= section %>" class="subheadings">
               <% mainheading[:subheadings].each_with_index do |subheading, index| %>
-                <li id="<%= subheading[:id] %>_sub" class="subheading">
+                <li id="<%= subheading[:id] %>" class="subheading">
                     <a href="javascript:current_player.seek(<%= subheading[:item] + "," + subheading[:pos]  %>);">
                         <%= "#{section}.#{index + 1}."  %>
                         <%= subheading[:title] %>
@@ -24,3 +24,20 @@
     <% end %>
   </tbody>
 </table>
+<% javascript_tag do %>
+    var currentSection = null;
+    function switchToSection(num) {
+        if(currentSection) {
+            currentSection.removeClassName('current');
+        }
+        if(currentSection.id = num) {
+            currentSection = null;
+        } else {
+            var new_section = $(num);
+            if(new_section) {
+                new_section.addClassName('current');
+            }
+            currentSection = new_section;
+        }
+    }
+<% end %>
