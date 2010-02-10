@@ -251,35 +251,36 @@ border-bottom: 1px solid #F1F1EB;
 }
 
 #interview_fulltext {
-	margin:5px 0 10px -10px;
+
+	margin:5px 0 10px 0px;
 	width: 200px;
 	border:1px solid #ccc;
 }
 
 #seach_in_interview_submit {
-	float:right;
-	margin:5px 30px 0 0;
+	position:absolute;
+	margin-left:5px;
 }
 
 .container-toggle {
 	clear:right;
 	height:20px;
-    text-indent: 22px;
-    padding-top: 6px;
+	text-indent: 22px;
+	padding-top: 6px;
 	border-bottom: 1px solid #F1F1EB;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .container-toggle.open {
-    background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
+	background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
 }
 
 .container-toggle.closed {
-    background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
+	background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
 }
 
 #interviewSearch {
-    padding-left: 22px;
+	padding-left: 10px;
 }
 
 #interviewSearch h2 {
@@ -326,3 +327,5 @@ font-size:90%;
 #interview_headings {
 	margin-left:10px;
 }
+
+#my-results {padding:10px;}
