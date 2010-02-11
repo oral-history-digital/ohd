@@ -25,6 +25,7 @@ task :staging do
   set :environment, :staging
   set :deploy_to, "/home/ruby/archive_test"
   set :user, "root"
+  set :keep_releases, 3
   role :app, "160.45.170.231"
   role :web, "160.45.170.231"
   role :db, "160.45.170.231", :primary => true
@@ -49,6 +50,7 @@ namespace :deploy do
       run "ln -nfs #{shared_path}/solr/data #{release_path}/solr/data"
     end
     run "ln -s #{shared_path}/public/archive_images #{release_path}/public"
+    run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/public/archive_images"
   end
 
   task :rewrite_stylesheet_urls, :roles => :app do

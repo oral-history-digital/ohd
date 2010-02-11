@@ -416,6 +416,11 @@ a.startGallery:hover, a.startGallery:active {
 	border:1px solid #000;
 }
 
+.baseContainerTeaserImage a img {
+    height: 105px;
+    width: 140px;
+}
+
 .baseContainerTeaserText{
 	width: 190px;
 	height: 120px;
