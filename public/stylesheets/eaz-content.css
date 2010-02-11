@@ -333,17 +333,18 @@ h5 {
 /* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
 
 .contentGallery {
+	margin: 0;
 	display: block;
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	background: #fff;
+	background: #e4e4da;
 	height: 80px;
 	position: relative;
 }
 
 .contentGallery #image_row {
-    height: 60px;
+    height: 80px;
     width: 100%;
     overflow: hidden;
     float: left;
