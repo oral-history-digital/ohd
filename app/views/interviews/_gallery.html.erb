@@ -1,9 +1,11 @@
 <div id="image_row">
+  <a href="javascript:void(0);" class="scroll back"><%= t('back', :scope => 'user_interface.player') %></a>
 <% @interview.photos.each do |photo| %>
 
   <%= image_tag photo.photo.url(:thumb) %>
 
 <% end %>
+  <a href="javascript:void(0);" class="scroll forward"><%= t('forward', :scope => 'user_interface.player') %></a>
 </div>
 
 <% unless @interview.photos.empty? %>
