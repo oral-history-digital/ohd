@@ -308,8 +308,12 @@ body {
 
 #mainWrapperClear {
 	clear: both;
-	height: 0;
+	height: 15px;
 	overflow: hidden;  /* funktioniert nicht in Mozilla 1.3 und Netscape 6.3 */
+}
+
+#mainWrapperClear.compact {
+	height: 0;
 }
 
 /* Layout fuNavigationLeft
@@ -334,7 +338,7 @@ body {
 	margin: 0;
 	float: left;
 	margin: 0;
-    padding: 20px 15px 0 6px; /* Optimierung für VideoScreen (padding-bottom:0)*/
+    padding: 20px 15px 0 6px; /* Optimierung f?r VideoScreen (padding-bottom:0)*/
 	/*padding: 20px 15px 20px 6px;*/
 	background-color: transparent;  /* fuer benutzerdefinierte Bildschirmeinstellungen */
 	min-height: 333px;  /* regelt variabel die Mindesthoehe des Inhaltsbereichs */
@@ -353,7 +357,10 @@ body {
 }
 
 .clear{ clear: both;
-	height:0px;
+	height:15px;
+}
+.compact.clear {
+	height:0;
 }
 
 /* Layout fuFooter
