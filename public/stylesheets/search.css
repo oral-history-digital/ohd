@@ -146,7 +146,7 @@ span.hits {
 	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
 	display: block;
 	padding: 0 12px 0 0;
-	width: 140px;
+	width: 200px;
 	height: 19px;
 }
 
@@ -156,7 +156,7 @@ span.hits a {
 	background: url(/images/suchpfeil.gif) top right no-repeat;
 	background-position: 103px 4px;
 	padding: 0 12px 0 0;
-	width: 140px;
+	width: 200px;
 	height: 19px;
 	text-decoration: none;
 }
@@ -226,7 +226,9 @@ position: relative;
 	left: 113px;
 }
 
-/* Ebene Video */
+/* Ebene Video (Suche im Interview, Inhaltsverzeichnis, MeinBereich)*/
+/* **************************************************************** */
+
 
 #interviewContentNavigation {
 	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
@@ -319,7 +321,7 @@ font-size:90%;
 }
 
 .mainheading .subheading{
-	padding-left:25px;
+	padding-left:0px;
 	font-size:90%;
 	width:210px;
 }
@@ -329,7 +331,7 @@ font-size:90%;
 }
 
 #interview_headings .current > a {
-  background-color: #b2afa1;
+  background-color: #e4e4da;
   color: #9F1313;
   width: 100%;
   display: block;
