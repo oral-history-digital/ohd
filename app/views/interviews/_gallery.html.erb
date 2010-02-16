@@ -1,25 +1,22 @@
-<div id="image_row">
-  <a href="javascript:void(0);" class="scroll back"><%= t('back', :scope => 'user_interface.player') %></a>
-<% @interview.photos.each do |photo| %>
+<div id="image_carousel" class="contentGallery">
+    <a href="javascript:" class="carousel-control back" rel="prev"><%= t('back', :scope => 'user_interface.player') %></a>
+    <div id="gallery_content">
+        <ul id="image_row" style="width:<%= (@interview.photos.size * 108) %>px;">
+        <% @interview.photos.each do |photo| %>
+          <li class="slide"><%= image_tag photo.photo.url(:thumb) %></li>
+        <% end %>
+        </ul>
+    </div>
+    <a href="javascript:" class="carousel-control forward" rel="next"><%= t('forward', :scope => 'user_interface.player') %></a>
 
-  <%= image_tag photo.photo.url(:thumb) %>
+    <noscript>
+      <h4>
+        JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
+        Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
+      </h4>
+    </noscript>
 
-<% end %>
-  <a href="javascript:void(0);" class="scroll forward"><%= t('forward', :scope => 'user_interface.player') %></a>
+    <% javascript_tag do %>
+        new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 6) ? @interview.photos.size : 6 %> } );
+    <% end %>
 </div>
-
-<noscript>
-  <h4>
-    JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
-    Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
-  </h4>
-</noscript>
-
-<!-- Links to further (i.e. No 2 and up) images for the slideshow -->
-<!--
-<a href="bild_ZA004_02/ZA004_02_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Marija Grachowskaja am Interviewtag in ihrem Wohnzimmer"></a>
-<a href="bild_ZA004_03/ZA004_03_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Frau Grachowskaja mit ihrer Tochter und dem Vertreter der Romavereinigung, Alexander"></a>
-<a href="bild_ZA004_04/ZA004_04_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
-<a href="bild_ZA004_05/ZA004_05_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
-<a href="bild_ZA004_06/ZA004_06_550.jpeg" target="_blank" rel="lightbox[gallery]" title="Ansicht des Hauses von Marija Grachowskaja"></a>
--->

@@ -330,56 +330,6 @@ h5 {
 	margin-top: 0px;
 }
 
-/* Formatierungen fuer Galerie im Inhaltsbereich - Neu: 14.01.2008 */
-
-.contentGallery {
-	margin: 0;
-	display: block;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	background: #e4e4da;
-	height: 80px;
-	position: relative;
-}
-
-.contentGallery #image_row {
-    height: 80px;
-    width: 100%;
-    overflow: hidden;
-    float: left;
-}
-
-.contentGallery img {
-	float: left;
-    display: block;
-    margin-right: 1px;
-}
-
-.contentGallery h6 {
-	color: #666;
-	margin: 0 0 5px 10px;
-}
-
-.contentGallery h6 a:link, .contentGallery h6 a:visited {
-	color: #666;
-	font-size: 90%;
-	clear: both;
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
-a.startGallery:hover, a.startGallery:active {
-	text-decoration: none;
-	color: #999;
-	font-size: 90%;
-	clear: both;
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
 /* Fade fuer scrollbare Inhalte */
 
 .scroll_fade {

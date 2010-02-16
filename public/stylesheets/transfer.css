@@ -119,7 +119,8 @@
   font-size:80%;
 }
 
-.back, .forward {
+.containerVideo .back,
+.containerVideo .forward {
   position:absolute;
   z-index:8;
   top: 1px;
