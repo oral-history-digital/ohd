@@ -21,8 +21,8 @@
     <% javascript_tag do %>
         new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 6) ? @interview.photos.size : 6 %> } );
         var LightboxOptions = {
-            fileLoadingImage:        'images/lightbox/loading.gif',
-            fileBottomNavCloseImage: 'images/lightbox/closelabel.gif',
+            fileLoadingImage:        '/images/lightbox/loading.gif',
+            fileBottomNavCloseImage: '/images/lightbox/close.gif',
 
             overlayOpacity: 0.8,   // controls transparency of shadow overlay
 
