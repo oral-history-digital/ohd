@@ -5,7 +5,7 @@ set :use_sudo, false
 
 set :deploy_to, "/data/applications/zwar/#{application}"
 set :deploy_via, :remote_cache
-set :copy_exclude, [".git/*", ".svn/*", ".DS_Store", "deploy.rb", "Capfile", "database.yml", "solr.yml", "sunspot.yml"]
+set :copy_exclude, [".git/*", ".svn/*", ".DS_Store", "deploy.rb", "production.rb", "Capfile", "database.yml", "solr.yml", "sunspot.yml"]
 
 set :environment, :undefined
 
@@ -44,7 +44,7 @@ namespace :deploy do
   end
 
   task :symlink_configuration, :roles => :app do
-    %w{database.yml sunspot.yml}.each do |config|
+    %w{database.yml sunspot.yml environments/production.rb}.each do |config|
       run "rm -f #{release_path}/config/#{config}"
       run "ln -s #{shared_path}/config/#{config} #{release_path}/config/#{config}"
       run "ln -nfs #{shared_path}/solr/data #{release_path}/solr/data"
