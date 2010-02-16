@@ -46,8 +46,8 @@
 //  Configurationl
 //
 LightboxOptions = Object.extend({
-    fileLoadingImage:        'images/loading.gif',     
-    fileBottomNavCloseImage: 'images/closelabel.gif',
+    fileLoadingImage:        'images/lightbox/loading.gif',
+    fileBottomNavCloseImage: 'images/lightbox/closelabel.gif',
 
     overlayOpacity: 0.8,   // controls transparency of shadow overlay
 
@@ -75,7 +75,7 @@ Lightbox.prototype = {
     // the function inserts html at the bottom of the page which is used to display the shadow 
     // overlay and the image container.
     //
-    initialize: function() {    
+    initialize: function() {
         
         this.updateImageList();
         
@@ -106,7 +106,7 @@ Lightbox.prototype = {
         //              </div>
         //              <div id="loading">
         //                  <a href="#" id="loadingLink">
-        //                      <img src="images/loading.gif">
+        //                      <img src="images/lightbox/loading.gif">
         //                  </a>
         //              </div>
         //          </div>
@@ -119,7 +119,7 @@ Lightbox.prototype = {
         //              </div>
         //              <div id="bottomNav">
         //                  <a href="#" id="bottomNavClose">
-        //                      <img src="images/close.gif">
+        //                      <img src="images/lightbox/close.gif">
         //                  </a>
         //              </div>
         //          </div>
@@ -493,5 +493,3 @@ Lightbox.prototype = {
 		return [pageWidth,pageHeight];
 	}
 }
-
-document.observe('dom:loaded', function () { new Lightbox(); });

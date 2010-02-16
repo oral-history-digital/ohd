@@ -2,8 +2,10 @@
     <a href="javascript:" class="carousel-control back" rel="prev"><%= t('back', :scope => 'user_interface.player') %></a>
     <div id="gallery_content">
         <ul id="image_row" style="width:<%= (@interview.photos.size * 108) %>px;">
-        <% @interview.photos.each do |photo| %>
-          <li class="slide"><%= image_tag photo.photo.url(:thumb) %></li>
+        <% @interview.photos.each_with_index do |photo, index| %>
+          <li class="slide">
+            <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.full_title[/^[^,.;]/]}]", :title => "Bild Nr. #{index+1}"  %>
+          </li>
         <% end %>
         </ul>
     </div>
@@ -18,5 +20,22 @@
 
     <% javascript_tag do %>
         new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 6) ? @interview.photos.size : 6 %> } );
+        var LightboxOptions = {
+            fileLoadingImage:        'images/lightbox/loading.gif',
+            fileBottomNavCloseImage: 'images/lightbox/closelabel.gif',
+
+            overlayOpacity: 0.8,   // controls transparency of shadow overlay
+
+            animate: true,         // toggles resizing animations
+            resizeSpeed: 7,        // controls the speed of the image resizing animations (1=slowest and 10=fastest)
+
+            borderSize: 10,         //if you adjust the padding in the CSS, you will need to update this variable
+
+            // When grouping images this is used to write: Image # of #.
+            // Change it for non-english localization
+            labelImage: "Bild",
+            labelOf: "von"
+        }
+        new Lightbox();
     <% end %>
 </div>
