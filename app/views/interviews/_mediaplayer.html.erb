@@ -93,7 +93,11 @@
     </div>
 
     <div id="captions_wrapper">
-        <div id="captions" class="captions_original"></div>
+        <div id="captions" class="captions_original">
+          <div id="captions-0" class="captions-slide"></div>
+          <div id="captions-1" class="captions-slide"></div>
+          <div id="captions-2" class="captions-slide"></div>
+        </div>
         <div class="back">
             <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
         </div>
@@ -117,6 +121,7 @@
         lightcolor:               'ffffff',
         player_id:                'player_high',
         content_id:               'mediaspace_high',
+        slide_class:              'captions-slide',
         call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;};',
         call_position:            'markHeading(current_player.item, current_player.position);',
         start_item:               <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
@@ -134,6 +139,7 @@
         lightcolor:               'ffffff',
         player_id:                'player_low',
         content_id:               'mediaspace_low',
+        slide_class:              'captions-slide',
         call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
         call_position:            'markHeading(current_player.item, current_player.position);'
       });
@@ -151,6 +157,7 @@
         lightcolor:               'ffffff',
         player_id:                'player_audio',
         content_id:               'mediaspace_audio',
+        slide_class:              'captions-slide',
         call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
         call_position:            'markHeading(current_player.item, current_player.position);'
       });

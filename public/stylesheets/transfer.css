@@ -126,12 +126,12 @@
   top: 1px;
   width: 65px;
   margin-left:335px;
-  background: url(/images/btn_caption_back.gif) -10px -4px no-repeat;
+  background: url(/images/btn_caption_back.gif) -6px -4px no-repeat;
 }
 
-.forward {
+.containerVideo div .forward {
   top:122px;
-  background: url(/images/btn_caption_forward.gif) -10px 2px no-repeat;
+  background: url(/images/btn_caption_forward.gif) -6px 2px no-repeat;
 }
 
 .back a:hover, .forward a:hover {
@@ -139,8 +139,7 @@
 }
 
 #captions,
-#captions-1,
-#captions-2 {
+#captions .captions-slide {
   position: absolute;
   top:0;
   left:0;
@@ -152,13 +151,7 @@
   overflow: hidden;
 }
 
-#captions-1 {
-  z-index: 1;
-}
-#captions-2 {
-  z-index: 2;
-}
-#captions {
+#captions .captions-slide {
   z-index: 3;
 }
 
