@@ -19,10 +19,10 @@
 #imageDataContainer{ font: 10px Verdana, Helvetica, sans-serif; background-color: #fff; margin: 0 auto; line-height: 1.4em; overflow: auto; width: 100%	; }
 
 #imageData{	padding:0 10px; color: #666; }
-#imageData #imageDetails{ width: 70%; float: left; text-align: left; }	
+#imageData #imageDetails{ width: 70%; float: left; text-align: left; }
 #imageData #caption{ font-weight: bold;	}
-#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}			
-#imageData #bottomNavClose{ width: 66px; float: right;  padding-bottom: 0.7em; outline: none;}	 	
+#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}
+#imageData #bottomNavClose{ width: 66px; float: right;  padding-bottom: 0.7em; outline: none;}
 
 #overlay{ position: absolute; top: 0; left: 0; z-index: 90; width: 100%; height: 500px; background-color: #000; }
 
@@ -56,7 +56,7 @@
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	background: #e4e4da;
+	/*background: #e4e4da;*/
 	height: 80px;
 	position: relative;
 }
@@ -76,11 +76,11 @@
 */
 
 .contentGallery #image_row li.slide {
-	float: left;
+    float: left;
     display: block;
-    margin-right: 1px;
+    margin-right: 5px;
     width: 107px;
-    background-image: none;
+    background: #e4e4da;
     padding: 0;
     text-align: center;
 }
