@@ -59,7 +59,7 @@
 	/*background: #e4e4da;*/
 	height: 80px;
 	position: relative;
-	opacity:.5;
+	opacity:.3;
 }
 .contentGallery:hover {
 	opacity:1;
