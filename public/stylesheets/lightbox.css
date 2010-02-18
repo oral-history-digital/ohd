@@ -59,6 +59,10 @@
 	/*background: #e4e4da;*/
 	height: 80px;
 	position: relative;
+	opacity:.5;
+}
+.contentGallery:hover {
+	opacity:1;
 }
 
 .contentGallery #gallery_content {
@@ -78,7 +82,7 @@
 .contentGallery #image_row li.slide {
     float: left;
     display: block;
-    margin-right: 5px;
+    margin-right: 10px;
     width: 107px;
     background: #e4e4da;
     padding: 0;
