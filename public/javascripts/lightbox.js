@@ -1,3 +1,12 @@
+/* Jan Rietema - 18.02.2010: changes to the library
+
+    1. quicker resizing
+    2. change width first and height second (reverse previous effect order)
+    3. parallel fade-in of image and data (no sliding of data)
+    4. only hide/fade data when the image width changes
+
+ */
+
 // -----------------------------------------------------------------------------------
 //
 //	Lightbox v2.04
@@ -84,7 +93,7 @@ Lightbox.prototype = {
         if (LightboxOptions.resizeSpeed > 10) LightboxOptions.resizeSpeed = 10;
         if (LightboxOptions.resizeSpeed < 1)  LightboxOptions.resizeSpeed = 1;
 
-	    this.resizeDuration = LightboxOptions.animate ? ((11 - LightboxOptions.resizeSpeed) * 0.15) : 0;
+	    this.resizeDuration = LightboxOptions.animate ? ((11 - LightboxOptions.resizeSpeed) * 0.1) : 0;
 	    this.overlayDuration = LightboxOptions.animate ? 0.2 : 0;  // shadow fade in/out duration
 
         // When Lightbox starts it will resize itself from 250 by 250 to the current image dimension.
@@ -249,20 +258,25 @@ Lightbox.prototype = {
         this.hoverNav.hide();
         this.prevLink.hide();
         this.nextLink.hide();
-		// HACK: Opera9 does not currently support scriptaculous opacity and appear fx
-        this.imageDataContainer.setStyle({opacity: .0001});
+
         this.numberDisplay.hide();      
         
         var imgPreloader = new Image();
         
         // once image is preloaded, resize image container
-
+        var prevWidth = this.outerImageContainer.getWidth();
 
         imgPreloader.onload = (function(){
             this.lightboxImage.src = this.imageArray[this.activeImage][0];
             this.resizeImageContainer(imgPreloader.width, imgPreloader.height);
         }).bind(this);
         imgPreloader.src = this.imageArray[this.activeImage][0];
+
+        // only hide DataContainer if the width changes
+        if((imgPreloader.width + LightboxOptions.borderSize * 2) != prevWidth) {
+            // HACK: Opera9 does not currently support scriptaculous opacity and appear fx
+            this.imageDataContainer.setStyle({opacity: .0001});
+        }
     },
 
     //
@@ -286,8 +300,10 @@ Lightbox.prototype = {
         var wDiff = widthCurrent - widthNew;
         var hDiff = heightCurrent - heightNew;
 
-        if (hDiff != 0) new Effect.Scale(this.outerImageContainer, yScale, {scaleX: false, duration: this.resizeDuration, queue: 'front'}); 
-        if (wDiff != 0) new Effect.Scale(this.outerImageContainer, xScale, {scaleY: false, duration: this.resizeDuration, delay: this.resizeDuration}); 
+        if (wDiff != 0) new Effect.Scale(this.outerImageContainer, xScale, {scaleY: false, duration: this.resizeDuration, queue: 'front'});
+        if (hDiff != 0) new Effect.Scale(this.outerImageContainer, yScale, {scaleX: false, duration: this.resizeDuration, delay: this.resizeDuration});
+
+        this.widthAdjustment = (wDiff != 0);
 
         // if new and old image are same size and no scaling transition is necessary, 
         // do a quick pause to prevent image flicker.
@@ -312,11 +328,42 @@ Lightbox.prototype = {
     //
     showImage: function(){
         this.loading.hide();
-        new Effect.Appear(this.lightboxImage, { 
-            duration: this.resizeDuration, 
-            queue: 'end', 
-            afterFinish: (function(){ this.updateDetails(); }).bind(this) 
-        });
+        this.updateDetails();
+        if(this.widthAdjustment) {
+            // Fade in the DataContainer
+            new Effect.Parallel(
+                [
+                    new Effect.Appear(this.lightboxImage, { sync: true, duration: this.resizeDuration }),
+                    new Effect.Appear(this.imageDataContainer, { sync: true, duration: this.resizeDuration })
+                ],
+                {
+                    duration: this.resizeDuration,
+                    queue: 'end',
+                    afterFinish: (function() {
+                        // update overlay size and update nav
+                        var arrayPageSize = this.getPageSize();
+                        this.overlay.setStyle({ height: arrayPageSize[1] + 'px' });
+                        this.updateNav();
+                    }).bind(this)
+                }
+            );
+
+        } else {
+            // only Fade in the Image
+            new Effect.Appear(  this.lightboxImage,
+                                {
+                                    duration: this.resizeDuration,
+                                    queue: 'end',
+                                    afterFinish: (function() {
+                                        // update overlay size and update nav
+                                        var arrayPageSize = this.getPageSize();
+                                        this.overlay.setStyle({ height: arrayPageSize[1] + 'px' });
+                                        this.updateNav();
+                                    }).bind(this)
+                                }
+                    );
+        }
+ 
         this.preloadNeighborImages();
     },
 
@@ -335,22 +382,6 @@ Lightbox.prototype = {
         if (this.imageArray.length > 1){
             this.numberDisplay.update( LightboxOptions.labelImage + ' ' + (this.activeImage + 1) + ' ' + LightboxOptions.labelOf + '  ' + this.imageArray.length).show();
         }
-
-        new Effect.Parallel(
-            [ 
-                new Effect.SlideDown(this.imageDataContainer, { sync: true, duration: this.resizeDuration, from: 0.0, to: 1.0 }), 
-                new Effect.Appear(this.imageDataContainer, { sync: true, duration: this.resizeDuration }) 
-            ], 
-            { 
-                duration: this.resizeDuration, 
-                afterFinish: (function() {
-	                // update overlay size and update nav
-	                var arrayPageSize = this.getPageSize();
-	                this.overlay.setStyle({ height: arrayPageSize[1] + 'px' });
-	                this.updateNav();
-                }).bind(this)
-            } 
-        );
     },
 
     //

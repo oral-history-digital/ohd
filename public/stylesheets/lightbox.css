@@ -59,11 +59,13 @@
 	/*background: #e4e4da;*/
 	height: 80px;
 	position: relative;
-	opacity:.3;
+	/* opacity:.3; */
 }
+/*
 .contentGallery:hover {
 	opacity:1;
 }
+*/
 
 .contentGallery #gallery_content {
     width: 649px;

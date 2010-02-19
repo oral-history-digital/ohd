@@ -1,4 +1,4 @@
-<div id="image_carousel" class="contentGallery">
+<div id="image_carousel" class="contentGallery" style="opacity: 0.3;" onmouseover="fadeInGallery();">
     <a href="javascript:" class="carousel-control back" rel="prev"><%= t('back', :scope => 'user_interface.player') %></a>
     <div id="gallery_content">
         <ul id="image_row" style="width:<%= (@interview.photos.size * 108) %>px;">
@@ -19,6 +19,7 @@
     </noscript>
 
     <% javascript_tag do %>
+        galleryElem = $('image_carousel');
         new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 6) ? @interview.photos.size : 6 %> } );
         var LightboxOptions = {
             fileLoadingImage:        '/images/lightbox/loading.gif',
