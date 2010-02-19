@@ -23,7 +23,8 @@ end
 desc "prepare to act on the test environment"
 task :staging do
   set :environment, :staging
-  set :deploy_to, "/home/ruby/archive_test"
+  set :application, 'archive_test'
+  set :deploy_to, "/home/ruby/#{application}"
   set :user, "root"
   set :keep_releases, 3
   role :app, "160.45.170.231"
