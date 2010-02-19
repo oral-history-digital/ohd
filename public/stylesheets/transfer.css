@@ -115,7 +115,7 @@
   width: 100%;
   color: #999;
   text-decoration:none;
-  margin-left:10px;
+  padding-left:10px;
   font-size:80%;
 }
 
@@ -125,13 +125,13 @@
   z-index:8;
   top: 1px;
   width: 65px;
-  margin-left:335px;
-  background: url(/images/btn_caption_back.gif) -6px -4px no-repeat;
+  margin-left:325px;
+  background: url(/images/btn_caption_back.gif) 0 -3px no-repeat;
 }
 
 .containerVideo div .forward {
   top:122px;
-  background: url(/images/btn_caption_forward.gif) -6px 2px no-repeat;
+  background: url(/images/btn_caption_forward.gif) 0px 2px no-repeat;
 }
 
 .back a:hover, .forward a:hover {

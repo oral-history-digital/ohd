@@ -330,12 +330,18 @@ font-size:90%;
 	margin-left:10px;
 }
 
+#interview_headings .heading {
+  width: 89%;
+  display:block;
+}
+
 #interview_headings .current > a,
 #interview_headings .current .heading > a {
   background-color: #e4e4da;
   color: #9F1313;
-  width: 100%;
   display: block;
 }
 
-#my-results {padding:10px;}
+#my-results {
+    padding:10px;
+}
