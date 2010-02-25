@@ -66,7 +66,7 @@ DEF
   end
 
   def timecode
-    "[#{tape.number}] #{read_attribute(:timecode)}"
+    "[#{tape.number}] #{read_attribute(:timecode).sub(/\.\d\d$/,'')}"
   end
 
   def raw_timecode

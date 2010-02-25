@@ -20,6 +20,7 @@ module InterviewHelper
         headings_hash[section_number] = {
                 :title => heading.title,
                 :item => player_item,
+                :timecode => heading.segment.timecode.to_s,
                 :pos => player_pos,
                 :id => heading_id,
                 :subheadings => []
@@ -29,6 +30,7 @@ module InterviewHelper
         headings_hash[section_number][:subheadings] << {
                 :title => heading.title,
                 :item => player_item,
+                :timecode => heading.segment.timecode.to_s,
                 :pos => player_pos,
                 :id => heading_id
         }

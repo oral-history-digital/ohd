@@ -40,7 +40,7 @@ class Timecode
   end
 
   def to_s
-    (estimate? ? '~' : '') + timecode
+    (estimate? ? '~' : '') + timecode.sub(/\.\d\d$/,'')
   end
 
   def minimal
