@@ -18,11 +18,19 @@ module ApplicationHelper
   end
 
   #
-  def link_to_segment(segment, show_segment_text=false)
+  def link_to_segment(segment, match_text='', show_segment_text=false)
     interview = segment.interview
     item = segment.tape.number
     position = Timecode.new(segment.timecode).time.to_i
-    link_text = show_segment_text ? "#{segment.timecode} " + truncate(segment.translation || segment.transcript || 'keine Transkription vorhanden.', :length => 300) : "Zum Interview-Ausschnitt"
+    # TODO: reduce word count in both directions on interpunctuation
+    pattern = Regexp.new '(\w+\W+){0,8}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,8}', Regexp::IGNORECASE
+    match_text = segment.translation[pattern] || segment.transcript[pattern]
+    match_text = if match_text.nil?
+      'keine Transkription vorhanden.'
+    else
+      '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
+    end
+    link_text = show_segment_text ? "#{segment.timecode} " + truncate(match_text, :length => 300) : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview)
       link_to link_text, "javascript:current_player.seek(#{item-1},#{position});"
     else

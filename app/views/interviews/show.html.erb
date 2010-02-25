@@ -13,13 +13,7 @@
       <li id="tabForcedLabor">
         <p onclick="showInterviewTab('tabForcedLabor');">Daten zur Zwangsarbeit</p>
       </li>
-      <!--
-      <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
-      <li id="tabSegments"<%= !@search.matching_segments_for(@interview.archive_id).empty? ? "" : " style=\"display: none;\"" %>>
-        <p onclick="showInterviewTab('tabSegments');">Ausschnitte</p>
-      </li>
-      <% end %>
-      //-->
+
       <% javascript_tag do %>
 
         var interviewTabs = $$('#tabsOverview ul li');
@@ -47,10 +41,6 @@
   <%= render :partial => "interview", :object => @interview %>
 
   <%= render :partial => "forced_labor", :object => @interview %>
-
-  <% if !@search.matching_segments_for(@interview.archive_id).empty? %>
-  <%= render :partial => "segments" %>
-  <% end %>
 
 </div>
 

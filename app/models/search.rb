@@ -76,7 +76,8 @@ DEF
 
   def results=(solr_result)
     @results = solr_result
-    write_attribute :results, @results.to_yaml
+    # not sure we should store results!
+    # write_attribute :results, @results.to_yaml
   end
 
   # Returns the Sunspot::Search#results of any queries
@@ -243,7 +244,10 @@ SQL
 
 
   def matching_segments_for(archive_id)
-    @segments[archive_id.upcase] || []
+    archive_id.upcase! if archive_id.is_a?(String)
+    match = @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
+    puts "\n\n@@@@ MATCHING SEGMENTS FOR #{archive_id.inspect}:\n#{match.inspect}"
+    match
   end
 
 
@@ -313,6 +317,18 @@ SQL
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
         end
       end
+    end
+  end
+
+  def self.in_interview(id, fulltext)
+    search_results = if id.is_a?(Integer)
+      Interview.find(:all, :conditions => ['id = ?', id])
+    else
+      Interview.find(:all, :conditions => ['archive_id = ?', id])
+    end
+    Search.new do |search|
+      search.results = search_results
+      search.fulltext = fulltext
     end
   end
 

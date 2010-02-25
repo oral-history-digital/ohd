@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
                         :member => { :transcript => :get }
   end
 
-  map.resources :searches
+  map.resources :searches, :collection => { :interview => :post }
 
   map.home ':page', :controller => 'home', :action => :show
   map.root :controller => 'home', :action => 'archive'

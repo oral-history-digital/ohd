@@ -1,8 +1,7 @@
 <div id="interviewContentNavigation" class="baseListBox">
 
   <% remote_form_for content,
-                     :url => '#',
-                     :method => :get,
+                     :url => interview_searches_path,
                      :html => { :action => '',
                                 :method => :get,
                                 :update => 'search-results',
@@ -12,23 +11,29 @@
 
     <div id="interviewSearch">
         <h2><label for="fulltext">Suche in &#145;<%= content %>&#146;</label></h2>
-        <%= text_field_tag 'fulltext', t('search_term'), :id => "interview_fulltext" %>
+        <%= text_field_tag 'fulltext', @search.fulltext || t('search_term'), :id => "interview_fulltext" %>
+        <%= hidden_field_tag 'id', @interview.archive_id %>
         <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
         <%#= search.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
     </div>
 
   <% end %>
 
-  <!--
-  <div id="search-results-toggle" class="container-toggle" style="display:none;">Suchergebnisse</div>
-  <div id="search-results" class="container" style="display:none;">Keine passenden Ausschnitte gefunden.</div>
-  //-->
+  <% javascript_tag do %>
+      $('interview_fulltext').value = '<%= @search.fulltext || t('search_term') %>';
+  <% end %>
+
+  <% show_segments = !@search.matching_segments_for(@interview.archive_id).empty? %>
+  <div id="search-results-toggle" class="<%= show_segments ? 'open ' : ''%>container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">Suchergebnisse</div>
+  <div id="search-results" class="container" style="<%= show_segments ? '' : 'display:none;' %>">
+    <%= render :partial => 'segments', :object => @search.matching_segments_for(@interview.archive_id) %>
+  </div>
 
   <% if content.has_headings? %>
-  <div id="headings-toggle" class="open container-toggle" onclick="toggleContainer('headings-toggle', true);">
+  <div id="headings-toggle" class="<%= show_segments ? '' : 'open ' %>container-toggle" onclick="toggleContainer('headings-toggle', true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="headings" class="container">
+  <div id="headings" class="container" style="<%= show_segments ? 'display:none;' : '' %>">
     <%= render :partial => 'headings', :object => content %>
   </div>
   <% end %>

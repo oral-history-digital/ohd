@@ -59,6 +59,25 @@ class SearchesController < BaseController
     end
   end
 
+  def interview
+    @search = Search.in_interview(params[:id],params[:fulltext])
+    @search.segment_search!
+    archive_id = @search.results.first.nil? ? '' : @search.results.first.archive_id
+    @segments = @search.matching_segments_for(archive_id)
+    respond_to do |format|
+      format.html do
+        render :template => '/interviews/show'
+      end
+      format.js do
+        segments_html = render_to_string({:partial => '/interviews/segments.html' })
+        render :update do |page|
+          page.replace_html 'search-results', segments_html
+          page.show 'search-results'
+          page.show 'search-results-toggle'
+        end
+      end
+    end
+  end
 
   private
 

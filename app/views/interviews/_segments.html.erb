@@ -1,15 +1,14 @@
-<div id="containerSegments" style="height: 405px; overflow-y: scroll; overflow-x: hidden; display: none;">
-  <% matching_segments = @search.matching_segments_for(@interview.archive_id) %>
-  <% if matching_segments.empty? %>
+<div id="containerSegments">
+  <% if segments.empty? %>
     Für dieses Interview sind keine Treffer-Ausschnitte vorhanden.
   <% else %>
 
     <!--<p><%#= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %> gefunden:</p>-->
 
     <ul>
-    <% matching_segments.each do |segment| %>
+    <% segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
-        <%= link_to_segment segment, true %>
+        <%= link_to_segment segment, @search.fulltext, true %>
       </li>
     <% end %>
   </ul>
