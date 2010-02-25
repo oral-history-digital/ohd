@@ -229,15 +229,13 @@ position: relative;
 /* Ebene Video (Suche im Interview, Inhaltsverzeichnis, MeinBereich)*/
 /* **************************************************************** */
 
-
 #interviewContentNavigation {
 	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
-
 }
 
 #search_in_interview {
 	padding:60px 0 0 0;
-border-bottom: 1px solid #F1F1EB;
+	border-bottom: 1px solid #F1F1EB;
 
 }
 .fragmentTitle {
@@ -311,10 +309,17 @@ border-bottom: 1px solid #F1F1EB;
 }
 
 #containerSegments ul {
-    margin-left:10px;
-    width:253px;
+    margin:30px 0 0 20px;
+    width:230px;
 }
-
+#containerSegments ul li {
+    position:relative;
+    margin-bottom:20px;
+}
+span.timecode {position:absolute;
+    color:#999;
+    top:-12px;
+}
 
 #headings.container {
     height: 377px;
