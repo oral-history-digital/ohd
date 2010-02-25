@@ -10,33 +10,33 @@
         </ul>
     </div>
     <a href="javascript:" class="carousel-control forward" rel="next"><%= t('forward', :scope => 'user_interface.player') %></a>
-
-    <noscript>
-      <h4>
-        JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
-        Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
-      </h4>
-    </noscript>
-
-    <% javascript_tag do %>
-        galleryElem = $('image_carousel');
-        new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 6) ? @interview.photos.size : 6 %> } );
-        var LightboxOptions = {
-            fileLoadingImage:        '/images/lightbox/loading.gif',
-            fileBottomNavCloseImage: '/images/lightbox/close.gif',
-
-            overlayOpacity: 0.8,   // controls transparency of shadow overlay
-
-            animate: true,         // toggles resizing animations
-            resizeSpeed: 7,        // controls the speed of the image resizing animations (1=slowest and 10=fastest)
-
-            borderSize: 10,         //if you adjust the padding in the CSS, you will need to update this variable
-
-            // When grouping images this is used to write: Image # of #.
-            // Change it for non-english localization
-            labelImage: "Bild",
-            labelOf: "von"
-        }
-        new Lightbox();
-    <% end %>
 </div>
+
+<noscript>
+  <span class="warning">
+    JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
+    Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
+  </span>
+</noscript>
+
+<% javascript_tag do %>
+    galleryElem = $('image_carousel');
+    new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 5) ? @interview.photos.size : 5 %> } );
+    var LightboxOptions = {
+        fileLoadingImage:        '/images/lightbox/loading.gif',
+        fileBottomNavCloseImage: '/images/lightbox/close.gif',
+
+        overlayOpacity: 0.8,   // controls transparency of shadow overlay
+
+        animate: true,         // toggles resizing animations
+        resizeSpeed: 7,        // controls the speed of the image resizing animations (1=slowest and 10=fastest)
+
+        borderSize: 10,         //if you adjust the padding in the CSS, you will need to update this variable
+
+        // When grouping images this is used to write: Image # of #.
+        // Change it for non-english localization
+        labelImage: "Bild",
+        labelOf: "von"
+    }
+    new Lightbox();
+<% end %>
