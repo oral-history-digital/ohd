@@ -22,19 +22,22 @@ module ApplicationHelper
     interview = segment.interview
     item = segment.tape.number
     position = Timecode.new(segment.timecode).time.to_i
+    link_text = show_segment_text ? content_tag(:span, "#{segment.timecode}", :class => :timecode) + truncate(segment_excerpt_for_match(segment, match_text), :length => 300) : "Zum Interview-Ausschnitt"
+    if @object.is_a?(Interview)
+      link_to link_text, "javascript:current_player.seek(#{item-1},#{position});"
+    else
+      link_to link_text, interview_path(interview, :item => item, :position => position)
+    end
+  end
+
+  def segment_excerpt_for_match(segment, match_text='', width=8)
     # TODO: reduce word count in both directions on interpunctuation
-    pattern = Regexp.new '(\w+\W+){0,8}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,8}', Regexp::IGNORECASE
+    pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
       'keine Transkription vorhanden.'
     else
       '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
-    end
-    link_text = show_segment_text ? content_tag(:span, "#{segment.timecode}", :class => :timecode) + truncate(match_text, :length => 300) : "Zum Interview-Ausschnitt"
-    if @object.is_a?(Interview)
-      link_to link_text, "javascript:current_player.seek(#{item-1},#{position});"
-    else
-      link_to link_text, interview_path(interview, :item => item, :position => position)
     end
   end
 
