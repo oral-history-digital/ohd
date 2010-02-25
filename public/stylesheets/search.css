@@ -305,8 +305,19 @@ border-bottom: 1px solid #F1F1EB;
 	float:right;
 }
 
+#search-results.container {
+    height: 404px;
+    background: #F8F8F5;
+}
+
+#containerSegments ul {
+    margin-left:10px;
+    width:253px;
+}
+
+
 #headings.container {
-    height: 420px;
+    height: 377px;
     background: #F8F8F5;
 }
 
@@ -328,6 +339,9 @@ font-size:90%;
 
 #interview_headings {
 	margin-left:10px;
+}
+.subheading .timecode {
+color:#999;
 }
 
 #interview_headings .heading {
