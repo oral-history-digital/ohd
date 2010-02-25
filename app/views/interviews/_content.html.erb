@@ -24,16 +24,21 @@
   <% end %>
 
   <% show_segments = !@search.matching_segments_for(@interview.archive_id).empty? %>
-  <div id="search-results-toggle" class="<%= show_segments ? 'open ' : ''%>container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">Suchergebnisse</div>
-  <div id="search-results" class="container" style="<%= show_segments ? '' : 'display:none;' %>">
+  <div id="search-results-toggle" class="<%= show_segments ? 'closed ' : ''%>container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">
+    <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
+    <% if show_segments %>
+    <span class="hits">(<%= @search.matching_segments_for(@interview.archive_id).size %>)</span>
+    <% end %>
+  </div>
+  <div id="search-results" class="container" style="display:none;">
     <%= render :partial => 'segments', :object => @search.matching_segments_for(@interview.archive_id) %>
   </div>
 
   <% if content.has_headings? %>
-  <div id="headings-toggle" class="<%= show_segments ? '' : 'open ' %>container-toggle" onclick="toggleContainer('headings-toggle', true);">
+  <div id="headings-toggle" class="open container-toggle" onclick="toggleContainer('headings-toggle', true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="headings" class="container" style="<%= show_segments ? 'display:none;' : '' %>">
+  <div id="headings" class="container" style="">
     <%= render :partial => 'headings', :object => content %>
   </div>
   <% end %>

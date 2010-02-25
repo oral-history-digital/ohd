@@ -30,7 +30,7 @@ module ApplicationHelper
     else
       '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
     end
-    link_text = show_segment_text ? "#{segment.timecode} " + truncate(match_text, :length => 300) : "Zum Interview-Ausschnitt"
+    link_text = show_segment_text ? content_tag(:span, "#{segment.timecode}", :class => :timecode) + truncate(match_text, :length => 300) : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview)
       link_to link_text, "javascript:current_player.seek(#{item-1},#{position});"
     else

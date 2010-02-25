@@ -27,6 +27,7 @@ de:
 
   user_interface:
     labels:
+      search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
     player:
