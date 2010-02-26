@@ -34,34 +34,46 @@
             <% category = f.first %>
 
             <li>
-                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => facet_name, :onclick => "categoryChange = true;Element.show('#{facet_name}_submit');" } %>
-                <span class="facet-name" onclick="var check_elem = $('<%= "#{facet_name}_#{category[:id]}" %>'); check_elem.checked = !check_elem.checked;Element.show('<%=  "#{facet_name}_submit" %>');" ><%= category.is_a?(String) ? category : category.name %></span>
+                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
+                <span class="facet-name<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" ><%= category.is_a?(String) ? category : category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
                 <% end %>
             </li>
 
           <% end %>
+        <ul>
 
         <% else %>
           <%# Fulltext Facet %>
 
-          <% if fulltext_list %>
-
+          <% if fulltext_list and !facet_entries.empty? %>
+        <ul>
             <% facet_entries.each do |name| %>
 
             <li><%= link_to_remote name.first, :url => searches_path(:search => { :person_name => name.first }), :method => :get %></li>
 
             <% end %>
+        </ul>
 
           <% else %>
 
             <%= search_facets.text_field :person_name, { :size => 25 } %>
 
+            <div id="person_name_suggestions"></div>
+
+            <% javascript_tag do %>
+
+              new Ajax.Autocompleter(   'search_person_name',
+                                        'person_name_suggestions',
+                                        <%#= autocomplete_url %>'',
+                                        {});
+
+            <% end %>
+
           <% end %>
 
         <% end %>
-     </ul>
     </fieldset>
 
     <% end %>

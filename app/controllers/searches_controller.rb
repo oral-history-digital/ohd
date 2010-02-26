@@ -79,6 +79,11 @@ class SearchesController < BaseController
     end
   end
 
+  def person_name
+    @search = Search.from_params({ :person_name => params[:person_name] })
+    @search.search!
+  end
+
   private
 
   # This method clears the default search field contents from the query

@@ -90,6 +90,21 @@
     cursor: default;
 }
 
+/* Checkbox replacement */
+.facet-field input.checkbox {
+    position: absolute;
+    right: -2000px;
+}
+
+.facet-field .facet-name {
+    padding-left: 22px;
+    background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
+}
+
+.facet-field .facet-name.checked {
+    background-image: url(/images/checkbox_a2.gif);
+}
+
 /* transcript excerpts and segment selection */
 .baseContainerTeaserExcerpts .segment {
     display: none;

@@ -1,4 +1,4 @@
-
+/* Facet toggling and submission */
   // blind effect for category facets
   function toggleCategory(id, blindToggle) {
     var cat_index = -1;
@@ -72,4 +72,19 @@
   function afterResponse() {
     $('search_header_overlay').hide();
     $('search_facets_overlay').hide();
+  }
+
+  function checkCategory(id, labelElement) {
+      var facetName = id.sub(/_\d+$/,'');
+      var input = $(id);
+      if(input) {
+          if(labelElement.hasClassName('checked')) {
+              input.checked = false;
+              labelElement.removeClassName('checked');
+          } else {
+              input.checked = true;
+              labelElement.addClassName('checked');
+          }
+          Element.show(facetName + '_submit');
+      }
   }
