@@ -257,7 +257,7 @@ h5 {
 #language_select .captions_orig, #language_select .captions_trans {
 	float: left;
 	padding: 0 6px;
-	background: url(/demo/images/lang_btn_bg_n.gif);
+	background: url(/images/lang_btn_bg_n.gif);
 }
 #language_select .captions_orig:hover,
 #language_select .captions_trans:hover,
@@ -266,13 +266,13 @@ h5 {
 	color:#8B0f09;
 	float: left;
 	padding: 0 6px;
-	background: url(/demo/images/lang_btn_bg_a.gif);
+	background: url(/images/lang_btn_bg_a.gif);
 }
 
 #language_select .captions_orig.disabled,
 #language_select .captions_trans.disabled {
     color: #999;
-    background: url(/demo/images/lang_btn_bg_n.gif);
+    background: url(/images/lang_btn_bg_n.gif);
 }
 
 .playerControl .itemselection {
