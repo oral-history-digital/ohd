@@ -368,52 +368,58 @@ position: relative;
 .mainheading .subheading{
     padding-left:0px;
     font-size:90%;
-    width:210px;
+   /* width:210px;*/
 }
 
 #interview_headings {
   margin-left:10px;
 }
 
-#interview_headings .heading {
+#interview_headings .heading,
+#interview_headings .subheading {
     position:relative;
-    width: 89%;
     display:block;
+}
+#interview_headings .heading {
+width: 89%;
+}
+
+.heading a:hover,
+.subheading a:hover {
+    display: block;
+    color: #9F1313;
+    background-color: #e4e4da;
 }
 
 .heading .timecode,
 .subheading .timecode {
     display:none;
     position:absolute;
-    top:-14px;
-    right:5px;
+    top:-16px;
+    right:29px;
 }
 
 .heading a:hover .timecode,
-.subheading a:hover .timecode {
+.subheading a:hover + .timecode {
     color:#333;
     display:block;
     text-decoration:none;
     padding:2px;
     background: #e4e4da;
-    opacity:.75;
+    opacity:1;
 }
 
-/*
-#headings a:hover span.timecode {
-    color:#333;
-    display:block;
-    text-decoration:none;
-    padding:2px;
-    background: #e4e4da;
-    opacity:.75;
+#interview_headings .current a:hover + .timecode {
+  background:#b2afa1;
+  color:#fff;
 }
-*/
 
 #interview_headings .current > a,
 #interview_headings .current .heading > a {
-  background-color: #e4e4da;
-  color: #9F1313;
+  /*background-color: #e4e4da;*/
+  background-color: #b2afa1;
+  /*color: #9F1313;*/
+  color:#fff;
   display: block;
 }
 
