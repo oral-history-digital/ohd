@@ -253,6 +253,12 @@ position: relative;
 	border-bottom: 1px solid #F1F1EB;
 
 }
+
+#back_to_search {
+	margin: 10px 10px 0 0;
+	float:right;
+}
+
 .fragmentTitle {
 	padding-bottom:10px;
 }
@@ -308,14 +314,15 @@ position: relative;
     overflow-x: hidden;
 }
 
-#my-results.container {
-    height: 220px;
+#search-results-toggle {
+    position:relative;
+
 }
 
-
-#back_to_search {
-	margin: 10px 10px 0 0;
-	float:right;
+#search-results-toggle .hits {
+    position:absolute;
+    top:6px;
+    left:105px;
 }
 
 #search-results.container {
@@ -337,6 +344,10 @@ position: relative;
     color:#999;
     top:-12px;
 }
+
+
+/* ########### Inhaltsverzeichnis ########## */
+
 
 #headings.container {
     height: 377px;
@@ -370,17 +381,16 @@ position: relative;
     display:block;
 }
 
-#headings .timecode {
+.heading .timecode,
+.subheading .timecode {
     display:none;
     position:absolute;
-    top:-10px;
-    right:-40px;
-}
-#headings a .timecode {
-text-decoration:none;
+    top:-14px;
+    right:5px;
 }
 
-#headings a:hover span.timecode {
+.heading a:hover .timecode,
+.subheading a:hover .timecode {
     color:#333;
     display:block;
     text-decoration:none;
@@ -389,6 +399,16 @@ text-decoration:none;
     opacity:.75;
 }
 
+/*
+#headings a:hover span.timecode {
+    color:#333;
+    display:block;
+    text-decoration:none;
+    padding:2px;
+    background: #e4e4da;
+    opacity:.75;
+}
+*/
 
 #interview_headings .current > a,
 #interview_headings .current .heading > a {
@@ -396,6 +416,9 @@ text-decoration:none;
   color: #9F1313;
   display: block;
 }
+
+
+/* ########### Meine Recherche ########## */
 
 #my-results {
     padding:10px;
