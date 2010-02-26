@@ -379,17 +379,22 @@ h5 {
 	float: left;
 }
 
+.baseContainerTeaserText .forced_labor_groups {
+    font-size: 80%;
+}
+
+
 .baseContainerTeaserText .label {
     font-weight: normal;
-    font-size: 80%;
+    font-size: 100%;
     font-family: Arial, Helvetica, sans;
     color:#999281;
-    margin-bottom:-2px;
+    margin: 4px 0 0 0;
     display:block;
 }
 
 .baseContainerTeaserExcerpts {
-    /*height: 160px;*/
+    height: 120px;
 }
 
 .baseContainerTeaserExcerpts p,
@@ -398,8 +403,9 @@ h5 {
 }
 
 .baseContainerTeaserExcerpts h5 {
-	background: none;
-	padding: 0;
+	background: #e4e4da;
+	padding: 0 4px;
+        font-size:85%;
 }
 
 .baseContainerTeaserExcerpts .transcript {
@@ -409,7 +415,7 @@ h5 {
 }
 
 .baseContainerTeaserExcerpts a {
-	font-size: 85%;
+	font-size: 90%;
 	line-height: 1.4em;
 }
 
