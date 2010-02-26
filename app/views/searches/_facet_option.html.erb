@@ -34,7 +34,7 @@
             <% category = f.first %>
 
             <li>
-                <%= check_box_tag "search[#{facet_name}][]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
+                <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
                 <span class="facet-name<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" ><%= category.is_a?(String) ? category : category.name %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
@@ -42,7 +42,7 @@
             </li>
 
           <% end %>
-        <ul>
+        </ul>
 
         <% else %>
           <%# Fulltext Facet %>
@@ -51,23 +51,23 @@
         <ul>
             <% facet_entries.each do |name| %>
 
-            <li><%= link_to_remote name.first, :url => searches_path(:search => { :person_name => name.first }), :method => :get %></li>
+            <li><%= link_to_remote name.first, :url => searches_path(:person_name => name.first ), :method => :get %></li>
 
             <% end %>
         </ul>
 
           <% else %>
 
-            <%= search_facets.text_field :person_name, { :size => 25 } %>
+            <%= search_facets.text_field :person_name, { :size => 25, :name => 'person_name' } %>
 
-            <div id="person_name_suggestions"></div>
+            <div id="person_name_suggestions" class="autocomplete"></div>
 
             <% javascript_tag do %>
 
               new Ajax.Autocompleter(   'search_person_name',
                                         'person_name_suggestions',
-                                        <%#= autocomplete_url %>'',
-                                        {});
+                                        '<%= person_name_searches_path %>',
+                                        { parameters: '<%= @search.serialized_query_params %>'});
 
             <% end %>
 

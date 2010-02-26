@@ -11,7 +11,7 @@ class SearchesController < BaseController
     before do
       @search.search!
       reinstate_category_state
-      @search.open_category = params['search']['open_category'] unless params['search'].blank?
+      @search.open_category = params['open_category']
       @interviews = @search.results
 
       session[:query] = @search.query_params
@@ -37,7 +37,7 @@ class SearchesController < BaseController
       @search.search!
       reinstate_category_state
       @search.segment_search!
-      @search.open_category = params['search']['open_category'] unless params['search'].blank?
+      @search.open_category = params['open_category']
       @interviews = @search.results
 
       session[:query] = @search.query_params
@@ -80,8 +80,25 @@ class SearchesController < BaseController
   end
 
   def person_name
-    @search = Search.from_params({ :person_name => params[:person_name] })
-    @search.search!
+    query_params = params.merge({:partial_person_name => params.delete('person_name')})
+    @search = Search.from_params(query_params)
+    begin
+      @search.search!
+    rescue Sunspot
+      @search.results = []
+    end
+    respond_to do |format|
+      format.html do
+        # ?
+      end
+      format.js do
+        if @search.results.empty?
+          render :text => '<span>keine Personen gefunden</span>'
+        else
+          render :partial => 'person_name', :collection => @search.results
+        end
+      end
+    end
   end
 
   private
@@ -89,8 +106,8 @@ class SearchesController < BaseController
   # This method clears the default search field contents from the query
   # on the server-side, in case this is missed by the JS client code.
   def remove_search_term_from_params
-    unless object_params.blank? || object_params[:fulltext].blank?
-      object_params.delete(:fulltext) if object_params[:fulltext] == t('search_term')
+    unless params.blank? || params[:fulltext].blank?
+      params.delete(:fulltext) if params[:fulltext] == t('search_term')
     end
   end
 

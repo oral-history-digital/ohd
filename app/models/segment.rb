@@ -33,6 +33,9 @@ DEF
     string :heading, :stored => true
     string :timecode
     text :joined_transcript_and_translation
+    text :heading, :boost => 10 do
+      self.heading.blank? ? '' : self.heading.to_s
+    end
     #text :transcript
     #text :translation, :boost => 2
     Category::ARCHIVE_CATEGORIES.each do |category|

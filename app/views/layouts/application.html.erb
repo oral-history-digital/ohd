@@ -54,6 +54,7 @@
             <% javascript_tag do %>
               var categoryChange = false;
               var checkedCategories = [];
+              var categoryElems = [];
 
               // clearing the fulltext field before submission or editing
               function clearFulltextField(id) {
@@ -75,7 +76,7 @@
 
             <% javascript_tag do %>
 
-              var categoryElems = $$('fieldset.facet-field');
+              categoryElems = $$('fieldset.facet-field');
 
             <% end %>
 

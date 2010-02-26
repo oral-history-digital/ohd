@@ -45,9 +45,15 @@ DEF
       end
       str
     end
+    text :person_name, :boost => 20, :using => :full_title
+
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
+    text :categories, :boost => 20 do
+      ([self.archive_id] + Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first).to_s }).join(' ')
+    end
+    
     string :person_name, :using => :full_title, :stored => true
   end
 

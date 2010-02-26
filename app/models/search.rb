@@ -48,6 +48,7 @@ class Search < ActiveRecord::Base
                             + NON_QUERY_ACCESSIBLES \
                             + [
                                 :fulltext,
+                                :partial_person_name,
                                 :page
                               ]).join(', :')}
 ATTR
@@ -86,6 +87,15 @@ DEF
     @results ||= read_attribute :results
     @results = YAML.load(@results) if @results.is_a?(String)
     @results
+  end
+
+  # used to construct the autocomplete searches for person names
+  def partial_person_name=(name_token)
+    @partial_person_name = name_token
+  end
+
+  def partial_person_name
+    @partial_person_name
   end
 
   # The total number of records matching the query criteria
@@ -152,6 +162,23 @@ DEF
     query_params
   end
 
+  # Returns a string-serialized version of the query params for use as
+  # url parameters.
+  def serialized_query_params
+    query_params.to_a.map do |param|
+      str = []
+      if param.last.is_a?(Array)
+        # this is an Array field
+        param.last.each do |value|
+          str << param.first.to_s + '[]=' + value.to_s
+        end
+      else
+        str << param.first.to_s + '=' + param.last.to_s
+      end
+      str.join('&')
+    end.join('&')
+  end
+
   # This method queries the Solr search server for matching
   # instances of interviews/segments.
   #
@@ -161,6 +188,7 @@ DEF
   # directly from the DB
   def search!
     query_params = self.query_params
+
     #handle the page parameter separately
     @page = (query_params.delete('page') || 1).to_i
 
@@ -191,16 +219,31 @@ SQL
       # SOLR query
       @search = Sunspot.search Interview do
 
-        # fulltext search
-        keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
+        if query_params['partial_person_name'].blank?
+          # fulltext search
+          keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
+
+          # person name facet
+          self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
+
+        else
+          # search for partial person names for autocompletion
+          keywords 'person_name_text:' + query_params['partial_person_name'].downcase + '*', :fields => 'person_name'
+
+          text_fields do
+            with(:fulltext, query_params['fulltext']) unless query_params['fulltext'].blank?
+          end
+
+          adjust_solr_params do |params|
+            params[:defType] = 'lucene'
+          end
+
+        end
 
         # category facets
         Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
           self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
         end
-
-        # person name facet
-        self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
 
         facet :person_name,
               :forced_labor_group_ids,
@@ -212,9 +255,6 @@ SQL
         paginate :page => @page, :per_page => RESULTS_PER_PAGE
         order_by :person_name, :asc
 
-#        adjust_solr_params do |params|
-#          params.delete(:defType)
-#        end
       end
       @hits = @search.total
       @results = @search.results

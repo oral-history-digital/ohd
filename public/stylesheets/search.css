@@ -105,6 +105,24 @@
     background-image: url(/images/checkbox_a2.gif);
 }
 
+/* Autocompleter */
+fieldset.facet-field .autocomplete {
+    background: #f8f8f8;
+    opacity: 0.9;
+    z-index: 5;
+}
+
+.autocomplete span {
+    display: block;
+    width: 100%;
+    font-size: 80%;
+}
+
+.autocomplete span a {
+    color: #666666;
+    text-decoration: none;
+}
+
 /* transcript excerpts and segment selection */
 .baseContainerTeaserExcerpts .segment {
     display: none;

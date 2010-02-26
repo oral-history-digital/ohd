@@ -47,12 +47,12 @@
       <%# end %>
 
       <% query.each do |category| %>
-        <%= hidden_field_tag "search[#{active_facet}][]", category[:id], { :id => "#{active_facet}_#{category[:id]}"} %>
+        <%= hidden_field_tag "#{active_facet}[]", category[:id], { :id => "#{active_facet}_#{category[:id]}"} %>
       <% end %>
 
     <% else %>
 
-      <%= hidden_field_tag "search[#{active_facet}]", query, :id => "#{active_facet.singularize}" %>
+      <%= hidden_field_tag "#{active_facet}", query, :id => "#{active_facet.singularize}" %>
     
     <% end %>
 
