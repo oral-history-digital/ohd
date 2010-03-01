@@ -1,80 +1,52 @@
+var playerDefaults = {
+  jwplayerFile                : 'player.swf',
+  captionsPluginFile          : 'captions.swf',
+  qualityPluginFile           : '',
+  additionalPluginFiles       : '',
 
-var player_cfg = {
-  jwplayer_file:                        'player.swf',
-  captions_plugin_file:                 'captions.swf',
+  playerID                    : '',
+  jwplayerSpace               : 'mediaspace',
+  captionsSpace               : '',
+  slideClass                  : null,
 
-  // Streaming Server
-  streamer:                             'rtmp://stream03.cedis.fu-berlin.de/abcbe6deaec582258749fcd36da488ca',
+  playlistfile                : '',
+  streamer                    : 'rtmp://stream03.cedis.fu-berlin.de/abcbe6deaec582258749fcd36da488ca',
 
-  // Breite des Player-Fensters, ggf. inkl. Playlist
-  width:                                '400',
+  width                       : '400',
+  height                      : '320',
+  playlist                    : 'none', // 'none', 'bottom', 'over', 'right'
+  playlistsize                : '80',
 
-  // Hoehe des Player-Fensters, ggf. inkl. Steuerbuttons und Playlist
-  height:                               '320',
+  skin                        : '',
+  backcolor                   : '',
+  frontcolor                  : '',
+  lightcolor                  : '',
 
-  // Skin-Datei (swf)
-  skin:                                 '',
+  allowfullscreen             : true,
+  autostart                   : false,
 
-  backcolor:                            '',
+  startItem                   : '',
+  startPosition               : '',
+  startCaptionsLanguage       : 'x-original',
 
-  frontcolor:                           '',
+  onCaptions                  : function(){},
+  onItem                      : function(){},
+  onMute                      : function(){},
+  onPause                     : function(){},
+  onPlayerReady               : function(){},
+  onState                     : function(){},
+  onVolume                    : function(){},
+  whilePlaying                : function(){},
 
-  lightcolor:                           '',
-  playlist:                             'none', // 'none', 'bottom', 'over', 'right'
-  playlistsize:                         '80',
+  delay                       : 500
+}
 
-  startItem:                            null,
-  startPosition:                        null,
-  startTranslation:                    null,
-
-  allow_fullscreen:                     'true',
-
-  // Verzoegerung, die gebraucht wird, wenn z.B. an eine Position in einem
-  // anderen Band geprungen wird, 500 (= halbe sec.) sollte OK sein
-  delay:                                500,
-
-  // Callback für Beginn des Abspielmodus
-  whilePlaying:                         function(){},
-
-  // Callback für Pause
-  onPause:                              function(){},
-
-  // Objekt-ID des Players
-  player_id:                            'player',
-
-  // ID des HTML-Content-Elements, in dem Player dargestellt wird
-  content_id:                           'mediaspace',
-
-  // ID des HTML-Content-Elements, in dem Transkription angezeigt wird
-  captions_id:                          'captions',
-
-  slide_class:                          null,
-
-  // auszufuehrender Code bei Veraenderungen der Interview-Position
-  // in Sekunden
-  call_position:                        "",
-
-  // auszufuehrender Code bei Wechsel des Interview-Bandes
-  call_item:                            "$(this.cfg['player_id'] + '_item').selectedIndex = this.item;",
-
-  // auszufuehrender Code bei Veraenderungen des Player-Status�
-  // (PLAYING, PAUSED usw.)
-  call_state:                           "",
-
-  onPlayerReady:                        function(){},
-  onVolume:                             function(){},
-  onMute:                               function(){}
-};
-// *****************************************************************************
-
-
-// unerheblich, wenn nur ein Player pro Seite dargestellt wird
 var players = new Array();
 var current_player = null;
 
-// wird IMMER vom JWPlayer aufgerufen, sobald er geladen ist
+// wird vom JWPlayer aufgerufen, sobald er geladen ist
 function playerReady(player) {
-  players[player.id].cfg['player_id'] = player.id;
+  players[player.id].cfg.id = player.id;
   players[player.id].player = $(player.id);
   current_player = players[player.id];
   players[player.id].player.addModelListener("STATE", "stateListener");
@@ -111,41 +83,47 @@ function captionsListener(obj) {
 
 // ausser Parameter "file" alles optional
 var Player = Class.create({
-  /*
-   * initialize: function(file, cfg) {
-   * var _this = this;
-   * this.file = file;
-   * this.cfg = player_cfg;
-   * // Ueberschreiben der Standard-Konfiguration
-   * for(attr in cfg) { if(this.cfg[attr] != undefined) { this.cfg[attr] = cfg[attr]; } }
-   */
   initialize: function(file, cfg) {
     this.file = file;
-    this.cfg = player_cfg;
-    // Standard-Konfiguration ueberschreiben
-    for(attr in cfg) { this.cfg[attr] = cfg[attr]; }
-    if(typeof(player_id) == 'string') { this.cfg['player_id'] = player_id; }
-    if(typeof(content_id) == 'string') { this.cfg['content_id'] = content_id; }
-    players[this.cfg['player_id']] = this;
+    this.cfg = playerDefaults;
+    for(var attr in cfg) { this.cfg[attr] = cfg[attr]; }
+    players[this.cfg.id] = this;
 
-    this.jwplayer = new SWFObject(this.cfg['jwplayer_file'], this.cfg['player_id'], this.cfg['width'], this.cfg['height'], '9');
-    this.jwplayer.addParam('allowfullscreen', this.cfg['allow_fullscreen']);
-    this.jwplayer.addParam('allowscriptaccess', 'always');
-    this.jwplayer.addParam('seamlesstabbing', 'true');
-    this.jwplayer.addParam('wmode','opaque');
-    this.jwplayer.addVariable('playlist', this.cfg['playlist']);
-    this.jwplayer.addVariable('streamer', this.cfg['streamer']);
-    this.jwplayer.addVariable('plugins', this.cfg['captions_plugin_file']);
-    this.jwplayer.addVariable('captions.listener', 'captionsListener');
-    this.jwplayer.addVariable('captions.state', false);
-    this.jwplayer.addVariable('file', this.file);
-    this.jwplayer.addVariable('skin', this.cfg['skin']);
-    this.jwplayer.addVariable('backcolor', this.cfg['backcolor']);
-    this.jwplayer.addVariable('frontcolor', this.cfg['frontcolor']);
-    this.jwplayer.addVariable('lightcolor', this.cfg['lightcolor']);
-    this.jwplayer.addVariable('id', this.cfg['player_id']);
-    if(this.cfg['startItem'] != null) { this.jwplayer.addVariable('autostart', true); }
-    this.jwplayer.write(this.cfg['content_id']);
+    // adding plugin files
+    var plugins = new Array();
+    if(this.cfg.additionalPluginFiles) { plugins.push(this.cfg.additionalPluginFiles); }
+    if(this.cfg.captionsPluginFile) { plugins.push(this.cfg.captionsPluginFile); }
+    if(this.cfg.qualityPluginFile) { plugins.push(this.cfg.qualityPluginFile); }
+
+    var playerParams = {
+      'allowfullscreen'     : this.cfg.allowfullscreen,
+      'allowscriptaccess'   : 'always',
+      'seamlesstabbing'     : true,
+      'wmode'               : 'opaque'
+    }
+
+    var playerVariables = {
+      'autostart'           : this.cfg.autostart,
+      'captions.listener'   : 'captionsListener',
+      'captions.state'      : false,
+      'file'                : this.file,
+      'id'                  : this.cfg.id,
+      'playlist'            : this.cfg.playlist,
+      'plugins'             : plugins.join(","),
+      'skin'                : this.cfg.skin,
+      'streamer'            : this.cfg.streamer,
+      'backcolor'           : this.cfg.backcolor,
+      'frontcolor'          : this.cfg.frontcolor,
+      'lightcolor'          : this.cfg.lightcolor
+    }
+
+    if(this.cfg.startItem) { playerVariables.autostart = true; }
+
+    // creates and writes the JW Player
+    this.jwplayer = new SWFObject(this.cfg.jwplayerFile, this.cfg.id, this.cfg.width, this.cfg.height, '10');
+    for(var i in playerParams) { this.jwplayer.addParam(i, playerParams[i]); }
+    for(var j in playerVariables) { this.jwplayer.addVariable(j, playerVariables[j]); }
+    this.jwplayer.write(this.cfg.jwplayerSpace);
 
     this.player = null;
     this.state = null;
@@ -156,13 +134,14 @@ var Player = Class.create({
     this.playCallback = this.cfg['whilePlaying'];
     this.pauseCallback = this.cfg['onPause'];
     this.caption = null;
-    this.captionContainer = $(this.cfg['captions_id']);
-    this.slide_class = this.cfg['slide_class'];
-    this.useSlides = this.slide_class != null;
+    this.captionContainer = $(this.cfg.captionsSpace);
+    this.captionsLanguage = this.cfg.startCaptionsLanguage;
+    this.slideClass = this.cfg.slideClass;
+    this.useSlides = this.slideClass != null;
     this.currentSlide = null;
     this.slideIndex = 0;
     if (this.useSlides) {
-        this.slides = $$('#' + this.cfg['captions_id'] + ' .' + this.slide_class);
+        this.slides = $$('#' + this.cfg.captionsSpace + ' .' + this.slideClass);
         if (this.slides.length < 3) {
             // a minimum of 3 slides is needed
             this.useSlides = false;
@@ -183,14 +162,15 @@ var Player = Class.create({
   },
 
   captionsListener: function(obj) {
-    if(!this.captionContainer) { this.captionContainer = $(this.cfg['captions_id']);}
-    this.caption = obj.caption;
+    if(!this.captionContainer) { this.captionContainer = $(this.cfg.captionsSpace);}
+    this.caption = obj;
     this.showCaptions();
+    //$('captions').innerHTML = "<b>" + this.caption.prevPosition+" << "+this.caption.begin+" >> "+this.caption.nextPosition + "</b>";
     eval(this.cfg['onCaptions']);
   },
 
   changeItem: function(item) {
-    if(item != this.item) { this.player.sendEvent('ITEM', item) }
+    if(item != this.item) { this.player.sendEvent('ITEM', item); }
   },
 
   checkStartParams: function() {
@@ -224,22 +204,19 @@ var Player = Class.create({
   },
 
   pause: function() {
-    if(this.isPlaying()) { this.player.sendEvent('PLAY'); }
+    if(this.isPlaying()) { this.player.sendEvent('PLAY', 'false'); }
   },
 
   play: function() {
-    if(!this.isPlaying()) { this.player.sendEvent('PLAY'); }
+    if(!this.isPlaying()) { this.player.sendEvent('PLAY', 'true'); }
   },
 
-  playerReady: function() {  
-    //this.player.sendEvent('MUTE', true);
-    this.setVolume('90');
-    eval(this.cfg['onPlayerready']);  
+  playerReady: function() {
+    this.setVolume('90');  
   },
 
   positionListener: function(obj) {
     this.position = obj.position;
-    //current_player = this;
 
     // wenn Player geladen und (automatisch) gestartet ist, Sprung zu den
     // Start-Parametern, falls angegeben
@@ -247,7 +224,7 @@ var Player = Class.create({
       this.checkStartParams();
       this.cfg['startItem'] = null;
       this.cfg['startPosition'] = null;
-      this.cfg['startTranslation'] = null;
+      this.cfg['startCaptionsLanguage'] = null;
     }
 
     // wird nur jede Sekunde aufgerufen, nicht jede 1/100 sec.
@@ -301,27 +278,29 @@ var Player = Class.create({
       if(this.useSlides) {
           // insert into next slide
           var nextIndex = this.nextSlideIndex();
-          this.slides[nextIndex].innerHTML = this.caption;
+          this.slides[nextIndex].innerHTML = this.caption.text;
           new Effect.Fade(this.slides[this.slideIndex], { duration: 0.25 });
           new Effect.Appear(this.slides[nextIndex], { duration: 0.25, queue: 'end' });
           this.slideIndex = nextIndex;
       } else {
           // simple caption exchange
-          this.captionContainer.innerHTML = this.caption;
+          this.captionContainer.innerHTML = this.caption.text;
       }
     }
   },
 
+  /* not working */
   scrollBack: function() {
       if(this.useSlides) {
-          var prevIndex = this.previousSlideIndex();
-          
+        var prevIndex = this.previousSlideIndex();
+        this.seekPosition(this.caption.prevPosition);
       }
   },
 
+  /* not working */
   scrollForward: function() {
       if(this.useSlides) {
-
+        this.seekPosition(this.caption.nextPosition);
       }
   },
 

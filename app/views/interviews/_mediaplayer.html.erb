@@ -116,10 +116,10 @@
           <div id="captions-2" class="captions-slide"></div>
         </div>
         <div class="back">
-            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
+            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'current_player.scrollBack();') %>
         </div>
         <div class="forward">
-            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
+            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'current_player.scrollForward();') %>
         </div>
     </div>
 
@@ -128,57 +128,45 @@
     <% if @interview.video == 'Video' %>
 
       var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
-        jwplayer_file:            '/swf/player.swf',
-        captions_plugin_file:     '/swf/captions.swf',
-        skin:                     '/swf/zwar.swf',
-        height:                   '335',
-        width:                    '400',
-        backcolor:                '990000',
-        frontcolor:               '999999',
-        lightcolor:               'ffffff',
-        player_id:                'player_high',
-        content_id:               'mediaspace_high',
-        whilePlaying:              fadeOutGallery,
-        slide_class:              'captions-slide',
-        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;};',
-        call_position:            'markHeading(current_player.item, current_player.position);',
-        start_item:               <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
-        start_position:           <%= params['position'] == nil ? "null" : params['position'].to_i %>
-      });
-
-      var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", {
-        jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
-        captions_plugin_file:     '/jw_player/lib/captions-10',
-        skin:                     '/jw_player/skins/zwar.swf',
-        height:                   '335',
-        width:                    '400',
-        backcolor:                '990000',
-        frontcolor:               '999999',
-        lightcolor:               'ffffff',
-        player_id:                'player_low',
-        content_id:               'mediaspace_low',
-        whilePlaying:              fadeOutGallery,
-        slide_class:              'captions-slide',
-        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
-        call_position:            'markHeading(current_player.item, current_player.position);'
+        jwplayerFile              : '/swf/player.swf',
+        captionsPluginFile        : '/swf/captions.swf',
+        skin                      : '/swf/zwar.swf',
+        height                    : '335',
+        width                     : '400',
+        backcolor                 : '990000',
+        frontcolor                : '999999',
+        lightcolor                : 'ffffff',
+        id                        : 'player_high',
+        jwplayerSpace             : 'mediaspace_high',
+        captionsSpace             : 'captions',
+        whilePlaying              : fadeOutGallery,
+        slideClass                : 'captions-slide',
+        call_item                 : 'if(current_player==this){$("player_item").selectedIndex = this.item;};',
+        call_position             : 'markHeading(current_player.item, current_player.position);',
+        startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
+        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
 
     <% else %>
 
       var player_audio = new Player("<%= playlist_audio_interview_tapes_path(@interview, :format => :xml) %>", {
-        jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
-        captions_plugin_file:     '/jw_player/lib/captions-10',
-        skin:                     '/jw_player/skins/zwar.swf',
-        height:                   '335',
-        width:                    '400',
-        backcolor:                '990000',
-        frontcolor:               '999999',
-        lightcolor:               'ffffff',
-        player_id:                'player_audio',
-        content_id:               'mediaspace_audio',
-        slide_class:              'captions-slide',
-        call_item:                'if(current_player==this){$("player_item").selectedIndex = this.item;}',
-        call_position:            'markHeading(current_player.item, current_player.position);'
+        jwplayerFile              : '/swf/player.swf',
+        captionsPluginFile        : '/swf/captions.swf',
+        skin                      : '/swf/zwar.swf',
+        height                    : '335',
+        width                     : '400',
+        backcolor                 : '990000',
+        frontcolor                : '999999',
+        lightcolor                : 'ffffff',
+        id                        : 'player_audio',
+        jwplayerSpace             : 'mediaspace_audio',
+        captionsSpace             : 'captions',
+        whilePlaying              : fadeOutGallery,
+        slideClass                : 'captions-slide',
+        call_item                 : 'if(current_player==this){$("player_item").selectedIndex = this.item;};',
+        call_position             : 'markHeading(current_player.item, current_player.position);',
+        startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
+        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
 
     <% end %>
