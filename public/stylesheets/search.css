@@ -397,6 +397,26 @@ position: relative;
     font-size:90%;
 }
 
+.mainheading .section {
+    cursor: pointer;
+}
+
+.mainheading.closed .section {
+    background: transparent url(/images/pfeil_rot_rechts.gif) left 0.25em no-repeat;
+}
+
+.mainheading.open .section {
+    background: transparent url(/images/pfeil_rot_unten.gif) left 0.25em no-repeat;
+}
+
+.mainheading.closed .subheadings {
+    display: none;
+}
+
+.mainheading ul.subheadings {
+    padding: 0;
+}
+
 .mainheading .subheading{
     padding-left:0px;
     font-size:90%;
@@ -413,7 +433,8 @@ position: relative;
     display:block;
 }
 #interview_headings .heading {
-width: 89%;
+    width: 89%;
+    margin-bottom: 0.25em;
 }
 
 .heading a:hover,
