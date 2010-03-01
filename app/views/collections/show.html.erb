@@ -32,8 +32,6 @@
 
 <h2>Interviewte</h2>
 
-<ul>
-  <% @collection.interviews.each do |interview| %>
-    <li><%= link_to interview.short_title, interview_path(interview) %></li>
-  <% end %>
-</ul>
+<div class="teaserList">
+  <%= render :partial => '/interviews/result', :collection => @collection.interviews, :locals => { :search => @search } %>
+</div>
