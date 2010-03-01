@@ -24,9 +24,8 @@ class BaseController < ResourceController::Base
   end
 
   def current_search
-    puts "\n\n@@@@ CURRENT_SEARCH\n@query_params = #{@query_params.inspect}"
     query = @query_params || params
-    query[:page] = params[:page] unless query.nil? || !query[:page].nil? || params[:page].nil?
+    #query[:page] = params[:page] unless query.nil? || !query[:page].nil? || params[:page].nil?
     @search = Search.from_params(query)
   end
 

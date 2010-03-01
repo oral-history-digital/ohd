@@ -192,6 +192,8 @@ DEF
     #handle the page parameter separately
     @page = (query_params.delete('page') || 1).to_i
 
+    puts "\n\n######>>>>> PERFORM SEARCH:\nquery params: #{query_params.inspect}"
+
     if query_params.blank?
       # the blank or default query
       @search = nil
@@ -221,10 +223,14 @@ SQL
 
         if query_params['partial_person_name'].blank?
           # fulltext search
-          keywords query_params['fulltext'].downcase unless query_params['fulltext'].blank?
+          unless query_params['fulltext'].blank?
+            keywords query_params['fulltext'].downcase
+          end
 
           # person name facet
-          self.with :person_name, query_params['person_name'] unless query_params['person_name'].blank?
+          unless query_params['person_name'].blank?
+            self.with :person_name, query_params['person_name']
+          end
 
         else
           # search for partial person names for autocompletion
