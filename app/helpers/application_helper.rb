@@ -31,6 +31,7 @@ module ApplicationHelper
   end
 
   def segment_excerpt_for_match(segment, match_text='', width=8)
+    return segment.translation # TODO: remove this - it's for debugging search only'
     # TODO: reduce word count in both directions on interpunctuation
     pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
