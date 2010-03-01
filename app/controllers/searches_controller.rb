@@ -33,7 +33,7 @@ class SearchesController < BaseController
       end
     end
     wants.html do
-      render :nothing => true
+      render :template => '/interviews/index.html'
     end
   end
 
