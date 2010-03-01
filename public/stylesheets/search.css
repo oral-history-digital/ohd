@@ -30,6 +30,14 @@
     height: 150%;
 }
 
+#interview_search_overlay {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 500px;
+}
+
 #baseContainerRight {
     position: relative;
 }

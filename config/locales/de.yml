@@ -33,6 +33,8 @@ de:
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
+    messages:
+      no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
 
   activerecord:
     interview:

@@ -77,12 +77,7 @@ class SearchesController < BaseController
         render :template => '/interviews/show'
       end
       format.js do
-        segments_html = render_to_string({:partial => '/interviews/segments.html' })
-        render :update do |page|
-          page.replace_html 'search-results', segments_html
-          page.show 'search-results'
-          page.show 'search-results-toggle'
-        end
+        render :partial => '/interviews/segments.html'
       end
     end
   end

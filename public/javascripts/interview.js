@@ -35,6 +35,12 @@
     }
   }
 
+  function openContainer(parentId, blindToggle) {
+        if($(parentId).hasClassName('closed')) {
+            toggleContainer(parentId, blindToggle);
+        }
+  }
+
   function markClosed(el) {
       if(el) {
           el.addClassName('closed');

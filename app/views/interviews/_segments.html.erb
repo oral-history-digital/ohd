@@ -1,6 +1,6 @@
 <div id="containerSegments">
   <% if segments.empty? %>
-    Für dieses Interview sind keine Treffer-Ausschnitte vorhanden.
+    <%= t(:no_segments_result, :scope => 'user_interface.messages') %>
   <% else %>
 
     <!--<p><%#= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %> gefunden:</p>-->

@@ -11,6 +11,29 @@ en:
   translated: 'übersetzt'
   all: 'all'
 
+  tasks:
+    interviewers: 'Interviewf&uuml;hrung'
+    transcriptors: 'Transkription'
+    translators: '&Uuml;bersetzung'
+    proofreaders: 'Lektorat'
+    segmentators: 'Segmentierung'
+    researchers: 'Erschlie&szlig;ung'
+
+  status:
+    translated: 'translated to German'
+    not_translated: 'untranslated'
+
+  user_interface:
+    labels:
+      search_results: 'Search Results'
+      headings: 'Table of Contents'
+      my_search: 'My Search'
+    player:
+      back: 'previous'
+      forward: 'next'
+    messages:
+      no_segments_result: 'No segments found that match these search criteria.'
+
   activerecord:
     interview:
       one: 'Interview'
