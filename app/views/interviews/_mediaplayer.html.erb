@@ -128,8 +128,8 @@
     <% if @interview.video == 'Video' %>
 
       var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
-        jwplayer_file:            '/jw_player/lib/player-4.6.485.swf',
-        captions_plugin_file:     '/jw_player/lib/captions-10',
+        jwplayer_file:            '/jw_player/lib/player.swf',
+        captions_plugin_file:     '/jw_player/lib/captions.swf',
         skin:                     '/jw_player/skins/zwar.swf',
         height:                   '335',
         width:                    '400',
