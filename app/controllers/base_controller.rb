@@ -13,8 +13,6 @@ class BaseController < ResourceController::Base
 
   before_filter :init_search
 
-  before_filter :set_search_update_mode
-
   private
 
   def set_locale
@@ -25,23 +23,12 @@ class BaseController < ResourceController::Base
 
   def current_search
     query = @query_params || params
-    #query[:page] = params[:page] unless query.nil? || !query[:page].nil? || params[:page].nil?
     @search = Search.from_params(query)
   end
 
   def init_search
     @search.search!
     @search.segment_search! if model_name == 'interview'
-  end
-
-  # Determine the search update mode: will only the search form be changed,
-  # or will the search results be rendered in the content?
-  def set_search_update_mode
-    if action_name == 'index'
-      @search_update_contents = true
-    else
-      @search_update_contents = false
-    end
   end
 
   # This retrieves the query params of the current search from the session.

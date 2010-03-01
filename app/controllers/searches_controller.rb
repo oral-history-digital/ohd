@@ -2,6 +2,8 @@ class SearchesController < BaseController
 
   actions :new, :index
 
+  # handle search initialization specifically
+  skip_before_filter :current_search
   skip_before_filter :current_query_params
   skip_before_filter :init_search
 
@@ -9,6 +11,9 @@ class SearchesController < BaseController
 
   new_action do
     before do
+      @search = Search.from_params(@query_params || params)
+      puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
+      puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
       reinstate_category_state
       @search.open_category = params['open_category']
@@ -34,6 +39,9 @@ class SearchesController < BaseController
 
   index do
     before do
+      @search = Search.from_params(@query_params || params)
+      puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
+      puts "REFRESH SEARCH: #{@search.inspect}"
       @search.search!
       reinstate_category_state
       @search.segment_search!

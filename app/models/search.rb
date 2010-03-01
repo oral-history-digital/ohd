@@ -154,12 +154,12 @@ DEF
 
   # Returns the query params - this is needed for link generation from a given query, for instance.
   def query_params
-    query_params = {}
+    query = {}
     (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |query_param|
       query_value = self.send(query_param)
-      query_params[query_param] = query_value unless query_value.nil?
+      query[query_param] = query_value unless query_value.nil?
     end
-    query_params
+    query
   end
 
   # Returns a string-serialized version of the query params for use as
@@ -187,91 +187,34 @@ DEF
   # currently being done to instantiate the blank searches
   # directly from the DB
   def search!
-    query_params = self.query_params
+    current_query_params = query_params
 
     #handle the page parameter separately
-    @page = (query_params.delete('page') || 1).to_i
+    @page = (current_query_params.delete('page') || 1).to_i
 
-    puts "\n\n######>>>>> PERFORM SEARCH:\nquery params: #{query_params.inspect}"
-
-    if query_params.blank?
-      # the blank or default query
-      @search = nil
-      @hits = Interview::NUMBER_OF_INTERVIEWS
-      interviews = Interview.find(:all, :order => "full_title ASC", :limit => "#{(@page-1) * RESULTS_PER_PAGE},#{RESULTS_PER_PAGE}")
-      @results = WillPaginate::Collection.new(@page, RESULTS_PER_PAGE).replace(interviews)
-      @results.total_entries = Interview::NUMBER_OF_INTERVIEWS
-      # instantiate facets from the DB
-      @facets = {}
-      FACET_FIELDS.each do |facet|
-        facet_categories = Categorization.connection.execute <<SQL
-          SELECT categories.name, categories.id, count('id')
-          FROM categorizations
-          LEFT JOIN categories ON categories.id = categorizations.category_id
-          WHERE categorizations.category_type = '#{I18n.t(facet, :locale => :de)}'
-          GROUP BY categories.id
-          ORDER BY categories.name ASC
-SQL
-        facet_name = Category::ARCHIVE_CATEGORIES.assoc(facet.to_sym).nil? ? facet : (facet.to_s.singularize << "_ids")
-        @facets[facet_name.to_sym] = []
-        facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[2] ]}
-      end
+    if current_query_params.blank?
+      @search = blank_search
 
     else
-      # SOLR query
-      @search = Sunspot.search Interview do
+      if current_query_params['partial_person_name'].blank?
+        # fulltext search
+        @search = standard_search current_query_params, @page
 
-        if query_params['partial_person_name'].blank?
-          # fulltext search
-          unless query_params['fulltext'].blank?
-            keywords query_params['fulltext'].downcase
-          end
-
-          # person name facet
-          unless query_params['person_name'].blank?
-            self.with :person_name, query_params['person_name']
-          end
-
-        else
-          # search for partial person names for autocompletion
-          keywords 'person_name_text:' + query_params['partial_person_name'].downcase + '*', :fields => 'person_name'
-
-          text_fields do
-            with(:fulltext, query_params['fulltext']) unless query_params['fulltext'].blank?
-          end
-
-          adjust_solr_params do |params|
-            params[:defType] = 'lucene'
-          end
-
-        end
-
-        # category facets
-        Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-          self.with((category + '_ids').to_sym).any_of query_params[category.pluralize] unless query_params[category.pluralize].blank?
-        end
-
-        facet :person_name,
-              :forced_labor_group_ids,
-              :forced_labor_field_ids,
-              :forced_labor_habitation_ids,
-              :language_ids,
-              :country_ids
-
-        paginate :page => @page, :per_page => RESULTS_PER_PAGE
-        order_by :person_name, :asc
+      else
+        # search for partial person names for autocompletion
+        @search = person_name_search current_query_params, @page
 
       end
       @hits = @search.total
       @results = @search.results
-      
+
       # facets are populated from the search lazily
       @facets = nil
     end
-    @query = query_params.select{|k,v| !v.nil? }
+    @query = current_query_params.select{|k,v| !v.nil? }
     @query_facets = nil
     @segments = {}
-    puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
+    puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
 
@@ -358,11 +301,15 @@ SQL
     if query_params.blank?
       @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
     else
-      Search.new do |search|
+      search = Search.new do |search|
         (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |attr|
+          puts "-> setting search query param: #{attr} = #{query_params[attr]}"
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
+          puts "search.#{attr} = #{search.send(attr.to_s)}"
         end
       end
+      puts "Search.query_params = #{search.query_params}"
+      search
     end
   end
 
@@ -377,5 +324,100 @@ SQL
       search.fulltext = fulltext
     end
   end
+
+  private
+
+  # the default blank search - retrieve all the content
+  def blank_search
+    # the blank or default query
+    @search = nil
+    @hits = Interview::NUMBER_OF_INTERVIEWS
+    interviews = Interview.find(:all, :order => "full_title ASC", :limit => "#{(@page-1) * RESULTS_PER_PAGE},#{RESULTS_PER_PAGE}")
+    @results = WillPaginate::Collection.new(@page, RESULTS_PER_PAGE).replace(interviews)
+    @results.total_entries = Interview::NUMBER_OF_INTERVIEWS
+    # instantiate facets from the DB
+    @facets = {}
+    FACET_FIELDS.each do |facet|
+      facet_categories = Categorization.connection.execute <<SQL
+        SELECT categories.name, categories.id, count('id')
+        FROM categorizations
+        LEFT JOIN categories ON categories.id = categorizations.category_id
+        WHERE categorizations.category_type = '#{I18n.t(facet, :locale => :de)}'
+        GROUP BY categories.id
+        ORDER BY categories.name ASC
+SQL
+      facet_name = Category::ARCHIVE_CATEGORIES.assoc(facet.to_sym).nil? ? facet : (facet.to_s.singularize << "_ids")
+      @facets[facet_name.to_sym] = []
+      facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[2] ]}
+    end
+  end
+
+  # normal interview search
+  def standard_search(query, page)
+    # SOLR query
+    Sunspot.search Interview do
+
+      # fulltext search
+      unless query['fulltext'].blank?
+        keywords query['fulltext'].downcase
+      end
+
+      # person name facet
+      unless query['person_name'].blank?
+        self.with :person_name, query['person_name']
+      end
+
+      # category facets
+      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+      end
+
+      facet :person_name,
+            :forced_labor_group_ids,
+            :forced_labor_field_ids,
+            :forced_labor_habitation_ids,
+            :language_ids,
+            :country_ids
+
+      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      order_by :person_name, :asc
+
+    end
+  end
+
+  # search for autocomplete on person_name
+  def person_name_search(query, page)
+    # SOLR query
+    Sunspot.search Interview do
+
+      # search for partial person names for autocompletion
+      keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
+
+      text_fields do
+        with(:fulltext, query['fulltext']) unless query['fulltext'].blank?
+      end
+
+      # category facets
+      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+      end
+
+      facet :person_name,
+            :forced_labor_group_ids,
+            :forced_labor_field_ids,
+            :forced_labor_habitation_ids,
+            :language_ids,
+            :country_ids
+
+      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      order_by :person_name, :asc
+
+      adjust_solr_params do |params|
+        params[:defType] = 'lucene'
+      end
+
+    end
+  end
+
 
 end
