@@ -77,9 +77,26 @@
             <% end %>
           <% end %>
         </div>
-        <div class="volume">
-          <%= image_tag("volume.gif") %>
+        <div id="volumeMute" style="width: 15px; padding: 0; margin: 3px 0 0 0;"><%= link_to_function (image_tag "player_speaker_n.gif"), "" %></div>
+        <div id="volumeSelect" style="width: 50px; height: 8px; margin: 5px 0 0 0; padding: 0;">
+          <div id="volumeOn" style="background-color: #fff; width: 14px; height: 100%; padding: 0; margin: 0;"></div>
+          <div id="volumeOff" style="background-color: #730f0f; width: 36px; height: 100%; padding: 0; margin: 0;"></div>
         </div>
+        <% # TODO: styling and interaction with player %>
+        <% javascript_tag do %>
+          Event.observe('volumeSelect', 'click', function(event) {
+            var width = $('volumeSelect').getWidth();
+            var proportion = 100 / width;
+            var on = ((Event.pointerX(event)) - ($('volumeSelect').cumulativeOffset().left));
+            var off = (width - on);
+            Element.setStyle('volumeOn', {
+              width:on+'px'
+            });
+            Element.setStyle('volumeOff', {
+              width:off+'px'
+            });
+        });
+        <% end %>
 
         <div class="interviewinfo"><%= @interview.video ? 'Video' : 'Audio' %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
