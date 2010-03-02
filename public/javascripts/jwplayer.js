@@ -42,46 +42,45 @@ var playerDefaults = {
 }
 
 var players = new Array();
-var current_player = null;
+var currentPlayer = null;
 
 // wird vom JWPlayer aufgerufen, sobald er geladen ist
 function playerReady(player) {
   players[player.id].cfg.id = player.id;
   players[player.id].player = $(player.id);
-  current_player = players[player.id];
+  currentPlayer = players[player.id];
   players[player.id].player.addModelListener("STATE", "stateListener");
   players[player.id].player.addModelListener("TIME", "positionListener");
   players[player.id].player.addControllerListener("ITEM", "itemListener");
   players[player.id].player.addControllerListener("VOLUME", "volumeListener");
   players[player.id].player.addControllerListener("MUTE", "muteListener");
-  if(current_player) { players[player.id].playerReady(); };
+  if(currentPlayer) { players[player.id].playerReady(); };
 };
 
 function stateListener(obj) {
-  if(current_player) { current_player.stateListener(obj)};
+  if(currentPlayer) { currentPlayer.stateListener(obj) };
 };
 
 function positionListener(obj) {
-  if(current_player) { current_player.positionListener(obj)};
+  if(currentPlayer) { currentPlayer.positionListener(obj) };
 };
 
 function itemListener(obj) {
-  if(current_player) { current_player.itemListener(obj)};
+  if(currentPlayer) { currentPlayer.itemListener(obj) };
 };
 
 function volumeListener(obj) {
-  if(current_player) { current_player.volumeListener(obj)};
+  if(currentPlayer) { currentPlayer.volumeListener(obj) };
 };
 
 function muteListener(obj) {
-  if(current_player) { current_player.muteListener(obj)};
+  if(currentPlayer) { currentPlayer.muteListener(obj) };
 };
 
 function captionsListener(obj) {
-  if(current_player) { current_player.captionsListener(obj)};
+  if(currentPlayer) { currentPlayer.captionsListener(obj) };
 };
 
-// ausser Parameter "file" alles optional
 var Player = Class.create({
   initialize: function(file, cfg) {
     this.file = file;

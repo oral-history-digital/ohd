@@ -6,14 +6,14 @@
       <tr id="<%= mainheading[:id] %>" class="mainheading<%= mainheading[:subheadings].empty? ? '' : ' closed' %>">
         <td class="section"<%= mainheading[:subheadings].empty? ? '' : " onclick=\"toggleSection('#{mainheading[:id]}');\""%>><%= section %>.</td>
         <td class="heading">
-            <a href="javascript:current_player.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
+            <a href="javascript:currentPlayer.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
                 <%= mainheading[:title] %>
                 <span class="timecode"><%= mainheading[:timecode] %></span>
             </a>
             <ul id="subheadings_for_<%= section %>" class="subheadings">
               <% mainheading[:subheadings].each_with_index do |subheading, index| %>
                 <li id="<%= subheading[:id] %>" class="subheading">
-                    <a href="javascript:current_player.seek(<%= subheading[:item] + "," + subheading[:pos]  %>);" class="heading">
+                    <a href="javascript:currentPlayer.seek(<%= subheading[:item] + "," + subheading[:pos]  %>);" class="heading">
                         <%= "#{section}.#{index + 1}."  %>
                         <%= subheading[:title] %>
                     </a>

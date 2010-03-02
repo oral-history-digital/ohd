@@ -6,10 +6,10 @@
     <ul>
       <% if @interview.video == 'Video' %>
         <li id="tabHigh" class="active">
-          <p onclick="current_player = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
+          <p onclick="currentPlayer = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
         </li>
         <li id="tabLow">
-          <p onclick="current_player = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
+          <p onclick="currentPlayer = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
         </li>
       <% else %>
         <li id="tabAudio" class="active"><p>Audio</p></li>
@@ -67,11 +67,11 @@
     <div class="playerControl">
         <div id="language_select">
           <% if @interview.language.downcase == 'deutsch' %>
-            <a id="original" class="captions_orig active" href="javascript:current_player.translateCaptions(false);"><%= @interview.language.downcase %></a>
+            <a id="original" class="captions_orig active" href="javascript:currentPlayer.translateCaptions(false);"><%= @interview.language.downcase %></a>
           <% else %>
-            <a id="original" class="captions_orig active" href="javascript:current_player.translateCaptions(false);" onclick="$('original').addClassName('active');$('translated').removeClassName('active');"><%= @interview.language.downcase %></a>
+            <a id="original" class="captions_orig active" href="javascript:currentPlayer.translateCaptions(false);" onclick="$('original').addClassName('active');$('translated').removeClassName('active');"><%= @interview.language.downcase %></a>
             <% if @interview.translated? %>
-            <a id="translated" class="captions_trans" href="javascript:current_player.translateCaptions(true);" onclick="$('original').removeClassName('active');$('translated').addClassName('active');">deutsch</a>
+            <a id="translated" class="captions_trans" href="javascript:currentPlayer.translateCaptions(true);" onclick="$('original').removeClassName('active');$('translated').addClassName('active');">deutsch</a>
             <% else %>
             <a id="translated" class="captions_trans disabled" href="javascript:void(0);">deutsch</a>
             <% end %>
@@ -101,7 +101,7 @@
         <div class="interviewinfo"><%= @interview.video ? 'Video' : 'Audio' %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
           Band:
-          <select id="player_item" name="player_item" onChange="current_player.changeItem(this.value);">
+          <select id="player_item" name="player_item" onChange="currentPlayer.changeItem(this.value);">
           <% @interview.tapes.count.times do |item| %>
             <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
           <% end %>
@@ -116,10 +116,10 @@
           <div id="captions-2" class="captions-slide"></div>
         </div>
         <div class="back">
-            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'current_player.scrollBack();') %>
+            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'currentPlayer.scrollBack();') %>
         </div>
         <div class="forward">
-            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'current_player.scrollForward();') %>
+            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'currentPlayer.scrollForward();') %>
         </div>
     </div>
 
@@ -141,8 +141,8 @@
         captionsSpace             : 'captions',
         whilePlaying              : fadeOutGallery,
         slideClass                : 'captions-slide',
-        call_item                 : 'if(current_player==this){$("player_item").selectedIndex = this.item;};',
-        call_position             : 'markHeading(current_player.item, current_player.position);',
+        call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
+        call_position             : 'markHeading(currentPlayer.item, currentPlayer.position);',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
@@ -163,8 +163,8 @@
         captionsSpace             : 'captions',
         whilePlaying              : fadeOutGallery,
         slideClass                : 'captions-slide',
-        call_item                 : 'if(current_player==this){$("player_item").selectedIndex = this.item;};',
-        call_position             : 'markHeading(current_player.item, current_player.position);',
+        call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
+        call_position             : 'markHeading(currentPlayer.item, currentPlayer.position);',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       });
