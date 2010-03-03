@@ -27,7 +27,8 @@ var playerDefaults = {
 
   startItem                   : '',
   startPosition               : '',
-  startCaptionsLanguage       : 'x-original',
+
+  captionsLanguage            : 'original',
 
   onCaptions                  : function(){},
   onItem                      : function(){},
@@ -135,7 +136,7 @@ var Player = Class.create({
     this.pauseCallback = this.cfg['onPause'];
     this.caption = null;
     this.captionContainer = $(this.cfg.captionsSpace);
-    this.captionsLanguage = this.cfg.startCaptionsLanguage;
+    this.captionsLanguage = this.cfg.captionsLanguage;
     this.slideClass = this.cfg.slideClass;
     this.useSlides = this.slideClass != null;
     this.currentSlide = null;
@@ -273,34 +274,44 @@ var Player = Class.create({
   },
 
   showCaptions: function() {
-    if(this.captionContainer) {
+    if(this.captionContainer && this.caption) {
+      var captionText = "";
+      if(this.captionsLanguage) {
+        captionText = this.caption.lang[this.captionsLanguage];
+      } else {
+        captionText = this.caption.text;
+      }
+      // empty string if undefined
+      if(!captionText) { captionText = ""; }
       if(this.useSlides) {
           // insert into next slide
           var nextIndex = this.nextSlideIndex();
-          this.slides[nextIndex].innerHTML = this.caption.text;
+          this.slides[nextIndex].innerHTML = captionText;
           new Effect.Fade(this.slides[this.slideIndex], { duration: 0.25 });
           new Effect.Appear(this.slides[nextIndex], { duration: 0.25, queue: 'end' });
           this.slideIndex = nextIndex;
       } else {
           // simple caption exchange
-          this.captionContainer.innerHTML = this.caption.text;
+          this.captionContainer.innerHTML = captionText;
       }
     }
   },
 
-  /* not working */
   scrollBack: function() {
       if(this.useSlides) {
         var prevIndex = this.previousSlideIndex();
-        this.seekPosition(this.caption.prevPosition);
       }
   },
 
-  /* not working */
   scrollForward: function() {
       if(this.useSlides) {
-        this.seekPosition(this.caption.nextPosition);
+
       }
+  },
+
+  setCaptionsLanguage: function(language) {
+    this.captionsLanguage = language;
+    this.showCaptions();
   },
 
   stateListener: function(obj) {

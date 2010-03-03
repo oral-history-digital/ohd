@@ -67,13 +67,13 @@
     <div class="playerControl">
         <div id="language_select">
           <% if @interview.language.downcase == 'deutsch' %>
-            <a id="original" class="captions_orig active" href="javascript:currentPlayer.translateCaptions(false);"><%= @interview.language.downcase %></a>
+            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.language.downcase %></a>
           <% else %>
-            <a id="original" class="captions_orig active" href="javascript:currentPlayer.translateCaptions(false);" onclick="$('original').addClassName('active');$('translated').removeClassName('active');"><%= @interview.language.downcase %></a>
+            <%= link_to(@interview.language.downcase, 'javascript:currentPlayer.setCaptionsLanguage("original")', :id => "original", :class => "captions_orig active", :onClick => "$('original').addClassName('active');$('translated').removeClassName('active');") %>
             <% if @interview.translated? %>
-            <a id="translated" class="captions_trans" href="javascript:currentPlayer.translateCaptions(true);" onclick="$('original').removeClassName('active');$('translated').addClassName('active');">deutsch</a>
+              <%= link_to('deutsch', 'javascript:currentPlayer.setCaptionsLanguage("de")', :id => "translated", :class => "captions_trans", :onClick => "$('original').removeClassName('active');$('translated').addClassName('active');") %>
             <% else %>
-            <a id="translated" class="captions_trans disabled" href="javascript:void(0);">deutsch</a>
+              <a id="translated" class="captions_trans disabled" href="javascript:void(0);">deutsch</a>
             <% end %>
           <% end %>
         </div>
@@ -110,16 +110,16 @@
     </div>
 
     <div id="captions_wrapper">
-        <div id="captions" class="captions_original">
+        <div id="captions">
           <div id="captions-0" class="captions-slide"></div>
           <div id="captions-1" class="captions-slide"></div>
           <div id="captions-2" class="captions-slide"></div>
         </div>
         <div class="back">
-            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'currentPlayer.scrollBack();') %>
+            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
         </div>
         <div class="forward">
-            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'currentPlayer.scrollForward();') %>
+            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
         </div>
     </div>
 
@@ -139,6 +139,7 @@
         id                        : 'player_high',
         jwplayerSpace             : 'mediaspace_high',
         captionsSpace             : 'captions',
+        captionsLanguage          : 'original', // 'original', 'de'
         whilePlaying              : fadeOutGallery,
         slideClass                : 'captions-slide',
         call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',

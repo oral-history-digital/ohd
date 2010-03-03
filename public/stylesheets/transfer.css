@@ -155,11 +155,6 @@
   z-index: 3;
 }
 
-div.captions_original span.caption_original { display: inline-block; }
-div.captions_original span.caption_translation { display: none; }
-div.captions_translation span.caption_original { display: none; }
-div.captions_translation span.caption_translation { display: inline-block; }
-
 #containerHeadings li.mainheading {
   font-style: normal;
 }
