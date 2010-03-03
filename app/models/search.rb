@@ -198,7 +198,7 @@ DEF
     else
       if current_query_params['partial_person_name'].blank?
         # fulltext search
-        @search = standard_search current_query_params, @page
+        @search = standard_lucene_search current_query_params, @page
 
       else
         # search for partial person names for autocompletion
@@ -250,8 +250,8 @@ DEF
     unless fulltext.blank? || interview_ids.empty?
       subsearch = Sunspot.search Segment do
 
-        # keyword search on fulltext only
-        keywords fulltext.downcase #do
+        # keyword search on fulltext only - for DisMax queries
+        # keywords fulltext.downcase #do
         #  highlight :transcript, :translation
         #end
 
@@ -261,9 +261,17 @@ DEF
 
         order_by :timecode, :asc
 
-#        adjust_solr_params do |params|
-#          params.delete(:defType)
-#        end
+        # lucene search
+        adjust_solr_params do |params|
+          params[:defType] = 'lucene'
+          #params[:qt] = 'standard'
+          
+          # fulltext search
+          unless fulltext.blank?
+            params[:q] = fulltext.downcase
+          end
+        end
+
       end
 
       puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
@@ -381,6 +389,44 @@ SQL
 
       paginate :page => page, :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
+
+    end
+  end
+
+  # do a standard search with the lucene handler
+  def standard_lucene_search(query, page)
+    # SOLR query
+    Sunspot.search Interview do
+
+      # person name facet
+      unless query['person_name'].blank?
+        self.with :person_name, query['person_name']
+      end
+
+      # category facets
+      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+      end
+
+      facet :person_name,
+            :forced_labor_group_ids,
+            :forced_labor_field_ids,
+            :forced_labor_habitation_ids,
+            :language_ids,
+            :country_ids
+
+      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      order_by :person_name, :asc
+
+      adjust_solr_params do |params|
+        params[:defType] = 'lucene'
+        #params[:qt] = 'standard'
+
+        # fulltext search
+        unless query['fulltext'].blank?
+          params[:q] = "#{query['fulltext'].downcase}"
+        end
+      end
 
     end
   end

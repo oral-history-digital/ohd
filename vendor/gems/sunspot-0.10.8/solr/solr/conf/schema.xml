@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema version="0.9" name="sunspot">
   <types>
+    <!--
     <fieldtype class="solr.TextField" positionIncrementGap="100" name="text">
       <analyzer type="index">
         <tokenizer class="solr.LowerCaseTokenizerFactory"/>
@@ -9,6 +10,15 @@
       <analyzer type="query">
         <tokenizer class="solr.LowerCaseTokenizerFactory"/>
         <filter class="org.apache.solr.analysis.PatternReplaceFilterFactory" pattern="[*]+" replacement="" all="true"/>
+      </analyzer>
+    </fieldtype>
+    //-->
+    <fieldtype class="solr.TextField" positionIncrementGap="100" name="text">
+      <analyzer type="index">
+        <tokenizer class="solr.LowerCaseTokenizerFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.LowerCaseTokenizerFactory"/>
       </analyzer>
     </fieldtype>
     <fieldtype class="solr.RandomSortField" name="rand"/>

@@ -16,6 +16,7 @@ class SearchesController < BaseController
       puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
       reinstate_category_state
+      @search.segment_search!
       @search.open_category = params['open_category']
       @interviews = @search.results
 
