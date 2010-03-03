@@ -5,13 +5,26 @@
 
       <% right_to_left = @tape.interview.language == 'Hebräisch' ? true : false -%>
 
+      <% heading_id = nil -%>
+
       <% @tape.segments.each do |segment| -%>
 
-    <p begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span class="caption_translation"><%= segment.translation.strip -%></span></p>
+        <%
+          unless segment.heading == nil
+            # choose subheading if segment has main and subheading
+            subheading = nil
+            if segment.heading.mainheading
+              subheading = Heading.find(:first, :conditions => { :segment_id => segment.id, :mainheading => false })
+            end
+            heading_id = subheading ? subheading.id : segment.heading.id
+          end
+        -%>
+
+      <p heading="<%= heading_id ? "heading_#{heading_id}" : "" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span lang="de" class="caption_translation"><%= segment.translation.strip -%></span></p>
 
       <% end -%>
       <% unless @tape.segments.empty? -%>
-    <p begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span class="caption_original">&nbsp;</span><span class="caption_translation">&nbsp;</span></p>
+      <p heading="<%= heading_id ? "heading_#{heading_id}" : "" %>" begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span lang="original" class="caption_original">&#160;</span><span lang="de" class="caption_translation">&#160;</span></p>
       <% end -%>
     </div>
 
