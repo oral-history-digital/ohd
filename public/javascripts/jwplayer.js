@@ -130,6 +130,7 @@ var Player = Class.create({
     this.position = null;
     this.volume = '90';
     this.mute = false;
+    this.captionsCallback = this.cfg.onCaptions;
     this.playCallback = this.cfg['whilePlaying'];
     this.pauseCallback = this.cfg['onPause'];
     this.caption = null;
@@ -164,8 +165,7 @@ var Player = Class.create({
     if(!this.captionContainer) { this.captionContainer = $(this.cfg.captionsSpace);}
     this.caption = obj;
     this.showCaptions();
-    //$('captions').innerHTML = "<b>" + this.caption.prevPosition+" << "+this.caption.begin+" >> "+this.caption.nextPosition + "</b>";
-    eval(this.cfg['onCaptions']);
+    this.captionsCallback();
   },
 
   changeItem: function(item) {
