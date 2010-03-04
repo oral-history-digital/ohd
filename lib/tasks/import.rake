@@ -9,10 +9,19 @@ namespace :import do
 
     FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
 
-      collection = Collection.find_by_name row.field('Projekt')
-      collection ||= Collection.create :name => row.field('Projekt')
+      collection = Collection.find_by_name row.field('name')
+      collection ||= Collection.create :name => row.field('name')
 
-      puts "Teilsammlung #{collection.name} hinzugefügt"
+      if collection
+        collection.update_attributes :countries => row.field("countries"),
+                                     :institution => row.field("institution"),
+                                     :responsibles => row.field("responsibles"),
+                                     :notes => row.field("notes"),
+                                     :interviewers => row.field("interviewers")
+        puts "Teilsammung #{collection.name} aktualisiert."
+      else
+        puts "Teilsammlung #{row.field('name')} nicht gefunden!"
+      end
 
     end
 
