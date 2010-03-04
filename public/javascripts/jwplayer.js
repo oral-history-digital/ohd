@@ -50,13 +50,18 @@ function playerReady(player) {
   players[player.id].cfg.id = player.id;
   players[player.id].player = $(player.id);
   currentPlayer = players[player.id];
+
   players[player.id].player.addModelListener("STATE", "stateListener");
   players[player.id].player.addModelListener("TIME", "positionListener");
   players[player.id].player.addControllerListener("ITEM", "itemListener");
   players[player.id].player.addControllerListener("VOLUME", "volumeListener");
   players[player.id].player.addControllerListener("MUTE", "muteListener");
   if(currentPlayer) { players[player.id].playerReady(); };
-};
+
+  // volume and mute state from jwplayer cookies
+  currentPlayer.setVolume(player.volume);
+  currentPlayer.setMute(player.mute); 
+}
 
 function stateListener(obj) {
   if(currentPlayer) { currentPlayer.stateListener(obj) };
@@ -131,9 +136,13 @@ var Player = Class.create({
     this.position = null;
     this.volume = '90';
     this.mute = false;
+
     this.captionsCallback = this.cfg.onCaptions;
-    this.playCallback = this.cfg['whilePlaying'];
-    this.pauseCallback = this.cfg['onPause'];
+    this.muteCallback = this.cfg.onMute;
+    this.volumeCallback = this.cfg.onVolume;
+    this.playCallback = this.cfg.whilePlaying;
+    this.pauseCallback = this.cfg.onPause;
+
     this.caption = null;
     this.captionContainer = $(this.cfg.captionsSpace);
     this.captionsLanguage = this.cfg.captionsLanguage;
@@ -200,7 +209,7 @@ var Player = Class.create({
 
   muteListener: function(obj) {
     this.mute = obj.state;
-    if(this.cfg['onMute']) { eval(this.cfg['onMute']); }  
+    eval(this.muteCallback)();
   },
 
   pause: function() {
@@ -212,7 +221,7 @@ var Player = Class.create({
   },
 
   playerReady: function() {
-    this.setVolume('90');  
+      
   },
 
   positionListener: function(obj) {
@@ -253,8 +262,8 @@ var Player = Class.create({
   },
 
   setVolume: function(percentage) {
-      this.volume = percentage;
-      this.player.sendEvent('VOLUME', percentage);
+    this.volume = percentage;
+    this.player.sendEvent('VOLUME', percentage);
   },
 
   nextSlideIndex: function() {
@@ -330,7 +339,7 @@ var Player = Class.create({
     this.player.sendEvent('STOP');
   },
 
-  toogleMute: function() {
+  toggleMute: function() {
     this.mute = !this.mute;
     this.player.sendEvent('MUTE', this.mute);
   },
@@ -349,7 +358,7 @@ var Player = Class.create({
 
   volumeListener: function(obj) {
     this.volume = obj.percentage;
-    if(this.cfg['onVolume']) { eval(this.cfg['onVolume']); }
+    eval(this.volumeCallback)();
   }
 });
 

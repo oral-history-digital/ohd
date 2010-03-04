@@ -501,3 +501,43 @@ h5 {
 	margin:20px 0 0 0;
 }
 
+#volumeMuteButton {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  margin: 3px 5px 0 0;
+  cursor: pointer;
+}
+
+.unmute {
+  background: transparent url(/images/player_speaker_n.gif) top left no-repeat;
+}
+
+.mute {
+  background: transparent url(/images/player_speaker_mute_n.gif) top left no-repeat;
+}
+
+.unmute:hover {
+  background: transparent url(/images/player_speaker_a.gif) top left no-repeat;
+}
+
+.mute:hover {
+  background: transparent url(/images/player_speaker_mute_a.gif) top left no-repeat;
+}
+
+#volumeSelect {
+  width: 50px;
+  height: 8px;
+  margin: 5px 5px 0 0;
+  padding: 0;
+  background-color: #730f0f;
+}
+
+#volumeOn {
+  /*background: transparent url(/images/volume_on.gif);*/
+  background-color: #999;
+  width: 14px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}

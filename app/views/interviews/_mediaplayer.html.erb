@@ -77,26 +77,10 @@
             <% end %>
           <% end %>
         </div>
-        <div id="volumeMute" style="width: 15px; padding: 0; margin: 3px 0 0 0;"><%= link_to_function (image_tag "player_speaker_n.gif"), "" %></div>
-        <div id="volumeSelect" style="width: 50px; height: 8px; margin: 5px 0 0 0; padding: 0;">
-          <div id="volumeOn" style="background-color: #fff; width: 14px; height: 100%; padding: 0; margin: 0;"></div>
-          <div id="volumeOff" style="background-color: #730f0f; width: 36px; height: 100%; padding: 0; margin: 0;"></div>
+        <div id="volumeMuteButton" class="unmute" onClick="currentPlayer.toggleMute();"></div>
+        <div id="volumeSelect">
+          <div id="volumeOn"></div>
         </div>
-        <% # TODO: styling and interaction with player %>
-        <% javascript_tag do %>
-          Event.observe('volumeSelect', 'click', function(event) {
-            var width = $('volumeSelect').getWidth();
-            var proportion = 100 / width;
-            var on = ((Event.pointerX(event)) - ($('volumeSelect').cumulativeOffset().left));
-            var off = (width - on);
-            Element.setStyle('volumeOn', {
-              width:on+'px'
-            });
-            Element.setStyle('volumeOff', {
-              width:off+'px'
-            });
-        });
-        <% end %>
 
         <div class="interviewinfo"><%= @interview.video ? 'Video' : 'Audio' %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
@@ -123,11 +107,11 @@
         </div>
     </div>
 
-    <script type="text/javascript">
+    <% javascript_tag do %>
 
-    <% if @interview.video == 'Video' %>
-
-      var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", {
+      var playerSettings = {
+        id                        : '',
+        jwplayerSpace             : '',
         jwplayerFile              : '/swf/player.swf',
         captionsPluginFile        : '/swf/captions.swf',
         skin                      : '/swf/zwar.swf',
@@ -136,41 +120,43 @@
         backcolor                 : '990000',
         frontcolor                : '999999',
         lightcolor                : 'ffffff',
-        id                        : 'player_high',
-        jwplayerSpace             : 'mediaspace_high',
         captionsSpace             : 'captions',
         captionsLanguage          : 'original', // 'original', 'de'
         whilePlaying              : fadeOutGallery,
+        onVolume                  : 'drawVolumeBar(this.volume)',
+        onMute                    : 'drawMuteButton(this.mute)',
         slideClass                : 'captions-slide',
         call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
         call_position             : 'markHeading(currentPlayer.item, currentPlayer.position);',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
-      });
+      };
 
-    <% else %>
+      <% if @interview.video == 'Video' %>
 
-      var player_audio = new Player("<%= playlist_audio_interview_tapes_path(@interview, :format => :xml) %>", {
-        jwplayerFile              : '/swf/player.swf',
-        captionsPluginFile        : '/swf/captions.swf',
-        skin                      : '/swf/zwar.swf',
-        height                    : '335',
-        width                     : '400',
-        backcolor                 : '990000',
-        frontcolor                : '999999',
-        lightcolor                : 'ffffff',
-        id                        : 'player_audio',
-        jwplayerSpace             : 'mediaspace_audio',
-        captionsSpace             : 'captions',
-        whilePlaying              : fadeOutGallery,
-        slideClass                : 'captions-slide',
-        call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
-        call_position             : 'markHeading(currentPlayer.item, currentPlayer.position);',
-        startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
-        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
-      });
+        // high quality video player
+        playerSettings.id = 'player_high';
+        playerSettings.jwplayerSpace = 'mediaspace_high';
+        var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
+
+        // low quality video player
+        playerSettings.id = 'player_low';
+        playerSettings.jwplayerSpace = 'mediaspace_low';
+        var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
+
+      <% else %>
+
+        // audio player
+        playerSettings.id = 'player_audio';
+        playerSettings.jwplayerSpace = 'mediaspace_audio';
+        var player_audio = new Player("<%= playlist_audio_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
+
+      <% end %>
 
     <% end %>
-
-    </script>
 	</div>
+
+<% # TODO: styling and interaction with player %>
+<% javascript_tag do %>
+  Event.observe('volumeSelect', 'click', setVolume);
+<% end %>

@@ -48,6 +48,31 @@
       }
   }
 
+  function setVolume(event) {
+    var width = $('volumeSelect').getWidth();
+    var on = ((Event.pointerX(event)) - ($('volumeSelect').cumulativeOffset().left));
+    currentPlayer.setVolume(Math.round((100 / width) * on));
+  }
+
+  function drawVolumeBar(percentage) {
+    var width = $('volumeSelect').getWidth();
+    var on = Math.round(percentage / (100 / width));
+    var scale = Math.round((on / $('volumeOn').getWidth()) * 100);
+    new Effect.Scale($('volumeOn'), scale, {scaleY: false, duration: 0.1});
+  }
+
+  function drawMuteButton(state) {
+    var id = $('volumeMuteButton');
+    if(id) {
+      if(state) {
+        id.addClassName('mute');
+        id.removeClassName('unmute');
+      } else {
+        id.addClassName('unmute');
+        id.removeClassName('mute');
+      }
+    }
+  }
 
   /* Gallery Effects */
 
