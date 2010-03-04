@@ -26,6 +26,8 @@ DEF
   validates_presence_of :media_id
   validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
 
+  after_create :create_headings
+
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -104,11 +106,34 @@ DEF
     ((transcript || '') + ' ' + (translation || '')).strip
   end
 
+  def mainheading=(heading)
+    @mainheading = heading
+  end
+
+  def subheading=(heading)
+    @subheading = heading
+  end
+
   private
 
   # remove workflow comments
   def filter_annotation(text)
     text.gsub(/\{[^{}]+\}/,'')
+  end
+
+  # create headings via the accessor-set instance variables
+  def create_headings
+    if defined?(@mainheading) and !@mainheading.blank?
+      heading = Heading.find_or_initialize_by_segment_id_and_mainheading(self.id, true)
+      heading.title = @mainheading
+      heading.tape = self.tape
+      heading.save
+    end
+    if defined?(@subheading) and !@subheading.blank?
+      heading = Heading.find_or_initialize_by_segment_id_and_mainheading(self.id, false)
+      heading.tape = self.tape
+      heading.title = @subheading
+    end
   end
 
 

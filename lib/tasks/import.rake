@@ -136,11 +136,15 @@ namespace :import do
       # lösche alle bisher gespeicherten Segmente
       # Segment.delete_all(["media_id LIKE '#{archive_id}%'"])
 
-      interview = Interview.find_by_archive_id archive_id
-      tape = Tape.find_by_media_id tape_media_id
+      if @interview.nil? || @interview.archive_id != archive_id
+        @interview = Interview.find_by_archive_id(archive_id)
+      end
+      if @tape.nil? || @tape.media_id != tape_media_id
+        @tape = Tape.find_by_media_id tape_media_id
+      end
 
-      unless interview == nil or tape == nil
-        segment = Segment.create  :tape_id => tape.id,
+      unless @interview.nil? or @tape.nil?
+        segment = Segment.create  :tape_id => @tape.id,
                                   :media_id => row.field('Media-ID'),
                                   :timecode => row.field('Timecode'),
                                   :transcript => row.field('Transcript'),
@@ -151,6 +155,53 @@ namespace :import do
       end
 
       
+
+    end
+
+  end
+
+  desc "Import von Captions als Segmente"
+  task :captions, [ :file ] => :environment do |task, args|
+    file = args[:file] || ENV['file'] || File.join(RAILS_ROOT, 'db/import_files/captions.csv')
+    puts "Importing from file: #{file}"
+
+    require "fastercsv"
+    @interview = nil
+    @tape = nil
+    @section = nil
+
+    FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+
+      media_id = row.field('Media-ID')
+      archive_id = media_id[/^ZA\d{3}/i].downcase
+      tape_media_id = media_id.gsub(/_\d{4}$/, '')
+
+      if @interview.nil? || @interview.archive_id != archive_id
+        @interview = Interview.find_by_archive_id(archive_id)
+      end
+      if @tape.nil? || @tape.media_id != tape_media_id
+        @tape = Tape.find_by_media_id tape_media_id
+      end
+
+      unless @interview.nil? || @tape.nil?
+        segment = Segment.find_or_initialize_by_media_id(media_id)
+
+        segment.tape = @tape
+        segment.timecode = row.field('Timecode')
+        segment.section = row.field('Section')
+        segment.chapter_change = true unless @section == segment.section
+        segment.transcript = row.field('Transcript')
+        segment.translation = row.field('Translation')
+        segment.mainheading = row.field('Main Heading')
+        segment.subheading = row.field('Subheading')
+
+        segment.save!
+
+        @section = segment.section
+
+        puts segment.media_id + ' (' + segment.timecode.to_s + ') ' + (segment.section.blank? ? '' : " (#{segment.section})")
+
+      end
 
     end
 
