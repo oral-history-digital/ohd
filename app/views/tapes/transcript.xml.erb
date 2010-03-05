@@ -8,11 +8,11 @@
       <% @tape.segments.each do |segment| -%>
 
 
-      <p heading="<%= "#{segment.section.gsub(/'/, '')}" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span lang="de" class="caption_translation"><%= segment.translation.strip -%></span></p>
+      <p heading="<%= "#{segment.section}" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span lang="de" class="caption_translation"><%= segment.translation.strip -%></span></p>
 
       <% end -%>
       <% unless @tape.segments.empty? -%>
-      <p heading="<%= "#{@tape.segments.last.section.gsub(/'/, '')}" %>" begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span lang="original" class="caption_original">&#160;</span><span lang="de" class="caption_translation">&#160;</span></p>
+      <p heading="<%= "#{@tape.segments.last.section}" %>" begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span lang="original" class="caption_original">&#160;</span><span lang="de" class="caption_translation">&#160;</span></p>
       <% end -%>
     </div>
 
