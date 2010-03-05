@@ -46,7 +46,7 @@ namespace :data do
 
         tape.segments.each do |segment|
 
-          time = Timecode.new(segment.timecode).time
+          time = segment.start_time
 
           unless previous_segment.nil?
 
@@ -77,6 +77,8 @@ namespace :data do
       offset += batch
 
     end
+
+    puts "\ndone."
 
   end
 
