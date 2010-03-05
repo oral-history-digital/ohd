@@ -1,10 +1,10 @@
 <table id="interview_headings" class="mainheadings">
   <tbody>
     <% headings_hash = hashed_headings_from_array(@interview.headings) %>
-    <% headings_hash.keys.sort.each do |section| %>
+    <% headings_hash.keys.sort.each_with_index do |section, index| %>
       <% mainheading = headings_hash[section] %>
       <tr id="<%= mainheading[:id] %>" class="mainheading<%= mainheading[:subheadings].empty? ? '' : ' closed' %>">
-        <td class="section"<%= mainheading[:subheadings].empty? ? '' : " onclick=\"toggleSection('#{mainheading[:id]}');\""%>><%= section %>.</td>
+        <td class="section"<%= mainheading[:subheadings].empty? ? '' : " onclick=\"headings.toggleSection(#{index+1});\""%>><%= section %>.</td>
         <td class="heading">
             <a href="javascript:currentPlayer.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
                 <%= mainheading[:title] %>
@@ -27,32 +27,37 @@
   </tbody>
 </table>
 <% javascript_tag do %>
-    var currentSection = null;
-    function switchToSection(num) {
-        if(currentSection) {
-            currentSection.removeClassName('current');
-        }
-        if(currentSection.id = num) {
-            currentSection = null;
-        } else {
-            var new_section = $(num);
-            if(new_section) {
-                new_section.addClassName('current');
-            }
-            currentSection = new_section;
-        }
-    }
 
-    function toggleSection(id) {
-        var section = $(id);
-        if(section) {
-            if(section.hasClassName('open')) {
-                section.addClassName('closed');
-                section.removeClassName('open');
-            } else {
-                section.removeClassName('closed');
-                section.addClassName('open');
-            }
-        }
-    }
+    headings = new TableOfContents({
+        id: 'headings'
+    });
+    
+    <!--var currentSection = null;-->
+    <!--function switchToSection(num) {-->
+        <!--if(currentSection) {-->
+            <!--currentSection.removeClassName('current');-->
+        <!--}-->
+        <!--if(currentSection.id = num) {-->
+            <!--currentSection = null;-->
+        <!--} else {-->
+            <!--var new_section = $(num);-->
+            <!--if(new_section) {-->
+                <!--new_section.addClassName('current');-->
+            <!--}-->
+            <!--currentSection = new_section;-->
+        <!--}-->
+    <!--}-->
+
+    <!--function toggleSection(id) {-->
+        <!--var section = $(id);-->
+        <!--if(section) {-->
+            <!--if(section.hasClassName('open')) {-->
+                <!--section.addClassName('closed');-->
+                <!--section.removeClassName('open');-->
+            <!--} else {-->
+                <!--section.removeClassName('closed');-->
+                <!--section.addClassName('open');-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
 <% end %>

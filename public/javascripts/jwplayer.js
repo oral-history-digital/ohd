@@ -30,6 +30,8 @@ var playerDefaults = {
 
   captionsLanguage            : 'original',
 
+  headingsTable               : null,
+
   onCaptions                  : function(){},
   onItem                      : function(){},
   onMute                      : function(){},
@@ -143,6 +145,8 @@ var Player = Class.create({
     this.playCallback = this.cfg.whilePlaying;
     this.pauseCallback = this.cfg.onPause;
 
+    this.headingsTable = this.cfg.headingsTable;
+
     this.caption = null;
     this.captionContainer = $(this.cfg.captionsSpace);
     this.captionsLanguage = this.cfg.captionsLanguage;
@@ -174,6 +178,9 @@ var Player = Class.create({
   captionsListener: function(obj) {
     if(!this.captionContainer) { this.captionContainer = $(this.cfg.captionsSpace);}
     this.caption = obj;
+    if(this.headingsTable) {
+        this.headingsTable.markHeadings(this.caption.heading);
+    }
     this.showCaptions();
     this.captionsCallback();
   },
