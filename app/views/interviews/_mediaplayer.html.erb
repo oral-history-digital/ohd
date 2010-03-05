@@ -122,7 +122,7 @@
         backcolor                 : '990000',
         frontcolor                : '999999',
         lightcolor                : 'ffffff',
-        headingsTable             : headings,
+        headingsTable             : 'headings',
         captionsSpace             : 'captions',
         captionsLanguage          : 'original', // 'original', 'de'
         whilePlaying              : fadeOutGallery,
@@ -130,7 +130,6 @@
         onMute                    : 'drawMuteButton(this.mute)',
         slideClass                : 'captions-slide',
         call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
-        call_position             : 'markHeading(currentPlayer.item, currentPlayer.position);',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
         startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       };

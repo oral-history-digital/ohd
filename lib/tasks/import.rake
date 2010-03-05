@@ -241,22 +241,15 @@ namespace :import do
 
 
           unless segment == nil
-            heading = Heading.find(:first, :conditions => { :tape_id => tape.id, :media_id => segment.media_id})
-            heading ||= Heading.create  :tape_id => tape.id, :media_id => segment.media_id
-
-            heading.update_attributes :segment_id => segment.id
-
 
             if row.field("Hauptüberschrift") == nil
-              heading.mainheading = false
-              heading.title = row.field("Zwischenüberschrift")
+              segment.subheading = row.field("Zwischenüberschrift")
             else
-              heading.mainheading = true
-              heading.title = row.field("Hauptüberschrift")
+              segment.mainheading = row.field("Hauptüberschrift")
             end
 
-            heading.save!
-            puts "#{heading.media_id}"
+            segment.save!
+            puts "#{segment.media_id}"
 
           end
         end
@@ -283,22 +276,9 @@ namespace :import do
         mainheading = row.field("Mainheading").strip
         subheading = row.field("Subheading").strip
         unless mainheading == "NULL" and subheading == "NULL"
-          unless mainheading == "NULL"
-            heading = Heading.find(:first, :conditions => { :segment_id => segment.id, :media_id => segment.media_id, :mainheading => true})
-            heading ||= Heading.create :segment_id => segment.id, :media_id => segment.media_id, :mainheading => true
-            heading.update_attributes :tape_id => tape.id, :title => mainheading
-            heading.save!
-            puts "Hauptueberschrift fuer #{heading.media_id} hinzugefuegt / aktualisiert"
-          end
-
-          unless subheading == "NULL"
-            heading = Heading.find(:first, :conditions => { :segment_id => segment.id, :media_id => segment.media_id, :mainheading => false})
-            heading ||= Heading.create :segment_id => segment.id, :media_id => segment.media_id, :mainheading => false
-            heading.update_attributes :tape_id => tape.id, :title => subheading
-            heading.save!
-            puts "Zwischenueberschrift fuer #{heading.media_id} hinzugefuegt / aktualisiert"
-          end
-
+          segment.mainheading = mainheading
+          segment.subheading = subheading
+          segment.save!
         end
       else
         puts "#{row.field("Media_ID")} nicht hinzugefügt"

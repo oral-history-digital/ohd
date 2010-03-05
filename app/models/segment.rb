@@ -2,8 +2,6 @@ class Segment < ActiveRecord::Base
 
   belongs_to :tape
 
-  has_one :heading
-
   has_one :previous_segment,
           :class_name => 'Segment'
 
@@ -21,23 +19,20 @@ class Segment < ActiveRecord::Base
 DEF
   end
 
+  named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
   
   validates_presence_of :timecode
   validates_presence_of :media_id
   validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
 
-  after_create :create_headings
-
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
     string :media_id, :stored => true
-    string :heading, :stored => true
     string :timecode
     text :joined_transcript_and_translation
-    text :heading, :boost => 10 do
-      self.heading.blank? ? '' : self.heading.to_s
-    end
+    text :mainheading, :boost => 10
+    text :subheading, :boost => 10
     #text :transcript
     #text :translation, :boost => 2
     Category::ARCHIVE_CATEGORIES.each do |category|
@@ -106,35 +101,11 @@ DEF
     ((transcript || '') + ' ' + (translation || '')).strip
   end
 
-  def mainheading=(heading)
-    @mainheading = heading
-  end
-
-  def subheading=(heading)
-    @subheading = heading
-  end
-
   private
 
   # remove workflow comments
   def filter_annotation(text)
     text.gsub(/\{[^{}]+\}/,'')
   end
-
-  # create headings via the accessor-set instance variables
-  def create_headings
-    if defined?(@mainheading) and !@mainheading.blank?
-      heading = Heading.find_or_initialize_by_segment_id_and_mainheading(self.id, true)
-      heading.title = @mainheading
-      heading.tape = self.tape
-      heading.save
-    end
-    if defined?(@subheading) and !@subheading.blank?
-      heading = Heading.find_or_initialize_by_segment_id_and_mainheading(self.id, false)
-      heading.tape = self.tape
-      heading.title = @subheading
-    end
-  end
-
 
 end

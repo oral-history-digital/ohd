@@ -4,11 +4,11 @@ var TableOfContents = Class.create({
 
     initialize: function(options) {
 
-        this.containerId = options.id || 'headings';
+        this.containerId = options.id || 'interview_headings';
         this.mainClass = options.mainClass || 'mainheading';
         this.subClass = options.subClass || 'subheading';
         this.subListElem = options.subListElem || 'ul';
-        this.scrollPosition = options.scrollPosition || (2/3);
+        this.scrollPosition = options.scrollPosition || 1;
         this.currentClassName = options.currentClassName || 'current';
 
         this.currentHeading = null;
@@ -20,33 +20,58 @@ var TableOfContents = Class.create({
             throw("No Headings found for container " + this.containerId);
         }
 
-        this.scrollStart = $(this.containerId).down('table').scrollTop + ($(this.containerId).getHeight() * this.scrollPosition);
-        
+    },
+
+    scrollOffsetPosition: function() {
+        return $(this.containerId).scrollTop + ($(this.containerId).getHeight() * this.scrollPosition) + 60;
     },
 
     toggleSection: function(section) {
-        var toggledSection = this.getHeading(this.parseSectionNumber(section));
+        this.toggleSectionNumber(this.parseSectionNumber(section)[0], false);
+    },
+
+    toggleSectionNumber: function(sectionNum, closeAll) {
+        var toggledSection = this.getHeading([sectionNum, 0]);
+        if((closeAll) && (sectionNum != 0)) {
+            for(var i=0; i < this.mainHeadings.length; i++) {
+                if((i - sectionNum > 2) || (i - sectionNum < -2)) {
+                    var heading = this.mainHeadings[i];
+                    if(heading.hasClassName('open')) {
+                        heading.removeClassName('open');
+                        heading.addClassName('closed');
+                    }
+                }
+            }
+        }
         if(toggledSection) {
             if(toggledSection.hasClassName('open')) {
                 toggledSection.addClassName('closed');
                 toggledSection.removeClassName('open');
             } else {
-                toggledSection.removeClassName('closed');
-                toggledSection.addClassName('open');
+                // check for className - headings without subheadings
+                // don't need to get toggled!
+                if(toggledSection.hasClassName('closed')) {
+                    toggledSection.removeClassName('closed');
+                    toggledSection.addClassName('open');
+                }
             }
         }
     },
 
-    parseSectionNumber: function(sectionString) {
+    parseSectionNumber: function(sectionNum) {
         var section = 0;
         var subSection = 0;
-        if(sectionString.isString) {
-            if(section =~ /\d+\.\d+/) {
-                subSection = parseInt(section.substr(/\d+$/));
+        if(!sectionNum) {
+            return [ 0, 0 ];
+        }
+        if(sectionNum.isString) {
+            if(sectionNum =~ /\d+\.\d+/) {
+                subSection = parseInt(sectionNum.sub(/^\d+\./,''));
             }
-            section = parseInt(section.substr(/^\d+/));
+            section = parseInt(sectionNum.sub(/\.\d+$/,''));
         } else {
-            return [ sectionString, 0 ];
+            section = Math.floor(sectionNum);
+            subSection = parseInt(sectionNum.toString().sub(/^\d+/,'').sub('.','') || '0');
         }
         return [section,subSection];
     },
@@ -56,30 +81,41 @@ var TableOfContents = Class.create({
         var section = sectionArray[0];
         var subSection = sectionArray[1];
         var heading = null;
-        if(subSection == 0) {
+        if(section < 1) return null;
+        if(subSection < 1) {
             heading = this.mainHeadings[section-1];
         } else {
-            heading = this.mainHeadings.getElementsBySelector('.' + this.subClass)[subSection-1];
+            heading = this.mainHeadings[section-1].getElementsBySelector('.' + this.subClass)[subSection-1];
         }
         return heading;
     },
 
     markHeading: function(sectionInput) {
-        alert('MARK HEADING: ' + sectionInput);
         var sectionArray = this.parseSectionNumber(sectionInput);
         var section = sectionArray[0];
         var subSection = sectionArray[1];
-        // only do something when we have a new section and subsection
-        if((section != this.section) && (subSection != this.subSection)) {
-            var newHeading = getHeading(sectionArray);
+        
+        // only do something when we have a new section or subsection
+        if((section != this.section) || (subSection != this.subSection)) {
+
+            // toggleSection on mainheading change
+            if(section != this.section) {
+                this.toggleSectionNumber(section, true);
+                this.section = section;
+            }
+
+            var newHeading = this.getHeading(sectionArray);
             if(newHeading != this.currentHeading) {
-                this.currentHeading.removeClassName(this.currentClassName);
+                if(this.currentHeading != null) {
+                    this.currentHeading.removeClassName(this.currentClassName);
+                }
+                if(newHeading) {
+                    newHeading.addClassName(this.currentClassName);
+                }
             }
             if(newHeading) {
-                newHeading.addClassName(this.currentClassName);
-                
                 // smoothly scroll to the new heading
-                var newOffset = newHeading.offsetTop - this.scrollStart;
+                var newOffset = newHeading.offsetTop - this.scrollOffsetPosition();
                 if(newHeading.hasClassName(this.subClass)) {
                     // add the mainheading's offsetTop
                     var sectionHeading = newHeading.up('.' + this.mainClass);
@@ -92,7 +128,6 @@ var TableOfContents = Class.create({
 
                 // update current status variables
                 this.currentHeading = newHeading;
-                this.section = section;
                 this.subSection = subSection;
             }
         }

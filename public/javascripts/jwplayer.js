@@ -145,8 +145,9 @@ var Player = Class.create({
     this.playCallback = this.cfg.whilePlaying;
     this.pauseCallback = this.cfg.onPause;
 
+    this.registeredHeadingsTable = null;
     this.headingsTable = this.cfg.headingsTable;
-
+      
     this.caption = null;
     this.captionContainer = $(this.cfg.captionsSpace);
     this.captionsLanguage = this.cfg.captionsLanguage;
@@ -167,8 +168,10 @@ var Player = Class.create({
     }
 
     this.translated_captions = this.cfg['startTranslation'];
-    this.marked_mainheading = null;
-    this.marked_subheading = null;
+  },
+
+  registerHeadingsTable: function(table) {
+    this.registeredHeadingsTable = table;
   },
 
   calledByListener: function(call_listener) {
@@ -178,8 +181,11 @@ var Player = Class.create({
   captionsListener: function(obj) {
     if(!this.captionContainer) { this.captionContainer = $(this.cfg.captionsSpace);}
     this.caption = obj;
-    if(this.headingsTable) {
-        this.headingsTable.markHeadings(this.caption.heading);
+    if(!this.registeredHeadingsTable && (this.headingsTable != null))  {
+        eval('this.registerHeadingsTable(' + this.headingsTable + ');');
+    }
+    if(this.registeredHeadingsTable != null) {
+        this.registeredHeadingsTable.markHeading(this.caption.heading);
     }
     this.showCaptions();
     this.captionsCallback();
@@ -368,63 +374,3 @@ var Player = Class.create({
     eval(this.volumeCallback)();
   }
 });
-
-
-
-// Ueberschriften
-
-var marked_heading = null;
-
-var scrollStart = 0;
-
-function showSubheadings(main) {
-  if($('subheadings_for_' + main) != undefined) {
-    $('subheadings_for_' + main).toggle();
-  }
-}
-
-function markHeading(item, position) {
-  while(!$("heading_" + item + "_" + position)) {
-    if(position == 0 && item > 0) {
-      position = 10000;
-      item--;
-    } else if(position == -1 && item == 0) {
-      var founded_heading = "headings_begin";
-      break;
-    } else {
-      position--;
-    }
-  }
-
-  if(founded_heading != "headings_begin") {
-    var founded_heading = "heading_" + item + "_" + position;
-  }
-
-  if(marked_heading == founded_heading) { return; }
-
-  if(scrollStart == 0) {
-      // initialize scrollStart
-      scrollStart = $('headings').down('table').scrollTop + ($('headings').getHeight() * 2 / 3);
-  }
-
-  var previous = $(marked_heading);
-  var new_heading = $(founded_heading);
-
-  if(previous) { previous.removeClassName('current'); }
-  if(new_heading) {
-      // mark the current heading
-      new_heading.addClassName('current');
-      // smooth scroll to the current heading
-      var newOffset = new_heading.offsetTop - scrollStart;
-      if(new_heading.hasClassName('subheading')) {
-          // add the mainheading's offsetTop
-          var previousHeading = new_heading.up('.mainheading');
-          if(previousHeading) {
-              newOffset = newOffset + previousHeading.offsetTop;
-          }
-      }
-      if(newOffset < 0) { newOffset = 0; }
-      new Effect.Tween('headings', $('headings').scrollTop, newOffset, { duration: 0.6 }, 'scrollTop');
-  }
-  marked_heading = founded_heading;
-}

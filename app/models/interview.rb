@@ -10,10 +10,6 @@ class Interview < ActiveRecord::Base
 
   has_many  :segments,
             :through => :tapes
-
-  has_many  :headings,
-             :through => :tapes,
-             :order => "media_id ASC"
   
   has_attached_file :interview_still,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
@@ -101,7 +97,7 @@ DEF
   end
 
   def has_headings?
-    headings.count > 0 ? true : false
+    segments.headings.count > 0 ? true : false
   end
 
   # this should be handled by the view

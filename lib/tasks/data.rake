@@ -14,11 +14,9 @@ namespace :data do
 
     Rake::Task['import:tapes'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'tapes.csv')})
 
-    Rake::Task['import:segments'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'captions.csv')})
+    Rake::Task['import:captions'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'captions.csv')})
 
     Rake::Task['data:segment_duration'].execute
-
-    Rake::Task['import:all_headings'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'headings.csv')})
 
   end
 

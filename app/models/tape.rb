@@ -5,8 +5,6 @@ class Tape < ActiveRecord::Base
   has_many  :segments,
               :order => 'media_id ASC'
 
-  has_many :headings
-
   validates_uniqueness_of :media_id
 
   def number
