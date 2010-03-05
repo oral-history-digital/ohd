@@ -197,7 +197,7 @@ namespace :import do
 
         segment.tape = @tape
         segment.timecode = row.field('Timecode')
-        segment.section = row.field('Section')
+        segment.section = row.field('Section')[/\d+\.\d+/]
         segment.chapter_change = true unless @section == segment.section
         segment.transcript = row.field('Transcript')
         segment.translation = row.field('Translation')
