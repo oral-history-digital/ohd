@@ -50,6 +50,7 @@ namespace :deploy do
       run "ln -s #{shared_path}/config/#{config} #{release_path}/config/#{config}"
       run "ln -nfs #{shared_path}/solr/data #{release_path}/solr/data"
     end
+    run "rm -rf #{release_path}/public/archive_images"
     run "ln -s #{shared_path}/public/archive_images #{release_path}/public"
     run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/public/archive_images"
   end
