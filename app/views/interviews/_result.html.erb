@@ -22,6 +22,7 @@
         </div>
       <% if query_params.keys.include?('fulltext') %>
       <% matching_segments = search.matching_segments_for(result.archive_id) %>
+        <% unless matching_segments.empty? %>
       <div id="interview_<%= result.archive_id.upcase %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
 
         <h5><%= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %>
@@ -49,5 +50,6 @@
         <% end %>
 
       </div>
+        <% end %>
     <% end %>
     </div>

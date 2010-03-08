@@ -42,4 +42,11 @@ module ApplicationHelper
     end
   end
 
+  def zwar_paginate(collection)
+    will_paginate collection,
+                  { :previous_label => I18n.t(:previous),
+                    :next_label => I18n.t(:next)
+                  }
+  end
+
 end

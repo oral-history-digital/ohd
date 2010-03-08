@@ -10,6 +10,8 @@ en:
   more: 'more'
   translated: 'übersetzt'
   all: 'all'
+  previous: 'previous'
+  next: 'next'
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'

@@ -2,13 +2,13 @@
 
   <% if defined?(@search) && !@search.hits.blank? %>
   <h2><%= pluralize(@search.hits, Interview.human_name) %></h2>
-  <%= will_paginate @interviews %>
+  <%= zwar_paginate @interviews %>
   <% end %>
 
   <%= render :partial => '/interviews/result', :collection => @interviews || [], :locals => { :search => @search } %>
 
   <% if defined?(@search) && !@search.hits.blank? %>
-  <%= will_paginate @interviews %>
+  <%= zwar_paginate @interviews %>
   <% end %>
 
   <% javascript_tag do %>

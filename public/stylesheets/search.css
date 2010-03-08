@@ -1,3 +1,9 @@
+/* Search Results */
+.teaserList .pagination {
+    float: left;
+    clear: left;
+}
+
 /* Facetted Search */
 #search_facets .active-facet {
     display: block;
