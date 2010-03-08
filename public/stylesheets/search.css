@@ -1,9 +1,3 @@
-/* Search Results */
-.teaserList .pagination {
-    float: left;
-    clear: left;
-}
-
 /* Facetted Search */
 #search_facets .active-facet {
     display: block;
@@ -413,6 +407,7 @@ position: relative;
 
 .mainheading .section {
     cursor: pointer;
+    padding-left:10px;
 }
 
 .mainheading.closed .section {
@@ -428,7 +423,7 @@ position: relative;
 }
 
 .mainheading ul.subheadings {
-    padding: 0;
+    padding:5px 0 0 0;
 }
 
 .mainheading .subheading{
@@ -438,7 +433,7 @@ position: relative;
 }
 
 #interview_headings {
-  margin-left:10px;
+  margin-left:5px;
 }
 
 #interview_headings .heading,
@@ -447,7 +442,7 @@ position: relative;
     display:block;
 }
 #interview_headings .heading {
-    width: 89%;
+    width: 88%;
     margin-bottom: 0.25em;
 }
 
@@ -464,6 +459,10 @@ position: relative;
     position:absolute;
     top:-16px;
     right:29px;
+}
+
+.heading > a .timecode {
+    right:0px;
 }
 
 .heading a:hover .timecode,
