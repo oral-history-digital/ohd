@@ -99,20 +99,22 @@
 }
 
 /* Checkbox replacement */
-.facet-field input.checkbox {
+.facet-field .facet input.checkbox {
     position: absolute;
     right: -2000px;
 }
 
-
-.facet-field .facet-name {
+.facet-field .facet {
     padding-left: 22px;
     background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
-    font-size:90%;
 }
 
-.facet-field .facet-name.checked {
+.facet-field .facet.checked {
     background-image: url(/images/checkbox_a2.gif);
+}
+
+.facet-field .facet .facet-name {
+    font-size:90%;
 }
 
 /* Autocompleter */

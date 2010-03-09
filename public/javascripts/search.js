@@ -77,13 +77,14 @@
   function checkCategory(id, labelElement) {
       var facetName = id.sub(/_\d+$/,'');
       var input = $(id);
-      if(input) {
-          if(labelElement.hasClassName('checked')) {
+      var item = labelElement.up('.facet');
+      if((input) && (item)) {
+          if(item.hasClassName('checked')) {
               input.checked = false;
-              labelElement.removeClassName('checked');
+              item.removeClassName('checked');
           } else {
               input.checked = true;
-              labelElement.addClassName('checked');
+              item.addClassName('checked');
           }
           Element.show(facetName + '_submit');
       }
