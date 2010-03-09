@@ -104,9 +104,11 @@
     right: -2000px;
 }
 
+
 .facet-field .facet-name {
     padding-left: 22px;
     background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
+    font-size:90%;
 }
 
 .facet-field .facet-name.checked {
@@ -269,6 +271,11 @@ float:left;
 position: relative;
 }
 
+.fragmentTitle.open {
+	padding-bottom:10px;
+}
+
+
 .facet_refresh {
 	position: absolute;
 	top: 4px;
@@ -297,10 +304,6 @@ position: relative;
 #back_to_search {
 	margin: 10px 10px 0 0;
 	float:right;
-}
-
-.fragmentTitle {
-	padding-bottom:10px;
 }
 
 .fragmentTitle label {
@@ -433,7 +436,7 @@ position: relative;
 }
 
 #interview_headings {
-  margin-left:5px;
+    margin: 15px 0 0 5px;
 }
 
 #interview_headings .heading,
