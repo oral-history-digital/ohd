@@ -416,11 +416,11 @@ position: relative;
 }
 
 .mainheading.closed .section {
-    background: transparent url(/images/pfeil_rot_rechts.gif) left 0.25em no-repeat;
+    background: transparent url(/images/plus.gif) left 0.5em no-repeat;
 }
 
 .mainheading.open .section {
-    background: transparent url(/images/pfeil_rot_unten.gif) left 0.25em no-repeat;
+    background: transparent url(/images/minus.gif) left 0.5em no-repeat;
 }
 
 .mainheading.closed .subheadings {
