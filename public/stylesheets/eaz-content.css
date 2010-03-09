@@ -341,14 +341,18 @@ h5 {
 /* Formatierung fuer Listenausgaben */
 .teaserList {
 	width: 710px;
+	margin-top:6px;
 	padding: 0px;
 	overflow: hidden;
 	clear: left;
 }
 
-.teaserList h1{
+.teaserList h1,
+.teaserList h2,
+.teaserList .pagination{
 	clear: both;
-	margin-bottom: 12px;
+margin: 0 0 12px;
+/*margin-bottom: 12px;*/
 }
 
 .baseContainerTeaser{
