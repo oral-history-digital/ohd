@@ -8,7 +8,7 @@
     <ul>
     <% segments.each do |segment| %>
       <li id="<%= segment.media_id %>">
-        <%= link_to_segment segment, @search.fulltext, true %>
+        <%= link_to_segment segment, @search.fulltext, true, true %>
       </li>
     <% end %>
   </ul>

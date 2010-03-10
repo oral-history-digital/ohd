@@ -367,7 +367,7 @@ SQL
 
       # fulltext search
       unless query['fulltext'].blank?
-        keywords query['fulltext'].downcase
+        keywords Unicode.downcase(query['fulltext'])
       end
 
       # person name facet
@@ -424,7 +424,7 @@ SQL
 
         # fulltext search
         unless query['fulltext'].blank?
-          params[:q] = "#{query['fulltext'].downcase}"
+          params[:q] = lucene_escape(query['fulltext'])
         end
       end
 
@@ -440,7 +440,7 @@ SQL
       keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
 
       text_fields do
-        with(:fulltext, query['fulltext']) unless query['fulltext'].blank?
+        with(:fulltext, lucene_escape(query['fulltext'])) unless query['fulltext'].blank?
       end
 
       # category facets
@@ -465,5 +465,9 @@ SQL
     end
   end
 
+  # Escapes lucene query for safe querying with the Lucene Parser
+  def lucene_escape(query)
+    Unicode.downcase(query.gsub(/^[\*\?\+\-\{\}\[\]\~\!\(\)]+/,''))
+  end
 
 end
