@@ -66,7 +66,7 @@ namespace :import do
                                       :deportation_date => row.field("Datum der Deportation")
         }
 
-        collection = Collection.find__or_initialize_by_name row.field('Projekt')
+        collection = Collection.find_or_initialize_by_name row.field('Projekt')
         collection.save! if collection.new_record?
 
         interview.collection_id = collection.id
