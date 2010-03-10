@@ -43,10 +43,22 @@ namespace :import do
 
         interview ||= Interview.create :archive_id => row.field('Archiv-ID')
 
+        # handle origin data depending on research state
+        origin = row.field('Geburtsort')
+        if origin == 'unerschlossen'
+          origin = row.field('Herkunft')
+          if origin.length > 45
+            origin = row.field('Herkunft (Land)')
+          end
+        else
+          country = row.field('Herkunft (Land)')
+          origin += ', ' + country.to_s unless origin.include?(country)
+        end
+
         interview.update_attributes   :full_title => row.field('Zeitzeuge/Zeitzeugin'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
-                                      :country_of_origin => row.field("Herkunft"),
+                                      :country_of_origin => origin,
                                       :video => row.field("Medium") == "Video" ? true : false,
                                       :duration => Timecode.new((row.field("Dauer in s") || '').to_i).time,
                                       :translated => row.field("Übersetzt") == "übersetzt" ? true : false,
@@ -56,6 +68,10 @@ namespace :import do
 
         collection = Collection.find_by_name row.field('Projekt')
         collection ||= Collection.create :name => row.field('Projekt')
+
+        interview.collection_id = collection.id
+
+        interview.save!
 
         Category::ARCHIVE_CATEGORIES.each do |category_class|
           category_field = category_class.last
@@ -69,11 +85,6 @@ namespace :import do
             end
           end
         end
-
-        interview.collection_id = collection.id
-
-        interview.save!
-        collection.save!
 
         puts "#{interview.full_title} hinzugefügt / aktualisiert."
 
