@@ -40,7 +40,7 @@ module ApplicationHelper
     query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
     query_string.gsub!('_',' ')
     query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
-    pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
+    pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
       'keine Transkription vorhanden.'
