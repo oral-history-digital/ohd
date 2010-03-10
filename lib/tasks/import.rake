@@ -45,7 +45,7 @@ namespace :import do
 
         # handle origin data depending on research state
         origin = row.field('Geburtsort')
-        if origin == 'unerschlossen'
+        if origin.blank? || origin == 'unerschlossen'
           origin = row.field('Herkunft')
           if origin.length > 45
             origin = row.field('Herkunft (Land)')
