@@ -3,7 +3,7 @@
 
     <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
         <div class="baseContainerTeaserImage">
-            <%= link_to image_tag(result.interview_still.url(:small)), interview_path(result), :title => result.short_title %>
+            <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title %>
         </div>
         <div class="baseContainerTeaserText">
             <h3><%= link_to result.short_title, interview_path(result), :title => result.short_title %></h3>

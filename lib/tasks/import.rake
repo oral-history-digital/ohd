@@ -54,23 +54,30 @@ namespace :import do
           origin += ', ' + country.to_s unless origin.include?(country)
         end
 
-        interview.attributes = {      :full_title => row.field('Zeitzeuge/Zeitzeugin'),
+        interview.attributes = {      :full_title => row.field('Zeitzeuge'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
                                       :country_of_origin => origin,
                                       :video => row.field("Medium") == "Video" ? true : false,
-                                      :duration => Timecode.new((row.field("Dauer in s") || '').to_i).time,
-                                      :translated => row.field("Übersetzt") == "übersetzt" ? true : false,
-                                      :forced_labor_location => row.field("Orte der Zwangsarbeit"),
+                                      :duration => Timecode.new((row.field("Dauer") || '').to_i).time,
+                                      :translated => row.field("Übersetzung ins Deutsche") == "übersetzt" ? true : false,
+                                      :forced_labor_locations => row.field("Orte der Zwangsarbeit"),
                                       :details_of_origin => "-",
-                                      :deportation_date => row.field("Datum der Deportation")
+                                      :deportation_date => row.field("Datum der Deportation"),
+                                      :deportation_location => row.field('Ort der Deportation'),
+                                      :forced_labor_details => row.field('')
         }
 
-        collection = Collection.find_or_initialize_by_name row.field('Projekt')
+        collection = Collection.find_or_initialize_by_name row.field('Teilsammlung')
         collection.save! if collection.new_record?
 
         interview.collection_id = collection.id
-        interview.save!
+
+        interview.save
+
+        unless interview.valid?
+          raise "INVALID: #{interview.errors.full_messages}\n\n#{interview.inspect}\n"
+        end
 
         Category::ARCHIVE_CATEGORIES.each do |category_class|
           category_field = category_class.last

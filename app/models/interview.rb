@@ -11,7 +11,7 @@ class Interview < ActiveRecord::Base
   has_many  :segments,
             :through => :tapes
   
-  has_attached_file :interview_still,
+  has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
                     :url => "/archive_images/stills/:basename_still_:style.:extension",
                     :path => ":rails_root#{ApplicationController.relative_url_root}/public/archive_images/stills/:basename_still_:style.:extension",
@@ -29,7 +29,9 @@ DEF
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
-  validates_attachment_content_type :interview_still, :content_type => ['image/jpeg', 'image/png']
+  validates_attachment_content_type :still_image,
+                                    :content_type => ['image/jpeg', 'image/png'],
+                                    :if => Proc.new{|i| !i.still_image_file_name.blank? }
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -86,10 +88,6 @@ DEF
 
   def segmentators
     'Tobias Kilgus'
-  end
-
-  def forced_labor_locations
-    %w( Auschwitz Flossenbürg Treblinka Sachsenhausen )
   end
 
   def return_location
