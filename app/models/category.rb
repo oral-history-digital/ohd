@@ -29,6 +29,8 @@ DEF
   has_many :interviews,
            :through => :categorizations
 
+  validates_uniqueness_of :name, :scope => :category_type
+
   def to_s
     name
   end
