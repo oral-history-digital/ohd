@@ -31,8 +31,15 @@ module ApplicationHelper
   end
 
   def segment_excerpt_for_match(segment, match_text='', width=8)
-    return segment.translation # TODO: remove this - it's for debugging search only'
+    #return segment.translation # TODO: remove this - it's for debugging search only'
     # TODO: reduce word count in both directions on interpunctuation
+    # handle wildcards
+    match_text.gsub!(/\*/,'\w+')
+    # and multiple expressions
+    match_text.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
+    match_text.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
+    match_text.gsub!('_',' ')
+    match_text.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
     pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
