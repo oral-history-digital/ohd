@@ -65,7 +65,13 @@ namespace :import do
                                       :details_of_origin => "-",
                                       :deportation_date => row.field("Datum der Deportation"),
                                       :deportation_location => row.field('Ort der Deportation'),
-                                      :forced_labor_details => row.field('')
+                                      :forced_labor_details => row.field(''),
+                                      :interviewers => row.field('Interviewführung'),
+                                      :transcriptors => row.field('Transkription'),
+                                      :translators => row.field('Übersetzung'),
+                                      :researchers => row.field('Wissenschaftliche Erschließung'),
+                                      :proofreaders => row.field('Lektorat'),
+                                      :segmentators => row.field('Segmentierung')
         }
 
         collection = Collection.find_or_initialize_by_name row.field('Teilsammlung')
@@ -85,6 +91,7 @@ namespace :import do
             classification.strip!
             category = Category.find_by_name_and_category_type classification, category_field
             category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
+            raise "Invalid Category: #{category.inspect}" unless category.valid?
             interview.send(category_class.first.to_s + "_categorizations").create do |categorization|
               categorization.category_type = category.category_type
               categorization.category_id = category.id
