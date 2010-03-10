@@ -59,7 +59,7 @@ namespace :import do
                                       :date_of_birth => row.field("Geburtsdatum"),
                                       :country_of_origin => origin,
                                       :video => row.field("Medium") == "Video" ? true : false,
-                                      :duration => Timecode.new((row.field("Dauer") || '').to_i).time,
+                                      :duration => row.field("Dauer"),
                                       :translated => row.field("Übersetzung ins Deutsche") == "übersetzt" ? true : false,
                                       :forced_labor_locations => row.field("Orte der Zwangsarbeit"),
                                       :details_of_origin => "-",

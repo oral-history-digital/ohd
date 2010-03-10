@@ -78,6 +78,25 @@ DEF
     @duration ||= Timecode.new read_attribute(:duration)
   end
 
+  # Sets the duration either as an integer in seconds,
+  # or applies a timecode by parsing. Even sub-timecodes
+  # such as HH:MM are allowed.
+  def duration=(seconds_or_timecode)
+    time = seconds_or_timecode.to_i
+    if seconds_or_timecode.is_a?(String)
+      unless seconds_or_timecode.index(':').nil?
+        case seconds_or_timecode.count(':.')
+          when 2
+            seconds_or_timecode << '.00'
+          when 1
+            seconds_or_timecode << ':00.00'
+        end
+        time = Timecode.new(seconds_or_timecode).time
+      end
+    end
+    write_attribute :duration, time
+  end
+
   def short_title
     @short_title ||= full_title[/^[^,;]+, \w/] + "."
   end
