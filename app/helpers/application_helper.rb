@@ -30,21 +30,22 @@ module ApplicationHelper
     end
   end
 
-  def segment_excerpt_for_match(segment, match_text='', width=8)
+  def segment_excerpt_for_match(segment, query_string='', width=8)
     #return segment.translation # TODO: remove this - it's for debugging search only'
     # TODO: reduce word count in both directions on interpunctuation
     # handle wildcards
-    match_text.gsub!(/\*/,'\w+')
+    query_string.gsub!(/\*/,'\w+')
     # and multiple expressions
-    match_text.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
-    match_text.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
-    match_text.gsub!('_',' ')
-    match_text.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
-    pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (match_text.blank? ? '' : (match_text + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
+    query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
+    query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
+    query_string.gsub!('_',' ')
+    query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
+    pattern = Regexp.new '(\w+\W+){0,' + width.to_s + '}' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
       'keine Transkription vorhanden.'
     else
+      match_text.gsub!(Regexp.new(query_string, Regexp::IGNORECASE),"<span class='highlight'>\\0</span>")
       '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
     end
   end
