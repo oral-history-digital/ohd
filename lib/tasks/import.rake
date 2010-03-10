@@ -47,8 +47,8 @@ namespace :import do
         origin = row.field('Geburtsort')
         if origin.blank? || origin == 'unerschlossen'
           origin = row.field('Herkunft')
-          if origin.length > 45
-            origin = row.field('Herkunft (Land)')
+          if origin.nil? || origin.length > 45
+            origin = row.field('Herkunft (Land)') || '&mdash;'
           end
         else
           country = row.field('Herkunft (Land)')
