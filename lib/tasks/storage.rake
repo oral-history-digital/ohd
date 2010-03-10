@@ -68,8 +68,8 @@ namespace :storage do
           
           if file_name.match(/^za\d{3}\.(png|jpg)$/i)
             
-            if interview.interview_still_file_name == nil
-              interview.interview_still = File.open(file)
+            if interview.still_image_file_name == nil
+              interview.still_image = File.open(file)
               interview.save!
               puts "#{file_name} added"
             end           
