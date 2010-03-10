@@ -206,7 +206,8 @@ namespace :import do
         @interview = Interview.find_by_archive_id(archive_id)
       end
       if @tape.nil? || @tape.media_id != tape_media_id
-        @tape = Tape.find_by_media_id tape_media_id
+        @tape = Tape.find_by_or_initialize_by media_id tape_media_id
+        @tape.save if @tape.new_record?
       end
 
       unless @interview.nil? || @tape.nil?
