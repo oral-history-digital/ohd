@@ -37,11 +37,10 @@ namespace :import do
 
     FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
 
-      interview = Interview.find_by_archive_id row.field('Archiv-ID')
+      interview = Interview.find_or_initialize_by_archive_id row.field('Archiv-ID')
 
-      unless row.field('Online veröffentlicht') == "nicht online"
-
-        interview ||= Interview.create :archive_id => row.field('Archiv-ID')
+      # TODO: this is dirty - a check vs hard-coded string!
+      unless row.field('Online veröffentlicht') == "nicht online" # this is NEVER the case!
 
         # handle origin data depending on research state
         origin = row.field('Geburtsort')
@@ -55,7 +54,7 @@ namespace :import do
           origin += ', ' + country.to_s unless origin.include?(country)
         end
 
-        interview.update_attributes   :full_title => row.field('Zeitzeuge/Zeitzeugin'),
+        interview.attributes = {      :full_title => row.field('Zeitzeuge/Zeitzeugin'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
                                       :country_of_origin => origin,
@@ -65,12 +64,12 @@ namespace :import do
                                       :forced_labor_location => row.field("Orte der Zwangsarbeit"),
                                       :details_of_origin => "-",
                                       :deportation_date => row.field("Datum der Deportation")
+        }
 
-        collection = Collection.find_by_name row.field('Projekt')
-        collection ||= Collection.create :name => row.field('Projekt')
+        collection = Collection.find__or_initialize_by_name row.field('Projekt')
+        collection.save! if collection.new_record?
 
         interview.collection_id = collection.id
-
         interview.save!
 
         Category::ARCHIVE_CATEGORIES.each do |category_class|
