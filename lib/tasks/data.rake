@@ -8,7 +8,7 @@ namespace :data do
   desc "Setup the initial data for test / demo deployments"
   task :setup => :environment do
 
-    Rake::Task['import:metadata'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'interviews.csv')})
+    Rake::Task['import:interviews'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'interviews.csv')})
 
     Rake::Task['import:credits'].execute({ :file => File.join(RAILS_ROOT, 'db', 'import_files', 'credits.csv')})
 

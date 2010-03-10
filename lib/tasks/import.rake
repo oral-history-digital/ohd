@@ -28,7 +28,7 @@ namespace :import do
   end
 
   desc "Import der Interviewdaten"
-  task :metadata, [ :file ] => :environment do |task, args|
+  task :interviews, [ :file ] => :environment do |task, args|
     puts "ARGUMENTS: #{args.inspect}"
     csv_file = args[:file] || ENV['file']
     raise "no csv file provided (as argument or 'file' environment variable), aborting." if csv_file.nil?
