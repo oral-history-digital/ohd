@@ -144,6 +144,13 @@ fieldset.facet-field .autocomplete {
 
 }
 
+/* Segment highlighting */
+.segment .highlight {
+    background-color: #e4e4da;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
 /* hh */
 .baseContainerTeaserExcerpts .segment.visible a {
     font-size:85%;
@@ -456,6 +463,7 @@ position: relative;
     display: block;
     color: #9F1313;
     background-color: #e4e4da;
+    padding-left: 1px;
 }
 
 .heading .timecode,
