@@ -383,7 +383,10 @@ margin: 0 0 12px;
 	float: left;
 }
 
-.baseContainerTeaserText .forced_labor_groups {
+.baseContainerTeaserText .forced_labor_groups,
+.baseContainerTeaserText .forced_labor_fields,
+.baseContainerTeaserText .forced_labor_habitations,
+.baseContainerTeaserText .countries {
     font-size: 80%;
 }
 
