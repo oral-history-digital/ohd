@@ -30,11 +30,11 @@ module ApplicationHelper
     end
   end
 
-  def segment_excerpt_for_match(segment, query_string='', width=8)
+  def segment_excerpt_for_match(segment, original_query='', width=8)
     #return segment.translation # TODO: remove this - it's for debugging search only'
     # TODO: reduce word count in both directions on interpunctuation
     # handle wildcards
-    query_string.gsub!(/\*/,'\w+')
+    query_string = original_query.gsub(/\*/,'\w+')
     # and multiple expressions
     query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
     query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
