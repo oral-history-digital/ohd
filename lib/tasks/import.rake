@@ -85,6 +85,22 @@ namespace :import do
           raise "INVALID: #{interview.errors.full_messages}\n\n#{interview.inspect}\n"
         end
 
+        # create missing tapes
+        number_of_tapes = (row.field('Bänder') || 0).to_i 
+        tapes_created = 0
+        unless number_of_tapes == interview.tapes.size
+          tape_index = 0
+          number_of_tapes.times do
+            tape_index += 1
+            media_id = interview.archive_id.upcase + "_#{number_of_tapes.to_s.rjust(2,'0')}_#{tape_index.to_s.rjust(2,'0')}"
+            tape = interview.tapes.find_or_initialize_by_media_id(media_id)
+            if tape.new_record?
+              tape.save
+              tapes_created += 1
+            end
+          end
+        end
+
         Category::ARCHIVE_CATEGORIES.each do |category_class|
           category_field = category_class.last
           (row.field(category_field) || '').split(';').each do |classification|
@@ -99,7 +115,7 @@ namespace :import do
           end
         end
 
-        puts "#{interview.full_title} hinzugefügt / aktualisiert."
+        puts "#{interview.full_title} hinzugefügt / aktualisiert.#{(tapes_created > 0) ? "(#{tapes_created} Bänder erstellt)" : ''}"
 
       else
 
