@@ -212,6 +212,9 @@ namespace :import do
       if @interview.nil? || @interview.archive_id != archive_id
         @interview = Interview.find_by_archive_id(archive_id)
       end
+
+      next if @interview.nil?
+
       if @tape.nil? || @tape.media_id != tape_media_id
         @tape = Tape.find_or_initialize_by_media_id tape_media_id
         @tape.save if @tape.new_record?
