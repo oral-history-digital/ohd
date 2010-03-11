@@ -359,7 +359,7 @@ margin: 0 0 12px;
 	width: 340px;
 	overflow: hidden;
 	float:left;
-	margin: 0 15px 20px 0;
+	margin: 0 15px 5px 0;
 }
 
 .baseContainerTeaserImage{
@@ -378,7 +378,7 @@ margin: 0 0 12px;
 
 .baseContainerTeaserText{
 	width: 190px;
-	height: 120px;
+	height: 135px;
 	overflow: hidden;
 	float: left;
 }
