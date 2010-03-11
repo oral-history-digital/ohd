@@ -8,7 +8,7 @@ class Tape < ActiveRecord::Base
   validates_uniqueness_of :media_id
 
   def number
-    @number ||= interview.tapes.index(self) + 1
+    @number ||= media_id[/\d+$/]
   end
 
   def media_id=(id)
