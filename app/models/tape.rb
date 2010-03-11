@@ -8,7 +8,7 @@ class Tape < ActiveRecord::Base
   validates_uniqueness_of :media_id
 
   def number
-    @number ||= media_id[/\d+$/]
+    @number ||= media_id[/\d+$/].to_i
   end
 
   def media_id=(id)
