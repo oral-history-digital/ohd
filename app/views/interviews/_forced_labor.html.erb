@@ -35,8 +35,8 @@
         <span class="value"><%= forced_labor.liberation_date || 'unbekannt' %></span>
       </li>
       <li>
-        <span class="label"><%= Interview.human_attribute_name(:return_location) %></span>
-        <span class="value"><%= forced_labor.return_location || 'unbekannt' %></span>
+        <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
+        <span class="value"><%= forced_labor.return_locations || 'unbekannt' %></span>
       </li>
       <% unless forced_labor.return_date.blank? %>
       <li>
