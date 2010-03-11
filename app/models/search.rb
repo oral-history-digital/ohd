@@ -396,6 +396,7 @@ SQL
   # do a standard search with the lucene handler
   def standard_lucene_search(query, page)
     # SOLR query
+    fulltext_query = lucene_escape(query['fulltext'])
     Sunspot.search Interview do
 
       # person name facet
@@ -423,8 +424,8 @@ SQL
         #params[:qt] = 'standard'
 
         # fulltext search
-        unless query['fulltext'].blank?
-          params[:q] = lucene_escape(query['fulltext'])
+        unless fulltext_query.blank?
+          params[:q] = fulltext_query
         end
       end
 
@@ -434,13 +435,14 @@ SQL
   # search for autocomplete on person_name
   def person_name_search(query, page)
     # SOLR query
+    fulltext_query = lucene_escape(query['fulltext'])
     Sunspot.search Interview do
 
       # search for partial person names for autocompletion
       keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
 
       text_fields do
-        with(:fulltext, lucene_escape(query['fulltext'])) unless query['fulltext'].blank?
+        with(:fulltext, fulltext_query) unless fulltext_query.blank?
       end
 
       # category facets
