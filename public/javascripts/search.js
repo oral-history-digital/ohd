@@ -89,3 +89,16 @@
           Element.show(facetName + '_submit');
       }
   }
+
+
+/* show the Segments in the result teaser */
+function showSegment(archiveID, mediaID) {
+  $$('#interview_' + archiveID + '_segments .segment').each(function(el){
+    el.removeClassName('visible');
+  });
+  $$('#interview_' + archiveID + '_segments .segment_pagination li').each(function(el) {
+    el.removeClassName('current');
+  });
+  $(mediaID).addClassName('visible');
+  $(mediaID + '_link').addClassName('current');
+}
