@@ -36,10 +36,10 @@
   </div>
 
   <% if content.has_headings? %>
-  <div id="headings-toggle" class="open container-toggle" onclick="toggleContainer('headings-toggle', true);">
+  <div id="headings-toggle" class="<%= show_segments ? 'closed' : 'open'%> container-toggle" onclick="toggleContainer('headings-toggle', true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="headings" class="container" style="">
+  <div id="headings" class="container" style="<%= show_segments ? 'display: none;' : ''%>">
     <%= render :partial => 'headings', :object => content %>
   </div>
   <% end %>
