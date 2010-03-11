@@ -51,6 +51,16 @@
 
                 var containerElems = $$('#baseContainerRight .container-toggle');
 
+                // clearing the fulltext field before submission or editing
+                function clearFulltextField(id) {
+                    var elem = $(id);
+                    if(elem) {
+                      if(elem.value == '<%= t('search_term') %>') {
+                        elem.value = '';
+                      }
+                    }
+                }
+
             <% end %>
         </div>
 
