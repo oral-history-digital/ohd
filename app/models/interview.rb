@@ -105,14 +105,6 @@ DEF
     read_attribute(:video) ? 'Video' : 'Audio'
   end
 
-  def segmentators
-    'Tobias Kilgus'
-  end
-
-  def return_location
-    'keine Angabe'
-  end
-
   def has_headings?
     segments.headings.count > 0 ? true : false
   end
