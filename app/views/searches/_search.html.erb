@@ -4,9 +4,9 @@
 
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t(:all) + '&nbsp;Interviews', searches_path(@search.query_params) %>
+      <%= link_to t(:all) + '&nbsp;Interviews', current_search_path %>
     <% elsif search.hits > 0 %>
-      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;in&nbsp;der&nbsp;Auswahl', searches_path(@search.query_params) %>
+      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;in&nbsp;der&nbsp;Auswahl', current_search_path %>
     <% else %>
       keine&nbsp;Interviews&nbsp;in&nbsp;der&nbsp;Auswahl
     <% end %>

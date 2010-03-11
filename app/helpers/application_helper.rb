@@ -1,6 +1,10 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def current_search_path
+    url_for(@search.query_params.merge({:controller => :searches, :action => :new}))
+  end
+
   # Formats attributes for display
   def format_value(value)
     # when matching with Array class doesn't work

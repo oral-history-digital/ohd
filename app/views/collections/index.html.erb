@@ -19,7 +19,7 @@
 
   <% @collections.each do |collection| %>
 
-    <li><%= link_to collection.name, :action => "show", :id => collection.id %></li>
+    <li><%= link_to collection.name, url_for(:controller => :collections, :action => :show, :project_id => collection.project_id) %></li>
 
   <% end %>
 

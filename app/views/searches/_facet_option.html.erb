@@ -51,7 +51,7 @@
         <ul>
             <% facet_entries.each do |name| %>
 
-            <li><%= link_to_remote name.first, :url => searches_path(:person_name => name.first ), :method => :get %></li>
+            <li><%= link_to_remote name.first, :url => url_for(:controller => :searches, :action => :new, :person_name => name.first ), :method => :get %></li>
 
             <% end %>
         </ul>

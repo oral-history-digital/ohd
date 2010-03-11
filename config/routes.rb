@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :collections
+
+  map.collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
+
+  map.collections 'teilsammlungen', :controller => :collections, :action => :index
 
   map.resources :interviews do |interview|
 
@@ -7,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
                         :collection => { :playlist_high => :get, :playlist_low => :get, :playlist_audio => :get },
                         :member => { :transcript => :get }
   end
+
+  map.search 'suche', :controller => :searches, :action => :new
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 

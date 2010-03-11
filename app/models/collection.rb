@@ -8,4 +8,8 @@ class Collection < ActiveRecord::Base
     name
   end
 
+  def project_id
+    read_attribute(:project_id) || "projekt_#{id}"
+  end
+
 end
