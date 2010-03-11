@@ -469,7 +469,11 @@ SQL
 
   # Escapes lucene query for safe querying with the Lucene Parser
   def lucene_escape(query)
-    Unicode.downcase(query.gsub(/^[\*\?\+\-\{\}\[\]\~\!\(\)]+/,''))
+    if query.blank?
+      ''
+    else
+      Unicode.downcase(query.gsub(/^[\*\?\+\-\{\}\[\]\~\!\(\)]+/,''))
+    end
   end
 
 end
