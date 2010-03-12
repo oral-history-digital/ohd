@@ -39,11 +39,17 @@ module ApplicationHelper
     # TODO: reduce word count in both directions on interpunctuation
     # handle wildcards
     query_string = original_query.gsub(/\*/,'\w*')
-    # and multiple expressions
-    query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
-    query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
+    unless query_string.index(' ').nil?
+      # check if an expression matches directly
+      r = Regexp.new query_string, Regexp::IGNORECASE
+      if (segment.translation[r] || segment.transcript[r]).blank?
+        # and multiple expressions
+        query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
+        query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
+        query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
+      end
+    end
     query_string.gsub!('_',' ')
-    query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
     pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
