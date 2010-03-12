@@ -21,9 +21,13 @@ DEF
 
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
   
-  validates_presence_of :timecode
-  validates_presence_of :media_id
+  validates_presence_of :timecode, :media_id
+  validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
+  validates_presence_of :transcript, :if => Proc.new{|i| i.translation.blank? }
+  validates_uniqueness_of :media_id
   validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
+
+  validates_associated :tape
 
 
   searchable :auto_index => false do

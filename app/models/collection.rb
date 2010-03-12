@@ -2,7 +2,7 @@ class Collection < ActiveRecord::Base
 
   has_many :interviews
 
-  validates_presence_of :name
+  validates_presence_of :name, :project_id
 
   def to_s
     name
