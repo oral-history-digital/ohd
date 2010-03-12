@@ -53,7 +53,7 @@ module ApplicationHelper
     pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
-      'keine Transkription vorhanden.'
+      truncate(segment.translation, 180)
     else
       match_text.gsub!(Regexp.new(query_string, Regexp::IGNORECASE),"<span class='highlight'>\\0</span>")
       '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
