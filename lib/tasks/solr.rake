@@ -129,19 +129,33 @@ namespace :solr do
     end
 
     desc "builds the index for segments"
-    task :segments => :environment do
+    task :segments, [ :interviews ] => :environment do |task, args|
+
+      ids = args[:interviews] || nil
 
       # Segments
       batch=25
       offset=0
-      total = Segment.count :all
+      joins = "RIGHT JOIN tapes ON tapes.id = segments.tape_id"
+      if ids.nil?
+        joins << " AND tapes.interview_id IS NOT NULL"
+      else
+        joins << " AND tapes.interview_id IN ('#{ids.split(',').join("','")}')"
+      end
+      conds = "segments.id IS NOT NULL"
+      total = Segment.count :all, :joins => joins, :conditions => conds
 
       puts "\nIndexing #{total} segments..."
 
       while(offset<total)
 
-        Segment.find(:all, :limit => "#{offset},#{batch}").each do |segment|
-          segment.index
+        Segment.find(:all, :joins => joins, :conditions => conds, :limit => "#{offset},#{batch}").each do |segment|
+          begin
+            segment.index
+          rescue Exception => e
+            puts "#{e.class.name} on #{segment.inspect}\n#{e.message}"
+            exit
+          end
         end
 
         STDOUT.printf '.'
