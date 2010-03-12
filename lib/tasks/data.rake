@@ -80,4 +80,30 @@ namespace :data do
 
   end
 
+  desc "Assign collection titles"
+  task :collection_titles => :environment do
+
+    cleanup = lambda do |string|
+      string.downcase!
+      string.gsub!('ä','ae')
+      string.gsub!('ü','ue')
+      string.gsub!('ö','oe')
+      string.gsub!('ß','ss')
+      string.gsub!('ó','o')
+      string
+    end
+
+    Collection.find(:all).each do |collection|
+      pid = collection.name.split(/[-–]/)
+      prefix = pid.first.strip
+      prefix.sub!('Zeugen ','')
+      suffix = pid.last.strip
+      suffix.sub!(/(Universität|Fernuni)/i,'')
+      collection.project_id = (cleanup.call(prefix.strip) + ' ' + cleanup.call(suffix.strip)).gsub(/\s+/,'_')
+      puts "#{collection.name} => #{collection.project_id}"
+      collection.save!
+    end
+
+  end
+
 end

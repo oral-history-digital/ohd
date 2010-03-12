@@ -12,4 +12,8 @@ class Collection < ActiveRecord::Base
     read_attribute(:project_id) || "projekt_#{id}"
   end
 
+  def to_param
+    project_id
+  end
+
 end
