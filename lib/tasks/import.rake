@@ -260,6 +260,32 @@ namespace :import do
 
   end
 
+
+  desc "Import captions from all available captions files"
+  task :all_captions, [ :dir ] => :environment do |task, args|
+
+    dir = args[:dir] || ENV['dir']
+    raise "No directory given! (supply as argument dir=)" unless File.directory?(dir)
+
+    require "open4"
+
+    @logger = ScriptLogger.new('captions_import')
+
+    Dir.glob(File.join(dir, '**', 'captions_za*.csv')).each do |filename|
+
+      @logger.log "Importing captions from #{filename}."
+
+      Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake import:captions file=#{filename} --trace") do |pid, stdin, stdout, stderr|
+        stdout.each_line {|line| @logger.log line }
+        errors = []
+        stderr.each_line {|line| errors << line unless line.empty?}
+        @logger.log "\nImport der Transkriptionen - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+      end
+
+    end
+
+  end
+
   desc "Import von Interview-Überschriften für einzelne Tapes"
   task :headings, [ :file ] => :environment do |task, args|
     file = args[:file] || ENV['file']
