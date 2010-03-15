@@ -25,7 +25,7 @@ module ApplicationHelper
   def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false)
     interview = segment.interview
     item = segment.tape.number
-    position = Timecode.new(segment.raw_timecode).time.to_i
+    position = segment.start_time.round
     link_text = show_segment_text ? content_tag(:span, "#{segment.timecode}", :class => :timecode) + truncate(segment_excerpt_for_match(segment, match_text), :length => 300) : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview) || ajax
       link_to link_text, "javascript:currentPlayer.seek(#{item-1},#{position});"
