@@ -55,7 +55,7 @@ module ApplicationHelper
     match_text = if match_text.nil?
       truncate(segment.translation, 180)
     else
-      match_text.gsub!(Regexp.new(query_string, Regexp::IGNORECASE),"<span class='highlight'>\\0</span>")
+      match_text.gsub!(Regexp.new('(\W)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
       '&hellip;' + match_text + (match_text.last == '.' ? '' : '&hellip;')
     end
   end
