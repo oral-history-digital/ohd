@@ -1,7 +1,7 @@
 <div id="image_carousel" class="contentGallery" style="opacity: 0.3;" onmouseover="fadeInGallery();">
     <a href="javascript:" class="carousel-control back" rel="prev"><%= t('back', :scope => 'user_interface.player') %></a>
     <div id="gallery_content">
-        <ul id="image_row" style="width:<%= (@interview.photos.size * 108) %>px;">
+        <ul id="image_row" style="width:<%= (@interview.photos.size * 117) %>px;">
         <% @interview.photos.each_with_index do |photo, index| %>
           <li class="slide">
             <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.full_title[/^[^,.;]/]}]", :title => "Bild Nr. #{index+1}"  %>
