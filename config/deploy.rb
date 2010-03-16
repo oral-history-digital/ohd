@@ -53,6 +53,9 @@ namespace :deploy do
     run "rm -rf #{release_path}/public/archive_images"
     run "ln -s #{shared_path}/public/archive_images #{release_path}/public"
     run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/public/archive_images"
+    # symlink the prebuilt unicode gem
+    run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
+    run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
   end
 
   task :rewrite_stylesheet_urls, :roles => :app do
@@ -79,4 +82,4 @@ namespace :deploy do
 end
 
 after "deploy:update_code", "deploy:symlink_configuration"
-after "deploy:update_code", "deploy:rewrite_stylesheet_urls"
+#after "deploy:update_code", "deploy:rewrite_stylesheet_urls"
