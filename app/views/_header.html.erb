@@ -16,7 +16,7 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), "http://www.zwangsarbeit-archiv.de", :accesskey => "0" %></li>
+            <li><%= link_to (t :home), root_url, :accesskey => "0" %></li>
             <li>
               <% if I18n.locale == "de" %>
                 <%= link_to "English", "/en/home/archive", :title => "English version" %>
