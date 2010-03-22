@@ -5,7 +5,7 @@ class HomeController < BaseController
 
   def show
     if STATIC_PAGES.include?(params[:page])
-      render :action => params[:page]
+      render :template => "/home/#{params[:page]}.#{@locale}.html.erb"
     else
       raise ActionController::UnknownAction
     end

@@ -16,8 +16,9 @@ class BaseController < ResourceController::Base
   private
 
   def set_locale
-    locale = params[:locale] || 'de'
-    I18n.locale = locale
+    @locale = params[:locale] || session[:locale] || 'de'
+    session[:locale] = @locale
+    I18n.locale = @locale
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
   end
 
