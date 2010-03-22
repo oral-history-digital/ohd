@@ -2,6 +2,12 @@ class CollectionsController < BaseController
 
   actions :show, :index
 
+  index.response do |wants|
+    wants.html do
+      render_localized :action => :index
+    end
+  end
+
   private
 
   def object
