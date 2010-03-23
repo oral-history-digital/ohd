@@ -38,6 +38,7 @@ de:
       search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
+      status_update: 'Stand'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'

@@ -38,6 +38,7 @@ en:
       search_results: 'Search Results'
       headings: 'Table of Contents'
       my_search: 'My Search'
+      status_update: 'Last updated'
     player:
       back: 'previous'
       forward: 'next'
