@@ -1,7 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.localized_collection ':locale/teilsammlungen/:project_id', :controller => :collections, :action => :show
   map.collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
 
+  map.localized_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
   map.collections 'teilsammlungen', :controller => :collections, :action => :index
 
   map.resources :interviews do |interview|
@@ -15,8 +17,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 
-  map.home ':page', :controller => 'home', :action => :show
-  map.root :controller => 'home', :action => 'archive'
+  map.localized_home  ':locale/:page', :controller => :home, :action => :show
+  map.home ':page', :controller => :home, :action => :show
+  map.root :controller => :home, :action => :archive
   
   # The priority is based upon order of creation: first created -> highest priority.
 
