@@ -21,15 +21,15 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
-        <% search_facets.object.fulltext = t('search_term') if search_facets.object.fulltext.blank? %>
-        <%= search_facets.text_field :fulltext, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
+        <% search_facets.object.fulltext = t('search_term', :scope => 'user_interface.search') if search_facets.object.fulltext.blank? %>
+        <%= search_facets.text_field :fulltext, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch', :title => t('fulltext_title', :scope => 'user_interface.search'), :onFocus => "clearFulltextField('searchInput');" %>
         <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts.gif'), :onclick => "submitViaAjax(); false;" %>
         <%= hidden_field_tag 'open_category', '', :id => 'open_category' %>
     </div>
 
     <noscript>
       <div class="warning">
-        <h4>Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen.</h4>
+        <h4><%= t('search_no_javascript', :scope => 'user_interface.messages') %></h4>
       </div>
     </noscript>
 

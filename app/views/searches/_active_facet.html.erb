@@ -11,7 +11,7 @@
     <% query = query.map{|c| c.to_i != 0 ? Category.find(c) : nil }.compact %>
 
     <% query.each_with_index do |category, index| %>
-    <li><%= category -%><%= (index == query.size-1) ? '' : ','-%></li>
+    <li><%= t(category.to_s, :scope => "categories.#{active_facet}") -%><%= (index == query.size-1) ? '' : ','-%></li>
     <% end %>
 
   <% else %>

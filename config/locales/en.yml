@@ -41,10 +41,14 @@ en:
     player:
       back: 'previous'
       forward: 'next'
+    search:
+      search_term: 'search term'
+      fulltext_title: 'Insert search terms here'
     messages:
       no_segments_result: 'No segments found that match these search criteria.'
       player_not_loaded: 'Mediaplayer not loaded!'
-      no_javascript: 'Please activate JavaScript in your web browser!'
+      player_no_javascript: 'Please activate JavaScript in your web browser!'
+      search_no_javascript: 'Please activate Javascript to use the interactive search function!'
       check_flash_version: 'Please install the latest Flash Player! Disable ad blockers for this web site!'
 
   activerecord:
@@ -184,12 +188,12 @@ en:
       'Ukraine – Universität Charkiw': 'Ukraine – Kharkiv University'
 
   categories:
-    groups:
+    forced_labor_groups:
       'Ostarbeiter/Ostarbeiterin': 'OST-Arbeiter (“Eastern Workers”)'
       'Rassisch Verfolgte (Jude/Jüdin)': 'Jews'
       'Rassistisch Verfolgte (Jude/Jüdin)': 'Jews'
       'KZ-Häftling': 'Concentration Camp Prisoners'
-      'Rassistisch Verfolgte (Sinte und Roma)': 'Sinti and Roma'
+      'Rassisch Verfolgte (Sinti und Roma)': 'Sinti and Roma'
       'Rassistisch Verfolgte (Sinti und Roma)': 'Sinti and Roma'
       'Zwangsarbeiter/Zwangsarbeiterin (Zivilarbeiter/Zivilarbeiterin)': 'Forced Laborers'
       'Kriegsgefangene': 'Prisoners of War'
@@ -200,7 +204,7 @@ en:
       'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)': 'Religiously Persecuted'
       'Germanisiertes Kind': 'Germanized Children '
       'Keine Angabe': 'Not Specified '
-    fields:
+    forced_labor_fields:
       'Bau/Steine/Erden': 'Construction, Stonework, Earthwork'
       'Industrie': 'Industry'
       'Bergbau': 'Mining'
@@ -219,7 +223,7 @@ en:
       'Privathaushalt': 'Private Household'
       'Öffentliche Hand': 'Public Sector'
       'Verwaltung': 'Administration'
-    habitations:
+    forced_labor_habitations:
       'Lager': 'Camp'
       'Gefängnis': 'Prison'
       'KZ': 'Concentration Camp'
@@ -257,9 +261,9 @@ en:
       'Ukrainisch': 'Ukrainian'
       'Surschik': 'Surzhyk'
 
-  forced_labor_group: 'Gruppe'
-  forced_labor_field: 'Einsatzbereich'
-  forced_labor_habitation: 'Unterbringung / Inhaftierung'
-  person_name: 'Name der Interviewten'
-  language: 'Sprache'
-  country: 'Wohnort (Land)'
+  forced_labor_group: 'Group'
+  forced_labor_field: 'Deployment Area'
+  forced_labor_habitation: 'Internment Conditions'
+  person_name: 'Name of the Interviewee'
+  language: 'Language'
+  country: 'Place of Residence (Country'

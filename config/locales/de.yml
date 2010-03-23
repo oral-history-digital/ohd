@@ -41,10 +41,14 @@ de:
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
+    search:
+      search_term: 'Suchbegriff'
+      fulltext_title: 'Suchbegriff bitte hier eingeben'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
       player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
-      no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
+      player_no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
+      search_no_javascript: 'Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen!'
       check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
 
   activerecord:
@@ -184,12 +188,12 @@ de:
       'Ukraine – Universität Charkiw': 'Ukraine – Universität Charkiw'
 
   categories:
-    groups:
+    forced_labor_groups:
       'Ostarbeiter/Ostarbeiterin': 'Ostarbeiter/Ostarbeiterin'
       'Rassisch Verfolgte (Jude/Jüdin)': 'Rassistisch Verfolgte (Jude/Jüdin)'
       'Rassistisch Verfolgte (Jude/Jüdin)': 'Rassistisch Verfolgte (Jude/Jüdin)'
       'KZ-Häftling': 'KZ-Häftling'
-      'Rassistisch Verfolgte (Sinte und Roma)': 'Rassistisch Verfolgte (Sinte und Roma)'
+      'Rassisch Verfolgte (Sinti und Roma)': 'Rassistisch Verfolgte (Sinti und Roma)'
       'Rassistisch Verfolgte (Sinti und Roma)': 'Rassistisch Verfolgte (Sinti und Roma)'
       'Zwangsarbeiter/Zwangsarbeiterin (Zivilarbeiter/Zivilarbeiterin)': 'Zwangsarbeiter/Zwangsarbeiterin (Zivilarbeiter/Zivilarbeiterin)'
       'Kriegsgefangene': 'Kriegsgefangene'
@@ -200,7 +204,7 @@ de:
       'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)': 'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)'
       'Germanisiertes Kind': 'Germanisiertes Kind'
       'Keine Angabe': 'Keine Angabe'
-    fields:
+    forced_labor_fields:
       'Bau/Steine/Erden': 'Bau/Steine/Erden'
       'Industrie': 'Industrie'
       'Bergbau': 'Bergbau'
@@ -219,7 +223,7 @@ de:
       'Privathaushalt': 'Privathaushalt'
       'Öffentliche Hand': 'Öffentliche Hand'
       'Verwaltung': 'Verwaltung'
-    habitations:
+    forced_labor_habitations:
       'Lager': 'Lager'
       'Gefängnis': 'Gefängnis'
       'KZ': 'KZ'

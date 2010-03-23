@@ -35,7 +35,7 @@
 
             <li class="facet<%= current_categories.include?(category[:id]) ? ' checked' : '' %>">
                 <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
-                <span class="facet-name" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" ><%= category.is_a?(String) ? category : category.name %></span>
+                <span class="facet-name" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" ><%= t((category.is_a?(String) ? category : category.name), :scope => "categories.#{facet_name}") %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
                 <% end %>
