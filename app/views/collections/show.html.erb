@@ -1,36 +1,37 @@
-<h1>Teilsammlung &quot;<%= @collection.name %>&quot;</h1>
+<h1><%= Collection.human_name %> &quot;<%= t(@collection.name, :scope => 'collections.name') %>&quot;</h1>
 
 <p>
-  <strong>Interviews in:</strong>
+  <strong><%= Collection.human_attribute_name('countries') %>:</strong>
   <br />
-  <%= @collection.countries %>
+  <% countries = @collection.countries.split(",") %>
+  <%= countries.map{|f| t(f.strip, :scope => 'location.countries')}.join(", ") %>
 </p>
 
 <p>
-  <strong>durchgeführt von:</strong>
+  <strong><%= Collection.human_attribute_name('institution') %>:</strong>
   <br />
   <%= @collection.institution %>
 </p>
 
 <p>
-  <strong>Verantwortliche:</strong>
+  <strong><%= Collection.human_attribute_name('responsibles') %>:</strong>
   <br />
   <%= @collection.responsibles %>
 </p>
 
 <p>
-  <strong>Weitere Anmerkungen:</strong>
+  <strong><%= Collection.human_attribute_name('notes') %>:</strong>
   <br />
   <%= @collection.notes %>
 </p>
 
 <p>
-  <strong>Interviewende:</strong>
+  <strong><%= Collection.human_attribute_name('interviewers') %>:</strong>
   <br />
   <%= @collection.interviewers %>
 </p>
 
-<h2>Interviewte</h2>
+<h2><%= Collection.human_attribute_name('interviews') %></h2>
 
 <div class="teaserList">
   <%= render :partial => '/interviews/result', :collection => @collection.interviews, :locals => { :search => @search } %>

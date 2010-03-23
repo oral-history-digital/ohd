@@ -1,4 +1,7 @@
 <%= javascript_include_tag "jwplayer" %>
+<%= javascript_tag "var headings = null;" %>
+
+
 <!--<div id="leftColumn">-->
 
   <!--
@@ -26,24 +29,24 @@
 
     <div id="playerHigh" class="playerContainer">
       <div id="mediaspace_high" class="player">
-        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
+        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
         <noscript>
-          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
+          <p><%= t(:no_javascript, :scope => 'user_interface.messages') %></p>
         </noscript>
         <script type="text/javascript">
-          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
+          document.writeln(<%= t(:check_flash_version, :scope => 'user_interface.messages') %>);
         </script>
       </div>
     </div>
 
     <div id="playerLow" class="playerContainer" style="display: none;">
       <div id="mediaspace_low" class="player">
-        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
+        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
         <noscript>
-          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
+          <p><%= t(:no_javascript, :scope => 'user_interface.messages') %></p>
         </noscript>
         <script type="text/javascript">
-          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
+          document.writeln('<%= t(:check_flash_version, :scope => 'user_interface.messages') %>');
         </script>
       </div>
     </div>
@@ -52,12 +55,12 @@
 
     <div id="playerAudio" class="playerContainer">
       <div id="mediaspace_audio" class="player">
-        <h4>Der Medien-Player konnte nicht geladen werden!</h4>
+        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
         <noscript>
-          <p>Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!</p>
+          <p><%= t(:no_javascript, :scope => 'user_interface.messages') %></p>
         </noscript>
         <script type="text/javascript">
-          document.writeln('Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.');
+          document.writeln(<%= t(:check_flash_version, :scope => 'user_interface.messages') %>);
         </script>
       </div>
     </div>
@@ -67,13 +70,13 @@
     <div class="playerControl">
         <div id="language_select">
           <% if @interview.language.downcase == 'deutsch' %>
-            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.language.downcase %></a>
+            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| (t(f, :scope => 'categories.languages').downcase)}.join(' / ') %></a>
           <% else %>
-            <%= link_to(@interview.language.downcase, 'javascript:currentPlayer.setCaptionsLanguage("original")', :id => "original", :class => "captions_orig active", :onClick => "$('original').addClassName('active');$('translated').removeClassName('active');") %>
+            <%= link_to((@interview.languages.map{|f| (t(f, :scope => 'categories.languages').downcase)}.join(' / ')), 'javascript:currentPlayer.setCaptionsLanguage("original")', :id => "original", :class => "captions_orig active", :onClick => "$('original').addClassName('active');$('translated').removeClassName('active');") %>
             <% if @interview.translated? %>
-              <%= link_to('deutsch', 'javascript:currentPlayer.setCaptionsLanguage("de")', :id => "translated", :class => "captions_trans", :onClick => "$('original').removeClassName('active');$('translated').addClassName('active');") %>
+              <%= link_to(t('Deutsch', :scope => 'categories.languages').downcase, 'javascript:currentPlayer.setCaptionsLanguage("de")', :id => "translated", :class => "captions_trans", :onClick => "$('original').removeClassName('active');$('translated').addClassName('active');") %>
             <% else %>
-              <a id="translated" class="captions_trans disabled" href="javascript:void(0);">deutsch</a>
+              <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'categories.languages').downcase %></a>
             <% end %>
           <% end %>
         </div>
@@ -82,12 +85,12 @@
           <div id="volumeOn"></div>
         </div>
 
-        <div class="interviewinfo"><%= @interview.video ? 'Video' : 'Audio' %>: <%= "#{@interview.duration.minimal}" %></div>
+        <div class="interviewinfo"><%= @interview.video ? t(:video, :scope => 'media') : t(:audio, :scope => 'media') %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
-          Band:
+          <%= t(:tape, :scope => 'media') %>:
           <select id="player_item" name="player_item" onChange="currentPlayer.changeItem(this.value);">
           <% @interview.tapes.count.times do |item| %>
-            <option value="<%= item %>"><%= (item+1) %> von <%= @interview.tapes.count %></option>
+            <option value="<%= item %>"><%= (item+1) %> <%= t(:of_tapes, :scope => 'media') %> <%= @interview.tapes.count %></option>
           <% end %>
           </select>
         </div>
@@ -160,7 +163,6 @@
     <% end %>
 	</div>
 
-<% # TODO: styling and interaction with player %>
 <% javascript_tag do %>
   Event.observe('volumeSelect', 'click', setVolume);
 <% end %>

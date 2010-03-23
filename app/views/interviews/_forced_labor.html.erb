@@ -6,7 +6,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= forced_labor.deportation_location %>&nbsp;<%= forced_labor.deportation_date.gsub(/\d{2}:\d{2}$/, '') || 'unbekannt' %></span>
+        <span class="value"><%= forced_labor.deportation_location %>&nbsp;<%= forced_labor.deportation_date.gsub(/\d{2}:\d{2}$/, '') || t(:unknown, :scope => 'status') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
@@ -15,7 +15,7 @@
       <% unless forced_labor.forced_labor_details.blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
-        <span class="value"><%= t(forced_labor.forced_labor_details, :scope => 'categories.details') %></span>
+        <span class="value"><%= forced_labor.forced_labor_details %></span>
       </li>
       <% end %>
       <li>
@@ -24,19 +24,19 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
-        <span class="value"><%= forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.details')}.join(', ') %></span>
+        <span class="value"><%= forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.habitations')}.join(', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:punishment) %></span>
-        <span class="value"><%= forced_labor.punishment || 'keine Angabe' %></span>
+        <span class="value"><%= forced_labor.punishment || t(:not_specified, :scope => 'status') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
-        <span class="value"><%= forced_labor.liberation_date || 'unbekannt' %></span>
+        <span class="value"><%= forced_labor.liberation_date || t(:unknown, :scope => 'status') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
-        <span class="value"><%= forced_labor.return_locations || 'unbekannt' %></span>
+        <span class="value"><%= forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
       </li>
       <% unless forced_labor.return_date.blank? %>
       <li>

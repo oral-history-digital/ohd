@@ -2,24 +2,24 @@
 
   <ul class="data">
     <li>
-      <span class="label">Art und L&auml;nge des Interviews</span>
-      <span class="value"><%= interview.video ? 'Videointerview' : 'Audiointerview' %>&nbsp;<%= interview.duration.minimal %></span>
+      <span class="label"><%= Interview.human_attribute_name('duration') %></span>
+      <span class="value"><%= interview.video ? t(:video_interview, :scope => 'media') : t(:audio_interview, :scope => 'media') %>&nbsp;<%= interview.duration.minimal %></span>
     </li>
     <li>
-      <span class="label">gef&uuml;hrt am</span>
-      <span class="value"><%= (Time.now - 6.years).strftime('%d.%m.%Y') %></span>
+      <span class="label"><%= Interview.human_attribute_name('interview_date') %></span>
+      <span class="value"><%= (Time.now - 6.years).strftime('%d.%m.%Y') || t(:not_specified, :scope => 'status') %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('interviewers') %></span>
-      <span class="value"><%= interview.interviewers || 'keine Angabe' %></span>
+      <span class="value"><%= interview.interviewers || t(:not_specified, :scope => 'status') %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('transcriptors') %></span>
-      <span class="value"><%= interview.transcriptors || 'keine Angabe' %></span>
+      <span class="value"><%= interview.transcriptors || t(:not_specified, :scope => 'status') %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
-      <span class="value"><%= interview.language %>
+      <span class="value"><%= interview.languages.map{|f| t(f, :scope => 'categories.languages')}.join(' / ') %>
         <% unless interview.language.downcase == "deutsch" %>
         ,&nbsp;<%= interview.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
         <% end %>
@@ -30,13 +30,13 @@
       <% unless value.blank? %>
     <li>
       <span class="label"><%= Interview.human_attribute_name(attr) %></span>
-      <span class="value"><%= value || 'keine Angabe' %></span>
+      <span class="value"><%= value || t(:not_specified, :scope => 'status') %></span>
     </li>
       <% end %>
     <% end %>
     <li>
-      <span class="label">Teilsammlung<%#= Collection.human_name %></span>
-      <span class="value"><%= interview.collection %></span>
+      <span class="label"><%= Interview.human_attribute_name('collection') %></span>
+      <span class="value"><%= t(interview.collection, :scope => 'collections.name') %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name(:archive_id) %></span>
@@ -45,9 +45,9 @@
   </ul>
 
     <ul id="interviewDocuments">
-      <li><a href="za004_bg.pdf" target="_blank">Biographie zu <%= @interview.short_title %> (pdf)</a></li>
-      <li><a href="za004_tr.pdf" target="_blank">Transkript zu <%= @interview.short_title %> (pdf)</a></li>
-      <li><a href="za004_tr.pdf" target="_blank">Übersetzung zu <%= @interview.short_title %> (pdf)</a></li>
+      <li><a href="za004_bg.pdf" target="_blank"><%= t(:biography, :scope => 'user_interface.labels') %> <%= @interview.short_title %> (pdf)</a></li>
+      <li><a href="za004_tr.pdf" target="_blank"><%= t(:transcript, :scope => 'user_interface.labels') %> (pdf)</a></li>
+      <li><a href="za004_tr.pdf" target="_blank"><%= t(:translation, :scope => 'user_interface.labels') %> (pdf)</a></li>
     </ul>
 
 </div>

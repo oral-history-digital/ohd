@@ -1,11 +1,11 @@
 de:
-  home: "Startseite"
-  archive: "Archiv"
-  map: "Karte"
-  terms_of_use: "Nutzungsbedingungen"
-  contact: "Kontakt"
-  legal_notice: "Impressum"
-  faq: "Hilfe"
+  home: 'Startseite'
+  archive: 'Archiv'
+  map: 'Karte'
+  terms_of_use: 'Nutzungsbedingungen'
+  contact: 'Kontakt'
+  legal_notice: 'Impressum'
+  faq: 'Hilfe'
   previous: 'vor'
   next: 'nächste'
   more: 'mehr'
@@ -24,9 +24,17 @@ de:
   status:
     translated: '&uuml;bersetzt ins Deutsche'
     not_translated: 'ohne &Uuml;bersetzung'
+    unknown: 'unbekannt'
+    not_specified: 'keine Angabe'
+    other: 'Sonstige'
 
   user_interface:
     labels:
+      interview: 'Interview'
+      forced_labor_data: 'Daten zur Zwangsarbeit'
+      biography: 'Biographie von'
+      transcript: 'Transkript'
+      translation: 'Übersetzung'
       search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
@@ -35,22 +43,35 @@ de:
       forward: 'vor'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
+      player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
+      no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
+      check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
 
   activerecord:
-    interview:
-      one: 'Interview'
-      other: 'Interviews'
-    tape:
-      one: 'Band'
-      other: 'Bänder'
-    collection:
-      one: 'Teilsammlung'
-      other: 'Teilsammlungen'
-    photo:
-      one: 'Bild'
-      other: 'Bilder'
+    models:
+      interview:
+        one: 'Interview'
+        other: 'Interviews'
+      tape:
+        one: 'Band'
+        other: 'Bänder'
+      collection:
+        one: 'Teilsammlung'
+        other: 'Teilsammlungen'
+      photo:
+        one: 'Bild'
+        other: 'Bilder'
 
     attributes:
+      collection:
+        name: 'Name'
+        countries: 'Interviews in'
+        institution: 'Durchgeführt von'
+        responsibles: 'Verantwortliche'
+        interviewers: 'Interviewende'
+        homepage: 'Homepage'
+        notes: 'Weitere Anmerkungen'
+        interviews: 'Interviewte'
       interview:
         person_name: 'Name'
         archive_id: 'Archiv-ID'
@@ -64,6 +85,8 @@ de:
         return_locations: 'Wohnorte nach 1945'
         return_date: 'Datum der R&uuml;ckkehr'
         countries: 'Wohnort (Land)'
+        duration: 'Art und L&auml;nge des Interviews'
+        interview_date: 'gef&uuml;hrt am'
         interviewers: 'Interviewf&uuml;hrung'
         transcriptors: 'Transkription'
         translators: 'Übersetzung'
@@ -72,6 +95,93 @@ de:
         segmentators: 'Segmentierung'
         language: 'Sprache'
         collection: 'Teilsammlung'
+
+  personal_data:
+    male: 'männlich'
+    female: 'weiblich'
+    born: 'geb.'
+
+  media:
+    video_interview: 'Videointerview'
+    audio_interview: 'Audiointerview'
+    video: 'Video'
+    audio: 'Audio'
+    tape: 'Band'
+    of_tapes: 'von'
+    low_quality: 'mittlere Qualität'
+    high_quality: 'hohe Qualität'
+
+  location:
+    in: 'in'
+    countries:
+      'Belarus': 'Belarus'
+      'Bosnien-Herzegowina': 'Bosnien-Herzegowina'
+      'Deutschland': 'Deutschland'
+      'Bulgarien': 'Bulgarien'
+      'Großbritannien': 'Großbritannien'
+      'Frankreich': 'Frankreich'
+      'Israel': 'Israel'
+      'Italien': 'Italien'
+      'Kroatien': 'Kroatien'
+      'Lettland': 'Lettland'
+      'Litauen': 'Litauen'
+      'Mazedonien': 'Mazedonien'
+      'Moldawien': 'Moldawien'
+      'Niederlande': 'Niederlande'
+      'Norwegen': 'Norwegen'
+      'Polen': 'Polen'
+      'Tschechische Republik': 'Tschechische Republik'
+      'Tschechien': 'Tschechien'
+      'Rumänien': 'Rumänien'
+      'Russland': 'Russland'
+      'Serbien': 'Serbien'
+      'Serbien-Montenegro': 'Serbien-Montenegro'
+      'Slowakei': 'Slowakei'
+      'Ungarn': 'Ungarn'
+      'Slowenien': 'Slowenien'
+      'USA': 'USA'
+      'Spanien': 'Spanien'
+      'Südafrika': 'Südafrika'
+      'Ukraine': 'Ukraine'
+
+  collections:
+    name:
+      'Belarus – RWTH Aachen': 'Belarus – RWTH Aachen'
+      'Belarus – EHU Minsk': 'Belarus – EHU Minsk'
+      'Belarus – IBB Minsk': 'Belarus – IBB Minsk'
+      'Bosnien – ISFBB Nürnberg': 'Bosnien – ISFBB Nürnberg'
+      'Bulgarien – Akademie Sofia': 'Bulgarien – Akademie Sofia'
+      'Deutschland – FernUni Hagen': 'Deutschland – FernUni Hagen'
+      'Großbritannien – FernUni Hagen': 'Großbritannien – FernUni Hagen'
+      'Frankreich – AAMRDI Grenoble': 'Frankreich – AAMRDI Grenoble'
+      'Israel – HU Jerusalem': 'Israel – HU Jerusalem'
+      'Italien – Luce Rom': 'Italien – Luce Rom'
+      'Kroatien – CM München': 'Kroatien – CM München'
+      'Lettland – IOM Genf': 'Lettland – IOM Genf'
+      'Litauen – LNP Jerusalem': 'Litauen – LNP Jerusalem'
+      'Mazedonien – IOM Genf': 'Mazedonien – IOM Genf'
+      'Moldawien – IOM Genf': 'Moldawien – IOM Genf'
+      'Niederlande – Universität Amsterdam': 'Niederlande – Universität Amsterdam'
+      'Norwegen – KIF Oslo': 'Norwegen – KIF Oslo'
+      'Polen – Karta Warschau': 'Polen – Karta Warschau'
+      'Polen – BGW Berlin': 'Polen – BGW Berlin'
+      'Polen – Podgórski Poniatowa': 'Polen – Podgórski Poniatowa'
+      'Rumänien – CSIES Bukarest': 'Rumänien – CSIES Bukarest'
+      'Russland – Memorial Moskau': 'Russland – Memorial Moskau'
+      'Russland – Akademie Moskau': 'Russland – Akademie Moskau'
+      'Russland – Memorial Petersburg': 'Russland – Memorial Petersburg'
+      'Russland – Universität Woronesch': 'Russland – Universität Woronesch'
+      'Serbien – Universität Salzburg': 'Serbien – Universität Salzburg'
+      'Slowakei – TLI Budapest': 'Slowakei – TLI Budapest'
+      'Ungarn – TLI Budapest': 'Ungarn – TLI Budapest'
+      'Slowakei – ZP Prag': 'Slowakei – ZP Prag'
+      'Slowenien – Museum Ljubljana': 'Slowenien – Museum Ljubljana'
+      'USA – Breman Atlanta': 'USA – Breman Atlanta'
+      'Spanien – AHFO Barcelona': 'Spanien – AHFO Barcelona'
+      'Zeugen Auschwitzprozess - FBI Frankfurt': 'Zeugen Auschwitzprozess - FBI Frankfurt'
+      'Südafrika – LNP Jerusalem': 'Südafrika – LNP Jerusalem'
+      'Tschechien – ZP Prag': 'Tschechien – ZP Prag'
+      'Ukraine – Universität Charkiw': 'Ukraine – Universität Charkiw'
 
   categories:
     groups:
@@ -109,7 +219,7 @@ de:
       'Privathaushalt': 'Privathaushalt'
       'Öffentliche Hand': 'Öffentliche Hand'
       'Verwaltung': 'Verwaltung'
-    details:
+    habitations:
       'Lager': 'Lager'
       'Gefängnis': 'Gefängnis'
       'KZ': 'KZ'
@@ -120,7 +230,34 @@ de:
       'Sonstiges': 'Sonstiges'
       'Keine Angabe': 'Keine Angabe'
       'AEL': 'AEL'
-
+    languages:
+      'Russisch': 'Russisch'
+      'Bosnisch': 'Bosnisch'
+      'Romani': 'Romani'
+      'Bulgarisch': 'Bulgarisch'
+      'Deutsch': 'Deutsch'
+      'Englisch': 'Englisch'
+      'Französisch': 'Französisch'
+      'Hebräisch': 'Hebräisch'
+      'Italienisch': 'Italienisch'
+      'Kroatisch': 'Kroatisch'
+      'Lettisch': 'Lettisch'
+      'Mazedonisch': 'Mazedonisch'
+      'Rumänisch': 'Rumänisch'
+      'Niederländisch': 'Niederländisch'
+      'Norwegisch': 'Norwegisch'
+      'Polnisch': 'Polnisch'
+      'Serbisch': 'Serbisch'
+      'Ungarisch': 'Ungarisch'
+      'Slowakisch': 'Slowakisch'
+      'Tschechisch': 'Tschechisch'
+      'Slowenisch': 'Slowenisch'
+      'Katalanisch': 'Katalanisch'
+      'Spanisch': 'Spanisch'
+      'Ukrainisch': 'Ukrainisch'
+      'Surschik': 'Surschik'
+  
+  
   forced_labor_group: 'Gruppe'
   forced_labor_groups: 'Gruppen'
   forced_labor_field: 'Einsatzbereich'
