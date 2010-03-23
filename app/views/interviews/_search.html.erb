@@ -1,20 +1,20 @@
 <h2 class="info">Service-Funktionen</h2>
-<p>Suche im Archiv</p>
+<p><%= t(:search_the_archive, :scope => 'user_interface.labels') %></p>
 <div id="baseHeaderSearch">
 
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t(:all) + '&nbsp;Interviews', current_search_path %>
+      <%= link_to t(:all) + '&nbsp;' + Interview.human_name.pluralize, current_search_path %>
     <% elsif search.hits > 0 %>
-      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;in&nbsp;der&nbsp;Auswahl', current_search_path %>
+      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels'), current_search_path %>
     <% else %>
-      keine&nbsp;Interviews&nbsp;in&nbsp;der&nbsp;Auswahl
+      <%= t(:no, :scope => 'user_interface.search') + '&nbsp' + Interview.human_name.pluralize + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels') %>
     <% end %>
   </span>
 </div>
 
 <div id="back_to_search" class="action">
-  <%= link_to image_tag(image_path('suchpfeil_zurueck.gif'), :title => 'zur Suche'), current_search_path %>
+  <%= link_to image_tag(image_path('suchpfeil_zurueck.gif'), :title => t(:back_to_search, :scope => 'user_interface.labels')), current_search_path %>
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>

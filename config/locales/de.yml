@@ -38,13 +38,20 @@ de:
       search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
+      search: 'suchen'
+      back_to_search: 'zur Suche'
       status_update: 'Stand'
+      search_the_archive: 'Suche im Archiv'
+      search_the_interview: 'Suche im Interview'
+      in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'
+      no: 'keine'
+      reset: 'zur&uuml;cksetzen'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
       player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'

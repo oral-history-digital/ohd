@@ -38,13 +38,20 @@ en:
       search_results: 'Search Results'
       headings: 'Table of Contents'
       my_search: 'My Search'
+      search: 'search'
+      back_to_search: 'back to search'
       status_update: 'Last updated'
+      search_the_archive: 'Search the archive'
+      search_the_interview: 'search the interview'
+      in_the_current_search: 'in&nbsp;the&nbsp;current&nbsp;selection'
     player:
       back: 'previous'
       forward: 'next'
     search:
       search_term: 'search term'
       fulltext_title: 'Insert search terms here'
+      no: 'no'
+      reset: 'reset'
     messages:
       no_segments_result: 'No segments found that match these search criteria.'
       player_not_loaded: 'Mediaplayer not loaded!'
