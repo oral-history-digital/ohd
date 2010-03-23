@@ -233,6 +233,7 @@ en:
       'Privatunterkunft': 'Private Lodgings'
       'Sonstiges': 'Other'
       'Keine Angabe': 'Not Specified'
+      'KZ-Außenlager': 'Concentration Camp Sub-Camp'
       'AEL': 'Arbeitserziehungslager (“Work Education Camps”)'
     languages:
       'Russisch': 'Russian'
@@ -266,4 +267,4 @@ en:
   forced_labor_habitation: 'Internment Conditions'
   person_name: 'Name of the Interviewee'
   language: 'Language'
-  country: 'Place of Residence (Country'
+  country: 'Place of Residence (Country)'
