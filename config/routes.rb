@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.localized_collection ':locale/teilsammlungen/:project_id', :controller => :collections, :action => :show
+  map.localized_collection ':locale/teilsammlung/:project_id', :controller => :collections, :action => :show
   map.collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
 
   map.localized_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
