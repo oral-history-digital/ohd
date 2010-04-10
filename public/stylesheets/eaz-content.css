@@ -380,9 +380,16 @@ margin: 0 0 12px;
 
 .baseContainerTeaserText{
 	width: 170px;
-	height: auto;
+	min-height: 140px;
 	overflow: hidden;
 	float: left;
+}
+
+
+.baseContainerTeaserText .languages,
+.baseContainerTeaserText .media_type {
+    font-weight:bold;
+    font-size: 90%;
 }
 
 .baseContainerTeaserText .forced_labor_groups,
@@ -391,7 +398,6 @@ margin: 0 0 12px;
 .baseContainerTeaserText .countries {
     font-size: 80%;
 }
-
 
 .baseContainerTeaserText .label {
     font-weight: normal;
@@ -441,8 +447,8 @@ margin: 0 0 12px;
 }
 
 .baseContainerTeaserText span{
-       font-size:90%;
-       line-height:130%;
+       font-size:100%;
+       line-height:140%;
 }
 
 /*
