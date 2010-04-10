@@ -380,7 +380,7 @@ margin: 0 0 12px;
 
 .baseContainerTeaserText{
 	width: 170px;
-	height: 135px;
+	height: auto;
 	overflow: hidden;
 	float: left;
 }
