@@ -1,12 +1,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-    <%= render :partial => '/head' %>
+    <title>Zwangsarbeit 1939-1945: Das Online-Archiv "Zwangsarbeit 1939-1945"</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
+
+    <link href="/stylesheets/archiv-standard.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/archiv-design.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/content.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/eaz-content.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/lightbox.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/archiv-portlet.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/search.css" media="screen" rel="stylesheet" type="text/css" />
+     <link href="/stylesheets/transfer.css" media="screen" rel="stylesheet" type="text/css" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
 </head>
 
 <body>
     <div id="headerIdentityWrapper">
-        <%= render :partial => '/header' %>
+              <div id="baseHeader">
+        <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
+        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
+       </a>
+
+        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <hr class="divider" />
+        <p class="skip">
+          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+        </p>
+
+        <hr class="divider" />
+        <h2 class="info">
+          Service-Navigation
+        </h2>
+        <div id="baseHeaderNavigation">
+          <ul>
+            <li><a href="http://demo.zwangsarbeit-archiv.de/" accesskey="0">Startseite</a></li>
+            <li>
+
+                <a href="/?locale=en" title="English version">English</a>
+
+            </li>
+            <li><a href="http://demo.zwangsarbeit-archiv.de/teilsammlungen" title="Geografische Verteilung der Teilsammlungen">Karte</a></li>
+            <li><a href="/terms_of_use">Nutzungsbedingungen</a></li>
+
+            <li><a href="/contact" accesskey="9" title="Kontaktdaten (Adresse, Telefon, Email, ...)">Kontakt</a></li>
+            <li><a href="/impressum" accesskey="1">Impressum</a></li>
+            <li><a href="/faq_index" title="Fragen und Antworten zur Nutzung des Archivs">Hilfe</a></li>
+          </ul>
+          
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div id="baseLogout" class="portlet logoutPortlet">
+          <form action="" method="post">
+            <fieldset>
+              <legend>Abmelden</legend>
+              <p id="logoutUserLogin">
+                hahoffmann@cedis.fu-berlin.de
+                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+              </p>
+            </fieldset>
+          </form>
+      </div>
 
         <div id="baseServices">
             &nbsp;
@@ -24,11 +86,11 @@
             <div id="innerContent">
                 <h2>Die Seite ist zur Zeit nicht erreichbar wegen <%= ENV['REASON'] || 'Wartungsarbeiten' %></h2>
                 <p>Wir bem&uuml;hen uns um eine z&uuml;gige Probleml&ouml;sung.</p>
-                <p><%= ENV['UNTIL'].blank? ? "Stand: #{Time.now.strftime('%d.%m.%Y %M:%H Uhr')}" : "Voraussichtlich bis: #{ENV['UNTIL']}" %></p>
+                <p><%= ENV['UNTIL'].nil? ? "Stand: #{Time.now.strftime('%d.%m.%Y %M:%H Uhr')}" : "Voraussichtlich bis: #{ENV['UNTIL']}" %></p>
             </div>
 
             <br class="clear" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>   
             <br class="clear" />
 
             <div class="clear"></div>
@@ -47,10 +109,6 @@
 
     <hr class="divider" />
 
-    <div id="baseContainerFooter">
-        <div class="left"><%= t(:status_update, :scope => 'user_interface.labels') %>:15.03.2010</div>
-    </div>
-
     <a name="seitenende" accesskey="u"></a>
 
     <hr class="divider" />
@@ -59,7 +117,8 @@
 
     <div id="printlogo">
         <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+        <img src="/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+
     </div>
 
     <!-- /noindex -->

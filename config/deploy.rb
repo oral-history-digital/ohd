@@ -79,19 +79,21 @@ namespace :deploy do
     end
   end
 
-  namespace :web do
-    task :disable, :roles => :web do
-      # invoke with
-      # UNTIL="16:00 MST" REASON="a database upgrade" cap deploy:web:disable
+  task :disable_web, :roles => :web do
+    # invoke with
+    # UNTIL="16:00 MST" REASON="a database upgrade" cap deploy:web:disable
 
-      on_rollback { rm "#{shared_path}/system/maintenance.html" }
+    on_rollback { rm "#{shared_path}/system/maintenance.html" }
 
-      require 'erb'
-      deadline, reason = ENV['UNTIL'], ENV['REASON']
-      maintenance = ERB.new(File.read("./app/views/layouts/maintenance.erb")).result(binding)
+    require 'erb'
+    deadline, reason = ENV['UNTIL'], ENV['REASON']
+    maintenance = ERB.new(File.read("./app/views/layouts/maintenance.html.erb"), nil, "%").result(binding)
 
-      put maintenance, "#{shared_path}/system/maintenance.html", :mode => 0644
-    end
+    put maintenance, "#{shared_path}/system/maintenance.html", :mode => 0644
+  end
+
+  task :enable_web, :roles => :web do
+    run "rm #{shared_path}/system/maintenance.html"
   end
 
 
