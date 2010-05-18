@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+    <%= render :partial => '/head' %>
+</head>
+
+<body>
+    <div id="headerIdentityWrapper">
+        <%= render :partial => '/header' %>
+
+        <div id="baseServices">
+            &nbsp;
+        </div>
+
+        <hr class="divider" />
+    </div>
+
+    <div id="mainWrapper">
+
+        <div id="baseContent">
+
+            <a name="inhalt" accesskey="I"></a>
+
+            <div id="innerContent">
+                <h2>Die Seite ist zur Zeit nicht erreichbar wegen <%= ENV['REASON'] || 'Wartungsarbeiten' %></h2>
+                <p>Wir bem&uuml;hen uns um eine z&uuml;gige Probleml&ouml;sung.</p>
+                <p><%= ENV['UNTIL'].blank? ? "Stand: #{Time.now.strftime('%d.%m.%Y %M:%H Uhr')}" : "Voraussichtlich bis: #{ENV['UNTIL']}" %></p>
+            </div>
+
+            <br class="clear" />
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <br class="clear" />
+
+            <div class="clear"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div id="baseContainerRight">
+
+        </div>
+
+        <div id="mainWrapperClear">&nbsp;</div>
+
+    </div>
+    <!-- Ende mainWrapper -->
+
+    <hr class="divider" />
+
+    <div id="baseContainerFooter">
+        <div class="left"><%= t(:status_update, :scope => 'user_interface.labels') %>:15.03.2010</div>
+    </div>
+
+    <a name="seitenende" accesskey="u"></a>
+
+    <hr class="divider" />
+
+    <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
+
+    <div id="printlogo">
+        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
+        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+    </div>
+
+    <!-- /noindex -->
+
+</body>
+</html>
