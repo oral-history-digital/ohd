@@ -1,0 +1,78 @@
+--- !ruby/object:Gem::Specification 
+name: archive-authentication
+version: !ruby/object:Gem::Version 
+  version: 0.1.2
+platform: ruby
+authors: 
+- jrietema
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2010-05-20 00:00:00 +02:00
+default_executable: 
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: devise
+  type: :runtime
+  version_requirement: 
+  version_requirements: !ruby/object:Gem::Requirement 
+    requirements: 
+    - - "="
+      - !ruby/object:Gem::Version 
+        version: 1.0.7
+    version: 
+description: A cross-archive authentication framework build for the CeDiS multimedia web archive projects VHA and ZWAR for a common, shared authentication mechanism that is compatible to the FUDIS-LDAP storage of authentication data. This project uses the 'devise' rack-based authentication system.
+email: jrietema@cedis.fu-berlin.de
+executables: []
+
+extensions: []
+
+extra_rdoc_files: 
+- LICENSE
+- README.rdoc
+files: 
+- app/models/authenticable.rb
+- app/models/authentication_model.rb
+- app/models/user_account.rb
+- config/database.yml
+- config/initializers/devise.rb
+- config/locales/devise.en.yml
+- generators/20100520000000_db_setup.rb
+- generators/auth_db_generator.rb
+- lib/archive-authentication.rb
+- LICENSE
+- README.rdoc
+- test/test_archive-authentication.rb
+- test/helper.rb
+has_rdoc: true
+homepage: http://github.com/none/archive-authentication
+licenses: []
+
+post_install_message: 
+rdoc_options: 
+- --charset=UTF-8
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.5
+signing_key: 
+specification_version: 3
+summary: A cross-archive authentication framework build for the CeDiS multimedia archives using 'devise'.
+test_files: 
+- test/test_archive-authentication.rb
+- test/helper.rb

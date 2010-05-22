@@ -1,0 +1,17 @@
+login: &login
+  adapter: mysql
+  username: archives
+  password: sevihcra
+  host: localhost
+
+development:
+  <<: *login
+  database: auth_dev
+
+test:
+  <<: *login
+  database: auth_test
+
+production:
+  <<: *login
+  database: auth_live

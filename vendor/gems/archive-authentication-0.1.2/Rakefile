@@ -1,0 +1,72 @@
+require 'rubygems'
+require 'rake'
+
+namespace :authentication do
+
+  namespace :import do
+
+    desc "Imports account info from yaml files"
+    task :from_yaml, [:file] => :environment do |task, args|
+
+      file = args[:file] || ENV['file']
+      raise "No file argument supplied (file=). Please try again with a file argument." unless File.exists?(file)
+
+      require 'yaml'
+      
+
+    end
+
+  end
+
+end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "archive-authentication"
+    gem.summary = "A cross-archive authentication framework build for the CeDiS multimedia archives using 'devise'."
+    gem.description =  "A cross-archive authentication framework build for the CeDiS multimedia web archive projects VHA and ZWAR for a common, shared authentication mechanism that is compatible to the FUDIS-LDAP storage of authentication data. This project uses the 'devise' rack-based authentication system."
+    gem.email = "jrietema@cedis.fu-berlin.de"
+    gem.homepage = "http://github.com/none/archive-authentication"
+    gem.authors = ["jrietema"]
+    gem.add_dependency "devise", "1.0.7"
+    gem.files = Dir["{app}/**/*","{lib}/**/*","{config}/**/*","{generators}/**/*"]
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+end
+
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |test|
+  test.libs << 'lib' << 'test'
+  test.pattern = 'test/**/test_*.rb'
+  test.verbose = true
+end
+
+begin
+  require 'rcov/rcovtask'
+  Rcov::RcovTask.new do |test|
+    test.libs << 'test'
+    test.pattern = 'test/**/test_*.rb'
+    test.verbose = true
+  end
+rescue LoadError
+  task :rcov do
+    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+  end
+end
+
+task :test => :check_dependencies
+
+task :default => :test
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "archive-authentication #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
