@@ -30,8 +30,8 @@ namespace :user_accounts do
             STDOUT.printf '.'
             STDOUT.flush
             encrypted_password = attributes['encrypted_password'].sub('{SSHA}','')
-            password_salt = Base64.decode64(user.encrypted_password)[/.{4}$/]
-            UserAccount.update_all "encrypted_password = '#{encrypted_password}', password_salt = '#{password_salt}'",
+            password_salt = Base64.decode64(encrypted_password)[/.{4}$/]
+            UserAccount.update_all ActiveRecord::Base.send(:sanitize_sql_array, ["encrypted_password = '%s', password_salt = '%s'",encrypted_password, password_salt]),
                                    ['id = ?', user.id]
             user.reload
             # update the confirmation process

@@ -31,7 +31,7 @@ Devise.setup do |config|
   # config.authentication_keys = [ :email ]
 
   # TODO: activate once the form supports it:
-  # config.authentication_keys = [:login]
+  config.authentication_keys = [:login]
 
   # The realm used in Http Basic Authentication
   # config.http_authentication_realm = "Application"
