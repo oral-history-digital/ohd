@@ -9,6 +9,10 @@ class UserAccount < AuthenticationModel
 
   has_many :authenticatables
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :login, :password, :password_confirmation, :remember_me
+
+  validates_uniqueness_of :login
+  validates_uniqueness_of :email
+  validates_presence_of :login
 
 end

@@ -5,10 +5,15 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  include SearchFilters
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
   before_filter :set_locale
+
+  before_filter :current_search
+  before_filter :init_search
 
   def set_locale
     locale = params[:locale] || 'de'

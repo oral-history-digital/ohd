@@ -9,6 +9,8 @@ script/generate auth_db development
 
 Add a "devise_for :user_accounts" line in routes.rb.
 
+Copy and modify the gem config/initializers to your app's config/initializers directory.
+
 == Note on Patches/Pull Requests
  
 * Fork the project.

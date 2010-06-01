@@ -340,6 +340,7 @@ DEF
     # the blank or default query
     @search = nil
     @hits = Interview::NUMBER_OF_INTERVIEWS
+    @page = 1 if @page.blank? || @page.to_i < 1
     interviews = Interview.find(:all, :order => "full_title ASC", :limit => "#{(@page-1) * RESULTS_PER_PAGE},#{RESULTS_PER_PAGE}")
     @results = WillPaginate::Collection.new(@page, RESULTS_PER_PAGE).replace(interviews)
     @results.total_entries = Interview::NUMBER_OF_INTERVIEWS

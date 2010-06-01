@@ -1,3 +1,8 @@
+require(File.join(File.dirname(__FILE__),'../../../..', 'config', 'boot'))
+
+require 'rake/rdoctask'
+require 'tasks/rails'
+
 namespace :user_accounts do
 
     namespace :import do
@@ -19,7 +24,7 @@ namespace :user_accounts do
             valid_record = false if attributes[check_attribute].nil?
           end
           next unless valid_record
-          user = UserAccount.find_or_initialize_by_email(attributes['mail'])
+          user = UserAccount.find_or_initialize_by_login_and_email(attributes['login'], attributes['mail'])
           if user.new_record?
             user.save!
             STDOUT.printf '.'
@@ -28,6 +33,9 @@ namespace :user_accounts do
             password_salt = Base64.decode64(user.encrypted_password)[/.{4}$/]
             UserAccount.update_all "encrypted_password = '#{encrypted_password}', password_salt = '#{password_salt}'",
                                    ['id = ?', user.id]
+            user.reload
+            # update the confirmation process
+            user.confirm!
           end
         end
 

@@ -40,8 +40,12 @@
             <fieldset>
               <legend>Abmelden</legend>
               <p id="logoutUserLogin">
-                hahoffmann@cedis.fu-berlin.de
-                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
+                <%= current_user_account.try(:login) || t(:not_signed_in, :scope => 'user_interface.status') %>
+                <% if current_user_account.nil? %>
+                    <%= link_to 'Anmelden', new_user_account_session_path, :name => 'buttonLogin' %>
+                <% else %>
+                    <%= link_to 'Abmelden', destroy_user_account_session_path, :name => 'buttonLogout' %>
+                <% end %>
               </p>
             </fieldset>
           </form>

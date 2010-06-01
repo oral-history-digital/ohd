@@ -9,7 +9,11 @@ class DbSetup < ActiveRecord::Migration
       t.recoverable
       t.trackable
       t.validatable
+      t.string :login
     end
+    add_index :user_accounts, :confirmation_token, :unique => true
+    add_index :user_accounts, :login, :unique => true
+    add_index :user_accounts, :reset_password_token, :unique => true
 
     create_table :authenticatables do |t|
       t.string :authentication_realm, :null => false

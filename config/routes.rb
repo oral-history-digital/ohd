@@ -17,9 +17,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 
+  map.devise_for :user_accounts
+
   map.localized_home  ':locale/:page', :controller => :home, :action => :show
   map.home ':page', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :archive
+  map.root :controller => :home, :action => :show, :page => 'archive'
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -62,4 +64,7 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing or commenting them out if you're using named routes and resources.
   map.connect ':locale/:controller/:action/:id'
   map.connect ':locale/:controller/:action/:id.:format'
+
+  map.connect ':controller/:action/:id', :locale => :de
+  map.connect ':controller/:action/:id.:format', :locale => :de
 end

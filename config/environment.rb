@@ -24,6 +24,7 @@ Rails::Initializer.run do |config|
   config.gem 'rsolr-ext'
   config.gem 'escape'
   config.gem 'daemons' # for sunspot
+  config.gem 'daemons' # for sunspot
   config.gem 'sunspot', :lib => 'sunspot', :version => ">=0.10.8"
   config.gem 'sunspot_rails', :lib => 'sunspot/rails', :version => ">=0.11.5"
 
@@ -33,8 +34,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'unicode'
 
-  config.gem 'warden', :version => '0.10.5'
-  config.gem 'devise', :version => '1.0.7'
+  config.gem 'archive-authentication'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

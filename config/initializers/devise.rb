@@ -29,7 +29,9 @@ Devise.setup do |config|
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
   # config.authentication_keys = [ :email ]
-  config.authentication_keys = [:login]
+
+  # TODO: activate once the form supports it:
+  # config.authentication_keys = [:login]
 
   # The realm used in Http Basic Authentication
   # config.http_authentication_realm = "Application"

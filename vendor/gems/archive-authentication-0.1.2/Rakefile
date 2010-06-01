@@ -1,25 +1,6 @@
 require 'rubygems'
 require 'rake'
 
-namespace :authentication do
-
-  namespace :import do
-
-    desc "Imports account info from yaml files"
-    task :from_yaml, [:file] => :environment do |task, args|
-
-      file = args[:file] || ENV['file']
-      raise "No file argument supplied (file=). Please try again with a file argument." unless File.exists?(file)
-
-      require 'yaml'
-      
-
-    end
-
-  end
-
-end
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
@@ -30,7 +11,7 @@ begin
     gem.homepage = "http://github.com/none/archive-authentication"
     gem.authors = ["jrietema"]
     gem.add_dependency "devise", "1.0.7"
-    gem.files = Dir["{app}/**/*","{lib}/**/*","{config}/**/*","{generators}/**/*"]
+    gem.files = Dir["{app}/**/*","{lib}/**/*","{config}/**/*","{generators}/**/*","{tasks}/**/*"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -60,6 +41,8 @@ end
 task :test => :check_dependencies
 
 task :default => :test
+
+load 'tasks/user_accounts.rake'
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
