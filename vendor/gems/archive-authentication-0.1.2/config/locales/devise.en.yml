@@ -5,6 +5,7 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
       unauthenticated: 'You need to sign in or sign up before continuing.'
+      unauthenticated_search: 'In order to search you are required to sign in first.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'

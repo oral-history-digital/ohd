@@ -110,8 +110,10 @@ class SearchesController < BaseController
   private
 
   # redirect users to login if they're unauthenticated
+  # even on AJAX requests
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
+      flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
       if request.xhr?
         render :update do |page|
           page << "window.location.href = '#{new_user_account_session_url}';"
