@@ -372,10 +372,21 @@ Lightbox.prototype = {
     //  Display caption, image number, and bottom nav.
     //
     updateDetails: function() {
-    
+        
         // if caption is not null
         if (this.imageArray[this.activeImage][1] != ""){
-            this.caption.update(this.imageArray[this.activeImage][1]).show();
+
+            // scale caption font according to text length;
+            var caption_text = this.imageArray[this.activeImage][1];
+            var caption_class = '';
+            if(caption_text.length > 320) {
+                caption_class = 'smallest';
+            } else {
+                if(caption_text.length > 200) {
+                    caption_class = 'smaller';
+                }
+            }
+            this.caption.update(new Element('span', { 'class': caption_class }).update(this.imageArray[this.activeImage][1])).show();
         }
         
         // if image is part of set display 'Image x of x' 
