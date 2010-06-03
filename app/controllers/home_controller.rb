@@ -3,6 +3,8 @@ class HomeController < BaseController
 
   STATIC_PAGES = (Dir.entries(File.join(RAILS_ROOT, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
+  skip_before_filter :authenticate_user_account!
+
   def show
     if STATIC_PAGES.include?(params[:page])
       render_localized :action => params[:page]

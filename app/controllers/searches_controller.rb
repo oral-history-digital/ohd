@@ -2,6 +2,8 @@ class SearchesController < BaseController
 
   actions :new, :index
 
+  prepend_before_filter :redirect_unauthenticated_users
+
   # handle search initialization specifically
   skip_before_filter :current_search
   skip_before_filter :current_query_params
@@ -106,6 +108,19 @@ class SearchesController < BaseController
   end
 
   private
+
+  # redirect users to login if they're unauthenticated
+  def redirect_unauthenticated_users
+    unless signed_in?(:user_account)
+      if request.xhr?
+        render :update do |page|
+          page << "window.location.href = '#{new_user_account_session_url}';"
+        end
+      else
+        redirect_to new_user_account_session_url
+      end
+    end
+  end
 
   # This method clears the default search field contents from the query
   # on the server-side, in case this is missed by the JS client code.
