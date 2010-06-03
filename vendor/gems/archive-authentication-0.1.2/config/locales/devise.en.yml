@@ -14,11 +14,18 @@ en:
       inactive: 'Your account was not activated yet.'
       remember_me: 'Remember me'
     passwords:
+      change: 'Change your password'
+      forgot: 'Forgot your password?'
+      password: 'Password'
+      password_confirmation: 'Passwort confirmation'
+      submit: 'Change my Password'
+      resend: 'Send me reset password instructions'
       link: 'Forgot password?'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
     confirmations:
       link: "Didn't receive confirmation instructions?"
+      resend: 'Resend confirmation instructions'
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
@@ -35,6 +42,8 @@ en:
       reset_password_instructions: 'Reset password instructions'
       unlock_instructions: 'Unlock Instructions'
 
+    labels:
+      send_now: 'Resend now'
     authentication_keys:
       login: 'Login'
       email: 'Email'
