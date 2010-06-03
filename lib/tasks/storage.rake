@@ -13,11 +13,10 @@ namespace :storage do
       
       Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
         
-        archive_id = interview.archive_id.upcase
-        
+        archive_id = interview.archive_id.upcase       
         photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
         
-        Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
+        Dir.glob(File.join(photo_path, "#{archive_id}", "**", "*.{jpg,JPG,png,PNG}")).each do |file|
           
           file_name = file.split("/").last
           
@@ -44,6 +43,41 @@ namespace :storage do
     end
     
   end
+
+
+  desc "removes photos that are missing files"
+  task :cleanup_photos => :environment do
+
+    joins = 'RIGHT JOIN photos ON photos.interview_id = interviews.id'
+    interview_ids = Interview.count(:all, :joins => joins, :group => 'interviews.id').keys.compact
+
+    photos_removed = 0
+
+    puts "Checking and removing unavailable photos for #{interview_ids.size} interviews:"
+
+    interview_ids.each do |id|
+
+      interview = Interview.find(id)
+
+      interview.photos.each do |photo|
+
+        photo_file_path = File.join(RAILS_ROOT, 'public', photo.photo.url).sub(/\?\d+$/,'')
+
+        unless File.exists?(photo_file_path)
+          # remove the photo
+          puts "removing missing #{photo_file_path.split('/').last}"
+          photo.destroy
+          photos_removed += 1
+        end
+
+      end
+
+    end
+
+    puts "done. Removed #{photos_removed} missing photos."
+
+  end
+  
   
   desc "imports interview stills"
   task :import_interview_stills => :environment do
@@ -90,7 +124,8 @@ namespace :storage do
   task :lookup_tapes => :environment do
 
     joins = "LEFT JOIN tapes ON tapes.interview_id = interviews.id"
-    conditions = "tapes.id IS NULL"
+    con
+    ditions = "tapes.id IS NULL"
 
     batch = 25
     offset = 0
