@@ -6,10 +6,10 @@ class AuthenticationModel < ActiveRecord::Base
   self.abstract_class = true
 
   require 'yaml'
-  DB_CONFIG = YAML::load_file(File.join(File.dirname(__FILE__), '../../config/database.yml'))
+  DB_CONFIG = YAML::load_file(File.join(RAILS_ROOT, 'config/database.yml'))['authentication']
 
   # establish connection on loading the class
-  establish_connection(DB_CONFIG[RAILS_ENV || 'test'])
+  establish_connection(DB_CONFIG)
 
 #  def self.establish_connection_to_auth_db(env)
 #    require 'yaml'
