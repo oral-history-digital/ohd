@@ -14,10 +14,11 @@ set :keep_releases, 3
 desc "prepare to act on the production environment"
 task :production do
   set :environment, :production
-  set :deploy_to, "/data/applications/zwar/#{application}"
-  role :app, "fnf.cedis.fu-berlin.de"
-  role :web, "fnf.cedis.fu-berlin.de"
-  role :db,  "fnf.cedis.fu-berlin.de", :primary => true
+  set :application, 'zwar_archiv'
+  set :deploy_to, "/data/applications/#{application}"
+  role :app, "bb-app-02.cedis.fu-berlin.de"
+  role :web, "bb-app-02.cedis.fu-berlin.de"
+  role :db,  "bb-app-02.cedis.fu-berlin.de", :primary => true
 end
 
 desc "prepare to act on the test environment"
@@ -55,7 +56,9 @@ namespace :deploy do
     run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/public/archive_images"
     # symlink the prebuilt unicode gem
     run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
-    run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
+    unless environment == :production
+      run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
+    end
   end
 
   task :rewrite_stylesheet_urls, :roles => :app do

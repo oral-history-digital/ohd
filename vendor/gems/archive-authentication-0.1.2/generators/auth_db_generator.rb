@@ -4,9 +4,6 @@ class AuthDbGenerator < Rails::Generator::NamedBase
 
     record do |m|
 
-      @env = class_name.downcase
-      raise 'No such environment: ' + @env unless %w(development test production).include?(@env)
-
       @options = AuthenticationModel::DB_CONFIG.dup.merge({:charset => 'utf8', :collation => 'utf8_unicode_ci'})
 
       begin
