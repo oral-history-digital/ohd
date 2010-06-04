@@ -13,7 +13,7 @@ namespace :user_accounts do
         raise "No file argument specified (file=). Aborting." if file.nil?
         raise "No such file: #{file}. Try again." unless File.exists?(file)
 
-        puts 'KCODE: ' + ENV['KCODE']
+        puts 'KCODE: ' + (ENV['KCODE'] || 'none').to_s
         raise "Please set $KCODE to 'u' before importing" if ENV['KCODE'].nil? or ENV['KCODE'].downcase[/^u/].blank?
 
         puts "Importing data from #{file}..."
