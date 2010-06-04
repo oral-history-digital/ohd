@@ -31,10 +31,12 @@ namespace :user_accounts do
             STDOUT.flush
             encrypted_password = attributes['encrypted_password'].sub('{SSHA}','')
             password_salt = Base64.decode64(encrypted_password)[/.{4}$/]
-            UserAccount.update_all ActiveRecord::Base.send(:sanitize_sql_array, ["encrypted_password = '%s', password_salt = '%s', confirmed_at = '%s', confirmation_sent_at = '%s'",encrypted_password, password_salt, Time.now.to_s(:db), Time.now.to_s(:db)]),
+            UserAccount.update_all ActiveRecord::Base.send(:sanitize_sql_array, ["encrypted_password = '%s', password_salt = '%s'",encrypted_password, password_salt]),
                                    ['id = ?', user.id]
           end
         end
+
+        UserAccount.update_all "confirmed_at = '#{Time.now.to_s(:db)}', confirmation_sent_at = '#{Time.now.to_s(:db)}'"
 
       end
 
