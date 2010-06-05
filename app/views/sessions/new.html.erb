@@ -1,0 +1,20 @@
+<h2><%= t(:link, :scope => 'devise.sessions') %></h2>
+
+<% form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
+
+  <% Devise.authentication_keys.each do |auth_key| %>
+  <p><%= f.label t(auth_key, :scope => 'devise.authentication_keys') %></p>
+  <p><%= f.text_field auth_key %></p>
+  <% end -%>
+
+  <p><%= f.label t(:password, :scope => 'devise.authentication_keys') %></p>
+  <p><%= f.password_field :password %></p>
+
+  <% if devise_mapping.rememberable? -%>
+    <p><%= f.check_box :remember_me %> <%= f.label t(:remember_me, :scope => 'devise.sessions') %></p>
+  <% end -%>
+
+  <p><%= f.submit t(:link, :scope => 'devise.sessions') %></p>
+<% end -%>
+
+<%= render :partial => "shared/devise_links" %>

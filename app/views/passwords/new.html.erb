@@ -1,0 +1,12 @@
+<h2><%= t('forgot', :scope => 'devise.passwords') %></h2>
+
+<% form_for resource_name, resource, :url => password_path(resource_name) do |f| %>
+  <%= f.error_messages %>
+
+  <p><%= f.label t(:email, :scope => 'devise.authentication_keys') %></p>
+  <p><%= f.text_field :email %></p>
+
+  <p><%= f.submit t(:resend, :scope => 'devise.passwords') %></p>
+<% end %>
+
+<%= render :partial => "shared/devise_links" %>
