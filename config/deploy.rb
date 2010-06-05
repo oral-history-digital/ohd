@@ -21,6 +21,16 @@ task :production do
   role :db,  "bb-app-02.cedis.fu-berlin.de", :primary => true
 end
 
+desc "prepare to act on the demo server"
+task :demo do
+  set :environment, :production
+  set :application, 'demo'
+  set :deploy_to, "/data/applications/zwar/#{application}"
+  role :app, "fnf.cedis.fu-berlin.de"
+  role :web, "fnf.cedis.fu-berlin.de"
+  role :db, "fnf.cedis.fu-berlin.de"
+end
+
 desc "prepare to act on the test environment"
 task :staging do
   set :environment, :staging
