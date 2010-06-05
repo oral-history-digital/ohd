@@ -26,13 +26,11 @@ namespace :user_accounts do
           next unless valid_record
           user = UserAccount.find_or_initialize_by_login_and_email(attributes['login'], attributes['mail'])
           if user.new_record?
+            user.encrypted_password = attributes['encrypted_password'].sub('{SSHA}','')
+            user.password_salt = Base64.encode64(Base64.decode64(user.encrypted_password)[-4,4])
             user.save!
             STDOUT.printf '.'
             STDOUT.flush
-            encrypted_password = attributes['encrypted_password'].sub('{SSHA}','')
-            password_salt = Base64.decode64(encrypted_password)[/.{4}$/]
-            UserAccount.update_all ActiveRecord::Base.send(:sanitize_sql_array, ["encrypted_password = '%s', password_salt = '%s'",encrypted_password, password_salt]),
-                                   ['id = ?', user.id]
           end
         end
 
@@ -43,3 +41,28 @@ namespace :user_accounts do
     end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

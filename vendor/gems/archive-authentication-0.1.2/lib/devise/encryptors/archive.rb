@@ -7,12 +7,13 @@ module Devise
       # Gererates a default password digest based on stretches, salt, pepper and the
       # incoming password.
       def self.digest(password, stretches, salt, pepper)
-        puts "\n\n@@@ CALLING FU-DIS ENCRYPTOR: #{password}, #{salt}"
+        salt_decoded = Base64.decode64(salt)
+        puts "\n\n@@@ CALLING FU-DIS ENCRYPTOR: #{password}, #{salt_decoded}"
         # ignore stretches and pepper
-        salted_password = password + salt
+        salted_password = password + salt_decoded
         digest = Digest::SHA1.digest(salted_password)
         puts "digest: #{digest}\n@@@@\n"
-        Base64.encode64(digest + salt).chomp
+        Base64.encode64(digest + salt_decoded).chomp
       end
 
     end
