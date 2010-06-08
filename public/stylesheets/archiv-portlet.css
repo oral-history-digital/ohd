@@ -196,3 +196,58 @@
 	width: 150px;
 }
 
+
+/* New Form Styles */
+#flashNotice {
+    color: #fff;
+}
+
+#flashAlert {
+    color: #8B0F09;
+    background-color: #fff;
+    padding: 0.33em;
+}
+
+h1.formHeader,
+h2.formHeader,
+h3.formHeader,
+h4.formHeader,
+h5.formHeader {
+    color: #8B0F09;
+    background-color: #E4E4DA;
+    margin-bottom: 0;
+    padding: 3px 20px;
+    display: inline;
+    float: left;
+}
+
+#innerContent form {
+    background-color: #E4E4DA;
+    padding: 3px 20px 20px 20px;
+    min-width: 40%;
+    display: inline-block;
+    float: left;
+    clear: left;
+}
+
+#innerContent form + .additionalOptions {
+    float: left;
+    margin-left: 20px;
+    padding-top: 3px;
+}
+
+#innerContent .additionalOptions a {
+    padding-top: 3px;
+    margin-bottom: 20px;
+}
+
+#innerContent form input[type=text],
+#innerContent form input[type=password],
+#innerContent form textarea {
+    background-color: #fff;
+}
+
+#innerContent form input[type=submit] {
+    color: #8B0F09;
+    font-size: 90%;
+}

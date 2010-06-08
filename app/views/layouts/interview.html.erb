@@ -37,11 +37,6 @@
             <a name="inhalt" accesskey="I"></a>
 
             <div id="innerContent">
-                <% unless flash[:alert].blank? %>
-                  <div id="flashAlert">
-                  <%= flash[:alert] %>
-                  </div>
-                <% end %>
                 <%= yield %>
             </div>
 

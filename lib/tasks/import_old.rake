@@ -211,8 +211,9 @@ namespace :import_old do
   end
 
   desc "Import von Captions als Segmente"
-  task :captions, [ :file ] => :environment do |task, args|
+  task :captions, [ :file, :archive_id ] => :environment do |task, args|
     file = args[:file] || ENV['file'] || File.join(RAILS_ROOT, 'db/import_files/captions.csv')
+    @archive_id = args[:archive_id] || 'za001'
     puts "Importing from file: #{file}"
 
     require "fastercsv"
@@ -224,6 +225,9 @@ namespace :import_old do
 
       media_id = row.field('Media-ID')
       archive_id = media_id[/^ZA\d{3}/i].downcase
+
+      next if archive_id < @archive_id
+
       tape_media_id = media_id.gsub(/_\d{4}$/, '')
 
       if @interview.nil? || @interview.archive_id != archive_id
@@ -276,7 +280,7 @@ namespace :import_old do
 
       @logger.log "Importing captions from #{filename}."
 
-      Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake import:captions file=#{filename} --trace") do |pid, stdin, stdout, stderr|
+      Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake import_old:captions file=#{filename} --trace") do |pid, stdin, stdout, stderr|
         stdout.each_line {|line| @logger.log line }
         errors = []
         stderr.each_line {|line| errors << line unless line.empty?}
