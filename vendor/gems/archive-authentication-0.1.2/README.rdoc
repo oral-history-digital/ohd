@@ -4,6 +4,9 @@ Shared authentication code for archive projects at CeDiS.
 
 For installation:
 
+add an 'authentication' environment to your config/database.yml
+create the authentication database and permissions
+
 script/generate archive_authentication installation
 script/generate auth_db development
 
