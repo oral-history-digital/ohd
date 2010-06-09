@@ -50,7 +50,7 @@ en:
     search:
       search_term: 'search term'
       fulltext_title: 'Insert search terms here'
-      no: 'no'
+      not_found: 'no'
       reset: 'reset'
     status:
       not_signed_in: 'not signed in'

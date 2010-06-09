@@ -50,7 +50,7 @@ de:
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'
-      no: 'keine'
+      not_found: 'keine'
       reset: 'zur&uuml;cksetzen'
     status:
       not_signed_in: 'nicht angemeldet'
