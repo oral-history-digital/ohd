@@ -91,6 +91,23 @@ namespace :solr do
 
     end
 
+
+    desc "deletes interviews with given ids (archive_ids)"
+    task :by_archive_id, [ :ids ] => 'solr:connect' do |task, args|
+
+      ids = args[:ids] || nil
+      raise "no ids given! Use the ids= argument to provide a list of archive_ids" if ids.nil?
+      ids = ids.split(/\W+/)
+
+      puts "\nDeleting the index for #{ids.size} interviews..."
+
+      ids.each do |archive_id|
+        SOLR.delete_by_query 'type:Interview&archive_id=' + archive_id
+        puts archive_id
+      end
+
+    end
+
   end
 
 
@@ -101,18 +118,23 @@ namespace :solr do
     task :build => ['solr:index:interviews', 'solr:index:segments']
 
     desc "builds the index for interviews"
-    task :interviews => :environment do
+    task :interviews, [ :ids ] => :environment do |task, args|
+
+      ids = args[:ids] || nil
+      ids = ids.split(/\W+/) unless ids.nil?
 
       # Interviews
       batch=25
       offset=0
-      total = Interview.count :all
+      conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
+      total = Interview.count :all, :conditions => conditions
 
       puts "\nIndexing #{total} interviews..."
 
       while(offset<total)
 
-        Interview.find(:all, :limit => "#{offset},#{batch}").each do |interview|
+        Interview.find(:all, :conditions => conditions,
+                       :limit => "#{offset},#{batch}").each do |interview|
           interview.index
         end
 
@@ -132,6 +154,7 @@ namespace :solr do
     task :segments, [ :interviews ] => :environment do |task, args|
 
       ids = args[:interviews] || nil
+      ids = ids.split(/\W+/) unless ids.nil?
 
       # Segments
       batch=25
@@ -187,6 +210,15 @@ namespace :solr do
       puts "Reindexing interviews complete."
     end
 
+    desc "reindex interviews by archive_id"
+    task :by_archive_id, [ :ids ] => 'solr:connect' do |task, args|
+      ids = args[:ids] || nil
+      raise "no ids given! Use the ids= argument to provide a list of archive_ids" if ids.nil?
+
+      Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids })
+      Rake::Task['solr:index:interviews'].execute({ :ids => ids })
+      Rake::Task['solr:index:segments'].execute({ :ids => ids })
+    end
 
     desc "reindex segments"
     task :segments => ['solr:delete:segments', 'solr:index:segments'] do
