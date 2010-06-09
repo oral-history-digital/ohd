@@ -8,7 +8,7 @@
     <% elsif search.hits > 0 %>
       <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels'), current_search_path %>
     <% else %>
-      <%= t(:not_found, :scope => 'user_interface.search') + '&nbsp' + Interview.human_name.pluralize + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels') %>
+      <%= t(:not_found, :scope => 'user_interface.search') + '&nbsp;' + Interview.human_name.pluralize + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels') %>
     <% end %>
   </span>
 </div>
