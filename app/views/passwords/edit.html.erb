@@ -1,16 +1,17 @@
-<h2 class="formHeader"><%= t('change', :scope => 'devise.passwords') %></h2>
+<h1><%= t('change', :scope => 'devise.passwords') %></h1>
 
 <% form_for resource_name, resource, :url => password_path(resource_name), :html => { :method => :put } do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :reset_password_token %>
 
-  <p><%= f.label t(:password, :scope => 'devise.passwords') %></p>
-  <p><%= f.password_field :password %></p>
+  <span><%= f.label t(:password, :scope => 'devise.passwords') %></span>
+  <span><%= f.password_field :password %></span>
 
-  <p><%= f.label t(:password_confirmation, :scope => 'devise.passwords') %></p>
-  <p><%= f.password_field :password_confirmation %></p>
+  <span><%= f.label t(:password_confirmation, :scope => 'devise.passwords') %></span>
+  <span><%= f.password_field :password_confirmation %></span>
 
-  <p><%= f.submit t(:submit, :scope => 'devise.passwords') %></p>
+  <span><%= f.submit t(:submit, :scope => 'devise.passwords') %></span>
+
+  <%= render :partial => "shared/devise_links" %>
+
 <% end %>
-
-<%= render :partial => "shared/devise_links" %>

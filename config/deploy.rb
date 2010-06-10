@@ -73,10 +73,10 @@ namespace :deploy do
 
   task :rewrite_stylesheet_urls, :roles => :app do
     if environment == :production
-      # this places a /demo before each image url
+      # this places a /archiv before each image url
       Dir.glob(File.join(File.dirname(__FILE__), '..', 'public', 'stylesheets', '*.css')).each do |file|
         stylesheet = file.split('/').last
-        run "sed 's/\\/images/\\/demo\\/images/g' #{current_release}/public/stylesheets/#{stylesheet} > #{current_release}/public/stylesheets/#{stylesheet}.new"
+        run "sed 's/\\/images/\\/archiv\\/images/g' #{current_release}/public/stylesheets/#{stylesheet} > #{current_release}/public/stylesheets/#{stylesheet}.new"
         run "mv #{current_release}/public/stylesheets/#{stylesheet}.new #{current_release}/public/stylesheets/#{stylesheet}"
       end
 
@@ -113,4 +113,4 @@ namespace :deploy do
 end
 
 after "deploy:update_code", "deploy:symlink_configuration"
-#after "deploy:update_code", "deploy:rewrite_stylesheet_urls"
+after "deploy:update_code", "deploy:rewrite_stylesheet_urls"

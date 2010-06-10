@@ -1,20 +1,29 @@
-<h2 class="formHeader"><%= t(:link, :scope => 'devise.sessions') %></h2>
+<h1><%= t(:link, :scope => 'devise.sessions') %></h1>
 
-<% form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
+<% form_for resource_name, resource, :url => session_path(resource_name), :html => { :class => 'signup' } do |f| -%>
 
   <% Devise.authentication_keys.each do |auth_key| %>
-  <p><%= f.label t(auth_key, :scope => 'devise.authentication_keys') %></p>
-  <p><%= f.text_field auth_key %></p>
+  <span><%= f.label t(auth_key, :scope => 'devise.authentication_keys') %></span>
+  <span><%= f.text_field auth_key %></span>
   <% end -%>
 
-  <p><%= f.label t(:password, :scope => 'devise.authentication_keys') %></p>
-  <p><%= f.password_field :password %></p>
+  <span><%= f.label t(:password, :scope => 'devise.authentication_keys') %></span>
+  <span><%= f.password_field :password %></span>
 
   <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label t(:remember_me, :scope => 'devise.sessions') %></p>
+    <% f.hidden_field :remember_me, :value => true %>
   <% end -%>
 
-  <p><%= f.submit t(:link, :scope => 'devise.sessions') %></p>
+  <span><%= f.submit t(:link, :scope => 'devise.sessions') %></span>
+
+  <%= render :partial => "shared/devise_links" %>
+    
 <% end -%>
 
-<%= render :partial => "shared/devise_links" %>
+<div class="clear">&nbsp;</div>
+
+<div id="registration_link">
+  <%= t('devise.registrations.not_yet_registered') %>&nbsp;<%= link_to t('devise.registrations.link_to'), new_user_registration_path %>
+</div>
+
+<div class="clear">&nbsp;</div>

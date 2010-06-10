@@ -213,21 +213,31 @@ h2.formHeader,
 h3.formHeader,
 h4.formHeader,
 h5.formHeader {
-    color: #8B0F09;
-    background-color: #E4E4DA;
     margin-bottom: 0;
-    padding: 3px 20px;
+    padding: 3px 20px 4px;
     display: inline;
     float: left;
+    position: relative;
+    top: 1px;
+    z-index: 10;
 }
 
 #innerContent form {
+    position: relative;
     background-color: #E4E4DA;
-    padding: 3px 20px 20px 20px;
+    margin: 5px 0;
+    padding: 12px;
     min-width: 40%;
     display: inline-block;
     float: left;
     clear: left;
+}
+
+#innerContent form span {
+    float: left;
+    clear: left;
+    line-height: 100%;
+    margin-bottom: 0.5em;
 }
 
 #innerContent form + .additionalOptions {
@@ -245,9 +255,57 @@ h5.formHeader {
 #innerContent form input[type=password],
 #innerContent form textarea {
     background-color: #fff;
+    margin-bottom: 0.33em;
+    color: #666666;
+    border:1px solid #666666;
 }
 
 #innerContent form input[type=submit] {
-    color: #8B0F09;
+    color: #fff;
+    background-color: #840f08;
+    margin-top: 8px;
+    padding: 0.25em 0.5em;
+    border: 0px none;
     font-size: 90%;
+    cursor: pointer;
+}
+
+form.signup {
+    display: block;
+    width: 320px;
+    height: 135px;
+}
+
+form .link {
+    float: right;
+    clear: right;
+    margin-top: 15px;
+}
+
+form.signup .link {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+}
+
+#registration_link {
+    font-weight: bold;
+}
+
+/* User Registration Form */
+form.user_registration label {
+    padding-right: 0.5em;
+}
+
+form.user_registration td {
+    padding: 0.15em 0;
+}
+
+form.user_registration input[type=text],
+form.user_registration textarea {
+    width: 380px;
+}
+
+form.user_registration textarea {
+    height: 100px;
 }

@@ -5,4 +5,5 @@ rescue
   require 'devise'
 end
 
+ActiveRecord::Base.send(:include, Devise::ArchiveModelExtensions::ActiveRecordExtension)
 User.send(:include, Devise::ArchiveModelExtensions::UserExtension)

@@ -17,6 +17,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 
+  map.resources :user_registrations
+
   map.devise_for :user_accounts
 
   map.localized_home  ':locale/:page', :controller => :home, :action => :show

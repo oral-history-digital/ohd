@@ -1,12 +1,13 @@
-<h2 class="formHeader"><%= t(:resend, :scope => 'devise.confirmations') %></h2>
+<h1><%= t(:resend, :scope => 'devise.confirmations') %></h1>
 
 <% form_for resource_name, resource, :url => confirmation_path(resource_name) do |f| %>
   <%= f.error_messages %>
 
-  <p><%= f.label t(:email, :scope => 'devise.authentication_keys') %></p>
-  <p><%= f.text_field :email %></p>
+  <span><%= f.label t(:email, :scope => 'devise.authentication_keys') %></span>
+  <span><%= f.text_field :email %></span>
 
-  <p><%= f.submit t(:send_now, :scope => 'devise.labels') %></p>
+  <span><%= f.submit t(:send_now, :scope => 'devise.labels') %></span>
+
+  <%= render :partial => "shared/devise_links" %>
+
 <% end %>
-
-<%= render :partial => "shared/devise_links" %>
