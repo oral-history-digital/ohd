@@ -23,8 +23,8 @@
     galleryElem = $('image_carousel');
     new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 5) ? @interview.photos.size : 5 %> } );
     var LightboxOptions = {
-        fileLoadingImage:        '/images/lightbox/loading.gif',
-        fileBottomNavCloseImage: '/images/lightbox/close.gif',
+        fileLoadingImage:        '<%= ActionController::Base.relative_url_root %>/images/lightbox/loading.gif',
+        fileBottomNavCloseImage: '<%= ActionController::Base.relative_url_root %>/images/lightbox/close.gif',
 
         overlayOpacity: 0.8,   // controls transparency of shadow overlay
 

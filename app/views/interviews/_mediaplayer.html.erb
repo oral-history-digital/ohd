@@ -119,9 +119,9 @@
       var playerSettings = {
         id                        : '',
         jwplayerSpace             : '',
-        jwplayerFile              : '/swf/player.swf',
-        captionsPluginFile        : '/swf/captions.swf',
-        skin                      : '/swf/zwar.swf',
+        jwplayerFile              : '<%= ActionController::Base.relative_url_root %>/swf/player.swf',
+        captionsPluginFile        : '<%= ActionController::Base.relative_url_root %>/swf/captions.swf',
+        skin                      : '<%= ActionController::Base.relative_url_root %>/swf/zwar.swf',
         height                    : '335',
         width                     : '400',
         backcolor                 : '990000',
