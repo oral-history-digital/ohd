@@ -6,6 +6,8 @@ class Interview < ActiveRecord::Base
   
   has_many  :photos
 
+  has_many :text_materials
+
   has_many  :tapes
 
   has_many  :segments,

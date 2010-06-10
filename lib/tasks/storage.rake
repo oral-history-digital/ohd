@@ -264,5 +264,67 @@ namespace :storage do
 
   end
 
+  desc "Import text materials"
+  task :import_text_materials => :environment do
+    require 'fileutils'
+
+    source_dir = ENV['dir'] || File.join(ActiveRecord.path_to_storage, 'archiv_dis')
+    raise 'No source directory specificed! Aborting.' unless File.directory?(source_dir)
+
+    DEST_REPOSITORY_DIR = "#{RAILS_ROOT}/public/archive_text_materials"
+    dest_dir = DEST_REPOSITORY_DIR
+
+    Interview.find(:all).each do |interview|
+
+      STDOUT::printf '.'
+      STDOUT::flush
+
+      archive_id = interview.archive_id.upcase
+      interview_dir = File.join(source_dir, "#{archive_id}", "#{archive_id}_archive", "data", "bm")
+      Dir.glob(File.join(interview_dir, "[zZ][aA]#{archive_id[/\d{3}/]}_[a-zA-Z][a-zA-Z].pdf")).each do |file|
+        filename = file.split('/').last
+        type = filename[/_\w{2}/].gsub('_', '')
+
+        document_type = case type
+          when 'bg'
+            'Biography'
+          when 'tr'
+            'Transcript'
+          when 'ue'
+            'Translation'
+          when 'pk'
+            puts("skipping '#{file}' (Datenblatt/Kurzprotokoll)")
+            next
+          when 'db'
+            puts("skipping '#{file}' (Datenblatt/Kurzprotokoll)")
+            next
+          else
+            puts("skipping '#{file}' - unidentifiable type")
+            next
+        end
+
+        dest_file = File.join(dest_dir, archive_id.downcase, filename)
+
+        text_material = TextMaterial.find(:first, :conditions => {
+                :interview_id => interview.id,
+                :document_type => document_type })
+
+        if text_material == nil
+          text_material = TextMaterial.create :interview_id => interview.id,
+                                              :document_type => document_type
+          text_material.document = File.open(file)
+          text_material.save!
+        elsif File.exists?(dest_file) \
+          && !(File.open(dest_file){|f| f.mtime } < File.open(file){|f| f.mtime })
+          puts
+          puts "Destination file '#{dest_file}' newer than source file, skipping."
+        else
+          text_material.document = File.open(file)
+          text_material.save!
+        end
+      end
+    end
+  end
+
 
 end

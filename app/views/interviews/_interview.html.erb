@@ -45,9 +45,14 @@
   </ul>
 
     <ul id="interviewDocuments">
-      <li><a href="za004_bg.pdf" target="_blank"><%= t(:biography, :scope => 'user_interface.labels') %> <%= @interview.short_title %> (pdf)</a></li>
-      <li><a href="za004_tr.pdf" target="_blank"><%= t(:transcript, :scope => 'user_interface.labels') %> (pdf)</a></li>
-      <li><a href="za004_tr.pdf" target="_blank"><%= t(:translation, :scope => 'user_interface.labels') %> (pdf)</a></li>
+      <% interview.text_materials.each do |text_material| %>
+        <li>
+          <% link_text = "#{t(text_material.document_type, :scope => 'user_interface.labels')}" %>
+          <% link_text << " von #{interview.full_title[/^[^,]+,\s+\w/]}." if text_material.document_type == "Biography" %>
+          <% link_text << " (pdf)" %>
+          <%= link_to link_text, text_material.document.url %>
+        </li>
+      <% end %>
     </ul>
 
 </div>
