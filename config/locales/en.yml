@@ -25,6 +25,7 @@ en:
     translated: 'translated to German'
     not_translated: 'untranslated'
     unknown: 'Unknown'
+    date_unknown: 'Date unknown'
     not_specified: 'Not Specified'
     other: 'Other'
 

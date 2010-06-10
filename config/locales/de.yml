@@ -25,6 +25,7 @@ de:
     translated: '&uuml;bersetzt ins Deutsche'
     not_translated: 'ohne &Uuml;bersetzung'
     unknown: 'unbekannt'
+    date_unknown: 'Datum unbekannt'
     not_specified: 'keine Angabe'
     other: 'Sonstige'
 
