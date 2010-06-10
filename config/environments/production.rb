@@ -1,7 +1,7 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
 # Path Prefix for demo deployment on FnF
-#config.action_controller.relative_url_root = "/demo"
+config.action_controller.relative_url_root = "/archiv"
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
