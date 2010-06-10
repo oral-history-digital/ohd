@@ -5,9 +5,11 @@ if RAILS_ENV == 'production'
   ActiveRecord.path_to_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
   ActiveRecord.path_to_photo_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/FOTO_MASTER'
 else
+
+
   # Mac OS X
-  ActiveRecord.path_to_storage = '/Volumes/data/archiv_backup/archiv_dis'
-  ActiveRecord.path_to_photo_storage = '/Volumes/share/FOTO_MASTER'
+  ActiveRecord.path_to_storage = '/home/jrietema/dev/platform/data/' # '/share/Z/archiv_backup/archiv_dis'
+  ActiveRecord.path_to_photo_storage = '/home/jrietema/dev/platform/data/photos' #'/share/Z/FOTO_MASTER'
   # ActiveRecord.path_to_storage = (RUBY_PLATFORM.include?('mswin32') ? 'Z:/archiv_backup/archiv_dis' : '/share/Z/archiv_backup/archiv_dis')
   # ActiveRecord.path_to_photo_storage = '/Volumes/data/archiv_backup/bilder/FOTOS_SEZ_META_renamed'
 end
