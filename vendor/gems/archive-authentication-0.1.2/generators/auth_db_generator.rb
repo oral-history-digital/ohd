@@ -18,16 +18,16 @@ class AuthDbGenerator < Rails::Generator::NamedBase
       require 'active_record/migration'
       require 'fileutils'
 
-#      migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
-#        mig.name = 'DbSetup'
-#        mig.version = '20100520000000'
-#        mig.filename = File.join(File.dirname(__FILE__), '20100520000000_db_setup.rb')
-#      end
-#
-#      # make sure to connect to the authentication DB
-#      ActiveRecord::Base.establish_connection(@options)
-#
-#      migration.migrate(:up)
+      migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
+        mig.name = 'DbSetup'
+        mig.version = '20100520000000'
+        mig.filename = File.join(File.dirname(__FILE__), '20100520000000_db_setup.rb')
+      end
+
+      # make sure to connect to the authentication DB
+      ActiveRecord::Base.establish_connection(@options)
+
+      migration.migrate(:up)
 
 
       migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
@@ -40,12 +40,10 @@ class AuthDbGenerator < Rails::Generator::NamedBase
         puts "generating as Migration '#{mig.version}': #{mig.name}"
         mig.filename = File.join(File.dirname(__FILE__), '20100609102820_create_user_registration.rb')
         FileUtils.cp(mig.filename, File.join(RAILS_ROOT, 'db/migrate', "#{mig.version}_create_user_registration.rb"))
+        puts "Migration #{mig.version}_create_user_registration.rb added."
       end
 
-      # make sure to connect to the application DB
-      #ActiveRecord::Base.establish_connection
-
-      #migration.migrate(:up)
+      puts "Please run rake db:migrate now."
 
     end
 
