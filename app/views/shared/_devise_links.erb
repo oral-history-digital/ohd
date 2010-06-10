@@ -18,5 +18,7 @@
 <%- if devise_mapping.lockable? && controller_name != 'unlocks' %>
   <%= link_to t('devise.unlocks.link'), new_unlock_path(resource_name) %><br />
 <% end -%>
+
+  <%#= link_to t('devise.registrations.link_to'), new_user_registration_path %><br/>
 </div>
 <div class="clear">&nbsp;</div>
