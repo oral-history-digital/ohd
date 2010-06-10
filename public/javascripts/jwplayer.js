@@ -196,7 +196,11 @@ var Player = Class.create({
   },
 
   checkStartParams: function() {
-    this.seek(this.cfg['startItem'], this.cfg['startPosition'], true);
+    var startItem = this.cfg['startItem'];
+    var startPosition = this.cfg['startPosition'] - 1;
+    this.cfg['startItem'] = null;
+    this.cfg['startPosition'] = null;
+    this.seek(startItem, startPosition, true);
     if(this.cfg['start_language'] != null) { this.translateCaptions(this.cfg['start_language']); }
   },
 
@@ -265,7 +269,7 @@ var Player = Class.create({
   seekPosition: function(position, pause) {
     this.player.sendEvent('SEEK', position);
     if(pause) {
-      setTimeout(this.pause.bind(this), this.cfg['delay']);
+      setTimeout(this.pause.bind(this), 1000);
     }
   },
 
