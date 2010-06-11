@@ -116,6 +116,12 @@
 
       var headings = null;
 
+      <% if @interview.language == "Deutsch" or !@interview.translated %>
+        <% captions_language = "original" %>
+      <% else %>
+        <% captions_language = "de" %>
+      <% end %>
+
       var playerSettings = {
         id                        : '',
         jwplayerSpace             : '',
@@ -129,7 +135,7 @@
         lightcolor                : 'ffffff',
         headingsTable             : 'headings',
         captionsSpace             : 'captions',
-        captionsLanguage          : 'original', // 'original', 'de'
+        captionsLanguage          : '<%= captions_language %>', // 'original', 'de'
         whilePlaying              : fadeOutGallery,
         onVolume                  : 'drawVolumeBar(this.volume)',
         onMute                    : 'drawMuteButton(this.mute)',
