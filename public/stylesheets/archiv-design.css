@@ -68,6 +68,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-size: 100%;
+    width: 472px;
 }
 
 /* Layout fu#navigationTopFlexible
@@ -402,6 +403,32 @@ br.spacer {
 	padding-bottom: 10px;
 }
 
+/* Footer Nav */
+#baseContainerFooter ul {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 570px;
+    margin: 0;
+    padding: 0 0 10px 0;
+}
+
+#baseContainerFooter li {
+    float: left;
+    display: inline;
+    list-style: none outside none;
+    margin: 0;
+}
+
+#baseContainerFooter li.pipe {
+    margin: 0 12px;
+    font-size: 90%;
+}
+
+#baseContainerFooter li.copyright {
+    margin-right: 36px;
+}
+
 /* -----------------------------------------------------------------------------
    Spezielle- Stilanweisungen
    -----------------------------------------------------------------------------
@@ -415,6 +442,7 @@ br.spacer {
 	margin: 0;
 	padding: 0;
 	display: inline;
+    float: right;
 }
 
 #baseHeaderNavigation ul li {
