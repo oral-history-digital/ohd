@@ -16,7 +16,7 @@ namespace :storage do
         archive_id = interview.archive_id.upcase       
         photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
         
-        Dir.glob(File.join(photo_path, "#{archive_id}", "**", "*.{jpg,JPG,png,PNG}")).each do |file|
+        Dir.glob(File.join(photo_path, "#{archive_id}*.{jpg,JPG,png,PNG}")).each do |file|
           
           file_name = file.split("/").last
           
