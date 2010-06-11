@@ -21,6 +21,8 @@ namespace :import_old do
         puts "Teilsammung #{collection.name} aktualisiert."
       else
         puts "Teilsammlung #{row.field('name')} nicht gefunden!"
+
+
       end
 
     end
@@ -35,13 +37,16 @@ namespace :import_old do
     puts "csv file = #{csv_file}"
     require 'fastercsv'
 
+
+
+
     FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
 
       interview = Interview.find_or_initialize_by_archive_id row.field('Archiv-ID')
 
       # TODO: this is dirty - a check vs hard-coded string!
       unless row.field('Online veröffentlicht') == "nicht online" # this is NEVER the case!
-
+uniq
         # handle origin data depending on research state
         origin = row.field('Geburtsort')
         if origin.blank? || origin == 'unerschlossen'
@@ -55,6 +60,7 @@ namespace :import_old do
         end
 
         interview.attributes = {      :full_title => row.field('Zeitzeuge'),
+                                      :interview_date => row.field('Datum des Interviews'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
                                       :country_of_origin => origin,
@@ -388,6 +394,43 @@ namespace :import_old do
 
         interview.save!
 
+      end
+
+    end
+
+  end
+
+
+  desc "Import der Photos entsprechend einer CSV-Datei"
+  task :photos, [:file] => :environment do |task,args|
+    file = args[:file] || ENV['file']
+    raise "no csv file provided (as argument or 'file' environment variable), aborting." if file.nil?
+    puts "csv file = #{file}"
+    require 'fastercsv'
+
+    photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
+
+    FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+
+      interview = Interview.find_by_archive_id(row.field('Archiv-ID'))
+      next if interview.nil?
+
+      photo = Photo.find_or_initialize_by_interview_id_and_photo_file_name(interview.id, row.field('Dateiname'))
+
+      if row.field('Freigabe') != 'true'
+        photo.destroy unless photo.new_record?
+        puts "Deleting #{photo.photo_file_name}"
+      else
+        photo.caption = row.field('Bildtitel')
+        if photo.new_record?
+          files = Dir.glob(File.join(photo_path, "#{row.field('Dateiname')}.{jpg,JPG,png,PNG}"))
+          next if files.empty?
+          photo.photo = File.open(files.first)
+          puts "#{photo.photo_file_name} added"
+        else
+          puts "#{photo.photo_file_name} updated"
+        end
+        photo.save!
       end
 
     end

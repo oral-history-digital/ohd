@@ -293,3 +293,7 @@ de:
   languages: 'Sprache' # need singular for category_type
   country: 'Wohnort (Land)'
   countries: 'Lebensmittelpunkt' # need singular for category_type
+
+  photos:
+    image: 'Bild'
+    of: 'von'

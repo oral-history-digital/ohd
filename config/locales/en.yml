@@ -285,3 +285,7 @@ en:
   person_name: 'Name of the Interviewee'
   language: 'Language'
   country: 'Place of Residence (Country)'
+
+  photos:
+    image: 'Photo'
+    of: 'of'
