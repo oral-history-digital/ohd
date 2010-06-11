@@ -48,7 +48,7 @@
       <% interview.text_materials.each do |text_material| %>
         <li>
           <% link_text = "#{t(text_material.document_type, :scope => 'user_interface.labels')}" %>
-          <% link_text << " von #{interview.full_title[/^[^,]+,\s+\w/]}." if text_material.document_type == "Biography" %>
+          <% link_text << " #{interview.full_title[/^[^,]+,\s+\w/]}." if text_material.document_type == "Biography" %>
           <% link_text << " (pdf)" %>
           <%= link_to link_text, text_material.document.url %>
         </li>
