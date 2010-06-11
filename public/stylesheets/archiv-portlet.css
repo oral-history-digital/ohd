@@ -282,6 +282,10 @@ form .link {
     margin-top: 15px;
 }
 
+form .flashAlert {
+    color: #840f08;
+}
+
 form.signup .link {
     position: absolute;
     bottom: 10px;
