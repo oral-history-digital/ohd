@@ -5,6 +5,8 @@ This is the web application for Zwangsarbeit-Archiv 2.0.
 1. generate the database.yml and setup the databases (<tt>rake db:create</tt> or <tt>rake db:create:all</tt>)
 2. run the migrations: <tt>rake db:migrate</tt>
 3. import the data: <tt>rake data:setup</tt>
+4. import collections data: <tt>rake import:collections ./db/import_files/collections.csv</tt>
+5. create collection ids: <tt>rake data:collection_titles</tt>
 
 If you need to import the data partially or via the individual steps, the last part
 breaks down into these tasks:
