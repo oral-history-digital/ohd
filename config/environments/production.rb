@@ -36,7 +36,7 @@ config.action_view.cache_template_loading            = true
 SERVER_HOST = Socket.gethostname
 
 config.after_initialize do
-  ExceptionNotifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de jschmeisser@cedis.fu-berlin.de)
-  ExceptionNotifier.sender_address = %("Application Error" <server@#{SERVER_HOST}>)
+  ExceptionNotifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de)
+  ExceptionNotifier.sender_address = "server@#{SERVER_HOST}"
   ExceptionNotifier.email_prefix = "[ERROR] "
 end
