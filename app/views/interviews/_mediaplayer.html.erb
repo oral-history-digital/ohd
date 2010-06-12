@@ -191,7 +191,10 @@
 
 
   document.observe('dom:loaded', function() {
-    $('mediaContainer').observe('mouseenter', function() {
+    $('mediaspace_high').observe('mouseenter', function() {
+        showQualityToggler();
+    }),
+    $('mediaspace_low').observe('mouseenter', function() {
         showQualityToggler();
     }),
     $('qualityToggler').observe('click', function(){
