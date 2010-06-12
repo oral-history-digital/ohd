@@ -4,13 +4,13 @@ var playerDefaults = {
   qualityPluginFile           : '',
   additionalPluginFiles       : '',
 
-  playerID                    : '',
+  id                          : '',
   jwplayerSpace               : 'mediaspace',
   captionsSpace               : '',
   slideClass                  : null,
 
   playlistfile                : '',
-  streamer                    : 'rtmp://stream03.cedis.fu-berlin.de/abcbe6deaec582258749fcd36da488ca',
+  streamer                    : 'rtpm://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv2',
 
   width                       : '400',
   height                      : '320',
@@ -32,6 +32,8 @@ var playerDefaults = {
 
   headingsTable               : null,
 
+  qualityToggler              : false,
+
   onCaptions                  : function(){},
   onItem                      : function(){},
   onMute                      : function(){},
@@ -51,6 +53,7 @@ var currentPlayer = null;
 function playerReady(player) {
   players[player.id].cfg.id = player.id;
   players[player.id].player = $(player.id);
+  currentPlayer = null;
   currentPlayer = players[player.id];
 
   players[player.id].player.addModelListener("STATE", "stateListener");
@@ -60,9 +63,13 @@ function playerReady(player) {
   players[player.id].player.addControllerListener("MUTE", "muteListener");
   if(currentPlayer) { players[player.id].playerReady(); };
 
+  eval(players[player.id].playerReadyCallback)();
+
   // volume and mute state from jwplayer cookies
   currentPlayer.setVolume(player.volume);
-  currentPlayer.setMute(player.mute); 
+  currentPlayer.setMute(player.mute);
+
+  currentPlayer.showQualityToggler(true);
 }
 
 function stateListener(obj) {
@@ -138,16 +145,19 @@ var Player = Class.create({
     this.position = null;
     this.volume = '90';
     this.mute = false;
+    this.qualityTimer = null;
+    this.qualityToggler = this.cfg.qualityToggler;
 
     this.captionsCallback = this.cfg.onCaptions;
     this.muteCallback = this.cfg.onMute;
     this.volumeCallback = this.cfg.onVolume;
     this.playCallback = this.cfg.whilePlaying;
     this.pauseCallback = this.cfg.onPause;
+    this.playerReadyCallback = this.cfg.onPlayerReady;
 
     this.registeredHeadingsTable = null;
     this.headingsTable = this.cfg.headingsTable;
-      
+
     this.caption = null;
     this.captionContainer = $(this.cfg.captionsSpace);
     this.captionsLanguage = this.cfg.captionsLanguage;
@@ -238,7 +248,7 @@ var Player = Class.create({
   },
 
   playerReady: function() {
-      
+
   },
 
   positionListener: function(obj) {
@@ -340,13 +350,40 @@ var Player = Class.create({
     this.showCaptions();
   },
 
+  showQualityToggler: function() {
+    if(this.qualityToggler) {
+      //this.hideQualityToggler();
+      clearTimeout(this.qualityTimer);
+      //$(this.cfg.jwplayerSpace).insert('<div id="qualityToggler">TEST</div>');
+      var togglerContent = '';
+      if(this.cfg.id.indexOf("high") >= 0) {
+        togglerContent = '<strong>&radic; '+this.cfg.quality_text_high+'</strong><br />'+this.cfg.quality_text_low;
+      } else {
+        togglerContent = this.cfg.quality_text_high+'<br /><strong>&radic; '+this.cfg.quality_text_low+'</strong>';
+      }
+      /*$('mediaContainer').insert('<div id="qualityToggler">'+togglerContent+'</div>');
+      $('qualityToggler').observe('click', function(){
+        toggleMedia();
+      });*/
+      $('qualityToggler').innerHTML = togglerContent;
+      new Effect.Appear('qualityToggler', { duration: 0.25 });
+      this.qualityTimer = setTimeout(this.hideQualityToggler.bind(this), 3000);
+    }
+  },
+
+  hideQualityToggler: function() {
+    if($('qualityToggler') != null) {
+      new Effect.Fade('qualityToggler', { duration: 0.25 });
+    }
+  },
+
   stateListener: function(obj) {
     this.state = obj.newstate;
     if(this.state == 'PLAYING') {
         this.playCallback();
     } else {
         if((this.state == 'PAUSED') || (this.state == 'IDLE')) {
-            this.pauseCallback();   
+            this.pauseCallback();
         }
     }
     this.calledByListener('call_state');
@@ -359,6 +396,10 @@ var Player = Class.create({
   toggleMute: function() {
     this.mute = !this.mute;
     this.player.sendEvent('MUTE', this.mute);
+  },
+
+  toggleQuality: function() {
+    this.quality = !this.quality;
   },
 
   translateCaptions: function(translate_captions) {
@@ -378,3 +419,5 @@ var Player = Class.create({
     eval(this.volumeCallback)();
   }
 });
+
+

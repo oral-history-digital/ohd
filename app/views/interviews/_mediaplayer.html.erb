@@ -22,8 +22,9 @@
 
   <br class="clear" />
   //-->
-  
-  <div id="containerHigh" class="containerVideo">
+
+
+  <div id="mediaContainer" class="containerVideo">
 
     <% if @interview.video == 'Video' %>
 
@@ -50,7 +51,9 @@
         </script>
       </div>
     </div>
-    
+
+    <div id="qualityToggler" style="display: none;"></div>
+
     <% else %>
 
     <div id="playerAudio" class="playerContainer">
@@ -66,6 +69,8 @@
     </div>
 
     <% end %>
+
+
 
     <div class="playerControl">
         <div id="language_select">
@@ -85,7 +90,7 @@
           <div id="volumeOn"></div>
         </div>
 
-        <div class="interviewinfo"><%= @interview.video ? t(:video, :scope => 'media') : t(:audio, :scope => 'media') %>: <%= "#{@interview.duration.minimal}" %></div>
+        <div class="interviewinfo"><%= @interview.video == 1 ? t(:video, :scope => 'media') : t(:audio, :scope => 'media') %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
           <%= t(:tape, :scope => 'media') %>:
           <select id="player_item" name="player_item" onChange="currentPlayer.changeItem(this.value);">
@@ -123,8 +128,6 @@
       <% end %>
 
       var playerSettings = {
-        id                        : '',
-        jwplayerSpace             : '',
         jwplayerFile              : '<%= ActionController::Base.relative_url_root %>/swf/player.swf',
         captionsPluginFile        : '<%= ActionController::Base.relative_url_root %>/swf/captions.swf',
         skin                      : '<%= ActionController::Base.relative_url_root %>/swf/zwar.swf',
@@ -142,20 +145,24 @@
         slideClass                : 'captions-slide',
         call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
-        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
+        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>,
+        quality_text_high         : '<%= t(:high_quality, :scope => "media") %>',
+        quality_text_low          : '<%= t(:low_quality, :scope => "media") %>'
       };
 
       <% if @interview.video == 'Video' %>
 
-        // high quality video player
-        playerSettings.id = 'player_high';
-        playerSettings.jwplayerSpace = 'mediaspace_high';
-        var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
-
         // low quality video player
         playerSettings.id = 'player_low';
         playerSettings.jwplayerSpace = 'mediaspace_low';
+        playerSettings.qualityToggler = true;
         var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
+
+        // high quality video player
+        playerSettings.id = 'player_high';
+        playerSettings.jwplayerSpace = 'mediaspace_high';
+        playerSettings.qualityToggler = true;
+        var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
 
       <% else %>
 
@@ -170,5 +177,33 @@
 	</div>
 
 <% javascript_tag do %>
+
+  function showQualityToggler(event) {
+    player_id = currentPlayer.player.id;
+    //alert(currentPlayer.player.id);
+    currentPlayer.showQualityToggler();
+  }
+
+  function toggleMedia() {
+    $('playerHigh').toggle();
+    $('playerLow').toggle();  
+  }
+
+
+  document.observe('dom:loaded', function() {
+    $('mediaContainer').observe('mouseenter', function() {
+        showQualityToggler();
+    }),
+    $('qualityToggler').observe('click', function(){
+      toggleMedia();
+    });
+  })
+
+  /*
+  $('mediaspace_high').observe('mouseover', showQualityToggler);
+  $('mediaspace_high').observe('mouseout', hideQualityToggler);
+  $('mediaspace_low').observe('mouseover', showQualityToggler);
+  $('mediaspace_low').observe('mouseout', hideQualityToggler);
+  */
   Event.observe('volumeSelect', 'click', setVolume);
 <% end %>

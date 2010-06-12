@@ -191,3 +191,25 @@
     writing-mode: tb-rl;
     text-align: right;
 }
+
+#qualityToggler {
+  position: absolute;
+  background: url(/images/schwarz75.png);
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  color: #fff;
+  font-size: 8pt;
+  text-align: center;
+  line-height: normal;
+  z-index: 10;
+  cursor: pointer;
+}
+
+div.player {
+  position: relative;
+}
+
+#mediaContainer {
+  position: relative;
+}
