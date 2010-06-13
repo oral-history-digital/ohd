@@ -1,5 +1,8 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
+config.middleware.use 'Rack::Maintenance',
+   :file => Rails.root.join('tmp', 'maintenance.html')
+
 # Path Prefix for demo deployment on FnF
 config.action_controller.relative_url_root = "/archiv"
 
