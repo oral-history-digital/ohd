@@ -46,7 +46,7 @@ namespace :import_old do
 
       # TODO: this is dirty - a check vs hard-coded string!
       unless row.field('Online veröffentlicht') == "nicht online" # this is NEVER the case!
-uniq
+
         # handle origin data depending on research state
         origin = row.field('Geburtsort')
         if origin.blank? || origin == 'unerschlossen'
