@@ -8,14 +8,14 @@
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
 
-    <link href="/stylesheets/archiv-standard.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/archiv-design.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/content.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/eaz-content.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/lightbox.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/archiv-portlet.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/search.css" media="screen" rel="stylesheet" type="text/css" />
-     <link href="/stylesheets/transfer.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/archiv-standard.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/archiv-design.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/content.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/eaz-content.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/lightbox.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/archiv-portlet.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/search.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="<%= ActionController::Base.relative_url_root || '' %>/stylesheets/transfer.css" media="screen" rel="stylesheet" type="text/css" />
 
     <link rel="shortcut icon" href="/favicon.ico" />
 </head>
@@ -24,7 +24,7 @@
     <div id="headerIdentityWrapper">
               <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
+        <a href="<%= ActionController::Base.relative_url_root || '' %>/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
        </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
@@ -39,32 +39,13 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><a href="http://demo.zwangsarbeit-archiv.de/" accesskey="0">Startseite</a></li>
-            <li>
-
-                <a href="/?locale=en" title="English version">English</a>
-
-            </li>
-            <li><a href="http://demo.zwangsarbeit-archiv.de/teilsammlungen" title="Geografische Verteilung der Teilsammlungen">Karte</a></li>
-            <li><a href="/faq_index" title="Fragen und Antworten zur Nutzung des Archivs">Hilfe</a></li>
+            <li><a href="<%= ActionController::Base.relative_url_root || '/' %> "><%= I18n.t :home %></a></li>
           </ul>
-          
         </div>
       </div>
 
       <hr class="divider" />
 
-      <div id="baseLogout" class="portlet logoutPortlet">
-          <form action="" method="post">
-            <fieldset>
-              <legend>Abmelden</legend>
-              <p id="logoutUserLogin">
-                hahoffmann@cedis.fu-berlin.de
-                <input id="submit" type="submit" name="buttonLogout" value="Abmelden" />
-              </p>
-            </fieldset>
-          </form>
-      </div>
 
         <div id="baseServices">
             &nbsp;
@@ -86,7 +67,7 @@
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>   
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= ActionController::Base.relative_url_root || '' %>/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -110,14 +91,14 @@
     <hr class="divider" />
 
     <div id="baseContainerFooter">
-        <%= render :partial => '/footer' %>
+        <%#= render :partial => '/footer' %>
     </div>
 
     <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
 
     <div id="printlogo">
         <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-        <img src="/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+        <img src="<%= ActionController::Base.relative_url_root || '' %>/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
 
     </div>
 
