@@ -423,7 +423,7 @@ namespace :import_old do
       else
         photo.caption = row.field('Bildtitel')
         if photo.new_record?
-          files = Dir.glob(File.join(photo_path, "#{row.field('Dateiname')}.{jpg,JPG,png,PNG}"))
+          files = Dir.glob(File.join(photo_path, "#{row.field('Dateiname').sub(/\.\w{3}$/,'')}.{jpg,JPG,png,PNG}"))
           next if files.empty?
           photo.photo = File.open(files.first)
           puts "#{photo.photo_file_name} added"
