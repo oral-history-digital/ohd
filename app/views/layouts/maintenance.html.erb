@@ -25,7 +25,8 @@
               <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="<%= ActionController::Base.relative_url_root || '' %>/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-       </a>
+          <img title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" src="<%= ActionController::Base.relative_url_root || '' %>/images/zwar_logo_de.gif" class="baseHeaderLogo" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte">
+        </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
         <hr class="divider" />
@@ -61,9 +62,11 @@
             <a name="inhalt" accesskey="I"></a>
 
             <div id="innerContent">
-                <h2>Die Seite ist zur Zeit nicht erreichbar wegen <%= ENV['REASON'] || 'Wartungsarbeiten' %></h2>
-                <p>Wir bem&uuml;hen uns um eine z&uuml;gige Probleml&ouml;sung.</p>
-                <p><%= ENV['UNTIL'].nil? ? "Stand: #{Time.now.strftime('%d.%m.%Y %M:%H Uhr')}" : "Voraussichtlich bis: #{ENV['UNTIL']}" %></p>
+              <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
+              <hr/>
+              <h2>Die Seite ist zur Zeit nicht erreichbar wegen <%= ENV['REASON'] || 'Wartungsarbeiten' %></h2>
+              <p>Wir bem&uuml;hen uns um eine z&uuml;gige Probleml&ouml;sung.</p>
+              <p><%= ENV['UNTIL'].nil? ? "Stand: #{Time.now.strftime('%d.%m.%Y %M:%H Uhr')}" : "Voraussichtlich bis: #{ENV['UNTIL']}" %></p>
             </div>
 
             <br class="clear spacer" />
