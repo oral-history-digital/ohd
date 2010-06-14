@@ -17,7 +17,7 @@ class SearchesController < BaseController
       puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
       puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
-      reinstate_category_state
+      #reinstate_category_state
       @search.segment_search!
       @search.open_category = params['open_category']
       @interviews = @search.results
@@ -46,7 +46,7 @@ class SearchesController < BaseController
       puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
       puts "REFRESH SEARCH: #{@search.inspect}"
       @search.search!
-      reinstate_category_state
+      #reinstate_category_state
       @search.segment_search!
       @search.open_category = params['open_category']
       @interviews = @search.results

@@ -32,7 +32,10 @@
         query.each do |category|
           next unless category.is_a?(Category)
           page << "Element.remove('#{active_facet + '_' + category[:id].to_s}');"
-          page << "$('search_facets').insert(new Element('input', { type: 'hidden', name: 'reinstate[]', value: '#{active_facet + '_' + category[:id].to_s}' }));"
+          # NOTE: the reinstate feature was removed because the
+          # non-reinstating behaviour (i.e. where the removed facets are not
+          # added back in as checked categories) is more consistent overall.
+          # page << "$('search_facets').insert(new Element('input', { type: 'hidden', name: 'reinstate[]', value: '#{active_facet + '_' + category[:id].to_s}' }));"
         end
       else
         page << "Element.remove('#{active_facet.singularize}');";
