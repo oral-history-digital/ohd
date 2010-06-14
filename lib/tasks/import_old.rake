@@ -310,32 +310,45 @@ namespace :import_old do
 
     puts "#{tape_media_id}"
 
+    section = 0
+    subsection = 0
+
+    rows = 0
+
     tape = Tape.find(:first, :conditions => { :media_id => tape_media_id.upcase })
 
     unless tape == nil
 
       FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
 
-        unless row.field("Hauptüberschrift") == nil and row.field("Zwischenüberschrift") == nil
+        rows += 1
+
+        unless row.field("Main Heading").blank? and row.field("Subheading").blank?
           timecode = row.field("Timecode")
           segment = Segment.find(:first, :conditions => "media_id LIKE '#{tape_media_id}%' AND timecode = '#{timecode}'")
 
-
-          unless segment == nil
-
-            if row.field("Hauptüberschrift") == nil
-              segment.subheading = row.field("Zwischenüberschrift")
-            else
-              segment.mainheading = row.field("Hauptüberschrift")
+          if segment.nil?
+            puts "Found no segment for #{row.field('Main Heading') || row.field('Subheading')} [#{timecode}]"
+          else
+            unless row.field('Main Heading').blank?
+              section += 1
+              subsection = 0
+              segment.mainheading = row.field('Main Heading')
+              puts "#{section}. [#{timecode}] #{segment.mainheading}"
             end
-
-            segment.save!
-            puts "#{segment.media_id}"
-
+            unless row.field('Subheading').blank?
+              subsection += 1
+              segment.subheading = row.field('Subheading')
+              puts "#{section}.#{subsection}. [#{timecode}] #{segment.subheading}"
+            end
+            segment.save! if segment.changed?
           end
+
         end
 
       end
+
+      puts "Found #{rows} rows in CSV."
 
     end
 
