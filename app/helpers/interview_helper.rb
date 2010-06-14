@@ -25,7 +25,7 @@ module InterviewHelper
                 :subheadings => []
         }
       end
-      if !heading.subheading.blank? || !headings_hash[section_number]
+      if !heading.subheading.blank? && !headings_hash[section_number].nil?
         # add the subheading to the current mainheading
         headings_hash[section_number][:subheadings] << {
                 :title => heading.subheading,
