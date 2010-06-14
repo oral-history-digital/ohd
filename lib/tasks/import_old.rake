@@ -297,6 +297,74 @@ namespace :import_old do
 
   end
 
+
+  desc "Checks captions for completeness of segment import from captions files"
+  task :check_captions, [ :file ] => :environment do |task, args|
+
+    file = args[:file]
+    raise "Please supply a file= argument." if file.nil?
+    raise "No such file #{file}" unless File.exists?(file)
+
+    puts "Checking captions import for '#{file}'"
+
+    missing = 0
+    number_of_segments = 0
+
+    archive_id = nil
+
+    FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+      if archive_id.nil?
+        archive_id = row.field('Media-ID').blank? ? nil : row.field('Media-ID')[/^\w{2}\d{3}/]
+        puts "Interview: #{archive_id}" unless archive_id.nil?
+      end
+      timecode = row.field('Timecode')
+      next if timecode.blank?
+      number_of_segments += 1
+      next unless Segment.find(:first, :conditions => ['timecode = ?', timecode]).nil?
+      missing += 1
+      if missing < 11
+        puts timecode
+      else
+        STDOUT.printf '.'
+        STDOUT.flush
+      end
+    end
+
+    puts
+    puts "#{number_of_segments} captions in file."
+    puts "#{missing} segments missing in database."
+    puts "done."
+
+  end
+
+
+  desc "Checks captions import from all available captions files"
+  task :check_all_captions, [ :dir ] => :environment do |task, args|
+
+    dir = args[:dir] || ENV['dir']
+    raise "No directory given! (supply as argument dir=)" unless File.directory?(dir)
+
+    require "open4"
+
+    @logger = ScriptLogger.new('captions_check')
+
+    Dir.glob(File.join(dir, '**', 'captions_za*.csv')).each do |filename|
+
+      @logger.log "Checking captions from #{filename}."
+
+      Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake import_old:check_captions file=#{filename} --trace") do |pid, stdin, stdout, stderr|
+        stdout.each_line {|line| @logger.log line }
+        errors = []
+        stderr.each_line {|line| errors << line unless line.empty?}
+        @logger.log "\nCaptions-Check - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+      end
+
+    end
+
+  end
+
+
+
   desc "Import von Interview-Überschriften für einzelne Tapes"
   task :headings, [ :file ] => :environment do |task, args|
     file = args[:file] || ENV['file']
@@ -306,51 +374,42 @@ namespace :import_old do
 
     filename = file.split('/').last
 
-    tape_media_id = filename.gsub(/.csv$/, '')
-
-    puts "#{tape_media_id}"
-
     section = 0
     subsection = 0
 
     rows = 0
 
-    tape = Tape.find(:first, :conditions => { :media_id => tape_media_id.upcase })
+    FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
 
-    unless tape == nil
+      rows += 1
 
-      FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
+      unless row.field("Main Heading").blank? and row.field("Subheading").blank?
+        timecode = row.field("Timecode")
+        segment = Segment.find(:first, :conditions => [ 'media_id = ? and timecode = ?', row.field('Media-ID'), timecode ])
 
-        rows += 1
-
-        unless row.field("Main Heading").blank? and row.field("Subheading").blank?
-          timecode = row.field("Timecode")
-          segment = Segment.find(:first, :conditions => "media_id LIKE '#{tape_media_id}%' AND timecode = '#{timecode}'")
-
-          if segment.nil?
-            puts "Found no segment for #{row.field('Main Heading') || row.field('Subheading')} [#{timecode}]"
-          else
-            unless row.field('Main Heading').blank?
-              section += 1
-              subsection = 0
-              segment.mainheading = row.field('Main Heading')
-              puts "#{section}. [#{timecode}] #{segment.mainheading}"
-            end
-            unless row.field('Subheading').blank?
-              subsection += 1
-              segment.subheading = row.field('Subheading')
-              puts "#{section}.#{subsection}. [#{timecode}] #{segment.subheading}"
-            end
-            segment.save! if segment.changed?
+        if segment.nil?
+          puts "Found no segment for #{row.field('Main Heading') || row.field('Subheading')} [#{timecode}]"
+        else
+          unless row.field('Main Heading').blank?
+            section += 1
+            subsection = 0
+            segment.mainheading = row.field('Main Heading')
+            puts "#{section}. [#{timecode}] #{segment.mainheading}"
           end
-
+          unless row.field('Subheading').blank?
+            subsection += 1
+            segment.subheading = row.field('Subheading')
+            puts "#{section}.#{subsection}. [#{timecode}] #{segment.subheading}"
+          end
+          segment.save! if segment.changed?
         end
 
       end
 
-      puts "Found #{rows} rows in CSV."
-
     end
+
+    puts "Found #{rows} rows in CSV."
+
 
   end
 
