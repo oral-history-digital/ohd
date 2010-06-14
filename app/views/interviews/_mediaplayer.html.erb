@@ -2,28 +2,6 @@
 <%= javascript_tag "var headings = null;" %>
 
 
-<!--<div id="leftColumn">-->
-
-  <!--
-  <div id="tabsVideo">
-    <ul>
-      <% if @interview.video == 'Video' %>
-        <li id="tabHigh" class="active">
-          <p onclick="currentPlayer = players['player_high']; Element.show('playerHigh'); Element.hide('playerLow'); Element.addClassName('tabHigh', 'active'); Element.removeClassName('tabLow', 'active');">Video (hohe Qualität)</p>
-        </li>
-        <li id="tabLow">
-          <p onclick="currentPlayer = players['player_low'];Element.show('playerLow'); Element.addClassName('tabLow', 'active'); Element.hide('playerHigh'); Element.removeClassName('tabHigh', 'active');">Video (mittlere Qualität)</p>
-        </li>
-      <% else %>
-        <li id="tabAudio" class="active"><p>Audio</p></li>
-      <% end %>
-    </ul>
-  </div>
-
-  <br class="clear" />
-  //-->
-
-
   <div id="mediaContainer" class="containerVideo">
 
     <% if @interview.video == 'Video' %>
