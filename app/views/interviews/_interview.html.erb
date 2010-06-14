@@ -3,7 +3,7 @@
   <ul class="data">
     <li>
       <span class="label"><%= Interview.human_attribute_name('duration') %></span>
-      <span class="value"><%= interview.video ? t(:video_interview, :scope => 'media') : t(:audio_interview, :scope => 'media') %>&nbsp;<%= interview.duration.minimal %></span>
+      <span class="value"><%= interview.video == 1 ? t(:video_interview, :scope => 'media') : t(:audio_interview, :scope => 'media') %>&nbsp;<%= interview.duration.minimal %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('interview_date') %></span>

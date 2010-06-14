@@ -30,7 +30,9 @@
       </div>
     </div>
 
-    <div id="qualityToggler" style="display: none;"></div>
+    <div id="qualityToggler" style="display: none;">
+      <span id="qualityToggler-high" class="active"><%= t(:high_quality, :scope => "media") %></span><span id="qualityToggler-low"><%= t(:low_quality, :scope => "media") %></span>
+    </div>
 
     <% else %>
 
@@ -179,12 +181,6 @@
       toggleMedia();
     });
   })
-
-  /*
-  $('mediaspace_high').observe('mouseover', showQualityToggler);
-  $('mediaspace_high').observe('mouseout', hideQualityToggler);
-  $('mediaspace_low').observe('mouseover', showQualityToggler);
-  $('mediaspace_low').observe('mouseout', hideQualityToggler);
-  */
+  
   Event.observe('volumeSelect', 'click', setVolume);
 <% end %>

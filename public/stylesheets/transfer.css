@@ -194,16 +194,39 @@
 
 #qualityToggler {
   position: absolute;
-  background: url(/images/schwarz75.png);
-  top: 10px;
+  padding: 0;
+  top: 20px;
   left: 10px;
-  padding: 5px 10px;
-  color: #fff;
   font-size: 8pt;
   text-align: center;
   line-height: normal;
   z-index: 10;
   cursor: pointer;
+}
+
+#qualityToggler span {
+  background: url(/images/schwarz75.png);
+  color: #fff;
+  padding: 5px;
+}
+
+#qualityToggler span:first-child {
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-bottom-left-radius: 2px;
+  -webkit-border-top-left-radius: 2px;
+  -moz-border-top-left-radius: 2px;
+}
+
+#qualityToggler span:last-child {
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-bottom-right-radius: 2px;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-top-right-radius: 2px;
+}
+
+#qualityToggler span.active {
+  background: url(/images/weiss75.png);
+  color: #000;
 }
 
 div.player {

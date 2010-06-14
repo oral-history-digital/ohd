@@ -355,18 +355,18 @@ var Player = Class.create({
       //this.hideQualityToggler();
       clearTimeout(this.qualityTimer);
       //$(this.cfg.jwplayerSpace).insert('<div id="qualityToggler">TEST</div>');
-      var togglerContent = '';
-      if(this.cfg.id.indexOf("high") >= 0) {
-        togglerContent = '<strong>&radic; '+this.cfg.quality_text_high+'</strong><br />'+this.cfg.quality_text_low;
-      } else {
-        togglerContent = this.cfg.quality_text_high+'<br /><strong>&radic; '+this.cfg.quality_text_low+'</strong>';
-      }
       /*$('mediaContainer').insert('<div id="qualityToggler">'+togglerContent+'</div>');
       $('qualityToggler').observe('click', function(){
         toggleMedia();
       });*/
-      $('qualityToggler').innerHTML = togglerContent;
       new Effect.Appear('qualityToggler', { duration: 0.25 });
+      if(this.cfg.id.indexOf("high") >= 0) {
+        $('qualityToggler-high').addClassName('active');
+        $('qualityToggler-low').removeClassName('active');
+      } else {
+        $('qualityToggler-high').removeClassName('active');
+        $('qualityToggler-low').addClassName('active');
+      }
       this.qualityTimer = setTimeout(this.hideQualityToggler.bind(this), 3000);
     }
   },
