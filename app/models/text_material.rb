@@ -3,7 +3,7 @@ class TextMaterial < ActiveRecord::Base
   belongs_to :interview
 
   has_attached_file :document,
-                    :url => '/archive_text_materials/:interview/:basename.:extension',
+                    :url => (ActionController::Base.relative_url_root || '') + '/archive_text_materials/:interview/:basename.:extension',
                     :path => ':rails_root/public/archive_text_materials/:interview/:basename.:extension'
 
   DOCUMENT_TYPES = [
