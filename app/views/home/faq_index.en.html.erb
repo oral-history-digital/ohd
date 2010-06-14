@@ -2,16 +2,14 @@
 
 <ul>
 	<li>
-        <a href="inhaltlich/index.html">Questions About the Archive Contents </a>
-    </li>
-
-    <li>
-        <a href="suche/index.html">Questions About Searching </a>
-    </li>
-
-    <li>
-        <a href="support/index.html">Technical Questions </a>
-    </li>
+    <%= link_to 'Questions About the Archive Contents', home_path(:page => "faq_archive_contents") %>
+  </li>
+  <li>
+    <%= link_to 'Questions About Searching', home_path(:page => "faq_searching") %>
+  </li>
+  <li>
+    <%= link_to 'Technical Questions', home_path(:page => "faq_technical") %>
+  </li>
 </ul>
 
 <p>In this section you can find technical advice as well as information about the archive contents and using the archive. <br />

@@ -2,16 +2,14 @@
 
 <ul>
 	<li>
-        <a href="inhaltlich/index.html">Inhaltliche Fragen</a>
-    </li>
-
-    <li>
-        <a href="suche/index.html">Fragen zur Recherche</a>
-    </li>
-
-    <li>
-        <a href="support/index.html">Fragen rund um die Technik</a>
-    </li>
+    <%= link_to 'Inhaltliche Fragen', home_path(:page => "faq_archive_contents") %>
+  </li>
+  <li>
+    <%= link_to 'Fragen zur Recherche', home_path(:page => "faq_searching") %>
+  </li>
+  <li>
+    <%= link_to 'Fragen rund um die Technik', home_path(:page => "faq_technical") %>
+  </li>
 </ul>
 
 <p>In diesem Bereich finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs. <br />
