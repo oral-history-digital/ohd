@@ -111,6 +111,10 @@ DEF
     segments.headings.count > 0 ? true : false
   end
 
+  def segmented?
+    @segmented ||= !segments.empty?
+  end
+
   # this should be handled by the view
   # def translated
   #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'

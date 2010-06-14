@@ -40,4 +40,18 @@ module InterviewHelper
     headings_hash
   end
 
+
+  # formats the languages for the transcript language tabs
+  def formatted_languages(interview)
+    truncate_language_names = interview.languages.size > 1
+    interview.languages.map do |lang|
+      lang_name = t(lang, :scope => 'categories.languages').downcase
+      if truncate_language_names && lang_name.length > 8
+        truncate(lang_name, 5, '.')
+      else
+        lang_name
+      end
+    end.join(' / ')
+  end
+
 end
