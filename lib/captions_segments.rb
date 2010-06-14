@@ -68,21 +68,21 @@ class CaptionsSegments < Nokogiri::XML::SAX::Document
   def end_element(element)
     case element
     when 'transcript'
-      @segment.transcript = @characters
+      @segment.transcript = @characters.strip
 
     when 'translation'
-      @segment.translation = @characters
+      @segment.translation = @characters.strip
 
     when 'mainheading'
-      @segment.mainheading = @characters
+      @segment.mainheading = @characters.strip
       @sections_imported += 1
 
     when 'subheading'
-      @segment.subheading = @characters
+      @segment.subheading = @characters.strip
       @sections_imported += 1
 
     when 'speaker'
-      @segment.speaker = @characters
+      @segment.speaker = @characters.strip
       unless @speaker == @segment.speaker
         @segment.speaker_change = true
         @speaker = @segment.speaker
