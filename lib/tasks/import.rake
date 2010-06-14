@@ -167,6 +167,21 @@ namespace :import do
 
     end
 
+    Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake data:segment_duration --trace") do |pid, stdin, stdout, stderr|
+      stdout.each_line {|line| @logger.log line }
+      errors = []
+      stderr.each_line {|line| errors << line unless line.empty?}
+      @logger.log "\nRecalculating Segment Duration - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+    end
+
+    Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && rake solr:reindex:all --trace") do |pid, stdin, stdout, stderr|
+      stdout.each_line {|line| @logger.log line }
+      errors = []
+      stderr.each_line {|line| errors << line unless line.empty?}
+      @logger.log "\nRecalculating Segment Duration - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+    end
+    
+
   end
 
 end
