@@ -23,12 +23,6 @@ class BaseController < ResourceController::Base
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
   end
 
-  # This retrieves the query params of the current search from the session.
-  # It's important to deactivate this in all contexts that perform a new search.
-  def current_query_params
-    @query_params = session[:query] || {}
-  end
-
   def render_localized(options = nil, extra_options = {}, &block)
     if !options[:template].blank?
       options[:template] = localize_template_path(options[:template])

@@ -130,7 +130,7 @@ DEF
     @facets[facet_name.to_sym] ||= \
     if @search.is_a?(Sunspot::Search)
       facet = @search.facet(facet_name.to_sym)
-      puts "FACET NAME: #{facet_name}  => #{facet}"
+      # puts "FACET NAME: #{facet_name}  => #{facet}"
       if facet.blank?
         []
       elsif facet.rows.blank?
@@ -214,7 +214,7 @@ DEF
     @query = current_query_params.select{|k,v| !v.nil? }
     @query_facets = nil
     @segments = {}
-    puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
+    # puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
 
@@ -235,7 +235,7 @@ DEF
   def matching_segments_for(archive_id)
     archive_id.upcase! if archive_id.is_a?(String)
     match = @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
-    puts "\n\n@@@@ MATCHING SEGMENTS FOR #{archive_id.inspect}:\n#{match.inspect}"
+    # puts "\n\n@@@@ MATCHING SEGMENTS FOR #{archive_id.inspect}:\n#{match.inspect}"
     match
   end
 
@@ -274,11 +274,11 @@ DEF
 
       end
 
-      puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
+      # puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
 
-      puts "\n\n@@@@ RAW RESULTS:"
+      # puts "\n\n@@@@ RAW RESULTS:"
       first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
-      puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
+      # puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
 
       # iterate over results, not subsearch!
 
@@ -311,12 +311,12 @@ DEF
     else
       search = Search.new do |search|
         (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |attr|
-          puts "-> setting search query param: #{attr} = #{query_params[attr]}"
+          # puts "-> setting search query param: #{attr} = #{query_params[attr]}"
           search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
-          puts "search.#{attr} = #{search.send(attr.to_s)}"
+          # puts "search.#{attr} = #{search.send(attr.to_s)}"
         end
       end
-      puts "Search.query_params = #{search.query_params}"
+      # puts "Search.query_params = #{search.query_params}"
       search
     end
   end
