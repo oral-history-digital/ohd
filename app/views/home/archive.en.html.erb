@@ -23,11 +23,24 @@
         <h2>Search Options</h2>
         <p>There are three ways to get started on your research in the archive:<br /><br /></p>
         <hr />
-        <p>Content categories in the menu on the right provide access structured by theme.<br /><strong><a href="hilfe/suche/recherchemoeglichkeiten.html">More About the Categories »</a><br /></strong></p>
+        <p>Content categories in the menu on the right provide access structured by theme.<br /><strong>
+          <%= link_to 'More About the Categories »',
+                home_path(:page => "faq_searching", :anchor => "recherchemoeglichkeiten") %>
+          <br /></strong></p>
         <hr />
-        <p>Use the map of the geographical distribution of the subsets of the collection for access by region.<br /><strong><a href="/collections" title="Karte">Map »</a><br /><a href="../sammlung/teilsammlungen/index.html" target="_blank" title="Subset Collections">More About the Subsets of the Collection »</a><br /></strong></p>
+        <p>Use the map of the geographical distribution of the subsets of the collection for access by region.<br /><strong>
+          <%= link_to "#{(t :map)} »", collections_url %>
+          <br />
+          <%= link_to "More About the Subsets of the Collection »",
+                "http://www.zwangsarbeit-archiv.de/en/sammlung/teilsammlungen/index.html",
+                :target => "_blank",
+                :title => "Subset Collections" %>
+          <br /></strong></p>
         <hr />
-        <p>A full text search provides broad and intuitive access.<br /><strong><a href="suche/index.html" title="Search the Interviews">Full Text Search »</a><br /><a href="hilfe/suche/suche-allgemein.html" title="What search options are there?">More About Searching »</a></strong></p>
+        <p>A full text search provides broad and intuitive access.<br /><strong>
+          <%= link_to 'More About Searching »',
+                home_path(:page => "faq_searching", :anchor => "suche-allgemein") %>
+          </strong></p>
         <hr />
         <h2 class="clear">FAQs</h2>
-        <p>Please see the <a href="hilfe/index.html" title="Help">Help Page</a> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
+        <p>Please see the <%= link_to 'Help Page', home_path(:page => "faq_index") %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
