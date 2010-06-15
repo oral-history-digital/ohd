@@ -15,8 +15,8 @@ class Interview < ActiveRecord::Base
   
   has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
-                    :url => "/archive_images/stills/:basename_still_:style.:extension",
-                    :path => ":rails_root#{ApplicationController.relative_url_root}/public/archive_images/stills/:basename_still_:style.:extension",
+                    :url => (ApplicationController.relative_url_root || '') + "/archive_images/stills/:basename_still_:style.:extension",
+                    :path => ":rails_root/public/archive_images/stills/:basename_still_:style.:extension",
                     :default_url => "/archive_images/missing_still.jpg"
 
   Category::ARCHIVE_CATEGORIES.each do |category|
