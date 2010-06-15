@@ -36,6 +36,7 @@ module Devise
             end
           end
           @@registration_field_names.each do |field|
+            next if [:email, :first_name, :last_name, :tos_agreement].include?(field)
             UserRegistration.class_eval <<EVAL
               def #{field}
                 @#{field}

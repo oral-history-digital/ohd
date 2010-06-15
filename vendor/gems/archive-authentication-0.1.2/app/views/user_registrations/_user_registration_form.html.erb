@@ -18,7 +18,7 @@
                 when :text, 'Text'
                     f.text_area(field.to_sym)
                 when :boolean, 'Boolean'
-                    f.check_box(field.to_sym) + content_tag(:span, t(field.to_s + '_explanation', :scope => 'devise.registration_fields'))
+                    f.check_box(field.to_sym) + content_tag(:span, t(field.to_s + '_explanation', :scope => 'devise.registration_fields'), :style => 'float: none;')
                 else
                     f.text_field(field.to_sym)
                 end, :class => 'formInput'

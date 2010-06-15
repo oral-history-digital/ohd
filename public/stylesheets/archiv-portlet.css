@@ -204,8 +204,9 @@
 
 #flashAlert {
     color: #8B0F09;
-    background-color: #fff;
-    padding: 0.33em;
+    padding: 0 0 0.33em 0;
+    margin-bottom: 0.66em;
+    border-bottom: 1px solid #999281;
 }
 
 h1.formHeader,
@@ -312,4 +313,14 @@ form.user_registration textarea {
 
 form.user_registration textarea {
     height: 100px;
+}
+
+.formLabel .fieldWithErrors label {
+    color: #840f08;
+}
+
+#innerContent .formInput div.fieldWithErrors input[type=text],
+#innerContent .formInput div.fieldWithErrors textarea,
+#innerContent .formInput div.fieldWithErrors select {
+    border-color: #990000;
 }

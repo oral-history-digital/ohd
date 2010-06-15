@@ -23,7 +23,7 @@ end
 
 desc "prepare to act on the demo server"
 task :demo do
-  set :environment, :production
+  set :environment, :demo
   set :application, 'demo'
   set :deploy_to, "/data/applications/zwar/#{application}"
   role :app, "fnf.cedis.fu-berlin.de"
@@ -69,7 +69,7 @@ namespace :deploy do
     run "ln -s #{shared_path}/public/archive_text_materials #{release_path}/public/archive_text_materials"
     # symlink the prebuilt unicode gem
     run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
-    unless environment == :production
+    unless [:production, :demo ].include?(environment)
       run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
     end
   end
@@ -82,7 +82,14 @@ namespace :deploy do
         run "sed 's/\\/images/\\/archiv\\/images/g' #{current_release}/public/stylesheets/#{stylesheet} > #{current_release}/public/stylesheets/#{stylesheet}.new"
         run "mv #{current_release}/public/stylesheets/#{stylesheet}.new #{current_release}/public/stylesheets/#{stylesheet}"
       end
-
+    end
+    if environment == :demo
+      # this places a /demo before each image url
+      Dir.glob(File.join(current_release, 'public', 'stylesheets', '*.css')).each do |file|
+        stylesheet = file.split('/').last
+        run "sed 's/\\/images/\\/demo\\/images/g' #{current_release}/public/stylesheets/#{stylesheet} > #{current_release}/public/stylesheets/#{stylesheet}.new"
+        run "mv #{current_release}/public/stylesheets/#{stylesheet}.new #{current_release}/public/stylesheets/#{stylesheet}"
+      end
     end
   end
 

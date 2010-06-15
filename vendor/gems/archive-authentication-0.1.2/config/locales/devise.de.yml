@@ -33,6 +33,7 @@ de:
       not_yet_registered: 'Noch nicht registriert?'
       link_to: 'Zur Registrierung &raquo;'
       submit: 'Registrierung senden'
+      successful: 'Ihre Registrierung ist bei uns eingegangen.'
       signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
       updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
       destroyed: 'Ihre Zugangsdaten wurden erfolgreich gelöscht.'

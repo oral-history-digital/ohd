@@ -19,10 +19,10 @@
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
-      <span class="value"><%= interview.languages.map{|f| t(f, :scope => 'categories.languages')}.join(' / ') %>
-        <% unless interview.language.downcase == "deutsch" %>,
+      <span class="value"><%= interview.languages.map{|f| t(f, :scope => 'categories.languages')}.join(' / ') -%>
+        <% unless interview.language.downcase == "deutsch" -%>,
         <%= interview.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
-        <% end %>
+        <% end -%>
       </span>
     </li>
     <% %w( translators researchers proofreaders segmentators ).each do |attr| %>

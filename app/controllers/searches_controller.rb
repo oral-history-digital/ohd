@@ -14,8 +14,8 @@ class SearchesController < BaseController
   new_action do
     before do
       @search = Search.from_params(@query_params || params)
-      puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
-      puts "NEW SEARCH: #{@search.inspect}"
+      #puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
+      #puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
       #reinstate_category_state
       @search.segment_search!
@@ -25,7 +25,7 @@ class SearchesController < BaseController
       session[:query] = @search.query_params
     end
     wants.js do
-      puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
+      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
@@ -43,8 +43,8 @@ class SearchesController < BaseController
   index do
     before do
       @search = Search.from_params(@query_params || params)
-      puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
-      puts "REFRESH SEARCH: #{@search.inspect}"
+      #puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
+      #puts "REFRESH SEARCH: #{@search.inspect}"
       @search.search!
       #reinstate_category_state
       @search.segment_search!
@@ -55,7 +55,7 @@ class SearchesController < BaseController
 
     end
     wants.js do
-      puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
+      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
