@@ -5,9 +5,10 @@
     <% unless @tapes == nil -%>
       <% @tapes.each do |tape| -%>
         <track>
-          <location><%= tape.media_id + ".flv" %></location>
+          <location><%= "#{tape.interview.archive_id.upcase}/#{tape.interview.archive_id.upcase}_archive/data/av/flv/#{tape.media_id}.flv" %></location>
           <meta rel="captions"><%= transcript_interview_tape_path(:id => tape.id, :format => :xml) %></meta>
           <meta rel="start">10</meta>
+          <meta rel="streamer">rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv</meta>
           <image><%= tape.interview.still_image.url(:original) -%></image>
         </track>
       <% end -%>
