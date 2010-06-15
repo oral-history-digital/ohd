@@ -27,10 +27,10 @@ var TableOfContents = Class.create({
     },
 
     toggleSection: function(section) {
-        this.toggleSectionNumber(this.parseSectionNumber(section)[0], false);
+        this.toggleSectionNumber(this.parseSectionNumber(section)[0], false, false);
     },
 
-    toggleSectionNumber: function(sectionNum, closeAll) {
+    toggleSectionNumber: function(sectionNum, closeAll, openOnly) {
         var toggledSection = this.getHeading([sectionNum, 0]);
         if((closeAll) && (sectionNum != 0)) {
             for(var i=0; i < this.mainHeadings.length; i++) {
@@ -44,7 +44,7 @@ var TableOfContents = Class.create({
             }
         }
         if(toggledSection) {
-            if(toggledSection.hasClassName('open')) {
+            if(toggledSection.hasClassName('open') && !openOnly) {
                 toggledSection.addClassName('closed');
                 toggledSection.removeClassName('open');
             } else {
@@ -100,7 +100,7 @@ var TableOfContents = Class.create({
 
             // toggleSection on mainheading change
             if(section != this.section) {
-                this.toggleSectionNumber(section, true);
+                this.toggleSectionNumber(section, true, true);
                 this.section = section;
             }
 
