@@ -1,3 +1,4 @@
+<% cache [ @locale, @collection.project_id ].join('/') do -%>
 <h1><%= Collection.human_name %> &quot;<%= t(@collection.name, :scope => 'collections.name') %>&quot;</h1>
 
 <p>
@@ -36,3 +37,4 @@
 <div class="teaserList">
   <%= render :partial => '/interviews/result', :collection => @collection.interviews, :locals => { :search => @search } %>
 </div>
+<% end -%><%# cache -%>

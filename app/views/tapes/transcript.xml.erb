@@ -1,3 +1,4 @@
+<% cache [ @tape.interview.to_param, @tape.media_id, 'transcript'].join('/') do -%>
 <?xml version="1.0" encoding="utf-8"?>
 <tt xmlns="http://www.w3.org/2006/10/ttaf1">
   <body>
@@ -18,3 +19,4 @@
 
   </body>
 </tt>
+<% end -%><%# cache -%>

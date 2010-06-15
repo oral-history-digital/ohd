@@ -1,3 +1,4 @@
+<% cache [ @locale, @interview.to_param, 'headings'].join('/') do -%>
 <table id="interview_headings" class="mainheadings">
   <tbody>
     <% headings_hash = hashed_headings_from_array(@interview.segments.headings) %>
@@ -35,3 +36,4 @@
 
     
 <% end %>
+<% end %><%# cache %>

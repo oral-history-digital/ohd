@@ -69,7 +69,7 @@ namespace :deploy do
     run "ln -s #{shared_path}/public/archive_text_materials #{release_path}/public/archive_text_materials"
     # symlink the prebuilt unicode gem
     run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
-    if [:production, :demo ].include?(environment)
+    if environment == :demo
       run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
     end
   end

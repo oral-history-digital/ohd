@@ -1,3 +1,4 @@
+<% cache [ @locale, @interview.to_param, 'show'].join('/') do -%>
 <div class="intervieweeTitle">
   <h1><%= @interview.full_title %></h1>
   <p>
@@ -55,3 +56,4 @@
 <div class="compact clear">&nbsp;</div>
 
 <%= render :partial => "gallery" %>
+<% end %><%# cache %>
