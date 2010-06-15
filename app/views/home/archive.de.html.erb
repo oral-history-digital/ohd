@@ -1,29 +1,82 @@
-        <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
+<h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
 
-        <div class="contentImagesLeft">
-          <div class="contentImage150">
-            <img src="<%= image_path '180_DolezalMiroslavPhot09_150.jpg' %>" alt="Doležal, Miroslav" title="" />
-            <h6>Doležal, Miroslav</h6>
-          </div>
-          <div class="contentImage150">
-            <img src="<%= image_path 'ZA007_03_150.jpg' %>" alt="Poleschtschuk, Anna Iwanowna" title="" />
-            <h6>Poleschtschuk, Anna Iwanowna</h6>
-          </div>
-        </div>
+<div class="contentImagesLeft">
+  <div class="contentImage150">
+    <img src="<%= image_path '180_DolezalMiroslavPhot09_150.jpg' %>" alt="Doležal, Miroslav" title=""/>
+    <h6>Doležal, Miroslav</h6>
+  </div>
+  <div class="contentImage150">
+    <img src="<%= image_path 'ZA007_03_150.jpg' %>" alt="Poleschtschuk, Anna Iwanowna" title=""/>
+    <h6>Poleschtschuk, Anna Iwanowna</h6>
+  </div>
+</div>
 
-        <p> </p>
+<p></p>
 
-        <p>Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern, die während der Zeit des Nationalsozialismus Zwangsarbeit geleistet haben. Das Archiv setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden, finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;, in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt. Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.</p>
-
-        <h2> </h2>
-        <h2>Recherchemöglichkeiten</h2>
-        <p>Der Einstieg in eine Recherche in dem Archiv ist über die folgenden drei Wege möglich:<br /><br /></p>
-        <hr />
-        <p>Inhaltliche Kategorien (rechts in der Navigation) für einen thematisch strukturierten Zugang<br /><strong><a href="hilfe/suche/recherchemoeglichkeiten.html" title="Welche Recherchemöglichkeiten gibt es?">mehr zu den Kategorien »</a><br /></strong></p>
-        <hr />
-        <p>Karte der geographischen Verteilung der Teilsammlungen für einen regionalen Zugang<br /><strong><a href="/collections" title="Karte">Karte »</a><br /><a href="../sammlung/teilsammlungen/index.html" target="_blank" title="Teilsammlungen">mehr zu den Teilsammlungen »</a><br /></strong></p>
-        <hr />
-        <p>Volltextsuche für einen breiten und intuitiven Zugang<br /><strong><a href="suche/index.html" title="Suche in den Interviews">Volltextsuche »</a><br /><a href="hilfe/suche/suche-allgemein.html" title="Wie kann ich die Volltextsuche nutzen?">mehr zur Suche »</a></strong></p>
-        <hr />
-        <h2 class="clear">Fragen und Antworten</h2>
-        <p>Über die <a href="hilfe/index.html" title="Hilfe">Hilfe</a> auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs. Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">mail@zwangsarbeit-archiv.de</a></p>
+<p>
+  Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
+  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern,
+  die während der Zeit des Nationalsozialismus Zwangsarbeit geleistet haben.
+  Das Archiv setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
+  finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
+  in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
+  Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
+  für Bildung und Wissenschaft zur Verfügung.
+</p>
+<h2></h2>
+<h2>Recherchemöglichkeiten</h2>
+<p>
+  Der Einstieg in eine Recherche in dem Archiv ist über die folgenden drei Wege möglich:
+  <br/>
+  <br/>
+</p>
+<hr/>
+<p>
+  Inhaltliche Kategorien (rechts in der Navigation) für einen thematisch strukturierten Zugang
+  <br/>
+  <strong>
+    <%= link_to 'mehr zu den Kategorien »',
+                home_path(:page => "faq_searching", :anchor => "recherchemoeglichkeiten"),
+                :title => "Welche Recherchemöglichkeiten gibt es?" %>
+    <br/>
+  </strong>
+</p>
+<hr/>
+<p>
+  Karte der geographischen Verteilung der Teilsammlungen für einen regionalen Zugang
+  <br/>
+  <strong>
+    <%= link_to "#{(t :map)} »", collections_url, :title => "Geografische Verteilung der Teilsammlungen" %>
+    <br/>
+    <%= link_to "mehr zu den Teilsammlungen »",
+                "http://www.zwangsarbeit-archiv.de/sammlung/teilsammlungen/index.html",
+                :target => "_blank",
+                :title => "Teilsammlungen" %>
+    <br/>
+  </strong>
+</p>
+<hr/>
+<p>
+  Volltextsuche für einen breiten und intuitiven Zugang
+  <br/>
+  <strong>
+    <!--<a href="suche/index.html" title="Suche in den Interviews">Volltextsuche »</a>
+    <br/>-->
+    <%= link_to 'mehr zur Suche »',
+                home_path(:page => "faq_searching", :anchor => "suche-allgemein"),
+                :title => "Wie kann ich die Volltextsuche nutzen?" %>
+  </strong>
+</p>
+<hr/>
+<h2 class="clear">Fragen und Antworten</h2>
+<p>
+  Über die
+  <%= link_to (t :faq),
+              home_path(:page => "faq_index"),
+              :title => "Fragen und Antworten zur Nutzung des Archivs" %>
+  auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
+  Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
+  <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">
+    mail@zwangsarbeit-archiv.de
+  </a>
+</p>
