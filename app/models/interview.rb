@@ -115,6 +115,10 @@ DEF
     @segmented ||= !segments.empty?
   end
 
+  def right_to_left
+    languages.map{|l| l.name }.include? 'Hebräisch' ? true : false
+  end
+
   # this should be handled by the view
   # def translated
   #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
