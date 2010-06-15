@@ -31,6 +31,7 @@
   <br/>
 </p>
 <hr/>
+<br/>
 <p>
   Inhaltliche Kategorien (rechts in der Navigation) für einen thematisch strukturierten Zugang
   <br/>
@@ -42,13 +43,13 @@
   </strong>
 </p>
 <hr/>
+<br/>
 <p>
   Karte der geographischen Verteilung der Teilsammlungen für einen regionalen Zugang
   <br/>
   <strong>
     <%= link_to "#{(t :map)} »", collections_url, :title => "Geografische Verteilung der Teilsammlungen" %>
-    <br/>
-    <%= link_to "mehr zu den Teilsammlungen »",
+    <%#= link_to "mehr zu den Teilsammlungen »",
                 "http://www.zwangsarbeit-archiv.de/sammlung/teilsammlungen/index.html",
                 :target => "_blank",
                 :title => "Teilsammlungen" %>
@@ -56,6 +57,7 @@
   </strong>
 </p>
 <hr/>
+<br/>
 <p>
   Volltextsuche für einen breiten und intuitiven Zugang
   <br/>
@@ -65,6 +67,7 @@
     <%= link_to 'mehr zur Suche »',
                 home_path(:page => "faq_searching", :anchor => "suche-allgemein"),
                 :title => "Wie kann ich die Volltextsuche nutzen?" %>
+    <br/>
   </strong>
 </p>
 <hr/>
