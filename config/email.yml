@@ -1,0 +1,4 @@
+production:
+  :address: mail.cedis.fu-berlin.de
+  :port: 25
+  :domain: dev-02
