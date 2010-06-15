@@ -45,7 +45,7 @@ var playerDefaults = {
   onVolume                    : function(){},
   whilePlaying                : function(){},
 
-  delay                       : 500
+  delay                       : 750
 }
 
 var players = new Array();
