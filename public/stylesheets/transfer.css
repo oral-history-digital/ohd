@@ -239,23 +239,34 @@ div.player {
 
 #extendedControlbar {
   position: absolute;
-  top: 278px;
+  top: 284px;
   left: 0;
-  width: 390px;
-  height: 21px;
-  background-color: #990000;
+  display: inline-block;
+  width: auto;
+  height: 20px;
+  background-color: #aa2d2d;
+  padding: 0;
   color: #999999;
   font-size: 8pt;
-  padding: 2px 5px;
 }
 
 #extendedControlbar span {
-  margin-right: 5px;
+  display: inline;
+  margin: 0;
+  width: 80px;
+  padding: 4px 5px;
+  text-align: center;
   cursor: pointer;
+  background-color: #990000;
 }
 
 #extendedControlbar span.active {
-  margin-right: 5px;
   color: #fff;
+  background-color: #a21818;
+  height: 20px;
   cursor: auto;
+}
+
+#extendedControlbar-low {
+  margin-left: 1px;
 }

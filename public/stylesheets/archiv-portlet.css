@@ -196,6 +196,13 @@
 	width: 150px;
 }
 
+/* login / password change */
+form.signup #user_account_login,
+form.signup #user_account_password,
+form #user_account_email {
+    width: 220px;
+}
+
 
 /* New Form Styles */
 #flashNotice {
