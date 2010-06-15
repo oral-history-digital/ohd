@@ -8,7 +8,7 @@
       <% @tape.segments.each do |segment| -%>
 
 
-      <p heading="<%= "#{segment.section}" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= segment.transcript.strip -%></span><span lang="de" class="caption_translation"><%= segment.translation.strip -%></span></p>
+      <p heading="<%= "#{segment.section}" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= format_transcript segment.transcript -%></span><span lang="de" class="caption_translation"><%= format_transcript segment.translation -%></span></p>
 
       <% end -%>
       <% unless @tape.segments.empty? -%>
