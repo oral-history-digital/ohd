@@ -116,7 +116,7 @@ DEF
   end
 
   def right_to_left
-    languages.map{|l| l.name }.include? 'Hebräisch' ? true : false
+    languages.map{|l| l.name }.include?('Hebräisch') ? true : false
   end
 
   # this should be handled by the view
