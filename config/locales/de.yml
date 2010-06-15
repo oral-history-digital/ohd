@@ -126,8 +126,8 @@ de:
     audio: 'Audio'
     tape: 'Band'
     of_tapes: 'von'
-    low_quality: 'mittlere Qualität'
-    high_quality: 'hohe Qualität'
+    low_quality: 'Mittlere Qualität'
+    high_quality: 'Hohe Qualität'
 
   location:
     in: 'in'

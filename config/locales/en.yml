@@ -126,8 +126,8 @@ en:
     audio: 'Audio'
     tape: 'Tape'
     of_tapes: 'of'
-    low_quality: 'lower quality'
-    high_quality: 'high quality'
+    low_quality: 'Lower quality'
+    high_quality: 'High quality'
 
   location:
     in: 'in'

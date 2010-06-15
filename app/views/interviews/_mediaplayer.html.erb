@@ -30,8 +30,9 @@
       </div>
     </div>
 
-    <div id="qualityToggler" style="display: none;">
-      <span id="qualityToggler-high" class="active"><%= t(:high_quality, :scope => "media") %></span><span id="qualityToggler-low"><%= t(:low_quality, :scope => "media") %></span>
+    <div id="extendedControlbar" style="display: none;">
+      <span id="extendedControlbar-high" class='active' onClick="toggleMedia('high');"><%= t(:high_quality, :scope => "media") %></span>
+      <span id="extendedControlbar-low" onClick="toggleMedia('low');"><%= t(:low_quality, :scope => "media") %></span>
     </div>
 
     <% else %>
@@ -125,9 +126,7 @@
         slideClass                : 'captions-slide',
         call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
         startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
-        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>,
-        quality_text_high         : '<%= t(:high_quality, :scope => "media") %>',
-        quality_text_low          : '<%= t(:low_quality, :scope => "media") %>'
+        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
       };
 
       <% if @interview.video == 'Video' %>
@@ -135,13 +134,13 @@
         // low quality video player
         playerSettings.id = 'player_low';
         playerSettings.jwplayerSpace = 'mediaspace_low';
-        playerSettings.qualityToggler = true;
+        playerSettings.extendedControlbar = true;
         var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
 
         // high quality video player
         playerSettings.id = 'player_high';
         playerSettings.jwplayerSpace = 'mediaspace_high';
-        playerSettings.qualityToggler = true;
+        playerSettings.extendedControlbar = true;
         var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
 
       <% else %>
@@ -158,28 +157,30 @@
 
 <% javascript_tag do %>
 
-  function showQualityToggler(event) {
+  function showExtendedControlbar(event) {
     player_id = currentPlayer.player.id;
     //alert(currentPlayer.player.id);
-    currentPlayer.showQualityToggler();
+    currentPlayer.showExtendedControlbar();
   }
 
-  function toggleMedia() {
-    currentPlayer.pause();
-    $('playerHigh').toggle();
-    $('playerLow').toggle();  
+  function toggleMedia(quality) {
+    var changeToLow = (quality == 'low' && currentPlayer.player.id.indexOf('high') >= 0);
+    var changeToHigh = (quality == 'high' && currentPlayer.player.id.indexOf('low') >= 0);
+    if(changeToHigh || changeToLow) {
+      currentPlayer.pause();
+      $('playerHigh').toggle();
+      $('playerLow').toggle();
+      $('extendedControlbar-high').toggleClassName('active');
+      $('extendedControlbar-low').toggleClassName('active');
+    }
   }
-
 
   document.observe('dom:loaded', function() {
     $('mediaspace_high').observe('mouseenter', function() {
-        showQualityToggler();
+        showExtendedControlbar();
     }),
     $('mediaspace_low').observe('mouseenter', function() {
-        showQualityToggler();
-    }),
-    $('qualityToggler').observe('click', function(){
-      toggleMedia();
+        showExtendedControlbar();
     });
   })
   

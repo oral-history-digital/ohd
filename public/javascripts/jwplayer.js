@@ -33,6 +33,8 @@ var playerDefaults = {
   headingsTable               : null,
 
   qualityToggler              : false,
+  extendedControlbar          : false,
+  extendedControlbarSpace     : 'extendedControlbar',
 
   onCaptions                  : function(){},
   onItem                      : function(){},
@@ -69,7 +71,8 @@ function playerReady(player) {
   currentPlayer.setVolume(player.volume);
   currentPlayer.setMute(player.mute);
 
-  currentPlayer.showQualityToggler(true);
+  currentPlayer.showQualityToggler();
+  currentPlayer.showExtendedControlbar();
 }
 
 function stateListener(obj) {
@@ -146,7 +149,9 @@ var Player = Class.create({
     this.volume = '90';
     this.mute = false;
     this.qualityTimer = null;
+    this.extendedControlbarTimer = null;
     this.qualityToggler = this.cfg.qualityToggler;
+    this.extendedControlbar = this.cfg.extendedControlbar;
 
     this.captionsCallback = this.cfg.onCaptions;
     this.muteCallback = this.cfg.onMute;
@@ -348,6 +353,20 @@ var Player = Class.create({
   setCaptionsLanguage: function(language) {
     this.captionsLanguage = language;
     this.showCaptions();
+  },
+
+  showExtendedControlbar: function() {
+    if(this.extendedControlbar) {
+      clearTimeout(this.extendedControlbarTimer);
+      new Effect.Appear(this.cfg.extendedControlbarSpace, { duration: 0.25 });
+      this.extendedControlbarTimer = setTimeout(this.hideExtendedControlbar.bind(this), 3000);
+    }
+  },
+
+  hideExtendedControlbar: function() {
+    if($(this.cfg.extendedControlbarSpace) != null) {
+      new Effect.Fade(this.cfg.extendedControlbarSpace, { duration: 0.25 });
+    }
   },
 
   showQualityToggler: function() {
