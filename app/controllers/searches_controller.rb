@@ -24,6 +24,9 @@ class SearchesController < BaseController
 
       session[:query] = @search.query_params
     end
+    wants.html do
+      render :template => '/interviews/index.html'
+    end
     wants.js do
       #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
@@ -34,9 +37,6 @@ class SearchesController < BaseController
         page.replace_html 'baseServices', service_html
         page.replace_html 'baseContainerRight', search_facets_html
       end
-    end
-    wants.html do
-      render :template => '/interviews/index.html'
     end
   end
 
@@ -54,6 +54,9 @@ class SearchesController < BaseController
       session[:query] = @search.query_params
 
     end
+    wants.html do
+      render :template => '/interviews/index.html'
+    end
     wants.js do
       #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
@@ -64,9 +67,6 @@ class SearchesController < BaseController
         page.replace_html 'baseServices', service_html
         page.replace_html 'baseContainerRight', search_facets_html
       end
-    end
-    wants.html do
-      render :template => '/interviews/index.html'
     end
   end
 
