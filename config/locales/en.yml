@@ -158,6 +158,7 @@ en:
     of_tapes: 'of'
     low_quality: 'Lower quality'
     high_quality: 'High quality'
+    subtitled: 'Subtitled interview'
 
   location:
     in: 'in'

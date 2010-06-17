@@ -158,6 +158,7 @@ de:
     of_tapes: 'von'
     low_quality: 'Mittlere Qualität'
     high_quality: 'Hohe Qualität'
+    subtitled: 'Untertitel vorhanden'
 
   location:
     in: 'in'
