@@ -23,24 +23,26 @@
         <h2>Search Options</h2>
         <p>There are three ways to get started on your research in the archive:<br /><br /></p>
         <hr />
+        <br/>
         <p>Content categories in the menu on the right provide access structured by theme.<br /><strong>
           <%= link_to 'More About the Categories »',
-                home_path(:page => "faq_searching", :anchor => "recherchemoeglichkeiten") %>
+                home_path(:page => t("faq_searching", :scope => 'page_urls'), :anchor => "recherchemoeglichkeiten") %>
           <br /></strong></p>
         <hr />
-        <p>Use the map of the geographical distribution of the subsets of the collection for access by region.<br /><strong>
+        <br/>
+        <p>A map of the geographical distribution of the collection subsets for access by region.<br /><strong>
           <%= link_to "#{(t :map)} »", collections_url %>
-          <br />
-          <%= link_to "More About the Subsets of the Collection »",
+          <%#= link_to "More About the Subsets of the Collection »",
                 "http://www.zwangsarbeit-archiv.de/en/sammlung/teilsammlungen/index.html",
                 :target => "_blank",
                 :title => "Subset Collections" %>
           <br /></strong></p>
         <hr />
+        <br/>
         <p>A full text search provides broad and intuitive access.<br /><strong>
           <%= link_to 'More About Searching »',
-                home_path(:page => "faq_searching", :anchor => "suche-allgemein") %>
+                home_path(:page => t("faq_searching", :scope => 'page_urls'), :anchor => "suche-allgemein") %>
           </strong></p>
         <hr />
         <h2 class="clear">FAQs</h2>
-        <p>Please see the <%= link_to 'Help Page', home_path(:page => "faq_index") %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
+        <p>Please see the <%= link_to 'Help Page', home_path(:page => t("faq_index", :scope => 'page_urls')) %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
