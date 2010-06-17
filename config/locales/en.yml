@@ -11,8 +11,8 @@ en:
   more: 'more'
   translated: 'übersetzt'
   all: 'all'
-  previous: 'previous'
-  next: 'next'
+  previous: '&laquo;&nbsp;previous'
+  next: 'next&nbsp;&raquo;'
 
   page_paths:
     archive: 'archive'
