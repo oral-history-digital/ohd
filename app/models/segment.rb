@@ -85,7 +85,7 @@ DEF
   end
 
   def end_time
-    @time + duration 
+    start_time + duration 
   end
 
   def language_id

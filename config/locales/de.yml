@@ -84,6 +84,7 @@ de:
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
+      no_transcript: 'Für dieses Interview liegen noch keine Transkript-Untertitel vor.'
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'

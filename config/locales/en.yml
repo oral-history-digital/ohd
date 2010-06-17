@@ -84,6 +84,7 @@ en:
     player:
       back: 'previous'
       forward: 'next'
+      no_transcript: 'There are no transcript subtitles for this interview yet.'
     search:
       search_term: 'search term'
       fulltext_title: 'Insert search terms here'

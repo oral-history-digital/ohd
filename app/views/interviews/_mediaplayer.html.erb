@@ -2,7 +2,7 @@
 <%= javascript_tag "var headings = null;" %>
 
 
-  <div id="mediaContainer" class="containerVideo">
+  <div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
 
     <% if @interview.video == 'Video' %>
 
@@ -92,9 +92,13 @@
 
     <div id="captions_wrapper">
         <div id="captions">
+          <% if !@interview.segmented? %>
+            <span class="notice"><%= t(:no_transcript, :scope => 'user_interface.player' ) %></span>
+          <% else %>
           <div id="captions-0" class="captions-slide"></div>
           <div id="captions-1" class="captions-slide"></div>
           <div id="captions-2" class="captions-slide"></div>
+          <% end %>
         </div>
         <!--
         <div class="back">

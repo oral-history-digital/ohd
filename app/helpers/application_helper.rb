@@ -34,7 +34,7 @@ module ApplicationHelper
     end
   end
 
-  def segment_excerpt_for_match(segment, original_query='', width=8)
+  def segment_excerpt_for_match(segment, original_query='', width=10)
     #return segment.translation # TODO: remove this - it's for debugging search only'
     # TODO: reduce word count in both directions on interpunctuation
     # handle wildcards
@@ -50,7 +50,8 @@ module ApplicationHelper
       end
     end
     query_string.gsub!('_',' ')
-    pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
+    # pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
+    pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
       truncate(segment.translation, 180)

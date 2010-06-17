@@ -155,6 +155,24 @@
   z-index: 3;
 }
 
+.no-transcript #captions .notice {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 400px;
+    font-size: 80%;
+    color: #999281;
+    text-align: center;
+}
+
+#mediaContainer.no-transcript #language_select a {
+    color: #999999;
+}
+
+#mediaContainer.no-transcript #language_select a.active {
+    color: #999281;
+}
+
 #containerHeadings li.mainheading {
   font-style: normal;
 }
