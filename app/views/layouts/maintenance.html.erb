@@ -85,7 +85,6 @@
         <div id="mainWrapperClear">&nbsp;</div>
 
     </div>
-    <!-- Ende mainWrapper -->
 
     <hr class="divider" />
 
@@ -94,18 +93,14 @@
     <hr class="divider" />
 
     <div id="baseContainerFooter">
-        <%#= render :partial => '/footer' %>
+        <%#= don't render :partial => '/footer' %>
     </div>
-
-    <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
 
     <div id="printlogo">
         <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
         <img src="<%= ActionController::Base.relative_url_root || '' %>/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
 
     </div>
-
-    <!-- /noindex -->
 
 </body>
 </html>
