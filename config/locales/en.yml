@@ -3,6 +3,7 @@ en:
   archive: "Archive"
   map: "Map"
   terms_of_use: "Terms of Use"
+  team: 'team'
   contact: "Contact"
   legal_notice: "Legal notice"
   faq: "FAQ"
@@ -21,6 +22,7 @@ en:
     hilfe:  'faq_index'
     terms_of_use: 'terms_of_use'
     nutzungsbedingungen: 'terms_of_use'
+    team: 'team'
     contact: 'contact'
     kontakt: 'contact'
     imprint: 'impressum'
@@ -37,6 +39,7 @@ en:
     home: 'archive'
     faq_index: 'faq'
     terms_of_use: 'terms_of_use'
+    team: 'team'
     contact: 'contact'
     impressum: 'imprint'
     faq_archive_contents: 'faq_contents'
