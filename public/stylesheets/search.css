@@ -440,8 +440,12 @@ position: relative;
     padding:5px 0 0 0;
 }
 
+.mainheading .heading a {
+    padding-left: 1px;
+}
+
 .mainheading .subheading{
-    padding-left:0px;
+    padding-left: 1px;
     font-size:90%;
    /* width:210px;*/
 }
