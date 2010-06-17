@@ -13,6 +13,36 @@ de:
   translated: 'übersetzt'
   all: 'alle'
 
+  page_paths: #inbound translation
+    archive: 'archive'
+    archiv: 'archive'
+    home: 'archive'
+    faq:  'faq_index'
+    hilfe:  'faq_index'
+    terms_of_use: 'terms_of_use'
+    nutzungsbedingungen: 'terms_of_use'
+    contact: 'contact'
+    kontakt: 'contact'
+    imprint: 'impressum'
+    impressum: 'impressum'
+    faq_contents: 'faq_archive_contents'
+    hilfe_zu_inhalten: 'faq_archive_contents'
+    faq_search: 'faq_searching'
+    hilfe_zur_suche: 'faq_searching'
+    faq_technical: 'faq_technical'
+    hilfe_zu_technischen_fragen: 'faq_technical'
+
+  page_urls: #outbound translation ('pretty' urls)
+    archive: 'archiv'
+    home: 'archiv'
+    faq_index: 'hilfe'
+    terms_of_use: 'nutzungsbedingungen'
+    contact: 'kontakt'
+    impressum: 'impressum'
+    faq_archive_contents: 'hilfe_zu_inhalten'
+    faq_searching: 'hilfe_zur_suche'
+    faq_technical: 'hilfe_zu_technischen_fragen'
+
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
     transcriptors: 'Transkription'

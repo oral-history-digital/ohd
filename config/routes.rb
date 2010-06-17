@@ -17,13 +17,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 
-  map.resources :user_registrations
+  map.resources :user_registrations, :path_prefix => 'anmeldung'
 
   map.devise_for :user_accounts
 
   map.localized_home  ':locale/:page', :controller => :home, :action => :show
   map.home ':page', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :show, :page => 'archive'
+  map.root :controller => :home, :action => :show, :page => 'home'
   
   # The priority is based upon order of creation: first created -> highest priority.
 

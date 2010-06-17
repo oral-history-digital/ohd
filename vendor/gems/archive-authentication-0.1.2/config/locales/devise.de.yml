@@ -13,6 +13,7 @@ de:
       timeout: 'Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.'
       inactive: 'Ihr Zugang ist zur Zeit deaktiviert.'
       remember_me: 'angemeldet bleiben'
+      logout: 'abmelden'
     passwords:
       change: 'Ihr Passwort ändern'
       forgot: 'Sie haben Ihr Passwort vergessen?'
@@ -49,7 +50,7 @@ de:
     labels:
       send_now: 'Jetzt zuschicken'
     authentication_keys:
-      login: 'Username'
+      login: 'Benutzer'
       email: 'E-Mail'
       password: 'Passwort'
 

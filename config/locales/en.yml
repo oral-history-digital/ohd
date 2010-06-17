@@ -13,6 +13,36 @@ en:
   previous: 'previous'
   next: 'next'
 
+  page_paths:
+    archive: 'archive'
+    archiv: 'archive'
+    home: 'archive'
+    faq:  'faq_index'
+    hilfe:  'faq_index'
+    terms_of_use: 'terms_of_use'
+    nutzungsbedingungen: 'terms_of_use'
+    contact: 'contact'
+    kontakt: 'contact'
+    imprint: 'impressum'
+    impressum: 'impressum'
+    faq_contents: 'faq_archive_contents'
+    hilfe_zu_inhalten: 'faq_archive_contents'
+    faq_search: 'faq_searching'
+    hilfe_zur_suche: 'faq_searching'
+    faq_technical: 'faq_technical'
+    hilfe_zu_technischen_fragen: 'faq_technical'
+
+  page_urls:
+    archive: 'archive'
+    home: 'archive'
+    faq_index: 'faq'
+    terms_of_use: 'terms_of_use'
+    contact: 'contact'
+    impressum: 'imprint'
+    faq_archive_contents: 'faq_contents'
+    faq_searching: 'faq_search'
+    faq_technical: 'faq_technical'
+
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
     transcriptors: 'Transkription'
