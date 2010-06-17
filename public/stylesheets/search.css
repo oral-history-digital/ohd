@@ -106,6 +106,8 @@
 
 .facet-field .facet {
     padding-left: 22px;
+    display: block;
+    width: 240px;
     background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
 }
 
@@ -287,8 +289,8 @@ position: relative;
 
 .facet_refresh {
 	position: absolute;
-	top: 4px;
-	right: 8px;
+	top: 0px;
+	right: 10px;
 }
 
 .spinner_search {

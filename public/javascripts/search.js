@@ -77,7 +77,7 @@
   function checkCategory(id, labelElement) {
       var facetName = id.sub(/_\d+$/,'');
       var input = $(id);
-      var item = labelElement.up('.facet');
+      var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
       if((input) && (item)) {
           if(item.hasClassName('checked')) {
               input.checked = false;
@@ -86,7 +86,7 @@
               input.checked = true;
               item.addClassName('checked');
           }
-          Element.show(facetName + '_submit');
+          new Effect.Appear(facetName + '_submit', { duration: 0.33 });
       }
   }
 
