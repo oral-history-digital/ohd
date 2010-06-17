@@ -79,7 +79,7 @@
           <div id="volumeOn"></div>
         </div>
 
-        <div class="interviewinfo"><%= @interview.video == 1 ? t(:video, :scope => 'media') : t(:audio, :scope => 'media') %>: <%= "#{@interview.duration.minimal}" %></div>
+        <div class="interviewinfo"><%= @interview.video %>: <%= "#{@interview.duration.minimal}" %></div>
         <div class="itemselection">
           <%= t(:tape, :scope => 'media') %>:
           <select id="player_item" name="player_item" onChange="currentPlayer.changeItem(this.value);">
