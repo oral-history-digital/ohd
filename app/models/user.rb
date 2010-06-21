@@ -63,7 +63,8 @@ class User < ActiveRecord::Base
                             'Bremen',
                             'Schleswig-Holstein',
                             'außerhalb Deutschlands' ]},
-            'country',
+            { :name => 'country',
+              :type => :country },
             { :name => 'send_newsletter',
               :mandatory => false,
               :type => :boolean }
