@@ -253,7 +253,7 @@
 			:UA => "Ukraine",
 			:UG => "Uganda",
 			:UM => "Amerikanisch-Ozeanien",
-			:US => "Vereinigte Staaten",
+			:US => "USA",
 			:UY => "Uruguay",
 			:UZ => "Usbekistan",
 			:VA => "Vatikanstadt",

@@ -248,7 +248,7 @@
 			:UA => "Ukraine",
 			:UG => "Uganda",
 			:UM => "United States Minor Outlying Islands",
-			:US => "United States",
+			:US => "USA",
 			:UY => "Uruguay",
 			:UZ => "Uzbekistan",
 			:VA => "Vatican",
