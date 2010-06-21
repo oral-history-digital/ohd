@@ -38,6 +38,12 @@ config.cache_store = :file_store, 'tmp/cache'
 # Exception Notifier Recipients
 SERVER_HOST = Socket.gethostname
 
+ActionMailer::Base.smtp_settings = {
+  :address => "mail.fu-berlin.de",
+  :port => 25,
+  :domain => "zwangsarbeit-archiv.de"
+}
+
 config.action_mailer.default_url_options = {
     :host => 'zwangsarbeit-archiv.de'
 }
