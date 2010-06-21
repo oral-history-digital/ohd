@@ -38,8 +38,13 @@ config.cache_store = :file_store, 'tmp/cache'
 # Exception Notifier Recipients
 SERVER_HOST = Socket.gethostname
 
+config.action_mailer.default_url_options = {
+    :host => 'zwangsarbeit-archiv.de'
+}
+config.action_mailer.delivery_method = :smtp
+
 config.after_initialize do
   ExceptionNotifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de)
-  ExceptionNotifier.sender_address = "server@#{SERVER_HOST}"
+  ExceptionNotifier.sender_address = "team@zwangsarbeit-archiv.de"
   ExceptionNotifier.email_prefix = "[ERROR] "
 end
