@@ -46,12 +46,16 @@ namespace :data do
 
           time = segment.start_time
 
+          puts "#{segment.media_id} [#{segment.timecode}] earlier than #{previous_segment.media_id} [#{previous_segment.timecode}]" if previous_segment && previous_segment.start_time > time
+
           unless previous_segment.nil?
 
             duration = time - previous_time
 
             unless (duration < 0) || ((duration == segment.duration) && (!segment.duration.nil?))
               previous_segment.update_attribute :duration, duration
+            else
+              puts "Could not set duration for #{segment.media_id}!" unless duration == segment.duration
             end
 
             maximum_duration = duration if duration > maximum_duration
