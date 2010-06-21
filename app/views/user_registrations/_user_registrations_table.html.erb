@@ -1,0 +1,37 @@
+<h2>Neue Registrierungsanfragen</h2>
+<table class="useraccounts">
+  <tbody>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>Beruf</th>
+      <th>Institution</th>
+      <th>Registrierung</th>
+    </tr>
+    <% object.each do |user_registration| %>
+    <tr id="user-registration-<%= user_registration.id %>" class="user-registration-basic <%= cycle('even', 'odd') %>">
+      <td>
+        <%= user_registration.id %>
+      </td>
+      <td><%= "#{user_registration.first_name} #{user_registration.last_name}" %></td>
+      <td><%= user_registration.email %></td>
+      <td></td>
+      <td style='text-align: right;'>
+        <%= "#{user_registration.created_at.strftime("%d.%m.%y %H:%M")}" %><br />
+        <%= link_to_remote 'Bearbeiten',
+                            #TODO: path name
+                            :url => "/user_registrations/edit/#{user_registration.id}" %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% javascript_tag do %>
+
+  function toggleUserRegistration(id) {
+    $('user-registration-'+id).toggleClassName('user-registration-open');
+    $('user-registration-details-'+id).toggle();
+  }
+
+<% end %>

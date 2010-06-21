@@ -1,0 +1,11 @@
+<div id="lightbox-container">
+  <% remote_form_for @object do |f| %>
+    <table class="form">
+      <tr>
+        <td><label for="first_name">Anrede</label></td><td><select></select></td>
+        <td><label for="first_name">Vorname</label></td><td><%= text_field_tag 'first_name', @object.first_name %></td>
+        <td><label for="last_name">Nachname</label></td><td><%= text_field_tag 'last_name', @object.last_name %></td>
+      </tr>
+    </table>
+  <% end %>
+</div>

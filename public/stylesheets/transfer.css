@@ -1,110 +1,110 @@
 /* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
 
 #fragmentOverview {
-	float: left;
-	font-size:95%;
-	clear: both;
-	width: 280px;
-	height:495px;
-	padding: 0 15px 0 0;
-	margin: 0 0 15px 0;
+  float: left;
+  font-size: 95%;
+  clear: both;
+  width: 280px;
+  height: 495px;
+  padding: 0 15px 0 0;
+  margin: 0 0 15px 0;
 }
 
-#fragmentOverview h1{
-	padding: 0px;
-	margin: 0px;
+#fragmentOverview h1 {
+  padding: 0px;
+  margin: 0px;
 }
 
-#fragmentOverview table{
-	padding-top: 0px;
-	margin-top: 0px;
+#fragmentOverview table {
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
-#fragmentOverview th{
-	padding: 8px 0 0 0;
+#fragmentOverview th {
+  padding: 8px 0 0 0;
 }
 
-#fragmentOverview td{
-	padding: 0;
+#fragmentOverview td {
+  padding: 0;
 }
 
-#fragmentOverview td ul{
-	padding-top: 0px;
-	margin-top: 0px;
+#fragmentOverview td ul {
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 #tabsOverview {
-	width: 280px;
-	margin: 0;
-	padding: 0;
+  width: 280px;
+  margin: 0;
+  padding: 0;
 }
 
 #tabsOverview ul {
-	margin: 0;
-	padding: 0;
-    width: 280px;
-    background-color: #fff;
+  margin: 0;
+  padding: 0;
+  width: 280px;
+  background-color: #fff;
 }
 
 #tabsOverview ul li {
-	padding:3px 0px;
-	text-indent:20px;
-	height: 21px;
-	float: left;
-	background-color: #e4e4da;
-	cursor: pointer;
-	list-style: none;
-	background-image:none;
+  padding: 3px 0px;
+  text-indent: 20px;
+  height: 21px;
+  float: left;
+  background-color: #e4e4da;
+  cursor: pointer;
+  list-style: none;
+  background-image: none;
 }
 
 #tabsOverview #tabInterview {
-	width:95px;
+  width: 95px;
 }
 
 #tabsOverview #tabForcedLabor {
-    float: right;
-    width:185px;
+  float: right;
+  width: 185px;
 }
 
-#tabsOverview li p{
-	padding:2px 0 0 0;
-	color: #9f1313;
-    font-weight: bold;
+#tabsOverview li p {
+  padding: 2px 0 0 0;
+  color: #9f1313;
+  font-weight: bold;
 }
 
-#tabsOverview li:hover p{
-	color: #990000;
+#tabsOverview li:hover p {
+  color: #990000;
 }
 
 #tabsOverview li.active {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 #tabsOverview  p {
-	color: #999;
+  color: #999;
 }
 
 /*Textformatierung "Interview / Daten zur Zwangsarbeit" */
 
-#containerInterview .data li, #containerForcedLabor .data li{
-  	background-image: none;
-  	padding:0 0 2px 10px;
+#containerInterview .data li, #containerForcedLabor .data li {
+  background-image: none;
+  padding: 0 0 2px 10px;
 }
 
-.data li{
-	background-image: none;
-	list-style-type:none;
+.data li {
+  background-image: none;
+  list-style-type: none;
 }
 
 .data li .label {
-	color:#999281;
-	display:block;
-	font-size:85%;
-	margin-bottom:-4px;
+  color: #999281;
+  display: block;
+  font-size: 85%;
+  margin-bottom: -4px;
 }
 
 #captions_wrapper {
-  position:relative;
+  position: relative;
   float: left;
   width: 400px;
   background-color: #fff;
@@ -114,23 +114,23 @@
   display: block;
   width: 100%;
   color: #999;
-  text-decoration:none;
-  padding-left:10px;
-  font-size:80%;
+  text-decoration: none;
+  padding-left: 10px;
+  font-size: 80%;
 }
 
 .containerVideo .back,
 .containerVideo .forward {
-  position:absolute;
-  z-index:8;
+  position: absolute;
+  z-index: 8;
   top: 1px;
   width: 65px;
-  margin-left:325px;
+  margin-left: 325px;
   background: url(/images/btn_caption_back.gif) 0 -3px no-repeat;
 }
 
 .containerVideo div .forward {
-  top:122px;
+  top: 122px;
   background: url(/images/btn_caption_forward.gif) 0px 2px no-repeat;
 }
 
@@ -141,8 +141,8 @@
 #captions,
 #captions .captions-slide {
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   background-color: #fff;
   padding: 20px 10px;
   text-align: left;
@@ -156,21 +156,21 @@
 }
 
 .no-transcript #captions .notice {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    width: 400px;
-    font-size: 80%;
-    color: #999281;
-    text-align: center;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 400px;
+  font-size: 80%;
+  color: #999281;
+  text-align: center;
 }
 
 #mediaContainer.no-transcript #language_select a {
-    color: #999999;
+  color: #999999;
 }
 
 #mediaContainer.no-transcript #language_select a.active {
-    color: #999281;
+  color: #999281;
 }
 
 #containerHeadings li.mainheading {
@@ -195,19 +195,19 @@
 }
 
 #containerHeadings ul li {
-	background: none;
-	padding-left: 0;
+  background: none;
+  padding-left: 0;
 }
 
 #containerSegments ul li {
-	background: none;
-	font-size: 80%;
-	margin-bottom: 15px;
+  background: none;
+  font-size: 80%;
+  margin-bottom: 15px;
 }
 
 .rtl {
-    writing-mode: tb-rl;
-    text-align: right;
+  writing-mode: tb-rl;
+  text-align: right;
 }
 
 #qualityToggler {
@@ -287,4 +287,81 @@ div.player {
 
 #extendedControlbar-low {
   margin-left: 1px;
+}
+
+table.useraccounts {
+  width: 100%;
+}
+
+table.useraccounts th, td {
+  padding: 5px;
+  font-size: 12px;
+}
+
+table.useraccounts tr.even {
+  background-color: #E4E4DA;
+}
+
+table.useraccounts input[type=button] {
+  color: #fff;
+  background-color: #840f08;
+  padding: 0.25em 0.5em;
+  border: 0px none;
+  font-size: 90%;
+  cursor: pointer;
+}
+
+tr.user-registration-basic {
+  cursor: pointer;
+  background-color: #F1F1EB;
+}
+
+div.user-registration-details {
+
+}
+
+tr.user-registration-basic .arrow-opened {
+  display: none;
+}
+
+tr.user-registration-open .arrow-closed {
+  display: none;
+}
+
+tr.user-registration-open .arrow-opened {
+  display: inline;
+}
+
+#user-registration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  filter: alpha(opacity = 60);
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+
+#lightbox-container {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  margin-left: -375px;
+  width: 750px;
+  height: 450px;
+  padding: 1.6em;
+  border: 2px solid #840f08;
+  z-index: 1001;
+  background-color: #F1F1EB;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  filter: alpha(opacity = 90);
+  -moz-opacity: 0.9;
+  opacity: 0.9;
+}
+
+#lightbox-container form {
 }
