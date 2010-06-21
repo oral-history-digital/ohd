@@ -1,6 +1,6 @@
 { :de => {
 
-    :countries => {
+    :user_countries => {
 			:AC => "Ascension",
 			:AD => "Andorra",
 			:AE => "Vereinigte Arabische Emirate",

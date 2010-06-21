@@ -23,7 +23,7 @@ module LocalizedCountrySelect
     # Returns array with codes and localized country names (according to <tt>I18n.locale</tt>)
     # for <tt><option></tt> tags
     def localized_countries_array
-      I18n.translate(:countries).map { |key, value| [value, key.to_s.upcase] }.
+      I18n.translate(:user_countries).map { |key, value| [value, key.to_s.upcase] }.
                                  sort_by { |country| country.first.parameterize }
     end
     # Return array with codes and localized country names for array of country codes passed as argument
@@ -31,7 +31,7 @@ module LocalizedCountrySelect
     #   priority_countries_array([:TW, :CN])
     #   # => [ ['Taiwan', 'TW'], ['China', 'CN'] ]
     def priority_countries_array(country_codes=[])
-      countries = I18n.translate(:countries)
+      countries = I18n.translate(:user_countries)
       country_codes.map { |code| [countries[code.to_s.upcase.to_sym], code.to_s.upcase] }
     end
   end

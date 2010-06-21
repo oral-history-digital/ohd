@@ -11,7 +11,7 @@
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to t('devise.confirmations.link'), new_confirmation_path(resource_name), :class => 'new_confirmation link' %><br />
+  <%#= link_to t('devise.confirmations.link'), new_confirmation_path(resource_name), :class => 'new_confirmation link' %><br />
 <% end -%>
 
 <%- if devise_mapping.lockable? && controller_name != 'unlocks' %>

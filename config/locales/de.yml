@@ -55,7 +55,7 @@ de:
     researchers: 'Erschlie&szlig;ung'
 
   status:
-    translated: '&uuml;bersetzt ins Deutsche'
+    translated: 'deutsche Transkription'
     not_translated: 'ohne &Uuml;bersetzung'
     unknown: 'unbekannt'
     date_unknown: 'Datum unbekannt'

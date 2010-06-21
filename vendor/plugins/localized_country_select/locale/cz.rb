@@ -1,6 +1,6 @@
 { :cz => {
 
-    :countries => {
+    :user_countries => {
 			:AD => "Andorra",
 			:AE => "Spojené arabské emiráty",
 			:AF => "Afghánistán",
