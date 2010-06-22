@@ -20,8 +20,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 
 
-  map.registration    'registrieren', :controller => :user_registrations, :action => :new
+  map.anmelden        'login',        :controller => :sessions, :action => :new
+  map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
   map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :confirmations, :action => :show
+  map.reset_password  'passwort_vergessen', :controller => :passwords, :action => :new
   map.change_password 'neues_passwort/:password_reset_token', :controller => :passwords, :action => :edit
 
   map.devise_for :user_accounts
