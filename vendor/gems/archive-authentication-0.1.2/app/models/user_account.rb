@@ -3,7 +3,7 @@ class UserAccount < AuthenticationModel
   devise :database_authenticatable,
          :recoverable,
          # handle Confirmations less automatically
-         # :confirmable,
+         :confirmable,
          :rememberable,
          :recoverable,
          :trackable

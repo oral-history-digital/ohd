@@ -19,6 +19,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 
+
+  map.registration    'registrieren', :controller => :user_registrations, :action => :new
+  map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :confirmations, :action => :show
+  map.change_password 'neues_passwort/:password_reset_token', :controller => :passwords, :action => :edit
+
   map.devise_for :user_accounts
 
   map.localized_home  ':locale/:page', :controller => :home, :action => :show

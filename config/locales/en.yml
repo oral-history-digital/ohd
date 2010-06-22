@@ -148,6 +148,11 @@ en:
         language: 'Language'
         collection: 'Subset'
 
+    errors:
+      template:
+        header: 'Your request could not be processed'
+        body: 'The following problems occurred:'
+
   personal_data:
     male: 'male'
     female: 'female'

@@ -148,6 +148,11 @@ de:
         language: 'Sprache'
         collection: 'Teilsammlung'
 
+    errors:
+      template:
+        header: 'Ihre Anfrage konnte nicht bearbeitet werden'
+        body: 'Folgendes Problem ist aufgetreten:'
+
   personal_data:
     male: 'männlich'
     female: 'weiblich'

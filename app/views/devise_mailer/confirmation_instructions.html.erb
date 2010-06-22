@@ -2,7 +2,7 @@
 
 <p>Sie können Ihren Zugang jetzt bestätigen unter dem nachfolgenden Link:</p>
 
-<p><%= link_to 'Zugang jetzt bestätigen', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p><%= link_to 'Zugang jetzt bestätigen', @url %></p>
 
 <hr/>
 
@@ -10,4 +10,4 @@
 
 <p>You can confirm your account through the link below:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p><%= link_to 'Confirm my account', @url %></p>

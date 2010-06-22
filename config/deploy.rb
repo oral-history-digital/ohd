@@ -109,7 +109,9 @@ namespace :deploy do
     on_rollback { rm "#{shared_path}/system/maintenance.html" }
 
     require 'erb'
-    deadline, reason = ENV['UNTIL'], ENV['REASON']
+    puts "Wartungsarbeiten im Online-Archiv 'Zwangsarbeit 1939-1945':"
+    set(:reason) { Capistrano::CLI.ui.ask("Die Seite ist zur Zeit nicht erreichbar wegen: ['Wartungsarbeiten'] ")}
+    set(:deadline) { Capistrano::CLI.ui.ask("Voraussichtlich bis: [unabsehbar] ")}
     maintenance = ERB.new(File.read("./app/views/layouts/maintenance.html.erb"), nil, "%").result(binding)
 
     put maintenance, "#{shared_path}/system/maintenance.html", :mode => 0644
