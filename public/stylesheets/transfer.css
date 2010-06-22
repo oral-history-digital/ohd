@@ -293,7 +293,8 @@ table.useraccounts {
   width: 100%;
 }
 
-table.useraccounts th, td {
+table.useraccounts th,
+table.useraccounts td {
   padding: 5px;
   font-size: 12px;
 }
