@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
 
+  belongs_to  :user_account
+
+  belongs_to  :user_registration
+
   define_registration_fields [
             { :name => 'appellation',
               :values => [  'Frau',

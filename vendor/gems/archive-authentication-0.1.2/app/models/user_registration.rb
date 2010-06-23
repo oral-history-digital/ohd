@@ -1,5 +1,7 @@
 class UserRegistration < ActiveRecord::Base
 
+  belongs_to :user_account
+
   validates_format_of :email,
                       :with => /^.+@.+\..+$/,
                       :on => :create
@@ -9,11 +11,23 @@ class UserRegistration < ActiveRecord::Base
   before_create :serialize_form_parameters
 
   def validate
-    self.class.registration_field_names.select{|f| self.class.registration_fields[f.to_sym][:mandatory] }.each do |field|
-      if self.send(field).blank?
-        errors.add(field, "Angaben zu #{field} fehlen.")
+    unless workflow_state == 'registriert'
+      # Sadly, people were registered even without matching the minimum required fields...
+      # ... so we need to cease checking for already registered people.
+      self.class.registration_field_names.select{|f| self.class.registration_fields[f.to_sym][:mandatory] }.each do |field|
+        if self.send(field).blank?
+          errors.add(field, "Angaben zu #{field} fehlen.")
+        end
       end
     end
+#    missing_fields = self.class.registration_field_names - self.class.registration_field_names.compact
+#    unless missing_fields.empty?
+#      errors.add_to_base("Angaben zu #{missing_fields.join(', ')} fehlen.")
+#    end
+  end
+
+  def full_name
+    [ self.first_name, self.last_name ].join(' ').strip
   end
 
   private

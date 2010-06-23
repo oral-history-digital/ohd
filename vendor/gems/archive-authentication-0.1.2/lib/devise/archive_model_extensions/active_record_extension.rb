@@ -47,6 +47,13 @@ module Devise
               end
 EVAL
           end
+          UserRegistration.class_eval <<DEF
+              def after_initialize
+                (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
+                  self.send(attr.to_s + "=", value)
+                end
+              end
+DEF
         end
 
         def registration_field_names
