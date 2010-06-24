@@ -4,11 +4,6 @@ class UserRegistrationsController < ResourceController::Base
   actions :new, :create
 
   create do
-    before do
-      puts "\n@@@@ USER REGISTRATION:"
-      puts "PARAMS: #{object_params.inspect}"
-      puts object.inspect
-    end
     wants.html do
       render :action => 'submitted'
     end
@@ -50,7 +45,6 @@ class UserRegistrationsController < ResourceController::Base
   private
 
   def account_for_token(confirmation_token)
-    puts "\n\n@@@ PARAMS:\n#{params.inspect}\n\n"
     @user_account = UserAccount.find_by_confirmation_token(params[:confirmation_token], :include => :user_registration)
   end
   
