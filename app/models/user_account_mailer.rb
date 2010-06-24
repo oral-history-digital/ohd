@@ -13,7 +13,7 @@ class UserAccountMailer < ActionMailer::Base
     from         'mail@zwangsarbeit-archiv.de'
     recipients   account.email
     sent_on      Time.now
-    @user_name = account.user_registration.nil? ? account.login : (account.user_registration.appellation + ' ' + account.user_registration.full_name)
+    @user_name = account.display_name
   end
 
 end

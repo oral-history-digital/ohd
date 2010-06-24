@@ -331,3 +331,7 @@ form.user_registration textarea {
 #innerContent .formInput div.fieldWithErrors select {
     border-color: #990000;
 }
+
+#errorExplanation ul li {
+  color: #8B0F09;
+}

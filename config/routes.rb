@@ -22,7 +22,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.anmelden        'login',        :controller => :sessions, :action => :new
   map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
-  map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate
+  map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
+  map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
   map.reset_password  'passwort_vergessen', :controller => :passwords, :action => :new
   map.change_password 'neues_passwort/:password_reset_token', :controller => :passwords, :action => :edit
 

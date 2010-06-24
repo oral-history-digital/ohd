@@ -29,15 +29,20 @@ de:
       resend: 'Bestätigung anfordern'
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
       confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
+      invalid_token: 'Der angegebene Link ist nicht mehr gültig.'
     registrations:
       link: 'Registrierung'
       not_yet_registered: 'Noch nicht registriert?'
       link_to: 'Zur Registrierung &raquo;'
       submit: 'Registrierung senden'
+      activate: 'Zugangsaktivierung für'
+      activate_submit: 'absenden'
+      activate_text: 'Bitte wählen Sie ein geeignetes Passwort für Ihren Zugang.'
       successful: 'Ihre Registrierung ist bei uns eingegangen.'
       signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
       updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
       destroyed: 'Ihre Zugangsdaten wurden erfolgreich gelöscht.'
+      welcome: 'Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie sind jetzt angemeldet. Bitte halten Sie Ihren Benutzernamen und Ihr Passwort bei Ihrem nächsten Besuch bereit.'
     unlocks:
       link: 'Zugang reaktivieren'
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Anweisungen, wie Sie Ihren Zugang reaktivieren können.'
@@ -126,3 +131,18 @@ de:
         'Bremen': 'Bremen'
         'Schleswig-Holstein': 'Schleswig-Holstein'
         'außerhalb Deutschlands': 'außerhalb Deutschlands'
+
+  activerecord:
+    errors:
+      models:
+        user_account:
+          attributes:
+            password:
+              confirmation: 'und -wiederholung stimmen nicht überein.'
+              too_short: 'ist zu kurz.'
+              too_long: 'ist zu lang.'
+    attributes:
+      user_account:
+        email: 'E-Mail'
+        login: 'Benutzername'
+        password: 'Passwort'

@@ -15,12 +15,21 @@ class UserAccount < AuthenticationModel
   attr_accessible :email, :login, :password, :password_confirmation, :remember_me
 
   validates_uniqueness_of :login
-  validates_uniqueness_of :email
   validates_presence_of :login
+  validates_uniqueness_of :email
+  validates_presence_of :email
+  validates_format_of :email, :with => Devise::EMAIL_REGEX
+  validates_confirmation_of :password
+  validates_length_of       :password, :within => 5..20, :allow_blank => true
+  
 
   def generate_confirmation_token
     self.confirmation_token = Devise.friendly_token
     self.confirmation_sent_at = Time.now.utc
+  end
+
+  def display_name
+    self.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
 
