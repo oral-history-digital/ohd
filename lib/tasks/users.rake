@@ -91,6 +91,61 @@ namespace :users do
   end
 
 
+  desc "import the missing user accounts from the LDAP users.yml"
+  task :import_missing, [:file] => :environment do |task,args|
+    file = args[:file]
+    raise 'Please supply a file= argument.' if file.nil?
+    raise "No such file '#{file}'." unless File.exists?(file)
+
+    require 'yaml'
+
+    puts "Reading in accounts that are not in LDAP and not in Registrations:"
+
+    YAML::load_file(file).each do |record|
+      raise "Record invalid! #{record.inspect}" unless record.is_a?(Array) and record.last.is_a?(Hash)
+      attributes = record.last
+
+      # don't handle accounts that are strictly LDAP
+      next if attributes.keys.include?('encrypted_password')
+
+      next unless UserAccount.find_by_login(attributes['login']).nil?
+
+      name = "#{attributes['given_name']} #{attributes['surname']}"
+
+      registration = UserRegistration.find_or_initialize_by_email(attributes['mail'])
+
+      if registration.new_record?
+        registration.login = attributes['login']
+        registration.first_name       = attributes['given_name'].to_s.strip
+        registration.last_name        = attributes['surname'].to_s.strip
+        registration.tos_agreement    = true
+        registration.workflow_state   = 'registriert'
+
+        # application-info:
+        registration.appellation      = ''
+        registration.job_description  = 'Mitarbeit'
+        registration.research_intentions  = 'Mitarbeit'
+        registration.comments         = 'keine Angaben'
+        registration.organization     = 'FU-Berlin'
+        registration.homepage         = ''
+        registration.street           = 'Ihne oder Garystr'
+        registration.zipcode          = '14195'
+        registration.city             = 'Berlin'
+        registration.state            = 'Berlin'
+        registration.country          = 'Deutschland'
+
+        registration.admin_comments   = ''
+        registration.processed_at     = Time.now
+
+        perform_registration(registration)
+      else
+        puts "Found existing registration #{registration.id} for User: #{name}"
+      end
+
+    end
+  end
+
+
   def perform_registration(registration)
     new_registration = registration.new_record?
 
