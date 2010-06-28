@@ -3,14 +3,17 @@ class TextMaterial < ActiveRecord::Base
   belongs_to :interview
 
   has_attached_file :document,
-                    :url => (ActionController::Base.relative_url_root || '') + '/archive_text_materials/:interview/:basename.:extension',
-                    :path => ':rails_root/public/archive_text_materials/:interview/:basename.:extension'
+                    :url => (ActionController::Base.relative_url_root || '') + '/interviews/:interview/text_materials/:basename.:extension',
+                    :path => ':rails_root/assets/archive_text_materials/:interview/:basename.:extension'
 
   DOCUMENT_TYPES = [
     'Biography',
     'Transcript',
     'Translation'
   ]
+
+  named_scope :of_type, lambda{|type| {:conditions => ['document_type = ?', type ] }}
+  named_scope :for_file, lambda{|filename| { :conditions => ['document_file_name = ?', (filename || '') + '.pdf' ]}}
 
 =begin
   validates_attachment_presence :document

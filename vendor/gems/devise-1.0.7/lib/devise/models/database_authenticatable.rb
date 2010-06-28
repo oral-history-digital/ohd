@@ -136,7 +136,7 @@ module Devise
         #   end
         #
         def find_for_authentication(conditions)
-          find(:first, :conditions => conditions)
+          find(:first, :conditions => conditions.merge({ :login => conditions['login'].downcase }))
         end
       end
     end

@@ -61,12 +61,12 @@ namespace :deploy do
       run "ln -s #{shared_path}/config/#{config} #{release_path}/config/#{config}"
       run "ln -nfs #{shared_path}/solr/data #{release_path}/solr/data"
     end
-    run "rm -rf #{release_path}/public/archive_images"
-    run "ln -s #{shared_path}/public/archive_images #{release_path}/public/archive_images"
-    run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/public/archive_images"
+    run "rm -rf #{release_path}/assets/archive_images"
+    run "ln -s #{shared_path}/assets/archive_images #{release_path}/assets/archive_images"
+    run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/assets/archive_images"
     # text_materials
-    run "rm -rf #{release_path}/public/archive_text_materials"
-    run "ln -s #{shared_path}/public/archive_text_materials #{release_path}/public/archive_text_materials"
+    run "rm -rf #{release_path}/assets/archive_text_materials"
+    run "ln -s #{shared_path}/assets/archive_text_materials #{release_path}/assets/archive_text_materials"
     # symlink the prebuilt unicode gem
     run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
     if environment == :demo

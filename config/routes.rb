@@ -6,6 +6,11 @@ ActionController::Routing::Routes.draw do |map|
   map.localized_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
   map.collections 'teilsammlungen', :controller => :collections, :action => :index
 
+  # ensure protected URLs to interview assets
+  map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials
+  map.photos 'interviews/:id/photos/:filename.:extension', :controller => :interviews, :action => :photos
+  map.stills 'interviews/stills/:filename.:extension', :controller => :interviews, :action => :stills
+
   map.resources :interviews do |interview|
 
     interview.resources :tapes,
