@@ -7,8 +7,10 @@ class CreateUserRegistration < ActiveRecord::Migration
       t.string :last_name
       t.string :email
       t.boolean :tos_agreement
+      t.boolean :receive_newsletter
       t.text :application_info
       t.string :workflow_state
+      t.string :default_locale
       t.datetime :created_at
       t.datetime :approved_at
       t.datetime :activated_at

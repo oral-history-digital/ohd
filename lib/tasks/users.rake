@@ -206,4 +206,21 @@ namespace :users do
 
   end
 
+
+  desc "converts German workflow_state to English"
+  task :convert_workflows => :environment do
+
+    states = { 'ungeprüft' => 'unchecked',
+      'geprüft'   => 'checked',
+      'registriert' => 'registered',
+      'zurückgestellt' => 'postponed',
+      'abgewiesen' => 'rejected' }
+
+    states.each_pair do |old_state, new_state|
+      number = UserRegistration.update_all "workflow_state = '#{new_state}'", "workflow_state = '#{old_state}'"
+      puts "Updated #{number} registrations of state = '#{old_state}' to new state '#{new_state}'"
+    end
+
+  end
+
 end

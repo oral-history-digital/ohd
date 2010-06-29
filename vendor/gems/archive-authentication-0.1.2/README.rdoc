@@ -4,13 +4,22 @@ Shared authentication code for archive projects at CeDiS.
 
 For installation:
 
+== 1. Install dependencies:
+Workflow:
+./script/plugin install git://github.com/geekq/workflow.git
+
+== 2. Prepare DB for Authentication Models:
 add an 'authentication' environment to your config/database.yml
 create the authentication database and permissions
 
 script/generate archive_authentication installation
 script/generate auth_db development
 
+== 3. Add the routes:
 Add a "devise_for :user_accounts" line in routes.rb.
+
+== 4. Rails Configuration:
+Add a dependency in environment.rb (config.gem 'archive-authentication')
 
 Copy and modify the gem config/initializers to your app's config/initializers directory.
 

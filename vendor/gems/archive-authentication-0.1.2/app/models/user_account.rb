@@ -1,7 +1,6 @@
 class UserAccount < AuthenticationModel
 
   devise :database_authenticatable,
-         :recoverable,
          # handle Confirmations less automatically
          # :confirmable,
          :rememberable,
@@ -29,7 +28,7 @@ class UserAccount < AuthenticationModel
   end
 
   def display_name
-    self.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
+    self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
 
@@ -51,6 +50,8 @@ class UserAccount < AuthenticationModel
     unless_confirmed do
       self.confirmation_token = nil
       self.confirmed_at = Time.now
+      self.deactivated_at = nil
+      self.user_registration.activate! unless self.user_registration.nil?
       save(false)
     end
   end
@@ -65,12 +66,21 @@ class UserAccount < AuthenticationModel
   # is already confirmed, it should never be blocked. Otherwise we need to
   # calculate if the confirm time has not expired for this user.
   def active?
-    super && (confirmed? || confirmation_period_valid?)
+    super && (confirmed? || confirmation_period_valid?) && !deactivated?
   end
 
   # The message to be shown if the account is inactive.
   def inactive_message
-    !confirmed? ? :unconfirmed : super
+    !deactivated? ? :deactivated : (!confirmed? ? :unconfirmed : super)
+  end
+
+  def deactivated?
+    !self.deactivated_at.blank?
+  end
+
+  def deactivate!
+    self.deactivated_at = Time.now
+    save
   end
 
   # If you don't want confirmation to be sent on create, neither a code
@@ -127,6 +137,7 @@ class UserAccount < AuthenticationModel
   #   end
   #
   def find_for_authentication(conditions)
+    conditions[:deactivated_at] = nil
     find(:first, :conditions => conditions)
   end
 
