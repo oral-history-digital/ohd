@@ -13,6 +13,7 @@ en:
   all: 'all'
   previous: '&laquo;&nbsp;previous'
   next: 'next&nbsp;&raquo;'
+  admin_area: 'Admin Area'
 
   page_paths:
     archive: 'archive'
