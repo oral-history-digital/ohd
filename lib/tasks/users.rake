@@ -223,4 +223,30 @@ namespace :users do
 
   end
 
+
+  desc "Creates a user for each registered UserRegistration"
+  task :create_from_registrations => :environment do
+
+    conditions = ["workflow_state = ?", 'registered']
+
+    offset=0
+    batch=5
+    total = UserRegistration.count :all, :conditions => conditions
+
+    puts "Checking users for #{total} user registrations"
+
+    #while offset < total
+
+      UserRegistration.find(:all, :conditions => conditions, :limit => "#{offset},#{batch}", :include => :user ).each do |registration|
+        next unless registration.user.nil?
+        next if registration.user_account.nil?
+        registration.send(:initialize_user)
+        puts "creating user: '#{registration.user.to_s}'" if registration.user.valid?
+      end
+
+      offset += batch
+    #end
+
+  end
+
 end

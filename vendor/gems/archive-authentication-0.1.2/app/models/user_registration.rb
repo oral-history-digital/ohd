@@ -3,6 +3,8 @@ class UserRegistration < ActiveRecord::Base
 
   belongs_to :user_account
 
+  has_one :user
+
   validates_format_of :email,
                       :with => /^.+@.+\..+$/,
                       :on => :create
@@ -55,6 +57,7 @@ class UserRegistration < ActiveRecord::Base
   # Registers a UserAccount by generating a confirmation token
   def register
     create_account
+    initialize_user
     if self.user_account.valid?
       UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
     end
@@ -62,11 +65,13 @@ class UserRegistration < ActiveRecord::Base
 
   # Flags the account as deactivated
   def deactivate
+    self.user.update_attribute(:admin, nil)
     self.user_account.deactivate!
   end
 
   # Flags the account as deactivated
   def remove
+    self.user.update_attribute(:admin, nil)
     self.user_account.deactivate!
   end
 
@@ -97,11 +102,36 @@ class UserRegistration < ActiveRecord::Base
   end
 
   def create_account
-    self.user_account = UserAccount.new
-    self.user_account.email = self.email
-    self.user_account.login = create_login
-    self.user_account.generate_confirmation_token
+    self.user_account = UserAccount.find_or_initialize_by_email(self.email)
+    self.user_account.login = create_login if self.user_account.login.blank?
+    self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.save
+  end
+
+  def initialize_user
+    if self.user.blank?
+      user = self.build_user
+      user.attributes = user_attributes
+      user.first_name = self.first_name
+      user.last_name = self.last_name
+      user.user_account_id = self.user_account_id
+      user.tos_agreed_at = self.created_at || Time.now if User.content_columns.map(&:name).include?('tos_agreed_at')
+      user.save
+      puts "Created user: #{user.inspect}"
+    elsif !self.user_account.nil?
+      self.user.update_attributes(user_attributes)
+      self.user.user_account = self.user_account
+      self.user.save
+    end
+  end
+
+  def user_attributes
+    require 'yaml'
+    attr = YAML.load(read_attribute(:application_info)).stringify_keys
+    user_columns = User.content_columns.map(&:name) & attr.keys
+    attr.delete_if{|k,v| !user_columns.include?(k) }
+    puts "\nSetting attributes for user:\n#{attr.inspect}"
+    attr
   end
 
   def create_login

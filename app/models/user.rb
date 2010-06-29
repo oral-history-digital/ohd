@@ -76,4 +76,13 @@ class User < ActiveRecord::Base
             
           ]
 
+  def to_s
+    [ first_name, last_name ].compact.join(' ')
+  end
+
+  def admin?
+    read_attribute(:admin) == true
+  end
+
+
 end

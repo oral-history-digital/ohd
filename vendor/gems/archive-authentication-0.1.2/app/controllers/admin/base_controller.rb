@@ -19,7 +19,7 @@ class Admin::BaseController < BaseController
       redirect_to new_user_account_session_url
     else
       user = User.find_by_user_account_id(current_user_account.id)
-      unless user.admin
+      if user.nil? || !user.admin
         flash[:alert] = "Sie haben keine Administratorenrechte!"
         redirect_to new_user_account_session_url
       end      
