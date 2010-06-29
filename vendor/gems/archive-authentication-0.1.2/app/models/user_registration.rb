@@ -15,6 +15,10 @@ class UserRegistration < ActiveRecord::Base
 
   named_scope :requested, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unbeantwortet']
 
+  def after_initialize
+    @skip_mail_delivery = false
+  end
+
   def validate
     unless registered?
       # Sadly, people were registered even without matching the minimum required fields...
@@ -58,7 +62,7 @@ class UserRegistration < ActiveRecord::Base
   def register
     create_account
     initialize_user
-    if self.user_account.valid?
+    if self.user_account.valid? and !@skip_mail_delivery
       UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
     end
   end
@@ -88,6 +92,10 @@ class UserRegistration < ActiveRecord::Base
     require 'yaml'
     form_parameters = YAML.load read_attribute(:application_info)
     form_parameters
+  end
+
+  def skip_mail_delivery!
+    @skip_mail_delivery = true
   end
 
   private

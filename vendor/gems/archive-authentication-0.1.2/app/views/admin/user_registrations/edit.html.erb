@@ -3,20 +3,20 @@
 <h2><%= object.email %></h2>
 
 <% form_for [:admin, object], :html => { :class => 'user_registration' } do |f| %>
-  <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
+  <table id='usertable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
-      <tr class="userTable" style="vertical-align: top;">
-        <td class="userTable">
+      <tr>
+        <td>
           <strong><%= "#{object.first_name} #{object.last_name}" %></strong><br />
           <strong>E-Mail:</strong> <%= "#{object.email}" %>
         </td>
-        <td class="userTable" rowspan="2" style='text-align: right;'>
+        <td rowspan="2" style='text-align: right;'>
           <strong>Status:</strong> <%= object.workflow_state == nil ? 'unbeantwortet' : object.workflow_state %><br />
           <span class='user-dates' style='text-align: right; float: none;'>Anfrage vom <%= object.created_at.strftime("%d.%m.%y %H:%M") %></span>          
         </td>
       </tr>
       <tr>
-        <td class="userTable">
+        <td>
           <strong><%= t("tos_agreement", :scope => "devise.registration_fields") %>:</strong>
           <%= object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %>
         </td>
@@ -26,6 +26,7 @@
 
   <hr class="user-divider" />
 
+  <%#TODO: editable %>
   <% if @user %>
     <%#TODO: form for user data %>
   <% else %>
@@ -42,17 +43,8 @@
 
   <strong>Anmerkungen:</strong><br />
   <%= f.text_area :admin_comments, :style => "height: 50px;" %><br />
-
-  <% if object.workflow_state == 'requested' or object.workflow_state == nil %>
-    <%= submit_tag 'Registrieren', :name => 'geprüft' %>
-    <%= submit_tag 'Zurückstellen', :name => 'zurückgestellt' %>
-    <%= submit_tag 'Ablehnen', :name => 'abgelehnt' %>
-  <% elsif object.workflow_state == 'zurückgestellt' %>
-    <%= submit_tag 'Registrieren', :name => 'geprüft' %>
-    <%= submit_tag 'Ablehnen', :name => 'abgelehnt' %>
-  <% elsif object.workflow_state == 'registriert' %>
-    <%= submit_tag 'Deaktivieren', :name => 'zurückstellen' %>
-  <% elsif object.workflow_state == 'deactivated' %>
-    <%= submit_tag 'Aktivieren', :name => 'activated' %>
-  <% end %>
+  
+  <%= submit_tag 'Registrieren', :name => 'geprüft' %>
+  <%= submit_tag 'Zurückstellen', :name => 'zurückgestellt' %>
+  <%= submit_tag 'Ablehnen', :name => 'abgelehnt' %>
 <% end %>

@@ -4,30 +4,28 @@
   <%= (@workflow_state == "unbeantwortet" ? t(:new_registrations, :scope => "devise.workflow_states") : @workflow_state).capitalize %>
 </h2>
 
-<table class='userTable' cellspacing='0' cellpadding='0' border='0'>
+<table id='usertable' cellspacing='0' cellpadding='0' border='0'>
   <tbody>
     <tr>
-      <th class="userTable userTableList">Name</th>
-      <th class="userTable userTableList">&nbsp;</th>
-      <th class="userTable userTableList">Anfrage vom</th>
-      <th class="userTable userTableList">&nbsp;</th>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>&nbsp;</th>
+      <th>Anfrage vom</th>
+      <th>&nbsp;</th>
     </tr>
     <% @user_registrations.each do |user_registration| %>
-    <tr class="<%= cycle('userTableEven', 'userTableOdd') %>">
-      <td class="userTable userTableLabel userTableList"><%= "#{user_registration.first_name} #{user_registration.last_name}" %></td>
-      <td class="userTable userTableList">
+    <tr class="<%= cycle('even', 'odd') %>">
+      <td><strong><%= user_registration.id %></strong></td>
+      <td><%= "#{user_registration.first_name} #{user_registration.last_name}" %></td>
+      <td style="font-size: 8pt;">
         <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_highlighted_application_info.html.erb')) %>
           <%=  render :partial => '/users/highlighted_application_info', :object => user_registration %>
         <% else %>
           &nbsp;
         <% end %>
       </td>
-      <td class="userTable userTableList"><%= user_registration.created_at.strftime("%d.%m.%y %H:%M") %></td>
-      <td class="userTable userTableButtons userTableList">
-        <%= link_to 'Anfrage bearbeiten',
-                    edit_admin_user_registration_path(user_registration.id),
-                    :class => 'userTableButtonLink' %>
-      </td>
+      <td><%= user_registration.created_at.strftime("%d.%m.%y %H:%M") %></td>
+      <td id="user-registration-button-<%= "#{user_registration.id}" %>" class="buttons"><%= link_to 'Anfrage bearbeiten', edit_admin_user_registration_path(user_registration.id) %></td>
     </tr>
     <% end %>
   </tbody>

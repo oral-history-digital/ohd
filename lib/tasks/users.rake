@@ -249,4 +249,40 @@ namespace :users do
 
   end
 
+
+  desc "Initialize admins"
+  task :init_admins => :environment do
+
+    admins = { :jrietema => %w(Herr Jan Rietema),
+               :jschmeisser => %w(Herr Johannes Schmeisser),
+               'wolfram.lippert@gmx.de' => %w(Herr Wolfram Lippert) }
+
+    admins.keys.each do |login|
+      account = UserAccount.find_by_login login.to_s
+      next if account.nil?
+      reg = account.build_user_registration
+      reg.appellation = admins[login][0]
+      reg.first_name = admins[login][1]
+      reg.last_name = admins[login][2]
+      reg.email = account.email
+      reg.login = account.login
+      reg.tos_agreement = true
+      reg.job_description = 'Projektmitarbeiter'
+      reg.research_intentions = 'Projektmitarbeit'
+      reg.comments = 'keine Angaben'
+      reg.organization = 'CeDiS FU-Berlin'
+      reg.homepage = 'www.zwangsarbeit-archiv.de'
+      reg.street = 'Ihnestr. 24'
+      reg.zipcode = '14195'
+      reg.city = 'Berlin'
+      reg.state = 'Berlin'
+      reg.country = 'Deutschland'
+      reg.save
+      reg.register!
+      User.update_all "admin = true", "id = #{reg.user.id}"
+      puts "created user: #{reg.user.reload}"
+    end
+
+  end
+
 end
