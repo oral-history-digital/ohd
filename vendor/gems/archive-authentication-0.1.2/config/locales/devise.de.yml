@@ -59,6 +59,10 @@ de:
       email: 'E-Mail'
       password: 'Passwort'
 
+    workflow_states:
+      new_registration: 'Neuanmeldung'
+      new_registrations: 'Neuanmeldungen'
+
     registration_fields:
       fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
       select: 'Bitte auswählen'

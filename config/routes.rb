@@ -18,6 +18,14 @@ ActionController::Routing::Routes.draw do |map|
                         :member => { :transcript => :get }
   end
 
+  map.namespace :admin do |admin|
+    admin.resources :user_registrations
+    admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
+    admin.registration_details 'registrierung/:user_registration',
+                               :controller => :user_registrations,
+                               :action => :edit
+  end
+
   map.search 'suche', :controller => :searches, :action => :new
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }

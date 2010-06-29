@@ -60,6 +60,10 @@ en:
       email: 'Email'
       password: 'Password'
 
+    workflow_states:
+      new_registration: 'requested'
+      new_registrations: 'requested'
+
     registration_fields:
       fill_out_missing_fields_message: 'Please fill in the missing information:'
       select: 'Please select'

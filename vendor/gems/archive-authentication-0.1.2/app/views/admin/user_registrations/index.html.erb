@@ -1,0 +1,32 @@
+<h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
+
+<h2>
+  <%= (@workflow_state == "unbeantwortet" ? t(:new_registrations, :scope => "devise.workflow_states") : @workflow_state).capitalize %>
+</h2>
+
+<table id='usertable' cellspacing='0' cellpadding='0' border='0'>
+  <tbody>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>&nbsp;</th>
+      <th>Anfrage vom</th>
+      <th>&nbsp;</th>
+    </tr>
+    <% @user_registrations.each do |user_registration| %>
+    <tr class="<%= cycle('even', 'odd') %>">
+      <td><strong><%= user_registration.id %></strong></td>
+      <td><%= "#{user_registration.first_name} #{user_registration.last_name}" %></td>
+      <td style="font-size: 8pt;">
+        <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_highlighted_application_info.html.erb')) %>
+          <%=  render :partial => '/users/highlighted_application_info', :object => user_registration %>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+      <td><%= user_registration.created_at.strftime("%d.%m.%y %H:%M") %></td>
+      <td id="user-registration-button-<%= "#{user_registration.id}" %>" class="buttons"><%= link_to 'Anfrage bearbeiten', edit_admin_user_registration_path(user_registration.id) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

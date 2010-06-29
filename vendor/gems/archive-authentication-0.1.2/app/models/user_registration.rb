@@ -11,6 +11,8 @@ class UserRegistration < ActiveRecord::Base
 
   before_create :serialize_form_parameters
 
+  named_scope :requested, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unbeantwortet']
+
   def validate
     unless registered?
       # Sadly, people were registered even without matching the minimum required fields...
@@ -75,6 +77,12 @@ class UserRegistration < ActiveRecord::Base
 
   def full_name
     [ self.first_name, self.last_name ].join(' ').strip
+  end
+
+  def form_parameters
+    require 'yaml'
+    form_parameters = YAML.load read_attribute(:application_info)
+    form_parameters
   end
 
   private

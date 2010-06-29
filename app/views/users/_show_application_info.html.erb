@@ -1,0 +1,29 @@
+<table class='form' cellspacing='0' cellpadding='0' border='0'>
+  <tbody>
+    <tr>
+      <td class="formLabel"><strong>Beruf:</strong></td>
+      <td class="formInput">
+        <%= form_parameters[:job_description] %>
+      </td>
+      <td class="formLabel"><strong>Institution:</strong></td>
+      <td class="formInput">
+        <%= link_to form_parameters[:organization], form_parameters[:homepage] %>
+      </td>
+    </tr>
+    <tr>
+      <td class="formLabel"><strong>Anliegen:</strong></td>
+      <td class="formInput"><%= form_parameters[:research_intentions] %></td>
+      <td class="formLabel"><strong>Präzisierung:</strong></td>
+      <td class="formInput"><%= form_parameters[:comments] %></td>
+    </tr>
+    <tr>
+      <td class="formLabel"><strong>Anschrift:</strong></td>
+      <td colspan="3" class="formInput">
+        <%= form_parameters[:street] %>,
+        <%= form_parameters[:zipcode] %>
+        <%= form_parameters[:city] %>,
+        <%= form_parameters[:country] %>
+      </td>
+    </tr>
+  </tbody>
+</table>

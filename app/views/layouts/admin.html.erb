@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+    <%= render :partial => '/head' %>
+    <%= javascript_include_tag 'builder', 'interview', 'carousel', 'lightbox', 'swfobject', :cache => true %>
+</head>
+
+<body>
+    <div id="headerIdentityWrapper">
+        <%= render :partial => '/header' %>
+
+        <div id="baseServices">
+           
+        </div>
+
+        <hr class="divider" />
+    </div>
+
+    <div id="mainWrapper">
+
+        <div id="baseContent">
+
+            <a name="inhalt" accesskey="I"></a>
+
+            <div id="innerContent">
+                <%= yield %>
+            </div>
+
+            <div class="compact clear"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div id="baseContainerRight">
+          <%= render :partial => '/admin_sidebar' %>
+        </div>
+
+        <div id="mainWrapperClear" class="compact">&nbsp;</div>
+
+    </div>
+
+    <hr class="divider" />
+
+    <div id="baseContainerFooter">
+        <%= render :partial => '/footer' %>
+    </div>
+
+    <a name="seitenende" accesskey="u"></a>
+
+    <hr class="divider" />
+
+    <div id="printlogo">
+        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
+        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+    </div>
+
+</body>
+</html>
