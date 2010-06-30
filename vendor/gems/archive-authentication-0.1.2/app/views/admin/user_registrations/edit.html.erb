@@ -11,7 +11,8 @@
         </td>
         <td style='text-align: right; padding-left: 5px;'>
           <span class='user-dates' style='text-align: right; float: none;'>
-            Anfrage vom <%= object.created_at.strftime("%d.%m.%y %H:%M") %>
+            <strong><%= t(:requested_at, :scope => "devise.registration_fields") %>:</strong>
+            <%= "#{object.created_at.strftime("%d.%m.%y %H:%M")}" %>
           </span>          
         </td>
       </tr>
