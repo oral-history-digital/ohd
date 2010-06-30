@@ -20,10 +20,9 @@
 
   <hr class="user-divider" />
 
-  <%#TODO: editable %>
-
+  <%#TODO: edit user information %>
   <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_show_application_info.html.erb')) %>
-    <%=  render :partial => '/users/show_application_info', :object => (@user ? @user : object) %>
+    <%=  render :partial => '/users/show_application_info', :object => object %>
   <% else %>
     <% object.form_parameters.each do |field_name, value| %>
       <strong><%= field_name %>:</strong> <%= value %><br />
