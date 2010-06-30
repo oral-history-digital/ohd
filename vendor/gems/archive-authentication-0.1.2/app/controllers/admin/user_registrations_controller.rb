@@ -13,6 +13,16 @@ class Admin::UserRegistrationsController < Admin::BaseController
           @object.postpone!
         when 'reject'
           @object.reject!
+        when 'activate'
+          if @workflow_state.to_s == 'checked'
+            flash[:alert] = 'Benutzer muss seinen Account selbst aktivieren um ein Passwort zu erhalten.'
+          else
+            @object.activate!
+          end
+        when 'expire'
+          @object.expire!
+        when 'remove'
+          @object.remove!
       end
     end
     wants.html do
