@@ -1,24 +1,18 @@
 <%#TODO: localizations %>
 <h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
-<h2><%= object.email %></h2>
+<h2><%= "#{object.first_name} #{object.last_name} &mdash; #{object.email}" %></h2>
 
-<% form_for [:admin, object], :html => { :class => 'user_registration' } do |f| %>
-  <table id='usertable' cellspacing='0' cellpadding='0' border='0'>
+<% form_for [:admin, object], :html => {  } do |f| %>
+  <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
       <tr>
         <td>
-          <strong><%= "#{object.first_name} #{object.last_name}" %></strong><br />
-          <strong>E-Mail:</strong> <%= "#{object.email}" %>
+          <strong>Status:</strong> <%= "#{t(object.current_state.to_sym, :scope => "devise.workflow_states")}" %>
         </td>
-        <td rowspan="2" style='text-align: right;'>
-          <strong>Status:</strong> <%= object.workflow_state == nil ? 'unbeantwortet' : object.workflow_state %><br />
-          <span class='user-dates' style='text-align: right; float: none;'>Anfrage vom <%= object.created_at.strftime("%d.%m.%y %H:%M") %></span>          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <strong><%= t("tos_agreement", :scope => "devise.registration_fields") %>:</strong>
-          <%= object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %>
+        <td style='text-align: right; padding-left: 5px;'>
+          <span class='user-dates' style='text-align: right; float: none;'>
+            Anfrage vom <%= object.created_at.strftime("%d.%m.%y %H:%M") %>
+          </span>          
         </td>
       </tr>
     </tbody>
@@ -27,24 +21,23 @@
   <hr class="user-divider" />
 
   <%#TODO: editable %>
-  <% if @user %>
-    <%#TODO: form for user data %>
+
+  <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_show_application_info.html.erb')) %>
+    <%=  render :partial => '/users/show_application_info', :object => (@user ? @user : object) %>
   <% else %>
-    <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_show_application_info.html.erb')) %>
-      <%=  render :partial => '/users/show_application_info', :locals => { :form_parameters => object.form_parameters } %>    
-    <% else %>
-      <% object.form_parameters.each do |field_name, value| %>
-        <strong><%= field_name %>:</strong> <%= value %><br />
-      <% end %>
+    <% object.form_parameters.each do |field_name, value| %>
+      <strong><%= field_name %>:</strong> <%= value %><br />
     <% end %>
   <% end %>
 
   <hr class="user-divider" />
 
+  <strong><%= t("tos_agreement", :scope => "devise.registration_fields") %>:</strong>
+  <%= object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %><br />
   <strong>Anmerkungen:</strong><br />
   <%= f.text_area :admin_comments, :style => "height: 50px;" %><br />
-  
-  <%= submit_tag 'Registrieren', :name => 'geprüft' %>
-  <%= submit_tag 'Zurückstellen', :name => 'zurückgestellt' %>
-  <%= submit_tag 'Ablehnen', :name => 'abgelehnt' %>
+
+  <% object.current_state.events.each do |event, workflow| %>
+    <%= submit_tag "#{t(event.to_sym, :scope => "devise.workflow_events")}", :name => event %>
+  <% end %>
 <% end %>

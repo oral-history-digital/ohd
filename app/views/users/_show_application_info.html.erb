@@ -1,29 +1,39 @@
-<table class='form' cellspacing='0' cellpadding='0' border='0'>
+<table cellspacing='0' cellpadding='0' border='0'>
   <tbody>
     <tr>
-      <td class="formLabel"><strong>Beruf:</strong></td>
-      <td class="formInput">
-        <%= form_parameters[:job_description] %>
-      </td>
-      <td class="formLabel"><strong>Institution:</strong></td>
-      <td class="formInput">
-        <%= link_to form_parameters[:organization], form_parameters[:homepage] %>
+      <td class="userTableLabel"><%= "#{t(:name, :scope => "devise.registration_fields")}" %>:</td>
+      <td colspan="3" class="userTable">
+        <%= "#{object.appellation}" %>
+        <%= "#{object.first_name}" %>
+        <%= "#{object.last_name}" %>
       </td>
     </tr>
     <tr>
-      <td class="formLabel"><strong>Anliegen:</strong></td>
-      <td class="formInput"><%= form_parameters[:research_intentions] %></td>
-      <td class="formLabel"><strong>Präzisierung:</strong></td>
-      <td class="formInput"><%= form_parameters[:comments] %></td>
+      <td class="userTableLabel"><%= "#{t(:adress, :scope => "devise.registration_fields")}" %>:</td>
+      <td colspan="3" class="userTable">
+        <%= "#{object.street}" %>,
+        <%= "#{object.zipcode}" %>
+        <%= "#{object.city}" %>,
+        <%= "#{object.country}" %>
+      </td>
     </tr>
     <tr>
-      <td class="formLabel"><strong>Anschrift:</strong></td>
-      <td colspan="3" class="formInput">
-        <%= form_parameters[:street] %>,
-        <%= form_parameters[:zipcode] %>
-        <%= form_parameters[:city] %>,
-        <%= form_parameters[:country] %>
+      <td class="userTableLabel"><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %>:</td>
+      <td class="userTable">
+        <%= "#{object.job_description}" %>
       </td>
+      <td class="userTableLabel"><%= "#{t(:organization, :scope => "devise.registration_fields")}" %>:</td>
+      <td class="userTable">
+        <%= link_to "#{object.organization}",
+                    "#{object.homepage}",
+                    :target => '_blank' %>
+      </td>
+    </tr>
+    <tr>
+      <td class="userTableLabel"><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %>:</td>
+      <td class="userTable"><%= "#{object.research_intentions}" %></td>
+      <td class="userTableLabel"><%= "#{t(:comments, :scope => "devise.registration_fields")}" %>:</td>
+      <td class="userTable"><%= "#{object.comments}" %></td>
     </tr>
   </tbody>
 </table>

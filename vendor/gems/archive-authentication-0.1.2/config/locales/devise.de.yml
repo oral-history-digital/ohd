@@ -62,6 +62,21 @@ de:
     workflow_states:
       new_registration: 'Neuanmeldung'
       new_registrations: 'Neuanmeldungen'
+      unchecked: 'unbeantwortet'
+      checked: 'geprüft'
+      registered: 'registriert'
+      deactivated: 'deaktiviert'
+      postponed: 'zurückgestellt'
+      rejected: 'abgelehnt'
+
+    workflow_events:
+      register: 'registrieren'
+      reject: 'ablehnen'
+      deactivate: 'deaktivieren'
+      postpone: 'zurückstellen'
+      activate: 'aktivieren'
+      expire: ''
+      remove: 'löschen'
 
     registration_fields:
       fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
@@ -84,6 +99,9 @@ de:
       tos_agreement_explanation: 'Ich stimme den Nutzungsbedingungen zu'
       send_newsletter: 'Newsletter'
       send_newsletter_explanation: 'Ich möchte den Newsletter des Projektes Zwangsarbeit 1939-1945 abonnieren.'
+      requested_at: 'Datum der Anfrage'
+      name: 'Name'
+      adress: 'Anschrift'
 
     registration_values:
       appellation:
