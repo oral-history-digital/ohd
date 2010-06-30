@@ -75,7 +75,7 @@ de:
       deactivate: 'deaktivieren'
       postpone: 'zurückstellen'
       activate: 'aktivieren'
-      expire: ''
+      expire: 'verfallen'
       remove: 'löschen'
 
     registration_fields:
