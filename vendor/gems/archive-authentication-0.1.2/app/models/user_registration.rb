@@ -15,6 +15,8 @@ class UserRegistration < ActiveRecord::Base
 
   before_create :serialize_form_parameters
 
+  named_scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
+
   def after_initialize
     @skip_mail_delivery = false
   end

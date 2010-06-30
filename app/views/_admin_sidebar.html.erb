@@ -1,7 +1,7 @@
 <div class="fragmentTitle">
   <h2><%= link_to "Benutzerverwaltung", admin_user_management_url %></h2>
   <ul>
-    <li><%= link_to "#{t(:new_registrations, :scope => "devise.workflow_states")} (#{UserRegistration.requested.count})", admin_user_management_url %></li>
+    <li><%= link_to "#{t(:new_registrations, :scope => "devise.workflow_states")} (#{UserRegistration.unchecked.count})", admin_user_management_url %></li>
     <% ['checked',
         'registered',
         'postponed',
