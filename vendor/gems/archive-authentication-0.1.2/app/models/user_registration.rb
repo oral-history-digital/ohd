@@ -1,6 +1,8 @@
 class UserRegistration < ActiveRecord::Base
   include Workflow
 
+  STATES = %w(unchecked checked registered postponed rejected)
+
   belongs_to :user_account
 
   has_one :user
