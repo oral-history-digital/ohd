@@ -17,12 +17,9 @@ class Admin::BaseController < BaseController
     if !signed_in?(:user_account)
       flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
       redirect_to new_user_account_session_url
-    else
-      user = User.find_by_user_account_id(current_user_account.id)
-      if user.nil? || !user.admin
-        flash[:alert] = "Sie haben keine Administratorenrechte!"
-        redirect_to new_user_account_session_url
-      end      
+    elsif !current_user_account.admin?
+      flash[:alert] = "Sie haben keine Administratorenrechte!"
+      redirect_to new_user_account_session_url
     end
   end
 

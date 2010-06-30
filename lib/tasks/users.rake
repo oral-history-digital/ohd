@@ -207,14 +207,15 @@ namespace :users do
   end
 
 
-  desc "converts German workflow_state to English"
+  desc "converts German workflow_state to English and checked to unchecked for workflow compatibility"
   task :convert_workflows => :environment do
 
     states = { 'ungeprüft' => 'unchecked',
       'geprüft'   => 'checked',
       'registriert' => 'registered',
       'zurückgestellt' => 'postponed',
-      'abgewiesen' => 'rejected' }
+      'abgewiesen' => 'rejected',
+      'checked' => 'unchecked' }
 
     states.each_pair do |old_state, new_state|
       number = UserRegistration.update_all "workflow_state = '#{new_state}'", "workflow_state = '#{old_state}'"
@@ -235,7 +236,7 @@ namespace :users do
 
     puts "Checking users for #{total} user registrations"
 
-    #while offset < total
+    while offset < total
 
       UserRegistration.find(:all, :conditions => conditions, :limit => "#{offset},#{batch}", :include => :user ).each do |registration|
         next unless registration.user.nil?
@@ -245,7 +246,7 @@ namespace :users do
       end
 
       offset += batch
-    #end
+    end
 
   end
 
