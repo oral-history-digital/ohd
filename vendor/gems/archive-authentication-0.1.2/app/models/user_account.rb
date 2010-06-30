@@ -1,4 +1,5 @@
 class UserAccount < AuthenticationModel
+  unloadable
 
   devise :database_authenticatable,
          # handle Confirmations less automatically
@@ -32,7 +33,7 @@ class UserAccount < AuthenticationModel
   end
 
   def admin?
-    !self.user.nil? && self.user.admin?
+    !self.user.blank? # && self.user.admin?
   end
 
   # METHODS FROM CONFIRMABLE:

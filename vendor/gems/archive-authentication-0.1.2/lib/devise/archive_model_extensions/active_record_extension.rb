@@ -6,6 +6,7 @@ module Devise
 
       def self.included(recipient)
         recipient.extend(ClassMethods)
+        super
       end
 
       module ClassMethods

@@ -10,6 +10,7 @@ module Devise
           has_one :authenticatable
           has_one :user_account, :through => :authenticatable
         end
+        super
       end
 
 
