@@ -10,7 +10,7 @@ class InterviewsController < BaseController
     material = object.text_materials.for_file(params[:filename].capitalize).first
     head(:not_found) if material.nil?
     response.headers['Cache-Control'] = 'no-store'
-    send_file material.document.path, :disposition => 'inline', :type => material.document.content_type, :x_sendfile => true
+    send_file material.document.path, :disposition => 'inline', :type => material.document.content_type #, :x_sendfile => true
   end
 
   def photos
