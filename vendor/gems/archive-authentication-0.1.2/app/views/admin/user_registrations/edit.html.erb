@@ -1,4 +1,3 @@
-<%#TODO: localizations %>
 <h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
 <h2><%= "#{object.first_name} #{object.last_name} &mdash; #{object.email}" %></h2>
 
@@ -22,8 +21,8 @@
   <hr class="user-divider" />
 
   <%#TODO: edit user information %>
-  <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_show_application_info.html.erb')) %>
-    <%=  render :partial => '/users/show_application_info', :object => object %>
+  <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>
+    <%=  render :partial => '/users/_application_info', :object => object %>
   <% else %>
     <% object.form_parameters.each do |field_name, value| %>
       <strong><%= field_name %>:</strong> <%= value %><br />
