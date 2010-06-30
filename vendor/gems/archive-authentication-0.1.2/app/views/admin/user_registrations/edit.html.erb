@@ -12,7 +12,7 @@
         <td style='text-align: right; padding-left: 5px;'>
           <span class='user-dates' style='text-align: right; float: none;'>
             <strong><%= t(:requested_at, :scope => "devise.registration_fields") %>:</strong>
-            <%= "#{object.created_at.strftime("%d.%m.%y %H:%M")}" %>
+            <%= object.created_at.nil? ? '?' : object.created_at.strftime("%d.%m.%y %H:%M") %>
           </span>          
         </td>
       </tr>
@@ -37,7 +37,9 @@
   <strong>Anmerkungen:</strong><br />
   <%= f.text_area :admin_comments, :style => "height: 50px;" %><br />
 
+  <%= hidden_field_tag :workflow_event, '', :id => "workflow_event" %>
+
   <% object.current_state.events.each do |event, workflow| %>
-    <%= submit_tag "#{t(event.to_sym, :scope => "devise.workflow_events")}", :name => event %>
+    <%= submit_tag "#{t(event.to_sym, :scope => "devise.workflow_events")}", :name => event, :onclick => "$('workflow_event').value = '#{event}';" %>
   <% end %>
 <% end %>

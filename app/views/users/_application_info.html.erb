@@ -3,37 +3,37 @@
     <tr>
       <td class="userTableLabel"><%= "#{t(:name, :scope => "devise.registration_fields")}" %>:</td>
       <td colspan="3" class="userTable">
-        <%= "#{object.appellation}" %>
-        <%= "#{object.first_name}" %>
-        <%= "#{object.last_name}" %>
+        <%= "#{application_info.appellation}" %>
+        <%= "#{application_info.first_name}" %>
+        <%= "#{application_info.last_name}" %>
       </td>
     </tr>
     <tr>
       <td class="userTableLabel"><%= "#{t(:adress, :scope => "devise.registration_fields")}" %>:</td>
       <td colspan="3" class="userTable">
-        <%= "#{object.street}" %>,
-        <%= "#{object.zipcode}" %>
-        <%= "#{object.city}" %>,
-        <%= "#{object.country}" %>
+        <%= "#{application_info.street}" %>,
+        <%= "#{application_info.zipcode}" %>
+        <%= "#{application_info.city}" %>,
+        <%= "#{application_info.country}" %>
       </td>
     </tr>
     <tr>
       <td class="userTableLabel"><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %>:</td>
       <td class="userTable">
-        <%= "#{object.job_description}" %>
+        <%= "#{application_info.job_description}" %>
       </td>
       <td class="userTableLabel"><%= "#{t(:organization, :scope => "devise.registration_fields")}" %>:</td>
       <td class="userTable">
-        <%= link_to "#{object.organization}",
-                    "#{object.homepage}",
+        <%= link_to "#{application_info.organization}",
+                    "#{application_info.homepage}",
                     :target => '_blank' %>
       </td>
     </tr>
     <tr>
       <td class="userTableLabel"><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable"><%= "#{object.research_intentions}" %></td>
+      <td class="userTable"><%= "#{application_info.research_intentions}" %></td>
       <td class="userTableLabel"><%= "#{t(:comments, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable"><%= "#{object.comments}" %></td>
+      <td class="userTable"><%= "#{application_info.comments}" %></td>
     </tr>
   </tbody>
 </table>

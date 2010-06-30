@@ -2,13 +2,31 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   actions :index, :edit, :update
 
+  update do
+    before do
+      @workflow_state = object.workflow_state
+      # action dependent on submit value
+      case params['workflow_event']
+        when 'register'
+          @object.register!
+        when 'postpone'
+          @object.postpone!
+        when 'reject'
+          @object.reject!
+      end
+    end
+    wants.html do
+      redirect_to :action => :index, :workflow_state => @workflow_state
+    end
+  end
+
   private
 
   def object
-    object = UserRegistration.find(params[:id])
-    @user_account = object.user_account
+    @object = UserRegistration.find(params[:id])
+    @user_account = @object.user_account
     @user = @user_account ? @user_account.user : nil
-    object
+    @object
   end
 
   def collection
