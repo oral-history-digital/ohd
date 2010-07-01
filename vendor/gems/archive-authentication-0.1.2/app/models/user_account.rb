@@ -55,7 +55,9 @@ class UserAccount < AuthenticationModel
       self.confirmation_token = nil
       self.confirmed_at = Time.now
       self.deactivated_at = nil
-      self.user_registration.activate! unless self.user_registration.nil?
+      unless self.user_registration.nil?
+        self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
+      end
       save(false)
     end
   end
