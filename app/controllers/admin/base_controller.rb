@@ -1,5 +1,6 @@
 class Admin::BaseController < BaseController
-
+  include ExceptionNotifiable
+  
   before_filter :authenticate_admin_account
 
   layout 'admin'
