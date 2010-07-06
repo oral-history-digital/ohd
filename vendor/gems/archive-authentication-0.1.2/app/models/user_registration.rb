@@ -145,7 +145,7 @@ class UserRegistration < ActiveRecord::Base
   end
 
   def create_login
-    ideal_login = first_name.first.downcase + last_name.downcase
+    ideal_login = first_name.first.strip.downcase.gsub(/\s/,'') + last_name.strip.downcase.gsub(/\s/,'')
     login = ideal_login
     # try email address if it's not too long and contains the last name
     try_email = (self.email.length < 20) && self.email.downcase.index(self.last_name.downcase)
