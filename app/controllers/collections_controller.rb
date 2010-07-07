@@ -20,4 +20,8 @@ class CollectionsController < BaseController
     params[:id] || params[:project_id]
   end
 
+  def collection
+    end_of_association_chain.find(:all, :order => "name ASC")
+  end
+
 end
