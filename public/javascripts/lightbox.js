@@ -393,6 +393,8 @@ Lightbox.prototype = {
         if (this.imageArray.length > 1){
             this.numberDisplay.update( LightboxOptions.labelImage + ' ' + (this.activeImage + 1) + ' ' + LightboxOptions.labelOf + '  ' + this.imageArray.length).show();
         }
+        // make the ImageDataContainer appear if it hasn't done so already.
+        new Effect.Appear(this.imageDataContainer, { sync: true, duration: 0.15 })
     },
 
     //
