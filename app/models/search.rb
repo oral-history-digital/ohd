@@ -442,8 +442,13 @@ SQL
       # search for partial person names for autocompletion
       keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
 
-      text_fields do
-        with(:fulltext, fulltext_query) unless fulltext_query.blank?
+      unless fulltext_query.blank?
+        text_fields do
+          any_of do
+            with :transcript, fulltext_query
+            with :categories, fulltext_query
+          end
+        end
       end
 
       # category facets
@@ -463,6 +468,11 @@ SQL
 
       adjust_solr_params do |params|
         params[:defType] = 'lucene'
+
+        # fulltext search
+#        unless fulltext_query.blank?
+#          params[:q] = fulltext_query
+#        end
       end
 
     end
