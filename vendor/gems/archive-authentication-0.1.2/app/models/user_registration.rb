@@ -50,11 +50,10 @@ class UserRegistration < ActiveRecord::Base
       event :expire,    :transitions_to => :postponed
     end
     state :registered do
-      event :deactivate,  :transitions_to => :postponed
       event :remove,      :transitions_to => :rejected
     end
     state :postponed do
-      event :activate,    :transitions_to => :registered
+      event :reactivate,  :transitions_to => :checked
       event :reject,      :transitions_to => :rejected
     end
     state :rejected
@@ -79,6 +78,10 @@ class UserRegistration < ActiveRecord::Base
   def remove
     self.user.update_attribute(:admin, nil)
     self.user_account.deactivate!
+  end
+
+  def reactivate
+    self.user_account.reactivate!
   end
 
   # Expires the confirmation token

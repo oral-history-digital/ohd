@@ -67,6 +67,7 @@ en:
       checked: 'checked'
       registered: 'registered'
       deactivated: 'deactivated'
+      reactivate: 'reactivate'
       postponed: 'postponed'
       rejected: 'rejected'
 

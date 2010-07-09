@@ -73,6 +73,7 @@ de:
       register: 'registrieren'
       reject: 'ablehnen'
       deactivate: 'deaktivieren'
+      reactivate: 'wieder aktivieren'
       postpone: 'zurückstellen'
       activate: 'aktivieren'
       expire: 'verfallen'

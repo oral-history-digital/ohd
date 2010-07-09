@@ -89,6 +89,10 @@ class UserAccount < AuthenticationModel
     save
   end
 
+  def reactivate!
+    update_attribute(:deactivated_at, nil)
+  end
+
   # If you don't want confirmation to be sent on create, neither a code
   # to be generated, call skip_confirmation!
   def skip_confirmation!

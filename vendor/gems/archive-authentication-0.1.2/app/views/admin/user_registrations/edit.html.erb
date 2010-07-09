@@ -38,7 +38,7 @@
 
   <%= hidden_field_tag :workflow_event, '', :id => "workflow_event" %>
 
-  <% object.current_state.events.each do |event, workflow| %>
+  <% (object.current_state.events.keys - ['activate']).each do |event, workflow| %>
     <%= submit_tag "#{t(event.to_sym, :scope => "devise.workflow_events")}", :name => event, :onclick => "$('workflow_event').value = '#{event}';" %>
   <% end %>
 <% end %>
