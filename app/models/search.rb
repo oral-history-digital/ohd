@@ -468,11 +468,6 @@ SQL
 
       adjust_solr_params do |params|
         params[:defType] = 'lucene'
-
-        # fulltext search
-#        unless fulltext_query.blank?
-#          params[:q] = fulltext_query
-#        end
       end
 
     end
