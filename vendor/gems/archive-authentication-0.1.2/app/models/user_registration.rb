@@ -130,7 +130,6 @@ class UserRegistration < ActiveRecord::Base
       user.user_account_id = self.user_account_id
       user.tos_agreed_at = self.created_at || Time.now if User.content_columns.map(&:name).include?('tos_agreed_at')
       user.save
-      puts "Created user: #{user.inspect}"
     elsif !self.user_account.nil?
       self.user.update_attributes(user_attributes)
       self.user.user_account = self.user_account
@@ -143,7 +142,6 @@ class UserRegistration < ActiveRecord::Base
     attr = YAML.load(read_attribute(:application_info)).stringify_keys
     user_columns = User.content_columns.map(&:name) & attr.keys
     attr.delete_if{|k,v| !user_columns.include?(k) }
-    puts "\nSetting attributes for user:\n#{attr.inspect}"
     attr
   end
 

@@ -146,6 +146,102 @@ namespace :users do
   end
 
 
+  desc "Generates 'anonymous'-style User and UserRegistration entries for isolated UserAccounts"
+  task :generate_anonymous => :environment do
+
+    batch = 25
+    offset = 0
+    total = UserAccount.count :all
+
+    new_registrations = 0
+    new_users = 0
+    new_users_for_existing_regs = 0
+
+    puts "Checking #{total} user accounts for missing users and registrations:"
+
+    while offset < total
+
+      UserAccount.find(:all, :limit => "#{offset},#{batch}").each do |account|
+        next unless account.user.nil? || account.user_registration.nil?
+        unless account.user_registration.nil?
+          # don't create users if not registered
+          next unless account.user_registration.registered?
+          # we have a registration, now create a user for them
+          account.user_registration.send(:initialize_user)
+          puts account.user.to_s
+        else
+          # create this user registration
+
+          registration = UserRegistration.find_or_initialize_by_email(account.email)
+
+          if registration.new_record?
+            new_registrations += 1
+
+            registration.login = account.login
+            name_parts = account.email.split(/[@.]/)
+            registration.first_name       = name_parts.first
+            registration.last_name        = name_parts[1]
+            registration.tos_agreement    = true
+            registration.workflow_state   = 'registriert'
+
+            # application-info:
+            registration.appellation      = 'Herr oder Frau'
+            registration.job_description  = 'Sonstiges'
+            registration.research_intentions  = 'keine Angabe'
+            registration.comments         = 'keine Angaben'
+            registration.organization     = 'keine Angabe'
+            registration.homepage         = ''
+            registration.street           = 'keine Angabe'
+            registration.zipcode          = '--'
+            registration.city             = 'keine Angabe'
+            registration.state            = 'keine Angabe'
+            registration.country          = 'Deutschland'
+
+            registration.admin_comments   = ''
+            registration.processed_at     = Time.now
+
+            registration.skip_mail_delivery!
+            registration.send(:serialize_form_parameters)
+
+            perform_registration(registration)
+          else
+            new_users_for_existing_regs += 1
+            puts "Existing registration: #{registration.inspect}\nfor UserAccount: #{account.inspect}"
+          end
+
+          if registration.valid?
+            state = account.deactivated_at.nil? ? 'registered' : 'rejected'
+            UserRegistration.update_all "workflow_state = '#{state}'", "id = #{registration.id}"
+
+            begin
+              if registration.user.nil?
+                new_users += 1
+                registration.send(:initialize_user)
+              end
+              puts registration.user.to_s
+
+            rescue Exception => e
+              puts "ERROR: #{e.message}"
+            end
+
+          else
+            new_registrations -= 1
+
+          end
+
+        end
+
+      end
+
+      offset += batch
+
+    end
+
+    puts "done. Created #{new_registrations} registrations, #{new_users} users in total and #{new_users_for_existing_regs} users for existing registrations."
+
+  end
+
+
   def perform_registration(registration)
     new_registration = registration.new_record?
 
