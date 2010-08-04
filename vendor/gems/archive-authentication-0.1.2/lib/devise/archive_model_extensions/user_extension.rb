@@ -7,8 +7,8 @@ module Devise
       def self.included(recipient)
         recipient.extend(ClassMethods)
         recipient.class_eval do
-          has_one :authenticatable
-          has_one :user_account, :through => :authenticatable
+          belongs_to :user_registration
+          belongs_to :user_account
         end
         super
       end
@@ -22,7 +22,7 @@ module Devise
           return unless Devise.authentication_keys.all? { |k| attributes[k].present? }
           conditions = attributes.slice(*Devise.authentication_keys)
           auth_proxy = find_for_authentication(conditions)
-          auth_proxy.authenticatables.first if auth_proxy.try(:valid_for_authentication?, attributes)
+          auth_proxy.user if auth_proxy.try(:valid_for_authentication?, attributes)
         end
 
         private

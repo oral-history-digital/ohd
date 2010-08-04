@@ -43,6 +43,7 @@ task :test => :check_dependencies
 task :default => :test
 
 load 'tasks/user_accounts.rake'
+load 'tasks/authentication_data.rake'
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|

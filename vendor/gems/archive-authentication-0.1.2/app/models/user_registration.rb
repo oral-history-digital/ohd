@@ -5,7 +5,7 @@ class UserRegistration < ActiveRecord::Base
 
   belongs_to :user_account
 
-  has_one :user
+  has_one :user, :dependent => :destroy
 
   validates_format_of :email,
                       :with => /^.+@.+\..+$/,
@@ -129,7 +129,7 @@ class UserRegistration < ActiveRecord::Base
       user.last_name = self.last_name
       user.user_account_id = self.user_account_id
       user.tos_agreed_at = self.created_at || Time.now if User.content_columns.map(&:name).include?('tos_agreed_at')
-      user.save
+      user.save!
     elsif !self.user_account.nil?
       self.user.update_attributes(user_attributes)
       self.user.user_account = self.user_account
