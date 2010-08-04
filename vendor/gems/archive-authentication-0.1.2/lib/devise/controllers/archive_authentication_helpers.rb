@@ -2,6 +2,9 @@ module Devise
 
   module Controllers
 
+    # This module includes controller methods that
+    # facilitate authentication via the User model
+    # via proxying to UserAccount
     module ArchiveAuthenticationHelpers
 
       def self.included?(recipient)
