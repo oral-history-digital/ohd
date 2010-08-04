@@ -3,7 +3,7 @@ class HomeController < BaseController
 
   STATIC_PAGES = (Dir.entries(File.join(RAILS_ROOT, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
-  skip_before_filter :authenticate_user_account!
+  skip_before_filter :authenticate_user!
 
   def show
     @page_action = I18n.t(params[:page], :scope => 'page_paths')

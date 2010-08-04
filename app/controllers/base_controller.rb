@@ -4,7 +4,7 @@ class BaseController < ResourceController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  before_filter :authenticate_user_account!
+  before_filter :authenticate_user!
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
