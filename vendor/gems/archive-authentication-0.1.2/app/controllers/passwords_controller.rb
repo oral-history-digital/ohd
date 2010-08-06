@@ -13,7 +13,7 @@ class PasswordsController < ApplicationController
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message :notice, :send_instructions
+      set_flash_message :alert, :send_instructions
       redirect_to new_session_path(resource_name)
     else
       render_with_scope :new
