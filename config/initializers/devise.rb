@@ -3,7 +3,7 @@
 
 Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = "mail.zwangsarbeit-archiv.de"
+  config.mailer_sender = "mail@zwangsarbeit-archiv.de"
   
   # Configure the content type of DeviseMailer mails (defaults to text/html")
   # config.mailer_content_type = "text/plain"
