@@ -114,6 +114,7 @@ class SearchesController < BaseController
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
       flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
+      session[:"user_account.return_to"] = request.request_uri
       if request.xhr?
         render :update do |page|
           page << "window.location.href = '#{new_user_account_session_url}';"
