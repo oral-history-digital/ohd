@@ -29,8 +29,7 @@
               <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.#{field}")} : field_def[:values] -%>
               <%= content_tag :td, select(:user_registration,
                                         field,
-                                        options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] \
-                                                            + values,
+                                        options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
                                                             params['user_registration'].blank? ? nil : params['user_registration'][field])),
                                         { :include_blank => false } -%>
             <% end -%>
