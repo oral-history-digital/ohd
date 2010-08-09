@@ -28,10 +28,10 @@
             <% else -%>
               <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.#{field}")} : field_def[:values] -%>
               <%= content_tag :td, select(:user_registration,
-                                        field.to_sym,
+                                        field,
                                         options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] \
                                                             + values,
-                                                            t(:select, :scope => 'devise.registration_fields'))),
+                                                            params['user_registration'].blank? ? nil : params['user_registration'][field])),
                                         { :include_blank => false } -%>
             <% end -%>
         </tr>
