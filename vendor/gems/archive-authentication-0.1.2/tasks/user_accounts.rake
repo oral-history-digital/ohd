@@ -14,7 +14,7 @@ namespace :user_accounts do
         raise "No such file: #{file}. Try again." unless File.exists?(file)
 
         puts 'KCODE: ' + (ENV['KCODE'] || 'none').to_s
-        raise "Please set $KCODE to 'u' before importing" if ENV['KCODE'].nil? or ENV['KCODE'].downcase[/^u/].blank?
+        raise "Please set $KCODE to 'u' before importing" if ENV['KCODE'].nil? || ENV['KCODE'].downcase[/^u/].blank?
 
         puts "Importing data from #{file}..."
 
