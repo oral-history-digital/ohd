@@ -46,7 +46,9 @@ class UserRegistration < ActiveRecord::Base
       event :postpone,  :transitions_to => :postponed
     end
     state :checked do
-      event :activate,  :transitions_to => :registered
+      event :activate,  :transitions_to => :registered do
+        halt if self.user_account.nil? || !self.user_account.confirmed?
+      end
       event :expire,    :transitions_to => :postponed
     end
     state :registered do

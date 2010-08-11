@@ -1,73 +1,140 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+$rand_chars = [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
+$registration_fields = {}
+UserRegistration.registration_field_names.select{|f| UserRegistration.registration_fields[f.to_sym][:mandatory] }.each do |f|
+  field = UserRegistration.registration_fields[f.to_sym]
+  case f
+    when 'email', :email
+      $registration_fields[f] = (0..8).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '@' + (0..10).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '.de'
+    else
+      $registration_fields[f] = field[:values].empty? ? (0..12).map{ $rand_chars[rand($rand_chars.length)]  }.join : field[:values][rand(field[:values].size)]
+  end
+end
+
 describe UserRegistration, 'when newly created' do
 
-  it "should have the unchecked state" do
+  before :each do
+    @registration = UserRegistration.create $registration_fields
+  end
 
+  it "should have the unchecked state" do
+    @registration.should be_unchecked
   end
 
   it "should not have a user account associated with it" do
-
+    @registration.user_account.should be_nil
   end
 
   it "should not have a user associated with it" do
-
+    @registration.user.should be_nil
   end
 
-  it "should not be created if required fields are missing" do
-
+  it "should not be created if any of the required fields are missing" do
+    registration2 = UserRegistration.create $registration_fields.delete($registration_fields[$registration_fields.keys[rand($registration_fields.keys.size)]])
+    registration2.should be_new_record
+    registration2.should_not be_valid
   end
 
   it "should be created if all the required fields are there" do
-
+    @registration.should_not be_new_record
   end
 
   it "should not be created with an invalid email" do
+    registration3 = UserRegistration.create $registration_fields.merge({ :email => 'invalid.email.de' })
+    registration3.should be_new_record
+    registration3.should_not be_valid
+  end
 
+  it "should respond to the register event" do
+    lambda{@registration.register!}.should_not raise_exception
+  end
+
+  it "should respond to the postpone event" do
+    lambda{@registration.postpone!}.should_not raise_exception
+  end
+
+  it "should respond to the reject event" do
+    lambda{@registration.reject!}.should_not raise_exception
+  end
+
+  it "should send an email to the user on a register event" do
+    previous_deliveries = UserAccountMailer.deliveries.size
+    @registration.register!
+    UserAccountMailer.deliveries.size.should == previous_deliveries+1
+    UserAccountMailer.deliveries.last.destinations.first.should == @registration.email
   end
 
 end
 
-describe UserRegistration, 'on activation' do
+describe UserRegistration, 'on registration' do
 
-  it "should generate a confirmation code" do
-
+  before :each do
+    @registration = UserRegistration.create $registration_fields
+    @registration.register!
   end
 
-  it "should send an email to the registered address" do
-
+  it "should generate a user account with confirmation token" do
+    @registration.user_account.should_not be_nil
+    @registration.user_account.confirmation_token.should_not be_nil
   end
 
   it "should generate a user object" do
     # or should this happen on confirmation?
+    @registration.user.should_not be_nil
   end
 
   it "should move on to the 'checked' state" do
+    @registration.should be_checked
+  end
 
+  it "should respond to the activate event" do
+    lambda{@registration.activate!}.should_not raise_exception
+  end
+
+  it "should not be activatable without confirming the user account" do
+    @registration.activate!
+    @registration.should_not be_registered
+    @registration.should be_checked
+  end
+
+  it "should be activatable once the user account is confirmed" do
+    # mock the account confirmation here and test it in the account spec
+    @registration.user_account = mock_model(UserAccount)
+    @registration.user_account.should_receive(:confirmed?).and_return(true)
+    @registration.activate!
+    @registration.should be_registered
   end
 
 end
 
 describe UserRegistration, 'on rejection' do
 
-  it "should move on to the 'rejected' state" do
-
+  before :all do
+    @initial_delivery_count = UserAccountMailer.deliveries.size
+    @registration = UserRegistration.create $registration_fields
+    @registration.reject!
   end
 
-  it "should not generate a confirmation code" do
+  it "should move on to the 'rejected' state" do
+    @registration.should be_rejected
+  end
 
+  it "should not generate a user account" do
+    @registration.user_account.should be_nil
   end
 
   it "should not send an email to the registered address" do
-
+    UserAccountMailer.deliveries.size.should == @initial_delivery_count
   end
 
 end
 
 describe UserRegistration, 'on confirmation' do
 
-  it "should not be confirmed without a password" do
-
+  before :all do
+    @registration = UserRegistration.create $registration_fields
+    @registration.register!
   end
 
   it "should be confirmed with a password" do

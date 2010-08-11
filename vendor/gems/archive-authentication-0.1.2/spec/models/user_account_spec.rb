@@ -46,3 +46,20 @@ describe UserAccount, 'with a password' do
   end
 
 end
+
+describe UserAccount, 'without a password' do
+
+  before :all do
+    @account = UserAccount.new
+    @account.login = 'aneumann2'
+    @account.email = 'a.neumann2@mad.de'
+    @account.save
+  end
+
+  it "should not be confirmable" do
+    @account.should_not be_confirmed
+    lambda{@account.confirm!}.should_not raise_exception
+    @account.should_not be_confirmed
+  end
+
+end
