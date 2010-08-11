@@ -43,8 +43,13 @@
 }
 
 /* spacing */
+#search_facets .fragmentTitle {
+    padding: 2px 10px 2px 4px;
+}
+
 .baseListBox #search_facets h2 {
     margin-bottom: 0;
+    padding-left: 6px;
 }
 .baseListBox #search_facets h2.baseListBoxTitle {
     margin-bottom:  0px;
@@ -84,8 +89,11 @@
     display: none;
 }
 
+/* open arrow needs to be shifted left */
 .open.fragmentTitle .arrow-open {
     display: inline-block;
+    margin-left: -3px;
+    margin-right: 3px;
 }
 
 .open.fragmentTitle .arrow-closed {
@@ -105,7 +113,7 @@
 }
 
 .facet-field .facet {
-    padding-left: 22px;
+    padding-left: 19px;
     display: block;
     width: 240px;
     background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
