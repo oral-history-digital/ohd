@@ -116,7 +116,7 @@
     padding-left: 19px;
     display: block;
     width: 240px;
-    background: transparent url(/images/checkbox_n.gif) left 1px no-repeat;
+    background: transparent url(/images/checkbox_n.gif) left 2px no-repeat;
 }
 
 .facet-field .facet.checked {
