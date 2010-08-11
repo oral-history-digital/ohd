@@ -313,6 +313,14 @@ form.user_registration td {
     padding: 0.15em 0;
 }
 
+form.user_registration td.formLabel {
+    width: 152px;
+}
+
+form.user_registration td.formLabel.textarea {
+    vertical-align: top;
+}
+
 form.user_registration input[type=text],
 form.user_registration textarea {
     width: 380px;

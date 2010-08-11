@@ -10,7 +10,7 @@
   <% User.registration_field_names.each do |field| -%>
         <tr>
             <% field_def = User.registration_fields[field.to_sym] -%>
-            <td class='formLabel'>
+            <td class='formLabel<%= [:text, Text].include?(field_def[:type]) ? ' textarea' : ''%>'>
               <%= f.label field, t(field, :scope => 'devise.registration_fields') << (field_def[:mandatory] ? '*' : '') -%>
             </td>
             <% if field_def[:values].blank? -%>
