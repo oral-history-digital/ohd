@@ -29,13 +29,27 @@ class UserRegistrationsController < ResourceController::Base
     # don't clear the confirmation_token until we have successfully
     # submitted the password
     account_for_token(params[:confirmation_token])
-    @user_account.reset_password!(params['user_account']['password'], params['user_account']['password_confirmation']) unless @user_account.nil? || params['user_account'].blank?
+    password = params['user_account'].blank? ? nil : params['user_account']['password']
+    password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    if !@user_account.nil? && @user_account.errors.empty?
-      @user_account.reset_password_token = nil
-      @user_account.confirm!
-      flash[:alert] = t('welcome', :scope => 'devise.registrations')
-      sign_in_and_redirect(:user_account, @user_account)
+    if !@user_account.nil?
+      @user_account.confirm!(password, password_confirmation)
+      if @user_account.errors.empty?
+        @user_account.reset_password_token = nil
+        flash[:alert] = t('welcome', :scope => 'devise.registrations')
+        sign_in_and_redirect(:user_account, @user_account)
+      else
+        error_type = case @user_account.errors.map{|e| e.first }.compact.first
+          when :password, 'password'
+            'password_missing'
+          when :password_confirmation, 'password_confirmation'
+            'password_confirmation_missing'
+          else
+          'invalid_token'
+        end
+        flash[:alert] = t(error_type, :scope => 'devise.confirmations')
+        render :action => :activate
+      end
     else
       flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
       render :action => :activate

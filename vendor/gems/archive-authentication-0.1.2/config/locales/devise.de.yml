@@ -30,6 +30,8 @@ de:
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
       confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
       invalid_token: 'Der angegebene Link ist nicht mehr gültig.'
+      password_missing: 'Zur Bestätigung müssen Sie ein Passwort auswählen.'
+      password_confirmation_missing: 'Die Passwort-Wiederholung stimmt nicht mit Ihrem Passwort überein.'
     registrations:
       link: 'Registrierung'
       not_yet_registered: 'Noch nicht registriert?'
@@ -164,8 +166,11 @@ de:
               confirmation: 'und -wiederholung stimmen nicht überein.'
               too_short: 'ist zu kurz.'
               too_long: 'ist zu lang.'
+      messages:
+        blank: 'fehlt'
     attributes:
       user_account:
         email: 'E-Mail'
         login: 'Benutzername'
         password: 'Passwort'
+        password_confirmation: 'Passwort-Wiederholung'

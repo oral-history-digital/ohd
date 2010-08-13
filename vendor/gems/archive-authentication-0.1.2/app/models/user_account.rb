@@ -19,8 +19,22 @@ class UserAccount < AuthenticationModel
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise::EMAIL_REGEX
-  validates_confirmation_of :password
   validates_length_of       :password, :within => 5..20, :allow_blank => true
+
+  # NOTE: validates_confirmation_of won't work on virtual attributes!
+  # This is why add a custom validation method later.
+  # validates_confirmation_of :password
+
+  # password confirmation validation
+  def validate
+    unless password.blank?
+      if password_confirmation.blank?
+        errors.add(:password_confirmation, :blank)
+      elsif !password_confirmation.eql?(password)
+        errors.add(:password, :confirmation)
+      end
+    end
+  end
   
 
   def generate_confirmation_token
@@ -38,23 +52,18 @@ class UserAccount < AuthenticationModel
 
   # METHODS FROM CONFIRMABLE:
 
-  # Find a user by it's confirmation token and try to confirm it.
-  # If no user is found, returns a new user with an error.
-  # If the user is already confirmed, create an error for the user
-  # Options must have the confirmation_token
-  def self.confirm_by_token(confirmation_token)
-    confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-    confirmable.confirm! unless confirmable.new_record?
-    confirmable
-  end
+  # self.confirm_by_token: not used.
 
   # Confirm a user by setting it's confirmed_at to actual time. If the user
-  # is already confirmed, add en error to email field
-  def confirm!
+  # is already confirmed, add en error to email field.
+  # Additionally, we require passwords for confirming the account.
+  def confirm!(password, password_confirmation)
+    reset_password!(password, password_confirmation)
     unless_confirmed do
       self.confirmation_token = nil
       self.confirmed_at = Time.now
       self.deactivated_at = nil
+
       unless self.user_registration.nil?
         self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
       end
@@ -127,9 +136,18 @@ class UserAccount < AuthenticationModel
 
   # Checks whether the record is confirmed or not, yielding to the block
   # if it's already confirmed, otherwise adds an error to email.
+  # It also stops on any validation errors, or if there is no
+  # password info given.
   def unless_confirmed
     unless confirmed?
-      yield
+      if !valid?
+        false
+      elsif encrypted_password.blank?
+        self.class.add_error_on(self, :password, :blank)
+        false
+      else
+        yield
+      end
     else
       self.class.add_error_on(self, :email, :already_confirmed)
       false

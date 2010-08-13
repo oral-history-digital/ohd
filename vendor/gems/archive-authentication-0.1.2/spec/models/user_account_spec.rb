@@ -31,7 +31,7 @@ describe UserAccount, 'with a password' do
 
   it 'should be confirmable' do
     @account.should_not be_confirmed
-    lambda{@account.confirm!}.should_not raise_exception
+    lambda{@account.confirm!('pass-word','pass-word')}.should_not raise_exception
     @account.should be_confirmed
   end
 
@@ -56,10 +56,31 @@ describe UserAccount, 'without a password' do
     @account.save
   end
 
-  it "should not be confirmable" do
+  it "should not be confirmable without password" do
     @account.should_not be_confirmed
-    lambda{@account.confirm!}.should_not raise_exception
+    lambda{@account.confirm!(nil, nil)}.should_not raise_exception
     @account.should_not be_confirmed
+  end
+
+  it "should have an error on the password field on a confirmation attempt" do
+    @account.confirm!('', '')
+    @account.errors[:password].should_not be_nil
+  end
+
+  it "should have an error on the password confirmation field if not supplied" do
+    @account.confirm!('protected!',nil)
+    @account.errors[:password_confirmation].should_not be_nil
+  end
+
+  it "should have an error if password and confirmation don't match" do
+    lambda{@account.confirm!('protected!','unprotected?')}.should_not raise_exception
+    @account.errors[:password].should_not be_nil
+  end
+
+  it "should confirm without errors if both password and confirmation are supplied" do
+    lambda{@account.confirm!('validpass','validpass')}.should_not raise_exception
+    @account.errors.should be_empty
+    @account.should be_confirmed
   end
 
 end

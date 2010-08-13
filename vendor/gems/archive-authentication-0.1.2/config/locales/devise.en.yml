@@ -30,6 +30,8 @@ en:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
       invalid_token: 'The link address used is not valid.'
+      password_missing: 'You need to choose a password to confirm your account.'
+      password_confirmation_missing: 'The password confirmation does not match your chosen password.'
     registrations:
       link: 'Registration'
       not_yet_registered: 'Not registered yet?'
@@ -166,8 +168,11 @@ en:
               confirmation: "and confirmation don't match"
               too_short: "is too short"
               too_long: 'is too long'
+      messages:
+        blank: 'missing'
     attributes:
       user_account:
         email: 'Email'
         login: 'username'
         password: 'password'
+        password_confirmation: 'password confirmation'

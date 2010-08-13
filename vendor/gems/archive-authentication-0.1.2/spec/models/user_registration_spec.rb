@@ -138,7 +138,7 @@ describe UserRegistration, 'on confirmation' do
   end
 
   it "should be confirmed with a password" do
-
+    
   end
 
   it "should move on to the 'registered' state" do

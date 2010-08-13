@@ -340,6 +340,10 @@ form.user_registration textarea {
     border-color: #990000;
 }
 
+#errorExplanation {
+    margin-bottom: 0.5em;
+}
+
 #errorExplanation ul li {
   color: #8B0F09;
 }
