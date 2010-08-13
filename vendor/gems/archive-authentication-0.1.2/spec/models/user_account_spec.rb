@@ -78,9 +78,14 @@ describe UserAccount, 'without a password' do
   end
 
   it "should confirm without errors if both password and confirmation are supplied" do
-    lambda{@account.confirm!('validpass','validpass')}.should_not raise_exception
+    @account.confirm!('validpass','validpass')
     @account.errors.should be_empty
     @account.should be_confirmed
+  end
+
+  it "should reset it's confirmation token to nil after confirmation" do
+    @account.confirm!('validpass','validpass')
+    @account.confirmation_token.should be_nil
   end
 
 end

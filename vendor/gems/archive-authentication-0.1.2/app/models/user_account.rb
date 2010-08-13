@@ -81,7 +81,7 @@ class UserAccount < AuthenticationModel
   # is already confirmed, it should never be blocked. Otherwise we need to
   # calculate if the confirm time has not expired for this user.
   def active?
-    super && (confirmed? || confirmation_period_valid?) && !deactivated?
+    (confirmed? || confirmation_period_valid?) && !deactivated?
   end
 
   # The message to be shown if the account is inactive.

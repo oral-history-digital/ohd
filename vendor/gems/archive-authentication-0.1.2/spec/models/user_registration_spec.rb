@@ -70,6 +70,8 @@ end
 describe UserRegistration, 'on registration' do
 
   before :each do
+    UserRegistration.delete_all
+    UserAccount.delete_all
     @registration = UserRegistration.create $registration_fields
     @registration.register!
   end
@@ -130,39 +132,36 @@ describe UserRegistration, 'on rejection' do
 
 end
 
-describe UserRegistration, 'on confirmation' do
-
+describe UserRegistration, 'on activation after account activation' do
+  # are we testing confirmation
+  
   before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
     @registration = UserRegistration.create $registration_fields
     @registration.register!
+    @registration.user_account.confirm!('password','password')
+    @registration.activate!
   end
 
-  it "should be confirmed with a password" do
-    
-  end
-
-  it "should move on to the 'registered' state" do
-
+  it "should not move on to the 'registered' state" do
+    @registration.should be_registered
   end
 
   it "should have an active user account associated" do
-    
+    @registration.user_account.should be_active
   end
 
   it "should have a valid user object associated" do
-
+    @registration.user.should be_valid
   end
 
   it "should have the same email as the user account" do
-
+    @registration.user_account.email.eql?(@registration.email).should be_true
   end
 
   it "should have passed the registration info to the user object" do
-    
-  end
-
-  it "should reset it's confirmation code to nil" do
-
+    # TODO
   end
 
 end
@@ -170,7 +169,7 @@ end
 describe UserRegistration, 'on removal' do
 
   it "should move on to the 'rejected' state" do
-
+  
   end
 
   it "should not have an active user account associated" do
