@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+# Generate randomly populated registration fields
 $rand_chars = [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
 $registration_fields = {}
 UserRegistration.registration_field_names.select{|f| UserRegistration.registration_fields[f.to_sym][:mandatory] }.each do |f|
@@ -133,7 +134,6 @@ describe UserRegistration, 'on rejection' do
 end
 
 describe UserRegistration, 'on activation after account activation' do
-  # are we testing confirmation
   
   before :all do
     UserRegistration.delete_all
@@ -168,44 +168,85 @@ end
 
 describe UserRegistration, 'on removal' do
 
+  before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
+    @registration = UserRegistration.create $registration_fields
+    @registration.register!
+    @registration.user_account.confirm!('password','password')
+    @registration.activate!
+    @registration.remove!
+  end
+
   it "should move on to the 'rejected' state" do
-  
+    @registration.should be_rejected
   end
 
   it "should not have an active user account associated" do
-    
+    @registration.user_account.should_not be_active
   end
 
 end
 
 describe UserRegistration, 'on postponing' do
 
-  it "should move on to the postponed state" do
+  before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
+    @registration = UserRegistration.create $registration_fields
+    @registration.postpone!
+  end
 
+  it "should move on to the postponed state" do
+    @registration.should be_postponed
   end
 
   it "should not have an active user account associated" do
-
+    if @registration.user_account.nil?
+      @registration.user_account.should be_nil
+    else
+      @registration.user_account.should_not be_active
+    end  
   end
 
-  it "should not have a confirmation code set" do
-
+  it "should not have a confirmation token set" do
+    unless @registration.user_account.nil?
+      @registration.user_account.confirmation_token.should be_nil
+    else
+      @registration.user_account.should be_nil
+    end
   end
 
 end
 
 describe UserRegistration, 'on resuming' do
 
-  it "should move back to the 'checked' state" do
+  before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
+    @registration = UserRegistration.create $registration_fields
+    @registration.postpone!
+    @registration.resume!
+  end
 
+  it "should move back to the 'checked' state" do
+    @registration.should be_checked
   end
 
   it "should not have an active user account associated" do
-
+    unless @registration.user_account.nil?
+      @registration.user_account.should_not be_active
+    else
+      @registration.user_account.should be_nil
+    end
   end
 
-  it "should have a confirmation code set" do
-    
+  it "should have a confirmation token set" do
+    unless @registration.user_account.nil?
+      @registration.user_account.confirmation_token.should be_nil
+    else
+      @registration.user_account.should be_nil
+    end
   end
 
 end
