@@ -20,7 +20,7 @@ class UserRegistrationsController < ResourceController::Base
       @user_account.save
     else
       flash[:alert] = @user_account.nil? ? t('invalid_token', :scope => 'devise.confirmations') : @user_account.errors.full_messages
-      redirect_to anmelden_url
+      redirect_to new_user_account_session_url
     end
   end
 
@@ -52,7 +52,7 @@ class UserRegistrationsController < ResourceController::Base
       end
     else
       flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
-      render :action => :activate
+      redirect_to new_user_account_session_url
     end
   end
 

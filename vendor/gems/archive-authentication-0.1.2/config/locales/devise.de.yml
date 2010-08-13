@@ -29,7 +29,7 @@ de:
       resend: 'Bestätigung anfordern'
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
       confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
-      invalid_token: 'Der angegebene Link ist nicht mehr gültig.'
+      invalid_token: 'Der angegebene Link ist nicht mehr gültig. Vermutlich ist Ihr Zugang bereits freigeschaltet. Bitte verwenden Sie die "Passwort vergessen" Funktion, falls Sie sich nicht anmelden können.'
       password_missing: 'Zur Bestätigung müssen Sie ein Passwort auswählen.'
       password_confirmation_missing: 'Die Passwort-Wiederholung stimmt nicht mit Ihrem Passwort überein.'
     registrations:
