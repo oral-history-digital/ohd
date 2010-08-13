@@ -26,7 +26,7 @@ module ApplicationHelper
     interview = segment.interview
     item = segment.tape.number
     position = segment.start_time.round
-    link_text = show_segment_text ? content_tag(:span, "#{segment.timecode}", :class => :timecode) + truncate(segment_excerpt_for_match(segment, match_text), :length => 300) : "Zum Interview-Ausschnitt"
+    link_text = show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview) || ajax
       link_to link_text, "javascript:currentPlayer.seek(#{item-1},#{position});"
     else
@@ -58,7 +58,7 @@ module ApplicationHelper
     else
       str = ((segment.translation.index(match_text) || segment.transcript.index(match_text)) == 0) ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
-      str + match_text + (match_text.last == '.' ? '' : '&hellip;')
+      "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
     end
   end
 
