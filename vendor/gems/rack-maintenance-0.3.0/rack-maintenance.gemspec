@@ -17,13 +17,11 @@ Gem::Specification.new do |s|
      "README.rdoc"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "lib/rack/maintenance.rb",
+     "lib/rack-maintenance.rb",
      "rack-maintenance.gemspec",
      "spec/rack-maintenance_spec.rb",
      "spec/spec_helper.rb"
