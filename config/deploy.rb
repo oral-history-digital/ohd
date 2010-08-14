@@ -1,4 +1,4 @@
-set :application, "demo"
+set :application, "zwar_archiv"
 set :repository,  "https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/trunk"
 set :user, "jrietema"
 set :use_sudo, false
@@ -33,14 +33,12 @@ end
 
 desc "prepare to act on the test environment"
 task :staging do
-  set :environment, :staging
-  set :application, 'archive_test'
-  set :deploy_to, "/home/ruby/#{application}"
-  set :user, "root"
-  set :keep_releases, 3
-  role :app, "160.45.170.231"
-  role :web, "160.45.170.231"
-  role :db, "160.45.170.231", :primary => true
+  set :environment, :production
+  set :application, 'zwar_archiv'
+  set :deploy_to, "/data/applications/#{application}"
+  role :app, "da01.cedis.fu-berlin.de"
+  role :web, "da01.cedis.fu-berlin.de"
+  role :db,  "da01.cedis.fu-berlin.de", :primary => true
 end
 
 # deploy restart: restart apache
