@@ -33,8 +33,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 
 
+  # DE
   map.anmelden        'login',        :controller => :sessions, :action => :new
   map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
+
+  # EN
+  map.en_login        'sign_in',      :controller => :sessions, :action => :new, :locale => 'en'
+  map.en_register     'register',     :controller => :user_registrations, :action => :new, :locale => 'en'
+
   map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
   map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
   map.reset_password  'passwort_vergessen', :controller => :passwords, :action => :new
