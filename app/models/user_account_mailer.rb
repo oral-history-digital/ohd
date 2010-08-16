@@ -23,6 +23,7 @@ class UserAccountMailer < ActionMailer::Base
     end
     from         'mail@zwangsarbeit-archiv.de'
     recipients   account.email
+    bcc          "mail@zwangsarbeit-archiv.de"
     sent_on      Time.now
     @user_name = registration.nil? ? account.display_name : registration.full_name
   end
