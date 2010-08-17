@@ -106,10 +106,9 @@ class UserRegistration < ActiveRecord::Base
     unless checked?
       raise "Dieser Zugang ist nicht freigegeben worden (aktueller Stand: '#{I18n.t(workflow_state, :scope => 'workflow_states')}')"
     end
-    if user_account.confirmation_code.blank?
-      user_account.generate_confirmation_token
-      user_account.save
-    end
+    user_account.generate_confirmation_token if user_account.confirmation_code.blank?
+    user_account.confirmation_sent_at = Time.now
+    user_account.save
     UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
   end
 
