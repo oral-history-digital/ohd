@@ -126,6 +126,10 @@ class UserRegistration < ActiveRecord::Base
     @skip_mail_delivery = true
   end
 
+  def email=(mail)
+    write_attribute :email, mail.to_s.downcase
+  end
+
   private
 
   def serialize_form_parameters
