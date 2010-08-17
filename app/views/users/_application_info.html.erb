@@ -5,7 +5,7 @@
     <%= "#{application_info.first_name}" %>
     <%= "#{application_info.last_name}" %></b>
   </td>
-  <td rowspan="2" style="width:66%;">
+  <td rowspan="2" style="width:66%;max-width:200px;">
     <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
     <%= [application_info.street,
          "#{application_info.zipcode || ''} #{application_info.city || ''}",
@@ -19,7 +19,7 @@
   </td>
 </tr>
 <tr>
-  <td colspan="2">
+  <td colspan="2" style="max-width: 360px;">
     <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
     <% if application_info.homepage.blank? || application_info.homepage.eql?('/') %>
         <%= application_info.organization %>
@@ -35,7 +35,7 @@
     <strong><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %></strong>
     <%= "#{application_info.research_intentions}" %>
   </td>
-  <td rowspan="2">
+  <td rowspan="2" style="max-width:200px;">
     <strong><%= "#{t(:comments, :scope => "devise.registration_fields")}" %></strong>
     <%= "#{application_info.comments}" %>
   </td>
