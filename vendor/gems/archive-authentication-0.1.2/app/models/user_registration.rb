@@ -58,7 +58,9 @@ class UserRegistration < ActiveRecord::Base
       event :reactivate,  :transitions_to => :checked
       event :reject,      :transitions_to => :rejected
     end
-    state :rejected
+    state :rejected do
+      event :reactivate,  :transitions_to => :checked
+    end
   end
 
   # Registers a UserAccount by generating a confirmation token
@@ -83,12 +85,32 @@ class UserRegistration < ActiveRecord::Base
   end
 
   def reactivate
-    self.user_account.reactivate!
+    if self.user_account.nil?
+      # perform the usual registration
+      self.register
+    else
+      self.user_account.reactivate!
+      if self.user_account.valid? and !@skip_mail_delivery
+        UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
+      end
+    end
   end
 
   # Expires the confirmation token
   def expire
     self.user_account.update_attribute(:confirmation_token, nil)
+  end
+
+  # Resends the E-Mail with the account information
+  def resend_info
+    unless checked?
+      raise "Dieser Zugang ist nicht freigegeben worden (aktueller Stand: '#{I18n.t(workflow_state, :scope => 'workflow_states')}')"
+    end
+    if user_account.confirmation_code.blank?
+      user_account.generate_confirmation_token
+      user_account.save
+    end
+    UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
   end
 
   def full_name

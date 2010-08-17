@@ -186,6 +186,12 @@ describe UserRegistration, 'on removal' do
     @registration.user_account.should_not be_active
   end
 
+  it "should send an email to the user on reactivation" do
+    @mails_sent = UserAccountMailer.deliveries.size
+    @registration.reactivate!
+    UserAccountMailer.deliveries.size.should == @mails_sent+1
+  end
+
 end
 
 describe UserRegistration, 'on postponing' do
@@ -219,50 +225,98 @@ describe UserRegistration, 'on postponing' do
 
 end
 
-describe UserRegistration, 'on resuming' do
+describe UserRegistration, 'on reactivation after postponing' do
 
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
     @registration = UserRegistration.create $registration_fields
     @registration.postpone!
-    @registration.resume!
+    @registration.reactivate!
   end
 
   it "should move back to the 'checked' state" do
     @registration.should be_checked
   end
 
+  it "should have a valid user account assigned" do
+    @registration.user_account.should_not be_nil
+    @registration.user_account.should be_valid
+  end
+
   it "should not have an active user account associated" do
-    unless @registration.user_account.nil?
-      @registration.user_account.should_not be_active
-    else
-      @registration.user_account.should be_nil
-    end
+    @registration.user_account.should_not be_active
   end
 
   it "should have a confirmation token set" do
-    unless @registration.user_account.nil?
-      @registration.user_account.confirmation_token.should be_nil
-    else
-      @registration.user_account.should be_nil
-    end
+    @registration.user_account.confirmation_token.should_not be_nil
   end
 
 end
 
-describe UserRegistration, 'on reactivation' do
+describe UserRegistration, 'on reactivation after rejecting' do
 
-  it "should move back to the 'registered' state" do
-
+  before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
+    @registration = UserRegistration.create $registration_fields
+    @registration.reject!
+    @registration.reactivate!
   end
 
-  it "should have an active user account associated" do
-
+  it "should move back to the 'checked' state" do
+    @registration.should be_checked
   end
 
-  it "should not have a confirmation code set" do
-    
+  it "should have a valid user account associated" do
+    @registration.user_account.should be_valid
+  end
+
+  it "should not have an active user account associated" do
+    @registration.user_account.should_not be_active
+  end
+
+  it "should have a confirmation code set" do
+    @registration.user_account.confirmation_token.should_not be_nil
+  end
+
+  it "should have a valid user associated" do
+    @registration.user.should be_valid
+  end
+
+end
+
+describe UserRegistration, 'on reactivation after removing' do
+
+  before :all do
+    UserRegistration.delete_all
+    UserAccount.delete_all
+    @registration = UserRegistration.create $registration_fields
+    @registration.register!
+    @registration.user_account.confirm!('password','password')
+    @registration.activate!
+    @registration.remove!
+    @registration.reactivate!
+  end
+
+  it "should move back to the 'checked' state" do
+    @registration.should be_checked
+  end
+
+  it "should have a valid user account associated" do
+    @registration.user_account.should be_valid
+  end
+
+  it "should not have an active user account associated" do
+    @registration.user_account.should_not be_active
+  end
+
+  it "should have a confirmation code set" do
+    @registration.user_account.confirmation_token.should_not be_nil
+  end
+
+  it "should have a valid user associated" do
+    @registration.user.should be_valid
   end
 
 end

@@ -347,3 +347,174 @@ form.user_registration textarea {
 #errorExplanation ul li {
   color: #8B0F09;
 }
+
+/* admin-area */
+
+/* User Management Table */
+
+table.userTable {
+  width: 100%;
+}
+
+tr.userTable {
+
+}
+
+tr.userTableEven {
+  background-color: #E4E4DA;
+}
+
+th.userTable {
+  font-size: 8pt;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: dotted 1px #000000;
+}
+
+td.userTable,
+td.userTableLabel {
+  padding: 5px;
+}
+
+td.userTableLabel {
+  font-weight: bold;
+}
+
+td.userTableField {
+
+}
+
+td.userTableButtons {
+  text-align: right;
+}
+
+td.userTableList, th.userTableList {
+  border-bottom: dotted 1px #000000;
+}
+
+a.userTableButtonLink {
+  background-color: #840F09;
+  color: #ffffff;
+  border: 1px solid #840F09;
+  padding: 2px;
+  font-size: 80%;
+  text-decoration: none;
+}
+
+a.userTableButtonLink:hover {
+  background-color: #fff;
+  color: #8B0F09;
+  border: 1px solid #999281;
+}
+
+/* User Info */
+.edit_user_registration .userTable strong {
+    width: 100%;
+    display: block;
+    font-weight: normal;
+    font-size: 85%;
+    line-height: 110%;
+    color: #999281;
+}
+
+.userTable td {
+    vertical-align: top;
+    padding: 0.4em 1.33em 0.1em 0;
+}
+
+.userTable .underlined td {
+    border-bottom: 2px solid #F1F1EB;
+}
+
+.userTable textarea {
+    font-size: 85%;
+    padding: 2px;
+    font-family: Arial,Helvetica,sans !important;
+}
+
+#workflow_actions {
+    position: relative;
+}
+
+#workflow_actions a {
+    float: left;
+    margin-right: 0.66em;
+}
+
+#workflow_actions #reject_user_registration,
+#workflow_actions #postpone_user_registration,
+#workflow_actions #expire_user_registration,
+#workflow_actions #remove_user_registration {
+    float: right;
+    margin-right: 0;
+    margin-left: 0.66em;
+}
+
+#workflow_actions #reject_user_registration input,
+#workflow_actions #postpone_user_registration input,
+#workflow_actions #expire_user_registration input,
+#workflow_actions #remove_user_registration input {
+    background-color: #b2afa1;
+    border-top: 1px solid #b2afa1;
+    border-left: 1px solid #b2afa1;
+    border-right: 1px solid #b2afa1;
+    color: #660000;
+}
+
+hr.user-divider {
+	border: none;
+	border-bottom: solid 1px #F1F1EB;
+	height: 1px;
+	margin: 4px 0 4px 0;
+}
+
+.tooltip {
+    display: none;
+    z-index: 100;
+    background-color: #fff;
+    color: #8B0F09;
+    font-size: 85%;
+    border: 1px solid #999999;
+    padding: 0.66em;
+    position: absolute;
+    top: 30px;
+    left: -128px;;
+    width: 380px;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    -moz-opacity: .90;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+a.tooltipButton {
+   display: block;
+   text-decoration: none;
+}
+
+.tooltipButton:hover .tooltip {
+    display: block;
+}
+
+.edit_user_registration #workflow_actions .tooltipButton input {
+    border-top: 1px solid #840F08;
+    border-left: 1px solid #840F08;
+    border-right: 1px solid #840F08;
+}
+
+#workflow_actions #register_user_registration.tooltipButton:hover input,
+#workflow_actions #activate_user_registration.tooltipButton:hover input,
+#workflow_actions #postpone_user_registration.tooltipButton:hover input,
+#workflow_actions #expire_user_registration.tooltipButton:hover input,
+#workflow_actions #reject_user_registration.tooltipButton:hover input,
+#workflow_actions #deactivate_user_registration.tooltipButton:hover input,
+#workflow_actions #reactivate_user_registration.tooltipButton:hover input,
+#workflow_actions #resend_info_user_registration.tooltipButton:hover input,
+#workflow_actions #remove_user_registration.tooltipButton:hover input {
+    color: #8B0F09;
+    background-color: #fff;
+    border-top: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
+    z-index: 200;
+}

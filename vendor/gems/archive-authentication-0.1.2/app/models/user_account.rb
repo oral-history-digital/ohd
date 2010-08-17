@@ -99,7 +99,16 @@ class UserAccount < AuthenticationModel
   end
 
   def reactivate!
-    update_attribute(:deactivated_at, nil)
+    # remove all current password info,
+    # regenerate a confirmation_token and
+    # reset deactivated_at
+    self.encrypted_password = nil
+    self.password_salt = nil
+    self.generate_confirmation_token
+    self.deactivated_at = nil
+    self.confirmed_at = nil
+    self.confirmation_sent_at = Time.now
+    save
   end
 
   # If you don't want confirmation to be sent on create, neither a code
@@ -111,27 +120,10 @@ class UserAccount < AuthenticationModel
 
   protected
 
-  # Checks if the confirmation for the user is within the limit time.
-  # We do this by calculating if the difference between today and the
-  # confirmation sent date does not exceed the confirm in time configured.
-  # Confirm_in is a model configuration, must always be an integer value.
-  #
-  # Example:
-  #
-  #   # confirm_within = 1.day and confirmation_sent_at = today
-  #   confirmation_period_valid?   # returns true
-  #
-  #   # confirm_within = 5.days and confirmation_sent_at = 4.days.ago
-  #   confirmation_period_valid?   # returns true
-  #
-  #   # confirm_within = 5.days and confirmation_sent_at = 5.days.ago
-  #   confirmation_period_valid?   # returns false
-  #
-  #   # confirm_within = 0.days
-  #   confirmation_period_valid?   # will always return false
-  #
+  # We don't use the Devise confirmation period. Instead we just
+  # check that the account was confirmed in the past.
   def confirmation_period_valid?
-    confirmation_sent_at && confirmation_sent_at.utc >= self.class.confirm_within.ago
+    !confirmed_at.nil? && confirmed_at < (Time.now + 1.minute)
   end
 
   # Checks whether the record is confirmed or not, yielding to the block

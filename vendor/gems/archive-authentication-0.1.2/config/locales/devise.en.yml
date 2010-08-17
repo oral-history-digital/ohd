@@ -75,12 +75,23 @@ en:
 
     workflow_events:
       register: 'register'
+      register_info: 'The user receives an Email with a link to activate the account.'
       reject: 'reject'
+      reject_info: 'The registration request is rejected permanently (no Email sent).'
+      resend_info: 'send info again'
+      resend_info_info: 'The link for account activation is sent to the user again (via Email).'
       deactivate: 'deactivate'
+      deactivate_info: 'The account is deactivated (the user cannot sign in anymore - no Email is sent).'
       postpone: 'postpone'
+      postpone_info: 'The registration request is postponed until some points are cleared up (please send an Email separately and write a comment).'
+      reactivate: 'reactivate'
+      reactivate_info: 'The user receives an Email with a link to activate the account.'
       activate: 'activate'
+      activate_info: 'The account is activated directly (please inform the user separately of his login details).'
       expire: 'expire'
-      remove: 'löschen'
+      expire_info: 'Expire this request, as the user does not react and activate the account (no Email).'
+      remove: 'deactivate'
+      remove_info: 'The account is deactivated (please inform the user of this in a separate Email).'      
 
     registration_fields:
       fill_out_missing_fields_message: 'Please fill in the missing information:'

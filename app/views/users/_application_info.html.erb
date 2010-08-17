@@ -1,39 +1,45 @@
-<table cellspacing='0' cellpadding='0' border='0'>
-  <tbody>
-    <tr>
-      <td class="userTableLabel"><%= "#{t(:name, :scope => "devise.registration_fields")}" %>:</td>
-      <td colspan="3" class="userTable">
-        <%= "#{application_info.appellation}" %>
-        <%= "#{application_info.first_name}" %>
-        <%= "#{application_info.last_name}" %>
-      </td>
-    </tr>
-    <tr>
-      <td class="userTableLabel"><%= "#{t(:adress, :scope => "devise.registration_fields")}" %>:</td>
-      <td colspan="3" class="userTable">
-        <%= "#{application_info.street}" %>,
-        <%= "#{application_info.zipcode}" %>
-        <%= "#{application_info.city}" %>,
-        <%= "#{application_info.country}" %>
-      </td>
-    </tr>
-    <tr>
-      <td class="userTableLabel"><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable">
-        <%= "#{application_info.job_description}" %>
-      </td>
-      <td class="userTableLabel"><%= "#{t(:organization, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable">
+<tr>
+  <td>
+    <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
+    <b><%= "#{application_info.appellation}" %>
+    <%= "#{application_info.first_name}" %>
+    <%= "#{application_info.last_name}" %></b>
+  </td>
+  <td rowspan="2" style="width:66%;">
+    <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
+    <%= [application_info.street,
+         "#{application_info.zipcode || ''} #{application_info.city || ''}",
+         application_info.country].delete_if{|p| p.blank?}.join(',<br/>') %>
+  </td>
+</tr>
+<tr>
+  <td>
+    <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
+    <%= "#{application_info.job_description}" %>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
+    <% if application_info.homepage.blank? || application_info.homepage.eql?('/') %>
+        <%= application_info.organization %>
+    <% else %>
         <%= link_to "#{application_info.organization}",
-                    "http://#{application_info.homepage}",
-                    :target => '_blank' %>
-      </td>
-    </tr>
-    <tr>
-      <td class="userTableLabel"><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable"><%= "#{application_info.research_intentions}" %></td>
-      <td class="userTableLabel"><%= "#{t(:comments, :scope => "devise.registration_fields")}" %>:</td>
-      <td class="userTable"><%= "#{application_info.comments}" %></td>
-    </tr>
-  </tbody>
-</table>
+                "http://#{application_info.homepage}",
+                :target => '_blank' %>
+    <% end %>
+  </td>
+</tr>
+<tr>
+  <td>
+    <strong><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %></strong>
+    <%= "#{application_info.research_intentions}" %>
+  </td>
+  <td rowspan="2">
+    <strong><%= "#{t(:comments, :scope => "devise.registration_fields")}" %></strong>
+    <%= "#{application_info.comments}" %>
+  </td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+</tr>

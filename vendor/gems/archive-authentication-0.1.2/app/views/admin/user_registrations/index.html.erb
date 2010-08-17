@@ -22,8 +22,8 @@
           &nbsp;
         <% end %>
       </td>
-      <td class="userTable userTableList"><%= user_registration.created_at.nil? ? '?' : user_registration.created_at.strftime("%d.%m.%y %H:%M") %></td>
-      <td class="userTable userTableList">
+      <td class="userTable userTableList" style="font-size:85%;"><%= user_registration.created_at.nil? ? '&mdash;' : user_registration.created_at.strftime("am %d.%m.%y %H:%M Uhr") %></td>
+      <td class="userTable userTableList" style="vertical-align:middle;">
         <%= link_to 'Anfrage&nbsp;bearbeiten',
                     edit_admin_user_registration_path(user_registration.id),
                     :class => "userTableButtonLink" %>

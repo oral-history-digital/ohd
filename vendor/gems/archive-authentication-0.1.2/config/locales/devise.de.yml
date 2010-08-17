@@ -73,13 +73,23 @@ de:
 
     workflow_events:
       register: 'registrieren'
+      register_info: 'Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.'
       reject: 'ablehnen'
+      reject_info: 'Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).'
+      resend_info: 'Daten erneut senden'
+      resend_info_info: 'Der Link für die Zugangsaktivierung wird dem Benutzer erneut zugesandt (per E-Mail).'
       deactivate: 'deaktivieren'
-      reactivate: 'wieder aktivieren'
+      deactivate_info: 'Der Zugang des Nutzers wird deaktiviert (der Nutzer erhält keine E-Mail und kann sich nicht mehr einloggen).'
+      reactivate: 'wiederaufnehmen'
+      reactivate_info: 'Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.'
       postpone: 'zurückstellen'
+      postpone_info: 'Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte separate E-Mail und Anmerkung schreiben).'
       activate: 'aktivieren'
-      expire: 'verfallen'
-      remove: 'löschen'
+      activate_info: 'Der Zugang des Nutzers wird direkt aktiviert (bitte den Nutzer separat über seine Zugangsdaten informieren).'
+      expire: 'verfallen lassen'
+      expire_info: 'Die Anfrage zurückstellen, da der Nutzer nicht reagiert und seinen Zugang nicht aktiviert (keine E-Mail).'
+      remove: 'deaktivieren'
+      remove_info: 'Der Zugang des Nutzers wird deaktiviert (bitte den Nutzer in einer separaten E-Mail informieren).'
 
     registration_fields:
       fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
