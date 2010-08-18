@@ -55,7 +55,7 @@ module InterviewHelper
   end
 
   def format_transcript(text)
-    text.gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
+    h(text).gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
   end
 
 end
