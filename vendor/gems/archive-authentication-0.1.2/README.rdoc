@@ -1,37 +1,173 @@
 = archive-authentication
 
-Shared authentication code for archive projects at CeDiS.
+Shared authentication and user account management code for archive projects at CeDiS.
 
-For installation:
+INSTALLATION:
+
 
 == 1. Install dependencies:
-Workflow:
-./script/plugin install git://github.com/geekq/workflow.git
+Workflow Plugin:
+Workflow is an acts_as_state_machine variant. To install:
++./script/plugin install git://github.com/geekq/workflow.git+
 
-== 2. Prepare DB for Authentication Models:
-add an 'authentication' environment to your config/database.yml
-create the authentication database and permissions
+Gems: (added as dependency in environment.rb):
+<tt>
+  config.gem 'warden', :version => '0.10.7'
+  config.gem 'devise', :version => '1.0.8'
+</tt>
+Then run:
++rake gems:install+
 
-script/generate archive_authentication installation
-script/generate auth_db development
+And finally add the archive-authentication gem in environment.rb:
+  +config.gem 'archive-authentication'+
 
-== 3. Add the routes:
-Add a "devise_for :user_accounts" line in routes.rb.
 
-== 4. Rails Configuration:
-Add a dependency in environment.rb (config.gem 'archive-authentication')
+== 2. Configure your ActionMailer
+If you haven't already, activate the action mailer module in environment.rb, by
+either commenting out the line below or ensuring that action_mailer is included:
+  +#config.frameworks -= [ :active_record, :active_resource, :action_mailer ]+
 
-Copy and modify the gem config/initializers to your app's config/initializers directory.
+Add a configuration to each of the environment-specific initializers
+(environments/development.rb|test.rb|production.rb). For instance for
+development:
+<tt>
+  # Raise delivery errors - this is important for testing
+  config.action_mailer.raise_delivery_errors = true
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+  # Specify a host to use for url generation in mailer views
+  config.action_mailer.default_url_options = {
+    :host => '127.0.0.1'
+  }
+
+  # Delivery method :test is great for not sending out
+  # mail but still controlling behavior.
+  config.action_mailer.delivery_method = :test
+</tt>
+
+In production mode, you will most likely want to use something like the :smtp
+delivery method instead.
+
+
+== 3. Add / Modify your User Model:
+
+=== Migration for DB table 'users'
+Create a minimal migration for a user table, adding desirable string or text
+fields where necessary (other desirable fields might include comments on
+intent of registration or field of research, institution, or just plain
+multipurpose comments).
+<tt>
+  create_table "users", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "admin"
+    t.integer  "user_account_id"
+    t.integer  "user_registration_id"
+  end
+  add_index "users", ["user_account_id"], :name => "index_users_on_user_account_id"
+</tt>
+
+=== Explanation of mandatory fields
+The following fields are implicit and *must* be supplied:
+- first_name:           the person's first name
+- last_name:            the person's last_name
+- admin:                a boolean flag for admin status
+- user_account_id:      foreign key for association with the user account
+- user_registration_id: foreign key for association with the user registration
+
+=== Minimal user model:
+The user model must respond to a method +admin?+ and is expected to
+print out the person's name on +to_s+.
+<tt>
+class User < ActiveRecord::Base
+
+  attr_protected :admin
+
+  # add your own registration fields here
+  define_registration_fields ['first_name','last_name']
+
+  def to_s
+    [ first_name, last_name ].compact.join(' ')
+  end
+
+  def admin?
+    read_attribute(:admin) == true
+  end
+end
+</tt>
+
+
+== 4. Create the authentication DB and configuration
+Prepare an 'authentication' database environment in your +config/database.yml+:
+<tt>
+  authentication:
+    # add info similar to other environments
+</tt>
+You can use the same DB for authentication as development/production, but it
+is recommended to keep the strict authentication data in a separate DB.
+
+Create the DB and permissions accordingly.
+
+
+== 5. Install the gem-specific views (optional)
+This step will copy all relevant views to your app to allow you to modify them
+according to your needs.
+
+  +script/generate archive_authentication installation+
+
+Alternatively, you may copy the views on a case-by-case basis depending
+on your needs.
+
+
+== 6. Create the authentication DB and install missing migrations
+This step will create the authentication DB (if you haven't already), run
+a migration on it to create the user_accounts table, and install a new migration
+for user_registrations in your application.
+
+  +script/generate auth_db development|production|test+
+
+To run the migration for the user_registrations, run
+
+  +rake db:migrate+
+
+afterwards.
+
+
+== 7. Add necessary routes to your application
+Add the following to your +config/routes.rb+:
+<tt>
+    map.namespace :admin do |admin|
+      admin.resources :user_registrations
+      admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
+      admin.registration_details 'registrierung/:user_registration',
+                                 :controller => :user_registrations,
+                                 :action => :edit
+    end
+
+    map.resources :user_registrations, :path_prefix => 'anmeldung'
+
+    map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
+    map.en_register     'register',     :controller => :user_registrations, :action => :new, :locale => 'en'
+    map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
+    map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
+
+    map.devise_for :user_accounts
+</tt>
+
+
+== 8. Devise Configuration
+Copy the gem's +config/initializers/devise.rb+ to your app's config/initializers directory
+and customize Devise to your needs.
+
+
+== 9. Test - run the specs
+Go to the gem's directory and run
+
+  +rake spec+
+
+(Assuming you have rspec/rspec_rails installed.)
+
 
 == Copyright
 
