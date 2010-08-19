@@ -11,7 +11,7 @@
         <tr>
             <% field_def = User.registration_fields[field.to_sym] -%>
             <td class='formLabel<%= [:text, Text].include?(field_def[:type]) ? ' textarea' : ''%>'>
-              <%= f.label field, t(field, :scope => 'devise.registration_fields') << (field_def[:mandatory] ? '*' : '') -%>
+              <%= f.label field, t(field, :scope => 'devise.registration_fields' ) << (field_def[:mandatory] ? '*' : '') -%>
             </td>
             <% if field_def[:values].blank? -%>
             <%= content_tag :td, case field_def[:type]
@@ -36,7 +36,7 @@
         </tr>
   <% end -%>
         <tr>
-          <td class="formLabel"><%= f.label :tos_agreement, t(:tos_agreement, :scope => 'devise.registration_fields') << '*' %></td>
+          <td class="formLabel"><%= f.label :tos_agreement, t(:tos_agreement, :scope => 'devise.registration_fields').to_s << '*' %></td>
           <td class="formInput"><%= f.check_box :tos_agreement %><%= t(:tos_agreement_explanation, :scope => 'devise.registration_fields') %></td>
         </tr>
         <tr>

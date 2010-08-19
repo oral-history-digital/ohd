@@ -3,12 +3,14 @@ class CreateUserRegistration < ActiveRecord::Migration
   def self.up
 
     create_table :user_registrations do |t|
+      t.integer :user_account_id
       t.string :first_name
       t.string :last_name
       t.string :email
       t.boolean :tos_agreement
       t.boolean :receive_newsletter
       t.text :application_info
+      t.text :admin_comments
       t.string :workflow_state
       t.string :default_locale
       t.datetime :created_at
