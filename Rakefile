@@ -9,4 +9,5 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
-require 'sunspot/rails/tasks'
+# specify absolute path to local gem
+require File.join(File.dirname(__FILE__), 'vendor/gems/sunspot_rails-0.11.5/lib/sunspot/rails/tasks')
