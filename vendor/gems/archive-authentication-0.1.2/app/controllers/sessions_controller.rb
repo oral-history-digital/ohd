@@ -2,6 +2,8 @@ class SessionsController < ApplicationController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
   include Devise::Controllers::InternalHelpers
 
+  filter_parameter_logging :password
+
   # GET /resource/sign_in
   def new
     unless flash[:notice].present?

@@ -55,6 +55,10 @@ en:
       reset_password_instructions: 'Reset password instructions'
       unlock_instructions: 'Unlock Instructions'
 
+    user_interface:
+      status:
+        not_signed_in: 'not signed in'
+
     labels:
       send_now: 'Resend now'
     authentication_keys:
@@ -104,6 +108,7 @@ en:
       research_intentions: 'Research objectives'
       comments: 'Specification of research objectives'
       organization: 'Institution'
+      school: 'School'
       homepage: 'Institution Homepage'
       street: 'Street Address'
       zipcode: 'Zipcode'

@@ -154,7 +154,7 @@ class UserRegistration < ActiveRecord::Base
       user.attributes = user_attributes
       user.first_name = self.first_name
       user.last_name = self.last_name
-      user.user_account_id = self.user_account_id
+      user.user_account_id = self.user_account.id
       user.tos_agreed_at = self.created_at || Time.now if User.content_columns.map(&:name).include?('tos_agreed_at')
       user.save!
     elsif !self.user_account.nil?

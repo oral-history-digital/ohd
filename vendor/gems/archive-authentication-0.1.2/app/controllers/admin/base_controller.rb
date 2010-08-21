@@ -1,4 +1,4 @@
-class Admin::BaseController < BaseController
+class Admin::BaseController < ApplicationController
 
   before_filter :authenticate_admin_account
 

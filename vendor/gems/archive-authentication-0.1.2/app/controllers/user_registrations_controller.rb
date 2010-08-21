@@ -1,15 +1,19 @@
-class UserRegistrationsController < ResourceController::Base
+class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
-  actions :new, :create
-
-  create do
-    wants.html do
-      render :action => 'submitted'
-    end
+  def new
+    @user_registration = UserRegistration.new
   end
 
-  create.flash I18n.t(:successful, :scope => 'devise.registrations')
+  def create
+    @user_registration = UserRegistration.new(params['user_registration'])
+    if @user_registration.save
+      flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
+      render :action => 'submitted'
+    else
+      render :action => 'new'
+    end
+  end
 
   # GET /zugang_aktivieren/:confirmation_token
   def activate

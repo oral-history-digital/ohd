@@ -54,6 +54,10 @@ de:
       reset_password_instructions: 'Schritte für die Wiederherstellung Ihres Passwortes'
       unlock_instructions: 'Schritte für die Reaktivierung Ihres Zugangs'
 
+    user_interface:
+      status:
+        not_signed_in: 'nicht angemeldet'
+
     labels:
       send_now: 'Jetzt zuschicken'
     authentication_keys:
@@ -102,6 +106,7 @@ de:
       research_intentions: 'Recherche-Anliegen'
       comments: 'Präzisierung des Anliegens'
       organization: 'Institution'
+      school: 'Schule'
       homepage: 'Homepage der Institution'
       street: 'Straße'
       zipcode: 'PLZ'

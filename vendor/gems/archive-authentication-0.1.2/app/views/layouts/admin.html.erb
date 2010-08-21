@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-    <%= javascript_include_tag 'builder', 'interview', 'carousel', 'lightbox', 'swfobject', :cache => true %>
+    <%= javascript_include_tag :defaults, :cache => true %>
 </head>
 
 <body>
@@ -12,6 +12,20 @@
             <%= t(:admin_area) %>
           </p>
         </div>
+        
+        <div id="logoutUserLogin">
+                <%= current_user_account.try(:login) || t(:not_signed_in, :scope => 'devise.user_interface.status') %>
+                <% if current_user_account.nil? %>
+                    <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
+                <% else %>
+                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>
+                <% end %>
+        </div>
+        <% unless flash[:notice].blank? %>
+          <div id="flashNotice">
+          <%= flash[:notice] %>
+          </div>
+        <% end %>
 
         <hr class="divider" />
     </div>
@@ -23,6 +37,11 @@
             <a name="inhalt" accesskey="I"></a>
 
             <div id="innerContent">
+                <% unless flash[:alert].blank? %>
+                  <div id="flashAlert">
+                  <%= flash[:alert] %>
+                  </div>
+                <% end %>
                 <%= yield %>
             </div>
 

@@ -1,17 +1,14 @@
 <% if @mail_locale != 'EN' -%>
 Sehr geehrte/r <%= @user_name %>,
 
-wir bestätigen hiermit Ihren Zugang zum Archiv "Zwangsarbeit 1939-1945". Ihr Benutzername lautet: <%= @login %>
+wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @login %>
 
 Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang hier zu aktivieren und ein neues Passwort zu wählen:
 <%= @url %>
 
-Aus Gründen des Persönlichkeitsschutzes der interviewten Zeitzeugen ist für die Benutzung des Archivs eine Anmeldung und die Anerkennung der Nutzungsbedingungen erforderlich. Die Nutzungsbedingungen können hier eingesehen werden:
-<%= localized_home_url(:page => 'terms_of_use', :locale => 'de') %>
-
 Mit freundlichen Grüßen,
 
-Ihr Team "Zwangsarbeit 1939-1945"
+Der Administrator
 <% end -%>
 <% unless %w(DE EN).include?(@mail_locale) -%>
 
@@ -23,15 +20,12 @@ English version below
 <% if @mail_locale != 'DE' -%>
 Dear <%= @user_name %>,
 
-we confirm your account registration for the archive "Forced Labor 1939-1945". Your username is: <%= @login %>
+we confirm your account registration to our archive. Your username is: <%= @login %>
 
 To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:
 <%= @url %>
 
-For reasons of privacy of the interviewees, registration for the use of the archives and acceptance of the Terms of Use are required. You can read the Terms of Use here:
-<%= localized_home_url(:page => 'terms_of_use', :locale => 'en') %>
-
 Best regards,
 
-Team "Forced Labor 1939-1945"
+The administrator
 <% end -%>

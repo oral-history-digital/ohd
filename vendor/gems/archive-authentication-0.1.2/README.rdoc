@@ -117,7 +117,12 @@ Alternatively, you may copy the views on a case-by-case basis depending
 on your needs.
 
 
-== 6. Create the authentication DB and install missing migrations
+== 6. Add gem dependency on archive-authentication
+Now add the archive-authentication gem in environment.rb:
+  +config.gem 'archive-authentication'+
+
+
+== 7. Create the authentication DB and install missing migrations
 This step will create the authentication DB (if you haven't already), run
 a migration on it to create the user_accounts table, and install a new migration
 for user_registrations in your application.
@@ -131,7 +136,7 @@ To run the migration for the user_registrations, run
 afterwards.
 
 
-== 7. Add necessary routes to your application
+== 8. Add necessary routes to your application
 Add the following to your +config/routes.rb+:
 <tt>
     map.namespace :admin do |admin|
@@ -153,14 +158,9 @@ Add the following to your +config/routes.rb+:
 </tt>
 
 
-== 8. Devise Configuration
+== 9. Devise Configuration
 Copy the gem's +config/initializers/devise.rb+ to your app's config/initializers directory
 and customize Devise to your needs.
-
-
-== 9. Add gem dependency on archive-authentication
-And finally add the archive-authentication gem in environment.rb:
-  +config.gem 'archive-authentication'+
 
 
 == 10. Test - run the specs

@@ -1,25 +1,25 @@
 <h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
-<h2><%= "#{object.first_name} #{object.last_name} &mdash; #{link_to object.email, "mailto:#{object.email}"}" %></h2>
+<h2><%= "#{@object.first_name} #{@object.last_name} &mdash; #{link_to @object.email, "mailto:#{@object.email}"}" %></h2>
 
-<% form_for [:admin, object], :html => {  } do |f| %>
+<% form_for [:admin, @object], :html => {  } do |f| %>
   <div class='column' style='float: left;'>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
       <tr class="underlined">
         <td style="width:40%;">
-          <strong>Status</strong> <%= "#{t(object.current_state.to_sym, :scope => "devise.workflow_states")}" %>
+          <strong>Status</strong> <%= "#{t(@object.current_state.to_sym, :scope => "devise.workflow_states")}" %>
         </td>
         <td>
           <strong><%= t(:requested_at, :scope => "devise.registration_fields") %></strong>
-          <%= object.created_at.nil? ? '&mdash;' : object.created_at.strftime("%d.%m.%y %H:%M") %>
+          <%= @object.created_at.nil? ? '&mdash;' : @object.created_at.strftime("%d.%m.%y %H:%M") %>
         </td>
       </tr>
 
     <%#TODO: edit user information %>
       <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>
-        <%=  render :partial => '/users/application_info', :object => object %>
+        <%=  render :partial => '/users/application_info', :object => @object %>
       <% else %>
-        <% object.form_parameters.each do |field_name, value| %>
+        <% @object.form_parameters.each do |field_name, value| %>
         <tr>
           <td>
             <strong><%= field_name %></strong> <%= value %>
@@ -36,7 +36,7 @@
       <tr class="underlined">
         <td>
           <strong><%= t("tos_agreement", :scope => "devise.registration_fields") %></strong>
-          <%= object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %>
+          <%= @object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %>
           <%= hidden_field_tag :workflow_event, '', :id => "workflow_event" %>
         </td>
       </tr>
@@ -49,7 +49,7 @@
       <tr>
         <td>
           <div id="workflow_actions">
-            <%= render :partial => object.current_state.to_s, :object => object %>
+            <%= render :partial => @object.current_state.to_s, :object => @object %>
           </div>
         </td>
       </tr>
