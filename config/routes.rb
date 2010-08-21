@@ -1,10 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.localized_collection ':locale/teilsammlung/:project_id', :controller => :collections, :action => :show
-  map.collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
+  map.localized_interview_collection ':locale/teilsammlung/:project_id', :controller => :collections, :action => :show
+  map.interview_collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
 
-  map.localized_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
-  map.collections 'teilsammlungen', :controller => :collections, :action => :index
+  map.localized_interview_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
+  map.interview_collections 'teilsammlungen', :controller => :collections, :action => :index
 
   # ensure protected URLs to interview assets
   map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials

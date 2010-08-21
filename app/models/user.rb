@@ -1,8 +1,5 @@
 class User < ActiveRecord::Base
 
-  belongs_to  :user_account
-  belongs_to  :user_registration
-
   attr_protected :admin
 
   define_registration_fields [

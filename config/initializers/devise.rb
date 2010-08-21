@@ -88,6 +88,13 @@ Devise.setup do |config|
   # role declared in your routes.
   # config.default_scope = :user
 
+  # Use the archive-authentication failure app to handle unscoped
+  # authentication failures better.
+  config.warden do |manager|
+    manager.failure_app = Devise::ArchiveFailure
+  end
+
+
   # If you want to use other strategies, that are not (yet) supported by Devise,
   # you can configure them inside the config.warden block. The example below
   # allows you to setup OAuth, using http://github.com/roman/warden_oauth

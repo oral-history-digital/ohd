@@ -9,7 +9,7 @@ class BaseController < ResourceController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
-  before_filter :set_locale
+  prepend_before_filter :set_locale
 
   include SearchFilters
 

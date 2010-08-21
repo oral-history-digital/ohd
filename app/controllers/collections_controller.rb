@@ -1,5 +1,7 @@
 class CollectionsController < BaseController
 
+  skip_before_filter :authenticate_user!, :only => :index
+
   actions :show, :index
 
   index.response do |wants|

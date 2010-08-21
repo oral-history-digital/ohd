@@ -18,13 +18,13 @@
           <ul>
             <li><%= link_to (t :home), root_url, :accesskey => "0" %></li>
             <li>
-              <% if I18n.locale == "de" %>
+              <% if I18n.locale.to_s =~ /^de/i %>
                 <%= link_to "English", localized_home_url(:locale => :en, :page => t((@page_action || :home), :scope => 'page_urls', :locale => :en)), :title => "English version" %>
               <% else %>
                 <%= link_to "Deutsch", localized_home_url(:locale => :de, :page => t((@page_action || :home), :scope => 'page_urls', :locale => :de)), :title => "Deutsche Version" %>
               <% end %>
             </li>
-            <li><%= link_to (t :map), collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to (t :map), interview_collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
             <li><%= link_to (t :faq), home_path(:page => t("faq_index", :scope => 'page_urls')), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
