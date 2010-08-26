@@ -1,0 +1,10 @@
+collection:
+  key_attribute: 'project_id'
+  project-id: 'project_id'
+  title: 'name'
+  countries: 'countries'
+  institution: 'institution'
+  homepage: 'homepage'
+  interviewers: 'interviewers'
+  responsibles: 'responsibles'
+  notes: 'notes'  
