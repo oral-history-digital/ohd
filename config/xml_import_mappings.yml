@@ -7,4 +7,38 @@ collection:
   homepage: 'homepage'
   interviewers: 'interviewers'
   responsibles: 'responsibles'
-  notes: 'notes'  
+  notes: 'notes'
+
+interview:
+  key_attribute: 'archive_id'
+  archive-id: 'archive_id'
+  #collection-id: 'collection_id'
+  duration: 'duration'
+  full-title: 'full_title'
+  interview-date: 'interview_date'
+  #language-id: 'language_id'
+  still-content-type: 'still_image_content_type'
+  still-file-name: 'still_image_file_name'
+  still-file-size: 'still_image_file_size'
+  translated: 'translated'
+  video:  'video'
+  #version-number: not used yet
+  language:
+    name: 'name'
+  person:
+    alias-names: 'alias_names'
+    country-of-origin: 'country_of_origin'
+    date-of-birth: 'date_of_birth'
+    deportation-date: 'deportation_date'
+    deportation-location: 'deportation_location'
+    details-of-origin: 'details_of_origin'
+    firstname: 'first_name'
+
+  photos:
+    photo:
+      key_attribute: 'photo_file_name'
+      #interview-id: 'interview_id'
+      photo-file-name: 'photo_file_name'
+      photo-file-size: 'photo_file_size'
+      photo-content-type: 'photo_content_type'
+      caption: 'caption'
