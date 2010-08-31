@@ -38,7 +38,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
         @object.reactivate!
         flash[:alert] = "#{@object} wurde wieder aktiviert. (E-Mail an '#{@object.email} um )'"
       when 'resend_info'
-        @object.resend_info!
+        @object.resend_info
         flash[:alert] = "Ein Aktivierungscode wurde an '#{@object.email}' um #{Time.now.strftime('%d.%m.%Y um %M:%H Uhr')} gesendet."
     end
     redirect_to :action => :index, :workflow_state => @workflow_state
