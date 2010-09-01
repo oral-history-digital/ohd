@@ -26,7 +26,7 @@
                 end, :class => 'formInput'
             %>
             <% else -%>
-              <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.#{field}")} : field_def[:values] -%>
+              <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.#{field}")}.uniq : field_def[:values] -%>
               <%= content_tag :td, select(:user_registration,
                                         field,
                                         options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
