@@ -11,6 +11,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
   def update
     @workflow_state = object.workflow_state
     # action dependent on submit value
+    @object.admin_comments = object_params['admin_comments']
     case params['workflow_event']
       when 'register'
         @object.register!
