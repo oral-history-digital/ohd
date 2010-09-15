@@ -23,8 +23,10 @@ interview:
   translated: 'translated'
   video:  'video'
   #version-number: not used yet
+  
   language:
     name: 'name'
+
   person:
     alias-names: 'alias_names'
     country-of-origin: 'country_of_origin'
@@ -38,7 +40,7 @@ interview:
     photo:
       key_attribute: 'photo_file_name'
       #interview-id: 'interview_id'
-      photo-file-name: 'photo_file_name'
-      photo-file-size: 'photo_file_size'
-      photo-content-type: 'photo_content_type'
+      image-file-name: 'photo_file_name'
+      image-file-size: 'photo_file_size'
+      image-content-type: 'photo_content_type'
       caption: 'caption'

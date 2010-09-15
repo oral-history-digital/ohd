@@ -12,6 +12,10 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def initialize(incremental=true)
     @incremental = !(incremental.nil? || incremental == false)
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
+    puts "\nFull-Fledged Objects:"
+    @mappings.keys.each do |type|
+      puts type.to_s
+    end
     super()
   end
 
@@ -51,14 +55,23 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def start_element(name, attributes={})
     @current_data = ''
     if @mappings.keys.include?(name)
-      # Start a new full-fledged main object
+      # This is a base-level object type
       STDOUT.printf '.'
       STDOUT.flush
       set_context(name)
+      puts "Associations: #{@associations.join(', ')}"
+
     elsif @associations.include?(name.to_sym)
       # somehow define a sub-context
       # TODO...
       set_subcontext(name)
+
+=begin
+    elsif @current_subcontext.nil? ? false : @current_subcontext.name.underscore == name
+      # keep on working!
+      open_mapping_level(name)
+=end
+      
     elsif !(@current_mapping.nil? || @current_mapping.empty?)
       # We open another mapping level for the current context
       open_mapping_level(name)
@@ -70,34 +83,49 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def end_element(name)
     if @mappings.keys.include?(name)
       # Wrap up the instance for the current context
-      key_attribute = @current_mapping['key_attribute'] || 'id'
+      key_attribute = @mappings[name]['key_attribute'] || 'id'
+      puts "\n#{@current_context.name} (#{key_attribute}) attributes:\n#{@attributes.inspect}"
       @instance = @current_context.send("find_or_initialize_by_#{key_attribute}", @attributes[key_attribute])
       @instance.attributes = @attributes
-      puts "\n#{@current_context.name} attributes:\n#{@attributes.inspect}"
       puts @instance.inspect
+      puts "Mapping on closing: #{@mappings[name].inspect}"
+      puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
       puts
       #@instance.save!
       @imported[@current_context.name.underscore.pluralize] ||= []
-      @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[@current_mapping['key_attribute'] || :id]
+      puts "Adding instance: #{@instance[key_attribute.to_sym]}"
+      @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[key_attribute.to_sym]
       close_context(name)
+
+=begin
+    elsif @current_subcontext.nil? ? false : @current_subcontext.name.underscore == name
+      # keep on working! - this can't be right!
+      close_mapping_level(name)
+=end
+
+=begin
+
     elsif @associations.include?(name.to_sym)
       # Create the associated object and append to all associates
       # TODO: create the association and close the sub-context
       @associated_data[name.to_sym][@current_attribute] = @current_data unless @current_data.blank?
+
+=end
+
+
     elsif !@current_context.nil?
-      # Add to the attributes for the current context
-      if @current_attribute.blank?
-        # Assign via the current mapping (i.e. we have a full sub-node)
-        unless @current_mapping.blank? || !@current_context.columns.map(&:name).include?(@current_mapping)
-          @attributes[@current_mapping] = @current_data
-        end
+      # Add to the attributes for the current context or associations
+      assign_data @current_data
+
+      if @associations.include?(name.to_sym) && !@current_subcontext.nil?
+        # close as sub-context
+        close_subcontext(name)
       else
-        # assign via the current attribute
-        @attributes[@current_attribute] = @current_data
+        # Close the current mapping level and return to
+        # one level higher up.
+        close_mapping_level(name)
       end
-      # Close the current mapping level and return to
-      # one level higher up.
-      close_mapping_level(name)
+
     end
   end
 
@@ -137,16 +165,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # the main context.
   # Deal differently with has_many and belongs_to/has_one
   def set_subcontext(klass)
-    unless @current_context.reflect_on_association(klass).nil? \
-      || @current_context.reflect_on_association(klass).macro == :has_many
-        @current_subcontext = @current_context.reflect_on_association(klass).class_name.constantize
+    unless @current_context.reflect_on_association(klass.to_sym).nil? #\
+      #|| @current_context.reflect_on_association(klass).macro == :has_many
+        @current_subcontext = @current_context.reflect_on_association(klass.to_sym).class_name.constantize
         puts "New Subcontext: #{@current_subcontext.inspect}"
         @associations = @current_subcontext.reflect_on_all_associations.map(&:name)
-        @associated_data[klass.to_sym] = {}
+        @associated_data[@current_subcontext.name.underscore.to_sym] = {}
     end
-    @mapping_levels << [klass]
-    @current_mapping = @mappings[klass]
-    @current_attribute = nil
+    open_mapping_level klass
   end
 
   # Resets the state between associated contexts by
@@ -154,10 +180,38 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def close_subcontext(klass)
     raise "Subcontext Mismatch on closing: (current: #{@current_subcontext.name}, called: #{klass}" unless klass.camelize.capitalize == @current_subcontext.name
     @current_subcontext = nil
-    @mapping_levels.pop
+    close_mapping_level klass
     puts "Closed Subcontext: #{@current_subcontext}\n#{@associated_data.inspect}"
     @associations = @current_context.reflect_on_all_associations.map(&:name) unless @current_context.nil?
     refresh_current_mapping
+  end
+
+  # assigns data to either the associated_data object (for sub-context)
+  # or attributes (for context)
+  def assign_data(data)
+    attribute = if @current_attribute.blank?
+      unless @current_mapping.is_a?(Hash)
+        @current_mapping
+      else
+        nil
+      end
+    else
+      @current_attribute
+    end
+    unless attribute.nil?
+      puts "Assigning #{attribute} = #{data}"
+      available_attributes = @current_subcontext.nil? ? \
+        @current_context.columns.map(&:name) : @current_subcontext.columns.map(&:name)
+      if available_attributes.include?(attribute)
+        if @associated_data.empty?
+          # write to attributes
+          @attributes[attribute] = data
+        elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name.underscore.to_sym].nil?
+          # write to associated data
+          @associated_data[@current_subcontext.name.underscore.to_sym][attribute] = data
+        end
+      end
+    end
   end
 
   # Opens a level of mapping, going deeper.
@@ -166,9 +220,21 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     return if @mapping_levels.empty? && !@mappings.keys.include?(node)
     @mapping_levels << node
     refresh_current_mapping
-    puts "Mapping Levels: #{@mapping_levels.inspect}\n"
-    puts "Current_mapping: #{@current_mapping}\n"
-    puts "Current attribute: #{@current_attribute}\n"
+    unless @current_mapping.nil?
+      available_attributes = @current_subcontext.nil? ? \
+        @current_context.columns.map(&:name) : @current_subcontext.columns.map(&:name)
+      possible_attribute = @current_mapping[node]
+      if !possible_attribute.nil? && available_attributes.include?(possible_attribute)
+        @current_attribute = possible_attribute
+      end
+      if @current_mapping.is_a?(Hash)
+        puts "Current Sub-Context: #{@current_subcontext}" unless @current_subcontext.nil?
+        puts "Mapping Levels: #{@mapping_levels.inspect}\n"
+        puts "Current_mapping: #{@current_mapping.inspect}\n"
+        puts "Current attribute: #{@current_attribute}\n" unless @current_attribute.nil?
+      end
+      puts
+    end
   end
 
   # Closes the current mapping level and moves one level
@@ -178,13 +244,18 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @mapping_levels.pop if @mapping_levels.last == node
     @current_data = ''
     refresh_current_mapping
+    unless @current_attribute.nil? || @current_subcontext.nil? || @associated_data[@current_subcontext.name.underscore.to_sym].nil?
+      puts "Associated Data for #{@current_subcontext}: #{@associated_data[@current_subcontext.name.underscore.to_sym].inspect}"
+    end
+    @current_attribute = nil
   end
 
   # Reassigns the current_mapping and resets the current
   # attribute.
   def refresh_current_mapping
+    # traverses the mapping hash according to the mapping levels and returns
+    # the remaining sub-tree / node
     @current_mapping = @mapping_levels.inject(@mappings.dup){|m,l| m.is_a?(Hash) ? m[l] : {} }
-    @current_attribute = nil
   end
 
 end
