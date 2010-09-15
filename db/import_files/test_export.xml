@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<export>
+<created-at>Tue Aug 24 13:44:54 +0200 2010</created-at>
+<current-migration>20100708164928</current-migration>
+<collections type="array">
+  <collection>
+    <countries>Belarus</countries>
+    <created-at type="datetime">2009-05-05T14:54:09Z</created-at>
+    <homepage>www.wiso.rwth-aachen.de</homepage>
+    <id type="integer">1</id>
+    <institution>Rheinisch-Westf&#228;lische Technische Hochschule (RWTH) Aachen, Fakult&#228;t f&#252;r Wirtschaftswissenschaften, Lehr- und Forschungsgebiet Wirtschafts- und Sozialgeschichte, Aachen</institution>
+    <interviewers>Dolgowskij, Alexander</interviewers>
+    <notes nil="true"></notes>
+    <project-id>belarus_rwth_aachen</project-id>
+    <responsibles>Rass, Christoph / Dalhouski, Alexander</responsibles>
+    <title>Belarus &#8211; RWTH Aachen</title>
+    <updated-at type="datetime">2010-07-08T16:55:02Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Belarus</countries>
+    <created-at type="datetime">2009-05-05T14:54:10Z</created-at>
+    <homepage>gender-ehu.org</homepage>
+    <id type="integer">2</id>
+    <institution>Centre for Gender Studies, European Humanities University, Minsk</institution>
+    <interviewers>Khloptseva, Elena</interviewers>
+    <notes nil="true"></notes>
+    <project-id>belarus_ehu_minsk</project-id>
+    <responsibles>Gapova, Elena</responsibles>
+    <title>Belarus &#8211; EHU Minsk</title>
+    <updated-at type="datetime">2010-07-08T16:55:02Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Belarus</countries>
+    <created-at type="datetime">2009-05-05T14:54:10Z</created-at>
+    <homepage>www.ibb.by</homepage>
+    <id type="integer">3</id>
+    <institution>Internationale Bildungs- und Begegnungsst&#228;tte Minsk GmbH, Minsk</institution>
+    <interviewers>Belanowitsch, Alesia / Hansen, Imke / &#268;ehovskaja, Kristina</interviewers>
+    <notes nil="true"></notes>
+    <project-id>belarus_ibb_minsk</project-id>
+    <responsibles>Rentrop, Petra / Hansen, Imke / &#268;ehovskaja, Kristina</responsibles>
+    <title>Belarus &#8211; IBB Minsk</title>
+    <updated-at type="datetime">2010-07-08T16:55:02Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Slowakei</countries>
+    <created-at type="datetime">2009-05-05T14:54:20Z</created-at>
+    <homepage>www.zivapamet.cz</homepage>
+    <id type="integer">28</id>
+    <institution>&#381;iv&#225; pam&#283;t&#8217; (Lebendige Erinnerung), Prag</institution>
+    <interviewers>Danielov&#225;, Helena / Oplu&#353;til, Ji&#345;&#237; / Schuster, Michal</interviewers>
+    <notes nil="true"></notes>
+    <project-id>slowakei_zp_prag</project-id>
+    <responsibles>Jelinek, Toma&#353; / Jarsk&#225;, &#352;&#225;rka / Jakschov&#225;, Viola</responsibles>
+    <title>Slowakei &#8211; ZP Prag</title>
+    <updated-at type="datetime">2010-07-08T16:55:02Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Frankreich, Israel, Polen</countries>
+    <created-at type="datetime">2009-05-05T14:54:21Z</created-at>
+    <homepage>www.fritz-bauer-institut.de</homepage>
+    <id type="integer">30</id>
+    <institution>Fritz Bauer Institut, Studien- und Dokumentationszentrum zur Geschichte und Wirkung des Holocaust, Frankfurt</institution>
+    <interviewers>Knellessen, Dagi</interviewers>
+    <notes>Die interviewten Zeuginnen und Zeugen des Frankfurter Auschwitz-Prozesses leben heute in Polen (4), Israel (3) und Frankreich (1).</notes>
+    <project-id>auschwitzprozess_fbi_frankfurt</project-id>
+    <responsibles>Knellessen, Dagi</responsibles>
+    <title>Zeugen Auschwitzprozess - FBI Frankfurt</title>
+    <updated-at type="datetime">2010-07-08T16:55:03Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Frankreich, Spanien</countries>
+    <created-at type="datetime">2009-05-05T14:54:21Z</created-at>
+    <homepage>www.hayfo.com</homepage>
+    <id type="integer">31</id>
+    <institution>Asociaci&#243;n Historia y Fuente Oral (Gesellschaft f&#252;r Oral History), Barcelona</institution>
+    <interviewers>Vilanova, Mercedes</interviewers>
+    <notes>Ein Interview fand in Frankreich statt. Neun Interviews sind auf spanisch, zwei auf katalanisch gef&#252;hrt worden.</notes>
+    <project-id>spanien_ahfo_barcelona</project-id>
+    <responsibles>Vilanova, Mercedes</responsibles>
+    <title>Spanien &#8211; AHFO Barcelona</title>
+    <updated-at type="datetime">2010-07-08T16:55:03Z</updated-at>
+  </collection>
+  <collection>
+    <countries>Tschechien</countries>
+    <created-at type="datetime">2009-05-05T14:54:21Z</created-at>
+    <homepage>www.zivapamet.cz</homepage>
+    <id type="integer">33</id>
+    <institution>&#381;iv&#225; pam&#283;t&#8217; (Lebendige Erinnerung), Prag</institution>
+    <interviewers>Danielov&#225;, Helena / Hamplov&#225;, Tereza / Havl&#237;kov&#225;, Jana / Ho&#345;&#225;k, Martin / Horv&#225;thov&#225;, Jana / Jakschov&#225;, Viola / Jarsk&#225;, &#352;&#225;rka / Jirk&#367;, Gabriela / Kram&#225;&#345;ov&#225;, Jana / Oplu&#353;til, Ji&#345;&#237; / Schuster, Michal</interviewers>
+    <notes nil="true"></notes>
+    <project-id>tschechien_zp_prag</project-id>
+    <responsibles>Jelinek, Toma&#353; / Jarsk&#225;, &#352;&#225;rka / Jakschov&#225;, Viola</responsibles>
+    <title>Tschechien &#8211; ZP Prag</title>
+    <updated-at type="datetime">2010-07-08T16:55:03Z</updated-at>
+  </collection>
+</collections>
+    
+<interviews type="array">
+  <interview>
+  <agreement type="boolean">true</agreement>
+  <agreement-text></agreement-text>
+  <archive-id>za001</archive-id>
+  <collection-id type="integer">1</collection-id>
+  <created-at type="datetime">2009-05-05T14:54:09Z</created-at>
+  <documents-generated-at type="datetime" nil="true"></documents-generated-at>
+  <duration type="integer">04:26:00.00</duration>
+  <duration-unit>s</duration-unit>
+  <editors-interview>Dalhouski/Dolgowskij/, Alexander</editors-interview>
+  <editors-transcript>Sabolodskaja, Veronika</editors-transcript>
+  <editors-translation></editors-translation>
+  <full-title>Adamez, Konstantin Wojtowitsch</full-title>
+  <id type="integer">1</id>
+  <interview-date nil="true"></interview-date>
+  <language-id type="integer">3</language-id>
+  <published type="boolean">true</published>
+  <published-at type="datetime">2009-01-21T00:00:00Z</published-at>
+  <ready-to-publish type="boolean">false</ready-to-publish>
+  <still-content-type>x-application/JPG</still-content-type>
+  <still-file-name>za001.JPG</still-file-name>
+  <still-file-size type="integer">142828</still-file-size>
+  <title>Adamez, K.</title>
+  <transcript-speakers></transcript-speakers>
+  <translated type="boolean">false</translated>
+  <translation-speakers></translation-speakers>
+  <updated-at type="datetime">2009-11-09T16:38:24Z</updated-at>
+  <video type="boolean">false</video>
+  <version-number type="integer">8</version-number>
+  <workflow-state-for-segmentation>completed</workflow-state-for-segmentation>
+  <workflow-state-for-research>&amp;mdash;</workflow-state-for-research>
+  <language-name>Russisch</language-name>
+</interview>
+  <interview>
+  <agreement type="boolean">true</agreement>
+  <agreement-text></agreement-text>
+  <archive-id>za018</archive-id>
+  <collection-id type="integer">2</collection-id>
+  <created-at type="datetime">2009-05-05T14:54:10Z</created-at>
+  <documents-generated-at type="datetime" nil="true"></documents-generated-at>
+  <duration type="integer">03:24:00.00</duration>
+  <duration-unit>s</duration-unit>
+  <editors-interview>Elena Khloptseva</editors-interview>
+  <editors-transcript>Natalia Scherbina</editors-transcript>
+  <editors-translation></editors-translation>
+  <full-title>Anoprijenko, Fjodor Kornejewitsch</full-title>
+  <id type="integer">18</id>
+  <interview-date nil="true"></interview-date>
+  <language-id type="integer">3</language-id>
+  <published type="boolean">false</published>
+  <published-at type="datetime" nil="true"></published-at>
+  <ready-to-publish type="boolean">false</ready-to-publish>
+  <still-content-type>image/jpg</still-content-type>
+  <still-file-name>za018.jpg</still-file-name>
+  <still-file-size type="integer">206432</still-file-size>
+  <title>Anoprijenko, F.</title>
+  <transcript-speakers></transcript-speakers>
+  <translated type="boolean">false</translated>
+  <translation-speakers></translation-speakers>
+  <updated-at type="datetime">2009-11-09T16:38:25Z</updated-at>
+  <video type="boolean">false</video>
+  <version-number type="integer">7</version-number>
+  <workflow-state-for-segmentation>&amp;mdash;</workflow-state-for-segmentation>
+  <workflow-state-for-research>&amp;mdash;</workflow-state-for-research>
+  <language-name>Russisch</language-name>
+  <person>
+    <alias-names>&#1040;&#1085;&#1086;&#1087;&#1088;&#1080;&#1077;&#1085;&#1082;&#1086; &#1060;&#1105;&#1076;&#1086;&#1088; &#1050;&#1086;&#1088;&#1085;&#1077;&#1077;&#1074;&#1080;&#1095; Anoprijenko Fjodor Kornejewitsch Anoprienko Fedr Korneewitsch Korneevich</alias-names>
+    <country-of-origin>Belarus </country-of-origin>
+    <created-at type="datetime">2009-05-05T14:54:10Z</created-at>
+    <date-of-birth>1921</date-of-birth>
+    <deportation-date>1941-06</deportation-date>
+    <deportation-location>Belarus, Gebiet Mogilev</deportation-location>
+    <details-of-origin>Gebiet Gomel, Bezirk Braginski, Grushnoe, Belarus </details-of-origin>
+    <firstname>Fjodor</firstname>
+    <forced-labor-details>Landwirtschaft</forced-labor-details>
+    <forced-labor-field>Land- und Forstwirtschaft/G&#228;rtnerei</forced-labor-field>
+    <forced-labor-field-ids>3</forced-labor-field-ids>
+    <forced-labor-group-ids>6</forced-labor-group-ids>
+    <forced-labor-habitation>Lager</forced-labor-habitation>
+    <forced-labor-habitation-details>Lager</forced-labor-habitation-details>
+    <forced-labor-habitation-ids>1</forced-labor-habitation-ids>
+    <forced-labor-industry>keine Angabe</forced-labor-industry>
+    <forced-labor-location>Polen, Ostrov Mazovetsky; Norwegen, Etarshtadt</forced-labor-location>
+    <full-name>Anoprijenko, Fjodor Kornejewitsch</full-name>
+    <gender type="boolean">true</gender>
+    <group>Kriegsgefangene</group>
+    <group-details>Kriegsgefangene</group-details>
+    <home-location>Belarus</home-location>
+    <id type="integer">18</id>
+    <interview-id type="integer">18</interview-id>
+    <lastname>Anoprijenko</lastname>
+    <liberation-date>1945-05-05</liberation-date>
+    <middle-names>Kornejewitsch</middle-names>
+    <place-of-birth>unerschlossen</place-of-birth>
+    <punishment>keine Angabe</punishment>
+    <return-date nil="true"></return-date>
+    <return-home type="boolean">false</return-home>
+    <return-location>Russland, Novolisino (N&#228;he Leningrad)</return-location>
+    <updated-at type="datetime">2009-09-07T20:55:04Z</updated-at>
+    <forced-labor-group-names>Kriegsgefangene</forced-labor-group-names>
+    <forced-labor-habitation-names>Lager</forced-labor-habitation-names>
+    <forced-labor-field-names>Land- und Forstwirtschaft/G&#228;rtnerei</forced-labor-field-names>
+  </person>
+  <interview-team-members type="array">
+    <interview-team-member>
+      <id type="integer">39</id>
+      <interview-id type="integer">18</interview-id>
+      <project-team-member-id type="integer">9</project-team-member-id>
+      <task>interview</task>
+      <first-name>Khloptseva</first-name>
+      <last-name>Elena</last-name>
+      <alias-name nil="true"></alias-name>
+    </interview-team-member>
+    <interview-team-member>
+      <id type="integer">40</id>
+      <interview-id type="integer">18</interview-id>
+      <project-team-member-id type="integer">10</project-team-member-id>
+      <task>transcript</task>
+      <first-name>Scherbina</first-name>
+      <last-name>Natalia</last-name>
+      <alias-name nil="true"></alias-name>
+    </interview-team-member>
+  </interview-team-members>
+  <photos type="array">
+    <photo>
+      <caption>Fedr Anoprienko am Tag des Interviews in seiner Wohnung</caption>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <id type="integer">1973</id>
+      <image-content-type>image/jpeg</image-content-type>
+      <image-file-name>ZA018_01.JPG</image-file-name>
+      <image-file-size type="integer">103175</image-file-size>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">true</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </photo>
+    <photo>
+      <caption>Fedr Anoprienko am Tag des Interviews in seiner Wohnung</caption>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <id type="integer">1974</id>
+      <image-content-type>image/jpeg</image-content-type>
+      <image-file-name>ZA018_02.JPG</image-file-name>
+      <image-file-size type="integer">93780</image-file-size>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">true</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </photo>
+    <photo>
+      <caption>Portrait von Fedr Anoprienko am Tag des Interviews in seiner Wohnung</caption>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <id type="integer">1975</id>
+      <image-content-type>image/jpeg</image-content-type>
+      <image-file-name>ZA018_03.JPG</image-file-name>
+      <image-file-size type="integer">68412</image-file-size>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">true</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </photo>
+  </photos>
+  <text-materials type="array">
+    <text-material>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <document-content-type>application/x-odt</document-content-type>
+      <document-file-name>ZA018_bg.odt</document-file-name>
+      <document-file-size type="integer">19056</document-file-size>
+      <document-type>Biography</document-type>
+      <id type="integer">70</id>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">true</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </text-material>
+    <text-material>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <document-content-type>application/x-odt</document-content-type>
+      <document-file-name>ZA018_tr.odt</document-file-name>
+      <document-file-size type="integer">62427</document-file-size>
+      <document-type>Transcript</document-type>
+      <id type="integer">73</id>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">true</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </text-material>
+    <text-material>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <document-content-type>application/x-odt</document-content-type>
+      <document-file-name>ZA018_db.odt</document-file-name>
+      <document-file-size type="integer">23149</document-file-size>
+      <document-type>Data sheet</document-type>
+      <id type="integer">71</id>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">false</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </text-material>
+    <text-material>
+      <created-at type="datetime">2009-01-22T00:00:00Z</created-at>
+      <document-content-type>application/x-odt</document-content-type>
+      <document-file-name>ZA018_pk.odt</document-file-name>
+      <document-file-size type="integer">23700</document-file-size>
+      <document-type>Record</document-type>
+      <id type="integer">72</id>
+      <interview-id type="integer">18</interview-id>
+      <published type="boolean">false</published>
+      <updated-at type="datetime" nil="true"></updated-at>
+    </text-material>
+  </text-materials>
+  <tapes type="array">
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">950</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_01</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">951</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_02</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">952</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_03</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">953</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_04</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">954</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_05</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+    <tape>
+      <created-at type="datetime">2010-04-15T09:11:11Z</created-at>
+      <duration nil="true"></duration>
+      <filename nil="true"></filename>
+      <id type="integer">955</id>
+      <indexed-at type="datetime" nil="true"></indexed-at>
+      <interview-id type="integer">18</interview-id>
+      <media-id>ZA018_06_06</media-id>
+      <updated-at type="datetime">2010-04-15T09:11:11Z</updated-at>
+      <workflow-state>digitized</workflow-state>
+      <captions-segments type="array"/>
+    </tape>
+  </tapes>
+</interview>
+</interviews>
