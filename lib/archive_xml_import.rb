@@ -39,11 +39,19 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     # The instance being built for the current context
     @current_instance = nil
+    # This is the id used by the xml source
+    @source_id = nil
+    # This is a mapping hash of source to local ids
+    @source_to_local_id_mapping = {}
     # ??? unused
     @date_of_export = nil
   end
 
   def end_document
+    puts "\nSource-to-Local ID-Mapping:"
+    @source_to_local_id_mapping.keys.each do |type|
+      puts "#{type.pluralize}: #{@source_to_local_id_mapping[type].keys.inject([]){|a,k| a << "#{k}->#{@source_to_local_id_mapping[type][k]}" }.join(', ')}"
+    end
     puts "\nImported:"
     @imported.keys.each do |context|
       puts context.to_s + ':'
@@ -75,6 +83,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
+    # ID node: set source ID if not set already
+    if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
+      puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
+      @source_id ||= @current_data.to_i
+    end
+
     if @mappings.keys.include?(name)
       # Wrap up the instance for the current context
       key_attribute = @mappings[name]['key_attribute'] || 'id'
@@ -86,8 +100,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
       puts
       #@instance.save!
+      unless @source_id.nil?
+        @source_to_local_id_mapping[@current_context.name.underscore] ||= {}
+        @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = @instance.id
+      end
       @imported[@current_context.name.underscore.pluralize] ||= []
-      puts "Adding instance: #{@instance[key_attribute.to_sym]}"
+      puts "Adding instance (source id: #{@source_id}): #{@instance[key_attribute.to_sym]}"
       @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[key_attribute.to_sym]
       close_context(name)
 
@@ -136,6 +154,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @associations = []
     @attributes = {}
     @associated_data = {}
+    @source_id = nil
     @current_attribute = nil
   end
 
