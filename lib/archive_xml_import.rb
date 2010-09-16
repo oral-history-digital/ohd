@@ -65,12 +65,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       # somehow define a sub-context
       # TODO...
       set_subcontext(name)
-
-=begin
-    elsif @current_subcontext.nil? ? false : @current_subcontext.name.underscore == name
-      # keep on working!
-      open_mapping_level(name)
-=end
       
     elsif !(@current_mapping.nil? || @current_mapping.empty?)
       # We open another mapping level for the current context
@@ -96,22 +90,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       puts "Adding instance: #{@instance[key_attribute.to_sym]}"
       @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[key_attribute.to_sym]
       close_context(name)
-
-=begin
-    elsif @current_subcontext.nil? ? false : @current_subcontext.name.underscore == name
-      # keep on working! - this can't be right!
-      close_mapping_level(name)
-=end
-
-=begin
-
-    elsif @associations.include?(name.to_sym)
-      # Create the associated object and append to all associates
-      # TODO: create the association and close the sub-context
-      @associated_data[name.to_sym][@current_attribute] = @current_data unless @current_data.blank?
-
-=end
-
 
     elsif !@current_context.nil?
       # Add to the attributes for the current context or associations
@@ -170,7 +148,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @current_subcontext = @current_context.reflect_on_association(klass.to_sym).class_name.constantize
         puts "New Subcontext: #{@current_subcontext.inspect}"
         @associations = @current_subcontext.reflect_on_all_associations.map(&:name)
-        @associated_data[@current_subcontext.name.underscore.to_sym] = {}
+        @associated_data[@current_subcontext.name.underscore.to_sym] = \
+          (@current_subcontext.name.underscore.pluralize == klass.underscore) ? [] : {}
+=begin
+        if @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
+          puts "Appending '{}' to associated_data for '#{@current_subcontext.name.underscore}'"
+          @associated_data[@current_subcontext.name.underscore.to_sym] << {}
+        end
+=end
     end
     open_mapping_level klass
   end
@@ -208,7 +193,18 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           @attributes[attribute] = data
         elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name.underscore.to_sym].nil?
           # write to associated data
-          @associated_data[@current_subcontext.name.underscore.to_sym][attribute] = data
+          if @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
+            puts "write to array of associated data for '#{@current_subcontext.name.underscore}': #{@associated_data[@current_subcontext.name.underscore.to_sym].inspect}\n"
+            if @associated_data[@current_subcontext.name.underscore.to_sym].empty?
+              puts "-> array empty! appending..."
+              @associated_data[@current_subcontext.name.underscore.to_sym] << { attribute => data }
+            else
+              puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name.underscore.to_sym].last.inspect}"
+              @associated_data[@current_subcontext.name.underscore.to_sym].last[attribute] = data
+            end
+          else
+            @associated_data[@current_subcontext.name.underscore.to_sym][attribute] = data
+          end
         end
       end
     end
@@ -219,6 +215,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # don't open mapping levels if they don't define a mapping
     return if @mapping_levels.empty? && !@mappings.keys.include?(node)
     @mapping_levels << node
+
+    # TODO: if we have a new tag of the existing sub-context,
+    # add another associated_data element to the array
+    if !@current_subcontext.nil?
+      if @current_subcontext.name.underscore == node.underscore && @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
+        @associated_data[@current_subcontext.name.underscore.to_sym] << {}
+      end
+    end
+
     refresh_current_mapping
     unless @current_mapping.nil?
       available_attributes = @current_subcontext.nil? ? \
