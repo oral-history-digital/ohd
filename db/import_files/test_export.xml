@@ -116,7 +116,7 @@
   <published type="boolean">true</published>
   <published-at type="datetime">2009-01-21T00:00:00Z</published-at>
   <ready-to-publish type="boolean">false</ready-to-publish>
-  <still-content-type>x-application/JPG</still-content-type>
+  <still-content-type>image/jpeg</still-content-type>
   <still-file-name>za001.JPG</still-file-name>
   <still-file-size type="integer">142828</still-file-size>
   <title>Adamez, K.</title>

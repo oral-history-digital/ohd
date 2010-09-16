@@ -83,12 +83,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    # ID node: set source ID if not set already
-    if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
-      puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
-      @source_id ||= @current_data.to_i
-    end
-
     if @mappings.keys.include?(name)
       # Wrap up the instance for the current context
       key_attribute = @mappings[name]['key_attribute'] || 'id'
@@ -99,17 +93,39 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       puts "Mapping on closing: #{@mappings[name].inspect}"
       puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
       puts
-      #@instance.save!
+      @instance.save
+      raise @instance.errors.full_messages.to_s unless @instance.valid?
       unless @source_id.nil?
         @source_to_local_id_mapping[@current_context.name.underscore] ||= {}
         @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = @instance.id
       end
+      save_associated_data
       @imported[@current_context.name.underscore.pluralize] ||= []
       puts "Adding instance (source id: #{@source_id}): #{@instance[key_attribute.to_sym]}"
       @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[key_attribute.to_sym]
       close_context(name)
 
     elsif !@current_context.nil?
+
+      # ID node: set source ID if not set already
+      if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
+        puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
+        @source_id ||= @current_data.to_i
+      end
+
+      # if we have a foreign key, try to associate with an existing object
+      if name =~ /[_-]id$/
+        potential_parents = @associations.select{|a| a =~ name.sub(/[_-]id$/,'') }
+        unless potential_parents.empty?
+          parent_association = @current_context.reflect_on_association(potential_parents.first)
+          unless parent_association.macro == :belongs_to
+            parent = parent_association.class_name.constantize.find(@source_to_local_id_mapping[parent_association.class_name.underscore][@current_data.to_i])
+            @attributes[name.sub(/[_-]id$/,'_id')] = parent.id unless parent.nil?
+            puts "\n@@@@ PARENT FOUND\nfound parent object: #{parent.class.name} #{parent.id}\n"
+          end
+        end
+      end
+
       # Add to the attributes for the current context or associations
       assign_data @current_data
 
@@ -280,6 +296,32 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # traverses the mapping hash according to the mapping levels and returns
     # the remaining sub-tree / node
     @current_mapping = @mapping_levels.inject(@mappings.dup){|m,l| m.is_a?(Hash) ? m[l] : {} }
+  end
+
+  # saves all associated data of an instance
+  def save_associated_data
+    unless @instance.id.nil?
+      associations = @instance.class.reflect_on_all_associations
+      @associated_data.keys.each do |associate|
+        association = associations.select{|a| a.class_name.underscore == associate }.first
+        raise "No such association: '#{associate}' for #{@instance.class.name}." if association.nil?
+        if association.macro == :has_many
+          @associated_data[associate].each do |object_attributes|
+            # build a new instance on the association collection
+            new_object = association.send("build", object_attributes)
+            new_object.save
+            puts "Saved (#{new_object.valid?}): #{new_object.inspect}"
+            raise new_object.errors.full_messages.to_s unless new_object.valid?
+          end
+        else
+          # build the associated object directly on the instance
+          new_object = @instance.send("build_#{association.name}", @associated_data[associate])
+          new_object.save
+          puts "Saved (#{new_object.valid?}): #{new_object.inspect}"
+          raise new_object.errors.full_messages.to_s unless new_object.valid?
+        end
+      end
+    end
   end
 
 end

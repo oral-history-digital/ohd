@@ -32,7 +32,7 @@ DEF
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
   validates_attachment_content_type :still_image,
-                                    :content_type => ['image/jpeg', 'image/png'],
+                                    :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? }
 
   searchable :auto_index => false do
