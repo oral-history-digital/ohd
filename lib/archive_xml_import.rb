@@ -180,17 +180,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def set_subcontext(klass)
     unless @current_context.reflect_on_association(klass.to_sym).nil? #\
       #|| @current_context.reflect_on_association(klass).macro == :has_many
-        @current_subcontext = @current_context.reflect_on_association(klass.to_sym).class_name.constantize
-        puts "New Subcontext: #{@current_subcontext.inspect}"
-        @associations = @current_subcontext.reflect_on_all_associations.map(&:name)
-        @associated_data[@current_subcontext.name.underscore.to_sym] = \
-          (@current_subcontext.name.underscore.pluralize == klass.underscore) ? [] : {}
-=begin
-        if @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
-          puts "Appending '{}' to associated_data for '#{@current_subcontext.name.underscore}'"
-          @associated_data[@current_subcontext.name.underscore.to_sym] << {}
-        end
-=end
+        @current_subcontext = @current_context.reflect_on_association(klass.to_sym)
+        puts "New Subcontext: #{@current_subcontext.name}"
+        @associations = @current_subcontext.class_name.constantize.reflect_on_all_associations.map(&:name)
+        @associated_data[@current_subcontext.name] = \
+          (@current_subcontext.name.to_s.pluralize == klass.underscore) ? [] : {}
     end
     open_mapping_level klass
   end
@@ -221,24 +215,24 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     unless attribute.nil?
       puts "Assigning #{attribute} = #{data}"
       available_attributes = @current_subcontext.nil? ? \
-        @current_context.columns.map(&:name) : @current_subcontext.columns.map(&:name)
+        @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
       if available_attributes.include?(attribute)
         if @associated_data.empty?
           # write to attributes
           @attributes[attribute] = data
-        elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name.underscore.to_sym].nil?
+        elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
           # write to associated data
-          if @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
-            puts "write to array of associated data for '#{@current_subcontext.name.underscore}': #{@associated_data[@current_subcontext.name.underscore.to_sym].inspect}\n"
-            if @associated_data[@current_subcontext.name.underscore.to_sym].empty?
+          if @associated_data[@current_subcontext.name].is_a?(Array)
+            puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
+            if @associated_data[@current_subcontext.name].empty?
               puts "-> array empty! appending..."
-              @associated_data[@current_subcontext.name.underscore.to_sym] << { attribute => data }
+              @associated_data[@current_subcontext.name] << { attribute => data }
             else
-              puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name.underscore.to_sym].last.inspect}"
-              @associated_data[@current_subcontext.name.underscore.to_sym].last[attribute] = data
+              puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
+              @associated_data[@current_subcontext.name].last[attribute] = data
             end
           else
-            @associated_data[@current_subcontext.name.underscore.to_sym][attribute] = data
+            @associated_data[@current_subcontext.name][attribute] = data
           end
         end
       end
@@ -254,15 +248,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # TODO: if we have a new tag of the existing sub-context,
     # add another associated_data element to the array
     if !@current_subcontext.nil?
-      if @current_subcontext.name.underscore == node.underscore && @associated_data[@current_subcontext.name.underscore.to_sym].is_a?(Array)
-        @associated_data[@current_subcontext.name.underscore.to_sym] << {}
+      if @current_subcontext.name.to_s == node.underscore && @associated_data[@current_subcontext.name].is_a?(Array)
+        @associated_data[@current_subcontext.name] << {}
       end
     end
 
     refresh_current_mapping
     unless @current_mapping.nil?
       available_attributes = @current_subcontext.nil? ? \
-        @current_context.columns.map(&:name) : @current_subcontext.columns.map(&:name)
+        @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
       possible_attribute = @current_mapping[node]
       if !possible_attribute.nil? && available_attributes.include?(possible_attribute)
         @current_attribute = possible_attribute
@@ -284,8 +278,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @mapping_levels.pop if @mapping_levels.last == node
     @current_data = ''
     refresh_current_mapping
-    unless @current_attribute.nil? || @current_subcontext.nil? || @associated_data[@current_subcontext.name.underscore.to_sym].nil?
-      puts "Associated Data for #{@current_subcontext}: #{@associated_data[@current_subcontext.name.underscore.to_sym].inspect}"
+    unless @current_attribute.nil? || @current_subcontext.nil? || @associated_data[@current_subcontext.name].nil?
+      puts "Associated Data for #{@current_subcontext}: #{@associated_data[@current_subcontext.name].inspect}"
     end
     @current_attribute = nil
   end
@@ -302,13 +296,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def save_associated_data
     unless @instance.id.nil?
       associations = @instance.class.reflect_on_all_associations
-      @associated_data.keys.each do |associate|
-        association = associations.select{|a| a.class_name.underscore == associate }.first
-        raise "No such association: '#{associate}' for #{@instance.class.name}." if association.nil?
+      @associated_data.keys.each do |name|
+        matching_associations = associations.select{|assoc| assoc.name == name}
+        raise "No such association: '#{name}' for #{@instance.class.name}." if matching_associations.empty?
+        association = matching_associations.first
         if association.macro == :has_many
-          @associated_data[associate].each do |object_attributes|
+          @associated_data[association.name].each do |object_attributes|
             # build a new instance on the association collection
-            new_object = association.send("build", object_attributes)
+            new_object = @instance.send(association.name).send("build", object_attributes)
             new_object.save
             puts "Saved (#{new_object.valid?}): #{new_object.inspect}"
             raise new_object.errors.full_messages.to_s unless new_object.valid?
