@@ -63,7 +63,7 @@ namespace :import_old do
                                       :interview_date => row.field('Datum des Interviews'),
                                       :gender => row.field('Geschlecht') == "männlich" ? true : false,
                                       :date_of_birth => row.field("Geburtsdatum"),
-                                      :country_of_origin => origin,
+                                      :country_of_origin => row.field('Herkunft (Land)'),
                                       :video => row.field("Medium") == "Video" ? true : false,
                                       :duration => row.field("Dauer"),
                                       :translated => row.field("Übersetzung ins Deutsche") == "übersetzt" ? true : false,
@@ -119,9 +119,11 @@ namespace :import_old do
             category = Category.find_by_name_and_category_type classification, category_field
             category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
             raise "Invalid Category: #{category.inspect}" unless category.valid?
-            interview.send(category_class.first.to_s + "_categorizations").create do |categorization|
-              categorization.category_type = category.category_type
-              categorization.category_id = category.id
+            unless interview.send(category_class.first).include?(category)
+              interview.send(category_class.first.to_s + "_categorizations").create do |categorization|
+                categorization.category_type = category.category_type
+                categorization.category_id = category.id
+              end
             end
           end
         end
