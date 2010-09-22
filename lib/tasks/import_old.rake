@@ -71,7 +71,6 @@ namespace :import_old do
                                       :details_of_origin => "-",
                                       :deportation_date => row.field("Datum der Deportation"),
                                       :deportation_location => row.field('Ort der Deportation'),
-                                      :forced_labor_details => row.field('Einsatzbereiche (weitere Angaben)'),
                                       :punishment => row.field('Strafmaßnahmen'),
                                       :return_locations => row.field('Rückkehr-Ort'),
                                       :return_date => row.field('Datum der Rückkehr'),
