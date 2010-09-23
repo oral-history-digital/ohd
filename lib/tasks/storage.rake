@@ -124,8 +124,7 @@ namespace :storage do
   task :lookup_tapes => :environment do
 
     joins = "LEFT JOIN tapes ON tapes.interview_id = interviews.id"
-    con
-    ditions = "tapes.id IS NULL"
+    conditions = "tapes.id IS NULL"
 
     batch = 25
     offset = 0

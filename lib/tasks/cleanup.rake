@@ -139,6 +139,30 @@ namespace :cleanup do
       puts "Missing tape: #{tape_media_id}"
     end
 
+    # Add an empty translation field for segments of interviews
+    # with a translation that have an empty translation
+
+    puts "\nAdding empty translations to segments missing a translation..."
+
+    next_untranslated_segments = lambda do
+      Segment.find(:all,
+                            :limit => "0,25",
+                            :joins => "RIGHT JOIN tapes ON segments.tape_id = tapes.id RIGHT JOIN interviews ON interviews.id = tapes.interview_id",
+                            :conditions => "interviews.translated = ? AND segments.translation IS NULL")
+    end
+
+    segments = next_untranslated_segments.call
+    segments_updated = 0
+
+    while (!segments.empty?)
+      STDOUT.printf '.'
+      STDOUT.flush
+      segments_updated += Segment.update_all "translation = '(...)'", "id IN ('#{segments.map(&:id).join("','")}')"
+      segments = next_untranslated_segments.call
+    end
+
+    puts "\n#{segments_updated} segments updated."
+
     puts "\ndone."
 
     puts "\nNow you should run 'rake data:segment_duration' again."

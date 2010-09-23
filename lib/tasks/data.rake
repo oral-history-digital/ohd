@@ -110,4 +110,24 @@ namespace :data do
 
   end
 
+  desc "print out a list of all interviews with imported captions"
+  task :interviews_with_captions => :environment do
+
+    joins =  "RIGHT JOIN tapes ON tapes.interview_id = interviews.id RIGHT JOIN segments ON segments.tape_id = tapes.id"
+    cond = "segments.id IS NOT NULL"
+
+    ids = Interview.find(:all, :select => 'archive_id', :joins => joins, :conditions => cond, :group => 'interviews.id').map(&:archive_id)
+
+    puts "\nInterviews with captions:"
+
+    ids.sort.each do |archive_id|
+
+      puts archive_id
+
+    end
+
+    puts "\ndone."
+
+  end
+
 end

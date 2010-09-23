@@ -163,7 +163,7 @@ namespace :solr do
       if ids.nil?
         joins << " AND tapes.interview_id IS NOT NULL"
       else
-        joins << " AND tapes.interview_id IN ('#{ids.split(',').join("','")}')"
+        joins << " RIGHT JOIN interviews ON interviews.id = tapes.interview_id AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
       end
       conds = "segments.id IS NOT NULL"
       total = Segment.count :all, :joins => joins, :conditions => conds
