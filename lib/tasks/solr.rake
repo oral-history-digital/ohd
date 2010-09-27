@@ -160,12 +160,13 @@ namespace :solr do
       batch=25
       offset=0
       joins = "RIGHT JOIN tapes ON tapes.id = segments.tape_id"
+      conds = "segments.id IS NOT NULL"
       if ids.nil?
         joins << " AND tapes.interview_id IS NOT NULL"
       else
-        joins << " RIGHT JOIN interviews ON interviews.id = tapes.interview_id AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
+        joins << " RIGHT JOIN interviews ON interviews.id = tapes.interview_id"
+        conds << " AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
       end
-      conds = "segments.id IS NOT NULL"
       total = Segment.count :all, :joins => joins, :conditions => conds
 
       puts "\nIndexing #{total} segments..."
