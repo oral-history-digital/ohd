@@ -113,7 +113,7 @@ namespace :import_old do
         end
 
         Category::ARCHIVE_CATEGORIES.each do |category_class|
-          interview.send(category_class.first.to_s + "_categorizations").delete_all
+          interview.send(category_class.first.to_s + "_categorizations").each{|c| c.destroy }
           category_field = category_class.last
           (row.field(category_field) || '').gsub(' und ', ';').split(';').each do |classification|
             classification.strip!
