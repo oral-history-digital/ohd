@@ -38,7 +38,8 @@ namespace :import_old do
     require 'fastercsv'
 
 
-
+    # Import Category Name Mappings
+    @catmap = YAML::load_file(File.join(RAILS_ROOT, 'config/category_name_mappings.yml'))
 
     FasterCSV.foreach(csv_file, :headers => true, :col_sep => "\t") do |row|
 
@@ -112,9 +113,13 @@ namespace :import_old do
         end
 
         Category::ARCHIVE_CATEGORIES.each do |category_class|
+          interview.send(category_class.first.to_s + "_categorizations").delete_all
           category_field = category_class.last
-          (row.field(category_field) || '').split(';').each do |classification|
+          (row.field(category_field) || '').gsub(' und ', ';').split(';').each do |classification|
             classification.strip!
+            unless @catmap[category_class.first.to_s].nil?
+              classification = @catmap[category_class.first.to_s][classification] || classification
+            end
             category = Category.find_by_name_and_category_type classification, category_field
             category ||= Category.create{|c| c.name = classification; c.category_type = category_field }
             raise "Invalid Category: #{category.inspect}" unless category.valid?
@@ -139,6 +144,8 @@ namespace :import_old do
       end
 
     end
+
+    # TODO: Delete all unused categories
 
   end
 
