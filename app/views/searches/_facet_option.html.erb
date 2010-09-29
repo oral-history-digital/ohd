@@ -38,7 +38,7 @@
                 <%# translate language parts individually %>
                 <% category_titles = category.is_a?(String) ? [ category ] : (facet_name == 'languages' ? category.name.split('/') : [ category.name ]) %>
                 <%# don't translate country names #%>
-                <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{facet_name}")} unless facet_name == 'countries' %>
+                <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{facet_name}")} %>
                 <span class="facet-name"><%= category_titles.join('/') %></span>
                 <% if f.last != 0 %>
                 <span class="facet-count">(<%= f.last %>)</span>
