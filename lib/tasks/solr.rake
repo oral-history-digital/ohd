@@ -61,6 +61,7 @@ namespace :solr do
 
       # clear the index
       SOLR.delete_by_query '*:*'
+      SOLR.commit
 
       puts "done"
 
@@ -73,6 +74,7 @@ namespace :solr do
 
       # clear the index
       SOLR.delete_by_query 'type:Interview'
+      SOLR.commit
 
       puts "done"
 
@@ -86,6 +88,7 @@ namespace :solr do
 
       # clear the index
       SOLR.delete_by_query 'type:Segment'
+      SOLR.commit
 
       puts "done"
 
@@ -102,9 +105,10 @@ namespace :solr do
       puts "\nDeleting the index for #{ids.size} interviews..."
 
       ids.each do |archive_id|
-        SOLR.delete_by_query 'archive_id=' + archive_id
+        SOLR.delete_by_query 'archive_id_ss:' + archive_id
         puts archive_id
       end
+      SOLR.commit
 
     end
 
