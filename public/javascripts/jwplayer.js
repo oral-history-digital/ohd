@@ -115,8 +115,7 @@ var Player = Class.create({
     var playerParams = {
       'allowfullscreen'     : this.cfg.allowfullscreen,
       'allowscriptaccess'   : 'always',
-      'seamlesstabbing'     : true,
-      'wmode'               : 'opaque'
+      'seamlesstabbing'     : true
     }
 
     var playerVariables = {
