@@ -113,7 +113,7 @@ class UserRegistration < ActiveRecord::Base
   end
 
   def full_name
-    [ self.first_name, self.last_name ].join(' ').strip
+    [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
   end
 
   def form_parameters
@@ -128,6 +128,10 @@ class UserRegistration < ActiveRecord::Base
 
   def email=(mail)
     write_attribute :email, mail.to_s.downcase
+  end
+
+  def comments=(text)
+    write_attribute :comments, truncate(text, :length => 250)
   end
 
   private
