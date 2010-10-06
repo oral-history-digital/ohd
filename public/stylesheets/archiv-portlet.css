@@ -327,8 +327,7 @@ form.user_registration textarea {
 }
 
 form.user_registration textarea {
-    height: 62px;
-    overflow: hidden;
+    height: 100px;
 }
 
 .formLabel .fieldWithErrors label {

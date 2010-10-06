@@ -130,10 +130,6 @@ class UserRegistration < ActiveRecord::Base
     write_attribute :email, mail.to_s.downcase
   end
 
-  def comments=(text)
-    write_attribute :comments, truncate(text, :length => 250)
-  end
-
   private
 
   def serialize_form_parameters
