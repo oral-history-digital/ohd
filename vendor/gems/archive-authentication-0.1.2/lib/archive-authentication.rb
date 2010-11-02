@@ -1,7 +1,7 @@
 begin
   require 'devise'
 rescue
-  gem 'devise', '1.0.7'
+  gem 'devise', '1.0.8'
   require 'devise'
 end
 
