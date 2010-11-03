@@ -1,0 +1,23 @@
+= archive-authentication
+
+Shared authorization code for handling user rights on user-generated content and sharing for archive projects at CeDiS.
+
+Archive Authentication expects a User model and attaches all role-relevant models to this.
+
+INSTALLATION:
+
+
+
+
+
+== 10. Test - run the specs
+Go to the gem's directory and run
+
+  +rake spec+
+
+(Assuming you have rspec/rspec_rails installed.)
+
+
+== Copyright
+
+Copyright (c) 2010 jrietema. See LICENSE for details.
