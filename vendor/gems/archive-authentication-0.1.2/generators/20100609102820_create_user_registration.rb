@@ -7,6 +7,7 @@ class CreateUserRegistration < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.string :email
+      t.string :login
       t.boolean :tos_agreement
       t.boolean :receive_newsletter
       t.text :application_info
@@ -14,7 +15,7 @@ class CreateUserRegistration < ActiveRecord::Migration
       t.string :workflow_state
       t.string :default_locale
       t.datetime :created_at
-      t.datetime :approved_at
+      t.datetime :processed_at
       t.datetime :activated_at
     end
     add_index :user_registrations, :email

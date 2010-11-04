@@ -18,16 +18,20 @@ class AuthDbGenerator < Rails::Generator::NamedBase
       require 'active_record/migration'
       require 'fileutils'
 
-      migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
-        mig.name = 'DbSetup'
-        mig.version = '20100520000000'
-        mig.filename = File.join(File.dirname(__FILE__), '20100520000000_db_setup.rb')
+      begin
+        migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
+          mig.name = 'DbSetup'
+          mig.version = '20100520000000'
+          mig.filename = File.join(File.dirname(__FILE__), '20100520000000_db_setup.rb')
+        end
+
+        # make sure to connect to the authentication DB
+        ActiveRecord::Base.establish_connection(@options)
+
+        migration.migrate(:up)
+      rescue Exception => e
+        puts "DB-Setup not completed because of #{e.to_s}:\n#{e.message}\n"
       end
-
-      # make sure to connect to the authentication DB
-      ActiveRecord::Base.establish_connection(@options)
-
-      migration.migrate(:up)
 
 
       migration = returning(ActiveRecord::MigrationProxy.new) do |mig|

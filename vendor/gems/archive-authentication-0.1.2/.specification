@@ -28,8 +28,8 @@ dependencies:
         segments: 
         - 1
         - 0
-        - 8
-        version: 1.0.8
+        - 7
+        version: 1.0.7
   type: :runtime
   version_requirements: *id001
 description: A cross-archive authentication framework build for the CeDiS multimedia web archive projects VHA and ZWAR for a common, shared authentication mechanism that is compatible to the FUDIS-LDAP storage of authentication data. This project uses the 'devise' rack-based authentication system.
