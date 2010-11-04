@@ -9,12 +9,35 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["jrietema"]
-  s.date = %q{2010-11-02}
+  s.date = %q{2010-11-04}
   s.description = %q{An authorization framework aiming at handling user-generated content rights and roles for sharing build for the CeDiS multimedia web archive projects VHA and ZWAR for a common, shared authorization framework.}
   s.email = %q{jrietema@cedis.fu-berlin.de}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
+  ]
+  s.files = [
+    "app/helpers/authorization_helper.rb",
+     "app/models/role.rb",
+     "app/models/user_group.rb",
+     "app/models/users_user_groups.rb",
+     "config/initializers/archive-authorization.rb",
+     "lib/archive-authorization.rb",
+     "lib/authorization/authorization.rb",
+     "lib/authorization/item_and_group_roles.rb",
+     "lib/authorization/publishare/exceptions.rb",
+     "lib/authorization/publishare/hardwired_roles.rb",
+     "lib/authorization/publishare/identity.rb",
+     "lib/authorization/publishare/object_roles_table.rb",
+     "lib/authorization/publishare/parser.rb",
+     "lib/authorization/task_and_group_roles.rb",
+     "lib/authorization_patch.rb",
+     "lib/generators/role_model/role_model_generator.rb",
+     "lib/generators/role_model/templates/fixtures.yml",
+     "lib/generators/role_model/templates/migration.rb",
+     "lib/generators/role_model/templates/role_model.rb",
+     "lib/generators/role_model/templates/role_user_model.rb",
+     "lib/generators/role_model/templates/unit_test.rb"
   ]
   s.homepage = %q{none}
   s.rdoc_options = ["--charset=UTF-8"]

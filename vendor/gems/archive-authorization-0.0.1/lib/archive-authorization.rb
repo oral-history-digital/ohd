@@ -7,8 +7,6 @@ ActionView::Base.send( :include, Authorization::Base::ControllerInstanceMethods 
 # Choose a style of authorization below (see README.txt) and the appropriate
 # mixin will be used for your app.
 
-# When used with the auth_test app, we define this in config/environment.rb
-# AUTHORIZATION_MIXIN = "hardwired"
 if not Object.constants.include? "AUTHORIZATION_MIXIN"
   AUTHORIZATION_MIXIN = "items and groups"
 end
@@ -27,7 +25,7 @@ case AUTHORIZATION_MIXIN.to_s.underscore.gsub('_',' ')
       Authorization::ObjectRolesTable::ModelExtensions
     )
   when 'items and groups'
-    require File.join(File.dirname(__FILE__),'/authorization/item_and_group_roles')
+    require File.join(File.dirname(__FILE__), '/authorization/item_and_group_roles')
     ActiveRecord::Base.send( :include,
       Authorization::ItemAndGroupRoles::UserExtensions,
       Authorization::ItemAndGroupRoles::ModelExtensions
