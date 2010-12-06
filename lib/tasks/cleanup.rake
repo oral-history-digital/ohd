@@ -224,14 +224,16 @@ namespace :cleanup do
   desc "cleans up registrations that have been botched by malformed emails"
   task :registrations => :environment do
 
+    puts "\nChecking user registrations for malformed emails and missing accounts..."
+
     registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
 
     while !registration.nil?
       if registration.email =~ /\s+/
         registration.email = registration.email.gsub(' ','')
-        registration.save
         registration.send(:create_account)
         registration.send(:initialize_user)
+        registration.save
         mail = UserAccountMailer.deliver_account_activation_instructions(registration, registration.user_account)
         unless mail.nil?
           puts "\nSent Mail to: '#{registration.email}':\n#{mail.body}"
@@ -243,8 +245,54 @@ namespace :cleanup do
       end
       puts
 
-      registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
+      registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
     end
+
+
+    puts "\n\nChecking for more than one user registration per account...\n"
+
+    UserRegistration.find(:all, :having => "count(user_account_id) > 1", :group => 'user_account_id').each do |registration|
+      multiples = UserRegistration.find(:all, :conditions => ['user_account_id = ?', registration.user_account_id])
+      number = multiples.size
+      removables = multiples.select{|reg| reg != reg.user_account.user_registration }
+      if removables.size == number
+        removables.delete(removables.max{|a,b| a.attributes.to_s.length <=> b.attributes.to_s.length })
+      end
+      keepers = (multiples - removables).first
+      puts "Keeping: #{keepers.inspect}"
+      removables.each do |item|
+        if item.email != keepers.email
+          puts "Keeping also: #{item.inspect}"
+        else
+          item.destroy
+          puts "Deleted: #{item.inspect}"
+        end
+      end
+    end
+
+
+    puts "\n\nChecking registered user registrations that are stuck in 'checked' state to activate..."
+
+    registrations = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
+    last_size = 0
+
+    while !registrations.empty? && registrations.size == 150 && registrations.size != last_size
+      last_size = registrations.size
+      registrations.each do |registration|
+        account = registration.user_account
+        next if account.blank? || account.encrypted_password.blank? || account.password_salt.blank? || account.confirmed_at.blank?
+        begin
+          account.user_registration.activate!
+          puts "Activated '#{account.login}'."
+        rescue Exception => e
+          puts "\nERROR: #{e.message}\nREGISTRATION: #{registration.inspect}\n"
+          puts e.backtrace unless !e.respond_to?(:backtrace) || e.backtrace.nil?
+          exit
+        end
+      end
+      registrations = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
+    end
+
 
   end
 

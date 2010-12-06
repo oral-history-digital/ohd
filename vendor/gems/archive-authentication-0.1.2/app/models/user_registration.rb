@@ -11,6 +11,8 @@ class UserRegistration < ActiveRecord::Base
                       :with => Devise::EMAIL_REGEX,
                       :on => :create
 
+  validates_uniqueness_of :email, :on => :create
+
   validates_acceptance_of :tos_agreement, :accept => true
 
   before_create :serialize_form_parameters
@@ -47,7 +49,7 @@ class UserRegistration < ActiveRecord::Base
     end
     state :checked do
       event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || !self.user_account.confirmed?
+        halt if self.user_account.nil? || self.user_account.confirmed_at.nil? || self.user_account.encrypted_password.blank? || self.user_account.password_salt.blank?
       end
       event :expire,    :transitions_to => :postponed
     end
@@ -69,6 +71,7 @@ class UserRegistration < ActiveRecord::Base
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     initialize_user
     raise "Could not create a valid user for #{self.inspect}" unless self.user.valid?
+    save
     unless @skip_mail_delivery
       UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
     end
