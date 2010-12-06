@@ -1,5 +1,13 @@
 namespace :cleanup do
 
+  desc "test requiring plugins"
+  task :test => :environment do
+
+    require 'authorization'
+    puts "Authorization plugin present!"
+
+  end
+
   desc "make photo filenames consistent with existing resources"
   task :photos => :environment do
 
@@ -209,6 +217,34 @@ namespace :cleanup do
     puts "\nRemoved headings from:\n#{removed_headings.uniq.sort.join('\n')}\n"
 
     puts "done."
+
+  end
+
+
+  desc "cleans up registrations that have been botched by malformed emails"
+  task :registrations => :environment do
+
+    registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
+
+    while !registration.nil?
+      if registration.email =~ /\s+/
+        registration.email = registration.email.gsub(' ','')
+        registration.save
+        registration.send(:create_account)
+        registration.send(:initialize_user)
+        mail = UserAccountMailer.deliver_account_activation_instructions(registration, registration.user_account)
+        unless mail.nil?
+          puts "\nSent Mail to: '#{registration.email}':\n#{mail.body}"
+        else
+          puts "\nCould not send mail to: '#{registration.email}' (UserRegistration ##{registration.id})"
+        end
+      else
+        puts "\nCannot find problem with email: '#{registration.email}' for user_registration ##{registration.id}"
+      end
+      puts
+
+      registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
+    end
 
   end
 
