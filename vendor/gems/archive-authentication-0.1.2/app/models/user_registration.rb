@@ -8,7 +8,7 @@ class UserRegistration < ActiveRecord::Base
   has_one :user, :dependent => :destroy
 
   validates_format_of :email,
-                      :with => /^.+@.+\..+$/,
+                      :with => Devise::EMAIL_REGEX,
                       :on => :create
 
   validates_acceptance_of :tos_agreement, :accept => true
