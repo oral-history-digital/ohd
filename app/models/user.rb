@@ -2,6 +2,24 @@ class User < ActiveRecord::Base
 
   attr_protected :admin
 
+  acts_as_authorized_user
+
+  has_many  :user_groups,
+            :through => :users_user_groups
+
+  has_many  :supervised_groups,
+            :class_name => 'UserGroup',
+            :as => :supervisor
+
+  has_many  :users_user_groups
+
+  has_many  :user_roles,
+            :class_name => 'Role'
+
+  has_many  :group_roles,
+            :class_name => 'Role',
+            :through => :user_groups
+
   define_registration_fields [
             { :name => 'appellation',
               :values => [  'Frau',
@@ -40,7 +58,8 @@ class User < ActiveRecord::Base
                            'Sonstiges' ] },
             { :name => 'comments',
               :type => :text },
-            'organization',
+            { :name => 'organization',
+              :mandatory => false },
             { :name => 'homepage',
               :mandatory => false },
             'street',
@@ -72,6 +91,40 @@ class User < ActiveRecord::Base
               :type => :boolean }
             
           ]
+
+  after_save :refresh_roles
+
+  # direct accessor for roles:
+  ROLE_SELECT = 'SELECT roles.id, roles.name, roles.authorizable_type, roles.authorizable_id '
+
+  # the join via the user_groups -> roles
+  JOIN_VIA_GROUPS = <<-SQL
+                      FROM roles
+                      RIGHT JOIN user_groups ON user_groups.id = roles.user_group_id
+                      RIGHT JOIN users_user_groups AS uug ON uug.user_group_id = user_groups.id
+SQL
+
+  # Roles accessor to have some form of "caching"
+  def roles
+    @roles ||=  Role.find_by_sql  ['(' + ROLE_SELECT + JOIN_VIA_GROUPS + \
+                          '   WHERE uug.user_id = ?) ' + \
+                          'UNION DISTINCT (' + ROLE_SELECT + 'FROM roles' \
+                          '   WHERE roles.user_id = ?)', id, id ]
+  end
+
+  # Avoid roles memory effects.
+  # This is an after save callback, but it's also
+  # called from the Role model on create and
+  # destroy of user roles.
+  def refresh_roles
+    @roles = nil
+  end
+
+  # Avoid roles memory effects.
+  # Used as an association callback.
+  def refresh_groups(group)
+    refresh_roles
+  end
 
   def to_s
     [ first_name, last_name ].compact.join(' ')
