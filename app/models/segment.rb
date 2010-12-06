@@ -112,7 +112,7 @@ DEF
 
   # remove workflow comments
   def filter_annotation(text)
-    text.gsub(/\{[^{}]+\}/,'')
+    text.gsub(/\{[\s{]+[^{}]+[\s}]+\}\s?/,'')
   end
 
 end
