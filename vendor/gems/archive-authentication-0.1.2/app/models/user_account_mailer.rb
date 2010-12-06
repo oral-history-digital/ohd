@@ -9,7 +9,7 @@ class UserAccountMailer < ActionMailer::Base
   def account_activation_instructions(registration, account)
     @mail_locale = (registration.nil? ? nil : registration.default_locale).to_s.upcase
     @login = account.login
-    mail_headers_and_info account
+    mail_headers_and_info account, registration
     @url = confirm_account_url(:confirmation_token => account.confirmation_token, :protocol => 'https')
   end
 
