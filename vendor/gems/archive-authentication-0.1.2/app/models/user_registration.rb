@@ -66,8 +66,10 @@ class UserRegistration < ActiveRecord::Base
   # Registers a UserAccount by generating a confirmation token
   def register
     create_account
+    raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     initialize_user
-    if self.user_account.valid? and !@skip_mail_delivery
+    raise "Could not create a valid user for #{self.inspect}" unless self.user.valid?
+    unless @skip_mail_delivery
       UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
     end
   end
@@ -127,7 +129,7 @@ class UserRegistration < ActiveRecord::Base
   end
 
   def email=(mail)
-    write_attribute :email, mail.to_s.downcase
+    write_attribute :email, mail.to_s.strip.downcase
   end
 
   private
