@@ -105,6 +105,9 @@
   <created-at type="datetime">2009-05-05T14:54:09Z</created-at>
   <documents-generated-at type="datetime" nil="true"></documents-generated-at>
   <duration type="integer">04:26:00.00</duration>
+
+
+    
   <duration-unit>s</duration-unit>
   <editors-interview>Dalhouski/Dolgowskij/, Alexander</editors-interview>
   <editors-transcript>Sabolodskaja, Veronika</editors-transcript>

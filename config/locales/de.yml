@@ -56,12 +56,17 @@ de:
     researchers: 'Erschlie&szlig;ung'
 
   status:
-    translated: 'deutsche Transkription'
+    translated: '&uuml;bersetzt'
     not_translated: 'ohne &Uuml;bersetzung'
     unknown: 'unbekannt'
     date_unknown: 'Datum unbekannt'
     not_specified: 'keine Angabe'
     other: 'Sonstige'
+
+  search:
+    no_clips: 'keine Ausschnitte'
+    clip: 'Ausschnitt'
+    clips: 'Ausschnitte'
 
   user_interface:
     labels:
@@ -72,7 +77,7 @@ de:
       translation: 'Übersetzung'
       Biography: 'Biographie von'
       Transcript: 'Transkript'
-      Translation: 'Übersetzung'
+      Translation: 'Übersetzung des Transkripts'
       search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
@@ -132,6 +137,7 @@ de:
         forced_labor_fields: 'Einsatzbereich'
         forced_labor_habitations: 'Unterbringung / Inhaftierung'
         forced_labor_locations: 'Lager und Einsatzorte'
+        forced_labor_details: 'Angaben zum Einsatz'
         deportation: 'Angaben zur Deportation'
         punishment: 'Strafma&szlig;namen'
         liberation_date: 'Datum der Befreiung'

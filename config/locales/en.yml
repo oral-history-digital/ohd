@@ -9,7 +9,7 @@ en:
   faq: "FAQ"
   search_term: 'search term'
   more: 'more'
-  translated: 'übersetzt'
+  translated: 'translated'
   all: 'all'
   previous: '&laquo;&nbsp;previous'
   next: 'next&nbsp;&raquo;'
@@ -48,20 +48,25 @@ en:
     faq_technical: 'faq_technical'
 
   tasks:
-    interviewers: 'Interviewf&uuml;hrung'
-    transcriptors: 'Transkription'
-    translators: '&Uuml;bersetzung'
-    proofreaders: 'Lektorat'
-    segmentators: 'Segmentierung'
-    researchers: 'Erschlie&szlig;ung'
+    interviewers: 'Interviewer'
+    transcriptors: 'Transcription'
+    translators: 'Translation'
+    proofreaders: 'Proofreading'
+    segmentators: 'Segmentation'
+    researchers: 'Indexing and Summary'
 
   status:
-    translated: 'German transcript'
+    translated: 'translated'
     not_translated: 'untranslated'
     unknown: 'Unknown'
     date_unknown: 'Date unknown'
     not_specified: 'Not Specified'
     other: 'Other'
+
+  search:
+    no_clips: 'no segments'
+    clip: 'segment'
+    clips: 'segments'
 
   user_interface:
     labels:
@@ -72,7 +77,7 @@ en:
       translation: 'German Translation'
       Biography: 'Biography of'
       Transcript: 'Transcript'
-      Translation: 'German Translation'
+      Translation: 'German Translation of Transcript'
       search_results: 'Search Results'
       headings: 'Table of Contents'
       my_search: 'My Search'
@@ -130,8 +135,9 @@ en:
         archive_id: 'Archive ID'
         forced_labor_groups: 'Forced Labor Group'
         forced_labor_fields: 'Deployment Area'
-        forced_labor_habitations: 'Internment Conditions '
-        forced_labor_locations: 'Camps and Forced Labor Locations '
+        forced_labor_habitations: 'Internment Conditions'
+        forced_labor_locations: 'Camps and Forced Labor Locations'
+        forced_labor_details: 'Deployment Details'
         deportation: 'Deportation'
         punishment: 'Punishment'
         liberation_date: 'Liberation Date'
