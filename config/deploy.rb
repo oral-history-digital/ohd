@@ -16,9 +16,9 @@ task :production do
   set :environment, :production
   set :application, 'zwar_archiv'
   set :deploy_to, "/data/applications/#{application}"
-  role :app, "bb-app-02.cedis.fu-berlin.de"
-  role :web, "bb-app-02.cedis.fu-berlin.de"
-  role :db,  "bb-app-02.cedis.fu-berlin.de", :primary => true
+  role :app, "da01.cedis.fu-berlin.de"
+  role :web, "da01.cedis.fu-berlin.de"
+  role :db,  "da01.cedis.fu-berlin.de", :primary => true
 end
 
 desc "prepare to act on the demo server"
@@ -31,13 +31,13 @@ task :demo do
   role :db, "fnf.cedis.fu-berlin.de"
 end
 
-desc "prepare to act on the test environment"
+desc "prepare to act on the test environment (the old bb-app-02 server that is going to be dropped)"
 task :staging do
   set :environment, :production
   set :application, 'zwar_archiv'
   set :deploy_to, "/data/applications/#{application}"
-  role :app, "da01.cedis.fu-berlin.de"
-  role :web, "da01.cedis.fu-berlin.de"
+  role :app, "160.45.168.27"
+  role :web, "160.45.168.27"
   role :db,  "da01.cedis.fu-berlin.de", :primary => true
 end
 
