@@ -71,10 +71,15 @@ class UserRegistration < ActiveRecord::Base
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     initialize_user
     raise "Could not create a valid user for #{self.inspect}" unless self.user.valid?
+    self.processed_at = Time.now
     save
     unless @skip_mail_delivery
       UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
     end
+  end
+
+  def activate
+    update_attribute :activated_at, Time.now
   end
 
   # Flags the account as deactivated

@@ -16,7 +16,7 @@ end
 describe UserRegistration, 'when newly created' do
 
   before :each do
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
   end
 
   it "should have the unchecked state" do
@@ -38,6 +38,7 @@ describe UserRegistration, 'when newly created' do
   end
 
   it "should be created if all the required fields are there" do
+    puts "\nRegistration: #{@registration.inspect}\nvalid: #{@registration.valid?}\nErrors: #{@registration.errors.full_messages}"
     @registration.should_not be_new_record
   end
 
@@ -73,13 +74,20 @@ describe UserRegistration, 'on registration' do
   before :each do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration#
+    @time_of_registration = Time.now
     @registration.register!
   end
 
   it "should generate a user account with confirmation token" do
     @registration.user_account.should_not be_nil
     @registration.user_account.confirmation_token.should_not be_nil
+  end
+
+  it "should set processed_at on registration" do
+    @registration.processed_at.should be_a(Time)
+    @registration.processed_at.should > (@time_of_registration - 1.minute)
+    @registration.processed_at.should < (@time_of_registration + 1.minute)
   end
 
   it "should generate a user object" do
@@ -101,10 +109,20 @@ describe UserRegistration, 'on registration' do
     @registration.should be_checked
   end
 
+  it "should set activated_at on activation" do
+    activation_time = Time.now
+    @registration.activate!
+    @registration.activated_at.should be_a(Time)
+    @registration.activated_at.should > (activation_time - 1.minute)
+    @registration.activated_at.should < (activation_time + 1.minute)
+  end
+
   it "should be activatable once the user account is confirmed" do
     # mock the account confirmation here and test it in the account spec
     @registration.user_account = mock_model(UserAccount)
-    @registration.user_account.should_receive(:confirmed?).and_return(true)
+    @registration.user_account.should_receive(:confirmed_at).and_return(Time.now - 5.minutes)
+    @registration.user_account.should_receive(:encrypted_password).and_return('dhfjdshjfhsjd')
+    @registration.user_account.should_receive(:password_salt).and_return('jdhjfhsdfjg')
     @registration.activate!
     @registration.should be_registered
   end
@@ -115,7 +133,7 @@ describe UserRegistration, 'on rejection' do
 
   before :all do
     @initial_delivery_count = UserAccountMailer.deliveries.size
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.reject!
   end
 
@@ -138,7 +156,7 @@ describe UserRegistration, 'on activation after account activation' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.register!
     @registration.user_account.confirm!('password','password')
     @registration.activate!
@@ -171,7 +189,7 @@ describe UserRegistration, 'on removal' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.register!
     @registration.user_account.confirm!('password','password')
     @registration.activate!
@@ -199,7 +217,7 @@ describe UserRegistration, 'on postponing' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.postpone!
   end
 
@@ -230,7 +248,7 @@ describe UserRegistration, 'on reactivation after postponing' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.postpone!
     @registration.reactivate!
   end
@@ -259,7 +277,7 @@ describe UserRegistration, 'on reactivation after rejecting' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.reject!
     @registration.reactivate!
   end
@@ -291,7 +309,7 @@ describe UserRegistration, 'on reactivation after removing' do
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = UserRegistration.create $registration_fields
+    @registration = generate_registration
     @registration.register!
     @registration.user_account.confirm!('password','password')
     @registration.activate!
@@ -322,3 +340,9 @@ describe UserRegistration, 'on reactivation after removing' do
 end
 
 # TODO: add some state-based tasks on which transitions are possible
+
+# Generates a new registration with mandatory fields and makes sure the
+# email address is generated randomly each time
+def generate_registration
+  UserRegistration.create $registration_fields.merge({ :email => (0..8).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '@' + (0..10).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '.de'})
+end
