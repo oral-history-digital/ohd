@@ -106,7 +106,9 @@ namespace :solr do
       puts "\nDeleting the index for #{ids.size} interviews..."
 
       ids.each do |archive_id|
-        SOLR.delete_by_query 'archive_id_ss:' + archive_id + ' type:' + type
+        query = 'archive_id_ss:' + archive_id
+        query += '&type:' + type if type != '*'
+        SOLR.delete_by_query query
         puts archive_id + ' (' + type + ')'
       end
       SOLR.commit
