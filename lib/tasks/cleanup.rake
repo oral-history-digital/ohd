@@ -297,4 +297,57 @@ namespace :cleanup do
   end
 
 
+  desc "Parses a logfile and sets newsletter settings according to the registration info sent"
+  task :parse_log_for_newsletter, [:file] => :environment do |task,args|
+
+    file = args[:file]
+    raise "No logfile supplied (file=), aborting." unless File.exists?(file)
+
+    puts "Extracting newsletter recipients from logfile..."
+
+    email_extraction = /(email"=>")([^"]*)(",)/
+
+    newsletter_recipients = []
+
+    lines = 0
+    File.open(file, 'r').each do |line|
+      lines += 1
+      if lines % 1001 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+      next unless line =~ /send_newsletter"=>"1/
+      email = line.scan(email_extraction)
+      unless email.empty?
+        address = email.first[1]
+        STDOUT.printf '!'; STDOUT.flush
+        newsletter_recipients << address
+      end
+    end
+
+    newsletter_recipients.uniq!
+
+    puts "\ndone. #{lines} lines scanned, #{newsletter_recipients.size} newsletter recipients found."
+
+    puts "\nAdjusting Flag in Database for #{newsletter_recipients.size} potential users."
+
+    mailgroup = []
+    num_group = 0
+    newsletter_recipients.each_with_index do |email,index|
+      mailgroup << email
+      if index % 20 == 1
+        updates = UserRegistration.update_all 'receive_newsletter = 1', "email IN ('#{mailgroup.join("','")}')"
+        num_group += 1
+        puts "#{num_group}. group: #{updates} registrations of #{mailgroup.size} records updated."
+        mailgroup = []
+      end
+    end
+    updates = UserRegistration.update_all 'receive_newsletter = 1', "email IN ('#{mailgroup.join("','")}')"
+    num_group += 1
+    puts "#{num_group}. group: #{updates} registrations of #{mailgroup.size} records updated."
+
+    puts "\ndone."
+
+  end
+
+
 end

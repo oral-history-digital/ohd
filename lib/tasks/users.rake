@@ -1,5 +1,44 @@
 namespace :users do
 
+  desc 'exports a CSV for newsletter'
+  task :newsletter_export => :environment do
+
+    require 'yaml'
+
+    data = []
+    
+    data << ['Anrede', 'Vorname', 'Nachname', 'E-Mail Adresse']
+
+    offset=0
+    batch=25
+    total = UserRegistration.count(:all, :conditions => ['receive_newsletter = ?', true])
+
+    puts "\n#{total} Registrations to write as CSV."
+
+    while(offset<total)
+      UserRegistration.find(:all,
+                            :conditions => ['receive_newsletter = ?', true],
+                            :limit => "#{offset},#{batch}",
+                            :include => [ :user ]).each do |r|
+        appellation = YAML::load(r.application_info)[:appellation]
+        data << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip ]
+      end
+      STDOUT.printf '.'; STDOUT.flush
+      offset += batch
+    end
+
+    csv_file = Time.now.strftime('Newsletter-Abonnenten-%d.%m.%Y.csv')
+
+    File.open(csv_file, "w+") do |csv|
+      data.each do |line|
+        csv << line.join("\t") << "\n"
+      end
+    end
+
+    puts "\nDone - exported newsletter recipients to #{csv_file}"
+
+  end
+
   desc 'import users from CSV registrations file'
   task :import, [:file] => :environment do |task, args|
     file = args[:file]

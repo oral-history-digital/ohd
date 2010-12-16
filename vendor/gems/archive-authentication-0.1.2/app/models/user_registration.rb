@@ -140,6 +140,15 @@ class UserRegistration < ActiveRecord::Base
     write_attribute :email, mail.to_s.strip.downcase
   end
 
+  # fix for attribute name mismatch in registration info... *sigh*
+  def send_newsletter=(flag)
+    write_attribute :receive_newsletter, flag
+  end
+
+  def send_newsletter
+    read_attribute :receive_newsletter
+  end
+
   private
 
   def serialize_form_parameters

@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
                             'außerhalb Deutschlands' ]},
             { :name => 'country',
               :type => :country },
-            { :name => 'send_newsletter',
+            { :name => 'receive_newsletter',
               :mandatory => false,
               :type => :boolean }
             

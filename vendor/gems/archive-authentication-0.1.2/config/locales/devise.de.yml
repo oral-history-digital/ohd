@@ -117,6 +117,8 @@ de:
       tos_agreement_explanation: 'Ich stimme den Nutzungsbedingungen zu'
       send_newsletter: 'Newsletter'
       send_newsletter_explanation: 'Ich möchte den Newsletter des Projektes Zwangsarbeit 1939-1945 abonnieren.'
+      receive_newsletter: 'Newsletter'
+      receive_newsletter_explanation: 'Ich möchte den Newsletter des Projektes Zwangsarbeit 1939-1945 abonnieren.'
       requested_at: 'Datum der Anfrage'
       name: 'Name'
       adress: 'Anschrift'

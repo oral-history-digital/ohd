@@ -119,6 +119,8 @@ en:
       tos_agreement_explanation: 'I agree to the Terms of Use.'
       send_newsletter: 'Newsletter'
       send_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
+      receive_newsletter: 'Newsletter'
+      receive_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
       requested_at: 'Request date'
       name: 'Name'
       adress: 'Address'
