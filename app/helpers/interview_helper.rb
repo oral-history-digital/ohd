@@ -45,7 +45,7 @@ module InterviewHelper
   def formatted_languages(interview)
     truncate_language_names = interview.languages.size > 1
     interview.languages.map do |lang|
-      lang_name = t(lang, :scope => 'categories.languages').downcase
+      lang_name = t(lang, :scope => 'mediaplayer.languages')
       if truncate_language_names && lang_name.length > 8
         truncate(lang_name, 5, '.')
       else

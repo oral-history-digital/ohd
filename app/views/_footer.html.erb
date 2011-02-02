@@ -1,10 +1,10 @@
 <ul>
   <li class="copyright"><%= t(:status_update, :scope => 'user_interface.labels') %>:15.03.2010</li>
-  <li><%= link_to (t :terms_of_use), home_path(:page => t("terms_of_use", :scope => 'page_urls')) %></li>
+  <li><%= external_link(:terms_of_use, :nutzungsbedingungen) %></li>
   <li class="pipe">|</li>
-  <li><%= link_to (t :team), home_path(:page => t("team", :scope => 'page_urls')) %></li>
+  <li><%= external_link(:team, :team) %></li>
   <li class="pipe">|</li>
-  <li><%= link_to (t :contact), home_path(:page => t("contact", :scope => 'page_urls')), :title => "Kontaktdaten (Adresse, Telefon, Email, ...)", :accesskey => "9" %></li>
+  <li><%= external_link(:contact, :kontakt) %></li>
   <li class="pipe">|</li>
-  <li><%= link_to (t :legal_notice), home_path(:page => t("impressum", :scope => 'page_urls')), :accesskey => "1" %></li>
+  <li><%= external_link(:legal_notice, :impressum) %></li>
 </ul>
