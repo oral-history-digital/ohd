@@ -56,7 +56,7 @@
     <div class="playerControl">
         <div id="language_select">
           <% if @interview.language.downcase == 'deutsch' %>
-            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| (t(f, :scope => 'categories.languages').downcase)}.join(' / ') %></a>
+            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| t(f, :scope => 'mediaplayer.languages')}.join(' / ') %></a>
           <% else %>
             <%= link_to(formatted_languages(@interview),
                         'javascript:currentPlayer.setCaptionsLanguage("original");',
@@ -64,13 +64,13 @@
                         :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
                         :onClick => "$('original').addClassName('active');$('translated').removeClassName('active');"+((@interview.right_to_left) ? 'rightToLeftCaptions(true);' : '')) %>
             <% if @interview.translated? and @interview.segmented? %>
-              <%= link_to(t('Deutsch', :scope => 'categories.languages').downcase,
+              <%= link_to(t('Deutsch', :scope => 'mediaplayer.languages'),
                           'javascript:currentPlayer.setCaptionsLanguage("de")',
                           :id => "translated",
                           :class => "captions_trans active",
                           :onClick => "$('original').removeClassName('active');$('translated').addClassName('active');rightToLeftCaptions(false);") %>
             <% else %>
-              <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'categories.languages').downcase %></a>
+              <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'mediaplayer.languages') %></a>
             <% end %>
           <% end %>
         </div>

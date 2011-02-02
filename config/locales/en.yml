@@ -3,7 +3,7 @@ en:
   archive: "Archive"
   map: "Map"
   terms_of_use: "Terms of Use"
-  team: 'team'
+  team: 'Team'
   contact: "Contact"
   legal_notice: "Legal notice"
   faq: "FAQ"
@@ -15,6 +15,8 @@ en:
   next: 'next&nbsp;&raquo;'
   admin_area: 'Admin Area'
 
+  # TODO: page_paths and page_urls contain obsolete external pages
+  # make sure these aren't references anywhere and remove them
   page_paths:
     archive: 'archive'
     archiv: 'archive'
@@ -104,6 +106,8 @@ en:
       player_no_javascript: 'Please activate JavaScript in your web browser!'
       search_no_javascript: 'Please activate Javascript to use the interactive search function!'
       check_flash_version: 'Please install the latest Flash Player! Disable ad blockers for this web site!'
+      registration_needed1: 'In order to protect the privacy rights of the interviewees you must be registered and agree to the'
+      registration_needed2: 'before using the archive.'
 
   activerecord:
     models:
@@ -356,6 +360,44 @@ en:
       'Südafrika': 'South Africa'
       'Ukraine': 'Ukraine'
       'Vereinigte Staaten': 'United States'
+
+  # here are all the languages again - this time as
+  # adjectives!
+  mediaplayer:
+    languages:
+      'Russisch': 'Russian'
+      'Bosnisch': 'Bosnian'
+      'Romani': 'Romani'
+      'Bulgarisch': 'Bulgarian'
+      'Deutsch': 'German'
+      'Englisch': 'English'
+      'Französisch': 'French'
+      'Hebräisch': 'Hebrew'
+      'Italienisch': 'Italian'
+      'Kroatisch': 'Croatian'
+      'Lettisch': 'Latvian'
+      'Litauisch': 'Lithuanian'
+      'Mazedonisch': 'Macedonian'
+      'Rumänisch': 'Romanian'
+      'Niederländisch': 'Dutch'
+      'Norwegisch': 'Norwegian'
+      'Polnisch': 'Polish'
+      'Serbisch': 'Serbian'
+      'Ungarisch': 'Hungarian'
+      'Slowakisch': 'Slovak'
+      'Tschechisch': 'Czech'
+      'Slowenisch': 'Slovenian'
+      'Katalanisch': 'Catalan'
+      'Spanisch': 'Spanish'
+      'Ukrainisch': 'Ukrainian'
+      'Surschik': 'Surzhyk'
+
+  external_links:
+    notice: 'External link'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/zugang/nutzungsbedingungen'
+    team: 'http://www.zwangsarbeit-archiv.de/en/team'
+    kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
+    impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
 
   forced_labor_group: 'Group'
   forced_labor_field: 'Deployment Area'

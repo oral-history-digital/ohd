@@ -15,6 +15,8 @@ de:
   all: 'alle'
   admin_area: 'Administratoren-Bereich'
 
+  # TODO: page_paths and page_urls contain obsolete external pages
+  # make sure these aren't references anywhere and remove them
   page_paths: #inbound translation
     archive: 'archive'
     archiv: 'archive'
@@ -104,6 +106,8 @@ de:
       player_no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
       search_no_javascript: 'Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen!'
       check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
+      registration_needed1: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der Zeitzeugen m&uuml;ssen Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" registriert sein und die'
+      registration_needed2: 'anerkennen.'
 
   activerecord:
     models:
@@ -357,6 +361,46 @@ de:
       'Südafrika': 'Südafrika'
       'Ukraine': 'Ukraine'
       'Vereinigte Staaten': 'Vereinigte Staaten'
+
+  # here are all the languages again - this time as
+  # adjectives!
+  mediaplayer:
+    languages:
+      'Russisch': 'russisch'
+      'Bosnisch': 'bosnisch'
+      'Romani': 'romani'
+      'Bulgarisch': 'bulgarisch'
+      'Deutsch': 'deutsch'
+      'Englisch': 'englisch'
+      'Französisch': 'französisch'
+      'Hebräisch': 'hebräisch'
+      'Italienisch': 'italienisch'
+      'Kroatisch': 'kroatisch'
+      'Lettisch': 'lettisch'
+      'Litauisch': 'litauisch'
+      'Mazedonisch': 'mazedonisch'
+      'Rumänisch': 'rumänisch'
+      'Rumänisch/Russisch': 'rumänisch / russisch'
+      'Niederländisch': 'niederländisch'
+      'Norwegisch': 'norwegisch'
+      'Polnisch': 'polnisch'
+      'Serbisch': 'serbisch'
+      'Ungarisch': 'ungarisch'
+      'Slowakisch': 'slowakisch'
+      'Slowakisch/Tschechisch': 'slowakisch / tschechisch'
+      'Tschechisch': 'tschechisch'
+      'Slowenisch': 'slowenisch'
+      'Katalanisch': 'katalanisch'
+      'Spanisch': 'spanisch'
+      'Ukrainisch': 'ukrainisch'
+      'Surschik': 'surschik'
+
+  external_links:
+    notice: 'Externer Link'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/zugang/nutzungsbedingungen'
+    team: 'http://www.zwangsarbeit-archiv.de/team'
+    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
+    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
   
   
   forced_labor_group: 'Gruppe'

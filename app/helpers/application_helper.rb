@@ -1,6 +1,18 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def external_url(page_token)
+    begin
+      url_for t(page_token.to_s, :scope => 'external_links')
+    rescue
+      ''
+    end
+  end
+
+  def external_link(name, page_token)
+    link_to t(name), external_url(page_token), :title => t(:notice, :scope => 'external_links'), :target => '_blank'
+  end
+
   def current_search_path
     url_for(@search.query_params.merge({:controller => :searches, :action => :new}))
   end

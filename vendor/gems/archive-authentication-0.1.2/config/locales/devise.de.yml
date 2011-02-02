@@ -61,7 +61,7 @@ de:
     labels:
       send_now: 'Jetzt zuschicken'
     authentication_keys:
-      login: 'Benutzer'
+      login: 'Benutzer(in)'
       email: 'E-Mail'
       password: 'Passwort'
 
