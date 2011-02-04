@@ -103,6 +103,10 @@ DEF
     @short_title ||= full_title[/^[^,;]+, \w/] + "."
   end
 
+  def anonymous_title
+    @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'
+  end
+
   def video
     read_attribute(:video) ? 'Video' : 'Audio'
   end
