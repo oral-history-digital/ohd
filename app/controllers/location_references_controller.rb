@@ -9,7 +9,19 @@ class LocationReferencesController < BaseController
 
   index do
     before do
-      @results = LocationReference.find(:all, :order => "RAND()")
+      # fake a search:
+      result_num = rand(3) + rand(3) + rand(1)
+      @results = LocationReference.find(:all, :order => "RAND()", :limit => "0,#{result_num}")
+      if params['latitude']
+        @results.each do |loc|
+          loc.latitude = (latitude.to_f + rand(1) - rand(1)).to_s
+        end
+      end
+      if params['longitude']
+        @results.each do |loc|
+          loc.latitude = (latitude.to_f + rand(1) - rand(1)).to_s
+        end
+      end
     end
     wants.html do
       # this is only rendered when calling 'ortssuche.html' explicitly!
