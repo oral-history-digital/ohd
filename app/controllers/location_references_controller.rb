@@ -25,11 +25,12 @@ class LocationReferencesController < BaseController
     end
     wants.html do
       # this is only rendered when calling 'ortssuche.html' explicitly!
-      render :text => { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      # render :text => { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      render :text => "<h1>404 Not Found</h1>", :status => 404
     end
     wants.json do
       # this is the default response or when calling 'ortssuche.json''
-      render :text => { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      render :json => { 'results' => @results.map{|i| i.json_attrs } }.to_json
     end
   end
 
