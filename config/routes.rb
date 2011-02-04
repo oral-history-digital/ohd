@@ -18,7 +18,7 @@ ActionController::Routing::Routes.draw do |map|
                         :member => { :transcript => :get }
   end
 
-  map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => 'json'
+  map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
 
   map.namespace :admin do |admin|
