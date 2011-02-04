@@ -14,12 +14,12 @@ class LocationReferencesController < BaseController
       @results = LocationReference.find(:all, :order => "RAND()", :limit => "0,#{result_num}")
       if params['latitude']
         @results.each do |loc|
-          loc.latitude = (latitude.to_f + rand(1) - rand(1)).to_s
+          loc.latitude = (params['latitude'].to_f + (1.8 * rand) - 0.9).to_s[/^\d+\.\d{1,6}/]
         end
       end
       if params['longitude']
         @results.each do |loc|
-          loc.latitude = (latitude.to_f + rand(1) - rand(1)).to_s
+          loc.longitude = (params['longitude'].to_f + (1.8 * rand) - 0.9).to_s[/^\d+\.\d{1,6}/]
         end
       end
     end
