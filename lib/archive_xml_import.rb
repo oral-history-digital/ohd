@@ -71,7 +71,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     elsif @associations.include?(name.to_sym)
       # somehow define a sub-context
-      # TODO...
       set_subcontext(name)
       
     elsif !(@current_mapping.nil? || @current_mapping.empty?)
@@ -213,7 +212,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       @current_attribute
     end
     unless attribute.nil?
-      puts "Assigning #{attribute} = #{data}"
+      #puts "Assigning #{attribute} = #{data}"
       available_attributes = @current_subcontext.nil? ? \
         @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
       if available_attributes.include?(attribute)
@@ -223,12 +222,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
           # write to associated data
           if @associated_data[@current_subcontext.name].is_a?(Array)
-            puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
+            #puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
             if @associated_data[@current_subcontext.name].empty?
-              puts "-> array empty! appending..."
+              #puts "-> array empty! appending..."
               @associated_data[@current_subcontext.name] << { attribute => data }
             else
-              puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
+              #puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
               @associated_data[@current_subcontext.name].last[attribute] = data
             end
           else
@@ -248,8 +247,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # TODO: if we have a new tag of the existing sub-context,
     # add another associated_data element to the array
     if !@current_subcontext.nil?
-      if @current_subcontext.name.to_s == node.underscore && @associated_data[@current_subcontext.name].is_a?(Array)
+      if @current_subcontext.name.to_s.singularize == node.underscore.singularize && @associated_data[@current_subcontext.name].is_a?(Array)
         @associated_data[@current_subcontext.name] << {}
+        puts "\n@@@ New #{@current_subcontext.name.to_s.upcase} associated instance added."
       end
     end
 
@@ -262,6 +262,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @current_attribute = possible_attribute
       end
       if @current_mapping.is_a?(Hash)
+        puts "\n_____CONTEXT____:"
         puts "Current Sub-Context: #{@current_subcontext}" unless @current_subcontext.nil?
         puts "Mapping Levels: #{@mapping_levels.inspect}\n"
         puts "Current_mapping: #{@current_mapping.inspect}\n"
@@ -302,6 +303,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         association = matching_associations.first
         if association.macro == :has_many
           @associated_data[association.name].each do |object_attributes|
+            next if object_attributes.blank? || object_attributes.empty?
             # build a new instance on the association collection
             new_object = @instance.send(association.name).send("build", object_attributes)
             new_object.save
