@@ -29,8 +29,13 @@ class LocationReferencesController < BaseController
       render :text => "<h1>404 Not Found</h1>", :status => 404
     end
     wants.json do
-      # this is the default response or when calling 'ortssuche.json''
+      # this is the response when calling 'ortssuche.json''
       render :json => { 'results' => @results.map{|i| i.json_attrs } }.to_json
+    end
+    wants.js do
+      # this is the default response or when calling 'ortssuche.js'
+      json = { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
     end
   end
 
