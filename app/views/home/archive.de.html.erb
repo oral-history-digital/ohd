@@ -23,6 +23,13 @@
   Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
   für Bildung und Wissenschaft zur Verfügung.
 </p>
+<% if current_user_account.nil? %>
+<p style="font-weight: bold; margin-top: 0.33em;">
+  Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der Zeitzeuginnen und Zeitzeugen m&uuml;ssen
+  Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'registriert', anmelden_path %> sein und
+  die <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
+</p>
+<% end %>
 <h2></h2>
 <h2>Recherchemöglichkeiten</h2>
 <p>

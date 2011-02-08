@@ -19,6 +19,13 @@
           compiled worldwide between the years 2005 and 2006 and financed by the Foundation
           “Remembrance, Responsibility and Future”. The digital archive preserves these testimonies
           for the future and makes them available for educational and research purposes.</p>
+        <% if current_user_account.nil? %>
+        <p style="font-weight: bold; margin-top: 0.33em;">
+         In order to protect the privacy rights of the interviewees you must be
+          <%= link_to 'registered', anmelden_path %> and agree to the <%= external_link(:terms_of_use, :nutzungsbedingungen) %>
+          before using the archive.
+        </p>
+        <% end %>
         <h2> </h2>
         <h2>Search Options</h2>
         <p>There are three ways to get started on your research in the archive:<br /><br /></p>

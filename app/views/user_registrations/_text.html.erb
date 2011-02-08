@@ -1,0 +1,19 @@
+<%= case session[:locale]
+    when /^en/i
+        content_tag :p,
+        <<EN
+        Registration is required for research in the archive “Forced Labor 1939-1945". The
+         #{external_link(:terms_of_use, :nutzungsbedingungen)}
+        explain for whom and for which purposes the archive can be used.<br/>
+        Within two working days of sending your data you will receive a response and/or your login data.
+EN
+    else
+        content_tag :p,
+        <<DE
+        F&uuml;r die Recherche im Archiv "Zwangsarbeit 1939-1945" ist eine Registrierung notwendig.
+        Die #{external_link(:terms_of_use, :nutzungsbedingungen)}
+        erkl&auml;ren, für wen und f&uuml;r welche Zwecke das Archiv nutzbar ist.<br/>
+        Innerhalb von zwei Arbeitstagen nach dem Absenden Ihrer Daten erhalten Sie eine
+        R&uuml;ckmeldung bzw. Ihre Zugangsdaten.
+DE
+end %>

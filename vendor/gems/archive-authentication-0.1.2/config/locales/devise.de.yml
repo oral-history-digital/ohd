@@ -5,7 +5,7 @@ de:
       signed_in: 'Sie sind jetzt angemeldet.'
       signed_out: 'Sie sind jetzt abgemeldet.'
       unauthenticated: 'Für diese Aktion ist eine Anmeldung erforderlich.'
-      unauthenticated_search: 'Um die Suche zu nutzen müssen Sie sich erst anmelden.'
+      unauthenticated_search: 'Um die Suche zu nutzen, müssen Sie sich erst anmelden.'
       unconfirmed: 'Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden können.'
       locked: 'Ihr Zugang wurde gesperrt.'
       invalid: 'Username oder Passwort ist ungültig.'
