@@ -5,7 +5,7 @@
             <img src="<%= image_path '180_DolezalMiroslavPhot09_150.jpg' %>" alt="Doležal, Miroslav" title="" />
             <h6>Doležal, Miroslav</h6>
           </div>
-          <div class="contentImage150">
+          <div class="contentImage150" style="margin-top: <%= current_user_account.nil? ? 47 : 0 %>px;">
             <img src="<%= image_path 'ZA007_03_150.jpg' %>" alt="Poleschtschuk, Anna Iwanowna" title="" />
             <h6>Poleschtschuk, Anna Iwanowna</h6>
           </div>
@@ -25,10 +25,11 @@
           <%= link_to 'registered', anmelden_path %> and agree to the <%= external_link(:terms_of_use, :nutzungsbedingungen) %>
           before using the archive.
         </p>
+        <h2 style="margin-top: 20px;">Search Options</h2>
+        <% else %>
+        <h2 style="margin-top: 27px;">Search Options</h2>
         <% end %>
-        <h2> </h2>
-        <h2>Search Options</h2>
-        <p>There are three ways to get started on your research in the archive:<br /><br /></p>
+        <p>There are three ways to get started on your research in the archive:</p>
         <hr />
         <br/>
         <p>Content categories in the menu on the right provide access structured by theme.<br /><strong>

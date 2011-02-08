@@ -5,7 +5,7 @@
     <img src="<%= image_path '180_DolezalMiroslavPhot09_150.jpg' %>" alt="Doležal, Miroslav" title=""/>
     <h6>Doležal, Miroslav</h6>
   </div>
-  <div class="contentImage150">
+  <div class="contentImage150" style="margin-top: <%= current_user_account.nil? ? 64 : 0 %>px;">
     <img src="<%= image_path 'ZA007_03_150.jpg' %>" alt="Poleschtschuk, Anna Iwanowna" title=""/>
     <h6>Poleschtschuk, Anna Iwanowna</h6>
   </div>
@@ -29,13 +29,12 @@
   Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'registriert', anmelden_path %> sein und
   die <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
 </p>
+<h2 style="margin-top: 20px;">Recherchemöglichkeiten</h2>
+<% else %>
+<h2 style="margin-top: 27px;">Recherchemöglichkeiten</h2>
 <% end %>
-<h2></h2>
-<h2>Recherchemöglichkeiten</h2>
 <p>
   Der Einstieg in eine Recherche in dem Archiv ist über die folgenden drei Wege möglich:
-  <br/>
-  <br/>
 </p>
 <hr/>
 <br/>
