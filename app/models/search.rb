@@ -478,7 +478,7 @@ SQL
     if query.blank?
       ''
     else
-      Unicode.downcase(query.gsub(/^[\*\?\+\-\{\}\[\]\~\!\(\)]+/,''))
+      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]\~\!\(\)]+/,''))
     end
   end
 
