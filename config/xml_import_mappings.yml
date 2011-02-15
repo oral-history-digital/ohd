@@ -12,6 +12,8 @@ collection:
 interview:
   key_attribute: 'archive_id'
   archive-id: 'archive_id'
+  associated_models:
+    captions: 'segments'
   #collection-id: 'collection_id'
   duration: 'duration'
   full-title: 'full_title'
@@ -35,6 +37,8 @@ interview:
     deportation-location: 'deportation_location'
     details-of-origin: 'details_of_origin'
     firstname: 'first_name'
+    lastname: 'last_name'
+    middle-names: 'other_first_names'
 
   photos:
     photo:
@@ -44,3 +48,17 @@ interview:
       image-file-size: 'photo_file_size'
       image-content-type: 'photo_content_type'
       caption: 'caption'
+
+  captions:
+    caption:
+      media-id: 'media_id'
+      timecode: 'timecode'
+      duration: 'duration'
+      transcript: 'transcript'
+      translation: 'translation'
+      mainheading: 'mainheading'
+      subheading: 'subheading'
+      section-code: 'section_code'
+      speaker-change: 'speaker_change'
+      chapter-change: 'chapter_change'
+      speaker: 'speaker'

@@ -32,10 +32,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # The name of the current mapping levels of the current node
     @current_mapping_level = nil
 
+    @last_node = ''
+
+    @current_data = ''
+
     # The assocations of the current context
-    @associations = []
+    @associations = {}
     # Associated data to the current context
     @associated_data = {}
+
+    @attributes = {}
 
     # The instance being built for the current context
     @current_instance = nil
@@ -61,15 +67,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def start_element(name, attributes={})
-    @current_data = ''
+    # @current_data = ''
     if @mappings.keys.include?(name)
       # This is a base-level object type
-      STDOUT.printf '.'
-      STDOUT.flush
+      #STDOUT.printf '.'
+      #STDOUT.flush
       set_context(name)
-      puts "Associations: #{@associations.join(', ')}"
+      #puts "Associations: #{@associations.keys.join(', ')}"
 
-    elsif @associations.include?(name.to_sym)
+    elsif @associations.keys.include?(name.to_sym)
       # somehow define a sub-context
       set_subcontext(name)
       
@@ -82,16 +88,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    if @mappings.keys.include?(name)
+    if !@current_context.nil? && @current_context.name.underscore == name    
       # Wrap up the instance for the current context
       key_attribute = @mappings[name]['key_attribute'] || 'id'
-      puts "\n#{@current_context.name} (#{key_attribute}) attributes:\n#{@attributes.inspect}"
-      @instance = @current_context.send("find_or_initialize_by_#{key_attribute}", @attributes[key_attribute])
-      @instance.attributes = @attributes
-      puts @instance.inspect
-      puts "Mapping on closing: #{@mappings[name].inspect}"
-      puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
-      puts
+      puts "\n#{@current_context.name} (#{key_attribute}) attributes:\n#{attributes.inspect}"
+      @instance = @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
+      @instance.attributes = attributes
+      #puts @instance.inspect
+      #puts "Mapping on closing: #{@mappings[name].inspect}"
+      #puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
+      #puts
       @instance.save
       raise @instance.errors.full_messages.to_s unless @instance.valid?
       unless @source_id.nil?
@@ -106,6 +112,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     elsif !@current_context.nil?
 
+      # TODO: this seems broken - there are a number of sub-contexts which need to be
+      # ignored currently. Also there's a lot of assumptions going into this mapping_levels[-2] thing...
+
       # ID node: set source ID if not set already
       if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
         puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
@@ -119,7 +128,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           parent_association = @current_context.reflect_on_association(potential_parents.first)
           unless parent_association.macro == :belongs_to
             parent = parent_association.class_name.constantize.find(@source_to_local_id_mapping[parent_association.class_name.underscore][@current_data.to_i])
-            @attributes[name.sub(/[_-]id$/,'_id')] = parent.id unless parent.nil?
+            assign_attribute(name.sub(/[_-]id$/,'_id'), parent.id) unless parent.nil?
             puts "\n@@@@ PARENT FOUND\nfound parent object: #{parent.class.name} #{parent.id}\n"
           end
         end
@@ -138,6 +147,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       end
 
     end
+    @current_data = ''
   end
 
   def characters(text)
@@ -150,12 +160,21 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # setting the current_mapping and mapping_levels.
   def set_context(klass)
     @current_context = klass.camelize.capitalize.constantize
-    puts "Current Context: #{@current_context.inspect}"
+    puts "Current Context: #{@current_context.to_s}"
     @current_subcontext = nil
     @mapping_levels = [klass]
     @current_mapping = @mappings[klass]
-    @associations = @current_context.reflect_on_all_associations.map(&:name)
-    @attributes = {}
+    @associations = {}
+    @current_context.reflect_on_all_associations.each do |assoc|
+      @associations[assoc.name] = assoc.name
+    end
+    if @current_mapping['associated_models'].is_a?(Hash)
+      @current_mapping['associated_models'].each do |expected,name|
+        @associations[expected.to_sym] = name.to_sym
+      end
+    end
+    #puts "\n@@@ ASSOCIATION MAPPING FOR: #{@current_context.to_s}\n#{@associations.inspect}\n@@@\n\n"
+    reset_attributes_for(klass)
     @current_attribute = nil
   end
 
@@ -166,8 +185,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @current_subcontext = nil
     @mapping_levels = []
     @current_mapping = {}
-    @associations = []
-    @attributes = {}
+    @associations = {}
+    reset_attributes_for(klass)
     @associated_data = {}
     @source_id = nil
     @current_attribute = nil
@@ -177,25 +196,37 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # the main context.
   # Deal differently with has_many and belongs_to/has_one
   def set_subcontext(klass)
-    unless @current_context.reflect_on_association(klass.to_sym).nil? #\
+    associated_class = @associations[(klass || 'none').to_sym]
+   # puts "\n\n@@@ TRYING TO SET SUB-CONTEXT: #{klass} as '#{associated_class}' on #{@current_context}\n@@@\n\n"
+    unless @current_context.reflect_on_association(associated_class).nil? #\
       #|| @current_context.reflect_on_association(klass).macro == :has_many
-        @current_subcontext = @current_context.reflect_on_association(klass.to_sym)
+        @current_subcontext = @current_context.reflect_on_association(associated_class)
         puts "New Subcontext: #{@current_subcontext.name}"
-        @associations = @current_subcontext.class_name.constantize.reflect_on_all_associations.map(&:name)
+        @associations = {}
+        @current_subcontext.class_name.constantize.reflect_on_all_associations.each do |assoc|
+          @associations[assoc.name] = assoc.name
+        end
         @associated_data[@current_subcontext.name] = \
           (@current_subcontext.name.to_s.pluralize == klass.underscore) ? [] : {}
     end
+    @associated_tag = klass
     open_mapping_level klass
+    #puts "Sub-Context mapping (current_mapping levels): #{@mapping_levels.join(" >> ")}"
   end
 
   # Resets the state between associated contexts by
   # returning to the next context level higher up.
   def close_subcontext(klass)
-    raise "Subcontext Mismatch on closing: (current: #{@current_subcontext.name}, called: #{klass}" unless klass.camelize.capitalize == @current_subcontext.name
+    raise "Subcontext Mismatch on closing: (current: #{@current_subcontext.name}, called: #{klass}" unless klass == @associated_tag
     @current_subcontext = nil
     close_mapping_level klass
-    puts "Closed Subcontext: #{@current_subcontext}\n#{@associated_data.inspect}"
-    @associations = @current_context.reflect_on_all_associations.map(&:name) unless @current_context.nil?
+    #puts "Closed Subcontext: #{@current_subcontext.name}\n#{@associated_data.inspect}"
+    unless @current_context.nil?
+      @associations = {}
+      @current_context.reflect_on_all_associations.each do |assoc|
+        @associations[assoc.name] = assoc.name
+      end
+    end
     refresh_current_mapping
   end
 
@@ -212,13 +243,13 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       @current_attribute
     end
     unless attribute.nil?
-      #puts "Assigning #{attribute} = #{data}"
+      # puts "Assigning #{attribute} = #{data}"
       available_attributes = @current_subcontext.nil? ? \
         @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
       if available_attributes.include?(attribute)
         if @associated_data.empty?
           # write to attributes
-          @attributes[attribute] = data
+          assign_attribute(attribute, data)
         elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
           # write to associated data
           if @associated_data[@current_subcontext.name].is_a?(Array)
@@ -261,14 +292,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       if !possible_attribute.nil? && available_attributes.include?(possible_attribute)
         @current_attribute = possible_attribute
       end
-      if @current_mapping.is_a?(Hash)
+      if @current_mapping.is_a?(Hash) &&!@last_node.eql?(node)
         puts "\n_____CONTEXT____:"
-        puts "Current Sub-Context: #{@current_subcontext}" unless @current_subcontext.nil?
+        puts "Current Sub-Context: #{@current_subcontext.name}" unless @current_subcontext.nil?
         puts "Mapping Levels: #{@mapping_levels.inspect}\n"
         puts "Current_mapping: #{@current_mapping.inspect}\n"
         puts "Current attribute: #{@current_attribute}\n" unless @current_attribute.nil?
+        puts "Attributes on mapping level:\n#{attributes.inspect}"
       end
-      puts
+      #puts
     end
   end
 
@@ -280,9 +312,13 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @current_data = ''
     refresh_current_mapping
     unless @current_attribute.nil? || @current_subcontext.nil? || @associated_data[@current_subcontext.name].nil?
-      puts "Associated Data for #{@current_subcontext}: #{@associated_data[@current_subcontext.name].inspect}"
+      #puts "Associated Data for #{@current_subcontext.name}: #{@associated_data[@current_subcontext.name].inspect}"
     end
     @current_attribute = nil
+    unless @last_node == node
+      # puts "Closing: #{node}\n"
+    end
+    @last_node = node
   end
 
   # Reassigns the current_mapping and resets the current
@@ -319,6 +355,20 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         end
       end
     end
+  end
+
+  def attributes
+    @attributes[@current_context.name] ||= {}
+  end
+
+  def assign_attribute(name, value)
+    @attributes[@current_context.name] ||= {}
+    @attributes[@current_context.name][name.to_sym] = value.is_a?(String) ? value.strip : value
+  end
+
+  def reset_attributes_for(klass)
+    @attributes[klass] = {}
+    puts "\nData reset for '#{klass}'"
   end
 
 end
