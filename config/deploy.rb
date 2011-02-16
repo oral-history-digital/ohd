@@ -41,6 +41,17 @@ task :staging do
   role :db,  "da01.cedis.fu-berlin.de", :primary => true
 end
 
+desc "prepare to act on the test environment (shared with the bugtracker)"
+task :testing do
+  set :user, 'root'
+  set :environment, :development
+  set :application, 'archive_test'
+  set :deploy_to, "/home/ruby/#{application}"
+  role :app, "160.45.170.231"
+  role :web, "160.45.170.231"
+  role :db,  "160.45.170.231", :primary => true
+end
+
 # deploy restart: restart apache
 namespace :deploy do
 
