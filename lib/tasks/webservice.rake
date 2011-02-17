@@ -76,13 +76,17 @@ namespace :webservice do
   desc "Imports the locations from CSV data"
   task :csv_import, [:file] => :environment do |task, args|
 
-    LocationReference.delete_all
+    deleted = LocationReference.delete_all
+
+    puts "\nRemoved #{deleted} prior location references"
 
     file = args[:file]
 
     raise "No such file: '#{file}'.\nPlease specify a valid file= argument." unless File.exists?(file)
 
     fields = LocationReference.content_columns.map{|c| c.name }
+
+    imported = 0
 
     FasterCSV.foreach(file, { :headers => true }) do |row|
 
@@ -98,12 +102,15 @@ namespace :webservice do
       end
       begin
         location.save!
+        imported += 1
         puts [location.interview_id, location.location_type, location.name].compact.join(" ")
       rescue Exception => e
         puts "\nERROR: #{e.message}\nLR: #{location.inspect}\nInstance Errors:#{location.errors.full_messages}\n"
       end
 
     end
+
+    puts "\nImported a total of #{imported} location records. done."
 
   end
 
