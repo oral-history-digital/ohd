@@ -1,0 +1,52 @@
+<h1>Ergebnisse der Ortssuche<%#= ": nach suchbegriff" %></h1>
+
+<% if current_user_account.nil? %>
+<p style="font-weight: bold; margin-top: 0.33em;">
+  Zur Benutzung des Archivs "Zwangsarbeit 1939-1945" m&uuml;ssen Sie
+  <%= link_to 'registriert', registrieren_path %> sein und die
+  <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
+  Eine Suche innerhalb der Interviews ist ebenfalls erst
+  nach der Registrierung möglich.<br><br>
+  Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der
+  Zeitzeuginnen und Zeitzeugen sind die Namen anonymisiert.
+</p>
+<% end %>
+
+<p>&nbsp;</p>
+
+
+<table style="width: 600px; background-color: #f9f9f7;">
+  <tbody>
+  <% if @results.size == 0 %>
+  
+    <tr><td style="padding: 10px;" colspan="2">Für Ihre Suchanfrage konnten keine Interviews gefunden werden.</td></tr>
+  
+  <% else %>
+  
+    <tr>
+      <td style="padding: 10px;" colspan="2">
+        <strong><%= @results.size %> Vorkommen im Archiv "Zwangsarbeit 1939-1945" gefunden:</strong>
+      </td>
+    </tr>
+  
+    <% @results.each do |result| %>
+  
+      <tr style="border-top: dotted 1px #000;">
+        <td style="width: 250px; padding: 10px;">
+          <span style="color: #999281;"><%= result.location_type %></span><br>
+          <strong><%= result.name %></strong>
+        </td>
+        <td style="padding: 10px;">
+          <%= link_to "Interview #{result.interview.archive_id} mit #{result.interview.anonymous_title}", interview_path(result.interview), { :style => 'font-weight: bold;' } %><br>
+          <span style="font-size: 8pt; font-weight: normal;">
+            <%= format_value [ result.interview.send('forced_labor_groups') ].flatten.map{|a| t(a.to_s, :scope => "categories.#{'forced_labor_groups'}")}.join(', ') %><br>
+            <%= result.interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= result.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
+            <%= result.interview.video %> <%= format_value result.interview.duration %>        
+            <%= Interview.human_attribute_name('forced_labor_groups') %>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
