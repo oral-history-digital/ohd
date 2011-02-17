@@ -10,7 +10,7 @@
         <%= render :partial => '/header' %>
 
         <div id="baseServices">
-            <%= render :partial => 'searches/search', :object => @search %>
+            <%= render :partial => 'searches/search', :object => (@search ||= Search.from_params) %>
         </div>
 
         <hr class="divider" />
