@@ -12,6 +12,8 @@ class Interview < ActiveRecord::Base
 
   has_many  :segments,
             :through => :tapes
+
+  has_many  :location_references
   
   has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },

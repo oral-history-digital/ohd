@@ -71,4 +71,40 @@ namespace :webservice do
     end
 
   end
+
+
+  desc "Imports the locations from CSV data"
+  task :csv_import, [:file] => :environment do |task, args|
+
+    LocationReference.delete_all
+
+    file = args[:file]
+
+    raise "No such file: '#{file}'.\nPlease specify a valid file= argument." unless File.exists?(file)
+
+    fields = LocationReference.content_columns.map{|c| c.name }
+
+    FasterCSV.foreach(file, { :headers => true }) do |row|
+
+      interview = Interview.find_by_archive_id(row.field('interview_id'))
+
+      next if interview.nil?
+
+      location = LocationReference.new do |l|
+        fields.each do |field_name|
+          l.send("#{field_name}=", row.field(field_name))
+        end
+        l.interview_id = interview.id
+      end
+      begin
+        location.save!
+        puts [location.interview_id, location.location_type, location.name].compact.join(" ")
+      rescue Exception => e
+        puts "\nERROR: #{e.message}\nLR: #{location.inspect}\nInstance Errors:#{location.errors.full_messages}\n"
+      end
+
+    end
+
+  end
+
 end
