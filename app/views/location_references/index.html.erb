@@ -25,7 +25,7 @@
   
     <tr>
       <td style="padding: 10px;" colspan="2">
-        <strong><%= @results.size %> Vorkommen im Archiv "Zwangsarbeit 1939-1945" gefunden:</strong>
+        <strong><%= @results.size %> Vorkommen <%= params[:location].blank? ? '' : "zu '#{params[:location]}' " %>im Archiv "Zwangsarbeit 1939-1945" gefunden:</strong>
       </td>
     </tr>
   

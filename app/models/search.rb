@@ -397,7 +397,7 @@ SQL
   # do a standard search with the lucene handler
   def standard_lucene_search(query, page)
     # SOLR query
-    fulltext_query = lucene_escape(query['fulltext'])
+    fulltext_query = Search.lucene_escape(query['fulltext'])
     Sunspot.search Interview do
 
       # person name facet
@@ -436,7 +436,7 @@ SQL
   # search for autocomplete on person_name
   def person_name_search(query, page)
     # SOLR query
-    fulltext_query = lucene_escape(query['fulltext'])
+    fulltext_query = Search.lucene_escape(query['fulltext'])
     Sunspot.search Interview do
 
       # search for partial person names for autocompletion
@@ -474,7 +474,7 @@ SQL
   end
 
   # Escapes lucene query for safe querying with the Lucene Parser
-  def lucene_escape(query)
+  def self.lucene_escape(query)
     if query.blank?
       ''
     else

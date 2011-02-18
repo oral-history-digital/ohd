@@ -76,7 +76,7 @@ namespace :solr do
       SOLR.delete_by_query 'type:Interview'
       SOLR.commit
 
-      puts "done"
+      puts "done."
 
     end
 
@@ -90,7 +90,19 @@ namespace :solr do
       SOLR.delete_by_query 'type:Segment'
       SOLR.commit
 
-      puts "done"
+      puts "done."
+
+    end
+
+
+    desc "delete the index for locations"
+    task :locations => 'solr:connect' do
+
+      puts "\nDeleting the index for locations"
+      SOLR.delete_by_query 'type:LocationReference'
+      SOLR.commit
+
+      puts "done."
 
     end
 
@@ -201,6 +213,23 @@ namespace :solr do
 
     end
 
+    desc "Builds the location register index"
+    task :locations => :environment do
+
+      puts "\nIndexing #{LocationReference.count(:all)} locations:"
+
+      LocationReference.find_each(:batch_size => 50) do |location|
+        location.index
+        STDOUT.printf '.'
+        STDOUT::flush
+      end
+
+      Sunspot.commit
+
+      puts "\ndone."
+
+    end
+
   end
 
 
@@ -239,6 +268,11 @@ namespace :solr do
     desc "reindex segments"
     task :segments => ['solr:delete:segments', 'solr:index:segments'] do
       puts "Reindexing segments complete."
+    end
+
+    desc "reindex locations"
+    task :locations => ['solr:delete:locations', 'solr:index:locations'] do
+      puts "Reindexing locations complete."
     end
 
   end

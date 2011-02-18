@@ -11,7 +11,8 @@ class LocationReferencesController < BaseController
     before do
       # fake a search:
       result_num = rand(3) + rand(3) + rand(1)
-      @results = LocationReference.find(:all, :order => "RAND()", :limit => "0,#{result_num}")
+      # @results = LocationReference.find(:all, :order => "RAND()", :limit => "0,#{result_num}")
+      @results = perform_search
       if params['latitude']
         @results.each do |loc|
           loc.latitude = (params['latitude'].to_f + (1.8 * rand) - 0.9).to_s[/^\d+\.\d{1,6}/]
@@ -37,6 +38,19 @@ class LocationReferencesController < BaseController
       json = { 'results' => @results.map{|i| i.json_attrs } }.to_json
       render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
     end
+  end
+
+
+  private
+
+  def perform_search
+    query = {}
+    query[:location] = Search.lucene_escape(params[:location])
+    query[:longitude] = params[:longitude].blank? ? nil : params[:longitude].to_f
+    query[:latitude] = params[:latitude].blank? ? nil : params[:latitude].to_f
+    @location_search = LocationReference.search(query)
+    puts "\n@@@ #{@location_search.total} hits!\n@@@\n"
+    @collection = @location_search.results
   end
 
 end
