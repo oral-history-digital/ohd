@@ -31,13 +31,13 @@
   
     <% @results.each do |result| %>
   
-      <tr style="border-top: dotted 1px #000;">
+      <tr style="border-top: dotted 1px #000; cursor: pointer;" onclick="window.open(this.down('a').href, '_blank');">
         <td style="width: 250px; padding: 10px;">
           <span style="color: #999281;"><%= result.location_type %></span><br>
           <strong><%= result.name %></strong>
         </td>
         <td style="padding: 10px;">
-          <%= link_to "Interview #{result.interview.archive_id} mit #{result.interview.anonymous_title}", interview_path(result.interview), { :name => "#{result.interview.archive_id}", :style => 'font-weight: bold;' } %><br>
+          <%= link_to "Interview #{result.interview.archive_id} mit #{result.interview.anonymous_title}", interview_path(result.interview), { :name => "#{result.interview.archive_id}", :target => "_blank", :style => 'font-weight: bold;' } %><br>
           <span style="font-size: 8pt; font-weight: normal;">
             <%= format_value [ result.interview.send('forced_labor_groups') ].flatten.map{|a| t(a.to_s, :scope => "categories.#{'forced_labor_groups'}")}.join(', ') %><br>
             <%= result.interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= result.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
