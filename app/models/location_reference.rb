@@ -155,7 +155,6 @@ class LocationReference < ActiveRecord::Base
       unless lon.nil? && lat.nil?
         loc = LocationReference.new{|l| l.latitude = lat || 0.0; l.longitude = lon || 0.0 }
         raster = LocationReference.surrounding_quadrant_raster_for(loc.grid_coordinates)
-        puts "\n\n@@@@ Geolocation Search:\nlongitude: #{lon}\nlatitude: #{lat}\nRASTER:\n#{raster.join("\n")}\n@@@\n\n"
       end
 
       unless raster.empty?
