@@ -32,9 +32,9 @@ class LocationReferencesController < BaseController
 
   def perform_search
     query = {}
-    query[:location] = Search.lucene_escape(params[:location])
-    query[:longitude] = params[:longitude]
-    query[:latitude] = params[:latitude]
+    query[:location] = Search.lucene_escape(params['location'])
+    query[:longitude] = params['longitude']
+    query[:latitude] = params['latitude']
     @location_search = LocationReference.search(query)
     @results = @location_search.results
   end
