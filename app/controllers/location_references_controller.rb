@@ -9,7 +9,7 @@ class LocationReferencesController < BaseController
 
   index do
     before do
-      @results = perform_search
+      perform_search
     end
     wants.html do
       # this is only rendered when calling 'ortssuche.html' explicitly!
@@ -36,7 +36,7 @@ class LocationReferencesController < BaseController
     query[:longitude] = params[:longitude].blank? ? nil : params[:longitude].to_f
     query[:latitude] = params[:latitude].blank? ? nil : params[:latitude].to_f
     @location_search = LocationReference.search(query)
-    @collection = @location_search.results
+    @results = @location_search.results
   end
 
 end
