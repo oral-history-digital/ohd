@@ -219,6 +219,7 @@ namespace :solr do
       puts "\nIndexing #{LocationReference.count(:all)} locations:"
 
       LocationReference.find_each(:batch_size => 50) do |location|
+        next if location.interview.blank?
         location.index
         STDOUT.printf '.'
         STDOUT::flush

@@ -8,6 +8,7 @@ class LocationReference < ActiveRecord::Base
             :to => :interview
 
   validates_uniqueness_of :name, :scope => :interview_id
+  validates_associated  :interview
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -104,11 +105,12 @@ class LocationReference < ActiveRecord::Base
 
   def self.distance_to_grid_coordinate(distance)
     return nil if distance.nil?
-    grid_units = (distance / 25).round # 25 km per grid unit
+    grid_units = (distance / 40).round # 40 km per grid unit
     ('A'..'Z').to_a[grid_units % 26] + (0..99).to_a[(grid_units / 26).to_i].to_s.rjust(2,'0')
   end
 
   def self.grid_diff_coordinate(coordinate, diff)
+    coordinate = coordinate.to_s
     nil unless coordinate =~ /^[A-Z][0-9]{2}$/
     alpha = ('A'..'Z').to_a.index coordinate[/^\w/]
     numeric = coordinate[/\d+$/].to_i
@@ -149,8 +151,8 @@ class LocationReference < ActiveRecord::Base
 
       location = Search.lucene_escape(query[:location])
 
-      lon = query[:longitude]
-      lat = query[:latitude]
+      lon = query[:longitude].to_f
+      lat = query[:latitude].to_f
       raster = []
       unless lon.nil? && lat.nil?
         loc = LocationReference.new{|l| l.latitude = lat || 0.0; l.longitude = lon || 0.0 }
