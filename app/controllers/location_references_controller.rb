@@ -9,6 +9,7 @@ class LocationReferencesController < BaseController
 
   index do
     before do
+      store_query_in_session if current_user.nil?
       perform_search
     end
     wants.html do
@@ -30,13 +31,23 @@ class LocationReferencesController < BaseController
 
   private
 
-  def perform_search
+  def query
     query = {}
     query[:location] = Search.lucene_escape(params['location'])
     query[:longitude] = params['longitude']
     query[:latitude] = params['latitude']
-    @location_search = LocationReference.search(query)
+    query
+  end
+
+  def perform_search
+    @location_search = LocationReference.search(session[:location_search] || query)
+    session[:location_search] = nil unless current_user.nil?
     @results = @location_search.results
+  end
+
+  def store_query_in_session
+    session[:landing_page_url] = request.request_uri
+    puts "\n\n\n@@@@ STORING LANDING PAGE URL: #{session[:landing_page_url]}\n@@@@\n\n"
   end
 
 end
