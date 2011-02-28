@@ -40,14 +40,12 @@ class LocationReferencesController < BaseController
   end
 
   def perform_search
-    @location_search = LocationReference.search(session[:location_search] || query)
-    session[:location_search] = nil unless current_user.nil?
+    @location_search = LocationReference.search(query)
     @results = @location_search.results
   end
 
   def store_query_in_session
     session[:landing_page_url] = request.request_uri
-    puts "\n\n\n@@@@ STORING LANDING PAGE URL: #{session[:landing_page_url]}\n@@@@\n\n"
   end
 
 end
