@@ -235,13 +235,16 @@ h5.formHeader {
     background-color: #E4E4DA;
     margin: 5px 0;
     padding: 12px;
+    width: 40%;
     min-width: 40%;
     display: inline-block;
     float: left;
     clear: left;
 }
-html * #innerContent form {
-    width: 40%;
+
+#innerContent form.user_registration,
+#innerContent form.edit_user_registration {
+    width: auto;
 }
 
 #innerContent form span {
@@ -282,8 +285,7 @@ html * #innerContent form {
 }
 
 form.signup {
-    display: block;
-    width: 320px;
+    display: block !important;
     height: 135px;
 }
 
