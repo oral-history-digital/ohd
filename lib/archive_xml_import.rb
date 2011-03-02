@@ -90,9 +90,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def end_element(name)
     if !@current_context.nil? && @current_context.name.underscore == name    
       # Wrap up the instance for the current context
-      key_attribute = @mappings[name]['key_attribute'] || 'id'
+      key_attribute = (@mappings[name]['key_attribute'] || 'id').to_sym
       puts "\n#{@current_context.name} (#{key_attribute}) attributes:\n#{attributes.inspect}"
       @instance = @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
+      if @instance.new_record?
+        puts "\n=> Creating a new #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
+      else
+        puts "\n-> Updating existing #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
+      end
       @instance.attributes = attributes
       #puts @instance.inspect
       #puts "Mapping on closing: #{@mappings[name].inspect}"

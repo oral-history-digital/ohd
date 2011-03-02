@@ -62,3 +62,9 @@ interview:
       speaker-change: 'speaker_change'
       chapter-change: 'chapter_change'
       speaker: 'speaker'
+
+  locations:
+    location:
+      place-type: 'location_type'
+      descriptor: 'name'
+      related-to: 'reference_type'
