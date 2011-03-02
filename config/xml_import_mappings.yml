@@ -9,6 +9,13 @@ collection:
   responsibles: 'responsibles'
   notes: 'notes'
 
+language:
+  key_attribute: 'name'
+  name: 'name'
+  class_name: 'category'
+  class_type: 'Sprache'
+  type_field: 'category_type'
+
 interview:
   key_attribute: 'archive_id'
   archive-id: 'archive_id'
@@ -25,9 +32,6 @@ interview:
   translated: 'translated'
   video:  'video'
   #version-number: not used yet
-  
-  language:
-    name: 'name'
 
   person:
     alias-names: 'alias_names'
@@ -39,6 +43,7 @@ interview:
     firstname: 'first_name'
     lastname: 'last_name'
     middle-names: 'other_first_names'
+    full-name: 'full_title'
 
   photos:
     photo:

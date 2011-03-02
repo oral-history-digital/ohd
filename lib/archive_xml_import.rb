@@ -9,13 +9,17 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
 
-  def initialize(incremental=true)
+  def initialize(filename, incremental=true)
     @incremental = !(incremental.nil? || incremental == false)
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
     puts "\nFull-Fledged Objects:"
     @mappings.keys.each do |type|
       puts type.to_s
     end
+    @archive_id = (filename.split('/').last[/za\d{3}/i] || '').downcase
+    raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
+    @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
+    @@interview_associations = Interview.reflect_on_all_associations.map{|assoc| [ assoc.name, assoc.macro ]}
     super()
   end
 
@@ -24,6 +28,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # The current object class that serves as an import context
     # for all sub-nodes
     @current_context = nil
+    # Sub-Typing of context...
+    @current_context_type = nil
+    @current_node_name = nil
     @current_subcontext = nil # not used right now
     # The element-to-attribute (or sub-context) mapping for said context
     @current_mapping = {}
@@ -54,6 +61,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_document
+    puts "\n\n@@@attributes inspection:\n#{@attributes.inspect}\n\n"
+    begin
+      @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
+    rescue
+      puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
+      puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
+      raise "Aborted."
+    end
     puts "\nSource-to-Local ID-Mapping:"
     @source_to_local_id_mapping.keys.each do |type|
       puts "#{type.pluralize}: #{@source_to_local_id_mapping[type].keys.inject([]){|a,k| a << "#{k}->#{@source_to_local_id_mapping[type][k]}" }.join(', ')}"
@@ -88,23 +103,58 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    if !@current_context.nil? && @current_context.name.underscore == name    
+    if !@current_context.nil? && @current_node_name == name    
       # Wrap up the instance for the current context
       key_attribute = (@mappings[name]['key_attribute'] || 'id').to_sym
-      puts "\n#{@current_context.name} (#{key_attribute}) attributes:\n#{attributes.inspect}"
-      @instance = @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
-      if @instance.new_record?
-        puts "\n=> Creating a new #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
-      else
-        puts "\n-> Updating existing #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
+      puts "\n#{@current_context.name} (#{attributes[key_attribute]}) attributes:\n#{attributes.inspect}"
+      @type_scope = {}
+      if @current_mapping.keys.include?('class_type')
+        type_field = @current_mapping['type_field']  || 'type'
+        @type_scope[type_field] = @current_mapping['class_type']
       end
-      @instance.attributes = attributes
-      #puts @instance.inspect
-      #puts "Mapping on closing: #{@mappings[name].inspect}"
-      #puts "\nAssociated Data: #{@associated_data.inspect}" unless @associated_data.nil? || @associated_data.empty?
-      #puts
-      @instance.save
-      raise @instance.errors.full_messages.to_s unless @instance.valid?
+      case @current_context.name
+        when 'Interview'
+          # simply assign the attributes to the interview
+          raise "Archive-ID mismatch:\nFile: #{@archive_id}\nData: #{attributes[:archive_id]}" unless attributes[:archive_id] == @archive_id
+          @interview.attributes = attributes
+        else
+          @instance = if @type_scope.empty?
+                        @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
+                      else
+                        type_field = @type_scope.keys.first
+                        @current_context.send("find_or_initialize_by_#{key_attribute}_and_#{type_field}", attributes[key_attribute], @type_scope[type_field])
+                      end
+          if @instance.new_record?
+            puts "\n=> Creating a new #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
+          else
+            puts "\n-> Updating existing #{@current_context.name} [#{@instance.id}] for #{key_attribute} '#{attributes[key_attribute]}'."
+          end
+          @instance.attributes = attributes
+          # assign to interview association
+          association = @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
+          unless association.nil?
+            @interview.save if @interview.new_record?
+            case association.last
+              when :has_many
+                $instance = @instance
+                @interview.instance_eval { eval "#{association.first.to_s} << $instance" }
+              when :belongs_to
+                @instance.save
+                @interview.send("#{association.first}_id=", @instance.id)
+              else
+                if @instance.new_record?
+                  @instance = @interview.instance_eval { eval "build_#{association.first.to_s}" }
+                  @instance.attributes = attributes
+                else
+                  $instance = @instance
+                  @interview.instance_eval { eval "#{association.first.to_s} = $instance" }
+                end
+            end
+          end
+          @instance.save
+          raise @instance.errors.full_messages.to_s unless @instance.valid?
+      end
+
       unless @source_id.nil?
         @source_to_local_id_mapping[@current_context.name.underscore] ||= {}
         @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = @instance.id
@@ -164,11 +214,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # Initializes the state for the current context,
   # setting the current_mapping and mapping_levels.
   def set_context(klass)
-    @current_context = klass.camelize.capitalize.constantize
-    puts "Current Context: #{@current_context.to_s}"
+    @current_node_name = klass
     @current_subcontext = nil
     @mapping_levels = [klass]
     @current_mapping = @mappings[klass]
+    begin
+      @current_context = klass.camelize.capitalize.constantize
+    rescue NameError
+      @current_context = @current_mapping['class_name'].camelize.capitalize.constantize
+    end
+    puts "Current Context: #{@current_context.to_s}#{@current_node_name != @current_context.to_s.underscore ? " as Node #{@current_node_name}'" : ''}"
     @associations = {}
     @current_context.reflect_on_all_associations.each do |assoc|
       @associations[assoc.name] = assoc.name
@@ -179,19 +234,20 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       end
     end
     #puts "\n@@@ ASSOCIATION MAPPING FOR: #{@current_context.to_s}\n#{@associations.inspect}\n@@@\n\n"
-    reset_attributes_for(klass)
+    reset_attributes_for(@current_context.name)
     @current_attribute = nil
   end
 
   # Resets the state to become context-neutral.
   def close_context(klass)
-    raise "Context Mismatch on closing: (current: #{@current_context.name}, called: #{klass}" unless klass.camelize.capitalize == @current_context.name
+    raise "Context Mismatch on closing: (current: #{@current_context.name}, called: #{klass}" unless klass == @current_node_name
+    reset_attributes_for(@current_context.name)
     @current_context = nil
+    @current_node_name = nil
     @current_subcontext = nil
     @mapping_levels = []
     @current_mapping = {}
     @associations = {}
-    reset_attributes_for(klass)
     @associated_data = {}
     @source_id = nil
     @current_attribute = nil

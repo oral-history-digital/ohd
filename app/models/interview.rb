@@ -30,6 +30,14 @@ class Interview < ActiveRecord::Base
 DEF
   end
 
+  has_many  :categorizations
+
+  has_many :languages,
+            :class_name => 'Category',
+            :through => :categorizations,
+            :source => :category,
+            :conditions => "categories.category_type = 'Sprache'"
+
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
