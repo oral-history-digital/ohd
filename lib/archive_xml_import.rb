@@ -43,6 +43,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     @current_data = ''
 
+    # store skipped tag names here to avoid duplicate reporting of errors
+    @skipped_tag_names = []
+
     # The assocations of the current context
     @associations = {}
     # Associated data to the current context
@@ -70,6 +73,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
       raise "Aborted."
     end
+    puts "\nSkipped tag elements:\n#{@skipped_tag_names.join(", ")}"
     puts "\nSource-to-Local ID-Mapping:"
     @source_to_local_id_mapping.keys.each do |type|
       puts "#{type.pluralize}: #{@source_to_local_id_mapping[type].keys.inject([]){|a,k| a << "#{k}->#{@source_to_local_id_mapping[type][k]}" }.join(', ')}"
@@ -227,7 +231,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     begin
       @current_context = klass.camelize.capitalize.constantize
     rescue NameError
-      @current_context = @current_mapping['class_name'].camelize.capitalize.constantize
+      if @current_mapping['class_name'].nil?
+        unless @skipped_tag_names.include?(klass.to_sym)
+          puts "ERROR: Could not associate tag name '#{klass}' directly with an object class and no class_name definition is given. Skipping!"
+          @skipped_tag_names << klass.to_sym
+        end
+        return
+      else
+        puts "Could not associate tag name '#{klass}' directly with an object class... trying to interpret class_name definition (#{@current_mapping['class_name']})."
+        @current_context = @current_mapping['class_name'].camelize.capitalize.constantize
+      end
     end
     puts "Current Context: #{@current_context.to_s}#{@current_node_name != @current_context.to_s.underscore ? " as Node #{@current_node_name}'" : ''}"
     @associations = {}
