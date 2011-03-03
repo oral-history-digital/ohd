@@ -103,7 +103,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       # We open another mapping level for the current context
       open_mapping_level(name)
       # assign according to attribute-mapping
-      @current_attribute = @current_mapping.nil? ? nil : @current_mapping[name.to_s]
+      @current_attribute = case @current_mapping
+                             when nil
+                              nil
+                             when String
+                              @current_mapping
+                             when Hash
+                              @current_mapping[name.to_s]
+                           end
     end
   end
 
@@ -229,8 +236,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @mapping_levels = [klass]
     @current_mapping = @mappings[klass]
     begin
-      @current_context = klass.camelize.capitalize.constantize
+      @current_context = klass.camelize.constantize
     rescue NameError
+      puts
       if @current_mapping['class_name'].nil?
         unless @skipped_tag_names.include?(klass.to_sym)
           puts "ERROR: Could not associate tag name '#{klass}' directly with an object class and no class_name definition is given. Skipping!"
@@ -238,8 +246,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         end
         return
       else
-        puts "Could not associate tag name '#{klass}' directly with an object class... trying to interpret class_name definition (#{@current_mapping['class_name']})."
-        @current_context = @current_mapping['class_name'].camelize.capitalize.constantize
+        # puts "Could not associate tag name '#{klass}' directly with an object class... trying to interpret class_name definition (#{@current_mapping['class_name']})."
+        @current_context = @current_mapping['class_name'].camelize.constantize
       end
     end
     puts "Current Context: #{@current_context.to_s}#{@current_node_name != @current_context.to_s.underscore ? " as Node #{@current_node_name}'" : ''}"
@@ -259,6 +267,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   # Resets the state to become context-neutral.
   def close_context(klass)
+    puts "Attributes for #{@current_context.name}:\n#{attributes.inspect}\n"
     raise "Context Mismatch on closing: (current: #{@current_context.name}, called: #{klass}" unless klass == @current_node_name
     reset_attributes_for(@current_context.name)
     @current_context = nil
@@ -313,36 +322,32 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # assigns data to either the associated_data object (for sub-context)
   # or attributes (for context)
   def assign_data(data)
-    attribute = if @current_attribute.blank?
-      unless @current_mapping.is_a?(Hash)
-        @current_mapping
-      else
-        nil
-      end
-    else
-      @current_attribute
-    end
-    unless attribute.nil?
-      # puts "Assigning #{attribute} = #{data}"
+    unless @current_attribute.nil?
+      # puts "\n==> Assigning #{attribute} = #{data}"
+      #if data.to_s.strip == 'Auschwitz'
+      #  puts "\n=====> Data assignment (#{@current_context.to_s}): #{@current_attribute}"
+      #  puts "Assigning attribute: '#{@current_attribute}'"
+      #  puts "Current Mapping: #{@current_mapping.inspect}\n"
+      #end
       available_attributes = @current_subcontext.nil? ? \
         @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
-      if available_attributes.include?(attribute)
+      if available_attributes.include?(@current_attribute)
         if @associated_data.empty?
           # write to attributes
-          assign_attribute(attribute, data)
+          assign_attribute(@current_attribute, data)
         elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
           # write to associated data
           if @associated_data[@current_subcontext.name].is_a?(Array)
             #puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
             if @associated_data[@current_subcontext.name].empty?
               #puts "-> array empty! appending..."
-              @associated_data[@current_subcontext.name] << { attribute => data }
+              @associated_data[@current_subcontext.name] << { @current_attribute => data }
             else
               #puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
-              @associated_data[@current_subcontext.name].last[attribute] = data
+              @associated_data[@current_subcontext.name].last[@current_attribute] = data
             end
           else
-            @associated_data[@current_subcontext.name][attribute] = data
+            @associated_data[@current_subcontext.name][@current_attribute] = data
           end
         end
       end
@@ -448,7 +453,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   def reset_attributes_for(klass)
     @attributes[klass] = {}
-    puts "\nData reset for '#{klass}'"
+    # puts "\nData reset for '#{klass}'"
   end
 
 end

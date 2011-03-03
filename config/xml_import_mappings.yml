@@ -70,6 +70,17 @@ interview:
 
 location:
   key_attribute: 'name'
+  class_name: 'location_reference'
   place-type: 'location_type'
   descriptor: 'name'
   related-to: 'reference_type'
+  camp-category: 'camp_type'
+  physical-location:
+    name: 'location_name'
+    longitude: 'longitude'
+    latitude: 'latitude'
+  camp:
+    name: 'camp_name'
+    alias-names: 'camp_alias_names'
+    classification: 'camp_classification'
+
