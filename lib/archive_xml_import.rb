@@ -64,6 +64,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     puts "\n\n@@@attributes inspection:\n#{@attributes.inspect}\n\n"
     begin
       @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
+      @imported['interviews'] << @interview.archive_id
     rescue
       puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
       puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
@@ -76,7 +77,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     puts "\nImported:"
     @imported.keys.each do |context|
       puts context.to_s + ':'
-      puts @imported[context].inspect
+      puts @imported[context].compact.inspect
       puts
     end
   end
@@ -134,10 +135,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           association = @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
           unless association.nil?
             @interview.save if @interview.new_record?
+            [@interview, @instance].each do |item|
+              unless item.valid?
+                puts "\nERROR: #{item.class.name} '#{item}' invalid:\n#{item.inspect}\n\nError Messages:\n#{item.errors.full_messages.join("\n")}\n"
+              end
+            end
             case association.last
               when :has_many
                 $instance = @instance
-                @interview.instance_eval { eval "#{association.first.to_s} << $instance" }
+                @interview.instance_eval { eval "#{association.first.to_s} << $instance unless #{association.first.to_s}.include?($instance)" }
               when :belongs_to
                 @instance.save
                 @interview.send("#{association.first}_id=", @instance.id)
