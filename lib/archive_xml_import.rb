@@ -128,7 +128,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         when 'Interview'
           # simply assign the attributes to the interview
           raise "Archive-ID mismatch:\nFile: #{@archive_id}\nData: #{attributes[:archive_id]}" unless attributes[:archive_id] == @archive_id
-          @interview.attributes = attributes
+          assign_attributes_to_instance(@interview)
         else
           @instance = if @type_scope.empty?
                         @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
@@ -141,9 +141,13 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           else
             puts "\n-> Updating existing #{@current_context.name} [#{@instance.id}] for #{key_attribute} '#{attributes[key_attribute]}'."
           end
-          @instance.attributes = attributes
-          # assign to interview association
-          association = @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
+          assign_attributes_to_instance(@instance)
+
+          # assign to interview association based on context_name
+          association = @@interview_associations.assoc(@current_context.name.underscore.pluralize.to_sym) || @@interview_associations.assoc(@current_context.name.underscore.to_sym)
+          # assign to interview association based on tag name
+          association ||= @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
+
           unless association.nil?
             @interview.save if @interview.new_record?
             [@interview, @instance].each do |item|
@@ -161,7 +165,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
               else
                 if @instance.new_record?
                   @instance = @interview.instance_eval { eval "build_#{association.first.to_s}" }
-                  @instance.attributes = attributes
+                  assign_attributes_to_instance(@instance)
                 else
                   $instance = @instance
                   @interview.instance_eval { eval "#{association.first.to_s} = $instance" }
@@ -329,26 +333,22 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       #  puts "Assigning attribute: '#{@current_attribute}'"
       #  puts "Current Mapping: #{@current_mapping.inspect}\n"
       #end
-      available_attributes = @current_subcontext.nil? ? \
-        @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
-      if available_attributes.include?(@current_attribute)
-        if @associated_data.empty?
-          # write to attributes
-          assign_attribute(@current_attribute, data)
-        elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
-          # write to associated data
-          if @associated_data[@current_subcontext.name].is_a?(Array)
-            #puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
-            if @associated_data[@current_subcontext.name].empty?
-              #puts "-> array empty! appending..."
-              @associated_data[@current_subcontext.name] << { @current_attribute => data }
-            else
-              #puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
-              @associated_data[@current_subcontext.name].last[@current_attribute] = data
-            end
+      if @associated_data.empty?
+        # write to attributes
+        assign_attribute(@current_attribute, data)
+      elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
+        # write to associated data
+        if @associated_data[@current_subcontext.name].is_a?(Array)
+          #puts "write to array of associated data for '#{@current_subcontext.name}': #{@associated_data[@current_subcontext.name].inspect}\n"
+          if @associated_data[@current_subcontext.name].empty?
+            #puts "-> array empty! appending..."
+            @associated_data[@current_subcontext.name] << { @current_attribute => data }
           else
-            @associated_data[@current_subcontext.name][@current_attribute] = data
+            #puts "-> array non-empty! writing to last element: #{@associated_data[@current_subcontext.name].last.inspect}"
+            @associated_data[@current_subcontext.name].last[@current_attribute] = data
           end
+        else
+          @associated_data[@current_subcontext.name][@current_attribute] = data
         end
       end
     end
@@ -371,12 +371,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     refresh_current_mapping
     unless @current_mapping.nil?
-      available_attributes = @current_subcontext.nil? ? \
-        @current_context.columns.map(&:name) : @current_subcontext.class_name.constantize.columns.map(&:name)
-      possible_attribute = @current_mapping[node]
-      if !possible_attribute.nil? && available_attributes.include?(possible_attribute)
-        @current_attribute = possible_attribute
-      end
       if @current_mapping.is_a?(Hash) &&!@last_node.eql?(node)
         puts "\n_____CONTEXT____:"
         puts "Current Sub-Context: #{@current_subcontext.name}" unless @current_subcontext.nil?
@@ -449,6 +443,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def assign_attribute(name, value)
     @attributes[@current_context.name] ||= {}
     @attributes[@current_context.name][name.to_sym] = value.is_a?(String) ? value.strip : value
+  end
+
+  # handle assignment to content_columns and setter methods
+  def assign_attributes_to_instance(instance)
+    db_columns = instance.class.content_columns.map{|c| c.name }
+    attributes.select{|k,v| !db_columns.include?(k.to_s)}.each do |attr,value|
+      instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
+      @attributes[@current_context.name].delete(attr)
+    end
+    instance.attributes = attributes
   end
 
   def reset_attributes_for(klass)
