@@ -151,11 +151,11 @@ class LocationReference < ActiveRecord::Base
 
       location = Search.lucene_escape(query[:location])
 
-      lon = query[:longitude].to_f
-      lat = query[:latitude].to_f
+      lon = query[:longitude].nil? ? nil : query[:longitude].to_f
+      lat = query[:latitude].nil? ? nil : query[:latitude].to_f
       raster = []
       unless lon.nil? && lat.nil?
-        loc = LocationReference.new{|l| l.latitude = lat || 0.0; l.longitude = lon || 0.0 }
+        loc = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
         raster = LocationReference.surrounding_quadrant_raster_for(loc.grid_coordinates)
       end
 

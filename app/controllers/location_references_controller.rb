@@ -34,8 +34,8 @@ class LocationReferencesController < BaseController
   def query
     query = {}
     query[:location] = Search.lucene_escape(params['location'])
-    query[:longitude] = params['longitude']
-    query[:latitude] = params['latitude']
+    query[:longitude] = params['longitude'] unless params['longitude'].blank?
+    query[:latitude] = params['latitude'] unless params['latitude'].blank?
     query
   end
 
