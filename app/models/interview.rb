@@ -110,10 +110,12 @@ DEF
   end
 
   def short_title
+    return '' if full_title.blank?
     @short_title ||= full_title[/^[^,;]+, \w/] + "."
   end
 
   def anonymous_title
+    return '' if full_title.blank?
     @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'
   end
 

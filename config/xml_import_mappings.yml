@@ -79,8 +79,22 @@ location:
     name: 'location_name'
     longitude: 'longitude'
     latitude: 'latitude'
+    city:
+      name: 'city_name'
+      alias-names: 'city_alias_names'
+    region:
+      name: 'region_name'
+      alias-names: 'region_alias_names'
+    country:
+      name: 'country_name'
+      alias-names: 'country_alias_names'
   camp:
     name: 'camp_name'
     alias-names: 'camp_alias_names'
     classification: 'camp_classification'
+    description: 'description'
+  company:
+    name: 'company_name'
+    alias-names: 'company_alias_names'
+    description: 'description'
 

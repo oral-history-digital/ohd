@@ -10,6 +10,8 @@ class LocationReference < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :interview_id
   validates_associated  :interview
 
+  before_save :accumulate_field_info
+
   searchable :auto_index => false do
     string :archive_id, :stored => true
     text :name, :boost => 12
@@ -46,6 +48,71 @@ class LocationReference < ActiveRecord::Base
     json['longitude'] = longitude
     json['latitude'] = latitude
     json
+  end
+
+  # setter functions
+  def camp_type=(category='')
+    @camp_category = category
+  end
+
+  def camp_name=(name='')
+    @camp_name = name
+  end
+
+  def company_name=(name='')
+    @company_name = name
+  end
+
+  def add_main_alias=(alias_names='')
+    @main_aliases ||= []
+    @main_aliases += (alias_names || '').split(/\s+?[;,]\s+?/)
+  end
+
+  def additional_alias=(alias_names='')
+    @additional_alias_names ||= []
+    @additional_alias_names += (alias_names || '').split(/\s+?[;,]\s+?/)
+  end
+
+  def camp_alias_names=(alias_names='')
+    self.add_main_alias=alias_names
+  end
+
+  def company_alias_names=(alias_names='')
+    self.add_main_alias=alias_names
+  end
+
+  def city_name=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def city_alias_names=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def region_name=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def region_alias_names=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def country_name=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def country_alias_names=(alias_names='')
+    self.additional_alias=alias_names
+  end
+
+  def alias_location_names=(data)
+    result = case data
+      when String
+        data.strip
+      when Array
+        data.uniq.delete_if{|i| i.blank? }.join("; ")
+    end
+    write_attribute :alias_location_names, result
   end
 
   # returns approximated "flat" grid coordinates as distance from Berlin
@@ -173,6 +240,22 @@ class LocationReference < ActiveRecord::Base
         end
       end
 
+    end
+  end
+
+  private
+
+  # Assign relevant conditional info from setter fields to DB columns
+  def accumulate_field_info
+    accumulation_fields = {
+        :camp_category => :location_type,
+        :camp_name => :location_name,
+        :additional_alias_names => :alias_location_names
+    }
+    accumulation_fields.each do |variable, field|
+      if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
+        send("#{field}=",instance_eval("@#{variable}"))
+      end
     end
   end
 
