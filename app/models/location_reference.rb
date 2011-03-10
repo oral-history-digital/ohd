@@ -7,6 +7,11 @@ class LocationReference < ActiveRecord::Base
             :translated,
             :to => :interview
 
+  has_many  :location_segments
+
+  has_many  :segments,
+            :through => :location_segments
+
   validates_presence_of :name, :reference_type
   validates_uniqueness_of :name, :scope => :interview_id
   validates_associated  :interview
