@@ -183,7 +183,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             end
           end
           @instance.save
-          raise @instance.errors.full_messages.to_s unless @instance.valid?
+          raise @instance.errors.full_messages.to_s unless (@instance.valid? || @current_mapping['skip_invalid'])
       end
 
       unless @source_id.nil?

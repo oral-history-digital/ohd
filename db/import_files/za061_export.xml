@@ -3152,1579 +3152,6 @@ http://www.hachschara-ahrensdorf.de/</info>
   </location>
 </locations>
 
-<locations-segments type="array">
-  <locations-segment>
-    <media-id>ZA061_06_05_0039</media-id>
-    <descriptor>Mecklenburg</descriptor>
-    <location-id type="integer">14677</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0052</media-id>
-    <descriptor>Mecklenburg</descriptor>
-    <location-id type="integer">14677</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0296</media-id>
-    <descriptor>Griechenland</descriptor>
-    <location-id type="integer">14678</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0368</media-id>
-    <descriptor>Griechenland</descriptor>
-    <location-id type="integer">14678</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0284</media-id>
-    <descriptor>Tczew, Woiwodschaft Pommern, Polen</descriptor>
-    <location-id type="integer">14679</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0232</media-id>
-    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
-    <location-id type="integer">14680</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0100</media-id>
-    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
-    <location-id type="integer">14680</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0195</media-id>
-    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
-    <location-id type="integer">14680</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0297</media-id>
-    <descriptor>Belgien</descriptor>
-    <location-id type="integer">14681</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0300</media-id>
-    <descriptor>Belgien</descriptor>
-    <location-id type="integer">14681</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0070</media-id>
-    <descriptor>Belgien</descriptor>
-    <location-id type="integer">14681</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0039</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0042</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0269</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0290</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0293</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0499</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0566</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0057</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0060</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0062</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0080</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0112</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0129</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0231</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14682</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0033</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0037</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0040</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0055</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0316</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0319</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0336</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0337</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0338</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0339</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0407</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0528</media-id>
-    <descriptor>England</descriptor>
-    <location-id type="integer">14683</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0067</media-id>
-    <descriptor>Anhalter Bahnhof</descriptor>
-    <location-id type="integer">14684</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0318</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0327</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0333</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0338</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0367</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0372</media-id>
-    <descriptor>Australien</descriptor>
-    <location-id type="integer">14685</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0344</media-id>
-    <descriptor>London, Greater London, England</descriptor>
-    <location-id type="integer">14686</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0366</media-id>
-    <descriptor>Shanghai, Shanghai, China</descriptor>
-    <location-id type="integer">14687</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0367</media-id>
-    <descriptor>Shanghai, Shanghai, China</descriptor>
-    <location-id type="integer">14687</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0134</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14688</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0294</media-id>
-    <descriptor>Polen</descriptor>
-    <location-id type="integer">14689</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0297</media-id>
-    <descriptor>Polen</descriptor>
-    <location-id type="integer">14689</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0190</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0192</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0193</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0194</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0254</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0257</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0289</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0278</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0375</media-id>
-    <descriptor>Israel</descriptor>
-    <location-id type="integer">14690</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0021</media-id>
-    <descriptor>Hamburg-Blankenese, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14691</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0040</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0269</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0274</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0019</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0020</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0022</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0356</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0371</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0423</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0430</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0431</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0433</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0436</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0438</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0014</media-id>
-    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
-    <location-id type="integer">14692</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0253</media-id>
-    <descriptor>USA</descriptor>
-    <location-id type="integer">14693</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0131</media-id>
-    <descriptor>F&#252;rstenwalde/Spree, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14694</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0101</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14695</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0349</media-id>
-    <descriptor>Scheunenviertel</descriptor>
-    <location-id type="integer">14696</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0269</media-id>
-    <descriptor>Spreewald</descriptor>
-    <location-id type="integer">14697</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0086</media-id>
-    <descriptor>Memphis , Tennessee, Vereinigte Staaten</descriptor>
-    <location-id type="integer">14698</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0368</media-id>
-    <descriptor>Rhodos</descriptor>
-    <location-id type="integer">14699</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0254</media-id>
-    <descriptor>Wolgograd, S&#252;drussland , Russland</descriptor>
-    <location-id type="integer">14700</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0356</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14701</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0321</media-id>
-    <descriptor>Berlin-Tempelhof, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14702</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0283</media-id>
-    <descriptor>Westpreu&#223;en</descriptor>
-    <location-id type="integer">14703</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0291</media-id>
-    <descriptor>Westpreu&#223;en</descriptor>
-    <location-id type="integer">14703</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0292</media-id>
-    <descriptor>Westpreu&#223;en</descriptor>
-    <location-id type="integer">14703</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0199</media-id>
-    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14704</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0202</media-id>
-    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14704</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0058</media-id>
-    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14704</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0016</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0018</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0019</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0039</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0052</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0054</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0066</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0088</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0194</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0198</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0199</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0286</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0300</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0060</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0064</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0085</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0106</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0116</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0129</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0130</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0133</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0136</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0155</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0190</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0293</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0304</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0240</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0566</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0230</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0387</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0132</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0156</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0184</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0223</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0225</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14705</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0267</media-id>
-    <descriptor>Wodzis&#322;aw &#346;l&#261;sk, Woiwodschaft Schlesien, Polen</descriptor>
-    <location-id type="integer">14706</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0271</media-id>
-    <descriptor>Wodzis&#322;aw &#346;l&#261;sk, Woiwodschaft Schlesien, Polen</descriptor>
-    <location-id type="integer">14706</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0017</media-id>
-    <descriptor>Denzlingen, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14707</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0194</media-id>
-    <descriptor>Rischon Lezion, Zentralbezirk, Israel</descriptor>
-    <location-id type="integer">14708</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0295</media-id>
-    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
-    <location-id type="integer">14709</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0016</media-id>
-    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
-    <location-id type="integer">14709</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0226</media-id>
-    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
-    <location-id type="integer">14709</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0039</media-id>
-    <descriptor>L&#252;neburg, Niedersachsen, Deutschland</descriptor>
-    <location-id type="integer">14710</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0346</media-id>
-    <descriptor>M&#252;nchen, Bayern, Deutschland</descriptor>
-    <location-id type="integer">14711</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0280</media-id>
-    <descriptor>Breslau, Woiwodschaft Niederschlesien, Polen</descriptor>
-    <location-id type="integer">14712</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0330</media-id>
-    <descriptor>Breslau, Woiwodschaft Niederschlesien, Polen</descriptor>
-    <location-id type="integer">14712</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0268</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14713</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0338</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14713</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0419</media-id>
-    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14714</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0296</media-id>
-    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14714</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0299</media-id>
-    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14714</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0321</media-id>
-    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14714</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0005</media-id>
-    <descriptor>Weil am Rhein, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14715</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0006</media-id>
-    <descriptor>Weil am Rhein, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14715</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0104</media-id>
-    <descriptor>Jugoslawien</descriptor>
-    <location-id type="integer">14716</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0288</media-id>
-    <descriptor>Basel, Kanton Basel-Stadt, Schweiz</descriptor>
-    <location-id type="integer">14717</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0511</media-id>
-    <descriptor>S&#252;damerika</descriptor>
-    <location-id type="integer">14718</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0363</media-id>
-    <descriptor>Kaliningrad, Oblast Kaliningrad, Russland</descriptor>
-    <location-id type="integer">14719</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0368</media-id>
-    <descriptor>Kaliningrad, Oblast Kaliningrad, Russland</descriptor>
-    <location-id type="integer">14719</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0284</media-id>
-    <descriptor>W&#261;brze&#378;no, Woiwodschaft Kujawien-Pommern, Polen</descriptor>
-    <location-id type="integer">14720</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0037</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0069</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0195</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0198</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0294</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0434</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0168</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0185</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0346</media-id>
-    <descriptor>Deutschland</descriptor>
-    <location-id type="integer">14721</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0018</media-id>
-    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14722</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0026</media-id>
-    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14722</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0027</media-id>
-    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14722</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0047</media-id>
-    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14722</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0256</media-id>
-    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14723</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0265</media-id>
-    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14723</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0269</media-id>
-    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14723</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0314</media-id>
-    <descriptor>Dresden, Sachsen, Deutschland</descriptor>
-    <location-id type="integer">14724</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0092</media-id>
-    <descriptor>Kanada</descriptor>
-    <location-id type="integer">14725</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0335</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14726</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0475</media-id>
-    <descriptor>Berlin, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14726</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0366</media-id>
-    <descriptor>Berlin-Wei&#223;ensee, Berlin, Deutschland</descriptor>
-    <location-id type="integer">14727</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0336</media-id>
-    <descriptor>Insel Man (Isle of Man)</descriptor>
-    <location-id type="integer">14728</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0300</media-id>
-    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14729</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0302</media-id>
-    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14729</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0016</media-id>
-    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14729</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0044</media-id>
-    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14729</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0061</media-id>
-    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
-    <location-id type="integer">14729</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0236</media-id>
-    <descriptor>Schlesien</descriptor>
-    <location-id type="integer">14730</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0310</media-id>
-    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14731</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0311</media-id>
-    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14731</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0313</media-id>
-    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14731</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0321</media-id>
-    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14731</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0202</media-id>
-    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14732</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0134</media-id>
-    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14732</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0146</media-id>
-    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14732</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0174</media-id>
-    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
-    <location-id type="integer">14732</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0106</media-id>
-    <descriptor>Ahrensdorf (Ludwigsfelde), Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14733</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0285</media-id>
-    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14734</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0286</media-id>
-    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14734</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0414</media-id>
-    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
-    <location-id type="integer">14734</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0223</media-id>
-    <descriptor>Bergen-Belsen (KZ) (Bergen-Belsen)</descriptor>
-    <location-id type="integer">14735</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0097</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0099</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0101</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0243</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0252</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0311</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0332</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0349</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0406</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14736</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0283</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0499</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0057</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0093</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0094</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0099</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0110</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0111</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0116</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0129</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0240</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0251</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0386</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0387</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0440</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0003</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0007</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0009</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0011</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0012</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0324</media-id>
-    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
-    <location-id type="integer">14737</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0213</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0220</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0226</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0238</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0239</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0264</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0268</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0048</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0054</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0169</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0171</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0151</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14738</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0085</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14739</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0037</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14739</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0081</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14739</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0121</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14739</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0059</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0067</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0369</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0372</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0326</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0333</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0338</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0340</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0341</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0344</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0379</media-id>
-    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
-    <location-id type="integer">14740</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0051</media-id>
-    <descriptor>Malchow (Lager) (Malchow)</descriptor>
-    <location-id type="integer">14741</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0229</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0236</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0266</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0035</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0049</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0053</media-id>
-    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
-    <location-id type="integer">14742</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0067</media-id>
-    <descriptor>Maidanek (KZ) (Lublin)</descriptor>
-    <location-id type="integer">14743</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0037</media-id>
-    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
-    <location-id type="integer">14744</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0066</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0067</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0068</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0090</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0093</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0095</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0149</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0294</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0175</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0223</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0169</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0273</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0277</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0334</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0344</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0420</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0020</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0046</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0047</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0168</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0213</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0220</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0293</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0294</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0309</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0311</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0317</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0325</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0377</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0495</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0008</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0012</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0014</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0015</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0016</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0026</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0029</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0032</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0078</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_06_0276</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14745</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0130</media-id>
-    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
-    <location-id type="integer">14746</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0239</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14747</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0059</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_01_0083</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0356</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_02_0361</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0057</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0079</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0364</media-id>
-    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
-    <location-id type="integer">14748</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0523</media-id>
-    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
-    <location-id type="integer">14749</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0529</media-id>
-    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
-    <location-id type="integer">14749</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0037</media-id>
-    <descriptor>Siemens</descriptor>
-    <location-id type="integer">14750</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_05_0140</media-id>
-    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
-    <location-id type="integer">14751</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0497</media-id>
-    <descriptor>Friedrich Krupp AG (Auschwitz)</descriptor>
-    <location-id type="integer">14752</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_04_0498</media-id>
-    <descriptor>Friedrich Krupp AG (Auschwitz)</descriptor>
-    <location-id type="integer">14752</location-id>
-  </locations-segment>
-  <locations-segment>
-    <media-id>ZA061_06_03_0236</media-id>
-    <descriptor>Regina Pelz</descriptor>
-    <location-id type="integer">14753</location-id>
-  </locations-segment>
-</locations-segments>
-
 <captions type="array">
   <caption>
     <speaker>AVP</speaker>
@@ -18191,6 +16618,1579 @@ http://www.hachschara-ahrensdorf.de/</info>
     <start-time type="integer">11261</start-time>
   </caption>
 </captions>
+
+<locations-segments type="array">
+  <locations-segment>
+    <media-id>ZA061_06_05_0039</media-id>
+    <descriptor>Mecklenburg</descriptor>
+    <location-id type="integer">14677</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0052</media-id>
+    <descriptor>Mecklenburg</descriptor>
+    <location-id type="integer">14677</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0296</media-id>
+    <descriptor>Griechenland</descriptor>
+    <location-id type="integer">14678</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0368</media-id>
+    <descriptor>Griechenland</descriptor>
+    <location-id type="integer">14678</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0284</media-id>
+    <descriptor>Tczew, Woiwodschaft Pommern, Polen</descriptor>
+    <location-id type="integer">14679</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0232</media-id>
+    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
+    <location-id type="integer">14680</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0100</media-id>
+    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
+    <location-id type="integer">14680</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0195</media-id>
+    <descriptor>Davos, Kanton Graub&#252;nden, Schweiz</descriptor>
+    <location-id type="integer">14680</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0297</media-id>
+    <descriptor>Belgien</descriptor>
+    <location-id type="integer">14681</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0300</media-id>
+    <descriptor>Belgien</descriptor>
+    <location-id type="integer">14681</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0070</media-id>
+    <descriptor>Belgien</descriptor>
+    <location-id type="integer">14681</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0039</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0042</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0269</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0290</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0293</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0499</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0566</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0057</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0060</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0062</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0080</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0112</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0129</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0231</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14682</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0033</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0037</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0040</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0055</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0316</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0319</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0336</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0337</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0338</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0339</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0407</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0528</media-id>
+    <descriptor>England</descriptor>
+    <location-id type="integer">14683</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0067</media-id>
+    <descriptor>Anhalter Bahnhof</descriptor>
+    <location-id type="integer">14684</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0318</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0327</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0333</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0338</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0367</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0372</media-id>
+    <descriptor>Australien</descriptor>
+    <location-id type="integer">14685</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0344</media-id>
+    <descriptor>London, Greater London, England</descriptor>
+    <location-id type="integer">14686</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0366</media-id>
+    <descriptor>Shanghai, Shanghai, China</descriptor>
+    <location-id type="integer">14687</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0367</media-id>
+    <descriptor>Shanghai, Shanghai, China</descriptor>
+    <location-id type="integer">14687</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0134</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14688</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0294</media-id>
+    <descriptor>Polen</descriptor>
+    <location-id type="integer">14689</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0297</media-id>
+    <descriptor>Polen</descriptor>
+    <location-id type="integer">14689</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0190</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0192</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0193</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0194</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0254</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0257</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0289</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0278</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0375</media-id>
+    <descriptor>Israel</descriptor>
+    <location-id type="integer">14690</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0021</media-id>
+    <descriptor>Hamburg-Blankenese, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14691</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0040</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0269</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0274</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0019</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0020</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0022</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0356</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0371</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0423</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0430</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0431</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0433</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0436</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0438</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0014</media-id>
+    <descriptor>Mandatsgebiet Pal&#228;stina</descriptor>
+    <location-id type="integer">14692</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0253</media-id>
+    <descriptor>USA</descriptor>
+    <location-id type="integer">14693</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0131</media-id>
+    <descriptor>F&#252;rstenwalde/Spree, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14694</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0101</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14695</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0349</media-id>
+    <descriptor>Scheunenviertel</descriptor>
+    <location-id type="integer">14696</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0269</media-id>
+    <descriptor>Spreewald</descriptor>
+    <location-id type="integer">14697</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0086</media-id>
+    <descriptor>Memphis , Tennessee, Vereinigte Staaten</descriptor>
+    <location-id type="integer">14698</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0368</media-id>
+    <descriptor>Rhodos</descriptor>
+    <location-id type="integer">14699</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0254</media-id>
+    <descriptor>Wolgograd, S&#252;drussland , Russland</descriptor>
+    <location-id type="integer">14700</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0356</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14701</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0321</media-id>
+    <descriptor>Berlin-Tempelhof, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14702</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0283</media-id>
+    <descriptor>Westpreu&#223;en</descriptor>
+    <location-id type="integer">14703</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0291</media-id>
+    <descriptor>Westpreu&#223;en</descriptor>
+    <location-id type="integer">14703</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0292</media-id>
+    <descriptor>Westpreu&#223;en</descriptor>
+    <location-id type="integer">14703</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0199</media-id>
+    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14704</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0202</media-id>
+    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14704</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0058</media-id>
+    <descriptor>Freiburg im Breisgau, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14704</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0016</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0018</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0019</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0039</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0052</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0054</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0066</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0088</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0194</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0198</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0199</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0286</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0300</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0060</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0064</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0085</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0106</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0116</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0129</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0130</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0133</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0136</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0155</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0190</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0293</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0304</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0240</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0566</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0230</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0387</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0132</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0156</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0184</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0223</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0225</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14705</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0267</media-id>
+    <descriptor>Wodzis&#322;aw &#346;l&#261;sk, Woiwodschaft Schlesien, Polen</descriptor>
+    <location-id type="integer">14706</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0271</media-id>
+    <descriptor>Wodzis&#322;aw &#346;l&#261;sk, Woiwodschaft Schlesien, Polen</descriptor>
+    <location-id type="integer">14706</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0017</media-id>
+    <descriptor>Denzlingen, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14707</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0194</media-id>
+    <descriptor>Rischon Lezion, Zentralbezirk, Israel</descriptor>
+    <location-id type="integer">14708</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0295</media-id>
+    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
+    <location-id type="integer">14709</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0016</media-id>
+    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
+    <location-id type="integer">14709</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0226</media-id>
+    <descriptor>Br&#252;ssel, Br&#252;ssel-Hauptstadt, Belgien</descriptor>
+    <location-id type="integer">14709</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0039</media-id>
+    <descriptor>L&#252;neburg, Niedersachsen, Deutschland</descriptor>
+    <location-id type="integer">14710</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0346</media-id>
+    <descriptor>M&#252;nchen, Bayern, Deutschland</descriptor>
+    <location-id type="integer">14711</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0280</media-id>
+    <descriptor>Breslau, Woiwodschaft Niederschlesien, Polen</descriptor>
+    <location-id type="integer">14712</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0330</media-id>
+    <descriptor>Breslau, Woiwodschaft Niederschlesien, Polen</descriptor>
+    <location-id type="integer">14712</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0268</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14713</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0338</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14713</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0419</media-id>
+    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14714</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0296</media-id>
+    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14714</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0299</media-id>
+    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14714</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0321</media-id>
+    <descriptor>Berlin-Wittenau, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14714</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0005</media-id>
+    <descriptor>Weil am Rhein, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14715</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0006</media-id>
+    <descriptor>Weil am Rhein, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14715</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0104</media-id>
+    <descriptor>Jugoslawien</descriptor>
+    <location-id type="integer">14716</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0288</media-id>
+    <descriptor>Basel, Kanton Basel-Stadt, Schweiz</descriptor>
+    <location-id type="integer">14717</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0511</media-id>
+    <descriptor>S&#252;damerika</descriptor>
+    <location-id type="integer">14718</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0363</media-id>
+    <descriptor>Kaliningrad, Oblast Kaliningrad, Russland</descriptor>
+    <location-id type="integer">14719</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0368</media-id>
+    <descriptor>Kaliningrad, Oblast Kaliningrad, Russland</descriptor>
+    <location-id type="integer">14719</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0284</media-id>
+    <descriptor>W&#261;brze&#378;no, Woiwodschaft Kujawien-Pommern, Polen</descriptor>
+    <location-id type="integer">14720</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0037</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0069</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0195</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0198</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0294</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0434</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0168</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0185</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0346</media-id>
+    <descriptor>Deutschland</descriptor>
+    <location-id type="integer">14721</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0018</media-id>
+    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14722</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0026</media-id>
+    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14722</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0027</media-id>
+    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14722</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0047</media-id>
+    <descriptor>Hamburg-Harburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14722</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0256</media-id>
+    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14723</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0265</media-id>
+    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14723</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0269</media-id>
+    <descriptor>Ludwigslust, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14723</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0314</media-id>
+    <descriptor>Dresden, Sachsen, Deutschland</descriptor>
+    <location-id type="integer">14724</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0092</media-id>
+    <descriptor>Kanada</descriptor>
+    <location-id type="integer">14725</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0335</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14726</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0475</media-id>
+    <descriptor>Berlin, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14726</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0366</media-id>
+    <descriptor>Berlin-Wei&#223;ensee, Berlin, Deutschland</descriptor>
+    <location-id type="integer">14727</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0336</media-id>
+    <descriptor>Insel Man (Isle of Man)</descriptor>
+    <location-id type="integer">14728</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0300</media-id>
+    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14729</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0302</media-id>
+    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14729</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0016</media-id>
+    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14729</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0044</media-id>
+    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14729</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0061</media-id>
+    <descriptor>Hamburg, Hamburg, Deutschland</descriptor>
+    <location-id type="integer">14729</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0236</media-id>
+    <descriptor>Schlesien</descriptor>
+    <location-id type="integer">14730</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0310</media-id>
+    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14731</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0311</media-id>
+    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14731</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0313</media-id>
+    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14731</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0321</media-id>
+    <descriptor>Zeuthen, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14731</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0202</media-id>
+    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14732</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0134</media-id>
+    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14732</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0146</media-id>
+    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14732</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0174</media-id>
+    <descriptor>Stuttgart, Baden-W&#252;rttemberg, Deutschland</descriptor>
+    <location-id type="integer">14732</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0106</media-id>
+    <descriptor>Ahrensdorf (Ludwigsfelde), Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14733</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0285</media-id>
+    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14734</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0286</media-id>
+    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14734</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0414</media-id>
+    <descriptor>Neustadt-Glewe, Mecklenburg-Vorpommern, Deutschland</descriptor>
+    <location-id type="integer">14734</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0223</media-id>
+    <descriptor>Bergen-Belsen (KZ) (Bergen-Belsen)</descriptor>
+    <location-id type="integer">14735</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0097</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0099</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0101</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0243</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0252</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0311</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0332</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0349</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0406</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14736</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0283</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0499</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0057</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0093</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0094</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0099</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0110</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0111</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0116</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0129</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0240</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0251</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0386</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0387</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0440</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0003</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0007</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0009</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0011</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0012</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0324</media-id>
+    <descriptor>Neuendorf im Sande, Brandenburg, Deutschland</descriptor>
+    <location-id type="integer">14737</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0213</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0220</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0226</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0238</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0239</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0264</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0268</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0048</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0054</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0169</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0171</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0151</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14738</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0085</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14739</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0037</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14739</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0081</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14739</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0121</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14739</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0059</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0067</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0369</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0372</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0326</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0333</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0338</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0340</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0341</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0344</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0379</media-id>
+    <descriptor>Theresienstadt (KZ) (Terez&#237;n)</descriptor>
+    <location-id type="integer">14740</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0051</media-id>
+    <descriptor>Malchow (Lager) (Malchow)</descriptor>
+    <location-id type="integer">14741</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0229</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0236</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0266</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0035</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0049</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0053</media-id>
+    <descriptor>Neustadt-Glewe (KZ) (Neustadt-Glewe)</descriptor>
+    <location-id type="integer">14742</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0067</media-id>
+    <descriptor>Maidanek (KZ) (Lublin)</descriptor>
+    <location-id type="integer">14743</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0037</media-id>
+    <descriptor>Ravensbr&#252;ck (KZ) (F&#252;rstenberg/Havel)</descriptor>
+    <location-id type="integer">14744</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0066</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0067</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0068</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0090</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0093</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0095</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0149</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0294</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0175</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0223</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0169</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0273</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0277</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0334</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0344</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0420</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0020</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0046</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0047</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0168</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0213</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0220</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0293</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0294</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0309</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0311</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0317</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0325</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0377</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0495</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0008</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0012</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0014</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0015</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0016</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0026</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0029</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0032</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0078</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_06_0276</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14745</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0130</media-id>
+    <descriptor>Auschwitz II-Birkenau (KZ) (Auschwitz)</descriptor>
+    <location-id type="integer">14746</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0239</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14747</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0059</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_01_0083</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0356</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_02_0361</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0057</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0079</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0364</media-id>
+    <descriptor>Berlin-Gro&#223;e Hamburger Stra&#223;e (Lager) (Berlin)</descriptor>
+    <location-id type="integer">14748</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0523</media-id>
+    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
+    <location-id type="integer">14749</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0529</media-id>
+    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
+    <location-id type="integer">14749</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0037</media-id>
+    <descriptor>Siemens</descriptor>
+    <location-id type="integer">14750</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_05_0140</media-id>
+    <descriptor>Weichsel-Union-Metallwerke (Auschwitz)</descriptor>
+    <location-id type="integer">14751</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0497</media-id>
+    <descriptor>Friedrich Krupp AG (Auschwitz)</descriptor>
+    <location-id type="integer">14752</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_04_0498</media-id>
+    <descriptor>Friedrich Krupp AG (Auschwitz)</descriptor>
+    <location-id type="integer">14752</location-id>
+  </locations-segment>
+  <locations-segment>
+    <media-id>ZA061_06_03_0236</media-id>
+    <descriptor>Regina Pelz</descriptor>
+    <location-id type="integer">14753</location-id>
+  </locations-segment>
+</locations-segments>
 
 <photos type="array">
   <photo>

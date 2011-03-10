@@ -54,6 +54,10 @@ interview:
       image-content-type: 'photo_content_type'
       caption: 'caption'
 
+tape:
+  media-id: 'media_id'
+  duration: 'duration'
+
 caption:
   key_attribute: 'none'
   class_name: 'segment'
@@ -98,4 +102,11 @@ location:
     name: 'company_name'
     alias-names: 'company_alias_names'
     description: 'description'
+
+locations-segment:
+  key_attribute: 'none'
+  skip_invalid: true
+  class_name: 'location_segment'
+  media-id: 'media_id'
+  descriptor: 'descriptor'
 
