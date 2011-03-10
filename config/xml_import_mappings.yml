@@ -47,6 +47,7 @@ interview:
 
 photo:
   key_attribute: 'photo_file_name'
+  delete_all: true
   image-file-name: 'photo_file_name'
   caption: 'caption'
 
@@ -57,6 +58,7 @@ tape:
 text-material:
   class_name: 'text_material'
   key_attribute: 'document_file_name'
+  delete_all: true
   document-type: 'document_type'
   document-file-name: 'document_file_name'
 

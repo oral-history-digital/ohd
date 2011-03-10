@@ -33,10 +33,10 @@ class TextMaterial < ActiveRecord::Base
     # (because the filename gets assigned in the process of assigning the file)
     filename.sub!(/\w{3,4}$/,'pdf')
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = (filename[/^za\d{3}/i] || '').downcase
+      archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
       @assigned_filename = filename
       # construct the import file path
-      filepath = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', filename.split('/').last)
+      filepath = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
       File.open(filepath, 'r') do |file|
         self.document = file
       end
