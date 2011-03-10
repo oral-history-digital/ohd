@@ -10,8 +10,7 @@ class Interview < ActiveRecord::Base
 
   has_many  :tapes
 
-  has_many  :segments,
-            :through => :tapes
+  has_many  :segments
 
   has_many  :location_references
   

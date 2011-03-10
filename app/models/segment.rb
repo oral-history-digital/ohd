@@ -1,5 +1,7 @@
 class Segment < ActiveRecord::Base
 
+  belongs_to :interview
+
   belongs_to :tape
 
   has_one :previous_segment,
@@ -7,9 +9,6 @@ class Segment < ActiveRecord::Base
 
   has_one :following_segment,
           :class_name => 'Segment'
-
-  delegate  :interview,
-            :to => :tape
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     self.class_eval <<DEF
@@ -32,6 +31,21 @@ DEF
 
   validates_associated :tape
 
+  def before_validation_on_create
+    # make sure we have a tape assigned
+    if self.tape.nil?
+      tape_media_id = (media_id || '')[/za\d{3}_\d{2}_\d{2}/i]
+      interview_archive_id = (media_id || '')[/za\d{3}/i]
+      interview ||= Interview.find_by_archive_id(interview_archive_id)
+      raise "No interview found for archive_id='#{interview_archive_id}'" if interview.nil?
+      interview_id = interview.id
+      tape = Tape.find_or_initialize_by_media_id_and_interview_id(tape_media_id, interview_id)
+      raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{interview_id}" if tape.nil?
+      tape.save
+      tape.segments << self
+    end
+  end
+
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -51,10 +65,6 @@ DEF
   # use the MediaId Adapters
   #Sunspot::Adapters::InstanceAdapter.register(ZWAR::Sunspot::Adapters::MediaIdInstanceAdapter, self)
   #Sunspot::Adapters::DataAccessor.register(ZWAR::Sunspot::Adapters::MediaIdDataAccessor, self)
-
-  def interview_id
-    interview.id
-  end
 
   def archive_id
     @archive_id || interview.archive_id

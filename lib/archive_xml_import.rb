@@ -95,6 +95,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       set_context(name)
       #puts "Associations: #{@associations.keys.join(', ')}"
 
+      # check to see if we need to clear all associated items first
+      if @current_mapping.keys.include?(@current_tag_name.to_s.singularize)
+        key_attribute = @current_mapping[@current_tag_name.to_s.singularize]['key_attribute']
+        if !key_attribute.nil? && %w(nil none).include?(key_attribute)
+          # send the association a delete_all!
+        end
+      end
+
     elsif @associations.keys.include?(name.to_sym)
       # somehow define a sub-context
       set_subcontext(name)
@@ -115,10 +123,10 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    if !@current_context.nil? && @current_node_name == name    
+    if !@current_context.nil? && @current_node_name == name && !attributes.empty?
       # Wrap up the instance for the current context
-      key_attribute = (@mappings[name]['key_attribute'] || 'id').to_sym
-      puts "\n#{@current_context.name} (#{attributes[key_attribute]}) attributes:\n#{attributes.inspect}"
+      key_attribute = %w(none nil).include?(@mappings[name]['key_attribute']) ? nil : (@mappings[name]['key_attribute'] || 'id').to_sym
+      puts "\n#{@current_context.name} (#{key_attribute.nil? ? 'no key_attribute' : attributes[key_attribute]}) attributes:\n#{attributes.inspect}"
       @type_scope = {}
       if @current_mapping.keys.include?('class_type')
         type_field = @current_mapping['type_field']  || 'type'
@@ -130,7 +138,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           raise "Archive-ID mismatch:\nFile: #{@archive_id}\nData: #{attributes[:archive_id]}" unless attributes[:archive_id] == @archive_id
           assign_attributes_to_instance(@interview)
         else
-          @instance = if @type_scope.empty?
+          @instance = if key_attribute.nil?
+                        @current_context.new
+                      elsif @type_scope.empty?
                         @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
                       else
                         type_field = @type_scope.keys.first
@@ -182,8 +192,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       end
       save_associated_data
       @imported[@current_context.name.underscore.pluralize] ||= []
-      puts "Adding instance (source id: #{@source_id}): #{@instance[key_attribute.to_sym]}"
-      @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << @instance[key_attribute.to_sym]
+      puts "Adding instance (source id: #{@source_id}): #{!key_attribute.nil? ? @instance[key_attribute.to_sym] : @instance.to_s}"
+      @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << (key_attribute.nil? ? @instance.id : @instance[key_attribute.to_sym])
       close_context(name)
 
     elsif !@current_context.nil?

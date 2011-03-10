@@ -7,6 +7,7 @@ class LocationReference < ActiveRecord::Base
             :translated,
             :to => :interview
 
+  validates_presence_of :name, :reference_type
   validates_uniqueness_of :name, :scope => :interview_id
   validates_associated  :interview
 

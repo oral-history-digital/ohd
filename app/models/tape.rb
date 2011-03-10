@@ -8,7 +8,7 @@ class Tape < ActiveRecord::Base
   validates_presence_of :media_id, :interview_id
   validates_uniqueness_of :media_id
   
-  validates_associated :interview
+  # validates_associated :interview
 
   def number
     @number ||= media_id[/\d+$/].to_i

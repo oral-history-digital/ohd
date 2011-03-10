@@ -54,19 +54,20 @@ interview:
       image-content-type: 'photo_content_type'
       caption: 'caption'
 
-  captions:
-    caption:
-      media-id: 'media_id'
-      timecode: 'timecode'
-      duration: 'duration'
-      transcript: 'transcript'
-      translation: 'translation'
-      mainheading: 'mainheading'
-      subheading: 'subheading'
-      section-code: 'section_code'
-      speaker-change: 'speaker_change'
-      chapter-change: 'chapter_change'
-      speaker: 'speaker'
+caption:
+  key_attribute: 'none'
+  class_name: 'segment'
+  media-id: 'media_id'
+  timecode: 'timecode'
+  duration: 'duration'
+  transcript: 'transcript'
+  translation: 'translation'
+  mainheading: 'mainheading'
+  subheading: 'subheading'
+  section-code: 'section_code'
+  speaker-change: 'speaker_change'
+  chapter-change: 'chapter_change'
+  speaker: 'speaker'
 
 location:
   key_attribute: 'name'
