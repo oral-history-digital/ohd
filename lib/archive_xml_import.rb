@@ -88,37 +88,38 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   def start_element(name, attributes={})
     # @current_data = ''
-    if @mappings.keys.include?(name)
-      # This is a base-level object type
-      #STDOUT.printf '.'
-      #STDOUT.flush
-      set_context(name)
-      #puts "Associations: #{@associations.keys.join(', ')}"
+    # puts "\n####> CURRENT MAPPING: #{@mapping_levels.join(' | ')}"
+    if @mapping_levels.empty?
+      if @mappings.keys.include?(name)
+        # This is a base-level object type
+        #STDOUT.printf '.'
+        #STDOUT.flush
+        set_context(name)
+        #puts "Associations: #{@associations.keys.join(', ')}"
 
-      # check to see if we need to clear all associated items first
-      if @current_mapping.keys.include?(@current_tag_name.to_s.singularize)
-        key_attribute = @current_mapping[@current_tag_name.to_s.singularize]['key_attribute']
-        if !key_attribute.nil? && %w(nil none).include?(key_attribute)
-          # send the association a delete_all!
+        # check to see if we need to clear all associated items first
+        if @current_mapping.keys.include?(@current_tag_name.to_s.singularize)
+          key_attribute = @current_mapping[@current_tag_name.to_s.singularize]['key_attribute']
+          if !key_attribute.nil? && %w(nil none).include?(key_attribute)
+            # send the association a delete_all!
+          end
         end
-      end
 
-    elsif @associations.keys.include?(name.to_sym)
-      # somehow define a sub-context
-      set_subcontext(name)
-      
-    elsif !(@current_mapping.nil? || @current_mapping.empty?)
+      elsif @associations.keys.include?(name.to_sym)
+        # somehow define a sub-context
+        set_subcontext(name)
+
+      else
+        # We open another mapping level for the current context
+        open_mapping_level(name)
+        # assign according to attribute-mapping
+        set_current_attribute(name)
+      end
+    else
       # We open another mapping level for the current context
       open_mapping_level(name)
       # assign according to attribute-mapping
-      @current_attribute = case @current_mapping
-                             when nil
-                              nil
-                             when String
-                              @current_mapping
-                             when Hash
-                              @current_mapping[name.to_s]
-                           end
+      set_current_attribute(name)
     end
   end
 
@@ -391,6 +392,19 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       end
       #puts
     end
+  end
+
+
+  def set_current_attribute(name)
+    # assign according to attribute-mapping
+    @current_attribute = case @current_mapping
+                           when nil
+                            nil
+                           when String
+                            @current_mapping
+                           when Hash
+                            @current_mapping[name.to_s]
+                         end
   end
 
   # Closes the current mapping level and moves one level
