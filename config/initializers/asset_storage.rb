@@ -1,6 +1,8 @@
 # This sets the storage server location for asset and media files
 ARCHIVE_MANAGEMENT_DIR = 'redaktionssystem'
 
+REPOSITORY_DIR = 'archiv_dis'
+
 if RAILS_ENV == 'production'
   ActiveRecord.path_to_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
   ActiveRecord.path_to_photo_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/FOTO_MASTER'

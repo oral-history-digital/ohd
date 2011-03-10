@@ -102,6 +102,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           key_attribute = @current_mapping[@current_tag_name.to_s.singularize]['key_attribute']
           if !key_attribute.nil? && %w(nil none).include?(key_attribute)
             # send the association a delete_all!
+            # TODO: this deletion
           end
         end
 

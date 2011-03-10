@@ -54,6 +54,12 @@ tape:
   media-id: 'media_id'
   duration: 'duration'
 
+text-material:
+  class_name: 'text_material'
+  key_attribute: 'document_file_name'
+  document-type: 'document_type'
+  document-file-name: 'document_file_name'
+
 caption:
   key_attribute: 'none'
   class_name: 'segment'
