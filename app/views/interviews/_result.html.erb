@@ -8,9 +8,23 @@
   <div class="baseContainerTeaserImage">
     <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title %>
     <% if result.segmented? %>
-      <div class="baseContainerTeaserSubtitled"><%= t(:subtitled, :scope => 'media')%></div>
+      <div class="baseContainerTeaserSubtitled" onmouseover="$('teaser_<%= result.archive_id %>_tooltip').show();" onmouseout="$('teaser_<%= result.archive_id %>_tooltip').hide();">
+        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.languages.map{|l| t(l.to_s, :scope => 'language_codes')}.join('/') %><%= result.translated? ? "&nbsp;-&nbsp;#{t('Deutsch', :scope => 'language_codes')}" : '' %>
+        <% if result.has_headings? %>
+        <%= image_tag(image_path('inhaltsverzeichnis.png'), :style => "float: right; padding: 1px 1px 0 6px;") %>
+        <% end %>
+      </div>
     <% end %>
   </div>
+  <% if result.segmented? %>
+  <div id="teaser_<%= result.archive_id %>_tooltip" class="floatingToolTip" style="display: none;">
+    <%= t(:subtitles, :scope => 'media') %> in <%= result.languages.map{|l| t(l.to_s, :scope => "categories.languages")}.join('/') %><%= result.translated? ? (' ' + t('and') + ' ' + t('Deutsch', :scope => "categories.languages") ) : ''%>.
+    <% if result.has_headings? %>
+    <br/>
+    <%= t(:has_headings, :scope => 'media') %>.
+    <% end %>
+  </div>
+  <% end %>
   <div class="baseContainerTeaserText">
     <h3><%= link_to result.short_title, interview_path(result), :title => result.short_title %></h3>
     <ul>

@@ -14,6 +14,7 @@ de:
   translated: 'übersetzt'
   all: 'alle'
   admin_area: 'Administratoren-Bereich'
+  and: 'und'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -186,6 +187,8 @@ de:
     low_quality: 'Mittlere Qualität'
     high_quality: 'Hohe Qualität'
     subtitled: 'Untertitel vorhanden'
+    subtitles: 'Untertitel'
+    has_headings: 'Inhaltsverzeichnis liegt vor'
 
   location:
     in: 'in'
@@ -401,6 +404,36 @@ de:
       'Spanisch': 'spanisch'
       'Ukrainisch': 'ukrainisch'
       'Surschik': 'surschik'
+
+  language_codes:
+    'Russisch': 'rus'
+    'Bosnisch': 'bos'
+    'Romani': 'rom'
+    'Bulgarisch': 'bul'
+    'Deutsch': 'deu'
+    'Englisch': 'eng'
+    'Französisch': 'fra'
+    'Hebräisch': 'heb'
+    'Italienisch': 'ita'
+    'Kroatisch': 'hrv'
+    'Lettisch': 'lav'
+    'Litauisch': 'lit'
+    'Mazedonisch': 'mkd'
+    'Rumänisch': 'ron'
+    'Rumänisch/Russisch': 'ron/rus'
+    'Niederländisch': 'nld'
+    'Norwegisch': 'nor'
+    'Polnisch': 'pol'
+    'Serbisch': 'srp'
+    'Ungarisch': 'hun'
+    'Slowakisch': 'slk'
+    'Slowakisch/Tschechisch': 'slk/ces'
+    'Tschechisch': 'ces'
+    'Slowenisch': 'slv'
+    'Katalanisch': 'cat'
+    'Spanisch': 'spa'
+    'Ukrainisch': 'ukr'
+    'Surschik': 'ukr/rus'
 
   external_links:
     notice: 'Externer Link'

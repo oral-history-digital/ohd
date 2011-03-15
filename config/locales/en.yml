@@ -14,6 +14,7 @@ en:
   previous: '&laquo;&nbsp;previous'
   next: 'next&nbsp;&raquo;'
   admin_area: 'Admin Area'
+  and: 'and'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -186,6 +187,8 @@ en:
     low_quality: 'Lower quality'
     high_quality: 'High quality'
     subtitled: 'Subtitled interview'
+    subtitles: 'Subtitles'
+    has_headings: 'Table of contents is available'
 
   location:
     in: 'in'
@@ -398,6 +401,36 @@ en:
       'Spanisch': 'Spanish'
       'Ukrainisch': 'Ukrainian'
       'Surschik': 'Surzhyk'
+
+  language_codes:
+    'Russisch': 'rus'
+    'Bosnisch': 'bos'
+    'Romani': 'rom'
+    'Bulgarisch': 'bul'
+    'Deutsch': 'deu'
+    'Englisch': 'eng'
+    'Französisch': 'fra'
+    'Hebräisch': 'heb'
+    'Italienisch': 'ita'
+    'Kroatisch': 'hrv'
+    'Lettisch': 'lav'
+    'Litauisch': 'lit'
+    'Mazedonisch': 'mkd'
+    'Rumänisch': 'ron'
+    'Rumänisch/Russisch': 'ron/rus'
+    'Niederländisch': 'nld'
+    'Norwegisch': 'nor'
+    'Polnisch': 'pol'
+    'Serbisch': 'srp'
+    'Ungarisch': 'hun'
+    'Slowakisch': 'slk'
+    'Slowakisch/Tschechisch': 'slk/ces'
+    'Tschechisch': 'ces'
+    'Slowenisch': 'slv'
+    'Katalanisch': 'cat'
+    'Spanisch': 'spa'
+    'Ukrainisch': 'ukr'
+    'Surschik': 'ukr/rus'
 
   external_links:
     notice: 'External link'

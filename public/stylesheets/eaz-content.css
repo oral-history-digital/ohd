@@ -361,6 +361,7 @@ h5 {
 }
 
 .baseContainerTeaser {
+  position: relative;
   width: 325px;
   overflow: hidden;
   float: left;
@@ -388,13 +389,14 @@ h5 {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 130px;
   font-size: 9px;
   line-height: 120%;
   text-align: left;
   color: #fff;
   padding: 2px 5px;
   background-image: url(/images/pixel_schwarz_33.png);
+  cursor: help;
 }
 
 .baseContainerTeaserText {
@@ -467,6 +469,18 @@ h5 {
 .baseContainerTeaserText span {
   font-size: 100%;
   line-height: 140%;
+}
+
+/* Info / Tooltips */
+.floatingToolTip {
+    background-color: #b2afa0;
+    color: #fff;
+    position: absolute;
+    top: 116px;
+    font-size: 9px;
+    line-height: 125%;
+    padding: 2px 6px;
+    z-index:100;
 }
 
 /*
