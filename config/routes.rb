@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
     admin.resources :user_registrations
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
+    admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index
     admin.registration_details 'registrierung/:user_registration',
                                :controller => :user_registrations,
                                :action => :edit
