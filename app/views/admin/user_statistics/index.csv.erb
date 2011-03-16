@@ -12,7 +12,11 @@
     <% end -%>
   <% end -%>
   <% csv << [] -%>
-  <% csv << [ "Stand: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ] -%>
+  <% csv << [ "Stand der Erhebung: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ] -%>
   <% csv << [ "Zeitraum: Gesamt" ] -%>
+  <% csv << [ @errors.size == 0 ? 'Keine Fehlermeldungen.' : 'Fehler / Warnungen:' ] -%>
+  <% @errors.each do |error| -%>
+    <% csv << [ error ] -%>
+  <% end -%>
 <% end -%>
 <%= content -%>

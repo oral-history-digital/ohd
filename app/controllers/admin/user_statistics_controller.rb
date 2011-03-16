@@ -12,14 +12,15 @@ class Admin::UserStatisticsController < Admin::BaseController
   private
 
   def csv_export
-    #@first_registration = UserRegistration.find(:first, :conditions => ['created_at <> ?', 0], :order => 'created_at ASC')
-    #@last_registration = UserRegistration.find(:first, :conditions => ['created_at <> ?', 0], :order => 'created_at DESC')
-    #@user_registrations = UserRegistration.find(:all, :order => 'created_at ASC')
+
+    mapping_file = File.join(RAILS_ROOT, 'config', 'statistics_mappings.yml')
+    mappings = YAML::load_file(mapping_file)
 
     @list = [ :header ]
     @rows = {
             :header => { :label => "ZWAR-Benutzerstatisik vom #{}", :sum => User.count, :cols => {} }
     }
+    @errors = []
 
     categories = { 'Beruf' => 'job_description', 'Recherche-Anliegen' => 'research_intentions', 'Land' => 'country' }
     categories.each do |category, field_name|
@@ -28,9 +29,18 @@ class Admin::UserStatisticsController < Admin::BaseController
       category_results.each do |category_result|
         label = category_result.first
         label = "k. A. (#{category})" if label.empty?
+        if mappings.keys.include?(field_name)
+          category_mappings = mappings[field_name]
+          if category_mappings.keys.include?(label)
+            label = category_mappings[label]
+          end
+        end
         sum = category_result.last
-        @list << label
-        @rows[label] = { :label => label, :sum => sum, :cols => {} }
+        row_title = category == 'Land' ? I18n.t(label, :scope => :user_countries, :locale => :de) : label
+        unless @rows.include?(label)
+          @list << label
+          @rows[label] = { :label => row_title, :sum => sum, :cols => {} }
+        end
       end
       #inserts an empty row
       @list << [ nil ]
@@ -67,7 +77,23 @@ class Admin::UserStatisticsController < Admin::BaseController
         results = User.count(:group => field_name, :conditions => conditions)
         results.each do |label, value|
           label = "k. A. (#{category})" if label.empty?
-          @rows[label][:cols][month_label] = value if @rows[label]
+
+          if mappings.keys.include?(field_name)
+            category_mappings = mappings[field_name]
+            if category_mappings.keys.include?(label)
+              label = category_mappings[label]
+            end
+          end
+
+          if @rows[label]
+            if @rows[label][:cols][month_label]
+              @rows[label][:cols][month_label] += value
+            else
+              @rows[label][:cols][month_label] = value
+            end
+          else
+            @errors << "#{label} mit Wert '#{value}' nicht berücksichtigt."
+          end
         end
       end
     end
