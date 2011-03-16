@@ -4,7 +4,7 @@
   <%= f.error_messages %>
 
   <span><%= f.label t(:email, :scope => 'devise.authentication_keys') %></span>
-  <span><%= f.text_field :email %></span>
+  <span><%= text_field_tag "#{resource_name}[email]", params[:email] %></span>
 
   <span><%= f.submit t(:resend, :scope => 'devise.passwords') %></span>
 
