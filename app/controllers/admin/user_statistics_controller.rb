@@ -49,7 +49,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     date_pattern = "%m / %Y"
     first_month = Date.new(2010, 7)
     current_month = first_month
-    last_month = Date.new(2011, 2)
+    last_month = (Date.today-1.month).beginning_of_month
 
     months = [ nil ]
     while current_month <= last_month
