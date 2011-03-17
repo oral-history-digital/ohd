@@ -16,9 +16,10 @@ class Admin::UserStatisticsController < Admin::BaseController
     mapping_file = File.join(RAILS_ROOT, 'config', 'statistics_mappings.yml')
     mappings = YAML::load_file(mapping_file)
 
-    @list = [ :header ]
+    @list = [ :header, :count ]
     @rows = {
-            :header => { :label => "ZWAR-Benutzerstatisik vom #{}", :sum => User.count, :cols => {} }
+            :header => { :label => "Benutzerstatisik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
+            :count => { :label => nil, :sum => User.count, :cols => {} }
     }
     @errors = []
 

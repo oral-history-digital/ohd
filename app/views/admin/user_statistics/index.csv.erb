@@ -1,22 +1,22 @@
 <% content = FasterCSV.generate(:col_sep => "\t") do |csv| -%>
-  <% @list.each do |col| -%>
-    <% row = @rows[col] -%>
-    <% if row === nil -%>
-      <% csv << [ col ] -%>
-    <% else -%>
-      <% cells_for_row = [ row[:label], row[:sum] ] -%>
-      <% @month_labels.each do |month_label| -%>
-        <% cells_for_row << row[:cols][month_label] -%>
-      <% end -%>
-      <% csv << cells_for_row -%>
-    <% end -%>
-  <% end -%>
-  <% csv << [] -%>
-  <% csv << [ "Stand der Erhebung: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ] -%>
-  <% csv << [ "Zeitraum: Gesamt" ] -%>
-  <% csv << [ @errors.size == 0 ? 'Keine Fehlermeldungen.' : 'Fehler / Warnungen:' ] -%>
-  <% @errors.each do |error| -%>
-    <% csv << [ error ] -%>
-  <% end -%>
+<% @list.each do |col| -%>
+<% row = @rows[col] -%>
+<% if row === nil -%>
+<% csv << [ col ] -%>
+<% else -%>
+<% cells_for_row = [ row[:label], row[:sum] ] -%>
+<% @month_labels.each do |month_label| -%>
+<% cells_for_row << row[:cols][month_label] -%>
+<% end -%>
+<% csv << cells_for_row -%>
+<% end -%>
+<% end -%>
+<% csv << [] -%>
+<% csv << [ "Stand der Erhebung: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ] -%>
+<% csv << [ "Zeitraum: Gesamt" ] -%>
+<% csv << [ @errors.size == 0 ? 'Keine Fehlermeldungen.' : 'Fehler / Warnungen:' ] -%>
+<% @errors.each do |error| -%>
+<% csv << [ error ] -%>
+<% end -%>
 <% end -%>
 <%= content -%>
