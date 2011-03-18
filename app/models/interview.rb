@@ -139,4 +139,21 @@ DEF
   #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
   # end
 
+  def still_image_file_name=(filename)
+    # assign the photo - but skip this part on subsequent changes of the file name
+    # (because the filename gets assigned in the process of assigning the file)
+    if !defined?(@assigned_filename) || @assigned_filename != filename
+      archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
+      @assigned_filename = filename
+      # construct the import file path
+      filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
+      return unless File.exists?(filepath)
+      File.open(filepath, 'r') do |file|
+        self.still_image = file
+      end
+    else
+      write_attribute :still_image_file_name, filename
+    end
+  end
+
 end
