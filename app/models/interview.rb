@@ -13,6 +13,9 @@ class Interview < ActiveRecord::Base
   has_many  :segments
 
   has_many  :location_references
+
+  has_many  :imports,
+            :as => :importable
   
   has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
@@ -43,6 +46,8 @@ DEF
   validates_attachment_content_type :still_image,
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? }
+
+  after_save :create_import
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -154,6 +159,19 @@ DEF
     else
       write_attribute :still_image_file_name, filename
     end
+  end
+
+  def import_time
+    @import_time ||= begin
+      import = Import.for_interview(id).first
+      import.nil? ? created_at : import.time
+    end
+  end
+
+  private
+
+  def create_import
+    imports.create
   end
 
 end
