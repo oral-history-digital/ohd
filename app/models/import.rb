@@ -3,7 +3,7 @@ class Import < ActiveRecord::Base
   belongs_to  :importable,
               :polymorphic => true
 
-  before_create :set_time
+  before_create :set_time, :set_current_migration
 
   named_scope :last, { :limit => "0,1", :order => "time DESC" }
 
@@ -11,10 +11,27 @@ class Import < ActiveRecord::Base
                                             :limit => "0,1",
                                             :order => "time DESC" }}
 
+  def self.current_migration
+    @@current_migration ||= begin
+      last_migration_import = Import.find :first, :order => "migration DESC"
+      last_migration_import.nil? ? '00000000000000' : last_migration_import.migration
+    end
+  end
+
+  def self.current_migration=(migration)
+    @@current_migration = migration if migration.is_a?(String) && migration =~ /^\d+$/
+  end
+
   private
 
   def set_time
     write_attribute :time, Time.now
+  end
+
+  def set_current_migration
+    unless @@current_migration.nil? || @@current_migration > migration
+      @@current_migration = migration
+    end
   end
 
 end

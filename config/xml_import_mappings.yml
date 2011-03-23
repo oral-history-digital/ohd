@@ -54,6 +54,7 @@ photo:
 tape:
   media-id: 'media_id'
   duration: 'duration'
+  skip_invalid: true
 
 text-material:
   class_name: 'text_material'

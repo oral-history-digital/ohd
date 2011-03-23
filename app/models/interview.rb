@@ -164,14 +164,19 @@ DEF
   def import_time
     @import_time ||= begin
       import = Import.for_interview(id).first
-      import.nil? ? created_at : import.time
+      import.nil? ? (created_at || Time.gm(2009,1,1)) : import.time
     end
+  end
+
+  # Sets the migration version for import
+  def import_migration=(version)
+    @migration = version
   end
 
   private
 
   def create_import
-    imports.create
+    imports.create{|i| i.migration = @migration}
   end
 
 end

@@ -1,6 +1,5 @@
 namespace :import do
 
-  #TODO: Libary / XML valid?
   desc "Import interview data"
   task :all => :environment do
 

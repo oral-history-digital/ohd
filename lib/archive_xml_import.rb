@@ -2,12 +2,9 @@ require 'nokogiri'
 
 class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
-  # Chars to remove before Indexing/Importing
-  ILLEGAL_XML_CHARS = /\x00|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0B|
-\x0C|\x0E|\x0F|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|
-\x1B|\x1C|\x1D|\x1E|\x1F/
-
   MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
+
+  SANITY_CHECKS = %w(export created-at current-migration)
 
   def initialize(filename, incremental=true)
     @incremental = !(incremental.nil? || incremental == false)
@@ -19,6 +16,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @archive_id = (filename.split('/').last[/za\d{3}/i] || '').downcase
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
     @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
+    self.import_sanity_levels = SANITY_CHECKS
     @@interview_associations = Interview.reflect_on_all_associations.map{|assoc| [ assoc.name, assoc.macro ]}
     super()
   end
@@ -61,37 +59,75 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @source_id = nil
     # This is a mapping hash of source to local ids
     @source_to_local_id_mapping = {}
+    # flag whether we are still parsing
+    @parsing = true
     # ??? unused
     @date_of_export = nil
   end
 
   def end_document
     # puts "\n\n@@@attributes inspection:\n#{@attributes.inspect}\n\n"
-    begin
-      @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
-      @imported['interviews'] << @interview.archive_id
-    rescue
-      puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
-      puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
-      raise "Aborted."
+    if @parsing
+      begin
+        @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
+        @imported['interviews'] << @interview.archive_id
+      rescue
+        puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
+        puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
+        raise "Aborted."
+      end
+      puts "\nSkipped tag elements:\n#{@skipped_tag_names.join(", ")}"
+      puts "\nSource-to-Local ID-Mapping:"
+      @source_to_local_id_mapping.keys.each do |type|
+        puts "#{type.pluralize}: #{@source_to_local_id_mapping[type].keys.inject([]){|a,k| a << "#{k}->#{@source_to_local_id_mapping[type][k]}" }.join(', ')}"
+      end
+    else
+      puts "\nStopped parsing."
     end
-    puts "\nSkipped tag elements:\n#{@skipped_tag_names.join(", ")}"
-    puts "\nSource-to-Local ID-Mapping:"
-    @source_to_local_id_mapping.keys.each do |type|
-      puts "#{type.pluralize}: #{@source_to_local_id_mapping[type].keys.inject([]){|a,k| a << "#{k}->#{@source_to_local_id_mapping[type][k]}" }.join(', ')}"
-    end
-    puts "\nImported:"
+    puts "\nImported: #{@imported.empty? ? 'nothing' : ''}"
     @imported.keys.each do |context|
       puts context.to_s + ':'
       puts @imported[context].compact.inspect
       puts
     end
+    puts
   end
 
   def start_element(name, attributes={})
+    return unless @parsing && passes_import_sanity_checks(name)
     # @current_data = ''
     # puts "\n####> CURRENT MAPPING: #{@mapping_levels.join(' | ')}"
-    if @mapping_levels.empty?
+    if SANITY_CHECKS.include?(name)
+      # perform a sanity check
+      case name
+        when 'export'
+          attributes = [ attributes ] unless attributes.first.is_a?(Array)
+          export_archive_id = attributes.assoc('archive-id')
+          export_archive_id = export_archive_id.last unless export_archive_id.nil?
+          if export_archive_id != @archive_id
+            report_sanity_check_failure_for 'export', "Mismatch of archive_ids: File-based=#{@archive_id}, based on XML attribute=#{export_archive_id}. Aborting."
+          else
+            increment_import_sanity name
+          end
+
+          sanity_check = 'created-at'
+          export_date_attr = attributes.assoc(sanity_check)
+          if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
+            report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
+          else
+            export_date = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr.last)
+            if export_date < @interview.import_time
+              report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is more recent than '#{export_date.strftime('%d.%m.%Y')}'."
+            else
+              increment_import_sanity sanity_check
+            end
+          end
+
+        else
+          # handle the data on closing the element
+      end
+    
+    elsif @mapping_levels.empty?
       
       if @mappings.keys.include?(name)
         if @last_main_node != name
@@ -146,7 +182,28 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    if !@current_context.nil? && @current_node_name == name && !attributes.empty?
+    return unless @parsing
+    if SANITY_CHECKS.include?(name)
+      # handle sanity checks
+      case name
+        when 'current-migration'
+          import_migration = Import.current_migration
+          if import_migration != @current_data
+            if import_migration > @current_data
+              puts "Importing data from an older migration than '#{import_migration}': #{@current_data}."
+            else
+              puts "Importing data from a new migration '#{@current_data}'."
+            end
+          end
+          @interview.import_migration = @current_data
+          increment_import_sanity name
+        else
+          # do nothing here
+      end
+      @current_data = ''
+      return
+
+    elsif !@current_context.nil? && @current_node_name == name && !attributes.empty?
       # Wrap up the instance for the current context
       key_attribute = %w(none nil).include?(@mappings[name]['key_attribute']) ? nil : (@mappings[name]['key_attribute'] || 'id').to_sym
       # puts "\n#{@current_context.name} (#{key_attribute.nil? ? 'no key_attribute' : attributes[key_attribute]}) attributes:\n#{attributes.inspect}"
@@ -186,11 +243,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           association ||= @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
 
           unless association.nil?
-            @interview.save if @interview.new_record?
-            [@interview, @instance].each do |item|
-              unless item.valid? || @current_mapping['skip_invalid']
-                puts "\nERROR: #{item.class.name} '#{item}' invalid:\n#{item.inspect}\n\nError Messages:\n#{item.errors.full_messages.join("\n")}\n"
-              end
+            # don't check the interview if we have a belongs_to association
+            unless association.last == :belongs_to
+              @interview.save if @interview.new_record?
+            end
+            unless @instance.valid? || @current_mapping['skip_invalid']
+              puts "\nERROR: #{@instance.class.name} '#{@instance}' invalid:\n#{@instance.inspect}\n\nError Messages:\n#{@instance.errors.full_messages.join("\n")}\n"
             end
             case association.last
               when :has_many
@@ -230,7 +288,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
       # ID node: set source ID if not set already
       if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
-        puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
+        # puts "ID-Element: current_mapping: #{@current_mapping}\ncurrent context: #{@current_context.name}\nmapping levels: #{@mapping_levels.join(', ')}\nID: #{@current_data}"
         @source_id ||= @current_data.to_i
       end
 
@@ -242,7 +300,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           unless parent_association.macro == :belongs_to
             parent = parent_association.class_name.constantize.find(@source_to_local_id_mapping[parent_association.class_name.underscore][@current_data.to_i])
             assign_attribute(name.sub(/[_-]id$/,'_id'), parent.id) unless parent.nil?
-            puts "\n@@@@ PARENT FOUND\nfound parent object: #{parent.class.name} #{parent.id}\n"
           end
         end
       end
@@ -402,7 +459,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     if !@current_subcontext.nil?
       if @current_subcontext.name.to_s.singularize == node.underscore.singularize && @associated_data[@current_subcontext.name].is_a?(Array)
         @associated_data[@current_subcontext.name] << {}
-        puts "\n@@@ New #{@current_subcontext.name.to_s.upcase} associated instance added."
+        # puts "\n@@@ New #{@current_subcontext.name.to_s.upcase} associated instance added."
       end
     end
 
@@ -504,6 +561,59 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def reset_attributes_for(klass)
     @attributes[klass] = {}
     # puts "\nData reset for '#{klass}'"
+  end
+
+
+  # Import Sanity - set a precondition for a successful save
+  # Each sanity level must be cleared before a successful validation
+  # or the corresponding message is added to the errors.
+  def import_sanity_levels=(levels)
+    @sanity_checks = {}
+    set_sanity_level = lambda{|level, msg| @sanity_checks[level.to_s.underscore.to_sym] = msg}
+    case levels
+      when Array
+        levels.each do |level|
+          set_sanity_level.call(level, import_sanity_message_for(level))
+        end
+      when Hash
+        levels.each_pair do |level, message|
+          set_sanity_level.call(level, message)
+        end
+      when String, Symbol
+        set_sanity_level.call(level, import_sanity_message_for(name))
+    end
+  end
+
+  def increment_import_sanity(name)
+    name = name.to_s.underscore.to_sym
+    if @sanity_checks.keys.include?(name)
+      @sanity_checks.delete(name)
+    end
+  end
+
+  def report_sanity_check_failure_for(name, message)
+    name = name.to_s.underscore.to_sym
+    if @sanity_checks.keys.include?(name)
+      @sanity_checks[name] = message
+    end
+  end
+
+  def import_sanity_message_for(name)
+    "Did not pass sanity check for #{name} (missing info in XML?)."
+  end
+
+  def passes_import_sanity_checks(name)
+    if @sanity_checks.empty? || !@mappings.keys.include?(name)
+      true
+    else
+      unless defined?(@reported_failed_sanity_checks)
+        puts "\nERROR - FAILED SANITY CHECKS (on #{name}):"
+        puts @sanity_checks.keys.map{|k| k.to_s + ': ' + @sanity_checks[k].to_s}.join("\n")
+        @reported_failed_sanity_checks = true
+        @parsing = false
+      end
+      false
+    end
   end
 
 end
