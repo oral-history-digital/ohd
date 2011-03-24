@@ -47,8 +47,6 @@ DEF
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? }
 
-  after_save :create_import
-
   searchable :auto_index => false do
     string :archive_id, :stored => true
     text :transcript, :boost => 10 do
@@ -139,10 +137,18 @@ DEF
     languages.map{|l| l.name }.include?('Hebräisch') ? true : false
   end
 
-  # this should be handled by the view
-  # def translated
-  #  read_attribute(:translated) ? 'übersetzt' : 'nicht übersetzt'
-  # end
+  # forced_labor_groups setter for attribute-based XML import
+  def forced_labor_groups=(data)
+    create_categories_from(data, 'Gruppen')
+  end
+
+  def forced_labor_habitation=(data)
+    create_categories_from(data, 'Unterbringung')
+  end
+
+  def forced_labor_fields=(data)
+    create_categories_from(data, 'Einsatzbereiche')
+  end
 
   def still_image_file_name=(filename)
     # assign the photo - but skip this part on subsequent changes of the file name
@@ -175,8 +181,24 @@ DEF
 
   private
 
-  def create_import
-    imports.create{|i| i.migration = @migration}
+#  def create_import
+#    imports.create{|i| i.migration = @migration}
+#  end
+
+  def create_categories_from(data, type)
+    category_names = data.split('|')
+    category_names.each do |name|
+      category = Category.find_or_initialize_by_category_type_and_name type, name
+      category.save if category.new_record?
+      begin
+        categorizations << Categorization.new{|c|
+          c.category_id = category.id
+          c.category_type = type
+        }
+      rescue Exception => e
+        puts e.message
+      end
+    end
   end
 
 end

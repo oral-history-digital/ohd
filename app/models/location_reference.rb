@@ -18,6 +18,8 @@ class LocationReference < ActiveRecord::Base
 
   before_save :accumulate_field_info
 
+  after_save :update_interview_category
+
   searchable :auto_index => false do
     string :archive_id, :stored => true
     text :name, :boost => 12
@@ -262,6 +264,22 @@ class LocationReference < ActiveRecord::Base
       if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
         send("#{field}=",instance_eval("@#{variable}"))
       end
+    end
+  end
+
+  # Creates a relevant interview field (forced labor locations etc)
+  def update_interview_category
+    attr = []
+    case reference_type.to_s
+      when 'place_of_birth'
+
+      when 'deportation_location'
+
+      when 'forced_labor_location'
+        
+      when 'return_location'
+
+      when 'home_location'
     end
   end
 

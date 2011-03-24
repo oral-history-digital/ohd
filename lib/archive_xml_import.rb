@@ -63,6 +63,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @parsing = true
     # ??? unused
     @date_of_export = nil
+    # migration to store in imports table
+    @migration = nil
   end
 
   def end_document
@@ -71,6 +73,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       begin
         @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
         @imported['interviews'] << @interview.archive_id
+        @interview.imports.create{|import| import.migration = @migration }
       rescue
         puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
         puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
@@ -131,7 +134,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       
       if @mappings.keys.include?(name)
         if @last_main_node != name
-          STDOUT.printf name; STDOUT.flush
+          STDOUT.printf "\n#{name}"; STDOUT.flush
           @last_main_node = name
         end
         # This is a base-level object type
@@ -142,8 +145,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
       elsif @mappings.keys.include?(name.singularize)
         if @last_main_node != name.singularize
-          puts
-          STDOUT.printf name; STDOUT.flush
+          STDOUT.printf "\n#{name}"; STDOUT.flush
           @last_main_node = name.singularize
         end
         # check to see if we need to clear all associated items first
@@ -195,7 +197,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
               puts "Importing data from a new migration '#{@current_data}'."
             end
           end
-          @interview.import_migration = @current_data
+          @migration = @current_data
           increment_import_sanity name
         else
           # do nothing here

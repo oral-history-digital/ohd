@@ -44,6 +44,13 @@ interview:
     lastname: 'last_name'
     middle-names: 'other_first_names'
     full-name: 'full_title'
+    forced-labor-details: 'forced_labor_details'
+    punishment: 'punishment'
+    liberation-date: 'liberation_date'
+    group: 'forced_labor_groups'
+    forced-labor-habitation: 'forced_labor_habitation'
+    forced-labor-field: 'forced_labor_fields'
+
 
 photo:
   key_attribute: 'photo_file_name'
