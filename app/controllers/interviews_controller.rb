@@ -6,6 +6,17 @@ class InterviewsController < BaseController
 
   actions :show
 
+  show do
+    wants.html do
+      if @object.nil?
+        # render a 404 error
+        render_optional_error_file(:not_found)
+      else
+        render :show
+      end
+    end
+  end
+
   def text_materials
     material = object.text_materials.for_file(params[:filename].capitalize).first
     head(:not_found) if material.nil?
@@ -40,8 +51,6 @@ class InterviewsController < BaseController
   def object
     @object ||= @search.results.select{|i| i.archive_id == param }.first unless @search.results.nil?
     @object ||= end_of_association_chain.find_by_archive_id(param) unless param.nil?
-    # TODO: handle this smartly
-    # raise ActiveRecord::RecordNotFound if @object.nil?
     @object
   end
 
