@@ -1,5 +1,19 @@
 require 'nokogiri'
 
+# Optional Mapping Definitions:
+#
+# key_attribute: used as the unique key for the find_or_initialize
+#
+# class_name: class to be instantiated rather than the node name
+#
+# class_type/type_field: static value and field for type-scoping (for instance for STI-classes)
+#
+# scope_field: additional unique field that scopes the find_or_initialize by to allow scoped duplicates
+#
+# delete_all: calls a delete_all on has_many associations before evaluating an array-type node
+#
+# skip_invalid: doesn't cause an error on invalid objects, just skips them
+
 class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
@@ -72,10 +86,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     if @parsing
       begin
         @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
+        @interview.set_forced_labor_locations!
         @imported['interviews'] << @interview.archive_id
         @interview.imports.create{|import| import.migration = @migration }
-      rescue
-        puts "\nERROR: #{@interview.errors.full_messages.join("\n")}\n"
+      rescue Exception => e
+        puts "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n"
         puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
         raise "Aborted."
       end
@@ -155,7 +170,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           if (!key_attribute.nil? && %w(nil none).include?(key_attribute)) \
             || item_mapping['delete_all']
             # send the association a delete_all!
-            # TODO: this deletion
             # puts "\nChecking whether to delete #{@current_context.name.pluralize} for Interview:\n#{@interview.inspect}\n"
             klass = (item_mapping['class_name'] || name.singularize).camelize.constantize
             if klass.column_names.include?('interview_id') && !@interview.new_record?
@@ -210,9 +224,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       key_attribute = %w(none nil).include?(@mappings[name]['key_attribute']) ? nil : (@mappings[name]['key_attribute'] || 'id').to_sym
       # puts "\n#{@current_context.name} (#{key_attribute.nil? ? 'no key_attribute' : attributes[key_attribute]}) attributes:\n#{attributes.inspect}"
       @type_scope = {}
-      if @current_mapping.keys.include?('class_type')
+      if @current_mapping.keys.include?('type_field')
         type_field = @current_mapping['type_field']  || 'type'
-        @type_scope[type_field] = @current_mapping['class_type']
+        @type_scope[type_field] = @current_mapping['class_type'] || name.camelize.capitalize
+        
+      elsif @current_mapping.keys.include?('scope_field')
+        @type_scope[@current_mapping['scope_field']] = attributes[@current_mapping['scope_field'].to_sym]
       end
       case @current_context.name
         when 'Interview'

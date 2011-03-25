@@ -87,6 +87,7 @@ caption:
 
 location:
   key_attribute: 'name'
+  scope_field: 'reference_type'
   class_name: 'location_reference'
   place-type: 'location_type'
   descriptor: 'name'

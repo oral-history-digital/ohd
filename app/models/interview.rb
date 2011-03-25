@@ -150,6 +150,10 @@ DEF
     create_categories_from(data, 'Einsatzbereiche')
   end
 
+  def home_location=(data)
+    create_categories_from(data, 'Lebensmittelpunkt')
+  end
+
   def still_image_file_name=(filename)
     # assign the photo - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
@@ -179,11 +183,15 @@ DEF
     @migration = version
   end
 
-  private
+  def set_forced_labor_locations!
+    locations = []
+    location_references.forced_labor.each do |location|
+      locations << location.name.strip
+    end
+    update_attribute :forced_labor_locations, locations.join("; ")
+  end
 
-#  def create_import
-#    imports.create{|i| i.migration = @migration}
-#  end
+  private
 
   def create_categories_from(data, type)
     category_names = data.split('|')
@@ -191,10 +199,12 @@ DEF
       category = Category.find_or_initialize_by_category_type_and_name type, name
       category.save if category.new_record?
       begin
-        categorizations << Categorization.new{|c|
-          c.category_id = category.id
-          c.category_type = type
-        }
+        if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
+          categorizations << Categorization.new{|c|
+            c.category_id = category.id
+            c.category_type = type
+          }
+        end
       rescue Exception => e
         puts e.message
       end

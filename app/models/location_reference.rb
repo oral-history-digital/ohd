@@ -12,8 +12,10 @@ class LocationReference < ActiveRecord::Base
   has_many  :segments,
             :through => :location_segments
 
+  named_scope :forced_labor, { :conditions => "reference_type = 'forced_labor_location'" }
+
   validates_presence_of :name, :reference_type
-  validates_uniqueness_of :name, :scope => :interview_id
+  validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
   validates_associated  :interview
 
   before_save :accumulate_field_info
@@ -90,7 +92,8 @@ class LocationReference < ActiveRecord::Base
   end
 
   def city_name=(alias_names='')
-    self.additional_alias=alias_names
+    @city_name = alias_names
+    self.additional_alias=@city_name
   end
 
   def city_alias_names=(alias_names='')
@@ -98,7 +101,8 @@ class LocationReference < ActiveRecord::Base
   end
 
   def region_name=(alias_names='')
-    self.additional_alias=alias_names
+    @region_name = alias_names
+    self.additional_alias=@region_name
   end
 
   def region_alias_names=(alias_names='')
@@ -106,7 +110,8 @@ class LocationReference < ActiveRecord::Base
   end
 
   def country_name=(alias_names='')
-    self.additional_alias=alias_names
+    @country_name = alias_names
+    self.additional_alias=@country_name
   end
 
   def country_alias_names=(alias_names='')
@@ -122,6 +127,9 @@ class LocationReference < ActiveRecord::Base
     end
     write_attribute :alias_location_names, result
   end
+
+  # only overwrite reference_type if it's blank or 'interview'
+
 
   # returns approximated "flat" grid coordinates as distance from Berlin
   def coordinates
@@ -280,6 +288,12 @@ class LocationReference < ActiveRecord::Base
       when 'return_location'
 
       when 'home_location'
+        # set the home location on the interview
+        if defined?(@country_name)
+          puts "\n\n@@@@ SETTING HOME LOCATION '#{@country_name}' ON INTERVIEW: #{interview.inspect}\n@@@@\n\n"
+          interview.home_location = @country_name
+          puts "\n#### INTERVIEW VALID = #{interview.valid?}\n#{interview.errors.full_messages}\n#{interview.categorizations.select{|c| !c.valid? }.map{|c| c.category_type.to_s + ': (' + c.category.name.to_s + ') ' + c.errors.full_messages.to_s }.join("\n")}\n"
+        end
     end
   end
 
