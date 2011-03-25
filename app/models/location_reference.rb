@@ -1,5 +1,9 @@
 class LocationReference < ActiveRecord::Base
 
+  # LocationReference is a model to encapsulate all locations-based register data
+  # (see Redaktionssystem: Location, Camp, Company, LocationName, PhysicalLocation...)
+  # All this information is flattened into one table here.
+
   belongs_to :interview
 
   delegate  :archive_id,
@@ -13,6 +17,8 @@ class LocationReference < ActiveRecord::Base
             :through => :location_segments
 
   named_scope :forced_labor, { :conditions => "reference_type = 'forced_labor_location'" }
+  named_scope :return, { :conditions => "reference_type = 'return_location'" }
+  named_scope :deportation, { :conditions => "reference_type = 'deportation_location'" }
 
   validates_presence_of :name, :reference_type
   validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
@@ -280,19 +286,11 @@ class LocationReference < ActiveRecord::Base
     attr = []
     case reference_type.to_s
       when 'place_of_birth'
-
-      when 'deportation_location'
-
-      when 'forced_labor_location'
-        
-      when 'return_location'
-
+        interview.update_attribute :birth_location, name
       when 'home_location'
         # set the home location on the interview
         if defined?(@country_name)
-          puts "\n\n@@@@ SETTING HOME LOCATION '#{@country_name}' ON INTERVIEW: #{interview.inspect}\n@@@@\n\n"
           interview.home_location = @country_name
-          puts "\n#### INTERVIEW VALID = #{interview.valid?}\n#{interview.errors.full_messages}\n#{interview.categorizations.select{|c| !c.valid? }.map{|c| c.category_type.to_s + ': (' + c.category.name.to_s + ') ' + c.errors.full_messages.to_s }.join("\n")}\n"
         end
     end
   end

@@ -14,6 +14,47 @@ class Interview < ActiveRecord::Base
 
   has_many  :location_references
 
+  has_many  :contributions
+
+  has_many  :contributors,
+            :through => :contributions
+
+  has_many  :interview_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type = 'interview'"
+
+  has_many  :transcript_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type = 'transcript'"
+
+  has_many  :translation_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type = 'translation'"
+
+  has_many  :proofreading_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type IN ('proofreading','proof_reading')"
+
+  has_many  :segmentation_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type = 'segmentation'"
+
+  has_many  :documentation_contributors,
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions,
+            :conditions => "contributions.contribution_type = 'documentation'"
+
   has_many  :imports,
             :as => :importable
   
@@ -191,6 +232,32 @@ DEF
     update_attribute :forced_labor_locations, locations.join("; ")
   end
 
+  def set_return_locations!
+    locations = []
+    location_references.return.each do |location|
+      locations << location.name.strip
+    end
+    update_attribute :return_locations, locations.join("; ")
+  end
+
+  def set_deportation_location!
+    locations = []
+    location_references.deportation.each do |location|
+      locations << location.name.strip
+    end
+    update_attribute :deportation_location, locations.join("; ")
+  end
+
+  def set_contributor_fields!
+    set_contributor_field_from('interviewers', 'interview_contributors')
+    set_contributor_field_from('transcriptors', 'transcript_contributors')
+    set_contributor_field_from('translators', 'translation_contributors')
+    set_contributor_field_from('proofreaders','proofreading_contributors')
+    set_contributor_field_from('segmentators', 'segmentation_contributors')
+    set_contributor_field_from('researchers', 'documentation_contributors')
+    save
+  end
+
   private
 
   def create_categories_from(data, type)
@@ -209,6 +276,12 @@ DEF
         puts e.message
       end
     end
+  end
+
+  def set_contributor_field_from(field,association)
+    field_contributors = self.send(association)
+    self.send field.to_s + '=',
+      field_contributors.map{|c| [ c.last_name, c.first_name ].compact.join(', ')}.join("; ")
   end
 
 end

@@ -1,5 +1,8 @@
 class LocationSegment < ActiveRecord::Base
 
+  # LocationSegment joins LocationReference information to particular
+  # interview segments
+
   belongs_to :location_reference
   belongs_to :segment
   belongs_to :interview

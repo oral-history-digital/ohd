@@ -35,6 +35,7 @@ interview:
 
   person:
     alias-names: 'alias_names'
+    gender: 'gender'
     country-of-origin: 'country_of_origin'
     date-of-birth: 'date_of_birth'
     deportation-date: 'deportation_date'
@@ -47,10 +48,18 @@ interview:
     forced-labor-details: 'forced_labor_details'
     punishment: 'punishment'
     liberation-date: 'liberation_date'
+    return-date: 'return_date'
     group: 'forced_labor_groups'
     forced-labor-habitation: 'forced_labor_habitation'
     forced-labor-field: 'forced_labor_fields'
 
+interview-team-member:
+  class_name: 'contribution'
+  delete_all: true
+  first-name: 'first_name'
+  last-name: 'last_name'
+  task: 'contribution_type'
+  
 
 photo:
   key_attribute: 'photo_file_name'

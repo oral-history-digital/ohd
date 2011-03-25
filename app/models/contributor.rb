@@ -1,0 +1,22 @@
+class Contributor < ActiveRecord::Base
+
+  # This class stores personal information on contributors to the Archive.
+  # (compare Redaktionssystem: InterviewTeamMember/ProjectTeamMember)
+
+  has_many  :contributions
+
+  has_many  :interviews,
+            :through => :contributions
+
+  validates_presence_of :first_name, :last_name
+  validates_uniqueness_of :first_name, :scope => :last_name
+
+  def contribution_type=(type)
+    @contribution_type = type
+  end
+
+  def contribution_type
+    @contribution_type
+  end
+
+end
