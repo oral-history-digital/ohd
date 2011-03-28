@@ -88,6 +88,8 @@ DEF
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? }
 
+  before_save :set_workflow_flags
+
   searchable :auto_index => false do
     string :archive_id, :stored => true
     text :transcript, :boost => 10 do
@@ -259,6 +261,19 @@ DEF
   end
 
   private
+
+  # segmented, researched, proofread
+  def set_workflow_flags
+    if segments.size > 0
+      write_attribute :segmented, true
+      if segments.headings.size > 0
+        write_attribute :researched, true
+      end
+      unless proofreaders.blank?
+        write_attribute :proofread, true
+      end
+    end
+  end
 
   def create_categories_from(data, type)
     category_names = data.split('|')
