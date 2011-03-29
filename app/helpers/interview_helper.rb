@@ -58,4 +58,20 @@ module InterviewHelper
     h(text).gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
   end
 
+  def format_date(text)
+    time = text.strip.split(/[.-]/)
+    if time.empty?
+      t(:unknown, :scope => 'status')
+    else
+      year = time.pop
+      month = time.pop
+      day = time.pop
+      unless month.nil?
+        month = t(%w(Jan Feb Mar Apr Mai Jun Jul Aug Sep Okt Nov Dez)[month.to_i-1], :scope => 'months')
+      end
+      day = day.to_i.to_s + '.' unless day.nil?
+      [day, month, year].compact.join('&nbsp;')
+    end
+  end
+
 end

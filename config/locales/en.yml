@@ -112,6 +112,20 @@ en:
       password_change_instructions1: 'Please enter the email address you used to register. You will then receive a link to re-enter a password via email.'
       password_change_instructions2: 'Please choose a new password for your account.'
 
+  months:
+    Jan: 'Jan'
+    Feb: 'Feb'
+    Mar: 'March'
+    Apr: 'April'
+    Mai: 'May'
+    Jun: 'June'
+    Jul: 'July'
+    Aug: 'Aug'
+    Sep: 'Sep'
+    Okt: 'Oct'
+    Nov: 'Nov'
+    Dez: 'Dec'
+
   devise:
     registration_fields:
       tos_agreement_explanation1: 'I agree to the '

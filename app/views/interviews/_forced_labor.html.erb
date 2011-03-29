@@ -6,7 +6,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= [ forced_labor.deportation_location, forced_labor.deportation_date || t(:date_unknown, :scope => 'status').gsub(/\d{2}:\d{2}$/, '') ].compact.join('&nbsp;') %></span>
+        <span class="value"><%= [ forced_labor.deportation_location, format_date(forced_labor.deportation_date) ].compact.join(',&nbsp;') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
@@ -32,7 +32,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
-        <span class="value"><%= forced_labor.liberation_date || t(:unknown, :scope => 'status') %></span>
+        <span class="value"><%= format_date forced_labor.liberation_date %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
@@ -41,7 +41,7 @@
       <% unless forced_labor.return_date.blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_date) %></span>
-        <span class="value"><%= forced_labor.return_date %></span>
+        <span class="value"><%= format_date forced_labor.return_date %></span>
       </li>
       <% end %>
     </ul>

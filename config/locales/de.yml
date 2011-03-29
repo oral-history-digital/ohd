@@ -112,6 +112,20 @@ de:
       password_change_instructions1: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich bei uns registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
 
+  months:
+    Jan: 'Jan'
+    Feb: 'Feb'
+    Mar: 'März'
+    Apr: 'April'
+    Mai: 'Mai'
+    Jun: 'Juni'
+    Jul: 'Juli'
+    Aug: 'Aug'
+    Sep: 'Sep'
+    Okt: 'Okt'
+    Nov: 'Nov'
+    Dez: 'Dez'
+
   devise:
     registration_fields:
       tos_agreement_explanation1: 'Ich stimme den '
