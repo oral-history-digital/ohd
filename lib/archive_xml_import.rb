@@ -75,7 +75,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @source_to_local_id_mapping = {}
     # flag whether we are still parsing
     @parsing = true
-    # ??? unused
+    # for setting the import time
     @date_of_export = nil
     # migration to store in imports table
     @migration = nil
@@ -91,7 +91,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @interview.set_deportation_location!
         @interview.set_contributor_fields!
         @imported['interviews'] << @interview.archive_id
-        @interview.imports.create{|import| import.migration = @migration }
+        @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
       rescue Exception => e
         puts "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n"
         puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
@@ -136,9 +136,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
-            export_date = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr.last)
-            if export_date < @interview.import_time
-              report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is more recent than '#{export_date.strftime('%d.%m.%Y')}'."
+            @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr.last)
+            if @date_of_export < @interview.import_time
+              report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is more recent than '#{@date_of_export.strftime('%d.%m.%Y')}'."
             else
               increment_import_sanity sanity_check
             end

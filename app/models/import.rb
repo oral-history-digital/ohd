@@ -22,10 +22,24 @@ class Import < ActiveRecord::Base
     @@current_migration = migration if migration.is_a?(String) && migration =~ /^\d+$/
   end
 
+  def time=(time)
+    @time = time
+  end
+
   private
 
   def set_time
-    write_attribute :time, Time.now
+    time_of_import = begin
+      case @time
+        when String
+          Time.parse @time
+        when Time, Datetime
+          @time
+        else
+          Time.now
+      end
+    end
+    write_attribute :time, time_of_import
   end
 
   def set_current_migration
