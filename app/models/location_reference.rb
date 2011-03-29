@@ -11,7 +11,8 @@ class LocationReference < ActiveRecord::Base
             :translated,
             :to => :interview
 
-  has_many  :location_segments
+  has_many  :location_segments,
+            :dependent => :delete_all
 
   has_many  :segments,
             :through => :location_segments
