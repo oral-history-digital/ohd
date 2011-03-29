@@ -21,7 +21,6 @@ class LocationSegment < ActiveRecord::Base
     self.segment = Segment.find(:first, :conditions => ["NOT (media_id > ?) AND media_id REGEXP ?", @media_id, @media_id[/^za\d{3}_\d{2}_\d{2}/i]], :order => "timecode DESC")
     self.segment_id = segment.id unless segment.nil?
     self.interview_id = segment.interview_id unless segment.nil?
-    puts "\n@@-Val: #{location_reference.nil? ? "NIL (#{location_reference_id}) " : location_reference.name} to #{segment.nil? ? 'NO SEGMENT ' : segment.media_id} in #{interview.archive_id}"
   end
 
   def descriptor=(name)

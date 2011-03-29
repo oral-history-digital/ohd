@@ -4,6 +4,11 @@ class LocationReference < ActiveRecord::Base
   # (see Redaktionssystem: Location, Camp, Company, LocationName, PhysicalLocation...)
   # All this information is flattened into one table here.
 
+  # TODO: enforce singular location names and separate location names (at least per interview)
+  # from references in different categories (birth, deportation etc). Or store the categories
+  # in a struct or individual flags, so that multiple are possible. Otherwise location_segments
+  # will only be related to a single category, each.
+
   belongs_to :interview
 
   delegate  :archive_id,
