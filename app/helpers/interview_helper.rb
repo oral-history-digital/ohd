@@ -63,9 +63,9 @@ module InterviewHelper
     if time.empty?
       t(:unknown, :scope => 'status')
     else
-      year = time.pop
-      month = time.pop
-      day = time.pop
+      year = time.shift
+      month = time.shift
+      day = time.shift
       unless month.nil?
         month = t(%w(Jan Feb Mar Apr Mai Jun Jul Aug Sep Okt Nov Dez)[month.to_i-1], :scope => 'months')
       end
