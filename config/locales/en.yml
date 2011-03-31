@@ -385,6 +385,21 @@ en:
       'Ukraine': 'Ukraine'
       'Vereinigte Staaten': 'United States'
 
+  location_categories:
+    'Ort': 'Town'
+    'Firma': 'Company'
+    'Lager': 'Camp'
+    'Gefängnis': 'Prison'
+    'KZ': 'Concentration Camp'
+    'zu Hause': 'At Home'
+    'am Arbeitsplatz': 'At the Place of Work'
+    'Ghetto': 'Ghetto'
+    'Privatunterkunft': 'Private Lodgings'
+    'Sonstiges': 'Other'
+    'Keine Angabe': 'Not Specified'
+    'KZ-Außenlager': 'Concentration Camp Sub-Camp'
+    'AEL': 'Arbeitserziehungslager (“Work Education Camps”)'
+
   # here are all the languages again - this time as
   # adjectives!
   mediaplayer:

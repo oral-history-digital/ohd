@@ -19,9 +19,9 @@
             <li><%= link_to (t :home), root_url, :accesskey => "0" %></li>
             <li>
               <% if I18n.locale.to_s =~ /^de/i %>
-                <%= link_to "English", url_for({:locale => :en, :action => action_name, :controller => controller_name}.merge(params)), :title => "English version" %>
+                <%= link_to "English", url_for({:locale => :en, :language => nil, :action => action_name, :controller => controller_name}.merge(params)), :title => "English version" %>
               <% else %>
-                <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(params)), :title => "Deutsche Version" %>
+                <%= link_to "Deutsch", url_for({:locale => :de, :language => nil, :action => action_name, :controller => controller_name}.merge(params)), :title => "Deutsche Version" %>
               <% end %>
             </li>
             <li><%= link_to (t :map), interview_collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>

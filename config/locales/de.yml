@@ -386,6 +386,21 @@ de:
       'Ukraine': 'Ukraine'
       'Vereinigte Staaten': 'Vereinigte Staaten'
 
+  location_categories:
+    'Ort': 'Ort'
+    'Firma': 'Firma'
+    'Lager': 'Lager'
+    'Gefängnis': 'Gefängnis'
+    'KZ': 'KZ'
+    'zu Hause': 'zu Hause'
+    'am Arbeitsplatz': 'am Arbeitsplatz'
+    'Ghetto': 'Ghetto'
+    'Privatunterkunft': 'Privatunterkunft'
+    'Sonstiges': 'Sonstiges'
+    'Keine Angabe': 'Keine Angabe'
+    'AEL': 'AEL'
+    'KZ-Außenlager': 'KZ-Außenlager'
+
   # here are all the languages again - this time as
   # adjectives!
   mediaplayer:

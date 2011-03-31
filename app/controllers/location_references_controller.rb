@@ -5,7 +5,6 @@ class LocationReferencesController < BaseController
   skip_before_filter :authenticate_user!
   skip_before_filter :current_search
   skip_before_filter :init_search
-  skip_before_filter :set_locale
 
   index do
     before do
@@ -30,6 +29,14 @@ class LocationReferencesController < BaseController
 
 
   private
+
+  # language= parameter overrides all
+  def set_locale
+    @locale = params[:language] || params[:locale] || session[:locale] || 'de'
+    session[:locale] = @locale
+    I18n.locale = @locale
+    I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
+  end
 
   def query
     query = {}
