@@ -231,7 +231,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           end
 
         when 'published'
-          puts "DATA FOR PUBLISHED: #{@current_data.inspect}"
           if @current_data.strip == 'true'
             puts "Publish condition: satisfied."
             increment_import_sanity name
@@ -273,11 +272,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                         type_field = @type_scope.keys.first
                         @current_context.send("find_or_initialize_by_#{key_attribute}_and_#{type_field}", attributes[key_attribute], @type_scope[type_field])
                       end
-#          if @instance.new_record?
-#            puts "\n=> Creating a new #{@current_context.name} for #{key_attribute} '#{attributes[key_attribute]}'."
-#          else
-#            puts "\n-> Updating existing #{@current_context.name} [#{@instance.id}] for #{key_attribute} '#{attributes[key_attribute]}'."
-#          end
 
           if (@node_index += 1) % 15 == 12
             STDOUT.printf '.'; STDOUT.flush
@@ -314,7 +308,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                 end
             end
           end
-          @instance.save
+          puts "\n=>> #{@instance.inspect}\n" unless @instance.save
           raise @instance.errors.full_messages.to_s unless (@instance.valid? || @current_mapping['skip_invalid'])
       end
 

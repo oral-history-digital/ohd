@@ -140,7 +140,9 @@ class LocationReference < ActiveRecord::Base
     write_attribute :alias_location_names, result
   end
 
-  # only overwrite reference_type if it's blank or 'interview'
+  def workflow_state=(state)
+    @workflow_state=state
+  end
 
 
   # returns approximated "flat" grid coordinates as distance from Berlin
@@ -285,6 +287,8 @@ class LocationReference < ActiveRecord::Base
         send("#{field}=",instance_eval("@#{variable}"))
       end
     end
+    self.classified = ((@workflow_state || '').strip == 'classified')
+    true
   end
 
   # Creates a relevant interview field (forced labor locations etc)

@@ -220,6 +220,7 @@ namespace :solr do
 
       LocationReference.find_each(:batch_size => 50) do |location|
         next if location.interview.blank?
+        next unless location.classified
         location.index
         STDOUT.printf '.'
         STDOUT::flush

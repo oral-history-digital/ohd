@@ -104,6 +104,7 @@ location:
   descriptor: 'name'
   related-to: 'reference_type'
   camp-category: 'camp_type'
+  workflow-state: 'workflow_state'
   physical-location:
     name: 'location_name'
     longitude: 'longitude'
