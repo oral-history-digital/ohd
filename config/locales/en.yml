@@ -89,7 +89,7 @@ en:
       status_update: 'Last updated'
       search_the_archive: 'Search the archive'
       search_the_interview: 'search the interview'
-      in_the_current_search: 'in&nbsp;the&nbsp;current&nbsp;selection'
+      in_the_current_search: 'in&nbsp;current&nbsp;selection'
     player:
       back: 'previous'
       forward: 'next'
