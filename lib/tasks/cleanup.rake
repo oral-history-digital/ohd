@@ -350,4 +350,28 @@ namespace :cleanup do
   end
 
 
+  desc "Marks interviews as segmented, proofread or researched"
+  task :update_workstate => :environment do
+
+    puts "\nChecking interviews for updates to the workflow flags"
+    updated = 0
+    checked = 0
+    Interview.find_each(:conditions => ["segmented = ? AND proofread = ? AND researched = ?", false, false, false]) do |interview|
+      interview.send('set_workflow_flags')
+      checked += 1
+      if interview.changed?
+        interview.save
+        updated += 1
+      end
+      if checked % 5 == 1
+        STDOUT.printf '.'
+        STDOUT.flush
+      end
+    end
+
+    puts "\nDone. Updated #{updated} out of #{checked} interviews."
+
+  end
+
+
 end
