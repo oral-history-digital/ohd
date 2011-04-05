@@ -30,7 +30,9 @@ namespace :xml_import do
         stderr.each_line {|line| errors << line unless line.empty?}
         puts "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
       end
+      puts "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 90 seconds."
       sleep 90
+      puts
     end
 
   end
