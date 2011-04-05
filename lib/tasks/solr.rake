@@ -133,7 +133,7 @@ namespace :solr do
     task :interviews, [ :ids ] => :environment do |task, args|
 
       ids = args[:ids] || nil
-      ids = ids.split(/\W+/) unless ids.nil?
+      ids = ids.scan(/za\d{3}/i) unless ids.nil?
 
       # Interviews
       batch=25
@@ -211,11 +211,22 @@ namespace :solr do
     end
 
     desc "Builds the location register index"
-    task :locations => :environment do
+    task :locations, [:interviews ] => :environment do |task,args|
 
-      puts "\nIndexing #{LocationReference.count(:all)} locations:"
+      archive_id = (args[:interviews] || '').scan(/za\d{3}/i)
+      interviews = Interview.find :all,
+                                  :conditions => archive_id.empty? ? nil : archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"
 
-      LocationReference.find_each(:batch_size => 50) do |location|
+      conditions = archive_id.empty? ? nil : "interview_id IN ('#{interviews.map(&:id).join("','")}')"
+
+      puts "\nIndexing #{LocationReference.count(:all, :conditions => conditions)} locations:"
+      unless archive_id.empty?
+        archive_id.each do |id|
+          puts id
+        end
+      end
+
+      LocationReference.find_each(:conditions => conditions, :batch_size => 50) do |location|
         next if location.interview.blank?
         next unless location.classified
         location.index
@@ -254,6 +265,7 @@ namespace :solr do
       Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids })
       Rake::Task['solr:index:interviews'].execute({ :ids => ids })
       Rake::Task['solr:index:segments'].execute({ :interviews => ids })
+      Rake::Task['solr:index:locations'].execute({ :interviews => ids })
     end
 
     desc "reindex interview data only"

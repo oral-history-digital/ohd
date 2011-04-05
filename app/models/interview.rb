@@ -231,7 +231,7 @@ DEF
   def set_forced_labor_locations!
     locations = []
     location_references.forced_labor.each do |location|
-      locations << location.name.strip
+      locations << location.short_name.strip
     end
     update_attribute :forced_labor_locations, locations.join("; ")
   end
@@ -239,7 +239,7 @@ DEF
   def set_return_locations!
     locations = []
     location_references.return.each do |location|
-      locations << location.name.strip
+      locations << location.short_name.strip
     end
     update_attribute :return_locations, locations.join("; ")
   end
@@ -247,7 +247,7 @@ DEF
   def set_deportation_location!
     locations = []
     location_references.deportation.each do |location|
-      locations << location.name.strip
+      locations << location.short_name.strip
     end
     update_attribute :deportation_location, locations.join("; ")
   end

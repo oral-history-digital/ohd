@@ -27,10 +27,6 @@
         <span class="value"><%= forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ') %></span>
       </li>
       <li>
-        <span class="label"><%= Interview.human_attribute_name(:punishment) %></span>
-        <span class="value"><%= forced_labor.punishment || t(:not_specified, :scope => 'status') %></span>
-      </li>
-      <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
         <span class="value"><%= format_date forced_labor.liberation_date %></span>
       </li>

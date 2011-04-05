@@ -72,6 +72,34 @@ class LocationReference < ActiveRecord::Base
     json
   end
 
+  def short_name
+    @short_name ||= '' + \
+      begin
+        built_name = []
+        if classified
+          # then we can just ignore the region (second name part) if given
+          built_name = name.split(',').map{|p| p.strip}
+          if built_name.size == 3
+            built_name.delete_at(1)
+          end
+        else
+          name.split(';').each do |location|
+            parts = location.split(',').map{|p| p.strip}
+            parts.each do |part|
+              remove = false
+              (parts - [part]).each do |other_part|
+                if other_part.include?(part)
+                  remove = true
+                end
+              end
+              built_name << part unless remove
+            end
+          end
+        end
+      built_name.uniq.join(', ')
+      end
+  end
+
   # setter functions
   def camp_type=(category='')
     @camp_category = category
