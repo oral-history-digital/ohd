@@ -111,7 +111,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     puts "\nImported: #{@imported.empty? ? 'nothing' : ''}"
     @imported.keys.each do |context|
       puts context.to_s + ':'
-      puts @imported[context].compact.inspect
+      @imported[context].compact!
+      if (@imported[context].size > 12) && @imported[context].first.to_i + @imported[context].size - 1 == @imported[context].last.to_i
+        puts "[#{@imported[context].first}...#{@imported[context].last}]"
+      else
+        puts @imported[context].compact.inspect
+      end
       puts
     end
     puts
@@ -140,8 +145,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
             @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr.last)
-            if @date_of_export < @interview.import_time
-              report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is more recent than '#{@date_of_export.strftime('%d.%m.%Y')}'."
+            if @date_of_export <= @interview.import_time
+              report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is just as recent or more than '#{@date_of_export.strftime('%d.%m.%Y')}'."
             else
               increment_import_sanity sanity_check
             end
@@ -211,7 +216,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         when 'current-migration'
           import_migration = Import.current_migration
           if import_migration != @current_data
-            if import_migration > @current_data
+            if import_migration >= @current_data
               puts "Importing data from an older migration than '#{import_migration}': #{@current_data}."
             else
               puts "Importing data from a new migration '#{@current_data}'."
@@ -308,7 +313,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                 end
             end
           end
-          puts "\n=>> #{@instance.inspect}\n" unless @instance.save
+          puts "\n=>> skipping #{@instance.inspect}\n" unless @instance.save
           raise @instance.errors.full_messages.to_s unless (@instance.valid? || @current_mapping['skip_invalid'])
       end
 
