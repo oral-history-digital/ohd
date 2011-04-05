@@ -53,7 +53,7 @@ class Interview < ActiveRecord::Base
             :class_name => 'Contributor',
             :source => :contributor,
             :through => :contributions,
-            :conditions => "contributions.contribution_type = 'documentation'"
+            :conditions => "contributions.contribution_type = 'research'"
 
   has_many  :imports,
             :as => :importable
