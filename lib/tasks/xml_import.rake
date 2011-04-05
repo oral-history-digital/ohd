@@ -10,6 +10,28 @@ namespace :xml_import do
     @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file))
     @parser.parse(File.read(file))
 
+    archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
+    unless Interview.find_by_archive_id(archive_id).nil?
+      Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
+    else
+      puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
+    end
+
+  end
+
+  desc "full import from the common repository"
+  task :full => :environment do
+    require 'open4'
+    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
+    Dir.glob(File.join(repo_dir, '**', '*.xml')).each do |xmlfile|
+      Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+        stdout.each_line {|line| puts line }
+        errors = []
+        stderr.each_line {|line| errors << line unless line.empty?}
+        puts "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+      end
+    end
+
   end
 
 

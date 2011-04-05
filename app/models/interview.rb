@@ -206,8 +206,10 @@ DEF
       # construct the import file path
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
       return unless File.exists?(filepath)
-      File.open(filepath, 'r') do |file|
-        self.still_image = file
+      unless read_attribute(:still_image_file_name) == filename
+        File.open(filepath, 'r') do |file|
+          self.still_image = file
+        end
       end
     else
       write_attribute :still_image_file_name, filename

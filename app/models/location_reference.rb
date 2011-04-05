@@ -299,9 +299,7 @@ class LocationReference < ActiveRecord::Base
         interview.update_attribute :birth_location, name
       when 'home_location'
         # set the home location on the interview
-        if defined?(@country_name)
-          interview.home_location = @country_name
-        end
+        interview.home_location = @country_name || name
     end
   end
 

@@ -40,14 +40,7 @@ namespace :solr do
 
   desc "initializes the Solr connection"
   task :connect => :environment do
-
-    solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
-
-    url = "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path'].strip.gsub(/^\//, '')}"
-    puts "Connecting to: '#{url}'"
-
-    SOLR = RSolr.connect :url => url
-
+    solr_connection
   end
 
 
@@ -60,8 +53,8 @@ namespace :solr do
       puts "\nDeleting index..."
 
       # clear the index
-      SOLR.delete_by_query '*:*'
-      SOLR.commit
+      solr_connection.delete_by_query '*:*'
+      solr_connection.commit
 
       puts "done"
 
@@ -73,8 +66,8 @@ namespace :solr do
       puts "\nDeleting index for interviews..."
 
       # clear the index
-      SOLR.delete_by_query 'type:Interview'
-      SOLR.commit
+      solr_connection.delete_by_query 'type:Interview'
+      solr_connection.commit
 
       puts "done."
 
@@ -87,8 +80,8 @@ namespace :solr do
       puts "\nDeleting index for segments..."
 
       # clear the index
-      SOLR.delete_by_query 'type:Segment'
-      SOLR.commit
+      solr_connection.delete_by_query 'type:Segment'
+      solr_connection.commit
 
       puts "done."
 
@@ -99,8 +92,8 @@ namespace :solr do
     task :locations => 'solr:connect' do
 
       puts "\nDeleting the index for locations"
-      SOLR.delete_by_query 'type:LocationReference'
-      SOLR.commit
+      solr_connection.delete_by_query 'type:LocationReference'
+      solr_connection.commit
 
       puts "done."
 
@@ -120,10 +113,10 @@ namespace :solr do
       ids.each do |archive_id|
         query = 'archive_id_ss:' + archive_id
         query += '&type:' + type if type != '*'
-        SOLR.delete_by_query query
+        solr_connection.delete_by_query query
         puts archive_id + ' (' + type + ')'
       end
-      SOLR.commit
+      solr_connection.commit
 
     end
 
@@ -201,7 +194,11 @@ namespace :solr do
           end
         end
 
-        STDOUT.printf '.'
+        if offset/batch % 400 == 0
+          STDOUT.printf "[#{offset}]"
+        else
+          STDOUT.printf '.'
+        end
         STDOUT::flush
 
         offset += batch
@@ -277,6 +274,19 @@ namespace :solr do
       puts "Reindexing locations complete."
     end
 
+  end
+
+  def solr_connection
+    unless defined?($SOLR)
+      solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
+
+      url = "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path'].strip.gsub(/^\//, '')}"
+      puts "Connecting to: '#{url}'"
+
+      $SOLR = RSolr.connect :url => url
+    else
+      $SOLR
+    end
   end
 
 end
