@@ -139,7 +139,7 @@ namespace :data do
     puts "\nReport on Archive Contents from #{(last_import.nil? ? Time.gm(2010,9,23).strftime('%d.%m.%Y') : last_import.time)}"
     puts "========================================================="
     puts "Interview total:            #{@interviews.size.to_s.rjust(6)}"
-    puts "Intervies with transcript:  #{@interviews.select{|i| i.segmented }.size.to_s.rjust(6)}"
+    puts "Interviews with transcript:  #{@interviews.select{|i| i.segmented }.size.to_s.rjust(6)}"
     puts "Interviews with headings:   #{@interviews.select{|i| i.researched }.size.to_s.rjust(6)}"
     puts
     puts "Locations total:            #{LocationReference.count(:all).to_s.rjust(6)}"
