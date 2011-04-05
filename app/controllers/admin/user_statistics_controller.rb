@@ -18,7 +18,7 @@ class Admin::UserStatisticsController < Admin::BaseController
 
     @list = [ :header, :count ]
     @rows = {
-            :header => { :label => "Benutzerstatisik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
+            :header => { :label => "Benutzerstatistik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
             :count => { :label => nil, :sum => User.count, :cols => {} }
     }
     @errors = []
@@ -38,7 +38,9 @@ class Admin::UserStatisticsController < Admin::BaseController
         end
         sum = category_result.last
         row_title = category == 'Land' ? I18n.t(label, :scope => :user_countries, :locale => :de) : label
-        unless @rows.include?(label)
+        if @rows.include?(label)
+          @rows[label][:sum] += sum
+        else
           @list << label
           @rows[label] = { :label => row_title, :sum => sum, :cols => {} }
         end
@@ -87,8 +89,8 @@ class Admin::UserStatisticsController < Admin::BaseController
           end
 
           if @rows[label]
-            if @rows[label][:cols][month_label]
-              @rows[label][:cols][month_label] += value
+            unless @rows[label][:cols][month_label] == nil
+              @rows[label][:cols][month_label] = @rows[label][:cols][month_label] + value
             else
               @rows[label][:cols][month_label] = value
             end
