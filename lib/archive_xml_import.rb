@@ -216,8 +216,10 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         when 'current-migration'
           import_migration = Import.current_migration
           if import_migration != @current_data
-            if import_migration >= @current_data
+            if import_migration > @current_data
               puts "Importing data from an older migration than '#{import_migration}': #{@current_data}."
+            elsif import_migration == @current_data
+              puts "Importing data from the current migration ('#{@current_data}')."
             else
               puts "Importing data from a new migration '#{@current_data}'."
             end

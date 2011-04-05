@@ -86,7 +86,7 @@ DEF
   validates_uniqueness_of :archive_id
   validates_attachment_content_type :still_image,
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                    :if => Proc.new{|i| !i.still_image_file_name.blank? }
+                                    :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   before_save :set_workflow_flags
 
@@ -205,11 +205,14 @@ DEF
       @assigned_filename = filename
       # construct the import file path
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
-      return unless File.exists?(filepath)
-      unless read_attribute(:still_image_file_name) == filename
-        File.open(filepath, 'r') do |file|
-          self.still_image = file
+      if File.exists?(filepath)
+        unless read_attribute(:still_image_file_name) == filename
+          File.open(filepath, 'r') do |file|
+            self.still_image = file
+          end
         end
+      else
+        write_attribute :still_image_file_name, nil
       end
     else
       write_attribute :still_image_file_name, filename
