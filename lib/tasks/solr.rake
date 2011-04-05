@@ -239,7 +239,7 @@ namespace :solr do
   namespace :reindex do
 
     desc "reindex the archive contents for Solr search"
-    task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments'] do
+    task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments', 'solr:index:locations'] do
       puts "Reindexing complete."
     end
 
