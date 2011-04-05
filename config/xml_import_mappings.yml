@@ -64,6 +64,7 @@ interview-team-member:
 photo:
   key_attribute: 'photo_file_name'
   delete_all: true
+  skip_invalid: true # I don't like it, but at least they get reported
   image-file-name: 'photo_file_name'
   caption: 'caption'
 

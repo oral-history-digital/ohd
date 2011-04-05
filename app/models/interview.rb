@@ -202,14 +202,16 @@ DEF
     # (because the filename gets assigned in the process of assigning the file)
     if !defined?(@assigned_filename) || @assigned_filename != filename
       archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
-      @assigned_filename = filename
       # construct the import file path
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
       if File.exists?(filepath)
-        unless read_attribute(:still_image_file_name) == filename
+        if @assigned_filename != filename
+          @assigned_filename = filename
           File.open(filepath, 'r') do |file|
             self.still_image = file
           end
+        else
+          puts "\n\n@@@@ WARN: Problem assigning filename = #{filename}\nCurrent still_image = #{read_attribute(:still_image_file_name)}\nAssigned Filename = #{@assigned_filename}\n@@@@ ENDWARN\n\n"
         end
       else
         write_attribute :still_image_file_name, nil

@@ -22,8 +22,12 @@ class Photo < ActiveRecord::Base
       @assigned_filename = filename
       # construct the import file path
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'photos', (filename || '').split('/').last.to_s)
-      File.open(filepath, 'r') do |file|
-        self.photo = file
+      if !File.exists?(filepath)
+        puts "\nERROR: missing photo file, skipping: #{filepath}"
+      else
+        File.open(filepath, 'r') do |file|
+          self.photo = file
+        end
       end
     else
       write_attribute :photo_file_name, filename
