@@ -18,7 +18,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
 
-  SANITY_CHECKS = %w(export created-at current-migration agreement published)
+  SANITY_CHECKS = %w(export xml-schema created-at current-migration agreement published)
 
   # A few entities need to waive the checks so we can interpret agreement & published values
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
@@ -131,6 +131,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       case name
         when 'export'
           attributes = [ attributes ] unless attributes.first.is_a?(Array)
+          if attributes.map{|a| a.first } == %w(archive-id created-at)
+            increment_import_sanity 'xml-schema'
+          end
           export_archive_id = attributes.assoc('archive-id')
           export_archive_id = export_archive_id.last unless export_archive_id.nil?
           if export_archive_id != @archive_id
@@ -272,7 +275,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           @instance = if key_attribute.nil?
                         @current_context.new
                       elsif @type_scope.empty?
-                        @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
+                        if @current_context.columns.map(&:name).include?('interview_id')
+                          @current_context.send("find_or_initialize_by_#{key_attribute}_and_interview_id", attributes[key_attribute], @interview.id)
+                        else
+                          @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
+                        end
                       else
                         type_field = @type_scope.keys.first
                         @current_context.send("find_or_initialize_by_#{key_attribute}_and_#{type_field}", attributes[key_attribute], @type_scope[type_field])

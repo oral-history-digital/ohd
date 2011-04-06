@@ -76,7 +76,7 @@ tape:
 
 text-material:
   class_name: 'text_material'
-  key_attribute: 'document_file_name'
+  key_attribute: 'document_type'
   delete_all: true
   document-type: 'document_type'
   document-file-name: 'document_file_name'
