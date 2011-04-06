@@ -130,12 +130,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       # perform a sanity check
       case name
         when 'export'
-          attributes = [ attributes ] unless attributes.first.is_a?(Array)
-          if attributes.map{|a| a.first } == %w(archive-id created-at)
+          attributes = node_attributes_to_hash(attributes)
+          if attributes.keys.sort == %w(archive-id created-at)
             increment_import_sanity 'xml-schema'
           end
-          export_archive_id = attributes.assoc('archive-id')
-          export_archive_id = export_archive_id.last unless export_archive_id.nil?
+          export_archive_id = attributes['archive-id']
           if export_archive_id != @archive_id
             report_sanity_check_failure_for 'export', "Mismatch of archive_ids: File-based=#{@archive_id}, based on XML attribute=#{export_archive_id}. Aborting."
           else
@@ -143,11 +142,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           end
 
           sanity_check = 'created-at'
-          export_date_attr = attributes.assoc(sanity_check)
+          export_date_attr = attributes[sanity_check]
           if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
-            @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr.last)
+            @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr)
             if @date_of_export <= @interview.import_time
               report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is just as recent or more than '#{@date_of_export.strftime('%d.%m.%Y')}'."
             else
@@ -213,6 +212,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   def end_element(name)
     return unless @parsing
+    @current_data.strip!
     if SANITY_CHECKS.include?(name)
       # handle sanity checks
       case name
@@ -614,6 +614,19 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def reset_attributes_for(klass)
     @attributes[klass] = {}
     # puts "\nData reset for '#{klass}'"
+  end
+
+  # creates a hash from the different formats of Nokogiri attribute
+  # arrays: flat and 2D.
+  def node_attributes_to_hash(attr)
+    attr.flatten!
+    attr_hash = {}
+    while(attr.size > 0) && (attr.size % 2 == 0)
+      k = attr.shift
+      v = attr.shift
+      attr_hash[k] = v
+    end
+    attr_hash
   end
 
 
