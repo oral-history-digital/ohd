@@ -374,4 +374,53 @@ namespace :cleanup do
   end
 
 
+  desc "Fixes interviews with any other number than 1 country category"
+  task :fix_countries => :environment do
+
+    interviews = begin
+      Interview.find(:all).select{|i| i.countries.size != 1}
+    end
+
+    puts "#{interviews.size} interviews with wrong number of countries. Starting to fix"
+
+    interviews.each do |interview|
+      interview.categorizations.select{|c| c.category_type == 'Lebensmittelpunkt'}.each{|c| c.destroy }
+      interview.send('set_country_category')
+      STDOUT.printf '.'
+      STDOUT.flush
+    end
+
+    puts "\n\nRe-mapping non-standardized country names"
+    countries = Category.find(:all, :conditions => "category_type = 'Lebensmittelpunkt'")
+    mapping_table = {}
+    countries.each do |country|
+      t_name = I18n.translate(country.name, :scope => 'location.countries', :locale => :de)
+      unless t_name == country.name
+        standardized_country = countries.select{|c| c.name == t_name }.first
+        unless standardized_country.nil?
+          mapping_table[country.id] = standardized_country.id
+        end
+      end
+      STDOUT.printf '.'
+      STDOUT.flush
+    end
+    updated = 0
+    mapping_table.each_pair do |from, to|
+      updated += Categorization.update_all "category_id = #{to}", "category_id = #{from} AND category_type = 'Lebensmittelpunkt'"
+    end
+    puts "\n#{updated} categorizations re-mapped (for #{mapping_table.keys.size} countries total)."
+
+    puts "\nReindexing these interviews:"
+    Rake::Task['solr:reindex:interview_data'].execute({:ids => interviews.map(&:archive_id).join(",")})
+
+    puts "\nDeleting all unnecessary country categories"
+    cats = Category.find(:all, :joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "categories.category_type = 'Lebensmittelpunkt' AND cz.id IS NULL")
+    puts "#{cats.size} countries found"
+    cats.each{|c| puts c.name; c.destroy }
+
+    puts "\nDone."
+
+  end
+
+
 end

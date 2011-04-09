@@ -88,7 +88,7 @@ DEF
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
-  before_save :set_workflow_flags
+  before_save :set_workflow_flags, :set_country_category
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -194,7 +194,8 @@ DEF
   end
 
   def home_location=(data)
-    create_categories_from(data, 'Lebensmittelpunkt')
+    # This is not the same as "Lebensmittelpunkt"! This is the place of birth
+    # create_categories_from(data, 'Lebensmittelpunkt')
   end
 
   def still_image_file_name=(filename)
@@ -282,11 +283,23 @@ DEF
     end
   end
 
+  def set_country_category
+    create_categories_from(self.country_of_origin, 'Lebensmittelpunkt')
+  end
+
   def create_categories_from(data, type)
     category_names = data.split('|')
     category_names.each do |name|
-      category = Category.find_or_initialize_by_category_type_and_name type, name
-      category.save if category.new_record?
+      category = case type
+                   when 'Lebensmittelpunkt'
+                    c = Category.find_or_initialize_by_category_type(type)
+                    classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
+                    c.name = classified_name[/^de,/].blank? ? classified_name : name
+                    c
+                   else
+                    Category.find_or_initialize_by_category_type_and_name type, name
+      end
+      category.save if category.new_record? || category.changed?
       begin
         if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
           categorizations << Categorization.new{|c|

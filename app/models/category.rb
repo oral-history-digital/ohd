@@ -8,6 +8,8 @@ class Category < ActiveRecord::Base
                           [ :countries, 'Lebensmittelpunkt' ]
                         ]
 
+  SINGULAR_CATEGORIES = %w(Lebensmittelpunkt)
+
   # *named scope* for each category
   ARCHIVE_CATEGORIES.each do |category|
     class_eval <<DEF

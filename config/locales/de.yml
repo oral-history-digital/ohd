@@ -236,6 +236,10 @@ de:
       'Südafrika': 'Südafrika'
       'Ukraine': 'Ukraine'
       'Vereinigte Staaten': 'Vereinigte Staaten'
+      # aliases:
+      'Weißrussland': 'Belarus'
+      'Weissrussland': 'Belarus'
+      'USA': 'Vereinigte Staaten'
 
   collections:
     name:
