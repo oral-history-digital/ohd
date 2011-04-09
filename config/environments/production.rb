@@ -14,7 +14,7 @@ config.cache_classes = true
 config.action_controller.consider_all_requests_local = false
 # set this to false temporarily - the stylesheet and javascript
 # includes don't seem to work perfectly with a relative_url_root
-config.action_controller.perform_caching             = false
+config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
 # See everything in the log (default is :info)

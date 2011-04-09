@@ -194,8 +194,11 @@ DEF
   end
 
   def home_location=(data)
-    # This is not the same as "Lebensmittelpunkt"! This is the place of birth
-    # create_categories_from(data, 'Lebensmittelpunkt')
+    # only create from home_location if we have valid data (such as a singular country name)
+    # - check for parenthesis, comma, semicolon to see if we have an aggregate name
+    unless data.match(/[,();]+/)
+      create_categories_from(data, 'Lebensmittelpunkt')
+    end
   end
 
   def still_image_file_name=(filename)
@@ -284,7 +287,8 @@ DEF
   end
 
   def set_country_category
-    create_categories_from(self.country_of_origin, 'Lebensmittelpunkt')
+    # set from country_of_origin as a fallback
+    create_categories_from(self.country_of_origin, 'Lebensmittelpunkt') if self.countries.empty?
   end
 
   def create_categories_from(data, type)

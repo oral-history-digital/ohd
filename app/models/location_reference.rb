@@ -327,7 +327,7 @@ class LocationReference < ActiveRecord::Base
         interview.update_attribute :birth_location, name
       when 'home_location'
         # set the home location on the interview
-        interview.home_location = @country_name || name
+        interview.home_location = @country_name || name.split(',').last
     end
   end
 
