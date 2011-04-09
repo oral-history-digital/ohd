@@ -112,7 +112,7 @@ namespace :solr do
 
       ids.each do |archive_id|
         query = 'archive_id_ss:' + archive_id
-        query += '&type:' + type if type != '*'
+        query += 'AND type:' + type if type != '*'
         solr_connection.delete_by_query query
         puts archive_id + ' (' + type + ')'
       end
