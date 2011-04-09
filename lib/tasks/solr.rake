@@ -251,6 +251,18 @@ namespace :solr do
       puts "Reindexing complete."
     end
 
+    desc "one by one reindexing of all interviews"
+    task :one_by_one => [ "solr:connect", :environment ] do
+      puts "Gradually reindexing all interviews:"
+      Interview.find_each do |interview|
+        STDOUT.printf "\n\n=======\n#{interview.archive_id}"
+        STDOUT.flush
+        Rake::Task['solr:reindex:by_archive_id'].execute({:ids => interview.archive_id})
+        puts "#{interview.archive_id} done.\n-----------"
+        sleep 60
+      end
+    end
+
 
     desc "reindex interviews"
     task :interviews => ['solr:delete:interviews', 'solr:index:interviews'] do
