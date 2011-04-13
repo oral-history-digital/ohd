@@ -307,6 +307,10 @@ DEF
 
   def self.from_params(query_params=nil)
     if query_params.blank?
+      if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
+        @@default_search = nil
+        @@default_search_cache_time = Time.now
+      end
       @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
     else
       search = Search.new do |search|
