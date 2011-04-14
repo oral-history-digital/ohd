@@ -185,7 +185,7 @@ DEF
     create_categories_from(data, 'Gruppen')
   end
 
-  def forced_labor_habitation=(data)
+  def forced_labor_habitations=(data)
     create_categories_from(data, 'Unterbringung')
   end
 
