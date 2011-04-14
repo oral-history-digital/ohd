@@ -115,6 +115,7 @@ namespace :solr do
                 else
           q = 'archive_id_ss:' + archive_id
           q += 'AND type:' + type if type != '*'
+          q
         end
         solr_connection.delete_by_query query
         puts archive_id + ' (' + type + ')'
