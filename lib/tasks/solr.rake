@@ -103,16 +103,19 @@ namespace :solr do
     desc "deletes interviews with given ids (archive_ids)"
     task :by_archive_id, [ :ids, :type ] => 'solr:connect' do |task, args|
 
-      ids = args[:ids] || nil
+      ids = args[:ids].blank? ? '*' : args[:ids]
       type = args[:type] || '*'
-      raise "no ids given! Use the ids= argument to provide a list of archive_ids" if ids.nil?
-      ids = ids.split(/\W+/)
+      ids = ids[/za\d{3}/].nil? ? [ids] : ids.split(/\W+/)
 
-      puts "\nDeleting the index for #{ids.size} interviews..."
+      puts "\nDeleting the index for #{ids.first == '*' ? 'all' : ids.size} interviews..."
 
       ids.each do |archive_id|
-        query = 'archive_id_ss:' + archive_id
-        query += 'AND type:' + type if type != '*'
+        query = if archive_id == '*'
+          'type:' + type
+                else
+          q = 'archive_id_ss:' + archive_id
+          q += 'AND type:' + type if type != '*'
+        end
         solr_connection.delete_by_query query
         puts archive_id + ' (' + type + ')'
       end
@@ -283,9 +286,13 @@ namespace :solr do
     desc "reindex interview data only"
     task :interview_data, [:ids] => 'solr:connect' do |task, args|
       ids = args[:ids] || nil
-      raise "no ids given! Use the ids= argument to provide a list of archive_ids" if ids.nil?
-      Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids, :type => 'Interview' })
-      Rake::Task['solr:index:interviews'].execute({ :ids => ids })
+      if ids.nil?
+        Rake::Task['solr:delete:by_archive_id'].execute({ :type => 'Interview' })
+        Rake::Task['solr:index:interviews'].execute
+      else
+        Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids, :type => 'Interview' })
+        Rake::Task['solr:index:interviews'].execute({ :ids => ids })
+      end
     end
 
     desc "reindex segments"
