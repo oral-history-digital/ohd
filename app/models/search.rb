@@ -205,12 +205,12 @@ DEF
         @search = person_name_search current_query_params, @page
 
       end
-      @hits = @search.total
-      @results = @search.results
-
-      # facets are populated from the search lazily
-      @facets = nil
     end
+    @hits = @search.total
+    @results = @search.results
+
+    # facets are populated from the search lazily
+    @facets = nil
     @query = current_query_params.select{|k,v| !v.nil? }
     @query_facets = nil
     @segments = {}
@@ -277,7 +277,7 @@ DEF
       # puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
 
       # puts "\n\n@@@@ RAW RESULTS:"
-      first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
+      # first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
       # puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
 
       # iterate over results, not subsearch!
@@ -339,29 +339,20 @@ DEF
 
   private
 
-  # the default blank search - retrieve all the content
+  # the default blank search - nothing but facets
   def blank_search
-    # the blank or default query
-    @search = nil
-    @hits = Interview::NUMBER_OF_INTERVIEWS
-    @page = 1 if @page.blank? || @page.to_i < 1
-    interviews = Interview.find(:all, :order => "full_title ASC", :limit => "#{(@page-1) * RESULTS_PER_PAGE},#{RESULTS_PER_PAGE}")
-    @results = WillPaginate::Collection.new(@page, RESULTS_PER_PAGE).replace(interviews)
-    @results.total_entries = Interview::NUMBER_OF_INTERVIEWS
-    # instantiate facets from the DB
-    @facets = {}
-    FACET_FIELDS.each do |facet|
-      facet_categories = Categorization.connection.execute <<SQL
-        SELECT categories.name, categories.id, count('id')
-        FROM categorizations
-        LEFT JOIN categories ON categories.id = categorizations.category_id
-        WHERE categorizations.category_type = '#{I18n.t(facet, :locale => :de)}'
-        GROUP BY categories.id
-        ORDER BY categories.name ASC
-SQL
-      facet_name = Category::ARCHIVE_CATEGORIES.assoc(facet.to_sym).nil? ? facet : (facet.to_s.singularize << "_ids")
-      @facets[facet_name.to_sym] = []
-      facet_categories.each{|row| @facets[facet_name.to_sym] << [ Category.new{|c| c.name = row[0]; c.id = row[1] }, row[2] ]}
+    Sunspot.search Interview do
+
+      facet :person_name,
+            :forced_labor_group_ids,
+            :forced_labor_field_ids,
+            :forced_labor_habitation_ids,
+            :language_ids,
+            :country_ids
+
+      paginate :page => 1, :per_page => RESULTS_PER_PAGE
+      order_by :person_name, :asc
+
     end
   end
 
