@@ -423,4 +423,33 @@ namespace :cleanup do
   end
 
 
+  desc "Fixes problems with the languages"
+  task :languages => :environment do
+
+    interviews = []
+
+    # Identify all categories that contain a slash
+    Category.find_each(:conditions => "name REGEXP '/' AND category_type = 'Sprache'") do |category|
+      puts "\n" + category.name + ':'
+      languages = category.name.split('/').map{|l| l.strip }
+      category.interviews.each do |interview|
+        interviews << interview
+        puts interview.archive_id + ': ' + interview.languages.size.to_s + ' Sprachen'
+        interview.categorizations.select{|c| c.category_id == category.id }.each{|cc| cc.destroy }
+        languages.each do |language_name|
+          language = Category.find_or_initialize_by_name_and_category_type(language_name, 'Sprache')
+          language.save if language.new_record?
+          interview.languages << language unless interview.languages.include?(language)
+        end
+        interview.save
+      end
+      puts
+    end
+
+    puts "#{interviews.size} interviews changed. Reindexing:"
+    Rake::Task['solr:reindex:interview_data'].execute({:ids => interviews.map(&:archive_id).join(",")})
+
+  end
+
+
 end
