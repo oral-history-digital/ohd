@@ -292,7 +292,11 @@ DEF
   end
 
   def create_categories_from(data, type)
-    category_names = data.split('|')
+    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
+    unless category_names.empty?
+      # Remove all previous categorizations
+      categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
+    end
     category_names.each do |name|
       category = case type
                    when 'Lebensmittelpunkt'
