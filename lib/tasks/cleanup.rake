@@ -452,4 +452,94 @@ namespace :cleanup do
   end
 
 
+  desc "Fixes forced labor groups - duplicates"
+  task :forced_labor_groups => :environment do
+
+    group_names = Category.find(:all, :select => "name", :conditions => "category_type = 'Gruppen'", :group => 'name').map(&:name)
+
+    valid_group_names = group_names.map{|g| I18n.t(g, :scope => 'categories.forced_labor_groups', :locale => :de)}.uniq.delete_if{|g| !g[/^de\./].blank?}
+
+    invalid_group_names = group_names - valid_group_names
+
+    invalid_to_valid = {}
+
+    invalid_group_names.each do |group|
+      valid = I18n.t(group, :scope => 'categories.forced_labor_groups', :locale => :de)
+      valid = nil unless valid_group_names.include?(valid)
+      invalid_to_valid[group] = valid
+    end
+
+    puts "\nFound #{group_names.size} group names, #{valid_group_names.size} are valid."
+
+    interviews = []
+
+    puts "\nInvalid group names:\n" unless invalid_group_names.empty?
+
+    invalid_group_names.each do |group|
+      puts group.to_s + ':'
+      category = Category.find_by_name_and_category_type(group, 'Gruppen')
+      valid_id = if invalid_to_valid[group].nil?
+        nil
+      else
+        Category.find_by_name_and_category_type(invalid_to_valid[group],'Gruppen').id
+      end
+      interviews << Categorization.find(:all, :conditions => "category_id = #{category.id}").map(&:interview_id)
+      if valid_id
+        Categorization.update_all "category_id = #{valid_id}", "category_id = #{category.id}"
+        puts " - mapping all categorizations for '#{group}' (#{category.id}) to '#{invalid_to_valid[group]}' (#{valid_id})"
+      else
+        Categorization.delete_all "category_id = #{category.id}"
+        puts " - deleting all categorizations for '#{group}' (#{category.id})"
+      end
+      puts " - delete '#{group}' (#{category.id}) later by running 'cleanup:unused_categories' if you know what you're doing.\n"
+      puts
+    end
+
+    # Find and remove duplicate categorizations
+    puts "\nChecking for duplicate category associations"
+    Categorization.find(:all, :conditions => "category_type = 'Gruppen'", :group => "interview_id", :having => "COUNT(*) > COUNT(category_id)").map(&:interview_id).each do |interview_id|
+      interview = Interview.find interview_id
+      next if interview.nil?
+      puts interview.archive_id
+      groups = []
+      interview.forced_labor_groups.each do |group|
+        if groups.include?(group.id)
+          group.destroy
+          puts " - one instance of '#{group.name}' removed."
+        end
+        groups << group.id
+      end
+    end
+
+    interviews = interviews.flatten.uniq
+    unless interviews.empty?
+      puts "#{interviews.size} interviews to reindex:"
+      archive_ids = Interview.find(:all, :select => "archive_id", :conditions => "id IN (#{interviews.join(",")})").map(&:archive_id)
+      Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_ids.join(",")})
+    end
+
+    puts "Done."
+
+  end
+
+
+  # WARNING: unused categories could still be in the index
+  # MAKE SURE YOU HAVE AN UP-TO-DATE INDEX BEFORE RUNNING THIS
+  desc "Removes unused categories - those that aren't used by any interviews"
+  task :unused_categories => :environment do
+
+    puts "Checking for unused categories:"
+
+    cats = Category.find(:all, :joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "cz.id IS NULL")
+    puts "#{cats.size} unused categories found#{cats.size > 0 ? ' - deleting.' : ''}"
+    cats.each do |category|
+      puts "#{category.category_type}: #{category.name} deleted."
+      category.destroy
+    end
+
+    puts "Done."
+    
+  end
+
+
 end
