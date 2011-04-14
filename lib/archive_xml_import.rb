@@ -320,7 +320,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                 end
             end
           end
-          puts "\n=>> skipping #{@instance.inspect}\n" unless @instance.save
+          unless @instance.save
+            puts "\n=>> skipping #{@instance.inspect}\n"
+            interview = @instance.respond_to?('interview') ? @instance.interview : @interview
+            puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
+          end
           raise @instance.errors.full_messages.to_s unless (@instance.valid? || @current_mapping['skip_invalid'])
       end
 

@@ -12,6 +12,9 @@ namespace :xml_import do
 
     archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
     unless Interview.find_by_archive_id(archive_id).nil?
+      # Don't run this as it can corrupt the index for all
+      # interviews that are not up-to-date
+      # Rake::Task['cleanup:unused_categories'].execute
       Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
     else
       puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
