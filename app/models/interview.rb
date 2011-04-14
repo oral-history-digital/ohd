@@ -296,10 +296,9 @@ DEF
     category_names.each do |name|
       category = case type
                    when 'Lebensmittelpunkt'
-                    c = Category.find_or_initialize_by_category_type(type)
                     classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
-                    c.name = classified_name[/^de,/].blank? ? classified_name : name
-                    c
+                    classified_name = classified_name[/^de,/].blank? ? classified_name : name
+                    Category.find_or_initialize_by_category_type_and_name(type, classified_name)
                    else
                     Category.find_or_initialize_by_category_type_and_name type, name
       end
