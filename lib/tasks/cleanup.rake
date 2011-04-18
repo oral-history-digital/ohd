@@ -542,4 +542,30 @@ namespace :cleanup do
   end
 
 
+  desc "Removes duplicate categorizations - two or more assignments to exactly the same category for an interview"
+  task :remove_duplicate_categories => :environment do
+
+    puts "Checking duplicates for #{Category.count(:all)} categories:"
+
+    Category.find_each do |category|
+
+      duplicate_categorizations = Categorization.find(:all, :conditions => "category_id = #{category.id}", :group => "interview_id", :having => "count(interview_id) > 1")
+
+      duplicate_categorizations.each do |categorization|
+        removed = Categorization.delete_all "interview_id = #{categorization.interview_id} AND category_id = #{categorization.category_id} AND id != #{categorization.id}"
+        if removed > 0
+          puts "\n - deleted #{removed} duplicate categorization(s) for interview #{categorization.interview_id} '#{category.name}' (#{category.category_type})"
+        end
+      end
+
+      STDOUT.printf '.'
+      STDOUT.flush
+
+    end
+
+  end
+
+  puts "Done."
+
+
 end
