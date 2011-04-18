@@ -164,9 +164,10 @@ DEF
 
   # Returns a string-serialized version of the query params for use as
   # url parameters.
-  def serialized_query_params
+  def serialized_query_params(include_page=true)
     query_params.to_a.map do |param|
       str = []
+      next if param.first.to_s == 'page' && !include_page
       if param.last.is_a?(Array)
         # this is an Array field
         param.last.each do |value|
