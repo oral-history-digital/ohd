@@ -22,4 +22,8 @@ class Tape < ActiveRecord::Base
     (read_attribute(:media_id) || '').upcase
   end
 
+  def media_file(extension)
+    "#{interview.archive_id.upcase}/#{interview.archive_id.upcase}_archive/data/av/#{extension}/#{media_id.upcase}.#{extension}"
+  end
+  
 end

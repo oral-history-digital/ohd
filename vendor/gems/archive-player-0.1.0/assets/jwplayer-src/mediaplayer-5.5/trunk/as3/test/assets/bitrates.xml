@@ -1,0 +1,25 @@
+<rss version="2.0" xmlns:jwplayer="http://developer.longtailvideo.com/trac/" xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+  <title>Elephants Dream</title>
+  <description>Elephants Dream is the world’s first open movie, made entirely with open source graphics software such as Blender, and with all production files freely available to use however you please, under a Creative Commons license.</description>
+  <link>http://orange.blender.org/</link>
+
+  <item>
+    <title>Elephants Dream</title>
+    <link>http://orange.blender.org/</link>
+    <pubDate>Fri, 04 Apr 2008 00:00:00 -0000</pubDate>
+    <description>Elephants Dream is the world’s first open movie, made entirely with open source graphics software such as Blender, and with all production files freely available to use however you please, under a Creative Commons license.</description>
+
+    <media:group>
+        <media:content bitrate="1390" url="http://content.bitsontherun.com/videos/LJSVMnCF-67067.mp4" width="1080" />
+        <media:content bitrate="990" url="http://content.bitsontherun.com/videos/LJSVMnCF-329.mp4" width="720" />
+        <media:content bitrate="610" url="http://content.bitsontherun.com/videos/LJSVMnCF-60830.mp4" width="480" />
+        <media:content bitrate="630" url="http://content.bitsontherun.com/videos/LJSVMnCF-327.mp4" width="320" />
+    </media:group>
+    <jwplayer:type>bitgravity</jwplayer:type>
+    <jwplayer:duration>653</jwplayer:duration>
+    <jwplayer:image>http://content.bitsontherun.com/thumbs/LJSVMnCF.jpg</jwplayer:image>
+    <jwplayer:playlist.image>http://content.bitsontherun.com/thumbs/LJSVMnCF-120.jpg</jwplayer:playlist.image>
+  </item>
+</channel>
+</rss>

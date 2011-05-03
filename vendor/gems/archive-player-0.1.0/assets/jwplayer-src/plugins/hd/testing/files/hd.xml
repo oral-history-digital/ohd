@@ -1,0 +1,130 @@
+<rss version="2.0" 
+	xmlns:media="http://search.yahoo.com/mrss/" 
+	xmlns:jwplayer="http://developer.longtailvideo.com/trac/wiki/FlashFormats">
+	<channel>
+		<title>Example media RSS playlist with HD</title>
+
+		<item>
+			<title>No HD file</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+		</item>
+
+		<item>
+			<title>No HD file, HD Enabled</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+		</item>
+
+		<item>
+			<title>No HD file, HD Enabled, Autostart enabled</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:autostart>true</jwplayer:autostart>
+		</item>
+		
+		<item>
+			<title>Progressive download HD File</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+			<jwplayer:hd.file>http://developer.longtailvideo.com/player/testing/files/bunny.mp4</jwplayer:hd.file>
+		</item>
+
+		<item>
+			<title>Progressive download HD File, HD Enabled</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+			<jwplayer:hd.file>http://developer.longtailvideo.com/player/testing/files/bunny.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+		</item>
+
+		<item>
+			<title>Progressive download HD File, HD Enabled, Autostart enabled</title>
+			<media:content url="http://developer.longtailvideo.com/player/testing/files/bunny.flv" />
+			<jwplayer:hd.file>http://developer.longtailvideo.com/player/testing/files/bunny.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:autostart>true</jwplayer:autostart>
+		</item>
+		
+		<item>
+			<title>HTTP Streaming HD File</title>
+			<jwplayer:http.startparam>starttime</jwplayer:http.startparam>
+			<jwplayer:type>http</jwplayer:type>
+			<media:content url="http://content.bitsontherun.com/videos/LJSVMnCF-327.mp4" />
+			<jwplayer:hd.file>http://content.bitsontherun.com/videos/LJSVMnCF-67067.mp4</jwplayer:hd.file>
+		</item>
+
+		<item>
+			<title>HTTP Streaming HD File, HD Enabled</title>
+			<jwplayer:http.startparam>starttime</jwplayer:http.startparam>
+			<jwplayer:type>http</jwplayer:type>
+			<media:content url="http://content.bitsontherun.com/videos/LJSVMnCF-327.mp4" />
+			<jwplayer:hd.file>http://content.bitsontherun.com/videos/LJSVMnCF-67067.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+		</item>
+
+		<item>
+			<title>HTTP Streaming HD File, HD Enabled, Autostart enabled</title>
+			<jwplayer:http.startparam>starttime</jwplayer:http.startparam>
+			<jwplayer:type>http</jwplayer:type>
+			<media:content url="http://content.bitsontherun.com/videos/LJSVMnCF-327.mp4" />
+			<jwplayer:hd.file>http://content.bitsontherun.com/videos/LJSVMnCF-67067.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:autostart>true</jwplayer:autostart>
+		</item>
+
+		<item>
+			<title>RTMP Streaming HD File</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+		</item>
+
+		<item>
+			<title>RTMP Streaming HD File, HD Enabled</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+		</item>
+
+		<item>
+			<title>RTMP Streaming HD File, HD Enabled, Autostart enabled</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:autostart>true</jwplayer:autostart>
+		</item>
+		
+		<item>
+			<title>RTMP Streaming HD File w/ HD.streamer</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+			<jwplayer:hd.streamer>rtmp://fms.12E5.edgecastcdn.net/0012E6</jwplayer:hd.streamer>
+		</item>
+
+		<item>
+			<title>RTMP Streaming HD File, HD Enabled w/ HD.streamer</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:hd.streamer>rtmp://fms.12E5.edgecastcdn.net/0012E6</jwplayer:hd.streamer>
+		</item>
+
+		<item>
+			<title>RTMP Streaming HD File, HD Enabled, Autostart enabled w/ HD.streamer</title>
+			<jwplayer:type>RTMP</jwplayer:type>
+			<jwplayer:streamer>rtmp://fms.12E5.edgecastcdn.net/0012E5</jwplayer:streamer>
+			<media:content url="videos/8Juv1MVa-483.mp4" />
+			<jwplayer:hd.file>videos/8Juv1MVa-67727.mp4</jwplayer:hd.file>
+			<jwplayer:hd.state>true</jwplayer:hd.state>
+			<jwplayer:autostart>true</jwplayer:autostart>
+			<jwplayer:hd.streamer>rtmp://fms.12E5.edgecastcdn.net/0012E6</jwplayer:hd.streamer>
+		</item>
+	</channel>
+</rss>

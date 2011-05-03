@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'archive-authentication'
   config.gem 'archive-authorization'
+  config.gem 'archive-player'
 
   config.gem 'rack-maintenance'
 

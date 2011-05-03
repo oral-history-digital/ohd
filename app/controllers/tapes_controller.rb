@@ -8,17 +8,7 @@ class TapesController < BaseController
 
   skip_before_filter :init_search
 
-  def playlist_high
-    @interview = parent_object
-    @tapes = @interview.tapes
-  end
-
-  def playlist_low
-    @interview = parent_object
-    @tapes = @interview.tapes
-  end
-
-  def playlist_audio
+  def playlist
     @interview = parent_object
     @tapes = @interview.tapes
   end

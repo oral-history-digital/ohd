@@ -263,7 +263,7 @@ namespace :solr do
         STDOUT.flush
         Rake::Task['solr:reindex:by_archive_id'].execute({:ids => interview.archive_id})
         puts "#{interview.archive_id} done.\n-----------"
-        sleep 60
+        sleep 5
       end
     end
 

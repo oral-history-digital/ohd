@@ -1,39 +1,6 @@
 <% cache [ @locale, @interview.to_param, 'headings'].join('/') do -%>
-<table id="interview_headings" class="mainheadings">
-  <tbody>
-    <% headings_hash = hashed_headings_from_array(@interview.segments.headings) %>
-    <% headings_hash.keys.sort.each_with_index do |section, index| %>
-      <% mainheading = headings_hash[section] %>
-      <tr id="<%= mainheading[:id] %>" class="mainheading<%= mainheading[:subheadings].empty? ? '' : ' closed' %>">
-        <td class="section"<%= mainheading[:subheadings].empty? ? '' : " onclick=\"headings.toggleSection(#{index+1});\""%>><%= section %>.</td>
-        <td class="heading">
-            <a href="javascript:currentPlayer.seek(<%= mainheading[:item] + "," + mainheading[:pos]  %>);">
-                <%= mainheading[:title] %>
-                <span class="timecode"><%= mainheading[:timecode] %></span>
-            </a>
-            <ul id="subheadings_for_<%= section %>" class="subheadings">
-              <% mainheading[:subheadings].each_with_index do |subheading, index| %>
-                <li id="<%= subheading[:id] %>" class="subheading">
-                    <a href="javascript:currentPlayer.seek(<%= subheading[:item] + "," + subheading[:pos]  %>);" class="heading">
-                        <%= "#{section}.#{index + 1}."  %>
-                        <%= subheading[:title] %>
-                    </a>
-                    <span class="timecode"><%= subheading[:timecode] %></span>
-                </li>
-              <% end %>
-            </ul>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= javascript_include_tag 'headings' %>
-<% javascript_tag do %>
 
-    headings = new TableOfContents({
-        id: 'headings'
-    });
+  <% headings_hash = hashed_headings_from_array(@interview.segments.headings) %>
+  <%= @player.headings_container headings_hash %>
 
-    
-<% end %>
 <% end %><%# cache %>

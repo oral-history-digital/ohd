@@ -1,0 +1,12 @@
+<config>
+	<file>http://content.bitsontherun.com/videos/nPripu9l-67651.mp3</file>
+	<image>http://content.bitsontherun.com/thumbs/nPripu9l-480.jpg</image>
+	<title>Big Buck Bunny</title>
+	<repeat>true</repeat>
+	<backcolor>333333</backcolor>
+	<frontcolor>CCCCCC</frontcolor>
+	<screencolor>666666</screencolor>
+	<lightcolor>cc0000</lightcolor>
+	<volume>40</volume>
+	<controlbar>over</controlbar>
+</config>

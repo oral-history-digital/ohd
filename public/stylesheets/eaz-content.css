@@ -253,6 +253,8 @@ h5 {
   float: left;
   padding: 0 6px;
   background: url(/images/lang_btn_bg_n.gif);
+  color: #fff;
+  cursor: pointer;
 }
 
 #language_select .captions_orig:hover,
@@ -587,4 +589,12 @@ h5 {
   height: 100%;
   padding: 0;
   margin: 0;
+}
+
+div.headings-container {
+  background-color: #f8f8f5;
+}
+
+div.headings-container a:link,a:visited,a:hover,a:focus {
+  color: #990000;
 }

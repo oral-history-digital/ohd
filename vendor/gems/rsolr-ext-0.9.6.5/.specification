@@ -1,6 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: rsolr-ext
 version: !ruby/object:Gem::Version 
+  hash: 21
   prerelease: false
   segments: 
   - 0
@@ -26,6 +27,7 @@ dependencies:
     requirements: 
     - - ">="
       - !ruby/object:Gem::Version 
+        hash: 55
         segments: 
         - 0
         - 9
@@ -75,6 +77,7 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
       segments: 
       - 0
       version: "0"
@@ -83,6 +86,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
       segments: 
       - 0
       version: "0"

@@ -1,0 +1,664 @@
+<html>
+<head>
+<title>JW Player Testing SDK</title>
+<link rel="stylesheet" href="assets/style.css" type="text/css">
+<script type="text/javascript" src="assets/jquery.js"></script>
+<script type="text/javascript" src="assets/swfobject.js"></script>
+<script type="text/javascript">
+
+var settings = {
+	/** Permalink root to display in the settings top **/
+	permalink:false,
+	/** Player versions to test. **/
+	players: {
+		'4.7':'../player.swf',
+		'4.6':'/player/tags/mediaplayer-4.6/player.swf',
+		'4.5':'/player/tags/mediaplayer-4.5/player.swf',
+		'4.4':'/player/tags/mediaplayer-4.4/player.swf',
+		'4.3':'/player/tags/mediaplayer-4.3/player.swf',
+		'4.2':'/player/tags/mediaplayer-4.2/player.swf',
+		'4.1':'/player/tags/mediaplayer-4.1/player.swf'
+	},
+	/** Available JW4 plugins to test. **/
+	plugins: {
+		audiodescription:'/player/plugins/audiodescription/v4/audiodescription.swf',
+		captions:'/player/plugins/captions/v4/captions.swf',
+		hd:'/player/plugins/hd/v4/hd.swf',
+		metaviewer:'/player/plugins/metaviewer/metaviewer.swf',
+		revolt:'/player/plugins/revolt/revolt.swf',
+		qualitymonitor:'/player/plugins/qualitymonitor/qualitymonitor.swf',
+		searchbar:'/player/plugins/searchbar/searchbar.swf',
+		sharing:'/player/plugins/sharing/v4/sharing.swf'
+	},
+	/** PNG skins to test. **/
+	skins: {
+		none:'',
+		bekle:'/player/skins/bekle/bekle.swf',
+		bluemetal:'/player/skins/bluemetal/bluemetal.swf',
+		five:'/player/skins/five/five.swf',
+		modieus:'/player/skins/modieus/modieus.swf',
+		snel:'/player/skins/snel/snel.swf',
+		stijl:'/player/skins/stijl/stijl.swf'
+	},
+	/** All the setup examples with their flashvars. **/
+	examples: {
+		'': {},
+		'FLV video': {
+			file:'/player/testing/files/bunny.flv',
+			image:'/player/testing/files/bunny.jpg',
+			height:240,
+			width:400
+		},
+		'MP4 video': {
+			file:'/player/testing/files/bunny.mp4',
+			image:'/player/testing/files/bunny.jpg',
+			height:240,
+			width:400
+		},
+		'MP3 audio': {
+			file:'/player/testing/files/bunny.mp3',
+			height:20,
+			width:400
+		},
+		'AAC audio': {
+			file:'/player/testing/files/bunny.m4a',
+			height:20,
+			width:400
+		},
+		'JPG image': {
+			file:'/player/testing/files/bunny.jpg',
+			height:240,
+			width:400
+		},
+		'Youtube video': {
+			file: 'http://youtube.com/watch?v=IBTE-RoMsvw',
+			image: 'http://i.ytimg.com/vi/IBTE-RoMsvw/hqdefault.jpg',
+			height: 240,
+			width: 400
+		},
+		' ': {},
+		'HTTP streamed FLV': {
+			file:'http://content.bitsontherun.com/videos/Qvxp3Jnv-68183.flv',
+			type:'http',
+			height:240,
+			width:400,
+			'http.startparam':'apstart'
+		},
+		'HTTP streamed MP4': {
+			file:'http://content.bitsontherun.com/videos/LJSVMnCF-60830.mp4',
+			height:240,
+			type:'bitgravity',
+			width:400
+		},
+		'HTTP bitrate switching': {
+			file:'assets/bitrates.xml',
+			height:240,
+			plugins:'qualitymonitor',
+			width:400
+		},
+		'RTMP streamed FLV': {
+			file:'videos/Qvxp3Jnv-68183.flv',
+			type:'rtmp',
+			streamer:'rtmp://fms.12E5.edgecastcdn.net/0012E5',
+			height:240,
+			width:400
+		},
+		'RTMP streamed MP3': {
+			file:'videos/Qvxp3Jnv-68182.mp3',
+			type:'rtmp',
+			streamer:'rtmp://fms.12E5.edgecastcdn.net/0012E5',
+			height:24,
+			width:400
+		},
+		'RTMP dynamic stream': {
+			file:'assets/dynamic.xml',
+			height:240,
+			width:500,
+			plugins:'qualitymonitor'
+		},
+		'RTMP live stream (not always on)': {
+			file:'isight',
+			streamer:'rtmp://fml.dca.12E5.edgecastcdn.net/2012E5/',
+			type:'rtmp',
+			height:240,
+			width:500,
+			plugins:'qualitymonitor'
+		},
+		'  ':{},
+		'ASX playlist': {
+			file:'assets/asx.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'ATOM playlist': {
+			file:'assets/atom.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'iRSS playlist': {
+			file:'assets/irss.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'mRSS playlist': {
+			file:'assets/mrss.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'SMIL playlist': {
+			file:'assets/smil.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'XSPF playlist': {
+			file:'assets/xspf.xml',
+			height:240,
+			width:800,
+			playlist:'right',
+			playlistsize:400
+		},
+		'   ': {},
+		'Different colors and logo': {
+			file:'assets/mrss.xml',
+			height:300,
+			width:500,
+			logo:'assets/logo.png',
+			controlbar: 'over',
+			playlist:'bottom',
+			playlistsize:120,
+			backcolor:'333333',
+			frontcolor:'CCCCCC',
+			lightcolor:'77AA22',
+			screencolor:'FFFFFF'
+		},
+		'Autostart, shuffle and repeat': {
+			file:'assets/mrss.xml',
+			repeat:'always',
+			height:240,
+			width:800,
+			autostart:'true',
+			frontcolor:'000000',
+			lightcolor:'77AA22',
+			shuffle:'true',
+			repeat:'always',
+			playlist:'right',
+			playlistsize:400
+		},
+		'Stretched, stacked and muted': {
+			file:'assets/mrss.xml',
+			stretching:'fill',
+			height:240,
+			width:600,
+			playlist:'over',
+			controlbar:'over',
+			mute:"true",
+			playlistsize:400
+		},
+		'Loading from config xml': {
+			config:'assets/config.xml',
+			height:240,
+			width:500
+		},
+		'Start and duration flashvars': {
+			file:'/player/testing/files/bunny.mp3',
+			height:20,
+			width:400,
+			start:5,
+			duration:15,
+			repeat:'always',
+			autostart:'true'
+		},
+		'    ': {},
+		'Audiodescription and captions plugins': {
+			file:'/player/testing/files/corrie.flv',
+			image:'/player/testing/files/corrie.jpg',
+			height:240,
+			width:500,
+			plugins:'audiodescription,captions',
+			'audiodescription.file':'/player/testing/files/corrie.mp3',
+			'captions.file':'/player/testing/files/corrie.xml'
+		},
+		'HD plugin (dock)': {
+			file:'/player/testing/files/bunny.flv',
+			height:240,
+			width:500,
+			plugins:'hd',
+			dock:'true',
+			'hd.file':'/player/testing/files/bunny.mp4'
+		},
+		'Searchbar plugin': {
+			file:'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured?v=2',
+			playlist:'over',
+			height:260,
+			width:460,
+			plugins:'searchbar',
+			'searchbar.query': 'http://gdata.youtube.com/feeds/api/videos?vq=QUERY&format=5'
+		},
+		'Sharing plugin (dock)': {
+			dock:true,
+			file:'/player/testing/files/bunny.mp4',
+			height:260,
+			width:460,
+			plugins:'sharing',
+			'sharing.code':'%3Cembed%20src%3D%22http%3A%2F%2Fcontent.bitsontherun.com%2Fplayers%2FnPripu9l-1754.swf%22%20width%3D%22400%22%20height%3D%22250%22%20allowscriptaccess%3D%22always%22%20%2F%3E',
+			'sharing.link':'http://www.bigbuckbunny.org/'
+		}
+	}
+}
+
+
+
+	/**
+	* Initialization section. Parses settings.js and the browser querystring.
+	* This section is only executed on page (re)load.
+	**/
+
+	/** The complete list with all current flashvars. **/
+	var variables = {width:500,height:260};
+	/** When jQuery is loaded, we initialize everything. **/
+	$().ready(function() { loadSettings(); });
+	/** Load the settings and querystring. **/
+	function loadSettings() {
+		// load the settings.
+		if(settings.permalink === false) { 
+			$('#permalabel').css('display','none');
+			$('#permalink').css('display','none');
+		}
+		for (itm in settings['examples']) { $("#examples").append("<option>"+itm+"</option>"); }
+		for (itm in settings['players']) { $("#players").append("<option>"+itm+"</option>"); }
+		for (itm in settings['skins']) { $("#skins").append("<option>"+itm+"</option>"); }
+		for (itm in settings['plugins']) { $("#plugins").append("<option>"+itm+"</option>"); }
+		// When an example is selected, we reload the entire page.
+		$("#examples").change(function(evt) {
+			evt.preventDefault();
+			var obj = settings.examples[$('#examples').val()];
+			window.top.location.href = window.top.location.pathname+'?'+$.param(obj);
+		 });
+		// get the options from the querystring.
+		window.top.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g,function () {
+			variables[decodeURIComponent(arguments[1])] = decodeURIComponent(arguments[2]);
+		});
+		// set the value and handler on player, skin and plugins.
+		if(variables['player']) { $('#players').val(variables['player']); }
+		$("#players").change(function(evt) { reloadFieldsets(evt); });
+		if(variables['skin']) { $('#skins').val(variables['skin']); }
+		$("#skins").change(function(evt) { insertPlayer(evt); });
+		if(variables['plugins']) { 
+			var arr = variables['plugins'].split(',');
+			for(var i =0; i<arr.length; i++) { 
+				if(!settings['plugins'][arr[i]]) { 
+					$("#plugins").append("<option>"+arr[i]+"</option>");
+				}
+			}
+			$('#plugins').val(arr); 
+		}
+		$("#plugins").change(function(evt) { reloadFieldsets(evt); });
+		// set the handler on the flashvars and load the whole bunch.
+		$("#flashvarsform").submit(function(evt) { insertPlayer(evt); });
+		reloadFieldsets();
+	};
+
+
+
+
+	/**
+	* Fieldset insertion section. Loads the player/plugins XML files to print the appropriate fieldsets.
+	* This section is executed every time the player/plugins selection changes.
+	**/
+
+	/** The number of XML files that still need to be parsed. **/
+	var parsing;
+	/** All variables that are inserted in an XML-defined field. **/
+	var prefilled;
+	/** Check for inserting of fieldsets. **/
+	function reloadFieldsets(evt) {
+		if(evt) { evt.preventDefault(); }
+		$("#flashvarsform > .removable").remove();
+		$("#fieldsettabs > .removable").remove();
+		$("#custom > .removable").remove();
+		parsing = 1;
+		prefilled = {plugins:'',player:'',skin:''};
+		var swf = settings.players[$("#players").val()];
+		var xml = swf.substr(0,swf.length-4) + '.xml';
+		parsePlayerXML(xml);
+		var str = $("#plugins").val();
+		if(str != null) {
+			arr = str.toString().split(',');
+			for (var i=0; i<arr.length; i++) {
+				swf = settings['plugins'][arr[i]];
+				if(swf) { 
+					parsing++;
+					xml = swf.substr(0,swf.length-4) + '.xml';
+					parsePluginXML(xml,arr[i]);
+				}
+			}
+		}
+	};
+	/** Insert a specific plugin fieldset. **/
+	function parsePlayerXML(url) {
+		$.get(url,{},function(xml) {
+			var arr = $('player',xml).find('flashvars');
+			for (var i=0; i<arr.length; i++) {
+				var nam = $(arr[i]).attr('section').toLowerCase();
+				insertFieldset(arr[i],nam);
+			}
+			parsing--;
+			if(parsing == 0) { setCustomTabbing(); }
+		});
+	};
+	/** Insert a specific plugin fieldset. **/
+	function parsePluginXML(url,nam) {
+		$.get(url,{},function(xml) {
+			var arr = $('flashvars',xml).find('flashvar');
+			if(arr.length > 0) {
+				insertFieldset(xml,nam,true);
+			}
+			parsing--;
+			if(parsing == 0) { setCustomTabbing(); }
+		});
+	};
+	/** Insert a specific plugin fieldset. **/
+	function insertFieldset(xml,nam,plg) {
+		var tit = nam.substr(0,1).toUpperCase()+nam.substr(1);
+		var set = '<fieldset id="'+nam+'" class="removable">';
+		var arr = $(xml).find('flashvar');
+		$("#customli").before('<li class="removable">'+tit+'</li>');
+		for (var i=0; i<arr.length; i++) {
+			var val = $('name',arr[i]).text();
+			if(plg) { val = nam+'.'+val; }
+			set +='<label>'+val+'</label><input type="text" name="'+val+'" ';
+			if(variables[val]) {
+				set += 'value="'+variables[val]+'" ';
+				prefilled[val] = variables[val];
+			}
+			set += "/>";
+		}
+		set += '</fieldset>';
+		$('#custom').before(set);
+	};
+	/** Set the custom fields and the tabbing functionality. **/
+	function setCustomTabbing() {
+		for(var itm in variables) { 
+			if(prefilled[itm] == undefined) {
+				var elm = '<label class="removable">'+itm+'</label>'
+				elm += '<input type="text" name="'+itm+'" value="'+variables[itm]+'" class="removable"/>';
+				$("#custom").append(elm);
+			}
+		}
+		$('li').click(function() {
+			$('li').removeClass('active');
+			$(this).addClass('active');
+			var itm = $(this).text().toLowerCase();
+			doTab($.trim(itm));
+		});
+		doTab('sources');
+		insertPlayer();
+	};
+	/** Flip to a tab. **/
+	function doTab(itm) {
+		var arr = $("#flashvarsform").find('fieldset');
+		for(var i=0; i<arr.length; i++) {
+			if($(arr[i]).attr('id') == itm) {
+				$(arr[i]).css('display','block');
+			} else {
+				$(arr[i]).css('display','none');
+			}
+		}
+	};
+
+
+
+
+	/**
+	* Player insertion section. Gathers variables from all fields and prints the player on the page.
+	* This section is executed every time the flashvars form is submitted.
+	**/
+
+	/** Print the player on the page. **/
+	function insertPlayer(evt) {
+		if(evt) { evt.preventDefault(); }
+		var vrs = {};
+		variables = {}
+		variables['player'] = $('#players').val();
+		if($("#skins").val() != 'none') {
+			vrs['skin'] = settings['skins'][$("#skins").val()];
+			variables['skin'] = $("#skins").val();
+		}
+		if($("#plugins").val() != null) {
+			var plg = [];
+			var arr = $("#plugins").val();
+			for(var i=0; i<arr.length; i++) {
+				if(settings['plugins'][arr[i]]) { 
+					plg.push(settings['plugins'][arr[i]]);
+				} else { 
+					plg.push(arr[i]);
+				}
+			}
+			vrs['plugins'] = plg.join(',');
+			variables['plugins'] = arr.join(',');
+		}
+		var arr = $("#flashvarsform").find('input');
+		for(var i=0; i<arr.length; i++) {
+			if($(arr[i]).val()) {
+				vrs[$(arr[i]).attr('name')] = $(arr[i]).val();
+				variables[$(arr[i]).attr('name')] = $(arr[i]).val();
+			}
+		}
+		$('#preview').css('height',vrs['height']);
+		$('#preview').html('<div id="container"></div>');
+		swfobject.embedSWF(
+			settings.players[$('#players').val()],
+			'container',
+			vrs['width'],
+			vrs['height'],
+			'9.0.0',
+			null,
+			vrs,
+			{allowfullscreen:'true',allowscriptaccess:'always'},
+			{id:'player',name:'player'}
+		);
+		if(settings.permalink !== false) {
+			$("#permalink").val(settings.permalink+'?'+$.param(variables));
+		}
+	};
+
+
+
+
+	/**
+	* Player API section. Contains functions for getting a player reference and executing API calls.
+	* This section is executed when a user starts interacting with the player API.
+	**/
+
+	/** Reference to the player **/
+	var player;
+	/** When the player is ready and the API forms can be shown, display them. **/
+	function playerReady(obj) {
+		player = document.getElementById(obj['id']);
+		$("#variablesform").submit(function(evt) { getVariable(evt); });
+		$("#sendeventform").submit(function(evt) { sendEvent(evt); });
+		$("#listenersform").submit(function(evt) { setListener(evt); });
+	};
+	/** Get a variable from the player. **/
+	function getVariable(evt) {
+		evt.preventDefault();
+		switch($('#vartype').val().toString()) {
+			case 'config':
+				var obj = player.getConfig();
+				break;
+			case 'playlist':
+				var obj = player.getPlaylist();
+				break;
+			case 'plugin.config':
+				var obj = player.getPluginConfig($('#configplugin').val());
+				break;
+		}
+		alertValue(obj);
+	};
+	/** Send an event to the player. **/
+	function sendEvent(evt) {
+		evt.preventDefault();
+		var typ = $('#sendevent').val();
+		var dat = $('#sendeventdata').val();
+		player.sendEvent(typ,dat);
+	};
+	/** Set a listener to the player. **/
+	function setListener(evt) {
+		evt.preventDefault();
+		var arr = $('#eventtype').val().toString().split(' ');
+		var sel = $('#addremove').val().toString();
+		var fcn = 'alertValue';
+		if(arr.length == 2 && sel == 'add') {
+			if(arr[1] == '(model)') {
+				player.addModelListener(arr[0],fcn);
+			} else { 
+				player.addControllerListener(arr[0],fcn);
+			}
+		} else if(arr.length == 2 && sel == 'remove') {
+			if(arr[1] == '(model)') { 
+				player.removeModelListener(arr[0],fcn);
+			} else {
+				player.removeControllerListener(arr[0],fcn);
+			}
+		}
+	};
+	/** Alert responses from the player. **/
+	function alertValue(obj) {
+		var txt = '';
+		for (itm in obj) {
+			if(typeof(obj[itm]) == 'object') {
+				txt += itm+':\n';
+				for (ent in obj[itm]) {
+					txt += '  '+ent+': '+obj[itm][ent]+'\n';
+				}
+			} else {
+				txt += itm+': '+obj[itm]+'\n';
+			}
+		}
+		alert(txt);
+	};
+
+
+
+
+</script>
+</head>
+<body>
+
+
+
+<form id="examplesform">
+	<fieldset>
+		<label>Load an example setup</label>
+		<select name="examples" id="examples"></select>
+		<label id="permalabel">Permalink of this setup</label>
+		<input name="permalink" id="permalink"/>
+	</fieldset>
+</form>
+
+
+
+<div id="javascript">
+	<form id="variablesform">
+		<fieldset>
+			<label>Variable</label>
+			<select type="text" id="vartype">
+				<option>config</option>
+				<option>playlist</option>
+			</select>
+		</fieldset>
+		<button type="submit" id="variablesbutton">Get variable</button>
+	</form>
+	<form id="sendeventform">
+		<fieldset>
+			<label>Event</label>
+			<select type="text" id="sendevent">
+				<option>item</option>
+				<option>link</option>
+				<option>load</option>
+				<option>mute</option>
+				<option>next</option>
+				<option>play</option>
+				<option>prev</option>
+				<option>seek</option>
+				<option>stop</option>
+				<option>volume</option>
+			</select>
+			<label>Parameter</label>
+			<input type="text" id="sendeventdata" />
+		</fieldset>
+		<button type="submit" id="sendeventbutton">Send event</button>
+	</form>
+	<form id="listenersform">
+		<fieldset>
+			<label>Type</label>
+			<select type="text" id="addremove">
+				<option>add</option>
+				<option>remove</option>
+			</select>
+			<label>Event</label>
+			<select type="text" id="eventtype">
+				<option>error (model)</option>
+				<option>loaded (model)</option>
+				<option>meta (model)</option>
+				<option>state (model)</option>
+				<option>time (model)</option>
+				<option>item (controller)</option>
+				<option>mute (controller)</option>
+				<option>play (controller)</option>
+				<option>playlist (controller)</option>
+				<option>resize (controller)</option>
+				<option>seek (controller)</option>
+				<option>stop (controller)</option>
+				<option>volume (controller)</option>
+			</select>
+		</fieldset>
+		<button type="submit" id="listenersbutton">Set listener</button>
+	</form>
+</div>
+
+
+
+<div id="preview">
+<p>Testing is simple: choose an example, change the flashvars and see if it works.</p>
+</div>
+
+
+
+<form id="flashvarsform">
+	<ul id="fieldsettabs">
+		<li class="active">Sources</li>
+		<li id="customli">Custom</li>
+	</ul>
+	<fieldset></fieldset>
+	<fieldset id="sources">
+		<label>player</label>
+		<select id="players"></select>
+		<label>skin</label>
+		<select id="skins"></select>
+		<label>plugins</label>
+		<select multiple="multiple" id="plugins"></select>
+	</fieldset>
+	<fieldset id="custom">
+		<p>
+			This fieldset contains variables not claimed by the player or plugin. 
+			They can be entered in the browser querystring to show up here.
+		</p>
+	</fieldset>
+	<button type="submit">Reload player</button>
+</form>
+
+
+
+</body>
+</html>

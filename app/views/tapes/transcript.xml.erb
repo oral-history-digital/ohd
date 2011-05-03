@@ -1,22 +1,12 @@
 <% cache [ @tape.interview.to_param, @tape.media_id, 'transcript'].join('/') do -%>
 <?xml version="1.0" encoding="utf-8"?>
-<tt xmlns="http://www.w3.org/2006/10/ttaf1">
-  <body>
-    <div xml:id="captions">
-
-      <% right_to_left = @tape.interview.language == 'Hebräisch' ? true : false -%>
-
-      <% @tape.segments.each do |segment| -%>
-
-
-      <p heading="<%= "#{segment.section}" %>" begin="<%= segment.start_time.round -%>" end="<%= segment.end_time.round -%>"><span<%= right_to_left ? " dir='rtl'" : ""  %> lang="original" class="caption_original<%= right_to_left ? " rtl" : ""  %>"><%= format_transcript segment.transcript -%></span><span lang="de" class="caption_translation"><%= format_transcript segment.translation -%></span></p>
-
-      <% end -%>
-      <% unless @tape.segments.empty? -%>
-      <p heading="<%= "#{@tape.segments.last.section}" %>" begin="<%= @tape.segments.last.end_time.to_i -%>" end="<%= @tape.segments.last.end_time.to_i + 1 -%>"><span lang="original" class="caption_original">&#160;</span><span lang="de" class="caption_translation">&#160;</span></p>
-      <% end -%>
-    </div>
-
-  </body>
-</tt>
-<% end -%><%# cache -%>
+<segments>
+  <% @tape.segments.each do |segment| -%>
+  <segment section="<%= "#{segment.section}" %>" begin="<%= "#{segment.start_time.to_i}" -%>" end="<%= "#{segment.end_time.to_i}" -%>">
+    <transcript><%= "#{segment.transcript}" -%></transcript>
+    <translation><%= "#{segment.translation}" -%></translation>
+    <section><%= "#{segment.section}" %></section>
+  </segment>
+  <% end -%>
+</segments>
+<% end -%>

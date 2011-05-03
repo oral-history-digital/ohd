@@ -1,214 +1,65 @@
-<%= javascript_include_tag "jwplayer" %>
-<%= javascript_tag "var headings = null;" %>
+<%= javascript_include_tag 'jwplayer', 'archiveplayer-core', 'archiveplayer-effects' %>
 
+<div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
 
-  <div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
+  <%= @player = JWPlayer.new(playlist_interview_tapes_path(@interview, :format => :xml),
+                             :id => 'interview-player',
+                             :item => (params[:item] != nil ? (params[:item].to_i-1) : nil),
+                             :position => (params[:position] != nil ? params[:position] : nil)) %>
 
-    <% if @interview.video == 'Video' %>
+  <div class="playerControl">
 
-    <div id="playerHigh" class="playerContainer">
-      <div id="mediaspace_high" class="player">
-        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
-        <noscript>
-          <p><%= t(:no_javascript, :scope => 'user_interface.messages') %></p>
-        </noscript>
-        <script type="text/javascript">
-          document.writeln('<%= t(:check_flash_version, :scope => 'user_interface.messages') %>');
-        </script>
-      </div>
-    </div>
-
-    <div id="playerLow" class="playerContainer" style="display: none;">
-      <div id="mediaspace_low" class="player">
-        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
-        <noscript>
-          <p><%= t(:no_javascript, :scope => 'user_interface.messages') %></p>
-        </noscript>
-        <script type="text/javascript">
-          document.writeln('<%= t(:check_flash_version, :scope => 'user_interface.messages') %>');
-        </script>
-      </div>
-    </div>
-
-    <div id="extendedControlbar" style="display: none;">
-      <span id="extendedControlbar-high" class='active' onClick="toggleMedia('high');"><%= t(:high_quality, :scope => "media") %></span>
-      <span id="extendedControlbar-low" onClick="toggleMedia('low');"><%= t(:low_quality, :scope => "media") %></span>
-    </div>
-
+    <div id="language_select">
+    <% if @interview.language.downcase == 'deutsch' %>
+      <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| t(f, :scope => 'mediaplayer.languages')}.join(' / ') %></a>
     <% else %>
-
-    <div id="playerAudio" class="playerContainer">
-      <div id="mediaspace_audio" class="player">
-        <h4><%= t(:player_not_loaded, :scope => 'user_interface.messages') %></h4>
-        <noscript>
-          <p><%= t(:player_no_javascript, :scope => 'user_interface.messages') %></p>
-        </noscript>
-        <script type="text/javascript">
-          document.writeln('<%= t(:check_flash_version, :scope => 'user_interface.messages') %>');
-        </script>
-      </div>
-    </div>
-
-    <% end %>
-
-
-
-    <div class="playerControl">
-        <div id="language_select">
-          <% if @interview.language.downcase == 'deutsch' %>
-            <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| t(f, :scope => 'mediaplayer.languages')}.join(' / ') %></a>
-          <% else %>
-            <%= link_to(formatted_languages(@interview),
-                        'javascript:currentPlayer.setCaptionsLanguage("original");',
-                        :id => "original",
-                        :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
-                        :onClick => "$('original').addClassName('active');$('translated').removeClassName('active');"+((@interview.right_to_left) ? 'rightToLeftCaptions(true);' : '')) %>
-            <% if @interview.translated? and @interview.segmented? %>
-              <%= link_to(t('Deutsch', :scope => 'mediaplayer.languages'),
-                          'javascript:currentPlayer.setCaptionsLanguage("de")',
-                          :id => "translated",
-                          :class => "captions_trans active",
-                          :onClick => "$('original').removeClassName('active');$('translated').addClassName('active');rightToLeftCaptions(false);") %>
-            <% else %>
-              <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'mediaplayer.languages') %></a>
-            <% end %>
-          <% end %>
-        </div>
-        <div id="volumeMuteButton" class="unmute" onClick="currentPlayer.toggleMute();"></div>
-        <div id="volumeSelect">
-          <div id="volumeOn"></div>
-        </div>
-
-        <div class="interviewinfo"><%= @interview.video %>: <%= "#{@interview.duration.minimal}" %></div>
-        <div class="itemselection">
-          <%= t(:tape, :scope => 'media') %>:
-          <select id="player_item" name="player_item" onChange="currentPlayer.changeItem(this.value);">
-          <% @interview.tapes.count.times do |item| %>
-            <option value="<%= item %>"><%= (item+1) %> <%= t(:of_tapes, :scope => 'media') %> <%= @interview.tapes.count %></option>
-          <% end %>
-          </select>
-        </div>
-    </div>
-
-    <div id="captions_wrapper">
-        <div id="captions">
-          <% if !@interview.segmented? %>
-            <span class="notice"><%= t(:no_transcript, :scope => 'user_interface.player' ) %></span>
-          <% else %>
-          <div id="captions-0" class="captions-slide"></div>
-          <div id="captions-1" class="captions-slide"></div>
-          <div id="captions-2" class="captions-slide"></div>
-          <% end %>
-        </div>
-        <!--
-        <div class="back">
-            <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
-        </div>
-        <div class="forward">
-            <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
-        </div>
-        //-->
-    </div>
-
-    <% javascript_tag do %>
-
-      var headings = null;
-
-      <% if @interview.language == "Deutsch" or !@interview.translated %>
-        <% captions_language = "original" %>
+      <%= content_tag(:div,
+                      formatted_languages(@interview),
+                      :id => "original",
+                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
+                      :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
+      <% if @interview.translated? and @interview.segmented? %>
+        <%= content_tag(:div,
+                        t('Deutsch', :scope => 'mediaplayer.languages'),
+                        :id => "translated",
+                        :class => "captions_trans active",
+                        :onClick => "$('#{@player.segments_container_id_for 'translation'}').show();$('#{@player.segments_container_id_for 'transcript'}').hide();$('original').removeClassName('active');$('translated').addClassName('active');") %>
       <% else %>
-        <% captions_language = "de" %>
+        <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'mediaplayer.languages') %></a>
       <% end %>
-
-      var playerSettings = {
-        jwplayerFile              : '<%= ActionController::Base.relative_url_root %>/swf/player.swf',
-        captionsPluginFile        : '<%= ActionController::Base.relative_url_root %>/swf/captions.swf',
-        skin                      : '<%= ActionController::Base.relative_url_root %>/swf/zwar.swf',
-        height                    : '335',
-        width                     : '400',
-        backcolor                 : '990000',
-        frontcolor                : '999999',
-        lightcolor                : 'ffffff',
-        headingsTable             : 'headings',
-        captionsSpace             : 'captions',
-        captionsLanguage          : '<%= captions_language %>', // 'original', 'de'
-        whilePlaying              : fadeOutGallery,
-        onVolume                  : 'drawVolumeBar(this.volume)',
-        onMute                    : 'drawMuteButton(this.mute)',
-        slideClass                : 'captions-slide',
-        call_item                 : 'if(currentPlayer==this){$("player_item").selectedIndex = this.item;};',
-        startItem                 : <%= params['item'] == nil ? "null" : (params['item'].to_i - 1) %>,
-        startPosition             : <%= params['position'] == nil ? "null" : params['position'].to_i %>
-      };
-
-      <% if @interview.video == 'Video' %>
-
-        // low quality video player
-        playerSettings.id = 'player_low';
-        playerSettings.jwplayerSpace = 'mediaspace_low';
-        playerSettings.extendedControlbar = true;
-        var player_low = new Player("<%= playlist_low_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
-
-        // high quality video player
-        playerSettings.id = 'player_high';
-        playerSettings.jwplayerSpace = 'mediaspace_high';
-        playerSettings.extendedControlbar = true;
-        var player_high = new Player("<%= playlist_high_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
-
-      <% else %>
-
-        // audio player
-        playerSettings.id = 'player_audio';
-        playerSettings.jwplayerSpace = 'mediaspace_audio';
-        var player_audio = new Player("<%= playlist_audio_interview_tapes_path(@interview, :format => :xml) %>", playerSettings);
-
-      <% end %>
-
     <% end %>
-	</div>
+    </div>
 
-<% javascript_tag do %>
+    <div id="volumeMuteButton"><%= @player.mute_control %></div>
+    <div id="volumeSelect"><%= @player.volume_control %></div>
+    <div class="interviewinfo"><%= @interview.video %>: <%= "#{@interview.duration.minimal}" %></div>
+    <div class="itemselection">
+      <%= t(:tape, :scope => 'media') %>:
+      <%= @player.items_selector(@interview.tapes.size) %>
+    </div>
+  </div>
 
-  function showExtendedControlbar(event) {
-    player_id = currentPlayer.player.id;
-    //alert(currentPlayer.player.id);
-    currentPlayer.showExtendedControlbar();
-  }
+  <div id="captions_wrapper">
+    <div id="captions">
+    <% if !@interview.segmented? %>
+      <span class="notice"><%= t(:no_transcript, :scope => 'user_interface.player' ) %></span>
+    <% else %>
+      <%= @player.segments_container_for 'transcript', :span, { :style => "display: none;", :slides => true } %>
+      <%= @player.segments_container_for 'translation', :span, { :slides => true } %>
+    <% end %>
+    </div>
+    <%#TODO: back and forward buttons %>
+    <!--
+    <div class="back">
+        <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
+    </div>
+    <div class="forward">
+        <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
+    </div>
+    //-->
+  </div>
 
-  function toggleMedia(quality) {
-    var changeToLow = (quality == 'low' && currentPlayer.player.id.indexOf('high') >= 0);
-    var changeToHigh = (quality == 'high' && currentPlayer.player.id.indexOf('low') >= 0);
-    if(changeToHigh || changeToLow) {
-      currentPlayer.pause();
-      $('playerHigh').toggle();
-      $('playerLow').toggle();
-      $('extendedControlbar-high').toggleClassName('active');
-      $('extendedControlbar-low').toggleClassName('active');
-    }
-  }
-
-  document.observe('dom:loaded', function() {
-    $('mediaspace_high').observe('mouseenter', function() {
-        showExtendedControlbar();
-    }),
-    $('mediaspace_low').observe('mouseenter', function() {
-        showExtendedControlbar();
-    });
-  })
-
-  function rightToLeftCaptions(rightToLeft) {
-    if(rightToLeft) {
-      for(var i in [0, 1, 2]) {
-        $('captions-'+i).setStyle({textAlign: 'right'});
-        $('captions-'+i).writeAttribute('dir', 'RTL');
-      }
-    } else {
-      for(var i in [0, 1, 2]) {
-        $('captions-'+i).setStyle({textAlign: 'left'});
-        $('captions-'+i).removeAttribute('dir');
-      }
-    }
-  }
-  
-  Event.observe('volumeSelect', 'click', setVolume);
-<% end %>
+  <% javascript_tag do %>
+    var headings = null;
+  <% end %>
+</div>

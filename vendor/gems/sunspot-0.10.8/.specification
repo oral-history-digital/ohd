@@ -1,6 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: sunspot
 version: !ruby/object:Gem::Version 
+  hash: 39
   prerelease: false
   segments: 
   - 0
@@ -34,6 +35,7 @@ dependencies:
     requirements: 
     - - ">="
       - !ruby/object:Gem::Version 
+        hash: 55
         segments: 
         - 0
         - 9
@@ -49,6 +51,7 @@ dependencies:
     requirements: 
     - - ~>
       - !ruby/object:Gem::Version 
+        hash: 15
         segments: 
         - 1
         - 0
@@ -63,6 +66,7 @@ dependencies:
     requirements: 
     - - ~>
       - !ruby/object:Gem::Version 
+        hash: 13
         segments: 
         - 1
         - 1
@@ -77,6 +81,7 @@ dependencies:
     requirements: 
     - - ~>
       - !ruby/object:Gem::Version 
+        hash: 31
         segments: 
         - 0
         - 10
@@ -91,6 +96,7 @@ dependencies:
     requirements: 
     - - "="
       - !ruby/object:Gem::Version 
+        hash: 29
         segments: 
         - 1
         - 2
@@ -270,6 +276,7 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
       segments: 
       - 0
       version: "0"
@@ -278,6 +285,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
       segments: 
       - 0
       version: "0"

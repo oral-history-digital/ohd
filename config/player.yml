@@ -1,0 +1,25 @@
+default:
+  flashplayer:                '/swf/player.swf'
+  skin:                       '/swf/zwar.swf'
+  backcolor:                  '990000'
+  frontcolor:                 '999999'
+  lightcolor:                 'ffffff'
+  width:                      400
+  height:                     335
+  allowfullscreen:            true
+  wmode:                      'opaque'
+  autostart:                  false
+  controlbar:                 'bottom'
+  segments:
+    plugin_file:              '/swf/segments.swf'
+  hd:
+    plugin_file:              '/swf/hd.swf'
+    state:                    'true'
+  images:
+    heading_open:             '/images/plus.gif'
+    heading_close:            '/images/minus.gif'
+    mute:                     '/images/player_speaker_mute_n.gif'
+    mute_hover:               '/images/player_speaker_mute_a.gif'
+    unmute:                   '/images/player_speaker_n.gif'
+    unmute_hover:             '/images/player_speaker_a.gif'
+    volume_blank:             '/images/volume_blank.gif'
