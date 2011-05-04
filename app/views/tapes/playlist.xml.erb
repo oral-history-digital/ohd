@@ -1,4 +1,4 @@
-<% media_extension = (@interview.video =~ /video/i) ? { :file => 'flv', :hd => 'mp4' } : { :file => 'mp3' } -%>
+<% media_extension = @interview.video? ? { :file => 'flv', :hd => 'mp4' } : { :file => 'mp3' } -%>
 <% cache [@interview.to_param, 'playlist'].join('/') do -%>
 <?xml version="1.0" encoding="utf-8"?>
 <playlist version="1" xmlns="http://xspf.org/ns/0/">

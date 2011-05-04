@@ -168,6 +168,10 @@ DEF
     read_attribute(:video) ? 'Video' : 'Audio'
   end
 
+  def video?
+    read_attribute(:video)
+  end
+
   def has_headings?
     segments.headings.count > 0 ? true : false
   end
