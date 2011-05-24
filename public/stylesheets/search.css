@@ -450,6 +450,7 @@ position: relative;
 
 .mainheading .heading a {
     padding-left: 1px;
+    outline-style: none;
 }
 
 .mainheading .subheading{
