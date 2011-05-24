@@ -51,6 +51,47 @@ namespace :cleanup do
   end
 
 
+  desc "Reassigns section numbers for all segments of an interview"
+  task :segment_sections, [:id] => :environment do |task,args|
+
+    archive_id = (args[:id] || '')[/za\d{3}/]
+
+    conditions = "researched = true"
+    unless archive_id.nil?
+      puts "\nChecking section numbers for #{Interview.count(:all, :conditions => "researched = true")} interviews."
+      conditions << " AND archive_id = #{archive_id.downcase}"
+    end
+
+    Interview.find_each(:conditions => conditions) do |interview|
+
+      puts "\nUpdating section numbers for #{interview.archive_id} '#{interview}' (#{interview.segments.size} segments):"
+
+      section = 0
+      subsection = 0
+
+      interview.segments.each_with_index do |segment,index|
+        if !segment.mainheading.blank?
+          section += 1
+          subsection = 0
+        end
+        if !segment.subheading.blank?
+          subsection += 1
+        end
+        section_str = "#{section}"
+        section_str << ".#{subsection}" unless subsection == 0
+        Segment.update_all "section = '#{section_str}'", "id = #{segment.id}" unless segment.section == section_str
+        if index % 75 == 0
+          STDOUT.printf '.'
+          STDOUT.flush
+        end
+      end
+
+    end
+
+    puts "\ndone."
+  end
+
+
   desc "cleanup segment ordering and tape assignment"
   task :segments => :environment do
 

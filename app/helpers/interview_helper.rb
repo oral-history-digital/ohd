@@ -10,7 +10,7 @@ module InterviewHelper
     headings.each do |heading|
       # values for the player seeking
       player_item = (heading.tape.number-1).to_s
-      player_pos = heading.start_time.round.to_s
+      player_pos = heading.start_time.floor.to_s
       # html
       heading_id = "heading_" + player_item + "_" + player_pos
 
