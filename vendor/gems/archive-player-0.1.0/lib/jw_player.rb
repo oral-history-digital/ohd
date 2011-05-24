@@ -79,7 +79,7 @@ class JWPlayer
     end
 
     @options[:images].each do |image_file|
-      @options[:images][image_file] = image_path(@options[:images][image_file]) unless @options[:images][image_file].nil?
+      @options[:images][image_file] = images_path(@options[:images][image_file]) unless @options[:images][image_file].nil?
     end
 
     # hd plugin translations
@@ -177,7 +177,7 @@ class JWPlayer
 
   def mute_control
     content_tag(:span,
-                link_to_function(image_tag('player_speaker_n.gif', :id => "#{@container}-mute-image"),
+                link_to_function(image_tag(@options[:images][:mute], :id => "#{@container}-mute-image"),
                                  "archiveplayer('#{container_id}').toggleMute();",
                                  :onmouseover => "archiveplayer('#{@container}').changeMuteImage(true);",
                                  :onmouseout => "archiveplayer('#{@container}').changeMuteImage(false);"),
@@ -187,7 +187,7 @@ class JWPlayer
 
   def volume_control
     content =  content_tag(:div, '', { :id => "#{container_id}-volumebar", :style => 'position: absolute; top: 0; left: 0; width: 80%; height: 100%; background-color: #999999; margin: 0; padding: 0;' })
-    content << image_tag(image_path('volume_blank.gif'), :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;')
+    content << image_tag(@options[:images][:volume_blank], :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;')
     content << javascript_tag("archiveplayer('#{container_id}').volumeClickListener();")
     content_tag(:div, content, { :style => 'position: relative; background-color: #730f0f; width: 50px; height: 8px; padding: 0; margin: 0;' })
   end
@@ -197,6 +197,10 @@ class JWPlayer
   end
 
   protected
+
+  def images_path(file, images_root='images')
+    File.join(ApplicationController.relative_url_root || '', images_root, file.sub(Regexp.new("^/?#{images_root}"),''))
+  end
 
   def swf_path(file, swf_root='swf')
     File.join(ApplicationController.relative_url_root || '', swf_root, file.sub(Regexp.new("^/?#{swf_root}"),''))
