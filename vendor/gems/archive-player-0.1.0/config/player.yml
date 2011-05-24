@@ -6,6 +6,7 @@ default:
   wmode:                      'opaque'
   autostart:                  false
   controlbar:                 'bottom'
+  repeat:                     'list'
   images:
     heading_open:             '/images/plus.gif'
     heading_close:            '/images/minus.gif'
