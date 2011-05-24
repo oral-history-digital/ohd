@@ -194,7 +194,7 @@ DEF
     @page = (current_query_params.delete('page') || 1).to_i
 
     if current_query_params.blank?
-      @search = blank_search
+      @search = blank_search(@page)
 
     else
       if current_query_params['partial_person_name'].blank?
@@ -341,7 +341,7 @@ DEF
   private
 
   # the default blank search - nothing but facets
-  def blank_search
+  def blank_search(page)
     Sunspot.search Interview do
 
       facet :person_name,
@@ -351,7 +351,7 @@ DEF
             :language_ids,
             :country_ids
 
-      paginate :page => 1, :per_page => RESULTS_PER_PAGE
+      paginate :page => page, :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
     end
