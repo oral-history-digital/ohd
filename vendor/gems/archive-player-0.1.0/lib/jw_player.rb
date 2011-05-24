@@ -123,9 +123,10 @@ class JWPlayer
       content << '</table>'
       # set the id and style on the parent container
       #TODO: include parent container here
-      js = "var hC = $('interview_headings').up(); hC.id = '#{@container}-headings';"
+      # WARNING: DON'T MESS UP THE APPS MARKUP HERE!!!
+      js = "var hC = $('interview_headings').up();" # removed the part that was changing the id unnecessarily!
       js << "hC.setStyle({overflowY: 'scroll', overflowX: 'hidden'});"
-      js << "headings = new TableOfContents({id: '#{@container}-headings'});"
+      js << "headings = new TableOfContents({id: hC.id});"
       content << javascript_tag(js)
     end
   end
