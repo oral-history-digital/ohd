@@ -13,6 +13,7 @@ class JWPlayer
           :width                  => 400,
           :height                 => 300,
           :autostart              => false,
+          :repeat                 => 'list',
           :controlbar             => 'bottom',
           :images                 => {
                   :heading_open         => '/images/plus.gif',

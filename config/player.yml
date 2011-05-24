@@ -9,6 +9,7 @@ default:
   allowfullscreen:            true
   wmode:                      'opaque'
   autostart:                  false
+  repeat:                     'list'
   controlbar:                 'bottom'
   segments:
     plugin_file:              '/swf/segments.swf'
