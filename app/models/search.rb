@@ -341,7 +341,7 @@ DEF
   private
 
   # the default blank search - nothing but facets
-  def blank_search(page)
+  def blank_search(page=1)
     Sunspot.search Interview do
 
       facet :person_name,
@@ -358,7 +358,7 @@ DEF
   end
 
   # normal interview search
-  def standard_search(query, page)
+  def standard_search(query, page=1)
     # SOLR query
     Sunspot.search Interview do
 
@@ -391,7 +391,7 @@ DEF
   end
 
   # do a standard search with the lucene handler
-  def standard_lucene_search(query, page)
+  def standard_lucene_search(query, page=1)
     # SOLR query
     fulltext_query = Search.lucene_escape(query['fulltext'])
     Sunspot.search Interview do
@@ -430,7 +430,7 @@ DEF
   end
 
   # search for autocomplete on person_name
-  def person_name_search(query, page)
+  def person_name_search(query, page=1)
     # SOLR query
     fulltext_query = Search.lucene_escape(query['fulltext'])
     Sunspot.search Interview do
