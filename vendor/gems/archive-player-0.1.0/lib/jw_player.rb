@@ -131,7 +131,7 @@ class JWPlayer
   end
 
   def link_to_position(text, item, position)
-    link_to_function text, "archiveplayer('#{@container}').seek(#{item}, #{position})"
+    link_to_function text, "archiveplayer('#{@container}').seek(#{item}, #{position})", :class => "heading"
   end
 
   # displays the player
