@@ -3,8 +3,8 @@
 <segments>
   <% @tape.segments.each do |segment| -%>
   <segment section="<%= "#{segment.section}" %>" begin="<%= "#{segment.start_time.to_i}" -%>" end="<%= "#{segment.end_time.to_i}" -%>">
-    <transcript><%= "#{segment.transcript}" -%></transcript>
-    <translation><%= "#{segment.translation}" -%></translation>
+    <transcript><%= format_transcript segment.transcript -%></transcript>
+    <translation><%= format_transcript segment.translation -%></translation>
     <section><%= "#{segment.section}" %></section>
   </segment>
   <% end -%>
