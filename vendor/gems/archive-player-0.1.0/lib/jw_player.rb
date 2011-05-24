@@ -31,7 +31,6 @@ class JWPlayer
   def initialize(file, config = {})
     # object specific configuration
     @container = (config[:id] ? config.delete(:id) : "mediaplayer-#{self.object_id.to_s.gsub(/\D/, '')}")
-    @root_path = config.delete(:root_path)
 
     # merge default settings and application wide configuration
     #unless defined?(@@app_wide_config)
@@ -80,7 +79,7 @@ class JWPlayer
     end
 
     @options[:images].each do |image_file|
-      @options[:images][image_file] = images_path(@options[:images][image_file]) unless @options[:images][image_file].nil?
+      @options[:images][image_file] = image_path(@options[:images][image_file]) unless @options[:images][image_file].nil?
     end
 
     # hd plugin translations
@@ -188,7 +187,7 @@ class JWPlayer
 
   def volume_control
     content =  content_tag(:div, '', { :id => "#{container_id}-volumebar", :style => 'position: absolute; top: 0; left: 0; width: 80%; height: 100%; background-color: #999999; margin: 0; padding: 0;' })
-    content << image_tag('volume_blank.gif', :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;')
+    content << image_tag(image_path('volume_blank.gif'), :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;')
     content << javascript_tag("archiveplayer('#{container_id}').volumeClickListener();")
     content_tag(:div, content, { :style => 'position: relative; background-color: #730f0f; width: 50px; height: 8px; padding: 0; margin: 0;' })
   end
@@ -199,12 +198,8 @@ class JWPlayer
 
   protected
 
-  def images_path(file, images_root='images')
-    File.join(@root_path || "", images_root, file.sub(Regexp.new("^/?#{images_root}"),''))
-  end
-
   def swf_path(file, swf_root='swf')
-    File.join(@root_path || "", swf_root, file.sub(Regexp.new("^/?#{swf_root}"),''))
+    File.join(ApplicationController.relative_url_root || '', swf_root, file.sub(Regexp.new("^/?#{swf_root}"),''))
   end
 
   def container
