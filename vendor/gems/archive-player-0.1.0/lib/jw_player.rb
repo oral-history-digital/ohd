@@ -78,7 +78,7 @@ class JWPlayer
       @options[asset_file_option] = swf_path(@options[asset_file_option]) unless @options[asset_file_option].nil?
     end
 
-    @options[:images].each do |image_file|
+    @options[:images].each_pair do |image_file, path_for_image|
       @options[:images][image_file] = images_path(@options[:images][image_file]) unless @options[:images][image_file].nil?
     end
 
@@ -177,7 +177,7 @@ class JWPlayer
 
   def mute_control
     content_tag(:span,
-                link_to_function(image_tag(@options[:images][:mute], :id => "#{@container}-mute-image"),
+                link_to_function(content_tag(:img, '', { :src => @options[:images][:mute], :id => "#{@container}-mute-image" }),
                                  "archiveplayer('#{container_id}').toggleMute();",
                                  :onmouseover => "archiveplayer('#{@container}').changeMuteImage(true);",
                                  :onmouseout => "archiveplayer('#{@container}').changeMuteImage(false);"),
@@ -187,7 +187,7 @@ class JWPlayer
 
   def volume_control
     content =  content_tag(:div, '', { :id => "#{container_id}-volumebar", :style => 'position: absolute; top: 0; left: 0; width: 80%; height: 100%; background-color: #999999; margin: 0; padding: 0;' })
-    content << image_tag(@options[:images][:volume_blank], :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;')
+    content << content_tag(:img, '', { :src => @options[:images][:volume_blank], :width => '100%', :height => '100%', :id => "#{container_id}-volume", :style => 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;'})
     content << javascript_tag("archiveplayer('#{container_id}').volumeClickListener();")
     content_tag(:div, content, { :style => 'position: relative; background-color: #730f0f; width: 50px; height: 8px; padding: 0; margin: 0;' })
   end
