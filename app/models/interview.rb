@@ -165,7 +165,8 @@ DEF
   end
 
   def year_of_birth
-    read_attribute(:date_of_birth)[/(19|20)\d{2}/]
+    date = read_attribute(:date_of_birth)
+    date.blank? ? '?' : date[/(19|20)\d{2}/]
   end
 
   def video
