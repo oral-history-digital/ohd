@@ -351,7 +351,7 @@ DEF
             :language_ids,
             :country_ids
 
-      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
     end
@@ -384,7 +384,7 @@ DEF
             :language_ids,
             :country_ids
 
-      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
     end
@@ -413,7 +413,7 @@ DEF
             :language_ids,
             :country_ids
 
-      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
       adjust_solr_params do |params|
@@ -459,7 +459,7 @@ DEF
             :language_ids,
             :country_ids
 
-      paginate :page => page, :per_page => RESULTS_PER_PAGE
+      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
       adjust_solr_params do |params|
@@ -476,6 +476,10 @@ DEF
     else
       Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!\(\)]+/,''))
     end
+  end
+
+  def self.valid_page_number(page)
+    page.to_i > 0 ? page.to_i : 1
   end
 
 end
