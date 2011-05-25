@@ -4,7 +4,7 @@
   <p>
     <%= @interview.gender ? t(:male, :scope => 'personal_data') : t(:female, :scope => 'personal_data') %>,
     <%= t(:born, :scope => 'personal_data') %>
-    <%= @interview.date_of_birth %>
+    <%= @interview.year_of_birth %>
     <%= t(:in, :scope => 'location') %>
     <%= @interview.country_of_origin %>
   </p>

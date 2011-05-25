@@ -164,6 +164,10 @@ DEF
     @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'
   end
 
+  def year_of_birth
+    read_attribute(:date_of_birth)[/(19|20)\d{2}/]
+  end
+
   def video
     read_attribute(:video) ? 'Video' : 'Audio'
   end
