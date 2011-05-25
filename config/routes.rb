@@ -31,6 +31,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.search 'suche', :controller => :searches, :action => :new
+  map.search_by_hash 'suche/:suche', :controller => :searches, :action => :new
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 

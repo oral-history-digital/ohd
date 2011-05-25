@@ -25,6 +25,7 @@
 class Search < ActiveRecord::Base
 
   require 'yaml'
+  require 'base64'
 
   RESULTS_PER_PAGE = 12
 
@@ -53,9 +54,11 @@ class Search < ActiveRecord::Base
                               ]).join(', :')}
 ATTR
 
+  QUERY_PARAMS = Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }
+
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
-  (self.accessible_attributes - [ 'fulltext' ]).each do |query_param|
+  (Search.accessible_attributes - [ 'fulltext' ]).each do |query_param|
     class_eval <<DEF
     # This is the generated setter for accessing the
     # #{query_param} query conditions.
@@ -155,7 +158,7 @@ DEF
   # Returns the query params - this is needed for link generation from a given query, for instance.
   def query_params
     query = {}
-    (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |query_param|
+    QUERY_PARAMS.each do |query_param|
       query_value = self.send(query_param)
       query[query_param] = query_value unless query_value.nil?
     end
@@ -314,10 +317,12 @@ DEF
       end
       @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
     else
+      search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
+      search_params.merge!(query_params)
       search = Search.new do |search|
-        (Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }).each do |attr|
+        QUERY_PARAMS.each do |attr|
           # puts "-> setting search query param: #{attr} = #{query_params[attr]}"
-          search.send(attr+'=', query_params[attr.to_s]) unless query_params[attr.to_s].blank?
+          search.send(attr+'=', search_params[attr.to_s]) unless search_params[attr.to_s].blank?
           # puts "search.#{attr} = #{search.send(attr.to_s)}"
         end
       end
@@ -480,6 +485,37 @@ DEF
 
   def self.valid_page_number(page)
     page.to_i > 0 ? page.to_i : 1
+  end
+
+  # transforms a parameter hashtable to a hashed string
+  def self.encode_parameters(params)
+    param_tokens = []
+    params.stringify_keys!
+    QUERY_PARAMS.each do |p|
+      unless params[p].blank?
+        param_tokens << Search.codify_parameter_name(p) + '=' + params[p].to_s
+      end
+    end
+    Base64.encode64(param_tokens.join('|')).sub(/\n$/,'')
+  end
+
+  def self.decode_parameters(hash)
+    params_str = Base64.decode64(hash)
+    params = {}
+    params_str.split('|').each do |token|
+      p_code = token[/^[a-z]+=/].sub('=','')
+      p_value = token.sub(p_code + '=', '')
+      p_key = nil
+      QUERY_PARAMS.each do |param_name|
+        p_key = param_name if Search.codify_parameter_name(param_name) == p_code
+      end
+      params[p_key.to_sym] = p_value unless p_key.nil?
+    end
+    params
+  end
+
+  def self.codify_parameter_name(name)
+    name.split('_').map{|i|i.first.downcase}.join('')
   end
 
 end
