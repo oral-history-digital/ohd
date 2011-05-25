@@ -36,6 +36,7 @@ class SearchesController < BaseController
         page.replace_html 'innerContent', results_html
         page.replace_html 'baseServices', service_html
         page.replace_html 'baseContainerRight', search_facets_html
+        page << "setQueryHashInURL('#{@search.query_hash}');"
       end
     end
   end

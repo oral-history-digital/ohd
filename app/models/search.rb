@@ -114,6 +114,12 @@ DEF
     @query || {}
   end
 
+  # The query parameters in hashed form.
+  def query_hash
+    puts "\n@@@ ENCODING QUERY: #{query_params.inspect}\n@@@\n\n"
+    Search.encode_parameters(query_params)
+  end
+
   # Returns an array of facets that are actively filtered on in the current query.
   def query_facets
     @query_facets ||= query.select{|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym) }

@@ -18,3 +18,10 @@
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>
+
+<% javascript_tag do %>
+    <% if action_name == 'new' && controller_name == 'searches' %>
+    // document.observe("dom:loaded", submitHashedQueryParams());
+    <% end %>
+    var queryHash = <%= (@search || Search.new).query_hash %>
+<% end %>
