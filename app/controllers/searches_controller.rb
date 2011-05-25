@@ -14,8 +14,8 @@ class SearchesController < BaseController
   new_action do
     before do
       @search = Search.from_params(@query_params || params)
-      #puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
-      #puts "NEW SEARCH: #{@search.inspect}"
+      puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
+      puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
       #reinstate_category_state
       @search.segment_search!

@@ -493,7 +493,7 @@ DEF
     params.stringify_keys!
     QUERY_PARAMS.each do |p|
       unless params[p].blank?
-        param_tokens << Search.codify_parameter_name(p) + '=' + params[p].to_s
+        param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
     Base64.encode64(param_tokens.join('|')).sub(/\n$/,'')
@@ -509,8 +509,11 @@ DEF
       QUERY_PARAMS.each do |param_name|
         p_key = param_name if Search.codify_parameter_name(param_name) == p_code
       end
-      params[p_key.to_sym] = p_value unless p_key.nil?
+      # make sure arrays of ids are instantiated as such:
+      numeric_values = p_value.scan(/\"\d+\"/)
+      params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
     end
+    # puts "\n\n@@ DECODED PARAMS for search from #{hash}\n#{params.inspect}\n@@\n"
     params
   end
 
