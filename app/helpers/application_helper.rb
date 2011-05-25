@@ -40,7 +40,7 @@ module ApplicationHelper
     position = segment.start_time.round
     link_text = show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview) || ajax
-      link_to link_text, "javascript:currentPlayer.seek(#{item-1},#{position});"
+      link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
     else
       link_to link_text, interview_path(interview, :item => item, :position => position)
     end

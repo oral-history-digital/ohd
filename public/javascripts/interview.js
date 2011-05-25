@@ -51,7 +51,7 @@
   function setVolume(event) {
     var width = $('volumeSelect').getWidth();
     var on = ((Event.pointerX(event)) - ($('volumeSelect').cumulativeOffset().left));
-    currentPlayer.setVolume(Math.round((100 / width) * on));
+    archiveplayer('interview-player').setVolume(Math.round((100 / width) * on));
   }
 
   function drawVolumeBar(percentage) {
