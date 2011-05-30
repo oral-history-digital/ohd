@@ -4,9 +4,9 @@
 
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t(:all) + '&nbsp;' + Interview.human_name.pluralize, current_search_path %>
+      <%= link_to t(:all) + '&nbsp;' + Interview.human_name.pluralize, current_search_path, :method => :post %>
     <% elsif search.hits > 0 %>
-      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels'), current_search_path %>
+      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels'), current_search_path, :method => :post %>
     <% else %>
       <%= t(:not_found, :scope => 'user_interface.search') + '&nbsp;' + Interview.human_name.pluralize + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels') %>
     <% end %>
@@ -20,8 +20,8 @@
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>
 
 <% javascript_tag do %>
+    var queryHash = '<%= (@search || Search.new).query_hash || '' %>';
     <% if action_name == 'new' && controller_name == 'searches' %>
-    // document.observe("dom:loaded", submitHashedQueryParams());
+    document.observe("dom:loaded", submitHashedQueryParams());
     <% end %>
-    var queryHash = <%= (@search || Search.new).query_hash %>
 <% end %>

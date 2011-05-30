@@ -4,22 +4,30 @@
   var searchParams = [];
   function submitHashedQueryParams(){
       var hash = window.location.hash.sub(/^#/,'');
-      alert('Checking for query hash=' + hash);
+      alert('Checking for query hash=' + hash + '\ncurrentHash=' + queryHash);
       //document.URL.scan(/#[a-zA-Z0-9]+(==)?$/, function(str){ hash=String.interpret(str).gsub(/[#=,]/,''); });
       if(hash != queryHash) {
         // Change the form submit:
         var searchForm = $('search_facets');
         queryHash = hash;
-        alert('Submitting for query hash=' + hash);
-        searchForm.onsubmit = new Ajax.Request('/suche',{asynchronous: true, evalScripts: true, method: 'get', parameters: { 'suche': hash }});
-      }
+        if(searchForm) {
+            alert('Submitting for query hash=' + hash);
+            searchForm.onsubmit = new Ajax.Request('/suche',{asynchronous: true, evalScripts: true, method: 'get', parameters: { 'suche': hash }});
+        } else {
+            alert('ERROR:\nsearchForm = ' + searchForm);
+        }
+     }
   }
 
   function setQueryHashInURL(hash){
       queryHash = hash;
       window.location.hash = hash.sub(/^#/,'');
       if(searchParams.size == 0) {
-          $('search_facets').getInputs().each(function(el){ searchParams.push(el.name); });
+          clearFulltextField('searchInput');
+          var searchForm = $('search_facets');
+          var formInputs = searchForm.getInputs('text');
+          formInputs.concat(searchForm.getInputs('checkbox'));
+          formInputs.each(function(el){ searchParams.push(el.name); });
           alert('Setting searchParameters to ' + searchParams);
       }
       // document.URL = document.URL.sub(/#[A-Za-z0-9]+(==)?/, '#' + hash);

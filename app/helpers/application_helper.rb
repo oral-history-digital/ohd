@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def current_search_path
-    url_for(@search.query_params.merge({:controller => :searches, :action => :new}))
+    url_for({:controller => :searches, :action => :create, :page => @search.page, :suche => @search.query_hash })
   end
 
   # Formats attributes for display
@@ -74,10 +74,11 @@ module ApplicationHelper
     end.gsub(/~([^~]*)~/,'<em>\1</em>')
   end
 
-  def zwar_paginate(collection)
+  def zwar_paginate(collection, params=nil)
     will_paginate collection,
                   { :previous_label => I18n.t(:previous),
-                    :next_label => I18n.t(:next)
+                    :next_label => I18n.t(:next),
+                    :params => params
                   }
   end
 

@@ -56,6 +56,11 @@ ATTR
 
   QUERY_PARAMS = Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }
 
+  IGNORE_SEARCH_TERMS = [
+    I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
+    I18n.t('search_term', :scope => 'user_interface.search', :locale => :en)
+  ]
+
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
   (Search.accessible_attributes - [ 'fulltext' ]).each do |query_param|
@@ -101,6 +106,11 @@ DEF
     @partial_person_name
   end
 
+  # filter the ignore (default label) words from fulltext
+  def fulltext=(term)
+    write_attribute(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+  end
+
   # The total number of records matching the query criteria
   # as returned by Solr. Defaults to zero if Search#search!
   # hasn't been called.
@@ -116,8 +126,14 @@ DEF
 
   # The query parameters in hashed form.
   def query_hash
-    puts "\n@@@ ENCODING QUERY: #{query_params.inspect}\n@@@\n\n"
-    Search.encode_parameters(query_params)
+    puts "\n@@@ ENCODING QUERY: #{query_params.inspect}"
+    @query_hash ||= Search.encode_parameters(query_params)
+    puts "ENCODED: #{@query_hash}\n@@@\n\n"
+    @query_hash
+  end
+
+  def page
+    @page
   end
 
   # Returns an array of facets that are actively filtered on in the current query.
@@ -223,6 +239,7 @@ DEF
     @facets = nil
     @query = current_query_params.select{|k,v| !v.nil? }
     @query_facets = nil
+    @query_hash = nil
     @segments = {}
     # puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
@@ -497,29 +514,30 @@ DEF
   def self.encode_parameters(params)
     param_tokens = []
     params.stringify_keys!
-    QUERY_PARAMS.each do |p|
+    (QUERY_PARAMS - ['page']).each do |p|
       unless params[p].blank?
         param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
-    Base64.encode64(param_tokens.join('|')).sub(/\n$/,'')
+    Base64.encode64(param_tokens.join('|')).gsub("\n",'')
   end
 
   def self.decode_parameters(hash)
     params_str = Base64.decode64(hash)
     params = {}
     params_str.split('|').each do |token|
-      p_code = token[/^[a-z]+=/].sub('=','')
+      p_code = (token[/^[a-z]+=/] || '').sub('=','')
+      next if p_code.blank?
       p_value = token.sub(p_code + '=', '')
       p_key = nil
-      QUERY_PARAMS.each do |param_name|
+      (QUERY_PARAMS - ['page']).each do |param_name|
         p_key = param_name if Search.codify_parameter_name(param_name) == p_code
       end
       # make sure arrays of ids are instantiated as such:
       numeric_values = p_value.scan(/\"\d+\"/)
       params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
     end
-    # puts "\n\n@@ DECODED PARAMS for search from #{hash}\n#{params.inspect}\n@@\n"
+    puts "\n\n@@ DECODED PARAMS for search from #{hash}\n#{params.inspect}\n@@\n"
     params
   end
 

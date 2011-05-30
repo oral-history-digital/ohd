@@ -1,8 +1,8 @@
 <div id="searchReset">
   <% if facets.hits < Interview::NUMBER_OF_INTERVIEWS %>
     <%# reload the complete page if we are in the search result view %>
-    <% reset_path = (request.path == searches_path) ? searches_path : search_path  %>
-    <%= link_to_remote(content_tag('span', t(:reset, :scope => 'user_interface.search')) + image_tag(image_path 'suche_reset1.gif'), { :url => new_search_path, :method => :get, :complete => "afterResponse();", :success => "resetBlindStatus();", :before => "beforeSubmit();" }) %>
+    <%# reset_path = (request.path == searches_path) ? searches_path : search_path  %>
+    <%= link_to_remote(content_tag('span', t(:reset, :scope => 'user_interface.search')) + image_tag(image_path 'suche_reset1.gif'), { :url => search_path, :method => :post, :complete => "afterResponse();", :success => "resetBlindStatus();", :before => "beforeSubmit();" }) %>
   <% end %>
 </div>
 
@@ -12,9 +12,9 @@
 
   <% remote_form_for facets,
                      :url => form_action,
-                     :method => :get,
+                     :method => :post,
                      :html => { :action => form_action,
-                                :method => :get,
+                                :method => :post,
                                 :complete => "afterResponse();",
                                 :success => "resetBlindStatus();",
                                 :name => "searchFacets",

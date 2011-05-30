@@ -1,6 +1,6 @@
 class SearchesController < BaseController
 
-  actions :new, :index
+  actions :create, :index
 
   prepend_before_filter :redirect_unauthenticated_users
 
@@ -11,7 +11,7 @@ class SearchesController < BaseController
 
   before_filter :remove_search_term_from_params
 
-  new_action do
+  create do
     before do
       @search = Search.from_params(@query_params || params)
       puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
@@ -40,6 +40,8 @@ class SearchesController < BaseController
       end
     end
   end
+
+  create.flash nil
 
   index do
     before do
