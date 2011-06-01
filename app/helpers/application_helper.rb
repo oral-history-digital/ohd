@@ -14,7 +14,11 @@ module ApplicationHelper
   end
 
   def current_search_path
-    url_for({:controller => :searches, :action => :create, :page => @search.page, :suche => @search.query_hash })
+    if @search.query_hash.blank?
+      url_for({:controller => :searches, :action => :create })
+    else
+      url_for({:controller => :searches, :action => :create, :suche => @search.query_hash })
+    end
   end
 
   # Formats attributes for display
@@ -75,6 +79,7 @@ module ApplicationHelper
   end
 
   def zwar_paginate(collection, params=nil)
+    params.delete_if{|k,v| v.blank? }
     will_paginate collection,
                   { :previous_label => I18n.t(:previous),
                     :next_label => I18n.t(:next),
