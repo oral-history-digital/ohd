@@ -537,7 +537,6 @@ DEF
       numeric_values = p_value.scan(/\"\d+\"/)
       params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
     end
-    puts "\n\n@@ DECODED PARAMS for search from #{hash}\n#{params.inspect}\n@@\n"
     params
   end
 
