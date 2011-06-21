@@ -65,6 +65,7 @@ var TableOfContents = Class.create({
     this.subListElem = options.subListElem || 'ul';
     this.scrollPosition = options.scrollPosition || 1;
     this.currentClassName = options.currentClassName || 'current';
+    this.scrollViewPosition = options.scrollViewPosition || 196;
 
     this.currentHeading = null;
     this.section = 0;
@@ -75,10 +76,6 @@ var TableOfContents = Class.create({
       throw("No Headings found for container " + this.containerId);
     }
 
-  },
-
-  scrollOffsetPosition: function() {
-    return $(this.containerId).scrollTop + ($(this.containerId).getHeight() * this.scrollPosition) + 60;
   },
 
   toggleSection: function(section) {
@@ -161,8 +158,6 @@ var TableOfContents = Class.create({
 
       var newHeading = this.getHeading(sectionArray);
 
-      // alert('Mark New Heading:\nsectionArray: ' + sectionArray + '\n\nHeading: ' + newHeading);
-
       if(newHeading != this.currentHeading) {
         if(this.currentHeading != null) {
           this.currentHeading.removeClassName(this.currentClassName);
@@ -173,14 +168,27 @@ var TableOfContents = Class.create({
       }
       if(newHeading) {
         // smoothly scroll to the new heading
-        var newOffset = newHeading.offsetTop - this.scrollOffsetPosition();
+        var newOffset = 0;
+        var sectionHeading = newHeading;
         if(newHeading.hasClassName(this.subClass)) {
-          // add the mainheading's offsetTop
+          // try to retrieve the mainheading
           var sectionHeading = newHeading.up('.' + this.mainClass);
           if(sectionHeading) {
-            newOffset = newOffset + sectionHeading.offsetTop;
+            // newOffset = newOffset + sectionHeading.offsetTop;
           }
+          // add the subheading offsetTop (i.e. within the current section)
+          newOffset = newOffset + newHeading.offsetTop;
         }
+        var prevOffset = 0;
+        // add all previous sections' heights (this works for both open/closed status)
+        if(sectionHeading) {
+            var sec = 1;
+            sectionHeading.previousSiblings().each(function(el){
+                prevOffset = prevOffset + el.offsetHeight;
+                sec = sec + 1;
+            })
+        }
+        newOffset = newOffset + prevOffset - this.scrollViewPosition;
         if(newOffset < 0) { newOffset = 0; }
         new Effect.Tween(this.containerId, $(this.containerId).scrollTop, newOffset, { duration: 0.6 }, 'scrollTop');
 
