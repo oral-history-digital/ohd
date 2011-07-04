@@ -33,7 +33,7 @@
 
     <div id="volumeMuteButton"><%= @player.mute_control %></div>
     <div id="volumeSelect"><%= @player.volume_control %></div>
-    <div class="interviewinfo"><%= @interview.video %>: <%= "#{@interview.duration.minimal}" %></div>
+    <div class="interviewinfo"><%= "#{@interview.duration.minimal}" %></div>
     <div class="itemselection">
       <%= t(:tape, :scope => 'media') %>:
       <%= @player.items_selector(@interview.tapes.size) %>

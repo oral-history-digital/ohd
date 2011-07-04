@@ -227,6 +227,7 @@ h5 {
 
 .containerVideo .playerControl {
   float: left;
+  position: relative;
   background: #990000;
   padding: 0 4px 0 4px;
   color: #999;
@@ -275,16 +276,23 @@ h5 {
 
 .playerControl .itemselection {
   color: #fff;
-  float: right;
+  background-color: #990000;
+  position: absolute;
+  right: 3px;
+  top: 0px;
+  padding: 1px 0 3px 6px;
+  vertical-align: center;
 }
 
 .playerControl select {
   background-color: #990000;
   color: #fff;
-  height: 1.4em;
+  height: 14px;
   font-size: 11px !important;
   border: 1px solid #a31a1a !important;
   outline-style: none;
+  margin-top: 1px;
+  padding: 0;
 }
 
 /* End Tabs */
