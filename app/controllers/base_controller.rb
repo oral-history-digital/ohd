@@ -16,10 +16,13 @@ class BaseController < ResourceController::Base
   before_filter :current_search
   before_filter :init_search
 
+  @@valid_locales = Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^a-z+/]}
+
   private
 
   def set_locale
     @locale = params[:locale] || session[:locale] || 'de'
+    @locale = 'de' unless @@valid_locales.include?(@locale)
     session[:locale] = @locale
     I18n.locale = @locale
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
