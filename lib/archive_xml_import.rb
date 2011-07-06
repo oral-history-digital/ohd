@@ -248,6 +248,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             return
           end
 
+        when 'quality'
+          @interview.quality = @current_data.strip.to_f
+
         else
           # do nothing here
       end

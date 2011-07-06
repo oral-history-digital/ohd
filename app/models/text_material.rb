@@ -36,6 +36,8 @@ class TextMaterial < ActiveRecord::Base
       archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
       @assigned_filename = filename
       # construct the import file path
+      # TODO: if the quality setting is not at least 2.0, use the original material, which is:
+      # the oldest file matching the pattern in REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + 'archive', 'versions/bm'
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'text', (filename || '').split('/').last.to_s)
       unless File.exists?(filepath)
         filepath = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)

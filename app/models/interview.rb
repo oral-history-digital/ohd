@@ -246,6 +246,15 @@ DEF
     @migration = version
   end
 
+  # interview.qm_value from quality attribute of export
+  def quality=(level)
+    @quality = level.to_f
+  end
+
+  def quality
+    @quality || 2.0
+  end
+
   def set_forced_labor_locations!
     locations = []
     location_references.forced_labor.each do |location|
