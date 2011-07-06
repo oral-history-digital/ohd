@@ -31,14 +31,14 @@ task :demo do
   role :db, "fnf.cedis.fu-berlin.de"
 end
 
-desc "prepare to act on the test environment (the old bb-app-02 server that is going to be dropped)"
+desc "prepare to act on the test environment"
 task :staging do
   set :environment, :production
   set :application, 'zwar_archiv'
   set :deploy_to, "/data/applications/#{application}"
-  role :app, "160.45.168.27"
-  role :web, "160.45.168.27"
-  role :db,  "da01.cedis.fu-berlin.de", :primary => true
+  role :app, "160.45.170.236"
+  role :web, "160.45.170.236"
+  role :db,  "160.45.170.236", :primary => true
 end
 
 desc "prepare to act on the test environment (shared with the bugtracker)"
