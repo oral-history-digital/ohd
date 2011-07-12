@@ -1,13 +1,12 @@
 class SearchesController < BaseController
 
-  actions :create, :index
+  actions :create, :new, :index
 
   prepend_before_filter :redirect_unauthenticated_users
 
   # handle search initialization specifically
-  skip_before_filter :current_search
-  skip_before_filter :current_query_params
-  skip_before_filter :init_search
+  before_filter :current_query_params
+  skip_before_filter :current_search_for_side_panel
 
   before_filter :remove_search_term_from_params
 
@@ -42,6 +41,32 @@ class SearchesController < BaseController
   end
 
   create.flash nil
+
+  # delete clears the session[:query] and performs a brand new search or other action
+  new_action do
+    before do
+      session[:query] = nil
+      url_params = {}
+      unless params[:referring_controller].blank? || params[:referring_action].blank?
+        url_params = {
+            :controller => params[:referring_controller],
+            :action => params[:referring_action]
+        }
+        url_params.merge!({:page => params[:page]}) unless params[:page].blank?
+      end
+      @redirect = url_params.empty? ? create_searches_path(:full_text => '') : url_for(url_params)
+    end
+    wants.html do
+      redirect_to(@redirect)
+    end
+    wants.js do
+      render :page do |page|
+        page << "window.location = #{@redirect}"
+      end
+    end
+  end
+
+  new_action.flash nil
 
   index do
     before do
@@ -117,6 +142,8 @@ class SearchesController < BaseController
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
       flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
+      session[:query] = Search.from_params(params).query_params
+      report_session_query
       session[:"user_account.return_to"] = request.request_uri
       if request.xhr?
         render :update do |page|
@@ -155,6 +182,15 @@ class SearchesController < BaseController
       end
 
     end
+  end
+
+  # override the usual handling of session before parameters in side-panel searches
+  # here: local params override session!
+  def current_query_params
+    @query_params = Search.from_params(params).query_params
+    @query_params.delete(:page) if @query_params[:page] == 1
+    @query_params = session[:query] || {} if @query_params.empty?
+    @query_params
   end
   
 end

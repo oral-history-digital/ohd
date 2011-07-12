@@ -38,9 +38,22 @@ class TextMaterial < ActiveRecord::Base
       # construct the import file path
       # TODO: if the quality setting is not at least 2.0, use the original material, which is:
       # the oldest file matching the pattern in REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + 'archive', 'versions/bm'
-      filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'text', (filename || '').split('/').last.to_s)
-      unless File.exists?(filepath)
-        filepath = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
+      filepath = if !interview.nil? and interview.quality < 2.0
+        # use the original text materials
+        versions_dir = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[/za\d{3}_\w+}/])
+        ctime = Time.now
+        original_file = nil
+        Dir.glob(versions_dir + '*.pdf').each do |file|
+          original_file = file if File.ctime(file) < ctime
+        end
+        original_file
+      else
+        # use the specified document path or the default Repository content
+        doc_path = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'text', (filename || '').split('/').last.to_s)
+        unless File.exists?(doc_path)
+          doc_path = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
+        end
+        doc_path
       end
       File.open(filepath, 'r') do |file|
         self.document = file

@@ -1,9 +1,10 @@
 module SearchFilters
 
   # This retrieves the query params of the current search from the session.
-  # It's important to deactivate this in all contexts that perform a new search.
+  # It's important to deactivate or override this in all contexts that perform a new search.
+  # (i.e. searches_controller).
   def current_query_params
-    @query_params = session[:query] || nil
+    @query_params = signed_in?(:user_account) ? (session[:query] || nil) : nil
   end
 
   def current_search
@@ -11,7 +12,8 @@ module SearchFilters
     @search = Search.from_params(query)
   end
 
-  def init_search
+  def current_search_for_side_panel
+    current_search
     @search.search!
     @search.segment_search! if defined?(model_name) && model_name == 'interview'
   end

@@ -21,6 +21,11 @@ module ApplicationHelper
     end
   end
 
+  def reset_search_link(options={})
+    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + image_tag(image_path 'suche_reset1.gif'),
+                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
+  end
+
   # Formats attributes for display
   def format_value(value)
     # when matching with Array class doesn't work

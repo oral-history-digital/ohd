@@ -4,7 +4,7 @@ class LocationReferencesController < BaseController
 
   skip_before_filter :authenticate_user!
   skip_before_filter :current_search
-  skip_before_filter :init_search
+  skip_before_filter :init_sidepanel_search
 
   index do
     before do

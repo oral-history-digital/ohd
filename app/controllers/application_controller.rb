@@ -14,8 +14,7 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
-  before_filter :current_search
-  before_filter :init_search
+  before_filter :current_search_for_side_panel
 
   def set_locale  
     @locale = params[:locale] || session[:locale] || 'de'
