@@ -126,9 +126,7 @@ DEF
 
   # The query parameters in hashed form.
   def query_hash
-    puts "\n@@@ ENCODING QUERY: #{query_params.inspect}"
     @query_hash ||= Search.encode_parameters(query_params)
-    puts "ENCODED: #{@query_hash}\n@@@\n\n"
     @query_hash
   end
 

@@ -15,8 +15,6 @@ class BaseController < ResourceController::Base
 
   before_filter :current_search_for_side_panel
 
-  append_before_filter :report_session_query
-
   @@valid_locales = Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}
 
   private
@@ -72,10 +70,6 @@ class BaseController < ResourceController::Base
     end
 
     render :layout => false
-  end
-
-  def report_session_query
-    puts "\n#### SESSION QUERY #{controller_name}/#{action_name}:\n#{session[:query].inspect}\n~~~~"
   end
 
 

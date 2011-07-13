@@ -32,9 +32,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :create
   map.search_by_hash 'suche/:suche', :controller => :searches, :action => :create
+  map.new_search 'suchen/neu', :controller => :searches, :action => :new
   map.search_by_page 'suchen/:page', :controller => :searches, :action => :create
   map.search 'suchen', :controller => :searches, :action => :create
-  map.new_search 'suchen/neu', :controller => :searches, :action => :new
 
   map.resources :searches, :collection => { :interview => :post, :person_name => :post }
 
@@ -57,7 +57,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.localized_home  ':locale/:page_id', :controller => :home, :action => :show
   map.home ':page_id', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :show, :page_id => 'home'
+  map.root :controller => :home, :action => :show
 
   map.connect ':locale/:controller/:action/:id'
   map.connect ':locale/:controller/:action/:id.:format'

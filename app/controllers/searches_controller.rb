@@ -13,8 +13,6 @@ class SearchesController < BaseController
   create do
     before do
       @search = Search.from_params(@query_params || params)
-      puts "\n NEW QUERY PARAMS: #{@search.query_params.inspect}"
-      puts "NEW SEARCH: #{@search.inspect}"
       @search.search!
       #reinstate_category_state
       @search.segment_search!
@@ -35,33 +33,39 @@ class SearchesController < BaseController
         page.replace_html 'innerContent', results_html
         page.replace_html 'baseServices', service_html
         page.replace_html 'baseContainerRight', search_facets_html
-        page << "setQueryHashInURL('#{@search.query_hash}');"
+        # page << "setQueryHashInURL('#{@search.query_hash}');"
       end
     end
   end
 
   create.flash nil
 
-  # delete clears the session[:query] and performs a brand new search or other action
+  # calculates a hash for the query parameters and redirects to this hash-url
+  # Note: this doesn't call the lucene search engine!
   new_action do
     before do
+      # The session query search is NOT used here at all!
       session[:query] = nil
+      @query_hash = Search.from_params(params).query_hash
       url_params = {}
+      search_params = {}
+      search_params.merge!({:page => params[:page]}) unless params[:page].blank? || params[:page].to_i == 1
+      search_params.merge!({:suche => @query_hash }) unless @query_hash.blank?
       unless params[:referring_controller].blank? || params[:referring_action].blank?
         url_params = {
             :controller => params[:referring_controller],
             :action => params[:referring_action]
         }
-        url_params.merge!({:page => params[:page]}) unless params[:page].blank?
       end
-      @redirect = url_params.empty? ? create_searches_path(:full_text => '') : url_for(url_params)
+      @redirect = url_params.empty? ? searches_path(search_params.merge!({:method => :post})) : url_for(url_params.merge(search_params))
     end
     wants.html do
       redirect_to(@redirect)
     end
     wants.js do
-      render :page do |page|
-        page << "window.location = #{@redirect}"
+      # either change the location or reload:
+      render :update do |page|
+        page << "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
       end
     end
   end
