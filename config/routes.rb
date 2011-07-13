@@ -55,14 +55,14 @@ ActionController::Routing::Routes.draw do |map|
 
   map.devise_for :user_accounts
 
+  map.localized_home  ':locale/:page_id', :controller => :home, :action => :show
+  map.home ':page_id', :controller => :home, :action => :show
+  map.root :controller => :home, :action => :show, :page_id => 'home'
+
   map.connect ':locale/:controller/:action/:id'
   map.connect ':locale/:controller/:action/:id.:format'
 
   map.connect ':controller/:action/:id', :locale => :de
   map.connect ':controller/:action/:id.:format', :locale => :de
-
-  map.localized_home  ':locale/:page', :controller => :home, :action => :show
-  map.home ':page', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :show, :page => 'home'
 
 end

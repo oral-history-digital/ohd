@@ -6,7 +6,7 @@ class HomeController < BaseController
   skip_before_filter :authenticate_user!
 
   def show
-    @page_action = I18n.t(params[:page], :scope => 'page_paths')
+    @page_action = I18n.t(params[:page_id], :scope => 'page_paths')
     if STATIC_PAGES.include?(@page_action)
       render_localized :action => @page_action
     else

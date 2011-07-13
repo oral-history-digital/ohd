@@ -14,8 +14,8 @@ module ApplicationHelper
   end
 
   def current_search_path
-    if @search.query_hash.blank?
-      url_for({:controller => :searches, :action => :create })
+    if !@search.is_a?(Search) || @search.query_hash.blank?
+      create_search_url
     else
       url_for({:controller => :searches, :action => :create, :suche => @search.query_hash })
     end

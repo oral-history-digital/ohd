@@ -17,7 +17,7 @@ class BaseController < ResourceController::Base
 
   append_before_filter :report_session_query
 
-  @@valid_locales = Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^a-z+/]}
+  @@valid_locales = Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}
 
   private
 
