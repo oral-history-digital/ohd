@@ -155,7 +155,6 @@ class SearchesController < BaseController
     unless signed_in?(:user_account)
       flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
       session[:query] = Search.from_params(params).query_params
-      report_session_query
       session[:"user_account.return_to"] = request.request_uri
       if request.xhr?
         render :update do |page|
