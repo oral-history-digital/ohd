@@ -2,7 +2,7 @@
   <% if facets.hits < Interview::NUMBER_OF_INTERVIEWS %>
     <%# reload the complete page if we are in the search result view %>
     <%# reset_path = (request.path == searches_path) ? searches_path : search_path  %>
-    <%= reset_search_link({ :complete => "afterResponse();", :success => "resetBlindStatus();", :before => "beforeSubmit();" }) %>
+    <%= reset_search_link({ :before => "beforeSubmit();" }) %>
   <% end %>
 </div>
 
@@ -47,6 +47,6 @@
     <% end %>
   <% end %>
 
-  <div id="search_facets_overlay" class="overlay" style="display: none;"><img class="spinner_search" src="<%= image_path 'spinner.gif' %>" title="" alt="" /></div>
+  <div id="search_facets_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
 
 </div>

@@ -12,6 +12,7 @@
 .overlay {
     opacity: 0.8;
     background-color: #F1F1EB;
+    z-Index: 100;
 }
 
 #search_header_overlay {
@@ -287,7 +288,7 @@ float:left;
 .fragmentTitle {
 	border-bottom: 1px solid #f1f1eb;
 	padding: 2px 10px;
-position: relative;
+    position: relative;
 }
 
 .fragmentTitle.open {
