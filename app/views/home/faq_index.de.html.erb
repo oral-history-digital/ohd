@@ -2,13 +2,13 @@
 
 <ul>
 	<li>
-    <%= link_to 'Inhaltliche Fragen', home_path(:page => t("faq_archive_contents", :scope => 'page_urls')) %>
+    <%= link_to 'Inhaltliche Fragen', home_path(:page_id=> t("faq_archive_contents", :scope => 'page_urls')) %>
   </li>
   <li>
-    <%= link_to 'Fragen zur Recherche', home_path(:page => t("faq_searching", :scope => 'page_urls')) %>
+    <%= link_to 'Fragen zur Recherche', home_path(:page_id=> t("faq_searching", :scope => 'page_urls')) %>
   </li>
   <li>
-    <%= link_to 'Fragen rund um die Technik', home_path(:page => t("faq_technical", :scope => 'page_urls')) %>
+    <%= link_to 'Fragen rund um die Technik', home_path(:page_id=> t("faq_technical", :scope => 'page_urls')) %>
   </li>
 </ul>
 

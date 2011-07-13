@@ -43,7 +43,7 @@
   <br/>
   <strong>
     <%= link_to 'mehr zu den Kategorien »',
-                home_path(:page => t("faq_searching", :scope => 'page_urls'), :anchor => "recherchemoeglichkeiten"),
+                home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :anchor => "recherchemoeglichkeiten"),
                 :title => "Welche Recherchemöglichkeiten gibt es?" %>
     <br/>
   </strong>
@@ -71,7 +71,7 @@
     <!--<a href="suche/index.html" title="Suche in den Interviews">Volltextsuche »</a>
     <br/>-->
     <%= link_to 'mehr zur Suche »',
-                home_path(:page => t("faq_searching", :scope => 'page_urls'), :anchor => "suche-allgemein"),
+                home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :anchor => "suche-allgemein"),
                 :title => "Wie kann ich die Volltextsuche nutzen?" %>
     <br/>
   </strong>
@@ -81,7 +81,7 @@
 <p>
   Über die
   <%= link_to (t :faq),
-              home_path(:page => t("faq_index", :scope => 'page_urls')),
+              home_path(:page_id=> t("faq_index", :scope => 'page_urls')),
               :title => "Fragen und Antworten zur Nutzung des Archivs" %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
