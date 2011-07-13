@@ -57,7 +57,15 @@ class SearchesController < BaseController
             :action => params[:referring_action]
         }
       end
-      @redirect = url_params.empty? ? searches_path(search_params.merge!({:method => :post})) : url_for(url_params.merge(search_params))
+      @redirect = if url_params.empty?
+          if @query_hash.blank?
+            searches_url(search_params)
+          else
+            search_by_hash_url(search_params)
+          end
+        else
+          url_for(url_params.merge(search_params))
+        end
     end
     wants.html do
       redirect_to(@redirect)
