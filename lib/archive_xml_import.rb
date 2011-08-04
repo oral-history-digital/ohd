@@ -94,7 +94,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @interview.set_deportation_location!
         @interview.set_contributor_fields!
         @imported['interviews'] << @interview.archive_id
-        @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
+        import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
+        puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
       rescue Exception => e
         puts "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n"
         puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
@@ -131,7 +132,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       case name
         when 'export'
           attributes = node_attributes_to_hash(attributes)
-          if attributes.keys.sort == %w(archive-id created-at)
+          includes_all_mandatory_attributes = true
+          %w(archive-id created-at quality).each do |attr|
+            includes_all_mandatory_attributes = false unless attributes.keys.include?(attr)
+          end
+          if includes_all_mandatory_attributes
             increment_import_sanity 'xml-schema'
           end
           export_archive_id = attributes['archive-id']
