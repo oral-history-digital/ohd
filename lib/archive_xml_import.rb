@@ -329,7 +329,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             end
           end
           unless @instance.save
-            puts "\n=>> skipping #{@instance.inspect}\n"
+            puts "\n=>> skipping #{@instance.inspect}\nErrors: #{@instance.errors.full_messages}"
             interview = @instance.respond_to?('interview') ? @instance.interview : @interview
             puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
           end
