@@ -517,7 +517,7 @@ DEF
         param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
-    Base64.encode64(param_tokens.join('|')).gsub("\n",'').sub(/=*$/,'')
+    Base64.encode64(param_tokens.join('|')).gsub("\n",'')
   end
 
   def self.decode_parameters(hash)
