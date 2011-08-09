@@ -87,6 +87,7 @@ text-material:
 caption:
   key_attribute: 'none'
   class_name: 'segment'
+  delete_all: true
   media-id: 'media_id'
   timecode: 'timecode'
   duration: 'duration'
