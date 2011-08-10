@@ -12,6 +12,7 @@ namespace :xml_import do
 
     archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
     unless Interview.find_by_archive_id(archive_id).nil?
+      puts "Beginning import of '#{archive_id}'"
       # Don't run this as it can corrupt the index for all
       # interviews that are not up-to-date
       # Rake::Task['cleanup:unused_categories'].execute
@@ -24,18 +25,29 @@ namespace :xml_import do
 
   desc "full import from the common repository"
   task :full => :environment do
+
     require 'open4'
     repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    Dir.glob(File.join(repo_dir, '**', '*.xml')).each do |xmlfile|
-      Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
-        stdout.each_line {|line| puts line }
-        errors = []
-        stderr.each_line {|line| errors << line unless line.empty?}
-        puts "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}" unless errors.empty?
+    @logfile = File.join(RAILS_ROOT, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
+    puts "\nLogging import to #{@logfile}"
+    File.open(@logfile,'w+') do |logfile|
+      Dir.glob(File.join(repo_dir, '**', '*.xml')).each do |xmlfile|
+        Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+          stdout.each_line {|line| puts line }
+          errors = []
+          stderr.each_line {|line| errors << line unless line.empty?}
+          unless errors.empty?
+            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            logfile << errmsg
+            puts errmsg
+          end
+        end
+        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 6 seconds.\n"
+        logfile << statusmsg
+        puts statusmsg
+        sleep 6
+        puts
       end
-      puts "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 90 seconds."
-      sleep 90
-      puts
     end
 
   end
