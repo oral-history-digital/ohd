@@ -55,12 +55,21 @@ ActionController::Routing::Routes.draw do |map|
 
   map.devise_for :user_accounts
 
-  map.localized_home  ':locale/:page_id', :controller => :home, :action => :show
-  map.home ':page_id', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :show
+  map.connect 'de', :locale => :de, :controller => :home, :action => :show
+  map.connect 'de/:page_id', :locale => :de, :controller => :home, :action => :show
+  map.connect 'de/:controller/:action', :locale => :de
+  map.connect 'de/:controller/:action/:id', :locale => :de
+  map.connect 'de/:controller/:action/:id.:format', :locale => :de
 
-  map.connect ':locale/:controller/:action/:id'
-  map.connect ':locale/:controller/:action/:id.:format'
+  map.connect 'en', :locale => :en, :controller => :home, :action => :show
+  map.connect 'en/:page_id', :locale => :en, :controller => :home, :action => :show
+  map.connect 'en/:controller/:action', :locale => :en
+  map.connect 'en/:controller/:action/:id', :locale => :en
+  map.connect 'en/:controller/:action/:id.:format', :locale => :en
+
+  map.home ':page_id', :controller => :home, :action => :show
+  map.localized_home  ':locale/:page_id', :controller => :home, :action => :show
+  map.root :controller => :home, :action => :show
 
   map.connect ':controller/:action/:id', :locale => :de
   map.connect ':controller/:action/:id.:format', :locale => :de
