@@ -31,7 +31,7 @@ class TextMaterial < ActiveRecord::Base
   def document_file_name=(filename)
     # assign the document - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
-    next if filename.blank?
+    return if filename.blank?
     filename = (filename || '').sub!(/\w{3,4}$/,'pdf')
     if !defined?(@assigned_filename) || @assigned_filename != filename
       archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase

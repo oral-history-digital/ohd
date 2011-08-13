@@ -31,7 +31,8 @@ namespace :xml_import do
     @logfile = File.join(RAILS_ROOT, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
-      Dir.glob(File.join(repo_dir, '**', '*.xml')).each do |xmlfile|
+      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
         Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []

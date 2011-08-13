@@ -97,9 +97,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
         puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
       rescue Exception => e
-        puts "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n"
-        puts "Interview '#{@archive_id}': #{@interview.inspect}\n\n"
-        raise "Aborted."
+        raise "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n'#{@archive_id}': #{@interview.inspect}\nAborted."
       end
       puts "\nSkipped tag elements:\n#{@skipped_tag_names.join(", ")}"
       puts "\nSource-to-Local ID-Mapping:"
@@ -333,7 +331,16 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             interview = @instance.respond_to?('interview') ? @instance.interview : @interview
             puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
           end
-          raise @instance.errors.full_messages.to_s unless (@instance.valid? || @current_mapping['skip_invalid'])
+          errors = [ @instance.errors.full_messages.to_s, @instance.inspect ]
+          associations = @instance.class.reflect_on_all_associations.select{|assoc| assoc.macro == :belongs_to && assoc.name != :interview }
+          associations.each do |assoc|
+            associated_instance = @instance.send(assoc.name.to_s)
+            unless associated_instance.errors.empty?
+              errors << associated_instance.errors.full_messages.to_s
+              errors << associated_instance.inspect
+            end
+          end
+          raise "ERROR on #{@instance.class.name}:\n#{errors.join("\n")}" unless (@instance.valid? || @current_mapping['skip_invalid'])
       end
 
       unless @source_id.nil?
