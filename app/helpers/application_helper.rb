@@ -13,6 +13,11 @@ module ApplicationHelper
     link_to t(name), external_url(page_token), :title => t(:notice, :scope => 'external_links'), :target => '_blank'
   end
 
+  def current_locale
+    code = params[:locale] || session[:locale]
+    code.nil? ? :de : code.to_sym
+  end
+
   def current_search_path
     if !@search.is_a?(Search) || @search.query_hash.blank?
       searches_url(:method => :post)

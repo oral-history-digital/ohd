@@ -20,7 +20,7 @@ class BaseController < ResourceController::Base
   private
 
   def set_locale
-    @locale = params[:locale] || session[:locale] || 'de'
+    @locale = params[:locale].to_s || session[:locale] || 'de'
     @locale = 'de' unless @@valid_locales.include?(@locale)
     session[:locale] = @locale
     I18n.locale = @locale

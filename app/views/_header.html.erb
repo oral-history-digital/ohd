@@ -1,7 +1,7 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="/" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => "Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte", :alt => "Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte") %>
+        <a href="<%= localized_root_url(:locale => I18n.locale.to_sym) %>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
+          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
@@ -16,7 +16,7 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), root_url, :accesskey => "0" %></li>
+            <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
             <li>
               <% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
               <% if I18n.locale.to_s =~ /^de/i %>
@@ -25,8 +25,8 @@
                 <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
               <% end %>
             </li>
-            <li><%= link_to (t :map), interview_collections_url, :title => "Geografische Verteilung der Teilsammlungen" %></li>
-            <li><%= link_to (t :faq), home_path(:page_id => t("faq_index", :scope => 'page_urls')), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+            <li><%= link_to (t :map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => current_locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
       </div>

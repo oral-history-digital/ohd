@@ -153,7 +153,7 @@ class SearchesController < BaseController
   # even on AJAX requests
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
-      flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions')
+      flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions', :locale => session[:locale] || I18n.locale)
       session[:query] = Search.from_params(params).query_params
       session[:"user_account.return_to"] = request.request_uri
       if request.xhr?
