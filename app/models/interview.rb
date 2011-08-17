@@ -314,6 +314,8 @@ DEF
     unless category_names.empty?
       # Remove all previous categorizations
       categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
+      # must be reloaded for the later creation to work
+      categorizations.reload
     end
     category_names.each do |name|
       category = case type
