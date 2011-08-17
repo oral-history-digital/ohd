@@ -22,7 +22,7 @@
 # Segment#matching_segments_for maps the matching segments per
 # archive_id.
 
-class Search < ActiveRecord::Base
+class Search < UserContent
 
   require 'yaml'
   require 'base64'
@@ -108,7 +108,11 @@ DEF
 
   # filter the ignore (default label) words from fulltext
   def fulltext=(term)
-    write_attribute(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+    write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+  end
+
+  def fulltext
+    read_property(:fulltext)
   end
 
   # The total number of records matching the query criteria
