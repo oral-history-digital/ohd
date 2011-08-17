@@ -33,6 +33,7 @@ namespace :xml_import do
     File.open(@logfile,'w+') do |logfile|
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
         xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+        next if xmlfile.blank?
         Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
