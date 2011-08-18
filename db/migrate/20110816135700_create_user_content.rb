@@ -7,8 +7,10 @@ class CreateUserContent < ActiveRecord::Migration
       t.string :description
       t.string :interview_references
       t.string :properties, :limit => 500
+      t.string :link_url
       t.string :type, :null => false
       t.boolean :shared, :default => false
+      t.boolean :persistent, :default => true
       t.timestamps
     end
     add_index :user_contents, :type
