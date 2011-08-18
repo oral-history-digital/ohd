@@ -4,7 +4,7 @@
                      :url => interview_searches_path,
                      :update => 'search-results',
                      :before => "$('interview_search_overlay').show()",
-                     :complete => "$('interview_search_overlay').hide();$('search-results-toggle').show();openContainer('search-results-toggle');",
+                     :complete => "$('interview_search_overlay').hide();$('search-results-toggle').show();openContainer('search-results-toggle',true);",
                      :html => { :action => '',
                                 :method => :get,
                                 :name => "search-in-interview",
