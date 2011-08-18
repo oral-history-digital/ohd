@@ -2,6 +2,10 @@ class User < ActiveRecord::Base
 
   attr_protected :admin
 
+  has_many :user_contents
+
+  has_many :searches
+
   acts_as_authorized_user
 
   has_many  :user_groups,
