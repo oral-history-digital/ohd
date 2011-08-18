@@ -89,6 +89,7 @@ DEF
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   before_save :set_workflow_flags, :set_country_category
+  after_save :set_categories
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
@@ -309,15 +310,14 @@ DEF
     create_categories_from(self.country_of_origin, 'Lebensmittelpunkt') if self.countries.empty?
   end
 
-  def create_categories_from(data, type)
-    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
-    unless category_names.empty?
+  def set_categories
+    @category_import.keys.each do |type|
+      category_names = @category_import[type]
       # Remove all previous categorizations
       categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
       # must be reloaded for the later creation to work
       categorizations.reload
-    end
-    category_names.each do |name|
+      category_names.each do |name|
       category = case type
                    when 'Lebensmittelpunkt'
                     classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
@@ -338,6 +338,40 @@ DEF
         puts e.message
       end
     end
+    end
+  end
+
+  def create_categories_from(data, type)
+    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
+#    unless category_names.empty?
+#      # Remove all previous categorizations
+#      categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
+#      # must be reloaded for the later creation to work
+#      categorizations.reload
+#    end
+    @category_import ||= {}
+    @category_import[type.to_s] = category_names
+#    category_names.each do |name|
+#      category = case type
+#                   when 'Lebensmittelpunkt'
+#                    classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
+#                    classified_name = classified_name[/^de,/].blank? ? classified_name : name
+#                    Category.find_or_initialize_by_category_type_and_name(type, classified_name)
+#                   else
+#                    Category.find_or_initialize_by_category_type_and_name type, name
+#      end
+#      category.save if category.new_record? || category.changed?
+#      begin
+#        if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
+#          categorizations << Categorization.new{|c|
+#            c.category_id = category.id
+#            c.category_type = type
+#          }
+#        end
+#      rescue Exception => e
+#        puts e.message
+#      end
+#    end
   end
 
   def set_contributor_field_from(field,association)
