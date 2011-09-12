@@ -31,6 +31,11 @@ module ApplicationHelper
                    options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
+  def save_search_link(search)
+    link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
+                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })  
+  end
+
   # Formats attributes for display
   def format_value(value)
     # when matching with Array class doesn't work
@@ -109,6 +114,20 @@ module ApplicationHelper
         else
           Time.gm(2010,9,22)
       end
+    end
+  end
+
+  # returns an area_id string per 
+  def current_area_id
+    case controller_name
+      when /searches/
+        'search-page'
+      when /interviews/
+        'interview-page'
+      when /collections/
+        'collection-page'
+      else
+        'archive-page'
     end
   end
 

@@ -72,6 +72,7 @@ en:
     no_clips: 'no segments'
     clip: 'segment'
     clips: 'segments'
+    save: 'save search'
 
   user_interface:
     labels:

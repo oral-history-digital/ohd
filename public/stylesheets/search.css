@@ -525,3 +525,16 @@ float:left;
 #my-results {
     padding:10px;
 }
+
+
+/* ###### Interactives (save etc) ###### */
+#search-page .save_user_content a.save {
+    background: url(/images/suche_speichern.png) top left no-repeat transparent;
+    padding-left: 16px;
+}
+
+.teaserList .save_user_content {
+    position: absolute;
+    top: 0;
+    right: 30px;
+}

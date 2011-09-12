@@ -349,6 +349,7 @@ h5 {
   margin-top: 6px;
   padding: 0px;
   overflow: hidden;
+  position: relative;
   clear: left;
 }
 
@@ -357,6 +358,15 @@ h5 {
 .teaserList .pagination {
   clear: both;
   margin: 0 0 12px; /*margin-bottom: 12px;*/
+}
+
+.teaserList h2 .pagination {
+  clear: none;
+  display: inline;
+  font-size: 91%;
+  width: auto;
+  font-weight: normal;
+  margin-left: 18px;
 }
 
 .teaserList .pagination a,

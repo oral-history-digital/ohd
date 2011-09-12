@@ -1,0 +1,8 @@
+<span class="save_user_content">
+  <% if defined?(@user_content) && !@user_content.nil? %>
+    <% link_to t(:saved, :scope => "interface.search"), 'false' %>
+  <% else %>
+    <%= link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')),
+                   { :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get }, :class => "save" %>
+  <% end %>
+</span>

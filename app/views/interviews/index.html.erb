@@ -1,8 +1,11 @@
 <div class='teaserList'>
 
   <% if defined?(@search) && !@search.hits.blank? %>
-  <h2><%= pluralize(@search.hits, Interview.human_name) %></h2>
-  <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
+  <h2>
+    <%= pluralize(@search.hits, Interview.human_name) %>
+    <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
+  </h2>
+  <%#= render :partial => "searches/save" %>
   <% end %>
 
   <%= render :partial => '/interviews/result', :collection => @interviews || [], :locals => { :search => @search } %>

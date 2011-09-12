@@ -101,6 +101,7 @@ de:
       fulltext_title: 'Suchbegriff bitte hier eingeben'
       not_found: 'keine'
       reset: 'zur&uuml;cksetzen'
+      save: 'Suche speichern'
     status:
       not_signed_in: 'nicht angemeldet'
     messages:
