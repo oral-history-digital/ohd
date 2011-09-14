@@ -147,6 +147,13 @@ class SearchesController < BaseController
     end
   end
 
+  # saves a search as user_content
+  def save
+    @user = current_user
+    attributes = { :user_id => @user.id }.merge!(object_params)
+    Search.create(attributes)
+  end
+
   private
 
   # redirect users to login if they're unauthenticated

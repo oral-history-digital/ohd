@@ -88,6 +88,10 @@ h6 {
 	margin: 4px 0 4px 0;
 }
 
+a {
+    outline: none;
+}
+
 a:link {
 	color: #990000;
 	text-decoration: none;

@@ -1,0 +1,24 @@
+/* Stylesheets for user content interfaces */
+
+/* Buttons & Forms */
+#mainWrapper .save_user_content form {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+#mainWrapper .save_user_content input[type="submit"] {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    color: #990000;
+}
+
+#mainWrapper .save_user_content input[type="submit"]:hover {
+    background-color: #E4E4DA !important;
+}
+
+#mainWrapper .teaserList .save_user_content input[type="submit"] {
+    background: url(/images/suche_speichern.png) top left no-repeat;
+    padding-left: 12px;
+}

@@ -5,7 +5,7 @@
     <%= pluralize(@search.hits, Interview.human_name) %>
     <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
   </h2>
-  <%#= render :partial => "searches/save" %>
+  <%= render :partial => "searches/save" %>
   <% end %>
 
   <%= render :partial => '/interviews/result', :collection => @interviews || [], :locals => { :search => @search } %>
