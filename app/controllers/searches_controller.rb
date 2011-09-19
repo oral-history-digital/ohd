@@ -151,7 +151,16 @@ class SearchesController < BaseController
   def save
     @user = current_user
     attributes = { :user_id => @user.id }.merge!(object_params)
-    Search.create(attributes)
+    @search = Search.create(attributes)
+    @user_content = @search
+    respond_to do |format|
+      format.html do
+        render :partial => "save"
+      end
+      format.js do
+        render :partial => "save"
+      end
+    end
   end
 
   private
@@ -206,8 +215,8 @@ class SearchesController < BaseController
   # here: local params override session!
   def current_query_params
     @query_params = Search.from_params(params).query_params
-    @query_params.delete(:page) if @query_params[:page] == 1
     @query_params = session[:query] || {} if @query_params.empty?
+    @query_params.delete(:page) if @query_params[:page] == 1
     @query_params
   end
   

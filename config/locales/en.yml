@@ -73,6 +73,7 @@ en:
     clip: 'segment'
     clips: 'segments'
     save: 'save search'
+    saved: 'saved search'
 
   user_interface:
     labels:

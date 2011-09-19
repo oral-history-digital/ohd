@@ -41,7 +41,10 @@ class Search < UserContent
   # This contains a list of accessible attributes that are not
   # considered query params and will not be kept in a stored search.
   NON_QUERY_ACCESSIBLES = [
-                      :open_category
+                      :open_category,
+                      :user_id,
+                      :title,
+                      :interview_references
   ]
 
   class_eval <<ATTR
@@ -372,12 +375,12 @@ DEF
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
-    attr = {:type => 'Search'}
+    attr = {}
     title_tokens = [Search.human_name]
     title_tokens << "'#{fulltext}'" unless fulltext.blank?
     title_tokens << Time.now.strftime('%d.%m.%Y %H:%M')
     attr[:title] = title_tokens.join(' ')
-    attr[:interview_references] = @results[0..4].map(&:archive_id).join(',')
+    attr[:interview_references] = @results.nil? ? (read_property(:interview_references) || []) : @results[0..4].map(&:archive_id).join(',')
     attr[:properties] = { :query => @query, :hits => @hits, :query_hash => query_hash }
     attr
   end

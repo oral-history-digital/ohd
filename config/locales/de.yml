@@ -102,6 +102,7 @@ de:
       not_found: 'keine'
       reset: 'zur&uuml;cksetzen'
       save: 'Suche speichern'
+      saved: 'Suche gespeichert'
     status:
       not_signed_in: 'nicht angemeldet'
     messages:

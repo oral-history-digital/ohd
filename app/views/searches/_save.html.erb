@@ -1,14 +1,13 @@
 <span class="save_user_content">
   <% if defined?(@user_content) && !@user_content.nil? %>
-    <% link_to t(:saved, :scope => "interface.search"), 'false' %>
+    <%= link_to t(:saved, :scope => "user_interface.search"), 'false', :class => 'saved' %>
   <% else %>
-    <% form_remote_tag :url => save_searches_path, :class => "save"  do -%>
+    <% form_remote_tag :url => save_searches_path, :class => "save", :update => "save_search"  do -%>
         <% user_content_attributes = @search.user_content_attributes -%>
         <% user_content_attributes.keys.each do |attr| -%>
           <%= hidden_field_tag "search[#{attr}]", user_content_attributes[attr] %>
         <% end -%>
         <%= submit_tag t(:save, :scope => 'user_interface.search'), :class => 'save' %>
-        <%#= link_to content_tag('span', t(:save, :scope => 'user_interface.search')), "#", :onclick => "this.up('form').submit()", :class => 'save' -%>
     <% end -%>
                        
 

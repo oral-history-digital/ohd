@@ -5,7 +5,7 @@ class UserContent < ActiveRecord::Base
   before_save :store_properties
 
   def write_property(name, value)
-    properties[name.to_s] = value
+    (@properties || properties)[name.to_s] = value
   end
 
   def read_property(name)
