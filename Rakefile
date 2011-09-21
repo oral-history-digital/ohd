@@ -5,9 +5,6 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 require 'tasks/rails'
-
-# specify absolute path to local gem
-require File.join(File.dirname(__FILE__), 'vendor/gems/sunspot_rails-0.11.5/lib/sunspot/rails/tasks')

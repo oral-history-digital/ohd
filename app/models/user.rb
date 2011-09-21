@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  require 'archive-authorization'
+
   attr_protected :admin
 
   has_many :user_contents
