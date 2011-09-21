@@ -68,7 +68,7 @@ module Sunspot #:nodoc:
         private
         
         def options_for_find
-          returning({}) do |options|
+          {}.tap do |options|
             options[:include] = @include unless @include.blank?
             options[:select]  =  @select unless  @select.blank?
           end
