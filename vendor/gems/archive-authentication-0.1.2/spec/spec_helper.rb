@@ -20,7 +20,7 @@ db_config = YAML::load_file(File.join(RAILS_ROOT, 'config/database.yml'))['authe
 ActiveRecord::Base.establish_connection(db_config)
 ActiveRecord::Base.connection.drop_database db_config['database']
 ActiveRecord::Base.connection.create_database db_config['database'], db_config.dup.merge({:charset => 'utf8', :collation => 'utf8_unicode_ci'})
-migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
+migration = ActiveRecord::MigrationProxy.new.tap do |mig|
   mig.name = 'DbSetup'
   mig.version = '20100520000000'
   mig.filename = File.join(File.dirname(__FILE__), '../generators', '20100520000000_db_setup.rb')

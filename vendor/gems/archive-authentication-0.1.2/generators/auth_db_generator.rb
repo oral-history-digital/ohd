@@ -19,7 +19,7 @@ class AuthDbGenerator < Rails::Generator::NamedBase
       require 'fileutils'
 
       begin
-        migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
+        migration = ActiveRecord::MigrationProxy.new.tap do |mig|
           mig.name = 'DbSetup'
           mig.version = '20100520000000'
           mig.filename = File.join(File.dirname(__FILE__), '20100520000000_db_setup.rb')
@@ -34,7 +34,7 @@ class AuthDbGenerator < Rails::Generator::NamedBase
       end
 
 
-      migration = returning(ActiveRecord::MigrationProxy.new) do |mig|
+      migration = ActiveRecord::MigrationProxy.new.tap do |mig|
         mig.name = 'CreateUserRegistration'
         time = Time.now
         mig.version = ''
