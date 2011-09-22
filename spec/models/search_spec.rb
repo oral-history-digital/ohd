@@ -32,3 +32,18 @@ describe Search, 'utilizing hashed parameters' do
   end
 
 end
+
+
+describe Search, 'when saving as a UserContent' do
+
+  before(:all) do
+    @content_attributes = {"title"=>"Search 'berlin' 22.09.2011 16:02", "interview_references"=>"za251,za571,za061,za194,za253", "properties"=>"queryforced_labor_groups107118fulltextberlinhits25query_hashZmxnPVsiMTA3IiwgIjExOCJdfGY9YmVybGlu"}
+  end
+
+  it "should store the query in the properties and serialize them as YAML" do
+    @search = Search.create(@content_attributes)
+    @search.should be_valid
+    @search.get_properties.should == @content_attributes['properties']
+  end
+
+end

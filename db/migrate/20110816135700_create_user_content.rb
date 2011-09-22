@@ -10,7 +10,7 @@ class CreateUserContent < ActiveRecord::Migration
       t.string :link_url
       t.string :type, :null => false
       t.boolean :shared, :default => false
-      t.boolean :persistent, :default => true
+      t.boolean :persistent
       t.timestamps
     end
     add_index :user_contents, :type

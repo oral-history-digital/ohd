@@ -1,6 +1,6 @@
 class SearchesController < BaseController
 
-  actions :create, :new, :index
+  actions :new, :index
 
   prepend_before_filter :redirect_unauthenticated_users
 
@@ -10,35 +10,76 @@ class SearchesController < BaseController
 
   before_filter :remove_search_term_from_params
 
-  create do
-    before do
-      @search = Search.from_params(@query_params || params)
-      @search.search!
-      #reinstate_category_state
-      @search.segment_search!
-      @search.open_category = params['open_category']
-      @interviews = @search.results
+  def query
+    @search = Search.from_params(@query_params || params)
+    @search.search!
+    #reinstate_category_state
+    @search.segment_search!
+    @search.open_category = params['open_category']
+    @interviews = @search.results
 
-      session[:query] = @search.query_params
-    end
-    wants.html do
-      render :template => '/interviews/index.html'
-    end
-    wants.js do
-      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
-      results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
-      service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
-      search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
-      render :update do |page|
-        page.replace_html 'innerContent', results_html
-        page.replace_html 'baseServices', service_html
-        page.replace_html 'baseContainerRight', search_facets_html
-        # page << "setQueryHashInURL('#{@search.query_hash}');"
+    session[:query] = @search.query_params
+
+    respond_to do |format|
+      format.html do
+        render :template => '/interviews/index.html'
+      end
+      format.js do
+        #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
+        results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
+        service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
+        search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
+        render :update do |page|
+          page.replace_html 'innerContent', results_html
+          page.replace_html 'baseServices', service_html
+          page.replace_html 'baseContainerRight', search_facets_html
+          # page << "setQueryHashInURL('#{@search.query_hash}');"
+        end
       end
     end
   end
 
-  create.flash nil
+#  create do
+#    before do
+#      @search = Search.from_params(@query_params || params)
+#      @search.search!
+#      #reinstate_category_state
+#      @search.segment_search!
+#      @search.open_category = params['open_category']
+#      @interviews = @search.results
+#
+#      session[:query] = @search.query_params
+#    end
+#    wants.html do
+#      render :template => '/interviews/index.html'
+#    end
+#    wants.js do
+#      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
+#      results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
+#      service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
+#      search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
+#      render :update do |page|
+#        page.replace_html 'innerContent', results_html
+#        page.replace_html 'baseServices', service_html
+#        page.replace_html 'baseContainerRight', search_facets_html
+#        # page << "setQueryHashInURL('#{@search.query_hash}');"
+#      end
+#    end
+#    failure.wants.js do
+#      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
+#      results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
+#      service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
+#      search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
+#      render :update do |page|
+#        page.replace_html 'innerContent', results_html
+#        page.replace_html 'baseServices', service_html
+#        page.replace_html 'baseContainerRight', search_facets_html
+#        # page << "setQueryHashInURL('#{@search.query_hash}');"
+#      end
+#    end
+#  end
+#
+#  create.flash nil
 
   # calculates a hash for the query parameters and redirects to this hash-url
   # Note: this doesn't call the lucene search engine!
@@ -59,7 +100,7 @@ class SearchesController < BaseController
       end
       @redirect = if url_params.empty?
           if @query_hash.blank?
-            searches_url(search_params)
+            query_searches_url(search_params)
           else
             search_by_hash_url(search_params)
           end
@@ -150,8 +191,11 @@ class SearchesController < BaseController
   # saves a search as user_content
   def save
     @user = current_user
-    attributes = { :user_id => @user.id }.merge!(object_params)
+    attributes = { :user_id => @user.id, :persistent => true }
+    object_params.each_pair{|k,v| attributes[k.to_sym] = ActiveSupport::JSON.decode(v)}
+    puts "\n@@@ SEARCH ATTR:\n#{attributes.inspect}\n@@@\n"
     @search = Search.create(attributes)
+    puts "\n\n@@@@ SAVED SEARCH:\n#{@search.inspect}\n#{@search.errors.full_messages}\n@@@@\n"
     @user_content = @search
     respond_to do |format|
       format.html do

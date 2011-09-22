@@ -3,16 +3,23 @@ class UserContent < ActiveRecord::Base
   belongs_to :user
 
   before_save :store_properties
+  after_validation_on_create :check_persistence
+
+  attr_accessible :user_id, :title, :interview_references, :properties, :persistent
 
   def write_property(name, value)
-    (@properties || properties)[name.to_s] = value
+    get_properties[name.to_s] = value
   end
 
   def read_property(name)
-    properties[name.to_s]
+    get_properties[name.to_s]
   end
 
   def properties
+    get_properties
+  end
+
+  def get_properties
     @properties ||= (YAML.load(read_attribute(:properties) || '') || {})
   end
 
@@ -31,6 +38,14 @@ class UserContent < ActiveRecord::Base
 
   def store_properties
     write_attribute :properties, @properties.to_yaml
+  end
+
+  def check_persistence
+    if read_attribute(:persistence).nil?
+      false
+    else
+      true
+    end
   end
 
 end

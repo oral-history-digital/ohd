@@ -30,13 +30,13 @@ ActionController::Routing::Routes.draw do |map|
                                :action => :edit
   end
 
-  map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :create
-  map.search_by_hash 'suche/:suche', :controller => :searches, :action => :create
+  map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :query
+  map.search_by_hash 'suche/:suche', :controller => :searches, :action => :query
   map.new_search 'suchen/neu', :controller => :searches, :action => :new
-  map.search_by_page 'suchen/:page', :controller => :searches, :action => :create
-  map.search 'suchen', :controller => :searches, :action => :create
+  map.search_by_page 'suchen/:page', :controller => :searches, :action => :query
+  map.search 'suchen', :controller => :searches, :action => :query
 
-  map.resources :searches, :collection => { :interview => :post, :person_name => :post, :save => :post }
+  map.resources :searches, :collection => { :query => :post, :interview => :post, :person_name => :post, :save => :post }
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 

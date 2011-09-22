@@ -44,7 +44,9 @@ class Search < UserContent
                       :open_category,
                       :user_id,
                       :title,
-                      :interview_references
+                      :interview_references,
+                      :properties,
+                      :persistent
   ]
 
   class_eval <<ATTR
@@ -111,11 +113,11 @@ DEF
 
   # filter the ignore (default label) words from fulltext
   def fulltext=(term)
-    write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+    self.write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
   end
 
   def fulltext
-    read_property(:fulltext)
+    self.read_property(:fulltext)
   end
 
   # The total number of records matching the query criteria

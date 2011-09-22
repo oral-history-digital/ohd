@@ -5,7 +5,8 @@
     <% form_remote_tag :url => save_searches_path, :class => "save", :update => "save_search"  do -%>
         <% user_content_attributes = @search.user_content_attributes -%>
         <% user_content_attributes.keys.each do |attr| -%>
-          <%= hidden_field_tag "search[#{attr}]", user_content_attributes[attr] %>
+          <% value = user_content_attributes[attr] -%>
+          <%= hidden_field_tag "search[#{attr}]", value.is_a?(Hash) ? value.to_json : value %>
         <% end -%>
         <%= submit_tag t(:save, :scope => 'user_interface.search'), :class => 'save' %>
     <% end -%>
