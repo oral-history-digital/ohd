@@ -38,28 +38,19 @@ class Search < UserContent
                       :countries
   ]
 
+  NON_FACET_FIELDS = [ :fulltext,
+                      :partial_person_name,
+                      :page ]
+
   # This contains a list of accessible attributes that are not
   # considered query params and will not be kept in a stored search.
   NON_QUERY_ACCESSIBLES = [
-                      :open_category,
-                      :user_id,
-                      :title,
-                      :interview_references,
-                      :properties,
-                      :persistent
+                      :open_category
   ]
 
-  class_eval <<ATTR
-    attr_accessible :#{(FACET_FIELDS \
-                            + NON_QUERY_ACCESSIBLES \
-                            + [
-                                :fulltext,
-                                :partial_person_name,
-                                :page
-                              ]).join(', :')}
-ATTR
+  QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map{|a| a.to_s }
 
-  QUERY_PARAMS = Search.accessible_attributes - NON_QUERY_ACCESSIBLES.map{|a| a.to_s }
+  ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
 
   IGNORE_SEARCH_TERMS = [
     I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
@@ -68,7 +59,7 @@ ATTR
 
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
-  (Search.accessible_attributes - [ 'fulltext' ]).each do |query_param|
+  (ACCESSIBLES - [ 'fulltext' ]).each do |query_param|
     class_eval <<DEF
     # This is the generated setter for accessing the
     # #{query_param} query conditions.
