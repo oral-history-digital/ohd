@@ -19,6 +19,16 @@ class UserContent < ActiveRecord::Base
     get_properties
   end
 
+  # JSON-serialized hashes come out as arrays that need to be re-hashed
+  def properties=(props)
+    @properties = case props
+      when Array
+        props.inject({}){|h,v| h[v.first] = v.last; h }
+      else
+        props
+    end
+  end
+
   def get_properties
     @properties ||= (YAML.load(read_attribute(:properties) || '') || {})
   end

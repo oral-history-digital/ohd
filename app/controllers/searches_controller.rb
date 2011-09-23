@@ -192,7 +192,8 @@ class SearchesController < BaseController
   def save
     @user = current_user
     attributes = { :user_id => @user.id, :persistent => true }
-    object_params.each_pair{|k,v| attributes[k.to_sym] = ActiveSupport::JSON.decode(v)}
+    # when decoding the JSON, remove the escape backslashes
+    object_params.each_pair{|k,v| attributes[k.to_sym] = ActiveSupport::JSON.decode(v).gsub('\\','')}
     puts "\n@@@ SEARCH ATTR:\n#{attributes.inspect}\n@@@\n"
     @search = Search.create(attributes)
     puts "\n\n@@@@ SAVED SEARCH:\n#{@search.inspect}\n#{@search.errors.full_messages}\n@@@@\n"
