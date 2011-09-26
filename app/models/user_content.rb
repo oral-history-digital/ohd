@@ -2,7 +2,7 @@ class UserContent < ActiveRecord::Base
 
   belongs_to :user
 
-  before_save :store_properties
+  before_save :store_properties, :compile_id_hash
   after_validation_on_create :check_persistence
 
   attr_accessible :user_id, :title, :interview_references, :properties, :persistent
@@ -44,10 +44,19 @@ class UserContent < ActiveRecord::Base
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end
 
+  def self.default_id_hash(instance)
+    Base64.encode64((YAML.load(instance.send(read_attribute(:interview_references))) || ['blank']).join(','))
+  end
+
   private
 
   def store_properties
     write_attribute :properties, @properties.to_yaml
+  end
+
+  def compile_id_hash
+    @id_hash = read_attribute(:type).constantize.default_id_hash(self)
+    write_attribute :id_hash, @id_hash.sub(/\\n$/,'')
   end
 
   def check_persistence

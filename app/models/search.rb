@@ -371,7 +371,7 @@ DEF
     attr = {}
     title_tokens = [Search.human_name]
     title_tokens << "'#{fulltext}'" unless fulltext.blank?
-    title_tokens << Time.now.strftime('%d.%m.%Y %H\:%M')
+    title_tokens << Time.now.strftime('%d.%m.%Y %H-%M')
     attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = @results.nil? ? (read_property(:interview_references) || []) : @results[0..4].map(&:archive_id).join(',')
     attr[:properties] = { :query => @query, :hits => @hits, :query_hash => query_hash }
@@ -385,6 +385,11 @@ DEF
       props['query'] = query_array.inject({}){|h,v| h[v.first] = v.last; h }
     end
     super(props)
+  end
+
+  # sets the query hash as id_hash instead of serialized interview references (default)
+  def self.default_id_hash(instance)
+    instance.read_property('query_hash')
   end
 
   private

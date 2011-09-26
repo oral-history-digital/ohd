@@ -3,6 +3,7 @@ class CreateUserContent < ActiveRecord::Migration
   def self.up
     create_table :user_contents do |t|
       t.integer :user_id
+      t.string :id_hash
       t.string :title
       t.string :description
       t.string :interview_references
@@ -13,7 +14,8 @@ class CreateUserContent < ActiveRecord::Migration
       t.boolean :persistent
       t.timestamps
     end
-    add_index :user_contents, :type
+    add_index :user_contents, :user_id
+    add_index :user_contents, [:type, :id_hash]
 
   end
 
