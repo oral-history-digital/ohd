@@ -47,19 +47,8 @@ class UserContent < ActiveRecord::Base
   def self.default_id_hash(instance)
     refs = (instance.send(:read_attribute, :interview_references) || %w(blank)).join(',')
     puts "\nBase for ID-HASH: #{refs}"
-    YAML.load(refs)
+    Base64.encode64(YAML.load(refs)).sub(/\\n$/,'')
   end
-
-  # NOTE: this doesn't fix the problem that user_contents_controller#create does not render
-#  # Fix for subclasses generating form_for/link_to urls
-#  def self.inherited(child)
-#    child.instance_eval do
-#      def model_name
-#        UserContent.model_name
-#      end
-#    end
-#    super
-#  end
 
   private
 
@@ -69,7 +58,7 @@ class UserContent < ActiveRecord::Base
 
   def compile_id_hash
     @id_hash = read_attribute(:type).constantize.default_id_hash(self)
-    write_attribute :id_hash, Base64.encode64(@id_hash).sub(/\\n$/,'')
+    write_attribute :id_hash, @id_hash
   end
 
   def check_persistence
