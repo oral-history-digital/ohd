@@ -19,6 +19,8 @@ class UserContentsController < BaseController
     end
   end
 
+  create.flash nil
+
   show do
     wants.html do
     end

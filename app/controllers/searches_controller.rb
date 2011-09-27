@@ -146,26 +146,6 @@ class SearchesController < BaseController
     end
   end
 
-  # saves a search as user_content
-  def save
-    @user = current_user
-    attributes = { :user_id => @user.id, :persistent => true }
-    # when decoding the JSON, remove the escape backslashes
-    object_params.each_pair{|k,v| a = ActiveSupport::JSON.decode(v); attributes[k.to_sym] = a.is_a?(String) ? a.sub(/(\d{2})(-)(\d{2})$/, '\1:\3') : a }
-    puts "\n@@@ SEARCH ATTR:\n#{attributes.inspect}\n@@@\n"
-    @search = Search.create(attributes)
-    puts "\n\n@@@@ SAVED SEARCH:\n#{@search.inspect}\n#{@search.errors.full_messages}\n@@@@\n"
-    @user_content = @search
-    respond_to do |format|
-      format.html do
-        render :partial => "save"
-      end
-      format.js do
-        render :partial => "save", :layout => false
-      end
-    end
-  end
-
   private
 
   # redirect users to login if they're unauthenticated
