@@ -6,10 +6,6 @@ class UserContentsController < BaseController
 
   actions :create, :show, :index
 
-  create.before do
-    puts "\n@@@ BEFORE CREATE:\nobject: #{@object.inspect}\ntype: #{@type}\nobject_params: #{object_params.inspect}\nparams: #{params.inspect}\n@@@"
-  end
-
   create do
     wants.html do
       render :action => 'show'
