@@ -389,7 +389,7 @@ DEF
 
   # sets the query hash as id_hash instead of serialized interview references (default)
   def self.default_id_hash(instance)
-    instance.read_property('query_hash')
+    instance.read_property('query_hash') || 'blank_search'
   end
 
   private

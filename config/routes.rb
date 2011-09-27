@@ -36,7 +36,12 @@ ActionController::Routing::Routes.draw do |map|
   map.search_by_page 'suchen/:page', :controller => :searches, :action => :query
   map.search 'suchen', :controller => :searches, :action => :query
 
-  map.resources :searches, :collection => { :query => :post, :interview => :post, :person_name => :post, :save => :post }
+  map.resources :searches, :collection => { :query => :post,
+                                            :interview => :post,
+                                            :person_name => :post,
+                                            :save => :post }
+
+  map.resources :user_contents
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 

@@ -14,11 +14,19 @@
     color: #990000;
 }
 
-#mainWrapper .save_user_content input[type="submit"]:hover {
-    background-color: #E4E4DA !important;
+#mainWrapper .save_user_content input[type="submit"],
+#mainWrapper .save_user_content a.saved {
+    padding-left: 20px;
+    padding-top: 2px;
+    background-image: url(/images/icon_sprite.png);
+    background-repeat: no-repeat;
 }
 
-#mainWrapper .teaserList .save_user_content input[type="submit"] {
-    background: url(/images/suche_speichern.png) top left no-repeat;
-    padding-left: 12px;
+#mainWrapper #save_search input[type="submit"] {
+    background-position: 0px -60px;
+}
+
+#mainWrapper #save_search input[type="submit"]:hover,
+#mainWrapper #save_search a.saved {
+    background-position: 0px -120px;
 }

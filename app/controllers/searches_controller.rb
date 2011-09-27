@@ -161,7 +161,7 @@ class SearchesController < BaseController
         render :partial => "save"
       end
       format.js do
-        render :partial => "save"
+        render :partial => "save", :layout => false
       end
     end
   end
