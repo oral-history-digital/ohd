@@ -55,7 +55,7 @@ ActionController::Routing::Routes.draw do |map|
   map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
   map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
   map.reset_password  'passwort_vergessen', :controller => :passwords, :action => :new
-  map.change_password 'neues_passwort/:password_reset_token', :controller => :passwords, :action => :edit
+  map.change_password 'neues_passwort/:reset_password_token', :controller => :passwords, :action => :edit
 
   map.devise_for :user_accounts
 
