@@ -5,12 +5,26 @@
     <%= javascript_include_tag 'search', :cache => 'search' %>
 </head>
 
-<body id="<%= current_area_id %>">
+<body id="<%= current_area_id %>" class="workbook">
     <div id="headerIdentityWrapper">
         <%= render :partial => '/header' %>
 
-        <div id="baseServices">
-            <%= render :partial => 'searches/search', :object => (@search ||= Search.from_params) %>
+        <div id="baseServices" class="workbook">
+
+            <h2 class="info">Service-Funktionen</h2>
+            <p class="title"><%= current_user.blank? ? '' : current_user.first_name %>s<br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
+            <div id="baseHeaderSearch">
+            
+            </div>
+
+            <div id="submit_search" class="action">
+              <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path('suchpfeil_zurueck.gif'), :onclick => 'submitViaAjax(); false;' %>
+            </div>
+
+            <%= image_tag image_path('symbol_workbook.png'), :alt => '', :id => "folder_image" -%>
+
+            <div id="search_header_overlay" class="overlay" style="display: none;"></div>
+
         </div>
 
         <hr class="divider" />
@@ -42,34 +56,7 @@
 
         <div id="baseContainerRight">
 
-            <% javascript_tag do %>
-              var categoryChange = false;
-              var checkedCategories = [];
-              var categoryElems = [];
-
-              // clearing the fulltext field before submission or editing
-              function clearFulltextField(id) {
-                var elem = $(id);
-                if(elem) {
-                  if(elem.value == '<%= t('search_term') %>') {
-                    elem.value = '';
-                  }
-                }
-              }
-
-              checkedCategories.each(function(id) {
-                  categoryState(id, true, true);
-              });
-              
-            <% end %>
-
-            <%= render :partial => 'searches/facets', :object => @search %>
-
-            <% javascript_tag do %>
-
-              categoryElems = $$('fieldset.facet-field');
-
-            <% end %>
+            <%= render :partial => 'user_contents/filters', :object => @user_contents %>
 
         </div>
 

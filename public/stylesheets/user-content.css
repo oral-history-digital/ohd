@@ -30,3 +30,77 @@
 #mainWrapper #save_search a.saved {
     background-position: 0px -120px;
 }
+
+#baseServices #folder_image {
+    float: right;
+    margin-top: -13px;
+    margin-right: 12px;
+}
+
+#baseServices .title {
+    width: 125px;
+}
+
+.workbook #mainWrapper {
+    background-image: none;
+    padding-top: 5px;
+}
+
+.workbook #baseContainerRight {
+    padding-top: 20px;
+    color: #838175;
+}
+
+.workbook #baseContainerRight div {
+    background-color: #E4E4DA;
+}
+
+#mainWrapper #user_contents {
+    color: #969380;
+}
+
+/* User Content Overview */
+#user_contents .header {
+    line-height: 225%;
+    padding-left: 25px;
+    background-color: #E4E4DA;
+    margin-bottom: 1px;
+    background-image: url(/images/icon_sprite.png);
+    background-repeat: no-repeat;
+    background-position: 0.3em -296px;
+}
+
+/* icons */
+#user_contents .header .search {
+
+}
+
+#user_contents .title {
+    color: #990000;
+}
+
+#user_contents .date {
+    float: right;
+    font-size: 85%;
+    margin-right: 10px;
+}
+
+#user_contents .toggle {
+    float: right;
+    background-image: url('/images/icon_sprite.png');
+    background-repeat: no-repeat;
+    background-position: 0.3em -720px;
+    height: 20px;
+    width: 28px;
+    margin-top: 0.3em;
+    border-left: 1px solid #F1F1EB;
+}
+
+#user_contents .details {
+    display: none;
+    clear: left;
+}
+
+#user_contents .shown .details {
+    display: block;
+}
