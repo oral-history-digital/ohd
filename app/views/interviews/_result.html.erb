@@ -2,9 +2,9 @@
 <% additional_params = query_params.keys - [ 'languages', 'person_name', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
 <% search ||= Search.new %>
 
+<div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
 <% cache [ @locale, result.to_param, 'result', additional_params.join('+') ].join('/') do -%>
 
-<div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
   <div class="baseContainerTeaserImage">
     <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title %>
     <% if result.segmented? %>
@@ -80,6 +80,5 @@
       </div>
     <% end %>
   <% end %>
-</div>
-
 <% end -%><%# cache -%>
+</div>
