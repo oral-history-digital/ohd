@@ -40,6 +40,9 @@ ActionController::Routing::Routes.draw do |map|
                                             :interview => :post,
                                             :person_name => :post }
 
+  map.connect 'arbeitsmappe', :locale => :de, :controller => :user_contents, :action => :index
+  map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
+
   map.resources :user_contents
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'

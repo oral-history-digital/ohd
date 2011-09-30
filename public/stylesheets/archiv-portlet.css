@@ -113,6 +113,16 @@
 	border: 1px solid #999;
 }
 
+/* Link zur Arbeitsmappe */
+.portlet a.workbook {
+    padding-left: 20px;
+    padding-top: 2px;
+    background-image: url('/images/icon_sprite.png');
+    background-repeat: no-repeat;
+    background-position: top left;
+    font-weight: bold;
+}
+
 .portlet .clear {
 	clear: both;
 }

@@ -38,10 +38,12 @@
             <fieldset>
               <legend>Abmelden</legend>
               <p id="logoutUserLogin">
-                <%= current_user_account.try(:login) || t(:not_signed_in, :scope => 'user_interface.status') %>
+                <%= current_user_account.try(:login) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
                     <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
                 <% else %>
+                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index', :locale => @locale }, :class => "workbook" %>
+                    <span class='red'>&nbsp;|&nbsp;</span>
                     <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>
                 <% end %>
               </p>

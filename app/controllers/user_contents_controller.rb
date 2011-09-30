@@ -1,6 +1,6 @@
 class UserContentsController < BaseController
 
-  layout nil
+  layout 'workspace', :except => [ :show, :create ]
 
   belongs_to :user
 
@@ -45,7 +45,7 @@ class UserContentsController < BaseController
   end
 
   def model_name
-    @type = params[:type].downcase || 'user_content'
+    @type = params[:type].blank? ? 'user_content' : params[:type].downcase
   end
 
   def object_params
@@ -63,6 +63,10 @@ class UserContentsController < BaseController
     @object = model_name.capitalize.constantize.new object_params
     @object.user = current_user
     @object
+  end
+
+  def collection
+    end_of_association_chain.find(:all, :conditions => ['user_id = ?', current_user.id])
   end
 
 end

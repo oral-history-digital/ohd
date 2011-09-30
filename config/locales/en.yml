@@ -94,6 +94,7 @@ en:
       search_the_archive: 'Search the archive'
       search_the_interview: 'search the interview'
       in_the_current_search: 'in&nbsp;current&nbsp;selection'
+      workbook: 'workbook'
     player:
       back: 'previous'
       forward: 'next'

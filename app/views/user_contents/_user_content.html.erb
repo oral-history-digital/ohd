@@ -1,0 +1,17 @@
+<div id="user_content_<%= user_content.id %>" class="header">
+  <span class="title <%= user_content.type.to_s.downcase %>">
+    <%= user_content.title %>
+  </span>
+  <span class="themes">
+    <!-- this is the tag list for the content //-->
+  </span>
+  <span class="date">
+    <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') %>
+  </span>
+  <span class="toggle">
+    <%= link_to_function '&nbsp;', '' %>
+  </span>
+  <div class="details" style="display: none;">
+
+  </div>
+</div>
