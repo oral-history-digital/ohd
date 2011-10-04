@@ -13,7 +13,8 @@ class BaseController < ResourceController::Base
 
   include SearchFilters
 
-  before_filter :current_search_for_side_panel
+  before_filter :current_search_for_side_panel,
+                :determine_user
 
   @@valid_locales = Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}
 

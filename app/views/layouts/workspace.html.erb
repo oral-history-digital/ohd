@@ -12,7 +12,7 @@
         <div id="baseServices" class="workbook">
 
             <h2 class="info">Service-Funktionen</h2>
-            <p class="title"><%= current_user.blank? ? '' : current_user.first_name %>s<br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
+            <p class="title"><%= current_user.blank? ? current_user_account.login : current_user.first_name %>s<br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
             <div id="baseHeaderSearch">
             
             </div>

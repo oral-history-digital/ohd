@@ -7,6 +7,8 @@ class UserContent < ActiveRecord::Base
 
   attr_accessible :user_id, :title, :interview_references, :properties, :persistent
 
+  validates_presence_of :user_id
+
   def write_property(name, value)
     get_properties[name.to_s] = value
   end
@@ -46,7 +48,6 @@ class UserContent < ActiveRecord::Base
 
   def self.default_id_hash(instance)
     refs = (instance.send(:read_attribute, :interview_references) || %w(blank)).join(',')
-    puts "\nBase for ID-HASH: #{refs}"
     Base64.encode64(YAML.load(refs)).sub(/\\n$/,'')
   end
 

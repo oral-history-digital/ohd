@@ -1,17 +1,40 @@
-<div id="user_content_<%= user_content.id %>" class="header closed">
-  <span class="title <%= user_content.type.to_s.downcase %>">
-    <%= user_content.title %>
-  </span>
-  <span class="themes">
-    <!-- this is the tag list for the content //-->
-  </span>
-  <span class="toggle">
-    <%= link_to_function '&nbsp;', '' %>
-  </span>
-  <span class="date">
-    <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') %>
-  </span>
-  <div class="details">
-
-  </div>
+<% if defined?(@user_content_index) && !@user_content_index.is_a?(Numeric)
+   @user_content_index += 1
+else
+  @user_content_index = 0
+end -%>
+<div id="user_content_<%= user_content.id %>" class="item <%= @user_content_index > 2 ? ' closed' : ''-%>">
+    <div class="header" onclick="this.parentNode.toggleClassName('closed');">
+      <span class="title <%= user_content.type.to_s.downcase %>">
+        <%= user_content.title %>
+      </span>
+      <span class="themes">
+        <!-- this is the tag list for the content //-->
+        <%= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' %>
+      </span>
+      <span class="toggle">
+        <%= link_to_function '&nbsp;', '' %>
+      </span>
+      <span class="date">
+        <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') %>
+      </span>
+    </div>
+    <div class="details">
+        <ul>
+          <% case user_content.type.to_s
+              when 'Search'
+                %>
+            <li>
+              <%= label_tag 'Suchkriterien' %>
+              <p><%= user_content.properties['query'] %></p>
+            </li>
+          <%  else
+                false
+          end %>
+          <li>
+            <%= label_tag 'Beschreibung' %>
+            <p><%= user_content.description %></p>
+          </li>
+        </ul>
+    </div>
 </div>

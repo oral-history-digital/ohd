@@ -7,6 +7,7 @@ class UserContentsController < BaseController
   actions :create, :show, :index
 
   before_filter :determine_user!
+  skip_before_filter :determine_user
 
   create do
     wants.html do
