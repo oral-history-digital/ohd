@@ -8,6 +8,7 @@ class SearchesController < BaseController
   before_filter :current_query_params
   skip_before_filter :current_search_for_side_panel
 
+  before_filter :determine_user, :only => :query
   before_filter :remove_search_term_from_params
 
   def query

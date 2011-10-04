@@ -1,16 +1,18 @@
-<span class="save_user_content" style="display:none;">
-    <% form_remote_tag :url => user_contents_path, :class => "save", :update => "save_search"  do -%>
-        <% user_content_attributes = @search.user_content_attributes -%>
-        <% user_content_attributes.keys.each do |attr| -%>
-          <% value = user_content_attributes[attr] -%>
-          <%= hidden_field_tag "search[#{attr}]", value.is_a?(Hash) ? value.to_json : value %>
+<% unless current_user.nil? -%>
+    <span class="save_user_content" style="display:none;">
+        <% form_remote_tag :url => user_contents_path, :class => "save", :update => "save_search"  do -%>
+            <% user_content_attributes = @search.user_content_attributes -%>
+            <% user_content_attributes.keys.each do |attr| -%>
+              <% value = user_content_attributes[attr] -%>
+              <%= hidden_field_tag "search[#{attr}]", value.is_a?(Hash) ? value.to_json : value %>
+            <% end -%>
+            <%= hidden_field_tag "type", 'Search' %>
+            <%= submit_tag t(:save, :scope => 'user_interface.search'), :class => 'save' %>
         <% end -%>
-        <%= hidden_field_tag "type", 'Search' %>
-        <%= submit_tag t(:save, :scope => 'user_interface.search'), :class => 'save' %>
-    <% end -%>
-</span>
-<% javascript_tag do %>
+    </span>
+    <% javascript_tag do %>
 
-    new Ajax.Updater({ success: 'save_search' }, '<%= user_content_path(:id => @search.query_hash, :type => 'search') %>', { method: 'get', onComplete: function(){$('save_search').down('span').show();}});
+        new Ajax.Updater({ success: 'save_search' }, '<%= user_content_path(:id => @search.query_hash, :type => 'search') %>', { method: 'get', onComplete: function(){$('save_search').down('span').show();}});
 
-<% end %>
+    <% end %>
+<% end -%>

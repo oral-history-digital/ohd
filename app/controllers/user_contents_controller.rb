@@ -6,7 +6,7 @@ class UserContentsController < BaseController
 
   actions :create, :show, :index
 
-  before_filter :determine_user
+  before_filter :determine_user!
 
   create do
     wants.html do
@@ -69,10 +69,6 @@ class UserContentsController < BaseController
 
   def collection
     end_of_association_chain.find(:all, :conditions => ['user_id = ?', current_user.id])
-  end
-
-  def determine_user
-    @current_user = current_user
   end
 
 end

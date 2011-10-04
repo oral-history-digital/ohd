@@ -72,5 +72,14 @@ class BaseController < ResourceController::Base
     render :layout => false
   end
 
+  def determine_user!
+    @current_user = current_user
+    raise ActiveRecord::RecordNotFound if @current_user.nil?
+  end
+
+  def determine_user
+    @current_user = current_user
+  end
+
 
 end
