@@ -7,6 +7,7 @@ end -%>
     <div class="header" onclick="toggleUserContent('user_content_<%= user_content.id %>')">
       <span class="title <%= user_content.type.to_s.downcase %>">
         <%= in_place_edit_for user_content, :title %>
+        <a name="user_content_<%= user_content.id %>" style="display: none;">&nbsp;</a>
       </span>
       <%= link_to t(:edit, :scope => "user_interface.actions"), '#', :class => 'edit' %>
       <span class="themes">

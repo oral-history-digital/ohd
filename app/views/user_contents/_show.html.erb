@@ -1,5 +1,5 @@
 <% user_content ||= @user_content -%>
 <% content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).downcase -%>
 <span class="save_user_content">
-    <%= link_to t(:saved, :scope => "user_interface.#{content_type}"), '#', :class => 'saved' %>
+    <%= link_to t(:saved, :scope => "user_interface.#{content_type}"), user_contents_path << "#user_content_#{user_content.id}", :class => 'saved' %>
 </span>

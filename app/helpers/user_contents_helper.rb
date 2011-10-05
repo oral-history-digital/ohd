@@ -59,7 +59,7 @@ module UserContentsHelper
   # render the interview references for a search item
   def reference_details_for_search(search)
     html = content_tag(:span, "#{search.properties['hits'] || t(:none)} #{t(:search_results, :scope => 'user_interface.labels')}")
-    interview_stills = Interview.find(:all, :select => 'archive_id, still_image_file_name', :conditions => "archive_id IN ('#{search.interview_references.join("','")}')")
+    interview_stills = Interview.find(:all, :select => 'archive_id, full_title, still_image_file_name', :conditions => "archive_id IN ('#{search.interview_references.join("','")}')")
     image_list = search.interview_references.inject('') do |list, archive_id|
       if archive_id =~ /^za\d{3}$/
         image = interview_stills.select{|still| still.archive_id == archive_id }.first
@@ -68,12 +68,12 @@ module UserContentsHelper
         else
           image_path(File.join("/interviews/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
         end
-        list << content_tag(:li, image_tag(image_file, :alt => archive_id))
+        list << content_tag(:li, image_tag(image_file, :alt => archive_id, :title => "#{image.full_title} (#{archive_id})"))
       end
       list
     end
     html << content_tag(:ul, image_list)
-    html << content_tag(:span, link_to('alle_anzeigen', '#'))
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_all, :scope => 'user_interface.labels')}", search_by_hash_path(:suche => search.properties['query_hash']), :target => '_blank'))
     html
   end
 
