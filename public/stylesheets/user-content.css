@@ -63,6 +63,8 @@
 #user_contents .item {
     background-color: #FFFFFF;
     margin-bottom: 1px;
+    float: left;
+    width: 100%;
 }
 
 #user_contents .item.closed {
@@ -70,6 +72,8 @@
 }
 
 #user_contents .header {
+    float: left;
+    width: 675px;
     line-height: 225%;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
@@ -129,6 +133,7 @@
 #user_contents .details {
     display: block;
     padding-left: 25px;
+    float: left;
 }
 
 #user_contents .closed .details {
@@ -141,6 +146,17 @@
     font-size: 80%;
 }
 
+#user_contents .properties {
+    float: left;
+    width: 270px;
+    margin-right: 10px;
+}
+
+#user_contents .details .references {
+    float: left;
+    width: 390px;
+}
+
 #user_contents .details li {
     margin-top: 0.5em;
     background-image: none;
@@ -148,6 +164,32 @@
 
 #user_contents .details p {
     color: #000000;
+}
+
+#user_contents .details .references ul,
+#user_contents .details .references li {
+    width: auto;
+    position: relative;
+    display: block;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+#user_contents .details .references li {
+    clear: none;
+    margin: 0 10px 0 0;
+}
+
+#user_contents .details .references img {
+    display: block;
+    width: 65px;
+    height: 50px;
+    border: 1px solid #000;
+}
+
+#user_contents .references span {
+    float: left;
 }
 
 /* Inline Editing */
@@ -160,4 +202,8 @@
     width: auto;
     min-width: 1%;
     font-size: 80%;
+}
+
+#user_contents .inline-editable {
+    cursor: pointer;
 }

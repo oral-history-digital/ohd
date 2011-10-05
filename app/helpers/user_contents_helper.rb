@@ -47,13 +47,40 @@ module UserContentsHelper
             :update => "user_content_#{user_content.id}",
             :html => options.merge({:class => 'inline'})
     })
-    html = content_tag(:span, value, options.merge({:id => display_id, :style => 'display: inline;', :onclick => "$('#{display_id}').hide();$('#{id}').value = $('#{display_id}').innerHTML; $('#{form_id}').show(); Event.stop(event);"}))
+    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :style => 'display: inline;', :onclick => "$('#{display_id}').hide();$('#{id}').value = $('#{display_id}').innerHTML; $('#{form_id}').show(); Event.stop(event);"}))
     html << content_tag(:span, options.merge({:id => form_id, :style => 'display: none;'})) do
       form_remote_tag(form_options) do
-        text_field_tag(user_content, attribute.to_sym, :id => id, :name => "user_content[#{attribute}]")
+        text_field_tag(user_content, attribute.to_sym, :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);")
       end
     end
     html
+  end
+
+  # render the interview references for a search item
+  def reference_details_for_search(search)
+    html = content_tag(:span, "#{search.properties['hits'] || t(:none)} #{t(:search_results, :scope => 'user_interface.labels')}")
+    interview_stills = Interview.find(:all, :select => 'archive_id, still_image_file_name', :conditions => "archive_id IN ('#{search.interview_references.join("','")}')")
+    image_list = search.interview_references.inject('') do |list, archive_id|
+      if archive_id =~ /^za\d{3}$/
+        image = interview_stills.select{|still| still.archive_id == archive_id }.first
+        image_file = if image.nil? || image.still_image_file_name.nil?
+          image_path("/archive_images/missing_still.jpg")
+        else
+          image_path(File.join("/archive_images/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+        end
+        puts "\n\n@@@@ IMAGE FILE FOR : #{archive_id}\nFILE: #{image_file}\nIMAGE: #{image.inspect}\n@@@@\n"
+        list << content_tag(:li, image_tag(image_file, :alt => archive_id))
+      end
+      list
+    end
+    html << content_tag(:ul, image_list)
+    html << content_tag(:span, link_to('alle_anzeigen', '#'))
+    html
+  end
+
+  # render a singular interview reference detail for interview or segment items
+  def reference_details_for_interview(references)
+
   end
 
 end

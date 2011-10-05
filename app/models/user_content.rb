@@ -52,7 +52,7 @@ class UserContent < ActiveRecord::Base
   end
 
   def description
-    read_attribute(:description) || [I18n.t(:no_placeholder), UserContent.human_attribute_name(:description)].join(' ')
+    read_attribute(:description) || [I18n.t(:no_placeholder).capitalize, UserContent.human_attribute_name(:description)].join(' ')
   end
 
   def self.default_id_hash(instance)

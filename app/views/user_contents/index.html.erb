@@ -1,3 +1,18 @@
 <div id="user_contents">
   <%= render :partial => 'user_content', :collection => @user_contents %>
 </div>
+<% javascript_tag do %>
+
+    function toggleUserContent(id) {
+        var el = $(id);
+        var details = el.down('.details');
+        if(el.hasClassName('closed')) {
+            // open
+            new Effect.BlindDown(details, { duration: 0.5, beforeStart: function(){el.removeClassName('closed');}});
+        } else {
+            // close
+            new Effect.BlindUp(details, { duration: 0.5, afterFinish: function(){el.addClassName('closed');}});
+        }
+    }
+
+<% end %>

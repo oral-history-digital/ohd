@@ -21,7 +21,7 @@ end -%>
       </span>
     </div>
     <div class="details">
-        <ul>
+        <ul class="properties">
           <% case user_content.type.to_s
               when 'Search'
                 %>
@@ -37,20 +37,13 @@ end -%>
             <p><%= in_place_edit_for(user_content, :description) %></p>
           </li>
         </ul>
+      <div class="references">
+        <%= case user_content.type.to_s
+            when 'Search'
+              reference_details_for_search(user_content)
+            else
+              reference_details_for_interview(user_content.interview_references)
+          end %>
+      </div>
     </div>
 </div>
-<% javascript_tag do %>
-
-    function toggleUserContent(id) {
-        var el = $(id);
-        var details = el.down('.details');
-        if(el.hasClassName('closed')) {
-            // open
-            new Effect.BlindDown(details, { duration: 0.5, beforeStart: function(){el.removeClassName('closed');}});
-        } else {
-            // close
-            new Effect.BlindUp(details, { duration: 0.5, afterFinish: function(){el.addClassName('closed');}});
-        }
-    }
-
-<% end %>
