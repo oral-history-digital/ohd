@@ -157,8 +157,13 @@
     width: 390px;
 }
 
+#user_contents .details .properties,
+#user_contents .details .references {
+    padding: 1em 0 2em 0;
+}
+
 #user_contents .details li {
-    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     background-image: none;
 }
 

@@ -8,7 +8,7 @@ module UserContentsHelper
     case query
       when Hash
         category_ids = query.values.flatten.inject([]){|ids, value| ids << value if (value.to_i != 0); ids }.uniq
-        preloaded_categories = Category.find(:all, :conditions => "id IN (#{category_ids.join(',')})")
+        preloaded_categories = category_ids.empty? ? [] : Category.find(:all, :conditions => "id IN (#{category_ids.join(',')})")
         fulltext = query.delete('fulltext')
         str = fulltext.nil? ? [] : [ t('fulltext').to_s + ': "' + fulltext.to_s + '"' ]
         str += query.keys.inject([]) do |out, key|

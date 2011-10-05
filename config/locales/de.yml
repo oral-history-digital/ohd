@@ -157,6 +157,9 @@ de:
       user_content:
         one: 'Inhalt'
         other: 'Inhalte'
+      search:
+        one: 'Suche'
+        other: 'Suchen'
 
 
     attributes:

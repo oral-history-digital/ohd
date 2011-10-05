@@ -159,6 +159,9 @@ en:
       user_content:
         one: 'content'
         other: 'contents'
+      search:
+        one: 'Suche'
+        other: 'Suchen'
 
     attributes:
       collection:
