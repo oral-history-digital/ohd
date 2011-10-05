@@ -482,6 +482,7 @@ en:
   person_name: 'Name of the Interviewee'
   language: 'Language'
   country: 'Place of Residence (Country)'
+  fulltext: 'Search Term'
 
   photos:
     image: 'Photo'
