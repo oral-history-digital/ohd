@@ -6,8 +6,9 @@ end -%>
 <div id="user_content_<%= user_content.id %>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
     <div class="header" onclick="this.parentNode.toggleClassName('closed');">
       <span class="title <%= user_content.type.to_s.downcase %>">
-        <%= user_content.title %>
+        <%= in_place_edit_for user_content, :title %>
       </span>
+      <%= link_to t(:edit, :scope => "user_interface.actions"), '#', :class => 'edit' %>
       <span class="themes">
         <!-- this is the tag list for the content //-->
         <%= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' %>
@@ -25,15 +26,15 @@ end -%>
               when 'Search'
                 %>
             <li>
-              <%= label_tag 'Suchkriterien' %>
+              <%= label_tag UserContent.human_attribute_name(:query) %>
               <p><%= query_hash_to_string user_content.properties['query'] %></p>
             </li>
           <%  else
                 false
           end %>
           <li>
-            <%= label_tag 'Beschreibung' %>
-            <p><%= user_content.description %></p>
+            <%= label_tag UserContent.human_attribute_name(:description) %>
+            <p><%= in_place_edit_for(user_content, :description) %></p>
           </li>
         </ul>
     </div>

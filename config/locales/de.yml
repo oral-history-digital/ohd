@@ -17,6 +17,7 @@ de:
   all: 'alle'
   admin_area: 'Administratoren-Bereich'
   and: 'und'
+  no_placeholder: 'keine'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -93,6 +94,8 @@ de:
       search_the_interview: 'Suche im Interview'
       in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
       workbook: 'Arbeitsmappe'
+    actions:
+      edit: 'bearbeiten'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
@@ -150,6 +153,10 @@ de:
       photo:
         one: 'Bild'
         other: 'Bilder'
+      user_content:
+        one: 'Inhalt'
+        other: 'Inhalte'
+
 
     attributes:
       collection:
@@ -185,6 +192,10 @@ de:
         segmentators: 'Segmentierung'
         language: 'Sprache'
         collection: 'Teilsammlung'
+      user_content:
+        title: 'Titel'
+        description: 'Beschreibung'
+        query: 'Suchkriterien'
 
     errors:
       template:

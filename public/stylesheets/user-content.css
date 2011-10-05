@@ -87,6 +87,17 @@
     color: #990000;
 }
 
+#user_contents .edit {
+    background: transparent url('/images/icon_sprite.png') 0.3em -604px no-repeat;
+    color: #990000;
+    font-size: 80%;
+    padding-left: 22px;
+}
+
+#user_contents .closed .edit {
+    display: none;
+}
+
 #user_contents .themes {
     background: transparent url('/images/icon_sprite.png') 0.3em -544px no-repeat;
     padding-left: 22px;
@@ -137,4 +148,16 @@
 
 #user_contents .details p {
     color: #000000;
+}
+
+/* Inline Editing */
+#innerContent form.inline {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    clear: none;
+    float: none;
+    width: auto;
+    min-width: 1%;
+    font-size: 80%;
 }

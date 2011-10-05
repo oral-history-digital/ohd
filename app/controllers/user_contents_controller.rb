@@ -4,7 +4,7 @@ class UserContentsController < BaseController
 
   belongs_to :user
 
-  actions :create, :show, :index
+  actions :create, :update, :show, :index
 
   before_filter :determine_user!
   skip_before_filter :determine_user
@@ -20,6 +20,8 @@ class UserContentsController < BaseController
 
   create.flash nil
 
+  update.flash nil
+
   show do
     wants.html do
     end
@@ -32,16 +34,32 @@ class UserContentsController < BaseController
     end
   end
 
+  update do
+    wants.html do
+      redirect_to :action => 'show'
+    end
+    wants.js do
+      render :partial => 'user_content', :object => @object
+    end
+  end
+
   private
 
   # find the object with the current_user id and the id_hash parameter
   def object
     @object ||= begin
       @id_hash = params[:id]
-      @type = params[:type]
+      @type = params[:type] || 'user_content'
       unless @type.blank?
-        klass = @type.capitalize.constantize
-        @object = @id_hash.blank? ? klass.new : klass.find(:first, :conditions => ["user_id = ? AND id_hash = ?", current_user.id, @id_hash ])
+        klass = @type.camelize.constantize
+        @object = begin
+          if @id_hash.blank?
+            klass.new
+          else
+            id_attr = @id_hash.to_i > 0 ? 'id' : 'id_hash'
+            klass.find(:first, :conditions => ["user_id = ? AND #{id_attr} = ?", current_user.id, @id_hash ])
+          end
+        end
       end
     end
     @user_content = @object

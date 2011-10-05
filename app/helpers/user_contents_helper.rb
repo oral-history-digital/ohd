@@ -34,4 +34,26 @@ module UserContentsHelper
     end
   end
 
+  def in_place_edit_for(user_content, attribute, options={})
+    value = user_content.send(attribute)
+    value = '&nbsp;' * 8 if value.blank?
+    id = "user_content_#{user_content.id}_#{attribute}"
+    display_id = id + '_display'
+    form_id = id + '_form'
+    form_options = options.merge({
+            :id => form_id,
+            :url => user_content_path(user_content),
+            :method => :put,
+            :update => "user_content_#{user_content.id}",
+            :html => options.merge({:class => 'inline'})
+    })
+    html = content_tag(:span, value, options.merge({:id => display_id, :style => 'display: inline;', :onclick => "$('#{display_id}').hide();$('#{id}').value = $('#{display_id}').innerHTML; $('#{form_id}').show(); Event.stop(event);"}))
+    html << content_tag(:span, options.merge({:id => form_id, :style => 'display: none;'})) do
+      form_remote_tag(form_options) do
+        text_field_tag(user_content, attribute.to_sym, :id => id, :name => "user_content[#{attribute}]")
+      end
+    end
+    html
+  end
+
 end

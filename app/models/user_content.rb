@@ -2,10 +2,15 @@ class UserContent < ActiveRecord::Base
 
   belongs_to :user
 
-  before_save :store_properties, :compile_id_hash
+  before_create :store_properties, :compile_id_hash
   after_validation_on_create :check_persistence
 
-  attr_accessible :user_id, :title, :interview_references, :properties, :persistent
+  attr_accessible :user_id,
+                  :title,
+                  :interview_references,
+                  :properties,
+                  :description,
+                  :persistent
 
   validates_presence_of :user_id
 
@@ -44,6 +49,10 @@ class UserContent < ActiveRecord::Base
       list_of_archive_ids = list_of_archive_ids.scan(/za\d{3}/i).map{|id| id.downcase }
     end
     write_attribute :interview_references, list_of_archive_ids.to_yaml
+  end
+
+  def description
+    read_attribute(:description) || [I18n.t(:no_placeholder), UserContent.human_attribute_name(:description)].join(' ')
   end
 
   def self.default_id_hash(instance)
