@@ -66,9 +66,8 @@ module UserContentsHelper
         image_file = if image.nil? || image.still_image_file_name.nil?
           image_path("/archive_images/missing_still.jpg")
         else
-          image_path(File.join("/archive_images/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+          image_path(File.join("/interviews/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
         end
-        puts "\n\n@@@@ IMAGE FILE FOR : #{archive_id}\nFILE: #{image_file}\nIMAGE: #{image.inspect}\n@@@@\n"
         list << content_tag(:li, image_tag(image_file, :alt => archive_id))
       end
       list
