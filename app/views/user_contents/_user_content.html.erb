@@ -1,9 +1,9 @@
-<% if defined?(@user_content_index) && !@user_content_index.is_a?(Numeric)
+<% if defined?(@user_content_index) && @user_content_index.is_a?(Numeric)
    @user_content_index += 1
 else
   @user_content_index = 0
 end -%>
-<div id="user_content_<%= user_content.id %>" class="item <%= @user_content_index > 2 ? ' closed' : ''-%>">
+<div id="user_content_<%= user_content.id %>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
     <div class="header" onclick="this.parentNode.toggleClassName('closed');">
       <span class="title <%= user_content.type.to_s.downcase %>">
         <%= user_content.title %>

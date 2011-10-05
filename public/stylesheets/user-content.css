@@ -131,6 +131,7 @@
 }
 
 #user_contents .details li {
+    margin-top: 0.5em;
     background-image: none;
 }
 

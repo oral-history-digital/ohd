@@ -69,7 +69,7 @@ class UserContentsController < BaseController
   end
 
   def collection
-    end_of_association_chain.find(:all, :conditions => ['user_id = ?', current_user.id])
+    end_of_association_chain.find(:all, :conditions => ['user_id = ?', current_user.id], :order => "created_at DESC")
   end
 
 end
