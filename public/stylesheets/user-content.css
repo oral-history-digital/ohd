@@ -165,6 +165,7 @@
 #user_contents .details li {
     margin-bottom: 0.5em;
     background-image: none;
+    padding-left: 0;
 }
 
 #user_contents .details p {
