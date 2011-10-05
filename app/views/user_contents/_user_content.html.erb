@@ -4,7 +4,7 @@ else
   @user_content_index = 0
 end -%>
 <div id="user_content_<%= user_content.id %>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
-    <div class="header" onclick="this.parentNode.toggleClassName('closed');">
+    <div class="header" onclick="toggleUserContent('user_content_<%= user_content.id %>')">
       <span class="title <%= user_content.type.to_s.downcase %>">
         <%= in_place_edit_for user_content, :title %>
       </span>
@@ -39,3 +39,18 @@ end -%>
         </ul>
     </div>
 </div>
+<% javascript_tag do %>
+
+    function toggleUserContent(id) {
+        var el = $(id);
+        var details = el.down('.details');
+        if(el.hasClassName('closed')) {
+            // open
+            new Effect.BlindDown(details, { duration: 0.5, beforeStart: function(){el.removeClassName('closed');}});
+        } else {
+            // close
+            new Effect.BlindUp(details, { duration: 0.5, afterFinish: function(){el.addClassName('closed');}});
+        }
+    }
+
+<% end %>
