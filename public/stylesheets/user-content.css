@@ -18,7 +18,7 @@
 #mainWrapper .save_user_content a.saved {
     padding-left: 20px;
     padding-top: 2px;
-    background-image: url(/images/icon_sprite.png);
+    background-image: url(/archiv/images/icon_sprite.png);
     background-repeat: no-repeat;
 }
 
@@ -60,6 +60,15 @@
 }
 
 /* User Content Overview */
+
+#toggle_links {
+    margin-bottom: 10px;
+    padding-left: 24px;
+    background-image: url(/archiv/images/icon_sprite.png);
+    background-repeat: no-repeat;
+    background-position: 0.3em -720px;
+}
+
 #user_contents .item {
     background-color: #FFFFFF;
     margin-bottom: 1px;
@@ -75,7 +84,7 @@
     float: left;
     width: 675px;
     line-height: 225%;
-    background-image: url(/images/icon_sprite.png);
+    background-image: url(/archiv/images/icon_sprite.png);
     background-repeat: no-repeat;
     background-position: 0.3em -296px;
     padding-left: 25px;
@@ -95,7 +104,7 @@
     position: absolute;
     left: 20px;
     top: -5px;
-    background: transparent url('/images/icon_sprite.png') 0.3em -600px no-repeat;
+    background: transparent url('/archiv/images/icon_sprite.png') 0.3em -600px no-repeat;
     color: #990000;
 /*    font-size: 80%;*/
     padding-left: 22px;
@@ -106,7 +115,7 @@
 }
 
 #user_contents .themes {
-    background: transparent url('/images/icon_sprite.png') 0.3em -544px no-repeat;
+    background: transparent url('/archiv/images/icon_sprite.png') 0.3em -544px no-repeat;
     padding-left: 22px;
     font-size: 85%;
     padding-bottom: 1px;
@@ -120,7 +129,7 @@
 
 #user_contents .toggle {
     float: right;
-    background-image: url('/images/icon_sprite.png');
+    background-image: url('/archiv/images/icon_sprite.png');
     background-repeat: no-repeat;
     background-position: 0.3em -660px;
     height: 20px;
@@ -214,6 +223,10 @@
     margin: 0;
 }
 
+#user_contents .details .references ul {
+    width: 100%;
+}
+
 #user_contents .details .references li {
     clear: none;
     margin: 0 10px 0 0;
@@ -254,7 +267,7 @@
 
 #user_contents form input[type="text"] {
   background :#fffdc0;
-  border: 1px solid #e4e4da;
+  border: 1px solid #fff700;
   color: #990000;
 }
 
