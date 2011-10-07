@@ -97,6 +97,7 @@ en:
       in_the_current_search: 'in&nbsp;current&nbsp;selection'
       workbook: 'workbook'
       show_all: 'show all'
+      maximize_all: 'maximize all'
       minimize_all: 'minimize all'
     actions:
       edit: 'edit'

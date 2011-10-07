@@ -95,6 +95,7 @@ de:
       in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
+      maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
     actions:
       edit: 'bearbeiten'
