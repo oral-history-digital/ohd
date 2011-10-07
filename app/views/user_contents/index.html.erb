@@ -36,7 +36,7 @@
                 closedContents[closedContents.length] = el;
             }
         });
-        Effect.multiple(closedContents, Effect.BlindDown, { beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('minimize_all').show();}});
+        Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('minimize_all').show();}});
         $('expand_all').hide();
     }
 
@@ -48,7 +48,7 @@
                 openContents[openContents.length] = el;
             }
         });
-        Effect.multiple(openContents, Effect.BlindUp, { beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('expand_all').show();}});
+        Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('expand_all').show();}});
         $('minimize_all').hide();
     }
 
