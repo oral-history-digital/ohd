@@ -97,7 +97,7 @@
     top: -5px;
     background: transparent url('/images/icon_sprite.png') 0.3em -600px no-repeat;
     color: #990000;
-    font-size: 80%;
+/*    font-size: 80%;*/
     padding-left: 22px;
 }
 
@@ -153,6 +153,7 @@
     display: block;
     top: -5px;
     left: 20px;
+    padding: 0 10px;
     border: 1px solid #E4E4DA;
     background-color: #fff;
 }
@@ -162,10 +163,13 @@
 }
 
 #user_contents .actions .close-button {
-    float: right;
-    clear: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-weight: bold;
     height: 20px;
-    width: 20px;
+    width: 15px;
+    padding: 0 0 0 5px;
     text-decoration: none;
 }
 
@@ -256,4 +260,7 @@
 
 #user_contents .details form input[type="text"] {
   color: #000;
+  font-size: 120%;
+  width: 270px;
 }
+
