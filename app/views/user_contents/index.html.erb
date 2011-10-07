@@ -3,15 +3,22 @@
 </div>
 <% javascript_tag do %>
 
-    function toggleUserContent(id) {
-        var el = $(id);
+    var togglingContent = 0;
+
+    $$('#user_contents .item .header').each(function(elem){
+        elem.addEventListener('click', toggleUserContent, false);
+    });
+
+    function toggleUserContent(event) {
+        if(togglingContent > 0) { return; };
+        var el = Event.element(event).parentNode;
         var details = el.down('.details');
         if(el.hasClassName('closed')) {
             // open
-            new Effect.BlindDown(details, { duration: 0.5, beforeStart: function(){el.removeClassName('closed');}});
+            new Effect.BlindDown(details, { duration: 0.5, beforeStart: function(){el.removeClassName('closed'); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; }});
         } else {
             // close
-            new Effect.BlindUp(details, { duration: 0.5, afterFinish: function(){el.addClassName('closed');}});
+            new Effect.BlindUp(details, { duration: 0.5, beforeStart: function(){togglingContent = 1;}, afterFinish: function(){el.addClassName('closed'); togglingContent = 0; }});
         }
     }
 

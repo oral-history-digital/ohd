@@ -4,12 +4,11 @@ else
   @user_content_index = 0
 end -%>
 <div id="user_content_<%= user_content.id %>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
-    <div class="header" onclick="toggleUserContent('user_content_<%= user_content.id %>')">
+    <div class="header">
       <span class="title <%= user_content.type.to_s.downcase %>">
         <%= in_place_edit_for user_content, :title %>
         <a name="user_content_<%= user_content.id %>" style="display: none;">&nbsp;</a>
       </span>
-      <%= link_to t(:edit, :scope => "user_interface.actions"), '#', :class => 'edit' %>
       <span class="themes">
         <!-- this is the tag list for the content //-->
         <%= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' %>
@@ -22,6 +21,17 @@ end -%>
       </span>
     </div>
     <div class="details">
+        <%= link_to_function t(:edit, :scope => "user_interface.actions"), "this.parentNode.down('.actions').removeClassName('closed')", :class => 'edit' %>
+        <div class="actions closed">
+          <%= link_to_function 'X', "this.parentNode.addClassName('closed');", :class => 'close-button' -%>
+          <ul>
+            <li><%= link_to 'Inhalt l&ouml;schen', '#' %></li>
+            <li><hr/></li>
+            <li><%= link_to 'Themen festlegen', '#' %></li>
+            <li><%= link_to 'Anders bearbeiten', '#' %></li>
+            <li><%= link_to 'Inhalt mit anderen teilen', '#' %></li>
+          </ul>
+        </div>
         <ul class="properties">
           <% case user_content.type.to_s
               when 'Search'

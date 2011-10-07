@@ -92,7 +92,10 @@
 }
 
 #user_contents .edit {
-    background: transparent url('/images/icon_sprite.png') 0.3em -604px no-repeat;
+    position: absolute;
+    left: 20px;
+    top: -5px;
+    background: transparent url('/images/icon_sprite.png') 0.3em -600px no-repeat;
     color: #990000;
     font-size: 80%;
     padding-left: 22px;
@@ -132,13 +135,38 @@
 
 #user_contents .details {
     display: block;
+    position: relative;
     padding-left: 25px;
     float: left;
+    padding-top: 8px;
 }
 
 #user_contents .closed .details {
     display: none;
     clear: left;
+}
+
+#user_contents .actions {
+    width: auto !important;
+    z-index: 999;
+    position: absolute;
+    display: block;
+    top: -5px;
+    left: 20px;
+    border: 1px solid #E4E4DA;
+    background-color: #fff;
+}
+
+#user_contents .actions.closed {
+    display: none;
+}
+
+#user_contents .actions .close-button {
+    float: right;
+    clear: none;
+    height: 20px;
+    width: 20px;
+    text-decoration: none;
 }
 
 /* Details container information */
