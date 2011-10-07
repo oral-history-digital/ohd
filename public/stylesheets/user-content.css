@@ -240,4 +240,20 @@
 
 #user_contents .inline-editable {
     cursor: pointer;
+    padding: 2px;
+}
+
+#user_contents .inline-editable:hover {
+  background: #fffdc0;
+  padding: 2px;
+}
+
+#user_contents form input[type="text"] {
+  background :#fffdc0;
+  border: 1px solid #e4e4da;
+  color: #990000;
+}
+
+#user_contents .details form input[type="text"] {
+  color: #000;
 }
