@@ -47,7 +47,7 @@
 }
 
 .workbook #baseContainerRight {
-    padding-top: 20px;
+    padding-top: 55px;
     color: #838175;
 }
 
@@ -64,9 +64,14 @@
 #toggle_links {
     margin-bottom: 10px;
     padding-left: 24px;
+    height: 25px;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
     background-position: 0.3em -720px;
+}
+
+#toggle_links a {
+  color: #838175;
 }
 
 #user_contents .item {
