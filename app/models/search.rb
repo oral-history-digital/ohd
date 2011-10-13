@@ -387,6 +387,11 @@ DEF
     super(props)
   end
 
+  # path to show the resource
+  def get_content_path
+    search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
+  end
+
   # sets the query hash as id_hash instead of serialized interview references (default)
   def self.default_id_hash(instance)
     instance.read_property('query_hash') || 'blank_search'

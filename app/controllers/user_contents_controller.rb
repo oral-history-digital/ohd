@@ -4,10 +4,13 @@ class UserContentsController < BaseController
 
   belongs_to :user
 
-  actions :create, :update, :show, :index
+  actions :create, :update, :show, :index, :destroy
 
   before_filter :determine_user!
   skip_before_filter :determine_user
+
+  before_filter :authorize_owner!, :only => [ :update, :destroy ]
+  rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
   create do
     wants.html do
@@ -18,15 +21,28 @@ class UserContentsController < BaseController
     end
   end
 
+  destroy do
+    wants.html do
+      render :action => 'index'
+    end
+    wants.js do
+      render :update do |page|
+        page.visual_effect(:switch_off, "user_content_#{@object.id}", { 'afterFinish' => "function(){Element.remove($('user_content_#{@object.id}'));}" })
+      end
+    end
+  end
+
   create.flash nil
 
   update.flash nil
+
+  destroy.flash nil
 
   show do
     wants.html do
     end
     wants.js do
-      if @object.new_record?
+      if @object.nil? || @object.new_record?
         render :nothing => true, :status => 404
       else
         render :partial => 'show', :object => @object
@@ -43,7 +59,20 @@ class UserContentsController < BaseController
     end
   end
 
+  protected
+
+  def unauthorized_access
+    render :nothing => true, :status => 403
+  end
+
   private
+
+  # make sure the current_user is the owner of the resource
+  def authorize_owner!
+    unless object.user == current_user
+      raise ActiveRecord::ReadOnlyRecord
+    end
+  end
 
   # find the object with the current_user id and the id_hash parameter
   def object

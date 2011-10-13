@@ -1,8 +1,10 @@
 class UserContent < ActiveRecord::Base
 
+  include ActionController::UrlWriter
+
   belongs_to :user
 
-  before_create :store_properties, :compile_id_hash
+  before_create :store_properties, :compile_id_hash, :set_link_url
   after_validation_on_create :check_persistence
 
   attr_accessible :user_id,
@@ -10,6 +12,7 @@ class UserContent < ActiveRecord::Base
                   :interview_references,
                   :properties,
                   :description,
+                  :link_url,
                   :persistent
 
   validates_presence_of :user_id
@@ -60,6 +63,11 @@ class UserContent < ActiveRecord::Base
     Base64.encode64(YAML.load(refs)).sub(/\\n$/,'')
   end
 
+  # path to show the resource
+  def get_content_path
+    user_content_path(self)
+  end
+
   private
 
   def store_properties
@@ -69,6 +77,10 @@ class UserContent < ActiveRecord::Base
   def compile_id_hash
     @id_hash = read_attribute(:type).constantize.default_id_hash(self)
     write_attribute :id_hash, @id_hash
+  end
+
+  def set_link_url
+    write_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
   end
 
   def check_persistence

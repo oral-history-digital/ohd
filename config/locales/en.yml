@@ -114,6 +114,12 @@ en:
       saved: 'search saved'
     status:
       not_signed_in: 'not signed in'
+    user_content:
+      view: 'View'
+      topics: 'Topics'
+      delete: 'Delete'
+      save: 'save content'
+      saved: 'saved content'
     messages:
       no_segments_result: 'No segments found that match these search criteria.'
       player_not_loaded: 'Mediaplayer not loaded!'

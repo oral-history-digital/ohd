@@ -112,6 +112,12 @@ de:
       saved: 'Suche gespeichert'
     status:
       not_signed_in: 'nicht angemeldet'
+    user_content:
+      view: 'Ansicht'
+      topics: 'Themen'
+      delete: 'L&ouml;schen'
+      save: 'Inhalt speichern'
+      saved: 'Inhalt gespeichert'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
       player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
