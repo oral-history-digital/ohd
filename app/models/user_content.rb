@@ -3,6 +3,7 @@ class UserContent < ActiveRecord::Base
   include ActionController::UrlWriter
 
   belongs_to :user
+  belongs_to :reference, :polymorphic => true
 
   before_create :store_properties, :compile_id_hash, :set_link_url
   after_validation_on_create :check_persistence
@@ -16,6 +17,9 @@ class UserContent < ActiveRecord::Base
                   :persistent
 
   validates_presence_of :user_id
+
+  validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
+  validates_associated :reference, :if => Proc.new{|content| content.type != Search }
 
   def write_property(name, value)
     get_properties[name.to_s] = value
@@ -58,6 +62,11 @@ class UserContent < ActiveRecord::Base
     read_attribute(:description) || [I18n.t(:no_placeholder).capitalize, UserContent.human_attribute_name(:description)].join(' ')
   end
 
+  def id_hash
+    @id_hash ||= read_attribute(:id_hash)
+    @id_hash = read_attribute(:type).constantize.default_id_hash(self) if @id_hash.blank?
+  end
+
   def self.default_id_hash(instance)
     refs = (instance.send(:read_attribute, :interview_references) || %w(blank)).join(',')
     Base64.encode64(YAML.load(refs)).sub(/\\n$/,'')
@@ -75,8 +84,7 @@ class UserContent < ActiveRecord::Base
   end
 
   def compile_id_hash
-    @id_hash = read_attribute(:type).constantize.default_id_hash(self)
-    write_attribute :id_hash, @id_hash
+    write_attribute :id_hash, id_hash
   end
 
   def set_link_url

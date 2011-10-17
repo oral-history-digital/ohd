@@ -7,7 +7,7 @@
   </h2>
     <% if defined?(@search) && (@search.query_params.keys.size > 1) -%>
     <div id="save_search">
-      <%= render :partial => "searches/save" %>
+      <%= render :partial => "user_contents/save", :object => @search %>
     </div>
     <% end -%>
   <% end %>
