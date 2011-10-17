@@ -227,7 +227,8 @@ span.hits {
 	height: 19px;
 }
 
-span.hits a {
+span.hits a,
+.mainSearch a {
 	color: #fff;
 	display: block;
 	background: url(/images/suchpfeil.gif) top right no-repeat;
@@ -238,7 +239,8 @@ span.hits a {
 	text-decoration: none;
 }
 
-span.hits a:hover {
+span.hits a:hover,
+.mainSearch a:hover {
 	text-decoration: none;
 }
 

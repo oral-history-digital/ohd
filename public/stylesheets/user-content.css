@@ -218,6 +218,11 @@
     color: #000000;
 }
 
+#user_contents .details .description .inline-editable {
+    display: block;
+    width: 100%;
+}
+
 #user_contents .details .references ul,
 #user_contents .details .references li {
     width: auto;
@@ -262,18 +267,23 @@
 
 #user_contents .inline-editable {
     cursor: pointer;
-    padding: 2px;
 }
 
 #user_contents .inline-editable:hover {
   background: #fffdc0;
-  padding: 2px;
 }
 
-#user_contents form input[type="text"] {
+#user_contents .header .title,
+#user_contents .header .title form input[type='text'] {
+    color: #990000;
+}
+
+#user_contents form input[type="text"],
+#user_contents form textarea {
   background :#fffdc0;
   border: 1px solid #fff700;
-  color: #990000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 125%;
 }
 
 #user_contents .details form input[type="text"] {

@@ -3,48 +3,48 @@
 else
   @user_content_index = 0
 end -%>
-<div id="user_content_<%= user_content.id %>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
+<div id="user_content_<%= user_content.id -%>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
     <div class="header">
-      <span class="title <%= user_content.type.to_s.downcase %>">
-        <%= in_place_edit_for user_content, :title %>
-        <a name="user_content_<%= user_content.id %>" style="display: none;">&nbsp;</a>
+      <span class="title <%= user_content.type.to_s.downcase -%>">
+        <%= in_place_edit_for user_content, :title -%>
+        <a name="user_content_<%= user_content.id -%>" style="display: none;">&nbsp;</a>
       </span>
       <span class="themes">
         <!-- this is the tag list for the content //-->
-        <%= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' %>
+        <%= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' -%>
       </span>
       <span class="toggle">
-        <%= link_to_function '&nbsp;', '' %>
+        <%= link_to_function '&nbsp;', '' -%>
       </span>
       <span class="date">
-        <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') %>
+        <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') -%>
       </span>
     </div>
     <div class="details">
         <%= link_to_function t(:edit, :scope => "user_interface.actions"), "this.parentNode.down('.actions').removeClassName('closed')", :class => 'edit' %>
-        <div class="actions closed">
+        <div id="user_content_<%= user_content.id -%>_actions" class="actions closed">
           <%= link_to_function 'X', "this.parentNode.addClassName('closed');", :class => 'close-button' -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#' %></li>
-            <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete %></li>
+            <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4) %></li>
           </ul>
         </div>
         <ul class="properties">
           <% case user_content.type.to_s
               when 'Search'
                 %>
-            <li>
-              <%= label_tag UserContent.human_attribute_name(:query) %>
-              <p><%= query_hash_to_string user_content.properties['query'] %></p>
+            <li class="query">
+              <%= label_tag UserContent.human_attribute_name(:query) -%>
+              <p><%= query_hash_to_string user_content.properties['query'] -%></p>
             </li>
           <%  else
                 false
           end %>
-          <li>
-            <%= label_tag UserContent.human_attribute_name(:description) %>
-            <p><%= in_place_edit_for(user_content, :description) %></p>
+          <li class="description">
+            <%= label_tag UserContent.human_attribute_name(:description) -%>
+            <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
           </li>
         </ul>
       <div class="references">
