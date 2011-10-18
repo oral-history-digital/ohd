@@ -77,6 +77,8 @@ de:
   user_interface:
     labels:
       interview: 'Interview'
+      video_interview: 'Videointerview'
+      audio_interview: 'Audiointerview'
       forced_labor_data: 'Daten zur Zwangsarbeit'
       biography: 'Biographie von'
       transcript: 'Transkript'
@@ -95,6 +97,7 @@ de:
       in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
+      show_interview: 'zum Interview'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
     actions:

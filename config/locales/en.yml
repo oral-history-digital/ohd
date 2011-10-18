@@ -79,6 +79,8 @@ en:
   user_interface:
     labels:
       interview: 'Interview'
+      video_interview: 'Video-Interview'
+      audio_interview: 'Audio-Interview'
       forced_labor_data: 'Forced Labor Data'
       biography: 'Biography of'
       transcript: 'Transcript'
@@ -97,6 +99,7 @@ en:
       in_the_current_search: 'in&nbsp;current&nbsp;selection'
       workbook: 'workbook'
       show_all: 'show all'
+      show_interview: 'show Interview'
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
     actions:

@@ -39,6 +39,16 @@ end -%>
               <%= label_tag UserContent.human_attribute_name(:query) -%>
               <p><%= query_hash_to_string user_content.properties['query'] -%></p>
             </li>
+          <% when 'InterviewReference' -%>
+            <li class="language_info">
+              <%= label_tag t((user_content.reference.video? ? :video_interview : :audio_interview), :scope => 'user_interface.labels') %>
+              <p>
+                <%= t(user_content.reference.language, :scope => 'categories.languages') -%>&nbsp;
+                (<%= user_content.reference.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>)
+                <br/>
+                <%= user_content.reference.duration.minimal -%>
+              </p>
+            </li>
           <%  else
                 false
           end %>
@@ -47,12 +57,14 @@ end -%>
             <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
           </li>
         </ul>
-      <div class="references">
+      <div class="<%= user_content.type.to_s == 'Search' ? 'references' : 'reference' -%>">
         <%= case user_content.type.to_s
             when 'Search'
               reference_details_for_search(user_content)
+            when 'InterviewReference'
+              reference_details_for_interview(user_content.reference)
             else
-              reference_details_for_interview(user_content.interview_references)
+              ''
           end %>
       </div>
     </div>

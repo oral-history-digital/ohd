@@ -83,8 +83,25 @@ module UserContentsHelper
   end
 
   # render a singular interview reference detail for interview or segment items
-  def reference_details_for_interview(references)
-
+  def reference_details_for_interview(interview)
+    image_file = if interview.nil? || interview.still_image_file_name.nil?
+      image_path("/archive_images/missing_still.jpg")
+    else
+      image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+    end
+    html = image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", '#', :target => '_blank'))
+    biographic = ''
+    # collection
+    biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
+                  + content_tag(:p, t(interview.collection, :scope => 'collections.name')))
+    # forced labor groups
+    biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
+                  + content_tag(:p, interview.forced_labor_groups.map{|f| t(f, :scope => 'categories.forced_labor_groups')}.join(', ')))
+    # habitations
+    biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
+                  + content_tag(:p, interview.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ')))
+    content_tag(:div, html, :class => "image-link") + content_tag(:ul, biographic)
   end
 
 end

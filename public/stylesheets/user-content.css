@@ -221,13 +221,15 @@ body .teaserList .save_user_content {
     margin-right: 10px;
 }
 
-#user_contents .details .references {
+#user_contents .details .references,
+#user_contents .details .reference {
     float: left;
     width: 390px;
 }
 
 #user_contents .details .properties,
-#user_contents .details .references {
+#user_contents .details .references,
+#user_contents .details .reference {
     padding: 1em 0 2em 0;
 }
 
@@ -247,7 +249,9 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .details .references ul,
-#user_contents .details .references li {
+#user_contents .details .references li,
+#user_contents .details .reference  ul,
+#user_contents .details .reference  li {
     width: auto;
     position: relative;
     display: block;
@@ -272,7 +276,36 @@ body .teaserList .save_user_content {
     border: 1px solid #000;
 }
 
-#user_contents .references span {
+#user_contents .details .reference {
+    padding-top: 10px;
+}
+
+#user_contents .details .reference .image-link {
+    float: left;
+    margin: 2px 10px 0 0;
+}
+
+#user_contents .reference .image-link * {
+    clear: left;
+}
+
+#user_contents .details .reference img {
+    display: block;
+    float: left;
+    width: 116px;
+    height: 88px;
+    border: 1px solid #000;
+}
+
+#user_contents .details .reference ul {
+    width: 255px;
+}
+#user_contents .details .reference li {
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+#user_contents .details div span {
     float: left;
 }
 
