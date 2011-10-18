@@ -89,7 +89,11 @@ module UserContentsHelper
     else
       image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
     end
-    html = image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+    html = if interview.nil?
+      image_tag(image_file)
+    else
+      image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+    end
     return html if interview.nil?
     html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", '#', :target => '_blank'))
     biographic = ''
