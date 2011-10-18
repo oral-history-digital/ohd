@@ -36,8 +36,13 @@
                 closedContents[closedContents.length] = el;
             }
         });
-        Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('expand_all').hide(); $('minimize_all').show();}});
-        new Effect.Fade('expand_all', { duration: 0.5 });
+        if(closedContents.length > 0) {
+            Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('expand_all').hide(); $('minimize_all').show();}});
+            new Effect.Fade('expand_all', { duration: 0.5 });
+        } else {
+            $('expand_all').hide();
+            $('minimize_all').show();
+        }
     }
 
     function minimizeAllContents() {
@@ -48,8 +53,13 @@
                 openContents[openContents.length] = el;
             }
         });
-        Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('minimize_all').hide(); $('expand_all').show();}});
-        new Effect.Fade('minimize_all', { duration: 0.5 });
+        if(openContents.length > 0) {
+            Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('minimize_all').hide(); $('expand_all').show();}});
+            new Effect.Fade('minimize_all', { duration: 0.5 });
+        } else {
+            $('minimize_all').hide();
+            $('expand_all').show();
+        }
     }
 
     function expandContent(el,reset) {
