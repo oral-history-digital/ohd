@@ -87,7 +87,7 @@ module UserContentsHelper
     image_file = if interview.nil? || interview.still_image_file_name.nil?
       image_path("/archive_images/missing_still.jpg")
     else
-      image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+      image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
     end
     html = if interview.nil?
       image_tag(image_file)
