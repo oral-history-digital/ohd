@@ -8,6 +8,7 @@
     <%= t(:in, :scope => 'location') %>
     <%= @interview.country_of_origin %>
   </p>
+  <%= render :partial => 'user_contents/save', :object => InterviewReference.for_interview(@interview) %>
 </div>
 
 <div id="fragmentOverview">

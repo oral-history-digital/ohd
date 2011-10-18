@@ -139,11 +139,13 @@ h5 {
 .intervieweeTitle {
   width: 100%;
   float: left;
+  position: relative;
   margin: 0 0 20px 0;
   vertical-align: bottom;
 }
 
-.intervieweeTitle * {
+.intervieweeTitle h1,
+.intervieweeTitle p {
   float: left;
   width: auto !important;
   margin-right: 0.33em;

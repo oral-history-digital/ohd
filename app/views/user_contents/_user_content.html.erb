@@ -4,8 +4,8 @@ else
   @user_content_index = 0
 end -%>
 <div id="user_content_<%= user_content.id -%>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
-    <div class="header">
-      <span class="title <%= user_content.type.to_s.downcase -%>">
+    <div class="header <%= user_content.type.to_s.underscore -%>">
+      <span class="title">
         <%= in_place_edit_for user_content, :title -%>
         <a name="user_content_<%= user_content.id -%>" style="display: none;">&nbsp;</a>
       </span>

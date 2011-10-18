@@ -534,9 +534,3 @@ float:left;
     background: url(/images/suche_speichern.png) top left no-repeat transparent;
     padding-left: 16px;
 }
-
-.teaserList .save_user_content {
-    position: absolute;
-    top: 0;
-    right: 30px;
-}

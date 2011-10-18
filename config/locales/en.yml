@@ -120,6 +120,9 @@ en:
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'
+    interview_reference:
+      save: 'save interview'
+      saved: 'saved interview'
     messages:
       no_segments_result: 'No segments found that match these search criteria.'
       player_not_loaded: 'Mediaplayer not loaded!'

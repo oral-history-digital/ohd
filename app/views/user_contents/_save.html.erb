@@ -1,5 +1,6 @@
+<% user_content_type = save.type.to_s.underscore -%>
+<div id="save_<%= user_content_type -%>">
 <% unless current_user.nil? -%>
-    <% user_content_type = save.type.to_s.underscore -%>
     <span class="save_user_content" style="display:none;">
         <% form_remote_tag :url => user_contents_path, :class => "save", :update => "save_#{user_content_type}"  do -%>
             <% user_content_attributes = save.user_content_attributes -%>
@@ -13,7 +14,8 @@
     </span>
     <% javascript_tag do %>
 
-        new Ajax.Updater({ success: 'save_<%= user_content_type -%>' }, '<%= user_content_path(:id => save.id_hash, :type => 'search') %>', { method: 'get', onComplete: function(){new Effect.Appear($('save_search').down('span'), { duration: 0.7 });}});
+        new Ajax.Updater({ success: 'save_<%= user_content_type -%>' }, '<%= user_content_path(:id => save.id_hash, :type => user_content_type) %>', { method: 'get', onComplete: function(){new Effect.Appear($('save_<%= user_content_type -%>').down('span'), { duration: 0.7 });}});
 
     <% end %>
 <% end -%>
+</div>

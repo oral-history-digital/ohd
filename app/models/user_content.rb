@@ -68,8 +68,8 @@ class UserContent < ActiveRecord::Base
   end
 
   def self.default_id_hash(instance)
-    refs = (instance.send(:read_attribute, :interview_references) || %w(blank)).join(',')
-    Base64.encode64(YAML.load(refs)).sub(/\\n$/,'')
+    refs = (instance.send(:interview_references) || %w(blank)).join(',')
+    Base64.encode64(refs).sub(/\\n$/,'')
   end
 
   # path to show the resource

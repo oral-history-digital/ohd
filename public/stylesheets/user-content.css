@@ -1,5 +1,20 @@
 /* Stylesheets for user content interfaces */
 
+.teaserList .save_user_content,
+#save_interview_reference .save_user_content {
+    position: absolute;
+    right: 0;
+}
+
+body .teaserList .save_user_content {
+    top: 1px;
+    right: 30px;
+}
+
+#save_interview_reference .save_user_content {
+    top: 3px;
+}
+
 /* Buttons & Forms */
 #mainWrapper .save_user_content form {
     background: transparent;
@@ -14,6 +29,10 @@
     color: #990000;
 }
 
+#mainWrapper .save_user_content a {
+    height: 15px;
+}
+
 #mainWrapper .save_user_content input[type="submit"],
 #mainWrapper .save_user_content a.saved {
     padding-left: 20px;
@@ -22,12 +41,12 @@
     background-repeat: no-repeat;
 }
 
-#mainWrapper #save_search input[type="submit"] {
+#mainWrapper .save_user_content input[type="submit"] {
     background-position: 0px -60px;
 }
 
-#mainWrapper #save_search input[type="submit"]:hover,
-#mainWrapper #save_search a.saved {
+#mainWrapper .save_user_content a.saved,
+#mainWrapper .save_user_content input[type="submit"]:hover {
     background-position: 0px -120px;
 }
 
@@ -91,14 +110,18 @@
     line-height: 225%;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
-    background-position: 0.3em -296px;
     padding-left: 25px;
     cursor: pointer;
 }
 
 /* icons */
-#user_contents .header .search {
+.item .header.search {
+    background-position: 0.3em -296px;
+}
 
+.item .header.interview_reference,
+.item .header.segment_reference {
+    background-position: 0.3em -355px;
 }
 
 #user_contents .title {

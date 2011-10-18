@@ -6,9 +6,7 @@
     <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
   </h2>
     <% if defined?(@search) && (@search.query_params.keys.size > 1) -%>
-    <div id="save_search">
-      <%= render :partial => "user_contents/save", :object => @search %>
-    </div>
+    <%= render :partial => "user_contents/save", :object => @search %>
     <% end -%>
   <% end %>
 

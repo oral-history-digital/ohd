@@ -95,7 +95,7 @@ class UserContentsController < BaseController
   end
 
   def model_name
-    @type = params[:type].blank? ? 'user_content' : params[:type].downcase
+    @type = params[:type].blank? ? 'user_content' : params[:type].underscore
   end
 
   def object_params
@@ -110,7 +110,7 @@ class UserContentsController < BaseController
   end
 
   def build_object
-    @object = model_name.capitalize.constantize.new object_params
+    @object = model_name.camelize.constantize.new object_params
     @object.user = current_user
     @object
   end
