@@ -81,16 +81,24 @@ body .teaserList .save_user_content {
 /* User Content Overview */
 
 #toggle_links {
+    display: block;
     margin-bottom: 10px;
-    padding-left: 24px;
     height: 25px;
-    background-image: url(/images/icon_sprite.png);
-    background-repeat: no-repeat;
-    background-position: 0.3em -720px;
 }
 
 #toggle_links a {
-  color: #838175;
+    padding-left: 24px;
+    background-image: url(/images/icon_sprite.png);
+    background-repeat: no-repeat;
+    color: #838175;
+}
+
+#toggle_links #expand_all {
+    background-position: 0.3em -721px;
+}
+
+#toggle_links #minimize_all {
+    background-position: 0.3em -661px;
 }
 
 #user_contents .item {

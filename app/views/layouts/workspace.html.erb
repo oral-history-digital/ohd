@@ -18,7 +18,9 @@
             </div>
 
             <div id="submit_search" class="action">
-              <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path('suchpfeil_zurueck.gif'), :onclick => 'submitViaAjax(); false;' %>
+              <% search_hash = session[:query].blank? ? nil : Search.from_params(session[:query]).query_hash -%>
+              <% search_path = search_hash.blank? ? new_search_path : search_by_hash_path(:suche => search_hash) -%>
+              <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path('suchpfeil_zurueck.gif'), :onclick => "window.location = '#{search_path}';" %>
             </div>
 
             <%= image_tag image_path('symbol_workbook.png'), :alt => '', :id => "folder_image" -%>

@@ -1,6 +1,6 @@
 <div id="toggle_links">
-    <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all" %>
-    <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => 'display: none;' %>
+    <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all", :style => (@user_contents.size < 4 ? 'display: none;' : '') %>
+    <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => (@user_contents.size < 4 ? '' : 'display: none;') %>
 </div>
 <div id="user_contents">
   <%= render :partial => 'user_content', :collection => @user_contents %>
@@ -36,8 +36,8 @@
                 closedContents[closedContents.length] = el;
             }
         });
-        Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('minimize_all').show();}});
-        $('expand_all').hide();
+        Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('expand_all').hide(); $('minimize_all').show();}});
+        new Effect.Fade('expand_all', { duration: 0.5 });
     }
 
     function minimizeAllContents() {
@@ -48,8 +48,8 @@
                 openContents[openContents.length] = el;
             }
         });
-        Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('expand_all').show();}});
-        $('minimize_all').hide();
+        Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('minimize_all').hide(); $('expand_all').show();}});
+        new Effect.Fade('minimize_all', { duration: 0.5 });
     }
 
     function expandContent(el,reset) {

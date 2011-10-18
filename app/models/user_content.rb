@@ -2,6 +2,8 @@ class UserContent < ActiveRecord::Base
 
   include ActionController::UrlWriter
 
+  CONTENT_TYPES = [ :search, :interview_reference ]
+
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
