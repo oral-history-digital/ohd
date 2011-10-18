@@ -17,7 +17,7 @@
 
     function toggleUserContent(event) {
         if(togglingContent > 0) { return; };
-        var el = Event.element(event).parentNode;
+        var el = Element.up(Event.element(event), '.item');
         var details = el.down('.details');
         if(el.hasClassName('closed')) {
             // open
