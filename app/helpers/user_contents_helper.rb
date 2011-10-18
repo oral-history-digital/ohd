@@ -95,7 +95,7 @@ module UserContentsHelper
       image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
     end
     return html if interview.nil?
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", '#', :target => '_blank'))
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
