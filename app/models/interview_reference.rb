@@ -34,6 +34,11 @@ class InterviewReference < UserContent
     interview_path(:id => reference.archive_id)
   end
 
+  # sets the archive_id as id_hash instead of default
+  def self.default_id_hash(instance)
+    instance.reference.blank? ? instance.read_property('interview_references') || 'blank_interview' : instance.reference.archive_id
+  end
+
   def self.for_interview(interview)
     interview = case interview
       when Interview

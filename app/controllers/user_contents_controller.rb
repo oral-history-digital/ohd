@@ -19,6 +19,14 @@ class UserContentsController < BaseController
     wants.js do
       render :partial => 'show', :object => @object
     end
+    failure do
+      wants.html do
+        render :action => 'show'
+      end
+      wants.js do
+        render :partial => 'show', :object => @object
+      end
+    end
   end
 
   destroy do

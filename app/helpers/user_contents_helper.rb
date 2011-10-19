@@ -4,6 +4,11 @@ module UserContentsHelper
     @current_user
   end
 
+  def users_first_name
+    @nick ||= current_user.blank? ? current_user_account.login : current_user.first_name
+    @nick[/^[^\s]*/]
+  end
+
   def query_hash_to_string(query)
     case query
       when Hash

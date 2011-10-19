@@ -22,6 +22,7 @@ class UserContent < ActiveRecord::Base
 
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
+  validates_uniqueness_of :id_hash, :scope => :user_id
 
   def write_property(name, value)
     get_properties[name.to_s] = value
@@ -66,7 +67,8 @@ class UserContent < ActiveRecord::Base
 
   def id_hash
     @id_hash ||= read_attribute(:id_hash)
-    @id_hash = read_attribute(:type).constantize.default_id_hash(self) if @id_hash.blank?
+    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self) if @id_hash.blank?
+    @id_hash
   end
 
   def self.default_id_hash(instance)

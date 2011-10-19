@@ -45,7 +45,9 @@ end -%>
               <%= label_tag t((user_content.reference.video? ? :video_interview : :audio_interview), :scope => 'user_interface.labels') %>
               <p>
                 <%= t(user_content.reference.language, :scope => 'categories.languages') -%>&nbsp;
+                <% unless user_content.reference.language == 'Deutsch' -%>
                 (<%= user_content.reference.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>)
+                <% end -%>
                 <br/>
                 <%= user_content.reference.duration.minimal -%>
               </p>
