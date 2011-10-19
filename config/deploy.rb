@@ -15,6 +15,7 @@ desc "prepare to act on the production environment"
 task :production do
   set :environment, :production
   set :application, 'zwar_archiv'
+  set :keep_releases, 7
   set :deploy_to, "/data/applications/#{application}"
   role :app, "da01.cedis.fu-berlin.de"
   role :web, "da01.cedis.fu-berlin.de"
@@ -25,6 +26,7 @@ desc "prepare to act on the demo server"
 task :demo do
   set :environment, :demo
   set :application, 'demo'
+  set :keep_releases, 3
   set :deploy_to, "/data/applications/zwar/#{application}"
   role :app, "fnf.cedis.fu-berlin.de"
   role :web, "fnf.cedis.fu-berlin.de"
@@ -35,6 +37,7 @@ desc "prepare to act on the test environment"
 task :staging do
   set :environment, :production
   set :application, 'zwar_archiv'
+  set :keep_releases, 3
   set :deploy_to, "/data/applications/#{application}"
   role :app, "160.45.170.236"
   role :web, "160.45.170.236"
