@@ -4,6 +4,9 @@
 </div>
 <div id="user_contents">
   <%= render :partial => 'user_content', :collection => @user_contents %>
+  <% if @user_contents.empty? -%>
+  <p><%= t(:no_saved_contents, :scope => 'user_interface.messages') -%></p>
+  <% end -%>
 </div>
 <% javascript_tag do %>
 

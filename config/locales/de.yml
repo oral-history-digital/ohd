@@ -135,6 +135,7 @@ de:
       registration_needed2: 'anerkennen.'
       password_change_instructions1: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich bei uns registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
+      no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
 
   months:
     Jan: 'Jan'

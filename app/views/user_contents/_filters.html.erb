@@ -1,8 +1,6 @@
-<% facets = @search -%>
-
 <div class="baseListBox">
 
-  <% remote_form_for filters,
+  <!-- <%# remote_form_for filters,
                      :url => user_contents_path,
                      :method => :get,
                      :html => { :action => user_contents_path,
@@ -11,6 +9,7 @@
                                 :success => "resetBlindStatus();",
                                 :name => "searchFacets",
                                 :id => "content_filters" } do |content_filters| %>
+    //-->
 
     <noscript>
       <div class="warning">
@@ -31,7 +30,9 @@
     </ul>
     //-->
 
-  <% end -%>
+  <!--
+  <%# end -%>
+  //-->
 
   <div id="content_filter_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
 
