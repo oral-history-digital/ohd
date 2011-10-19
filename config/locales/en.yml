@@ -138,6 +138,7 @@ en:
       password_change_instructions1: 'Please enter the email address you used to register. You will then receive a link to re-enter a password via email.'
       password_change_instructions2: 'Please choose a new password for your account.'
       no_saved_contents: 'There are no saved contents in your workbook yet.'
+      quality_disclaimer: "The lectorate of the transcript und translation of this interview is not yet finished."
 
   months:
     Jan: 'Jan'

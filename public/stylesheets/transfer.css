@@ -335,3 +335,12 @@ tr.user-registration-open .arrow-opened {
 
 #lightbox-container form {
 }
+
+#quality_disclaimer {
+    position: absolute;
+    bottom: 22px;
+    right: 5px;
+    width: 260px;
+    font-size: 85%;
+    color: #666666;
+}

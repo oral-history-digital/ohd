@@ -52,6 +52,12 @@
 
         <div id="mainWrapperClear" class="compact">&nbsp;</div>
 
+        <% if !@interview.nil? && @interview.inferior_quality && @interview.segmented -%>
+        <p id="quality_disclaimer">
+          <%= t(:quality_disclaimer, :scope => 'user_interface.messages') %>
+        </p>
+        <% end -%>
+
     </div>
 
     <hr class="divider" />
