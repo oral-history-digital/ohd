@@ -104,6 +104,7 @@ en:
       minimize_all: 'minimize all'
     actions:
       edit: 'edit'
+      update: 'update'
     player:
       back: 'previous'
       forward: 'next'

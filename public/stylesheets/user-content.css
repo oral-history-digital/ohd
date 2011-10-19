@@ -356,3 +356,9 @@ body .teaserList .save_user_content {
   width: 270px;
 }
 
+#user_contents .properties input[type="submit"] {
+    background-color: #b2aea2;
+    font-size: 100%;
+    margin-top: 2px;
+}
+

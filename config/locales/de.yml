@@ -102,6 +102,7 @@ de:
       minimize_all: 'alle minimieren'
     actions:
       edit: 'bearbeiten'
+      update: 'aktualisieren'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
