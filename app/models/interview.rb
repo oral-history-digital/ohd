@@ -311,7 +311,7 @@ DEF
   end
 
   def set_categories
-    @category_import.keys.each do |type|
+    (@category_import || {}).keys.each do |type|
       category_names = @category_import[type]
       # Remove all previous categorizations
       categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
