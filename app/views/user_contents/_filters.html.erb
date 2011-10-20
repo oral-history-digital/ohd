@@ -17,18 +17,38 @@
       </div>
     </noscript>
 
-    <%= image_tag(image_path('/images/dummy_filters.jpg'), :height => '154px', :width => '278px;', :alt => '', :style => "background-color: #e4e4da;") %>
-
-    <!--
-    <ul id="filters">
+  <div id="content-filters-toggle" class="open container-toggle" onclick="toggleContainer('content-filters-toggle', true);">
+    <h2><%= t('filter_contents', :scope => 'user_interface.labels') %></h2>
+  </div>
+  <div id="content-filters" class="container">
+    <ul class="facet-field">
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
-      <li class="facet">
-        <%= check_box_tag "#{type}[]", content_type, 1, { :id => "filter_#{content_type}}", :class => 'content_filter_checkbox' } %>
-        <span class="facet-name"><%= content_type %></span>
+      <li class="facet checked" onclick="checkFilter('<%= "filter_#{content_type}}" %>', this);">
+        <%= check_box_tag "#{type}[]", content_type, 1, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
+        <span class="facet-name"><%= t(content_type.to_s, :scope => [:activerecord, :models], :count => 2) %></span>
       </li>
       <% end -%>
     </ul>
-    //-->
+  </div>
+
+  <% javascript_tag do -%>
+      var categoryChange = 0;
+      var containerElems = $$('#baseContainerRight .container-toggle');
+
+      function checkFilter(id, labelElement) {
+          var input = $(id);
+          var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
+          if((input) && (item)) {
+              if(item.hasClassName('checked')) {
+                  input.checked = false;
+                  item.removeClassName('checked');
+              } else {
+                  input.checked = true;
+                  item.addClassName('checked');
+              }
+          }
+      }
+  <% end -%>
 
   <!--
   <%# end -%>

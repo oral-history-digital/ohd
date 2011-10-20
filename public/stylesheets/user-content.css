@@ -362,3 +362,22 @@ body .teaserList .save_user_content {
     margin-top: 2px;
 }
 
+/* Filters (right) */
+.workbook #baseContainerRight .container-toggle h2 {
+    font-weight: normal;
+}
+
+#baseContainerRight #content-filters {
+    overflow-y: visible;
+    height: 122px;
+}
+
+#content-filters .facet-field {
+    cursor: pointer;
+    padding: 4px;
+}
+
+#content-filters li.facet {
+    margin-top: 2px;
+    color: #6f6c5d;
+}
