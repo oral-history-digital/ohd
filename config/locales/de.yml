@@ -121,11 +121,11 @@ de:
       view: 'Ansicht'
       topics: 'Themen'
       delete: 'L&ouml;schen'
-      save: 'Inhalt speichern'
-      saved: 'Inhalt gespeichert'
+      save: 'Inhalt merken'
+      saved: 'Inhalt gemerkt'
     interview_reference:
-      save: 'Interview speichern'
-      saved: 'Interview gespeichert'
+      save: 'Interview merken'
+      saved: 'Interview gemerkt'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
       player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
