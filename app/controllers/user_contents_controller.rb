@@ -46,6 +46,17 @@ class UserContentsController < BaseController
 
   destroy.flash nil
 
+  index do
+    wants.html do
+    end
+    wants.js do
+      html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
+      render :update do |page|
+        page.replace_html 'innerContent', html
+      end
+    end
+  end
+
   show do
     wants.html do
     end
@@ -123,8 +134,33 @@ class UserContentsController < BaseController
     @object
   end
 
+  # derives the SQL conditions in Array format from filter params
+  def filter_conditions
+    conds = []
+    values = []
+    filters = params['content_filters']
+    unless filters.blank?
+      types = []
+      UserContent::CONTENT_TYPES.each do |content_type|
+        filter_value = filters[content_type.to_s.underscore]
+        types << content_type.to_s.camelize unless filter_value.blank? || filter_value == 0
+      end
+      conds << "type in ('#{types.join("','")}')"
+    end
+    conditions = [ conds.join(' AND ') ]
+    values.each do |value|
+      conditions << value
+    end
+    conditions
+  end
+
   def collection
-    end_of_association_chain.find(:all, :conditions => ['user_id = ?', current_user.id], :order => "created_at DESC")
+    conditions = filter_conditions
+    sql_conditions = []
+    sql_conditions << [conditions.shift, 'user_id = ?'].delete_if{|el| el.blank? }.join(' AND ')
+    sql_conditions += conditions
+    sql_conditions << current_user.id
+    end_of_association_chain.find(:all, :conditions => sql_conditions, :order => "created_at DESC")
   end
 
 end

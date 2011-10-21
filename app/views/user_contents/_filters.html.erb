@@ -1,15 +1,13 @@
 <div class="baseListBox">
 
-  <!-- <%# remote_form_for filters,
-                     :url => user_contents_path,
+  <% form_remote_tag :url => user_contents_path,
                      :method => :get,
                      :html => { :action => user_contents_path,
                                 :method => :get,
-                                :complete => "afterResponse();",
-                                :success => "resetBlindStatus();",
-                                :name => "searchFacets",
+                                # :complete => "afterResponse();",
+                                # :success => "resetBlindStatus();",
+                                :name => "contentFilters",
                                 :id => "content_filters" } do |content_filters| %>
-    //-->
 
     <noscript>
       <div class="warning">
@@ -24,12 +22,14 @@
     <ul class="facet-field">
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
       <li class="facet checked" onclick="checkFilter('<%= "filter_#{content_type}}" %>', this);">
-        <%= check_box_tag "#{type}[]", content_type, 1, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
+        <%= check_box_tag "content_filters[#{content_type}]", 1, true, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= t(content_type.to_s, :scope => [:activerecord, :models], :count => 2) %></span>
       </li>
       <% end -%>
     </ul>
   </div>
+
+  <% end -%>
 
   <% javascript_tag do -%>
       var categoryChange = 0;
@@ -39,20 +39,22 @@
           var input = $(id);
           var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
           if((input) && (item)) {
+              var changed = false;
               if(item.hasClassName('checked')) {
-                  input.checked = false;
-                  item.removeClassName('checked');
+                  if($$('#content_filters .checked').length > 1) {
+                      input.checked = false;
+                      item.removeClassName('checked');
+                      changed = true;
+                  }
               } else {
                   input.checked = true;
                   item.addClassName('checked');
+                  changed = true;
               }
+              if(changed) { input.up('form').request(); }
           }
       }
   <% end -%>
-
-  <!--
-  <%# end -%>
-  //-->
 
   <div id="content_filter_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
 
