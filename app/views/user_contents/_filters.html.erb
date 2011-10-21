@@ -34,30 +34,6 @@
   <% javascript_tag do -%>
       var categoryChange = 0;
       var containerElems = $$('#baseContainerRight .container-toggle');
-
-      function checkFilter(id, labelElement) {
-          var input = $(id);
-          var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
-          if((input) && (item)) {
-              var changed = false;
-              if(item.hasClassName('checked')) {
-                  if($$('#content_filters .checked').length > 1) {
-                      input.checked = false;
-                      item.removeClassName('checked');
-                      changed = true;
-                  }
-              } else {
-                  input.checked = true;
-                  item.addClassName('checked');
-                  changed = true;
-              }
-              if(changed) {
-                input.up('form').request();
-                // $('overlay').show();
-                new Effect.Appear('overlay', { duration: 0.3, to: 0.6, queue: 'front' });
-              }
-          }
-      }
   <% end -%>
 
   <div id="content_filter_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
