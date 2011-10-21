@@ -51,7 +51,11 @@
                   item.addClassName('checked');
                   changed = true;
               }
-              if(changed) { input.up('form').request(); }
+              if(changed) {
+                input.up('form').request();
+                // $('overlay').show();
+                new Effect.Appear('overlay', { duration: 0.3, to: 0.6, queue: 'front' });
+              }
           }
       }
   <% end -%>
