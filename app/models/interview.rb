@@ -93,14 +93,42 @@ DEF
 
   searchable :auto_index => false do
     string :archive_id, :stored => true
-    text :transcript, :boost => 10 do
-      str = ''
+    text :transcript, :boost => 5 do
+      indexing_interview_text = ''
       segments.each do |segment|
-        str << " " + segment.transcript
-        str << " " + segment.translation
+        indexing_interview_text << ' ' + segment.transcript
+        indexing_interview_text << ' ' + segment.translation
       end
-      str
+      indexing_interview_text.squeeze(' ')
     end
+    text :headings, :boost => 20 do
+      indexing_headings = ''
+      segments.headings.each do |segment|
+        indexing_headings << ' ' + segment.mainheading
+        indexing_headings << ' ' + segment.subheading
+      end
+      indexing_headings.squeeze(' ')
+    end
+
+    text :locations, :boost => 10 do
+      indexing_location_refs = {}
+      location_references.each do |location|
+        weight = location.location_segments.count
+        weight = 10 if weight == 0
+        indexing_location_refs[location.name] ||= 0
+        indexing_location_refs[location.name] += weight
+        (location.alias_location_names || '').split(/;\s+/).each do |name|
+          indexing_location_refs[name] ||= 0
+          indexing_location_refs[name] += weight
+        end
+      end
+      str = ''
+      indexing_location_refs.each do |loc, weight|
+        str << ' ' + (loc + ' ') * Math.sqrt(weight).round
+      end
+      str.squeeze(' ')
+    end
+
     text :person_name, :boost => 20, :using => :full_title
 
     Category::ARCHIVE_CATEGORIES.each do |category|

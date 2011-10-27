@@ -59,8 +59,16 @@ DEF
     text :joined_transcript_and_translation
     text :mainheading, :boost => 10
     text :subheading, :boost => 10
-    #text :transcript
-    #text :translation, :boost => 2
+    text :locations, :boost => 5 do
+      str = ''
+      location_references.each do |location|
+        str << ' ' + location.name
+        (location.alias_location_names || '').split(/;\s+/).each do |name|
+          str << ' ' + name
+        end
+        str.squeeze(' ')
+      end
+    end
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
