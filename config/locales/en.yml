@@ -102,7 +102,7 @@ en:
       show_interview: 'show Interview'
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
-      filter_contents: 'Constrain shown contents'
+      filter_contents: 'Contents shown'
     actions:
       edit: 'edit'
       update: 'update'
@@ -220,7 +220,7 @@ en:
         collection: 'Subset'
       user_content:
         title: 'Title'
-        description: 'Description'
+        description: 'Note'
         query: 'Search Criteria'
 
     errors:

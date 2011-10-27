@@ -100,7 +100,7 @@ de:
       show_interview: 'zum Interview'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
-      filter_contents: 'Angezeigte Inhalte eingrenzen'
+      filter_contents: 'Angezeigte Inhalte'
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'
@@ -219,7 +219,7 @@ de:
         collection: 'Teilsammlung'
       user_content:
         title: 'Titel'
-        description: 'Beschreibung'
+        description: 'Notiz'
         query: 'Suchkriterien'
 
     errors:
