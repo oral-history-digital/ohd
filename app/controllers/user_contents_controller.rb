@@ -121,17 +121,21 @@ class UserContentsController < BaseController
   def object_params
     @object_params ||= begin
       attributes = {}
-      logger.debug "\n@@@ CALLING OBJECT PARAMS >>>"
       params[model_name].each_pair do |k,v|
         if k == 'title'
           attributes[k.to_sym] = v
-          logger.debug "\n\n@@@ SETTING TITLE to '#{v}'"
         else
           a = ActiveSupport::JSON.decode(v)
           attributes[k.to_sym] = a.is_a?(String) ? a.sub(/(\d{2})(-)(\d{2})$/, '\1:\3') : a
         end
       end
-      attributes
+      # truncate to length of database columns
+      @@content_column_limits ||= UserContent.content_columns.inject({}){|h, c| h[c.name] = c.limit unless c.limit.blank?; h}
+      attributes.each do |attr, value|
+        if @@content_column_limits.keys.include?(attr.to_s) && value.length > @@content_column_limits[attr.to_s]
+          attributes[attr] = @template.truncate(value, :length => @@content_column_limits[attr.to_s])
+        end
+      end
     end
   end
 

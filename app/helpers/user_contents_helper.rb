@@ -53,7 +53,7 @@ module UserContentsHelper
             :update => "user_content_#{user_content.id}",
             :html => options.merge({:class => 'inline'})
     })
-    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "var fieldWidth = $('#{display_id}').offsetWidth; $('#{display_id}').hide();$('#{id}').value = $('#{display_id}').innerHTML; $('#{form_id}').show(); $('#{id}').setStyle({width: fieldWidth + 'px'}); Event.stop(event);"}))
+    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "var displayEl = $('#{display_id}'); var fieldWidth = displayEl.offsetWidth; var fieldHeight = displayEl.offsetHeight; displayEl.hide();$('#{id}').value = displayEl.innerHTML; $('#{form_id}').show(); $('#{id}').setStyle({width: fieldWidth + 'px', height: (fieldHeight + 25) + 'px'}); Event.stop(event);"}))
     html << content_tag(:span, options.merge({:id => form_id, :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         if(text_area)

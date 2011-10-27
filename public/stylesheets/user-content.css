@@ -264,6 +264,7 @@ body .teaserList .save_user_content {
 #user_contents .details .description .inline-editable {
     display: block;
     width: 100%;
+    overflow: auto;
 }
 
 #user_contents .details .references ul,
