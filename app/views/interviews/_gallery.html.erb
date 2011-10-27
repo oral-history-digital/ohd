@@ -10,14 +10,13 @@
         </ul>
     </div>
     <a href="javascript:" class="carousel-control forward" rel="next"><%= t('forward', :scope => 'user_interface.player') %></a>
+    <noscript>
+        <span class="warning">
+        JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
+        Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
+        </span>
+    </noscript>
 </div>
-
-<noscript>
-  <span class="warning">
-    JavaScript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie JavaScript.<br />
-    Die Bildergalerie auf dieser Seite ist für die Darstellung mit JavaScript optimiert.
-  </span>
-</noscript>
 
 <% javascript_tag do %>
     galleryElem = $('image_carousel');

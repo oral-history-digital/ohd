@@ -227,6 +227,20 @@ h5 {
   text-align: right;
 }
 
+#interview-player-wrapper {
+    display: block;
+    height: 335px;
+    background-color: #000;
+    vertical-align: bottom;
+}
+
+#interview-player-wrapper div#interview-player,
+#interview-player-wrapper noscript {
+    text-align: center;
+    color: #fff;
+    padding-top: 145px;
+}
+
 .containerVideo .playerControl {
   float: left;
   position: relative;
