@@ -121,9 +121,15 @@ class UserContentsController < BaseController
   def object_params
     @object_params ||= begin
       attributes = {}
+      logger.debug "\n@@@ CALLING OBJECT PARAMS >>>"
       params[model_name].each_pair do |k,v|
-        a = ActiveSupport::JSON.decode(v)
-        attributes[k.to_sym] = a.is_a?(String) ? a.sub(/(\d{2})(-)(\d{2})$/, '\1:\3') : a
+        if k == 'title'
+          attributes[k.to_sym] = v
+          logger.debug "\n\n@@@ SETTING TITLE to '#{v}'"
+        else
+          a = ActiveSupport::JSON.decode(v)
+          attributes[k.to_sym] = a.is_a?(String) ? a.sub(/(\d{2})(-)(\d{2})$/, '\1:\3') : a
+        end
       end
       attributes
     end

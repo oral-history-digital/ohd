@@ -57,10 +57,10 @@ module UserContentsHelper
     html << content_tag(:span, options.merge({:id => form_id, :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         if(text_area)
-          text_area_tag(user_content, attribute.to_sym, :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);") \
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);") \
           + submit_tag(t(:update, :scope => 'user_interface.actions'))
         else
-          text_field_tag(user_content, attribute.to_sym, :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);")
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);")
         end
       end
     end
