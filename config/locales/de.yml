@@ -138,6 +138,7 @@ de:
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
       quality_disclaimer: "Transkription und Übersetzung zu diesem Interview sind nicht abschließend lektoriert."
+      delete_content: "Der Inhalt (%{content}) wird dauerhaft gel&ouml;scht. Wollen Sie fortfahren?"
 
   months:
     Jan: 'Jan'

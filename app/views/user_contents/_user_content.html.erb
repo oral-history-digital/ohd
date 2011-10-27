@@ -31,7 +31,7 @@ end -%>
             <!--
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#' %></li>
             //-->
-            <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4) %></li>
+            <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
           </ul>
         </div>
         <ul class="properties">
