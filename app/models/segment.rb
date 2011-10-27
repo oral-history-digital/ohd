@@ -72,7 +72,9 @@ DEF
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
-    string :person_name, :using => :full_title, :stored => false
+    string :person_name, :stored => false do
+      (full_title + ' ' + alias_names).squeeze(' ')
+    end
   end
 
   # use the MediaId Adapters
@@ -116,7 +118,11 @@ DEF
   end
 
   def full_title
-    interview.full_title
+    interview.full_title || ''
+  end
+
+  def alias_names
+    interview.alias_names || ''
   end
 
   def transcript

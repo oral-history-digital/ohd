@@ -104,8 +104,8 @@ DEF
     text :headings, :boost => 20 do
       indexing_headings = ''
       segments.headings.each do |segment|
-        indexing_headings << ' ' + segment.mainheading
-        indexing_headings << ' ' + segment.subheading
+        indexing_headings << ' ' + segment.mainheading unless segment.mainheading.blank?
+        indexing_headings << ' ' + segment.subheading unless segment.subheading.blank?
       end
       indexing_headings.squeeze(' ')
     end
@@ -129,7 +129,9 @@ DEF
       str.squeeze(' ')
     end
 
-    text :person_name, :boost => 20, :using => :full_title
+    text :person_name, :boost => 20 do
+      (full_title + (alias_names || '')).squeeze(' ')
+    end
 
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
