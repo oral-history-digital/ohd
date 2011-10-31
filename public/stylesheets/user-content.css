@@ -97,7 +97,7 @@ body .teaserList .save_user_content {
 }
 
 #toggle_links a {
-    padding-left: 24px;
+    padding-left: 25px;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
     color: #838175;
@@ -124,7 +124,7 @@ body .teaserList .save_user_content {
 
 #user_contents .header {
     float: left;
-    width: 675px;
+    width: 695px;
     line-height: 225%;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
