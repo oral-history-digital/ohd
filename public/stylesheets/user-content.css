@@ -128,7 +128,7 @@ body .teaserList .save_user_content {
     line-height: 225%;
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
-    padding-left: 25px;
+    padding-left: 5px;
     cursor: pointer;
 }
 
@@ -261,6 +261,10 @@ body .teaserList .save_user_content {
     color: #000000;
 }
 
+#user_contents .details p span.inline-editable {
+    margin-left: -20px;
+}
+
 #user_contents .details .description .inline-editable {
     display: block;
     width: 100%;
@@ -341,11 +345,15 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .inline-editable {
+    padding-left: 20px;
     cursor: pointer;
 }
 
 #user_contents .inline-editable:hover {
   background: #fffdc0;
+  background-image: url('/archiv/images/icon_sprite.png');
+  background-repeat: no-repeat;
+  background-position: -0.10em -1021px;
 }
 
 #user_contents .header .title,
@@ -353,23 +361,32 @@ body .teaserList .save_user_content {
     color: #990000;
 }
 
+#innerContent .header form.inline {
+    margin: 0 0 0 20px;
+}
+
 #user_contents form input[type="text"],
 #user_contents form textarea {
+  color: #000;
+  border: none;
   background :#fffdc0;
-  border: 1px solid #fff700;
+/* border: 1px solid #fff700; */
+  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 125%;
+  line-height: 1.4em;
 }
 
 #user_contents .details form input[type="text"] {
   color: #000;
-  font-size: 120%;
+  font-size: 125%;
   width: 270px;
 }
 
 #user_contents .properties input[type="submit"] {
     background-color: #b2aea2;
-    font-size: 100%;
+    font-size: 120%;
+    padding: 0 2px 2px;
     margin-top: 2px;
 }
 
