@@ -152,15 +152,13 @@ class UserContentsController < BaseController
   def filter_conditions
     conds = []
     values = []
-    filters = params['content_filters']
-    unless filters.blank?
-      types = []
-      UserContent::CONTENT_TYPES.each do |content_type|
-        filter_value = filters[content_type.to_s.underscore]
-        types << content_type.to_s.camelize unless filter_value.blank? || filter_value == 0
-      end
-      conds << "type in ('#{types.join("','")}')"
+    filters = params['content_filters'] || {}
+    types = []
+    UserContent::CONTENT_TYPES.each do |content_type|
+      filter_value = filters[content_type.to_s.underscore]
+      types << content_type.to_s.camelize if filter_value.blank? || filter_value == 0
     end
+    conds << "type in ('#{types.join("','")}')"
     conditions = [ conds.join(' AND ') ]
     values.each do |value|
       conditions << value

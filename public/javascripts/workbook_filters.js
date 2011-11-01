@@ -12,7 +12,7 @@
               changed = true;
           }
         } else {
-          input.checked = true;
+          input.checked = false;
           facet.addClassName('checked');
           changed = true;
         }
@@ -24,24 +24,22 @@
       var input = $(id);
       var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
       if((input) && (item)) {
-        /*
           var changed = false;
           if(item.hasClassName('checked')) {
-              if($$('#content_filters .checked').length > 1) {
-                  input.checked = false;
-                  item.removeClassName('checked');
-                  changed = true;
-              }
+              input.checked = true; // true means remove this item
+              item.removeClassName('checked');
+              changed = true;
           } else {
-              input.checked = true;
+              input.checked = false; // false means keep it
               item.addClassName('checked');
               changed = true;
           }
-        */
+          /*
           if(!invertSelection(input)) {
             // invert all checkboxes
             invertSelection(item);
           }
+          */
           input.up('form').request();
           new Effect.Appear('overlay', { duration: 0.3, to: 0.9, queue: 'front' });
       }

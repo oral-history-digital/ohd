@@ -2,21 +2,10 @@
     <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all", :style => (@user_contents.size < 4 ? 'display: none;' : '') %>
     <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => (@user_contents.size < 4 ? '' : 'display: none;') %>
 </div>
-<div id="user_contents">
-  <%= render :partial => 'user_content', :collection => @user_contents %>
-  <% if @user_contents.empty? -%>
-  <p><%= t(:no_saved_contents, :scope => 'user_interface.messages') -%></p>
-  <% end -%>
-</div>
 <% javascript_tag do %>
 
     var togglingContent = 0;
     var contentItems = new Array();
-
-    $$('#user_contents .item .header').each(function(elem){
-        elem.addEventListener('click', toggleUserContent, false);
-        contentItems[contentItems.length] = elem.parentNode.down('.details');
-    });
 
     function toggleUserContent(event) {
         if(togglingContent > 0) { return; };
@@ -82,3 +71,9 @@
     }
 
 <% end %>
+<div id="user_contents">
+  <%= render :partial => 'user_content', :collection => @user_contents %>
+  <% if @user_contents.empty? -%>
+  <p><%= t(:no_saved_contents, :scope => 'user_interface.messages') -%></p>
+  <% end -%>
+</div>

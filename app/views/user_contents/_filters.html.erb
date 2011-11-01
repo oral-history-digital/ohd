@@ -22,7 +22,7 @@
     <ul class="facet-field">
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
       <li class="facet checked" onclick="checkFilter('<%= "filter_#{content_type}}" %>', this);">
-        <%= check_box_tag "content_filters[#{content_type}]", 1, true, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
+        <%= check_box_tag "content_filters[#{content_type}]", 1, false, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= t(content_type.to_s, :scope => [:activerecord, :models], :count => 2) %></span>
       </li>
       <% end -%>
