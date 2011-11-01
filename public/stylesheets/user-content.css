@@ -5,7 +5,7 @@
 }
 
 #overlay #ajax-spinner {
-    background: transparent url('/images/large_spinner.gif') center no-repeat;
+    background: transparent url('/archiv/images/large_spinner.gif') center no-repeat;
     height: 100%;
     width: 100%;
 }
@@ -47,7 +47,7 @@ body .teaserList .save_user_content {
 #mainWrapper .save_user_content a.saved {
     padding-left: 20px;
     padding-top: 2px;
-    background-image: url(/images/icon_sprite.png);
+    background-image: url(/archiv/images/icon_sprite.png);
     background-repeat: no-repeat;
 }
 
@@ -98,7 +98,7 @@ body .teaserList .save_user_content {
 
 #toggle_links a {
     padding-left: 25px;
-    background-image: url(/images/icon_sprite.png);
+    background-image: url(/archiv/images/icon_sprite.png);
     background-repeat: no-repeat;
     color: #838175;
 }
@@ -126,7 +126,7 @@ body .teaserList .save_user_content {
     float: left;
     width: 695px;
     line-height: 225%;
-    background-image: url(/images/icon_sprite.png);
+    background-image: url(/archiv/images/icon_sprite.png);
     background-repeat: no-repeat;
     padding-left: 5px;
     cursor: pointer;
@@ -150,7 +150,7 @@ body .teaserList .save_user_content {
     position: absolute;
     left: 20px;
     top: -5px;
-    background: transparent url('/images/icon_sprite.png') 0.3em -600px no-repeat;
+    background: transparent url('/archiv/images/icon_sprite.png') 0.3em -600px no-repeat;
     color: #990000;
 /*    font-size: 80%;*/
     padding-left: 22px;
@@ -161,7 +161,7 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .themes {
-    background: transparent url('/images/icon_sprite.png') 0.3em -544px no-repeat;
+    background: transparent url('/archiv/images/icon_sprite.png') 0.3em -544px no-repeat;
     padding-left: 22px;
     font-size: 85%;
     padding-bottom: 1px;
@@ -175,7 +175,7 @@ body .teaserList .save_user_content {
 
 #user_contents .toggle {
     float: right;
-    background-image: url('/images/icon_sprite.png');
+    background-image: url('/archiv/images/icon_sprite.png');
     background-repeat: no-repeat;
     background-position: 0.3em -660px;
     height: 20px;
@@ -219,13 +219,7 @@ body .teaserList .save_user_content {
 
 #user_contents .actions .close-button {
     position: absolute;
-    right: -2px;
-    top: 0;
-    font-weight: bold;
-    height: 20px;
-    width: 15px;
-    padding: 0 0 0 5px;
-    text-decoration: none;
+    right: 0;
 }
 
 /* Details container information */
@@ -351,7 +345,7 @@ body .teaserList .save_user_content {
 
 #user_contents .inline-editable:hover {
   background: #fffdc0;
-  background-image: url('/images/icon_sprite.png');
+  background-image: url('/archiv/images/icon_sprite.png');
   background-repeat: no-repeat;
   background-position: -0.10em -1021px;
 }
