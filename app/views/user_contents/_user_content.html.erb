@@ -3,7 +3,13 @@
 else
   @user_content_index = 0
 end -%>
-<div id="user_content_<%= user_content.id -%>" class="item<%= @user_content_index > 2 ? ' closed' : ''-%>">
+<% @interface_status = if params['interface_status'].blank?
+    @user_content_index > 2 ? ' closed' : ''
+    else
+    params['interface_status'].downcase
+end -%>
+
+<div id="user_content_<%= user_content.id -%>" class="item<%= @interface_status.blank? ? '' : " #{@interface_status}" -%>">
     <div class="header <%= user_content.type.to_s.underscore -%>">
       <span class="title">
         <%= in_place_edit_for user_content, :title -%>
@@ -76,3 +82,8 @@ end -%>
       </div>
     </div>
 </div>
+
+<% javascript_tag do %>
+    $('user_content_<%= user_content.id -%>').addEventListener('click', toggleUserContent, false);
+    contentItems = $$('#user_contents .item .details');
+<% end %>

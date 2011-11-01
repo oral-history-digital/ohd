@@ -75,7 +75,10 @@ class UserContentsController < BaseController
       redirect_to :action => 'show'
     end
     wants.js do
-      render :partial => 'user_content', :object => @object
+      html = render_to_string :partial => 'user_content', :object => @object
+      render :update do |page|
+        page.replace "user_content_#{object.id}", html
+      end
     end
   end
 

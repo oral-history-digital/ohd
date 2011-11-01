@@ -50,7 +50,7 @@ module UserContentsHelper
             :id => form_id,
             :url => user_content_path(user_content),
             :method => :put,
-            :update => "user_content_#{user_content.id}",
+            :before => "$('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : '');",
             :html => options.merge({:class => 'inline'})
     })
     js_onclick = "var displayEl = $('#{display_id}'); var fieldWidth = displayEl.offsetWidth - 20; "
@@ -61,7 +61,8 @@ module UserContentsHelper
     html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => js_onclick}))
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :style => 'display: none;'})) do
       form_remote_tag(form_options) do
-        if(text_area)
+        form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
+        form_html += if(text_area)
           text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event);") \
           + submit_tag(t(:update, :scope => 'user_interface.actions'))
         else
