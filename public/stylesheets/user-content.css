@@ -408,6 +408,11 @@ body .teaserList .save_user_content {
     background-position: -15px -15px;
 }
 
+#user_contents .item .title img {
+    position: relative;
+    top: 3px;
+}
+
 /* Filters (right) */
 .workbook #baseContainerRight .container-toggle h2 {
     font-weight: normal;
