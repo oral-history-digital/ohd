@@ -84,6 +84,6 @@ end -%>
 </div>
 
 <% javascript_tag do %>
-    $('user_content_<%= user_content.id -%>').down('.header').addEventListener('click', toggleUserContent, false);
+    Event.observe($('user_content_<%= user_content.id -%>').down('.header'), 'click', toggleUserContent);
     contentItems = $$('#user_contents .item .details');
 <% end %>
