@@ -375,13 +375,37 @@ body .teaserList .save_user_content {
   color: #000;
   font-size: 125%;
   width: 270px;
+  margin-right: 4px;
 }
 
-#user_contents .properties input[type="submit"] {
-    background-color: #b2aea2;
+#user_contents .item input[type="submit"],
+#user_contents .item input[type="reset"] {
+    background: transparent url('/images/form_action_sprite.png') top left no-repeat;
+    height: 15px;
+    width: 15px;
+    text-indent: -9999px;
+    border: 0px none;
     font-size: 120%;
     padding: 0 2px 2px;
-    margin-top: 2px;
+    margin-top: 4px;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+#user_contents .item input.update {
+    background-position: 0 0;
+}
+
+#user_contents .item input.update:hover {
+    background-position: 0 -15px;
+}
+
+#user_contents .item input.reset {
+    background-position: -15px 0;
+}
+
+#user_contents .item input.reset:hover {
+    background-position: -15px -15px;
 }
 
 /* Filters (right) */

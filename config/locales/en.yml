@@ -106,6 +106,7 @@ en:
     actions:
       edit: 'edit'
       update: 'update'
+      reset: 'cancel'
     player:
       back: 'previous'
       forward: 'next'

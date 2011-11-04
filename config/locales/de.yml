@@ -104,6 +104,7 @@ de:
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'
+      reset: 'abbrechen'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
