@@ -1,5 +1,3 @@
-<%= javascript_include_tag 'jwplayer', 'archiveplayer-core', 'archiveplayer-effects' %>
-
 <div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
 
   <%= @player = JWPlayer.new(playlist_interview_tapes_path(@interview, :format => :xml),
