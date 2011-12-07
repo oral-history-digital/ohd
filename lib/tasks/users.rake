@@ -7,7 +7,7 @@ namespace :users do
 
     data = []
     
-    data << ['Anrede', 'Vorname', 'Nachname', 'E-Mail Adresse']
+    data << ['Anrede', 'Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bundesland']
 
     offset=0
     batch=25
@@ -21,7 +21,8 @@ namespace :users do
                             :limit => "#{offset},#{batch}",
                             :include => [ :user ]).each do |r|
         appellation = YAML::load(r.application_info)[:appellation]
-        data << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip ]
+        u = r.user || User.new
+        data << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, u.state ]
       end
       STDOUT.printf '.'; STDOUT.flush
       offset += batch
