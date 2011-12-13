@@ -50,7 +50,7 @@ module UserContentsHelper
             :id => form_id,
             :url => user_content_path(user_content),
             :method => :put,
-            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = interfaceStatusValueOf('user_content_#{user_content.id}');",
+            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = interfaceStatusValueOf('user_content_#{user_content.id}'); addExtraneousFormElements(this, '.item', '.editor');",
             :complete => "togglingContent = 0;",
             :html => options.merge({:class => 'inline'})
     })
@@ -60,9 +60,9 @@ module UserContentsHelper
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
         form_html += if(text_area)
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event)") \
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :onclick => "Event.stop(event)")
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
         end
         buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => "update", :onclick => "togglingContent = 1;")
         buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"

@@ -34,6 +34,7 @@ end -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
+            <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); this.up('.actions').addClassName('closed');" %></li>
             <!--
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#' %></li>
             //-->

@@ -122,6 +122,7 @@ en:
       not_signed_in: 'not signed in'
     user_content:
       view: 'View'
+      edit: 'Edit'
       topics: 'Topics'
       delete: 'Delete'
       save: 'save content'

@@ -120,6 +120,7 @@ de:
       not_signed_in: 'nicht angemeldet'
     user_content:
       view: 'Ansicht'
+      edit: 'Bearbeiten'
       topics: 'Themen'
       delete: 'L&ouml;schen'
       save: 'Inhalt merken'

@@ -66,6 +66,15 @@
       Form.Element.focus(id);
   }
 
+  function addExtraneousFormElements(form, scope, selector) {
+      var existing = form.getInputs();
+      form.up(scope).getElementsBySelector(selector).each(function(input){
+          if(existing.indexOf(input) < 0) {
+            form.insert(new Element('input', {name: input.getAttribute('name'), value: input.value, type: 'hidden'}));
+          }
+      });
+  }
+
   function toggleFormAction(id) {
       togglingContent = 1;
       $(id + '_update').toggle();
