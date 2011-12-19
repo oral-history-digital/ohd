@@ -1,5 +1,21 @@
 module InterviewHelper
 
+  # Limits the number of displayed characters and adds a 'more' link
+  # to expand the content.
+  def expand(content, id=('field_' + (@expanded_fields = (@expanded_fields ||=0)+1).to_s), limit=190)
+    if content.length < limit+1
+      content
+    else
+      teaser = truncate(content, limit)
+      teaser_id = id + '_teaser'
+      full_id = id + '_full'
+      more_link = link_to_function(t(:more, :scope => 'user_interface.labels') + '&nbsp;&raquo;', "$('#{teaser_id}').hide(); new Effect.BlindDown('#{full_id}');")
+      html = content_tag(:span, teaser + more_link, :id => teaser_id)
+      less_link = link_to_function('&laquo;&nbsp;' + t(:less, :scope => 'user_interface.labels'), "$('#{full_id}').hide(); $('#{teaser_id}').show();")
+      html << content_tag(:span, content + less_link, :id => full_id, :style => 'display: none;')
+    end
+  end
+
   # transforms the headings array into a hash structure
   # which renders the hierarchy better
   def hashed_headings_from_array(headings)

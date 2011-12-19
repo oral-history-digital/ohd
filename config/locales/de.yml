@@ -101,6 +101,8 @@ de:
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
+      more: 'mehr'
+      less: 'weniger'
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'

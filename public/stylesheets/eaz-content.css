@@ -316,14 +316,31 @@ h5 {
 /* Container */
 #fragmentOverview .container {
   background: #fff;
-  padding: 10px;
-  height: 448px;
+  padding: 10px 0px 0 10px;
+  height: 458px;
   display: none;
   position: relative;
 }
 
 #fragmentOverview .container.active {
   display: block;
+}
+
+#fragmentOverview .container.active ul {
+    padding: 0px 10px 10px 0;
+    width: 260px;
+    overflow-y: auto;
+    margin: 0;
+}
+
+#fragmentOverview containerInterview ul.data {
+    height: 388px;
+}
+#fragmentOverview containerInterview ul.interviewDocuments {
+    height: 60px;
+}
+#fragmentOverview #containerForcedLabor ul.data {
+    height: 448px;
 }
 
 .container #interviewDocuments {

@@ -103,6 +103,11 @@
   margin-bottom: -4px;
 }
 
+.data li .value a {
+  font-size: 85%;
+  padding-left: 4px;
+}
+
 #captions_wrapper {
   position: relative;
   float: left;

@@ -29,7 +29,7 @@
       <% unless value.blank? %>
     <li>
       <span class="label"><%= Interview.human_attribute_name(attr) %></span>
-      <span class="value"><%= value || t(:not_specified, :scope => 'status') %></span>
+      <span class="value"><%= expand(value || t(:not_specified, :scope => 'status'), attr, 130) %></span>
     </li>
       <% end %>
     <% end %>

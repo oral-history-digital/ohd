@@ -103,6 +103,8 @@ en:
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
       filter_contents: 'Contents shown'
+      more: 'more'
+      less: 'less'
     actions:
       edit: 'edit'
       update: 'update'

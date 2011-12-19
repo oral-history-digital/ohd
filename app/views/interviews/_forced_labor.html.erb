@@ -10,21 +10,21 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
-        <span class="value"><%= forced_labor.forced_labor_fields.map{|f| t(f, :scope => 'categories.forced_labor_fields')}.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_fields.map{|f| t(f, :scope => 'categories.forced_labor_fields')}.join(', ') %></span>
       </li>
       <% unless forced_labor.forced_labor_details.blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
-        <span class="value"><%= forced_labor.forced_labor_details %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_details %></span>
       </li>
       <% end %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_locations) %></span>
-        <span class="value"><%= forced_labor.forced_labor_locations %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_locations %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
-        <span class="value"><%= forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
@@ -32,7 +32,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
-        <span class="value"><%= forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
+        <span class="value"><%= expand forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
       </li>
       <% unless forced_labor.return_date.blank? %>
       <li>
