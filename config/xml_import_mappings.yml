@@ -59,6 +59,7 @@ interview:
 interview-team-member:
   class_name: 'contribution'
   delete_all: true
+  skip_invalid: true
   first-name: 'first_name'
   last-name: 'last_name'
   task: 'contribution_type'
