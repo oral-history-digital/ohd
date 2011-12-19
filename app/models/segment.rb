@@ -98,7 +98,12 @@ DEF
   end
 
   def timecode
-    "[#{tape.number}] #{read_attribute(:timecode).sub(/\.\d\d$/,'')}"
+    timestr = read_attribute(:timecode).sub(/\.\d\d$/,'')
+    unless tape.blank?
+      "[#{tape.number}] #{timestr}"
+    else
+      timestr
+    end
   end
 
   def raw_timecode

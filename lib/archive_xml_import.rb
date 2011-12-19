@@ -334,9 +334,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           unless @instance.save
             puts "\n=>> skipping #{@instance.inspect}\nErrors: #{@instance.errors.full_messages}"
             interview = @instance.respond_to?('interview') ? @instance.interview : @interview
-            puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
+            if !interview.nil?
+              puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
+            end
             # remove the instance from the interview association again if invalid and skipping
-            if @current_mapping['skip_invalid']
+            if @current_mapping['skip_invalid'] && !association.nil?
               case association.last
                 when :has_many
                   @interview.send("#{association.first}").delete(@instance)
