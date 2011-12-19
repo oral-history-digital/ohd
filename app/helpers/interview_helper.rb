@@ -2,8 +2,8 @@ module InterviewHelper
 
   # Limits the number of displayed characters and adds a 'more' link
   # to expand the content.
-  def expand(content, id=('field_' + (@expanded_fields = (@expanded_fields ||=0)+1).to_s), limit=190)
-    if content.length < limit+1
+  def expand(content, id=('field_' + (@expanded_fields = (@expanded_fields ||=0)+1).to_s), limit=150)
+    if content.length < limit+81
       content
     else
       teaser = truncate(content, limit)
@@ -72,6 +72,14 @@ module InterviewHelper
 
   def format_transcript(text)
     h(text).gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
+  end
+
+  def deportation_for(interview)
+    unless interview.deportation_location.blank?
+      [ interview.deportation_location, format_date(interview.deportation_date) ].compact.join(',&nbsp;')
+    else
+      t(:not_deported, :scope => 'status')
+    end
   end
 
   def format_date(text)

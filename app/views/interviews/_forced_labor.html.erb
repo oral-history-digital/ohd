@@ -6,7 +6,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= [ forced_labor.deportation_location, format_date(forced_labor.deportation_date) ].compact.join(',&nbsp;') %></span>
+        <span class="value"><%= deportation_for(forced_labor) %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>

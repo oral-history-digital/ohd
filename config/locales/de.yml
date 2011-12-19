@@ -67,6 +67,7 @@ de:
     unknown: 'unbekannt'
     date_unknown: 'Datum unbekannt'
     not_specified: 'keine Angabe'
+    not_deported: 'Nicht deportiert'
     other: 'Sonstige'
 
   search:
