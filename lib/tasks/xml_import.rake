@@ -52,6 +52,18 @@ namespace :xml_import do
       end
     end
 
+    # delete empty location references
+    Open4::popen4("rake cleanup:remove_empty_locations --trace") do |pid, stdin, stdout, stderr|
+      stdout.each_line {|line| puts line }
+      errors = []
+      stderr.each_line {|line| errors << line unless line.empty?}
+      unless errors.empty?
+        errmsg = "\nFEHLER:\n#{errors.join("\n")}"
+        logfile << errmsg
+        puts errmsg
+      end
+    end
+
   end
 
 

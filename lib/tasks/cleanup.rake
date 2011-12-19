@@ -604,9 +604,30 @@ namespace :cleanup do
 
     end
 
+    puts "Done."
+
   end
 
-  puts "Done."
 
+  desc "Removes empty location references"
+  task :remove_empty_locations => :environment do
+
+    empty_locs = LocationReference.find :all, :conditions => "name REGEXP '^.{1,2}$'"
+
+    puts "\nChecking #{empty_locs.size} location_references for empty descriptors."
+    deleted = 0
+
+    empty_locs.each do |loc|
+      if loc.name.scan(/[a-z0-9]/).empty?
+        loc.destroy
+        deleted += 1
+      end
+      STDOUT.printf '.'
+      STDOUT.flush
+    end
+
+    puts "\n#{deleted} location_references deleted."
+
+  end
 
 end
