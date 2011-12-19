@@ -1,6 +1,6 @@
 <% cache [ @locale, @interview.to_param, 'headings'].join('/') do -%>
 
-  <% headings_hash = hashed_headings_from_array(@interview.segments.headings) %>
-  <%= (@player || JWPlayer.new).headings_container headings_hash %>
+  <% headings_hash = hashed_headings_from_array(@interview.segments.headings || []) %>
+  <%= (@player ||= interview_player(@interview)).headings_container(headings_hash) %>
 
 <% end %><%# cache %>

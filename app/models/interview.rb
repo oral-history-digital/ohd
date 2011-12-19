@@ -213,7 +213,7 @@ DEF
   end
 
   def segmented?
-    @segmented ||= !segments.empty?
+    !segments.empty?
   end
 
   def right_to_left

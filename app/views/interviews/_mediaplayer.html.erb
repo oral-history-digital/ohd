@@ -1,10 +1,6 @@
 <div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
 
-  <%= @player = JWPlayer.new(playlist_interview_tapes_path(@interview, :format => :xml),
-                             :id => 'interview-player',
-                             :item => (params[:item] != nil ? (params[:item].to_i-1) : nil),
-                             :position => (params[:position] != nil ? params[:position] : nil),
-                             :hd_plugin => @interview.video?) %>
+  <%= @player = interview_player(@interview) %>
 
   <div class="playerControl">
 
@@ -17,7 +13,7 @@
                       :id => "original",
                       :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
                       :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
-      <% if @interview.translated? and @interview.segmented? %>
+      <% if @interview.translated? && @interview.segmented? %>
         <%= content_tag(:div,
                         t('Deutsch', :scope => 'mediaplayer.languages'),
                         :id => "translated",
