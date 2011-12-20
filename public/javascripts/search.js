@@ -101,12 +101,8 @@
     clearFulltextField('searchInput');
     var veil = $('ajax-spinner');
     var newHeight = window.innerHeight - $('baseHeader').offsetHeight;
-    veil.style.height = newHeight; // setStyle({ height: newHeight});
-
-    alert('Setting overlay height to:' + newHeight + '\nwindow.innerHeight: ' + window.innerHeight + '\nbaseHeader.height: ' + $('baseHeader').offsetHeight);
+    veil.style.height = newHeight;
     $('overlay').show();
-    var i = 0;
-    // while(i<1000000000) { i = i + 1; }
   }
 
   function afterResponse() {
