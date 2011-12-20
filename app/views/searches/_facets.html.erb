@@ -13,8 +13,7 @@
                      :method => :get,
                      :html => { :action => new_search_path,
                                 :method => :get,
-                                :complete => "afterResponse();",
-                                # :success => "resetBlindStatus();",
+                                # no changes on complete are needed, since we redirect!
                                 :name => "searchFacets",
                                 :id => "search_facets" } do |search_facets| %>
 
@@ -46,7 +45,5 @@
       toggleCategory('<%= facets.open_category %>_query', true);
     <% end %>
   <% end %>
-
-  <div id="search_facets_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
 
 </div>

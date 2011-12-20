@@ -105,10 +105,6 @@
     $('overlay').show();
   }
 
-  function afterResponse() {
-    $('overlay').hide();
-  }
-
   function checkCategory(id, labelElement) {
       var facetName = id.sub(/_\d+$/,'');
       var input = $(id);
