@@ -1,15 +1,5 @@
 /* Stylesheets for user content interfaces */
 
-#overlay {
-    background-color: #F1F1EB;
-}
-
-#overlay #ajax-spinner {
-    background: transparent url('/images/large_spinner.gif') center no-repeat;
-    height: 100%;
-    width: 100%;
-}
-
 .teaserList .save_user_content,
 #save_interview_reference .save_user_content {
     position: absolute;

@@ -99,13 +99,18 @@
   function beforeSubmit() {
     categoryChange = false;
     clearFulltextField('searchInput');
-    $('search_facets_overlay').show();
-    $('search_header_overlay').show();
+    var veil = $('ajax-spinner');
+    var newHeight = window.innerHeight - $('baseHeader').offsetHeight;
+    veil.style.height = newHeight; // setStyle({ height: newHeight});
+
+    alert('Setting overlay height to:' + newHeight + '\nwindow.innerHeight: ' + window.innerHeight + '\nbaseHeader.height: ' + $('baseHeader').offsetHeight);
+    $('overlay').show();
+    var i = 0;
+    // while(i<1000000000) { i = i + 1; }
   }
 
   function afterResponse() {
-    $('search_header_overlay').hide();
-    $('search_facets_overlay').hide();
+    $('overlay').hide();
   }
 
   function checkCategory(id, labelElement) {

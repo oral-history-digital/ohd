@@ -1,5 +1,25 @@
 /* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
 
+#overlay {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    z-index: 100;
+    width: 100%;
+    display: block;
+    padding: 15% 0 0 33%;
+}
+
+#overlay #ajax-spinner {
+    background: transparent url('/images/large_spinner.gif') top left no-repeat;
+    width: 33%;
+    height: 120px;
+    opacity: 1;
+}
+
+.workbook #overlay {
+    height: 88%;
+}
+
 #fragmentOverview {
   float: left;
   font-size: 95%;
