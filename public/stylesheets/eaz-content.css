@@ -390,7 +390,7 @@ h5 {
 .teaserList h2,
 .teaserList .pagination {
   clear: both;
-  margin: 0 0 12px; /*margin-bottom: 12px;*/
+  margin: -1px 0 12px 0; /*margin-bottom: 12px;*/
 }
 
 .teaserList h2 .pagination {

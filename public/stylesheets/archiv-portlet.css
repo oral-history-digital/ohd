@@ -296,6 +296,12 @@ h5.formHeader {
     cursor: pointer;
 }
 
+#innerContent .save_user_content form input[type=submit] {
+    font-size: 100%;
+    font-family: Arial,Helvetica,sans-serif;
+    padding: 1px 0 0 18px;
+}
+
 form.signup {
     display: block !important;
     height: 135px;
