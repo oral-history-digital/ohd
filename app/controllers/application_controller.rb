@@ -23,4 +23,11 @@ class ApplicationController < ActionController::Base
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
   end
 
+  # resetting the remember_me_token on CSRF failure
+  def handle_unverified_request
+    super
+    cookies.delete 'remember_user_token'
+    sign_out :user
+  end
+
 end

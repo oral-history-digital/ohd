@@ -2,11 +2,11 @@
 
   <% remote_form_for content,
                      :url => interview_searches_path,
+                     :method => :get,
                      :update => 'search-results',
                      :before => "$('interview_search_overlay').show()",
                      :complete => "$('interview_search_overlay').hide();$('search-results-toggle').show();openContainer('search-results-toggle',true);",
                      :html => { :action => '',
-                                :method => :get,
                                 :name => "search-in-interview",
                                 :id => "search_in_interview" } do |search| %>
 

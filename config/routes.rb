@@ -37,8 +37,8 @@ ActionController::Routing::Routes.draw do |map|
   map.search 'suchen', :controller => :searches, :action => :query
 
   map.resources :searches, :collection => { :query => :post,
-                                            :interview => :post,
-                                            :person_name => :post }
+                                            :interview => :get,
+                                            :person_name => :get }
 
   map.connect 'arbeitsmappe', :locale => :de, :controller => :user_contents, :action => :index
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
