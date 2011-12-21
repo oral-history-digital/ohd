@@ -26,7 +26,7 @@ DEF
   LANGUAGES = Category.languages
   COUNTRIES = Category.countries
 
-  has_many :categorizations
+  has_many :categorizations, :dependent => :delete_all
 
   has_many :interviews,
            :through => :categorizations

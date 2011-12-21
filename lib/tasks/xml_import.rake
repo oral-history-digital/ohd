@@ -59,7 +59,7 @@ namespace :xml_import do
       stderr.each_line {|line| errors << line unless line.empty?}
       unless errors.empty?
         errmsg = "\nFEHLER:\n#{errors.join("\n")}"
-        logfile << errmsg
+        @logfile << errmsg
         puts errmsg
       end
     end
@@ -76,6 +76,26 @@ namespace :xml_import do
 
     @parser = Nokogiri::XML::SAX::Parser.new(LocationsXMLImport.new)
     @parser.parse(File.read(file))
+
+  end
+
+
+  desc "checks and assigns interview languages in case there are problems during xml import"
+  task :languages => :environment do
+    require 'nokogiri'
+
+    puts "\nChecking and updating languages:"
+    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
+    Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
+      xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+      next if xmlfile.blank?
+      archive_id = (xmlfile.split('/').last[/za\d{3}/i] || '').downcase
+      next if archive_id.blank?
+      puts archive_id
+      @parser = Nokogiri::XML::SAX::Parser.new(LanguageXMLImport.new(xmlfile))
+      @parser.parse(File.read(xmlfile))
+      puts
+    end
 
   end
 
