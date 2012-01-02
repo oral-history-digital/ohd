@@ -33,7 +33,7 @@
 
             <% category = f.first %>
 
-            <li class="facet<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);">
+            <li class="facet<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" id="<%= "facet_#{facet_name}_#{category[:id]}" -%>">
                 <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
                 <%# translate language parts individually %>
                 <% category_titles = category.is_a?(String) ? [ category ] : (facet_name == 'languages' ? category.name.split('/') : [ category.name ]) %>

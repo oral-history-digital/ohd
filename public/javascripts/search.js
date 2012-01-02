@@ -105,7 +105,8 @@
     $('overlay').show();
   }
 
-  function checkCategory(id, labelElement) {
+  function checkCategory(id, labelEl) {
+      var labelElement = $(labelEl.id);
       var facetName = id.sub(/_\d+$/,'');
       var input = $(id);
       var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
