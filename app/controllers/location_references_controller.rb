@@ -27,6 +27,9 @@ class LocationReferencesController < BaseController
     end
   end
 
+  def map
+
+  end
 
   private
 

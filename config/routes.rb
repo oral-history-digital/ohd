@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
+  map.public_map 'kartensuche', :controller => :location_references, :action => :map
 
   map.namespace :admin do |admin|
     admin.resources :user_registrations

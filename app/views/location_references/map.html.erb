@@ -1,0 +1,17 @@
+<% javascript_tag do -%>
+  function initializeMap(id) {
+    var latlng = new google.maps.LatLng(49.1, 16.3);
+    var myOptions = {
+      zoom: 5,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+    var map = new google.maps.Map($(id), myOptions);
+  }
+<% end -%>
+
+<div id="interactive_map" style="width: 100%; height: 660px"></div>
+
+<% javascript_tag do -%>
+    document.observe("dom:loaded", initializeMap('interactive_map'));
+<% end -%>
