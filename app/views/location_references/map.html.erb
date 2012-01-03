@@ -1,4 +1,6 @@
 <% javascript_tag do -%>
+  var map = null;
+
   function initializeMap(id) {
     var latlng = new google.maps.LatLng(49.1, 16.3);
     var myOptions = {
@@ -6,7 +8,15 @@
       center: latlng,
       mapTypeId: google.maps.MapTypeId.TERRAIN
     };
-    var map = new google.maps.Map($(id), myOptions);
+    map = new google.maps.Map($(id), myOptions);
+    google.maps.event.addListener(map, 'dragend', searchWithinBounds);
+    google.maps.event.addListener(map, 'zoom_changed', searchWithinBounds);
+  }
+
+  function searchWithinBounds() {
+    var bounds = map.getBounds();
+    if(!bounds) { return };
+    alert('Map NE = ' + map.getBounds().getNorthEast() + '\n SW  = ' + map.getBounds().getSouthWest());
   }
 <% end -%>
 

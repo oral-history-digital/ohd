@@ -228,6 +228,15 @@ class LocationReference < ActiveRecord::Base
     @grid_coord
   end
 
+  # sorting algorithm for grid coordinates
+  GRID_SORT = lambda do |a,b|
+    # first the numerical part
+    order = a.to_s[/\d+$/].to_i <=> b.to_s[/\d+$/].to_i
+    # next the alphabetical part
+    order = a.to_s[/^\w+/] <=> b.to_s[/^\w+/] if order == 0
+    order
+  end
+
   def self.distance_to_grid_coordinate(distance)
     return nil if distance.nil?
     grid_units = (distance / 40).round # 40 km per grid unit
@@ -271,6 +280,24 @@ class LocationReference < ActiveRecord::Base
     raster
   end
 
+  # yields a raster of quadrants for a bounding set of coordinate pairs
+  def self.bounding_quadrant_raster_for(coord1, coord2)
+    raster = []
+    x_limits = [ coord1.first, coord2.first ].sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
+    y_limits = [ coord1.last, coord2.last ].sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
+    puts "\n@@@ X_LIMITS: #{x_limits.inspect}\n Y_LIMITS: #{y_limits.inspect}"
+    x = x_limits.first
+    while LocationReference::GRID_SORT.call(x,x_limits.last) < 0
+      y = y_limits.first
+      while LocationReference::GRID_SORT.call(y,y_limits.last) < 0
+        raster << (x || '???').to_s + '=' + (y || '???').to_s
+        y = LocationReference.grid_diff_coordinate(y, 1)
+      end
+      x = LocationReference.grid_diff_coordinate(x, 1)
+    end
+    raster
+  end
+
   def self.search(query={})
     Sunspot.search LocationReference do
 
@@ -278,13 +305,24 @@ class LocationReference < ActiveRecord::Base
 
       lon = query[:longitude].nil? ? nil : query[:longitude].to_f
       lat = query[:latitude].nil? ? nil : query[:latitude].to_f
+
+      lon2 = query[:longitude2].nil? ? nil : query[:longitude2].to_f
+      lat2 = query[:latitude2].nil? ? nil : query[:latitude2].to_f
+
       raster = []
       unless lon.nil? && lat.nil?
-        loc = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
-        raster = LocationReference.surrounding_quadrant_raster_for(loc.grid_coordinates)
+        raster = if lon2.nil? || lat2.nil?
+          loc = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
+          LocationReference.surrounding_quadrant_raster_for(loc.grid_coordinates)
+        else
+          loc1 = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
+          loc2 = LocationReference.new{|l| l.latitude = lat2; l.longitude = lon2 }
+          LocationReference.bounding_quadrant_raster_for(loc1.grid_coordinates, loc2.grid_coordinates)
+        end
       end
 
       unless raster.empty?
+        puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
         self.with(:quadrant).any_of(raster)
       end
 
