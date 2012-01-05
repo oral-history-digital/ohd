@@ -177,7 +177,7 @@ class LocationReference < ActiveRecord::Base
   def coordinates
     coord = LocationReference.coordinates_for(latitude, longitude)
     return coord if coord.first.nil?
-    @@reference_coord ||= LocationReference.coordinates_for('52.5186','13.408')
+    @@reference_coord ||= LocationReference.coordinates_for('70','180')
     [coord.first - @@reference_coord.last, coord.last - @@reference_coord.last]
   end
 
@@ -239,7 +239,7 @@ class LocationReference < ActiveRecord::Base
 
   def self.distance_to_grid_coordinate(distance)
     return nil if distance.nil?
-    grid_units = (distance / 40).round # 40 km per grid unit
+    grid_units = (distance / 750).round # 750 km per grid unit
     ('A'..'Z').to_a[grid_units % 26] + (0..99).to_a[(grid_units / 26).to_i].to_s.rjust(2,'0')
   end
 
@@ -287,9 +287,9 @@ class LocationReference < ActiveRecord::Base
     y_limits = [ coord1.last, coord2.last ].sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
     puts "\n@@@ X_LIMITS: #{x_limits.inspect}\n Y_LIMITS: #{y_limits.inspect}"
     x = x_limits.first
-    while LocationReference::GRID_SORT.call(x,x_limits.last) < 0
+    while LocationReference::GRID_SORT.call(x,x_limits.last) <= 0
       y = y_limits.first
-      while LocationReference::GRID_SORT.call(y,y_limits.last) < 0
+      while LocationReference::GRID_SORT.call(y,y_limits.last) <= 0
         raster << (x || '???').to_s + '=' + (y || '???').to_s
         y = LocationReference.grid_diff_coordinate(y, 1)
       end

@@ -25,3 +25,13 @@
 <% javascript_tag do -%>
     document.observe("dom:loaded", initializeMap('interactive_map'));
 <% end -%>
+
+<-- TEST CONDITIONS:
+
+l = LocationReference.new{|lr| lr.latitude = 49.1; lr.longitude = 16.3 }
+
+l2 = LocationReference.new {|lr| lr.latitude = 51.1; lr.longitude = 13.6 }
+
+LocationReference.bounding_quadrant_raster_for(l.grid_coordinates, l2.grid_coordinates)
+
+//-->
