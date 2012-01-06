@@ -1,32 +1,14 @@
 <% javascript_tag do -%>
   var map = null;
-
-  function initializeMap(id) {
-    var latlng = new google.maps.LatLng(49.1, 16.3);
-    var myOptions = {
-      zoom: 5,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.TERRAIN
-    };
-    map = new google.maps.Map($(id), myOptions);
-    google.maps.event.addListener(map, 'dragend', searchWithinBounds);
-    google.maps.event.addListener(map, 'zoom_changed', searchWithinBounds);
-  }
-
-  function searchWithinBounds() {
-    var bounds = map.getBounds();
-    if(!bounds) { return };
-    alert('Map NE = ' + map.getBounds().getNorthEast() + '\n SW  = ' + map.getBounds().getSouthWest());
-  }
 <% end -%>
 
 <div id="interactive_map" style="width: 100%; height: 660px"></div>
 
 <% javascript_tag do -%>
-    document.observe("dom:loaded", initializeMap('interactive_map'));
+    document.observe("dom:loaded", mapSetup('interactive_map'));
 <% end -%>
 
-<-- TEST CONDITIONS:
+<!-- TEST CONDITIONS:
 
 l = LocationReference.new{|lr| lr.latitude = 49.1; lr.longitude = 16.3 }
 
