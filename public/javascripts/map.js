@@ -40,7 +40,7 @@ InteractiveMap.prototype = {
         var lng1 = bounds.getSouthWest().lng();
         var lat2 = bounds.getNorthEast().lat();
         var lng2 = bounds.getNorthEast().lng();
-        window.imapBounds = '(' + Math.floor(lat1*100)/100 + ',' + Math.floor(lng1*100)/100 + ') to (' + Math.floor(lat2*100)/100 + ',' + Math.floor(lng2*100)/100 + ')';
+        // window.imapBounds = '(' + Math.floor(lat1*100)/100 + ',' + Math.floor(lng1*100)/100 + ') to (' + Math.floor(lat2*100)/100 + ',' + Math.floor(lng2*100)/100 + ')';
         new Ajax.Request(this.component.options.searchURL, {
             parameters: {
                 latitude: lat1,
@@ -49,35 +49,37 @@ InteractiveMap.prototype = {
                 longitude2: lng2
             },
             method: 'GET',
-            onSuccess: function(response) {
-                if(response.responseJSON.results) {
-                    this.locations = [];
-                    var str = '';
-                    str = str + window.imapBounds + '\n';
-                    // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
-                    // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
-                    response.responseJSON.results.each(function(location){
-                        this.locations[this.locations.length] = location;
-                        str = str + location.location + '\n';
-                    });
-                    alert('Updated locations for bounds: '+ str);
-                    // alert('Received JSON results:\n' + response.responseJSON.results);
-                    this.addLocations(response.responseJSON.results);
-                }
-            }
+            onSuccess: this.component.addLocations
         });
         // alert('Map NE = ' + this.getBounds().getNorthEast() + '\n SW  = ' + this.getBounds().getSouthWest());
     },
-    addLocations: function(locations) {
-        alert('Called addLocations:\n\n' + locations);
-        var str = '';
-        locations.each(function(loc){
-            str = str + loc.location + '\n';
-        });
-        alert('Locations:\n' + str);
+    addLocations: function(response) {
+        if(response.responseJSON.results) {
+            this.locations = [];
+            var str = '';
+            // str = str + window.imapBounds + '\n';
+            // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
+            // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
+            response.responseJSON.results.each(function(location){
+                this.locations[this.locations.length] = location;
+                str = str + location.location + '\n';
+            });
+            alert('Updated locations for bounds: '+ str);
+            // alert('Received JSON results:\n' + response.responseJSON.results);
+            // this.addLocations();
+        }
+        //var str = '';
+        //locations.each(function(loc){
+        //    str = str + loc.location + '\n';
+        //});
+        //alert('Locations:\n' + str);
     }
 };
 
 function mapSetup(id) {
-    new InteractiveMap(id);
+    window.map = new InteractiveMap(id);
+}
+
+function searchWithinBounds() {
+    window.map.searchWithinBounds();
 }
