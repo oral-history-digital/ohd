@@ -177,27 +177,33 @@ class LocationReference < ActiveRecord::Base
   def coordinates
     coord = LocationReference.coordinates_for(latitude, longitude)
     return coord if coord.first.nil?
-    @@reference_coord ||= LocationReference.coordinates_for('70','180')
-    [coord.first - @@reference_coord.last, coord.last - @@reference_coord.last]
+    [LocationReference.null_coordinates.first + coord.first, LocationReference.null_coordinates.last + coord.last]
+  end
+
+  def self.null_coordinates
+    @@reference_coord ||= LocationReference.coordinates_for('90','180') # wrap west of Alaska and north of Polar circle
   end
 
   def self.coordinates_for(lat, lon)
     begin
       y = 110.6 * lat.to_f
-      # scale latitude distance by latitude spline approximation
-      s_scales = [[30, 96.39], [45, 78.7], [51.4795, 69.29], [60, 55.65]]
-      x_prev = 0
-      prev_scale = 111.3
-      x = 0
-      long = lon.to_f.abs
-      s_scales.each do |l|
-        if l.first > long
-          scale =  ((long - x_prev) / (l.first - x_prev) * l.last) + ((l.first - long) / (l.first - x_prev) * prev_scale)
-          x += scale * (long - x_prev)
-        end
-      end
-      x = x * (lon.to_f / lon.to_f.abs)
-      [x.round, y.round]
+      x = 75 * lon.to_f
+#      # scale latitude distance by latitude spline approximation
+#      s_scales = [[0, 111.3], [30, 96.39], [45, 78.7], [51.4795, 69.29], [60, 55.65], [90, 48]]
+#      y_prev = 0
+#      prev_scale = 111.3
+#      y = 0
+#      lati = lat.to_f.abs
+#      s_scales.each do |l|
+#        if l.first > lati
+#          scale =  ((lati - y_prev) / (l.first - y_prev) * l.last) + ((l.first - lati) / (l.first - y_prev) * prev_scale)
+#          y += scale * (lati - y_prev)
+#        end
+#        y_prev = l.first
+#        prev_scale = l.last
+#      end
+#      y = y * (lat.to_f / lat.to_f.abs)
+      [y.round, x.round] # lat, lng
     rescue FloatDomainError
       [ nil, nil ]
     end
@@ -205,12 +211,12 @@ class LocationReference < ActiveRecord::Base
 
   def grid_x
     @grid_coord ||= grid_coordinates
-    @grid_coord.first
+    @grid_coord.last
   end
 
   def grid_y
     @grid_coord ||= grid_coordinates
-    @grid_coord.last
+    @grid_coord.first
   end
 
   def quadrant
@@ -237,15 +243,39 @@ class LocationReference < ActiveRecord::Base
     order
   end
 
+  def self.grid_encode(units)
+    while(units > 26 * 26) do
+      units = units - 26 * 26
+    end
+    ('A'..'Z').to_a[(units / 26).floor] + ('A'..'Z').to_a[units % 26]
+  end
+
+  def self.grid_decode(gridcode)
+    tokens = gridcode.scan(/\w{1}/)
+    value = 0
+    scale = 1
+    while !tokens.empty?
+      alpha = tokens.pop
+      value += ('A'..'Z').to_a.index(alpha) * scale
+      scale = scale * 26
+    end
+    value
+  end
+
   def self.distance_to_grid_coordinate(distance)
     return nil if distance.nil?
-    grid_units = (distance / 750).round # 750 km per grid unit
-    ('A'..'Z').to_a[grid_units % 26] + (0..99).to_a[(grid_units / 26).to_i].to_s.rjust(2,'0')
+    grid_units = (distance.abs / 1000).round # 250 km per grid unit
+    # puts "GridIndices for distance = #{distance}: #{grid_units / 26}:#{(grid_units2 / 10).round}:#{grid_units2 % 10}"
+    LocationReference.grid_encode(grid_units)
   end
 
   def self.grid_diff_coordinate(coordinate, diff)
     coordinate = coordinate.to_s
-    nil unless coordinate =~ /^[A-Z][0-9]{2}$/
+    nil unless coordinate =~ /^[A-Z]+$/
+    value = LocationReference.grid_decode(coordinate)
+    LocationReference.grid_encode(value + diff)
+=begin
+
     alpha = ('A'..'Z').to_a.index coordinate[/^\w/]
     numeric = coordinate[/\d+$/].to_i
     alpha_diff = diff.abs  % 26
@@ -260,6 +290,7 @@ class LocationReference < ActiveRecord::Base
       numeric_diff += 1
     end
     ('A'..'Z').to_a[alpha] + (0..99).to_a[(numeric + numeric_diff)].to_s.rjust(2,'0')
+=end
   end
 
   # yields a raster of quadrants around a grid coordinate pair
@@ -283,18 +314,19 @@ class LocationReference < ActiveRecord::Base
   # yields a raster of quadrants for a bounding set of coordinate pairs
   def self.bounding_quadrant_raster_for(coord1, coord2)
     raster = []
-    x_limits = [ coord1.first, coord2.first ].sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
-    y_limits = [ coord1.last, coord2.last ].sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
+    x_limits = [ coord2.first, coord1.first ].sort # don't sort like this: .sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
+    y_limits = [ coord2.last, coord1.last ].sort # don't sort like this: .sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
     puts "\n@@@ X_LIMITS: #{x_limits.inspect}\n Y_LIMITS: #{y_limits.inspect}"
-    x = x_limits.first
-    while LocationReference::GRID_SORT.call(x,x_limits.last) <= 0
-      y = y_limits.first
-      while LocationReference::GRID_SORT.call(y,y_limits.last) <= 0
+    x = x_limits.first #LocationReference.grid_diff_coordinate(x_limits.first, -1)
+    while x <=  LocationReference.grid_diff_coordinate(x_limits.last, 1)
+      y = y_limits.first #LocationReference.grid_diff_coordinate(y_limits.first, -1)
+      while y <=  LocationReference.grid_diff_coordinate(y_limits.last, 1)
         raster << (x || '???').to_s + '=' + (y || '???').to_s
         y = LocationReference.grid_diff_coordinate(y, 1)
       end
       x = LocationReference.grid_diff_coordinate(x, 1)
     end
+    puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
     raster
   end
 
@@ -322,7 +354,7 @@ class LocationReference < ActiveRecord::Base
       end
 
       unless raster.empty?
-        puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
+        # puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
         self.with(:quadrant).any_of(raster)
       end
 

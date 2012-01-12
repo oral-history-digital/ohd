@@ -42,6 +42,7 @@ describe Search, 'when saving as a UserContent' do
 
   it "should store the query in the properties and serialize them as YAML" do
     @search = Search.create(@content_attributes)
+    @search.user = User.create{|u| u.first_name = 'Jan'; u.last_name = 'Rietema' }
     @search.should be_valid
     @search.get_properties.should == @content_attributes['properties']
   end
