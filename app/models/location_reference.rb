@@ -358,6 +358,12 @@ class LocationReference < ActiveRecord::Base
         self.with(:quadrant).any_of(raster)
       end
 
+      unless query[:page].blank?
+        self.paginate :page => query[:page].to_i, :per_page => 50
+      else
+        self.paginate :page => 1, :per_page => 800
+      end
+
       adjust_solr_params do |params|
         params[:defType] = 'lucene'
         #params[:qt] = 'standard'

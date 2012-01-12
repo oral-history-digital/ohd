@@ -41,19 +41,21 @@ class LocationReferencesController < BaseController
     I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
   end
 
-  def query
+  def query(paginate=false)
     query = {}
     query[:location] = Search.lucene_escape(params['location'])
     query[:longitude] = params['longitude'] unless params['longitude'].blank?
     query[:latitude] = params['latitude'] unless params['latitude'].blank?
     query[:longitude2] = params['longitude2'] unless params['longitude2'].blank?
     query[:latitude2] = params['latitude2'] unless params['latitude2'].blank?
+    query[:page] = params[:page] || 1 if !params[:page].blank? || paginate
     puts "\n@@@ QUERY: #{query.inspect}"
     query
   end
 
   def perform_search
-    @location_search = LocationReference.search(query)
+    paginate = request.xhr? ? false : true
+    @location_search = LocationReference.search(query(paginate))
     @results = @location_search.results
   end
 
