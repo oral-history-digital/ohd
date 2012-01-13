@@ -28,8 +28,9 @@ InteractiveMap.prototype = {
         this.map.component = this;
 
         // Event Listeners
-        google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
-        google.maps.event.addListener(this.map, 'zoom_changed', this.searchWithinBounds);
+        //google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
+        //google.maps.event.addListener(this.map, 'zoom_changed', this.searchWithinBounds);
+        google.maps.event.addListener(this.map, 'tilesloaded', this.searchWithinBounds);
 
         return this.map;
     },
@@ -56,15 +57,20 @@ InteractiveMap.prototype = {
     addLocations: function(response) {
         if(response.responseJSON.results) {
             this.locations = [];
+            this.markers = [];
             var str = '';
             // str = str + window.imapBounds + '\n';
             // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
             response.responseJSON.results.each(function(location){
-                this.locations[this.locations.length] = location;
-                str = str + location.location + '\n';
+                // this.locations[this.locations.length] = location;
+                // str = str + location.location + '\n';
+                this.markers[this.markers.length] = new google.maps.Marker({
+                    position: new google.maps.LatLng(location.latitude, location.longitude),
+                    map: window.locationSearch.map
+                });
             });
-            alert('Updated locations for bounds: '+ str);
+            // alert('Updated locations for bounds: '+ str);
             // alert('Received JSON results:\n' + response.responseJSON.results);
             // this.addLocations();
         }
@@ -77,9 +83,9 @@ InteractiveMap.prototype = {
 };
 
 function mapSetup(id) {
-    window.map = new InteractiveMap(id);
+    window.locationSearch = new InteractiveMap(id);
 }
 
 function searchWithinBounds() {
-    window.map.searchWithinBounds();
+    window.locationSearch.searchWithinBounds();
 }
