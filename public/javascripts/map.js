@@ -63,12 +63,16 @@ InteractiveMap.prototype = {
             // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
             response.responseJSON.results.each(function(location){
-                // this.locations[this.locations.length] = location;
+                this.locations[this.locations.length] = location;
                 // str = str + location.location + '\n';
-                this.markers[this.markers.length] = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(location.latitude, location.longitude),
-                    map: window.locationSearch.map
+                    map: window.locationSearch.map,
+                    title: location.interviewee + ' in ' + location.location
                 });
+                this.markers[this.markers.length] = marker;
+                // google.maps.event.addListener(marker, 'click', window.locationSearch.showInfo);
+
             });
             // alert('Updated locations for bounds: '+ str);
             // alert('Received JSON results:\n' + response.responseJSON.results);
@@ -79,6 +83,17 @@ InteractiveMap.prototype = {
         //    str = str + loc.location + '\n';
         //});
         //alert('Locations:\n' + str);
+    },
+    // presents an infoWindow for the marker and location at index position
+    showInfo: function() {
+      var index = window.locationSearch.map.markers.indexOf(this);
+      var marker = window.locationSearch.markers[index];
+      var location = window.locationSearch.locations[index];
+      var info = '<h1>' + location.interview + ' (' + location.interviewId + ')</h1>';
+      info = info + '<p>' + location.locationType + ' ' + location.location + '</p>';
+      info = info + '<p>' + location.interviewType + ', ' + location.language + '</p>';
+      var infoWindow = new google.maps.InfoWindow(info);
+      infoWindow.open(window.locationSearch.map, marker);
     }
 };
 
