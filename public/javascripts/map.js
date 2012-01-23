@@ -20,7 +20,7 @@ InteractiveMap.prototype = {
 
         // URL root
         this.options.urlRoot = window.location.pathname.split('/')[1] == 'archiv' ? 'archiv' : '';
-        // this.options.searchURL = this.options.urlRoot + this.options.searchURL;
+        this.options.searchURL = this.options.urlRoot + this.options.searchURL;
 
         window.locationSearch = this;
 
