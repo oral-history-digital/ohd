@@ -64,6 +64,7 @@ class LocationReference < ActiveRecord::Base
     json['language'] = self.interview.languages.to_s
     json['translated'] = self.interview.translated
     json['interviewType'] = self.interview.video ? 'video' : 'audio'
+    json['referenceType'] = self.reference_type
     json['experienceGroup'] = self.interview.forced_labor_groups.map{|g| g.name }.join(", ")
     json['location'] = name
     json['locationType'] = location_type
