@@ -121,8 +121,8 @@ InteractiveMap.prototype = {
         if(str == 'forced_labor_location') { return 'Zwangsarbeit -'; }
         if(str == 'deportation_location') { return 'Deportation -'; }
         if(str == 'place_of_birth') { return 'Geburtsort -'; }
-        if(str == 'home_location') { return 'Wohnort nach 1945 -'; }
-        if(str == 'return_location') { return 'Rückkehr -'; }
+        if(str == 'home_location') { return 'Lebensmittelpunkt -'; }
+        if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
     }
