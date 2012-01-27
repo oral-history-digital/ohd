@@ -360,7 +360,7 @@ DEF
     end
     Search.new do |search|
       search.results = search_results
-      search.fulltext = fulltext
+      search.fulltext = Search.lucene_escape(fulltext)
     end
   end
 
@@ -423,7 +423,7 @@ DEF
 
       # fulltext search
       unless query['fulltext'].blank?
-        keywords Unicode.downcase(query['fulltext'])
+        keywords Unicode.downcase(Search.lucene_escape(query['fulltext']))
       end
 
       # person name facet
@@ -533,7 +533,7 @@ DEF
     if query.blank?
       ''
     else
-      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!\(\)]+/,''))
+      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!\(\)]+/,'').gsub(/\(\W*\)?/,''))
     end
   end
 
