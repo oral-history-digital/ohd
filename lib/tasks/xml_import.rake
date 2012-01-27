@@ -1,8 +1,9 @@
 namespace :xml_import do
 
   desc "incremental import of data"
-  task :incremental, [:file] => :environment do |task,args|
+  task :incremental, [:file, :reindex] => :environment do |task,args|
     file = args[:file]
+    reindex = !args[:reindex].blank?
     require 'nokogiri'
 
     raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file)
@@ -11,14 +12,17 @@ namespace :xml_import do
     @parser.parse(File.read(file))
 
     archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
-    unless Interview.find_by_archive_id(archive_id).nil?
-      puts "Beginning import of '#{archive_id}'"
-      # Don't run this as it can corrupt the index for all
-      # interviews that are not up-to-date
-      # Rake::Task['cleanup:unused_categories'].execute
-      Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
-    else
-      puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
+    if reindex
+      unless Interview.find_by_archive_id(archive_id).nil?
+        # puts "Beginning import of '#{archive_id}'"
+        # Don't run this as it can corrupt the index for all
+        # interviews that are not up-to-date
+        # Rake::Task['cleanup:unused_categories'].execute
+        # NOTE: run the reindexing separately to allow for cleanup
+        Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
+      else
+        puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
+      end
     end
 
   end
@@ -34,20 +38,36 @@ namespace :xml_import do
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
         xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
         next if xmlfile.blank?
+        archive_id = xmlfile.to_s[/za\d{3}/i]
+        puts "\n\nStarting import processes for archive id: #{archive_id}"
+        # First: XML import
         Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
-          stderr.each_line {|line| errors << line unless line.empty?}
+          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
           unless errors.empty?
             errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
             logfile << errmsg
             puts errmsg
           end
         end
-        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 6 seconds.\n"
+        # Second: XML language cleanup/import
+        Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
+          stdout.each_line {|line| puts line }
+          errors = []
+          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+          unless errors.empty?
+            errmsg = "\nImport der Sprachdaten für Interview (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            logfile << errmsg
+            puts errmsg
+          end
+        end
+        # Third: Reindexing of interview
+        Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
+        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
         logfile << statusmsg
         puts statusmsg
-        sleep 6
+        sleep 2
         puts
       end
     end
@@ -56,7 +76,7 @@ namespace :xml_import do
     Open4::popen4("rake cleanup:remove_empty_locations --trace") do |pid, stdin, stdout, stderr|
       stdout.each_line {|line| puts line }
       errors = []
-      stderr.each_line {|line| errors << line unless line.empty?}
+      stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
       unless errors.empty?
         errmsg = "\nFEHLER:\n#{errors.join("\n")}"
         @logfile << errmsg
@@ -81,14 +101,21 @@ namespace :xml_import do
 
 
   desc "checks and assigns interview languages in case there are problems during xml import"
-  task :languages => :environment do
+  task :languages, [:id] => :environment do |task,args|
     require 'nokogiri'
 
-    puts "\nChecking and updating languages:"
+    id = args[:id]
+
+    puts "\nChecking and updating languages for #{id.blank? ? 'all interviews' : id}:"
     repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
-      xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
-      next if xmlfile.blank?
+    if id.blank?
+      # all interviews
+      repo_dir = File.join(repo_dir, 'za**')
+    else
+      # specific interview
+      repo_dir = File.join(repo_dir, id.downcase)
+    end
+    Dir.glob(File.join(repo_dir, 'data', 'za*.xml')).each do |xmlfile|
       archive_id = (xmlfile.split('/').last[/za\d{3}/i] || '').downcase
       next if archive_id.blank?
       puts archive_id
