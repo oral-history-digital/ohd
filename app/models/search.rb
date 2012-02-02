@@ -533,7 +533,7 @@ DEF
     if query.blank?
       ''
     else
-      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!\(\)]+/,'').gsub(/\(\W*\)?/,''))
+      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!]+/,'').gsub(/([\(\)])/,'\\\\\1').gsub(/\(\W+\)?/,''))
     end
   end
 
