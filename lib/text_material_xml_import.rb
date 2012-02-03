@@ -41,15 +41,19 @@ class TextMaterialXMLImport < Nokogiri::XML::SAX::Document
         @current_document = @interview.text_materials.select{|tm| tm.document_type == @document_properties[:type] }.first
         @current_document ||= @interview.text_materials.build{|tm| tm.document_type = @document_properties[:type] }
         puts "Importing document for #{@document_properties[:filename]}"
-        @current_document.document_file_name = @document_properties[:filename]
-        if @current_document.new_record?
-          puts "CREATED new text_material #{@current_document.document_file_name} for #{@interview}"
-        else
-          puts "UPDATED text_material #{@current_document.document_file_name} for #{@interview}"
-        end
-        @interview.save
-        if @current_document.save
-          @materials_for_interview << @current_document.document_file_name
+        begin
+          @current_document.document_file_name = @document_properties[:filename]
+          if @current_document.new_record?
+            puts "CREATED new text_material #{@current_document.document_file_name} for #{@interview}"
+          else
+            puts "UPDATED text_material #{@current_document.document_file_name} for #{@interview}"
+          end
+          @interview.save
+          if @current_document.save
+            @materials_for_interview << @current_document.document_file_name
+          end
+        rescue Exception => e
+          puts "ERROR: #{e.message}\nSkipping #{@document_properties[:filename]}!"
         end
       end
       @parsing_language = false
