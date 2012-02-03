@@ -126,4 +126,31 @@ namespace :xml_import do
 
   end
 
+
+  desc "checks and updates text_materials for an interview"
+  task :text_materials, [:id] => :environment do |task,args|
+    require 'nokogiri'
+
+    id = args[:id]
+
+    puts "\nChecking and updating text_materials for #{id.blank? ? 'all interviews' : id}:"
+    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
+    if id.blank?
+      # all interviews
+      repo_dir = File.join(repo_dir, 'za**')
+    else
+      # specific interview
+      repo_dir = File.join(repo_dir, id.downcase)
+    end
+    Dir.glob(File.join(repo_dir, 'data', 'za*.xml')).each do |xmlfile|
+      archive_id = (xmlfile.split('/').last[/za\d{3}/i] || '').downcase
+      next if archive_id.blank?
+      puts archive_id
+      @parser = Nokogiri::XML::SAX::Parser.new(TextMaterialXMLImport.new(xmlfile))
+      @parser.parse(File.read(xmlfile))
+      puts
+    end
+
+  end
+
 end
