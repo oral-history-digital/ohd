@@ -1,5 +1,5 @@
-var InteractiveMap = Class.create();
-InteractiveMap.prototype = {
+var InteractiveMap1 = Class.create();
+InteractiveMap1.prototype = {
     initialize: function(id, options) {
         // Settings and defaults
         var defaults = {
@@ -39,13 +39,12 @@ InteractiveMap.prototype = {
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
         this.map = new google.maps.Map($(id), mapOptions);
-
-        this.clusterManager = new ClusterManager(this.map);
+        this.markers = [];
 
         // Event Listeners
         //google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
         //google.maps.event.addListener(this.map, 'zoom_changed', this.searchWithinBounds);
-        google.maps.event.addListener(this.map, 'idle', this.searchWithinBounds);
+        google.maps.event.addListener(this.map, 'tilesloaded', this.searchWithinBounds);
 
         return this.map;
     },
@@ -73,20 +72,31 @@ InteractiveMap.prototype = {
         if(response.responseJSON.results) {
             // window.locationSearch.locations = [];
 
-            //var str = '';
+            var str = '';
             // str = str + window.imapBounds + '\n';
             // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
             response.responseJSON.results.each(function(location){
-                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.location, location.referenceType, 100);
                 // window.locationSearch.locations.push(location);
                 // str = str + location.location + '\n';
+                var markerIcon = window.locationSearch.options.images[location.referenceType];
+                if(!markerIcon) { markerIcon = window.locationSearch.options.images['default']; }
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(location.latitude, location.longitude),
+                    map: window.locationSearch.map,
+                    title: location.interviewee + ' in ' + location.location,
+                    icon: markerIcon
+                });
+                marker.location = location;
+                if (window.locationSearch.markers.indexOf(marker) == -1) {
+                    window.locationSearch.markers.push(marker);
+                }
+                google.maps.event.addListener(marker, 'click', window.locationSearch.showInfo);
+
             });
             // alert('Updated locations for bounds: '+ str);
             // alert('Received JSON results:\n' + response.responseJSON.results);
             // this.addLocations();
-
-            window.locationSearch.clusterManager.redraw(window.locationSearch.map);
         }
         //var str = '';
         //locations.each(function(loc){
@@ -118,10 +128,10 @@ InteractiveMap.prototype = {
     }
 };
 
-function mapSetup(id) {
-    new InteractiveMap(id);
+function mapSetup1(id) {
+    new InteractiveMap1(id);
 }
 
-function searchWithinBounds() {
+function searchWithinBounds1() {
     window.locationSearch.searchWithinBounds();
 }

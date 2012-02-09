@@ -18,17 +18,36 @@ class LocationReferencesController < BaseController
     end
     wants.json do
       # this is the response when calling 'ortssuche.json''
-      render :json => { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      render :json => { 'results' => @results.map{|i| i.json_attrs.merge({ :id => i.id }) } }.to_json
     end
     wants.js do
       # this is the default response or when calling 'ortssuche.js'
-      json = { 'results' => @results.map{|i| i.json_attrs } }.to_json
+      json = { 'results' => @results.map{|i| i.json_attrs.merge({ :id => i.id }) } }.to_json
       render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+    end
+  end
+
+  def full_index
+    @results = LocationReference.find(:all)
+    response.headers['Cache-Control'] = "public, max-age=1209600"
+    wants.html do
+      render :action => :index
+    end
+    wants.json do
+      render :json => { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+    end
+    wants.js do
+      json = { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+      render :js => json
     end
   end
 
   def map
 
+  end
+
+  def map1
+    
   end
 
   private

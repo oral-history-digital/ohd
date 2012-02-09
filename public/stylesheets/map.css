@@ -1,0 +1,27 @@
+.markerOverlay div {
+    height: 16px;
+    width: 16px;
+    text-indent: -9999px;
+    display: block;
+    background: transparent url(/images/test_markers/interview_marker.png) top left no-repeat;
+}
+
+.markerOverlay div.forced_labor_location {
+    background-image: url(/images/test_markers/forced_labor_location_marker.png);
+}
+
+.markerOverlay div.home_location {
+    background-image: url(/images/test_markers/home_location_marker.png);
+}
+
+.markerOverlay div.place_of_birth {
+    background-image: url(/images/test_markers/place_of_birth_marker.png);
+}
+
+.markerOverlay div.return_location {
+    background-image: url(/images/test_markers/return_location_marker.png);
+}
+
+.markerOverlay div.deportation_location {
+    background-image: url(/images/test_markers/deportation_location_marker.png);
+}
