@@ -27,7 +27,7 @@ InteractiveMap.prototype = {
         if(!this.options.images) {
             this.options.images = new Hash();
             this.options.images['default'] = new google.maps.MarkerImage(this.options.urlRoot + '/images/test_markers/interview_marker.png');
-            ['place_of_birth', 'deportation_location', 'forced_labor_location', 'return_location', 'home_location'].each(function(icon){
+            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'return_location', 'home_location'].each(function(icon){
                window.locationSearch.options.images[icon] = new google.maps.MarkerImage(window.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
             });
         }
@@ -40,7 +40,7 @@ InteractiveMap.prototype = {
         };
         this.map = new google.maps.Map($(id), mapOptions);
 
-        this.clusterManager = new ClusterManager(this.map);
+        this.clusterManager = new ClusterManager(this.map,{});
 
         // Event Listeners
         //google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
@@ -78,7 +78,8 @@ InteractiveMap.prototype = {
             // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
             response.responseJSON.results.each(function(location){
-                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.location, location.referenceType, 100);
+                var locationInfo = window.locationSearch.locationInfo(location);
+                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.referenceType, 0);
                 // window.locationSearch.locations.push(location);
                 // str = str + location.location + '\n';
             });
@@ -86,7 +87,7 @@ InteractiveMap.prototype = {
             // alert('Received JSON results:\n' + response.responseJSON.results);
             // this.addLocations();
 
-            window.locationSearch.clusterManager.redraw(window.locationSearch.map);
+            // window.locationSearch.clusterManager.redraw(window.locationSearch.map);
         }
         //var str = '';
         //locations.each(function(loc){
@@ -95,17 +96,13 @@ InteractiveMap.prototype = {
         //alert('Locations:\n' + str);
     },
     // presents an infoWindow for the marker and location at index position
-    showInfo: function() {
-      var index = window.locationSearch.markers.indexOf(this);
-      var marker = window.locationSearch.markers[index];
-      var location = marker.location;
+    locationInfo: function(location) {
       var reference = window.locationSearch.translate(location.referenceType);
       var info = '<h3>' + location.locationType + ' ' + location.location + '</h3>';
       info = info + '<p style="font-weight: bold;">' + reference + '&nbsp;<a href="' + window.locationSearch.options.urlRoot + '/interviews/' + location.interviewId + '" target="_blank">' + location.interviewee + ' (' + location.interviewId + ')<br/><small>&raquo;zum Interview</small></a></p>';
       info = info + '<p style="font-size: 85%">' + location.experienceGroup + '<br/>';
       info = info + location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
-      var infoWindow = new google.maps.InfoWindow({content: info, maxWidth: 320 });
-      infoWindow.open(window.locationSearch.map, marker);
+      return info;
     },
     translate: function(str) {
         if(str == 'forced_labor_location') { return 'Zwangsarbeit -'; }
