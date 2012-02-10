@@ -1,5 +1,10 @@
 /* Contains the JS for light-weight markers and location hierarchy clustering */
 
+/* Extend google.maps.LatLng to equal on coordinate equality */
+google.maps.LatLng.equals = function(other) {
+    return this.lat() == other.lat() && this.lng() == other.lng();
+};
+
 var ClusterManager = Class.create();
 
 ClusterManager.prototype = {
@@ -21,7 +26,13 @@ ClusterManager.prototype = {
     },
     addLocation: function(id, latLng, htmlText, divClass, zIndex) {
         var marker = null;
-        var idx = this.locations.indexOf(latLng);
+        var idx = this.locations.length;
+        while (idx--) {
+            if(idx == -1 || this.locations[idx].equals(latLng)) {
+                break;
+            }
+        }
+        // var idx = this.locations.indexOf(latLng);
         if(idx == -1) {
             // add new marker
             marker = new google.maps.Marker({

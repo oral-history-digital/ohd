@@ -30,15 +30,17 @@ class LocationReferencesController < BaseController
   def full_index
     @results = LocationReference.find(:all)
     response.headers['Cache-Control'] = "public, max-age=1209600"
-    wants.html do
-      render :action => :index
-    end
-    wants.json do
-      render :json => { 'locations' => @results.map{|i| i.json_attrs } }.to_json
-    end
-    wants.js do
-      json = { 'locations' => @results.map{|i| i.json_attrs } }.to_json
-      render :js => json
+    respond_to do |wants|
+      wants.html do
+        render :action => :index
+      end
+      wants.json do
+        render :json => { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+      end
+      wants.js do
+        json = { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+        render :js => json
+      end
     end
   end
 

@@ -6,7 +6,7 @@ InteractiveMap.prototype = {
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            searchURL: '/webservice/ortssuche.json'
+            searchURL: '/webservice/orte.json'
         };
         if (options != null) {
             this.options = options;
@@ -45,39 +45,42 @@ InteractiveMap.prototype = {
         // Event Listeners
         //google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
         //google.maps.event.addListener(this.map, 'zoom_changed', this.searchWithinBounds);
-        google.maps.event.addListener(this.map, 'idle', this.searchWithinBounds);
+        // google.maps.event.addListener(this.map, 'idle', this.searchWithinBounds);
+        searchWithinBounds();
 
         return this.map;
     },
     searchWithinBounds: function() {
+        /*
         var bounds = this.getBounds();
         if(!bounds) { return }
         var lat1 = bounds.getSouthWest().lat();
         var lng1 = bounds.getSouthWest().lng();
         var lat2 = bounds.getNorthEast().lat();
         var lng2 = bounds.getNorthEast().lng();
+        */
         // window.imapBounds = '(' + Math.floor(lat1*100)/100 + ',' + Math.floor(lng1*100)/100 + ') to (' + Math.floor(lat2*100)/100 + ',' + Math.floor(lng2*100)/100 + ')';
         new Ajax.Request(window.locationSearch.options.searchURL, {
-            parameters: {
+            /*parameters: {
                 latitude: lat1,
                 longitude: lng1,
                 latitude2: lat2,
                 longitude2: lng2
-            },
+            },*/
             method: 'GET',
             onSuccess: window.locationSearch.addLocations
         });
         // alert('Map NE = ' + this.getBounds().getNorthEast() + '\n SW  = ' + this.getBounds().getSouthWest());
     },
     addLocations: function(response) {
-        if(response.responseJSON.results) {
+        if(response.responseJSON.locations) {
             // window.locationSearch.locations = [];
 
             //var str = '';
             // str = str + window.imapBounds + '\n';
             // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
-            response.responseJSON.results.each(function(location){
+            response.responseJSON.locations.each(function(location){
                 var locationInfo = window.locationSearch.locationInfo(location);
                 window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.referenceType, 0);
                 // window.locationSearch.locations.push(location);
