@@ -23,8 +23,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # A few entities need to waive the checks so we can interpret agreement & published values
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
 
-  def initialize(filename, incremental=true)
+  def initialize(filename, incremental=true, selective=false)
     @incremental = !(incremental.nil? || incremental == false)
+    @selection = selective ? [selective.pluralize, selective.singularize] : []
+    unless @selection.empty?
+      puts "\nRestricting import to '#{selective.pluralize}'.\n"
+    end
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
     puts "\nFull-Fledged Objects:"
     @mappings.keys.each do |type|
@@ -39,7 +43,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def start_document
-    @imported = { }
+    @imported = { 'interviews' => [] }
     # The current object class that serves as an import context
     # for all sub-nodes
     @current_context = nil
@@ -97,7 +101,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
         puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
       rescue Exception => e
-        raise "\nERROR: #{e.message}\nInterview Errors: #{@interview.errors.full_messages.join("\n")}\n'#{@archive_id}': #{@interview.inspect}\nAborted."
+        msg = [e.message]
+        unless e.backtrace.blank?
+          msg = msg + [ e.backtrace ]
+        end
+        unless @interview.errors.empty?
+          msg = msg + ["Interview Errors: "] + @interview.errors.full_messages
+        end
+        raise "\nERROR: #{msg.flatten.join("\n")}\n'#{@archive_id}': #{@interview.inspect}\nAborted."
       end
       puts "\nSkipped tag elements:\n#{@skipped_tag_names.join(", ")}"
       puts "\nSource-to-Local ID-Mapping:"
@@ -122,9 +133,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def start_element(name, attributes={})
-    return unless @parsing && passes_import_sanity_checks(name)
-    # @current_data = ''
-    # puts "\n####> CURRENT MAPPING: #{@mapping_levels.join(' | ')}"
     if SANITY_CHECKS.include?(name)
       # perform a sanity check
       case name
@@ -165,6 +173,10 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         else
           # handle the data on closing the element
       end
+
+    elsif !(parsing?(name) && passes_import_sanity_checks(name))
+      # skip this element if not parsing
+      return
     
     elsif @mapping_levels.empty?
       
@@ -219,7 +231,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def end_element(name)
-    return unless @parsing
     @current_data.strip!
     if SANITY_CHECKS.include?(name)
       # handle sanity checks
@@ -251,7 +262,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             puts "Publish condition: satisfied."
             increment_import_sanity name
           else
-            puts "Does not satisfy publish condition - stopping import!"
+            puts "Does not satisfy publish condition (#{@current_data}) - stopping import!"
             @parsing = false
             return
           end
@@ -264,6 +275,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       end
       @current_data = ''
       return
+
+    elsif !(parsing?(name))
+      # do nothing
 
     elsif !@current_context.nil? && @current_node_name == name && !attributes.empty?
       # Wrap up the instance for the current context
@@ -413,6 +427,18 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   private
+
+  # implement a check for selective imports
+  def parsing?(name)
+    selection_toggle = case @selection
+      when []
+        true
+      when Array
+        @selection.include?(name) \
+          || @selection.include?(@current_context)
+    end
+    @parsing && selection_toggle
+  end
 
   # Initializes the state for the current context,
   # setting the current_mapping and mapping_levels.

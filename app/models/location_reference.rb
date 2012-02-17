@@ -9,6 +9,10 @@ class LocationReference < ActiveRecord::Base
   # in a struct or individual flags, so that multiple are possible. Otherwise location_segments
   # will only be related to a single category, each.
 
+  CITY_LEVEL = 0
+  REGION_LEVEL = 1
+  COUNTRY_LEVEL = 2
+
   belongs_to :interview
 
   delegate  :archive_id,
@@ -134,6 +138,7 @@ class LocationReference < ActiveRecord::Base
 
   def city_name=(alias_names='')
     @city_name = alias_names
+    write_attribute :hierarchy_level, CITY_LEVEL
     self.additional_alias=@city_name
   end
 
@@ -142,20 +147,24 @@ class LocationReference < ActiveRecord::Base
   end
 
   def region_name=(alias_names='')
-    @region_name = alias_names
-    self.additional_alias=@region_name
+    self.additional_alias=alias_names
+    write_attribute :hierarchy_level, REGION_LEVEL unless self.hierarchy_level == CITY_LEVEL
+    write_attribute :region_name, alias_names
   end
 
   def region_alias_names=(alias_names='')
+    region_attribute :additional_alias, alias_names
     self.additional_alias=alias_names
   end
 
   def country_name=(alias_names='')
-    @country_name = alias_names
-    self.additional_alias=@country_name
+    self.additional_alias=alias_names
+    write_attribute :hierarchy_level, COUNTRY_LEVEL if self.hierarchy_level.nil?
+    write_attribute :country_name, alias_names
   end
 
   def country_alias_names=(alias_names='')
+    country_attribute :additional_alias, alias_names
     self.additional_alias=alias_names
   end
 

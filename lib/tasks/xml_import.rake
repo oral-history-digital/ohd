@@ -74,7 +74,7 @@ namespace :xml_import do
 
     raise "No xml file supplied (file=...). Please provide a valid xml filename." unless File.exists?(file)
 
-    @parser = Nokogiri::XML::SAX::Parser.new(LocationsXMLImport.new)
+    @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file, true, 'location'))
     @parser.parse(File.read(file))
 
   end
