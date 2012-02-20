@@ -25,15 +25,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   def initialize(filename, incremental=true, selective=false)
     @incremental = !(incremental.nil? || incremental == false)
-    @selection = selective ? [selective.pluralize, selective.singularize] : []
+    @selection = selective ? selective.split(/[,;\s]/).map{|s| [s.pluralize, s.singularize]}.flatten : []
     unless @selection.empty?
-      puts "\nRestricting import to '#{selective.pluralize}'.\n"
+      puts "\nRestricting import to '#{@selection.join(", ")}'.\n"
     end
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
-    puts "\nFull-Fledged Objects:"
-    @mappings.keys.each do |type|
-      puts type.to_s
-    end
+    # puts "\nFull-Fledged Objects:"
+    # @mappings.keys.each do |type|
+    #   puts type.to_s
+    # end
     @archive_id = (filename.split('/').last[/za\d{3}/i] || '').downcase
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
     @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
@@ -82,6 +82,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @source_to_local_id_mapping = {}
     # flag whether we are still parsing
     @parsing = true
+    # flag for parsing nodes at a deeper nesting level than selection
+    @parse_within_selection = false
     # for setting the import time
     @date_of_export = nil
     # migration to store in imports table
@@ -98,8 +100,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @interview.set_deportation_location!
         @interview.set_contributor_fields!
         @imported['interviews'] << @interview.archive_id
-        import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
-        puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
+        if @selection.empty?
+          # only create an import instance on full imports
+          import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
+          puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
+        end
       rescue Exception => e
         msg = [e.message]
         unless e.backtrace.blank?
@@ -185,11 +190,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           STDOUT.printf "\n#{name}"; STDOUT.flush
           @last_main_node = name
         end
-        # This is a base-level object type
-        #STDOUT.printf '.'
-        #STDOUT.flush
         set_context(name)
-        #puts "Associations: #{@associations.keys.join(', ')}"
 
       elsif @mappings.keys.include?(name.singularize)
         if @last_main_node != name.singularize
@@ -313,6 +314,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           if (@node_index += 1) % 15 == 12
             STDOUT.printf '.'; STDOUT.flush
           end
+
           assign_attributes_to_instance(@instance)
 
           # assign to interview association based on context_name
@@ -384,9 +386,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       close_context(name)
 
     elsif !@current_context.nil?
-
-      # TODO: this seems broken - there are a number of sub-contexts which need to be
-      # ignored currently. Also there's a lot of assumptions going into this mapping_levels[-2] thing...
+      # handle as an attribute node
 
       # ID node: set source ID if not set already
       if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
@@ -417,9 +417,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         # one level higher up.
         close_mapping_level(name)
       end
-
+      
     end
+
+    # clean-up in any case
     @current_data = ''
+    @parse_within_selection = false if @selection.include?(name)
   end
 
   def characters(text)
@@ -437,7 +440,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @selection.include?(name) \
           || @selection.include?(@current_context)
     end
-    @parsing && selection_toggle
+    @parse_within_selection = true if selection_toggle
+    @parsing && (selection_toggle || @parse_within_selection)
   end
 
   # Initializes the state for the current context,
@@ -450,7 +454,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     begin
       @current_context = klass.camelize.constantize
     rescue NameError
-      # puts
+      # Not an Error: the mapping does not correspond 1:1 to an object class
       if @current_mapping['class_name'].nil?
         unless @skipped_tag_names.include?(klass.to_sym)
           puts "ERROR: Could not associate tag name '#{klass}' directly with an object class and no class_name definition is given. Skipping!"
@@ -458,7 +462,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         end
         return
       else
-        # puts "Could not associate tag name '#{klass}' directly with an object class... trying to interpret class_name definition (#{@current_mapping['class_name']})."
+        # Associate the class_name argument with the current_context
         @current_context = @current_mapping['class_name'].camelize.constantize
       end
     end
@@ -535,12 +539,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # or attributes (for context)
   def assign_data(data)
     unless @current_attribute.nil?
-      # puts "\n==> Assigning #{attribute} = #{data}"
-      #if data.to_s.strip == 'Auschwitz'
-      #  puts "\n=====> Data assignment (#{@current_context.to_s}): #{@current_attribute}"
-      #  puts "Assigning attribute: '#{@current_attribute}'"
-      #  puts "Current Mapping: #{@current_mapping.inspect}\n"
-      #end
       if @associated_data.empty?
         # write to attributes
         assign_attribute(@current_attribute, data)

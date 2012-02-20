@@ -153,7 +153,6 @@ class LocationReference < ActiveRecord::Base
   end
 
   def region_alias_names=(alias_names='')
-    region_attribute :additional_alias, alias_names
     self.additional_alias=alias_names
   end
 
@@ -164,7 +163,6 @@ class LocationReference < ActiveRecord::Base
   end
 
   def country_alias_names=(alias_names='')
-    country_attribute :additional_alias, alias_names
     self.additional_alias=alias_names
   end
 
