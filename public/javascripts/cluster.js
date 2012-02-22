@@ -60,7 +60,7 @@ ClusterManager.prototype = {
         var idx = this.markers.indexOf(marker);
         if(idx != -1) {
             var infoBox = new google.maps.InfoWindow({
-                content: '<ul><li>' + this.info[idx].uniq().join('</li><li>') + '</li></ul>',
+                content: '<ul class="locationReferenceList"><li>' + this.info[idx].uniq().join('</li><li>') + '</li></ul>',
                 maxWidth: 320
             });
             infoBox.open(this.map, marker);
