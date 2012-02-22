@@ -67,4 +67,18 @@ ClusterManager.prototype = {
             this.activeInfo = infoBox;
         }
     }
-}
+};
+
+var Cluster = Class.create();
+
+Cluster.prototype = {
+    initialize: function(latLng, level, component, options) {
+
+    },
+    addLocation: function() {
+
+    },
+    showInfoBox: function() {
+        
+    }
+};

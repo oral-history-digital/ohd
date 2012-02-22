@@ -27,7 +27,7 @@ InteractiveMap.prototype = {
         if(!this.options.images) {
             this.options.images = new Hash();
             this.options.images['default'] = new google.maps.MarkerImage(this.options.urlRoot + '/images/test_markers/interview_marker.png');
-            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'return_location', 'home_location'].each(function(icon){
+            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'home_location'].each(function(icon){
                window.locationSearch.options.images[icon] = new google.maps.MarkerImage(window.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
             });
         }
@@ -82,7 +82,8 @@ InteractiveMap.prototype = {
             // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
             response.responseJSON.locations.each(function(location){
                 var locationInfo = window.locationSearch.locationInfo(location);
-                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.referenceType, 0);
+                var referenceClass = window.locationSearch.locationReference(location.referenceType, location.locationType);
+                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, 0);
                 // window.locationSearch.locations.push(location);
                 // str = str + location.location + '\n';
             });
@@ -106,6 +107,14 @@ InteractiveMap.prototype = {
       info = info + '<p style="font-size: 85%">' + location.experienceGroup + '<br/>';
       info = info + location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
       return info;
+    },
+    locationReference: function(refStr, type) {
+        if(['Camp','Lager'].indexOf(type) > -1) {
+            return 'forced_labor_camp';
+        } else if(['Company','Firma'].indexOf(type) > -1) {
+            return 'forced_labor_company';
+        }
+        return refStr;
     },
     translate: function(str) {
         if(str == 'forced_labor_location') { return 'Zwangsarbeit -'; }
