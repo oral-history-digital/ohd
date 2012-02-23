@@ -44,14 +44,19 @@ ClusterManager.prototype = {
             marker.locationClass = divClass;
             this.locations.push(latLng);
             this.markers.push(marker);
-            this.info.push([htmlText]);
+            this.info.push(this.composeHtmlText(htmlText, divClass));
+            // this.info[idx] = this.info[idx] + '<li class="' + (divClass || 'interview') + '">' + htmlText + '</li>';
             google.maps.event.addListener(marker, 'click', function() { window.locationSearch.clusterManager.showInfoBox(marker) });
             marker.setMap(this.map);
         } else {
             marker = this.markers[idx];
             // extend the info...
-            this.info[idx].push(htmlText);
+            this.info[idx] = (this.info[idx] || '') + this.composeHtmlText(htmlText, divClass);
+            // this.info[idx] = this.info[idx] + '<li class="' + (divClass || 'interview') + '">' + htmlText + '</li>';
         }
+    },
+    composeHtmlText: function(html, klass) {
+        return ('<li class="' + (klass || 'interview') + '">' + html + '</li>');
     },
     showInfoBox: function(marker) {
         if(this.activeInfo) {
@@ -61,7 +66,7 @@ ClusterManager.prototype = {
         var idx = this.markers.indexOf(marker);
         if(idx != -1) {
             var infoBox = new google.maps.InfoWindow({
-                content: '<ul class="locationReferenceList"><li class="' + marker.locationClass + '">' + this.info[idx].uniq().join('</li><li>') + '</li></ul>',
+                content: '<ul class="locationReferenceList">' + this.info[idx] + '</ul>',
                 maxWidth: 320
             });
             infoBox.open(this.map, marker);
