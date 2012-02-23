@@ -43,7 +43,7 @@
 }
 
 #baseContent ul li.forced_labor_camp {
-    background: url("/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
+    background: url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.forced_labor_company {
