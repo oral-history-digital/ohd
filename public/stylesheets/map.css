@@ -5,31 +5,31 @@
     text-indent: -9999px;
     display: block;
     z-Index: 5;
-    background: transparent url(/archiv/images/test_markers/interview_marker.png) top left no-repeat;
+    background: transparent url(/images/test_markers/interview_marker.png) top left no-repeat;
 }
 
 .markerOverlay div.forced_labor_location {
-    background-image: url(/archiv/images/test_markers/forced_labor_location_marker.png);
+    background-image: url(/images/test_markers/forced_labor_location_marker.png);
     z-Index: 100;
 }
 
 .markerOverlay div.home_location {
-    background-image: url(/archiv/images/test_markers/home_location_marker.png);
+    background-image: url(/images/test_markers/home_location_marker.png);
     z-Index: 90;
 }
 
 .markerOverlay div.place_of_birth {
-    background-image: url(/archiv/images/test_markers/place_of_birth_marker.png);
+    background-image: url(/images/test_markers/place_of_birth_marker.png);
     z-Index: 85;
 }
 
 .markerOverlay div.return_location {
-    background-image: url(/archiv/images/test_markers/return_location_marker.png);
+    background-image: url(/images/test_markers/return_location_marker.png);
     z-Index: 80;
 }
 
 .markerOverlay div.deportation_location {
-    background-image: url(/archiv/images/test_markers/deportation_location_marker.png);
+    background-image: url(/images/test_markers/deportation_location_marker.png);
     z-Index: 95;
 }
 
@@ -42,36 +42,36 @@
     padding: 0 0 0 22px;
 }
 
-#baseContent ul li.forced_labor_camp_marker {
-    background: url("/archiv/images/test_markers/forced_labor_camp_marker.png");
+#baseContent ul li.forced_labor_camp {
+    background: url("/images/test_markers/forced_labor_camp_marker.png") no-repeat;
 }
 
-#baseContent ul li.forced_labor_company_marker {
-    background: url("/archiv/images/test_markers/forced_labor_company_marker.png");
+#baseContent ul li.forced_labor_company {
+    background: url("/images/test_markers/forced_labor_company_marker.png") no-repeat;
 }
 
-#baseContent ul li.forced_labor_location_marker {
-    background: url("/archiv/images/test_markers/forced_labor_location_marker.png");
+#baseContent ul li.forced_labor_location {
+    background: url("/images/test_markers/forced_labor_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.interview {
-    background: url("/archiv/images/test_markers/interview_marker.png");
+    background: url("/images/test_markers/interview_marker.png") no-repeat;
 }
 
 #baseContent ul li.place_of_birth {
-    background: url("/archiv/images/test_markers/place_of_birth_marker.png");
+    background: url("/images/test_markers/place_of_birth_marker.png") no-repeat;
 }
 
 #baseContent ul li.deportation_location {
-    background: url("/archiv/images/test_markers/deportation_location_marker.png");
+    background: url("/images/test_markers/deportation_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.return_location {
-    background: url("/archiv/images/test_markers/return_location_marker.png");
+    background: url("/images/test_markers/return_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.home_location {
-    background: url("/archiv/images/test_markers/home_location_marker.png");
+    background: url("/images/test_markers/home_location_marker.png") no-repeat;
 }
 
 .interviewReference small,
