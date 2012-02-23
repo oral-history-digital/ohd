@@ -35,10 +35,10 @@ class LocationReferencesController < BaseController
         render :action => :index
       end
       wants.json do
-        render :json => { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+        render :json => { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
       end
       wants.js do
-        json = { 'locations' => @results.map{|i| i.json_attrs } }.to_json
+        json = { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
         render :js => json
       end
     end

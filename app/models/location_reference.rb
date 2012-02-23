@@ -61,7 +61,7 @@ class LocationReference < ActiveRecord::Base
     end
   end
 
-  def json_attrs
+  def json_attrs(include_hierarchy=false)
     json = {}
     json['interviewId'] = self.interview.archive_id
     json['interviewee'] = self.interview.anonymous_title
@@ -74,6 +74,20 @@ class LocationReference < ActiveRecord::Base
     json['locationType'] = location_type
     json['longitude'] = longitude
     json['latitude'] = latitude
+    if include_hierarchy
+      json['country'] = {
+              'name' => country_name,
+              'latitude' => country_latitude,
+              'longitude' => country_longitude
+      }
+      json['region'] = {
+              'name' => region_name,
+              'latitude' => region_latitude,
+              'longitude' => region_longitude
+      }
+      json['country'].delete_if{|k,v| v.blank? }
+      json['region'].delete_if{|k,v| v.blank?}
+    end
     json
   end
 
