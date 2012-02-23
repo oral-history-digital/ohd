@@ -41,6 +41,7 @@ ClusterManager.prototype = {
                 flat: true,
                 icon: window.locationSearch.options.images[divClass || 'default']
             });
+            marker.locationClass = divClass;
             this.locations.push(latLng);
             this.markers.push(marker);
             this.info.push([htmlText]);
@@ -60,7 +61,7 @@ ClusterManager.prototype = {
         var idx = this.markers.indexOf(marker);
         if(idx != -1) {
             var infoBox = new google.maps.InfoWindow({
-                content: '<ul class="locationReferenceList"><li>' + this.info[idx].uniq().join('</li><li>') + '</li></ul>',
+                content: '<ul class="locationReferenceList"><li class="' + marker.locationClass + '">' + this.info[idx].uniq().join('</li><li>') + '</li></ul>',
                 maxWidth: 320
             });
             infoBox.open(this.map, marker);
