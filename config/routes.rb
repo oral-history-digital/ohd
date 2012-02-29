@@ -20,7 +20,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
-  map.public_locations_by_format 'webservice/orte.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_total_pages 'webservice/orte.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_by_page 'webservice/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
 
   map.public_map 'kartensuche', :controller => :location_references, :action => :map
   map.public_map 'kartensuche1', :controller => :location_references, :action => :map1

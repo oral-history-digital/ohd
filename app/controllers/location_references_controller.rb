@@ -1,5 +1,7 @@
 class LocationReferencesController < BaseController
 
+  PER_PAGE = 400
+
   actions :index
 
   skip_before_filter :authenticate_user!
@@ -28,18 +30,37 @@ class LocationReferencesController < BaseController
   end
 
   def full_index
-    @results = LocationReference.find(:all)
     response.headers['Cache-Control'] = "public, max-age=1209600"
-    respond_to do |wants|
-      wants.html do
-        render :action => :index
+    if params[:page].blank? || params[:page].to_i < 1
+      # deliver number of pages
+      @pages = (LocationReference.count(:all) / PER_PAGE).floor + 1
+      respond_to do |wants|
+        wants.html do
+          render :text => @pages
+        end
+        wants.json do
+          render :json => { 'pages' => @pages }
+        end
+        wants.js do
+          json = { 'pages' => @pages }
+          render :js => json
+        end
       end
-      wants.json do
-        render :json => { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
-      end
-      wants.js do
-        json = { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
-        render :js => json
+    else
+      # deliver specified page
+      @page = params[:page].to_i
+      @results = LocationReference.find(:all, :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}")
+      respond_to do |wants|
+        wants.html do
+          render :action => :index
+        end
+        wants.json do
+          render :json => { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
+        end
+        wants.js do
+          json = { 'locations' => @results.map{|i| i.json_attrs(true) } }.to_json
+          render :js => json
+        end
       end
     end
   end

@@ -6,7 +6,8 @@ InteractiveMap.prototype = {
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            searchURL: '/webservice/orte.json'
+            indexURL: '/webservice/orte.json',
+            dataURL: '/webservice/orte/satz'
         };
         if (options != null) {
             this.options = options;
@@ -16,11 +17,17 @@ InteractiveMap.prototype = {
         if(!this.options.latitude) { this.options.latitude = defaults.latitude }
         if(!this.options.longitude) { this.options.longitude = defaults.longitude }
         if(!this.options.zoom) { this.options.zoom = defaults.zoom }
-        if(!this.options.searchURL) { this.options.searchURL = defaults.searchURL }
+        if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL }
+        if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL }
+
+        this.currentLoadPage = 0;
+        this.loadPageNumber = 0;
+        this.loading = true;
 
         // URL root
         this.options.urlRoot = window.location.pathname.split('/')[1] == 'archiv' ? '/archiv' : '';
-        this.options.searchURL = this.options.urlRoot + this.options.searchURL;
+        this.options.dataURL = this.options.urlRoot + this.options.dataURL;
+        this.options.indexURL = this.options.urlRoot + this.options.indexURL;
 
         window.locationSearch = this;
 
@@ -42,62 +49,45 @@ InteractiveMap.prototype = {
 
         this.clusterManager = new ClusterManager(this.map,{});
 
-        // Event Listeners
-        //google.maps.event.addListener(this.map, 'dragend', this.searchWithinBounds);
-        //google.maps.event.addListener(this.map, 'zoom_changed', this.searchWithinBounds);
-        // google.maps.event.addListener(this.map, 'idle', this.searchWithinBounds);
         searchWithinBounds();
 
         return this.map;
     },
     searchWithinBounds: function() {
-        /*
-        var bounds = this.getBounds();
-        if(!bounds) { return }
-        var lat1 = bounds.getSouthWest().lat();
-        var lng1 = bounds.getSouthWest().lng();
-        var lat2 = bounds.getNorthEast().lat();
-        var lng2 = bounds.getNorthEast().lng();
-        */
-        // window.imapBounds = '(' + Math.floor(lat1*100)/100 + ',' + Math.floor(lng1*100)/100 + ') to (' + Math.floor(lat2*100)/100 + ',' + Math.floor(lng2*100)/100 + ')';
-        new Ajax.Request(window.locationSearch.options.searchURL, {
-            /*parameters: {
-                latitude: lat1,
-                longitude: lng1,
-                latitude2: lat2,
-                longitude2: lng2
-            },*/
+        new Ajax.Request(window.locationSearch.options.indexURL, {
             method: 'GET',
-            onSuccess: window.locationSearch.addLocations
+            onSuccess: window.locationSearch.initializeProgressBar
         });
-        // alert('Map NE = ' + this.getBounds().getNorthEast() + '\n SW  = ' + this.getBounds().getSouthWest());
     },
-    addLocations: function(response) {
+    initializeProgressBar: function(response) {
+        window.locationSearch.loadPageNumber = response.responseJSON.pages;
+        window.locationSearch.currentLoadPage = 0;
+        window.locationSearch.loading = true;
+        window.locationSearch.retrieveDataPage();
+    },
+    retrieveDataPage: function() {
+       this.currentLoadPage = this.currentLoadPage + 1;
+        if (this.currentLoadPage < (this.loadPageNumber + 1)) {
+            new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
+                method: 'GET',
+                onSuccess: window.locationSearch.initializeDataPage
+            });
+        } else {
+            this.loading = false;
+        }
+    },
+    initializeDataPage: function(response) {
         if(response.responseJSON.locations) {
-            // window.locationSearch.locations = [];
-
-            //var str = '';
-            // str = str + window.imapBounds + '\n';
-            // str = str + '(' + window.imapBounds.getSouthWest().lat() + ',' + window.imapBounds.getSouthWest().lng() + ')';
-            // str = str + '(' + window.imapBounds.getNorthWest().lat() + ',' + window.imapBounds.getNorthWest().lng() + ')\n';
-            response.responseJSON.locations.each(function(location){
+          response.responseJSON.locations.each(function(location){
                 var locationInfo = window.locationSearch.locationInfo(location);
                 var referenceClass = window.locationSearch.locationReference(location.referenceType, location.locationType);
                 window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, 0);
-                // window.locationSearch.locations.push(location);
-                // str = str + location.location + '\n';
             });
-            // alert('Updated locations for bounds: '+ str);
-            // alert('Received JSON results:\n' + response.responseJSON.results);
-            // this.addLocations();
 
-            // window.locationSearch.clusterManager.redraw(window.locationSearch.map);
         }
-        //var str = '';
-        //locations.each(function(loc){
-        //    str = str + loc.location + '\n';
-        //});
-        //alert('Locations:\n' + str);
+
+        window.locationSearch.retrieveDataPage();
+
     },
     // presents an infoWindow for the marker and location at index position
     locationInfo: function(location) {
