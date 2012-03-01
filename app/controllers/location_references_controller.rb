@@ -1,6 +1,6 @@
 class LocationReferencesController < BaseController
 
-  PER_PAGE = 400
+  PER_PAGE = 300
 
   actions :index
 

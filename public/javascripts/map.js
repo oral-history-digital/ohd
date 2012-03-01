@@ -47,6 +47,10 @@ InteractiveMap.prototype = {
         };
         this.map = new google.maps.Map($(id), mapOptions);
 
+        this.progress = new progressBar({colorBar: '#990000', top: '140px'});
+        this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.progress.getDiv());
+        this.progress.getDiv().setStyle({bottom: '60px'});
+
         this.clusterManager = new ClusterManager(this.map,{});
 
         searchWithinBounds();
@@ -61,6 +65,7 @@ InteractiveMap.prototype = {
     },
     initializeProgressBar: function(response) {
         window.locationSearch.loadPageNumber = response.responseJSON.pages;
+        window.locationSearch.progress.start(window.locationSearch.loadPageNumber);
         window.locationSearch.currentLoadPage = 0;
         window.locationSearch.loading = true;
         window.locationSearch.retrieveDataPage();
@@ -74,6 +79,7 @@ InteractiveMap.prototype = {
             });
         } else {
             this.loading = false;
+            this.progress.hide();
         }
     },
     initializeDataPage: function(response) {
@@ -85,6 +91,7 @@ InteractiveMap.prototype = {
             });
 
         }
+        window.locationSearch.progress.updateBar(1);
 
         window.locationSearch.retrieveDataPage();
 
