@@ -47,7 +47,7 @@ InteractiveMap.prototype = {
         };
         this.map = new google.maps.Map($(id), mapOptions);
 
-        this.progress = new progressBar({colorBar: '#990000', top: '140px'});
+        this.progress = new progressBar({colorBar: '#990000', background: '#B2AFA1' });
         this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.progress.getDiv());
         this.progress.getDiv().setStyle({bottom: '60px'});
 
@@ -79,6 +79,7 @@ InteractiveMap.prototype = {
             });
         } else {
             this.loading = false;
+            this.progress.updateBar(1);
             this.progress.hide();
         }
     },

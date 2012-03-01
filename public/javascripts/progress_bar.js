@@ -19,9 +19,9 @@
 progressBar = function(opts) {
 
   var options = progressBar.combineOptions(opts, {
-    height:       '1.3em',
-    width:        '150px',
-    top:          '30px',
+    height:       '1.75em',
+    width:        '200px',
+    top:          '32px',
     right:        '5px',
     colorBar:     '#68C',
     background:   '#FFF',
@@ -54,6 +54,8 @@ progressBar = function(opts) {
   text.id  = 'pg_text';
   var tstyle = text.style;
   tstyle.position      = 'absolute';
+  tstyle.color         = '#FFF';
+  tstyle.fontWeight    = 'bold';
   tstyle.width         = '100%';
   tstyle.border        = '5px';
   tstyle.textAlign     = 'center';
@@ -108,7 +110,7 @@ progressBar = function(opts) {
   }
 
   var hide = function() {
-    div.style.display = 'none';
+    new Effect.Fade(div, { duration: 1.2 });
   }
 
   var getDiv = function() {
