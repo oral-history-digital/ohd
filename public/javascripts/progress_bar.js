@@ -5,6 +5,7 @@
  *
  * by José Fernando Calcerrada.
  *
+ *
  * Licensed under the GPL licenses:
  * http://www.gnu.org/licenses/gpl.html
  *
@@ -13,7 +14,8 @@
  *
  * v1.1
  * - IE fixed
- *
+ * v1.2 (Jan Rietema)
+ * - added an Overlay and Fade
  */
 
 progressBar = function(opts) {
@@ -34,6 +36,17 @@ progressBar = function(opts) {
 
   var shadow = '1px 1px #888';
 
+  var overlay = document.createElement('div');
+  overlay.style.width = '9999px';
+  overlay.style.height = '9999px';
+  overlay.style.cssText = 'opacity: 0.85; background-color: #F1F1EB;';
+  overlay.style.display = 'block';
+  overlay.style.textAlign = 'center';
+  overlay.style.verticalAlign = 'center';
+  overlay.style.padding = '360px 950px 950px 245px';
+  overlay.style.zIndex = '1000';
+  overlay.style.position = 'relative';
+
 
   var div = document.createElement('div');
   div.id  = 'pg_div';
@@ -48,6 +61,7 @@ progressBar = function(opts) {
   dstyle.border      = '1px solid #BBB';
   dstyle.background  = options.background;
   dstyle.fontSize    = options.fontSize;
+  dstyle.position    = 'relative';
   dstyle.textAlign   = 'left';
 
   var text = document.createElement('div');
@@ -69,12 +83,14 @@ progressBar = function(opts) {
   div.appendChild(text);
   div.appendChild(bar);
 
+  overlay.appendChild(div);
+
 
   var draw = function(mapDiv) {
-    div.style.cssText = control.style.cssText +
+    overlay.style.cssText = control.style.cssText +
       'z-index: 20; position: absolute; '+
       'top: '+options.top+'; right: '+options.right+'; ';
-      document.getElementById(mapDiv).children[0].appendChild(div);
+      // document.getElementById(mapDiv).appendChild(overlay);
   }
 
   var start = function(total_) {
@@ -110,11 +126,11 @@ progressBar = function(opts) {
   }
 
   var hide = function() {
-    new Effect.Fade(div, { duration: 1.2 });
+    new Effect.Fade(overlay, { duration: 1.2 });
   }
 
   var getDiv = function() {
-    return div;
+    return overlay;
   }
 
   var getTotal = function() {
