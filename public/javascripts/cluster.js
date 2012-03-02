@@ -6,6 +6,8 @@ google.maps.LatLng.equals = function(other) {
 };
 
 var ClusterManager = Class.create();
+var Location = Class.create();
+var Cluster = Class.create();
 
 ClusterManager.prototype = {
     initialize: function(map, options) {
@@ -25,6 +27,19 @@ ClusterManager.prototype = {
 
     },
     addLocation: function(id, latLng, htmlText, divClass, zIndex) {
+
+        var location = new Location(id, latLng, htmlText, divClass);
+
+        if(!window.mapClusters) { window.mapClusters = new Hash(); }
+        var cluster = window.mapClusters[latLng];
+
+        if(!cluster) {
+            cluster = new Cluster(latLng);
+            // alert('Created new cluster for LatLng ' + latLng + '\nCluster: ' + cluster);
+        }
+        cluster.addLocation(location);
+
+        /*
         var marker = null;
         var idx = this.locations.length;
         while (idx--) {
@@ -54,6 +69,7 @@ ClusterManager.prototype = {
             this.info[idx] = (this.info[idx] || '') + this.composeHtmlText(htmlText, divClass);
             // this.info[idx] = this.info[idx] + '<li class="' + (divClass || 'interview') + '">' + htmlText + '</li>';
         }
+        */
     },
     composeHtmlText: function(html, klass) {
         return ('<li class="' + (klass || 'interview') + '">' + html + '</li>');
@@ -63,6 +79,16 @@ ClusterManager.prototype = {
             this.activeInfo.close();
             this.activeInfo = null;
         }
+        var cluster = window.mapClusters[marker.getPosition()];
+        if(cluster) {
+            var infoBox = new google.maps.InfoWindow({
+                content: '<ul class="locationReferenceList">' + cluster.locationsInfo() + '</ul>',
+                maxWidth: 320
+            });
+            infoBox.open(window.locationSearch.map, marker);
+            this.activeInfo = infoBox;
+        }
+        /*
         var idx = this.markers.indexOf(marker);
         if(idx != -1) {
             var infoBox = new google.maps.InfoWindow({
@@ -72,19 +98,75 @@ ClusterManager.prototype = {
             infoBox.open(this.map, marker);
             this.activeInfo = infoBox;
         }
+        */
     }
 };
 
-var Cluster = Class.create();
+var locationTypePriorities = [
+        'interview',
+        'return_location',
+        'home_location',
+        'place_of_birth',
+        'deportation_location',
+        'forced_labor_location'
+];
+
+Location.prototype = {
+    initialize: function(id, latLng, htmlText, divClass) {
+        this.info = htmlText;
+        this.locationType = this.getPriority(divClass);
+        this.title = id;
+        this.latLng = latLng;
+        if(!window.mapLocations) { window.mapLocations = []; }
+        this.id = window.mapLocations.length;
+        window.mapLocations.push(this);
+    },
+    getPriority: function(type) {
+        return locationTypePriorities.indexOf(type) || 0;
+    },
+    getLocationType: function(priority) {
+        return locationTypePriorities[priority] || 'interview';
+    },
+    getHtml: function() {
+        return ('<li class="' + this.getLocationType(this.locationType) + '">' + this.info + '</li>');
+    }
+};
 
 Cluster.prototype = {
-    initialize: function(latLng, level, component, options) {
+    initialize: function(latLng) {
+        this.icon = window.locationSearch.options.images['default'];
+        this.title = '?';
+        this.locations = [];
+        this.marker = new google.maps.Marker({
+            position: latLng,
+            icon: this.icon,
+            flat: true
+        });
+        google.maps.event.addListener(this.marker, 'click', function() { window.locationSearch.clusterManager.showInfoBox(this.marker) });
 
+        if(!window.mapClusters) { window.mapClusters = new Hash(); }
+        window.mapClusters[latLng] = this;
     },
-    addLocation: function() {
-
+    addLocation: function(location) {
+        if (this.locations.indexOf(location) == -1) {
+            this.locations.push(location);
+            this.locations = this.locations.sortBy(function(l){l.locationType; });
+            var loc = this.locations.last();
+            this.title = loc.title;
+            this.icon = window.locationSearch.options.images[loc.getLocationType(loc.locationType)];
+            if(this.locations.length > 1) {
+                this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
+            }
+            this.marker.setZIndex(loc.locationType * 10 + 100);
+            this.redraw();
+        }
     },
-    showInfoBox: function() {
-        
+    redraw: function() {
+        this.marker.setIcon(this.icon);
+        this.marker.setTitle(this.title);
+        this.marker.setMap(window.locationSearch.map);
+    },
+    locationsInfo: function() {
+        this.locations.collect(function(l) { l.getHtml(); }).join('');
     }
 };
