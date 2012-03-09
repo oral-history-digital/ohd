@@ -19,6 +19,8 @@ ClusterManager.prototype = {
 
         this.activeInfo = null;
 
+        this.shownCluster = null;
+
         if (options != null) {
             this.options = options;
         } else {
@@ -92,15 +94,17 @@ ClusterManager.prototype = {
         if(this.activeInfo) {
             this.activeInfo.close();
             this.activeInfo = null;
+            this.shownCluster = null;
         }
         // var marker = event.element;
         // NOTE: marker is undefined here - maybe go via the event.element.... ?
         var cluster = this.locateCluster(marker.getPosition());
         // alert('Showing infoBox for cluster: ' + cluster + ' with ' + (cluster == null ? '0' : cluster.locations.length) + ' locations at position ' + marker.getPosition().toString());
         if(cluster) {
+            this.shownCluster = cluster;
             // alert('Locations at cluster:\n' + cluster.locations);
             var infoBox = new google.maps.InfoWindow({
-                content: '<ul class="locationReferenceList">' + cluster.locationsInfo() + '</ul>',
+                content: cluster.locationsInfo(1),
                 maxWidth: 320
             });
             infoBox.open(window.locationSearch.map, marker);
@@ -117,6 +121,11 @@ ClusterManager.prototype = {
             this.activeInfo = infoBox;
         }
         */
+    },
+    showClusterPage: function(page) {
+        if(this.shownCluster && this.activeInfo) {
+            this.activeInfo.setContent(this.shownCluster.locationsInfo(page));
+        }
     }
 };
 
@@ -188,7 +197,30 @@ Cluster.prototype = {
         this.marker.setTitle(this.title);
         this.marker.setMap(window.locationSearch.map);
     },
-    locationsInfo: function() {
-        return this.locations.collect(function(l) { return l.getHtml(); }).join('');
+    locationsInfo: function(page) {
+        if(!page) { page = 1; }
+        html = '';
+        var totalPages = this.locations.length / 4;
+        if(totalPages > 1) {
+            html = html + '<ul class="pagination">';
+            var pageIndex = 1;
+            while(totalPages > 0) {
+                html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="javascript:window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '">' + (pageIndex++) + '</li>';
+                totalPages--;
+            }
+            html = html + '</ul>';
+        }
+        html = html + '<ul class="locationReferenceList">';
+        var displayIndices = [1,2,3,4].collect(function(n){ return 4*(page-1) + n; });
+        var clusterLocations = this.locations;
+        html = html + this.locations.collect(function(l) {
+            if(displayIndices.indexOf(clusterLocations.indexOf(l)) != -1) {
+                return l.getHtml();
+            } else {
+                return null;
+            }
+        }).compact().join('');
+        html = html + '</ul>';
+        return html;
     }
 };
