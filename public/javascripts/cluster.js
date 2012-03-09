@@ -172,8 +172,8 @@ Cluster.prototype = {
     addLocation: function(location) {
         if (this.locations.indexOf(location) == -1) {
             this.locations.push(location);
-            this.locations = this.locations.sortBy(function(l){l.locationType; });
-            var loc = this.locations.last();
+            this.locations = this.locations.sortBy(function(l){return l.locationType; }).reverse();
+            var loc = this.locations.first();
             this.title = loc.title;
             this.icon = window.locationSearch.options.images[loc.getLocationType(loc.locationType)];
             if(this.locations.length > 1) {
@@ -189,6 +189,6 @@ Cluster.prototype = {
         this.marker.setMap(window.locationSearch.map);
     },
     locationsInfo: function() {
-        return this.locations.reverse.collect(function(l) { return l.getHtml(); }).join('');
+        return this.locations.collect(function(l) { return l.getHtml(); }).join('');
     }
 };
