@@ -101,7 +101,7 @@ InteractiveMap.prototype = {
     // presents an infoWindow for the marker and location at index position
     locationInfo: function(location) {
       var reference = window.locationSearch.translate(location.referenceType);
-      var info = '<h3>' + location.locationType + ' ' + location.location + '</h3>';
+      var info = ''; // '<h3>' + location.locationType + ' ' + location.location + '</h3>';
       info = info + '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
       info = info + '<p class="referenceDetails">';
       info = info + location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';

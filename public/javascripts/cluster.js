@@ -104,7 +104,8 @@ ClusterManager.prototype = {
             this.shownCluster = cluster;
             // alert('Locations at cluster:\n' + cluster.locations);
             var infoBox = new google.maps.InfoWindow({
-                content: cluster.locationsInfo(1),
+                content: cluster.displayInfo(1),
+                // content: cluster.locationsInfo(1),
                 maxWidth: 320
             });
             infoBox.open(window.locationSearch.map, marker);
@@ -124,7 +125,8 @@ ClusterManager.prototype = {
     },
     showClusterPage: function(page) {
         if(this.shownCluster && this.activeInfo) {
-            this.activeInfo.setContent(this.shownCluster.locationsInfo(page));
+            // this.activeInfo.setContent(this.shownCluster.locationsInfo(page));
+            this.activeInfo.setContent(this.shownCluster.displayInfo(page));
         }
     }
 };
@@ -154,6 +156,9 @@ Location.prototype = {
     },
     getLocationType: function(priority) {
         return locationTypePriorities[priority] || 'interview';
+    },
+    displayLines: function() {
+        return (this.locationType == 0) ? 1 : 2;
     },
     getHtml: function() {
         return ('<li class="' + this.getLocationType(this.locationType) + '" onclick="window.open(\'' + this.linkURL + '\', \'_blank\');" style="cursor: pointer;">' + this.info + '</li>');
@@ -197,6 +202,72 @@ Cluster.prototype = {
         this.marker.setIcon(this.icon);
         this.marker.setTitle(this.title);
         this.marker.setMap(window.locationSearch.map);
+    },
+    // groups the locations by descriptor
+    displayLocations: function() {
+        var locs = this.locations.toArray();
+        var displayLocs = [];
+        var descriptors = [];
+        var titleIndex = 0;
+        locs.each(function(l){
+            var idx = descriptors.indexOf(l.title);
+            if(idx == -1) {
+                descriptors.push(l.title);
+                displayLocs.push([l.title, [l], 1 + l.displayLines()]);
+            } else {
+                var existingLoc = displayLocs[idx];
+                // if(existingLoc[2] + l.displayLines() > 12) {
+                    // start a new location with '2,3'
+                // } else {
+                    existingLoc[1].push(l);
+                    existingLoc[2] = existingLoc[2] + l.displayLines();
+                // }
+            }
+        });
+        return displayLocs;
+    },
+    displayInfo: function(page) {
+      if(!page) { page = 1; }
+      var html = '';
+      var locs = this.displayLocations();
+      var totalLines = 0;
+      locs.each(function(l){ totalLines = totalLines + l[2]; });
+      var totalPages = totalLines / 10;
+      var von = 0;
+      var bis = 0;
+      var lines = 0;
+      locs.each(function(l){
+          if((page-1)*10 > lines) {
+              von++;
+          }
+          lines = lines + l[2];
+          if(lines < page*10+1) {
+              bis++;
+          }
+      });
+      alert(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines);
+      if(totalPages > 1) {
+          var dataSetStr = (von == bis) ? ('Ort ' + (von+1)) : ('Orte ' + (von+1) + '-' + bis);
+          html = html + '<span>' + dataSetStr + ' von ' + locs.length + '&nbsp;</span><ul class="pagination">';
+          var pageIndex = 1;
+          while(totalPages > 0) {
+              html = html + '<li' + ((page == pageIndex) ? ' class="current"' : '') + ' style="list-style-type: none; float: left; border: 1px solid; cursor: pointer;" onclick="window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
+              // html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="#" onclick="javascript:window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '" style="display: block; float: left;">' + (pageIndex++) + '</li>';
+              totalPages--;
+          }
+          html = html + '</ul>';
+      }
+      html = html + '<ul class="locationReferenceList"' + ((totalLines > 10) ? ' style="height: 290px;"' : '') + '>';
+      var locInfo = locs.collect(function(l) {
+          var idx = locs.indexOf(l);
+          if((idx > von-2) && (idx < bis)) {
+              return ('<li><h3>' + l[0] + '</h3><ul>' + l[1].collect(function(l1){ return l1.getHtml(); }).join('') + '</ul></li>');
+          } else {
+              return null;
+          }
+      }).compact().join('');
+      html = html + locInfo +  '</ul>';
+      return html;
     },
     locationsInfo: function(page) {
         if(!page) { page = 1; }
