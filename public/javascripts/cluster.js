@@ -215,7 +215,7 @@ Cluster.prototype = {
             }
             html = html + '</ul>';
         }
-        html = html + '<ul class="locationReferenceList"' + ((this.locations.length > 4) ? ' style="height: 375px;"' : '') + '>';
+        html = html + '<ul class="locationReferenceList"' + ((this.locations.length > 4) ? ' style="height: 290px;"' : '') + '>';
         var displayIndices = [1,2,3,4].collect(function(n){ return 4*(page-1) + n - 1; });
         var clusterLocations = this.locations;
         var locInfo = this.locations.collect(function(l) {
