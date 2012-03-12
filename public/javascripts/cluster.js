@@ -28,9 +28,9 @@ ClusterManager.prototype = {
         }
 
     },
-    addLocation: function(id, latLng, htmlText, divClass, zIndex) {
+    addLocation: function(id, latLng, htmlText, divClass, linkURL) {
 
-        var location = new Location(id, latLng, htmlText, divClass);
+        var location = new Location(id, latLng, htmlText, divClass, linkURL);
 
         var cluster = this.locateCluster(latLng);
 
@@ -139,11 +139,12 @@ var locationTypePriorities = [
 ];
 
 Location.prototype = {
-    initialize: function(id, latLng, htmlText, divClass) {
+    initialize: function(id, latLng, htmlText, divClass, linkURL) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
         this.latLng = latLng;
+        this.linkURL = linkURL;
         if(!window.mapLocations) { window.mapLocations = []; }
         this.id = window.mapLocations.length;
         window.mapLocations.push(this);
@@ -155,7 +156,7 @@ Location.prototype = {
         return locationTypePriorities[priority] || 'interview';
     },
     getHtml: function() {
-        return ('<li class="' + this.getLocationType(this.locationType) + '">' + this.info + '</li>');
+        return ('<li class="' + this.getLocationType(this.locationType) + '" onclick="window.open(\'' + this.linkURL + '\', \'_blank\');" style="cursor: pointer;">' + this.info + '</li>');
     }
 };
 
@@ -199,10 +200,10 @@ Cluster.prototype = {
     },
     locationsInfo: function(page) {
         if(!page) { page = 1; }
-        html = '';
+        var html = '';
         var totalPages = this.locations.length / 4;
         if(totalPages > 1) {
-            html = html + '<ul class="pagination">';
+            html = html + '<span>' + this.locations.length + ' Treffer&nbsp;</span><ul class="pagination">';
             var pageIndex = 1;
             while(totalPages > 0) {
                 html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="javascript:window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '">' + (pageIndex++) + '</li>';
@@ -210,17 +211,17 @@ Cluster.prototype = {
             }
             html = html + '</ul>';
         }
-        html = html + '<ul class="locationReferenceList">';
+        html = html + '<ul class="locationReferenceList"' + ((this.locations.length > 4) ? ' style="height: 375px;"' : '') + '>';
         var displayIndices = [1,2,3,4].collect(function(n){ return 4*(page-1) + n; });
         var clusterLocations = this.locations;
-        html = html + this.locations.collect(function(l) {
+        var locInfo = this.locations.collect(function(l) {
             if(displayIndices.indexOf(clusterLocations.indexOf(l)) != -1) {
                 return l.getHtml();
             } else {
                 return null;
             }
         }).compact().join('');
-        html = html + '</ul>';
+        html = html + locInfo +  '</ul>';
         return html;
     }
 };

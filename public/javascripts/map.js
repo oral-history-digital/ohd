@@ -88,7 +88,8 @@ InteractiveMap.prototype = {
           response.responseJSON.locations.each(function(location){
                 var locationInfo = window.locationSearch.locationInfo(location);
                 var referenceClass = window.locationSearch.locationReference(location.referenceType, location.locationType);
-                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, 0);
+                var interviewURL = window.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
+                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, interviewURL);
             });
 
         }
@@ -101,8 +102,8 @@ InteractiveMap.prototype = {
     locationInfo: function(location) {
       var reference = window.locationSearch.translate(location.referenceType);
       var info = '<h3>' + location.locationType + ' ' + location.location + '</h3>';
-      info = info + '<p class="interviewReference">' + reference + '&nbsp;<a href="' + window.locationSearch.options.urlRoot + '/interviews/' + location.interviewId + '" target="_blank">' + location.interviewee + ' (' + location.interviewId + ')<br/><small>&raquo;zum Interview</small></a></p>';
-      info = info + '<p class="referenceDetails">' + location.experienceGroup + '<br/>';
+      info = info + '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
+      info = info + '<p class="referenceDetails">';
       info = info + location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
       return info;
     },
