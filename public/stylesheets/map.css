@@ -5,34 +5,50 @@
     text-indent: -9999px;
     display: block;
     z-Index: 5;
-    background: transparent url(/images/test_markers/interview_marker.png) top left no-repeat;
+    background: transparent url(/archiv/images/test_markers/interview_marker.png) top left no-repeat;
 }
 
 .markerOverlay div.forced_labor_location {
-    background-image: url(/images/test_markers/forced_labor_location_marker.png);
+    background-image: url(/archiv/images/test_markers/forced_labor_location_marker.png);
     z-Index: 100;
 }
 
 .markerOverlay div.home_location {
-    background-image: url(/images/test_markers/home_location_marker.png);
+    background-image: url(/archiv/images/test_markers/home_location_marker.png);
     z-Index: 90;
 }
 
 .markerOverlay div.place_of_birth {
-    background-image: url(/images/test_markers/place_of_birth_marker.png);
+    background-image: url(/archiv/images/test_markers/place_of_birth_marker.png);
     z-Index: 85;
 }
 
 .markerOverlay div.return_location {
-    background-image: url(/images/test_markers/return_location_marker.png);
+    background-image: url(/archiv/images/test_markers/return_location_marker.png);
     z-Index: 80;
 }
 
 .markerOverlay div.deportation_location {
-    background-image: url(/images/test_markers/deportation_location_marker.png);
+    background-image: url(/archiv/images/test_markers/deportation_location_marker.png);
     z-Index: 95;
 }
 
+/* Pagination of Location Reference List */
+
+#baseContent ul.pagination {
+  height: 20px;
+}
+
+#baseContent ul.pagination li {
+  background-image: none;
+  padding: 0 7px;
+  border: 1px solid #ccc;
+}
+
+#baseContent ul.pagination li.active {
+  background-image: #840f09;
+  color: #fff;
+}
 
 /* Location Reference Lists */
 
@@ -43,35 +59,35 @@
 }
 
 #baseContent ul li.forced_labor_camp {
-    background: url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
 }
 
 #baseContent ul li.forced_labor_company {
-    background: url("/images/test_markers/popup/forced_labor_company_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/forced_labor_company_marker.png") no-repeat;
 }
 
 #baseContent ul li.forced_labor_location {
-    background: url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.interview {
-    background: url("/images/test_markers/popup/interview_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/interview_marker.png") no-repeat;
 }
 
 #baseContent ul li.place_of_birth {
-    background: url("/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
 }
 
 #baseContent ul li.deportation_location {
-    background: url("/images/test_markers/popup/deportation_location_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/deportation_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.return_location {
-    background: url("/images/test_markers/popup/return_location_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/return_location_marker.png") no-repeat;
 }
 
 #baseContent ul li.home_location {
-    background: url("/images/test_markers/popup/home_location_marker.png") no-repeat;
+    background: url("/archiv/images/test_markers/popup/home_location_marker.png") no-repeat;
 }
 
 .interviewReference small,
