@@ -148,15 +148,15 @@
 
 #baseContent #explanation_filter ul li {
   position: relative;
-  padding: 8px 0 8px 55px;
+  padding: 4px 0 4px 55px;
   margin-bottom: 1px;
-  background-position: 30px 8px;
+  background-position: 30px 4px;
 }
 
 #explanation_filter ul li img {
   position: absolute;
-  padding: 8px;
+  padding: 4px;
   right: 7px;
-  top: 2px;
+  top: 0px;
   cursor: pointer;
 }
