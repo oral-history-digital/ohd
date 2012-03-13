@@ -60,7 +60,7 @@
 }
 
 #baseContent ul.locationReferenceList ul {
-  margin: 0;
+  margin: 5px 0 10px;
 }
 
 #baseContent ul.locationReferenceList ul li {
