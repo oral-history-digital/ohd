@@ -33,39 +33,7 @@
     z-Index: 95;
 }
 
-/* Pagination of Location Reference List */
-
-#baseContent ul.pagination {
-  height: 20px;
-}
-
-#baseContent ul.pagination li {
-  background-image: none;
-  padding: 0 7px;
-  border: 1px solid #ccc;
-  color: #900;
-}
-
-#baseContent ul.pagination li.active {
-  background-image: #840f09;
-  color: #fff;
-}
-
-/* Location Reference Lists */
-
-#baseContent ul.locationReferenceList li {
-  background: none;
-  padding: 0;
-}
-
-#baseContent ul.locationReferenceList ul li {
-  padding: 0 0 8px 22px;
-  background-position: 0 2px;
-}
-
-.locationReferenceList h3 {
-  margin: 0;
-}
+/* */
 
 #baseContent ul li.forced_labor_camp {
     background: url("/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
@@ -99,9 +67,48 @@
     background: url("/images/test_markers/popup/home_location_marker.png") no-repeat;
 }
 
+/* Pagination of Location Reference List */
+
+#baseContent ul.pagination {
+  height: 20px;
+}
+
+#baseContent ul.pagination li {
+  background-image: none;
+  padding: 0 7px;
+  border: 1px solid #ccc;
+  color: #900;
+}
+
+#baseContent ul.pagination li.active {
+  background-image: #840f09;
+  color: #fff;
+}
+
+/* Location Reference Lists */
+
+#baseContent ul.locationReferenceList li {
+  background: none;
+  padding: 0;
+}
+
+#baseContent ul.locationReferenceList ul {
+  margin: 0;
+}
+
+#baseContent ul.locationReferenceList ul li {
+  padding: 0 0 2px 22px;
+  background-position: 0 2px;
+}
+
+.locationReferenceList h3 {
+  margin: 0;
+}
+
 .interviewReference small,
 .referenceDetails {
-    font-size: 85%;
+  font-size: 85%;
+  color: #999281;
 }
 
 .interviewReference small {
