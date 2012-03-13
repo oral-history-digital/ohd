@@ -33,39 +33,6 @@
     z-Index: 95;
 }
 
-/* */
-
-#baseContent ul li.forced_labor_camp {
-    background: url("/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
-}
-
-#baseContent ul li.forced_labor_company {
-    background: url("/images/test_markers/popup/forced_labor_company_marker.png") no-repeat;
-}
-
-#baseContent ul li.forced_labor_location {
-    background: url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
-}
-
-#baseContent ul li.interview {
-    background: url("/images/test_markers/popup/interview_marker.png") no-repeat;
-}
-
-#baseContent ul li.place_of_birth {
-    background: url("/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
-}
-
-#baseContent ul li.deportation_location {
-    background: url("/images/test_markers/popup/deportation_location_marker.png") no-repeat;
-}
-
-#baseContent ul li.return_location {
-    background: url("/images/test_markers/popup/return_location_marker.png") no-repeat;
-}
-
-#baseContent ul li.home_location {
-    background: url("/images/test_markers/popup/home_location_marker.png") no-repeat;
-}
 
 /* Pagination of Location Reference List */
 
@@ -113,4 +80,37 @@
 
 .interviewReference small {
     line-height: 2.5em;
+}
+
+
+#baseContent ul li.forced_labor_camp {
+    background: url("/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
+}
+
+#baseContent ul li.forced_labor_company {
+    background: url("/images/test_markers/popup/forced_labor_company_marker.png") no-repeat;
+}
+
+#baseContent ul li.forced_labor_location {
+    background: url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
+}
+
+#baseContent ul li.interview {
+    background: url("/images/test_markers/popup/interview_marker.png") no-repeat;
+}
+
+#baseContent ul li.place_of_birth {
+    background: url("/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
+}
+
+#baseContent ul li.deportation_location {
+    background: url("/images/test_markers/popup/deportation_location_marker.png") no-repeat;
+}
+
+#baseContent ul li.return_location {
+    background: url("/images/test_markers/popup/return_location_marker.png") no-repeat;
+}
+
+#baseContent ul li.home_location {
+    background: url("/images/test_markers/popup/home_location_marker.png") no-repeat;
 }
