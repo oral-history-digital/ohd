@@ -2,6 +2,23 @@
   var map = null;
 <% end -%>
 
+<div id="explanation_filter_toggle">Legende / Filter</div>
+<div id="explanation_filter">
+  <ul style="float: left;">
+    <li class="forced_labor_location">Ort</li>
+    <li class="forced_labor_camp">Lager<img src="/archiv/images/pfeil_rot_unten.gif" alt="Aufklappen"/></li>
+    <li class="forced_labor_company">Firmen</li>
+    <li class="deportation_location">Deportation</li>
+  </ul>
+  <ul style="float: left;">
+    <li class="place_of_birth">Geburtsort</li>
+    <li class="return_location">Wohnort nach 1945</li>
+    <li class="home_location">Lebensmittelpunkt</li>
+    <li class="interview">Erwähnung</li>
+  </ul>
+<div style="clear: both;"></div>
+</div>
+
 <div id="interactive_map" style="width: 100%; height: 660px"></div>
 
 <% javascript_tag do -%>
