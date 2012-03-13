@@ -123,17 +123,16 @@
   width: 110px;
   padding: 2px 5px;
   color: #fff;
-  background: #840f09 url('/images/pfeil_weiss_unten.png') no-repeat 103px 9px;
+  background: #840f09 url('/archiv/images/pfeil_weiss_unten.png') no-repeat 103px 9px;
   cursor: pointer;
   z-index: 1;
 }
 
 #explanation_filter {
   position: absolute;
-  top: 50px;
-  left: 171px;
+  top: 52px;
+  left: 184px;
   width: 510px;
-  border: 1px solid;
   background: #F1F1EB;
   /* border: none;
   border: 10px solid rgba(0,0,0,0.2); */
@@ -148,9 +147,13 @@
 
 #baseContent #explanation_filter ul li {
   position: relative;
-  padding: 4px 0 4px 55px;
   margin-bottom: 1px;
+  padding: 4px 0;
   background-position: 30px 4px;
+}
+
+#baseContent #explanation_filter ul li span {
+  padding: 4px 0 4px 55px;
 }
 
 #explanation_filter ul li img {
@@ -159,4 +162,30 @@
   right: 7px;
   top: 0px;
   cursor: pointer;
+}
+
+#baseContent #explanation_filter ul ul {
+  padding: 4px 0 0 0;
+}
+
+#baseContent #explanation_filter ul ul li {
+  position: relative;
+  padding: 4px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #F1F1EB;
+  background-position: 30px 4px;
+  background: #f9f9f7;
+}
+
+#baseContent #explanation_filter ul ul li:first-child {
+  border-top: 1px solid #F1F1EB;
+}
+
+#baseContent #explanation_filter ul ul li span {
+  padding-left: 55px;
+}
+
+#baseContent #explanation_filter ul li.has_children {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
