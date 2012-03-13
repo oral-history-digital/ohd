@@ -43,6 +43,7 @@
   background-image: none;
   padding: 0 7px;
   border: 1px solid #ccc;
+  color: #900;
 }
 
 #baseContent ul.pagination li.active {
@@ -53,9 +54,17 @@
 /* Location Reference Lists */
 
 #baseContent ul.locationReferenceList li {
-    background-repeat: no-repeat;
-    background-position: 0 1px;
-    padding: 0 0 0 22px;
+  background: none;
+  padding: 0;
+}
+
+#baseContent ul.locationReferenceList ul li {
+  padding: 0 0 8px 22px;
+  background-position: 0 2px;
+}
+
+.locationReferenceList h3 {
+  margin: 0;
 }
 
 #baseContent ul li.forced_labor_camp {
