@@ -6,8 +6,8 @@
 <div id="explanation_filter">
   <ul style="float: left;">
     <li class="forced_labor_location"><span>Ort</span></li>
-    <li class="forced_labor_camp"><span>Lager</span><img src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
-      <ul class="sub_list">
+    <li class="forced_labor_camp"><span>Lager</span><img id="sub_list_toggle" src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
+      <ul id="sub_list" class="sub_list">
         <li><span>Gefängnis</span></li>
         <li><span>Ghetto</span></li>
         <li><span>KZ</span></li>
@@ -31,10 +31,16 @@
   <div style="clear: both;"></div>
 </div>
 
-<p><a href="#" onclick="$('featurebox-1').hide();">Hide Feature Box</a> |
-<a href="#" onclick="$('featurebox-1').show();">Show Feature Box</a></p>
-<div class="featurebox" id="featurebox-1"><strong>FeatureBox</strong> - Lorem ipsum dolor sit amet[...]</div>
+<script type="text/javascript">
+    Event.observe('explanation_filter_toggle', 'click', function(){
+        $('explanation_filter').toggle();
+    });
 
+    Event.observe('sub_list_toggle', 'click', function(){
+        $('sub_list').toggle();
+    });
+
+</script>
 
 <div id="interactive_map" style="width: 100%; height: 660px"></div>
 
