@@ -137,7 +137,6 @@
   background: #F1F1EB;
   z-index: 1;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  display: none;
 }
 
 #baseContent #explanation_filter ul {
@@ -168,7 +167,6 @@
 #baseContent #explanation_filter ul ul {
   padding: 4px 0 0;
   margin-bottom: -5px;
-  display: none;
 }
 
 #baseContent #explanation_filter ul ul li {
