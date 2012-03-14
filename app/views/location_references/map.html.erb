@@ -6,7 +6,7 @@
 <div id="explanation_filter">
   <ul style="float: left;">
     <li class="forced_labor_location"><span>Ort</span></li>
-    <li class="forced_labor_camp has_children"><span>Lager</span><img src="images/pfeil_rot_unten.gif" alt="Aufklappen"/>
+    <li class="forced_labor_camp"><span>Lager</span><img src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
       <ul class="sub_list">
         <li><span>Gefängnis</span></li>
         <li><span>Ghetto</span></li>
@@ -28,13 +28,18 @@
     <li class="home_location"><span>Lebensmittelpunkt</span></li>
     <li class="interview"><span>Erwähnung</span></li>
   </ul>
-<div style="clear: both;"></div>
+  <div style="clear: both;"></div>
 </div>
+
+<p><a href="#" onclick="$('featurebox-1').hide();">Hide Feature Box</a> |
+<a href="#" onclick="$('featurebox-1').show();">Show Feature Box</a></p>
+<div class="featurebox" id="featurebox-1"><strong>FeatureBox</strong> - Lorem ipsum dolor sit amet[...]</div>
+
 
 <div id="interactive_map" style="width: 100%; height: 660px"></div>
 
 <% javascript_tag do -%>
-    document.observe("dom:loaded", mapSetup('interactive_map'));
+  document.observe("dom:loaded", mapSetup('interactive_map'));
 <% end -%>
 
 <!-- TEST CONDITIONS:

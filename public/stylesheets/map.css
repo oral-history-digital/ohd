@@ -123,9 +123,10 @@
   width: 110px;
   padding: 2px 5px;
   color: #fff;
-  background: #840f09 url('/archiv/images/pfeil_weiss_unten.png') no-repeat 103px 9px;
+  background: #840f09 url('/archiv/archiv/images/pfeil_weiss_unten.png') no-repeat 103px 9px;
   cursor: pointer;
   z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #explanation_filter {
@@ -134,9 +135,8 @@
   left: 184px;
   width: 510px;
   background: #F1F1EB;
-  /* border: none;
-  border: 10px solid rgba(0,0,0,0.2); */
   z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #baseContent #explanation_filter ul {
@@ -152,20 +152,21 @@
   background-position: 30px 4px;
 }
 
-#baseContent #explanation_filter ul li span {
-  padding: 4px 0 4px 55px;
+#baseContent #explanation_filter ul li {
+  text-indent: 55px;
 }
 
 #explanation_filter ul li img {
   position: absolute;
   padding: 4px;
   right: 7px;
-  top: 0px;
+  top: 2px;
   cursor: pointer;
 }
 
 #baseContent #explanation_filter ul ul {
-  padding: 4px 0 0 0;
+  padding: 4px 0 0;
+  margin-bottom: -5px;
 }
 
 #baseContent #explanation_filter ul ul li {
@@ -179,13 +180,4 @@
 
 #baseContent #explanation_filter ul ul li:first-child {
   border-top: 1px solid #F1F1EB;
-}
-
-#baseContent #explanation_filter ul ul li span {
-  padding-left: 55px;
-}
-
-#baseContent #explanation_filter ul li.has_children {
-  padding-bottom: 0;
-  margin-bottom: 0;
 }
