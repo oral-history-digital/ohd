@@ -21,60 +21,34 @@ ClusterManager.prototype = {
 
         this.shownCluster = null;
 
+        var defaults = {
+            width: 320
+        };
+
         if (options != null) {
             this.options = options;
         } else {
             this.options = {};
         }
+        if(!this.options.width) { this.options.width = defaults.width; }
 
     },
-    addLocation: function(id, latLng, htmlText, divClass, linkURL) {
 
+    addLocation: function(id, latLng, htmlText, divClass, linkURL) {
         var location = new Location(id, latLng, htmlText, divClass, linkURL);
 
         var cluster = this.locateCluster(latLng);
 
         if(!cluster) {
             cluster = new Cluster(latLng);
-            // alert('Created new cluster for LatLng ' + latLng + '\nCluster: ' + cluster);
         }
         cluster.addLocation(location);
-
-        /*
-        var marker = null;
-        var idx = this.locations.length;
-        while (idx--) {
-            if(idx == -1 || this.locations[idx].equals(latLng)) {
-                break;
-            }
-        }
-        // var idx = this.locations.indexOf(latLng);
-        if(idx == -1) {
-            // add new marker
-            marker = new google.maps.Marker({
-                position: latLng,
-                title: id,
-                flat: true,
-                icon: window.locationSearch.options.images[divClass || 'default']
-            });
-            marker.locationClass = divClass;
-            this.locations.push(latLng);
-            this.markers.push(marker);
-            this.info.push(this.composeHtmlText(htmlText, divClass));
-            // this.info[idx] = this.info[idx] + '<li class="' + (divClass || 'interview') + '">' + htmlText + '</li>';
-            google.maps.event.addListener(marker, 'click', function() { window.locationSearch.clusterManager.showInfoBox(marker) });
-            marker.setMap(this.map);
-        } else {
-            marker = this.markers[idx];
-            // extend the info...
-            this.info[idx] = (this.info[idx] || '') + this.composeHtmlText(htmlText, divClass);
-            // this.info[idx] = this.info[idx] + '<li class="' + (divClass || 'interview') + '">' + htmlText + '</li>';
-        }
-        */
     },
+
     composeHtmlText: function(html, klass) {
         return ('<li class="' + (klass || 'interview') + '">' + html + '</li>');
     },
+
     locateCluster: function(latLng) {
         var loc = latLng.toString();
         var idx = window.mapLocations.length;
@@ -83,50 +57,38 @@ ClusterManager.prototype = {
         while(idx--) {
             if((idx < 0) || (window.clusterLocations[idx] == loc)) { break; }
         }
-        // alert('Located cluster #' + idx + ' at location ' + loc);
         if(idx > -1) {
             return window.mapClusters[idx];
         } else {
             return null;
         }
     },
+
     showInfoBox: function(marker) {
         if(this.activeInfo) {
             this.activeInfo.close();
             this.activeInfo = null;
             this.shownCluster = null;
         }
-        // var marker = event.element;
-        // NOTE: marker is undefined here - maybe go via the event.element.... ?
+
         var cluster = this.locateCluster(marker.getPosition());
-        // alert('Showing infoBox for cluster: ' + cluster + ' with ' + (cluster == null ? '0' : cluster.locations.length) + ' locations at position ' + marker.getPosition().toString());
         if(cluster) {
             this.shownCluster = cluster;
-            // alert('Locations at cluster:\n' + cluster.locations);
             var infoBox = new google.maps.InfoWindow({
                 content: cluster.displayInfo(1),
-                // content: cluster.locationsInfo(1),
-                maxWidth: 320
+                maxWidth: this.options.width
             });
             infoBox.open(window.locationSearch.map, marker);
             this.activeInfo = infoBox;
         }
-        /*
-        var idx = this.markers.indexOf(marker);
-        if(idx != -1) {
-            var infoBox = new google.maps.InfoWindow({
-                content: '<ul class="locationReferenceList">' + this.info[idx] + '</ul>',
-                maxWidth: 320
-            });
-            infoBox.open(this.map, marker);
-            this.activeInfo = infoBox;
-        }
-        */
     },
+
     showClusterPage: function(page) {
         if(this.shownCluster && this.activeInfo) {
-            // this.activeInfo.setContent(this.shownCluster.locationsInfo(page));
             this.activeInfo.setContent(this.shownCluster.displayInfo(page));
+            // remember the location list's width and set as minimum
+            var locationList = $('active_info_locations');
+            if(locationList && locationList.offsetWidth > this.shownCluster.width) { this.shownCluster.width = locationList.offsetWidth; }
         }
     }
 };
@@ -153,15 +115,19 @@ Location.prototype = {
         this.id = window.mapLocations.length;
         window.mapLocations.push(this);
     },
+
     getPriority: function(type) {
         return locationTypePriorities.indexOf(type) || 0;
     },
+
     getLocationType: function(priority) {
         return locationTypePriorities[priority] || 'interview';
     },
+
     displayLines: function() {
         return (this.locationType == 0) ? 1 : 2;
     },
+    
     getHtml: function() {
         return ('<li class="' + this.getLocationType(this.locationType) + '" onclick="window.open(\'' + this.linkURL + '\', \'_blank\');" style="cursor: pointer;">' + this.info + '</li>');
     }
@@ -177,6 +143,7 @@ Cluster.prototype = {
             icon: this.icon,
             flat: true
         });
+        this.width = 0;
         this.marker = marker;
         this.marker.setMap(window.locationSearch.map);
         google.maps.event.addListener(marker, 'click',  function() { window.locationSearch.clusterManager.showInfoBox(marker); });
@@ -186,6 +153,7 @@ Cluster.prototype = {
         window.clusterLocations.push(latLng.toString());
         window.mapClusters.push(this);
     },
+    
     addLocation: function(location) {
         if (this.locations.indexOf(location) == -1) {
             this.locations.push(location);
@@ -200,11 +168,13 @@ Cluster.prototype = {
             this.redraw();
         }
     },
+
     redraw: function() {
         this.marker.setIcon(this.icon);
         this.marker.setTitle(this.title);
         this.marker.setMap(window.locationSearch.map);
     },
+
     // groups the locations by descriptor
     displayLocations: function() {
         var locs = this.locations.toArray();
@@ -228,6 +198,7 @@ Cluster.prototype = {
         });
         return displayLocs;
     },
+
     displayInfo: function(page) {
       if(!page) { page = 1; }
       var html = '';
@@ -277,13 +248,17 @@ Cluster.prototype = {
           }
           html = html + '</ul>';
       }
-      html = html + '<ul class="locationReferenceList"' + ((totalLines > 10) ? ' style="height: 290px;"' : '') + '>';
+      var style = '';
+      if(this.width > 0) { style = ' width: ' + this.width + 'px;'}
+      if(totalLines > 10) { style = style + ' height: 290px;'}
+      html = html + '<ul id="active_info_locations" class="locationReferenceList" style="' + style + '">';
       var locInfo = pages[page-1].collect(function(l) {
             return ('<li><h3>' + l[0] + '</h3><ul>' + l[1].collect(function(l1){ return l1.getHtml(); }).join('') + '</ul></li>');
       }).join('');
       html = html + locInfo +  '</ul>';
       return html;
     },
+
     locationsInfo: function(page) {
         if(!page) { page = 1; }
         var html = '';
