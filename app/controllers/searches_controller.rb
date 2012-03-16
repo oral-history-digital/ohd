@@ -11,6 +11,8 @@ class SearchesController < BaseController
   before_filter :determine_user, :only => :query
   before_filter :remove_search_term_from_params
 
+  ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
+
   def query
     @search = Search.from_params(@query_params || params)
     @search.search!
@@ -155,7 +157,11 @@ class SearchesController < BaseController
     unless signed_in?(:user_account)
       flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions', :locale => session[:locale] || I18n.locale)
       session[:query] = Search.from_params(params).query_params
-      session[:"user_account.return_to"] = request.request_uri
+      if ACTIONS_FOR_DEFAULT_REDIRECT.include?(action_name)
+        session[:"user_account.return_to"] = new_search_url
+      else
+        session[:"user_account.return_to"] = request.request_uri
+      end
       if request.xhr?
         render :update do |page|
           page << "window.location.href = '#{new_user_account_session_url}';"
