@@ -116,7 +116,7 @@ InteractiveMap.prototype = {
         return refStr;
     },
     translate: function(str) {
-        if(str =~ /^forced_labor/) { return 'Zwangsarbeit -'; }
+        if(str.startsWith('forced_labor')) { return 'Zwangsarbeit -'; }
         if(str == 'deportation_location') { return 'Deportation -'; }
         if(str == 'place_of_birth') { return 'Geburtsort -'; }
         if(str == 'home_location') { return 'Lebensmittelpunkt -'; }
