@@ -137,7 +137,9 @@ var locationTypePriorities = [
         'home_location',
         'place_of_birth',
         'deportation_location',
-        'forced_labor_location'
+        'forced_labor_location',
+        'forced_labor_company',
+        'forced_labor_camp'
 ];
 
 Location.prototype = {
