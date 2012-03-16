@@ -36,8 +36,16 @@
 
 /* Pagination of Location Reference List */
 
+#baseContent span.pages {
+    float: left;
+    margin-top: 6px;
+}
+
 #baseContent ul.pagination {
   height: 20px;
+  display: inline-block;
+  margin-right: 8px;
+  float: left;
 }
 
 #baseContent ul.pagination li {
@@ -45,14 +53,20 @@
   padding: 0 7px;
   border: 1px solid #ccc;
   color: #900;
+  display: inline-block;
+  cursor: pointer;
 }
 
 #baseContent ul.pagination li.active {
-  background-image: #840f09;
+  background-color: #840f09;
   color: #fff;
 }
 
 /* Location Reference Lists */
+
+#baseContent ul.locationReferenceList {
+  clear: both;
+}
 
 #baseContent ul.locationReferenceList li {
   background: none;

@@ -239,14 +239,13 @@ Cluster.prototype = {
       */
       if(totalPages > 1) {
           var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
-          html = html + '<span>' + dataSetStr + ' von ' + locs.length + '&nbsp;</span><ul class="pagination">';
+          html = html +'<ul class="pagination">';
           var pageIndex = 1;
           while(totalPages > 0) {
-              html = html + '<li' + ((page == pageIndex) ? ' class="current"' : '') + ' style="list-style-type: none; float: left; border: 1px solid; cursor: pointer;" onclick="window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
-              // html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="#" onclick="javascript:window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '" style="display: block; float: left;">' + (pageIndex++) + '</li>';
+              html = html + '<li' + ((page == pageIndex) ? ' class="active"' : '') + ' onclick="window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
               totalPages--;
           }
-          html = html + '</ul>';
+          html = html + '</ul><span class="pages">' + dataSetStr + ' von ' + locs.length + '</span>';
       }
       var style = '';
       if(this.width > 0) { style = ' width: ' + this.width + 'px;'}
