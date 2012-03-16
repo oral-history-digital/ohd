@@ -233,23 +233,41 @@ Cluster.prototype = {
       var html = '';
       var locs = this.displayLocations();
       var totalLines = 0;
-      locs.each(function(l){ totalLines = totalLines + l[2]; });
-      var totalPages = totalLines / 10;
+      // collect the locations organized per page
+      var pages = [[]];
+      var pageIdx = 0;
+      var lines = 0;
       var von = 0;
       var bis = 0;
-      var lines = 0;
       locs.each(function(l){
-          if((page-1)*10 > lines) {
-              von++;
-          }
-          lines = lines + l[2];
-          if(lines < page*10+1) {
-              bis++;
-          }
+         if(lines > 10) {
+             pageIdx++;
+             pages[pageIdx] = [];
+             lines = 0;
+         }
+         pages[pageIdx].push(l);
+         lines = lines + l[2] +1;
+         totalLines = totalLines + l[2] +1;
+         if(pageIdx+1 == page) {
+             var idx = locs.indexOf(l);
+             bis = idx+1;
+             if(von == 0) {
+                 von = idx+1;
+             }
+         }
       });
-      alert(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines);
+      var totalPages = pages.length;
+      /*
+      var msg = '';
+      pages.each(function(p) {
+         msg = msg + '\n\n' + p.collect(function(l){
+             return l[1].id;
+         }).join('|');
+      });
+      alert(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\n' + pages.length + ' pages total\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines + '\n' + msg);
+      */
       if(totalPages > 1) {
-          var dataSetStr = (von == bis) ? ('Ort ' + (von+1)) : ('Orte ' + (von+1) + '-' + bis);
+          var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
           html = html + '<span>' + dataSetStr + ' von ' + locs.length + '&nbsp;</span><ul class="pagination">';
           var pageIndex = 1;
           while(totalPages > 0) {
@@ -260,14 +278,9 @@ Cluster.prototype = {
           html = html + '</ul>';
       }
       html = html + '<ul class="locationReferenceList"' + ((totalLines > 10) ? ' style="height: 290px;"' : '') + '>';
-      var locInfo = locs.collect(function(l) {
-          var idx = locs.indexOf(l);
-          if((idx > von-2) && (idx < bis)) {
-              return ('<li><h3>' + l[0] + '</h3><ul>' + l[1].collect(function(l1){ return l1.getHtml(); }).join('') + '</ul></li>');
-          } else {
-              return null;
-          }
-      }).compact().join('');
+      var locInfo = pages[page-1].collect(function(l) {
+            return ('<li><h3>' + l[0] + '</h3><ul>' + l[1].collect(function(l1){ return l1.getHtml(); }).join('') + '</ul></li>');
+      }).join('');
       html = html + locInfo +  '</ul>';
       return html;
     },
