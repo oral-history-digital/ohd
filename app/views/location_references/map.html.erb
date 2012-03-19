@@ -5,8 +5,8 @@
 <div id="explanation_filter_toggle">Legende / Filter</div>
 <div id="explanation_filter" style="display: none;">
   <ul style="float: left;">
-    <li class="forced_labor_location"><span>Ort</span></li>
-    <li class="forced_labor_camp"><span>Lager</span><img id="sub_list_toggle" src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
+    <li class="forced_labor_location" onclick="window.locationSearch.clusterManager.toggleFilter('forced_labor_location');"><span>Ort</span></li>
+    <li class="forced_labor_camp" onclick="window.locationSearch.clusterManager.toggleFilter('forced_labor_camp');"><span>Lager</span><img id="sub_list_toggle" src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
       <ul id="sub_list" class="sub_list" style="display: none;">
         <li><span>Gefängnis</span></li>
         <li><span>Ghetto</span></li>
@@ -19,14 +19,14 @@
         <li><span>Sonstige Lager</span></li>
       </ul>
     </li>
-    <li class="forced_labor_company"><span>Firmen</span></li>
-    <li class="deportation_location"><span>Deportation</span></li>
+    <li class="forced_labor_company" onclick="window.locationSearch.clusterManager.toggleFilter('forced_labor_company');"><span>Firmen</span></li>
+    <li class="deportation_location" onclick="window.locationSearch.clusterManager.toggleFilter('deportation_location');"><span>Deportation</span></li>
   </ul>
   <ul style="float: left;">
-    <li class="place_of_birth"><span>Geburtsort</span></li>
-    <li class="return_location"><span>Wohnort nach 1945</span></li>
-    <li class="home_location"><span>Lebensmittelpunkt</span></li>
-    <li class="interview"><span>Erwähnung</span></li>
+    <li class="place_of_birth" onclick="window.locationSearch.clusterManager.toggleFilter('place_of_birth');"><span>Geburtsort</span></li>
+    <li class="return_location" onclick="window.locationSearch.clusterManager.toggleFilter('return_location');"><span>Wohnort nach 1945</span></li>
+    <li class="home_location" onclick="window.locationSearch.clusterManager.toggleFilter('home_location');"><span>Lebensmittelpunkt</span></li>
+    <li class="interview" onclick="window.locationSearch.clusterManager.toggleFilter('interview');"><span>Erwähnung</span></li>
   </ul>
   <div style="clear: both;"></div>
 </div>

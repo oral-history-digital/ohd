@@ -17,6 +17,8 @@ ClusterManager.prototype = {
         this.info = [];
         this.alerted = false;
 
+        this.filters = [];
+
         this.activeInfo = null;
 
         this.shownCluster = null;
@@ -35,7 +37,7 @@ ClusterManager.prototype = {
     },
 
     addLocation: function(id, latLng, htmlText, divClass, linkURL) {
-        var location = new Location(id, latLng, htmlText, divClass, linkURL);
+        var location = new Location(id, latLng, htmlText, divClass, linkURL, true);
 
         var cluster = this.locateCluster(latLng);
 
@@ -90,6 +92,21 @@ ClusterManager.prototype = {
             var locationList = $('active_info_locations');
             if(locationList && locationList.offsetWidth > this.shownCluster.width) { this.shownCluster.width = locationList.offsetWidth; }
         }
+    },
+
+    toggleFilter: function(filter) {
+        if(locationTypePriorities.indexOf(filter) != -1) {
+            if(this.filters.indexOf(filter) == -1) {
+                this.filters.push(filter);
+            } else {
+                this.filters = this.filters.select(function(obj) { return obj != filter });
+            }
+            var filters = this.filters;
+            // apply filters to all locations
+            window.mapLocations.each(function(loc) {
+                loc.applyFilters(filters);
+            });
+        }
     }
 };
 
@@ -105,15 +122,47 @@ var locationTypePriorities = [
 ];
 
 Location.prototype = {
-    initialize: function(id, latLng, htmlText, divClass, linkURL) {
+    initialize: function(id, latLng, htmlText, divClass, linkURL, display) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
         this.latLng = latLng;
         this.linkURL = linkURL;
+        this.display = display;
+        this.cluster = null;
         if(!window.mapLocations) { window.mapLocations = []; }
         this.id = window.mapLocations.length;
         window.mapLocations.push(this);
+    },
+
+    setCluster: function(cluster) {
+        this.cluster = cluster;
+    },
+
+    hide: function() {
+        this.display = false;
+    },
+
+    show: function() {
+        this.display = true;
+    },
+
+    applyFilters: function(filters) {
+        var changed = false;
+        if(filters.indexOf(this.getLocationType(this.locationType)) > -1) {
+            if(this.display) {
+                this.hide();
+                changed = true;
+            }
+        } else {
+            if(!this.display) {
+                this.show();
+                changed = true;
+            }
+        }
+        if(changed && this.cluster) {
+            this.cluster.refresh();
+        }
     },
 
     getPriority: function(type) {
@@ -153,14 +202,19 @@ Cluster.prototype = {
         window.clusterLocations.push(latLng.toString());
         window.mapClusters.push(this);
     },
+
+    setIconByType: function(type) {
+        this.icon = window.locationSearch.options.images[type];
+    },
     
     addLocation: function(location) {
         if (this.locations.indexOf(location) == -1) {
             this.locations.push(location);
+            location.setCluster(this);
             this.locations = this.locations.sortBy(function(l){return l.locationType; }).reverse();
             var loc = this.locations.first();
             this.title = loc.title;
-            this.icon = window.locationSearch.options.images[loc.getLocationType(loc.locationType)];
+            this.setIconByType(loc.getLocationType(loc.locationType));
             if(this.locations.length > 1) {
                 this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
             }
@@ -175,13 +229,30 @@ Cluster.prototype = {
         this.marker.setMap(window.locationSearch.map);
     },
 
-    // groups the locations by descriptor
+    refresh: function() {
+        var locs = this.displayLocations();
+        if(locs.length != 0) {
+            var dLoc = locs.first();
+            var loc = dLoc[1].first();
+            // alert(locs.length + ' locations still at "' + this.title + '\n loc = ' + loc);
+            // redraw with new title & icon
+            this.title = loc.title;
+            this.setIconByType(loc.getLocationType(loc.locationType));
+            this.marker.setVisible(true);
+            this.redraw();
+        } else {
+            // no more locations shown - hide
+            this.marker.setVisible(false);
+        }
+    },
+
+    // groups the locations by descriptor [['descriptor', [array,of,locations], #number_of_locations]]
     displayLocations: function() {
         var locs = this.locations.toArray();
         var displayLocs = [];
         var descriptors = [];
         var titleIndex = 0;
-        locs.each(function(l){
+        locs.select(function(lo){ return lo.display }).each(function(l){
             var idx = descriptors.indexOf(l.title);
             if(idx == -1) {
                 descriptors.push(l.title);
