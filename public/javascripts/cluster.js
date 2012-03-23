@@ -53,14 +53,16 @@ ClusterManager.prototype = {
 
     locateCluster: function(latLng) {
         var loc = latLng.toString();
-        var idx = window.mapLocations.length;
-        if(!window.clusterLocations) { window.clusterLocations = []; }
-        if(!window.mapClusters) { window.mapClusters = []; }
+        var idx = cedisMap.mapLocations.length;
+        var clusterLocations = cedisMap.clusterLocations;
+        var mapClusters = cedisMap.mapClusters;
+        if(!clusterLocations) { clusterLocations = []; }
+        if(!mapClusters) { mapClusters = []; }
         while(idx--) {
-            if((idx < 0) || (window.clusterLocations[idx] == loc)) { break; }
+            if((idx < 0) || (clusterLocations[idx] == loc)) { break; }
         }
         if(idx > -1) {
-            return window.mapClusters[idx];
+            return mapClusters[idx];
         } else {
             return null;
         }
@@ -80,7 +82,7 @@ ClusterManager.prototype = {
                 content: cluster.displayInfo(1),
                 maxWidth: this.options.width
             });
-            infoBox.open(window.locationSearch.map, marker);
+            infoBox.open(cedisMap.locationSearch.map, marker);
             this.activeInfo = infoBox;
         }
     },
@@ -95,6 +97,9 @@ ClusterManager.prototype = {
     },
 
     toggleFilter: function(filter) {
+        var filterStartTime = (new Date).getTime();
+        var changedLocs = 0;
+        var changedClusters = [];
         if(locationTypePriorities.indexOf(filter) != -1) {
             if(this.filters.indexOf(filter) == -1) {
                 this.filters.push(filter);
@@ -103,10 +108,59 @@ ClusterManager.prototype = {
             }
             var filters = this.filters;
             // apply filters to all locations
-            window.mapLocations.each(function(loc) {
-                loc.applyFilters(filters);
-            });
+            var locations = cedisMap.mapLocations;
+            var index = locations.length;
+            while(index--) {
+                var loc = locations[index];
+                var changed = loc.applyFilters(filters);
+                if(changed && changedClusters.indexOf(loc.cluster) == -1) { changedClusters.push(loc.cluster); }
+            }
+            var idx = changedClusters.length;
+            while(idx--) {
+                changedClusters[idx].refresh();
+            }
+            /* cedisMap.mapLocations.each(function(loc) {
+                var changed = loc.applyFilters(filters);
+                if(changed) { changedLocs++ }
+            }); */
         }
+        var filterStopTime = (new Date).getTime();
+        alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations.length);
+    },
+
+    // benchmark test for markers
+    toggleAllMarkers: function() {
+        this.benchmark(function() {
+           var clusters = cedisMap.mapClusters;
+           var idx = clusters.length;
+           while(idx--) {
+               var marker = clusters[idx].marker;
+               marker.setVisible(!marker.getVisible());
+           }
+        }, 'Toggle all Clusters/Markers');
+    },
+
+    // benchmark test for locations
+    toggleAllLocations: function() {
+        this.benchmark(function() {
+            var locations = cedisMap.mapLocations;
+            var idx = locations.length;
+            while(idx--) {
+                var location = locations[idx];
+                if(location.display) {
+                    location.hide();
+                } else {
+                    location.show();
+                }
+            }
+        },'Toggle all Locations');
+    },
+
+    benchmark: function(test, desc) {
+        var startTime = (new Date).getTime();
+        test.call();
+        var endTime = (new Date).getTime();
+        alert(desc + '\nTime taken: ' + (endTime - startTime) + ' ms.');
     }
 };
 
@@ -130,9 +184,9 @@ Location.prototype = {
         this.linkURL = linkURL;
         this.display = display;
         this.cluster = null;
-        if(!window.mapLocations) { window.mapLocations = []; }
-        this.id = window.mapLocations.length;
-        window.mapLocations.push(this);
+        if(!cedisMap.mapLocations) { cedisMap.mapLocations = []; }
+        this.id = cedisMap.mapLocations.length;
+        cedisMap.mapLocations.push(this);
     },
 
     setCluster: function(cluster) {
@@ -161,8 +215,9 @@ Location.prototype = {
             }
         }
         if(changed && this.cluster) {
-            this.cluster.refresh();
+            //this.cluster.refresh();
         }
+        return changed;
     },
 
     getPriority: function(type) {
@@ -184,7 +239,8 @@ Location.prototype = {
 
 Cluster.prototype = {
     initialize: function(latLng) {
-        this.icon = window.locationSearch.options.images['default'];
+        var locationSearch = cedisMap.locationSearch;
+        this.icon = locationSearch.options.images['default'];
         this.title = '?';
         this.locations = [];
         var marker = new google.maps.Marker({
@@ -194,17 +250,17 @@ Cluster.prototype = {
         });
         this.width = 0;
         this.marker = marker;
-        this.marker.setMap(window.locationSearch.map);
-        google.maps.event.addListener(marker, 'click',  function() { window.locationSearch.clusterManager.showInfoBox(marker); });
+        this.marker.setMap(locationSearch.map);
+        google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
 
-        if(!window.clusterLocations) { window.clusterLocations = []; }
-        if(!window.mapClusters) { window.mapClusters = []; }
-        window.clusterLocations.push(latLng.toString());
-        window.mapClusters.push(this);
+        if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
+        if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
+        cedisMap.clusterLocations.push(latLng.toString());
+        cedisMap.mapClusters.push(this);
     },
 
     setIconByType: function(type) {
-        this.icon = window.locationSearch.options.images[type];
+        this.icon = cedisMap.locationSearch.options.images[type];
     },
     
     addLocation: function(location) {
@@ -226,7 +282,7 @@ Cluster.prototype = {
     redraw: function() {
         this.marker.setIcon(this.icon);
         this.marker.setTitle(this.title);
-        this.marker.setMap(window.locationSearch.map);
+        this.marker.setMap(cedisMap.locationSearch.map);
     },
 
     refresh: function() {
@@ -252,6 +308,26 @@ Cluster.prototype = {
         var displayLocs = [];
         var descriptors = [];
         var titleIndex = 0;
+        var index = locs.length;
+        while(index--) {
+            var l = locs[index];
+            if(l.display) {
+                var idx = descriptors.indexOf(l.title);
+                if(idx == -1) {
+                    descriptors.push(l.title);
+                    displayLocs.push([l.title, [l], 1 + l.displayLines()]);
+                } else {
+                    var existingLoc = displayLocs[idx];
+                    // if(existingLoc[2] + l.displayLines() > 12) {
+                        // start a new location with '2,3'
+                    // } else {
+                        existingLoc[1].push(l);
+                        existingLoc[2] = existingLoc[2] + l.displayLines();
+                    // }
+                }
+            }
+        }
+        /*
         locs.select(function(lo){ return lo.display }).each(function(l){
             var idx = descriptors.indexOf(l.title);
             if(idx == -1) {
@@ -267,6 +343,7 @@ Cluster.prototype = {
                 // }
             }
         });
+        */
         return displayLocs;
     },
 
@@ -281,6 +358,26 @@ Cluster.prototype = {
       var lines = 0;
       var von = 0;
       var bis = 0;
+      var index = locs.length;
+      while(index--) {
+          var l = locs[index];
+          if(lines > 10) {
+             pageIdx++;
+             pages[pageIdx] = [];
+             lines = 0;
+         }
+         pages[pageIdx].push(l);
+         lines = lines + l[2] +1;
+         totalLines = totalLines + l[2] +1;
+         if(pageIdx+1 == page) {
+             var idx = locs.indexOf(l);
+             bis = idx+1;
+             if(von == 0) {
+                 von = idx+1;
+             }
+         }
+      }
+        /*
       locs.each(function(l){
          if(lines > 10) {
              pageIdx++;
@@ -298,6 +395,7 @@ Cluster.prototype = {
              }
          }
       });
+      */
       var totalPages = pages.length;
       /*
       var msg = '';
@@ -313,7 +411,7 @@ Cluster.prototype = {
           html = html +'<ul class="pagination">';
           var pageIndex = 1;
           while(totalPages > 0) {
-              html = html + '<li' + ((page == pageIndex) ? ' class="active"' : '') + ' onclick="window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
+              html = html + '<li' + ((page == pageIndex) ? ' class="active"' : '') + ' onclick="cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
               totalPages--;
           }
           html = html + '</ul><span class="pages">' + dataSetStr + ' von ' + locs.length + '</span>';
@@ -340,8 +438,8 @@ Cluster.prototype = {
             html = html + '<span>' + dataSetStr + ' von ' + this.locations.length + '&nbsp;</span><ul class="pagination">';
             var pageIndex = 1;
             while(totalPages > 0) {
-                html = html + '<li style="list-style-type: none; float: left; border: 1px solid; cursor: pointer;" onclick="window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
-                // html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="#" onclick="javascript:window.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '" style="display: block; float: left;">' + (pageIndex++) + '</li>';
+                html = html + '<li style="list-style-type: none; float: left; border: 1px solid; cursor: pointer;" onclick="cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
+                // html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="#" onclick="javascript:cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '" style="display: block; float: left;">' + (pageIndex++) + '</li>';
                 totalPages--;
             }
             html = html + '</ul>';

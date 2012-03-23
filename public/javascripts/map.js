@@ -1,3 +1,5 @@
+var cedisMap = {};
+
 var InteractiveMap = Class.create();
 InteractiveMap.prototype = {
     initialize: function(id, options) {
@@ -29,13 +31,13 @@ InteractiveMap.prototype = {
         this.options.dataURL = this.options.urlRoot + this.options.dataURL;
         this.options.indexURL = this.options.urlRoot + this.options.indexURL;
 
-        window.locationSearch = this;
+        cedisMap.locationSearch = this;
 
         if(!this.options.images) {
             this.options.images = new Hash();
             this.options.images['default'] = new google.maps.MarkerImage(this.options.urlRoot + '/images/test_markers/interview_marker.png');
             ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'home_location'].each(function(icon){
-               window.locationSearch.options.images[icon] = new google.maps.MarkerImage(window.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
+               cedisMap.locationSearch.options.images[icon] = new google.maps.MarkerImage(cedisMap.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
             });
         }
 
@@ -58,24 +60,24 @@ InteractiveMap.prototype = {
         return this.map;
     },
     searchWithinBounds: function() {
-        new Ajax.Request(window.locationSearch.options.indexURL, {
+        new Ajax.Request(cedisMap.locationSearch.options.indexURL, {
             method: 'GET',
-            onSuccess: window.locationSearch.initializeProgressBar
+            onSuccess: cedisMap.locationSearch.initializeProgressBar
         });
     },
     initializeProgressBar: function(response) {
-        window.locationSearch.loadPageNumber = response.responseJSON.pages;
-        window.locationSearch.progress.start(window.locationSearch.loadPageNumber);
-        window.locationSearch.currentLoadPage = 0;
-        window.locationSearch.loading = true;
-        window.locationSearch.retrieveDataPage();
+        cedisMap.locationSearch.loadPageNumber = response.responseJSON.pages;
+        cedisMap.locationSearch.progress.start(cedisMap.locationSearch.loadPageNumber);
+        cedisMap.locationSearch.currentLoadPage = 0;
+        cedisMap.locationSearch.loading = true;
+        cedisMap.locationSearch.retrieveDataPage();
     },
     retrieveDataPage: function() {
        this.currentLoadPage = this.currentLoadPage + 1;
         if (this.currentLoadPage < (this.loadPageNumber + 1)) {
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
                 method: 'GET',
-                onSuccess: window.locationSearch.initializeDataPage
+                onSuccess: cedisMap.locationSearch.initializeDataPage
             });
         } else {
             this.loading = false;
@@ -86,21 +88,21 @@ InteractiveMap.prototype = {
     initializeDataPage: function(response) {
         if(response.responseJSON.locations) {
           response.responseJSON.locations.each(function(location){
-                var locationInfo = window.locationSearch.locationInfo(location);
-                var referenceClass = window.locationSearch.locationReference(location.referenceType, location.locationType);
-                var interviewURL = window.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
-                window.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, interviewURL);
+                var locationInfo = cedisMap.locationSearch.locationInfo(location);
+                var referenceClass = cedisMap.locationSearch.locationReference(location.referenceType, location.locationType);
+                var interviewURL = cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
+                cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, interviewURL);
             });
 
         }
-        window.locationSearch.progress.updateBar(1);
+        cedisMap.locationSearch.progress.updateBar(1);
 
-        window.locationSearch.retrieveDataPage();
+        cedisMap.locationSearch.retrieveDataPage();
 
     },
     // presents an infoWindow for the marker and location at index position
     locationInfo: function(location) {
-      var reference = window.locationSearch.translate(location.referenceType);
+      var reference = cedisMap.locationSearch.translate(location.referenceType);
       var info = ''; // '<h3>' + location.locationType + ' ' + location.location + '</h3>';
       info = info + '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
       info = info + '<p class="referenceDetails">';
@@ -123,6 +125,9 @@ InteractiveMap.prototype = {
         if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
+    },
+    toggleFilter: function(type) {
+        
     }
 };
 
@@ -131,5 +136,5 @@ function mapSetup(id) {
 }
 
 function searchWithinBounds() {
-    window.locationSearch.searchWithinBounds();
+    cedisMap.locationSearch.searchWithinBounds();
 }
