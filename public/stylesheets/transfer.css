@@ -1,5 +1,13 @@
 /* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
 
+.RTL {
+    direction: RTL;
+    text-align: justify !important;
+}
+.LTR {
+    direction: LTR;
+}
+
 #overlay {
     opacity: 0.9;
     filter: alpha(opacity=90);

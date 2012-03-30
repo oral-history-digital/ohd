@@ -106,4 +106,8 @@ module InterviewHelper
                              :hd_plugin => interview.video?)
   end
 
+  def interview_direction(interview)
+    interview.right_to_left ? 'RTL' : 'LTR'
+  end
+
 end
