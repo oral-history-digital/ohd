@@ -5,8 +5,8 @@
 <div id="explanation_filter_toggle">Legende / Filter</div>
 <div id="explanation_filter" style="display: none;">
   <ul style="float: left;">
-    <li class="map_filter forced_labor_location" style="cursor: pointer;"><span>Ort</span></li>
-    <li class="map_filter forced_labor_camp" style="cursor: pointer;"><span>Lager</span>
+    <li class="map_filter forced_labor_location" style="cursor: pointer;"><span>Einsatzorte</span></li>
+    <li class="map_filter forced_labor_camp" style="cursor: pointer;"><span>Lager und Haftst&auml;tten</span>
       <!--
       <img id="sub_list_toggle" src="<%= image_path('/images/pfeil_rot_unten.gif')-%>" alt="Lagertypen aufklappen"/>
       <ul id="sub_list" class="sub_list" style="display: none;">
@@ -23,24 +23,24 @@
       //-->
     </li>
     <li class="map_filter forced_labor_company" style="cursor: pointer;"><span>Firmen</span></li>
-    <li class="map_filter deportation_location" style="cursor: pointer;"><span>Deportation</span></li>
+    <li class="map_filter deportation_location" style="cursor: pointer;"><span>Deportationen</span></li>
   </ul>
   <ul style="float: left;">
-    <li class="map_filter place_of_birth" style="cursor: pointer;"><span>Geburtsort</span></li>
-    <li class="map_filter return_location" style="cursor: pointer;"><span>Wohnort nach 1945</span></li>
-    <li class="map_filter home_location" style="cursor: pointer;"><span>Lebensmittelpunkt</span></li>
-    <li class="map_filter interview" style="cursor: pointer;"><span>Erwähnung</span></li>
+    <li class="map_filter place_of_birth" style="cursor: pointer;"><span>Geburtsorte</span></li>
+    <li class="map_filter return_location" style="cursor: pointer;"><span>Wohnorte nach 1945</span></li>
+    <li class="map_filter home_location" style="cursor: pointer;"><span>Lebensmittelpunkte</span></li>
+    <li class="map_filter interview" style="cursor: pointer;"><span>Erwähnungen</span></li>
   </ul>
   <div style="clear: both;"></div>
 </div>
 
 <script type="text/javascript">
     Event.observe('explanation_filter_toggle', 'click', function(){
-        $('explanation_filter').toggle();
+        Effect.toggle('explanation_filter','appear', { duration: 0.5 });
     });
 
     Event.observe('sub_list_toggle', 'click', function(event){
-        $('sub_list').toggle();
+        Effect.toggle('sub_list','blind', { duration: 0.5 });
         Event.stop(event);
     });
 
