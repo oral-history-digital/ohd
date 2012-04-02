@@ -5,8 +5,10 @@
 <div id="explanation_filter_toggle">Legende / Filter</div>
 <div id="explanation_filter" style="display: none;">
   <ul style="float: left;">
-    <li class="forced_labor_location" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('forced_labor_location');"><span>Ort</span></li>
-    <li class="forced_labor_camp" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('forced_labor_camp');"><span>Lager</span><img id="sub_list_toggle" src="/archiv/images/pfeil_rot_unten.gif" alt="Lagertypen aufklappen"/>
+    <li class="map_filter forced_labor_location" style="cursor: pointer;"><span>Ort</span></li>
+    <li class="map_filter forced_labor_camp" style="cursor: pointer;"><span>Lager</span>
+      <!--
+      <img id="sub_list_toggle" src="<%= image_path('/images/pfeil_rot_unten.gif')-%>" alt="Lagertypen aufklappen"/>
       <ul id="sub_list" class="sub_list" style="display: none;">
         <li><span>Gefängnis</span></li>
         <li><span>Ghetto</span></li>
@@ -18,15 +20,16 @@
         <li><span>Repatriierungs- / DP-Lager</span></li>
         <li><span>Sonstige Lager</span></li>
       </ul>
+      //-->
     </li>
-    <li class="forced_labor_company" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('forced_labor_company');"><span>Firmen</span></li>
-    <li class="deportation_location" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('deportation_location');"><span>Deportation</span></li>
+    <li class="map_filter forced_labor_company" style="cursor: pointer;"><span>Firmen</span></li>
+    <li class="map_filter deportation_location" style="cursor: pointer;"><span>Deportation</span></li>
   </ul>
   <ul style="float: left;">
-    <li class="place_of_birth" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('place_of_birth');"><span>Geburtsort</span></li>
-    <li class="return_location" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('return_location');"><span>Wohnort nach 1945</span></li>
-    <li class="home_location" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('home_location');"><span>Lebensmittelpunkt</span></li>
-    <li class="interview" onclick="cedisMap.locationSearch.clusterManager.toggleFilter('interview');"><span>Erwähnung</span></li>
+    <li class="map_filter place_of_birth" style="cursor: pointer;"><span>Geburtsort</span></li>
+    <li class="map_filter return_location" style="cursor: pointer;"><span>Wohnort nach 1945</span></li>
+    <li class="map_filter home_location" style="cursor: pointer;"><span>Lebensmittelpunkt</span></li>
+    <li class="map_filter interview" style="cursor: pointer;"><span>Erwähnung</span></li>
   </ul>
   <div style="clear: both;"></div>
 </div>
@@ -36,8 +39,9 @@
         $('explanation_filter').toggle();
     });
 
-    Event.observe('sub_list_toggle', 'click', function(){
+    Event.observe('sub_list_toggle', 'click', function(event){
         $('sub_list').toggle();
+        Event.stop(event);
     });
 
 </script>

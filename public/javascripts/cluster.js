@@ -5,6 +5,36 @@ google.maps.LatLng.equals = function(other) {
     return this.lat() == other.lat() && this.lng() == other.lng();
 };
 
+// Reverse display priorities
+var locationTypePriorities = [
+        'interview',
+        'return_location',
+        'home_location',
+        'place_of_birth',
+        'deportation_location',
+        'forced_labor_location',
+        'forced_labor_company',
+        'forced_labor_camp'
+];
+
+function toggleFilterElement() {
+    var filterName = null;
+    var names = $w(this.className);
+    var i = names.length;
+    while(i--) {
+        var name = names[i];
+        if(locationTypePriorities.indexOf(name) != -1) {
+            filterName = name;
+            break;
+        }
+    }
+    if(filterName) {
+        cedisMap.locationSearch.clusterManager.toggleFilter(filterName);
+        this.toggleClassName('map_filter');
+        this.toggleClassName('map_filter_off');
+    }
+}
+
 var ClusterManager = Class.create();
 var Location = Class.create();
 var Cluster = Class.create();
@@ -33,6 +63,17 @@ ClusterManager.prototype = {
             this.options = {};
         }
         if(!this.options.width) { this.options.width = defaults.width; }
+
+        this.filterElements = $$('.map_filter');
+        var idx = this.filterElements.length;
+        var numFilters = idx;
+        while(idx--) {
+            var el = this.filterElements[idx];
+            if(!el.id) {
+                el.id = ('map_filter_' + (numFilters - idx));
+            }
+            Event.observe(el.id, 'click', toggleFilterElement);
+        }
 
     },
 
@@ -125,7 +166,7 @@ ClusterManager.prototype = {
             }); */
         }
         var filterStopTime = (new Date).getTime();
-        alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations.length);
+        // alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations.length);
     },
 
     // benchmark test for markers
@@ -163,17 +204,6 @@ ClusterManager.prototype = {
         alert(desc + '\nTime taken: ' + (endTime - startTime) + ' ms.');
     }
 };
-
-var locationTypePriorities = [
-        'interview',
-        'return_location',
-        'home_location',
-        'place_of_birth',
-        'deportation_location',
-        'forced_labor_location',
-        'forced_labor_company',
-        'forced_labor_camp'
-];
 
 Location.prototype = {
     initialize: function(id, latLng, htmlText, divClass, linkURL, display) {
