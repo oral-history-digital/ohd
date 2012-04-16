@@ -388,7 +388,8 @@ Cluster.prototype = {
       var lines = 0;
       var von = 0;
       var bis = 0;
-      var index = locs.length;
+      var locNumber = locs.length;
+      var index = locNumber;
       while(index--) {
           var l = locs[index];
           if(lines > 10) {
@@ -407,26 +408,10 @@ Cluster.prototype = {
              }
          }
       }
-        /*
-      locs.each(function(l){
-         if(lines > 10) {
-             pageIdx++;
-             pages[pageIdx] = [];
-             lines = 0;
-         }
-         pages[pageIdx].push(l);
-         lines = lines + l[2] +1;
-         totalLines = totalLines + l[2] +1;
-         if(pageIdx+1 == page) {
-             var idx = locs.indexOf(l);
-             bis = idx+1;
-             if(von == 0) {
-                 von = idx+1;
-             }
-         }
-      });
-      */
       var totalPages = pages.length;
+      // reverse the numbering again
+      von = locNumber - von + 1;
+      bis = locNumber - bis + 1;
       /*
       var msg = '';
       pages.each(function(p) {
