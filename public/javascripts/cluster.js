@@ -310,9 +310,9 @@ Cluster.prototype = {
     },
 
     redraw: function() {
-        this.marker.setIcon(this.icon);
-        this.marker.setTitle(this.title);
         this.marker.setMap(cedisMap.locationSearch.map);
+        this.marker.setTitle(this.title);
+        this.marker.setIcon(this.icon);
     },
 
     refresh: function() {
@@ -349,7 +349,22 @@ Cluster.prototype = {
                 } else {
                     var existingLoc = displayLocs[idx];
                     // check if existingLoc is added to front or back...
-                    existingLoc[1].push(l);
+                    var descriptorLocs = existingLoc[1];
+                    var newLocs = [];
+                    var dli = descriptorLocs.length;
+                    var added = false;
+                    while(dli--) {
+                        var el = descriptorLocs[dli];
+                        if((el.locationType > l.locationType) && !(added)) {
+                            newLocs.push(l);
+                            added = true;
+                        }
+                        newLocs.push(el);
+                    }
+                    if(!added) {
+                        newLocs.push(l);
+                    }
+                    existingLoc[1] = newLocs.reverse();
                     existingLoc[2] = existingLoc[2] + l.displayLines();
                 }
             }
