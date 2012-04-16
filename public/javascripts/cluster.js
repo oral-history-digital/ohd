@@ -348,32 +348,12 @@ Cluster.prototype = {
                     displayLocs.push([l.title, [l], 1 + l.displayLines()]);
                 } else {
                     var existingLoc = displayLocs[idx];
-                    // if(existingLoc[2] + l.displayLines() > 12) {
-                        // start a new location with '2,3'
-                    // } else {
-                        existingLoc[1].push(l);
-                        existingLoc[2] = existingLoc[2] + l.displayLines();
-                    // }
+                    // check if existingLoc is added to front or back...
+                    existingLoc[1].push(l);
+                    existingLoc[2] = existingLoc[2] + l.displayLines();
                 }
             }
         }
-        /*
-        locs.select(function(lo){ return lo.display }).each(function(l){
-            var idx = descriptors.indexOf(l.title);
-            if(idx == -1) {
-                descriptors.push(l.title);
-                displayLocs.push([l.title, [l], 1 + l.displayLines()]);
-            } else {
-                var existingLoc = displayLocs[idx];
-                // if(existingLoc[2] + l.displayLines() > 12) {
-                    // start a new location with '2,3'
-                // } else {
-                    existingLoc[1].push(l);
-                    existingLoc[2] = existingLoc[2] + l.displayLines();
-                // }
-            }
-        });
-        */
         return displayLocs;
     },
 
