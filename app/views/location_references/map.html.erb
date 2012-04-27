@@ -49,7 +49,12 @@
 <div id="interactive_map" style="width: 100%; height: 660px"></div>
 
 <div id="tests">
-  <ul style="float: left;">
+  <ul style="float: left; width: 30%;">
+    <li><%= link_to 'Places', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(0);' %></li>
+    <li><%= link_to 'Regions', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(1);' %></li>
+    <li><%= link_to 'Countries', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(2);' %></li>
+  </ul>
+  <ul style="float: left; width: 30%">
     <li><%= link_to 'Toggle all locations', 'javascript:cedisMap.locationSearch.clusterManager.toggleAllLocations();' %></li>
     <li><%= link_to 'Toggle all clusters', 'javascript:cedisMap.locationSearch.clusterManager.toggleAllMarkers();' %></li>
   </ul>

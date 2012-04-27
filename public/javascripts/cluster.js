@@ -218,8 +218,9 @@ ClusterManager.prototype = {
 
     // benchmark test for markers
     toggleAllMarkers: function() {
+        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         this.benchmark(function() {
-           var clusters = cedisMap.mapClusters[this.currentLevel];
+           var clusters = cedisMap.mapClusters[currentLevel];
            var idx = clusters.length;
            while(idx--) {
                var marker = clusters[idx].marker;
@@ -230,8 +231,9 @@ ClusterManager.prototype = {
 
     // benchmark test for locations
     toggleAllLocations: function() {
+        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         this.benchmark(function() {
-            var locations = cedisMap.mapLocations[this.currentLevel];
+            var locations = cedisMap.mapLocations[currentLevel];
             var idx = locations.length;
             while(idx--) {
                 var location = locations[idx];
@@ -242,6 +244,28 @@ ClusterManager.prototype = {
                 }
             }
         },'Toggle all Locations');
+    },
+
+    switchLevel: function(level) {
+        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
+        if(currentLevel == level) { return; }
+
+        var clustersOut = cedisMap.mapClusters[currentLevel];
+        var id1 = clustersOut.length;
+        while(id1--) {
+           var marker = clustersOut[id1].marker;
+           marker.setVisible(false);
+        }
+
+        cedisMap.locationSearch.clusterManager.currentLevel = level;
+        var clustersIn = cedisMap.mapClusters[level];
+        var id2 = clustersIn.length;
+        while(id2--) {
+           var marker = clustersIn[id2].marker;
+           marker.setVisible(true);
+           clustersIn[id2].redraw();
+        }
+
     },
 
     benchmark: function(test, desc) {
@@ -365,7 +389,6 @@ Cluster.prototype = {
     draw: function() {
         if(!this.rendered) {
             this.redraw();
-            this.rendered = true;
         }
     },
 
@@ -373,6 +396,7 @@ Cluster.prototype = {
         this.marker.setMap(cedisMap.locationSearch.map);
         this.marker.setTitle(this.title);
         this.marker.setIcon(this.icon);
+        this.rendered = true;
     },
 
     refresh: function() {
