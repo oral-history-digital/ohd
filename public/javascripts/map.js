@@ -91,7 +91,7 @@ InteractiveMap.prototype = {
                 var locationInfo = cedisMap.locationSearch.locationInfo(location);
                 var referenceClass = cedisMap.locationSearch.locationReference(location.referenceType, location.locationType);
                 var interviewURL = cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
-                cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, referenceClass, interviewURL);
+                cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.region, location.country, referenceClass, interviewURL);
             });
 
         }

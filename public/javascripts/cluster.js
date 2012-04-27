@@ -53,6 +53,8 @@ ClusterManager.prototype = {
 
         this.shownCluster = null;
 
+        this.currentLevel = 0;
+
         this.freshClusters = [];
 
         var defaults = {
@@ -77,18 +79,27 @@ ClusterManager.prototype = {
             Event.observe(el.id, 'click', toggleFilterElement);
         }
 
+        // lat/lng lookup for locations
+        if(!cedisMap.mapLocations) {cedisMap.mapLocations = []; }
+
+        if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
+        if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
+
     },
 
-    addLocation: function(id, latLng, htmlText, divClass, linkURL) {
+    addLocation: function(id, latLng, htmlText, region, country, divClass, linkURL) {
         var location = new Location(id, latLng, htmlText, divClass, linkURL, true);
 
         var cluster = this.locateCluster(latLng);
 
         if(!cluster) {
-            cluster = new Cluster(latLng);
+            cluster = new Cluster(latLng, this.currentLevel);
         }
         cluster.addLocation(location);
-        this.freshClusters.push(cluster);
+        if(cluster.level == this.currentLevel) {
+            // only add clusters on the current level to the draw roster
+            this.freshClusters.push(cluster);    
+        }
     },
 
     // bundle cluster rendering together
@@ -107,9 +118,9 @@ ClusterManager.prototype = {
 
     locateCluster: function(latLng) {
         var loc = latLng.toString();
-        var idx = cedisMap.mapLocations.length;
-        var clusterLocations = cedisMap.clusterLocations;
-        var mapClusters = cedisMap.mapClusters;
+        var idx = cedisMap.mapLocations[this.currentLevel].length;
+        var clusterLocations = cedisMap.clusterLocations[this.currentLevel];
+        var mapClusters = cedisMap.mapClusters[this.currentLevel];
         if(!clusterLocations) { clusterLocations = []; }
         if(!mapClusters) { mapClusters = []; }
         while(idx--) {
@@ -143,6 +154,7 @@ ClusterManager.prototype = {
 
     showClusterPage: function(page) {
         if(this.shownCluster && this.activeInfo) {
+            // TODO: is there a way to change the content more gently (fade etc.)?
             this.activeInfo.setContent(this.shownCluster.displayInfo(page));
             // remember the location list's width and set as minimum
             var locationList = $('active_info_locations');
@@ -162,7 +174,7 @@ ClusterManager.prototype = {
             }
             var filters = this.filters;
             // apply filters to all locations
-            var locations = cedisMap.mapLocations;
+            var locations = cedisMap.mapLocations[this.currentLevel];
             var index = locations.length;
             while(index--) {
                 var loc = locations[index];
@@ -173,19 +185,19 @@ ClusterManager.prototype = {
             while(idx--) {
                 changedClusters[idx].refresh();
             }
-            /* cedisMap.mapLocations.each(function(loc) {
+            /* cedisMap.mapLocations[this.currentLevel].each(function(loc) {
                 var changed = loc.applyFilters(filters);
                 if(changed) { changedLocs++ }
             }); */
         }
         var filterStopTime = (new Date).getTime();
-        // alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations.length);
+        // alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations[this.currentLevel].length);
     },
 
     // benchmark test for markers
     toggleAllMarkers: function() {
         this.benchmark(function() {
-           var clusters = cedisMap.mapClusters;
+           var clusters = cedisMap.mapClusters[this.currentLevel];
            var idx = clusters.length;
            while(idx--) {
                var marker = clusters[idx].marker;
@@ -197,7 +209,7 @@ ClusterManager.prototype = {
     // benchmark test for locations
     toggleAllLocations: function() {
         this.benchmark(function() {
-            var locations = cedisMap.mapLocations;
+            var locations = cedisMap.mapLocations[this.currentLevel];
             var idx = locations.length;
             while(idx--) {
                 var location = locations[idx];
@@ -228,8 +240,9 @@ Location.prototype = {
         this.display = display;
         this.cluster = null;
         if(!cedisMap.mapLocations) { cedisMap.mapLocations = []; }
-        this.id = cedisMap.mapLocations.length;
-        cedisMap.mapLocations.push(this);
+        if(!cedisMap.mapLocations[0]) { cedisMap.mapLocations[0] = []; }
+        this.id = cedisMap.mapLocations[0].length;
+        cedisMap.mapLocations[0].push(this);
     },
 
     setCluster: function(cluster) {
@@ -280,13 +293,15 @@ Location.prototype = {
     }
 };
 
+// constructor arguments are: lat/lng and the hierarchical grouping level
 Cluster.prototype = {
-    initialize: function(latLng) {
+    initialize: function(latLng, level) {
         var locationSearch = cedisMap.locationSearch;
         this.icon = locationSearch.options.images['default'];
         this.title = '?';
         this.locations = [];
         this.rendered = false;
+        this.level = level;
         var marker = new google.maps.Marker({
             position: latLng,
             icon: this.icon,
@@ -297,10 +312,10 @@ Cluster.prototype = {
         this.marker.setMap(locationSearch.map);
         google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
 
-        if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
-        if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
-        cedisMap.clusterLocations.push(latLng.toString());
-        cedisMap.mapClusters.push(this);
+        if(!cedisMap.clusterLocations[this.level]) { cedisMap.clusterLocations[this.level] = []; }
+        if(!cedisMap.mapClusters[this.level]) { cedisMap.mapClusters[this.level] = []; }
+        cedisMap.clusterLocations[this.level].push(latLng.toString());
+        cedisMap.mapClusters[this.level].push(this);
     },
 
     setIconByType: function(type) {
