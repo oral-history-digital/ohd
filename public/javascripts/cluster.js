@@ -88,9 +88,9 @@ ClusterManager.prototype = {
     },
 
     addLocation: function(id, latLng, htmlText, region, country, divClass, linkURL) {
-        var location = new Location(id, latLng, htmlText, divClass, linkURL, true);
+        var location = new Location(id, latLng, 0, htmlText, divClass, linkURL, true);
 
-        var cluster = this.locateCluster(latLng);
+        var cluster = this.locateCluster(latLng, 0);
 
         if(!cluster) {
             cluster = new Cluster(latLng, this.currentLevel);
@@ -116,11 +116,11 @@ ClusterManager.prototype = {
         return ('<li class="' + (klass || 'interview') + '">' + html + '</li>');
     },
 
-    locateCluster: function(latLng) {
+    locateCluster: function(latLng, level) {
         var loc = latLng.toString();
-        var idx = cedisMap.mapLocations[this.currentLevel].length;
-        var clusterLocations = cedisMap.clusterLocations[this.currentLevel];
-        var mapClusters = cedisMap.mapClusters[this.currentLevel];
+        var idx = cedisMap.mapLocations[level].length;
+        var clusterLocations = cedisMap.clusterLocations[level];
+        var mapClusters = cedisMap.mapClusters[level];
         if(!clusterLocations) { clusterLocations = []; }
         if(!mapClusters) { mapClusters = []; }
         while(idx--) {
@@ -140,7 +140,7 @@ ClusterManager.prototype = {
             this.shownCluster = null;
         }
 
-        var cluster = this.locateCluster(marker.getPosition());
+        var cluster = this.locateCluster(marker.getPosition(), this.currentLevel);
         if(cluster) {
             this.shownCluster = cluster;
             var infoBox = new google.maps.InfoWindow({
@@ -231,18 +231,19 @@ ClusterManager.prototype = {
 };
 
 Location.prototype = {
-    initialize: function(id, latLng, htmlText, divClass, linkURL, display) {
+    initialize: function(id, latLng, level, htmlText, divClass, linkURL, display) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
         this.latLng = latLng;
+        this.level = level;
         this.linkURL = linkURL;
         this.display = display;
         this.cluster = null;
         if(!cedisMap.mapLocations) { cedisMap.mapLocations = []; }
-        if(!cedisMap.mapLocations[0]) { cedisMap.mapLocations[0] = []; }
-        this.id = cedisMap.mapLocations[0].length;
-        cedisMap.mapLocations[0].push(this);
+        if(!cedisMap.mapLocations[level]) { cedisMap.mapLocations[level] = []; }
+        this.id = cedisMap.mapLocations[level].length;
+        cedisMap.mapLocations[level].push(this);
     },
 
     setCluster: function(cluster) {
