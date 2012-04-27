@@ -95,6 +95,7 @@ InteractiveMap.prototype = {
             });
 
         }
+        cedisMap.locationSearch.clusterManager.renderMarkers();
         cedisMap.locationSearch.progress.updateBar(1);
 
         cedisMap.locationSearch.retrieveDataPage();

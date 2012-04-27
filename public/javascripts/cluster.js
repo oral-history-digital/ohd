@@ -53,6 +53,8 @@ ClusterManager.prototype = {
 
         this.shownCluster = null;
 
+        this.freshClusters = [];
+
         var defaults = {
             width: 320
         };
@@ -86,6 +88,17 @@ ClusterManager.prototype = {
             cluster = new Cluster(latLng);
         }
         cluster.addLocation(location);
+        this.freshClusters.push(cluster);
+    },
+
+    // bundle cluster rendering together
+    renderMarkers: function() {
+        var clusters = this.freshClusters;
+        var idx = clusters.length;
+        while(idx--) {
+           clusters[idx].draw();
+        }
+        this.freshClusters = [];
     },
 
     composeHtmlText: function(html, klass) {
@@ -273,6 +286,7 @@ Cluster.prototype = {
         this.icon = locationSearch.options.images['default'];
         this.title = '?';
         this.locations = [];
+        this.rendered = false;
         var marker = new google.maps.Marker({
             position: latLng,
             icon: this.icon,
@@ -305,7 +319,15 @@ Cluster.prototype = {
                 this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
             }
             this.marker.setZIndex(loc.locationType * 10 + 100);
+            this.rendered = false;
+            // this.redraw();
+        }
+    },
+
+    draw: function() {
+        if(!this.rendered) {
             this.redraw();
+            this.rendered = true;
         }
     },
 
