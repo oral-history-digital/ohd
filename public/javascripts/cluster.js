@@ -90,10 +90,32 @@ ClusterManager.prototype = {
     addLocation: function(id, latLng, htmlText, region, country, divClass, linkURL) {
         var location = new Location(id, latLng, 0, htmlText, divClass, linkURL, true);
 
-        var cluster = this.locateCluster(latLng, 0);
+        this.addLocationToLevel(location, 0);
+
+        // region
+        if(region && region.longitude && region.latitude) {
+            // create the region & cluster
+            var latLng = new google.maps.LatLng(region.latitude, region.longitude);
+            var regionLoc = new Location(region.name, latLng, 1, '', divClass, '', true);
+
+            this.addLocationToLevel(regionLoc, 1);
+        }
+
+        // country
+        if(country && country.longitude && country.latitude) {
+            var latLng = new google.maps.LatLng(country.latitude, country.longitude);
+            var countryLoc = new Location(country.name, latLng, 2, '', divClass, '', true);
+
+            this.addLocationToLevel(countryLoc, 2);
+        }
+    },
+
+    addLocationToLevel: function(location, level) {
+        var latLng = location.latLng;
+        var cluster = this.locateCluster(latLng, level);
 
         if(!cluster) {
-            cluster = new Cluster(latLng, this.currentLevel);
+            cluster = new Cluster(latLng, level);
         }
         cluster.addLocation(location);
         if(cluster.level == this.currentLevel) {
