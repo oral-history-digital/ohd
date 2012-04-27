@@ -53,9 +53,13 @@ ClusterManager.prototype = {
 
         this.shownCluster = null;
 
-        this.currentLevel = 0;
-
         this.freshClusters = [];
+
+        this.minZoomPerLevel = [8, 7, 0];
+        this.currentLevel = this.getLevelByZoom(this.map.getZoom());
+        
+        google.maps.event.addListener(this.map, 'zoom_changed',  function() { cedisMap.locationSearch.clusterManager.checkForZoomShift(); });
+
 
         var defaults = {
             width: 320
@@ -153,6 +157,35 @@ ClusterManager.prototype = {
         } else {
             return null;
         }
+    },
+
+    getLevelByZoom: function(zoom) {
+        var level = 0;
+        while(level < 3) {
+            if(zoom+1 > this.minZoomPerLevel[level]) {
+                break;
+            }
+            level++;
+        }
+        return level;
+    },
+
+    // check to see if a new clustering level needs to be applied
+    checkForZoomShift: function() {
+        var zoom = this.map.getZoom();
+        var level = this.getLevelByZoom(zoom);
+        // alert('Check for zoom shift at zoom = ' + zoom + '\nlevel = ' + level);
+        if(level != this.currentLevel) {
+            this.switchLevel(level);
+        }
+    },
+
+    zoomOneLevel: function(marker) {
+        if(this.currentLevel < 1) { return; }
+        var pos = marker.getPosition();
+        var zoom = this.map.getZoom();
+        this.map.panTo(pos);
+        this.map.setZoom(this.minZoomPerLevel[this.currentLevel-1]);
     },
 
     showInfoBox: function(marker) {
@@ -355,8 +388,11 @@ Cluster.prototype = {
         this.width = 0;
         this.marker = marker;
         this.marker.setMap(locationSearch.map);
-        google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
-
+        if(level == 0) {
+            google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
+        } else {
+            google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.zoomOneLevel(marker); });
+        }
         if(!cedisMap.clusterLocations[this.level]) { cedisMap.clusterLocations[this.level] = []; }
         if(!cedisMap.mapClusters[this.level]) { cedisMap.mapClusters[this.level] = []; }
         cedisMap.clusterLocations[this.level].push(latLng.toString());
