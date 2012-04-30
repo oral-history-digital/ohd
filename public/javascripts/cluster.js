@@ -397,6 +397,9 @@ Cluster.prototype = {
         if(!cedisMap.mapClusters[this.level]) { cedisMap.mapClusters[this.level] = []; }
         cedisMap.clusterLocations[this.level].push(latLng.toString());
         cedisMap.mapClusters[this.level].push(this);
+        if(cedisMap.locationSearch.clusterManager.currentLevel != level) {
+            this.marker.setVisible(false);
+        }
     },
 
     setIconByType: function(type) {
