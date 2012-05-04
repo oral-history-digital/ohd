@@ -232,3 +232,9 @@
 #baseContent #explanation_filter ul ul li:first-child {
   border-top: 1px solid #F1F1EB;
 }
+
+#baseContent .cluster-icon {
+  background-color: #990000;
+  color: #fff;
+  position: absolute;
+}

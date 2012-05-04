@@ -5,6 +5,13 @@ google.maps.LatLng.equals = function(other) {
     return this.lat() == other.lat() && this.lng() == other.lng();
 };
 
+var debugOn = false;
+
+function debugMsg(msg) {
+    if(!debugOn)  { return; }
+    alert(msg.toString());
+}
+
 // Reverse display priorities
 var locationTypePriorities = [
         'interview',
@@ -119,9 +126,22 @@ ClusterManager.prototype = {
         var cluster = this.locateCluster(latLng, level);
 
         if(!cluster) {
+            if (level != 0) {
+                // alert('Creating new level ' + level + ' cluster at ' + latLng + '\nfor location: ' + location.title);
+            }
             cluster = new Cluster(latLng, level);
+        } else {
+            if(level != 0) {
+                // alert('Adding to level ' + level + ' cluster at ' + latLng + '\nthis location: ' + location.title);
+            }
+        }
+        if(level != 0) {
+            debugMsg('adding Location ' + location.title + ' to cluster...');
         }
         cluster.addLocation(location);
+        if(level != 0) {
+            debugMsg('location added.');
+        }
         if(cluster.level == this.currentLevel) {
             // only add clusters on the current level to the draw roster
             this.freshClusters.push(cluster);    
@@ -174,7 +194,7 @@ ClusterManager.prototype = {
     checkForZoomShift: function() {
         var zoom = this.map.getZoom();
         var level = this.getLevelByZoom(zoom);
-        // alert('Check for zoom shift at zoom = ' + zoom + '\nlevel = ' + level);
+        // debugMsg('Check for zoom shift at zoom = ' + zoom + '\nlevel = ' + level);
         if(level != this.currentLevel) {
             this.switchLevel(level);
         }
@@ -246,7 +266,7 @@ ClusterManager.prototype = {
             }); */
         }
         var filterStopTime = (new Date).getTime();
-        // alert('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations[this.currentLevel].length);
+        // debugMsg('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations[this.currentLevel].length);
     },
 
     // benchmark test for markers
@@ -303,7 +323,7 @@ ClusterManager.prototype = {
         var startTime = (new Date).getTime();
         test.call();
         var endTime = (new Date).getTime();
-        alert(desc + '\nTime taken: ' + (endTime - startTime) + ' ms.');
+        debugMsg(desc + '\nTime taken: ' + (endTime - startTime) + ' ms.');
     }
 };
 
@@ -380,17 +400,20 @@ Cluster.prototype = {
         this.locations = [];
         this.rendered = false;
         this.level = level;
-        var marker = new google.maps.Marker({
-            position: latLng,
-            icon: this.icon,
-            flat: true
-        });
         this.width = 0;
-        this.marker = marker;
-        this.marker.setMap(locationSearch.map);
         if(level == 0) {
+            var marker = new google.maps.Marker({
+                position: latLng,
+                icon: this.icon,
+                flat: true
+            });
+            this.marker = marker;
+            this.marker.setMap(locationSearch.map);
             google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
         } else {
+            var marker = new ClusterIcon(this, cedisMap.locationSearch.map, latLng);
+            this.marker = marker;
+            debugMsg('Created ClusterIcon ' + marker);
             google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.zoomOneLevel(marker); });
         }
         if(!cedisMap.clusterLocations[this.level]) { cedisMap.clusterLocations[this.level] = []; }
@@ -431,8 +454,10 @@ Cluster.prototype = {
 
     redraw: function() {
         this.marker.setMap(cedisMap.locationSearch.map);
-        this.marker.setTitle(this.title);
-        this.marker.setIcon(this.icon);
+        if(this.level == 0) {
+            this.marker.setTitle(this.title);
+            this.marker.setIcon(this.icon);    
+        }
         this.rendered = true;
     },
 
@@ -441,7 +466,7 @@ Cluster.prototype = {
         if(locs.length != 0) {
             var dLoc = locs.first();
             var loc = dLoc[1].first();
-            // alert(locs.length + ' locations still at "' + this.title + '\n loc = ' + loc);
+            // debugMsg(locs.length + ' locations still at "' + this.title + '\n loc = ' + loc);
             // redraw with new title & icon
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
@@ -535,7 +560,7 @@ Cluster.prototype = {
              return l[1].id;
          }).join('|');
       });
-      alert(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\n' + pages.length + ' pages total\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines + '\n' + msg);
+      debugMsg(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\n' + pages.length + ' pages total\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines + '\n' + msg);
       */
       if(totalPages > 1) {
           var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
@@ -591,286 +616,105 @@ Cluster.prototype = {
 };
 
 
-/* Below is the icon render code from MarkerClusterer - for reference */
-/**
- * A cluster icon
- *
- * @param {Cluster} cluster The cluster to be associated with.
- * @param {Object} styles An object that has style properties:
- *     'url': (string) The image url.
- *     'height': (number) The image height.
- *     'width': (number) The image width.
- *     'anchor': (Array) The anchor position of the label text.
- *     'textColor': (string) The text color.
- *     'textSize': (number) The text size.
- *     'backgroundPosition: (string) The background postition x, y.
- * @param {number=} opt_padding Optional padding to apply to the cluster icon.
- * @constructor
- * @extends google.maps.OverlayView
- * @ignore
- */
-function ClusterIcon(cluster, styles, opt_padding) {
-  cluster.getMarkerClusterer().extend(ClusterIcon, google.maps.OverlayView);
+var ClusterIcon = Class.create();
+ClusterIcon.prototype = google.maps.OverlayView.prototype;
 
-  this.styles_ = styles;
-  this.padding_ = opt_padding || 0;
-  this.cluster_ = cluster;
-  this.center_ = null;
-  this.map_ = cluster.getMap();
-  this.div_ = null;
-  this.sums_ = null;
-  this.visible_ = false;
-
-  this.setMap(this.map_);
-}
-
-
-/**
- * Triggers the clusterclick event and zoom's if the option is set.
- */
-ClusterIcon.prototype.triggerClusterClick = function() {
-  var markerClusterer = this.cluster_.getMarkerClusterer();
-
-  // Trigger the clusterclick event.
-  google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
-
-  if (markerClusterer.isZoomOnClick()) {
-    // Zoom into the cluster.
-    this.map_.fitBounds(this.cluster_.getBounds());
-  }
-};
-
-
-/**
- * Adding the cluster icon to the dom.
- * @ignore
- */
-ClusterIcon.prototype.onAdd = function() {
-  this.div_ = document.createElement('DIV');
-  if (this.visible_) {
-    var pos = this.getPosFromLatLng_(this.center_);
-    this.div_.style.cssText = this.createCss(pos);
-    this.div_.innerHTML = this.sums_.text;
-  }
-
-  var panes = this.getPanes();
-  panes.overlayMouseTarget.appendChild(this.div_);
-
-  var that = this;
-  google.maps.event.addDomListener(this.div_, 'click', function() {
-    that.triggerClusterClick();
-  });
-};
-
-
-/**
- * Returns the position to place the div dending on the latlng.
- *
- * @param {google.maps.LatLng} latlng The position in latlng.
- * @return {google.maps.Point} The position in pixels.
- * @private
- */
-ClusterIcon.prototype.getPosFromLatLng_ = function(latlng) {
-  var pos = this.getProjection().fromLatLngToDivPixel(latlng);
-  pos.x -= parseInt(this.width_ / 2, 10);
-  pos.y -= parseInt(this.height_ / 2, 10);
-  return pos;
-};
-
-
-/**
- * Draw the icon.
- * @ignore
- */
-ClusterIcon.prototype.draw = function() {
-  if (this.visible_) {
-    var pos = this.getPosFromLatLng_(this.center_);
-    this.div_.style.top = pos.y + 'px';
-    this.div_.style.left = pos.x + 'px';
-  }
-};
-
-
-/**
- * Hide the icon.
- */
-ClusterIcon.prototype.hide = function() {
-  if (this.div_) {
-    this.div_.style.display = 'none';
-  }
-  this.visible_ = false;
-};
-
-
-/**
- * Position and show the icon.
- */
-ClusterIcon.prototype.show = function() {
-  if (this.div_) {
-    var pos = this.getPosFromLatLng_(this.center_);
-    this.div_.style.cssText = this.createCss(pos);
-    this.div_.style.display = '';
-  }
-  this.visible_ = true;
-};
-
-
-/**
- * Remove the icon from the map
- */
-ClusterIcon.prototype.remove = function() {
-  this.setMap(null);
-};
-
-
-/**
- * Implementation of the onRemove interface.
- * @ignore
- */
-ClusterIcon.prototype.onRemove = function() {
-  if (this.div_ && this.div_.parentNode) {
-    this.hide();
-    this.div_.parentNode.removeChild(this.div_);
+ClusterIcon.prototype.initialize = function(cluster, map, center) {
+    this.styles_ = '';
+    this.padding_ = 2;
+    //
+    this.cluster = cluster;
+    this.center_ = center;
+    this.map_ = map;
     this.div_ = null;
-  }
+    this.totals = 0;
+    this.visible_ = true;
+    debugMsg('Going to call setMap for ClusterIcon at ' + center);
+    this.setMap(this.map_);
 };
 
-
-/**
- * Set the sums of the icon.
- *
- * @param {Object} sums The sums containing:
- *   'text': (string) The text to display in the icon.
- *   'index': (number) The style index of the icon.
- */
-ClusterIcon.prototype.setSums = function(sums) {
-  this.sums_ = sums;
-  this.text_ = sums.text;
-  this.index_ = sums.index;
-  if (this.div_) {
-    this.div_.innerHTML = sums.text;
-  }
-
-  this.useStyle();
+ClusterIcon.prototype.zoomIntoCluster = function() {
+    // Adjust adjust to the next zoom level margin!
+    debugMsg('Zoom into cluster: ' + this.cluster);
 };
 
+ClusterIcon.prototype.onAdd = function() {
+    this.div_ = new Element('div', { 'class': 'cluster-icon', 'style': { 'position': 'absolute' }});
+    var panes = this.getPanes();
+    panes.overlayLayer.appendChild(this.div_);
 
-/**
- * Sets the icon to the the styles.
- */
-ClusterIcon.prototype.useStyle = function() {
-  var index = Math.max(0, this.sums_.index - 1);
-  index = Math.min(this.styles_.length - 1, index);
-  var style = this.styles_[index];
-  this.url_ = style['url'];
-  this.height_ = style['height'];
-  this.width_ = style['width'];
-  this.textColor_ = style['textColor'];
-  this.anchor_ = style['anchor'];
-  this.textSize_ = style['textSize'];
-  this.backgroundPosition_ = style['backgroundPosition'];
-};
-
-
-/**
- * Sets the center of the icon.
- *
- * @param {google.maps.LatLng} center The latlng to set as the center.
- */
-ClusterIcon.prototype.setCenter = function(center) {
-  this.center_ = center;
-};
-
-
-/**
- * Create the css text based on the position of the icon.
- *
- * @param {google.maps.Point} pos The position.
- * @return {string} The css style text.
- */
-ClusterIcon.prototype.createCss = function(pos) {
-  var style = [];
-  style.push('background-image:url(' + this.url_ + ');');
-  var backgroundPosition = this.backgroundPosition_ ? this.backgroundPosition_ : '0 0';
-  style.push('background-position:' + backgroundPosition + ';');
-
-  if (typeof this.anchor_ === 'object') {
-    if (typeof this.anchor_[0] === 'number' && this.anchor_[0] > 0 &&
-        this.anchor_[0] < this.height_) {
-      style.push('height:' + (this.height_ - this.anchor_[0]) +
-          'px; padding-top:' + this.anchor_[0] + 'px;');
-    } else {
-      style.push('height:' + this.height_ + 'px; line-height:' + this.height_ +
-          'px;');
+    debugMsg('Trying to add ClusterIcon for cluster at ' + this.center_ + '\n\ncluster: ' + this.cluster);
+    if (this.visible_) {
+        // var pos = this.getPosFromLatLng(this.center_);
+        // this.div.style.cssText = this.createCss(pos);
+        this.div_.innerHTML = this.cluster.title + '&nbsp;' + this.totals.toString();
     }
-    if (typeof this.anchor_[1] === 'number' && this.anchor_[1] > 0 &&
-        this.anchor_[1] < this.width_) {
-      style.push('width:' + (this.width_ - this.anchor_[1]) +
-          'px; padding-left:' + this.anchor_[1] + 'px;');
-    } else {
-      style.push('width:' + this.width_ + 'px; text-align:center;');
-    }
-  } else {
-    style.push('height:' + this.height_ + 'px; line-height:' +
-        this.height_ + 'px; width:' + this.width_ + 'px; text-align:center;');
-  }
 
-  var txtColor = this.textColor_ ? this.textColor_ : 'black';
-  var txtSize = this.textSize_ ? this.textSize_ : 11;
+    debugMsg('add stage 1 completed');
 
-  style.push('cursor:pointer; top:' + pos.y + 'px; left:' +
-      pos.x + 'px; color:' + txtColor + '; position:absolute; font-size:' +
-      txtSize + 'px; font-family:Arial,sans-serif; font-weight:bold');
-  return style.join('');
+    var that = this;
+    google.maps.event.addDomListener(this.div_, 'click', function() {
+        that.zoomIntoCluster();
+    });
+
+    debugMsg('add stage 2 completed');
 };
 
-/* Calls to ClusterIcon: */
-/**
- * A cluster that contains markers.
- *
- * @param {MarkerClusterer} markerClusterer The markerclusterer that this
- *     cluster is associated with.
- * @constructor
- * @ignore
- */
-function Cluster(markerClusterer) {
-  this.markerClusterer_ = markerClusterer;
-  this.map_ = markerClusterer.getMap();
-  this.gridSize_ = markerClusterer.getGridSize();
-  this.minClusterSize_ = markerClusterer.getMinClusterSize();
-  this.averageCenter_ = markerClusterer.isAverageCenter();
-  this.center_ = null;
-  this.markers_ = [];
-  this.bounds_ = null;
-  this.clusterIcon_ = new ClusterIcon(this, markerClusterer.getStyles(),
-      markerClusterer.getGridSize());
+ClusterIcon.prototype.draw = function() {
+    // alert('Drawing Icon for Cluster: ' + this.cluster.title + '\n\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
+    debugMsg('Drawing ClusterIcon...');
+    if (this.visible_) {
+        var pos = this.getPosFromLatLng(this.center_);
+        // alert('Cluster-Pos: ' + pos + '\nfor Cluster: ' + this.cluster.title + '\nat: ' + this.center_ + '\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
+        if(pos) {
+            this.setVisible(true);
+            this.div_.style.top = pos.y + 'px';
+            this.div_.style.left = pos.x + 'px';
+        } else {
+            this.setVisible(false);
+        }
+    }
+    debugMsg('Drawn:\n div = ' + this.div_ + '\n\nhtml: ' + this.div_.innerHTML);
+};
+
+ClusterIcon.prototype.onRemove = function() {
+    if (this.div_ && this.div_.parentNode) {
+        this.visible_ = false;
+        this.div_.parentNode.removeChild(this.div_);
+        this.div_ = null;
+    }
+};
+
+ClusterIcon.prototype.getPosFromLatLng = function(latlng) {
+    var pos = this.getProjection().fromLatLngToDivPixel(latlng);
+    debugMsg('Calculated position...');
+    var mapDiv = this.map_.getDiv();
+    var width = mapDiv.offsetWidth;
+    var height = mapDiv.offsetHeight;
+    // alert('Map dimensions (pixel) = ' + width + ' x ' + height + ' \non Projection = ' + this.getProjection() + '\n\npos for ' + this.cluster.title + ' at ' + this.center_ + '\nis: ' + pos.x + ',' + pos.y);
+    pos.x = pos.x.toFixed();
+    pos.y = pos.y.toFixed();
+    return pos;
+};
+
+ClusterIcon.prototype.setTotal = function(sum) {
+    this.totals = sum;
+
+};
+
+ClusterIcon.prototype.setZIndex = function(z) {
+    if(this.div_) {
+        this.div_.style.zIndex = z;
+    }
+};
+
+ClusterIcon.prototype.setVisible = function(display) {
+    this.visible_ = display;
+    if(this.div_) {
+        if(this.visible_) {
+            this.div_.style.display = 'block';
+        } else {
+            this.div_.style.display = 'none';
+        }
+    }
 }
-
-/* ... */
-/**
- * Updates the cluster icon
- */
-Cluster.prototype.updateIcon = function() {
-  var zoom = this.map_.getZoom();
-  var mz = this.markerClusterer_.getMaxZoom();
-
-  if (mz && zoom > mz) {
-    // The zoom is greater than our max zoom so show all the markers in cluster.
-    for (var i = 0, marker; marker = this.markers_[i]; i++) {
-      marker.setMap(this.map_);
-    }
-    return;
-  }
-
-  if (this.markers_.length < this.minClusterSize_) {
-    // Min cluster size not yet reached.
-    this.clusterIcon_.hide();
-    return;
-  }
-
-  var numStyles = this.markerClusterer_.getStyles().length;
-  var sums = this.markerClusterer_.getCalculator()(this.markers_, numStyles);
-  this.clusterIcon_.setCenter(this.center_);
-  this.clusterIcon_.setSums(sums);
-  this.clusterIcon_.show();
-};
