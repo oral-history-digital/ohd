@@ -670,9 +670,10 @@ ClusterIcon.prototype.onAdd = function() {
 };
 
 ClusterIcon.prototype.createDiv = function() {
-    this.div_ = new Element('div', { 'class': 'cluster-icon', 'id': this.cluster.title.sub(/\s.*$/,'') });
+    var name = this.cluster.title.sub(/\s.*$/,'');
+    this.div_ = new Element('div', { 'class': 'cluster-icon', 'id': name, 'title': name });
     var panes = this.getPanes();
-    panes.overlayLayer.appendChild(this.div_);
+    panes.overlayMouseTarget.appendChild(this.div_);
 
     debugMsg('Trying to add ClusterIcon for cluster at ' + this.center_ + '\n\ncluster: ' + this.cluster);
     if (this.visible_) {
