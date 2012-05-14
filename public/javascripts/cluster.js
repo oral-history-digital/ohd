@@ -398,6 +398,7 @@ Cluster.prototype = {
     initialize: function(latLng, level, visible) {
         var locationSearch = cedisMap.locationSearch;
         this.icon = locationSearch.options.images['default'];
+        this.color = locationSearch.options.colors['default'];
         this.title = '?';
         this.locations = [];
         this.rendered = false;
@@ -429,7 +430,12 @@ Cluster.prototype = {
     },
 
     setIconByType: function(type) {
-        this.icon = cedisMap.locationSearch.options.images[type];
+        if(this.level == 0) {
+            this.icon = cedisMap.locationSearch.options.images[type];
+        } else {
+            this.color = cedisMap.locationSearch.options.colors[type] || '#990000';
+            this.marker.setColor(this.color);
+        }
     },
     
     addLocation: function(location) {
@@ -657,6 +663,8 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     // visibility is toggled just by search/filter state
     this.visible_ = true;
     // this.setMap(this.map_);
+    this.circle = null;
+    this.color = this.cluster.color;
     debugMsg('Going to call setMap for ClusterIcon at ' + center);
 };
 
@@ -688,8 +696,34 @@ ClusterIcon.prototype.createDiv = function() {
         that.zoomIntoCluster();
     });
 
+    // create the circle
+    if (this.visible_) {
+        this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
+    }
+
     debugMsg('add stage 2 completed');
-},
+};
+
+ClusterIcon.prototype.drawCircle = function() {
+    this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
+};
+
+ClusterIcon.prototype.getCircleRadius = function() {
+    var log = Math.log(this.totals+1);
+    var unit = (this.cluster.level == 1) ? 2500 : 10000;
+    return 2.5 * unit * log^3 + unit;
+};
+
+ClusterIcon.prototype.getColor = function() {
+    return this.color;
+};
+
+ClusterIcon.prototype.setColor = function(color) {
+    this.color = color;
+    if(this.circle) {
+        this.circle.setOptions({ color: color });
+    }
+};
 
 ClusterIcon.prototype.draw = function() {
     // alert('Drawing Icon for Cluster: ' + this.cluster.title + '\n\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
@@ -701,6 +735,11 @@ ClusterIcon.prototype.draw = function() {
             // this.setVisible(true);
             if(!this.div_) {
                 this.createDiv();
+            }
+
+            if(this.circle) {
+                this.circle.setRadius(this.getCircleRadius());
+                this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});
             }
             
             this.div_.style.top = (pos.y - 20) + 'px';
@@ -760,6 +799,19 @@ ClusterIcon.prototype.setVisible = function(display) {
             this.div_.style.display = 'inline-block';
         } else {
             this.div_.style.display = 'none';
+        }
+    }
+    if(this.circle) {
+        if(this.visible_) {
+            this.circle.setVisible(true);
+        } else {
+            this.circle.setVisible(false);
+            this.circle.setMap(null);
+            this.circle = null;
+        }
+    } else {
+        if(this.visible_) {
+            this.drawCircle();
         }
     }
 }

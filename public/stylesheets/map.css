@@ -234,8 +234,8 @@
 }
 
 #baseContent .cluster-icon {
-  background-color: #990000;
-  color: #fff;
+  background: transparent url('/images/cluster_bg.png') center no-repeat;
+  color: #990000;
   position: absolute;
   cursor: pointer;
   overflow: hidden;
