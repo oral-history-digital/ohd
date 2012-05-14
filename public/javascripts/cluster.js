@@ -304,7 +304,7 @@ ClusterManager.prototype = {
     switchLevel: function(level) {
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         if(currentLevel == level) { return; }
-        alert('Attempting to switch from level ' + currentLevel + ' to level ' + level);
+        // alert('Attempting to switch from level ' + currentLevel + ' to level ' + level);
 
         var clustersOut = cedisMap.mapClusters[currentLevel];
         var id1 = clustersOut.length;
@@ -661,8 +661,7 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
 };
 
 ClusterIcon.prototype.zoomIntoCluster = function() {
-    // Adjust adjust to the next zoom level margin!
-    alert('Zoom into cluster: ' + this.cluster);
+    cedisMap.locationSearch.clusterManager.zoomOneLevel(this);
 };
 
 ClusterIcon.prototype.onAdd = function() {
@@ -736,6 +735,10 @@ ClusterIcon.prototype.getPosFromLatLng = function(latlng) {
     pos.x = pos.x.toFixed();
     pos.y = pos.y.toFixed();
     return pos;
+};
+
+ClusterIcon.prototype.getPosition = function() {
+    return this.center_;
 };
 
 ClusterIcon.prototype.setTotal = function(sum) {
