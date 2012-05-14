@@ -82,6 +82,7 @@ InteractiveMap.prototype = {
         } else {
             this.loading = false;
             this.progress.updateBar(1);
+            // cedisMap.locationSearch.clusterManager.renderMarkers();
             this.progress.hide();
         }
     },
@@ -95,7 +96,8 @@ InteractiveMap.prototype = {
             });
 
         }
-        cedisMap.locationSearch.clusterManager.renderMarkers();
+        // postpone this until all are loaded:
+        // cedisMap.locationSearch.clusterManager.renderMarkers();
         cedisMap.locationSearch.progress.updateBar(1);
 
         cedisMap.locationSearch.retrieveDataPage();

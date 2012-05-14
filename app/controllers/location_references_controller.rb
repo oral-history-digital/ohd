@@ -49,7 +49,7 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.find(:all, :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}")
+      @results = LocationReference.find(:all, :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
       respond_to do |wants|
         wants.html do
           render :action => :index

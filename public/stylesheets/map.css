@@ -237,4 +237,13 @@
   background-color: #990000;
   color: #fff;
   position: absolute;
+  cursor: pointer;
+  overflow: hidden;
+  width: 40px;
+  max-width: 40px;
+  height: 28px;
+  max-height: 40px;
+  font-size: 12px;
+  padding-top: 12px;
+  text-align: center;
 }
