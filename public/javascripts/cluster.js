@@ -146,6 +146,10 @@ ClusterManager.prototype = {
             // only add clusters on the current level to the draw roster
             this.freshClusters.push(cluster);    
         }
+        var debugLocs = ['Berlin', 'Luxemburg', 'Region Skopje'];
+        if(debugLocs.indexOf((location.title.sub(/\s+\(.*$/,''))) != -1) {
+            // alert('Added location:\n' + location.title + ', at ' + location.latLng + '\nto Level ' + level + '\nto Cluster: ' + cluster.title + ' at ' + cluster.latLng + ' in level ' + cluster.level);
+        }
     },
 
     // bundle cluster rendering together
@@ -158,6 +162,23 @@ ClusterManager.prototype = {
            clusters[idx].draw();
         }
         this.freshClusters = [];
+    },
+
+    refreshLoadedClusters: function() {
+        if((!cedisMap.mapClusters) || (!cedisMap.mapClusters[this.currentLevel])) { return; }
+        var clusters = cedisMap.mapClusters[this.currentLevel];
+        var latLngs = cedisMap.clusterLocations[this.currentLevel];
+        var equator = new google.maps.LatLng(0,0);
+        var idx = clusters.length;
+        // alert('Refreshing ' + idx + ' Loaded Clusters for level ' + this.currentLevel);
+        while(idx--) {
+            var cluster = clusters[idx];
+            cluster.refresh();
+            // if((cluster) && (!latLngs[idx].equals(equator))) {
+            //    alert('Refreshing cluster ' + idx + ': ' + cluster.title);
+            //    cluster.refresh();
+            //}
+        }
     },
 
     composeHtmlText: function(html, klass) {
@@ -305,6 +326,21 @@ ClusterManager.prototype = {
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         if(currentLevel == level) { return; }
         // alert('Attempting to switch from level ' + currentLevel + ' to level ' + level);
+
+        /* this didn't improve cluster artifact issue
+        var clevel = 3;
+        while(clevel--) {
+            var clusters = cedisMap.mapClusters[clevel];
+            var idx = clusters.length;
+            while(idx--) {
+                if(clevel == level) {
+                    clusters[idx].show();
+                } else {
+                    clusters[idx].hide();
+                }
+            }
+        }
+        */
 
         var clustersOut = cedisMap.mapClusters[currentLevel];
         var id1 = clustersOut.length;
@@ -470,6 +506,7 @@ Cluster.prototype = {
             this.marker.setIcon(this.icon);
             this.marker.setTitle(this.title);
         } else {
+            // alert('Redraw of ClusterIcon for ' + this.title);
             this.marker.draw();
         }
         this.rendered = true;
@@ -490,7 +527,11 @@ Cluster.prototype = {
     },
 
     refresh: function() {
+        if(this.level != 0) {
+            this.marker.setTotal(this.locations.length);
+        }
         var locs = this.displayLocations();
+        // alert('Refresh of ' + this.title + ' (visible: ' + this.visible + ') with locations: ' + locs);
         if(locs.length != 0) {
             var dLoc = locs.first();
             var loc = dLoc[1].first();
@@ -499,9 +540,6 @@ Cluster.prototype = {
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
             if(this.visible) { this.marker.setVisible(true); }
-            if(this.level != 0) {
-                this.marker.setTotal(locs.length);
-            }
             this.redraw();
         } else {
             // no more locations shown - hide
@@ -677,7 +715,7 @@ ClusterIcon.prototype.onAdd = function() {
 };
 
 ClusterIcon.prototype.createDiv = function() {
-    var name = this.cluster.title.sub(/\s.*$/,'');
+    var name = this.cluster.title.sub(/\s\(.*$/,'');
     this.div_ = new Element('div', { 'class': 'cluster-icon', 'id': name, 'title': name });
     var panes = this.getPanes();
     panes.overlayMouseTarget.appendChild(this.div_);
@@ -710,8 +748,8 @@ ClusterIcon.prototype.drawCircle = function() {
 
 ClusterIcon.prototype.getCircleRadius = function() {
     var log = Math.log(this.totals+1);
-    var unit = (this.cluster.level == 1) ? 2500 : 10000;
-    return 2.5 * unit * log^3 + unit;
+    var unit = (this.cluster.level == 1) ? 2000 : 8000;
+    return 2.5 * unit * log^2 * (this.totals+1) + unit;
 };
 
 ClusterIcon.prototype.getColor = function() {
@@ -736,11 +774,14 @@ ClusterIcon.prototype.draw = function() {
             if(!this.div_) {
                 this.createDiv();
             }
+            // alert('Drawn DIV for ' + this.cluster.title);
 
             if(this.circle) {
                 this.circle.setRadius(this.getCircleRadius());
                 this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});
             }
+
+            // alert('Done with circle for ' + this.cluster.title + '\ncircle = ' + this.circle);
             
             this.div_.style.top = (pos.y - 20) + 'px';
             this.div_.style.left = (pos.x - 20) + 'px';

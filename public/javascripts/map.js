@@ -95,8 +95,11 @@ InteractiveMap.prototype = {
         } else {
             this.loading = false;
             this.progress.updateBar(1);
+            // WHY DOES THE REFRESH NOT FINISH??
+            // cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
             // cedisMap.locationSearch.clusterManager.renderMarkers();
             this.progress.hide();
+            cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
         }
     },
     initializeDataPage: function(response) {
@@ -105,12 +108,23 @@ InteractiveMap.prototype = {
                 var locationInfo = cedisMap.locationSearch.locationInfo(location);
                 var referenceClass = cedisMap.locationSearch.locationReference(location.referenceType, location.locationType);
                 var interviewURL = cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
-                cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.region, location.country, referenceClass, interviewURL);
+                var skip = false;
+                if(isNaN(location.latitude) || isNaN(location.longitude)) {
+                    skip = true;
+                } else if((Number(location.latitude) == 0) || (Number(location.longitude) == 0)) {
+                    skip = true;
+                }
+                if(!skip) {
+                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.region, location.country, referenceClass, interviewURL);   
+                } else {
+                    // alert('Skipping ' + location.location + ' at Lat/Lng: ' + location.latitude + ',' + location.longitude);
+                }
             });
 
         }
         // postpone this until all are loaded:
         // cedisMap.locationSearch.clusterManager.renderMarkers();
+        // cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
         cedisMap.locationSearch.progress.updateBar(1);
 
         cedisMap.locationSearch.retrieveDataPage();
