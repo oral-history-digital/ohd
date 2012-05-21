@@ -7,6 +7,8 @@ google.maps.LatLng.equals = function(other) {
 
 var debugOn = false;
 
+var totalClusters = 0;
+
 function debugMsg(msg) {
     if(!debugOn)  { return; }
     alert(msg.toString());
@@ -187,11 +189,11 @@ ClusterManager.prototype = {
 
     locateCluster: function(latLng, level) {
         var loc = latLng.toString();
-        var idx = cedisMap.mapLocations[level].length;
         var clusterLocations = cedisMap.clusterLocations[level];
         var mapClusters = cedisMap.mapClusters[level];
         if(!clusterLocations) { clusterLocations = []; }
         if(!mapClusters) { mapClusters = []; }
+        var idx = clusterLocations.length;
         while(idx--) {
             if((idx < 0) || (clusterLocations[idx] == loc)) { break; }
         }
@@ -441,6 +443,7 @@ Cluster.prototype = {
         this.visible = (level == cedisMap.locationSearch.clusterManager.currentLevel);
         this.level = level;
         this.width = 0;
+        this.marker = null;
         if(level == 0) {
             var marker = new google.maps.Marker({
                 position: latLng,
@@ -460,6 +463,8 @@ Cluster.prototype = {
         if(!cedisMap.mapClusters[this.level]) { cedisMap.mapClusters[this.level] = []; }
         cedisMap.clusterLocations[this.level].push(latLng.toString());
         cedisMap.mapClusters[this.level].push(this);
+
+        totalClusters++;
 
         this.marker.setVisible(visible);
         this.marker.setMap(cedisMap.locationSearch.map);
@@ -539,6 +544,9 @@ Cluster.prototype = {
             // redraw with new title & icon
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
+            if(this.level > 0) {
+                this.marker.setTotals(locs.length);
+            }
             if(this.visible) { this.marker.setVisible(true); }
             this.redraw();
         } else {
@@ -777,8 +785,12 @@ ClusterIcon.prototype.draw = function() {
             // alert('Drawn DIV for ' + this.cluster.title);
 
             if(this.circle) {
-                this.circle.setRadius(this.getCircleRadius());
-                this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});
+                if(this.totals < 1) {
+                    this.circle.setVisible(false)
+                } else {
+                    this.circle.setRadius(this.getCircleRadius());
+                    this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});   
+                }
             }
 
             // alert('Done with circle for ' + this.cluster.title + '\ncircle = ' + this.circle);
@@ -797,6 +809,7 @@ ClusterIcon.prototype.draw = function() {
 ClusterIcon.prototype.onRemove = function() {
     if (this.div_ && this.div_.parentNode) {
         // NO! this.visible_ = false;
+        this.circle.setVisible(false);
         this.div_.stopObserving('click');
         // this.div_.parentNode.removeChild(this.div_);
         Element.remove(this.div_);
@@ -843,16 +856,16 @@ ClusterIcon.prototype.setVisible = function(display) {
         }
     }
     if(this.circle) {
-        if(this.visible_) {
+        if(this.visible_ && (this.totals > 0)) {
             this.circle.setVisible(true);
         } else {
             this.circle.setVisible(false);
-            this.circle.setMap(null);
-            this.circle = null;
+            //this.circle.setMap(null);
+            //this.circle = null;
         }
     } else {
         if(this.visible_) {
             this.drawCircle();
         }
     }
-}
+};
