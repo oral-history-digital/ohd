@@ -694,6 +694,8 @@ Cluster.prototype = {
 };
 
 
+var iconType = 'circle';
+
 var ClusterIcon = Class.create();
 ClusterIcon.prototype = google.maps.OverlayView.prototype;
 
@@ -742,16 +744,24 @@ ClusterIcon.prototype.createDiv = function() {
         that.zoomIntoCluster();
     });
 
-    // create the circle
-    if (this.visible_) {
-        this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
+    if(iconType == 'img'){
+        // create an image circle
+        this.circle = new Element('img', { 'class': 'cluster-circle', 'src': '/images/circle_red.png', 'id': name + '_circle', 'style': 'position: absolute; display: none;'});
+        panes.overlayMouseTarget.appendChild(this.circle);
+    } else {
+        // create the circle
+        if (this.visible_) {
+            this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
+        }
     }
 
     debugMsg('add stage 2 completed');
 };
 
 ClusterIcon.prototype.drawCircle = function() {
-    this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
+    if(iconType != 'img') {
+        this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});   
+    }
 };
 
 ClusterIcon.prototype.getCircleRadius = function() {
@@ -766,7 +776,7 @@ ClusterIcon.prototype.getColor = function() {
 
 ClusterIcon.prototype.setColor = function(color) {
     this.color = color;
-    if(this.circle) {
+    if((iconType != 'img') && (this.circle)) {
         this.circle.setOptions({ color: color });
     }
 };
@@ -784,12 +794,22 @@ ClusterIcon.prototype.draw = function() {
             }
             // alert('Drawn DIV for ' + this.cluster.title);
 
-            if(this.circle) {
+            if((iconType != 'img') && (this.circle)) {
                 if(this.totals < 1) {
+                    alert('Drawing zero item circle for ' + this.cluster.title);
                     this.circle.setVisible(false)
                 } else {
                     this.circle.setRadius(this.getCircleRadius());
                     this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});   
+                }
+            } else {
+                if(this.circle) {
+                    var radius = (30 + Math.log(this.totals+1)^2 * 10 + (this.totals/5)).toFixed();
+                    this.circle.style.top = (pos.y - (radius/2) -1) + 'px';
+                    this.circle.style.left = (pos.x - (radius/2) -1) + 'px';
+                    this.circle.style.width = radius + 'px';
+                    this.circle.style.height = radius + 'px';
+                    this.circle.style.display = 'block';
                 }
             }
 
@@ -855,7 +875,7 @@ ClusterIcon.prototype.setVisible = function(display) {
             this.div_.style.display = 'none';
         }
     }
-    if(this.circle) {
+    if((iconType != 'img') && (this.circle)) {
         if(this.visible_ && (this.totals > 0)) {
             this.circle.setVisible(true);
         } else {
@@ -866,6 +886,16 @@ ClusterIcon.prototype.setVisible = function(display) {
     } else {
         if(this.visible_) {
             this.drawCircle();
+        }
+    }
+
+    if(iconType == 'img') {
+        if(this.circle) {
+            if(this.visible_) {
+                this.circle.style.display = 'block';
+            } else {
+                this.circle.style.display = 'none';
+            }
         }
     }
 };
