@@ -4,7 +4,7 @@ class BaseController < ResourceController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  before_filter :authenticate_user!
+  before_filter :check_user_authentication!
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -80,6 +80,22 @@ class BaseController < ResourceController::Base
 
   def determine_user
     @current_user = current_user
+  end
+
+  # authentication and extended IP-tracking wrapped together
+  def check_user_authentication!
+    authenticate_user!
+    current_ip = current_user.proxy_owner.current_sign_in_ip || request.remote_ip
+    if session[:current_ip] != current_ip
+      tracked_ip = UserAccountIP.find_or_initialize_by_ip_and_user_account_id(current_ip, current_user.proxy_owner.id)
+      begin
+        tracked_ip.save if tracked_ip.new_record?
+      rescue
+        # prevent unexpected errors from causing status 500
+        tracked_ip = UserAccountIP.new({:ip => current_ip})
+      end
+      session[:current_ip] = tracked_ip.ip
+    end
   end
 
 
