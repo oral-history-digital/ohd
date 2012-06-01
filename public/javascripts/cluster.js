@@ -557,7 +557,12 @@ Cluster.prototype = {
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
             if(this.level > 0) {
-                this.marker.setTotals(locs.length);
+                var num = 0;
+                var idx = locs.length;
+                while(idx--) {
+                    num = num + locs[idx][1].length;
+                }
+                this.marker.setTotal(num);
             }
             if(this.visible) { this.marker.setVisible(true); }
             this.redraw();
