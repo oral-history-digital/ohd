@@ -60,7 +60,8 @@ InteractiveMap.prototype = {
             center: new google.maps.LatLng(this.options.latitude, this.options.longitude),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
-        this.map = new google.maps.Map($(id), mapOptions);
+        this.mapContainer = $(id);
+        this.map = new google.maps.Map(this.mapContainer, mapOptions);
 
         this.progress = new progressBar({colorBar: '#990000', background: '#B2AFA1' });
         $(id).appendChild(this.progress.getDiv());

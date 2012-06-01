@@ -66,6 +66,7 @@ ClusterManager.prototype = {
 
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
+        cedisMap.locationSearch.mapContainer.addClassName('level-' + this.currentLevel);
         
         google.maps.event.addListener(this.map, 'zoom_changed',  function() { cedisMap.locationSearch.clusterManager.checkForZoomShift(); });
 
@@ -327,6 +328,17 @@ ClusterManager.prototype = {
     switchLevel: function(level) {
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         if(currentLevel == level) { return; }
+
+        var lvl = 3;
+        var mapDiv = cedisMap.locationSearch.mapContainer;
+        while(lvl--) {
+            var lvlClass = 'level-' + lvl;
+            if(lvl == level) {
+                mapDiv.addClassName(lvlClass);
+            } else {
+                mapDiv.removeClassName(lvlClass);
+            }
+        }
         // alert('Attempting to switch from level ' + currentLevel + ' to level ' + level);
 
         /* this didn't improve cluster artifact issue
@@ -694,7 +706,7 @@ Cluster.prototype = {
 };
 
 
-var iconType = 'circle';
+var iconType = 'img';
 
 var ClusterIcon = Class.create();
 ClusterIcon.prototype = google.maps.OverlayView.prototype;
@@ -713,6 +725,7 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     // this.setMap(this.map_);
     this.circle = null;
     this.color = this.cluster.color;
+    this.name = this.cluster.title.sub(/\s\(\.*$/,'');
     debugMsg('Going to call setMap for ClusterIcon at ' + center);
 };
 
@@ -725,8 +738,8 @@ ClusterIcon.prototype.onAdd = function() {
 };
 
 ClusterIcon.prototype.createDiv = function() {
-    var name = this.cluster.title.sub(/\s\(.*$/,'');
-    this.div_ = new Element('div', { 'class': 'cluster-icon', 'id': name, 'title': name });
+    var name = this.cluster.title.sub(/\s\(\.*$/,'');
+    this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': name, 'title': name, 'style': 'display: hidden' });
     var panes = this.getPanes();
     panes.overlayMouseTarget.appendChild(this.div_);
 
@@ -746,7 +759,7 @@ ClusterIcon.prototype.createDiv = function() {
 
     if(iconType == 'img'){
         // create an image circle
-        this.circle = new Element('img', { 'class': 'cluster-circle', 'src': '/images/circle_red.png', 'id': name + '_circle', 'style': 'position: absolute; display: none;'});
+        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': '/images/circle_red.png', 'id': name + '_circle', 'style': 'position: absolute; display: none;'});
         panes.overlayMouseTarget.appendChild(this.circle);
     } else {
         // create the circle
@@ -794,17 +807,22 @@ ClusterIcon.prototype.draw = function() {
             }
             // alert('Drawn DIV for ' + this.cluster.title);
 
-            if((iconType != 'img') && (this.circle)) {
-                if(this.totals < 1) {
-                    alert('Drawing zero item circle for ' + this.cluster.title);
-                    this.circle.setVisible(false)
-                } else {
-                    this.circle.setRadius(this.getCircleRadius());
-                    this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});   
+            if(iconType != 'img') {
+                if (this.circle) {
+                    if(this.totals < 1) {
+                        alert('Drawing zero item circle for ' + this.cluster.title);
+                        this.circle.setVisible(false)
+                    } else {
+                        this.circle.setRadius(this.getCircleRadius());
+                        this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});
+                    }
                 }
             } else {
                 if(this.circle) {
-                    var radius = (30 + Math.log(this.totals+1)^2 * 10 + (this.totals/5)).toFixed();
+                    var radius = imgRadius(this.totals);
+                    if((this.name == 'Frankreich') || (this.name == 'Deutschland') || (this.name == 'Polen')) {
+                        alert('Radius for ' + this.name + '\nwith a total of ' + this.totals + '\nis set to ' + radius);
+                    }
                     this.circle.style.top = (pos.y - (radius/2) -1) + 'px';
                     this.circle.style.left = (pos.x - (radius/2) -1) + 'px';
                     this.circle.style.width = radius + 'px';
@@ -820,7 +838,9 @@ ClusterIcon.prototype.draw = function() {
             this.div_.innerHTML = this.totals.toString();
         } else {
             // just don't draw it, but don't set it to invisible!
-            // this.setVisible(false);
+            this.setVisible(false);
+
+            // TODO: Remove it? Set it to invisible? Maybe we *should* do that!
         }
     }
     debugMsg('Drawn:\n div = ' + this.div_ + '\n\nhtml: ' + this.div_.innerHTML);
@@ -899,3 +919,9 @@ ClusterIcon.prototype.setVisible = function(display) {
         }
     }
 };
+
+function imgRadius(totals) {
+    var log = Math.log(totals+3);
+    var radius = Math.floor(25.0 + log * log * 2.5 + (totals/20.0));
+    return radius;
+}
