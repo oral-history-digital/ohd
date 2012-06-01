@@ -3,6 +3,7 @@ class UserAccountMailer < ActionMailer::Base
   def reactivate_fudis_account_instructions(account)
     mail_headers_and_info account
     @url = confirm_account_url(:confirmation_token => account.confirmation_token, :protocol => 'https')
+    @url = @url + '/'unless @url.last == '/'
     body :url => @url, :user_name => @user_name, :email => account.email
   end
 
@@ -11,6 +12,7 @@ class UserAccountMailer < ActionMailer::Base
     @login = account.login
     mail_headers_and_info account, registration
     @url = confirm_account_url(:confirmation_token => account.confirmation_token, :protocol => 'https')
+    @url = @url + '/' unless @url.last == '/'
   end
 
   private
