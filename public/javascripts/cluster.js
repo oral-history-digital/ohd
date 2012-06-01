@@ -486,7 +486,7 @@ Cluster.prototype = {
         if(this.level == 0) {
             this.icon = cedisMap.locationSearch.options.images[type];
         } else {
-            this.color = cedisMap.locationSearch.options.colors[type] || '#990000';
+            this.color = cedisMap.locationSearch.options.colors[type] || 'red';
             this.marker.setColor(this.color);
         }
     },
@@ -499,7 +499,7 @@ Cluster.prototype = {
             var loc = this.locations.first();
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
-            if(this.locations.length > 1) {
+            if((this.level == 0) && (this.locations.length > 1)) {
                 this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
             }
             this.marker.setZIndex(loc.locationType * 10 + 100);
@@ -730,7 +730,6 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     // this.setMap(this.map_);
     this.circle = null;
     this.color = this.cluster.color;
-    this.name = this.cluster.title.sub(/\s\(\.*$/,'');
     debugMsg('Going to call setMap for ClusterIcon at ' + center);
 };
 
@@ -743,8 +742,7 @@ ClusterIcon.prototype.onAdd = function() {
 };
 
 ClusterIcon.prototype.createDiv = function() {
-    var name = this.cluster.title.sub(/\s\(\.*$/,'');
-    this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': name, 'title': name, 'style': 'display: hidden' });
+    this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden' });
     var panes = this.getPanes();
     panes.overlayMouseTarget.appendChild(this.div_);
 
@@ -764,7 +762,7 @@ ClusterIcon.prototype.createDiv = function() {
 
     if(iconType == 'img'){
         // create an image circle
-        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': '/images/circle_red.png', 'id': name + '_circle', 'style': 'position: absolute; display: none;'});
+        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': '/images/circle_red.png', 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
         panes.overlayMouseTarget.appendChild(this.circle);
     } else {
         // create the circle
@@ -794,8 +792,12 @@ ClusterIcon.prototype.getColor = function() {
 
 ClusterIcon.prototype.setColor = function(color) {
     this.color = color;
-    if((iconType != 'img') && (this.circle)) {
-        this.circle.setOptions({ color: color });
+    if(this.circle) {
+        if(iconType != 'img') {
+            this.circle.setOptions({ color: color });
+        } else {
+            this.circle.src = '/images/circle_' + color + '.png';
+        }
     }
 };
 
@@ -825,9 +827,6 @@ ClusterIcon.prototype.draw = function() {
             } else {
                 if(this.circle) {
                     var radius = imgRadius(this.totals);
-                    if((this.name == 'Frankreich') || (this.name == 'Deutschland') || (this.name == 'Polen')) {
-                        alert('Radius for ' + this.name + '\nwith a total of ' + this.totals + '\nis set to ' + radius);
-                    }
                     this.circle.style.top = (pos.y - (radius/2) -1) + 'px';
                     this.circle.style.left = (pos.x - (radius/2) -1) + 'px';
                     this.circle.style.width = radius + 'px';
@@ -927,6 +926,7 @@ ClusterIcon.prototype.setVisible = function(display) {
 
 function imgRadius(totals) {
     var log = Math.log(totals+3);
-    var radius = Math.floor(25.0 + log * log * 2.5 + (totals/20.0));
+    var zoom = cedisMap.locationSearch.map.getZoom();
+    var radius = Math.floor(25.0 + (zoom/6) * (log * log * 0.5 * zoom + (zoom * totals/100.0)));
     return radius;
 }

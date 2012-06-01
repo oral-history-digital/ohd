@@ -43,15 +43,15 @@ InteractiveMap.prototype = {
 
         if(!this.options.colors) {
             this.options.colors = new Hash();
-            this.options.colors['default'] = '#990000';
-            this.options.colors['interview'] = '#89d41c';
-            this.options.colors['place_of_birth'] = '#37aadb';
-            this.options.colors['home_location'] = '#37aadb';
-            this.options.colors['return_location'] = '#37aadb';
-            this.options.colors['deportation_location'] = '#990000';
-            this.options.colors['forced_labor_location'] = '#990000';
-            this.options.colors['forced_labor_camp_location'] = '#990000';
-            this.options.colors['forced_labor_company_location'] = '#990000';
+            this.options.colors['default'] = 'red';
+            this.options.colors['interview'] = 'green';
+            this.options.colors['place_of_birth'] = 'blue';
+            this.options.colors['home_location'] = 'blue';
+            this.options.colors['return_location'] = 'blue';
+            this.options.colors['deportation_location'] = 'red';
+            this.options.colors['forced_labor_location'] = 'red';
+            this.options.colors['forced_labor_camp_location'] = 'red';
+            this.options.colors['forced_labor_company_location'] = 'red';
         }
 
         // Google Map Initialization
