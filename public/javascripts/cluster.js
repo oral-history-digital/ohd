@@ -762,7 +762,7 @@ ClusterIcon.prototype.createDiv = function() {
 
     if(iconType == 'img'){
         // create an image circle
-        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': '/images/circle_red.png', 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
+        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
         panes.overlayMouseTarget.appendChild(this.circle);
     } else {
         // create the circle
@@ -796,10 +796,14 @@ ClusterIcon.prototype.setColor = function(color) {
         if(iconType != 'img') {
             this.circle.setOptions({ color: color });
         } else {
-            this.circle.src = '/images/circle_' + color + '.png';
+            this.circle.src = this.getImagePath(color);
         }
     }
 };
+
+ClusterIcon.prototype.getImagePath = function(color) {
+    return cedisMap.locationSearch.options.urlRoot + '/images/circle_' + color + '.png';
+}
 
 ClusterIcon.prototype.draw = function() {
     // alert('Drawing Icon for Cluster: ' + this.cluster.title + '\n\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
