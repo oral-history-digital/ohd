@@ -529,11 +529,10 @@ Cluster.prototype = {
                 }
                 this.numberShown = num;
             }
-            if(this.visible) { this.marker.setVisible(true); }
+            if(this.visible && (this.numberShown > 0)) { this.marker.setVisible(true); }
             this.redraw();
         } else {
-            // no more locations shown - hide
-            this.visible = false;
+            this.numberShown = 0;
             this.marker.setVisible(false);
         }
     },
