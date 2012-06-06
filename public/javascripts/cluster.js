@@ -711,8 +711,6 @@ Cluster.prototype = {
 };
 
 
-var iconType = 'img';
-
 var ClusterIcon = Class.create();
 ClusterIcon.prototype = google.maps.OverlayView.prototype;
 
@@ -748,8 +746,6 @@ ClusterIcon.prototype.createDiv = function() {
 
     debugMsg('Trying to add ClusterIcon for cluster at ' + this.center_ + '\n\ncluster: ' + this.cluster);
     if (this.visible_) {
-        // var pos = this.getPosFromLatLng(this.center_);
-        // this.div.style.cssText = this.createCss(pos);
         this.div_.innerHTML = this.totals.toString();
     }
 
@@ -760,24 +756,11 @@ ClusterIcon.prototype.createDiv = function() {
         that.zoomIntoCluster();
     });
 
-    if(iconType == 'img'){
-        // create an image circle
-        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
-        panes.overlayMouseTarget.appendChild(this.circle);
-    } else {
-        // create the circle
-        if (this.visible_) {
-            this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});
-        }
-    }
+    // create an image circle
+    this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
+    panes.overlayMouseTarget.appendChild(this.circle);
 
     debugMsg('add stage 2 completed');
-};
-
-ClusterIcon.prototype.drawCircle = function() {
-    if(iconType != 'img') {
-        this.circle = new google.maps.Circle({center: this.center_, radius: this.getCircleRadius(), fillColor: this.getColor(), map: this.map_, strokeWeight: 0, fillOpacity: 0.8});   
-    }
 };
 
 ClusterIcon.prototype.getCircleRadius = function() {
@@ -793,11 +776,7 @@ ClusterIcon.prototype.getColor = function() {
 ClusterIcon.prototype.setColor = function(color) {
     this.color = color;
     if(this.circle) {
-        if(iconType != 'img') {
-            this.circle.setOptions({ color: color });
-        } else {
-            this.circle.src = this.getImagePath(color);
-        }
+        this.circle.src = this.getImagePath(color);
     }
 };
 
@@ -806,49 +785,26 @@ ClusterIcon.prototype.getImagePath = function(color) {
 }
 
 ClusterIcon.prototype.draw = function() {
-    // alert('Drawing Icon for Cluster: ' + this.cluster.title + '\n\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
     debugMsg('Drawing ClusterIcon...');
     if (this.visible_) {
         var pos = this.getPosFromLatLng(this.center_);
-        // alert('Cluster-Pos: ' + pos + '\nfor Cluster: ' + this.cluster.title + '\nat: ' + this.center_ + '\nVisible? ' + (this.visible_ ? 'yes' : 'no'));
         if(pos) {
-            // this.setVisible(true);
             if(!this.div_) {
                 this.createDiv();
             }
-            // alert('Drawn DIV for ' + this.cluster.title);
-
-            if(iconType != 'img') {
-                if (this.circle) {
-                    if(this.totals < 1) {
-                        alert('Drawing zero item circle for ' + this.cluster.title);
-                        this.circle.setVisible(false)
-                    } else {
-                        this.circle.setRadius(this.getCircleRadius());
-                        this.circle.setOptions({radius: this.getCircleRadius(), color: this.getColor()});
-                    }
-                }
-            } else {
-                if(this.circle) {
-                    var radius = imgRadius(this.totals);
-                    this.circle.style.top = (pos.y - (radius/2) -1) + 'px';
-                    this.circle.style.left = (pos.x - (radius/2) -1) + 'px';
-                    this.circle.style.width = radius + 'px';
-                    this.circle.style.height = radius + 'px';
-                    this.circle.style.display = 'block';
-                }
+            if(this.circle) {
+                var radius = imgRadius(this.totals);
+                this.circle.style.top = (pos.y - (radius/2) -1) + 'px';
+                this.circle.style.left = (pos.x - (radius/2) -1) + 'px';
+                this.circle.style.width = radius + 'px';
+                this.circle.style.height = radius + 'px';
+                this.circle.style.display = 'block';
             }
-
-            // alert('Done with circle for ' + this.cluster.title + '\ncircle = ' + this.circle);
-            
             this.div_.style.top = (pos.y - 20) + 'px';
             this.div_.style.left = (pos.x - 20) + 'px';
             this.div_.innerHTML = this.totals.toString();
         } else {
-            // just don't draw it, but don't set it to invisible!
             this.setVisible(false);
-
-            // TODO: Remove it? Set it to invisible? Maybe we *should* do that!
         }
     }
     debugMsg('Drawn:\n div = ' + this.div_ + '\n\nhtml: ' + this.div_.innerHTML);
@@ -856,10 +812,8 @@ ClusterIcon.prototype.draw = function() {
 
 ClusterIcon.prototype.onRemove = function() {
     if (this.div_ && this.div_.parentNode) {
-        // NO! this.visible_ = false;
         this.circle.setVisible(false);
         this.div_.stopObserving('click');
-        // this.div_.parentNode.removeChild(this.div_);
         Element.remove(this.div_);
         
         this.div_ = null;
@@ -869,10 +823,6 @@ ClusterIcon.prototype.onRemove = function() {
 ClusterIcon.prototype.getPosFromLatLng = function(latlng) {
     var pos = this.getProjection().fromLatLngToDivPixel(latlng);
     debugMsg('Calculated position...');
-    // var mapDiv = this.map_.getDiv();
-    // var width = mapDiv.offsetWidth;
-    // var height = mapDiv.offsetHeight;
-    // alert('Map dimensions (pixel) = ' + width + ' x ' + height + ' \non Projection = ' + this.getProjection() + '\n\npos for ' + this.cluster.title + ' at ' + this.center_ + '\nis: ' + pos.x + ',' + pos.y);
     pos.x = pos.x.toFixed();
     pos.y = pos.y.toFixed();
     return pos;
@@ -895,6 +845,7 @@ ClusterIcon.prototype.setZIndex = function(z) {
 
 ClusterIcon.prototype.setVisible = function(display) {
     this.visible_ = display;
+    // hide/show content div
     if(this.div_) {
         if(this.visible_) {
             this.rendered = false;
@@ -903,27 +854,12 @@ ClusterIcon.prototype.setVisible = function(display) {
             this.div_.style.display = 'none';
         }
     }
-    if((iconType != 'img') && (this.circle)) {
-        if(this.visible_ && (this.totals > 0)) {
-            this.circle.setVisible(true);
-        } else {
-            this.circle.setVisible(false);
-            //this.circle.setMap(null);
-            //this.circle = null;
-        }
-    } else {
+    // hide/show circle graphic
+    if(this.circle) {
         if(this.visible_) {
-            this.drawCircle();
-        }
-    }
-
-    if(iconType == 'img') {
-        if(this.circle) {
-            if(this.visible_) {
-                this.circle.style.display = 'block';
-            } else {
-                this.circle.style.display = 'none';
-            }
+            this.circle.style.display = 'block';
+        } else {
+            this.circle.style.display = 'none';
         }
     }
 };
