@@ -523,7 +523,6 @@ Cluster.prototype = {
             this.marker.setIcon(this.icon);
             this.marker.setTitle(this.title);
         } else {
-            // alert('Redraw of ClusterIcon for ' + this.title);
             this.marker.draw();
         }
         this.rendered = true;
@@ -533,22 +532,16 @@ Cluster.prototype = {
         this.visible = true;
         this.marker.rendered = false;
         this.marker.setVisible(true);
-        // this.marker.setMap(cedisMap.locationSearch.map);
         this.redraw();
     },
 
     hide: function() {
         this.visible = false;
         this.marker.setVisible(false);
-        // this.marker.setMap(null);
     },
 
     refresh: function() {
-        if(this.level != 0) {
-            this.marker.setTotal(this.locations.length);
-        }
         var locs = this.displayLocations();
-        // alert('Refresh of ' + this.title + ' (visible: ' + this.visible + ') with locations: ' + locs);
         if(locs.length != 0) {
             var dLoc = locs.first();
             var loc = dLoc[1].first();
@@ -573,7 +566,7 @@ Cluster.prototype = {
         }
     },
 
-    // groups the locations by descriptor [['descriptor', [array,of,locations], #number_of_locations]]
+    // groups the locations by descriptor [['descriptor', [array,of,locations], #number of lines]]
     displayLocations: function() {
         var locs = this.locations.toArray();
         var displayLocs = [];
@@ -725,7 +718,6 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     this.totals = 0;
     // visibility is toggled just by search/filter state
     this.visible_ = true;
-    // this.setMap(this.map_);
     this.circle = null;
     this.color = this.cluster.color;
     debugMsg('Going to call setMap for ClusterIcon at ' + center);
