@@ -263,22 +263,21 @@ ClusterManager.prototype = {
                 this.filters = this.filters.select(function(obj) { return obj != filter });
             }
             var filters = this.filters;
-            // apply filters to all locations
-            var locations = cedisMap.mapLocations[this.currentLevel];
-            var index = locations.length;
-            while(index--) {
-                var loc = locations[index];
-                var changed = loc.applyFilters(filters);
-                if(changed && changedClusters.indexOf(loc.cluster) == -1) { changedClusters.push(loc.cluster); }
+            // apply filters to all locations on all levels
+            var level = cedisMap.mapLocations.length;
+            while(level--) {
+                var locations = cedisMap.mapLocations[level];
+                var index = locations.length;
+                while(index--) {
+                    var loc = locations[index];
+                    var changed = loc.applyFilters(filters);
+                    if(changed && changedClusters.indexOf(loc.cluster) == -1) { changedClusters.push(loc.cluster); }
+                }
             }
             var idx = changedClusters.length;
             while(idx--) {
                 changedClusters[idx].refresh();
             }
-            /* cedisMap.mapLocations[this.currentLevel].each(function(loc) {
-                var changed = loc.applyFilters(filters);
-                if(changed) { changedLocs++ }
-            }); */
         }
         var filterStopTime = (new Date).getTime();
         // debugMsg('Optimization 4:\nTime for applying the filter: ' + filter + '\n\n' + (filterStopTime - filterStartTime) + ' ms.\n\n' + changedLocs + ' locations changed of ' + cedisMap.mapLocations[this.currentLevel].length);
@@ -503,7 +502,7 @@ Cluster.prototype = {
     show: function() {
         this.visible = true;
         this.marker.rendered = false;
-        this.marker.setVisible(true);
+        if(this.numberShown > 0) { this.marker.setVisible(true)};
         this.redraw();
     },
 
@@ -521,14 +520,13 @@ Cluster.prototype = {
             // redraw with new title & icon
             this.title = loc.title;
             this.setIconByType(loc.getLocationType(loc.locationType));
-            if(this.level > 0) {
-                var num = 0;
-                var idx = locs.length;
-                while(idx--) {
-                    num = num + locs[idx][1].length;
-                }
-                this.numberShown = num;
+            // recalculate number of locations shown
+            var num = 0;
+            var idx = locs.length;
+            while(idx--) {
+                num = num + locs[idx][1].length;
             }
+            this.numberShown = num;
             if(this.visible && (this.numberShown > 0)) { this.marker.setVisible(true); }
             this.redraw();
         } else {
