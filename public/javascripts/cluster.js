@@ -7,11 +7,23 @@ google.maps.LatLng.equals = function(other) {
 
 var debugOn = false;
 
+var clustersOffset = 0;
+
 var totalClusters = 0;
 
 function debugMsg(msg) {
     if(!debugOn)  { return; }
     alert(msg.toString());
+}
+
+function toggleClusters() {
+    $('cluster_toggle').toggleClassName('clusters-off');
+    if(clustersOffset > 0) {
+        clustersOffset = 0;
+    } else {
+        clustersOffset = 4;
+    }
+    cedisMap.locationSearch.clusterManager.checkForZoomShift();
 }
 
 // Reverse display priorities
@@ -197,7 +209,7 @@ ClusterManager.prototype = {
     getLevelByZoom: function(zoom) {
         var level = 0;
         while(level < 3) {
-            if(zoom+1 > this.minZoomPerLevel[level]) {
+            if(zoom+1 > (this.minZoomPerLevel[level] - clustersOffset)) {
                 break;
             }
             level++;
@@ -220,7 +232,7 @@ ClusterManager.prototype = {
         var pos = marker.getPosition();
         var zoom = this.map.getZoom();
         this.map.panTo(pos);
-        this.map.setZoom(this.minZoomPerLevel[this.currentLevel-1]);
+        this.map.setZoom(this.minZoomPerLevel[this.currentLevel-1] - clustersOffset);
     },
 
     showInfoBox: function(marker) {
