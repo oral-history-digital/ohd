@@ -688,6 +688,9 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     this.visible_ = true;
     this.circle = null;
     this.color = this.cluster.color;
+    if(this.cluster.title == 'Luxemburg') {
+        debugOn = true;
+    }
     debugMsg('Going to call setMap for ClusterIcon at ' + center);
 };
 
@@ -700,27 +703,25 @@ ClusterIcon.prototype.onAdd = function() {
 };
 
 ClusterIcon.prototype.createDiv = function() {
-    this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden' });
     var panes = this.getPanes();
-    panes.overlayMouseTarget.appendChild(this.div_);
+    if(!this.div_) {
+        this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden' });
+        panes.overlayMouseTarget.appendChild(this.div_);
 
-    debugMsg('Trying to add ClusterIcon for cluster at ' + this.center_ + '\n\ncluster: ' + this.cluster);
+        // add interaction
+        var that = this;
+        google.maps.event.addDomListener(this.div_, 'click', function() {
+            that.zoomIntoCluster();
+        });
+    }
     if (this.visible_) {
         this.div_.innerHTML = this.cluster.numberShown.toString();
     }
-
-    debugMsg('add stage 1 completed');
-
-    var that = this;
-    google.maps.event.addDomListener(this.div_, 'click', function() {
-        that.zoomIntoCluster();
-    });
-
-    // create an image circle
-    this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
-    panes.overlayMouseTarget.appendChild(this.circle);
-
-    debugMsg('add stage 2 completed');
+    if(!this.circle) {
+        // create an image circle
+        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
+        panes.overlayMouseTarget.appendChild(this.circle);
+    }
 };
 
 ClusterIcon.prototype.getColor = function() {
@@ -769,8 +770,6 @@ ClusterIcon.prototype.onRemove = function() {
         this.circle.setVisible(false);
         this.div_.stopObserving('click');
         Element.remove(this.div_);
-        
-        this.div_ = null;
     }
 };
 
