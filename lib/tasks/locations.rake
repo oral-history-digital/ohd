@@ -32,7 +32,6 @@ namespace :locations do
       region = regions[name]
       coordinates_retrieved = false
       path = URI::encode(service_path + '?address=' + name + '&sensor=false')
-      puts "Requesting geocodes at" + service_url + path
       resp = Net::HTTP.get_response(service_url, path)
       data = ActiveSupport::JSON.decode(resp.body)
       results = data['results']
