@@ -221,6 +221,10 @@ ClusterManager.prototype = {
     checkForZoomShift: function() {
         var zoom = this.map.getZoom();
         var level = this.getLevelByZoom(zoom);
+        if((level == 1) && (clustersOffset > 1)) {
+            // don't cluster by region except when using really small offsets
+            level = 2;
+        }
         // debugMsg('Check for zoom shift at zoom = ' + zoom + '\nlevel = ' + level);
         if(level != this.currentLevel) {
             this.switchLevel(level);
