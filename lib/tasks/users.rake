@@ -52,7 +52,7 @@ namespace :users do
 
     offset=0
     batch=25
-    total = UserRegistration.count(:all, :conditions => ['workflow_state != ? AND workflow_state != ?', 'rejected', 'postponed'])
+    total = UserRegistration.count(:all, :conditions => ['workflow_state = ? OR workflow_state = ?', 'checked', 'registered'])
 
     puts "\n#{total} Registrations to write as CSV."
 
