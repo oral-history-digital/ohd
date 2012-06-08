@@ -18,8 +18,6 @@ namespace :locations do
     total = regions.keys.size
     puts "\n#{total} distinct regions found with missing geocode information."
 
-    exit
-
     require 'net/http'
 
     found = 0
@@ -62,15 +60,17 @@ namespace :locations do
     end
 
     puts "Discovered #{found} geocodes. Storing to DB"
+    corrected = 0
     regions.keys.each do |name|
       reg = regions[name]
       unless reg[:lat].blank?
         updated = LocationReference.update_all ["region_latitude = ?, region_longitude = ?", reg[:lat], reg[:long]], ["region_name = ?", name]
         puts "#{updated} instances of '#{name}' updated."
+        corrected += 1
       end
     end
 
-    puts "\nDone."
+    puts "\nDone. Completed #{corrected} out of #{total} regions with missing geocodes."
 
   end
 
