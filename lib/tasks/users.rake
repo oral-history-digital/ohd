@@ -58,7 +58,7 @@ namespace :users do
 
     while(offset<total)
       UserRegistration.find(:all,
-                            :conditions => ['receive_newsletter = ?', true],
+                            :conditions => ['workflow_state = ? OR workflow_state = ?', 'checked', 'registered'],
                             :limit => "#{offset},#{batch}",
                             :include => [ :user ]).each do |r|
         appellation = YAML::load(r.application_info)[:appellation]
