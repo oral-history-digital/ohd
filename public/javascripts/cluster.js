@@ -21,7 +21,7 @@ function toggleClusters() {
     if(clustersOffset > 0) {
         clustersOffset = 0;
     } else {
-        clustersOffset = 4;
+        clustersOffset = 6;
     }
     cedisMap.locationSearch.clusterManager.checkForZoomShift();
 }
