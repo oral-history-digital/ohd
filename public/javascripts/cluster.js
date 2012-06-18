@@ -363,15 +363,37 @@ ClusterManager.prototype = {
 
     // supply an Array of archiveIds or a single one
     setInterviewRange: function(ids) {
-        if(typeof ids != 'array') {
+        if(!Object.isArray(ids)) {
             ids = [ ids ];
         }
         var idx = ids.length;
         interviewSelection = [];
         while(idx--) {
             var rawId = ids[idx];
-            var id = (typeof rawId == 'string') ? parseInt(rawId.sub(/[^\d]+/,'')) : rawId;
+            var id = (Object.isString(rawId)) ? parseInt(rawId.sub(/[^\d]+/,'')) : rawId;
             interviewSelection.push(id);
+        }
+    },
+
+    applyInterviewSelection: function() {
+        var level = 3;
+        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
+        var changedClusters = [];
+        while(level--) {
+            var locs = cedisMap.mapLocations[level];
+            var ldx = locs.length;
+            while(ldx--) {
+                var loc = locs[ldx];
+                var changed = loc.checkInterviewInclusion(interviewSelection);
+                if(changed && (level == currentLevel)) {
+                    changedClusters.push(loc.cluster);
+                }
+            }
+        }
+        var cdx = changedClusters.length;
+        // alert('Changed ' + cdx + ' clusters due to applying the selection:\n' + interviewSelection);
+        while(cdx--) {
+            changedClusters[cdx].refresh();
         }
     },
 
@@ -388,7 +410,7 @@ Location.prototype = {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
-        this.interviewId = (typeof interviewId == 'string') ? parseInt(interviewId.sub(/\w+/,'')) : interviewId;
+        this.interviewId = (Object.isString(interviewId)) ? parseInt(interviewId.sub(/[^\d]+/,'')) : interviewId;
         this.latLng = latLng;
         this.level = level;
         this.linkURL = linkURL;
@@ -437,6 +459,7 @@ Location.prototype = {
     },
 
     checkInterviewInclusion: function(idArray) {
+        var previousSelected = this.displaySelection;
         var idx = idArray.length;
         if(idx > 0) {
             this.displaySelection = false;
@@ -449,7 +472,7 @@ Location.prototype = {
         } else {
             this.displaySelection = true;
         }
-        return(this.displaySelection);
+        return(this.displaySelection != previousSelected);
     },
 
     getPriority: function(type) {
