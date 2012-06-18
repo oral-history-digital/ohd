@@ -11,6 +11,8 @@ var clustersOffset = 0;
 
 var totalClusters = 0;
 
+var interviewSelection = [];
+
 function debugMsg(msg) {
     if(!debugOn)  { return; }
     alert(msg.toString());
@@ -113,8 +115,8 @@ ClusterManager.prototype = {
 
     },
 
-    addLocation: function(id, latLng, htmlText, region, country, divClass, linkURL) {
-        var location = new Location(id, latLng, 0, htmlText, divClass, linkURL, true);
+    addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
+        var location = new Location(id, latLng, 0, interviewId, htmlText, divClass, linkURL, true);
 
         this.addLocationToLevel(location, 0);
 
@@ -122,7 +124,7 @@ ClusterManager.prototype = {
         if(region && region.longitude && region.latitude) {
             // create the region & cluster
             var latLng = new google.maps.LatLng(region.latitude, region.longitude);
-            var regionLoc = new Location(region.name, latLng, 1, '', divClass, '', true);
+            var regionLoc = new Location(region.name, latLng, 1, interviewId, '', divClass, '', true);
 
             this.addLocationToLevel(regionLoc, 1);
         }
@@ -130,7 +132,7 @@ ClusterManager.prototype = {
         // country
         if(country && country.longitude && country.latitude) {
             var latLng = new google.maps.LatLng(country.latitude, country.longitude);
-            var countryLoc = new Location(country.name, latLng, 2, '', divClass, '', true);
+            var countryLoc = new Location(country.name, latLng, 2, interviewId, '', divClass, '', true);
 
             this.addLocationToLevel(countryLoc, 2);
         }
@@ -359,6 +361,20 @@ ClusterManager.prototype = {
 
     },
 
+    // supply an Array of archiveIds or a single one
+    setInterviewRange: function(ids) {
+        if(typeof ids != 'array') {
+            ids = [ ids ];
+        }
+        var idx = ids.length;
+        interviewSelection = [];
+        while(idx--) {
+            var rawId = ids[idx];
+            var id = (typeof rawId == 'string') ? parseInt(rawId.sub(/[^\d]+/,'')) : rawId;
+            interviewSelection.push(id);
+        }
+    },
+
     benchmark: function(test, desc) {
         var startTime = (new Date).getTime();
         test.call();
@@ -368,14 +384,16 @@ ClusterManager.prototype = {
 };
 
 Location.prototype = {
-    initialize: function(id, latLng, level, htmlText, divClass, linkURL, display) {
+    initialize: function(id, latLng, level, interviewId, htmlText, divClass, linkURL, locDisplay) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
+        this.interviewId = (typeof interviewId == 'string') ? parseInt(interviewId.sub(/\w+/,'')) : interviewId;
         this.latLng = latLng;
         this.level = level;
         this.linkURL = linkURL;
-        this.display = display;
+        this.displayFilter = locDisplay;
+        this.displaySelection = true;
         this.cluster = null;
         if(!cedisMap.mapLocations) { cedisMap.mapLocations = []; }
         if(!cedisMap.mapLocations[level]) { cedisMap.mapLocations[level] = []; }
@@ -387,23 +405,27 @@ Location.prototype = {
         this.cluster = cluster;
     },
 
+    display: function() {
+        return(this.displayFilter && this.displaySelection);
+    },
+
     hide: function() {
-        this.display = false;
+        this.displayFilter = false;
     },
 
     show: function() {
-        this.display = true;
+        this.displayFilter = true;
     },
 
     applyFilters: function(filters) {
         var changed = false;
         if(filters.indexOf(this.getLocationType(this.locationType)) > -1) {
-            if(this.display) {
+            if(this.displayFilter) {
                 this.hide();
                 changed = true;
             }
         } else {
-            if(!this.display) {
+            if(!this.displayFilter) {
                 this.show();
                 changed = true;
             }
@@ -412,6 +434,22 @@ Location.prototype = {
             //this.cluster.refresh();
         }
         return changed;
+    },
+
+    checkInterviewInclusion: function(idArray) {
+        var idx = idArray.length;
+        if(idx > 0) {
+            this.displaySelection = false;
+            while(idx--) {
+                if(idArray[idx] == this.interviewId) {
+                    this.displaySelection = true;
+                    break;
+                }
+            }
+        } else {
+            this.displaySelection = true;
+        }
+        return(this.displaySelection);
     },
 
     getPriority: function(type) {
@@ -560,7 +598,7 @@ Cluster.prototype = {
         var index = locs.length;
         while(index--) {
             var l = locs[index];
-            if(l.display) {
+            if(l.display()) {
                 var idx = descriptors.indexOf(l.title);
                 if(idx == -1) {
                     descriptors.push(l.title);

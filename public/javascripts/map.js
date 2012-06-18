@@ -116,7 +116,7 @@ InteractiveMap.prototype = {
                     skip = true;
                 }
                 if(!skip) {
-                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), locationInfo, location.region, location.country, referenceClass, interviewURL);   
+                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);   
                 } else {
                     // alert('Skipping ' + location.location + ' at Lat/Lng: ' + location.latitude + ',' + location.longitude);
                 }
@@ -156,9 +156,6 @@ InteractiveMap.prototype = {
         if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
-    },
-    toggleFilter: function(type) {
-        
     }
 };
 
