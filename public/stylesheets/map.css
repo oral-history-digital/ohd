@@ -167,6 +167,20 @@
 
 /* Filter and Explanation */
 
+#interview_selection_toggle {
+  position: absolute;
+  left: 338px;
+  top: 25px;
+  width: 100px;
+  padding: 2px 5px;
+  color: #fff;
+  background-color: #840f09;
+  /* background: #840f09 url('/images/pfeil_weiss_unten.png') no-repeat 103px 9px; */
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 #explanation_filter_toggle {
   position: absolute;
   left: 460px;

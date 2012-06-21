@@ -62,6 +62,14 @@ function parseArchiveId(archiveId) {
     return (Object.isString(archiveId)) ? parseInt(archiveId.sub(/[^\d]+/,'').sub(/^0+/,'')) : archiveId;
 }
 
+function numToArchiveId(num) {
+    var numPart = '' + num;
+    while(numPart.length < 3) {
+        numPart = '0' + numPart;
+    }
+    return ('za' + numPart);
+}
+
 var ClusterManager = Class.create();
 var Location = Class.create();
 var Cluster = Class.create();
@@ -116,6 +124,12 @@ ClusterManager.prototype = {
 
         if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
         if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
+
+        // initialize filters and selection
+        var interviewIds = location.search.parseQuery([separator = '&']).interviews;
+        if(interviewIds) {
+            this.setInterviewRange(interviewIds);
+        }
 
     },
 
@@ -379,6 +393,9 @@ ClusterManager.prototype = {
     },
 
     applyInterviewSelection: function() {
+        // update interview_selection info
+        var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : interviewSelection.length);
+        $('interview_selection_toggle').innerHTML = 'Interviews: ' + str;
         var level = 3;
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         var changedClusters = [];
@@ -394,7 +411,6 @@ ClusterManager.prototype = {
             }
         }
         var cdx = changedClusters.length;
-        // alert('Changed ' + cdx + ' clusters due to applying the selection:\n' + interviewSelection);
         while(cdx--) {
             changedClusters[cdx].refresh();
         }
