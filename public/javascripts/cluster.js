@@ -374,7 +374,6 @@ ClusterManager.prototype = {
         interviewSelection = [];
         while(idx--) {
             var id = parseArchiveId(ids[idx]);
-            alert('Adding ' + id + ' to interviewSelection.\nRawId was ' + ids[idx]);
             interviewSelection.push(id);
         }
     },
@@ -389,7 +388,7 @@ ClusterManager.prototype = {
             while(ldx--) {
                 var loc = locs[ldx];
                 var changed = loc.checkInterviewInclusion(interviewSelection);
-                if(changed && (level == currentLevel)) {
+                if(changed && (level == currentLevel) && changedClusters.indexOf(loc.cluster) == -1) {
                     changedClusters.push(loc.cluster);
                 }
             }
@@ -584,7 +583,7 @@ Cluster.prototype = {
         this.visible = true;
         this.marker.rendered = false;
         if(this.numberShown > 0) { this.marker.setVisible(true)};
-        this.redraw();
+        this.refresh();
     },
 
     hide: function() {
