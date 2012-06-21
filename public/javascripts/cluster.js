@@ -58,6 +58,10 @@ function toggleFilterElement() {
     }
 }
 
+function parseArchiveId(archiveId) {
+    return (Object.isString(archiveId)) ? parseInt(archiveId.sub(/[^\d]+/,'').sub(/^0+/,'')) : archiveId;
+}
+
 var ClusterManager = Class.create();
 var Location = Class.create();
 var Cluster = Class.create();
@@ -369,8 +373,8 @@ ClusterManager.prototype = {
         var idx = ids.length;
         interviewSelection = [];
         while(idx--) {
-            var rawId = ids[idx];
-            var id = (Object.isString(rawId)) ? parseInt(rawId.sub(/[^\d]+/,'')) : rawId;
+            var id = parseArchiveId(ids[idx]);
+            alert('Adding ' + id + ' to interviewSelection.\nRawId was ' + ids[idx]);
             interviewSelection.push(id);
         }
     },
@@ -410,7 +414,7 @@ Location.prototype = {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
         this.title = id;
-        this.interviewId = (Object.isString(interviewId)) ? parseInt(interviewId.sub(/[^\d]+/,'')) : interviewId;
+        this.interviewId = parseArchiveId(interviewId);
         this.latLng = latLng;
         this.level = level;
         this.linkURL = linkURL;
