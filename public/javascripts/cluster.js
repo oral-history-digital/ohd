@@ -131,6 +131,19 @@ ClusterManager.prototype = {
             this.setInterviewRange(interviewIds);
         }
 
+        var filterSettings = location.search.parseQuery([separator = '&']).filters;
+        if(filterSettings) {
+            // var filterArray =
+            var that = this;
+            filterSettings.scan(/[_a-z]+/, function(filter) { alert('Filtering: ' + filter); that.toggleFilter(filter)});
+            /* var fidx = filterArray.length;
+            while(fidx--) {
+                var filter = filterArray[fidx];
+                this.toggleFilter(filter);
+            }
+            */
+        }
+
     },
 
     addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
@@ -293,6 +306,7 @@ ClusterManager.prototype = {
         var changedLocs = 0;
         var changedClusters = [];
         if(locationTypePriorities.indexOf(filter) != -1) {
+            alert('toggling filter: ' + filter);
             if(this.filters.indexOf(filter) == -1) {
                 this.filters.push(filter);
             } else {
@@ -396,6 +410,12 @@ ClusterManager.prototype = {
         // update interview_selection info
         var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : interviewSelection.length);
         $('interview_selection_toggle').innerHTML = 'Interviews: ' + str;
+        // hide clusters when less than 20 interviews
+        if((interviewSelection.length > 0) && (interviewSelection.length < 20)) {
+            $('cluster_toggle').addClassName('clusters-off');
+            clustersOffset = 8;
+            cedisMap.locationSearch.clusterManager.checkForZoomShift();
+        }
         var level = 3;
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         var changedClusters = [];
@@ -432,7 +452,7 @@ Location.prototype = {
         this.interviewId = parseArchiveId(interviewId);
         this.latLng = latLng;
         this.level = level;
-        this.linkURL = linkURL;
+        this.linkURL = linkURL + '/in/' + encodeURIComponent(id.gsub(/[()-+&.!,;/\//]+/, ' ').gsub(/\s+/, '+'));
         this.displayFilter = locDisplay;
         this.displaySelection = true;
         this.cluster = null;

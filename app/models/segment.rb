@@ -68,6 +68,7 @@ DEF
         end
         str.squeeze(' ')
       end
+      str
     end
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )

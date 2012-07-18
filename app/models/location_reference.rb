@@ -30,6 +30,10 @@ class LocationReference < ActiveRecord::Base
   named_scope :return, { :conditions => "reference_type = 'return_location'" }
   named_scope :deportation, { :conditions => "reference_type = 'deportation_location'" }
 
+  named_scope :with_segments, { :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
+                                :conditions => "location_segments.id IS NOT NULL",
+                                :group => "location_references.id" }
+
   validates_presence_of :name, :reference_type
   validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
   validates_associated  :interview

@@ -44,6 +44,16 @@
   </div>
   <% end %>
 
+  <div id="locations-toggle" class="closed container-toggle" onclick="toggleContainer('locations-toggle', true);">
+    <h2>Ortsangaben</h2>
+  </div>
+  <div id="locations" class="container" style="height: 377px; display: none;">
+    <% @locations = @interview.location_references.with_segments.select{|l| l.reference_type != 'interview' } -%>
+    <ul class="interview-contents">
+      <%= render :partial => 'location', :collection => @locations %>
+    </ul>
+  </div>
+
   <!--
 
   <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle');">

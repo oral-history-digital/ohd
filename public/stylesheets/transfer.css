@@ -224,12 +224,6 @@
   padding-left: 0;
 }
 
-#containerSegments ul li {
-  background: none;
-  font-size: 80%;
-  margin-bottom: 15px;
-}
-
 .rtl {
   writing-mode: tb-rl;
   text-align: right;

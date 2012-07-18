@@ -390,21 +390,40 @@ float:left;
     left:105px;
 }
 
-#search-results.container {
+#search-results.container,
+#locations.container {
     height: 404px;
     background: #F8F8F5;
 }
 
-#containerSegments ul {
+.interview-contents ul,
+.interview-contents h4 {
     margin:30px 0 0 20px;
     width:230px;
 }
-#containerSegments ul li {
-    position:relative;
-    margin-bottom:20px;
+
+.interview-contents h4 {
+    color: #333333;
+    font-size: 80%;
+    font-weight: bold;
 }
 
-#containerSegments .timecode {
+.interview-contents ul li {
+    position:relative;
+    margin-bottom:20px;
+    background: none;
+    font-size: 80%;
+    margin-bottom: 15px;
+}
+
+.interview-contents .location-segments .index {
+    position: relative;
+    left: -12px;
+    top: 4px;
+    font-size: 80%;
+}
+
+.interview-contents .timecode {
     position:absolute;
     color:#999;
     top:-12px;
