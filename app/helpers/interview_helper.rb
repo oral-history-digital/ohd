@@ -106,4 +106,14 @@ module InterviewHelper
                              :hd_plugin => interview.video?)
   end
 
+  def spaced_apart_segments(list_of_segments)
+    time = '[1] 00:00:00'
+    segments = []
+    list_of_segments.each do |seg|
+      segments << seg if (Timecode.diff(time, seg.timecode).abs > 60)
+      time = seg.timecode
+    end
+    segments
+  end
+
 end

@@ -1,7 +1,7 @@
-<h4><%= location.name -%>&nbsp;<small>(<%= location.segments.size -%>)</small></h4>
+<h4><%= location.name -%>&nbsp;<small>(<%= spaced_apart_segments(location.segments).size -%>)</small></h4>
 <% unless location.segments.empty? -%>
 <ul class='location-segments'>
-  <% location.segments.each_with_index do |segment,index| -%>
+  <% spaced_apart_segments(location.segments).each_with_index do |segment,index| -%>
     <span class="index"><%= index + 1-%>.</span>
     <li id="loc<%= location.id -%>_<%= segment.media_id %>" class="segment">
         <%= link_to_segment segment, ([ location.location_name ] +  (location.alias_location_names || '').split(/;\s*/)).join('|'), true, true %>
