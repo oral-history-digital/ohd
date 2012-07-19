@@ -143,6 +143,13 @@ DEF
     ((transcript || '') + ' ' + (translation || '')).strip
   end
 
+  # returns the segment that leads the chapter
+  def section_lead_segment
+    Segment.find :first,
+                 :conditions => ["interview_id = ? AND section = ?", interview_id, section],
+                 :order => "media_id ASC"
+  end
+
   private
 
   # remove workflow comments

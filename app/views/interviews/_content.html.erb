@@ -54,6 +54,15 @@
     </ul>
   </div>
 
+  <% javascript_tag do -%>
+    function subcontainerToggle(id) {
+        var toggle = $(id);
+        var subcontainer = toggle.next('ul');
+        subcontainer.toggle();
+        toggle.toggleClassName('closed');
+    }
+  <% end -%>
+
   <!--
 
   <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle');">
