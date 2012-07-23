@@ -180,6 +180,7 @@ ClusterManager.prototype = {
             debugMsg('adding Location ' + location.title + ' to cluster...');
         }
         cluster.addLocation(location);
+        location.checkInterviewInclusion(interviewSelection);
         if(level != 0) {
             debugMsg('location added.');
         }
@@ -406,10 +407,13 @@ ClusterManager.prototype = {
         }
     },
 
-    applyInterviewSelection: function() {
+    updateInterviewTab: function() {
         // update interview_selection info
         var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : interviewSelection.length);
         $('interview_selection_toggle').innerHTML = 'Interviews: ' + str;
+    },
+
+    applyInterviewSelection: function() {
         // hide clusters when less than 20 interviews
         if((interviewSelection.length > 0) && (interviewSelection.length < 20)) {
             $('cluster_toggle').addClassName('clusters-off');
