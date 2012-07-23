@@ -70,8 +70,9 @@
         <% javascript_tag do -%>
             var currentLocation = $$('#locations .interview-contents .open')[0];
             if(currentLocation) {
-                // set the scroll offset of the surrounding #locations container
-                // currentLocation.scrollTo();
+                var container = $('locations');
+                var offset = currentLocation.offsetTop - container.offsetTop;
+                container.scrollTop = offset;
             }
         <% end -%>
       <% end -%>
