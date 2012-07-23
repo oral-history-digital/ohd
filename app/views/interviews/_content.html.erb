@@ -24,7 +24,19 @@
       $('interview_fulltext').value = '<%= @search.fulltext || t('search_term') %>';
   <% end %>
 
-  <% show_segments = !@search.matching_segments_for(@interview.archive_id).empty? %>
+  <% featured_content = if params[:location_name].blank?
+      if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
+        :headings
+      else
+        :search_results
+      end
+  elsif content.location_references.empty?
+    :search_results
+  else
+    :locations
+  end -%>
+
+  <% show_segments = (featured_content == :search_results) %>
   <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed'%> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">
     <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
     <% if show_segments %>
@@ -35,24 +47,35 @@
     <%= render :partial => 'segments', :object => @search.matching_segments_for(@interview.archive_id) %>
   </div>
 
-  <% if content.has_headings? %>
-  <div id="headings-toggle" class="<%= show_segments ? 'closed' : 'open'%> container-toggle" onclick="toggleContainer('headings-toggle', true);">
+  <% show_headings = (featured_content == :headings) %>
+  <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed'%> container-toggle" onclick="toggleContainer('headings-toggle', true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="headings" class="container" style="height: 377px; background: #f8f8f5;<%= show_segments ? 'display: none;' : ''%>">
+  <div id="headings" class="container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
     <%= render :partial => 'headings', :object => content, :locals => { :player => @player } %>
   </div>
-  <% end %>
 
-  <div id="locations-toggle" class="closed container-toggle" onclick="toggleContainer('locations-toggle', true);">
+  <% unless content.location_references.empty? -%>
+  <% show_locations = (featured_content == :locations) -%>
+  <div id="locations-toggle" class="<%= show_locations ? 'open' : 'closed' -%> container-toggle" onclick="toggleContainer('locations-toggle', true);">
     <h2>Ortsangaben</h2>
   </div>
-  <div id="locations" class="container" style="height: 377px; display: none;">
-    <% @locations = @interview.location_references.with_segments.select{|l| l.reference_type != 'interview' } -%>
+  <div id="locations" class="container" style="height: 377px;<%= show_locations ? '' : ' display: none;' -%>">
+    <% @locations = @interview.location_references.with_segments_from_interview(@interview).select{|l| l.reference_type != 'interview' }.sort{|a,b| a.location_name <=> b.location_name } -%>
     <ul class="interview-contents">
       <%= render :partial => 'location', :collection => @locations %>
     </ul>
   </div>
+      <% unless params[:location_name].empty? -%>
+        <% javascript_tag do -%>
+            var currentLocation = $$('#locations .interview-contents .open')[0];
+            if(currentLocation) {
+                // set the scroll offset of the surrounding #locations container
+                // currentLocation.scrollTo();
+            }
+        <% end -%>
+      <% end -%>
+  <% end -%>
 
   <% javascript_tag do -%>
     function subcontainerToggle(id) {

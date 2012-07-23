@@ -74,6 +74,10 @@ module InterviewHelper
     h(text).gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
   end
 
+  def location_to_param(name)
+    name.gsub(/[\s,;]+/,'+')
+  end
+
   def deportation_for(interview)
     unless interview.deportation_location.blank?
       [ interview.deportation_location, format_date(interview.deportation_date) ].compact.join(',&nbsp;')

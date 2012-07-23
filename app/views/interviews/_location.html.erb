@@ -1,7 +1,11 @@
-<% location_segments = spaced_apart_segments(location.segments) -%>
-<h4 id="loc<%= location.id -%>" onclick="subcontainerToggle('loc<%= location.id -%>');" class="subcontainer-toggle closed"><%= location.name -%>&nbsp;<small>(<%= pluralize(location_segments.size, t(:clip, :scope => 'search'), t(:clips, :scope => 'search')) -%>)</small></h4>
+<% location_segments = spaced_apart_segments(location.segments.for_interview(@interview)) -%>
+<% status_open = location_to_param(location.name) == params[:location_name] -%>
+<h4 id="loc<%= location.id -%>" onclick="subcontainerToggle('loc<%= location.id -%>');" class="subcontainer-toggle <%= status_open ? 'open' : 'closed' -%>">
+  <%= location.location_name -%>&nbsp;(<%= t(location.reference_type, :scope => 'locations.types') -%>)
+  <small>(<%= pluralize(location_segments.size, t(:clip, :scope => 'search'), t(:clips, :scope => 'search')).sub(' ','&nbsp;') -%>)</small>
+</h4>
 <% unless location_segments.empty? -%>
-<ul class='location-segments' style="display: none;">
+<ul class='location-segments' style="<%= status_open ? '' : ' display: none' -%>">
   <% section = nil -%>
   <% location_segments.each_with_index do |segment,index| -%>
     <% if segment.section && segment.section != section -%>

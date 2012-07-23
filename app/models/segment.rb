@@ -24,6 +24,7 @@ DEF
   end
 
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
+  named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} } 
   
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
