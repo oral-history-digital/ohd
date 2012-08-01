@@ -84,7 +84,6 @@ ClusterManager.prototype = {
 
         if(options.filters) {
             this.filters = options.filters;
-            options.filters = null;
         } else {
             this.filters = [];
         }
@@ -99,6 +98,11 @@ ClusterManager.prototype = {
         this.shownCluster = null;
 
         this.freshClusters = [];
+
+        // lat/lng lookup for locations
+        if(!cedisMap.mapLocations) {cedisMap.mapLocations = []; }
+        if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
+        if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
 
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
@@ -129,25 +133,9 @@ ClusterManager.prototype = {
             Event.observe(el.id, 'click', toggleFilterElement);
         }
 
-        // lat/lng lookup for locations
-        if(!cedisMap.mapLocations) {cedisMap.mapLocations = []; }
-
-        if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
-        if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
-
-        // TODO: this is obsolete if filters are to be passed in
-        // as configuration options - the parameter checking happens elsewhere
-        var filterSettings = location.search.parseQuery([separator = '&']).filters;
-        if(filterSettings) {
-            // var filterArray =
-            var that = this;
-            filterSettings.scan(/[_a-z]+/, function(filter) { alert('Filtering: ' + filter); that.toggleFilter(filter)});
-            /* var fidx = filterArray.length;
-            while(fidx--) {
-                var filter = filterArray[fidx];
-                this.toggleFilter(filter);
-            }
-            */
+        var idx = this.filters.length;
+        while(idx--) {
+            this.toggleFilter(this.filters[idx]);
         }
 
     },
@@ -314,7 +302,6 @@ ClusterManager.prototype = {
         var changedLocs = 0;
         var changedClusters = [];
         if(locationTypePriorities.indexOf(filter) != -1) {
-            alert('toggling filter: ' + filter);
             if(this.filters.indexOf(filter) == -1) {
                 this.filters.push(filter);
             } else {
