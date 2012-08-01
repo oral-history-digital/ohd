@@ -409,6 +409,7 @@ ClusterManager.prototype = {
         }
         if(ids.length < 12) {
             clustersOffset = 6;
+            $('cluster_toggle').addClassName('clusters-off');
         }
     },
 
