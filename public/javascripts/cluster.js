@@ -89,8 +89,10 @@ ClusterManager.prototype = {
         }
 
         if(options.interviewRange) {
-            this.setInterviewRange(options.interviewRange);
-            this.updateInterviewTab();
+            if(Object.isArray(options.interviewRange) && options.interviewRange.size > 0) {
+                this.setInterviewRange(options.interviewRange);
+                this.updateInterviewTab();   
+            }
         }
 
         this.activeInfo = null;
