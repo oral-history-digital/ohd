@@ -89,7 +89,7 @@ ClusterManager.prototype = {
         }
 
         if(options.interviewRange) {
-            if(Object.isArray(options.interviewRange) && options.interviewRange.size > 0) {
+            if(Object.isArray(options.interviewRange) && (options.interviewRange.length > 0)) {
                 this.setInterviewRange(options.interviewRange);
                 this.updateInterviewTab();   
             }
@@ -135,7 +135,7 @@ ClusterManager.prototype = {
             Event.observe(el.id, 'click', toggleFilterElement);
         }
 
-        var idx = this.filters.length;
+        idx = this.filters.length;
         while(idx--) {
             this.toggleFilter(this.filters[idx]);
         }

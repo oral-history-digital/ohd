@@ -162,9 +162,6 @@ InteractiveMap.prototype = {
 
 function mapSetup(id) {
     var selectionOfInterviews = (location.search.parseQuery([separator = '&']).interviews || '').split(/\s*,\s*/);
-    if(!Object.isArray(selectionOfInterviews)) {
-        selectionOfInterviews = [selectionOfInterviews];
-    }
     // TODO: this is obsolete if filters are to be passed in
     // as configuration options - the parameter checking happens elsewhere
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
@@ -172,7 +169,7 @@ function mapSetup(id) {
     if(filterSettings) {
         filterSettings.scan(/[_a-z]+/, function(filter) { filterOptions.push(filter) });
     }
-    new InteractiveMap(id, { cluster: { interviewRange: selectionOfInterviews, filters: filterOptions.flatten() }});
+    new InteractiveMap(id, { cluster: { interviewRange: [selectionOfInterviews].flatten(), filters: filterOptions.flatten() }});
 }
 
 function searchWithinBounds() {
