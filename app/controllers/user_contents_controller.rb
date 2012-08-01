@@ -62,6 +62,11 @@ class UserContentsController < BaseController
 
   show do
     wants.html do
+      if @object.nil? || @objecct.new_record?
+        render :nothing => true, :status => 404
+      else
+        render
+      end
     end
     wants.js do
       if @object.nil? || @object.new_record?
