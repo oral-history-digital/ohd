@@ -67,7 +67,8 @@ InteractiveMap.prototype = {
         $(id).appendChild(this.progress.getDiv());
         this.progress.getDiv().setStyle({bottom: '60px'});
 
-        this.clusterManager = new ClusterManager(this.map,{});
+        var clusterOptions = this.options.cluster || {};
+        this.clusterManager = new ClusterManager(this.map,clusterOptions);
 
         searchWithinBounds();
 
@@ -160,7 +161,11 @@ InteractiveMap.prototype = {
 };
 
 function mapSetup(id) {
-    new InteractiveMap(id);
+    var selectionOfInterviews = (location.search.parseQuery([separator = '&']).interviews || '').split(/\s*,\s*/);
+    if(!Object.isArray(selectionOfInterviews)) {
+        selectionOfInterviews = [selectionOfInterviews];
+    }
+    new InteractiveMap(id, { cluster: { interviewRange: selectionOfInterviews }});
 }
 
 function searchWithinBounds() {

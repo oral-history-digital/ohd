@@ -82,7 +82,17 @@ ClusterManager.prototype = {
         this.info = [];
         this.alerted = false;
 
-        this.filters = [];
+        if(options.filters) {
+            this.filters = options.filters;
+            options.filters = null;
+        } else {
+            this.filters = [];
+        }
+
+        if(options.interviewRange) {
+            this.setInterviewRange(options.interviewRange);
+            this.updateInterviewTab();
+        }
 
         this.activeInfo = null;
 
@@ -125,12 +135,8 @@ ClusterManager.prototype = {
         if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
         if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
 
-        // initialize filters and selection
-        var interviewIds = location.search.parseQuery([separator = '&']).interviews;
-        if(interviewIds) {
-            this.setInterviewRange(interviewIds);
-        }
-
+        // TODO: this is obsolete if filters are to be passed in
+        // as configuration options - the parameter checking happens elsewhere
         var filterSettings = location.search.parseQuery([separator = '&']).filters;
         if(filterSettings) {
             // var filterArray =
@@ -204,6 +210,7 @@ ClusterManager.prototype = {
 
     refreshLoadedClusters: function() {
         if((!cedisMap.mapClusters) || (!cedisMap.mapClusters[this.currentLevel])) { return; }
+        // this.checkForZoomShift();
         var clusters = cedisMap.mapClusters[this.currentLevel];
         var latLngs = cedisMap.clusterLocations[this.currentLevel];
         var equator = new google.maps.LatLng(0,0);
@@ -405,12 +412,19 @@ ClusterManager.prototype = {
             var id = parseArchiveId(ids[idx]);
             interviewSelection.push(id);
         }
+        if(ids.length < 12) {
+            clustersOffset = 6;
+        }
     },
 
     updateInterviewTab: function() {
         // update interview_selection info
-        var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : interviewSelection.length);
+        var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : '' + interviewSelection.length);
+        while(str.length < 3) {
+            str = '&nbsp;&nbsp;' + str;
+        }
         $('interview_selection_toggle').innerHTML = 'Interviews: ' + str;
+        // TODO: dynamically add toggles for single interview ids per original selection.
     },
 
     applyInterviewSelection: function() {

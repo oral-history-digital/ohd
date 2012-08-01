@@ -91,7 +91,6 @@ class LocationReferencesController < BaseController
     query[:longitude2] = params['longitude2'] unless params['longitude2'].blank?
     query[:latitude2] = params['latitude2'] unless params['latitude2'].blank?
     query[:page] = params[:page] || 1 if !params[:page].blank? || paginate
-    puts "\n@@@ QUERY: #{query.inspect}"
     query
   end
 
