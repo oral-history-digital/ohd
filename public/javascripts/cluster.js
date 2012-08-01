@@ -321,6 +321,12 @@ ClusterManager.prototype = {
                 this.filters = this.filters.select(function(obj) { return obj != filter });
             }
             var filters = this.filters;
+            // toggle the filter elements
+            var elem = $$('.map_filter.' + filter).concat($$('.map_filter_off.' + filter)).uniq().compact().first();
+            if(elem) {
+                elem.toggleClassName('map_filter');
+                elem.toggleClassName('map_filter_off');
+            }
             // apply filters to all locations on all levels
             var level = cedisMap.mapLocations.length;
             while(level--) {
