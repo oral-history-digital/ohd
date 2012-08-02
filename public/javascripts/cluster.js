@@ -46,11 +46,13 @@ function storeMapConfigurationCookie() {
     while(idx--) {
         interviews.push(numToArchiveId(interviewSelection[idx]));
     }
+    /*
     if(interviews.length > 0) {
         document.cookie = 'i=' + encodeURIComponent(interviews.join(',')) + '; expires=' + expiry;
     } else {
         document.cookie = 'i=; expires=' + now;
     }
+    */
 }
 
 function parseCookieValue(cookieConfig, key) {

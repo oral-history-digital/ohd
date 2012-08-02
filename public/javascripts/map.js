@@ -161,13 +161,14 @@ InteractiveMap.prototype = {
 };
 
 function mapSetup(id) {
+    /* TODO: read the cookie from ClusterManager and ignore interview stuff */
     var storedConfig = readMapConfigurationCookie();
     var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
     if(selectionOfInterviews.length > 0) {
         selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
-    } else {
+    } /* else {
         selectionOfInterviews = storedConfig.interviews;
-    }
+    } */
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {
