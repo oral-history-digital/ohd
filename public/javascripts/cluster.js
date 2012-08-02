@@ -42,7 +42,6 @@ function readMapConfigurationCookie() {
     var filters = storedConfig.match(/f=[^;]+/);
     config.filters = [];
     if(filters) {
-        alert('cookie-filters = ' + filters.inspect());
         var idx = filters.length;
         while(idx--) {
             // skip the first 2 characters
@@ -115,20 +114,6 @@ ClusterManager.prototype = {
         this.info = [];
         this.alerted = false;
         this.dynamicBounds = false;
-
-        if(options.filters) {
-            this.filters = options.filters;
-        } else {
-            this.filters = [];
-        }
-
-        if(options.interviewRange) {
-            if(Object.isArray(options.interviewRange) && (options.interviewRange.length > 0)) {
-                this.setInterviewRange(options.interviewRange);
-                this.updateInterviewTab();   
-            }
-        }
-
         this.activeInfo = null;
 
         this.shownCluster = null;
@@ -139,6 +124,13 @@ ClusterManager.prototype = {
         if(!cedisMap.mapLocations) {cedisMap.mapLocations = []; }
         if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
         if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
+
+        if(options.interviewRange) {
+            if(Object.isArray(options.interviewRange) && (options.interviewRange.length > 0)) {
+                this.setInterviewRange(options.interviewRange);
+                this.updateInterviewTab();   
+            }
+        }
 
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
@@ -169,15 +161,20 @@ ClusterManager.prototype = {
             Event.observe(el.id, 'click', toggleFilterElement);
         }
 
-        idx = this.filters.length;
+        this.filters = [];
+        var initialFilters = options.filters || [];
+
+        idx = initialFilters.length;
         while(idx--) {
-            this.toggleFilter(this.filters[idx]);
+            this.toggleFilter(initialFilters[idx]);
         }
 
     },
 
     addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
-        var location = new Location(id, latLng, 0, interviewId, htmlText, divClass, linkURL, true);
+        var locDisplay = !(this.filters.include(divClass));
+        // alert('Adding a ' + divClass + '. locDisplay = ' + locDisplay + '\ncurrent filters = ' + this.filters.inspect());
+        var location = new Location(id, latLng, 0, interviewId, htmlText, divClass, linkURL, locDisplay);
 
         this.addLocationToLevel(location, 0);
 
@@ -185,7 +182,7 @@ ClusterManager.prototype = {
         if(region && region.longitude && region.latitude) {
             // create the region & cluster
             var latLng = new google.maps.LatLng(region.latitude, region.longitude);
-            var regionLoc = new Location(region.name, latLng, 1, interviewId, '', divClass, '', true);
+            var regionLoc = new Location(region.name, latLng, 1, interviewId, '', divClass, '', locDisplay);
 
             this.addLocationToLevel(regionLoc, 1);
         }
@@ -193,7 +190,7 @@ ClusterManager.prototype = {
         // country
         if(country && country.longitude && country.latitude) {
             var latLng = new google.maps.LatLng(country.latitude, country.longitude);
-            var countryLoc = new Location(country.name, latLng, 2, interviewId, '', divClass, '', true);
+            var countryLoc = new Location(country.name, latLng, 2, interviewId, '', divClass, '', locDisplay);
 
             this.addLocationToLevel(countryLoc, 2);
         }
@@ -616,7 +613,7 @@ Cluster.prototype = {
 
         totalClusters++;
 
-        this.marker.setVisible(visible);
+        //this.marker.setVisible(visible);
         this.marker.setMap(cedisMap.locationSearch.map);
     },
 
@@ -641,7 +638,10 @@ Cluster.prototype = {
                 this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
             }
             this.marker.setZIndex(loc.locationType * 10 + 100);
-            this.numberShown = this.locations.length;
+            this.numberShown = this.locations.select(function(l) { return l.display(); }).length;
+            if(this.numberShown < 1) {
+                this.marker.setVisible(false);
+            }
             this.rendered = false;
             // this.redraw();
         }
@@ -655,11 +655,13 @@ Cluster.prototype = {
 
     redraw: function() {
         if(!this.visible) { return; }
-        if(this.level == 0) {
-            this.marker.setIcon(this.icon);
-            this.marker.setTitle(this.title);
-        } else {
-            this.marker.draw();
+        if(this.numberShown > 0) {
+            if(this.level == 0) {
+                this.marker.setIcon(this.icon);
+                this.marker.setTitle(this.title);
+            } else {
+                this.marker.draw();
+            }
         }
         this.rendered = true;
     },
@@ -667,7 +669,7 @@ Cluster.prototype = {
     show: function() {
         this.visible = true;
         this.marker.rendered = false;
-        if(this.numberShown > 0) { this.marker.setVisible(true)};
+        if(this.numberShown > 0) { this.marker.setVisible(true); }
         this.refresh();
     },
 
