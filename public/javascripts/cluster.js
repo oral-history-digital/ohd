@@ -28,6 +28,39 @@ function toggleClusters() {
     cedisMap.locationSearch.clusterManager.checkForZoomShift();
 }
 
+function storeMapConfigurationCookie() {
+    var cm = cedisMap.locationSearch.clusterManager;
+    // filters
+    var storedValue = 'f=' + encodeURIComponent(cm.filters.join('+')) + ';';
+    document.cookie = storedValue;
+}
+
+function readMapConfigurationCookie() {
+    var config = {};
+    var storedConfig = decodeURIComponent(document.cookie);
+    // filters
+    var filters = storedConfig.match(/f=[^;]+/);
+    config.filters = [];
+    if(filters) {
+        alert('cookie-filters = ' + filters.inspect());
+        var idx = filters.length;
+        while(idx--) {
+            // skip the first 2 characters
+            var fvalues = filters[idx].substring(2).match(/[a-z_]+/g);
+            if(fvalues) {
+                var ldx = fvalues.length;
+                while(ldx--) {
+                    var val = fvalues[ldx];
+                    if(locationTypePriorities.include(val)) {
+                        config.filters.push(fvalues[ldx]);   
+                    }
+                }
+            }
+        }
+    }
+    return config;
+}
+
 // Reverse display priorities
 var locationTypePriorities = [
         'interview',
@@ -53,8 +86,8 @@ function toggleFilterElement() {
     }
     if(filterName) {
         cedisMap.locationSearch.clusterManager.toggleFilter(filterName);
-        this.toggleClassName('map_filter');
-        this.toggleClassName('map_filter_off');
+        // store filter values in a cookie
+        storeMapConfigurationCookie();
     }
 }
 
@@ -81,6 +114,7 @@ ClusterManager.prototype = {
         this.markers = [];
         this.info = [];
         this.alerted = false;
+        this.dynamicBounds = false;
 
         if(options.filters) {
             this.filters = options.filters;
@@ -407,6 +441,7 @@ ClusterManager.prototype = {
             var id = parseArchiveId(ids[idx]);
             interviewSelection.push(id);
         }
+        this.dynamicBounds = (ids.length < 3);
         if(ids.length < 12) {
             clustersOffset = 6;
             $('cluster_toggle').addClassName('clusters-off');

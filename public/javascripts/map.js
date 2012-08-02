@@ -161,12 +161,15 @@ InteractiveMap.prototype = {
 };
 
 function mapSetup(id) {
+    var storedConfig = readMapConfigurationCookie();
     var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
     if(selectionOfInterviews.length > 0) { selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/); }
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {
         filterSettings.scan(/[_a-z]+/, function(filter) { filterOptions.push(filter) });
+    } else {
+        filterOptions = storedConfig.filters || [];
     }
     new InteractiveMap(id, { cluster: { interviewRange: [selectionOfInterviews].flatten(), filters: filterOptions.flatten() }});
 }
