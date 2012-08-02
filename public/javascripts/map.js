@@ -163,7 +163,11 @@ InteractiveMap.prototype = {
 function mapSetup(id) {
     var storedConfig = readMapConfigurationCookie();
     var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
-    if(selectionOfInterviews.length > 0) { selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/); }
+    if(selectionOfInterviews.length > 0) {
+        selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
+    } else {
+        selectionOfInterviews = storedConfig.interviews;
+    }
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {

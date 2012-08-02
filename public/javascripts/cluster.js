@@ -30,33 +30,54 @@ function toggleClusters() {
 
 function storeMapConfigurationCookie() {
     var cm = cedisMap.locationSearch.clusterManager;
+    var expiry = new Date();
+    expiry.setTime((new Date()).getTime() + 3600000 * 24 * 180);
+    expiry = expiry.toGMTString();
+    var now = new Date(1970).toGMTString();
     // filters
-    var storedValue = 'f=' + encodeURIComponent(cm.filters.join('+')) + ';';
-    document.cookie = storedValue;
+    if((cm.filters) && (cm.filters.length > 0)) {
+        document.cookie= 'f=' + encodeURIComponent(cm.filters.join('+')) + '; expires=' + expiry;
+    } else {
+        document.cookie = 'f=; expires=' + now;
+    }
+    // interview selection
+    var interviews = [];
+    var idx = interviewSelection.length;
+    while(idx--) {
+        interviews.push(numToArchiveId(interviewSelection[idx]));
+    }
+    if(interviews.length > 0) {
+        document.cookie = 'i=' + encodeURIComponent(interviews.join(',')) + '; expires=' + expiry;
+    } else {
+        document.cookie = 'i=; expires=' + now;
+    }
+}
+
+function parseCookieValue(cookieConfig, key) {
+    var values = [];
+    var cookieKeyRegexp = new RegExp(key + '=[^;]+');
+    var configValues = cookieConfig.match(cookieKeyRegexp);
+    if(configValues) {
+        var idx = configValues.length;
+        while(idx--) {
+            // skip the key + 1 character ('=')
+            var cvalues = configValues[idx].substring(key.length+1).match(/[a-z0-9A-Z_-]+/g);
+            if(cvalues) {
+                var ldx = cvalues.length;
+                while(ldx--) {
+                    values.push(cvalues[ldx]);
+                }
+            }
+        }
+    }
+    return values;
 }
 
 function readMapConfigurationCookie() {
     var config = {};
     var storedConfig = decodeURIComponent(document.cookie);
-    // filters
-    var filters = storedConfig.match(/f=[^;]+/);
-    config.filters = [];
-    if(filters) {
-        var idx = filters.length;
-        while(idx--) {
-            // skip the first 2 characters
-            var fvalues = filters[idx].substring(2).match(/[a-z_]+/g);
-            if(fvalues) {
-                var ldx = fvalues.length;
-                while(ldx--) {
-                    var val = fvalues[ldx];
-                    if(locationTypePriorities.include(val)) {
-                        config.filters.push(fvalues[ldx]);   
-                    }
-                }
-            }
-        }
-    }
+    config.filters = parseCookieValue(storedConfig,'f');
+    config.interviews = parseCookieValue(storedConfig,'i');
     return config;
 }
 
@@ -168,6 +189,8 @@ ClusterManager.prototype = {
         while(idx--) {
             this.toggleFilter(initialFilters[idx]);
         }
+
+        alert('filter settings after initialization = ' + this.filters.inspect());
 
     },
 
