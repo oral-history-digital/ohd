@@ -161,9 +161,8 @@ InteractiveMap.prototype = {
 };
 
 function mapSetup(id) {
-    var selectionOfInterviews = (location.search.parseQuery([separator = '&']).interviews || '').split(/\s*,\s*/);
-    // TODO: this is obsolete if filters are to be passed in
-    // as configuration options - the parameter checking happens elsewhere
+    var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
+    if(selectionOfInterviews.length > 0) { selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/); }
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {
