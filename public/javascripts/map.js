@@ -54,14 +54,20 @@ InteractiveMap.prototype = {
             this.options.colors['forced_labor_company_location'] = 'red';
         }
 
+        this.boundsPerParameters = (this.options.mapBounds) ? true : false;
+        var center = (this.boundsPerParameters) ? this.options.mapBounds.getCenter() : new google.maps.LatLng(this.options.latitude, this.options.longitude);
+
         // Google Map Initialization
         var mapOptions = {
             zoom: this.options.zoom,
-            center: new google.maps.LatLng(this.options.latitude, this.options.longitude),
+            center: center,
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
         this.mapContainer = $(id);
         this.map = new google.maps.Map(this.mapContainer, mapOptions);
+        if(this.boundsPerParameters) {
+            this.map.fitBounds(this.options.mapBounds);
+        }
 
         this.progress = new progressBar({colorBar: '#990000', background: '#B2AFA1' });
         $(id).appendChild(this.progress.getDiv());
@@ -73,6 +79,12 @@ InteractiveMap.prototype = {
         searchWithinBounds();
 
         return this.map;
+    },
+    setMapBounds: function(bounds) {
+        // auto-reset only if parameters for bounds weren't provided!
+        if((!this.boundsPerParameters) && (bounds.intersects)) {
+            this.map.fitBounds(bounds);
+        }
     },
     searchWithinBounds: function() {
         new Ajax.Request(cedisMap.locationSearch.options.indexURL, {
@@ -163,8 +175,10 @@ InteractiveMap.prototype = {
 function mapSetup(id) {
     /* TODO: read the cookie from ClusterManager and ignore interview stuff */
     var storedConfig = readMapConfigurationCookie();
+    var parameters = location.search.parseQuery([separator = '&']);
 
-    var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
+    // interview selections
+    var selectionOfInterviews = parameters.interviews || [];
     if(selectionOfInterviews.length > 0) {
         selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
     }
@@ -176,15 +190,37 @@ function mapSetup(id) {
     } else {
         filterOptions = storedConfig.filters || [];
     }
+
     // cluster filtering
     var clusterOption = storedConfig.clusters || 0;
+
+    // map bounds
+    var bounds = null;
+    var sw = parseGeoLocParameter(parameters.swcorner);
+    var ne = parseGeoLocParameter(parameters.necorner);
+    if(sw && ne) {
+        bounds = new google.maps.LatLngBounds(sw,ne);
+    }
+
     new InteractiveMap(id, {
+        mapBounds: bounds,
         cluster: {
             filters: filterOptions.flatten(),
             clusters: clusterOption,
             interviewRange: [selectionOfInterviews].flatten()
         }
     });
+}
+
+function parseGeoLocParameter(param) {
+    var latLng = null;
+    if(param && param.length > 0) {
+        var ll = param.split(/\s*,\s*/);
+        var lat = ll[0];
+        var lng = ll[1];
+        latLng = (lat && lng) ? new google.maps.LatLng(lat,lng) : null;
+    }
+    return latLng;
 }
 
 function searchWithinBounds() {

@@ -206,8 +206,6 @@ ClusterManager.prototype = {
             this.toggleFilter(initialFilters[idx]);
         }
 
-        alert('filter settings after initialization = ' + this.filters.inspect());
-
     },
 
     addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
@@ -534,7 +532,8 @@ ClusterManager.prototype = {
                 bounds.extend(cluster.getPosition());
             }
         }
-        this.map.fitBounds(bounds);
+        // delegate map reset to InteractiveMap
+        cedisMap.locationSearch.setMapBounds(bounds);
     },
 
     benchmark: function(test, desc) {
