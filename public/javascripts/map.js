@@ -163,12 +163,13 @@ InteractiveMap.prototype = {
 function mapSetup(id) {
     /* TODO: read the cookie from ClusterManager and ignore interview stuff */
     var storedConfig = readMapConfigurationCookie();
-    var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
-    if(selectionOfInterviews.length > 0) {
-        selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
-    } /* else {
-        selectionOfInterviews = storedConfig.interviews;
-    } */
+    /* Interviews - not restored from user preferences but context-specific,
+       I'm leaving the exemplary code in for now. */
+    // var selectionOfInterviews = location.search.parseQuery([separator = '&']).interviews || [];
+    // if(selectionOfInterviews.length > 0) {
+    //     selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
+    // }
+
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {
@@ -176,7 +177,9 @@ function mapSetup(id) {
     } else {
         filterOptions = storedConfig.filters || [];
     }
-    new InteractiveMap(id, { cluster: { interviewRange: [selectionOfInterviews].flatten(), filters: filterOptions.flatten() }});
+    // cluster filtering
+    var clusterOption = storedConfig.clusters || 0;
+    new InteractiveMap(id, { cluster: { filters: filterOptions.flatten(), clusters: clusterOption }});
 }
 
 function searchWithinBounds() {

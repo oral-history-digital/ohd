@@ -25,6 +25,7 @@ function toggleClusters() {
     } else {
         clustersOffset = 6;
     }
+    storeMapConfigurationCookie();
     cedisMap.locationSearch.clusterManager.checkForZoomShift();
 }
 
@@ -40,13 +41,19 @@ function storeMapConfigurationCookie() {
     } else {
         document.cookie = 'f=; expires=' + now;
     }
-    // interview selection
+    // clusters
+    if(clustersOffset > 0) {
+        document.cookie = 'c=1; expires =' + expiry;
+    } else {
+        document.cookie = 'c=0; expires =' + now;
+    }
+    /*
+    // interview selection - not included in cookie at present
     var interviews = [];
     var idx = interviewSelection.length;
     while(idx--) {
         interviews.push(numToArchiveId(interviewSelection[idx]));
     }
-    /*
     if(interviews.length > 0) {
         document.cookie = 'i=' + encodeURIComponent(interviews.join(',')) + '; expires=' + expiry;
     } else {
@@ -79,7 +86,10 @@ function readMapConfigurationCookie() {
     var config = {};
     var storedConfig = decodeURIComponent(document.cookie);
     config.filters = parseCookieValue(storedConfig,'f');
+    /*
     config.interviews = parseCookieValue(storedConfig,'i');
+    */
+    config.clusters = parseCookieValue(storedConfig,'c');
     return config;
 }
 
@@ -155,6 +165,10 @@ ClusterManager.prototype = {
             }
         }
 
+        if((options.clusters) && (parseInt(options.clusters)) > 0) {
+            clustersOffset = 6;
+            $('cluster_toggle').addClassName('clusters-off');
+        }
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
         cedisMap.locationSearch.mapContainer.addClassName('level-' + this.currentLevel);
