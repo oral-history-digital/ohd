@@ -284,6 +284,9 @@ ClusterManager.prototype = {
             //    cluster.refresh();
             //}
         }
+        if(interviewSelection.length < 4) {
+            this.resetMapBoundsToSelection();
+        }
     },
 
     composeHtmlText: function(html, klass) {
@@ -521,6 +524,19 @@ ClusterManager.prototype = {
         }
     },
 
+    resetMapBoundsToSelection: function() {
+        var bounds = new google.maps.LatLngBounds();
+        var clusters = cedisMap.mapClusters[this.currentLevel];
+        var idx = clusters.length;
+        while(idx--) {
+            var cluster = clusters[idx];
+            if(cluster.isVisible()) {
+                bounds.extend(cluster.getPosition());
+            }
+        }
+        this.map.fitBounds(bounds);
+    },
+
     benchmark: function(test, desc) {
         var startTime = (new Date).getTime();
         test.call();
@@ -625,7 +641,7 @@ Cluster.prototype = {
         this.title = '?';
         this.locations = [];
         this.rendered = false;
-        this.visible = visible;
+        this.visible = visible; /* level visibility */
         this.level = level;
         this.width = 0;
         this.numberShown = 0;
@@ -714,6 +730,18 @@ Cluster.prototype = {
     hide: function() {
         this.visible = false;
         this.marker.setVisible(false);
+    },
+
+    isVisible: function() {
+        return (this.visible && (this.numberShown > 0));
+    },
+
+    getPosition: function() {
+        if(this.level == 0) {
+            return this.marker.position;
+        } else {
+            return this.marker.center_;
+        }
     },
 
     refresh: function() {
