@@ -611,7 +611,7 @@ Cluster.prototype = {
         this.title = '?';
         this.locations = [];
         this.rendered = false;
-        this.visible = (level == cedisMap.locationSearch.clusterManager.currentLevel);
+        this.visible = visible;
         this.level = level;
         this.width = 0;
         this.numberShown = 0;
@@ -623,7 +623,6 @@ Cluster.prototype = {
                 flat: true
             });
             this.marker = marker;
-            // this.marker.setMap(locationSearch.map);
             google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
         } else {
             var marker = new ClusterIcon(this, cedisMap.locationSearch.map, latLng);
@@ -638,7 +637,7 @@ Cluster.prototype = {
 
         totalClusters++;
 
-        //this.marker.setVisible(visible);
+        this.marker.setVisible(visible);
         this.marker.setMap(cedisMap.locationSearch.map);
     },
 
