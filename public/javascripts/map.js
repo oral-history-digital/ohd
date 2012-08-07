@@ -109,9 +109,6 @@ InteractiveMap.prototype = {
         } else {
             this.loading = false;
             this.progress.updateBar(1);
-            // WHY DOES THE REFRESH NOT FINISH??
-            // cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
-            // cedisMap.locationSearch.clusterManager.renderMarkers();
             this.progress.hide();
             cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
         }
@@ -130,15 +127,10 @@ InteractiveMap.prototype = {
                 }
                 if(!skip) {
                     cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);   
-                } else {
-                    // alert('Skipping ' + location.location + ' at Lat/Lng: ' + location.latitude + ',' + location.longitude);
                 }
             });
 
         }
-        // postpone this until all are loaded:
-        // cedisMap.locationSearch.clusterManager.renderMarkers();
-        // cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
         cedisMap.locationSearch.progress.updateBar(1);
 
         cedisMap.locationSearch.retrieveDataPage();
