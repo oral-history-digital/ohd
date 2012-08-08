@@ -102,10 +102,14 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .item {
-    background-color: #FFFFFF;
+    background-color: #E4E4DA;
     margin-bottom: 1px;
     float: left;
     width: 100%;
+}
+
+#user_contents .item .details {
+    background-color: #FFFFFF;
 }
 
 #user_contents .item.closed {
@@ -139,7 +143,7 @@ body .teaserList .save_user_content {
 #user_contents .edit {
     position: absolute;
     left: 20px;
-    top: -5px;
+    top: 0px;
     background: transparent url('/images/icon_sprite.png') 0.3em -600px no-repeat;
     color: #990000;
 /*    font-size: 80%;*/
@@ -196,11 +200,15 @@ body .teaserList .save_user_content {
     z-index: 999;
     position: absolute;
     display: block;
-    top: -12px;
+    top: -2px;
     left: 12px;
     padding: 0 10px;
-    border: 5px solid #E4E4DA;
+    border-width: 0px 5px 5px 5px;
+    border: solid #E4E4DA;
     background-color: #ffffff;
+    -moz-box-shadow: 2px 2px 1px #aaa;
+    -webkit-box-shadow: 2px 2px 1px #aaa;
+    box-shadow: 2px 2px 1px #aaa;
 }
 
 #user_contents .actions.closed {
@@ -333,7 +341,7 @@ body .teaserList .save_user_content {
     cursor: pointer;
 }
 
-#user_contents .inline-editable:hover {
+#user_contents .open .inline-editable:hover {
   background: #fffdc0;
   background-image: url('/images/icon_sprite.png');
   background-repeat: no-repeat;
@@ -343,6 +351,11 @@ body .teaserList .save_user_content {
 #user_contents .header .title,
 #user_contents .header .title form input[type='text'] {
     color: #990000;
+}
+
+#user_contents .closed .header .title,
+#user_contents .closed .header .title form input[type='text'] {
+    color: #969380;
 }
 
 #innerContent .header form.inline {

@@ -55,7 +55,7 @@ module UserContentsHelper
             :html => options.merge({:class => 'inline'})
     })
     js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
-    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event)"}))
+    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
