@@ -1,5 +1,7 @@
 module UserContentsHelper
 
+  include TagsHelper # acts_as_taggable_on_steroids
+
   def current_user
     @current_user
   end

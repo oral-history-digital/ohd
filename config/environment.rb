@@ -31,6 +31,7 @@ Rails::Initializer.run do |config|
   config.gem 'sunspot' , :lib => 'sunspot', :version => '0.10.8'
   config.gem 'sunspot_rails', :lib => 'sunspot/rails', :version => '0.11.5'
   config.gem 'unicode'
+  config.gem 'acts_as_taggable_on_steroids', :version => '1.2'
 
   config.gem 'fastercsv'
 

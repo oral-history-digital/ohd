@@ -1,5 +1,7 @@
 class UserContent < ActiveRecord::Base
 
+  acts_as_taggable
+
   include ActionController::UrlWriter
 
   CONTENT_TYPES = [ :search, :interview_reference ]
