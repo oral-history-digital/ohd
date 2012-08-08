@@ -48,9 +48,9 @@
     min-height: 30%;
     width: 40%;
     background-color: #F8F8F8;
-    -moz-box-shadow: 4px 4px 6px 6px #666;
-    -webkit-box-shadow: 4px 4px 6px 6px #666;
-    box-shadow: 4px 4px 6px 6px #666;
+    box-shadow: 4px 5px 6px 5px #666;
+    -moz-box-shadow: 4px 5px 6px 5px #666;
+    -webkit-box-shadow: 4px 5px 6px 5px #666;
 }
 
 #fragmentOverview {
