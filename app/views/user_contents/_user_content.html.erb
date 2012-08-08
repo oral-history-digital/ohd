@@ -15,11 +15,11 @@ end -%>
         <%= in_place_edit_for user_content, :title -%>
         <a name="user_content_<%= user_content.id -%>" style="display: none;">&nbsp;</a>
       </span>
-      <!--
+      <% unless user_content.tag_list.empty? -%>
       <span class="themes">
-        <%#= cycle 'Titel, Thesen, Temperamente', 'Ostarbeiter' -%>
+        <%= user_content.tag_list %>
       </span>
-      //-->
+      <% end -%>
       <span class="toggle">
         <%= link_to_function '&nbsp;', '' -%>
       </span>
@@ -35,9 +35,7 @@ end -%>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
             <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); this.up('.actions').addClassName('closed');" %></li>
-            <!--
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#' %></li>
-            //-->
             <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
           </ul>
         </div>

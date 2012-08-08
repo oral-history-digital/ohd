@@ -28,6 +28,31 @@
     height: 88%;
 }
 
+/* overlay and container for the modal interaction window */
+#shades {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 333;
+    opacity: 0.4;
+    background-color: #666;
+}
+
+#modal_window {
+    position: fixed;
+    top: 25%;
+    left: 30%;
+    z-index: 350;
+    min-height: 30%;
+    width: 40%;
+    background-color: #F8F8F8;
+    -moz-box-shadow: 4px 4px 6px 6px #666;
+    -webkit-box-shadow: 4px 4px 6px 6px #666;
+    box-shadow: 4px 4px 6px 6px #666;
+}
+
 #fragmentOverview {
   float: left;
   font-size: 95%;
