@@ -10,12 +10,14 @@ ActionController::Routing::Routes.draw do |map|
   map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials
   map.photos 'interviews/:id/photos/:filename.:extension', :controller => :interviews, :action => :photos
   map.stills 'interviews/stills/:filename.:extension', :controller => :interviews, :action => :stills
+  map.interview_locations 'interviews/:id/in/:location_name', :controller => :interviews, :action => :show
 
   map.resources :interviews do |interview|
 
     interview.resources :tapes,
                         :collection => { :playlist => :get },
                         :member => { :transcript => :get }
+
   end
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
