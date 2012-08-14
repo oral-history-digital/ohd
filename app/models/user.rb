@@ -140,5 +140,9 @@ SQL
     read_attribute(:admin) == true
   end
 
+  def tags
+    Tag.for_user(self)
+  end
+
 
 end

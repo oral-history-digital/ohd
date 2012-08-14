@@ -131,4 +131,32 @@ module ApplicationHelper
     end
   end
 
+
+  # modal window dialog
+  def javascript_open_modal_window(ajax_url, options={})
+    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }.join(', ')
+    method = options[:method] || :get
+    callback = options[:callback] || ''
+    <<JS
+$('modal_window').innerHTML = '';
+new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
+$('ajax-spinner').show;
+new Ajax.Updater('modal_window', '#{ajax_url}',
+  { parameters: '#{params}',
+    method: '#{method}',
+    evalScripts: true,
+    onFailure: function(){$('ajax-spinner').hide(); new Effect.Fade('shades', { from: 0.6 })},
+    onSuccess: function(){$('ajax-spinner').hide(); new Effect.Appear('modal_window', { duration: 0.3 }); $('modal_window').addClassName('edit');#{callback}}
+    });
+JS
+  end
+
+  # This method renders a close button on the lightbox if the current
+  # request was engaged by XHTTP.
+  def modal_window_close_button_on_javascript_request
+    if request.xhr?
+      link_to('X', '#', :id => ('modal_window_close'), :onclick => "new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); return false;")
+    end
+  end
+
 end

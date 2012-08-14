@@ -402,3 +402,32 @@ tr.user-registration-open .arrow-opened {
     font-size: 85%;
     color: #666666;
 }
+
+/* modal window */
+#ajax_spinner {
+    height: 64px;
+    width: 64px;
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    background: transparent url(/images/large_spinner.gif) center no-repeat;
+}
+
+#modal_window {
+    padding: 1em;
+}
+
+#modal_window .chzn-select {
+    width: 320px;
+}
+
+a#modal_window_close {
+    float: right;
+    display: block;
+    color: #fff;
+    height: 14px;
+    width: 14px;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: transparent url(/images/lightbox/close.gif) center no-repeat;
+}

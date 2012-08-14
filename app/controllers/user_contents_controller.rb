@@ -82,6 +82,24 @@ class UserContentsController < BaseController
     end
   end
 
+  # render the topics form
+  def topics
+    object
+    respond_to do |format|
+      format.html do
+        render
+      end
+      format.js do
+        render :layout => false
+      end
+    end
+  end
+
+  # set topics
+  def update_topics
+
+  end
+
   protected
 
   def unauthorized_access

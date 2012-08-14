@@ -193,7 +193,7 @@ body .teaserList .save_user_content {
 
 #user_contents .actions {
     width: auto !important;
-    z-index: 999;
+    z-index: 99;
     position: absolute;
     display: block;
     top: -12px;
