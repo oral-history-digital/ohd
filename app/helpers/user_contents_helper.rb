@@ -123,9 +123,9 @@ module UserContentsHelper
     content_tag(:div, html, :class => "image-link") + content_tag(:ul, biographic)
   end
 
-  def topics_select(options={}, selected=[])
+  def topics_select(name, options={}, selected=[])
     tag_values = options_for_select((current_user ? current_user.tags : []).map{|t| [t.name, t.id] }, selected)
-    content_tag(:select, tag_values, options.merge({'data-placeholder' => 'Bitte waehlen...', :multiple => true}))
+    select_tag(name, tag_values, options.merge({'data-placeholder' => 'Bitte waehlen...', :multiple => true}))
   end
 
 end

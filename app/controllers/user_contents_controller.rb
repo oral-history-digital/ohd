@@ -95,9 +95,27 @@ class UserContentsController < BaseController
     end
   end
 
-  # set topics
+  # set topics via 'tags' parameter (array of tag id's)
   def update_topics
-
+    object
+    tag_ids = params[:tags]
+    if tag_ids.is_a?(Array)
+      @object.tag_list = tag_list_from_ids(tag_ids)
+      @object.save
+    end
+    respond_to do |format|
+      format.html do
+        redirect_to user_contents_path
+      end
+      format.js do
+        item_update = render_to_string :partial => 'user_content', :object => @object
+        render :update do |page|
+          page.visual_effect(:hide, 'modal_window')
+          page.visual_effect(:fade, 'shades', { :from => 0.6 })
+          page.visual_effect(:highlight, "user_content_#{@object.id}", { :startcolor => '#FFFDC0', :afterFinish => page.replace_html("user_content_#{@object.id}", item_update) })
+        end
+      end
+    end
   end
 
   protected
@@ -191,6 +209,16 @@ class UserContentsController < BaseController
     sql_conditions += conditions
     sql_conditions << current_user.id
     end_of_association_chain.find(:all, :conditions => sql_conditions, :order => "created_at DESC")
+  end
+
+  def tag_list_from_ids(ids)
+    cond = ['id IN (']
+    ids.each_with_index do |id,index|
+      cond.first << ((index > 0) ? ',?' : '?')
+      cond << id
+    end
+    cond.first << ')'
+    Tag.find(:all, :conditions => cond).map(&:name)
   end
 
 end
