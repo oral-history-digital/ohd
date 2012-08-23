@@ -282,7 +282,7 @@ ClusterManager.prototype = {
             //    cluster.refresh();
             //}
         }
-        if(interviewSelection.length < 4) {
+        if((interviewSelection.length > 0) && (interviewSelection.length < 4)) {
             this.resetMapBoundsToSelection();
         }
     },
