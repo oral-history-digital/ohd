@@ -73,4 +73,27 @@ namespace :locations do
 
   end
 
+
+  desc "merges 'interview' relation locations into first non-interview counterpart"
+  task :merge_interview_locations => :environment do
+
+    index = 0
+    num = 0
+    LocationReference.find_each(:conditions => "reference_type = 'interview'") do |location|
+      next if location.location_segments.empty?
+      index += 1
+      STDOUT.printf '.'; STDOUT.flush
+      merge_location = LocationReference.find(:first, :conditions => ["interview_id = ? AND name = ? AND reference_type != 'interview'", location.interview_id, location.name])
+      next if merge_location.nil?
+      merged = LocationSegment.update_all "location_reference_id = #{merge_location.id}", "location_reference_id = #{location.id}"
+      puts "\n... merged #{merged} location segments to #{merge_location.reference_type} for '#{location.name}' (#{location.interview.archive_id})."
+      num += 1
+    end
+
+    puts "\ndone. Merged #{num} location_references of #{index} interview references with segments."
+
+    Rake::Task['solr:reindex:locations'].execute
+
+  end
+
 end
