@@ -92,7 +92,7 @@ namespace :locations do
 
     puts "\ndone. Merged #{num} location_references of #{index} interview references with segments."
 
-    Rake::Task['solr:reindex:locations'].execute
+    puts "Please reindex the locations now (rake solr:reindex:locations)."
 
   end
 
