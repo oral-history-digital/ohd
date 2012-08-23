@@ -118,7 +118,7 @@ InteractiveMap.prototype = {
           response.responseJSON.locations.each(function(location){
                 var locationInfo = cedisMap.locationSearch.locationInfo(location);
                 var referenceClass = cedisMap.locationSearch.locationReference(location.referenceType, location.locationType);
-                var interviewURL = cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
+                var interviewURL = 'http://' + window.location.host + cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
                 var skip = false;
                 if(isNaN(location.latitude) || isNaN(location.longitude)) {
                     skip = true;
