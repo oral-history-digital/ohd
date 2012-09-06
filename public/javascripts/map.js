@@ -61,7 +61,8 @@ InteractiveMap.prototype = {
         var mapOptions = {
             zoom: this.options.zoom,
             center: center,
-            mapTypeId: google.maps.MapTypeId.TERRAIN
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
+            streetViewControl: false
         };
         this.mapContainer = $(id);
         this.map = new google.maps.Map(this.mapContainer, mapOptions);
