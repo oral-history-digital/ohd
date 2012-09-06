@@ -947,7 +947,7 @@ ClusterIcon.prototype.createDiv = function() {
         });
     }
     if (this.visible_) {
-        this.div_.innerHTML = this.cluster.numberShown.toString();
+        // this.div_.innerHTML = this.cluster.numberShown.toString();
     }
     if(!this.circle) {
         // create an image circle
@@ -989,7 +989,7 @@ ClusterIcon.prototype.draw = function() {
             }
             this.div_.style.top = (pos.y - 20) + 'px';
             this.div_.style.left = (pos.x - 20) + 'px';
-            this.div_.innerHTML = this.cluster.numberShown.toString();
+            // this.div_.innerHTML = this.cluster.numberShown.toString();
         } else {
             this.setVisible(false);
         }
