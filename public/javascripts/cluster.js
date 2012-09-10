@@ -937,7 +937,8 @@ ClusterIcon.prototype.onAdd = function() {
 ClusterIcon.prototype.createDiv = function() {
     var panes = this.getPanes();
     if(!this.div_) {
-        this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden; position: absolute;' });
+        this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, style: 'display: none; position: absolute;' });
+        this.div_.innerHTML = '&nbsp;';
         panes.overlayMouseTarget.appendChild(this.div_);
 
         // add interaction
@@ -951,7 +952,7 @@ ClusterIcon.prototype.createDiv = function() {
     }
     if(!this.circle) {
         // create an image circle
-        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', 'style': 'position: absolute; display: none;'});
+        this.circle = new Element('img', { 'class': ('cluster-circle level-' + this.cluster.level), 'src': this.getImagePath('red'), 'id': this.cluster.title + '_circle', style: 'position: absolute; display: none;'});
         panes.overlayMouseTarget.appendChild(this.circle);
     }
 };
