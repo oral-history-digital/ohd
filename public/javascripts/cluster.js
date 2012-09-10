@@ -937,7 +937,7 @@ ClusterIcon.prototype.onAdd = function() {
 ClusterIcon.prototype.createDiv = function() {
     var panes = this.getPanes();
     if(!this.div_) {
-        this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden' });
+        this.div_ = new Element('div', { 'class': ('cluster-icon level-' + this.cluster.level), 'id': this.cluster.title, 'title': this.cluster.title, 'style': 'display: hidden; position: absolute;' });
         panes.overlayMouseTarget.appendChild(this.div_);
 
         // add interaction
