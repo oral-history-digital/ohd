@@ -72,7 +72,7 @@ InteractiveMap.prototype = {
 
         this.progress = new progressBar({colorBar: '#990000', background: '#B2AFA1' });
         $(id).appendChild(this.progress.getDiv());
-        this.progress.getDiv().setStyle({bottom: '60px'});
+        this.progress.getDiv().style.bottom = '60px';
 
         var clusterOptions = this.options.cluster || {};
         this.clusterManager = new ClusterManager(this.map,clusterOptions);
