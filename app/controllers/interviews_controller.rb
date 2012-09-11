@@ -4,6 +4,8 @@ class InterviewsController < BaseController
 
   helper :interview
 
+  before_filter :featured_location, :only => :show
+
   actions :show
 
   show do
@@ -52,6 +54,14 @@ class InterviewsController < BaseController
     @object ||= @search.results.select{|i| i.archive_id == param }.first unless @search.results.nil?
     @object ||= end_of_association_chain.find_by_archive_id(param) unless param.nil?
     @object
+  end
+
+  def featured_location
+    @location = params[:location_name].blank? ? nil : LocationReference.with_segments_from_interview(object).select{|l| location_to_param(l.name) == params[:location_name]}.first
+  end
+
+  def location_to_param(name)
+    (name || '').gsub(/[\s,;]+/,'+')
   end
 
 end

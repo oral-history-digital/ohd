@@ -75,7 +75,7 @@ module InterviewHelper
   end
 
   def location_to_param(name)
-    name.gsub(/[\s,;]+/,'+')
+    (name || '').gsub(/[\s,;]+/,'+')
   end
 
   def deportation_for(interview)

@@ -1,16 +1,24 @@
-<div id="containerSegments" class="interview-contents">
-  <% if segments.empty? %>
+<% if segments.empty? %>
     <%= t(:no_segments_result, :scope => 'user_interface.messages') %>
-  <% else %>
-
-    <!--<p><%#= matching_segments.size == 0 ? 'keine Ausschnitte' : pluralize(matching_segments.size, 'Ausschnitt', 'Ausschnitte') %> gefunden:</p>-->
-
-    <ul>
-    <% segments.each do |segment| %>
-      <li id="<%= segment.media_id %>" class="segment">
-        <%= link_to_segment segment, @search.fulltext, true, true %>
-      </li>
-    <% end %>
-  </ul>
-  <% end %>
-</div>
+<% else %>
+<% fulltext ||= defined?(@location) ? ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
+<% fulltext ||= @search.fulltext -%>
+<ul class='location-segments'>
+  <% section = nil -%>
+  <% segments.each_with_index do |segment,index| -%>
+    <% if segment.section && segment.section != section -%>
+        <% current_section_segment = segment.section_lead_segment -%>
+        <% section = segment.section -%>
+        <% if current_section_segment -%>
+    <li id="segments_section-<%= section -%>" class="section-heading">
+      In&nbsp;<span class="heading">&#147;<%= section -%>&nbsp;<%= current_section_segment.subheading || current_section_segment.mainheading -%>&#148;</span>:
+    </li>
+        <% end -%>
+    <% end -%>
+    <span class="index"><%= index + 1-%>.</span>
+    <li id="segment_<%= segment.media_id %>" class="segment">
+        <%= link_to_segment segment, fulltext || '$$$', true, true %>
+    </li>
+  <% end -%>
+</ul>
+<% end -%>

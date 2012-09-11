@@ -424,7 +424,7 @@ float:left;
     background: url("/images/plus.gif") no-repeat scroll left 0.3em transparent;
 }
 
-.interview-contents ul li {
+.container ul li {
     position:relative;
     margin-bottom:20px;
     background: none;
@@ -432,19 +432,19 @@ float:left;
     margin-bottom: 15px;
 }
 
-.interview-contents ul.location-segments {
+.container ul.location-segments {
     margin-top: 0px;
     padding-left: 10px;
 }
 
-.interview-contents .location-segments li.section-heading {
+.container .location-segments li.section-heading {
     margin-bottom: 0px;
     margin-top: 6px;
     /* font-weight: bold; */
     color: #999;
 }
 
-.interview-contents .location-segments .index {
+.container .location-segments .index {
     position: relative;
     left: -10px;
     top: 4px;
@@ -453,7 +453,7 @@ float:left;
     color: #999;
 }
 
-.interview-contents .timecode {
+.container .timecode {
     position:absolute;
     color:#999;
     top:-12px;

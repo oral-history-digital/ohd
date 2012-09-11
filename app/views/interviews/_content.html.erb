@@ -1,5 +1,20 @@
 <div id="interviewContentNavigation" class="baseListBox">
 
+  <% featured_content = if params[:location_name].blank?
+      if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
+        # table of contents displayed
+        :headings
+      else
+        # segment search
+        :search_results
+      end
+  elsif content.location_references.empty?
+    :search_results
+  else
+    # segments for location
+    :locations
+  end -%>
+
   <% remote_form_for content,
                      :url => interview_searches_path,
                      :method => :get,
@@ -24,27 +39,22 @@
       $('interview_fulltext').value = '<%= @search.fulltext || t('search_term') %>';
   <% end %>
 
-  <% featured_content = if params[:location_name].blank?
-      if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
-        :headings
-      else
-        :search_results
-      end
-  elsif content.location_references.empty?
-    :search_results
-  else
-    :locations
-  end -%>
-
-  <% show_segments = (featured_content == :search_results) %>
+  <% show_segments = [:search_results, :locations ].include?(featured_content) %>
+  <% if (featured_content == :locations ) -%>
+      <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
+      <% fulltext = ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
+  <% else -%>
+      <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
+      <% fulltext = @search.fulltext -%>
+  <% end -%>
   <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed'%> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">
     <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
     <% if show_segments %>
-    <span class="hits">(<%= @search.matching_segments_for(@interview.archive_id).size %>)</span>
+    <span class="hits">(<%= @segments.size %>)</span>
     <% end %>
   </div>
   <div id="search-results" class="container" style="<%= show_segments ? '' : 'display:none;'%>">
-    <%= render :partial => 'segments', :object => @search.matching_segments_for(@interview.archive_id) %>
+    <%= render :partial => 'segments', :object => @segments, :local => { :fulltext => fulltext } %>
   </div>
 
   <% show_headings = (featured_content == :headings) %>
@@ -54,29 +64,6 @@
   <div id="headings" class="container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
     <%= render :partial => 'headings', :object => content, :locals => { :player => @player } %>
   </div>
-
-  <% unless content.location_references.empty? -%>
-  <% show_locations = (featured_content == :locations) -%>
-  <div id="locations-toggle" class="<%= show_locations ? 'open' : 'closed' -%> container-toggle" onclick="toggleContainer('locations-toggle', true);">
-    <h2>Ortsangaben</h2>
-  </div>
-  <div id="locations" class="container" style="height: 377px;<%= show_locations ? '' : ' display: none;' -%>">
-    <% @locations = @interview.location_references.with_segments_from_interview(@interview).select{|l| l.reference_type != 'interview' }.sort{|a,b| a.location_name <=> b.location_name } -%>
-    <ul class="interview-contents">
-      <%= render :partial => 'location', :collection => @locations %>
-    </ul>
-  </div>
-      <% unless params[:location_name].blank? -%>
-        <% javascript_tag do -%>
-            var currentLocation = $$('#locations .interview-contents .open')[0];
-            if(currentLocation) {
-                var container = $('locations');
-                var offset = currentLocation.offsetTop - container.offsetTop;
-                container.scrollTop = offset;
-            }
-        <% end -%>
-      <% end -%>
-  <% end -%>
 
   <% javascript_tag do -%>
     function subcontainerToggle(id) {
