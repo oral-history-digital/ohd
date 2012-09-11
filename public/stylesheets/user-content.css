@@ -363,13 +363,18 @@ body .teaserList .save_user_content {
 }
 
 #user_contents form input[type="text"],
-#user_contents form textarea {
+#user_contents form textarea,
+.workbook .chzn-container .chzn-choices {
   color: #000;
   border: none;
   background :#fffdc0;
 /* border: 1px solid #fff700; */
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#user_contents form input[type="text"],
+#user_contents form textarea {
   font-size: 125%;
   line-height: 1.4em;
 }
@@ -434,4 +439,26 @@ body .teaserList .save_user_content {
 #content-filters li.facet {
     margin-top: 2px;
     color: #6f6c5d;
+}
+
+/* modal topics dialog */
+.workbook .topics div form div,
+.workbook .topics div form label,
+.workbook .topics div form li,
+.workbook .topics div form input {
+    float: left;
+    display: block;
+    clear: left;
+}
+.workbook .topics form .chzn-container,
+.workbook .topics form label,
+.workbook .topics form input {
+    margin-top: 10px;
+}
+
+.workbook .chzn-container .chzn-choices,
+.workbook .chzn-container .chzn-choices .search-field,
+.workbook .chzn-container .chzn-choices .search-field input,
+.workbook .chzn-results li {
+    width: 100% !important;
 }

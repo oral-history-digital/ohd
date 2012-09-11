@@ -130,6 +130,7 @@ en:
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'
+      user_tags: 'Choose available topics or enter new topic names:'
     interview_reference:
       save: 'mark interview'
       saved: 'marked interview'

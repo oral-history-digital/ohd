@@ -128,6 +128,7 @@ de:
       delete: 'L&ouml;schen'
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
+      user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein:'
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'
