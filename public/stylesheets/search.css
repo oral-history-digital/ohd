@@ -407,24 +407,24 @@ float:left;
     margin-left: 20px;
 }
 
-.interview-contents h4 {
+.accordion-container h4 {
     color: #333333;
     font-size: 80%;
     font-weight: bold;
     margin-top: 8px;
 }
 
-.interview-contents .subcontainer-toggle {
+.accordion-container .subcontainer-toggle {
     cursor: pointer;
     padding-left: 10px;
     background: url("/images/minus.gif") no-repeat scroll left 0.3em transparent;
 }
 
-.interview-contents .subcontainer-toggle.closed {
+.accordion-container .subcontainer-toggle.closed {
     background: url("/images/plus.gif") no-repeat scroll left 0.3em transparent;
 }
 
-.container ul li {
+.accordion-container ul li {
     position:relative;
     margin-bottom:20px;
     background: none;
@@ -432,12 +432,12 @@ float:left;
     margin-bottom: 15px;
 }
 
-.container ul.location-segments {
+.accordion-container ul.location-segments {
     margin-top: 0px;
     padding-left: 10px;
 }
 
-.container .location-segments li.section-heading {
+.accordion-container .location-segments li.section-heading {
     margin-bottom: 0px;
     margin-top: 6px;
     /* font-weight: bold; */

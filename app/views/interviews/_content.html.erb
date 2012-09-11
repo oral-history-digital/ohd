@@ -53,7 +53,7 @@
     <span class="hits">(<%= @segments.size %>)</span>
     <% end %>
   </div>
-  <div id="search-results" class="container" style="<%= show_segments ? '' : 'display:none;'%>">
+  <div id="search-results" class="accordion-container container" style="<%= show_segments ? '' : 'display:none;'%>">
     <%= render :partial => 'segments', :object => @segments, :local => { :fulltext => fulltext } %>
   </div>
 
@@ -61,7 +61,7 @@
   <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed'%> container-toggle" onclick="toggleContainer('headings-toggle', true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="headings" class="container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
+  <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
     <%= render :partial => 'headings', :object => content, :locals => { :player => @player } %>
   </div>
 
@@ -79,7 +79,7 @@
   <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle');">
     <h2><%= t('my_search', :scope => 'user_interface.labels') %></h2>
   </div>
-  <div id="my-results" class="container" style="display:none;">Noch keine Rechercheergebnisse gespeichert.</div>
+  <div id="my-results" class="accordion-container container" style="display:none;">Noch keine Rechercheergebnisse gespeichert.</div>
 
   //-->
 
