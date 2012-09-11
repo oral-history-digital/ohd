@@ -73,7 +73,7 @@ progressBar = function(opts) {
   tstyle.width         = '100%';
   tstyle.border        = '5px';
   tstyle.textAlign     = 'center';
-  tstyle.verticalAlign = 'bottom';
+  // tstyle.verticalAlign = 'bottom';
 
   var bar = document.createElement('div');
   bar.id                    = 'pg_bar';
