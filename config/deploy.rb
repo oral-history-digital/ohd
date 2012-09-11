@@ -1,6 +1,6 @@
 set :application, "zwar_archiv"
 set :repository,  "https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/trunk"
-set :user, "hahoffmann"
+set :user, "jrietema"
 set :use_sudo, false
 
 set :deploy_to, "/data/applications/zwar/#{application}"
