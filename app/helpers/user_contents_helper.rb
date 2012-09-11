@@ -124,8 +124,8 @@ module UserContentsHelper
   end
 
   def topics_select(name, options={}, selected=[])
-    tag_values = options_for_select((current_user ? current_user.tags : []).map{|t| [t.name, t.id] }, selected)
-    select_tag(name, tag_values, options.merge({'data-placeholder' => 'Bitte waehlen...', :multiple => true}))
+    tag_values = options_for_select((current_user ? current_user.tags : []).map{|t| [t.name, t.name] }, selected)
+    select_tag(name, tag_values, options.merge({'data-placeholder' => t(:please_select, :scope => 'user_interface.labels'), :multiple => true}))
   end
 
 end

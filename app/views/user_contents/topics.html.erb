@@ -3,7 +3,7 @@
 <div>
   <% remote_form_for @object, :url => update_topics_user_content_path(@object) do %>
     <label><%= t(:user_tags, :scope => 'user_interface.user_content') -%></label>
-    <%= topics_select('tags', { :id => "topics-#{@object.id}", :class => 'chzn-select' }, @object.tags.map(&:id)) -%>
+    <%= topics_select('tags', { :id => "topics-#{@object.id}", :class => 'chzn-select' }, @object.tags.map(&:name)) -%>
     <%= submit_tag 'aktualisieren' %>
   <% end %>
 </div>

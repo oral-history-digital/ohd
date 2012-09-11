@@ -462,3 +462,7 @@ body .teaserList .save_user_content {
 .workbook .chzn-results li {
     width: 100% !important;
 }
+
+.workbook .topics div form input[type='submit'] {
+    margin-top: 40px;
+}

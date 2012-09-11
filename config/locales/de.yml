@@ -104,6 +104,7 @@ de:
       filter_contents: 'Angezeigte Inhalte'
       more: 'mehr'
       less: 'weniger'
+      please_select: 'Bitte w&auml;hlen...'
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'

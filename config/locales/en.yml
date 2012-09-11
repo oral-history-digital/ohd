@@ -106,6 +106,7 @@ en:
       filter_contents: 'Contents shown'
       more: 'more'
       less: 'less'
+      please_select: 'Please select...'
     actions:
       edit: 'edit'
       update: 'update'
