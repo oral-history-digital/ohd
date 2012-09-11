@@ -24,6 +24,7 @@ DEF
   end
 
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
+  named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} } 
   
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
@@ -68,6 +69,7 @@ DEF
         end
         str.squeeze(' ')
       end
+      str
     end
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
@@ -140,6 +142,13 @@ DEF
 
   def joined_transcript_and_translation
     ((transcript || '') + ' ' + (translation || '')).strip
+  end
+
+  # returns the segment that leads the chapter
+  def section_lead_segment
+    Segment.find :first,
+                 :conditions => ["interview_id = ? AND section = ?", interview_id, section],
+                 :order => "media_id ASC"
   end
 
   private

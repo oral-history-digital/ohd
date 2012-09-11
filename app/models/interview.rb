@@ -75,6 +75,9 @@ DEF
 
   has_many  :categorizations
 
+  has_many :categories,
+           :through => :categorizations
+
   has_many :languages,
             :class_name => 'Category',
             :through => :categorizations,

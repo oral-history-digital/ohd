@@ -1,0 +1,291 @@
+.markerOverlay div {
+    height: 19px;
+    width: 16px;
+    margin-top: -19px;
+    text-indent: -9999px;
+    display: block;
+    z-Index: 5;
+    background: transparent url(/images/test_markers/interview_marker.png) top left no-repeat;
+}
+
+.markerOverlay div.forced_labor_location {
+    background-image: url(/images/test_markers/forced_labor_location_marker.png);
+    z-Index: 100;
+}
+
+.markerOverlay div.home_location {
+    background-image: url(/images/test_markers/home_location_marker.png);
+    z-Index: 90;
+}
+
+.markerOverlay div.place_of_birth {
+    background-image: url(/images/test_markers/place_of_birth_marker.png);
+    z-Index: 85;
+}
+
+.markerOverlay div.return_location {
+    background-image: url(/images/test_markers/return_location_marker.png);
+    z-Index: 80;
+}
+
+.markerOverlay div.deportation_location {
+    background-image: url(/images/test_markers/deportation_location_marker.png);
+    z-Index: 95;
+}
+
+
+/* Pagination of Location Reference List */
+
+#baseContent span.pages {
+    float: left;
+    margin-top: 6px;
+}
+
+#baseContent ul.pagination {
+  height: 20px;
+  display: inline-block;
+  margin-right: 8px;
+  float: left;
+}
+
+#baseContent ul.pagination li {
+  background-image: none;
+  padding: 0 7px;
+  border: 1px solid #ccc;
+  color: #900;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#baseContent ul.pagination li.active {
+  background-color: #840f09;
+  color: #fff;
+}
+
+/* Location Reference Lists */
+
+#baseContent ul.locationReferenceList {
+  clear: both;
+}
+
+#baseContent ul.locationReferenceList li {
+  background: none;
+  padding: 0;
+}
+
+#baseContent ul.locationReferenceList ul {
+  margin: 5px 0 10px;
+}
+
+#baseContent ul.locationReferenceList ul li {
+  padding: 0 0 2px 22px;
+  background-position: 0 2px;
+}
+
+.locationReferenceList h3 {
+  margin: 0;
+}
+
+.interviewReference small,
+.referenceDetails {
+  font-size: 85%;
+  color: #999281;
+}
+
+.interviewReference small {
+    line-height: 2.5em;
+}
+
+#baseContent ul li.forced_labor_camp {
+    background: #fff url("/images/test_markers/popup/forced_labor_camp_marker.png") no-repeat;
+}
+#baseContent ul li.forced_labor_camp.map_filter_off {
+    background-image: url("/images/test_markers/popup/forced_labor_camp_marker_off.png");
+    color: #b2afa1;
+}
+
+
+#baseContent ul li.forced_labor_company {
+    background: #fff url("/images/test_markers/popup/forced_labor_company_marker.png") no-repeat;
+}
+#baseContent ul li.forced_labor_company.map_filter_off {
+    background-image: url("/images/test_markers/popup/forced_labor_company_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.forced_labor_location {
+    background: #fff url("/images/test_markers/popup/forced_labor_location_marker.png") no-repeat;
+}
+#baseContent ul li.forced_labor_location.map_filter_off {
+    background-image: url("/images/test_markers/popup/forced_labor_location_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.interview {
+    background: #fff url("/images/test_markers/popup/interview_marker.png") no-repeat;
+}
+#baseContent ul li.interview.map_filter_off {
+    background-image: url("/images/test_markers/popup/interview_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.place_of_birth {
+    background: #fff url("/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
+}
+#baseContent ul li.place_of_birth.map_filter_off {
+    background-image: url("/images/test_markers/popup/place_of_birth_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.deportation_location {
+    background: #fff url("/images/test_markers/popup/deportation_location_marker.png") no-repeat;
+}
+#baseContent ul li.deportation_location.map_filter_off {
+    background-image: url("/images/test_markers/popup/deportation_location_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.return_location {
+    background: #fff url("/images/test_markers/popup/return_location_marker.png") no-repeat;
+}
+#baseContent ul li.return_location.map_filter_off {
+    background-image: url("/images/test_markers/popup/return_location_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.home_location {
+    background: #fff url("/images/test_markers/popup/home_location_marker.png") no-repeat;
+}
+#baseContent ul li.home_location.map_filter_off {
+    background-image: url("/images/test_markers/popup/home_location_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.map_filter_off img {
+    display: none;
+}
+
+/* Filter and Explanation */
+
+#interview_selection_toggle {
+  position: absolute;
+  left: 338px;
+  top: 25px;
+  width: 100px;
+  padding: 2px 5px;
+  color: #fff;
+  background-color: #840f09;
+  /* background: #840f09 url('/images/pfeil_weiss_unten.png') no-repeat 103px 9px; */
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#explanation_filter_toggle {
+  position: absolute;
+  left: 460px;
+  top: 25px;
+  width: 110px;
+  padding: 2px 5px;
+  color: #fff;
+  background: #840f09 url('/images/pfeil_weiss_unten.png') no-repeat 103px 9px;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#explanation_filter {
+  position: absolute;
+  top: 52px;
+  left: 184px;
+  width: 510px;
+  background: #F1F1EB;
+  z-index: 1;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#baseContent #explanation_filter ul {
+  padding: 10px 0 10px 10px;
+  width: 240px;
+  margin: 0;
+}
+
+#baseContent #explanation_filter ul li {
+  position: relative;
+  margin-bottom: 1px;
+  padding: 4px 0;
+  background-position: 30px 4px;
+}
+
+#baseContent #explanation_filter ul li {
+  text-indent: 55px;
+}
+
+#explanation_filter ul li img {
+  position: absolute;
+  padding: 4px;
+  right: 7px;
+  top: 2px;
+  cursor: pointer;
+}
+
+#baseContent #explanation_filter ul ul {
+  padding: 4px 0 0;
+  margin-bottom: -5px;
+}
+
+#baseContent #explanation_filter ul ul li {
+  position: relative;
+  padding: 4px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #F1F1EB;
+  background-position: 30px 4px;
+  background: #f9f9f7;
+}
+
+#baseContent #explanation_filter #cluster_toggle {
+    padding-left: 62px;
+    padding-top: 20px;
+    margin: 10px;
+    background: #f9f9f7 url('/images/circle_legend.png') 16px 8px no-repeat;
+    min-height: 36px;
+    vertical-align: middle;
+}
+
+#baseContent #explanation_filter #cluster_toggle.clusters-off {
+    background-image: url('/images/circle_legend_off.png');
+    color: #b2afa1;
+}
+
+#baseContent #explanation_filter ul ul li:first-child {
+  border-top: 1px solid #F1F1EB;
+}
+
+#baseContent .cluster-icon {
+  color: #990000;
+  position: absolute;
+  cursor: pointer;
+  overflow: hidden;
+  width: 40px;
+  max-width: 40px;
+  height: 28px;
+  max-height: 40px;
+  font-size: 12px;
+  padding-top: 12px;
+  text-align: center;
+  z-index: 100;
+}
+
+#baseContent .cluster-circle {
+    position: absolute;
+    z-index: 99;
+}
+
+#baseContent .level-0 .level-1,
+#baseContent .level-0 .level-2,
+#baseContent .level-1 .level-0,
+#baseContent .level-1 .level-2,
+#baseContent .level-2 .level-0,
+#baseContent .level-2 .level-1 {
+    display: none !important;
+}

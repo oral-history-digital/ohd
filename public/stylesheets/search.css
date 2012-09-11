@@ -390,21 +390,70 @@ float:left;
     left:105px;
 }
 
-#search-results.container {
+#search-results.container,
+#locations.container {
     height: 404px;
     background: #F8F8F5;
 }
 
-#containerSegments ul {
-    margin:30px 0 0 20px;
+.interview-contents ul,
+.interview-contents h4 {
+    margin-top:30px;
+    margin-left: 10px;
     width:230px;
 }
-#containerSegments ul li {
-    position:relative;
-    margin-bottom:20px;
+
+#headings .interview-contents ul {
+    margin-left: 20px;
 }
 
-#containerSegments .timecode {
+.interview-contents h4 {
+    color: #333333;
+    font-size: 80%;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.interview-contents .subcontainer-toggle {
+    cursor: pointer;
+    padding-left: 10px;
+    background: url("/images/minus.gif") no-repeat scroll left 0.3em transparent;
+}
+
+.interview-contents .subcontainer-toggle.closed {
+    background: url("/images/plus.gif") no-repeat scroll left 0.3em transparent;
+}
+
+.interview-contents ul li {
+    position:relative;
+    margin-bottom:20px;
+    background: none;
+    font-size: 80%;
+    margin-bottom: 15px;
+}
+
+.interview-contents ul.location-segments {
+    margin-top: 0px;
+    padding-left: 10px;
+}
+
+.interview-contents .location-segments li.section-heading {
+    margin-bottom: 0px;
+    margin-top: 6px;
+    /* font-weight: bold; */
+    color: #999;
+}
+
+.interview-contents .location-segments .index {
+    position: relative;
+    left: -10px;
+    top: 4px;
+    font-size: 80%;
+    font-weight: bold;
+    color: #999;
+}
+
+.interview-contents .timecode {
     position:absolute;
     color:#999;
     top:-12px;

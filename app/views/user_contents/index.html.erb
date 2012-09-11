@@ -7,6 +7,16 @@
     var togglingContent = 0;
     var contentItems = new Array();
 
+    function setItemStatus(el, open) {
+        if(open) {
+            el.addClassName('open');
+            el.removeClassName('closed');
+        } else {
+            el.removeClassName('open');
+            el.addClassName('closed');
+        }
+    }
+
     function toggleUserContent(event) {
         if(togglingContent > 0) { return; };
         var el = Element.up(Event.element(event), '.item');
@@ -29,7 +39,7 @@
             }
         });
         if(closedContents.length > 0) {
-            Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){el.parentNode.removeClassName('closed');}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('expand_all').hide(); $('minimize_all').show();}});
+            Effect.multiple(closedContents, Effect.BlindDown, { duration: 0.5, beforeStart: function(){ closedContents.each(function(el){setItemStatus(el.parentNode, true);}); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; $('expand_all').hide(); $('minimize_all').show();}});
             new Effect.Fade('expand_all', { duration: 0.5 });
         } else {
             $('expand_all').hide();
@@ -46,7 +56,7 @@
             }
         });
         if(openContents.length > 0) {
-            Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){el.parentNode.addClassName('closed');}); togglingContent = 0; $('minimize_all').hide(); $('expand_all').show();}});
+            Effect.multiple(openContents, Effect.BlindUp, { duration: 0.5, beforeStart: function(){ togglingContent = 1;}, afterFinish: function(){ openContents.each(function(el){setItemStatus(el.parentNode, false);}); togglingContent = 0; $('minimize_all').hide(); $('expand_all').show();}});
             new Effect.Fade('minimize_all', { duration: 0.5 });
         } else {
             $('minimize_all').hide();
@@ -56,17 +66,17 @@
 
     function expandContent(el,reset) {
         if(reset) {
-            new Effect.BlindDown(el, { duration: 0.5, beforeStart: function(){el.parentNode.removeClassName('closed'); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; }});
+            new Effect.BlindDown(el, { duration: 0.5, beforeStart: function(){setItemStatus(el.parentNode, true); togglingContent = 1;}, afterFinish: function(){ togglingContent = 0; }});
         } else {
-            new Effect.BlindDown(el, { duration: 0.5, beforeStart: function(){el.parentNode.removeClassName('closed'); togglingContent = 0;}});
+            new Effect.BlindDown(el, { duration: 0.5, beforeStart: function(){setItemStatus(el.parentNode, true); togglingContent = 0;}});
         }
     }
 
     function minimizeContent(el, reset) {
         if(reset) {
-            new Effect.BlindUp(el, { duration: 0.5, beforeStart: function(){togglingContent = 1;}, afterFinish: function(){el.parentNode.addClassName('closed'); togglingContent = 0; }});
+            new Effect.BlindUp(el, { duration: 0.5, beforeStart: function(){togglingContent = 1;}, afterFinish: function(){setItemStatus(el.parentNode, false); togglingContent = 0; }});
         } else {
-            new Effect.BlindUp(el, { duration: 0.5, afterFinish: function(){el.parentNode.addClassName('closed'); togglingContent = 0;}});
+            new Effect.BlindUp(el, { duration: 0.5, afterFinish: function(){setItemStatus(el.parentNode, false); togglingContent = 0;}});
         }
     }
 

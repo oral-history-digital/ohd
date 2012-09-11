@@ -121,9 +121,13 @@ location:
       alias-names: 'city_alias_names'
     region:
       name: 'region_name'
+      latitude: 'region_latitude'
+      longitude: 'region_longitude'
       alias-names: 'region_alias_names'
     country:
       name: 'country_name'
+      latitude: 'country_latitude'
+      longitude: 'country_longitude'
       alias-names: 'country_alias_names'
   camp:
     name: 'camp_name'

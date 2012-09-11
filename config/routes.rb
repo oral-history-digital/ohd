@@ -10,16 +10,23 @@ ActionController::Routing::Routes.draw do |map|
   map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials
   map.photos 'interviews/:id/photos/:filename.:extension', :controller => :interviews, :action => :photos
   map.stills 'interviews/stills/:filename.:extension', :controller => :interviews, :action => :stills
+  map.interview_locations 'interviews/:id/in/:location_name', :controller => :interviews, :action => :show
 
   map.resources :interviews do |interview|
 
     interview.resources :tapes,
                         :collection => { :playlist => :get },
                         :member => { :transcript => :get }
+
   end
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
+  map.public_locations_total_pages 'webservice/orte.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_by_page 'webservice/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
+
+  map.public_map 'kartensuche', :controller => :location_references, :action => :map
+  map.public_map 'kartensuche1', :controller => :location_references, :action => :map1
 
   map.namespace :admin do |admin|
     admin.resources :user_registrations

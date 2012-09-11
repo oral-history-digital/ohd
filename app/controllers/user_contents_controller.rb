@@ -9,6 +9,8 @@ class UserContentsController < BaseController
   before_filter :determine_user!
   skip_before_filter :determine_user
 
+  skip_before_filter :current_search_for_side_panel
+
   before_filter :authorize_owner!, :only => [ :update, :destroy ]
   rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
@@ -60,6 +62,11 @@ class UserContentsController < BaseController
 
   show do
     wants.html do
+      if @object.nil? || @object.new_record?
+        render :nothing => true, :status => 404
+      else
+        render
+      end
     end
     wants.js do
       if @object.nil? || @object.new_record?

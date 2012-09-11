@@ -510,6 +510,17 @@ en:
     'Ukrainisch': 'ukr'
     'Surschik': 'ukr/rus'
 
+  locations:
+    types:
+      forced_labor_location:  'Forced Labor'
+      forced_labor_camp:      'Camp'
+      forced_labor_company:   'Forced Labor'
+      deportation_location:   'Deportation'
+      place_of_birth:         'Place of Birth'
+      home_location:          'Home'
+      return_location:        'Place of Living after 1945'
+      interview:              'Mention'
+
   external_links:
     notice: 'External link'
     nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/zugang/nutzungsbedingungen'

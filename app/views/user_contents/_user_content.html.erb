@@ -4,7 +4,7 @@ else
   @user_content_index = 0
 end -%>
 <% @interface_status = if params['interface_status'].blank?
-    @user_content_index > 2 ? ' closed' : ''
+    @user_content_index > 2 ? ' closed' : 'open'
     else
     params['interface_status'].downcase
 end -%>
@@ -28,13 +28,13 @@ end -%>
       </span>
     </div>
     <div class="details">
-        <%= link_to_function t(:edit, :scope => "user_interface.actions"), "this.parentNode.down('.actions').removeClassName('closed')", :class => 'edit' %>
+        <%= link_to_function t(:edit, :scope => "user_interface.actions"), "setItemStatus(this.parentNode.down('.actions'), true)", :class => 'edit' %>
         <div id="user_content_<%= user_content.id -%>_actions" class="actions closed">
-          <%= link_to_function image_tag('/images/icon_cross.png'), "this.parentNode.addClassName('closed');", :class => 'close-button' -%>
+          <%= link_to_function image_tag('/images/icon_cross.png'), "setItemStatus(this.parentNode, false);", :class => 'close-button' -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
-            <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); this.up('.actions').addClassName('closed');" %></li>
+            <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); setItemStatus(this.up('.actions'), false)" %></li>
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get })}" %></li>
             <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
           </ul>

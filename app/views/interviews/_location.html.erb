@@ -1,0 +1,26 @@
+<% location_segments = spaced_apart_segments(location.segments.for_interview(@interview)) -%>
+<% status_open = location_to_param(location.name) == params[:location_name] -%>
+<h4 id="loc<%= location.id -%>" onclick="subcontainerToggle('loc<%= location.id -%>');" class="subcontainer-toggle <%= status_open ? 'open' : 'closed' -%>">
+  <%= location.location_name -%>&nbsp;(<%= t(location.reference_type, :scope => 'locations.types') -%>)
+  <small>(<%= pluralize(location_segments.size, t(:clip, :scope => 'search'), t(:clips, :scope => 'search')).sub(' ','&nbsp;') -%>)</small>
+</h4>
+<% unless location_segments.empty? -%>
+<ul class='location-segments' style="<%= status_open ? '' : ' display: none' -%>">
+  <% section = nil -%>
+  <% location_segments.each_with_index do |segment,index| -%>
+    <% if segment.section && segment.section != section -%>
+        <% current_section_segment = segment.section_lead_segment -%>
+        <% section = segment.section -%>
+        <% if current_section_segment -%>
+    <li id="loc<%= location.id -%>_section-<%= section -%>" class="section-heading">
+      In&nbsp;<span class="heading">&#147;<%= section -%>&nbsp;<%= current_section_segment.subheading || current_section_segment.mainheading -%>&#148;</span>:
+    </li>
+        <% end -%>
+    <% end -%>
+    <span class="index"><%= index + 1-%>.</span>
+    <li id="loc<%= location.id -%>_<%= segment.media_id %>" class="segment">
+        <%= link_to_segment segment, ([ location.location_name ] +  (location.alias_location_names || '').split(/;\s*/)).join('|'), true, true %>
+    </li>
+  <% end -%>
+</ul>
+<% end -%>

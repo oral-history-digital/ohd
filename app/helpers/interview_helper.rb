@@ -74,6 +74,10 @@ module InterviewHelper
     h(text).gsub(/~([^~]*)~/,'<em>\1</em>').sub(/^\s*[A-Z]{2,4}:/,'').strip
   end
 
+  def location_to_param(name)
+    name.gsub(/[\s,;]+/,'+')
+  end
+
   def deportation_for(interview)
     unless interview.deportation_location.blank?
       [ interview.deportation_location, format_date(interview.deportation_date) ].compact.join(',&nbsp;')
@@ -108,6 +112,16 @@ module InterviewHelper
 
   def interview_direction(interview)
     interview.right_to_left ? 'RTL' : 'LTR'
+  end
+
+  def spaced_apart_segments(list_of_segments)
+    time = '[1] 00:00:00'
+    segments = []
+    list_of_segments.each do |seg|
+      segments << seg if (Timecode.diff(time, seg.timecode).abs > 60)
+      time = seg.timecode
+    end
+    segments
   end
 
 end

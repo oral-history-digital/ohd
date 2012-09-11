@@ -1,0 +1,83 @@
+<% javascript_tag do -%>
+  var map = null;
+<% end -%>
+
+<div id="explanation_filter_toggle">Legende / Filter</div>
+<div id="explanation_filter" style="display: none;">
+  <ul style="float: left;">
+    <li class="map_filter forced_labor_location" style="cursor: pointer;"><span>Einsatzorte</span></li>
+    <li class="map_filter forced_labor_camp" style="cursor: pointer;"><span>Lager und Haftst&auml;tten</span>
+      <!--
+      <img id="sub_list_toggle" src="<%= image_path('/images/pfeil_rot_unten.gif')-%>" alt="Lagertypen aufklappen"/>
+      <ul id="sub_list" class="sub_list" style="display: none;">
+        <li><span>Gefängnis</span></li>
+        <li><span>Ghetto</span></li>
+        <li><span>KZ</span></li>
+        <li><span>AEL</span></li>
+        <li><span>Zwangsarbeiterlager</span></li>
+        <li><span>Sammel- und Durchgangslager</span></li>
+        <li><span>Kriegsgefangenenlager</span></li>
+        <li><span>Repatriierungs- / DP-Lager</span></li>
+        <li><span>Sonstige Lager</span></li>
+      </ul>
+      //-->
+    </li>
+    <li class="map_filter forced_labor_company" style="cursor: pointer;"><span>Firmen</span></li>
+    <li class="map_filter deportation_location" style="cursor: pointer;"><span>Deportationen</span></li>
+  </ul>
+  <ul style="float: left;">
+    <li class="map_filter place_of_birth" style="cursor: pointer;"><span>Geburtsorte</span></li>
+    <li class="map_filter return_location" style="cursor: pointer;"><span>Wohnorte nach 1945</span></li>
+    <li class="map_filter home_location" style="cursor: pointer;"><span>Lebensmittelpunkte</span></li>
+    <li class="map_filter interview" style="cursor: pointer;"><span>Erwähnungen</span></li>
+  </ul>
+  <div id="cluster_toggle" style="clear: both; cursor: pointer;" onclick="toggleClusters();">
+    <span>Gruppierung auf Ebene Region/Land</span>
+  </div>
+</div>
+
+<div id="interview_selection_toggle">Interviews: alle</div>
+
+<script type="text/javascript">
+    Event.observe('explanation_filter_toggle', 'click', function(){
+        Effect.toggle('explanation_filter','appear', { duration: 0.5 });
+    });
+
+    /*
+    Event.observe('sub_list_toggle', 'click', function(event){
+        Effect.toggle('sub_list','blind', { duration: 0.5 });
+        Event.stop(event);
+    });
+    */
+
+</script>
+
+<div id="interactive_map" style="width: 100%; height: 660px"></div>
+
+<!--
+<div id="tests">
+  <ul style="float: left; width: 30%;">
+    <li><%= link_to 'Places', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(0);' %></li>
+    <li><%= link_to 'Regions', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(1);' %></li>
+    <li><%= link_to 'Countries', 'javascript:cedisMap.locationSearch.clusterManager.switchLevel(2);' %></li>
+  </ul>
+  <ul style="float: left; width: 30%">
+    <li><%= link_to 'Toggle all locations', 'javascript:cedisMap.locationSearch.clusterManager.toggleAllLocations();' %></li>
+    <li><%= link_to 'Toggle all clusters', 'javascript:cedisMap.locationSearch.clusterManager.toggleAllMarkers();' %></li>
+  </ul>
+</div>
+//-->
+
+<% javascript_tag do -%>
+  document.observe("dom:loaded", mapSetup('interactive_map'));
+<% end -%>
+
+<!-- TEST CONDITIONS:
+
+l = LocationReference.new{|lr| lr.latitude = 49.1; lr.longitude = 16.3 }
+
+l2 = LocationReference.new {|lr| lr.latitude = 51.1; lr.longitude = 13.6 }
+
+LocationReference.bounding_quadrant_raster_for(l.grid_coordinates, l2.grid_coordinates)
+
+//-->

@@ -94,9 +94,38 @@ namespace :xml_import do
 
     raise "No xml file supplied (file=...). Please provide a valid xml filename." unless File.exists?(file)
 
-    @parser = Nokogiri::XML::SAX::Parser.new(LocationsXMLImport.new)
+    @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file, true, 'location,locations-segment'))
     @parser.parse(File.read(file))
 
+  end
+
+  desc "selective location references import for all interviews"
+  task :all_locations => :environment do
+    require 'open4'
+    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
+    @logfile = File.join(RAILS_ROOT, 'log', "import_locations_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
+    puts "\nLogging import to #{@logfile}"
+    File.open(@logfile,'w+') do |logfile|
+      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+        next if xmlfile.blank?
+        Open4::popen4("rake xml_import:locations file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+          stdout.each_line {|line| puts line }
+          errors = []
+          stderr.each_line {|line| errors << line unless line.empty?}
+          unless errors.empty?
+            errmsg = "\nImport der Ortsdaten aus (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            logfile << errmsg
+            puts errmsg
+          end
+        end
+        statusmsg = "finished locations import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
+        logfile << statusmsg
+        puts statusmsg
+        sleep 2
+        puts
+      end
+    end
   end
 
 

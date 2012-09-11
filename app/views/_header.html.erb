@@ -38,7 +38,7 @@
             <fieldset>
               <legend>Abmelden</legend>
               <p id="logoutUserLogin">
-                <%= truncate(current_user_account.try(:login), 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
+                <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
                     <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
                 <% else %>
