@@ -11,7 +11,8 @@
         <% section = segment.section -%>
         <% if current_section_segment -%>
     <li id="segments_section-<%= section -%>" class="section-heading">
-      In&nbsp;<span class="heading">&#147;<%= section -%>&nbsp;<%= current_section_segment.subheading || current_section_segment.mainheading -%>&#148;</span>:
+      <% heading = current_section_segment.subheading.blank? ? current_section_segment.mainheading : current_section_segment.subheading -%>
+      In&nbsp;<span class="heading">&#147;<%= heading -%>&#148;</span>:
     </li>
         <% end -%>
     <% end -%>
