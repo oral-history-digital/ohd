@@ -818,8 +818,6 @@ Copyright (c) 2011 by Harvest
               } else {
                 text = option.html;
               }
-                $('winnow-match').innerHTML = text;
-                $('winnow-results').innerHTML = results;
               if ($(result_id).innerHTML !== text) $(result_id).update(text);
               this.result_activate($(result_id));
               if (option.group_array_index != null) {
@@ -844,19 +842,6 @@ Copyright (c) 2011 by Harvest
         if(searchText.strip().length > 0) {
             this.add_button.show();
         }
-        /*
-        var bshow = false;
-        if((results > 0) && (searchText.length)) {
-            if(searchText !== this.result_highlight.innerHTML) {
-                bshow = true;
-            }
-        }
-        if(bshow) {
-            this.add_button.show();
-        } else {
-            this.add_button.hide();
-        }
-        */
         return this.winnow_results_set_highlight();
       }
     };

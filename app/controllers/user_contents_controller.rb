@@ -102,12 +102,12 @@ class UserContentsController < BaseController
     end
   end
 
-  # set topics via 'tags' parameter (array of tag id's)
+  # set topics via 'tags' parameter (array of tag names)
   def update_topics
     object
-    tag_ids = params[:tags]
-    if tag_ids.is_a?(Array)
-      @object.tag_list = tag_list_from_ids(tag_ids)
+    tag_names = params[:tags]
+    if tag_names.is_a?(Array)
+      @object.tag_list = tag_names
       @object.save
     end
     respond_to do |format|

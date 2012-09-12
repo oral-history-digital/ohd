@@ -1,10 +1,13 @@
 <%= modal_window_close_button_on_javascript_request -%>
 <h2><%= t(:topics, :scope => 'user_interface.user_content') -%></h2>
 <div>
-  <% remote_form_for @object, :url => update_topics_user_content_path(@object) do %>
+  <% remote_form_for @object,
+                     :url => update_topics_user_content_path(@object),
+                     :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
+                     :complete => "new Effect.Fade('shades');" do %>
     <label><%= t(:user_tags, :scope => 'user_interface.user_content') -%></label>
     <%= topics_select('tags', { :id => "topics-#{@object.id}", :class => 'chzn-select' }, @object.tags.map(&:name)) -%>
-    <%= submit_tag 'aktualisieren' %>
+    <%= submit_tag t(:update, :scope => 'user_interface.actions') %>
   <% end %>
 </div>
 <% javascript_tag do %>
