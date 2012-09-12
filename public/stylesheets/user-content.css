@@ -466,3 +466,10 @@ body .teaserList .save_user_content {
 .workbook .topics div form input[type='submit'] {
     margin-top: 40px;
 }
+
+.workbook .chzn-drop .chzn-results li {
+    display: none;
+}
+.workbook .chzn-drop .chzn-results li.active-result {
+    display: block;
+}

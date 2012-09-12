@@ -216,7 +216,7 @@ Copyright (c) 2011 by Harvest
       stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
       switch (stroke) {
-        case 8:
+        case 8: // BACKSPACE
           if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
             return this.keydown_backstroke();
           } else if (!this.pending_backstroke) {
@@ -224,19 +224,19 @@ Copyright (c) 2011 by Harvest
             return this.results_search();
           }
           break;
-        case 13:
+        case 13: // ENTER
           evt.preventDefault();
           if (this.results_showing) return this.result_select(evt);
           break;
-        case 27:
+        case 27: // ESCAPE
           if (this.results_showing) this.results_hide();
           return true;
-        case 9:
-        case 38:
-        case 40:
-        case 16:
-        case 91:
-        case 17:
+        case 9:  // TAB
+        case 38: // UP ARROW
+        case 40: // DOWN ARROW
+        case 16: // SHIFT
+        case 91: // LEFT WIN
+        case 17: // CTRL
           break;
         default:
           return this.results_search();
@@ -807,6 +807,8 @@ Copyright (c) 2011 by Harvest
               } else {
                 text = option.html;
               }
+                $('winnow-match').innerHTML = text;
+                $('winnow-results').innerHTML = results;
               if ($(result_id).innerHTML !== text) $(result_id).update(text);
               this.result_activate($(result_id));
               if (option.group_array_index != null) {
@@ -824,7 +826,8 @@ Copyright (c) 2011 by Harvest
         }
       }
       if (results < 1 && searchText.length) {
-        return this.no_results(searchText);
+        // return this.no_results(searchText);
+        this.results_hide();
       } else {
         return this.winnow_results_set_highlight();
       }
