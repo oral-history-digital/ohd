@@ -297,7 +297,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.set_default_values = function() {
       Chosen.__super__.set_default_values.call(this);
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
-      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
+      this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field" style="position: relative;"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /><a href="#" class="chzn-add" style="position: absolute; right: 0px; display: none;">add</a></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       return this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
     };
@@ -329,6 +329,7 @@ Copyright (c) 2011 by Harvest
         "top": dd_top + "px"
       });
       this.search_field = this.container.down('input');
+      this.add_button = this.container.down('.chzn-add');
       this.search_results = this.container.down('ul.chzn-results');
       this.search_field_scale();
       this.search_no_results = this.container.down('li.no-results');
@@ -827,8 +828,25 @@ Copyright (c) 2011 by Harvest
       }
       if (results < 1 && searchText.length) {
         // return this.no_results(searchText);
+        this.add_button.show();
         this.results_hide();
       } else {
+        if(searchText.strip().length > 0) {
+            this.add_button.show();
+        }
+        /*
+        var bshow = false;
+        if((results > 0) && (searchText.length)) {
+            if(searchText !== this.result_highlight.innerHTML) {
+                bshow = true;
+            }
+        }
+        if(bshow) {
+            this.add_button.show();
+        } else {
+            this.add_button.hide();
+        }
+        */
         return this.winnow_results_set_highlight();
       }
     };
@@ -859,6 +877,12 @@ Copyright (c) 2011 by Harvest
         }
         if (!(do_high != null)) {
           do_high = this.search_results.down(".active-result");
+        }
+        // remove the add button if there is a match between
+        if (do_high != null) {
+            if(this.search_field.value == do_high.innerHTML.gsub('<em>','').sub('</em>','')) {
+                this.add_button.hide();
+            }
         }
         if (do_high != null) return this.result_do_highlight(do_high);
       }
@@ -980,6 +1004,15 @@ Copyright (c) 2011 by Harvest
         this.search_field.setStyle({
           'width': w + 'px'
         });
+        if(this.search_field.value.strip().length == 0) {
+            this.add_button.hide()
+        } else {
+            // adjust button positioning
+            var bw = Element.measure(this.container, 'width') - w - Element.measure(this.add_button, 'width') - 2;
+            this.add_button.setStyle({
+              'right': bw + 'px'
+            });
+        }
         dd_top = this.container.getHeight();
         return this.dropdown.setStyle({
           "top": dd_top + "px"

@@ -458,13 +458,40 @@ body .teaserList .save_user_content {
 
 .workbook .chzn-container .chzn-choices,
 .workbook .chzn-container .chzn-choices .search-field,
-.workbook .chzn-container .chzn-choices .search-field input,
+.workbook .chzn-container .chzn-choices .search-field input[type='text'],
 .workbook .chzn-results li {
     width: 100% !important;
 }
 
 .workbook .topics div form input[type='submit'] {
     margin-top: 40px;
+}
+
+.workbook .chzn-choices .search-field .chzn-add {
+    z-index: 100;
+    -webkit-border-radius: 3px;
+    -moz-border-radius   : 3px;
+    border-radius        : 3px;
+    -moz-background-clip   : padding;
+    -webkit-background-clip: padding-box;
+    background-clip        : padding-box;
+    background-color: #e4e4e4;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 );
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+    background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    background-image: -moz-linear-gradient(top, #cce56c 30%, #e1e97f 40%, #cce56c 60%, #98d441 100%);
+    background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+    -moz-box-shadow   : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+    box-shadow        : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+    color: #333;
+    border: 1px solid #aaaaaa;
+    line-height: 13px;
+    padding: 3px;
+    margin: 3px 0 3px 5px;
+    text-decoration: none;
 }
 
 .workbook .chzn-drop .chzn-results li {
