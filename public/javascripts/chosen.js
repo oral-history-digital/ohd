@@ -386,6 +386,9 @@ Copyright (c) 2011 by Harvest
       this.search_field.observe("keydown", function(evt) {
         return _this.keydown_checker(evt);
       });
+      this.add_button.observe('click', function(evt) {
+        return _this.add_new_option(evt);
+      });
       if (this.is_multiple) {
         this.search_choices.observe("click", function(evt) {
           return _this.choices_click(evt);
@@ -766,6 +769,13 @@ Copyright (c) 2011 by Harvest
           after: "<abbr class=\"search-choice-close\"></abbr>"
         });
       }
+    };
+
+    Chosen.prototype.add_new_option = function(evt) {
+      var optionText = this.search_field.value.strip().escapeHTML();
+      var optionHtml = new Element('option', {'selected': true, 'value': optionText }).update(optionText);
+      this.form_field.insert({bottom: optionHtml});
+      this.results_build();
     };
 
     Chosen.prototype.winnow_results = function() {
