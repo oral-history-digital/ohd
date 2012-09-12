@@ -16,8 +16,9 @@ end -%>
         <a name="user_content_<%= user_content.id -%>" style="display: none;">&nbsp;</a>
       </span>
       <% unless user_content.tag_list.empty? -%>
-      <span class="themes">
-        <%= user_content.tag_list %>
+        <% expanded_tags = user_content.tag_list.join(', ') -%>
+      <span class="themes" title='<%= expanded_tags.length > 45 ? expanded_tags : '' -%>'>
+        <%= truncate(expanded_tags, :length => 45) %>
       </span>
       <% end -%>
       <span class="toggle">

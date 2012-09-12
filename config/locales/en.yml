@@ -111,6 +111,7 @@ en:
       edit: 'edit'
       update: 'update'
       reset: 'cancel'
+      add: 'add'
     player:
       back: 'previous'
       forward: 'next'

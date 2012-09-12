@@ -7,6 +7,9 @@
 
 // MIT License, https://github.com/harvesthq/chosen/blob/master/LICENSE.md
 
+// Modified 12.09.2012 by Jan Rietema for CeDiS, http://cedis.fu-berlin.de
+// Added the functionality to add an option and result based on the text entered
+
 (function() {
   var SelectParser;
 
@@ -124,6 +127,7 @@ Copyright (c) 2011 by Harvest
       };
       this.active_field = false;
       this.mouse_on_container = false;
+      this.add_label = this.options.add_label || 'add';
       this.results_showing = false;
       this.result_highlighted = null;
       this.result_single_selected = null;
@@ -330,6 +334,7 @@ Copyright (c) 2011 by Harvest
       });
       this.search_field = this.container.down('input');
       this.add_button = this.container.down('.chzn-add');
+      this.add_button.innerHTML = this.add_label;
       this.search_results = this.container.down('ul.chzn-results');
       this.search_field_scale();
       this.search_no_results = this.container.down('li.no-results');

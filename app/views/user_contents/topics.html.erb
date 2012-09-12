@@ -11,7 +11,7 @@
   <% end %>
 </div>
 <% javascript_tag do %>
-    new Chosen($('topics-<%= @object.id -%>'));
+    new Chosen($('topics-<%= @object.id -%>'), { 'add_label': '<%= t(:add, :scope => 'user_interface.actions') -%>' });
     var el = $('modal_window');
     if(el) { el.className = 'edit'; el.addClassName('topics'); }
 <% end %>

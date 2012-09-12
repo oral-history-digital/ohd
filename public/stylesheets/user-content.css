@@ -165,6 +165,7 @@ body .teaserList .save_user_content {
     float: right;
     font-size: 85%;
     margin-right: 10px;
+    margin-top: 1px;
 }
 
 #user_contents .toggle {
@@ -444,8 +445,7 @@ body .teaserList .save_user_content {
 /* modal topics dialog */
 .workbook .topics div form div,
 .workbook .topics div form label,
-.workbook .topics div form li,
-.workbook .topics div form input {
+.workbook .topics div form li {
     float: left;
     display: block;
     clear: left;
@@ -455,16 +455,21 @@ body .teaserList .save_user_content {
 .workbook .topics form input {
     margin-top: 10px;
 }
+.workbook .topics div form input {
+    float: left;
+    margin-left: 20px;
+    display: inline;
+}
+
+.workbook .chzn-container {
+    margin-bottom: 50px;
+}
 
 .workbook .chzn-container .chzn-choices,
 .workbook .chzn-container .chzn-choices .search-field,
 .workbook .chzn-container .chzn-choices .search-field input[type='text'],
 .workbook .chzn-results li {
     width: 100% !important;
-}
-
-.workbook .topics div form input[type='submit'] {
-    margin-top: 40px;
 }
 
 .workbook .chzn-choices .search-field .chzn-add {
