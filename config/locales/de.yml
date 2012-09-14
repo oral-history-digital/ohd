@@ -18,6 +18,7 @@ de:
   admin_area: 'Administratoren-Bereich'
   and: 'und'
   no_placeholder: 'keine'
+  for: 'f&uuml;r'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -130,7 +131,8 @@ de:
       delete: 'L&ouml;schen'
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
-      user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein:'
+      tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
+      user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'

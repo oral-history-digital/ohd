@@ -443,6 +443,13 @@ body .teaserList .save_user_content {
 }
 
 /* modal topics dialog */
+.workbook .hint {
+    margin: 10px;
+    font-size: 85%;
+    /* font-weight: bold; */
+    /* color: #6F6C5D; */
+}
+
 .workbook .topics div form div,
 .workbook .topics div form label,
 .workbook .topics div form li {

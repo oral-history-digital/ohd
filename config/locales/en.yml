@@ -18,6 +18,7 @@ en:
   admin_area: 'Admin Area'
   and: 'and'
   no_placeholder: 'no'
+  for: 'for'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -132,7 +133,8 @@ en:
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'
-      user_tags: 'Choose available topics or enter new topic names:'
+      tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
+      user_tags: 'Choose available topics or enter new topic names to characterize this content:'
     interview_reference:
       save: 'mark interview'
       saved: 'marked interview'
