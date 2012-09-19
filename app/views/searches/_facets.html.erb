@@ -47,7 +47,7 @@
   <% end %>
 
   <% javascript_tag do %>
-      Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) alert('Pressed ENTER - submitting search (WIP)!');});
+      Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) /* catch these keycodes to submit the forms! */ });
   <% end %>
 
 </div>
