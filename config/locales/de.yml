@@ -15,6 +15,7 @@ de:
   search_term: 'Suchbegriff'
   translated: 'übersetzt'
   all: 'alle'
+  select_all: 'alle ausw&auml;hlen'
   admin_area: 'Administratoren-Bereich'
   and: 'und'
   no_placeholder: 'keine'
@@ -134,6 +135,7 @@ de:
       saved: 'Inhalt gemerkt'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
+      tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'

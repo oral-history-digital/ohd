@@ -13,6 +13,7 @@ en:
   more: 'more'
   translated: 'translated'
   all: 'all'
+  select_all: 'select all'
   previous: '&laquo;&nbsp;previous'
   next: 'next&nbsp;&raquo;'
   admin_area: 'Admin Area'
@@ -136,6 +137,7 @@ en:
       saved: 'saved content'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
+      tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
     interview_reference:
       save: 'mark interview'
       saved: 'marked interview'
