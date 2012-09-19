@@ -209,13 +209,29 @@ class UserContentsController < BaseController
     conditions
   end
 
+  def tag_filters
+    filters = params['tag_filters'] || {}
+    if((filters.keys.size > 0) && (filters.keys.size < current_user.tags.length))
+      return filters.keys
+    else
+      return []
+    end
+  end
+
   def collection
     conditions = filter_conditions
     sql_conditions = []
     sql_conditions << [conditions.shift, 'user_id = ?'].delete_if{|el| el.blank? }.join(' AND ')
     sql_conditions += conditions
     sql_conditions << current_user.id
-    end_of_association_chain.find(:all, :conditions => sql_conditions, :order => "created_at DESC")
+    includes = []
+    tags = tag_filters
+    unless tags.empty?
+      includes << :taggings
+      includes << :tags
+      sql_conditions = [ sql_conditions.shift + " AND tags.name IN (?)" ] + sql_conditions + [tags.join("','")]
+    end
+    end_of_association_chain.find(:all, :conditions => sql_conditions, :include => includes, :order => "user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)

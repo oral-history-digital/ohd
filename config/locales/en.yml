@@ -105,6 +105,7 @@ en:
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
       filter_contents: 'Contents shown'
+      filter_by_tag: 'Topics shown'
       more: 'more'
       less: 'less'
       please_select: 'Please select...'

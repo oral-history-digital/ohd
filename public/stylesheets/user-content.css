@@ -432,12 +432,19 @@ body .teaserList .save_user_content {
     height: 122px;
 }
 
-#content-filters .facet-field {
+#baseContainerRight #tag-filters {
+    margin-top: 10px;
+    height: auto;
+}
+
+#content-filters .facet-field,
+#tag-filters .facet-field {
     cursor: pointer;
     padding: 4px;
 }
 
-#content-filters li.facet {
+#content-filters li.facet,
+#tag-filters li.facet {
     margin-top: 2px;
     color: #6f6c5d;
 }

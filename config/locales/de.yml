@@ -103,6 +103,7 @@ de:
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
+      filter_by_tag: 'Angezeigte Themen'
       more: 'mehr'
       less: 'weniger'
       please_select: 'Bitte w&auml;hlen...'

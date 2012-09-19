@@ -27,6 +27,20 @@
     </ul>
   </div>
 
+  <div id="tag-filters-toggle" class="open container-toggle" onclick="toggleContainer('tag-filters-toggle', true);">
+    <h2><%= t('filter_by_tag', :scope => 'user_interface.labels') %><a href='#' onclick="checkTag(null, this); Event.stop(event);">(<%= t('all') -%>)</a></h2>
+  </div>
+  <div id="tag-filters" class="container">
+    <ul class="facet-field">
+      <% current_user.tags.each do |tag| -%>
+      <li class="facet checked" onclick="checkTag('<%= "tagfilter_#{tag}" %>', this);">
+        <%= check_box_tag "tag_filters[#{tag}]", 1, false, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>
+        <span class="facet-name"><%= tag %></span>
+      </li>
+      <% end -%>
+    </ul>
+  </div>
+
   <% end -%>
 
   <% javascript_tag do -%>

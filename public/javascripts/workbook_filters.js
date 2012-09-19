@@ -45,6 +45,31 @@
       }
   }
 
+  function checkTag(id, labelElement) {
+      var changed = false;
+      var checkedInput = (id == null) ? null : $(id);
+      var facets = (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');
+      if(checkedInput) {
+          alert('Input: ' + Element.inspect(checkedInput) + '\n\nchecked: ' + checkedInput.checked);
+      }
+      facets.select('.checkbox').each(function(input){
+          var currentItem = input.up('.facet');
+          if((checkedInput == null) || (input.id == id)) {
+              if(!input.checked) { changed = true; }
+              input.checked = true;
+              currentItem.addClassName('checked');
+          } else {
+              if(input.checked) { changed = true; }
+              input.checked = false;
+              currentItem.removeClassName('checked');
+          }
+      });
+      if(changed) {
+          labelElement.up('form').request();
+          new Effect.Appear('overlay', { duration: 0.3, to: 0.9, queue: 'front' });
+      }
+  }
+
   function interfaceStatusValueOf(id) {
       return ($(id).hasClassName('closed') ? 'closed' : '');
   }
