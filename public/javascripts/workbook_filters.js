@@ -49,9 +49,6 @@
       var changed = false;
       var checkedInput = (id == null) ? null : $(id);
       var facets = (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');
-      if(checkedInput) {
-          alert('Input: ' + Element.inspect(checkedInput) + '\n\nchecked: ' + checkedInput.checked);
-      }
       facets.select('.checkbox').each(function(input){
           var currentItem = input.up('.facet');
           if((checkedInput == null) || (input.id == id)) {
