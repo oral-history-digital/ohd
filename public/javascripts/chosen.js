@@ -391,6 +391,11 @@ Copyright (c) 2011 by Harvest
       this.search_field.observe("keydown", function(evt) {
         return _this.keydown_checker(evt);
       });
+      this.search_field.observe('keypress', function(evt){
+        if(evt.keyCode == Event.KEY_RETURN) {
+            return _this.add_new_option(evt);   
+        }
+      });
       this.add_button.observe('click', function(evt) {
         return _this.add_new_option(evt);
       });

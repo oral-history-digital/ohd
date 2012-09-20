@@ -1,14 +1,16 @@
 
   // blind effect for accordion-container
-  function toggleContainer(parentId, blindToggle) {
+  function toggleContainer(parentId, blindToggle, toggleAll) {
     var cat_index = -1;
     var id = parentId.sub('-toggle','');
     for(var i=0; i< containerElems.length; i++) {
       if (parentId == containerElems[i].id) {
           cat_index = i;
       } else {
-          $(containerElems[i].id.sub('-toggle','')).hide();
-          markClosed(containerElems[i]);
+          if(toggleAll) {
+            $(containerElems[i].id.sub('-toggle','')).hide();
+            markClosed(containerElems[i]);   
+          }
       }
     }
     if(cat_index > -1) {

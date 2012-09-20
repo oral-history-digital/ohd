@@ -13,7 +13,7 @@
       </div>
     </noscript>
 
-  <div id="content-filters-toggle" class="open container-toggle" onclick="toggleContainer('content-filters-toggle', true);">
+  <div id="content-filters-toggle" class="open container-toggle" onclick="toggleContainer('content-filters-toggle', true, false);">
     <h2><%= t('filter_contents', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="content-filters" class="container">
@@ -27,7 +27,7 @@
     </ul>
   </div>
 
-  <div id="tag-filters-toggle" class="open container-toggle" onclick="toggleContainer('tag-filters-toggle', true);">
+  <div id="tag-filters-toggle" class="open container-toggle" onclick="toggleContainer('tag-filters-toggle', true, false);">
     <h2><%= t('filter_by_tag', :scope => 'user_interface.labels') %><a href='#' onclick="checkTag(null, this); Event.stop(event);">(<%= t('select_all') -%>)</a></h2>
   </div>
   <div id="tag-filters" class="container">

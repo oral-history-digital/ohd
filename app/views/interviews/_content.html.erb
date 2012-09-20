@@ -47,7 +47,7 @@
       <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
       <% fulltext = @search.fulltext -%>
   <% end -%>
-  <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed'%> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true);">
+  <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed'%> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true, true);">
     <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
     <% if show_segments %>
     <span class="hits">(<%= @segments.size %>)</span>
@@ -58,7 +58,7 @@
   </div>
 
   <% show_headings = (featured_content == :headings) %>
-  <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed'%> container-toggle" onclick="toggleContainer('headings-toggle', true);">
+  <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed'%> container-toggle" onclick="toggleContainer('headings-toggle', true, true);">
     <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
@@ -76,7 +76,7 @@
 
   <!--
 
-  <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle');">
+  <div id="my-results-toggle" class="closed container-toggle" onclick="toggleContainer('my-results-toggle', true, true);">
     <h2><%= t('my_search', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="my-results" class="accordion-container container" style="display:none;">Noch keine Rechercheergebnisse gespeichert.</div>
