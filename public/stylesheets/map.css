@@ -183,7 +183,7 @@
 
 #explanation_filter_toggle {
   position: absolute;
-  left: 460px;
+  left: 574px;
   top: 25px;
   width: 110px;
   padding: 2px 5px;
@@ -197,28 +197,59 @@
 #explanation_filter {
   position: absolute;
   top: 52px;
-  left: 184px;
-  width: 510px;
+  left: 434px;
   background: #F1F1EB;
   z-index: 1;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#baseContent #explanation_filter ul {
-  padding: 10px 0 10px 10px;
-  width: 240px;
+#introduction {
+    position: absolute;
+    top: 52px;
+    left: 100px;
+    width: 328px;
+    background: #F1F1EB;
+    z-index: 1;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#baseContent .map-overlay ul {
+  padding: 10px;
   margin: 0;
 }
 
-#baseContent #explanation_filter ul li {
+#baseContent #explanation_filter ul {
+    width: 240px;
+}
+
+#baseContent .map-overlay ul li {
   position: relative;
   margin-bottom: 1px;
   padding: 4px 0;
   background-position: 30px 4px;
 }
 
-#baseContent #explanation_filter ul li {
+#baseContent #explanation_filter ul li.map_filter {
   text-indent: 55px;
+}
+
+#baseContent .map-overlay ul li.hint {
+    background-image: none;
+    background-color: #fff;
+    padding: 10px 10px 4px 18px;
+    margin-top: 10px;
+}
+
+#baseContent .map-overlay ul li.hint:first-child {
+    margin-top: 0;
+}
+
+#baseContent .map-overlay li.hint p {
+    color: #969380;
+}
+
+#baseContent #introduction li.hint p {
+    color: #000;
 }
 
 #explanation_filter ul li img {
@@ -229,12 +260,12 @@
   cursor: pointer;
 }
 
-#baseContent #explanation_filter ul ul {
+#baseContent .map-overlay ul ul {
   padding: 4px 0 0;
   margin-bottom: -5px;
 }
 
-#baseContent #explanation_filter ul ul li {
+#baseContent .map-overlay ul ul li {
   position: relative;
   padding: 4px 0;
   margin-bottom: 0;
@@ -244,11 +275,11 @@
 }
 
 #baseContent #explanation_filter #cluster_toggle {
-    padding-left: 62px;
-    padding-top: 20px;
-    margin: 10px;
-    background: #f9f9f7 url('/images/circle_legend.png') 16px 8px no-repeat;
-    min-height: 36px;
+    padding-left: 66px;
+    padding-top: 10px;
+    background: #fff url('/images/circle_legend.png') 18px 8px no-repeat;
+    min-height: 40px;
+    text-indent: 0;
     vertical-align: middle;
 }
 
@@ -262,15 +293,16 @@
 }
 
 #baseContent .cluster-icon {
-  color: #990000;
+  color: #65645c;
   position: absolute;
+  background: transparent url('/images/cluster_bg.png') center no-repeat;
   cursor: pointer;
   overflow: hidden;
   width: 40px;
   max-width: 40px;
   height: 28px;
   max-height: 40px;
-  font-size: 12px;
+  font-size: 10px;
   padding-top: 12px;
   text-align: center;
   z-index: 100;
