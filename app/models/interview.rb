@@ -14,6 +14,8 @@ class Interview < ActiveRecord::Base
 
   has_many  :location_references
 
+  has_many :annotations
+
   has_many  :contributions
 
   has_many  :contributors,

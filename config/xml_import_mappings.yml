@@ -146,3 +146,12 @@ locations-segment:
   media-id: 'media_id'
   descriptor: 'descriptor'
 
+annotation:
+  key_attribute: 'none'
+  delete_all: true
+  skip_invalid: true
+  author: 'author'
+  media-id: 'media_id'
+  timecode: 'timecode'
+  text: 'text'
+

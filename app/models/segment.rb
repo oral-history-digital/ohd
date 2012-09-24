@@ -24,7 +24,9 @@ DEF
   end
 
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
-  named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} } 
+  named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
+
+  named_scope :for_media_id, lambda {|mid| { :conditions => ["media_id < ?", mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i+1).to_s.rjust(4,'0'))], :order => "media_id DESC", :limit => 1 }}
   
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
