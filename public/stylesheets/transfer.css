@@ -8,6 +8,20 @@
     direction: LTR;
 }
 
+.imageLeft {
+    float: left;
+    padding: 1px;
+    border: 1px solid #969380;
+    margin: 4px 4px 4px 0;
+}
+
+.imageRight {
+    float: right;
+    padding: 1px;
+    border: 1px solid #969380;
+    margin: 4px 0 4px 4px;
+}
+
 #overlay {
     opacity: 0.9;
     filter: alpha(opacity=90);

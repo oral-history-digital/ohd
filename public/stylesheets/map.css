@@ -229,7 +229,8 @@
   background-position: 30px 4px;
 }
 
-#baseContent #explanation_filter ul li.map_filter {
+#baseContent #explanation_filter ul li.map_filter,
+#baseContent #explanation_filter ul li.map_filter_off {
   text-indent: 55px;
 }
 
