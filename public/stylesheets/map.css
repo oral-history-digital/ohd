@@ -279,7 +279,7 @@
   background: #f9f9f7;
 }
 
-#baseContent #explanation_filter #cluster_toggle {
+#baseContent #explanation_filter .cluster_toggle {
     padding-left: 66px;
     padding-top: 10px;
     background: #fff url('/images/circle_legend.png') 18px 8px no-repeat;
@@ -289,7 +289,7 @@
     cursor: pointer;
 }
 
-#baseContent #explanation_filter #cluster_toggle.clusters-off {
+#baseContent #explanation_filter .cluster_toggle.clusters-off {
     background-image: url('/images/circle_legend_off.png');
     color: #b2afa1;
 }

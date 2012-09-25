@@ -21,7 +21,7 @@ function debugMsg(msg) {
 }
 
 function toggleClusters() {
-    $('cluster_toggle').toggleClassName('clusters-off');
+    $$('.cluster_toggle').each(function(el){el.toggleClassName('clusters-off');});
     if(clustersOffset > 0) {
         clustersOffset = 0;
     } else {
@@ -188,7 +188,7 @@ ClusterManager.prototype = {
 
         if((options.clusters) && (parseInt(options.clusters)) > 0) {
             clustersOffset = 0;
-            $('cluster_toggle').removeClassName('clusters-off');
+            $$('.cluster_toggle').each(function(el){el.removeClassName('clusters-off');});
         }
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
