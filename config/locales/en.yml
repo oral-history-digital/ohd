@@ -42,6 +42,7 @@ en:
     hilfe_zur_suche: 'faq_searching'
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
+    map_tutorial: 'map_tutorial'
 
   page_urls:
     archive: 'archive'
@@ -54,6 +55,7 @@ en:
     faq_archive_contents: 'faq_contents'
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
+    map_tutorial: 'map_tutorial'
 
   tasks:
     interviewers: 'Interviewer'

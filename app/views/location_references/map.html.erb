@@ -9,8 +9,8 @@
     <li class="hint">
       <p>Kartenansicht nach Arten der Ortsangaben filtern:</p>
     </li>
-    <li class="map_filter forced_labor_location" style="cursor: pointer;"><span>Einsatzorte</span></li>
-    <li class="map_filter forced_labor_camp" style="cursor: pointer;"><span>Lager und Haftst&auml;tten</span>
+    <li class="map_filter_off forced_labor_location" style="cursor: pointer;"><span>Einsatzorte</span></li>
+    <li class="map_filter_off forced_labor_camp" style="cursor: pointer;"><span>Lager und Haftst&auml;tten</span>
       <!--
       <img id="sub_list_toggle" src="<%= image_path('/images/pfeil_rot_unten.gif')-%>" alt="Lagertypen aufklappen"/>
       <ul id="sub_list" class="sub_list" style="display: none;">
@@ -26,12 +26,12 @@
       </ul>
       //-->
     </li>
-    <li class="map_filter forced_labor_company" style="cursor: pointer;"><span>Firmen</span></li>
-    <li class="map_filter deportation_location" style="cursor: pointer;"><span>Deportationen</span></li>
-    <li class="map_filter place_of_birth" style="cursor: pointer;"><span>Geburtsorte</span></li>
-    <li class="map_filter return_location" style="cursor: pointer;"><span>Wohnorte nach 1945</span></li>
-    <li class="map_filter home_location" style="cursor: pointer;"><span>Lebensmittelpunkte</span></li>
-    <li class="map_filter interview" style="cursor: pointer;"><span>Erwähnungen</span></li>
+    <li class="map_filter_off forced_labor_company" style="cursor: pointer;"><span>Firmen</span></li>
+    <li class="map_filter_off deportation_location" style="cursor: pointer;"><span>Deportationen</span></li>
+    <li class="map_filter_off place_of_birth" style="cursor: pointer;"><span>Geburtsorte</span></li>
+    <li class="map_filter_off return_location" style="cursor: pointer;"><span>Wohnorte nach 1945</span></li>
+    <li class="map_filter_off home_location" style="cursor: pointer;"><span>Lebensmittelpunkte</span></li>
+    <li class="map_filter_off interview" style="cursor: pointer;"><span>Erwähnungen</span></li>
     <li class="hint">
       <p>Gruppierung auf niedrigen Zoomstufen ein bzw aus:</p>
     </li>
@@ -58,6 +58,7 @@
     </li>
   </ul>
 </div>
+<div id="initial_map_tutorial" class="map-overlay slide-1" style="display: none;">&nbsp;</div>
 
 <div id="interview_selection_toggle" style="display: none;">Interviews: alle</div>
 
@@ -66,12 +67,19 @@
         Effect.toggle('explanation_filter','appear', { duration: 0.5 });
     });
 
-    /*
-    Event.observe('sub_list_toggle', 'click', function(event){
-        Effect.toggle('sub_list','blind', { duration: 0.5 });
-        Event.stop(event);
-    });
-    */
+    /* tutorial JS */
+    var currentSlideNum = 1;
+    function adjustSlideNum(move) {
+      var prevSlideNum = currentSlideNum;
+      currentSlideNum = currentSlideNum + move;
+      var el = $('initial_map_tutorial');
+      el.removeClassName('slide-' + prevSlideNum);
+      el.addClassName('slide-' + currentSlideNum);
+    }
+
+    function endTutorial() {
+      new Effect.Fade('initial_map_tutorial');
+    }
 
 </script>
 
@@ -92,7 +100,7 @@
 //-->
 
 <% javascript_tag do -%>
-  document.observe("dom:loaded", mapSetup('interactive_map'));
+  document.observe("dom:loaded", mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => @locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', auth_token: '<%= form_authenticity_token.inspect-%>' }));
 <% end -%>
 
 <!-- TEST CONDITIONS:

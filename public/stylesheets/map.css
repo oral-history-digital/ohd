@@ -194,23 +194,26 @@
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#explanation_filter {
-  position: absolute;
-  top: 52px;
-  left: 434px;
-  background: #F1F1EB;
-  z-index: 1;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-#introduction {
+.map-overlay {
     position: absolute;
     top: 52px;
-    left: 100px;
-    width: 328px;
     background: #F1F1EB;
     z-index: 1;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#explanation_filter {
+  left: 434px;
+}
+
+#introduction {
+    left: 100px;
+    width: 328px;
+}
+
+#initial_map_tutorial {
+    width: 328px;
+    left: 366px;
 }
 
 #baseContent .map-overlay ul {
@@ -229,8 +232,8 @@
   background-position: 30px 4px;
 }
 
-#baseContent #explanation_filter ul li.map_filter,
-#baseContent #explanation_filter ul li.map_filter_off {
+#baseContent .map-overlay ul li.map_filter,
+#baseContent .map-overlay ul li.map_filter_off {
   text-indent: 55px;
 }
 
@@ -246,11 +249,11 @@
 }
 
 #baseContent .map-overlay li.hint p {
-    color: #969380;
+    color: #000;
 }
 
-#baseContent #introduction li.hint p {
-    color: #000;
+#baseContent #explanation_filter li.hint p {
+    color: #969380;
 }
 
 #explanation_filter ul li img {
@@ -321,4 +324,16 @@
 #baseContent .level-2 .level-0,
 #baseContent .level-2 .level-1 {
     display: none !important;
+}
+
+/* map tutorial slides */
+.slide-1 .slide-2,
+.slide-1 .slide-3,
+.slide-2 .slide-1,
+.slide-2 .slide-3,
+.slide-3 .slide-1,
+.slide-3 .slide-2,
+.slide-1 .not-slide-1,
+.slide-3 .not-slide-3 {
+    display: none;
 }

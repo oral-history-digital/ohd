@@ -9,18 +9,20 @@ InteractiveMap.prototype = {
             longitude: 16.3,
             zoom: 5,
             indexURL: '/webservice/orte.json',
-            dataURL: '/webservice/orte/satz'
+            dataURL: '/webservice/orte/satz',
+            auth_token: 'please provide!' /* very important to provide this live */
         };
         if (options != null) {
             this.options = options;
         } else {
             this.options = {};
         }
-        if(!this.options.latitude) { this.options.latitude = defaults.latitude }
-        if(!this.options.longitude) { this.options.longitude = defaults.longitude }
-        if(!this.options.zoom) { this.options.zoom = defaults.zoom }
-        if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL }
-        if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL }
+        if(!this.options.latitude) { this.options.latitude = defaults.latitude; }
+        if(!this.options.longitude) { this.options.longitude = defaults.longitude; }
+        if(!this.options.zoom) { this.options.zoom = defaults.zoom; }
+        if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL; }
+        if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL; }
+        if(!this.options.introClass) { this.options.introClass = defaults.introClass; }
 
         this.currentLoadPage = 0;
         this.loadPageNumber = 0;
@@ -90,6 +92,7 @@ InteractiveMap.prototype = {
     },
     searchWithinBounds: function() {
         new Ajax.Request(cedisMap.locationSearch.options.indexURL, {
+            parameters: { 'authenticity_token': this.options.auth_token },
             method: 'GET',
             onSuccess: cedisMap.locationSearch.initializeProgressBar
         });
@@ -105,6 +108,7 @@ InteractiveMap.prototype = {
        this.currentLoadPage = this.currentLoadPage + 1;
         if (this.currentLoadPage < (this.loadPageNumber + 1)) {
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
+                parameters: { 'authenticity_token': this.options.auth_token },
                 method: 'GET',
                 onSuccess: cedisMap.locationSearch.initializeDataPage
             });
@@ -113,6 +117,7 @@ InteractiveMap.prototype = {
             this.progress.updateBar(1);
             this.progress.hide();
             cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
+            this.checkForIntro();
         }
     },
     initializeDataPage: function(response) {
@@ -163,10 +168,31 @@ InteractiveMap.prototype = {
         if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
+    },
+    checkForIntro: function() {
+      if(this.options.introId && this.options.introURL && (!readMapConfigurationCookie().intro)) {
+          this.showTutorial();
+      }
+    },
+    showTutorial: function() {
+      var _this = cedisMap.locationSearch;
+      var introTab = $(_this.options.introId);
+      new Ajax.Updater( _this.options.introId,
+                        _this.options.introURL,
+                        {   parameters: { 'authenticity_token': this.options.auth_token },
+                            evalScripts: true,
+                            onComplete: (function(){ _this.initTutorial(); })
+                        }
+      );
+    },
+    initTutorial: function() {
+        var _this = cedisMap.locationSearch;
+        new Effect.Appear(_this.options.introId);
+        setupFilters('#' + _this.options.introId + ' .map_filter_off');
     }
 };
 
-function mapSetup(id) {
+function mapSetup(id, options) {
     /* TODO: read the cookie from ClusterManager and ignore interview stuff */
     var storedConfig = readMapConfigurationCookie();
     var parameters = location.search.parseQuery([separator = '&']);
@@ -196,14 +222,15 @@ function mapSetup(id) {
         bounds = new google.maps.LatLngBounds(sw,ne);
     }
 
-    new InteractiveMap(id, {
-        mapBounds: bounds,
-        cluster: {
+    if(options == null) { options = {}; }
+    if(!options.mapBounds) { options.mapBound = bounds; }
+    if(!options.cluster) { options.cluster = {
             filters: filterOptions.flatten(),
             clusters: clusterOption,
             interviewRange: [selectionOfInterviews].flatten()
-        }
-    });
+    };}
+
+    new InteractiveMap(id, options);
 }
 
 function parseGeoLocParameter(param) {

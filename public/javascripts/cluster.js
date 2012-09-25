@@ -13,6 +13,8 @@ var totalClusters = 0;
 
 var interviewSelection = [];
 
+var filterControls = [];
+
 function debugMsg(msg) {
     if(!debugOn)  { return; }
     alert(msg.toString());
@@ -47,6 +49,8 @@ function storeMapConfigurationCookie() {
     } else {
         document.cookie = 'c=0; expires =' + now;
     }
+    // intro
+    document.cookie = 'i=1;';
     /*
     // interview selection - not included in cookie at present
     var interviews = [];
@@ -90,6 +94,7 @@ function readMapConfigurationCookie() {
     config.interviews = parseCookieValue(storedConfig,'i');
     */
     config.clusters = parseCookieValue(storedConfig,'c');
+    config.intro = storedConfig.match(/i=[^;]+/);
     return config;
 }
 
@@ -104,6 +109,22 @@ var locationTypePriorities = [
         'forced_labor_company',
         'forced_labor_camp'
 ];
+
+function setupFilters(selector) {
+    filterControls.push(selector);
+    filterControls = filterControls.uniq();
+    var filterControlId = 'abcde'[filterControls.length-1];
+    this.filterElements = $$(selector);
+    var idx = this.filterElements.length;
+    var numFilters = idx;
+    while(idx--) {
+        var el = this.filterElements[idx];
+        if(!el.id) {
+            el.id = ('map_filter_' + (numFilters - idx) + '_' + filterControlId);
+        }
+        Event.observe(el.id, 'click', toggleFilterElement);
+    }
+}
 
 function toggleFilterElement() {
     var filterName = null;
@@ -187,16 +208,7 @@ ClusterManager.prototype = {
         }
         if(!this.options.width) { this.options.width = defaults.width; }
 
-        this.filterElements = $$('.map_filter');
-        var idx = this.filterElements.length;
-        var numFilters = idx;
-        while(idx--) {
-            var el = this.filterElements[idx];
-            if(!el.id) {
-                el.id = ('map_filter_' + (numFilters - idx));
-            }
-            Event.observe(el.id, 'click', toggleFilterElement);
-        }
+        setupFilters('.map_filter_off');
 
         this.filters = [];
         var initialFilters = options.filters || [];
@@ -209,7 +221,7 @@ ClusterManager.prototype = {
     },
 
     addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
-        var locDisplay = !(this.filters.include(divClass));
+        var locDisplay = this.filters.include(divClass);
         // alert('Adding a ' + divClass + '. locDisplay = ' + locDisplay + '\ncurrent filters = ' + this.filters.inspect());
         var location = new Location(id, latLng, 0, interviewId, htmlText, divClass, linkURL, locDisplay);
 
@@ -382,10 +394,14 @@ ClusterManager.prototype = {
             }
             var filters = this.filters;
             // toggle the filter elements
-            var elem = $$('.map_filter.' + filter).concat($$('.map_filter_off.' + filter)).uniq().compact().first();
-            if(elem) {
-                elem.toggleClassName('map_filter');
-                elem.toggleClassName('map_filter_off');
+            var elems = $$('.map_filter.' + filter).concat($$('.map_filter_off.' + filter)).uniq().compact();
+            var eidx = elems.length;
+            while(eidx--) {
+                var elem = elems[eidx];
+                if(elem) {
+                    elem.toggleClassName('map_filter');
+                    elem.toggleClassName('map_filter_off');
+                }
             }
             // apply filters to all locations on all levels
             var level = cedisMap.mapLocations.length;
@@ -581,13 +597,13 @@ Location.prototype = {
     applyFilters: function(filters) {
         var changed = false;
         if(filters.indexOf(this.getLocationType(this.locationType)) > -1) {
-            if(this.displayFilter) {
-                this.hide();
+            if(!this.displayFilter) {
+                this.show();
                 changed = true;
             }
         } else {
-            if(!this.displayFilter) {
-                this.show();
+            if(this.displayFilter) {
+                this.hide();
                 changed = true;
             }
         }

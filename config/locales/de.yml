@@ -42,6 +42,7 @@ de:
     hilfe_zur_suche: 'faq_searching'
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
+    karteneinfuehrung: 'map_tutorial'
 
   page_urls: #outbound translation ('pretty' urls)
     archive: 'archiv'
@@ -54,6 +55,7 @@ de:
     faq_archive_contents: 'hilfe_zu_inhalten'
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
+    map_tutorial: 'karteneinfuehrung'
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
