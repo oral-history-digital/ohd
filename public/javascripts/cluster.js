@@ -162,6 +162,7 @@ var Cluster = Class.create();
 
 ClusterManager.prototype = {
     initialize: function(map, options) {
+
         this.map = map;
         this.locations = [];
         this.markers = [];

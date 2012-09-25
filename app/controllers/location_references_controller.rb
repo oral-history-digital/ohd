@@ -5,7 +5,7 @@ class LocationReferencesController < BaseController
   actions :index
 
   layout :check_for_iframe_render
-  IFRAME_ACTIONS = %w(map_frame)
+  IFRAME_ACTIONS = %w(map_frame map_test)
 
   skip_before_filter :check_user_authentication!
   skip_before_filter :current_search
@@ -72,6 +72,10 @@ class LocationReferencesController < BaseController
   end
 
   def map_frame
+  end
+
+  def map_test
+
   end
 
 
