@@ -1,0 +1,27 @@
+/* Style adjustments in Iframe */
+
+#mapFrame #baseContent {
+    position: relative;
+    width: 695px;
+}
+
+#mapFrame #interview_selection_toggle,
+#mapFrame #explanation_filter_toggle {
+    top: 3px;
+}
+
+#mapFrame #explanation_filter_toggle {
+    left: 569px;
+}
+
+#mapFrame #explanation_filter {
+    left: 429px;
+}
+
+#mapFrame #initial_map_tutorial {
+    left: 361px;
+}
+
+#mapFrame .map-overlay {
+    top: 30px;
+}

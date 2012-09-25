@@ -1,0 +1,75 @@
+<% javascript_tag do -%>
+  var map = null;
+<% end -%>
+
+<div id="explanation_filter_toggle">Legende / Filter</div>
+<div id="explanation_filter" class="map-overlay" style="display: none;">
+  <ul style="float: right;">
+    <li class="hint"><h3 style="margin: 0;">Legende und Filter<a href="#" onclick="new Effect.Fade('explanation_filter');" class="window-close"><%= t(:close) -%></a></h3></li>
+    <li class="hint">
+      <p>Kartenansicht nach Arten der Ortsangaben filtern:</p>
+    </li>
+    <li class="map_filter_off forced_labor_location"><span>Einsatzorte</span></li>
+    <li class="map_filter_off forced_labor_camp"><span>Lager und Haftst&auml;tten</span></li>
+    <li class="map_filter_off forced_labor_company"><span>Firmen</span></li>
+    <li class="map_filter_off deportation_location"><span>Deportationen</span></li>
+    <li class="map_filter_off place_of_birth"><span>Geburtsorte</span></li>
+    <li class="map_filter_off return_location"><span>Wohnorte nach 1945</span></li>
+    <li class="map_filter_off home_location"><span>Lebensmittelpunkte</span></li>
+    <li class="map_filter_off interview"><span>Erwähnungen</span></li>
+    <li class="hint">
+      <p>Gruppierung auf niedrigen Zoomstufen ein bzw aus:</p>
+    </li>
+    <li class="cluster_toggle clusters-off" onclick="toggleClusters();"><span>Gruppierung auf Ebene Region/Land</span></li>
+    <li class="hint">
+      <p>Hilfe benötigt? Mehr Erl&auml;uterungen finden Sie <a href="#" onclick="new Effect.Appear('introduction');">hier</a>.</p>
+    </li>
+  </ul>
+</div>
+<div id="introduction" class="map-overlay" style="display: none;">
+  <ul style="float: right;">
+    <li class="hint"><h3 style="margin: 0;">Erläuterungen<a href="#" onclick="new Effect.Fade('introduction');" class="window-close"><%= t(:close) -%></a></h3></li>
+    <li class="hint">
+      <p>Wählen Sie die Ortskategorien aus, <img class="imageLeft" src="<%= image_path('map/tut_filters.png') -%>"/>die Sie auf der Karte dargestellt haben wollen (Einsatzorte, Lager und Haftstätten, etc.). Verwenden Sie dazu die Filter rechts. Wenn alle Ortstypen abgewählt (grau) sind, können keine Orte mehr angezeigt werden.</p>
+    </li>
+    <li class="hint">
+      <p>Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. <img class="imageLeft" src="<%= image_path('map/tut_clusters.png') -%>"/>Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts "Gruppierungen..." unter den Filtern.</p>
+    </li>
+    <li class="hint">
+      <p>Diese Auswahlmöglichkeiten stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> Wählen Sie nur die Schaltfläche "Legende/Filter" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick außerhalb der Legende schließt diese wieder.</p>
+    </li>
+    <li class="hint">
+      <p><a href="#"  onclick="new Effect.Fade('introduction');">Schlie&szlig;en</a> Sie diese Anleitung, wenn Sie fertig sind.</p>
+    </li>
+  </ul>
+</div>
+<div id="initial_map_tutorial" class="map-overlay slide-1" style="display: none;">&nbsp;</div>
+
+<div id="interview_selection_toggle" style="display: none;">Interviews: alle</div>
+
+<script type="text/javascript">
+    Event.observe('explanation_filter_toggle', 'click', function(){
+        Effect.toggle('explanation_filter','appear', { duration: 0.5 });
+    });
+
+    /* tutorial JS */
+    var currentSlideNum = 1;
+    function adjustSlideNum(move) {
+      var prevSlideNum = currentSlideNum;
+      currentSlideNum = currentSlideNum + move;
+      var el = $('initial_map_tutorial');
+      el.removeClassName('slide-' + prevSlideNum);
+      el.addClassName('slide-' + currentSlideNum);
+    }
+
+    function endTutorial() {
+      new Effect.Fade('initial_map_tutorial');
+    }
+
+</script>
+
+<div id="interactive_map" style="width: 100%; height: 660px"></div>
+
+<% javascript_tag do -%>
+  document.observe("dom:loaded", mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => @locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', auth_token: '<%= form_authenticity_token.inspect-%>' }));
+<% end -%>

@@ -1,3 +1,7 @@
+iframe {
+    border: 0px none;
+}
+
 .imageLeft {
     float: left;
     margin: 4px 4px 4px 0;

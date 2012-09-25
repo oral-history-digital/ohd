@@ -4,6 +4,9 @@ class LocationReferencesController < BaseController
 
   actions :index
 
+  layout :check_for_iframe_render
+  IFRAME_ACTIONS = %w(map_frame)
+
   skip_before_filter :check_user_authentication!
   skip_before_filter :current_search
   skip_before_filter :init_sidepanel_search
@@ -66,12 +69,11 @@ class LocationReferencesController < BaseController
   end
 
   def map
-
   end
 
-  def map1
-    
+  def map_frame
   end
+
 
   private
 
@@ -102,6 +104,15 @@ class LocationReferencesController < BaseController
 
   def store_query_in_session
     session[:landing_page_url] = request.request_uri
+  end
+
+  def check_for_iframe_render
+    # render iframe only on iframe actions
+    if IFRAME_ACTIONS.include?(action_name.to_s)
+      'iframe'
+    else
+      'application'
+    end
   end
 
 end
