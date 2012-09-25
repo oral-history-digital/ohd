@@ -235,6 +235,7 @@
 #baseContent .map-overlay ul li.map_filter,
 #baseContent .map-overlay ul li.map_filter_off {
   text-indent: 55px;
+  cursor: pointer;
 }
 
 #baseContent .map-overlay ul li.hint {
@@ -285,6 +286,7 @@
     min-height: 40px;
     text-indent: 0;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 #baseContent #explanation_filter #cluster_toggle.clusters-off {

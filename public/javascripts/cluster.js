@@ -7,7 +7,7 @@ google.maps.LatLng.equals = function(other) {
 
 var debugOn = false;
 
-var clustersOffset = 0;
+var clustersOffset = 6;
 
 var totalClusters = 0;
 
@@ -187,8 +187,8 @@ ClusterManager.prototype = {
         }
 
         if((options.clusters) && (parseInt(options.clusters)) > 0) {
-            clustersOffset = 6;
-            $('cluster_toggle').addClassName('clusters-off');
+            clustersOffset = 0;
+            $('cluster_toggle').removeClassName('clusters-off');
         }
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
@@ -213,9 +213,9 @@ ClusterManager.prototype = {
         this.filters = [];
         var initialFilters = options.filters || [];
 
-        idx = initialFilters.length;
-        while(idx--) {
-            this.toggleFilter(initialFilters[idx]);
+        var fidx = initialFilters.length;
+        while(fidx--) {
+            this.toggleFilter(initialFilters[fidx]);
         }
 
     },
