@@ -12,6 +12,8 @@ de:
   previous: '&laquo;&nbsp;vor'
   next: 'nächste&nbsp;&raquo;'
   more: 'mehr'
+  back: 'zur&uuml;ck'
+  forward: 'weiter'
   search_term: 'Suchbegriff'
   translated: 'übersetzt'
   all: 'alle'
@@ -20,6 +22,7 @@ de:
   and: 'und'
   no_placeholder: 'keine'
   for: 'f&uuml;r'
+  close: 'schlie&szlig;en'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them

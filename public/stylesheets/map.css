@@ -1,3 +1,18 @@
+.imageLeft {
+    float: left;
+    margin: 4px 4px 4px 0;
+}
+
+.imageRight {
+    float: right;
+    margin: 4px 0 4px 4px;
+}
+
+.map-overlay img {
+    padding: 1px;
+    border: 1px solid #969380;
+}
+
 .markerOverlay div {
     height: 19px;
     width: 16px;
@@ -279,7 +294,7 @@
   background: #f9f9f7;
 }
 
-#baseContent #explanation_filter .cluster_toggle {
+#baseContent .map-overlay .cluster_toggle {
     padding-left: 66px;
     padding-top: 10px;
     background: #fff url('/images/circle_legend.png') 18px 8px no-repeat;
@@ -289,7 +304,7 @@
     cursor: pointer;
 }
 
-#baseContent #explanation_filter .cluster_toggle.clusters-off {
+#baseContent .map-overlay .cluster_toggle.clusters-off {
     background-image: url('/images/circle_legend_off.png');
     color: #b2afa1;
 }
@@ -338,4 +353,27 @@
 .slide-1 .not-slide-1,
 .slide-3 .not-slide-3 {
     display: none;
+}
+
+.map-overlay .hint h3 {
+    position: relative;
+}
+
+.map-overlay .hint a,
+.map-overlay .hint a:visited {
+    text-decoration: none;
+}
+
+.map-overlay a.window-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+    color: #fff;
+    height: 14px;
+    width: 14px;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 2;
+    background: transparent url(/images/lightbox/close.gif) center no-repeat;
 }

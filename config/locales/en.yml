@@ -11,6 +11,8 @@ en:
   faq: "FAQ"
   search_term: 'search term'
   more: 'more'
+  back: 'back'
+  forward: 'continue'
   translated: 'translated'
   all: 'all'
   select_all: 'select all'
@@ -20,6 +22,7 @@ en:
   and: 'and'
   no_placeholder: 'no'
   for: 'for'
+  close: 'close'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them

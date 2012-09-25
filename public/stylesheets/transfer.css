@@ -8,20 +8,6 @@
     direction: LTR;
 }
 
-.imageLeft {
-    float: left;
-    padding: 1px;
-    border: 1px solid #969380;
-    margin: 4px 4px 4px 0;
-}
-
-.imageRight {
-    float: right;
-    padding: 1px;
-    border: 1px solid #969380;
-    margin: 4px 0 4px 4px;
-}
-
 #overlay {
     opacity: 0.9;
     filter: alpha(opacity=90);
@@ -61,10 +47,35 @@
     z-index: 350;
     min-height: 30%;
     width: 40%;
+    padding: 1em;
     background-color: #F8F8F8;
     box-shadow: 4px 5px 6px 5px #666;
     -moz-box-shadow: 4px 5px 6px 5px #666;
     -webkit-box-shadow: 4px 5px 6px 5px #666;
+}
+
+#ajax_spinner {
+    height: 64px;
+    width: 64px;
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    background: transparent url(/images/large_spinner.gif) center no-repeat;
+}
+
+a#modal_window_close {
+    float: right;
+    display: block;
+    color: #fff;
+    height: 14px;
+    width: 14px;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: transparent url(/images/lightbox/close.gif) center no-repeat;
+}
+
+#modal_window .chzn-select {
+    width: 320px;
 }
 
 #fragmentOverview {
@@ -409,33 +420,4 @@ tr.user-registration-open .arrow-opened {
     width: 260px;
     font-size: 85%;
     color: #666666;
-}
-
-/* modal window */
-#ajax_spinner {
-    height: 64px;
-    width: 64px;
-    position: absolute;
-    top: 45%;
-    left: 48%;
-    background: transparent url(/images/large_spinner.gif) center no-repeat;
-}
-
-#modal_window {
-    padding: 1em;
-}
-
-#modal_window .chzn-select {
-    width: 320px;
-}
-
-a#modal_window_close {
-    float: right;
-    display: block;
-    color: #fff;
-    height: 14px;
-    width: 14px;
-    text-indent: -9999px;
-    overflow: hidden;
-    background: transparent url(/images/lightbox/close.gif) center no-repeat;
 }
