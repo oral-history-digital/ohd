@@ -23,6 +23,7 @@ en:
   no_placeholder: 'no'
   for: 'for'
   close: 'close'
+  here: 'hier'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -159,6 +160,42 @@ en:
       no_saved_contents: 'There are no saved contents in your workbook yet.'
       quality_disclaimer: "The lectorate of the transcript und translation of this interview is not yet finished."
       delete_content: "This content (%{content}) will be deleted permanently. Do you want to proceed?"
+
+  privacy:
+      label: 'Privacy Disclaimer'
+      terms: 'Terms of Use'
+      confirm: 'confirm and load external content'
+      more_here: 'Learn more here'
+      google_acceptance: "By clicking you accept Google's terms of use"
+      google_notice: 'If you accept to show the following content via click, Google will receive user data (especially your IP address). Google will store this data and may evaluate it together with other profile information (e.g. Google+ etc.).'
+      remember_settings: 'Always accept Google Maps content'
+
+  map:
+    legend:
+      tabname: 'Legend / Filters'
+      title:  'Legend and Filters'
+      filter_header: 'Filter the map view by type of location'
+      grouping_label: 'Clustering by Region/Country'
+      grouping_header: 'Enabling/disabling clustering on low zoom levels'
+      more_help: 'Need help? Learn more'
+    explanation:
+      title: 'Explanation of Map Features'
+      choose_filter_start: 'Choose location categories for display on'
+      choose_filter_end: 'the map (Einsatzorte, Lager und Haftstätten, etc.). You can use the filters on the right tab to do so. When all location types are disabled (grayed-out), no more locations will be shown.'
+      grouping_start: 'For a less cluttered map at low zoom levels, locations may be clustered by region and country.'
+      grouping_end: 'This clustering of locations can be disabled by deselecting the &quot;Clustering...&quot; option below the filters'
+      legend_start: 'These options are available at any time.'
+      legend_end: 'Simply click on the tab "Legend/Filters" at the top and right to reveal the filter options. A click on the &quot;X&quot; will hide the filters tab again'
+      finish: 'these instructions when you are done'
+    labels:
+      forced_labor_locations: 'Forced Labor Sites'
+      camps: 'Camps and Prisons'
+      companies: 'Companies'
+      deportations: 'Deportations'
+      places_of_birth: 'Places of Birth'
+      postwar_residences: 'Residences Post 1945'
+      home_locations: 'Place of Residence'
+      mentions: 'Mentioned Places'
 
   months:
     Jan: 'Jan'

@@ -52,6 +52,53 @@ iframe {
     z-Index: 95;
 }
 
+#map-wrapper {
+    width: 695px;
+    height: 660px;
+    background-color: #c1c1c1;
+}
+
+#map-wrapper .preload-map {
+    display: none;
+}
+
+#map-wrapper .embossed {
+    border: 2px solid #e2e2e2;
+    padding: 12px;
+    -moz-box-shadow: 6px 6px 3px #888;
+    -webkit-box-shadow: 6px 6px 3px #888;
+    box-shadow: 6px 6px 3px #888;
+    text-align: center;
+}
+
+#map-wrapper .embossed p {
+    text-align: justify;
+    margin: 10px;
+}
+
+.map-wrapper #privacy_agreement {
+    align: center;
+}
+
+.privacy_panel {
+    float: right;
+    background-color: #e2e2e2;
+    border-bottom: 2px solid #c1c1c1;
+    border-right: 2px solid #c1c1c1;
+    border-left: 2px solid #c1c1c1;
+    border-bottom-left-radius: 20px;
+    padding: 0 8px 2px 6px;
+    font-size: 85%;
+}
+
+.map-wrapper .privacy_config {
+    line-height: 100%;
+}
+
+.privacy_config .remember_privacy {
+    position: relative;
+    top: 3px;
+}
 
 /* Pagination of Location Reference List */
 

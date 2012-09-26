@@ -1,56 +1,95 @@
-<% javascript_tag do -%>
-  var map = null;
-<% end -%>
+<% @map_options ||= {} -%>
+<div id="map-wrapper" style="margin:0; padding:0; border:0; width: <%= @map_options['width'] || 695 -%>px;">
 
-<div id="explanation_filter_toggle">Legende / Filter</div>
-<div id="explanation_filter" class="map-overlay" style="display: none;">
-  <ul style="float: right;">
-    <li class="hint"><h3 style="margin: 0;">Legende und Filter<a href="#" onclick="new Effect.Fade('explanation_filter');" class="window-close"><%= t(:close) -%></a></h3></li>
-    <li class="hint">
-      <p>Kartenansicht nach Arten der Ortsangaben filtern:</p>
-    </li>
-    <li class="map_filter_off forced_labor_location"><span>Einsatzorte</span></li>
-    <li class="map_filter_off forced_labor_camp"><span>Lager und Haftst&auml;tten</span></li>
-    <li class="map_filter_off forced_labor_company"><span>Firmen</span></li>
-    <li class="map_filter_off deportation_location"><span>Deportationen</span></li>
-    <li class="map_filter_off place_of_birth"><span>Geburtsorte</span></li>
-    <li class="map_filter_off return_location"><span>Wohnorte nach 1945</span></li>
-    <li class="map_filter_off home_location"><span>Lebensmittelpunkte</span></li>
-    <li class="map_filter_off interview"><span>Erwähnungen</span></li>
-    <li class="hint">
-      <p>Gruppierung auf niedrigen Zoomstufen ein bzw aus:</p>
-    </li>
-    <li class="cluster_toggle clusters-off" onclick="toggleClusters();"><span>Gruppierung auf Ebene Region/Land</span></li>
-    <li class="hint">
-      <p>Hilfe benötigt? Mehr Erl&auml;uterungen finden Sie <a href="#" onclick="new Effect.Appear('introduction');">hier</a>.</p>
-    </li>
-  </ul>
-</div>
-<div id="introduction" class="map-overlay" style="display: none;">
-  <ul style="float: right;">
-    <li class="hint"><h3 style="margin: 0;">Erläuterungen<a href="#" onclick="new Effect.Fade('introduction');" class="window-close"><%= t(:close) -%></a></h3></li>
-    <li class="hint">
-      <p>Wählen Sie die Ortskategorien aus, <img class="imageLeft" src="<%= image_path('map/tut_filters.png') -%>"/>die Sie auf der Karte dargestellt haben wollen (Einsatzorte, Lager und Haftstätten, etc.). Verwenden Sie dazu die Filter rechts. Wenn alle Ortstypen abgewählt (grau) sind, können keine Orte mehr angezeigt werden.</p>
-    </li>
-    <li class="hint">
-      <p>Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. <img class="imageLeft" src="<%= image_path('map/tut_clusters.png') -%>"/>Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts "Gruppierungen..." unter den Filtern.</p>
-    </li>
-    <li class="hint">
-      <p>Diese Auswahlmöglichkeiten stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> Wählen Sie nur die Schaltfläche "Legende/Filter" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick außerhalb der Legende schließt diese wieder.</p>
-    </li>
-    <li class="hint">
-      <p><a href="#"  onclick="new Effect.Fade('introduction');">Schlie&szlig;en</a> Sie diese Anleitung, wenn Sie fertig sind.</p>
-    </li>
-  </ul>
-</div>
-<div id="initial_map_tutorial" class="map-overlay slide-1" style="display: none;">&nbsp;</div>
+    <div id="privacy_details" style="width: 60%; padding: 25% 20%;">
+      <div class="embossed">
+          <h3><%= t(:label, :scope => 'privacy') -%></h3>
+          <p>
+            <%= t(:google_notice, :scope => 'privacy') %>
+            <%= t(:google_acceptance, :scope => 'privacy') %>&nbsp;(<%= link_to 'Google', 'http://www.google.com/accounts/TOS', :target => '_blank' -%>).
+          </p>
+        <!--
+          <p>
+            <%= t(:more_here, :scope => 'privacy') %>:
+            <%= link_to t(:terms, :scope => 'privacy'), '#', :target => '_blank' -%>.
+          </p>
+        //-->
+          <p class="privacy_config">
+            <label class="checkbox">
+                <%= check_box_tag 'store_privacy_agreement1', true, false, :class => 'remember_privacy' %>
+                <%= t(:remember_settings, :scope => 'privacy') %>
+            </label>
+          </p>
+          <%= button_to_function t(:confirm, :scope => 'privacy'), 'loadExternalScripts();', :class => 'privacy_agreement' %>
+      </div>
+    </div>
 
-<div id="interview_selection_toggle" style="display: none;">Interviews: alle</div>
+    <div id="explanation_filter_toggle" class="preload-map"><%= t(:tabname, :scope => 'map.legend') -%></div>
+    <div id="explanation_filter" class="preload-map map-overlay" style="display: none;">
+      <ul style="float: right;">
+        <li class="hint"><h3 style="margin: 0;"><%= t(:title, :scope => 'map.legend') -%><a href="#" onclick="new Effect.Fade('explanation_filter');" class="window-close"><%= t(:close) -%></a></h3></li>
+        <li class="hint">
+          <p><%= t(:filter_header, :scope => 'map.legend') -%>:</p>
+        </li>
+        <li class="map_filter_off forced_labor_location"><span><%= t(:forced_labor_locations, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off forced_labor_camp"><span><%= t(:camps, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off forced_labor_company"><span><%= t(:companies, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off deportation_location"><span><%= t(:deportations, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off place_of_birth"><span><%= t(:places_of_birth, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off return_location"><span><%= t(:postwar_residences, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off home_location"><span><%= t(:home_locations, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off interview"><span><%= t(:mentions, :scope => 'map.labels') -%></span></li>
+        <li class="hint">
+          <p><%= t(:grouping_header, :scope => 'map.legend') -%>:</p>
+        </li>
+        <li class="cluster_toggle clusters-off" onclick="toggleClusters();"><span><%= t(:grouping_label, :scope => 'map.legend') -%></span></li>
+        <li class="hint">
+          <p><%= t(:more_help, :scope => 'map.legend') -%> <a href="#" onclick="new Effect.Appear('introduction');"><%= t(:here) -%></a>.</p>
+        </li>
+      </ul>
+    </div>
+    <div id="introduction" class="preload-map map-overlay" style="display: none;">
+      <ul style="float: right;">
+        <li class="hint"><h3 style="margin: 0;"><%= t(:title, :scope => 'map.explanation') -%><a href="#" onclick="new Effect.Fade('introduction');" class="window-close"><%= t(:close) -%></a></h3></li>
+        <li class="hint">
+          <p><%= t(:choose_filter_start, :scope => 'map.explanation') -%> <img class="imageLeft" src="<%= image_path('map/tut_filters.png') -%>"/><%= t(:choose_filter_end, :scope => 'map.explanation' ) -%></p>
+        </li>
+        <li class="hint">
+          <p><%= t(:grouping_start, :scope => 'map.explanation') -%> <img class="imageLeft" src="<%= image_path('map/tut_clusters.png') -%>"/><%= t(:grouping_end, :scope => 'map.explanation') -%>.</p>
+        </li>
+        <li class="hint">
+          <p><%= t(:legend_start, :scope => 'map.explanation') -%><img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> <%= t(:legend_end, :scope => 'map.explanation') -%>.</p>
+        </li>
+        <li class="hint">
+          <p><a href="#"  onclick="new Effect.Fade('introduction');"><%= t(:close).capitalize -%></a> <%= t(:finish, :scope => 'map.explanation') -%>.</p>
+        </li>
+      </ul>
+    </div>
+    <div id="initial_map_tutorial" class="preload-map map-overlay slide-1" style="display: none;">&nbsp;</div>
+
+    <div id="interview_selection_toggle" class="preload-map" style="display: none;">Interviews: alle</div>
+
+    <div id="interactive_map" class="preload-map" style="width: 100%; height: <%= @map_options['height'] || 660 -%>px"></div>
+
+</div>
+<div class="privacy_panel clearfix">
+  <i class="icon icon-info-sign"></i>
+  <i class="icon icon-asterisk"></i>
+  <div class="privacy_config">
+      <label class="checkbox">
+        <%= check_box_tag 'store_privacy_agreement2', true, false, :class => 'remember_privacy' %>
+        <%= t(:remember_settings, :scope => 'privacy') %>
+      </label>
+  </div>
+</div>
 
 <script type="text/javascript">
     Event.observe('explanation_filter_toggle', 'click', function(){
         Effect.toggle('explanation_filter','appear', { duration: 0.5 });
     });
+
+    var privacy_acceptance = readCookie('za-gm-priv');
+    var map = null;
 
     /* tutorial JS */
     var currentSlideNum = 1;
@@ -67,6 +106,9 @@
     }
 
     function initMap() {
+        $$('#map-wrapper .preload-map').each(function(el){
+            el.removeClassName('preload-map');
+        });
         mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => @locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', auth_token: '<%= form_authenticity_token.inspect-%>' });
     }
 
@@ -80,25 +122,38 @@
     }
 
     function loadExternalScripts() {
+        new Effect.Fade('privacy_details');
         loadMaps();
     }
 
-    function loadScript(src, callback) {
-        if(!callback) { callback = function() {}; }
-        var script = new Element('script', { 'src': src, 'type': 'text/javascript'});
-        script.onload = callback;
-        script.onreadystatechange = function(){
-            if(this.readyState == 'complete') {
-                callback();
-            }
+    function togglePrivacyCookie() {
+        var privacy_checkbox = this;
+        if(privacy_checkbox.checked) {
+            writeCookie('za-gm-priv', '<%= Time.now.strftime('%Y%m%d%H%M') -%>v3.9', 180);
+        } else {
+            writeCookie('za-gm-priv', '', 0);
         }
-        $('baseContent').insert({bottom: script});
+        $$('.remember_privacy').each(function(checkbox){
+            if(checkbox.id != privacy_checkbox.id) {
+                checkbox.checked = privacy_checkbox.checked;
+            }
+        });
     }
 
+    function initPrivacySettings() {
+        var accept = (privacy_acceptance != null);
+        $$('.remember_privacy').each(function(checkbox){
+            checkbox.checked = accept;
+            Element.observe(checkbox, 'change', togglePrivacyCookie);
+        });
+        if(accept) {
+            alert('privacy already accepted, loading map');
+            loadExternalScripts();
+        } else {
+            alert('No privacy acceptance detected. Set cookie by enabling checkbox');
+        }
+    }
+
+    document.observe("dom:loaded", initPrivacySettings);
+
 </script>
-
-<div id="interactive_map" style="width: 100%; height: 660px"></div>
-
-<% javascript_tag do -%>
-  document.observe("dom:loaded", loadMaps);
-<% end -%>
