@@ -1,10 +1,4 @@
 
-<iframe id="external_content_frame" src="#" name="Kartenansicht" width="695px" height="660px">
+<iframe id="external_content_frame" src="<%= map_frame_path -%>" name="Kartenansicht" width="695px" height="686px" style="overflow-x: hidden; overflow-y: hidden;">
   <p>Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber <%= link_to 'hier', map_frame_path -%> direkt aufrufen.</p>
 </iframe>
-<%= link_to 'Confirm Terms and Conditions and Load Google Maps Content', '#', :onclick => "loadExtContent();" -%>
-<% javascript_tag do -%>
-function loadExtContent() {
-    $('external_content_frame').src = '<%= map_frame_path -%>';
-}
-<% end -%>

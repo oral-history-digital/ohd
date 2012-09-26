@@ -27,6 +27,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_map 'kartensuche', :controller => :location_references, :action => :map
   map.map_frame 'karte', :controller => :location_references, :action => :map_frame
+  map.localized_map_frame ':locale/map', :controller => :location_references, :action => :map_frame
   map.blind_test 'blindtest', :controller => :location_references, :action => :map_test
 
   map.namespace :admin do |admin|

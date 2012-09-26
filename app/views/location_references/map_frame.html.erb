@@ -1,7 +1,7 @@
 <% @map_options ||= {} -%>
 <div id="map-wrapper" style="margin:0; padding:0; border:0; width: <%= @map_options['width'] || 695 -%>px;">
 
-    <div id="privacy_details" style="width: 60%; padding: 25% 20%;">
+    <div id="privacy_details" style="width: 60%; padding: 25% 20%; display: none;">
       <div class="embossed">
           <h3><%= t(:label, :scope => 'privacy') -%></h3>
           <p>
@@ -147,10 +147,9 @@
             Element.observe(checkbox, 'change', togglePrivacyCookie);
         });
         if(accept) {
-            alert('privacy already accepted, loading map');
             loadExternalScripts();
         } else {
-            alert('No privacy acceptance detected. Set cookie by enabling checkbox');
+            new Effect.Appear('privacy_details');
         }
     }
 

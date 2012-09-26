@@ -55,7 +55,7 @@ iframe {
 #map-wrapper {
     width: 695px;
     height: 660px;
-    background-color: #c1c1c1;
+    background-color: #d1d0c0;
 }
 
 #map-wrapper .preload-map {
@@ -63,7 +63,7 @@ iframe {
 }
 
 #map-wrapper .embossed {
-    border: 2px solid #e2e2e2;
+    border: 2px solid #e4e4da;
     padding: 12px;
     -moz-box-shadow: 6px 6px 3px #888;
     -webkit-box-shadow: 6px 6px 3px #888;
@@ -82,10 +82,10 @@ iframe {
 
 .privacy_panel {
     float: right;
-    background-color: #e2e2e2;
-    border-bottom: 2px solid #c1c1c1;
-    border-right: 2px solid #c1c1c1;
-    border-left: 2px solid #c1c1c1;
+    background-color: #e4e4da;
+    border-bottom: 1px solid #d1d0c0;
+    border-right: 1px solid #d1d0c0;
+    border-left: 1px solid #d1d0c0;
     border-bottom-left-radius: 20px;
     padding: 0 8px 2px 6px;
     font-size: 85%;

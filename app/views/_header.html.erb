@@ -25,7 +25,7 @@
                 <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
               <% end %>
             </li>
-            <li><%= link_to (t :map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %></li>
+            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %></li>
             <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => current_locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
