@@ -55,7 +55,7 @@ iframe {
 #map-wrapper {
     width: 695px;
     height: 660px;
-    background: #d1d0c0 url(/images/map/external_maps_bg.png) top left no-repeat;
+    background: #d1d0c0 url(/images/map/external_maps_bg.jpg) top left no-repeat;
 }
 
 #map-wrapper .preload-map {
