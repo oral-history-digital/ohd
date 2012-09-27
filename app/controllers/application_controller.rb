@@ -25,7 +25,11 @@ class ApplicationController < ActionController::Base
 
   # resetting the remember_me_token on CSRF failure
   def handle_unverified_request
-    super
+    begin
+      super
+    rescue Exception => e
+      logger.warn e.message
+    end
     cookies.delete 'remember_user_token'
     sign_out :user
   end
