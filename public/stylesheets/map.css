@@ -55,7 +55,7 @@ iframe {
 #map-wrapper {
     width: 695px;
     height: 660px;
-    background-color: #d1d0c0;
+    background: #d1d0c0 url(/images/map/external_maps_bg.png) top left no-repeat;
 }
 
 #map-wrapper .preload-map {
@@ -69,15 +69,12 @@ iframe {
     -webkit-box-shadow: 6px 6px 3px #888;
     box-shadow: 6px 6px 3px #888;
     text-align: center;
+    background-color: #d1d0c0;
 }
 
 #map-wrapper .embossed p {
     text-align: justify;
     margin: 10px;
-}
-
-.map-wrapper #privacy_agreement {
-    align: center;
 }
 
 .privacy_panel {
@@ -98,6 +95,15 @@ iframe {
 .privacy_config .remember_privacy {
     position: relative;
     top: 3px;
+}
+
+#map-wrapper .service_attribution {
+    position: absolute;
+    right: 6px;
+    bottom: 25px;
+    background-color: transparent;
+    color: #333;
+    padding: 8px;
 }
 
 /* Pagination of Location Reference List */
