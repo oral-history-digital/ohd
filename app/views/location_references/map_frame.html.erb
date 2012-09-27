@@ -1,6 +1,16 @@
 <% @map_options ||= {} -%>
 <div id="map-wrapper" style="margin:0; padding:0; border:0; width: <%= @map_options['width'] || 695 -%>px;">
 
+    <noscript>
+      <div class="embossed">
+        <p><%= t(:need_javascript, :scope => 'user_interface.messages') -%></p>
+      </div>
+    </noscript>
+
+    <div id="noncompliant_browser_message" class="embossed" style="display: none;">
+        <p><%= t(:need_ie8, :scope => 'user_interface.messages') -%></p>
+    </div>
+
     <div id="privacy_details" style="width: 60%; padding: 25% 20%; display: none;">
       <div class="embossed">
           <h3><%= t(:label, :scope => 'privacy') -%></h3>
@@ -143,16 +153,30 @@
         });
     }
 
+    function browserIsCompliant() {
+        if(Prototype.Browser.IE) {
+            var version = parseInt((navigator.userAgent.match(/MSIE\s+\d{1,2}/).first() || '').gsub('MSIE',''));
+            if(version && (version < 8)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     function initPrivacySettings() {
         var accept = (privacy_acceptance != null);
         $$('.remember_privacy').each(function(checkbox){
             checkbox.checked = accept;
             Element.observe(checkbox, 'change', togglePrivacyCookie);
         });
-        if(accept) {
-            loadExternalScripts();
+        if(browserIsCompliant()) {
+            if(accept) {
+                loadExternalScripts();
+            } else {
+                new Effect.Appear('privacy_details');
+            }   
         } else {
-            new Effect.Appear('privacy_details');
+            $('noncompliant_browser_message').show();
         }
     }
 

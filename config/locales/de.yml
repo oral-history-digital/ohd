@@ -158,6 +158,8 @@ de:
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
       quality_disclaimer: "Transkription und Übersetzung zu diesem Interview sind nicht abschließend lektoriert."
       delete_content: "Der Inhalt (%{content}) wird dauerhaft gel&ouml;scht. Wollen Sie fortfahren?"
+      need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
+      need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
 
   privacy:
     label: 'Hinweis zum Datenschutz'

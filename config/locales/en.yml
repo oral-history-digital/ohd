@@ -160,6 +160,8 @@ en:
       no_saved_contents: 'There are no saved contents in your workbook yet.'
       quality_disclaimer: "The lectorate of the transcript und translation of this interview is not yet finished."
       delete_content: "This content (%{content}) will be deleted permanently. Do you want to proceed?"
+      need_javascript: "To utilize the archive's features you need to enable Javascript. Please use standards compliant browser and settings."
+      need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
 
   privacy:
       label: 'Privacy Disclaimer'
