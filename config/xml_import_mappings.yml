@@ -32,6 +32,10 @@ interview:
   translated: 'translated'
   video:  'video'
   #version-number: not used yet
+  original-citation: 'original_citation'
+  translated-citation: 'translated_citation'
+  citation-timecode: 'citation_timecode'
+  citation-media-id: 'citation_media_id'
 
   person:
     alias-names: 'alias_names'
