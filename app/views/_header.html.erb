@@ -1,6 +1,6 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="<%= localized_root_url(:locale => I18n.locale.to_sym) %>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
+        <a href="http://www.zwangsarbeit-archiv.de<%= (current_locale.to_s == 'en') ? '/en' : '' -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
           <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
