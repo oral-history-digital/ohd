@@ -25,10 +25,9 @@ ActionController::Routing::Routes.draw do |map|
   map.public_locations_total_pages 'webservice/orte.:format', :controller => :location_references, :action => :full_index
   map.public_locations_by_page 'webservice/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
 
-  map.public_map 'kartensuche', :controller => :location_references, :action => :map
-  map.map_frame 'karte', :controller => :location_references, :action => :map_frame
-  map.localized_map_frame ':locale/map', :controller => :location_references, :action => :map_frame
-  map.blind_test 'blindtest', :controller => :location_references, :action => :map_test
+  map.public_map 'karte', :controller => :location_references, :action => :map
+  map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame
+  map.localized_map_frame ':locale/mapframe', :controller => :location_references, :action => :map_frame
 
   map.namespace :admin do |admin|
     admin.resources :user_registrations

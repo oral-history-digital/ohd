@@ -19,7 +19,7 @@
 
 <body id="mapFrame" style="background-image: none;">
 
-    <div id="baseContent" style="padding:0;">
+    <div id="baseContent" style="padding:0; width: <%= (@map_options ||= {})['width'] || 695 -%>px;">
             <%= yield %>
     </div>
 

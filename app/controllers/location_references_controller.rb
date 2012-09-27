@@ -72,10 +72,11 @@ class LocationReferencesController < BaseController
   end
 
   def map_frame
-  end
-
-  def map_test
-
+    unless params['width'].blank? && params['height'].blank?
+      @map_options = {}
+      @map_options['width'] = params['width'].to_i unless params['width'].blank?
+      @map_options['height'] = params['height'].to_i unless params['height'].blank?
+    end
   end
 
 
