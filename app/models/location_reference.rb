@@ -430,7 +430,6 @@ class LocationReference < ActiveRecord::Base
 
   # Creates a relevant interview field (forced labor locations etc)
   def update_interview_category
-    attr = []
     case reference_type.to_s
       when 'place_of_birth'
         interview.update_attribute :birth_location, name

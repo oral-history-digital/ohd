@@ -221,7 +221,8 @@ namespace :solr do
       interviews = Interview.find :all,
                                   :conditions => archive_id.empty? ? nil : archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"
 
-      conditions = archive_id.empty? ? nil : "interview_id IN ('#{interviews.map(&:id).join("','")}')"
+      conditions = "duplicate IS NOT TRUE"
+      conditions += archive_id.empty? ? "" : " AND interview_id IN ('#{interviews.map(&:id).join("','")}')"
 
       puts "\nIndexing #{LocationReference.count(:all, :conditions => conditions)} locations:"
       unless archive_id.empty?

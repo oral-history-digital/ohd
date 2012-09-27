@@ -36,7 +36,7 @@ class LocationReferencesController < BaseController
     response.headers['Cache-Control'] = "public, max-age=1209600"
     if params[:page].blank? || params[:page].to_i < 1
       # deliver number of pages
-      @pages = (LocationReference.count(:all) / PER_PAGE).floor + 1
+      @pages = (LocationReference.count(:all, :conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 1
       respond_to do |wants|
         wants.html do
           render :text => @pages
@@ -52,7 +52,7 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.find(:all, :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
+      @results = LocationReference.find(:all, :conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
       respond_to do |wants|
         wants.html do
           render :action => :index
