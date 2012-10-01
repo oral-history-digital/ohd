@@ -162,4 +162,37 @@ namespace :web_statistics do
   end
 
 
+  desc "Usage by number of total logins"
+  task :total_logins => :environment do
+
+    require 'fileutils'
+
+    csv_file = "zwar-logins-gesamt.csv"
+    if File.exists?(csv_file)
+      FileUtils.rm(csv_file)
+    end
+    system "touch #{csv_file}"
+
+    fields = [ 'Anzahl an Logins (seit 07/2010)', 'Anzahl an Nutzern' ]
+
+    system "echo '#{fields.join("\t")}' >> #{csv_file}"
+
+    values = (1..9).to_a
+
+    values.each do |val|
+      num = UserAccount.count :all, :conditions => ['sign_in_count = ?', val]
+      csv = [val, num]
+      system "echo '#{csv.join("\t")}' >> #{csv_file}"
+    end
+
+    num = UserAccount.count :all, :conditions => ['sign_in_count > 9']
+
+    csv = ['10+', num]
+    system "echo '#{csv.join("\t")}' >> #{csv_file}"
+    
+    puts "Written usage statistics by total logins to #{csv_file}"
+
+  end
+
+
 end
