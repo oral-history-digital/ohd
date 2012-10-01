@@ -136,4 +136,30 @@ namespace :web_statistics do
   end
 
 
+  desc "Prints a table of last logins since 2011"
+  task :last_logins => :environment do
+
+    require 'fileutils'
+
+    month_num = Time.now.month - 1 + (Time.now.year - 2011) * 12
+
+    csv_file = "zwar-logins-nach-monat.csv"
+    if File.exists?(csv_file)
+      FileUtils.rm(csv_file)
+    end
+    fields = ['Jahr','Monat','Nutzer mit letztem Login in diesem Monat']
+    system "echo '#{fields.join("\t")}' >> #{csv_file}"
+
+    (1..month_num).each do |month|
+      time = Time.gm(2011,1,1) + month.months
+      count = UserAccount.count(:all, :conditions => ["last_sign_in_at < ?", time.to_s(:db)])
+      csv = [ (time - 1.month).year, (time - 1.month).month, count ]
+      system "echo '#{csv.join("\t")}' >> #{csv_file}"
+    end
+
+    puts "Done. Written stats for #{month_num} months since 31.12.2010 to #{csv_file}."
+
+  end
+
+
 end
