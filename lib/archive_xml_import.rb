@@ -367,7 +367,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           associations = @instance.class.reflect_on_all_associations.select{|assoc| assoc.macro == :belongs_to && assoc.name != :interview }
           associations.each do |assoc|
             associated_instance = @instance.send(assoc.name.to_s)
-            unless associated_instance.errors.empty?
+            unless associated_instance.nil? || associated_instance.errors.empty?
               errors << associated_instance.errors.full_messages.to_s
               errors << associated_instance.inspect
             end
