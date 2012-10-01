@@ -36,8 +36,9 @@
     }
   }
 
-  function openContainer(parentId, blindToggle) {
+  function openContainer(parentId, blindToggle, toggleAll) {
+        if(toggleAll == null) { toggleAll = true; }
         if($(parentId).hasClassName('closed')) {
-            toggleContainer(parentId, blindToggle);
+            toggleContainer(parentId, blindToggle, toggleAll);
         }
   }

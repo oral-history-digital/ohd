@@ -3,7 +3,7 @@
 <% else %>
 <% fulltext ||= defined?(@location) ? ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
 <% fulltext ||= @search.fulltext -%>
-<ul class='location-segments'>
+<ul class='segment-list'>
   <% section = nil -%>
   <% segments.each_with_index do |segment,index| -%>
     <% if segment.section && segment.section != section -%>
@@ -16,7 +16,7 @@
     </li>
         <% end -%>
     <% end -%>
-    <span class="index"><%= index + 1-%>.</span>
+    <!-- <span class="index"><%= index + 1-%>.</span> //-->
     <li id="segment_<%= segment.media_id %>" class="segment">
         <%= link_to_segment segment, fulltext || '$$$', true, true %>
     </li>

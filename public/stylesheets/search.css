@@ -424,27 +424,26 @@ float:left;
     background: url("/images/plus.gif") no-repeat scroll left 0.3em transparent;
 }
 
-.accordion-container ul li {
-    position:relative;
-    margin-bottom:20px;
-    background: none;
-    font-size: 80%;
-    margin-bottom: 15px;
-}
-
-.accordion-container ul.location-segments {
+.accordion-container ul.segment-list {
     margin-top: 0px;
     padding-left: 10px;
 }
 
-.accordion-container .location-segments li.section-heading {
+.accordion-container .segment-list li.section-heading {
     margin-bottom: 0px;
-    margin-top: 6px;
+    margin-top: 15px;
     /* font-weight: bold; */
     color: #999;
 }
 
-.container .location-segments .index {
+.accordion-container .segment-list li {
+    position:relative;
+    background: none;
+    font-size: 80%;
+    margin-top: 15px;
+}
+
+.container .segment-list .index {
     position: relative;
     left: -10px;
     top: 4px;
