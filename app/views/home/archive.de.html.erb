@@ -50,7 +50,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "recherchemoeglichkeiten") -%>">
+    <a href="#">
       <img src="<%= image_path('teaser/kategorien.png') -%>" alt="Kategorien"/>
     </a>
   </div>
@@ -59,9 +59,27 @@
 <p>
   Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
   <br/>
-    <%= link_to 'mehr zu den Kategorien »',
+    <%= link_to 'Beschreibung der Kategorien »',
                 localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "recherchemoeglichkeiten"),
                 :title => "Welche Recherchemöglichkeiten gibt es?" %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Volltextsuche"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Volltextsuche</h3>
+<p>
+  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
+  <br/>
+    <%= link_to 'Beschreibung der Volltextsuche »',
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein"),
+                :title => "Wie kann ich die Volltextsuche nutzen?" %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -83,26 +101,6 @@
     <br/>
 </p>
 <br style="clear: both;"/>
-
-
-<div class="contentImagesLeft">
-  <div class="contentImage100">
-    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein") -%>">
-      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Volltextsuche"/>
-    </a>
-  </div>
-</div>
-<h3 style="margin-top: 8px;">Volltextsuche</h3>
-<p>
-  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
-  <br/>
-    <%= link_to 'mehr zur Volltextsuche »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein"),
-                :title => "Wie kann ich die Volltextsuche nutzen?" %>
-    <br/>
-</p>
-<br style="clear: both;"/>
-
 
 <div class="contentImagesLeft">
   <div class="contentImage100">

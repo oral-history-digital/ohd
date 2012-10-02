@@ -46,7 +46,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "recherchemoeglichkeiten") -%>">
+    <a href="#">
       <img src="<%= image_path('teaser/kategorien.png') -%>" alt="Kategorien"/>
     </a>
   </div>
@@ -55,8 +55,25 @@
 <p>
   Content Categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
   <br/>
-    <%= link_to 'more about the categories »',
+    <%= link_to 'description of categories »',
                 localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "recherchemoeglichkeiten") %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Fulltext Search"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Fulltext Search</h3>
+<p>
+  Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
+  <br/>
+    <%= link_to 'explanation of fulltext search »',
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "suche-allgemein") %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -77,25 +94,6 @@
     <br/>
 </p>
 <br style="clear: both;"/>
-
-
-<div class="contentImagesLeft">
-  <div class="contentImage100">
-    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "suche-allgemein") -%>">
-      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Fulltext Search"/>
-    </a>
-  </div>
-</div>
-<h3 style="margin-top: 8px;">Fulltext Search</h3>
-<p>
-  Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
-  <br/>
-    <%= link_to 'about fulltext search »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "suche-allgemein") %>
-    <br/>
-</p>
-<br style="clear: both;"/>
-
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
