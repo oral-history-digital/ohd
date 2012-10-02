@@ -101,6 +101,10 @@ module ApplicationHelper
                   }
   end
 
+  def random_featured_interview
+    Interview.find :first, :conditions => "(citation_timecode IS NOT NULL) AND still_image_file_name IS NOT NULL", :order => "RAND()"
+  end
+
   def last_import
     $last_import_date ||= begin
       last_import = Import.last.first

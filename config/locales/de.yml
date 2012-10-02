@@ -123,6 +123,7 @@ de:
       back: 'zur&uuml;ck'
       forward: 'vor'
       no_transcript: 'Für dieses Interview liegen noch keine Transkript-Untertitel vor.'
+      goto_citation: 'zum zitierten Ausschnitt'
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'

@@ -125,6 +125,7 @@ en:
       back: 'previous'
       forward: 'next'
       no_transcript: 'There are no transcript subtitles for this interview yet.'
+      goto_citation: 'go to cited passage'
     search:
       search_term: 'search term'
       fulltext_title: 'Insert search terms here'

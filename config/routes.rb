@@ -26,6 +26,7 @@ ActionController::Routing::Routes.draw do |map|
   map.public_locations_by_page 'webservice/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
 
   map.public_map 'karte', :controller => :location_references, :action => :map
+  map.localized_public_map ':locale/map', :controller => :location_references, :action => :map
   map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame
   map.localized_map_frame ':locale/mapframe', :controller => :location_references, :action => :map_frame
 

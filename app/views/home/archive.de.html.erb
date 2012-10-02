@@ -1,14 +1,25 @@
 <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
 
 <div class="contentImagesLeft">
-  <div class="contentImage150">
-    <img src="<%= image_path '180_DolezalMiroslavPhot09_150.jpg' %>" alt="Doležal, Miroslav" title=""/>
-    <h6>Doležal, Miroslav</h6>
+<% if current_user_account.nil? -%>
+<% @interview = Interview.find_by_archive_id 'za465' -%>
+  <div class="contentImage200">
+    <a href="<%= interview_path(@interview) -%>">
+        <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
+        <h6><%= @interview.short_title -%>,<br/><%= format_value [ @interview.send(:forced_labor_groups) ].flatten.map{|a| t(a.to_s, :scope => "categories.forced_labor_groups")}.first %></h6>
+        <!-- <span class="meta"><%= @interview.video %> Interview (<%= format_value @interview.duration %>) in <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></span> //-->
+    </a>
   </div>
-  <div class="contentImage150" style="margin-top: <%= current_user_account.nil? ? 64 : 0 %>px;">
-    <img src="<%= image_path 'ZA007_03_150.jpg' %>" alt="Poleschtschuk, Anna Iwanowna" title=""/>
-    <h6>Poleschtschuk, Anna Iwanowna</h6>
+<% else -%>
+<% @interview = random_featured_interview -%>
+  <div class="contentImage200">
+    <a href="<%= interview_path(@interview) -%>">
+        <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
+        <h6><%= @interview.short_title -%>,<br/><%= format_value [ @interview.send(:forced_labor_groups) ].flatten.map{|a| t(a.to_s, :scope => "categories.forced_labor_groups")}.first %></h6>
+        <!-- <span class="meta"><%= @interview.video %> Interview (<%= format_value @interview.duration %>) in <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></span> //-->
+    </a>
   </div>
+<% end -%>
 </div>
 
 <p></p>
@@ -23,65 +34,97 @@
   Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
   für Bildung und Wissenschaft zur Verfügung.
 </p>
+
 <% if current_user_account.nil? %>
-<p style="font-weight: bold; margin-top: 0.33em;">
+<p style="font-weight: bold;">
   Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der Zeitzeuginnen und Zeitzeugen m&uuml;ssen
   Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'registriert', registrieren_path %> sein und
   die <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
 </p>
-<h2 style="margin-top: 20px;">Recherchemöglichkeiten</h2>
 <% else %>
-<h2 style="margin-top: 27px;">Recherchemöglichkeiten</h2>
-<% end %>
-<p>
-  Der Einstieg in eine Recherche in dem Archiv ist über die folgenden drei Wege möglich:
-</p>
-<hr/>
 <br/>
+<p>Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller Länge, die wir unter unseren <%= external_link(:terms_of_use, :nutzungsbedingungen) %> im Web bereitstellen können.</p>
+<% end %>
+
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "recherchemoeglichkeiten") -%>">
+      <img src="<%= image_path('teaser/kategorien.png') -%>" alt="Kategorien"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Kategorien-Suche</h3>
 <p>
-  Inhaltliche Kategorien (rechts in der Navigation) für einen thematisch strukturierten Zugang
+  Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
   <br/>
-  <strong>
     <%= link_to 'mehr zu den Kategorien »',
-                home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :anchor => "recherchemoeglichkeiten"),
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "recherchemoeglichkeiten"),
                 :title => "Welche Recherchemöglichkeiten gibt es?" %>
     <br/>
-  </strong>
 </p>
-<hr/>
-<br/>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= localized_public_map_url(:locale => 'de') -%>">
+      <img src="<%= image_path('teaser/karte.png') -%>" alt="Karte"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Kartenrecherche</h3>
 <p>
-  Karte der geographischen Verteilung der Teilsammlungen für einen regionalen Zugang
+  Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte nach 1945.
   <br/>
-  <strong>
-    <%= link_to "#{(t :collections_map)} »", interview_collections_url, :title => "Geografische Verteilung der Teilsammlungen" %>
-    <%#= link_to "mehr zu den Teilsammlungen »",
-                "http://www.zwangsarbeit-archiv.de/sammlung/teilsammlungen/index.html",
-                :target => "_blank",
-                :title => "Teilsammlungen" %>
+    <%= link_to 'zur Kartenrecherche »',
+                localized_public_map_url(:locale => 'de'),
+                :title => "Kartenrecherche" %>
     <br/>
-  </strong>
 </p>
-<hr/>
-<br/>
+<br style="clear: both;"/>
+
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein") -%>">
+      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Volltextsuche"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Volltextsuche</h3>
 <p>
-  Volltextsuche für einen breiten und intuitiven Zugang
+  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
   <br/>
-  <strong>
-    <!--<a href="suche/index.html" title="Suche in den Interviews">Volltextsuche »</a>
-    <br/>-->
-    <%= link_to 'mehr zur Suche »',
-                home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :anchor => "suche-allgemein"),
+    <%= link_to 'mehr zur Volltextsuche »',
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein"),
                 :title => "Wie kann ich die Volltextsuche nutzen?" %>
     <br/>
-  </strong>
 </p>
-<hr/>
+<br style="clear: both;"/>
+
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= localized_interview_collections_url(:locale => 'de') -%>">
+      <img src="<%= image_path('teaser/collections.png') -%>" alt="Teilsammlungen"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Übersicht der Teilsammlungen</h3>
+<p>
+  Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
+  <br/>
+    <%= link_to "zur Karte der Teilsammlungen »", localized_interview_collections_url(:locale => 'de'), :title => "Geografische Verteilung der Teilsammlungen" %>
+    <br/>
+</p>
+
+<hr style="clear: both;"/>
 <h2 class="clear">Fragen und Antworten</h2>
 <p>
   Über die
   <%= link_to (t :faq),
-              home_path(:page_id=> t("faq_index", :scope => 'page_urls')),
+              localized_home_path(:page_id=> t("faq_index", :scope => 'page_urls'), :locale => 'de'),
               :title => "Fragen und Antworten zur Nutzung des Archivs" %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:

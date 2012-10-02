@@ -56,6 +56,20 @@ module InterviewHelper
     headings_hash
   end
 
+  def citation_for(citation, translated=false)
+    html = ''
+    text = translated ? citation[:translated] : citation[:original]
+    unless(text.to_s).strip.blank?
+      item = citation[:item]
+      position = citation[:position]
+      unless item.nil? || position.nil?
+        html = link_to_function '&raquo;&nbsp;' + t(:goto_citation, :scope => 'user_interface.player'), "archiveplayer('interview-player').seek(#{item-1},#{position});"
+      end
+      html = content_tag(:span, text.to_s + html, :class => "citation")
+      # (link_to '&raquo;&nbsp;' + t(:goto_citation, :scope => 'user_interface.player'), '#', :class => "segment-navigation"), :class => "citation")
+    end
+    html
+  end
 
   # formats the languages for the transcript language tabs
   def formatted_languages(interview)

@@ -103,6 +103,16 @@ Spezielle Anweisungen fur die Positionierung von Bildern im Inhaltsbereich
   margin: 4px 0 4px 0;
 }
 
+.contentImagesLeft a:hover {
+    text-decoration: none;
+}
+
+.contentImagesLeft a .meta {
+    color: #666666;
+    font-size: 90%;
+    line-height: 100%;
+}
+
 h5 {
   margin: 8px 0 4px 0px;
   background: #e6e6dc;
