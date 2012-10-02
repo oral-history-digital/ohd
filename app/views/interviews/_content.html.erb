@@ -40,7 +40,7 @@
   <% end %>
 
   <% show_segments = [:search_results, :locations ].include?(featured_content) %>
-  <% if (featured_content == :locations ) -%>
+  <% if (featured_content == :locations ) && defined?(@location) && !@location.nil? -%>
       <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
       <% fulltext = ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
   <% else -%>
