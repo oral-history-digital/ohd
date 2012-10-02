@@ -34,7 +34,7 @@
 <% if current_user_account.nil? %>
 <p style="font-weight: bold; margin-top: 0.33em;">
  In order to protect the privacy rights of the interviewees you must be
-  <%= link_to 'registered', en_register_path %> and agree to the <%= external_link(:terms_of_use, :nutzungsbedingungen) %>
+  <%= link_to 'logged in', en_login_path %> and agree to the <%= external_link(:terms_of_use, :nutzungsbedingungen) %>
   before being granted access to the archive.
 </p>
 <% else %>
