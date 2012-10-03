@@ -102,7 +102,9 @@ module ApplicationHelper
   end
 
   def random_featured_interview
-    Interview.find :first, :conditions => "(citation_timecode IS NOT NULL) AND still_image_file_name IS NOT NULL", :order => "RAND()"
+    interview = Interview.find :first, :conditions => "(citation_timecode IS NOT NULL) AND still_image_file_name IS NOT NULL", :order => "RAND()"
+    interview ||= Interview.find_by_archive_id 'za465'
+    interview
   end
 
   def last_import

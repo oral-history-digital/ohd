@@ -57,7 +57,7 @@ class InterviewsController < BaseController
   end
 
   def featured_location
-    @location = params[:location_name].blank? ? nil : LocationReference.with_segments_from_interview(object).select{|l| location_to_param(l.name) == params[:location_name]}.first
+    @location = (params[:location_name].blank? ? nil : LocationReference.with_segments_from_interview(object).select{|l| location_to_param(l.name) == params[:location_name]}.first)
   end
 
   def location_to_param(name)
