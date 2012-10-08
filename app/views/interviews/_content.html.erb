@@ -15,7 +15,9 @@
     :locations
   end -%>
 
-  <!-- <span style="display: none;">featured_content = <%= featured_content -%></span> //-->
+  <% show_segments = [:search_results, :locations ].include?(featured_content) -%>
+  <% show_locations = (featured_content == :locations ) && defined?(@location) && !@location.nil? -%>
+  <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term') : @search.fulltext -%>
 
   <% remote_form_for content,
                      :url => interview_searches_path,
@@ -29,20 +31,18 @@
 
     <div id="interviewSearch">
         <h2><label for="fulltext"><%= t(:search, :scope => 'user_interface.labels').capitalize %> in &#145;<%= content %>&#146;</label></h2>
-        <%= text_field_tag 'fulltext', @search.fulltext || t('search_term'), :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
+        <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
         <%= hidden_field_tag 'id', @interview.archive_id %>
         <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit', :class => "baseInputSearch" %>
-        <%#= search.text_field :fulltext, :size => 30, :id => 'searchInput', :class => 'baseInputSearch', :title => 'Suchbegriff bitte hier eingeben', :onFocus => "clearFulltextField('searchInput');" %>
     </div>
 
   <% end %>
 
   <% javascript_tag do %>
-      $('interview_fulltext').value = '<%= @search.fulltext || t('search_term') %>';
+      $('interview_fulltext').value = '<%= current_search_text %>';
   <% end %>
 
-  <% show_segments = [:search_results, :locations ].include?(featured_content) %>
-  <% if (featured_content == :locations ) && defined?(@location) && !@location.nil? -%>
+  <% if show_locations -%>
       <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
       <% fulltext = ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
   <% else -%>
