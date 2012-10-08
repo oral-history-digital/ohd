@@ -1,7 +1,7 @@
 <% if segments.empty? %>
     <%= t(:no_segments_result, :scope => 'user_interface.messages') %>
 <% else %>
-<% fulltext ||= defined?(@location) ? ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
+<% fulltext ||= (defined?(@location) && !@location.blank?) ? ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
 <% fulltext ||= @search.fulltext -%>
 <ul class='segment-list'>
   <% section = nil -%>

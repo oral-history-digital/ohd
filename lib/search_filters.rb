@@ -4,8 +4,11 @@ module SearchFilters
   # It's important to deactivate or override this in all contexts that perform a new search.
   # (i.e. searches_controller).
   def current_query_params
-    @query_params ||= params.dup.delete_if{|k,v| !Search::QUERY_PARAMS.include?(k.to_s)}
-    @query_params ||= signed_in?(:user_account) ? (session[:query] || nil) : nil
+    @auto_query_params ||= params.dup.delete_if{|k,v| !Search::QUERY_PARAMS.include?(k.to_s)}
+    if @auto_query_params.nil? || @auto_query_params.empty?
+      @auto_query_params = signed_in?(:user_account) ? (session[:query] || nil) : nil
+    end
+    @auto_query_params
   end
 
   def current_search
