@@ -242,7 +242,8 @@ h5.formHeader {
     z-index: 10;
 }
 
-#innerContent form {
+#innerContent form,
+#innerContent .box {
     position: relative;
     background-color: #E4E4DA;
     margin: 5px 0;

@@ -199,6 +199,14 @@ de:
       home_locations: 'Wohnort'
       mentions: 'Erwähnungen'
 
+  plugins:
+    noflash: 'Adobe Flash ben&ouml;tigt'
+    noflash_message: 'Um die Interviews des Archivs &quot;Zwangsarbeit 1939-1945. Erinnerungen und Geschichte&quot; wiedergeben zu können benötigen Sie eine aktuelle Version des Adobe Flash Players.'
+    noflash_link: '» laden Sie Adobe Flash Player herunter'
+    nojs: 'Javascript aktivieren'
+    nojs_message: 'Für die Verwendung des Archivs ist die Aktivierung von Javascript in Ihrem Browser erforderlich. Ohne Javascript wird es nicht möglich sein, zu den Inhalten zu navigieren oder die Interviews abzurufen.'
+    nojs_link: '» wie aktiviere ich Javascript?'
+
   months:
     Jan: 'Jan'
     Feb: 'Feb'

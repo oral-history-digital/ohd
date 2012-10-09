@@ -201,6 +201,14 @@ en:
       home_locations: 'Place of Residence'
       mentions: 'Mentioned Places'
 
+  plugins:
+    noflash: 'Adobe Flash required'
+    noflash_message: 'For playback of the testimonies of the archive &quot;Forced Labor 1939-1945. Memory and History&quot; an up-to-date version of the Adobe Flash Player must be installed.'
+    noflash_link: '» download Adobe Flash Player'
+    nojs: 'Activate Javascript'
+    nojs_message: 'In order to use the archive you must activate Javascript in your browser. Without Javascript, retrieval and access of the testimonies will be impossible.'
+    nojs_link: '» how do I activate Javascript?'
+
   months:
     Jan: 'Jan'
     Feb: 'Feb'

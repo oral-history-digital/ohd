@@ -1,3 +1,29 @@
+<noscript>
+  <div id="no-js" class="box" style="width: 90%;">
+    <h1><%= t(:nojs, :scope => 'plugins') -%>!</h1>
+    <p>
+      <%= t(:nojs_message, :scope => 'plugins') %>
+    </p>
+    <a href="http://activatejavascript.org/<%= @locale || 'de' -%>" target="_blank"><%= t(:nojs_link, :scope => 'plugins') -%></a>
+  </div>
+  <br class="clear" style="padding-bottom: 20px;"/>
+</noscript>
+
+<div id="no-flash" style="display: none; padding-bottom: 20px;">
+  <div class="box" style="width: 90%;">
+      <h1><%= t(:noflash, :scope => 'plugins') -%>!</h1>
+      <p><%= t(:noflash_message, :scope => 'plugins') -%></p>
+      <a href="http://get.adobe.com/flashplayer" target="_blank"><%= t(:noflash_link, :scope => 'plugins') -%></a>
+  </div>
+  <br class="clear"/>
+</div>
+
+<% javascript_tag do %>
+    if(PluginDetect.isMinVersion('Flash','10,1') < 0) {
+        $('no-flash').show();
+    }
+<% end %>
+
 <h1><%= t(:link, :scope => 'devise.sessions') %></h1>
 
 <% form_for resource_name, resource, :url => session_path(resource_name), :html => { :class => 'signup' } do |f| -%>
