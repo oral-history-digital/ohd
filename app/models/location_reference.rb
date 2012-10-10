@@ -72,6 +72,7 @@ class LocationReference < ActiveRecord::Base
 
   def json_attrs(include_hierarchy=false)
     json = {}
+    return json if self.interview.nil?
     json['interviewId'] = self.interview.archive_id
     json['interviewee'] = self.interview.anonymous_title
     json['language'] = self.interview.languages.to_s
@@ -203,6 +204,22 @@ class LocationReference < ActiveRecord::Base
 
   def workflow_state=(state)
     @workflow_state=state
+  end
+
+  def exact_latitude=(lat)
+    @exact_latitude = lat
+  end
+
+  def exact_latitude
+    @exact_latitude ||= read_attribute(:latitude)
+  end
+
+  def exact_longitude=(lon)
+    @exact_longitude = lon
+  end
+
+  def exact_longitude
+    @exact_longitude ||= read_attribute(:longitude)
   end
 
 
@@ -424,6 +441,8 @@ class LocationReference < ActiveRecord::Base
         send("#{field}=",instance_eval("@#{variable}"))
       end
     end
+    self.latitude = @exact_latitude if defined?(@exact_latitude) && !@exact_latitude.blank?
+    self.longitude = @exact_longitude if defined?(@exact_longitude) && !@exact_longitude.blank?
     self.classified = ((@workflow_state || '').strip == 'classified')
     true
   end

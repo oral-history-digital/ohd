@@ -138,10 +138,14 @@ location:
     alias-names: 'camp_alias_names'
     classification: 'camp_classification'
     description: 'description'
+    latitude: 'exact_latitude'
+    longitude: 'exact_longitude'
   company:
     name: 'company_name'
     alias-names: 'company_alias_names'
     description: 'description'
+    latitude: 'exact_latitude'
+    longitude: 'exact_longitude'
 
 locations-segment:
   key_attribute: 'none'
