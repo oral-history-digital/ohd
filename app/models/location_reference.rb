@@ -84,8 +84,8 @@ class LocationReference < ActiveRecord::Base
     end
     json['location'] = name
     json['locationType'] = location_type
-    json['longitude'] = longitude
-    json['latitude'] = latitude
+    json['longitude'] = exact_longitude
+    json['latitude'] = exact_latitude
     if include_hierarchy
       json['country'] = {
               'name' => country_name,
