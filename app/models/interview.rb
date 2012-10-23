@@ -4,19 +4,26 @@ class Interview < ActiveRecord::Base
 
   belongs_to :collection
   
-  has_many  :photos
+  has_many  :photos,
+            :dependent => :destroy
 
-  has_many :text_materials
+  has_many :text_materials,
+           :dependent => :destroy
 
-  has_many  :tapes
+  has_many  :tapes,
+            :dependent => :destroy
 
-  has_many  :segments
+  has_many  :segments,
+            :dependent => :destroy
 
-  has_many  :location_references
+  has_many  :location_references,
+            :dependent => :destroy
 
-  has_many :annotations
+  has_many :annotations,
+           :dependent => :delete_all
 
-  has_many  :contributions
+  has_many  :contributions,
+            :dependent => :delete_all
 
   has_many  :contributors,
             :through => :contributions
@@ -58,7 +65,8 @@ class Interview < ActiveRecord::Base
             :conditions => "contributions.contribution_type = 'research'"
 
   has_many  :imports,
-            :as => :importable
+            :as => :importable,
+            :dependent => :delete_all
   
   has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
@@ -205,6 +213,15 @@ DEF
     date.blank? ? '?' : date[/(19|20)\d{2}/]
   end
 
+  # uses the birth location (if available) or country_of_origin
+  def country_of_birth
+    if birth_location.nil? || birth_location.blank?
+      country_of_origin
+    else
+      birth_location.split(/,\s*/).last
+    end
+  end
+
   def video
     read_attribute(:video) ? 'Video' : 'Audio'
   end
@@ -223,6 +240,15 @@ DEF
 
   def right_to_left
     languages.map{|l| l.name }.include?('Hebräisch') ? true : false
+  end
+
+  def citation_hash
+    {
+      :original => read_attribute(:original_citation),
+      :translated => read_attribute(:translated_citation),
+      :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
+      :position => Timecode.new(read_attribute(:citation_timecode)).time.round
+    }
   end
 
   # forced_labor_groups setter for attribute-based XML import
