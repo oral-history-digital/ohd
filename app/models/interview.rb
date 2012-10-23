@@ -200,7 +200,10 @@ DEF
 
   def short_title
     return '' if full_title.blank?
-    @short_title ||= full_title[/^[^,;]+, \w/] + "."
+    # this is the old form: Baschlai, S.
+    # @short_title ||= full_title[/^[^,;]+, \w/] + "."
+    # new form is: Sinaida Baschlai
+    @short_title ||= [first_name, (last_name || '').sub(/\s*\([^(]+\)\s*$/,'')].join(' ')
   end
 
   def anonymous_title
