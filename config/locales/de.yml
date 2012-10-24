@@ -138,7 +138,7 @@ de:
       view: 'Ansicht'
       edit: 'Bearbeiten'
       topics: 'Themen'
-      delete: 'L&ouml;schen'
+      delete: 'Entfernen'
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
@@ -159,7 +159,7 @@ de:
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
       quality_disclaimer: "Transkription und Übersetzung zu diesem Interview sind nicht abschließend lektoriert."
-      delete_content: "Der Inhalt (%{content}) wird dauerhaft gel&ouml;scht. Wollen Sie fortfahren?"
+      delete_content: "Sie entfernen den Verweis auf (%{content}). Wollen Sie fortfahren?"
       need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
       need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
 
