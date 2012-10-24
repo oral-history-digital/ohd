@@ -38,7 +38,7 @@ class LanguageXMLImport < Nokogiri::XML::SAX::Document
       @parsing_language = false
     end
     if @parsing_language && name == 'name'
-      @current_data.strip.split('/').each do |lang|
+      @current_data.strip.split(/\s*\/\s*/).each do |lang|
         @current_language = Category.find(:first, :conditions => ["name = ? and category_type = 'Sprache'", lang])
         if @current_language.nil?
           puts "No language '#{lang}' found! Skipping."
@@ -56,6 +56,21 @@ class LanguageXMLImport < Nokogiri::XML::SAX::Document
   def end_document
     puts "Found languages for interview (#{@languages_for_interview.size}): #{@languages_for_interview.join(', ')}"
     @interview.save
+    # Remove categorizations for languages that are not included
+    @remove_languages = @interview.languages.map(&:name) - @languages_for_interview
+    removed = []
+    @remove_languages.each do |lang|
+      language = Category.find(:first, :conditions => ["name = ? and category_type = 'Sprache'", lang])
+      next if language.nil?
+      cat = Categorization.find :first, :conditions => "category_id = #{language.id} AND interview_id = #{@interview.id}"
+      unless cat.nil?
+        cat.destroy
+        removed << lang
+      end
+    end
+    unless removed.empty?
+      puts "Removed old languages: #{removed.join(', ')}."
+    end
     puts "Saved interview. Done."
   end
 

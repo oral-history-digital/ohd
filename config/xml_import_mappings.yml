@@ -9,12 +9,14 @@ collection:
   responsibles: 'responsibles'
   notes: 'notes'
 
-language:
-  key_attribute: 'name'
-  name: 'name'
-  class_name: 'category'
-  class_type: 'Sprache'
-  type_field: 'category_type'
+# remove old problematic language import
+# - use the xml_import:languages instead to split dual-language records
+#language:
+#  key_attribute: 'name'
+#  name: 'name'
+#  class_name: 'category'
+#  class_type: 'Sprache'
+#  type_field: 'category_type'
 
 interview:
   key_attribute: 'archive_id'
