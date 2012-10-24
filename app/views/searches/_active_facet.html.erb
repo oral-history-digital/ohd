@@ -8,7 +8,7 @@
   <ul>
   <% if is_category %>
 
-    <% query = query.map{|c| c.to_i != 0 ? Category.find(c) : nil }.compact %>
+    <% query = query.map{|c| c.to_i != 0 ? begin; Category.find(c); rescue; nil; end : nil }.compact %>
 
     <% query.each_with_index do |category, index| %>
         <%# translate language parts individually %>
