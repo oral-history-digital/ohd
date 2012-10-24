@@ -153,10 +153,12 @@ InteractiveMap.prototype = {
       return info;
     },
     locationReference: function(refStr, type) {
-        if(['Camp','Lager'].indexOf(type) > -1) {
-            return 'forced_labor_camp';
-        } else if(['Company','Firma'].indexOf(type) > -1) {
-            return 'forced_labor_company';
+        if(refStr == 'forced_labor_location') {
+            if(['Camp','Lager'].indexOf(type) > -1) {
+                return 'forced_labor_camp';
+            } else if(['Company','Firma'].indexOf(type) > -1) {
+                return 'forced_labor_company';
+            }
         }
         return refStr;
     },
