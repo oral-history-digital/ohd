@@ -11,6 +11,7 @@ var ArchivePlayerSlidesController = Class.create({
     this.useSlides = this.slideClass != null;
     this.currentSlide = null;
     this.slideIndex = 0;
+    this.citation = true;
     if (this.useSlides) {
       this.slides = $$('#' + captionsContainer + ' .' + this.slideClass);
       if (this.slides.length < 3) {
@@ -43,6 +44,11 @@ var ArchivePlayerSlidesController = Class.create({
   showCaptions: function(captionText) {
     if(this.captionContainer) {
       // empty string if undefined
+      // hide citation container
+      if(this.citation) {
+          this.citation = false;
+          this.captionContainer.down('.initial').each(function(el){ el.hide(); });
+      }
       if(!captionText) { captionText = ""; }
         // insert into next slide
         var nextIndex = this.nextSlideIndex();

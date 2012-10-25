@@ -464,6 +464,15 @@ body .teaserList .save_user_content {
     color: #6f6c5d;
 }
 
+#tag-filters .facet.checked .show-unchecked,
+#tag-filters .facet .show-checked {
+    display: none;
+}
+
+#tag-filters .facet.checked .show-checked {
+    display: block;
+}
+
 /* modal topics dialog */
 .workbook .hint {
     margin: 10px;

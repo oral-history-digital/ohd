@@ -193,6 +193,24 @@ a#modal_window_close {
   background-color: #fff;
 }
 
+.citation {
+    margin-top: 30px;
+    padding: 4px 12px 6px 26px;
+    background: transparent url(/images/quote_glyph.png) top left no-repeat;
+    font-style: italic;
+    color: #999281;
+}
+
+.citation a {
+    clear: both;
+    float: right;
+    margin-right: 12px;
+    font-size: 85%;
+    text-decoration: none;
+    font-style: normal;
+    padding-left: 4px;
+}
+
 .back a, .forward a {
   display: block;
   width: 100%;

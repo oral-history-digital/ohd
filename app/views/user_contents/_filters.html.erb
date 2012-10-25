@@ -28,10 +28,17 @@
   </div>
 
   <div id="tag-filters-toggle" class="open container-toggle" onclick="toggleContainer('tag-filters-toggle', true, false);">
-    <h2><%= t('filter_by_tag', :scope => 'user_interface.labels') %><a href='#' onclick="checkTag(null, this); Event.stop(event);">(<%= t('select_all') -%>)</a></h2>
+    <h2><%= t('filter_by_tag', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="tag-filters" class="container">
     <ul class="facet-field">
+      <li class="facet checked" onclick="checkTag(null, this); Event.stop(event);">
+        <%= check_box_tag "tag_filters['_all_']", 1, false, {:id => "tagfilter_all_", :class => 'content_filter checkbox' } %>
+        <span class="facet-name">
+          <span class="show-checked"><%= t(:all_topics, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
+          <span class="show-unchecked"><%= t(:select_all_topics, :scope => 'user_interface.user_content') -%></span>
+        </span>
+      </li>
       <% current_user.tags.sort{|a,b| a.name <=> b.name }.each do |tag| -%>
       <li class="facet checked" onclick="checkTag('<%= "tagfilter_#{tag}" %>', this);">
         <%= check_box_tag "tag_filters[#{tag}]", 1, false, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>

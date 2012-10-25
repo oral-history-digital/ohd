@@ -140,6 +140,8 @@ en:
       view: 'View'
       edit: 'Edit'
       topics: 'Topics'
+      all_topics: 'All topics'
+      select_all_topics: 'Select all topics'
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'

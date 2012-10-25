@@ -48,7 +48,7 @@
   function checkTag(id, labelElement) {
       var changed = false;
       var checkedInput = (id == null) ? null : $(id);
-      var facets = (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');
+      var facets = labelElement.up('.facet-field'); // (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');
       facets.select('.checkbox').each(function(input){
           var currentItem = input.up('.facet');
           if((checkedInput == null) || (input.id == id)) {
