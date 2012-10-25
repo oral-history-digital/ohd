@@ -80,6 +80,14 @@
         }
     }
 
+    function closeOpenActions() {
+        $$('.actions.open').each(function(el){
+            setItemStatus(el, false);
+        });
+    }
+
+    document.body.observe('click', closeOpenActions);
+
 <% end %>
 <div id="user_contents">
   <%= render :partial => 'user_content', :collection => @user_contents %>
