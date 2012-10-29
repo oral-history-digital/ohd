@@ -1,25 +1,5 @@
 /* JS-API for the workbook filter effects and functionality */
 
-  function invertSelection(elem) {
-    var selection = elem.parentNode.getElementsBySelector('.facet');
-    var changed = false;
-    selection.each(function(facet){
-        var input = facet.down('.checkbox');
-        if(facet.hasClassName('checked')) {
-          if($$('#content_filters .checked').length > 1) {
-              input.checked = false;
-              facet.removeClassName('checked');
-              changed = true;
-          }
-        } else {
-          input.checked = false;
-          facet.addClassName('checked');
-          changed = true;
-        }
-    });
-    return changed;
-  }
-
   function checkFilter(id, labelElement) {
       var changed = false;
       var checkedInput = (id == null) ? null : $(id);
@@ -30,7 +10,6 @@
           var currentItem = input.up('.facet');
           var newStatus = ((checkedInput == null) || (input.id == id)) ? !invertValue : invertValue;
           var setStatus = false;
-          // alert('Status for ' + input.id + ' = ' + (newStatus ? 'CHECKED' : 'NOT CHECKED') + ',\ncurrent status: ' + input.checked + '\nvalue = ' + input.value + '\n\ninvertValue: ' + invertValue);
           if(newStatus && !input.checked) {
               // only set the fullSelect if it was directly clicked
               if(!((input.id == fullSelect.id) && checkedInput)) {
