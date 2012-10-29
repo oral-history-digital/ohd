@@ -18,6 +18,13 @@
   </div>
   <div id="content-filters" class="container">
     <ul class="facet-field">
+      <li class="facet checked" onclick="checkFilter(null, this); Event.stop(event);">
+        <%= check_box_tag "content_filters['_all_']", 1, false, {:id => "filter_all_", :class => 'content_filter checkbox' } %>
+        <span class="facet-name">
+          <span class="show-checked"><%= t(:all_filters, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
+          <span class="show-unchecked"><%= t(:select_all_filters, :scope => 'user_interface.user_content') -%></span>
+        </span>
+      </li>
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
       <li class="facet checked" onclick="checkFilter('<%= "filter_#{content_type}}" %>', this);">
         <%= check_box_tag "content_filters[#{content_type}]", 1, false, { :id => "filter_#{content_type}}", :class => 'content_filter checkbox' } %>
@@ -32,7 +39,7 @@
   </div>
   <div id="tag-filters" class="container">
     <ul class="facet-field">
-      <li class="facet checked" onclick="checkTag(null, this); Event.stop(event);">
+      <li class="facet checked" onclick="checkFilter(null, this); Event.stop(event);">
         <%= check_box_tag "tag_filters['_all_']", 1, false, {:id => "tagfilter_all_", :class => 'content_filter checkbox' } %>
         <span class="facet-name">
           <span class="show-checked"><%= t(:all_topics, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
@@ -40,7 +47,7 @@
         </span>
       </li>
       <% current_user.tags.sort{|a,b| a.name <=> b.name }.each do |tag| -%>
-      <li class="facet checked" onclick="checkTag('<%= "tagfilter_#{tag}" %>', this);">
+      <li class="facet checked" onclick="checkFilter('<%= "tagfilter_#{tag}" %>', this);">
         <%= check_box_tag "tag_filters[#{tag}]", 1, false, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= tag %></span>
       </li>

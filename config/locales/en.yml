@@ -142,6 +142,8 @@ en:
       topics: 'Topics'
       all_topics: 'All topics'
       select_all_topics: 'Select all topics'
+      all_filters: 'All types of content'
+      select_all_filters: 'Select all types of content'
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'

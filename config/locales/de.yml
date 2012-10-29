@@ -138,6 +138,8 @@ de:
       view: 'Ansicht'
       edit: 'Bearbeiten'
       topics: 'Themen'
+      all_filters: 'Alle Inhaltsarten'
+      select_all_filters: 'Alle Inhaltsarten ausw&auml;hlen'
       all_topics: 'Alle Themen'
       select_all_topics: 'Alle Themen ausw&auml;hlen'
       delete: 'Entfernen'

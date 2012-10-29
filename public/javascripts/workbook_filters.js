@@ -20,7 +20,7 @@
     return changed;
   }
 
-  function checkFilter(id, labelElement) {
+  function checkFilterOld(id, labelElement) {
       var input = $(id);
       var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
       if((input) && (item)) {
@@ -45,7 +45,7 @@
       }
   }
 
-  function checkTag(id, labelElement) {
+  function checkFilter(id, labelElement) {
       var changed = false;
       var checkedInput = (id == null) ? null : $(id);
       var facets = labelElement.up('.facet-field'); // (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');

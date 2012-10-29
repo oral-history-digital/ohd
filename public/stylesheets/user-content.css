@@ -124,7 +124,6 @@ body .teaserList .save_user_content {
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
     padding-left: 5px;
-    cursor: pointer;
 }
 
 /* icons */
@@ -452,24 +451,22 @@ body .teaserList .save_user_content {
     min-height: 160px;
 }
 
-#content-filters .facet-field,
-#tag-filters .facet-field {
+.container .facet-field {
     cursor: pointer;
     padding: 4px;
 }
 
-#content-filters li.facet,
-#tag-filters li.facet {
+.facet-field li.facet {
     margin-top: 2px;
     color: #6f6c5d;
 }
 
-#tag-filters .facet.checked .show-unchecked,
-#tag-filters .facet .show-checked {
+.facet-field .facet.checked .show-unchecked,
+.facet-field .facet .show-checked {
     display: none;
 }
 
-#tag-filters .facet.checked .show-checked {
+.facet-field .facet.checked .show-checked {
     display: block;
 }
 

@@ -196,11 +196,13 @@ class UserContentsController < BaseController
     conds = []
     values = []
     filters = params['content_filters'] || {}
-    types = []
-    UserContent::CONTENT_TYPES.each do |content_type|
-      filter_value = filters[content_type.to_s.underscore]
-      types << content_type.to_s.camelize if filter_value.blank? || filter_value == 0
+    types = filters.keys.empty? ? UserContent::CONTENT_TYPES.map{|c| c.to_s.camelize } : []
+    filters.keys.each do |content_type|
+      next if content_type =~ /^'?_?all_?'?$/
+      filter_value = filters[content_type.to_s.underscore].to_i
+      types << content_type.to_s.camelize if filter_value != 0
     end
+    return [] if types.size == UserContent::CONTENT_TYPES.size
     conds << "type in ('#{types.join("','")}')"
     conditions = [ conds.join(' AND ') ]
     values.each do |value|
