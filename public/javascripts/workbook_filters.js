@@ -20,43 +20,29 @@
     return changed;
   }
 
-  function checkFilterOld(id, labelElement) {
-      var input = $(id);
-      var item = labelElement.hasClassName('facet') ? labelElement : labelElement.up('.facet');
-      if((input) && (item)) {
-          var changed = false;
-          if(item.hasClassName('checked')) {
-              input.checked = true; // true means remove this item
-              item.removeClassName('checked');
-              changed = true;
-          } else {
-              input.checked = false; // false means keep it
-              item.addClassName('checked');
-              changed = true;
-          }
-          /*
-          if(!invertSelection(input)) {
-            // invert all checkboxes
-            invertSelection(item);
-          }
-          */
-          input.up('form').request();
-          new Effect.Appear('overlay', { duration: 0.3, to: 0.9, queue: 'front' });
-      }
-  }
-
   function checkFilter(id, labelElement) {
       var changed = false;
       var checkedInput = (id == null) ? null : $(id);
-      var facets = labelElement.up('.facet-field'); // (id == null) ? labelElement.up('.container-toggle').next('.container').down('.facet-field') : labelElement.up('.facet-field');
+      var facets = labelElement.up('.facet-field');
+      var fullSelect = facets.down('.facet input');
+      var invertValue = (checkedInput && fullSelect && !fullSelect.checked) ? (checkedInput.checked ? true : false) : false;
       facets.select('.checkbox').each(function(input){
           var currentItem = input.up('.facet');
-          if((checkedInput == null) || (input.id == id)) {
-              if(!input.checked) { changed = true; }
-              input.checked = true;
-              currentItem.addClassName('checked');
-          } else {
-              if(input.checked) { changed = true; }
+          var newStatus = ((checkedInput == null) || (input.id == id)) ? !invertValue : invertValue;
+          var setStatus = false;
+          // alert('Status for ' + input.id + ' = ' + (newStatus ? 'CHECKED' : 'NOT CHECKED') + ',\ncurrent status: ' + input.checked + '\nvalue = ' + input.value + '\n\ninvertValue: ' + invertValue);
+          if(newStatus && !input.checked) {
+              // only set the fullSelect if it was directly clicked
+              if(!((input.id == fullSelect.id) && checkedInput)) {
+                  changed = true;
+                  setStatus = true;
+                  input.checked = true;
+                  currentItem.addClassName('checked');
+              }
+          }
+          if(!newStatus && input.checked) {
+              changed = true;
+              setStatus = true;
               input.checked = false;
               currentItem.removeClassName('checked');
           }

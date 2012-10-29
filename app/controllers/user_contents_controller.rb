@@ -1,4 +1,5 @@
 class UserContentsController < BaseController
+  include ERB::Util
 
   layout 'workspace', :except => [ :show, :create ]
 
@@ -231,7 +232,7 @@ class UserContentsController < BaseController
     unless tags.empty?
       includes << :taggings
       includes << :tags
-      sql_conditions = [ sql_conditions.shift + " AND tags.name IN (?)" ] + sql_conditions + [tags.join("','")]
+      sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
     end_of_association_chain.find(:all, :conditions => sql_conditions, :include => includes, :order => "user_contents.created_at DESC")
   end
