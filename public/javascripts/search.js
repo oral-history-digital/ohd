@@ -11,10 +11,10 @@
         var searchForm = $('search_facets');
         queryHash = hash;
         if(searchForm) {
-            alert('Submitting for query hash=' + hash);
+            // alert('Submitting for query hash=' + hash);
             searchForm.onsubmit = new Ajax.Request('/suche',{asynchronous: true, evalScripts: true, method: 'get', parameters: { 'suche': hash }});
         } else {
-            alert('ERROR:\nsearchForm = ' + searchForm);
+            // alert('ERROR:\nsearchForm = ' + searchForm);
         }
      }
   }

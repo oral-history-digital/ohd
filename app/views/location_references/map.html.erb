@@ -2,3 +2,10 @@
 <iframe id="external_content_frame" src="<%= map_frame_path -%>" name="Kartenansicht" width="695px" height="686px" style="overflow-x: hidden; overflow-y: hidden;">
   <p>Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber <%= link_to 'hier', map_frame_path -%> direkt aufrufen.</p>
 </iframe>
+
+<% javascript_tag do -%>
+    $('mainWrapper').addClassName('right-overlay');
+    $('ajax-spinner').hide();
+    $('overlay').setStyle({ opacity: 0.5 });
+    $('overlay').show();
+<% end -%>
