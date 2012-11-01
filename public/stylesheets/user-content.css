@@ -124,7 +124,7 @@ body .teaserList .save_user_content {
     background-position: 0.3em 2px;
 }
 #toggle_links .active #activate_sorting {
-    background-position: 0.3em -779px;
+    background-position: 0.3em -898px;
     color: #840f09;
 }
 #toggle_links .active {
@@ -143,7 +143,7 @@ body .teaserList .save_user_content {
 }
 
 #toggle_links #finalize_sorting {
-    background-position: 0.3em -900px;
+    background-position: 0.3em -1141px;    
     display: none;
 }
 #toggle_links .active #finalize_sorting {
