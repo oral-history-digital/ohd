@@ -1,5 +1,10 @@
 /* Stylesheets for user content interfaces */
 
+/* bigger padding of baseContent on the left */
+.workbook #mainWrapper {
+    width: 1064px;
+}
+
 .teaserList .save_user_content,
 #save_interview_reference .save_user_content {
     position: absolute;
@@ -92,6 +97,19 @@ body .teaserList .save_user_content {
     background-image: url(/images/icon_sprite.png);
     background-repeat: no-repeat;
     color: #838175;
+    margin-right: 10px;
+}
+
+#toggle_links div {
+    display: inline;
+    padding: 6px;
+}
+
+#toggle_links div a {
+    padding-top: 3px;
+    padding-right: 4px;
+    padding-bottom: 3px;
+    line-height: 1em;
 }
 
 #toggle_links #expand_all {
@@ -102,26 +120,62 @@ body .teaserList .save_user_content {
     background-position: 0.3em -661px;
 }
 
-#user_contents .item {
+#toggle_links #activate_sorting {
+    background-position: 0.3em 2px;
+}
+#toggle_links .active #activate_sorting {
+    background-position: 0.3em -779px;
+    color: #840f09;
+}
+#toggle_links .active {
     background-color: #E4E4DA;
+}
+#toggle_links .active a:hover {
+    background-color: #fff;
+}
+
+#toggle_links #cancel_sorting {
+    background-position: 0.3em -1080px;
+    display: none;
+}
+#toggle_links .active #cancel_sorting {
+    display: inline-block;
+}
+
+#toggle_links #finalize_sorting {
+    background-position: 0.3em -900px;
+    display: none;
+}
+#toggle_links .active #finalize_sorting {
+    display: inline-block;
+}
+
+.workbook #baseContent {
+    padding-left: 40px;
+}
+
+#user_contents {
+    margin-left: -40px;
+}
+
+#user_contents .item {
+    position: relative;
     margin-bottom: 1px;
     float: left;
     width: 100%;
+    padding-left: 40px;
 }
 
 #user_contents .item .details {
     background-color: #FFFFFF;
 }
 
-#user_contents .item.closed {
-    background-color: #E4E4DA;
-}
-
 #user_contents .header {
     float: left;
     width: 695px;
     line-height: 225%;
-    background-image: url(/images/icon_sprite.png);
+    background-color: #E4E4DA;
+    background-image: url('/images/icon_sprite.png');
     background-repeat: no-repeat;
     padding-left: 5px;
 }
@@ -134,6 +188,35 @@ body .teaserList .save_user_content {
 .item .header.interview_reference,
 .item .header.segment_reference {
     background-position: 0.3em -355px;
+}
+
+.item .handle {
+    display: none;
+    position: absolute;
+    top: 1px;
+    left: 10px;
+    background: #b2afa1 url('/images/drag_handle_bg.png') top center no-repeat;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.sort .item .handle {
+    display: block;
+}
+.item .handle.changed {
+    background-color: #990000;
+}
+
+.item .handle a {
+    display: block;
+    width: 25px;
+    height: 23px;
+    color: #fff;
+    text-align: center;
+    font-size: 80%;
+    padding-top: 5px;
+    padding-left: 3px;
+    text-decoration: none;
 }
 
 #user_contents .title {

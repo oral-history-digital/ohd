@@ -1,6 +1,11 @@
 <div id="toggle_links">
     <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all", :style => (@user_contents.size < 4 ? 'display: none;' : '') %>
     <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => (@user_contents.size < 4 ? '' : 'display: none;') %>
+  <div>
+    <%= link_to_function 'sortieren', "activateSorting('user_contents')", :id => "activate_sorting" %>
+    <%= link_to_function 'aktualisieren', "finalizeSorting('user_contents')", :id => "finalize_sorting", :style => 'display: none;' %>
+    <%= link_to_function 'abbrechen', "cancelSorting('user_contents')", :id => "cancel_sorting", :style => "display: none;" %>
+  </div>
 </div>
 <% javascript_tag do %>
 
