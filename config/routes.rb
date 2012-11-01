@@ -52,7 +52,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'arbeitsmappe', :locale => :de, :controller => :user_contents, :action => :index
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
 
-  map.resources :user_contents, :member => { :topics => :get, :update_topics => :put }
+  map.resources :user_contents,
+                :member => { :topics => :get, :update_topics => :put },
+                :collection => { :sort => :post }
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 

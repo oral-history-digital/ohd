@@ -126,6 +126,18 @@ class UserContentsController < BaseController
     end
   end
 
+  def sort
+    # TODO: implement logic to actually sort elements
+    respond_to do |format|
+      format.html do
+        redirect_to user_contents_path
+      end
+      format.js do
+        render :nothing => true, :status => 200
+      end
+    end
+  end
+
   protected
 
   def unauthorized_access

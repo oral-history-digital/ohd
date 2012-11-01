@@ -93,6 +93,8 @@
 
     document.body.observe('click', closeOpenActions);
 
+    var authenticityToken = '<%= form_authenticity_token.inspect-%>';
+
 <% end %>
 <div id="user_contents">
   <%= render :partial => 'user_content', :collection => @user_contents %>
