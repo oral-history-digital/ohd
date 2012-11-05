@@ -83,6 +83,10 @@ class UserContent < ActiveRecord::Base
     user_content_path(self)
   end
 
+  def reverse_position_order_str
+    "#{100000 - position} #{created_at}"
+  end
+
   private
 
   def store_properties

@@ -128,12 +128,15 @@ class UserContentsController < BaseController
 
   def sort
     # TODO: implement logic to actually sort elements
+    sort_by_list params[:user_contents]
     respond_to do |format|
       format.html do
         redirect_to user_contents_path
       end
       format.js do
-        render :nothing => true, :status => 200
+        render :update do |page|
+          page.visual_effect(:fade, 'overlay')
+        end
       end
     end
   end
@@ -246,7 +249,7 @@ class UserContentsController < BaseController
       includes << :tags
       sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
-    end_of_association_chain.find(:all, :conditions => sql_conditions, :include => includes, :order => "user_contents.created_at DESC")
+    end_of_association_chain.find(:all, :conditions => sql_conditions, :include => includes, :order => "position ASC, user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)
@@ -257,6 +260,22 @@ class UserContentsController < BaseController
     end
     cond.first << ')'
     Tag.find(:all, :conditions => cond).map(&:name)
+  end
+
+  # positional sorting by id list
+  def sort_by_list(ids)
+    current_contents = UserContent.find(:all, :conditions => ["user_id = ? AND id IN (#{ids.join(',')})", current_user.id], :order => "position ASC, created_at DESC")
+    pos = current_contents.map(&:position)
+    current_pos = (0.75 * pos.min).round
+    pos_per_step = ((1.25 * pos.max - current_pos) / pos.length).floor + 1
+    ids.each do |id|
+      item = current_contents.select{|c| c.id == id.to_i }.first
+      unless item.nil?
+        UserContent.update_all ['position = ?', current_pos], "id = #{id}"
+        item.position = current_pos
+      end
+      current_pos += pos_per_step
+    end
   end
 
 end

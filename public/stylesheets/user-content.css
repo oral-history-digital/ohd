@@ -130,8 +130,13 @@ body .teaserList .save_user_content {
 #toggle_links .active {
     background-color: #E4E4DA;
 }
-#toggle_links .active a:hover {
+#toggle_links .active #cancel_sorting:hover,
+#toggle_links .active #finalize_sorting:hover {
     background-color: #fff;
+    -moz-box-shadow: 2px 1px 1px #666;
+    -webkit-box-shadow: 2px 1px 1px #666;
+    box-shadow: 2px 1px 1px #666;
+    text-decoration: none;
 }
 
 #toggle_links #cancel_sorting {
