@@ -175,6 +175,7 @@ body .teaserList .save_user_content {
 
 #user_contents .item .details {
     background-color: #FFFFFF;
+    width: 675px;
 }
 
 #user_contents .header {
