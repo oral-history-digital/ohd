@@ -74,6 +74,25 @@ a#modal_window_close {
     background: transparent url(/images/lightbox/close.gif) center no-repeat;
 }
 
+#modal_window h2 + div,
+#modal_window h2 + p {
+    margin-top: 1em;
+}
+
+#modal_window .checkbox_notification {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    color: #6F6C5D;
+    font-size: 85%;
+}
+
+.checkbox_notification .checkbox input[type='checkbox'],
+.checkbox_notification .checkbox input.checkbox {
+    position: relative;
+    top: 3px;
+}
+
 #modal_window .chzn-select {
     width: 320px;
 }

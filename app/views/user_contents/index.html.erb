@@ -2,14 +2,36 @@
     <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all", :style => (@user_contents.size < 4 ? 'display: none;' : '') %>
     <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => (@user_contents.size < 4 ? '' : 'display: none;') %>
   <div>
-    <%= link_to_function 'sortieren', "currentSorting.activateSorting()", :id => "activate_sorting" %>
-    <%= link_to_function 'aktualisieren', "currentSorting.finalizeSorting()", :id => "finalize_sorting", :style => 'display: none;' %>
-    <%= link_to_function 'abbrechen', "currentSorting.cancelSorting()", :id => "cancel_sorting", :style => "display: none;" %>
+    <%= link_to_function t(:activate, :scope => "user_interface.sort"), "sortDialogInstructions(); currentSorting.activateSorting()", :id => "activate_sorting" %>
+    <%= link_to_function t(:update, :scope => "user_interface.sort"), "currentSorting.finalizeSorting()", :id => "finalize_sorting", :style => 'display: none;' %>
+    <%= link_to_function t(:cancel, :scope => "user_interface.sort"), "currentSorting.cancelSorting()", :id => "cancel_sorting", :style => "display: none;" %>
+  </div>
+</div>
+<div id="sorting_instructions" style="display: none;">
+  <h2><%= t(:title, :scope => 'help.sort') -%></h2>
+  <div>
+    <p>
+      <%= image_tag 'help/sort_handle.png', :style => "float: right; margin: 2px 28px 2px 2px;" -%>
+      <%= t(:text1, :scope => 'help.sort') -%>
+    </p>
+    <p><%= t(:text2, :scope => 'help.sort') -%></p>
   </div>
 </div>
 <% javascript_tag do %>
 
     document.body.observe('click', closeOpenActions);
+
+    function sortDialogInstructions() {
+        <%= javascript_instant_modal_window('sorting_instructions', 'zai-sort') %>
+    }
+    function toggleCookieStore(key) {
+        var cookieContent = readCookie('zai-sort');
+        if(!(cookieContent) || cookieContent.blank()) {
+            writeCookie('zai-sort','<%= Time.now.to_s.split(/\s+/).reverse.join('-').gsub(' ','') -%>', true);
+        } else {
+            writeCookie('zai-sort', null, false);
+        }
+    }
 
 <% end %>
 <div id="user_contents">

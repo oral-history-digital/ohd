@@ -151,6 +151,10 @@ de:
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'
+    sort:
+      activate: 'sortieren'
+      cancel: 'abbrechen'
+      update: 'aktualisieren'
     messages:
       no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
       player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
@@ -175,6 +179,12 @@ de:
     google_acceptance: 'Durch den Klick erkennen Sie die Google Nutzungsbedingungen an'
     google_notice: 'Wenn Sie folgende Inhalte durch einen Klick aktivieren, werden Nutzerdaten (insbesondere Ihre IP-Adresse) an Google übertragen, dort gespeichert, und unter Umständen mit weiteren Profilinformationen (z.B. Google+ etc.) dieses Anbieters abgeglichen.'
     remember_settings: 'Google Maps Inhalte immer zulassen'
+
+  help:
+    sort:
+      title: 'Anleitung: Inhalte sortieren'
+      text1: 'Die Inhalte in der aktuellen Ansicht können durch Drag & Drop mit Hilfe der am linken Rand eingeblendeten Schieber sortiert werden.'
+      text2: 'Geänderte Inhalte werden durch die rote Farbe des Schiebers hervorgehoben. Wenn Sie mit der Reihenfolge zufrieden sind müssen Sie diese durch &quot;aktualisieren&quot; in der oberen Aktionsleiste bestätigen - erst dann wird die Reihenfolge dauerhaft übernommen.'
 
   map:
     legend:

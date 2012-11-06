@@ -13,6 +13,7 @@ ContentSorting.prototype = {
     activateSorting: function() {
         this.sortItems.addClassName('sort');
         $('activate_sorting').parentNode.addClassName('active');
+        $('cancel_sorting').show();
         Sortable.create(this.dom_id, {
             tag: 'div',
             elements: $$('#' + this.dom_id + ' .item'),
@@ -25,7 +26,6 @@ ContentSorting.prototype = {
     updateOrder: function(item) {
         if(!this.sortingActive) {
             $('finalize_sorting').show();
-            $('cancel_sorting').show();
             this.sortingActive = true;
         }
         $(item).down('.handle').addClassName('changed');

@@ -44,3 +44,47 @@ Ajax.Responders.register({
   }
 });
 
+/* Helper functions */
+function loadScript(src, callback) {
+    if(!callback) { callback = function() {}; }
+    var script = new Element('script', { 'src': src, 'type': 'text/javascript'});
+    script.onload = callback;
+    script.onreadystatechange = function(){
+        if(this.readyState == 'complete') {
+            callback();
+        }
+    }
+    $('baseContent').insert({bottom: script});
+}
+
+function writeCookie(key, value, validity) {
+    var expiry = new Date();
+    if(validity) {
+        expiry.setTime((new Date()).getTime() + 3600000 * 24 * validity);
+        expiry = expiry.toGMTString();
+    } else {
+        expiry = new Date(1970).toGMTString();
+    }
+    document.cookie = key + '=' + value + '; expires=' + expiry;
+}
+
+function readCookie(key) {
+    var values = [];
+    var cookieKeyRegexp = new RegExp(key + '=[^;]+');
+    var cookieValues = document.cookie.match(cookieKeyRegexp);
+    if(cookieValues) {
+        var idx = cookieValues.length;
+        while(idx--) {
+            // skip the key + 1 character ('=')
+            var cvalues = cookieValues[idx].substring(key.length+1).match(/[a-z0-9A-Z_-]+/g);
+            if(cvalues) {
+                var ldx = cvalues.length;
+                while(ldx--) {
+                    values.push(cvalues[ldx]);
+                }
+            }
+        }
+    }
+    return (values.length < 2) ? values.first() : values;
+}
+

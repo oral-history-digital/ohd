@@ -150,6 +150,10 @@ en:
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
+    sort:
+      activate: 'sort contents'
+      cancel: 'cancel'
+      update: 'update'
     interview_reference:
       save: 'mark interview'
       saved: 'marked interview'
@@ -177,6 +181,13 @@ en:
       google_acceptance: "By clicking you accept Google's terms of use"
       google_notice: 'If you accept to show the following content via click, Google will receive user data (especially your IP address). Google will store this data and may evaluate it together with other profile information (e.g. Google+ etc.).'
       remember_settings: 'Always accept Google Maps content'
+
+  help:
+    sort:
+      title: 'Introduction: Sorting Contents'
+      text1: 'The contents in the current view can be reordered via drag & drop by using the sliding handle elements on the left border.'
+      text2: 'Changed contents will be indicated by the handle&apos;s red color. To save your changes, press &quot;update&quot; in the upper action bar when you are satisfied with the new sorting.'
+
 
   map:
     legend:
@@ -595,11 +606,16 @@ en:
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
 
   forced_labor_group: 'Group'
+  forced_labor_groups: 'Groups'
   forced_labor_field: 'Deployment Area'
+  forced_labor_fields: 'Deployment Areas'
   forced_labor_habitation: 'Internment Conditions'
+  forced_labor_habitations: 'Internment Conditions' # need singular for category_type
   person_name: 'Name of the Interviewee'
   language: 'Language'
+  languages: 'Language'
   country: 'Place of Residence (Country)'
+  countries: 'Place of Residence (Country)'
   fulltext: 'Search Term'
 
   photos:

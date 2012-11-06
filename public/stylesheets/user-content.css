@@ -126,6 +126,8 @@ body .teaserList .save_user_content {
 #toggle_links .active #activate_sorting {
     background-position: 0.3em -898px;
     color: #840f09;
+    text-decoration: none;
+    cursor: default;
 }
 #toggle_links .active {
     background-color: #E4E4DA;

@@ -156,6 +156,22 @@ new Ajax.Updater('modal_window', '#{ajax_url}',
 JS
   end
 
+  def javascript_instant_modal_window(dom_id, cookie=nil)
+    cookie_condition = cookie.nil? ? 'var openDialog = true; var cookieDialog = ""' : <<JS_COND
+var cookiestr = readCookie('#{cookie}');
+var openDialog = (cookiestr) ? false : true;
+var cookieDialog = "<div class='checkbox_notification'><label class='checkbox'><input type='checkbox' class='checkbox' value='true' onChange=\\"toggleCookieStore('#{cookie}');\\"></input>Diese Meldung nicht mehr anzeigen.</label></div>";
+JS_COND
+    <<JS
+#{cookie_condition}
+if(openDialog) {
+  var closeButton = "<a id='modal_window_close' onclick=\\"new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); return false;\\" href='#'>X</a>";
+  $('modal_window').innerHTML = closeButton + $('#{dom_id}').innerHTML + cookieDialog;
+  new Effect.Parallel([new Effect.Appear('shades'), new Effect.Appear('modal_window')], { to: 0.6, duration: 0.4 });
+}
+JS
+  end
+
   # This method renders a close button on the lightbox if the current
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
