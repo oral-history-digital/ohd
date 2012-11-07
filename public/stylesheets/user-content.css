@@ -59,7 +59,7 @@ body .teaserList .save_user_content {
     font-size: 85%;
     position: absolute;
     right: 0;
-    top: 18px;
+    top: 16px;
     background-color: #f1f1f1;
     width: 180px;
 }
@@ -471,11 +471,10 @@ body .teaserList .save_user_content {
 
 #user_contents form input[type="text"],
 #user_contents form textarea,
-.workbook .chzn-container .chzn-choices {
+.chzn-container .chzn-choices {
   color: #000;
   border: none;
   background :#fffdc0;
-/* border: 1px solid #fff700; */
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -584,9 +583,9 @@ body .teaserList .save_user_content {
     /* color: #6F6C5D; */
 }
 
-.topics div form div,
-.topics div form label,
-.topics div form li {
+#modal_window.edit div form div,
+#modal_window.edit div form label,
+#modal_window.edit div form li {
     float: left;
     display: block;
     clear: left;
@@ -604,6 +603,10 @@ body .teaserList .save_user_content {
 
 .chzn-container {
     margin-bottom: 50px;
+}
+
+.chzn-container .chzn-choices {
+    border: 1px solid #fff700;
 }
 
 .chzn-container .chzn-choices,

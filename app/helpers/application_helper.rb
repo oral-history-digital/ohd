@@ -142,11 +142,12 @@ module ApplicationHelper
     params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }.join(', ')
     method = options[:method] || :get
     callback = options[:callback] || ''
+    nodeclass = options[:class] || ''
     <<JS
 var windowEl = $('modal_window');
 if(!windowEl) {
   var htmlBody = $$('body')[0];
-  windowEl = new Element('div',{id: 'modal_window', style: 'display: none;'});
+  windowEl = new Element('div',{id: 'modal_window', style: 'display: none;', class: '#{nodeclass}'});
   htmlBody.insert({top: windowEl});
   if(!$('shades')) {
     var shades = new Element('div', { id: 'shades', style: 'display: none;'});

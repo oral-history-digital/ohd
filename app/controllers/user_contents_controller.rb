@@ -113,14 +113,30 @@ class UserContentsController < BaseController
     end
     respond_to do |format|
       format.html do
-        redirect_to user_contents_path
+        @interview = nil
+        if request.referer =~ /interviews/
+          @interview = case @object.reference
+            when Interview
+              @object.reference
+            else
+              nil
+          end
+        end
+        if @interview.nil?
+          redirect_to user_contents_path
+        else
+          redirect_to interview_path(@interview)
+        end
       end
       format.js do
-        item_update = render_to_string :partial => 'user_content', :object => @object
+        item_update = (request.referer =~ /user_contents/) \
+          ? render_to_string(:partial => 'user_content', :object => @object) \
+          : render_to_string(:partial => 'show', :object => (@user_content = @object))
+        # didn't get highlighting to work without messing with background images etc.
         render :update do |page|
-          page.visual_effect(:hide, 'modal_window')
+          page << "$('modal_window').hide();"
           page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.visual_effect(:highlight, "user_content_#{@object.id}", { :startcolor => '#FFFDC0', :afterFinish => page.replace_html("user_content_#{@object.id}", item_update) })
+          page.replace("user_content_#{@object.id}", item_update)
         end
       end
     end
