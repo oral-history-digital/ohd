@@ -54,7 +54,8 @@
     -webkit-box-shadow: 4px 5px 6px 5px #666;
 }
 
-#ajax_spinner {
+#ajax_spinner,
+#shades #ajax-spinner {
     height: 64px;
     width: 64px;
     position: absolute;

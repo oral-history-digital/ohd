@@ -143,7 +143,18 @@ module ApplicationHelper
     method = options[:method] || :get
     callback = options[:callback] || ''
     <<JS
-$('modal_window').innerHTML = '';
+var windowEl = $('modal_window');
+if(!windowEl) {
+  var htmlBody = $$('body')[0];
+  windowEl = new Element('div',{id: 'modal_window', style: 'display: none;'});
+  htmlBody.insert({top: windowEl});
+  if(!$('shades')) {
+    var shades = new Element('div', { id: 'shades', style: 'display: none;'});
+    shades.insert({top: new Element('div', {id: 'ajax-spinner'})});
+    htmlBody.insert({top: shades});
+  }
+}
+windowEl.innerHTML = '';
 new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
 $('ajax-spinner').show;
 new Ajax.Updater('modal_window', '#{ajax_url}',

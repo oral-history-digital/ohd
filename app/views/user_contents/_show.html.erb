@@ -1,5 +1,10 @@
 <% user_content ||= @user_content -%>
 <% content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore -%>
+<% label = user_content.tags.empty? ? t(:saved, :scope => "user_interface.#{content_type}") : user_content.tags.map(&:name).join(', ') -%>
 <span class="save_user_content">
-    <%= link_to t(:saved, :scope => "user_interface.#{content_type}"), user_contents_path << "#user_content_#{user_content.id}", :class => 'saved' %>
+  <%= link_to_function truncate(label, 30), "$('user_content_#{user_content.id}_actions').toggle();", :class => 'saved' %>
+  <span id="user_content_<%= user_content.id -%>_actions" class="saved_content_actions" style="display: none;">
+    <%= link_to "»&nbsp;#{t(:workbook, :scope => 'user_interface.labels')}", user_contents_path << "#user_content_#{user_content.id}", :target => '_blank' %>
+    <%= link_to "»&nbsp;#{t(:topics, :scope => 'user_interface.user_content')}", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get })}" %>
+  </span>
 </span>

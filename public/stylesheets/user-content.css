@@ -55,6 +55,21 @@ body .teaserList .save_user_content {
     background-position: 0px -120px;
 }
 
+#mainWrapper .saved_content_actions {
+    font-size: 85%;
+    position: absolute;
+    right: 0;
+    top: 18px;
+    background-color: #f1f1f1;
+    width: 180px;
+}
+
+#mainWrapper .saved_content_actions a {
+    display: inline-block;
+    float: right;
+    margin-left: 0.5em;
+}
+
 #baseServices #folder_image {
     float: right;
     margin-top: -13px;
@@ -562,43 +577,43 @@ body .teaserList .save_user_content {
 }
 
 /* modal topics dialog */
-.workbook .hint {
+.edit .hint {
     margin: 10px;
     font-size: 85%;
     /* font-weight: bold; */
     /* color: #6F6C5D; */
 }
 
-.workbook .topics div form div,
-.workbook .topics div form label,
-.workbook .topics div form li {
+.topics div form div,
+.topics div form label,
+.topics div form li {
     float: left;
     display: block;
     clear: left;
 }
-.workbook .topics form .chzn-container,
-.workbook .topics form label,
-.workbook .topics form input {
+.topics form .chzn-container,
+.topics form label,
+.topics form input {
     margin-top: 10px;
 }
-.workbook .topics div form input {
+.topics div form input {
     float: left;
     margin-left: 20px;
     display: inline;
 }
 
-.workbook .chzn-container {
+.chzn-container {
     margin-bottom: 50px;
 }
 
-.workbook .chzn-container .chzn-choices,
-.workbook .chzn-container .chzn-choices .search-field,
-.workbook .chzn-container .chzn-choices .search-field input[type='text'],
-.workbook .chzn-results li {
+.chzn-container .chzn-choices,
+.chzn-container .chzn-choices .search-field,
+.chzn-container .chzn-choices .search-field input[type='text'],
+.chzn-results li {
     width: 100% !important;
 }
 
-.workbook .chzn-choices .search-field .chzn-add {
+.chzn-choices .search-field .chzn-add {
     z-index: 100;
     -webkit-border-radius: 3px;
     -moz-border-radius   : 3px;
@@ -625,9 +640,9 @@ body .teaserList .save_user_content {
     text-decoration: none;
 }
 
-.workbook .chzn-drop .chzn-results li {
+.chzn-drop .chzn-results li {
     display: none;
 }
-.workbook .chzn-drop .chzn-results li.active-result {
+.chzn-drop .chzn-results li.active-result {
     display: block;
 }
