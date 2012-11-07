@@ -121,7 +121,7 @@ body .teaserList .save_user_content {
 }
 
 #toggle_links #activate_sorting {
-    background-position: 0.3em 2px;
+    background-position: 0.3em -1200px;
 }
 #toggle_links .active #activate_sorting {
     background-position: 0.3em -898px;
