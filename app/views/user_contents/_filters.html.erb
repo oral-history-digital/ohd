@@ -1,11 +1,20 @@
 <div class="baseListBox">
 
+  <% # instantiate filter settings from parameters
+     content_filters = (params['content_filters'] || {}).keys
+     all_contents = content_filters.empty?
+     content_filters = UserContent::CONTENT_TYPES.map{|c| c.to_s } if all_contents
+
+     tag_filters = (params['tag_filters'] || {}).keys
+     all_tags = tag_filters.empty?
+     tag_filters = current_user.tags.map(&:name) if all_tags -%>
+
   <% form_remote_tag :url => user_contents_path,
                      :method => :get,
                      :html => { :action => user_contents_path,
                                 :method => :get,
                                 :name => "contentFilters",
-                                :id => "content_filters" } do |content_filters| %>
+                                :id => "content_filters" } do |filter_selection| %>
 
     <noscript>
       <div class="warning">
@@ -18,16 +27,17 @@
   </div>
   <div id="content-filters" class="container">
     <ul class="facet-field">
-      <li class="facet checked" onclick="checkFilter(null, this); Event.stop(event);">
-        <%= check_box_tag "content_filters['_all_']", 1, true, {:id => "filter_all_", :class => 'content_filter checkbox' } %>
+      <li class="facet<%= all_contents ? ' checked' : '' -%>" onclick="checkFilter(null, this); Event.stop(event);">
+        <%= check_box_tag "content_filters['_all_']", 1, all_contents, {:id => "filter_all_", :class => 'content_filter checkbox' } %>
         <span class="facet-name">
           <span class="show-checked"><%= t(:all_filters, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
           <span class="show-unchecked"><%= t(:select_all_filters, :scope => 'user_interface.user_content') -%></span>
         </span>
       </li>
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
-      <li class="facet checked" onclick="checkFilter('<%= "filter_#{content_type}" %>', this);">
-        <%= check_box_tag "content_filters[#{content_type}]", 1, true, { :id => "filter_#{content_type}", :class => 'content_filter checkbox' } %>
+          <% active = content_filters.include?(content_type.to_s) ? true : false -%>
+      <li class="facet<%= active ? ' checked' : '' -%>" onclick="checkFilter('<%= "filter_#{content_type}" %>', this);">
+        <%= check_box_tag "content_filters[#{content_type}]", 1, active, { :id => "filter_#{content_type}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= t(content_type.to_s, :scope => [:activerecord, :models], :count => 2) %></span>
       </li>
       <% end -%>
@@ -39,16 +49,17 @@
   </div>
   <div id="tag-filters" class="container">
     <ul class="facet-field">
-      <li class="facet checked" onclick="checkFilter(null, this); Event.stop(event);">
-        <%= check_box_tag "tag_filters['_all_']", 1, true, {:id => "tagfilter_all_", :class => 'content_filter checkbox' } %>
+      <li class="facet<%= all_tags ? ' checked' : '' %>" onclick="checkFilter(null, this); Event.stop(event);">
+        <%= check_box_tag "tag_filters['_all_']", 1, all_tags, {:id => "tagfilter_all_", :class => 'content_filter checkbox' } %>
         <span class="facet-name">
           <span class="show-checked"><%= t(:all_topics, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
           <span class="show-unchecked"><%= t(:select_all_topics, :scope => 'user_interface.user_content') -%></span>
         </span>
       </li>
       <% current_user.tags.sort{|a,b| a.name <=> b.name }.each do |tag| -%>
-      <li class="facet checked" onclick="checkFilter('<%= "tagfilter_#{tag}" %>', this);">
-        <%= check_box_tag "tag_filters[#{tag}]", 1, true, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>
+        <% active = tag_filters.include?(tag.name) -%>
+      <li class="facet<%= active ? ' checked' : '' -%>" onclick="checkFilter('<%= "tagfilter_#{tag}" %>', this);">
+        <%= check_box_tag "tag_filters[#{tag}]", 1, active, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= tag %></span>
       </li>
       <% end -%>

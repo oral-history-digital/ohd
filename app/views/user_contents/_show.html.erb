@@ -1,10 +1,19 @@
 <% user_content ||= @user_content.reload -%>
 <% content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore -%>
-<% label = user_content.tags.empty? ? t(:saved, :scope => "user_interface.#{content_type}") : user_content.tags.map(&:name).join(', ') -%>
+<% tags_exist = !user_content.tags.empty? -%>
+<% label = tags_exist ? user_content.tags.map(&:name).join(', ') : t(:saved, :scope => "user_interface.#{content_type}") -%>
+<% tag_hash = {} -%>
+<% if tags_exist
+     user_content.tags.map(&:name).each{|t| tag_hash[t] = 1 }
+   end -%>
 <span id="user_content_<%= user_content.id -%>" class="save_user_content">
+  <% if tags_exist -%>
   <%= link_to_function truncate(label, 30), "$('user_content_#{user_content.id}_actions').toggle();", :class => 'saved' %>
+  <% else -%>
+  <%= link_to "»#{t(:apply_topics, :scope => 'user_interface.user_content')}", '#', :class => 'saved', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get, :class => 'topics' })}" %>
+  <% end -%>
   <span id="user_content_<%= user_content.id -%>_actions" class="saved_content_actions" style="display: none;">
-    <%= link_to "»&nbsp;#{t(:workbook, :scope => 'user_interface.labels')}", user_contents_path << "#user_content_#{user_content.id}", :target => '_blank' %>
+    <%= link_to "»&nbsp;#{t(:all_contents_for_topic, :scope => 'user_interface.user_content')}", user_contents_path(:tag_filters => tag_hash) << "#user_content_#{user_content.id}", :target => '_blank' %>
     <%= link_to "»&nbsp;#{t(:topics, :scope => 'user_interface.user_content')}", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get, :class => 'topics' })}" %>
   </span>
 </span>
