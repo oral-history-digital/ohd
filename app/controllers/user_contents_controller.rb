@@ -106,11 +106,9 @@ class UserContentsController < BaseController
   # set topics via 'tags' parameter (array of tag names)
   def update_topics
     object
-    tag_names = params[:tags]
-    if tag_names.is_a?(Array)
-      @object.tag_list = tag_names
-      @object.save
-    end
+    tag_names = params[:tags] || []
+    @object.tag_list = tag_names.is_a?(Array) ? tag_names : []
+    @object.save
     respond_to do |format|
       format.html do
         @interview = nil
