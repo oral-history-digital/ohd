@@ -1,9 +1,9 @@
-<% user_content ||= @user_content.reload -%>
-<% content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore -%>
-<% tags_exist = !user_content.tags.empty? -%>
-<% label = tags_exist ? user_content.tags.map(&:name).join(', ') : t(:saved, :scope => "user_interface.#{content_type}") -%>
-<% tag_hash = {} -%>
-<% if tags_exist
+<% user_content ||= @user_content.reload
+   content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore
+   tags_exist = !user_content.tags.empty?
+   label = tags_exist ? user_content.tags.map(&:name).join(', ') : t(:saved, :scope => "user_interface.#{content_type}")
+   tag_hash = {}
+   if tags_exist
      user_content.tags.map(&:name).each{|t| tag_hash[t] = 1 }
    end -%>
 <span id="user_content_<%= user_content.id -%>" class="save_user_content">
