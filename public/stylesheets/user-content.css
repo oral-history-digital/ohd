@@ -573,7 +573,7 @@ body .teaserList .save_user_content {
 }
 
 #baseContainerRight #tag-filters-toggle {
-    margin-top: 38px;
+    margin-top: 30px;
 }
 
 #baseContainerRight #tag-filters-toggle h2 a,
@@ -611,7 +611,8 @@ body .teaserList .save_user_content {
 }
 
 /* modal topics dialog */
-.edit .hint {
+.edit .hint,
+.container .hint {
     margin: 10px;
     font-size: 85%;
     /* font-weight: bold; */
