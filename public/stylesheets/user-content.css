@@ -261,10 +261,15 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .themes {
-    background: transparent url('/images/icon_sprite.png') 0.3em -544px no-repeat;
+    background: transparent url('/images/icon_sprite.png') 0.3em -120px no-repeat;
     padding-left: 22px;
     font-size: 85%;
     padding-bottom: 1px;
+    padding-top: 4px;
+    color: #33251f;
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    filter: alpha(opacity=50);
 }
 
 #user_contents .date {
