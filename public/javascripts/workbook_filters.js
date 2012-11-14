@@ -35,36 +35,3 @@
   function interfaceStatusValueOf(id) {
       return ($(id).hasClassName('closed') ? 'closed' : '');
   }
-
-  function showInlineEditForm(id, textArea) {
-      var displayEl = $(id + '_display');
-      var formEl = $(id + '_form');
-      var inputEl = $(id);
-      var fieldWidth = displayEl.offsetWidth - 20;
-      var fieldHeight = displayEl.offsetHeight + 25;
-      displayEl.hide();
-      inputEl.value = displayEl.innerHTML;
-      formEl.show();
-      var inputStyle = { width: fieldWidth + 'px'};
-      if(textArea) {
-          inputStyle = { width: fieldWidth + 'px', height: fieldHeight + 'px'};
-      }
-      inputEl.setStyle(inputStyle);
-      Form.Element.focus(id);
-  }
-
-  function addExtraneousFormElements(form, scope, selector) {
-      var existing = form.getInputs();
-      form.up(scope).getElementsBySelector(selector).each(function(input){
-          if(existing.indexOf(input) < 0) {
-            form.insert(new Element('input', {name: input.getAttribute('name'), value: input.value, type: 'hidden'}));
-          }
-      });
-  }
-
-  function toggleFormAction(id) {
-      togglingContent = 1;
-      $(id + '_update').toggle();
-      $(id + '_reset').toggle();
-      $(id + '_spinner').toggle();
-  }

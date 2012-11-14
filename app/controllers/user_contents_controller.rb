@@ -83,9 +83,10 @@ class UserContentsController < BaseController
       redirect_to :action => 'show'
     end
     wants.js do
-      html = render_to_string :partial => 'user_content', :object => @object
+      context = (params['context'] || 'user_content').underscore
+      html = render_to_string :partial => context, :object => @object
       render :update do |page|
-        page.replace "user_content_#{object.id}", html
+        page.replace "#{context}_#{object.id}", html
       end
     end
   end
@@ -95,10 +96,10 @@ class UserContentsController < BaseController
     object
     respond_to do |format|
       format.html do
-        render
+        render :partial => 'topics'
       end
       format.js do
-        render :layout => false
+        render :layout => false, :partial => 'topics'
       end
     end
   end

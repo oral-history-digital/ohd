@@ -48,17 +48,18 @@ module UserContentsHelper
     display_id = id + '_display'
     form_id = id + '_form'
     text_area = options.delete(:text_area)
+    context = options.delete(:context) || 'user_content'
     form_options = options.merge({
             :id => form_id,
             :url => user_content_path(user_content),
             :method => :put,
-            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = interfaceStatusValueOf('user_content_#{user_content.id}'); addExtraneousFormElements(this, '.item', '.editor');",
+            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
             :complete => "togglingContent = 0;",
             :html => options.merge({:class => 'inline'})
     })
     js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
     html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
-    html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :style => 'display: none;'})) do
+    html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
         form_html += if(text_area)
@@ -66,6 +67,7 @@ module UserContentsHelper
         else
           text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
         end
+        form_html += hidden_field_tag :context, context
         buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => "update", :onclick => "togglingContent = 1;")
         buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
