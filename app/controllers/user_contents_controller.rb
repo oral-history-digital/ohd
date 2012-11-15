@@ -244,7 +244,7 @@ class UserContentsController < BaseController
 
   def tag_filters
     filters = params['tag_filters'] || {}
-    if((filters.keys.size > 0) && (filters.keys.size < current_user.tags.length))
+    if((filters.keys.size > 0) && (filters.keys.size < (current_user.tags.length+1)))
       return filters.keys
     else
       return []
