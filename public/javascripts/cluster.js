@@ -20,6 +20,23 @@ function debugMsg(msg) {
     alert(msg.toString());
 }
 
+function retrieveMapLocations(name, interviewId=null) {
+    var mlocations = cedisMap.mapLocations[0];
+    var lidx = mlocations.length;
+    var foundlocs = [];
+    while(lidx--) {
+        var mloc = mlocations[lidx];
+        if(mloc.title == name) {
+           var add = true;
+           if((interviewId) && (mloc.interviewId != parseInt(interviewId.gsub(/[a-z]+/,'')))) {
+               add = false;
+           }
+           foundlocs.push(mloc);
+        }
+    }
+    return foundlocs;
+}
+
 function toggleClusters() {
     $$('.cluster_toggle').each(function(el){el.toggleClassName('clusters-off');});
     if(clustersOffset > 0) {

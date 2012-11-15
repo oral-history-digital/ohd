@@ -108,7 +108,7 @@ caption:
   speaker: 'speaker'
 
 location:
-  key_attribute: 'name'
+  key_attribute: 'none'
   scope_field: 'reference_type'
   delete_all: true
   skip_invalid: true

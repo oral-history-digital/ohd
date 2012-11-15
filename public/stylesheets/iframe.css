@@ -25,3 +25,85 @@
 #mapFrame .map-overlay {
     top: 30px;
 }
+
+
+#mapFrame #baseContent,
+#test_results,
+#locations {
+    width: 100%;
+    margin: 10px auto;
+}
+
+#mapFrame #test_results {
+    margin: 10px 10px;
+}
+
+#mapFrame #baseContent #locations li {
+    list-style-type: none !important;
+    background-image: none;
+    padding: 0;
+    width: auto;
+    clear: left;
+    float: left;
+}
+
+#locations li.odd,
+#locations li.heading {
+    background-color: #f1f1f1;
+}
+#locations li.even {
+    background-color: #E7EEEF;
+}
+#locations li.invalid {
+    background-color: #b2afa1;
+}
+
+#locations .heading .table {
+    font-weight: bold;
+    border-top: 1px solid;
+}
+
+#locations .table {
+    border-color: #666;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 0;
+    border-top: 0;
+    background: transparent;
+    padding: 2px;
+    margin: 0 !important;
+    float: left;
+    font-size: 85%;
+    height: 18px;
+    display: inline-block;
+    overflow: hidden;
+}
+#locations .t0 {
+    width: 25px;
+}
+#locations .t1 {
+    width: 380px;
+}
+#locations .t2 {
+    width: 180px;
+}
+#locations .t3 {
+    width: 25px;
+}
+#locations .t4 {
+    width: 110px;
+}
+#locations .t5 {
+    width: 35px;
+}
+#locations .t6 {
+    width: 110px;
+}
+#locations .t7,
+#locations .t8 {
+    width: 50px;
+}
+
+#locations .t8 {
+    border-right: 1px solid;
+}

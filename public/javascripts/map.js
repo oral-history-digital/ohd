@@ -8,8 +8,9 @@ InteractiveMap.prototype = {
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            indexURL: '/webservice/orte.json',
-            dataURL: '/webservice/orte/satz',
+            indexURL: '/orte.json',
+            dataURL: '/orte/satz',
+            dateStamp: '20121027',
             auth_token: 'please provide!' /* very important to provide this live */
         };
         if (options != null) {
@@ -22,7 +23,9 @@ InteractiveMap.prototype = {
         if(!this.options.zoom) { this.options.zoom = defaults.zoom; }
         if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL; }
         if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL; }
+        if(!this.options.dateStamp) { this.options.dateStamp = defaults.dateStamp; }
         if(!this.options.introClass) { this.options.introClass = defaults.introClass; }
+
 
         this.currentLoadPage = 0;
         this.loadPageNumber = 0;
@@ -30,8 +33,8 @@ InteractiveMap.prototype = {
 
         // URL root
         this.options.urlRoot = window.location.pathname.split('/')[1] == 'archiv' ? '/archiv' : '';
-        this.options.dataURL = this.options.urlRoot + this.options.dataURL;
-        this.options.indexURL = this.options.urlRoot + this.options.indexURL;
+        this.options.dataURL = this.options.urlRoot + '/webservice/' + this.options.dateStamp + this.options.dataURL;
+        this.options.indexURL = this.options.urlRoot + '/webservice/' + this.options.dateStamp + this.options.indexURL;
 
         cedisMap.locationSearch = this;
 

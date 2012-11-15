@@ -36,7 +36,7 @@ class LocationReferencesController < BaseController
     response.headers['Cache-Control'] = "public, max-age=1209600"
     if params[:page].blank? || params[:page].to_i < 1
       # deliver number of pages
-      @pages = (LocationReference.count(:all, :conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 1
+      @pages = (LocationReference.count(:all, :conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 2
       respond_to do |wants|
         wants.html do
           render :text => @pages
@@ -69,6 +69,10 @@ class LocationReferencesController < BaseController
   end
 
   def map
+  end
+
+  def map_test
+    raise ActiveRecord::NotFound if !(['127.0.0.1','160.45.168.207'].include?(request.ip))
   end
 
   def map_frame
