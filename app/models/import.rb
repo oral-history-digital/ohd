@@ -43,7 +43,7 @@ class Import < ActiveRecord::Base
   end
 
   def set_current_migration
-    unless @@current_migration.nil? || @@current_migration > migration
+    unless !defined?(@@current_migration) || @@current_migration > migration
       @@current_migration = migration
     end
   end
