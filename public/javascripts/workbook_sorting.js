@@ -3,7 +3,7 @@ ContentSorting.prototype = {
     initialize: function(id, auth_token) {
         this.dom_id = id;
         this.auth_token = auth_token;
-        this.sortItems = $(id);
+        this.sortableId = id;
         this.sortingActive = false;
         this.itemOrder = [];
         window._sorting = this;
@@ -11,7 +11,8 @@ ContentSorting.prototype = {
     },
 
     activateSorting: function() {
-        this.sortItems.addClassName('sort');
+        var sortItems = $(this.sortableId);
+        sortItems.addClassName('sort');
         $('activate_sorting').parentNode.addClassName('active');
         $('cancel_sorting').show();
         Sortable.create(this.dom_id, {
@@ -20,7 +21,7 @@ ContentSorting.prototype = {
             handles: $$('#' + this.dom_id + ' .handle'),
             onChange: window._sorting.updateOrder
         } );
-        this.itemOrder = Sortable.sequence(this.sortItems);
+        this.itemOrder = Sortable.sequence(sortItems);
     },
 
     updateOrder: function(item) {
@@ -32,8 +33,9 @@ ContentSorting.prototype = {
     },
 
     finalizeSortLinks: function() {
+        var sortItems = $(this.sortableId);
         $('activate_sorting').parentNode.removeClassName('active');
-        if(Sortable.sequence(this.sortItems) == this.itemOrder) {
+        if(Sortable.sequence(sortItems) == this.itemOrder) {
           $('cancel_sorting').hide();
           $('finalize_sorting').hide();
           this.sortingActive = false;
@@ -51,14 +53,16 @@ ContentSorting.prototype = {
     },
 
     cleanUp: function() {
-        this.sortItems.removeClassName('sort');
-        Sortable.destroy(this.sortItems);
+        var sortItems = $(this.sortableId);
+        sortItems.removeClassName('sort');
+        Sortable.destroy(sortItems);
         this.sortingActive = false;
     },
 
     finalizeSorting: function() {
+        var sortItems = $(this.sortableId);
         new Ajax.Request('/' + this.dom_id + '/sort',{
-            parameters: (Sortable.serialize(this.sortItems) + '&authenticity_token=' + this.auth_token),
+            parameters: (Sortable.serialize(sortItems) + '&authenticity_token=' + this.auth_token),
             onLoading: function() { new Effect.Appear('overlay'); },
             onSuccess: function() { window._sorting.updateChanges(); window._sorting.finalizeSortLinks(); window._sorting.cleanUp(); new Effect.Fade('overlay'); }
         });
