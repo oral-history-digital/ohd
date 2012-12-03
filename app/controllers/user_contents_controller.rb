@@ -286,7 +286,7 @@ class UserContentsController < BaseController
     ids.each do |id|
       item = current_contents.select{|c| c.id == id.to_i }.first
       unless item.nil?
-        UserContent.update_all ['position = ?', current_pos], "id = #{id}"
+        UserContent.update_all ['position = ?', current_pos], "id = #{id} AND user_id = #{current_user.id}"
         item.position = current_pos
       end
       current_pos += pos_per_step
