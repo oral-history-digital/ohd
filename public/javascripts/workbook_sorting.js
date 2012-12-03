@@ -1,9 +1,10 @@
 var ContentSorting = Class.create();
 ContentSorting.prototype = {
-    initialize: function(id, auth_token) {
+    initialize: function(id, auth_token, sort_url) {
         this.dom_id = id;
         this.auth_token = auth_token;
         this.sortableId = id;
+        this.sortUrl = sort_url;
         this.sortingActive = false;
         this.itemOrder = [];
         window._sorting = this;
@@ -61,7 +62,7 @@ ContentSorting.prototype = {
 
     finalizeSorting: function() {
         var sortItems = $(this.sortableId);
-        new Ajax.Request('/' + this.dom_id + '/sort',{
+        new Ajax.Request(this.sortUrl, {
             parameters: (Sortable.serialize(sortItems) + '&authenticity_token=' + this.auth_token),
             onLoading: function() { new Effect.Appear('overlay'); },
             onSuccess: function() { window._sorting.updateChanges(); window._sorting.finalizeSortLinks(); window._sorting.cleanUp(); new Effect.Fade('overlay'); }
