@@ -1,5 +1,6 @@
 class UserRegistration < ActiveRecord::Base
   include Workflow
+  include ActionView::Helpers::TextHelper
 
   STATES = %w(unchecked checked registered postponed rejected)
 
@@ -188,7 +189,12 @@ class UserRegistration < ActiveRecord::Base
     attr = YAML.load(read_attribute(:application_info)).stringify_keys
     user_columns = User.content_columns.map(&:name) & attr.keys
     attr.delete_if{|k,v| !user_columns.include?(k) }
-    attr
+    # make sure each field is short enough for the DB columns (240 char limit)
+    user_attr = {}
+    attr.each_pair do |k,v|
+      user_attr[k] = truncate(v, :length => 240)
+    end
+    user_attr
   end
 
   def create_login
