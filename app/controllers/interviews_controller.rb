@@ -61,7 +61,7 @@ class InterviewsController < BaseController
   end
 
   def location_to_param(name)
-    (name || '').gsub(/[\s,;]+/,'+')
+    (name || '').gsub('/', ' ').gsub(/[()-+&.!,;]+/, " ").gsub(/\s+/, "+")
   end
 
 end

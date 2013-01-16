@@ -16,11 +16,10 @@ class LocationSegment < ActiveRecord::Base
   validates_uniqueness_of :location_reference_id, :scope => [ :segment_id ]
 
   def before_validation_on_create
-    self.location_reference = LocationReference.find_by_name(@descriptor)
+    self.location_reference = LocationReference.find_by_name_and_interview_id(@descriptor, self.interview_id)
     self.location_reference_id = location_reference.id unless location_reference.nil?
     self.segment = Segment.find(:first, :conditions => ["NOT (media_id > ?) AND media_id REGEXP ?", @media_id, @media_id[/^za\d{3}_\d{2}_\d{2}/i]], :order => "timecode DESC")
     self.segment_id = segment.id unless segment.nil?
-    self.interview_id = segment.interview_id unless segment.nil?
   end
 
   def descriptor=(name)

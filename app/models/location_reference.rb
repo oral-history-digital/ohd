@@ -36,7 +36,7 @@ class LocationReference < ActiveRecord::Base
 
   named_scope :with_segments_from_interview, lambda {|i| {
                                 :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
-                                :conditions => ["location_segments.id IS NOT NULL AND location_segments.interview_id = ?",i.id],
+                                :conditions => ["location_segments.id IS NOT NULL AND location_references.interview_id = ?",i.id],
                                 :group => "location_references.id" }}
 
   validates_presence_of :name, :reference_type

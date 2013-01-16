@@ -19,6 +19,8 @@ class Interview < ActiveRecord::Base
   has_many  :location_references,
             :dependent => :destroy
 
+  has_many  :location_segments
+
   has_many :annotations,
            :dependent => :delete_all
 
