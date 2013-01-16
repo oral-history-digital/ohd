@@ -550,11 +550,11 @@ DEF
         param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
-    Base64.encode64(param_tokens.join('|')).gsub("\n",'')
+    Base64.encode64(param_tokens.join('|')).gsub("\n",'').gsub('/','_') # replace Base64 slashes with underscore!
   end
 
   def self.decode_parameters(hash)
-    params_str = Base64.decode64(hash)
+    params_str = Base64.decode64(hash.gsub('_','/'))
     params = {}
     params_str.split('|').each do |token|
       p_code = (token[/^[a-z]+=/] || '').sub('=','')
