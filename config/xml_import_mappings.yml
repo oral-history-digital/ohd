@@ -90,6 +90,7 @@ text-material:
   delete_all: true
   document-type: 'document_type'
   document-file-name: 'document_file_name'
+  skip_invalid: true
 
 caption:
   key_attribute: 'none'
