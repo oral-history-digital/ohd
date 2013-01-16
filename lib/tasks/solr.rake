@@ -136,7 +136,7 @@ namespace :solr do
     desc "builds the index for interviews"
     task :interviews, [ :ids ] => :environment do |task, args|
 
-      ids = args[:ids] || nil
+      ids = args[:ids] || 'za283,za017' # nil
       ids = ids.scan(/za\d{3}/i) unless ids.nil?
 
       # Interviews
@@ -169,7 +169,7 @@ namespace :solr do
     desc "builds the index for segments"
     task :segments, [ :interviews ] => :environment do |task, args|
 
-      ids = args[:interviews] || nil
+      ids = args[:interviews] || 'za283,za017' # nil
       ids = ids.split(/\W+/) unless ids.nil?
 
       # Segments
@@ -268,6 +268,26 @@ namespace :solr do
       end
     end
 
+    desc "randomly reindex a number of interviews"
+    task :randomly,[:number] => ["solr:connect", :environment] do |task,args|
+      number = args[:number] || ENV['number'] || Interview.count(:all)
+      ids = Interview.find(:all, :select => :id, :order => "RAND()")[0..(number.to_i-1)].map(&:id)
+      puts "Randomly indexing #{ids.size} interviews..."
+      index = ids.size
+      id = ids.shift
+      while(id)
+        interview = Interview.find(id.to_i)
+        unless interview.nil?
+          STDOUT.printf "\n\n======= [#{index}]\n#{interview.archive_id}"
+          STDOUT.flush
+          Rake::Task['solr:reindex:by_archive_id'].execute({:ids => interview.archive_id})
+          puts "#{interview.archive_id} done.\n-----------"
+          sleep 5
+        end
+        id = ids.shift
+        index -= 1
+      end
+    end
 
     desc "reindex interviews"
     task :interviews => ['solr:delete:interviews', 'solr:index:interviews'] do

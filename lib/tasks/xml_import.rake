@@ -2,11 +2,11 @@ namespace :xml_import do
 
   desc "incremental import of data"
   task :incremental, [:file, :reindex] => :environment do |task,args|
-    file = args[:file]
+    file = args[:file] || ENV['file']
     reindex = !args[:reindex].blank?
     require 'nokogiri'
 
-    raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file)
+    raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file.to_s)
 
     @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file))
     @parser.parse(File.read(file))
