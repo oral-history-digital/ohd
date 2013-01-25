@@ -26,6 +26,19 @@ class Import < ActiveRecord::Base
     @time = time
   end
 
+  def content=(hash)
+    content = {}
+    hash.keys.each do |k|
+      next if %(interviews collections).include?(k.to_s)
+      content[k.to_sym] = hash[k].compact.size
+    end
+    write_attribute :content, content.to_yaml
+  end
+
+  def content
+    YAML.load(read_attribute(:content))
+  end
+
   private
 
   def set_time
@@ -33,7 +46,7 @@ class Import < ActiveRecord::Base
       case @time
         when String
           Time.parse @time
-        when Time, Datetime
+        when Time, DateTime
           @time
         else
           Time.now

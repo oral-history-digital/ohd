@@ -102,7 +102,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @imported['interviews'] << @interview.archive_id
         if @selection.empty?
           # only create an import instance on full imports
-          import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export }
+          import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export, import.content = @imported }
           puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
         end
       rescue Exception => e
@@ -182,9 +182,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     elsif !(parsing?(name) && passes_import_sanity_checks(name))
       # skip this element if not parsing
       return
-    
+
     elsif @mapping_levels.empty?
-      
+
       if @mappings.keys.include?(name)
         if @last_main_node != name
           STDOUT.printf "\n#{name}"; STDOUT.flush
@@ -288,7 +288,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       if @current_mapping.keys.include?('type_field')
         type_field = @current_mapping['type_field']  || 'type'
         @type_scope[type_field] = @current_mapping['class_type'] || name.camelize.capitalize
-        
+
       elsif @current_mapping.keys.include?('scope_field')
         @type_scope[@current_mapping['scope_field']] = attributes[@current_mapping['scope_field'].to_sym]
       end
@@ -380,9 +380,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = @instance.id
       end
       save_associated_data
-      @imported[@current_context.name.underscore.pluralize] ||= []
-      # puts "Adding instance (source id: #{@source_id}): #{!key_attribute.nil? ? @instance[key_attribute.to_sym] : @instance.to_s}"
-      @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << (key_attribute.nil? ? @instance.id : @instance[key_attribute.to_sym])
+      unless @instance.new_record?
+        @imported[@current_context.name.underscore.pluralize] ||= []
+        # puts "Adding instance (source id: #{@source_id}): #{!key_attribute.nil? ? @instance[key_attribute.to_sym] : @instance.to_s}"
+        @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << (key_attribute.nil? ? @instance.id : @instance[key_attribute.to_sym])
+      end
       close_context(name)
 
     elsif !@current_context.nil?
@@ -417,7 +419,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         # one level higher up.
         close_mapping_level(name)
       end
-      
+
     end
 
     # clean-up in any case
