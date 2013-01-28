@@ -27,6 +27,70 @@ namespace :xml_import do
 
   end
 
+
+    desc "limited import from the common repository"
+  task :limited, [:number] => :environment do |task, args|
+    number = (args[:number] || ENV['number'] || 50).to_i
+    files_checked = 0
+    imported = 0
+    require 'open4'
+
+    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
+    @logfile = File.join(RAILS_ROOT, 'log', "import.log")
+    puts "\nLogging import from #{repo_dir} to #{@logfile}"
+    File.open(@logfile,'w+') do |logfile|
+      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+        next if xmlfile.blank?
+        archive_id = xmlfile.to_s[/za\d{3}/i]
+        puts "\n[#{number}]\nStarting import processes for archive id: #{archive_id}"
+        files_checked += 1
+
+        # First: XML import
+        Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+          stdout.each_line {|line| puts line }
+          errors = []
+          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+          unless errors.empty?
+            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            puts errmsg
+          end
+        end
+
+        interview = Interview.find_by_archive_id(archive_id)
+        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.stftime('%d.%m.%y-%H:%M')}):"
+        # post-processing - 2 subtasks
+        if interview.nil? || interview.imports.last.time < (Time.now - 3.minutes)
+          statusmsg << "skipped #{xmlfile}."
+        else
+          # Second: XML language cleanup/import
+          Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
+            stdout.each_line {|line| puts line }
+            errors = []
+            stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+            unless errors.empty?
+              errmsg = "\nImport der Sprachdaten für Interview (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+              puts errmsg
+            end
+          end
+
+          # Third: Reindexing of interview
+          Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
+
+          imported += 1
+          statusmsg << "imported data from #{interview.imports.last.time}."
+        end
+        logfile << statusmsg
+        puts statusmsg
+        break unless imported < number
+        sleep 2
+        puts
+      end
+    end
+    puts "Finished importing #{imported} interviews, #{files_checked} import files processed."
+  end
+
+
   desc "full import from the common repository"
   task :full => :environment do
 
