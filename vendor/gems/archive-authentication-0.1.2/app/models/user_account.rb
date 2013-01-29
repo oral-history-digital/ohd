@@ -47,7 +47,7 @@ class UserAccount < AuthenticationModel
   end
 
   def admin?
-    !self.user.blank? # && self.user.admin?
+    !self.user.blank? && self.user.admin?
   end
 
   # METHODS FROM CONFIRMABLE:
