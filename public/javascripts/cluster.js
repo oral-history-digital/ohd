@@ -62,9 +62,9 @@ function storeMapConfigurationCookie() {
     }
     // clusters
     if(clustersOffset > 0) {
-        document.cookie = 'za-c=1; expires =' + expiry;
-    } else {
         document.cookie = 'za-c=0; expires =' + now;
+    } else {
+        document.cookie = 'za-c=1; expires =' + expiry;
     }
     // intro
     document.cookie = 'za-i=1;';
@@ -91,7 +91,7 @@ function parseCookieValue(cookieConfig, key) {
         var idx = configValues.length;
         while(idx--) {
             // skip the key + 1 character ('=')
-            var cvalues = configValues[idx].substring(key.length+1).match(/[a-z0-9A-Z_-]+/g);
+            var cvalues = configValues[idx].substring(key.length+3).match(/[a-z0-9A-Z_-]+/g);
             if(cvalues) {
                 var ldx = cvalues.length;
                 while(ldx--) {
@@ -121,6 +121,7 @@ var locationTypePriorities = [
         'return_location',
         'home_location',
         'place_of_birth',
+        'postwar_camp',
         'deportation_location',
         'forced_labor_location',
         'forced_labor_company',
@@ -200,7 +201,7 @@ ClusterManager.prototype = {
         if(options.interviewRange) {
             if(Object.isArray(options.interviewRange) && (options.interviewRange.length > 0)) {
                 this.setInterviewRange(options.interviewRange);
-                this.updateInterviewTab();   
+                this.updateInterviewTab();
             }
         }
 
@@ -211,7 +212,7 @@ ClusterManager.prototype = {
         this.minZoomPerLevel = [8, 7, 0];
         this.currentLevel = this.getLevelByZoom(this.map.getZoom());
         cedisMap.locationSearch.mapContainer.addClassName('level-' + this.currentLevel);
-        
+
         google.maps.event.addListener(this.map, 'zoom_changed',  function() { cedisMap.locationSearch.clusterManager.checkForZoomShift(); });
 
 
@@ -280,7 +281,7 @@ ClusterManager.prototype = {
         }
         if(cluster.level == this.currentLevel) {
             // only add clusters on the current level to the draw roster
-            this.freshClusters.push(cluster);    
+            this.freshClusters.push(cluster);
         }
     },
 
@@ -659,7 +660,7 @@ Location.prototype = {
     displayLines: function() {
         return (this.locationType == 0) ? 1 : 2;
     },
-    
+
     getHtml: function() {
         return ('<li class="' + this.getLocationType(this.locationType) + '" onclick="window.open(\'' + this.linkURL + '\', \'_blank\');" style="cursor: pointer;">' + this.info + '</li>');
     }
@@ -712,7 +713,7 @@ Cluster.prototype = {
             this.marker.setColor(this.color);
         }
     },
-    
+
     addLocation: function(location) {
         if (this.locations.indexOf(location) == -1) {
             this.locations.push(location);

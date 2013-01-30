@@ -41,7 +41,7 @@ InteractiveMap.prototype = {
         if(!this.options.images) {
             this.options.images = new Hash();
             this.options.images['default'] = new google.maps.MarkerImage(this.options.urlRoot + '/images/test_markers/interview_marker.png');
-            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'home_location'].each(function(icon){
+            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'postwar_camp', 'home_location'].each(function(icon){
                cedisMap.locationSearch.options.images[icon] = new google.maps.MarkerImage(cedisMap.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
             });
         }
@@ -53,6 +53,7 @@ InteractiveMap.prototype = {
             this.options.colors['place_of_birth'] = 'blue';
             this.options.colors['home_location'] = 'blue';
             this.options.colors['return_location'] = 'blue';
+            this.options.colors['postwar_camp'] = 'blue';
             this.options.colors['deportation_location'] = 'red';
             this.options.colors['forced_labor_location'] = 'red';
             this.options.colors['forced_labor_camp_location'] = 'red';
@@ -136,7 +137,7 @@ InteractiveMap.prototype = {
                     skip = true;
                 }
                 if(!skip) {
-                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);   
+                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);
                 }
             });
 
@@ -156,13 +157,18 @@ InteractiveMap.prototype = {
       return info;
     },
     locationReference: function(refStr, type) {
-        if(refStr == 'forced_labor_location') {
-            if(['Camp','Lager'].indexOf(type) > -1) {
-                return 'forced_labor_camp';
+        if(['Camp','Lager'].indexOf(type) > -1) {
+                if(refStr == 'forced_labor_location') {
+                    return 'forced_labor_camp';
+                }
+                if(refStr == 'return_location') {
+                    return 'postwar_camp';
+                }
             } else if(['Company','Firma'].indexOf(type) > -1) {
-                return 'forced_labor_company';
+                if(refStr == 'forced_labor_location') {
+                    return 'forced_labor_company';
+                }
             }
-        }
         return refStr;
     },
     translate: function(str) {
@@ -171,6 +177,7 @@ InteractiveMap.prototype = {
         if(str == 'place_of_birth') { return 'Geburtsort -'; }
         if(str == 'home_location') { return 'Lebensmittelpunkt -'; }
         if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
+        if(str == 'postwar_camp') { return 'Lager nach 1945 -'; }
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
     },
