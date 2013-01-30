@@ -213,6 +213,7 @@ de:
       deportations: 'Deportationen'
       places_of_birth: 'Geburtsorte'
       postwar_residences: 'Wohnorte nach 1945'
+      postwar_camps: 'Lager nach 1945'
       home_locations: 'Wohnort'
       mentions: 'Erwähnungen'
 
@@ -612,8 +613,8 @@ de:
     team: 'http://www.zwangsarbeit-archiv.de/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
-  
-  
+
+
   forced_labor_group: 'Gruppe'
   forced_labor_groups: 'Gruppen'
   forced_labor_field: 'Einsatzbereich'
