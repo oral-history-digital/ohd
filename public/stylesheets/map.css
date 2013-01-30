@@ -47,6 +47,11 @@ iframe {
     z-Index: 80;
 }
 
+.markerOverlay div.postwar_camp {
+    background-image: url(/images/test_markers/postwar_camp_marker.png);
+    z-Index: 88;
+}
+
 .markerOverlay div.deportation_location {
     background-image: url(/images/test_markers/deportation_location_marker.png);
     z-Index: 95;
@@ -222,6 +227,14 @@ iframe {
 }
 #baseContent ul li.return_location.map_filter_off {
     background-image: url("/images/test_markers/popup/return_location_marker_off.png");
+    color: #b2afa1;
+}
+
+#baseContent ul li.postwar_camp {
+    background: #fff url("/images/test_markers/popup/postwar_camp_marker.png") no-repeat;
+}
+#baseContent ul li.postwar_camp.map_filter_off {
+    background-image: url("/images/test_markers/popup/postwar_camp_marker_off.png");
     color: #b2afa1;
 }
 
