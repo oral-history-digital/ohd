@@ -28,7 +28,7 @@ namespace :xml_import do
   end
 
 
-    desc "limited import from the common repository"
+  desc "limited import from the common repository"
   task :limited, [:number] => :environment do |task, args|
     number = (args[:number] || ENV['number'] || 50).to_i
     files_checked = 0
@@ -58,7 +58,7 @@ namespace :xml_import do
         end
 
         interview = Interview.find_by_archive_id(archive_id)
-        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.stftime('%d.%m.%y-%H:%M')}):"
+        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
         # post-processing - 2 subtasks
         if interview.nil? || interview.imports.last.time < (Time.now - 3.minutes)
           statusmsg << "skipped #{xmlfile}."
