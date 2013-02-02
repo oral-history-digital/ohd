@@ -199,10 +199,15 @@ class UserContentsController < BaseController
     @object_params ||= begin
       attributes = {}
       params[model_name].each_pair do |k,v|
-        if k == 'title'
+        # ensure that only real JSON hash is decoded, not plain attributes
+        if k == 'title' || v =~ /^[-,();.\/\w\d\s_]+$/
           attributes[k.to_sym] = v
         else
-          a = ActiveSupport::JSON.decode(v)
+          a = begin
+            ActiveSupport::JSON.decode(v)
+          rescue
+            v
+          end
           attributes[k.to_sym] = a.is_a?(String) ? a.sub(/(\d{2})(-)(\d{2})$/, '\1:\3') : a
         end
       end
