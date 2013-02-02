@@ -56,18 +56,18 @@ function storeMapConfigurationCookie() {
     var now = new Date(1970).toGMTString();
     // filters
     if((cm.filters) && (cm.filters.length > 0)) {
-        document.cookie= 'za-f=' + encodeURIComponent(cm.filters.join('+')) + '; expires=' + expiry;
+        document.cookie= 'zk-f=' + encodeURIComponent(cm.filters.join('+')) + '; expires=' + expiry;
     } else {
-        document.cookie = 'za-f=; expires=' + now;
+        document.cookie = 'zk-f=; expires=' + now;
     }
     // clusters
     if(clustersOffset > 0) {
-        document.cookie = 'za-c=0; expires =' + now;
+        document.cookie = 'zk-c=0; expires =' + now;
     } else {
-        document.cookie = 'za-c=1; expires =' + expiry;
+        document.cookie = 'zk-c=1; expires =' + expiry;
     }
     // intro
-    document.cookie = 'za-i=1;';
+    document.cookie = 'zk-i=1;';
     /*
     // interview selection - not included in cookie at present
     var interviews = [];
@@ -85,7 +85,7 @@ function storeMapConfigurationCookie() {
 
 function parseCookieValue(cookieConfig, key) {
     var values = [];
-    var cookieKeyRegexp = new RegExp('za-' + key + '=[^;]+');
+    var cookieKeyRegexp = new RegExp('zk-' + key + '=[^;]+');
     var configValues = cookieConfig.match(cookieKeyRegexp);
     if(configValues) {
         var idx = configValues.length;
@@ -111,7 +111,7 @@ function readMapConfigurationCookie() {
     config.interviews = parseCookieValue(storedConfig,'i');
     */
     config.clusters = parseCookieValue(storedConfig,'c');
-    config.intro = storedConfig.match(/za-i=[^;]+/);
+    config.intro = storedConfig.match(/zk-i=[^;]+/);
     return config;
 }
 
