@@ -5,8 +5,6 @@
     <%= @interview.gender ? t(:male, :scope => 'personal_data') : t(:female, :scope => 'personal_data') %>,
     <%= t(:born, :scope => 'personal_data') %>
     <%= @interview.year_of_birth %>
-    <%= t(:in, :scope => 'location') %>
-    <%= @interview.country_of_birth %>
   </p>
   <%= render :partial => 'user_contents/save', :object => InterviewReference.for_interview(@interview) %>
 </div>

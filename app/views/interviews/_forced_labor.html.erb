@@ -1,5 +1,16 @@
 <div id="containerForcedLabor"  class="container">
     <ul class="data">
+      <% if forced_labor.birth_location.nil? -%>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
+        <span class="value"><%= format_date forced_labor.date_of_birth %></span>
+      </li>
+      <% else -%>
+      <li>
+        <span class="label"><%= Interview.human_attribute_name(:birth_location) %></span>
+        <span class="value"><%= forced_labor.birth_location %>,&nbsp;<%= format_date forced_labor.date_of_birth%></span>
+      </li>
+      <% end -%>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_groups) %></span>
         <span class="value"><%= forced_labor.forced_labor_groups.map{|f| t(f, :scope => 'categories.forced_labor_groups')}.join(', ') %></span>
