@@ -50,6 +50,7 @@
         <li class="map_filter_off deportation_location"><span><%= t(:deportations, :scope => 'map.labels') -%></span></li>
         <li class="map_filter_off place_of_birth"><span><%= t(:places_of_birth, :scope => 'map.labels') -%></span></li>
         <li class="map_filter_off return_location"><span><%= t(:postwar_residences, :scope => 'map.labels') -%></span></li>
+        <li class="map_filter_off postwar_camp"><span><%= t(:postwar_camps, :scope => 'map.labels') -%></span></li>
         <li class="map_filter_off home_location"><span><%= t(:home_locations, :scope => 'map.labels') -%></span></li>
         <li class="map_filter_off interview"><span><%= t(:mentions, :scope => 'map.labels') -%></span></li>
         <li class="hint">
@@ -174,7 +175,7 @@
                 loadExternalScripts();
             } else {
                 new Effect.Appear('privacy_details');
-            }   
+            }
         } else {
             $('noncompliant_browser_message').show();
         }

@@ -11,6 +11,7 @@
     <li class="map_filter_off deportation_location slide-1"><span><%= t(:deportations, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off place_of_birth slide-1"><span><%= t(:places_of_birth, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off return_location slide-1"><span><%= t(:postwar_residences, :scope => 'map.labels') -%></span></li>
+    <li class="map_filter_off postwar_camp slide-1"><span><%= t(:postwar_camps, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off home_location slide-1"><span><%= t(:home_locations, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off interview slide-1"><span><%= t(:mentions, :scope => 'map.labels') -%></span></li>
     <li class="hint slide-1">
@@ -29,7 +30,7 @@
     <li class="hint slide-2">
       <p>Die Filter und Gruppierungsoption stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> Wählen Sie nur die Schaltfläche "<%= t(:tabname, :scope => 'map.legend') -%>" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das Kreuz oben rechts in der Legende schließt diese wieder.</p>
     </li>
-  
+
     <!-- Slide 3 //-->
     <li class="hint slide-3"><h3 style="margin: 0;">Karteneinf&uuml;hrung: Teil 3 - Interviews<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
     <li class="hint slide-3">
@@ -40,7 +41,7 @@
     </li>
     <li class="hint slide-3">Die Angaben zum Interview f&uuml;hren Sie direkt zu den betreffenden Stellen im Interview - vorausgesetzt, Sie sind im Archiv registriert.</li>
     <li class="hint slide-3">Sollten Sie noch nicht im Archiv registriert sein, k&ouml;nnen Sie sich &uuml;ber unser <%= link_to 'Formular f&uuml;r die Archivnutzung registrieren', registrieren_path, :target => '_blank' -%>.</li>
-  
+
     <!-- Slide Actions //-->
     <li class="hint links">
       <p><a class="back not-slide-1" href="#" onclick="adjustSlideNum(-1);">&laquo;&nbsp;zurück</a><span class="not-slide-1">&nbsp;oder&nbsp;</span><a class="forward not-slide-3" href="#" onclick="adjustSlideNum(1);">weiter&nbsp;&raquo;</a><a class="finish slide-3" href="#" onclick="endTutorial();">&raquo;&nbsp;Einf&uuml;hrung beenden</a></p>
