@@ -287,6 +287,8 @@ de:
         forced_labor_habitations: 'Unterbringung / Inhaftierung'
         forced_labor_locations: 'Lager und Einsatzorte'
         forced_labor_details: 'Angaben zum Einsatz'
+        birth_date: 'Geboren am'
+        birth_location: 'Geburtsort (heutiger Name)'
         deportation: 'Deportationsort (heutiger Name), Jahr'
         punishment: 'Strafma&szlig;namen'
         liberation_date: 'Datum der Befreiung'
