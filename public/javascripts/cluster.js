@@ -20,7 +20,7 @@ function debugMsg(msg) {
     alert(msg.toString());
 }
 
-function retrieveMapLocations(name, interviewId=null) {
+function retrieveMapLocations(name, interviewId) {
     var mlocations = cedisMap.mapLocations[0];
     var lidx = mlocations.length;
     var foundlocs = [];
