@@ -47,6 +47,7 @@
     z-index: 350;
     min-height: 30%;
     width: 40%;
+    min-width: 536px;
     padding: 1em;
     background-color: #F8F8F8;
     box-shadow: 4px 5px 6px 5px #666;
