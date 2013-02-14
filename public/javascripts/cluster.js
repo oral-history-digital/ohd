@@ -106,12 +106,15 @@ function parseCookieValue(cookieConfig, key) {
 function readMapConfigurationCookie() {
     var config = {};
     var storedConfig = decodeURIComponent(document.cookie);
-    config.filters = parseCookieValue(storedConfig,'f');
-    /*
-    config.interviews = parseCookieValue(storedConfig,'i');
-    */
-    config.clusters = parseCookieValue(storedConfig,'c');
     config.intro = storedConfig.match(/zk-i=[^;]+/);
+    // init other parameters only when skipping intro
+    if(config.intro) {
+        config.filters = parseCookieValue(storedConfig,'f');
+        /*
+        config.interviews = parseCookieValue(storedConfig,'i');
+        */
+        config.clusters = parseCookieValue(storedConfig,'c');
+    }
     return config;
 }
 
