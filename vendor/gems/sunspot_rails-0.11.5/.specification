@@ -2,7 +2,6 @@
 name: sunspot_rails
 version: !ruby/object:Gem::Version 
   hash: 57
-  prerelease: false
   segments: 
   - 0
   - 11
@@ -22,8 +21,6 @@ date: 2009-12-22 00:00:00 +01:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
-  name: escape
-  prerelease: false
   requirement: &id001 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -35,11 +32,11 @@ dependencies:
         - 0
         - 4
         version: 0.0.4
-  type: :runtime
   version_requirements: *id001
-- !ruby/object:Gem::Dependency 
-  name: sunspot
+  name: escape
+  type: :runtime
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id002 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -59,11 +56,11 @@ dependencies:
         - 10
         - 8
         version: 0.10.8
-  type: :runtime
   version_requirements: *id002
-- !ruby/object:Gem::Dependency 
-  name: rspec
+  name: sunspot
+  type: :runtime
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id003 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -74,11 +71,11 @@ dependencies:
         - 1
         - 2
         version: "1.2"
-  type: :development
   version_requirements: *id003
-- !ruby/object:Gem::Dependency 
-  name: rspec-rails
+  name: rspec
+  type: :development
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id004 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -89,11 +86,11 @@ dependencies:
         - 1
         - 2
         version: "1.2"
-  type: :development
   version_requirements: *id004
-- !ruby/object:Gem::Dependency 
-  name: ruby-debug
+  name: rspec-rails
+  type: :development
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id005 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -104,11 +101,11 @@ dependencies:
         - 0
         - 10
         version: "0.10"
-  type: :development
   version_requirements: *id005
-- !ruby/object:Gem::Dependency 
-  name: technicalpickles-jeweler
+  name: ruby-debug
+  type: :development
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id006 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -119,8 +116,10 @@ dependencies:
         - 1
         - 0
         version: "1.0"
-  type: :development
   version_requirements: *id006
+  name: technicalpickles-jeweler
+  type: :development
+  prerelease: false
 description: |
   Sunspot::Rails is an extension to the Sunspot library for Solr search.
   Sunspot::Rails adds integration between Sunspot and ActiveRecord, including
@@ -221,7 +220,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: sunspot
-rubygems_version: 1.3.7
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: Rails integration for the Sunspot Solr search library

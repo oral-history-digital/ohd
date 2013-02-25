@@ -1,6 +1,10 @@
 --- !ruby/object:Gem::Specification 
 name: acts_as_taggable_on_steroids
 version: !ruby/object:Gem::Version 
+  hash: 11
+  segments: 
+  - 1
+  - 2
   version: "1.2"
 platform: ruby
 authors: 
@@ -71,18 +75,24 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
       version: "0"
   version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
       version: "0"
   version: 
 requirements: []
 
 rubyforge_project: acts_as_taggable_on_steroids
-rubygems_version: 1.3.5
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: Rails plugin that is based on acts_as_taggable by DHH but includes extras such as tests, smarter tag assignment, and tag cloud calculations.

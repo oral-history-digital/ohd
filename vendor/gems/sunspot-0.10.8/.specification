@@ -2,7 +2,6 @@
 name: sunspot
 version: !ruby/object:Gem::Version 
   hash: 39
-  prerelease: false
   segments: 
   - 0
   - 10
@@ -28,8 +27,6 @@ date: 2009-11-24 00:00:00 +01:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
-  name: rsolr
-  prerelease: false
   requirement: &id001 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -41,11 +38,11 @@ dependencies:
         - 9
         - 6
         version: 0.9.6
-  type: :runtime
   version_requirements: *id001
-- !ruby/object:Gem::Dependency 
-  name: daemons
+  name: rsolr
+  type: :runtime
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id002 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -56,11 +53,11 @@ dependencies:
         - 1
         - 0
         version: "1.0"
-  type: :runtime
   version_requirements: *id002
-- !ruby/object:Gem::Dependency 
-  name: rspec
+  name: daemons
+  type: :runtime
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id003 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -71,11 +68,11 @@ dependencies:
         - 1
         - 1
         version: "1.1"
-  type: :development
   version_requirements: *id003
-- !ruby/object:Gem::Dependency 
-  name: ruby-debug
+  name: rspec
+  type: :development
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id004 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -86,11 +83,11 @@ dependencies:
         - 0
         - 10
         version: "0.10"
-  type: :development
   version_requirements: *id004
-- !ruby/object:Gem::Dependency 
-  name: technicalpickles-jeweler
+  name: ruby-debug
+  type: :development
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id005 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -102,8 +99,10 @@ dependencies:
         - 2
         - 1
         version: 1.2.1
-  type: :development
   version_requirements: *id005
+  name: technicalpickles-jeweler
+  type: :development
+  prerelease: false
 description: |
   Sunspot is a library providing a powerful, all-ruby API for the Solr search engine. Sunspot manages the configuration of persistent Ruby classes for search and indexing and exposes Solr's most powerful features through a collection of DSLs. Complex search operations can be performed without hand-writing any boolean queries or building Solr parameters by hand.
 
@@ -292,7 +291,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: sunspot
-rubygems_version: 1.3.7
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: Library for expressive, powerful interaction with the Solr search engine

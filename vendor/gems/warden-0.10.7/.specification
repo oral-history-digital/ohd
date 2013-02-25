@@ -2,7 +2,6 @@
 name: warden
 version: !ruby/object:Gem::Version 
   hash: 57
-  prerelease: false
   segments: 
   - 0
   - 10
@@ -19,8 +18,6 @@ date: 2010-05-30 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
-  name: rack
-  prerelease: false
   requirement: &id001 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -32,11 +29,11 @@ dependencies:
         - 0
         - 0
         version: 1.0.0
-  type: :runtime
   version_requirements: *id001
-- !ruby/object:Gem::Dependency 
-  name: rspec
+  name: rack
+  type: :runtime
   prerelease: false
+- !ruby/object:Gem::Dependency 
   requirement: &id002 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -48,8 +45,10 @@ dependencies:
         - 0
         - 0
         version: 1.0.0
-  type: :development
   version_requirements: *id002
+  name: rspec
+  type: :development
+  prerelease: false
 description: 
 email: has.sox@gmail.com
 executables: []
@@ -131,7 +130,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: warden
-rubygems_version: 1.3.7
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: Rack middleware that provides authentication for rack applications

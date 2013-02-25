@@ -2,7 +2,6 @@
 name: devise
 version: !ruby/object:Gem::Version 
   hash: 7
-  prerelease: false
   segments: 
   - 1
   - 0
@@ -20,8 +19,6 @@ date: 2010-06-23 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
-  name: warden
-  prerelease: false
   requirement: &id001 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -33,8 +30,10 @@ dependencies:
         - 10
         - 3
         version: 0.10.3
-  type: :runtime
   version_requirements: *id001
+  name: warden
+  type: :runtime
+  prerelease: false
 description: Flexible authentication solution for Rails with Warden
 email: contact@plataformatec.com.br
 executables: []
@@ -213,7 +212,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: 
-rubygems_version: 1.3.7
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: Flexible authentication solution for Rails with Warden

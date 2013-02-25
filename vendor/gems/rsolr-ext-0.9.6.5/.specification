@@ -2,7 +2,6 @@
 name: rsolr-ext
 version: !ruby/object:Gem::Version 
   hash: 21
-  prerelease: false
   segments: 
   - 0
   - 9
@@ -20,8 +19,6 @@ date: 2009-11-04 00:00:00 +01:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
-  name: rsolr
-  prerelease: false
   requirement: &id001 !ruby/object:Gem::Requirement 
     none: false
     requirements: 
@@ -33,8 +30,10 @@ dependencies:
         - 9
         - 6
         version: 0.9.6
-  type: :runtime
   version_requirements: *id001
+  name: rsolr
+  type: :runtime
+  prerelease: false
 description: An extension lib for RSolr
 email: goodieboy@gmail.com
 executables: []
@@ -93,7 +92,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: 
-rubygems_version: 1.3.7
+rubygems_version: 1.6.2
 signing_key: 
 specification_version: 3
 summary: An extension lib for RSolr
