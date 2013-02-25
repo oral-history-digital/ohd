@@ -1,0 +1,16 @@
+<ul class="annotations-list">
+    <% aidx = 0 %>
+    <% annotations.each do |annotation| -%>
+    <li id="annotation_<%= annotation.media_id -%>" class="annotation" style="display: <%= (aidx == 0) ? 'block' : 'none' -%>;">
+        <%= annotation.text %>
+        <span class="author">[<%=  annotation.author %>]</span>
+    </li>
+      <% aidx += 1 %>
+    <% end -%>
+</ul>
+
+<% javascript_tag do %>
+    function showSegmentAnnotations(event) {
+        alert('showSegmentAnnotations: ' + Object.inspect(event));
+    }
+<% end %>

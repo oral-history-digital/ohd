@@ -53,6 +53,10 @@
             <% end %>
         </div>
 
+        <div id="annotations_overlay">
+            <%=  render :partial => 'annotations', :object => @interview.annotations %>
+        </div>
+
         <div id="mainWrapperClear" class="compact">&nbsp;</div>
 
         <% if !@interview.nil? && @interview.inferior_quality && @interview.segmented -%>

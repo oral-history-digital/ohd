@@ -685,3 +685,35 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 .imageCropped {	
 	display: block;
 }
+
+/* Annotationen im rechten Content-Bereich */
+#interview-page #baseContainerRight {
+    min-height: 555px;
+}
+#interview-page #annotations_overlay {
+    position: absolute;
+    top: 415px;
+    left: 700px;
+    z-index: 250;
+    font-size: 80%;
+
+}
+#annotations_overlay ul {
+    margin: 0;
+    padding: 0;
+    height: 140px;
+    max-height: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 5px 0px 8px #ccc;
+}
+#annotations_overlay .annotation {
+    background: #FFFFFF;
+    width: 255px;
+    padding: 15px 10px 15px 30px;
+    height: 110px;
+}
+#annotations_overlay .annotation .author {
+    display: block;
+    color: #999281;
+}
