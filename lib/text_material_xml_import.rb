@@ -51,6 +51,8 @@ class TextMaterialXMLImport < Nokogiri::XML::SAX::Document
           @interview.save
           if @current_document.save
             @materials_for_interview << @current_document.document_file_name
+          else
+            puts "VALIDATION ERROR for: #{@current_document.inspect}\n\nERROR MESSAGE: #{@current_document.errors.full_messages}"
           end
         rescue Exception => e
           puts "ERROR: #{e.message}\nSkipping #{@document_properties[:filename]}!"
