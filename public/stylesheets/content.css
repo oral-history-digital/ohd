@@ -696,17 +696,17 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
     left: 700px;
     z-index: 250;
     font-size: 80%;
-
+    padding: 10px 0;
+    background: #FFFFFF;
+    box-shadow: 6px 0 4px #ccc;
 }
 #annotations_overlay ul {
     margin: 0;
-    padding: 10px 0;
+    padding: 0;
     height: 120px;
     max-height: 120px;
     overflow-y: auto;
     overflow-x: hidden;
-    background: #FFFFFF;
-    box-shadow: 6px 0 4px #ccc;
 }
 #annotations_overlay .annotation {
     width: 245px;

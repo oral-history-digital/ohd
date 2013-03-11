@@ -219,11 +219,9 @@ var AnnotationsDisplayController = Class.create({
         this.currentAnnotationID = null;
     },
     onSegment: function(event) {
-        var currentTape = this.getItem();
-        var currentPlayPosition = this.getPosition();
-        if (!currentPlayPosition) {
-            return;
-        }
+        var fading = false;
+        var matching = false;
+        var annContainer = annotationsController.annotationsContainer;
         var segmentMediaID = event['segmentData']['mediaId'];
         var domID = 'annotation_' + segmentMediaID;
         var aidx = this.annotations.length;
@@ -231,11 +229,19 @@ var AnnotationsDisplayController = Class.create({
         while(aidx--) {
             var annotation = this.annotations[aidx];
             if(annotation.id == domID) {
-                new Effect.Appear(annotation.id, { duration: 0.25, queue: 'end' });
+                annotation.show();
+                matching = true;
+                if(!fading) {
+                    new Effect.Appear(annContainer.id, { duration: 0.25, queue: 'end' });
+                    fading = true;
+                }
                 annotationIndex = aidx;
             } else {
                 annotation.hide();
             }
+        }
+        if(!matching) {
+            annContainer.hide();
         }
         annotationsController.currentAnnotationID = domID;
     }

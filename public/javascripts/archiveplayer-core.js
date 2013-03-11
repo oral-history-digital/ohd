@@ -52,8 +52,10 @@ ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
     }
     this.player.setup(this.config);
     this.player.onReady(function() {
-        if(this.archiveConfig.position) { this.goToStartPosition(); }
-        this.changeMuteImage(false);
+        var playerModule = archiveplayer(this.container);
+        if(playerModule.archiveConfig.position) { playerModule.goToStartPosition(); }
+        this.player.setMute(false);
+        playerModule.changeMuteImage(false);
     });
     this.player.onPlay(function() {
         __archivePlayerPlaying = this.container;
@@ -197,7 +199,6 @@ ArchivePlayer.prototype.volumeClickListener = function() {
 };
 
 ArchivePlayer.prototype.activateSlidesFor = function(captionsContainer, attribute) {
-    // this is dodgy?!
     if(!this.slidesControllers[attribute]) {
         this.slidesControllers[attribute] = new ArchivePlayerSlidesController(captionsContainer, 'captions-slide');
     }
@@ -243,7 +244,7 @@ ArchivePlayer.prototype.writeSegmentInformation = function(event) {
 
 ArchivePlayer.prototype.goToStartPosition = function() {
     this.player.setMute(true).seek(this.archiveConfig.position).onTime(function(event) {
-      if(this.firstStart == true && event.position > 0) {
+      if(this.firstStart == true) {
         this.player.pause().setMute(false);
         this.firstStart = false;
       }
