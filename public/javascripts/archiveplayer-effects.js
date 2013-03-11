@@ -43,19 +43,21 @@ var ArchivePlayerSlidesController = Class.create({
 
   showCaptions: function(captionText) {
     if(this.captionContainer) {
-      // empty string if undefined
-      // hide citation container
+      /*
+       // hide citation container - not working as intended!
       if(this.citation) {
           this.citation = false;
           this.captionContainer.down('.initial').each(function(el){ el.hide(); });
       }
+      */
+      // empty string if undefined
       if(!captionText) { captionText = ""; }
-        // insert into next slide
-        var nextIndex = this.nextSlideIndex();
-        this.slides[nextIndex].innerHTML = captionText;
-        new Effect.Fade(this.slides[this.slideIndex], { duration: 0.25 });
-        new Effect.Appear(this.slides[nextIndex], { duration: 0.25, queue: 'end' });
-        this.slideIndex = nextIndex;
+      // insert into next slide
+      var nextIndex = this.nextSlideIndex();
+      this.slides[nextIndex].innerHTML = captionText;
+      new Effect.Fade(this.slides[this.slideIndex], { duration: 0.25 });
+      new Effect.Appear(this.slides[nextIndex], { duration: 0.25, queue: 'end' });
+      this.slideIndex = nextIndex;
     }
   }
 
@@ -205,4 +207,36 @@ var TableOfContents = Class.create({
     }
   }
 
+});
+
+/* Class that handles display of annotations per segment */
+var AnnotationsDisplayController = Class.create({
+    initialize: function(domID, playerID, options) {
+        this.player = archiveplayer(playerID);
+        this.annotationsContainer = $(domID);
+        this.player.annotations = this.annotationsContainer.select('.annotation');
+        this.player.onSegment = this.onSegment;
+        this.currentAnnotationID = null;
+    },
+    onSegment: function(event) {
+        var currentTape = this.getItem();
+        var currentPlayPosition = this.getPosition();
+        if (!currentPlayPosition) {
+            return;
+        }
+        var segmentMediaID = event['segmentData']['mediaId'];
+        var domID = 'annotation_' + segmentMediaID;
+        var aidx = this.annotations.length;
+        var annotationIndex = null;
+        while(aidx--) {
+            var annotation = this.annotations[aidx];
+            if(annotation.id == domID) {
+                new Effect.Appear(annotation.id, { duration: 0.25, queue: 'end' });
+                annotationIndex = aidx;
+            } else {
+                annotation.hide();
+            }
+        }
+        annotationsController.currentAnnotationID = domID;
+    }
 });

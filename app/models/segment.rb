@@ -27,7 +27,7 @@ DEF
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
   named_scope :for_media_id, lambda {|mid| { :conditions => ["media_id < ?", mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i+1).to_s.rjust(4,'0'))], :order => "media_id DESC", :limit => 1 }}
-  
+
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
   validates_presence_of :transcript, :if => Proc.new{|i| i.translation.blank? }
@@ -54,7 +54,6 @@ DEF
     end
   end
 
-
   searchable :auto_index => false do
     string :archive_id, :stored => true
     string :media_id, :stored => true
@@ -80,10 +79,6 @@ DEF
       (full_title + ' ' + alias_names).squeeze(' ')
     end
   end
-
-  # use the MediaId Adapters
-  #Sunspot::Adapters::InstanceAdapter.register(ZWAR::Sunspot::Adapters::MediaIdInstanceAdapter, self)
-  #Sunspot::Adapters::DataAccessor.register(ZWAR::Sunspot::Adapters::MediaIdDataAccessor, self)
 
   def archive_id
     @archive_id || interview.archive_id
@@ -119,7 +114,7 @@ DEF
   end
 
   def end_time
-    start_time + duration 
+    start_time + duration
   end
 
   def language_id

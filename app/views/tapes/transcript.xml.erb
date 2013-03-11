@@ -5,7 +5,8 @@
   <segment section="<%= "#{segment.section}" %>" begin="<%= "#{segment.start_time.to_i}" -%>" end="<%= "#{segment.end_time.to_i}" -%>">
     <transcript><%= format_transcript segment.transcript -%></transcript>
     <translation><%= format_transcript segment.translation -%></translation>
-    <section><%= "#{segment.section}" %></section>
+    <section><%= "#{segment.section}" -%></section>
+    <mediaId><%= segment.media_id -%></mediaId>
   </segment>
   <% end -%>
 </segments>

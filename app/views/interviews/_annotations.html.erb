@@ -1,16 +1,12 @@
 <ul class="annotations-list">
-    <% aidx = 0 %>
     <% annotations.each do |annotation| -%>
-    <li id="annotation_<%= annotation.media_id -%>" class="annotation" style="display: <%= (aidx == 0) ? 'block' : 'none' -%>;">
-        <%= annotation.text %>
-        <span class="author">[<%=  annotation.author %>]</span>
+    <li id="annotation_<%= annotation.media_id -%>" class="annotation" style="display: none;">
+      <span class="author"><%= t(:label, :scope => "user_interface.annotations")-%> (<%=  annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => "user_interface.annotations")) -%>)</span>
+      <%= annotation.text %>
     </li>
-      <% aidx += 1 %>
     <% end -%>
 </ul>
 
 <% javascript_tag do %>
-    function showSegmentAnnotations(event) {
-        alert('showSegmentAnnotations: ' + Object.inspect(event));
-    }
+    var annotationsController = new AnnotationsDisplayController('annotations_overlay', 'interview-player', {});
 <% end %>
