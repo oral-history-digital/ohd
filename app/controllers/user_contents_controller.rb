@@ -142,7 +142,6 @@ class UserContentsController < BaseController
   end
 
   def sort
-    # TODO: implement logic to actually sort elements
     sort_by_list params[:user_contents]
     respond_to do |format|
       format.html do
