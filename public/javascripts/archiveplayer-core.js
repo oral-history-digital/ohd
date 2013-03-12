@@ -27,7 +27,6 @@ var ArchivePlayer = function(container) {
   this.config = {};
   this.container = container;
   this.player = jwplayer(container);
-  this.currentItem = 0;
   this.currentSegment = null;
   this.currentSection = null;
   this.currentVolume = 80;
@@ -38,7 +37,7 @@ var ArchivePlayer = function(container) {
 };
 
 ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
-    __archivePlayerPlaying = this.container;
+    __archivePlayerPlaying = this;
     this.config = setupConfig;
     this.archiveConfig = setupArchiveConfig;
     if(this.archiveConfig.segmentFile) {
@@ -58,26 +57,16 @@ ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
         playerModule.changeMuteImage(false);
     });
     this.player.onPlay(function() {
-        __archivePlayerPlaying = this.container;
+        __archivePlayerPlaying = true;
     });
     this.player.onPlaylistItem(function(event) {
-        __archivePlayerPlaying.currentItem = event.index;
-        var itemSelector = document.getElementById(__archivePlayerPlaying.container + "-item-selector");
+        var itemSelector = document.getElementById(this.container + "-item-selector");
         if(itemSelector) {
             itemSelector.selectedIndex = event.index;
         }
     });
     this.player.onMute(function(event) {
-        __archivePlayerPlaying.changeMuteImage(false);
-    });
-    this.player.onVolume(function(event) {
-        __archivePlayerPlaying.currentVolume = event.volume;
-        if(__archivePlayerPlaying.volumeWidth) {
-            var containerId = container + '-volumebar';
-            if(document.getElementById(containerId)) {
-                document.getElementById(containerId).style.width = Math.round((__archivePlayerPlaying.volumeWidth / 100) * event.volume) + "px";
-            }
-        }
+        this.changeMuteImage(false);
     });
 };
 
@@ -109,10 +98,10 @@ ArchivePlayer.prototype.stop = function() {
 
 /* Seeking functions also for segment-based seeking */
 ArchivePlayer.prototype.seek = function(item, position) {
-    if (this.currentItem == item) {
+    if (this.getItem() == item) {
         this.player.seek(position).play(true);
     } else {
-        this.player.playlistItem(item).seek(position).play(true);
+        this.playlistItem(item).player.seek(position).play(true);
     }
     return this;
 };
@@ -155,8 +144,12 @@ ArchivePlayer.prototype.changeMuteImage = function(hover) {
 
 ArchivePlayer.prototype.setVolume = function(event) {
     if(!event) { event = window.event; }
-    var percentage = Math.round((100 / this.volumeWidth) * event.layerX);
-    this.player.setVolume(percentage);
+    var containerId = this.id.sub('-volume','');
+    var playerModule = archiveplayer(containerId);
+    var percentage = Math.round((100 / playerModule.volumeWidth) * event.layerX);
+    playerModule.player.setVolume(percentage);
+    var bar = document.getElementById(containerId + '-volumebar');
+    bar.style.width = Math.round((playerModule.volumeWidth / 100) * percentage) + "px";
     return this;
 };
 
