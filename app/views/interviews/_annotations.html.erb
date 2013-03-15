@@ -1,6 +1,6 @@
 <ul class="annotations-list">
     <% annotations.each do |annotation| -%>
-    <li id="annotation_<%= annotation.media_id -%>" class="annotation" style="display: none;">
+    <li id="annotation_<%= annotation.id -%>" class="annotation <%= annotation.media_id -%>" style="display: none;">
       <span class="author"><%= t(:label, :scope => "user_interface.annotations")-%> (<%=  annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => "user_interface.annotations")) -%>)</span>
       <%= annotation.text %>
     </li>

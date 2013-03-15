@@ -1,13 +1,17 @@
 <% cache [ @tape.interview.to_param, @tape.media_id, 'transcript'].join('/') do -%>
 <?xml version="1.0" encoding="utf-8"?>
 <segments>
+  <% @previous_segment = nil -%>
   <% @tape.segments.each do |segment| -%>
-  <segment section="<%= "#{segment.section}" %>" begin="<%= "#{segment.start_time.to_i}" -%>" end="<%= "#{segment.end_time.to_i}" -%>">
-    <transcript><%= format_transcript segment.transcript -%></transcript>
-    <translation><%= format_transcript segment.translation -%></translation>
-    <section><%= "#{segment.section}" -%></section>
-    <mediaId><%= segment.media_id -%></mediaId>
+    <% if @previous_segment -%>
+  <segment section="<%= "#{@previous_segment.section}" %>" begin="<%= "#{@previous_segment.start_time.to_i}" -%>" end="<%= "#{@previous_segment.end_time.to_i}" -%>">
+    <transcript><%= format_transcript @previous_segment.transcript -%></transcript>
+    <translation><%= format_transcript @previous_segment.translation -%></translation>
+    <section><%= @previous_segment.section.to_s -%></section>
+    <mediaId><%= @previous_segment.media_ids_up_to(segment).join('-') -%></mediaId>
   </segment>
+    <% end -%>
+    <% @previous_segment = segment -%>
   <% end -%>
 </segments>
 <% end -%>

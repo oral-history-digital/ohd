@@ -60,7 +60,9 @@ ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
         __archivePlayerPlaying = true;
     });
     this.player.onPlaylistItem(function(event) {
-        var itemSelector = document.getElementById(this.container + "-item-selector");
+        // on the player, container seems to be the object directly, so let's catch both id and object:
+        var containerId = (typeof this.container == 'string') ? this.container : this.container.id
+        var itemSelector = document.getElementById(containerId + "-item-selector");
         if(itemSelector) {
             itemSelector.selectedIndex = event.index;
         }

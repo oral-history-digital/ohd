@@ -26,7 +26,7 @@ DEF
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
-  named_scope :for_media_id, lambda {|mid| { :conditions => ["media_id < ?", mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i+1).to_s.rjust(4,'0'))], :order => "media_id DESC", :limit => 1 }}
+  named_scope :for_media_id, lambda {|mid| { :conditions => ["segments.media_id < ?", mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i+1).to_s.rjust(4,'0'))], :order => "media_id DESC", :limit => 1 }}
 
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
@@ -94,6 +94,22 @@ DEF
 
   def media_id
     (read_attribute(:media_id) || '').upcase
+  end
+
+  # return a range of media ids up to and not including the segment's media id
+  def media_ids_up_to(segment)
+    segment = nil if (segment.tape != self.tape) || (segment.media_id < self.media_id)
+    media_index = self.media_id[/\d{4}$/].to_i
+    base_media_id = self.media_id.sub(/\d{4}$/,'')
+    range_size = 2
+    unless segment.nil?
+      range_size = segment.media_id[/\d{4}$/].to_i - media_index - 1
+    end
+    ids = [media_id]
+    if range_size > 0
+      ids << base_media_id + (media_index + range_size).to_s.rjust(4,'0')
+    end
+    ids
   end
 
   def timecode

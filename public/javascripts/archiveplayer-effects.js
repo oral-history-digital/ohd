@@ -214,35 +214,39 @@ var AnnotationsDisplayController = Class.create({
     initialize: function(domID, playerID, options) {
         this.player = archiveplayer(playerID);
         this.annotationsContainer = $(domID);
+        this.annotationPattern = /^\w{2}\d+_\d+_\d+_\d+$/;
         this.player.annotations = this.annotationsContainer.select('.annotation');
         this.player.onSegment = this.onSegment;
-        this.currentAnnotationID = null;
     },
     onSegment: function(event) {
-        var fading = false;
         var matching = false;
         var annContainer = annotationsController.annotationsContainer;
-        var segmentMediaID = event['segmentData']['mediaId'];
-        var domID = 'annotation_' + segmentMediaID;
+        var segmentMediaRange = event['segmentData']['mediaId'];
+        var mediaIdDelimiters = segmentMediaRange.split(/[-,;]+/).sort();
+        var currentMediaID = mediaIdDelimiters.shift();
+        var nextMediaID = mediaIdDelimiters.shift() || annotationsController.nextMediaID(currentMediaID);
+        var pattern = annotationsController.annotationPattern;
         var aidx = this.annotations.length;
-        var annotationIndex = null;
         while(aidx--) {
             var annotation = this.annotations[aidx];
-            if(annotation.id == domID) {
+            var annotationMediaID = annotation.classNames().select(function(klass){return pattern.match(klass);}).first();
+            if(!annotationMediaID) { continue; }
+            if((annotationMediaID >= currentMediaID) && (annotationMediaID < nextMediaID)) {
                 annotation.show();
                 matching = true;
-                if(!fading) {
-                    new Effect.Appear(annContainer.id, { duration: 0.25, queue: 'end' });
-                    fading = true;
-                }
-                annotationIndex = aidx;
-            } else {
+            }  else {
                 annotation.hide();
             }
         }
         if(!matching) {
             annContainer.hide();
+        } else {
+            new Effect.Appear(annContainer.id, { duration: 0.25, queue: 'end' });
         }
-        annotationsController.currentAnnotationID = domID;
+    },
+    nextMediaID: function(someMediaID) {
+        var baseMediaID = someMediaID.sub(/\d{4}$/,'');
+        var mediaIndex = (+someMediaID.split(/[-_.,;]+/).last()) + 1;
+        return baseMediaID + ('000' + mediaIndex).substr(-4);
     }
 });
