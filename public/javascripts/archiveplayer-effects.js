@@ -224,7 +224,7 @@ var AnnotationsDisplayController = Class.create({
         var segmentMediaRange = event['segmentData']['mediaId'];
         var mediaIdDelimiters = segmentMediaRange.split(/[-,;]+/).sort();
         var currentMediaID = mediaIdDelimiters.shift();
-        var nextMediaID = mediaIdDelimiters.shift() || annotationsController.nextMediaID(currentMediaID);
+        var nextMediaID = annotationsController.nextMediaID(mediaIdDelimiters.shift() || currentMediaID);
         var pattern = annotationsController.annotationPattern;
         var aidx = this.annotations.length;
         while(aidx--) {
@@ -232,10 +232,12 @@ var AnnotationsDisplayController = Class.create({
             var annotationMediaID = annotation.classNames().select(function(klass){return pattern.match(klass);}).first();
             if(!annotationMediaID) { continue; }
             if((annotationMediaID >= currentMediaID) && (annotationMediaID < nextMediaID)) {
+                annotation.addClassName('show');
                 annotation.show();
                 matching = true;
             }  else {
                 annotation.hide();
+                annotation.removeClassName('show');
             }
         }
         if(!matching) {

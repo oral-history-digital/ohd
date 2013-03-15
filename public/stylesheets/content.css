@@ -711,8 +711,14 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 #annotations_overlay .annotation {
     width: 245px;
     padding: 0 20px 0 30px;
-    margin-bottom: 8px;
     min-height: 90px;
+    display: none;
+}
+#annotations_overlay .annotation.show {
+    display: block;
+}
+#annotations_overlay .annotation.show + .annotation.show {
+    margin-top: 8px;
 }
 #annotations_overlay .annotation .author {
     display: block;
