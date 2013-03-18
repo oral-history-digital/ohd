@@ -630,4 +630,26 @@ namespace :cleanup do
 
   end
 
+
+  desc "Fixes import times after the migration to created_at but before they were imported correctly"
+  task :import_times => :environment do
+
+    puts "Fixing import times: (setting to 01.12.2012)"
+    count = 0
+    Import.find_each(:conditions => ["created_at IS NULL OR created_at < ?", Time.gm(2013, 03, 19).to_s(:db)]) do |import|
+      if import.created_at.nil? || ((import.created_at - 3.minutes) < import.time)
+        next if import.id != import.importable.imports.last.id
+        @created_at = import.created_at || import.time
+        @time = Time.gm(2012,12,1)
+        @time = (@created_at - 5.minutes) if @created_at < @time
+        @created_at = Time.gm(2012,11,18) if @created_at < Time.gm(2012,11,18)
+        Import.update_all "created_at = '#{@created_at.to_s(:db)}', time = '#{@time.to_s(:db)}'", "id = #{import.id}"
+        puts "updated import for #{import.importable} from '#{@created_at}'."
+        count +=1
+      end
+    end
+    puts "\nDone. Updated #{count} import records."
+
+  end
+
 end

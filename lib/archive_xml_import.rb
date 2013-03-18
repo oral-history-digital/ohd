@@ -102,7 +102,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @imported['interviews'] << @interview.archive_id
         if @selection.empty?
           # only create an import instance on full imports
-          import = @interview.imports.create{|import| import.migration = @migration.strip; import.time = @date_of_export, import.content = @imported }
+          import = @interview.imports.create{|imp| imp.migration = @migration.strip; imp.time = @date_of_export; imp.content = @imported }
           puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
         end
       rescue Exception => e
