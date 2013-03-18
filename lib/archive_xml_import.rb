@@ -170,10 +170,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             end
           end
 
-          if attributes['quality'].strip.first.to_i < 2
-            # set the inferior quality flag
-            @interview.inferior_quality = true
-          end
+          # set the inferior quality flag
+          @interview.inferior_quality = (attributes['quality'].strip.first.to_i < 2)
 
         else
           # handle the data on closing the element
