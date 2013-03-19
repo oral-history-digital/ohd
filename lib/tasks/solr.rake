@@ -268,6 +268,21 @@ namespace :solr do
       end
     end
 
+    desc "reindexes interviews that have been imported less than hours= ago."
+    task :new, [:hours] => ["solr:connect", :environment] do |task,args|
+      interval = args[:hours] || ENV['hours'] || 20
+      puts "Indexing interviews that have been imported #{interval} hours or less ago:"
+      count = 0
+      Interview.find_each do |interview|
+        if (interview.imports.last.created_at + interval) >= Time.now
+          puts "Indexing #{interview.archive_id}, imported at #{interview.imports.last.created_at}."
+          Rake::Task['solr:reindex:by_archive_id'].execute({:ids => interview.archive_id})
+          count += 1
+        end
+      end
+      puts "\nDone. Indexed #{count} interviews."
+    end
+
     desc "randomly reindex a number of interviews"
     task :randomly,[:number] => ["solr:connect", :environment] do |task,args|
       number = args[:number] || ENV['number'] || Interview.count(:all)

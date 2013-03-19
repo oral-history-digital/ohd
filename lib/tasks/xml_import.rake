@@ -46,6 +46,9 @@ namespace :xml_import do
         puts "\n[#{number}]\nStarting import processes for archive id: #{archive_id}"
         files_checked += 1
 
+        interview = Interview.find_by_archive_id(archive_id)
+        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
+
         # First: XML import
         Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
@@ -57,12 +60,11 @@ namespace :xml_import do
           end
         end
 
-        interview = Interview.find_by_archive_id(archive_id)
-        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
         # post-processing - 2 subtasks
-        if interview.nil? || interview.imports.last.time < (Time.now - 3.minutes)
+        if interview.nil? || interview.imports.last.created_at < (Time.now - 3.minutes)
           statusmsg << "skipped #{xmlfile}."
         else
+          statusmsg << "import completed for #{archive_id}."
           # Second: XML language cleanup/import
           Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
             stdout.each_line {|line| puts line }
