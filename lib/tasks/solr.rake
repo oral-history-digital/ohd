@@ -274,7 +274,7 @@ namespace :solr do
       puts "Indexing interviews that have been imported #{interval} hours or less ago:"
       count = 0
       Interview.find_each do |interview|
-        if (interview.imports.last.created_at + interval) >= Time.now
+        if (interview.imports.last.created_at + interval.to_i.hours) >= Time.now
           puts "Indexing #{interview.archive_id}, imported at #{interview.imports.last.created_at}."
           Rake::Task['solr:reindex:by_archive_id'].execute({:ids => interview.archive_id})
           count += 1
