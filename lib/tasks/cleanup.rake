@@ -652,4 +652,34 @@ namespace :cleanup do
 
   end
 
+
+  desc "Fixes user_registrations that are by all means registered, but don't have that workflow state"
+  task :registered_users => :environment do
+
+    puts "Attempting to fix user_registrations that are missing the 'registered' workflow state:"
+
+    conditions = "workflow_state = 'checked' AND activated_at IS NOT NULL"
+
+    updated = 0
+    mismatched = 0
+
+    UserRegistration.find_each(:conditions => conditions) do |registration|
+      next if registration.user_account.confirmed_at.nil? || registration.user_account.encrypted_password.nil?
+      if registration.user_account.deactivated_at.nil?
+        if (registration.activated_at - registration.user_account.confirmed_at) < 1.minute
+          puts "Updating '#{registration.user_account.login}/#{registration.email}', confirmed at: #{registration.user_account.confirmed_at.strftime('%d.%m.%Y %H:%M')}"
+          updated += UserRegistration.update_all "workflow_state = 'registered'", "id = #{registration.id}"
+        else
+          puts "Confirmation/Activation mismatch for '#{registration.user_account.login}/#{registration.email}': conf=#{registration.user_account.confirmed_at}, act=#{registration.activated_at}"
+          mismatched += 1
+        end
+      else
+        puts "Deactivated account skipped: #{registration.user_account.login}"
+      end
+    end
+
+    puts "Done. Updated #{updated} registrations. #{mismatched} registrations showed mismatch."
+
+  end
+
 end
