@@ -690,11 +690,12 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 #interview-page #baseContainerRight {
     min-height: 555px;
 }
+/* old design - annotations on the right
 #interview-page #annotations_overlay {
     position: absolute;
     top: 415px;
     left: 700px;
-    z-index: 250;
+    z-index: 90;
     font-size: 80%;
     padding: 8px 0 10px;
     background: #FFFFFF;
@@ -714,6 +715,35 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
     min-height: 90px;
     display: none;
 }
+*/
+/* new annotations at the bottom */
+#interview-page #annotations_overlay {
+    position: absolute;
+    top: 555px;
+    left: 301px;
+    z-index: 90;
+    font-size: 80%;
+    padding: 4px 0 5px;
+    background: #FFFFFF;
+    /*
+    box-shadow: 6px 0 4px #ccc;
+    */
+}
+#annotations_overlay ul {
+    margin: 0;
+    padding: 0 0 5px;
+    height: 84px;
+    max-height: 84px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#annotations_overlay .annotation {
+    width: 370px;
+    padding: 0 20px 0 10px;
+    min-height: 80px;
+    display: none;
+}
+
 #annotations_overlay .annotation.show {
     display: block;
 }
