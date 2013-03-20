@@ -36,5 +36,5 @@ def run_as_process(name, call)
 end
 
 # Import up to 50 interviews
-run_as_process 'Datenimport', 'rake xml_import:limited number=50 -t'
+run_as_process 'Datenimport', 'rake xml_import:limited number=25 -t'
 

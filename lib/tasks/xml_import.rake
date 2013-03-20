@@ -30,7 +30,7 @@ namespace :xml_import do
 
   desc "limited import from the common repository"
   task :limited, [:number] => :environment do |task, args|
-    number = (args[:number] || ENV['number'] || 50).to_i
+    number = (args[:number] || ENV['number'] || 25).to_i
     files_checked = 0
     imported = 0
     require 'open4'
@@ -41,13 +41,13 @@ namespace :xml_import do
     File.open(@logfile,'w+') do |logfile|
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
         xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
-        next if xmlfile.blank?
+        next if xmlfile.blank? || imported >= number
         archive_id = xmlfile.to_s[/za\d{3}/i]
         puts "\n[#{number}]\nStarting import processes for archive id: #{archive_id}"
         files_checked += 1
 
         interview = Interview.find_by_archive_id(archive_id)
-        statusmsg = "\n#{archive_id} [#{number}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
+        statusmsg = "\n#{archive_id} [#{number-imported}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
 
         # First: XML import
         Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
@@ -65,6 +65,7 @@ namespace :xml_import do
           statusmsg << "skipped #{xmlfile}."
         else
           statusmsg << "import completed for #{archive_id}."
+          imported += 1
           # Second: XML language cleanup/import
           Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
             stdout.each_line {|line| puts line }
@@ -79,12 +80,11 @@ namespace :xml_import do
           # Third: Reindexing of interview
           Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
 
-          imported += 1
           statusmsg << "imported data from #{interview.imports.last.time}."
         end
         logfile << statusmsg
         puts statusmsg
-        break unless imported < number
+        logfile.flush
         sleep 2
         puts
       end
