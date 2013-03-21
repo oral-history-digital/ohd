@@ -12,6 +12,8 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @workflow_state = object.workflow_state
     # action dependent on submit value
     @object.admin_comments = object_params['admin_comments']
+    workflow_changes = true
+    @object.update_attributes(object_params)
     case params['workflow_event']
       when 'register'
         @object.register!
@@ -41,8 +43,14 @@ class Admin::UserRegistrationsController < Admin::BaseController
       when 'resend_info'
         @object.resend_info
         flash[:alert] = "Ein Aktivierungscode wurde an '#{@object.email}' um #{Time.now.strftime('%d.%m.%Y um %M:%H Uhr')} gesendet."
+      else
+        workflow_changes = false
     end
-    redirect_to :action => :index, :workflow_state => @workflow_state
+    if workflow_changes
+      redirect_to :action => :index, :workflow_state => @workflow_state
+    else
+      render :action => :edit
+    end
   end
 
   private

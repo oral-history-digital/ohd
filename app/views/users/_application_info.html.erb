@@ -1,21 +1,30 @@
-<tr>
+<tr xmlns="http://www.w3.org/1999/html">
   <td>
     <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
     <b><%= "#{application_info.appellation}" %>
-    <%= "#{application_info.first_name}" %>
-    <%= "#{application_info.last_name}" %></b>
+    <%= application_info.first_name %>
+    <%= application_info.last_name  %></b>
   </td>
   <td rowspan="2" style="width:66%;max-width:200px;">
     <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
-    <%= [application_info.street,
-         "#{application_info.zipcode || ''} #{application_info.city || ''}",
-         application_info.country].delete_if{|p| p.blank?}.join(',<br/>') %>
+    <%= form_edit_field_for application_info, :street %>
+    <%= form_edit_field_for application_info, :zipcity %>
+    <%= form_edit_field_for application_info, :country, :select => localized_country_select(:country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
+    <br/><br/>
+    <strong><%= t(:email, :scope => 'devise.registration_fields') %></strong>
+    <%= form_edit_field_for application_info, :email %>
   </td>
 </tr>
 <tr>
   <td>
     <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{application_info.job_description}" %>
+    <% field_def = User.registration_fields[:job_description] -%>
+    <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
+    <%= form_edit_field_for application_info, :job_description, :select => select(:user_registration,
+                                                                                  :job_description,
+                                                                                  options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
+                                                                                                     params['user_registration'].blank? ? nil : params['user_registration']['job_description']),
+                                                                                                     :include_blank => false ) %>
   </td>
 </tr>
 <tr>

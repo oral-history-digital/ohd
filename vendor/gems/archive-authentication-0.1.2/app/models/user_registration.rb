@@ -127,6 +127,15 @@ class UserRegistration < ActiveRecord::Base
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
   end
 
+  def zipcity
+    "#{zipcode} #{city}"
+  end
+
+  def zipcity=(str)
+    self.zipcode = (str[/^\s*\d+/] || '').strip
+    self.city = str.sub(zipcode, '').strip
+  end
+
   def form_parameters
     require 'yaml'
     form_parameters = YAML.load read_attribute(:application_info)

@@ -1,0 +1,22 @@
+#administration .inline-editor {
+    font-size: 80% !important;
+    line-height: 100% !important;
+}
+
+#administration .column .inline-editor {
+    float: none !important;
+    margin: 0;
+    padding-right: 15px;
+}
+
+#administration .column select {
+    width: 140px;
+    z-index: 100;
+    font-size: 105%;
+}
+
+#administration .column .inline-editable {
+    float: none !important;
+    padding-left: 0;
+    display: block;
+}

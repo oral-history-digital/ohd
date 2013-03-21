@@ -48,10 +48,13 @@ module UserContentsHelper
     display_id = id + '_display'
     form_id = id + '_form'
     text_area = options.delete(:text_area)
-    context = options.delete(:context) || 'user_content'
+    path_prefix = options.delete(:path_prefix)
+    model_name = user_content.is_a?(UserContent) ? 'user_content' : user_content.class.name.underscore
+    context = options.delete(:context) || model_name
+    update_path = (context == 'user_content') ? user_content_path(user_content) : eval("#{[path_prefix, model_name].compact.join('_')}_path(user_content)")
     form_options = options.merge({
             :id => form_id,
-            :url => user_content_path(user_content),
+            :url => update_path,
             :method => :put,
             :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
             :complete => "togglingContent = 0;",
@@ -63,9 +66,9 @@ module UserContentsHelper
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
         form_html += if(text_area)
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "user_content[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
         end
         form_html += hidden_field_tag :context, context
         buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => "update", :onclick => "togglingContent = 1;")
