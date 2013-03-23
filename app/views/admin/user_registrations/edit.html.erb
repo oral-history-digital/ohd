@@ -14,23 +14,23 @@
           <%= @object.created_at.nil? ? '&mdash;' : @object.created_at.strftime("%d.%m.%y %H:%M") %>
         </td>
       </tr>
-
-      <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>
-        <%=  render :partial => '/users/application_info', :object => @object %>
-      <% else %>
-        <% @object.form_parameters.each do |field_name, value| %>
-        <tr>
-          <td>
-            <strong><%= field_name %></strong> <%= value %>
-          </td>
-        </tr>
-        <% end %>
+    <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>
+      <%=  render :partial => '/users/application_info', :object => @object %>
+    <% else %>
+      <% @object.form_parameters.each do |field_name, value| %>
+    <tr>
+      <td>
+        <strong><%= field_name %></strong> <%= value %>
+      </td>
+    </tr>
       <% end %>
+    <% end %>
     </tbody>
     </table>
+
     <div id="user_registration_data_actions" style="display: none;">
       <%= f.submit 'Änderungen speichern' %>
-      <%= f.submit 'Abbrechen', :onclick => "$$('.inline-editor').each(function(el){ el.hide();}); $$('.inline-editable').each(function(el){ el.show();}); $('user_registration_data_actions').hide(); Event.stop(event); false;" %>
+      <%= button_to_function 'Abbrechen', "$$('.inline-editor').each(function(el){ el.down('select, input, textarea').disabled = true; el.hide(); }); $$('.inline-editable').each(function(el){ el.show();}); $('user_registration_data_actions').hide(); Event.stop(event); false;" %>
     </div>
   </div>
 

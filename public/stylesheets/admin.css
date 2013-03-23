@@ -19,4 +19,12 @@
     float: none !important;
     padding-left: 0;
     display: block;
+    min-height: 15px;
+}
+
+#administration .column .inline-editable:hover {
+    background: #fffdc0;
+    background-image: url('/images/icon_sprite.png');
+    background-repeat: no-repeat;
+    background-position: 98% -1021px;
 }

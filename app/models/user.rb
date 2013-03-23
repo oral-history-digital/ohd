@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
 
   attr_protected :admin
 
+  belongs_to :user_account
+  belongs_to :user_registration
+
   has_many :user_contents
 
   has_many :searches
@@ -25,6 +28,9 @@ class User < ActiveRecord::Base
   has_many  :group_roles,
             :class_name => 'Role',
             :through => :user_groups
+
+  delegate  :email,
+            :to => :user_account
 
   define_registration_fields [
             { :name => 'appellation',
@@ -134,6 +140,15 @@ SQL
 
   def to_s
     [ first_name, last_name ].compact.join(' ')
+  end
+
+  def zipcity
+    "#{zipcode} #{city}"
+  end
+
+  def zipcity=(str)
+    self.zipcode = (str[/^\s*\d+/] || '').strip
+    self.city = str.sub(zipcode, '').strip
   end
 
   def admin?

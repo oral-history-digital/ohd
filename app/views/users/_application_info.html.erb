@@ -1,40 +1,32 @@
-<tr xmlns="http://www.w3.org/1999/html">
+<% user_record = application_info.user.nil? ? application_info : User.find_by_user_registration_id(application_info.id) -%>
+<tr>
   <td>
     <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
-    <b><%= "#{application_info.appellation}" %>
-    <%= application_info.first_name %>
-    <%= application_info.last_name  %></b>
+    <b><%= "#{user_record.appellation}" %>
+    <%= "#{user_record.first_name}" %>
+    <%= "#{user_record.last_name}" %></b>
   </td>
   <td rowspan="2" style="width:66%;max-width:200px;">
     <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
-    <%= form_edit_field_for application_info, :street %>
-    <%= form_edit_field_for application_info, :zipcity %>
-    <%= form_edit_field_for application_info, :country, :select => localized_country_select(:country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
-    <br/><br/>
-    <strong><%= t(:email, :scope => 'devise.registration_fields') %></strong>
-    <%= form_edit_field_for application_info, :email %>
+    <%= [user_record.street,
+         "#{user_record.zipcode || ''} #{user_record.city || ''}",
+         user_record.country].delete_if{|p| p.blank?}.join(',<br/>') %>
   </td>
 </tr>
 <tr>
   <td>
     <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
-    <% field_def = User.registration_fields[:job_description] -%>
-    <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
-    <%= form_edit_field_for application_info, :job_description, :select => select(:user_registration,
-                                                                                  :job_description,
-                                                                                  options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
-                                                                                                     params['user_registration'].blank? ? nil : params['user_registration']['job_description']),
-                                                                                                     :include_blank => false ) %>
+    <%= "#{user_record.job_description}" %>
   </td>
 </tr>
 <tr>
   <td colspan="2" style="max-width: 360px;">
     <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
-    <% if application_info.homepage.blank? || application_info.homepage.eql?('/') %>
-        <%= application_info.organization %>
+    <% if user_record.homepage.blank? || user_record.homepage.eql?('/') %>
+        <%= user_record.organization %>
     <% else %>
-        <%= link_to "#{application_info.organization}",
-                "http://#{application_info.homepage}",
+        <%= link_to "#{user_record.organization}",
+                "http://#{user_record.homepage}",
                 :target => '_blank' %>
     <% end %>
   </td>
@@ -42,11 +34,11 @@
 <tr>
   <td>
     <strong><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{application_info.research_intentions}" %>
+    <%= "#{user_record.research_intentions}" %>
   </td>
   <td rowspan="2" style="max-width:200px;">
     <strong><%= "#{t(:comments, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{application_info.comments}" %>
+    <%= "#{user_record.comments}" %>
   </td>
 </tr>
 <tr>
