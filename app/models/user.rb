@@ -29,8 +29,9 @@ class User < ActiveRecord::Base
             :class_name => 'Role',
             :through => :user_groups
 
-  delegate  :email,
+  delegate  :email, :login,
             :to => :user_account
+
 
   define_registration_fields [
             { :name => 'appellation',

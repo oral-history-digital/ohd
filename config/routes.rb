@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.test 'kartentest', :controller => :location_references, :action => :map_test
 
   map.namespace :admin do |admin|
+    admin.resources :users
     admin.resources :user_registrations
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
     admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index

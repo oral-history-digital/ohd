@@ -1,18 +1,31 @@
+<%= modal_window_close_button_on_javascript_request -%>
+<h2>Nutzerdaten für <%= @user.login -%> (<%= @user.email -%>)</h2>
+<table class='userTable' cellspacing='0' cellpadding='0' border='0'>
+<tbody>
 <tr xmlns="http://www.w3.org/1999/html">
+  <th>
+    <strong>Registriert seit</strong>
+    <%= @user.user_account.confirmed_at.strftime("%d.%m.%Y") || 'noch nicht' %>
+  </th>
+  <th style="width:66%;max-width:200px;">
+    <strong>Letzte Änderung der Angaben</strong>
+    <%= @user.updated_at.strftime('%d.%m.%Y') %>
+  </th>
+<tr>
   <td>
     <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
-    <b><%= user_info.appellation %>
-      <%= user_info.first_name %>
-      <%= user_info.last_name  %></b>
+    <b><%= @user.appellation %>
+      <%= @user.first_name %>
+      <%= @user.last_name  %></b>
   </td>
-  <td rowspan="2" style="width:66%;max-width:200px;">
+  <td rowspan="2">
     <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
-    <%= form_edit_field_for user_info, :street %>
-    <%= form_edit_field_for user_info, :zipcity %>
-    <%= form_edit_field_for user_info, :country, :select => localized_country_select('user[country]', [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
+    <%= form_edit_field_for @user, :street %>
+    <%= form_edit_field_for @user, :zipcity %>
+    <%= form_edit_field_for @user, :country, :select => localized_country_select('user[country]', [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
     <br/><br/>
     <strong><%= t(:email, :scope => 'devise.registration_fields') %></strong>
-    <%= form_edit_field_for user_info, :email %>
+    <%= form_edit_field_for @user, :email %>
   </td>
 </tr>
 <tr>
@@ -20,21 +33,21 @@
     <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
     <% field_def = User.registration_fields[:job_description] -%>
     <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
-    <%= form_edit_field_for user_info, :job_description, :select => select(:user,
+    <%= form_edit_field_for @user, :job_description, :select => select(:user,
                                                                            :job_description,
                                                                            options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
-                                                                                              user_info.job_description || nil),
+                                                                                              @user.job_description || nil),
                                                                            :include_blank => false ) %>
   </td>
 </tr>
 <tr>
   <td colspan="2" style="max-width: 360px;">
     <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
-    <% if user_info.homepage.blank? || user_info.homepage.eql?('/') %>
-        <%= user_info.organization %>
+    <% if @user.homepage.blank? || @user.homepage.eql?('/') %>
+        <%= @user.organization %>
     <% else %>
-        <%= link_to "#{user_info.organization}",
-                    "http://#{user_info.homepage}",
+        <%= link_to "#{@user.organization}",
+                    "http://#{@user.homepage}",
                     :target => '_blank' %>
     <% end %>
   </td>
@@ -42,13 +55,15 @@
 <tr>
   <td>
     <strong><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{user_info.research_intentions}" %>
+    <%= "#{@user.research_intentions}" %>
   </td>
   <td rowspan="2" style="max-width:200px;">
     <strong><%= "#{t(:comments, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{user_info.comments}" %>
+    <%= "#{@user.comments}" %>
   </td>
 </tr>
 <tr>
   <td>&nbsp;</td>
 </tr>
+</tbody>
+</table>

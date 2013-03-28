@@ -1,6 +1,10 @@
 <h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
 <h2><%= "#{@object.first_name} #{@object.last_name} &mdash; #{link_to @object.email, "mailto:#{@object.email}"}" %></h2>
 
+<% unless @object.user.nil? -%>
+<%= button_to_remote 'Nutzerdaten bearbeiten', { :method => :get, :url => admin_user_path(User.find_by_user_registration_id(@object.id)) } -%>
+<% end -%>
+
 <% form_for [:admin, @object], :html => {  } do |f| %>
   <div class='column' style='float: left;'>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
