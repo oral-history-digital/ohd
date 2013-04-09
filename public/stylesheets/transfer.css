@@ -419,15 +419,6 @@ table.useraccounts tr.even {
   background-color: #E4E4DA;
 }
 
-table.useraccounts input[type=button] {
-  color: #fff;
-  background-color: #840f08;
-  padding: 0.25em 0.5em;
-  border: 0px none;
-  font-size: 90%;
-  cursor: pointer;
-}
-
 tr.user-registration-basic {
   cursor: pointer;
   background-color: #F1F1EB;

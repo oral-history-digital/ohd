@@ -1,28 +1,64 @@
+#administration input[type=button],
+#administration input[type=submit],
+a.userTableButtonLink {
+    background-color: #840F09;
+    color: #ffffff;
+    border: 1px solid #840F09;
+    padding: 0.25em 0.5em;
+    font-size: 80%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#administration input[type=button]:hover,
+#administration input[type=submit]:hover,
+a.userTableButtonLink:hover {
+    background-color: #fff;
+    color: #8B0F09;
+    border: 1px solid #999281;
+}
+
+#administration a.userTableButtonLink {
+    padding: 2px;
+}
+
+#administration input.subdued {
+    background-color: #b2afa1;
+    border-top: 1px solid #b2afa1;
+    border-left: 1px solid #b2afa1;
+    border-right: 1px solid #b2afa1;
+    color: #660000;
+}
+
 #administration .inline-editor {
     font-size: 80% !important;
     line-height: 100% !important;
 }
 
-#administration .column .inline-editor {
+#administration .column .inline-editor,
+#administration .userTable .inline-editor {
     float: none !important;
     margin: 0;
     padding-right: 15px;
 }
 
-#administration .column select {
+#administration .column select,
+#administration .userTable select {
     width: 140px;
     z-index: 100;
     font-size: 105%;
 }
 
-#administration .column .inline-editable {
+#administration .column .inline-editable,
+#administration .userTable .inline-editable {
     float: none !important;
     padding-left: 0;
     display: block;
     min-height: 15px;
 }
 
-#administration .column .inline-editable:hover {
+#administration .column .inline-editable:hover,
+#administration .userTable .inline-editable:hover {
     background: #fffdc0;
     background-image: url('/images/icon_sprite.png');
     background-repeat: no-repeat;

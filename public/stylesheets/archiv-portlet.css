@@ -416,23 +416,9 @@ td.userTableList, th.userTableList {
   border-bottom: dotted 1px #000000;
 }
 
-a.userTableButtonLink {
-  background-color: #840F09;
-  color: #ffffff;
-  border: 1px solid #840F09;
-  padding: 2px;
-  font-size: 80%;
-  text-decoration: none;
-}
-
-a.userTableButtonLink:hover {
-  background-color: #fff;
-  color: #8B0F09;
-  border: 1px solid #999281;
-}
-
 /* User Info */
-.edit_user_registration .userTable strong {
+.edit_user_registration .userTable strong,
+#modal_window .userTable strong {
     width: 100%;
     display: block;
     font-weight: normal;
