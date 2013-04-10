@@ -14,7 +14,7 @@ namespace :storage do
       Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
         
         archive_id = interview.archive_id.upcase       
-        photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
+        photo_path = ActiveRecord.path_to_photo_storage
         
         Dir.glob(File.join(photo_path, "#{archive_id}*.{jpg,JPG,png,PNG}")).each do |file|
           
@@ -94,7 +94,7 @@ namespace :storage do
         
         archive_id = interview.archive_id.downcase
         
-        photo_path = File.join(ActiveRecord.path_to_photo_storage, '400x300')
+        photo_path = File.join(ActiveRecord.path_to_photo_storage, '../interview_stills')
         
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
           

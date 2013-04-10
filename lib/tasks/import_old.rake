@@ -492,7 +492,7 @@ namespace :import_old do
     puts "csv file = #{file}"
     require 'fastercsv'
 
-    photo_path = File.join(ActiveRecord.path_to_photo_storage, 'FOTOS SEZ META_renamed', 'FOTOS_SEZ_META_renamed')
+    photo_path = ActiveRecord.path_to_photo_storage
 
     FasterCSV.foreach(file, :headers => true, :col_sep => "\t") do |row|
 
