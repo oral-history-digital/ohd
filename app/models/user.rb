@@ -152,6 +152,10 @@ SQL
     self.city = str.sub(zipcode, '').strip
   end
 
+  def email=(address)
+    user_account.email=(address)
+  end
+
   def admin?
     read_attribute(:admin) == true
   end

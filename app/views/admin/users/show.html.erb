@@ -1,11 +1,11 @@
 <%= modal_window_close_button_on_javascript_request -%>
 <h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">Bearbeitung der Nutzerdaten für <%= @user.first_name -%>&nbsp;<%= @user.last_name -%> (<%= @user.email -%>)</h2>
-<% form_for [:admin, @user], :html => {  } do |f| %>
+<% remote_form_for [:admin, @user], :html => {  } do |f| %>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
     <tr xmlns="http://www.w3.org/1999/html">
-      <th rowspan="2">
-        <strong><%= "#{t(:first_name, :scope => "devise.registration_fields")}" %></strong>
+      <th>
+        <strong><%= t(:first_name, :scope => "devise.registration_fields") %></strong>
         <b><%= form_edit_field_for @user, :first_name %></b>
       </th>
       <th style="width:66%;max-width:200px;">
@@ -13,6 +13,10 @@
         <b><%= form_edit_field_for @user, :last_name %></b>
       </th>
     <tr>
+      <td>
+        <strong><%= t(:appellation, :scope => "devise.registration_fields") %></strong>
+        <%= form_edit_field_for @user, :appellation, :select => select(:user, :appellation, options_for_select(User.registration_fields[:appellation][:values].map{|v| [v,v] })) %>
+      </td>
       <td>
         <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
         <%= form_edit_field_for @user, :street %>
@@ -35,7 +39,7 @@
       </td>
       <td>
         <strong><%= t(:country, :scope => 'devise.registration_fields') %></strong>
-        <%= form_edit_field_for @user, :country, :select => localized_country_select('user[country]', [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
+        <%= form_edit_field_for @user, :country, :select => localized_country_select(:user, :country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]), :value => t(@user.country, :scope => "user_countries") %>
       </td>
     </tr>
     <tr>
@@ -60,7 +64,7 @@
     <tr>
       <td>
         <strong><%= t(:organization, :scope => "devise.registration_fields") %></strong>
-        <%=  form_edit_field_for @user, :organization, { :text_area => true } %>
+        <%= form_edit_field_for @user, :organization, { :text_area => true } %>
       </td>
       <td>
         <strong><%= t(:homepage, :scope => "devise.registration_fields") %></strong>

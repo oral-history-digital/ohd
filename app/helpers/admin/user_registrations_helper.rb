@@ -1,22 +1,26 @@
 module Admin::UserRegistrationsHelper
 
   def form_edit_field_for(user, attribute, options={})
-    value = user.send(attribute)
+    value = options.delete(:value) || user.send(attribute)
     id = "user_#{user.id}_#{attribute}"
     display_id = id + '_display'
     field_id = id + '_field'
     text_area = options.delete(:text_area)
     select = options.delete(:select)
+    inline = options.delete(:inline) || select
     form_html = \
     if text_area
-      text_area_tag(user, user.send(attribute.to_sym), :id => id, :name => "user[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
+      text_area_tag(user, user.send(attribute.to_sym), :id => id, :name => "user[#{attribute}]", :class => 'editor', :onclick => "#{inline ? '' : "$('user_registration_data_actions').show();"}Event.stop(event)") \
     elsif select
       content_tag(:div, select, :id => field_id)
     else
-      text_field_tag(user, user.send(attribute.to_sym), :id => id, :name => "user[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
+      text_field_tag(user, user.send(attribute.to_sym), :id => id, :name => "user[#{attribute}]", :class => 'editor', :onclick => "#{inline ? '' : "$('user_registration_data_actions').show();"}Event.stop(event)")
     end
-    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "var display = $('#{display_id}'); display.hide(); var field = $('#{field_id}'); var element = field.down('select, input, textarea'); element.disabled = false; element.value = display.innerHTML; field.show(); $('user_registration_data_actions').show(); element.focus(); Event.stop(event);"})) # Event.stop(event)
-    html << content_tag((text_area ? :div : :span), options.merge({:id => field_id, :class => 'inline-editor', :style => 'display: none;'})) do
+    html = ''
+    if inline
+      html << content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "var display = $('#{display_id}'); display.hide(); var field = $('#{field_id}'); var element = field.down('select, input, textarea'); element.disabled = false; element.value = display.innerHTML; field.show(); $('user_registration_data_actions').show(); element.focus(); Event.stop(event);"})) # Event.stop(event)
+    end
+    html << content_tag((text_area ? :div : :span), options.merge({:id => field_id, :class => 'inline-editor', :style => (inline ? 'display: none;' : '')})) do
       form_html
     end
     html
