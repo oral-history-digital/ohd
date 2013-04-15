@@ -163,6 +163,7 @@ th {
 	background-color: transparent;
 	font-weight: bold;
 	border-spacing: 0;
+    text-align: left;
 }
 
 ul, ol, li {

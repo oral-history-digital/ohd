@@ -1,30 +1,45 @@
 <%= modal_window_close_button_on_javascript_request -%>
-<h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">Nutzerdaten für <%= @user.login -%> (<%= @user.email -%>)</h2>
+<h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">Bearbeitung der Nutzerdaten für <%= @user.first_name -%>&nbsp;<%= @user.last_name -%> (<%= @user.email -%>)</h2>
 <% form_for [:admin, @user], :html => {  } do |f| %>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
     <tr xmlns="http://www.w3.org/1999/html">
-      <th>
-        <strong>Registriert seit</strong>
-        <%= @user.user_account.confirmed_at.strftime("%d.%m.%Y") || 'noch nicht' %>
+      <th rowspan="2">
+        <strong><%= "#{t(:first_name, :scope => "devise.registration_fields")}" %></strong>
+        <b><%= form_edit_field_for @user, :first_name %></b>
       </th>
       <th style="width:66%;max-width:200px;">
-        <strong>Letzte Änderung der Angaben</strong>
-        <%= @user.updated_at.strftime('%d.%m.%Y') %>
+        <strong><%= "#{t(:last_name, :scope => "devise.registration_fields")}" %></strong>
+        <b><%= form_edit_field_for @user, :last_name %></b>
       </th>
     <tr>
       <td>
-        <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
-        <b><%= @user.appellation %>
-          <%= @user.first_name %>
-          <%= @user.last_name  %></b>
-      </td>
-      <td>
         <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
         <%= form_edit_field_for @user, :street %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Registriert seit</strong>
+        <%= @user.user_account.confirmed_at.strftime("%d.%m.%Y") || 'noch nicht' %>
+        <br/>
+      </td>
+      <td>
+        <strong><%= [t(:zipcode, :scope => 'devise.registration_fields'), t(:and), t(:city, :scope => 'devise.registration_fields')].join(' ') -%></strong>
         <%= form_edit_field_for @user, :zipcity %>
+    </tr>
+    <tr>
+      <td>
+        <strong>Letzte Änderung der Angaben</strong>
+        <%= @user.updated_at.strftime('%d.%m.%Y') %>
+      </td>
+      <td>
+        <strong><%= t(:country, :scope => 'devise.registration_fields') %></strong>
         <%= form_edit_field_for @user, :country, :select => localized_country_select('user[country]', [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
       </td>
+    </tr>
+    <tr>
+      <td colspan="2"><hr/></td>
     </tr>
     <tr>
       <td>
@@ -32,25 +47,24 @@
         <% field_def = User.registration_fields[:job_description] -%>
         <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
         <%= form_edit_field_for @user, :job_description, :select => select(:user,
-                                                                               :job_description,
-                                                                               options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
-                                                                                                  @user.job_description || nil),
-                                                                               :include_blank => false ) %>
+                                                                           :job_description,
+                                                                           options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
+                                                                                              @user.job_description || nil),
+                                                                           :include_blank => false ) %>
       </td>
       <td>
         <strong><%= t(:email, :scope => 'devise.registration_fields') %></strong>
         <%= form_edit_field_for @user, :email %></td>
+      </td>
     </tr>
     <tr>
-      <td colspan="2" style="max-width: 360px;">
-        <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
-        <% if @user.homepage.blank? || @user.homepage.eql?('/') %>
-            <%= @user.organization %>
-        <% else %>
-            <%= link_to "#{@user.organization}",
-                        "http://#{@user.homepage}",
-                        :target => '_blank' %>
-        <% end %>
+      <td>
+        <strong><%= t(:organization, :scope => "devise.registration_fields") %></strong>
+        <%=  form_edit_field_for @user, :organization, { :text_area => true } %>
+      </td>
+      <td>
+        <strong><%= t(:homepage, :scope => "devise.registration_fields") %></strong>
+        <%= form_edit_field_for @user, :homepage %>
       </td>
     </tr>
     <tr>
@@ -70,7 +84,8 @@
     </table>
 
     <div id="user_registration_data_actions" style="display: none;">
+      <hr/>
       <%= f.submit 'Änderungen speichern' %>
-      <%= button_to_function 'Abbrechen', "$$('.inline-editor').each(function(el){ el.down('select, input, textarea').disabled = true; el.hide(); }); $$('.inline-editable').each(function(el){ el.show();}); $('user_registration_data_actions').hide(); Event.stop(event); false;", :class => "subdued" %>
+      <%= button_to_function 'Abbrechen', "$$('.inline-editor').each(function(el){ el.down('select, input, textarea').disabled = true; el.hide(); }); $$('.inline-editable').each(function(el){ el.show();}); $('user_registration_data_actions').hide(); new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); Event.stop(event); false;", :class => "subdued" %>
     </div>
 <% end %>

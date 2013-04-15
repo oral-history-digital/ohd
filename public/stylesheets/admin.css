@@ -18,6 +18,25 @@ a.userTableButtonLink:hover {
     border: 1px solid #999281;
 }
 
+#administration #modal_window .inline-editable,
+#administration #modal_window input[type='text'],
+#administration #modal_window textarea {
+    background: #fffdc0;
+    border: 1px solid #ccc;
+    padding: 0.2em;
+    font-family: Arial, Helvetica, serif !important;
+    min-width: 75%;
+}
+
+#administration #modal_window textarea {
+    font-size: 100% !important;
+}
+
+#administration #modal_window .inline-editable {
+    cursor: text;
+    width: 75%;
+}
+
 #administration a.userTableButtonLink {
     padding: 2px;
 }
@@ -31,7 +50,6 @@ a.userTableButtonLink:hover {
 }
 
 #administration .inline-editor {
-    font-size: 80% !important;
     line-height: 100% !important;
 }
 

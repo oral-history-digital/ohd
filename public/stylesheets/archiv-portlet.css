@@ -427,7 +427,8 @@ td.userTableList, th.userTableList {
     color: #999281;
 }
 
-.userTable td {
+.userTable td,
+.userTable th {
     vertical-align: top;
     padding: 0.4em 1.33em 0.1em 0;
 }
@@ -436,7 +437,7 @@ td.userTableList, th.userTableList {
     border-bottom: 2px solid #F1F1EB;
 }
 
-.userTable textarea {
+.column .userTable textarea {
     font-size: 85%;
     padding: 2px;
     font-family: Arial,Helvetica,sans !important;
