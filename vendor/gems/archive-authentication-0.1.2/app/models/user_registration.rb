@@ -150,6 +150,19 @@ class UserRegistration < ActiveRecord::Base
     read_attribute :receive_newsletter
   end
 
+  def receive_newsletter?
+    case receive_newsletter
+      when true, false
+        receive_newsletter
+      when String
+        receive_newsletter.to_i > 0
+      when Numeric
+        receive_newsletter > 0
+      else
+        false
+    end
+  end
+
   private
 
   def serialize_form_parameters

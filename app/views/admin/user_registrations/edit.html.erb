@@ -5,6 +5,8 @@
 <%= button_to_remote 'Nutzerdaten bearbeiten', { :method => :get, :url => admin_user_path(User.find_by_user_registration_id(@object.id)) } -%>
 <% end -%>
 
+<%= render :partial => 'newsletter', :object => @object %>
+
 <% form_for [:admin, @object], :html => {  } do |f| %>
   <div class='column' style='float: left;'>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>

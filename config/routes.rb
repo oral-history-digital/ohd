@@ -34,7 +34,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace :admin do |admin|
     admin.resources :users
-    admin.resources :user_registrations
+    admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
     admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index
     admin.registration_details 'registrierung/:user_registration',

@@ -140,7 +140,7 @@ afterwards.
 Add the following to your +config/routes.rb+:
 <tt>
     map.namespace :admin do |admin|
-      admin.resources :user_registrations
+      admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
       admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
       admin.registration_details 'registrierung/:user_registration',
                                  :controller => :user_registrations,

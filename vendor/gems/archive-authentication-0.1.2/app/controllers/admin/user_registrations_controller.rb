@@ -53,6 +53,19 @@ class Admin::UserRegistrationsController < Admin::BaseController
     end
   end
 
+  def subscribe
+    UserRegistration.update_all "receive_newsletter = '1'", "id = #{object.id}"
+    @object.reload
+    puts "\n@@@ SUBSCRIBE - OBJECT: #{@object.inspect}"
+    render :nothing => true
+  end
+
+  def unsubscribe
+    UserRegistration.update_all "receive_newsletter = ''", "id = #{object.id}"
+    puts "\n@@@ UNSUBSCRIBE - OBJECT: #{@object.inspect}"
+    render :nothing => :true
+  end
+
   private
 
   def object

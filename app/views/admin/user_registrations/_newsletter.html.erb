@@ -1,0 +1,17 @@
+<div id="newsletter_subscription_status" class="<%= newsletter.receive_newsletter? ? 'subscribed' : 'unsubscribed' -%>">
+
+  <div class="subscribed">
+    <span class="status">
+    Newsletter abonniert
+    </span>
+    <%=  button_to_remote 'abbestellen', { :url => unsubscribe_admin_user_registration_path(newsletter) } %>
+  </div>
+
+  <div class="unsubscribed">
+    <span class="status">
+    Newsletter abbestellt
+    </span>
+    <%=  button_to_remote 'abonnieren', { :url => subscribe_admin_user_registration_path(newsletter) } %>
+  </div>
+
+</div>

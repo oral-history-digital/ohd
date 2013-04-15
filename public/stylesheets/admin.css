@@ -82,3 +82,9 @@ a.userTableButtonLink:hover {
     background-repeat: no-repeat;
     background-position: 98% -1021px;
 }
+
+/* Newsletter subscription interface */
+.subscribed .unsubscribed,
+.unsubscribed .subscribed {
+    display: none;
+}
