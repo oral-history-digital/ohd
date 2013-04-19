@@ -84,7 +84,26 @@ a.userTableButtonLink:hover {
 }
 
 /* Newsletter subscription interface */
+#edit_user_button,
+#newsletter_subscription_status {
+    width: auto;
+    float: left;
+}
+#edit_user_button {
+    margin-right: 235px;
+}
+
 .subscribed .unsubscribed,
 .unsubscribed .subscribed {
     display: none;
+}
+
+#administration #innerContent {
+    position: relative;
+}
+
+#newsletter_spinner {
+    position: absolute;
+    top: 30px;
+    right: 60px;
 }

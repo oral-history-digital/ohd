@@ -1,17 +1,21 @@
-<div id="newsletter_subscription_status" class="<%= newsletter.receive_newsletter? ? 'subscribed' : 'unsubscribed' -%>">
+<div id="newsletter_subscription_status" class="<%= newsletter.newsletter_signup ? 'subscribed' : 'unsubscribed' -%>">
 
   <div class="subscribed">
     <span class="status">
     Newsletter abonniert
     </span>
-    <%=  button_to_remote 'abbestellen', { :url => unsubscribe_admin_user_registration_path(newsletter) } %>
+    <%=  button_to_remote 'abbestellen', { :url => unsubscribe_admin_user_registration_path(newsletter), :loading => "$('newsletter_spinner').show()", :complete => "$('newsletter_spinner').hide()" } %>
   </div>
 
   <div class="unsubscribed">
     <span class="status">
     Newsletter abbestellt
     </span>
-    <%=  button_to_remote 'abonnieren', { :url => subscribe_admin_user_registration_path(newsletter) } %>
+    <%=  button_to_remote 'abonnieren', { :url => subscribe_admin_user_registration_path(newsletter), :loading => "$('newsletter_spinner').show()", :complete => "$('newsletter_spinner').hide()" } %>
   </div>
+
+  <span id="newsletter_spinner" style="display: none;">
+    <%= image_tag 'loading.gif' %>
+  </span>
 
 </div>

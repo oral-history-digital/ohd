@@ -54,31 +54,51 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def subscribe
-    UserRegistration.update_all "receive_newsletter = '1'", "id = #{object.id}"
-    @object.reload
-    puts "\n@@@ SUBSCRIBE - OBJECT: #{@object.inspect}"
-    render :nothing => true
+    @object = UserRegistration.find(params[:id])
+    @object.newsletter_signup = true
+    @object.save
+    render_newsletter
   end
 
   def unsubscribe
-    UserRegistration.update_all "receive_newsletter = ''", "id = #{object.id}"
-    puts "\n@@@ UNSUBSCRIBE - OBJECT: #{@object.inspect}"
-    render :nothing => :true
+    object
+    @object.newsletter_signup = false
+    @object.save
+    render_newsletter
   end
 
   private
 
+=begin
   def object
     @object = UserRegistration.find(params[:id])
     @user_account = @object.user_account
     @user = @user_account ? @user_account.user : nil
     @user_registration = @object
   end
+=end
 
   def collection
     @workflow_state = params[:workflow_state] || 'unchecked'
     conditions = "workflow_state = '#{@workflow_state}'" + (@workflow_state == "unchecked" ? " OR workflow_state IS NULL" : "")
     @user_registrations = UserRegistration.find(:all, :conditions => conditions, :order => "created_at DESC")
+  end
+
+  def render_newsletter
+    respond_to do |format|
+      format.html do
+        if request.referer.blank?
+          render :nothing => true
+        else
+          redirect_to request.referer
+        end
+      end
+      format.js do
+        render :update do |page|
+          page.replace 'newsletter_subscription_status', :partial => 'newsletter', :object => @object
+        end
+      end
+    end
   end
 
 end
