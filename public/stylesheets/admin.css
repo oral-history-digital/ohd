@@ -1,3 +1,23 @@
+#administration .userTable td.userTableList {
+    font-size: 85%;
+}
+
+#administration .userIndex .clickable {
+    cursor: pointer;
+}
+
+#administration .userTable .translation_missing {
+    display: block;
+    color: transparent;
+    background: transparent url(/images/icon_sprite.png) 0 -1080px no-repeat;
+}
+#administration .userTable .translation_missing:hover {
+    text-indent: 0;
+    color: #000;
+    background-image: none;
+}
+
+
 #administration input[type=button],
 #administration input[type=submit],
 a.userTableButtonLink {

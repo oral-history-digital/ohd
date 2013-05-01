@@ -1,0 +1,46 @@
+<h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
+
+<h2>
+  <%= t(@workflow_state.to_sym, :scope => "devise.workflow_states").capitalize %>
+</h2>
+
+<table class='userTable userIndex' cellspacing='0' cellpadding='0' border='0'>
+  <tbody>
+    <tr>
+      <th class="userTable">Name und Email</th>
+      <th class="userTable">Beruf</th>
+      <th class="userTable">Staat</th>
+      <th class="userTable">Bundesland</th>
+      <th class="userTable">Datum&nbsp;der&nbsp;Anfrage</th>
+    </tr>
+    <% @user_registrations.each do |user_registration| %>
+    <tr class="userTable <%= cycle('userTableEven', 'userTableOdd') %>">
+      <td class="userTableLabel userTableList">
+        <%= link_to "#{user_registration.first_name} #{user_registration.last_name}",
+                    edit_admin_user_registration_path(user_registration.id), :target => "_blank", :class => "user_name_link" %>
+        <br/>
+        <small><%= user_registration.email %></small>
+      </td>
+      <td class="userTableList clickable" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';">
+        <% if user_registration.job_description.blank? -%>
+        &mdash;
+        <% else -%>
+        <%= t(user_registration.job_description, :scope => "devise.registration_values.job_description") %>
+        <% end -%>
+      </td>
+      <td class="userTableList clickable" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';">
+        <%= user_registration.country %>
+      </td>
+      <td class="userTableList clickable" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';">
+        <% if user_registration.state.blank? -%>
+        keine Angabe
+        <% else -%>
+        <%= t(user_registration.state, :scope => 'devise.registration_values.state') %>
+        <% end -%>
+      </td>
+      <td class="userTableList clickable" style="font-size:85%;" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';"><%= user_registration.created_at.nil? ? 'vor Juni 2010;' : user_registration.created_at.strftime("am %d.%m.%y %H:%M Uhr") %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
