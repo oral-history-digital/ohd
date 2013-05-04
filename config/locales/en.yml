@@ -630,3 +630,9 @@ en:
   photos:
     image: 'Photo'
     of: 'of'
+
+  admin_nav:
+    user_registrations: 'Nutzer'
+    import: 'Import'
+    statistics: 'Statistik'
+    permissions: 'Rechte'

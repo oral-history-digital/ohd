@@ -79,8 +79,24 @@ class Admin::UserRegistrationsController < Admin::BaseController
 =end
 
   def collection
-    @workflow_state = params[:workflow_state] || 'unchecked'
-    conditions = "workflow_state = '#{@workflow_state}'" + (@workflow_state == "unchecked" ? " OR workflow_state IS NULL" : "")
+    filters = {}
+    conditionals = []
+    condition_args = []
+    # workflow state
+    filters['workflow_state'] = params[:workflow_state]
+    unless filters['workflow_state'].blank?
+      conditionals << "workflow_state = '#{@workflow_state}'" + (filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL" : "")
+    end
+    @workflow_state = filters['workflow_state'] || 'all'
+    # user last_name
+    %(last_name first_name).each do |name_part|
+      filters[name_part] = params[name_part.to_sym]
+      unless filters[name_part].blank?
+        conditionals << "#{name_part} LIKE ?"
+        condition_args << filters[name_part] + '%'
+      end
+    end
+    conditions = [ conditionals.join('AND') ] + condition_args
     @user_registrations = UserRegistration.find(:all, :conditions => conditions, :order => "created_at DESC")
   end
 

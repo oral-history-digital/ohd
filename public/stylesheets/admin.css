@@ -1,3 +1,40 @@
+#mainNavigation {
+    position: absolute;
+    top: 95px;
+    right: 280px;
+    background-color: #990000;
+    display: block;
+    width: 100%;
+    border-top: 1px #fff solid;
+    border-bottom: 1px #fff solid;
+}
+#mainNavigation ul {
+    float: right;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+#mainNavigation ul li {
+    float: right;
+    display: inline-block;
+    padding: 0 0 0 1px;
+}
+#mainNavigation ul li a {
+    color: #fff;
+    background-color: #990000;
+    display: block;
+    padding: 1px 6px;
+    width: 80px;
+    font-weight: bold;
+    text-decoration: none;
+}
+#mainNavigation ul li a:hover,
+#mainNavigation ul li a.current {
+    background-color: #660000;
+    color: #ccc;
+}
+
+
 #administration .userTable td.userTableList {
     font-size: 85%;
 }

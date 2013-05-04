@@ -1,0 +1,66 @@
+      <div id="baseHeader">
+        <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
+        <a href="http://www.zwangsarbeit-archiv.de<%= (current_locale.to_s == 'en') ? '/en' : '' -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
+          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
+        </a>
+
+        <div id="mainNavigation">
+          <ul>
+            <li><%= link_to t(:permissions, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
+            <li><%= link_to t(:import, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
+            <li><%= link_to t(:statistics, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
+            <li><%= link_to t(:user_registrations, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
+          </ul>
+        </div>
+
+        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <hr class="divider" />
+        <p class="skip">
+          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+        </p>
+
+        <hr class="divider" />
+        <h2 class="info">
+          Service-Navigation
+        </h2>
+        <div id="baseHeaderNavigation">
+          <ul>
+            <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
+            <li>
+              <% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
+              <% if I18n.locale.to_s =~ /^de/i %>
+                <%= link_to "English", url_for({:locale => :en, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "English version" %>
+              <% else %>
+                <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div id="baseLogout" class="portlet logoutPortlet">
+          <form action="" method="post">
+            <fieldset>
+              <legend>Abmelden</legend>
+              <p id="logoutUserLogin">
+                <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
+                <% if current_user_account.nil? %>
+                    <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
+                <% else %>
+                    <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
+                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index', :locale => @locale }, :class => "workbook" %>
+                    <span class='red'>&nbsp;|&nbsp;</span>
+                    <% end %>
+                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>
+                <% end %>
+              </p>
+            <% unless flash[:notice].blank? %>
+              <p id="flashNotice">
+              <%= flash[:notice] %>
+              </p>
+            <% end %>
+            </fieldset>
+          </form>
+      </div>
