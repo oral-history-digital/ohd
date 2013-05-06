@@ -21,9 +21,11 @@
 
         <div id="baseServices">
           <p>
-            Zwangsarbeit 1939-1945<br />
-            <%= t(:admin_area) %>
+            <%= yield :title %>
           </p>
+          <span class="new_registrations">
+            <% new_user_count = UserRegistration.unchecked.count -%>
+            <%= link_to "#{(new_user_count < 1) ? 'Keine' : new_user_count} #{t(:new_registrations, :scope => "devise.workflow_states")} &raquo;", admin_user_management_url(:workflow_state => 'unchecked') %></span>
         </div>
 
         <hr class="divider" />
@@ -45,7 +47,7 @@
         <hr class="divider" />
 
         <div id="baseContainerRight">
-          <%= render :partial => '/admin_sidebar' %>
+          <%= yield :sidebar %>
         </div>
 
         <div id="mainWrapperClear" class="compact">&nbsp;</div>

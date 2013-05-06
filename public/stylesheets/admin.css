@@ -1,12 +1,34 @@
+body#administration {
+    background-image: url(/images/admin_bg_body.gif);
+}
+span.new_registrations {
+    position: absolute;
+    top: 26px;
+    left: 10px;
+}
+span.new_registrations a {
+    display: block;
+    width: 200px;
+    height: 19px;
+    color: #fff;
+}
+
 #mainNavigation {
     position: absolute;
     top: 95px;
     right: 280px;
     background-color: #990000;
     display: block;
-    width: 100%;
+    width: 710px;
     border-top: 1px #fff solid;
     border-bottom: 1px #fff solid;
+    border-right: 1px #fff solid;
+}
+#mainNavigation span {
+    float: left;
+    font-weight: bold;
+    color: #fff;
+    padding: 1px 6px;
 }
 #mainNavigation ul {
     float: right;
@@ -34,6 +56,9 @@
     color: #ccc;
 }
 
+#administration #baseContainerRight ul {
+    padding: 0;
+}
 
 #administration .userTable td.userTableList {
     font-size: 85%;
@@ -52,6 +77,19 @@
     text-indent: 0;
     color: #000;
     background-image: none;
+}
+
+#administration .userTable .state {
+    font-weight: bold;
+}
+#administration .userTable .unchecked,
+#administration .userTable .rejected {
+    color: #990000;
+}
+#administration .userTable .checked,
+#administration .userTable .postponed {
+    font-style: italic;
+    font-weight: normal;
 }
 
 

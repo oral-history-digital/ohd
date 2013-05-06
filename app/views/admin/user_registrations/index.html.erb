@@ -1,8 +1,6 @@
-<h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
-
-<h2>
-  <%= t(@workflow_state.to_sym, :scope => "devise.workflow_states").capitalize %>
-</h2>
+<h1>
+  Nutzer &mdash; <%= t(@workflow_state.to_sym, :scope => "devise.workflow_states").capitalize %>
+</h1>
 
 <table class='userTable userIndex' cellspacing='0' cellpadding='0' border='0'>
   <tbody>
@@ -11,7 +9,7 @@
       <th class="userTable">Beruf</th>
       <th class="userTable">Staat</th>
       <th class="userTable">Bundesland</th>
-      <th class="userTable">Datum&nbsp;der&nbsp;Anfrage</th>
+      <th class="userTable">Status&nbsp;der&nbsp;Anfrage</th>
     </tr>
     <% @user_registrations.each do |user_registration| %>
     <tr class="userTable <%= cycle('userTableEven', 'userTableOdd') %>">
@@ -38,9 +36,20 @@
         <%= t(user_registration.state, :scope => 'devise.registration_values.state') %>
         <% end -%>
       </td>
-      <td class="userTableList clickable" style="font-size:85%;" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';"><%= user_registration.created_at.nil? ? 'vor Juni 2010;' : user_registration.created_at.strftime("am %d.%m.%y %H:%M Uhr") %>
+      <td class="userTableList clickable" style="font-size:85%;" onclick="window.location.href = '<%= edit_admin_user_registration_path(user_registration.id) -%>';">
+        <span class="state <%= user_registration.workflow_state -%>"><%= t(user_registration.workflow_state, :scope => "devise.workflow_states") -%></span>
+        (<%= user_registration.created_at.nil? ? 'vor&nbsp;Juni&nbsp;2010' : user_registration.created_at.strftime("%d.%m.%y&nbsp;%H:%M&nbsp;Uhr") %>)
       </td>
     </tr>
     <% end %>
   </tbody>
 </table>
+
+<% unless request.xhr? -%>
+  <% content_for :title do -%>
+    Benutzerverwaltung
+  <% end -%>
+  <% content_for :sidebar do -%>
+    <%= render :partial => "/admin/user_sidebar.html.erb" %>
+  <% end -%>
+<% end -%>

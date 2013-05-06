@@ -74,6 +74,7 @@ de:
       deactivated: 'deaktiviert'
       postponed: 'zurückgestellt'
       rejected: 'abgelehnt'
+      all: 'alle'
 
     workflow_events:
       register: 'registrieren'

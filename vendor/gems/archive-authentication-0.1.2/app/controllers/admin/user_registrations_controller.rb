@@ -83,9 +83,9 @@ class Admin::UserRegistrationsController < Admin::BaseController
     conditionals = []
     condition_args = []
     # workflow state
-    filters['workflow_state'] = params[:workflow_state]
+    filters['workflow_state'] = params['workflow_state']
     unless filters['workflow_state'].blank?
-      conditionals << "workflow_state = '#{@workflow_state}'" + (filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL" : "")
+      conditionals << "workflow_state = '#{filters['workflow_state']}'" + (filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL" : "")
     end
     @workflow_state = filters['workflow_state'] || 'all'
     # user last_name
