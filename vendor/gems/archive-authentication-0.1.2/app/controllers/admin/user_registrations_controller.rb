@@ -2,6 +2,14 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   def index
     collection
+    respond_to do |format|
+      format.html do
+        render
+      end
+      format.js do
+        render :layout => false
+      end
+    end
   end
 
   def edit
@@ -84,7 +92,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
     condition_args = []
     # workflow state
     filters['workflow_state'] = params['workflow_state']
-    unless filters['workflow_state'].blank?
+    unless filters['workflow_state'].blank? || filters['workflow_state'] == 'all'
       conditionals << "workflow_state = '#{filters['workflow_state']}'" + (filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL" : "")
     end
     @workflow_state = filters['workflow_state'] || 'all'

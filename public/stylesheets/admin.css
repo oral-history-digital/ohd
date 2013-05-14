@@ -60,6 +60,10 @@ span.new_registrations a {
     padding: 0;
 }
 
+#administration #submit_filters {
+    margin-top: 15px;
+}
+
 #administration .userTable td.userTableList {
     font-size: 85%;
 }

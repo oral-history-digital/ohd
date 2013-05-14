@@ -5,8 +5,8 @@
       <% seloptions = options_for_select((UserRegistration::STATES + ['all']).map{|o| [t(o, :scope => 'devise.workflow_states'), o]}, :selected => params['workflow_state']) -%>
       <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
     </li>
-    <li>
-
+    <li id="submit_filters" style="display: none;">
+      <%= button_to_function 'Auswahl aktualisieren', 'filterSubmit();' %>
     </li>
   </ul>
 </div>
@@ -19,14 +19,19 @@ filterElements.each(function(filter){
 });
 var currentFilters = getFilterSettings();
 
+function filterSubmit() {
+  currentFilters = getFilterSettings();
+  var queryURL = window.location.pathname + '?' + currentFilters.toQueryString();
+  new Ajax.Updater('innerContent', queryURL, {
+      method: 'get',
+      onLoading: function() { new Effect.Appear('shades', { from: 0, to: 0.4 }); $('submit_filters').hide(); },
+      onComplete: function() { new Effect.Fade('shades', { from: 0.4, to: 0 }); }
+  });
+};
+
 function onFilterChange() {
   if(filterChanged()) {
-    currentFilters = getFilterSettings();
-    var queryURL = window.location.pathname + '?' + currentFilters.toQueryString();
-    new Ajax.Updater('innerContent', queryURL, {
-      method: 'get',
-      onLoading: alert('Now initiating request to: ' + queryURL)
-    });
+    $('submit_filters').show();
   }
 };
 
