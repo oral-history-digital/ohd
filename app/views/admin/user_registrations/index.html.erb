@@ -1,5 +1,14 @@
+<% @workflow_state = t((@filters.delete('workflow_state') || 'all'), :scope => "devise.workflow_states").capitalize
+   @first_name = @filters.delete('first_name')
+   @last_name = @filters.delete('last_name')
+   @country = @filters.delete('country') -%>
+<% filter_str = (@filters || {}).keys.map{|k| t(@filters[k], :scope => "devise.registration_values.#{k}").capitalize }.join(' &mdash; ') %>
 <h1>
-  Nutzer &mdash; <%= t(@workflow_state.to_sym, :scope => "devise.workflow_states").capitalize %>
+  <%= @workflow_state.last == 'e' ? @workflow_state : @workflow_state + 'e' -%>&nbsp;Nutzer
+  <%= filter_str.empty? ? '' : "&nbsp;(nur #{filter_str})" -%>
+  <%= @first_name.blank? ? '' : "&nbsp;,#{t(:first_name, :scope => 'devise.registration_fields')}: '#{@first_name}*'" -%>
+  <%= @last_name.blank? ? '' : "&nbsp;,#{t(:last_name, :scope => 'devise.registration_fields')}: '#{@last_name}*'" -%>
+  <%= @country.blank? ? '' : "&nbsp; aus #{t(@country, :scope => 'user_countries')}" -%>
 </h1>
 
 <table class='userTable userIndex' cellspacing='0' cellpadding='0' border='0'>

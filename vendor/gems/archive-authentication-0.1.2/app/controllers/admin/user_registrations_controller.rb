@@ -87,24 +87,33 @@ class Admin::UserRegistrationsController < Admin::BaseController
 =end
 
   def collection
-    filters = {}
+    @filters = {}
     conditionals = []
     condition_args = []
     # workflow state
-    filters['workflow_state'] = params['workflow_state']
-    unless filters['workflow_state'].blank? || filters['workflow_state'] == 'all'
-      conditionals << "workflow_state = '#{filters['workflow_state']}'" + (filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL" : "")
+    @filters['workflow_state'] = params['workflow_state']
+    unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
+      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
-    @workflow_state = filters['workflow_state'] || 'all'
-    # user last_name
-    %(last_name first_name).each do |name_part|
-      filters[name_part] = params[name_part.to_sym]
-      unless filters[name_part].blank?
+    @filters['workflow_state'] ||= 'all'
+    # user name
+    %w(last_name first_name).each do |name_part|
+      @filters[name_part] = params[name_part]
+      unless @filters[name_part].blank?
         conditionals << "#{name_part} LIKE ?"
-        condition_args << filters[name_part] + '%'
+        condition_args << @filters[name_part] + '%'
       end
     end
-    conditions = [ conditionals.join('AND') ] + condition_args
+    # job description etc
+    %w(job_description state research_intentions country).each do |info_part|
+      @filters[info_part] = params[info_part]
+      unless @filters[info_part].blank? || @filters[info_part] == 'all'
+        conditionals << "application_info LIKE ?"
+        condition_args << "%#{info_part}: #{ActiveRecord::Base.connection.quote(@filters[info_part])[1..-2]}%"
+      end
+    end
+    @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
+    conditions = [ conditionals.join(' AND ') ] + condition_args
     @user_registrations = UserRegistration.find(:all, :conditions => conditions, :order => "created_at DESC")
   end
 

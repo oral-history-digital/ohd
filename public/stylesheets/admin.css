@@ -60,6 +60,11 @@ span.new_registrations a {
     padding: 0;
 }
 
+#administration #baseContainerRight select {
+    font-size: 80%;
+    max-width: 220px;
+}
+
 #administration #submit_filters {
     margin-top: 15px;
 }

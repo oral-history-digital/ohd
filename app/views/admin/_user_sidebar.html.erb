@@ -1,9 +1,30 @@
 <div id="userFilters" class="fragmentTitle">
   <h2>Benutzer filtern nach:</h2>
   <ul>
+    <li>
       <label for="workflow_state">Registrierungsstatus</label>
-      <% seloptions = options_for_select((UserRegistration::STATES + ['all']).map{|o| [t(o, :scope => 'devise.workflow_states'), o]}, :selected => params['workflow_state']) -%>
+      <% seloptions = options_for_select((['all'] + UserRegistration::STATES).map{|o| [t(o, :scope => 'devise.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
       <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
+    </li>
+    <li>
+      <label for="country"><%= t(:country, :scope => 'devise.registration_fields') %></label>
+      <% seloptions = localized_country_options_for_select(params['country'], [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
+      <%= select_tag(:country, "<option value='all'>Alle</option>" + seloptions, :class => 'filter') -%>
+    </li>
+    <% [:job_description, :state, :research_intentions].each do |field| -%>
+    <li>
+      <label for="<%= field.to_s -%>"><%= t(field, :scope => 'devise.registration_fields') %></label>
+      <% seloptions = options_for_select([['Alle', 'all']] + User.registration_fields[field][:values].map{|o| [t(o, :scope => ('devise.registration_values.' + field.to_s)), o]}, :selected => params[field]) -%>
+      <%= select_tag field, seloptions, :class => 'filter' %>
+    </li>
+    <% end -%>
+    <li>
+      <label for="first_name"><%= t(:first_name, :scope => 'devise.registration_fields') %></label>
+      <%= text_field_tag 'first_name', params['first_name'], :class => 'filter' %>
+    </li>
+    <li>
+      <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
+      <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
     </li>
     <li id="submit_filters" style="display: none;">
       <%= button_to_function 'Auswahl aktualisieren', 'filterSubmit();' %>
