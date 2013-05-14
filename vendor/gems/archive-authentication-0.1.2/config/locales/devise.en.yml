@@ -121,10 +121,13 @@ en:
       send_newsletter: 'Newsletter'
       send_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
       receive_newsletter: 'Newsletter'
+      newsletter_signup: 'Newsletter subscription'
       receive_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
       requested_at: 'Request date'
       name: 'Name'
       adress: 'Address'
+      workflow_state: 'Registration status'
+      created_at: 'Date of Registration'
 
     registration_values:
       appellation:

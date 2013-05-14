@@ -9,6 +9,24 @@ class Admin::UserRegistrationsController < Admin::BaseController
       format.js do
         render :layout => false
       end
+      format.csv do
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Cache-Control'] = 'no-cache, must-revalidate'
+        response.headers['Content-Type'] = 'text/comma-separated-values'
+        fields = %w(appellation first_name last_name email job_description organization country state street zipcode city workflow_state created_at newsletter_signup)
+        csv = [fields.map{|f| translate_field_or_value(f) }.join("\t")]
+        @user_registrations.each do |r|
+          r_csv = []
+          fields.each do |f|
+            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '')
+          end
+          csv << r_csv.join("\t")
+        end
+        send_data(csv.join("\n"),
+                  { :filename => "Nutzer-#{@filters.keys.map{|k| translate_field_or_value(k, @filters[k])}.join("_")}-#{Time.now.strftime('%d.%m.%Y')}.csv",
+                    :disposition => 'attachment',
+                    :type => 'text/comma-separated-values' })
+      end
     end
   end
 
@@ -91,11 +109,11 @@ class Admin::UserRegistrationsController < Admin::BaseController
     conditionals = []
     condition_args = []
     # workflow state
-    @filters['workflow_state'] = params['workflow_state']
+    @filters['workflow_state'] = params['workflow_state'] || 'unchecked'
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
-    @filters['workflow_state'] ||= 'all'
+    @filters['workflow_state']
     # user name
     %w(last_name first_name).each do |name_part|
       @filters[name_part] = params[name_part]
@@ -131,6 +149,35 @@ class Admin::UserRegistrationsController < Admin::BaseController
           page.replace 'newsletter_subscription_status', :partial => 'newsletter', :object => @object
         end
       end
+    end
+  end
+
+  def translate_field_or_value(field, value=nil)
+    unless value.nil?
+      if value.is_a?(Time)
+        return value.strftime('%d.%m.%Y %H:%M Uhr')
+      end
+      if value.blank?
+        return ''
+      end
+      if value == true
+        return 'ja'
+      end
+      value.strip! if value.is_a?(String)
+      scope = case field
+              when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
+                return value
+              when 'country'
+                return value if value.length > 2
+                'user_countries'
+              when 'workflow_state'
+                'devise.workflow_states'
+              else
+                'devise.registration_values.' + field.to_s
+            end
+      t(value, :scope => scope, :locale => :de)
+    else
+      t(field, :scope => 'devise.registration_fields', :locale => :de)
     end
   end
 

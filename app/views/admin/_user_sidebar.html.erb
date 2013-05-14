@@ -61,7 +61,9 @@ function getFilterSettings() {
   filterElements.each(function(filter){
     var filterName = filter.id;
     var filterValue = Form.Element.getValue(filterName);
-    settings.set(filterName, filterValue);
+    if(filterValue != '') {
+      settings.set(filterName, filterValue);
+    }
   });
   return settings;
 };
