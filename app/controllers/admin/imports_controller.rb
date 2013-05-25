@@ -1,5 +1,25 @@
 class Admin::ImportsController < Admin::BaseController
 
+  show.response do |wants|
+    wants.html do
+      render :partial => 'import', :object => object
+    end
+    wants.js do
+      render :partial => 'import', :layout => false, :object => object
+    end
+  end
+
+  def for_interview
+    @interview = Interview.find_by_archive_id(params['archive_id'], :include => :imports)
+    respond_to do |format|
+      format.html do
+        render :partial => 'for_interview', :object => @interview
+      end
+      format.js do
+        render :partial => 'for_interview', :layout => false, :object => @interview
+      end
+    end
+  end
 
   private
 

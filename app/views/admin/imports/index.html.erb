@@ -1,0 +1,57 @@
+<h1>Importvorgänge</h1>
+
+<div id="interview_imports">
+  <div id="sorting_controls">
+    <span id="id_sort" class="sort" data-sort="archive_id">sortieren nach Archiv ID</span>
+    <span id="date_sort" class="sort" data-sort="last_import">sortieren nach Datum</span>
+    <div class="labels">
+        <span class="archive_id">
+           Archiv-ID
+        </span>
+        <span class="interview">
+          Zeitzeuge
+        </span>
+        <span class="last_import">
+          Datum des letzten Imports
+        </span>
+    </div>
+  </div>
+    <ul class="list">
+      <% @interviews.each do |interview| -%>
+      <li id="<%= interview['archive_id'] -%>" class="import closed">
+        <span class="archive_id">
+          <%= image_tag '/images/spinner.gif', :id => "#{interview['archive_id']}_spinner", :class => "spinner", :style => "display: none;" -%>
+          <%= link_to_remote interview['archive_id'],
+                             :update => "interview_#{interview['archive_id']}",
+                             :url => for_interview_admin_imports_path(:archive_id => interview['archive_id']),
+                             :method => :get,
+                             :complete => "$('#{interview['archive_id']}_spinner').remove();",
+                             :html => { :class => "more",
+                                        :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
+          }%>
+        </span>
+        <span class="interview"><%= interview['full_title'] -%></span>
+        <span class="data last_import">
+          <span style="display: none;">
+            <%= interview['time'] -%>
+          </span>
+          <%= interview['time'].sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+(\d{2})\D+(\d{2}).*/,'\3.\2.\1 \4:\5') -%>
+        </span>
+        <div id="interview_<%= interview['archive_id'] -%>" class="details"></div>
+      </li>
+      <% end -%>
+    </ul>
+</div>
+
+<% javascript_tag do -%>
+    var importList = new List('interview_imports', { valueNames: ['archive_id', 'last_import'] });
+<% end -%>
+
+<% unless request.xhr? -%>
+    <% content_for :title do -%>
+        Importvorgänge
+    <% end -%>
+    <% content_for :sidebar do -%>
+        <%= render :partial => "/admin/user_sidebar.html.erb" %>
+    <% end -%>
+<% end -%>

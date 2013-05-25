@@ -41,7 +41,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.registration_details 'registrierung/:user_registration',
                                :controller => :user_registrations,
                                :action => :edit
-    admin.resources :imports
+    admin.resources :imports,
+                    :collection => { :for_interview => :get }
   end
 
   map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :query

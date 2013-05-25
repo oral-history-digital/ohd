@@ -187,6 +187,100 @@ a.userTableButtonLink:hover {
     background-position: 98% -1021px;
 }
 
+/* Imports */
+#interview_imports .labels {
+    font-size: 85%;
+    font-weight: bold;
+}
+#interview_imports .import {
+    list-style-item: none;
+    background-image: none;
+    padding: 5px 0;
+    border-top: 1px dotted;
+}
+#interview_imports .list {
+    border-bottom: 1px dotted;
+}
+#interview_imports #date_sort {
+    float: right;
+    margin-right: 6px;
+}
+#interview_imports span {
+    display: inline-block;
+    margin-right: 10px;
+}
+#interview_imports .last_import {
+    float: right;
+}
+#interview_imports .import .archive_id,
+#interview_imports .import .last_import {
+    font-weight: bold;
+}
+#interview_imports .archive_id a {
+    text-decoration: none;
+    color: #000;
+}
+#interview_imports .archive_id .spinner {
+    float: right;
+}
+#interview_imports .more {
+    padding-left: 15px;
+    display: inline-block;
+    background: transparent url('/images/pfeil_rot_unten.gif') 2px 4px no-repeat;
+}
+#interview_imports .closed .more {
+    background: transparent url('/images/pfeil_rot_rechts.gif') 2px 4px no-repeat;
+}
+#interview_imports .closed .details {
+    display: none;
+}
+
+table.imports_for_interview {
+    margin: 10px 15px 0 15px;
+    font-size: 90%;
+}
+table.imports_for_interview tr {
+    vertical-align: top;
+    border-top: 1px solid #ccc;
+}
+table.imports_for_interview td {
+    opacity: 0.9;
+}
+
+.imports_for_interview span {
+    float: left;
+}
+.imports_for_interview .date {
+    display: block;
+    font-weight: bold;
+    width: 100%;
+}
+.imports_for_interview .location_references,
+.imports_for_interview .contributions {
+    clear: left;
+}
+
+/* Sortable Lists */
+#administration .list li:nth-child(odd) {
+    background-color: #E4E4DA;
+}
+#administration #sorting_controls {
+    margin-right: 20px;
+    padding-left: 5px;
+}
+#administration .sort {
+    display: inline-block;
+    cursor: pointer;
+    padding-right: 22px;
+    color: #666;
+}
+#administration .sort.asc {
+    background: transparent url('/images/icon_sprite.png') 98% -720px no-repeat;
+}
+#administration .sort.desc {
+    background: transparent url('/images/icon_sprite.png') 98% -660px no-repeat;
+}
+
 /* Newsletter subscription interface */
 #edit_user_button,
 #newsletter_subscription_status {

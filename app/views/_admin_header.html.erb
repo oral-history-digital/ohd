@@ -8,7 +8,7 @@
           <span>Administratoren-Bereich</span>
           <ul>
             <li><%= link_to t(:permissions, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
-            <li><%= link_to t(:import, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
+            <li><%= link_to t(:import, :scope => 'admin_nav'), admin_imports_path, :accesskey => "0", :class => (controller_name == 'imports' ? 'current' : '') %></li>
             <li><%= link_to t(:statistics, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0" %></li>
             <li><%= link_to t(:user_registrations, :scope => 'admin_nav'), admin_user_registrations_path, :accesskey => "0", :class => (controller_name == 'user_registrations' ? 'current' : '') %></li>
           </ul>

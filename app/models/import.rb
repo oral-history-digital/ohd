@@ -1,5 +1,7 @@
 class Import < ActiveRecord::Base
 
+  CONTENT_ITEMS = %w(tapes segments annotations location_references locations_segments contributions)
+
   belongs_to  :importable,
               :polymorphic => true
 
@@ -36,7 +38,7 @@ class Import < ActiveRecord::Base
   end
 
   def content
-    YAML.load(read_attribute(:content))
+    YAML.load(read_attribute(:content) || '')
   end
 
   private
