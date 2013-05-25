@@ -19,6 +19,7 @@
     <ul class="list">
       <% @interviews.each do |interview| -%>
       <li id="<%= interview['archive_id'] -%>" class="import closed">
+        <%# TODO: Link to Interview in Archive and a button to Prioritize Import! %>
         <span class="archive_id">
           <%= image_tag '/images/spinner.gif', :id => "#{interview['archive_id']}_spinner", :class => "spinner", :style => "display: none;" -%>
           <%= link_to_remote interview['archive_id'],
@@ -52,6 +53,6 @@
         Importvorgänge
     <% end -%>
     <% content_for :sidebar do -%>
-        <%= render :partial => "/admin/user_sidebar.html.erb" %>
+        <%# TODO: what to display here? %>
     <% end -%>
 <% end -%>
