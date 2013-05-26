@@ -1,0 +1,12 @@
+<li id="user_<%= user.id -%>" class="user">
+  <% last_login = user.user_account.last_sign_in_at || Time.gm(2009,1,1) -%>
+  <span class="name"><%= user.last_name -%>, <%=  user.first_name -%></span>
+  <span class="login"><%=  user.login -%></span>
+            <span class="data last_login">
+              <span style="display: none;">
+                <%= last_login -%>
+              </span>
+              <%= last_login.strftime('%d.%m.%Y %H:%M Uhr') -%>
+            </span>
+  <%= render :partial => 'admin_flag', :object => user %>
+</li>

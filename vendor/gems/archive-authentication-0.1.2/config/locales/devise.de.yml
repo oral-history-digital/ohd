@@ -125,6 +125,7 @@ de:
       name: 'Name'
       adress: 'Anschrift'
       workflow_state: 'Registrierungsstatus'
+      login: 'Benutzername'
       created_at: 'Datum der Registrierung'
 
     registration_values:

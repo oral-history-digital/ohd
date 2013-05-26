@@ -188,33 +188,50 @@ a.userTableButtonLink:hover {
 }
 
 /* Imports */
-#interview_imports .labels {
+#administration .labels {
     font-size: 85%;
     font-weight: bold;
 }
-#interview_imports .import {
+#interview_imports .import,
+#admin_users .user {
     list-style-item: none;
     background-image: none;
     padding: 5px 0;
     border-top: 1px dotted;
 }
-#interview_imports .list {
+#administration .list {
     border-bottom: 1px dotted;
 }
-#interview_imports #date_sort {
+#administration #date_sort,
+#admin_users .admin_flag {
     float: right;
     margin-right: 6px;
 }
-#interview_imports span {
+#interview_imports span,
+#admin_users span {
     display: inline-block;
     margin-right: 10px;
 }
-#interview_imports .last_import {
+#interview_imports .last_import,
+#admin_users .last_login {
     float: right;
 }
 #interview_imports .import .archive_id,
-#interview_imports .import .last_import {
+#interview_imports .import .last_import,
+#admin_users .user .name {
     font-weight: bold;
+}
+#admin_users .name{
+    width: 222px;
+}
+#admin_users .sort.name {
+    padding: 0px;
+}
+#administration #admin_users .name.asc {
+    background-position: 120px -720px;
+}
+#administration #admin_users .name.desc {
+    background-position: 120px -660px;
 }
 #interview_imports .archive_id a {
     text-decoration: none;

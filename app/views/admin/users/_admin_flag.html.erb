@@ -1,0 +1,10 @@
+<span id="admin_<%= admin_flag.id -%>" class="admin_flag">
+    <% if admin_flag.admin? -%>
+        <%=  button_to_remote 'Admin-Rechte entfernen', { :url => flag_admin_user_path(admin_flag, :admin => false), :loading => "$('admin_#{admin_flag.id}_spinner').show()", :complete => "$('admin_#{admin_flag.id}_spinner').hide()" } %>
+    <% else -%>
+        <%=  link_to_remote '&raquo; Admin-Rechte geben', { :url => flag_admin_user_path(admin_flag, :admin => true), :loading => "$('admin_#{admin_flag.id}_spinner').show()", :complete => "$('admin_#{admin_flag.id}_spinner').hide()", :style => "font-size: 85%;" } %>
+    <% end -%>
+  <span id="admin_<%= admin_flag.id -%>_spinner" style="display: none;">
+    <%= image_tag 'loading.gif' %>
+  </span>
+</span>

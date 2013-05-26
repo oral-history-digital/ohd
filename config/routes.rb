@@ -33,7 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.test 'kartentest', :controller => :location_references, :action => :map_test
 
   map.namespace :admin do |admin|
-    admin.resources :users
+    admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
     admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
     admin.user_export     'benutzerverwaltung.:format', :controller => :user_registrations, :action => :index

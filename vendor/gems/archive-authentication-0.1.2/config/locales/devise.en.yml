@@ -127,6 +127,7 @@ en:
       name: 'Name'
       adress: 'Address'
       workflow_state: 'Registration status'
+      login: 'Username'
       created_at: 'Date of Registration'
 
     registration_values:

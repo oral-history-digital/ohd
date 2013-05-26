@@ -1,0 +1,35 @@
+<h1>Nutzer mit Administratorrechten</h1>
+
+<div id="admin_users">
+  <div id="sorting_controls">
+    <span id="name_sort" class="sort name" data-sort="name">sortieren nach Name</span>
+    <span id="login_sort" class="sort" data-sort="login">sortieren nach Username</span>
+    <span id="date_sort" class="sort" data-sort="last_login">sortieren nach Login</span>
+    <div class="labels">
+        <span class="name">
+           Name
+        </span>
+        <span class="login">Username</span>
+        <span class="last_login">
+          Datum des letzten Logins
+        </span>
+    </div>
+  </div>
+  <ul id="user_list" class="list">
+    <%= render :partial => 'user', :collection => @users %>
+  </ul>
+</div>
+
+<% javascript_tag do -%>
+    var adminList = new List('admin_users', { valueNames: ['name', 'login', 'last_login'] });
+<% end -%>
+
+
+<% unless request.xhr? -%>
+    <% content_for :title do -%>
+        Rechte
+    <% end -%>
+    <% content_for :sidebar do -%>
+        <%= render :partial => 'admin_user_sidebar' %>
+    <% end -%>
+<% end -%>

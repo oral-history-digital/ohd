@@ -17,4 +17,47 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def admin
+    conditionals = ['admin IS TRUE']
+    condition_args = []
+    %w(first_name last_name login).each do |param|
+      filter = params[param]
+      unless filter.blank?
+        conditionals << "#{param == 'login' ? 'user_accounts.' : ''}#{param} LIKE ?"
+        condition_args << (filter + '%')
+      end
+    end
+    joins = "LEFT JOIN user_accounts ON users.user_account_id = user_accounts.id RIGHT JOIN user_registrations ON users.user_registration_id = user_registrations.id"
+    conditions = ["workflow_state = 'registered' AND (" + conditionals.join(' OR ') + ")"] + condition_args
+    @users = User.find(:all, :joins => joins, :conditions => conditions, :order => "admin ASC, last_name ASC")
+    respond_to do |format|
+      format.html do
+      end
+      format.js do
+        render :partial => 'user', :collection => @users, :layout => false
+      end
+    end
+  end
+
+  def flag
+    @object = User.find(params[:id])
+    @object.admin = !params['admin'].blank?
+    @object.save
+    respond_to do |format|
+      format.html do
+        if request.referer.blank?
+          render :nothing => true
+        else
+          redirect_to request.referer
+        end
+      end
+      format.js do
+        render :update do |page|
+          page.replace "admin_#{@object.id}", :partial => 'admin_flag', :object => @object
+        end
+      end
+    end
+  end
+
+
 end
