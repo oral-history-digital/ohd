@@ -8,7 +8,7 @@
               <span style="display: none;">
                 <%= last_login -%>
               </span>
-              <%= last_login.strftime('%d.%m.%Y %H:%M Uhr') -%>
+              <%= formatted_time last_login -%>
             </span>
   <%= render :partial => 'admin_flag', :object => user %>
 </li>

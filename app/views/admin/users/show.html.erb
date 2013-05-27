@@ -25,7 +25,7 @@
     <tr>
       <td>
         <strong>Registriert seit</strong>
-        <%= @user.user_account.confirmed_at.strftime("%d.%m.%Y") || 'noch nicht' %>
+        <%= formatted_date @user.user_account.confirmed_at, 'noch nicht' %>
         <br/>
       </td>
       <td>
@@ -35,7 +35,7 @@
     <tr>
       <td>
         <strong>Letzte Änderung der Angaben</strong>
-        <%= @user.updated_at.strftime('%d.%m.%Y') %>
+        <%= formatted_date @user.updated_at %>
       </td>
       <td>
         <strong><%= t(:country, :scope => 'devise.registration_fields') %></strong>

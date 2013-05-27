@@ -32,8 +32,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.test 'kartentest', :controller => :location_references, :action => :map_test
 
-  map.admin_home 'admin', :controller => 'admin/user_registrations', :action => :index
-
   map.namespace :admin do |admin|
     admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
     admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
@@ -46,6 +44,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :imports,
                     :collection => { :for_interview => :get }
   end
+  map.admin_home 'admin', :controller => 'admin/user_registrations', :action => :index
+  map.admin_user_by_state 'admin/:workflow_state', :controller => 'admin/user_registrations', :action => :index
 
   map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :query
   map.search_by_hash 'suche/:suche', :controller => :searches, :action => :query

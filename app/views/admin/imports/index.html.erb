@@ -36,7 +36,7 @@
           <span style="display: none;">
             <%= interview['time'] -%>
           </span>
-          <%= interview['time'].sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+(\d{2})\D+(\d{2}).*/,'\3.\2.\1 \4:\5') -%>
+          <%= formatted_time interview['time'] -%>
         </span>
         <div id="interview_<%= interview['archive_id'] -%>" class="details"></div>
       </li>

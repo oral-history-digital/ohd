@@ -19,7 +19,7 @@
         </td>
         <td>
           <strong><%= t(:requested_at, :scope => "devise.registration_fields") %></strong>
-          <%= @object.created_at.nil? ? '&mdash;' : @object.created_at.strftime("%d.%m.%y %H:%M") %>
+          <%= formatted_time @object.created_at %>
         </td>
       </tr>
     <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>

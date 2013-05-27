@@ -2,7 +2,7 @@
   <tr class="detailed">
     <td>
       <span class="date">
-        Import vom <%= @interview.imports.last.time.strftime('%d.%m.%Y %H:%M Uhr') -%>
+        Import vom <%= formatted_time @interview.imports.last.time -%>
       </span>
     </td>
     <td>
@@ -15,7 +15,7 @@
   <tr class="link">
     <td>
       <span class="date">
-        Import vom <%= import.time.strftime('%d.%m.%Y %H:%M Uhr') -%>
+        Import vom <%= formatted_time import.time -%>
       </span>
     </td>
     <td id="import_<%= import.id -%>">

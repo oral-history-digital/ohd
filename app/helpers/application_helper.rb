@@ -199,4 +199,30 @@ JS
     date.strftime('%Y%m%d')
   end
 
+  # presents an adequatly formatted string as a Time representation and handles nil time
+  def formatted_time(time, nilstring='&mdash;', formatstring='%d.%m.%Y %H:%M', de_suffix=' Uhr')
+    case time
+      when Time
+        time.strftime(formatstring) + ((@locale || '').to_sym == :de ? de_suffix : '')
+      when String
+        # converts the base DB storage format of time string representations
+        time.sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+(\d{2})\D+(\d{2}).*/,'\3.\2.\1 \4:\5')
+      else
+        nilstring
+    end
+  end
+
+  # presents adequatly formatted string in date format as a Time representation and handles nil
+  def formatted_date(time, nilstring='&mdash;')
+    case time
+      when String
+        # converts the base DB storage format of time string representations
+        time.sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+.*/,'\3.\2.\1')
+      else
+        formatted_time(time, nilstring, '%d.%m.%Y', '')
+    end
+  end
+
+
+
 end
