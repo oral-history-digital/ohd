@@ -638,9 +638,11 @@ en:
     permissions: 'Rechte'
 
   import:
-      tapes: 'Medien/Bänder'
-      segments: 'Untertitel-Segmente'
-      annotations: 'Anmerkungen der Redaktion'
-      location_references: 'Ortsbezogene Registereinträge'
-      locations_segments: 'Ortsreferenzierte Untertitel-Segmente'
-      contributions: 'Beteiligte Mitarbeiter'
+    tapes: 'Medien/Bänder'
+    segments: 'Untertitel-Segmente'
+    annotations: 'Anmerkungen der Redaktion'
+    location_references: 'Ortsbezogene Registereinträge'
+    locations_segments: 'Ortsreferenzierte Untertitel-Segmente'
+    contributions: 'Beteiligte Mitarbeiter'
+    photos: 'Bilder'
+    text_materials: 'Begleitmaterialien'

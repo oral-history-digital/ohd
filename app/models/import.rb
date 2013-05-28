@@ -1,6 +1,6 @@
 class Import < ActiveRecord::Base
 
-  CONTENT_ITEMS = %w(tapes segments annotations location_references locations_segments contributions)
+  CONTENT_ITEMS = %w(tapes segments annotations location_references locations_segments contributions photos text_materials)
 
   belongs_to  :importable,
               :polymorphic => true
