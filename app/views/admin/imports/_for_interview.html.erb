@@ -1,16 +1,18 @@
 <table class="imports_for_interview">
+  <% imports = @interview.imports.clone.reverse -%>
+  <% import = imports.shift -%>
   <tr class="detailed">
     <td>
       <span class="date">
-        Import vom <%= formatted_time @interview.imports.last.time -%>
+        Import vom <%= formatted_time import.time -%>
       </span>
     </td>
     <td>
-      <%= render :partial => 'import', :object => @interview.imports.last %>
+      <%= render :partial => 'import', :object => import %>
     </td>
   </tr>
   <% first = true %>
-  <% @interview.imports.each do |import| -%>
+  <% imports.each do |import| -%>
     <% unless first -%>
   <tr class="link">
     <td>
