@@ -233,6 +233,11 @@ a.userTableButtonLink:hover {
 #administration #admin_users .name.desc {
     background-position: 120px -660px;
 }
+
+#administration #import_overview ul.details {
+    padding-left: 16px;
+}
+
 #interview_imports .archive_id a {
     text-decoration: none;
     color: #000;
@@ -240,15 +245,15 @@ a.userTableButtonLink:hover {
 #interview_imports .archive_id .spinner {
     float: right;
 }
-#interview_imports .more {
+#administration .more {
     padding-left: 15px;
     display: inline-block;
     background: transparent url('/images/pfeil_rot_unten.gif') 2px 4px no-repeat;
 }
-#interview_imports .closed .more {
+#administration .closed .more {
     background: transparent url('/images/pfeil_rot_rechts.gif') 2px 4px no-repeat;
 }
-#interview_imports .closed .details {
+#administration .closed .details {
     display: none;
 }
 

@@ -13,6 +13,8 @@ class Import < ActiveRecord::Base
                                             :limit => "0,1",
                                             :order => "time DESC" }}
 
+  named_scope :recent_for, lambda{|type| { :conditions => ["importable_type = ? AND created_at > ?", type, (Time.now - 1.week).to_s(:db)], :include => :importable, :order => "created_at DESC"} }
+
   def self.current_migration
     @@current_migration ||= begin
       last_migration_import = Import.find :first, :order => "migration DESC"

@@ -208,6 +208,11 @@ DEF
     @short_title ||= [first_name, (last_name || '').sub(/\s*\([^(]+\)\s*$/,'')].join(' ')
   end
 
+  # display form of last name without addeda (geb etc.)
+  def last_name_short
+    last_name.sub(/\s+\(.*\)$/,'')
+  end
+
   def anonymous_title
     return '' if full_title.blank?
     @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'

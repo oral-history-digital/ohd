@@ -31,7 +31,7 @@
                                         :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
           }%>
         </span>
-        <span class="interview"><%= interview['full_title'] -%></span>
+        <span class="interview"><a name="imports_for_<%= interview['archive_id'] -%>"><%= interview['full_title'] -%></a></span>
         <span class="data last_import">
           <span style="display: none;">
             <%= interview['time'] -%>
@@ -53,6 +53,6 @@
         Importvorgänge
     <% end -%>
     <% content_for :sidebar do -%>
-        <%# TODO: what to display here? %>
+        <%= render :partial => 'admin_imports_sidebar' -%>
     <% end -%>
 <% end -%>
