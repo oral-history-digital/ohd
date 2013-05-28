@@ -4,8 +4,9 @@
   <tr class="detailed">
     <td>
       <span class="date">
-        Import vom <%= formatted_time import.time -%>
+        Import vom <%= formatted_time import.created_at, '? (Feb 2013 o. früher)' -%>
       </span>
+      Stand vom <%= formatted_date import.time -%>
     </td>
     <td>
       <%= render :partial => 'import', :object => import %>
@@ -17,8 +18,9 @@
   <tr class="link">
     <td>
       <span class="date">
-        Import vom <%= formatted_time import.time -%>
+        Import vom <%= formatted_time import.created_at, '? (Feb 2013 o. früher)' -%>
       </span>
+      Stand vom <%= formatted_date import.time -%>
     </td>
     <td id="import_<%= import.id -%>">
       <%= link_to_remote "&raquo;&nbsp;Details anzeigen",

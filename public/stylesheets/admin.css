@@ -213,8 +213,10 @@ a.userTableButtonLink:hover {
     margin-right: 10px;
 }
 #interview_imports .last_import,
+#interview_imports .time,
 #admin_users .last_login {
     float: right;
+    width: 132px;
 }
 #interview_imports .import .archive_id,
 #interview_imports .import .last_import,

@@ -4,6 +4,7 @@
   <div id="sorting_controls">
     <span id="id_sort" class="sort" data-sort="archive_id">sortieren nach Archiv ID</span>
     <span id="date_sort" class="sort" data-sort="last_import">sortieren nach Datum</span>
+    <span id="time_sort" class="sort" data-sort="time" style="float: right;">sortieren nach Stand</span>
     <div class="labels">
         <span class="archive_id">
            Archiv-ID
@@ -12,7 +13,10 @@
           Zeitzeuge
         </span>
         <span class="last_import">
-          Datum des letzten Imports
+          Datum letzter Import
+        </span>
+        <span class="time">
+          Stand der Daten
         </span>
     </div>
   </div>
@@ -31,12 +35,21 @@
                                         :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
           }%>
         </span>
-        <span class="interview"><a name="imports_for_<%= interview['archive_id'] -%>"><%= interview['full_title'] -%></a></span>
+        <span class="interview">
+          <a name="imports_for_<%= interview['archive_id'] -%>"><%= interview['full_title'] -%></a>
+          <%= link_to '&raquo;', interview_path(:id => interview['archive_id']), :target => '_blank' -%>
+        </span>
         <span class="data last_import">
+          <span style="display: none;">
+            <%= interview['created_at'] -%>
+          </span>
+          <%= formatted_time interview['created_at'], '<span style="font-weight: normal !important; width: 132px;">? (Feb 2013 o. früher)</span>' -%>
+        </span>
+        <span class="data time">
           <span style="display: none;">
             <%= interview['time'] -%>
           </span>
-          <%= formatted_time interview['time'] -%>
+          <%= formatted_date interview['time'] -%>
         </span>
         <div id="interview_<%= interview['archive_id'] -%>" class="details"></div>
       </li>
@@ -45,7 +58,7 @@
 </div>
 
 <% javascript_tag do -%>
-    var importList = new List('interview_imports', { valueNames: ['archive_id', 'last_import'] });
+    var importList = new List('interview_imports', { valueNames: ['archive_id', 'time', 'last_import'] });
 <% end -%>
 
 <% unless request.xhr? -%>
