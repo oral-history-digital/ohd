@@ -6,7 +6,10 @@
       <span class="date">
         Import vom <%= formatted_time import.created_at, '? (Feb 2013 o. früher)' -%>
       </span>
-      Stand vom <%= formatted_date import.time -%>
+      <span>Stand vom <%= formatted_date import.time -%></span>
+      <span class="link" style="clear: left;">
+        <%= link_to '&raquo; zum Redaktionssystem', "http://redaktion.zwangsarbeit-archiv.de:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
+      </span>
     </td>
     <td>
       <%= render :partial => 'import', :object => import %>
