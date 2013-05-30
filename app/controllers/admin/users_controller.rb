@@ -23,13 +23,13 @@ class Admin::UsersController < Admin::BaseController
     %w(first_name last_name login).each do |param|
       filter = params[param]
       unless filter.blank?
-        conditionals << "#{param == 'login' ? 'user_accounts.' : ''}#{param} LIKE ?"
+        conditionals << "#{param == 'login' ? 'user_accounts.' : 'users.'}#{param} LIKE ?"
         condition_args << (filter + '%')
       end
     end
     joins = "LEFT JOIN user_accounts ON users.user_account_id = user_accounts.id RIGHT JOIN user_registrations ON users.user_registration_id = user_registrations.id"
     conditions = ["workflow_state = 'registered' AND (" + conditionals.join(' OR ') + ")"] + condition_args
-    @users = User.find(:all, :joins => joins, :conditions => conditions, :order => "admin ASC, last_name ASC")
+    @users = User.find(:all, :joins => joins, :conditions => conditions, :order => "admin ASC, users.last_name ASC")
     respond_to do |format|
       format.html do
       end
