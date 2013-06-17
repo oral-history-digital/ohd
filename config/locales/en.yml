@@ -25,6 +25,7 @@ en:
   for: 'for'
   close: 'close'
   here: 'hier'
+  timecode: 'Timecode'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -91,6 +92,7 @@ en:
       interview: 'Interview'
       video_interview: 'Video-Interview'
       audio_interview: 'Audio-Interview'
+      segment_link: 'to Fragment'
       forced_labor_data: 'Forced Labor Data'
       biography: 'Biography of'
       transcript: 'Transcript'
@@ -258,6 +260,9 @@ en:
       tape:
         one: 'Tape'
         other: 'Tapes'
+      segment:
+        one: 'Fragment'
+        other: 'Fragments'
       collection:
         one: 'Subset'
         other: 'Subsets'
@@ -273,6 +278,9 @@ en:
       search:
         one: 'Saved Search'
         other: 'Saved Searches'
+      user_annotation:
+        one: 'Annotated Fragment'
+        other: 'Annotated Fragments'
 
     attributes:
       collection:
@@ -310,10 +318,15 @@ en:
         segmentators: 'Segmentator'
         language: 'Language'
         collection: 'Subset'
+      segment:
+        media_id: 'Fragment-ID'
       user_content:
         title: 'Title'
         description: 'Note'
         query: 'Search Criteria'
+      user_annotation:
+        workflow_state: 'Publication State'
+        text: 'Annotation'
 
     errors:
       template:
@@ -324,6 +337,14 @@ en:
     male: 'male'
     female: 'female'
     born: 'born in'
+
+  user_annotations:
+    workflow_states:
+      private: 'Private'
+      proposed: 'Proposed for Publication'
+      postponed: 'Postponed by Editors'
+      shared: 'Shared (Public)'
+      rejected: 'Private (Publication Rejected)'
 
   media:
     video_interview: 'Video interview'

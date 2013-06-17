@@ -54,7 +54,7 @@
         </div>
 
         <div id="annotations_overlay">
-            <%=  render :partial => 'annotations', :object => @interview.annotations %>
+            <%=  render :partial => 'annotations', :object => Annotation.displayable(@interview) %>
         </div>
 
         <div id="mainWrapperClear" class="compact">&nbsp;</div>

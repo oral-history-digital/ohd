@@ -44,30 +44,40 @@ end -%>
           </ul>
         </div>
         <ul class="properties">
-          <% case user_content.type.to_s
-              when 'Search'
-                %>
-            <li class="query">
-              <%= label_tag UserContent.human_attribute_name(:query) -%>
-              <p><%= query_hash_to_string user_content.properties['query'] -%></p>
-            </li>
-          <% when 'InterviewReference' -%>
-            <% unless user_content.reference.nil? -%>
-            <li class="language_info">
-              <%= label_tag t((user_content.reference.video? ? :video_interview : :audio_interview), :scope => 'user_interface.labels') %>
-              <p>
-                <%= user_content.reference.languages.map{|lang| t(lang, :scope => 'categories.languages')}.join('/') -%>&nbsp;
-                <% unless user_content.reference.language == 'Deutsch' -%>
-                (<%= user_content.reference.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>)
-                <% end -%>
-                <br/>
-                <%= user_content.reference.duration.minimal -%>
-              </p>
-            </li>
-            <% end -%>
-          <%  else
-                false
-          end %>
+          <% unless user_content.reference.nil? -%>
+              <% case user_content.type.to_s
+                  when 'Search'
+                    %>
+                <li class="query">
+                  <%= label_tag UserContent.human_attribute_name(:query) -%>
+                  <p><%= query_hash_to_string user_content.properties['query'] -%></p>
+                </li>
+              <% when 'InterviewReference' -%>
+                <li class="language_info">
+                  <%= label_tag t((user_content.reference.video? ? :video_interview : :audio_interview), :scope => 'user_interface.labels') %>
+                  <p>
+                    <%= user_content.reference.languages.map{|lang| t(lang, :scope => 'categories.languages')}.join('/') -%>&nbsp;
+                    <% unless user_content.reference.language == 'Deutsch' -%>
+                    (<%= user_content.reference.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>)
+                    <% end -%>
+                    <br/>
+                    <%= user_content.reference.duration.minimal -%>
+                  </p>
+                </li>
+              <% when 'UserAnnotation' -%>
+                <% interview = user_content.reference.interview -%>
+                <li class="segment_info">
+                  <%= label_tag Segment.human_attribute_name(:media_id) -%>
+                  <p><%= user_content.reference.media_id -%></p>
+                  <%= label_tag Tape.human_name -%>
+                  <p><%= user_content.reference.tape.number -%></p>
+                  <%= label_tag t(:timecode) -%>
+                  <p><%=  timecode_without_tape user_content.reference.timecode %></p>
+                </li>
+              <%  else
+                    false
+              end %>
+          <% end -%>
           <li class="description">
             <%= label_tag UserContent.human_attribute_name(:description) -%>
             <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
@@ -79,6 +89,8 @@ end -%>
               reference_details_for_search(user_content)
             when 'InterviewReference'
               reference_details_for_interview(user_content.reference)
+            when 'UserAnnotation'
+              reference_details_for_segment(user_content)
             else
               ''
           end %>
