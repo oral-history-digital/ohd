@@ -1,1 +1,5 @@
 .idea/
+.rvmrc
+vendor/gems/archive-player-0.2.0
+config/database.yml
+log/
