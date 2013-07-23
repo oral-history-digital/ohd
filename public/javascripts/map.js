@@ -1,7 +1,6 @@
 var cedisMap = {};
 
-var InteractiveMap = Class.create();
-InteractiveMap.prototype = {
+var InteractiveMap = Class.create({
     initialize: function(id, options) {
         // Settings and defaults
         var defaults = {
@@ -231,7 +230,7 @@ InteractiveMap.prototype = {
         new Effect.Appear(_this.options.introId);
         setupFilters('#' + _this.options.introId + ' .map_filter_off');
     }
-};
+});
 
 function mapSetup(id, options) {
     /* TODO: read the cookie from ClusterManager and ignore interview stuff */
