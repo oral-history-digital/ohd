@@ -50,7 +50,7 @@ config.action_mailer.default_url_options = {
 config.action_mailer.delivery_method = :smtp
 
 config.after_initialize do
-  ExceptionNotifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de)
+  ExceptionNotifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de jerico.dev@gmail.com)
   ExceptionNotifier.sender_address = "team@zwangsarbeit-archiv.de"
   ExceptionNotifier.email_prefix = "[ERROR] "
 end
