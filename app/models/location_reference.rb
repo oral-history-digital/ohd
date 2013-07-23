@@ -438,7 +438,7 @@ class LocationReference < ActiveRecord::Base
     }
     accumulation_fields.each do |variable, field|
       if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
-        send("#{field}=",instance_eval("@#{variable}"))
+        send("#{field}=", instance_eval("@#{variable}"))
       end
     end
     self.latitude = @exact_latitude if defined?(@exact_latitude) && !@exact_latitude.blank?
