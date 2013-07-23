@@ -1,6 +1,6 @@
 class LocationReferencesController < BaseController
 
-  PER_PAGE = 300
+  PER_PAGE = 3000
 
   actions :index
 
@@ -51,7 +51,7 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.find(:all, :conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
+      @results = LocationReference.all(:conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
       respond_to do |wants|
         wants.html do
           render :action => :index
