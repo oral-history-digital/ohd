@@ -24,7 +24,7 @@ en:
   no_placeholder: 'no'
   for: 'for'
   close: 'close'
-  here: 'hier'
+  here: 'here'
   timecode: 'Timecode'
 
   # TODO: page_paths and page_urls contain obsolete external pages
@@ -198,22 +198,20 @@ en:
 
 
   map:
+    noframes: 'Embedded content cannot be displayed in your browser. You can access it directly by clicking %{here}.'
     legend:
       tabname: 'Legend / Filters'
       title:  'Legend and Filters'
       filter_header: 'Filter the map view by type of location'
-      grouping_label: 'Clustering by Region/Country'
+      grouping_label: 'Clustering by<br/>Region/Country'
       grouping_header: 'Enabling/disabling clustering on low zoom levels'
       more_help: 'Need help? Learn more'
     explanation:
-      title: 'Explanation of Map Features'
-      choose_filter_start: 'Choose location categories for display on'
-      choose_filter_end: 'the map (Einsatzorte, Lager und Haftstätten, etc.). You can use the filters on the right tab to do so. When all location types are disabled (grayed-out), no more locations will be shown.'
-      grouping_start: 'For a less cluttered map at low zoom levels, locations may be clustered by region and country.'
-      grouping_end: 'This clustering of locations can be disabled by deselecting the &quot;Clustering...&quot; option below the filters'
-      legend_start: 'These options are available at any time.'
-      legend_end: 'Simply click on the tab "Legend/Filters" at the top and right to reveal the filter options. A click on the &quot;X&quot; will hide the filters tab again'
-      finish: 'these instructions when you are done'
+      title: 'How to use the map'
+      filter: '%{image}Use the filters on the right side to select the categories of places you want to see (Forced Labor Sites, Camps and Prisons etc.). No places will be shown if all filters are deselected (grey).'
+      clustering: '%{image}For more clarity in low zoom, locations may be bundled by country and region. This function may be deactivated by unchecking &quot;Clustering...&quot; below the filters.'
+      legend: 'The &quot;Filters&quot; and &quot;Clustering&quot; options are always available. %{image}Just choose the &quot;Legend/Filters&quot; button on the top right to see available filters. A Click on the &quot;X&quot; (top right) closes this option again.'
+      finish: '%{close} these instructions when you are done.'
     labels:
       forced_labor_locations: 'Forced Labor Sites'
       camps: 'Camps and Prisons'
