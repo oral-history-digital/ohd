@@ -8,8 +8,8 @@ InteractiveMap.prototype = {
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            indexURL: '/webservice/orte.json',
-            dataURL: '/webservice/orte/satz'
+            indexURL: '/orte.json',
+            dataURL: '/orte/satz',
             dateStamp: '20121027'
         };
         if (options != null) {
@@ -23,8 +23,6 @@ InteractiveMap.prototype = {
         if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL; }
         if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL; }
         if(!this.options.dateStamp) { this.options.dateStamp = defaults.dateStamp; }
-        if(!this.options.introClass) { this.options.introClass = defaults.introClass; }
-
 
         this.currentLoadPage = 0;
         this.loadPageNumber = 0;
@@ -81,75 +79,107 @@ InteractiveMap.prototype = {
         this.progress.getDiv().style.bottom = '60px';
 
         var clusterOptions = this.options.cluster || {};
-        this.clusterManager = new ClusterManager(this.map,clusterOptions);
+        this.clusterManager = new ClusterManager(this.map, clusterOptions);
 
-        this.searchWithinBounds();
+        this.loadAllLocations();
 
         return this.map;
     },
+
     setMapBounds: function(bounds) {
         // auto-reset only if parameters for bounds weren't provided!
         if((!this.boundsPerParameters) && (bounds.intersects)) {
             this.map.fitBounds(bounds);
         }
     },
-    searchWithinBounds: function() {
+
+    loadAllLocations: function() {
         new Ajax.Request(this.options.indexURL, {
             method: 'GET',
             onSuccess: this.initializeProgressBar.bind(this)
         });
     },
+
     initializeProgressBar: function(response) {
         this.loadPageNumber = response.responseJSON.pages;
         this.progress.start(this.loadPageNumber);
         this.currentLoadPage = 0;
         this.loading = true;
-        this.retrieveDataPage();
+        this.retrieveLocationsBatch();
     },
-    retrieveDataPage: function() {
-       this.currentLoadPage = this.currentLoadPage + 1;
+
+    retrieveLocationsBatch: function() {
+        this.currentLoadPage = this.currentLoadPage + 1;
         if (this.currentLoadPage < (this.loadPageNumber + 1)) {
+            var that = this;
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
                 method: 'GET',
-                onSuccess: this.initializeDataPage.bind(this)
+                onSuccess: function(response) {
+                    that.loadLocationsBatch(response.responseJSON.locations.toArray())
+                }
             });
         } else {
             this.loading = false;
             this.progress.updateBar(1);
             this.progress.hide();
-            this.clusterManager.refreshLoadedClusters();
+            this.clusterManager.addClustersToMap();
             this.checkForIntro();
         }
     },
-    initializeDataPage: function(response) {
-        var that = this;
-        if(response.responseJSON.locations) {
-            response.responseJSON.locations.each(function(location, index) {
+
+    loadLocationsBatch: function(remainingLocations) {
+        if(remainingLocations) {
+            // Load locations in batches to avoid blocking the browser
+            // event loop for too long and risking a script timeout.
+            var numLoaded = 0, locationToLoad;
+            while (remainingLocations.length > 0 && numLoaded < 500) {
+                numLoaded++;
+                locationToLoad = remainingLocations.pop();
+
                 // Skip invalid locations.
-                if(isNaN(location.latitude) || isNaN(location.longitude)
-                        || Number(location.latitude) == 0 || Number(location.longitude) == 0) {
-                    return;
+                if(isNaN(locationToLoad.latitude) || isNaN(locationToLoad.longitude)
+                    || Number(locationToLoad.latitude) == 0 || Number(locationToLoad.longitude) == 0) {
+                    continue;
                 }
 
-                var locationInfo = that.locationInfo(location);
-                var referenceClass = that.locationReference(location.referenceType, location.locationType);
-                var interviewURL = that.options.urlRoot + '/interviews/' + location.interviewId;
-                that.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);
-            });
+                // Load valid locations.
+                var locationInfo = this.locationInfo(locationToLoad);
+                var referenceClass = this.locationReference(locationToLoad.referenceType, locationToLoad.locationType);
+                var interviewURL = this.options.urlRoot + '/interviews/' + locationToLoad.interviewId;
+                this.clusterManager.addLocation(
+                    locationToLoad.location,
+                    new google.maps.LatLng(locationToLoad.latitude, locationToLoad.longitude),
+                    locationToLoad.interviewId, locationInfo,
+                    locationToLoad.region, locationToLoad.country,
+                    referenceClass, interviewURL);
+            }
         }
-        this.progress.updateBar(1);
-        // IE does not unblock on async Ajax requests, so give it a break.
-        setTimeout(this.retrieveDataPage.bind(this), 0);
+
+        if (remainingLocations && remainingLocations.length > 0) {
+            // We got more locations to load in the current batch: Let the
+            // browser catch up then go on.
+            setTimeout((function() { this.loadLocationsBatch(remainingLocations) }).bind(this), 0);
+        } else {
+            // We loaded all locations in the current batch: Try to load a new
+            // batch from the web service.
+            this.progress.updateBar(1);
+
+            // IE does not correctly unblock on async Ajax requests, so wrap
+            // in in a timeout, too.
+            setTimeout(this.retrieveLocationsBatch.bind(this), 0);
+        }
     },
+
     // presents an infoWindow for the marker and location at index position
     locationInfo: function(location) {
-      var reference = cedisMap.locationSearch.translate(location.referenceType);
-      var info = ''; // '<h3>' + location.locationType + ' ' + location.location + '</h3>';
-      info = info + '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
-      info = info + '<p class="referenceDetails">';
-      info = info + location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
+      var reference = this.translate(location.referenceType);
+      var info = '';
+      info += '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
+      info += '<p class="referenceDetails">';
+      info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
       return info;
     },
+
     locationReference: function(refStr, type) {
         if(['Camp','Lager'].indexOf(type) > -1) {
                 if(refStr == 'forced_labor_location') {
@@ -165,6 +195,7 @@ InteractiveMap.prototype = {
             }
         return refStr;
     },
+
     translate: function(str) {
         if(str.startsWith('forced_labor')) { return 'Zwangsarbeit -'; }
         if(str == 'deportation_location') { return 'Deportation -'; }
@@ -175,11 +206,13 @@ InteractiveMap.prototype = {
         if(str == 'interview') { return 'Erwähnung bei'; }
         return str;
     },
+
     checkForIntro: function() {
       if(this.options.introId && this.options.introURL && (!readMapConfigurationCookie().intro)) {
           this.showTutorial();
       }
     },
+
     showTutorial: function() {
       var _this = cedisMap.locationSearch;
       var introTab = $(_this.options.introId);
@@ -192,6 +225,7 @@ InteractiveMap.prototype = {
                         }
       );
     },
+
     initTutorial: function() {
         var _this = cedisMap.locationSearch;
         new Effect.Appear(_this.options.introId);
