@@ -5,6 +5,6 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+# require 'rake/rdoctask' - Completely disable rdoc for now as we don't have rdoc installed on the staging server.
 
 require 'tasks/rails'
