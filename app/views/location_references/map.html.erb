@@ -1,6 +1,6 @@
 
 <iframe id="external_content_frame" src="<%= map_frame_path -%>" name="Kartenansicht" width="695px" height="686px" style="overflow-x: hidden; overflow-y: hidden;">
-  <p>Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber <%= link_to 'hier', map_frame_path -%> direkt aufrufen.</p>
+  <p><%= t('map.noframes', :here => link_to(t(:here), I18n.locale == I18n.default_locale ? map_frame_path : localized_map_frame_path(:locale => I18n.locale))) -%></p>
 </iframe>
 
 <% javascript_tag do -%>

@@ -66,16 +66,16 @@
       <ul style="float: right;">
         <li class="hint"><h3 style="margin: 0;"><%= t(:title, :scope => 'map.explanation') -%><a href="#" onclick="new Effect.Fade('introduction');" class="window-close"><%= t(:close) -%></a></h3></li>
         <li class="hint">
-          <p><%= t(:choose_filter_start, :scope => 'map.explanation') -%> <img class="imageLeft" src="<%= image_path('map/tut_filters.png') -%>"/><%= t(:choose_filter_end, :scope => 'map.explanation' ) -%></p>
+          <p><%= t(:filter, :scope => 'map.explanation', :image => '<img class="imageLeft" src="' + image_path("map/tut_filters_#{I18n.locale}.png") + '"/>') -%></p>
         </li>
         <li class="hint">
-          <p><%= t(:grouping_start, :scope => 'map.explanation') -%> <img class="imageLeft" src="<%= image_path('map/tut_clusters.png') -%>"/><%= t(:grouping_end, :scope => 'map.explanation') -%>.</p>
+          <p><%= t(:clustering, :scope => 'map.explanation', :image => '<img class="imageLeft" src="' + image_path("map/tut_clusters_#{I18n.locale}.png") + '"/>') -%></p>
         </li>
         <li class="hint">
-          <p><%= t(:legend_start, :scope => 'map.explanation') -%><img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> <%= t(:legend_end, :scope => 'map.explanation') -%>.</p>
+          <p><%= t(:legend, :scope => 'map.explanation', :image => '<img class="imageRight" src="' + image_path("map/tut_legend_#{I18n.locale}.png") + '"/>') -%></p>
         </li>
         <li class="hint">
-          <p><a href="#"  onclick="new Effect.Fade('introduction');"><%= t(:close).capitalize -%></a> <%= t(:finish, :scope => 'map.explanation') -%>.</p>
+          <p><%= t(:finish, :scope => 'map.explanation', :close => '<a href="#"  onclick="new Effect.Fade(\'introduction\');">' + t(:close).capitalize + '</a>') -%></p>
         </li>
       </ul>
     </div>

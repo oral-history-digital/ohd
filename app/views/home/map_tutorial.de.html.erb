@@ -23,12 +23,12 @@
     <li class="hint slide-2">
       <p>Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts "Gruppierungen..." unter den Filtern.</p>
     </li>
-    <li class="cluster_toggle clusters-off slide-2" onclick="toggleClusters();" style="padding-top: 18px;"><span><%= t(:grouping_label, :scope => 'map.legend') -%></span></li>
+    <li class="cluster_toggle clusters-off slide-2" onclick="toggleClusters();"><span><%= t(:grouping_label, :scope => 'map.legend') -%></span></li>
     <li class="hint slide-2">
       <p>Die Anzahl der beinhalteten Ortsangaben wird durch die Gr&ouml;&szlig;e der Kreise und der angezeigten Nummern signalisiert. Ein Klick auf das Zentrum einer Gruppierung f&uuml;hrt auf die n&auml;chste Detailebene.</p>
     </li>
     <li class="hint slide-2">
-      <p>Die Filter und Gruppierungsoption stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend.png') -%>"/> Wählen Sie nur die Schaltfläche "<%= t(:tabname, :scope => 'map.legend') -%>" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das Kreuz oben rechts in der Legende schließt diese wieder.</p>
+      <p>Die Filter und Gruppierungsoption stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend_de.png') -%>"/> Wählen Sie nur die Schaltfläche "<%= t(:tabname, :scope => 'map.legend') -%>" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das Kreuz oben rechts in der Legende schließt diese wieder.</p>
     </li>
 
     <!-- Slide 3 //-->
@@ -37,7 +37,7 @@
       <p>Wenn Sie einen Ort auf der Karte ausw&auml;hlen, erhalten Sie weitergehende Informationen zur Ortsangabe und zu den betreffenden Interviews.</p>
     </li>
     <li class="hint slide-3">
-      <img src="<%= image_path('map/tut_interview.png') -%>" alt="Information zum Interview"/>
+      <img src="<%= image_path('map/tut_interview_de.png') -%>" alt="Information zum Interview"/>
     </li>
     <li class="hint slide-3">Die Angaben zum Interview f&uuml;hren Sie direkt zu den betreffenden Stellen im Interview - vorausgesetzt, Sie sind im Archiv registriert.</li>
     <li class="hint slide-3">Sollten Sie noch nicht im Archiv registriert sein, k&ouml;nnen Sie sich &uuml;ber unser <%= link_to 'Formular f&uuml;r die Archivnutzung registrieren', registrieren_path, :target => '_blank' -%>.</li>

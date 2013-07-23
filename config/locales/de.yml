@@ -193,22 +193,20 @@ de:
       text2: 'Geänderte Inhalte werden durch die rote Farbe des Schiebers hervorgehoben. Wenn Sie mit der Reihenfolge zufrieden sind müssen Sie diese durch &quot;aktualisieren&quot; in der oberen Aktionsleiste bestätigen - erst dann wird die Reihenfolge dauerhaft übernommen.'
 
   map:
+    noframes: 'Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber %{here} direkt aufrufen.'
     legend:
       tabname: 'Legende / Filter'
       title:  'Legende und Filter'
       filter_header: 'Kartenansicht nach Arten der Ortsangaben filtern'
-      grouping_label: 'Gruppierung auf Ebene Region/Land'
+      grouping_label: 'Gruppierung auf<br/>Ebene Region/Land'
       grouping_header: 'Gruppierung auf niedrigen Zoomstufen ein bzw aus'
       more_help: 'Hilfe benötigt? Mehr Erl&auml;uterungen finden Sie'
     explanation:
       title: 'Erl&auml;uterung der Kartenfunktionen'
-      choose_filter_start: 'Wählen Sie die Ortskategorien aus,'
-      choose_filter_end: 'die Sie auf der Karte dargestellt haben wollen (Einsatzorte, Lager und Haftstätten, etc.). Verwenden Sie dazu die Filter rechts. Wenn alle Ortstypen abgewählt (grau) sind, können keine Orte mehr angezeigt werden.'
-      grouping_start: 'Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden.'
-      grouping_end: 'Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts &quot;Gruppierungen...&quot; unter den Filtern'
-      legend_start: 'Diese Auswahlmöglichkeiten stehen Ihnen jederzeit zur Verfügung.'
-      legend_end: 'Wählen Sie nur die Schaltfläche "Legende/Filter" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das &quot;X&quot; oben verbirgt die Filter wieder.'
-      finish: 'Sie diese Anleitung, wenn Sie fertig sind'
+      filter: 'Wählen Sie die Ortskategorien aus, %{image}die Sie auf der Karte dargestellt haben wollen (Einsatzorte, Lager und Haftstätten, etc.). Verwenden Sie dazu die Filter rechts. Wenn alle Ortstypen abgewählt (grau) sind, können keine Orte mehr angezeigt werden.'
+      clustering: 'Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. %{image}Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts &quot;Gruppierungen...&quot; unter den Filtern.'
+      legend: 'Diese Auswahlmöglichkeiten stehen Ihnen jederzeit zur Verfügung. %{image}Wählen Sie nur die Schaltfläche &quot;Legende/Filter&quot; oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das &quot;X&quot; oben verbirgt die Filter wieder.'
+      finish: '%{close} Sie diese Anleitung, wenn Sie fertig sind.'
     labels:
       forced_labor_locations: 'Einsatzorte'
       camps: 'Lager und Haftst&auml;tten'
