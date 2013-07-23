@@ -30,8 +30,6 @@ ActionController::Routing::Routes.draw do |map|
   map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame
   map.localized_map_frame ':locale/mapframe', :controller => :location_references, :action => :map_frame
 
-  map.test 'kartentest', :controller => :location_references, :action => :map_test
-
   map.namespace :admin do |admin|
     admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
     admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }

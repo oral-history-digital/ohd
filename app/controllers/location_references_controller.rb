@@ -5,7 +5,6 @@ class LocationReferencesController < BaseController
   actions :index
 
   layout :check_for_iframe_render
-  IFRAME_ACTIONS = %w(map_frame map_test)
 
   skip_before_filter :check_user_authentication!
   skip_before_filter :current_search
@@ -71,10 +70,6 @@ class LocationReferencesController < BaseController
   def map
   end
 
-  def map_test
-    raise ActiveRecord::NotFound if !(['127.0.0.1','160.45.168.207'].include?(request.ip))
-  end
-
   def map_frame
     unless params['width'].blank? && params['height'].blank?
       @map_options = {}
@@ -117,7 +112,7 @@ class LocationReferencesController < BaseController
 
   def check_for_iframe_render
     # render iframe only on iframe actions
-    if IFRAME_ACTIONS.include?(action_name.to_s)
+    if action_name.to_s == 'map_frame'
       'iframe'
     else
       'application'
