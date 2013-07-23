@@ -286,21 +286,21 @@ ClusterManager.prototype = {
     },
 
     refreshLoadedClusters: function() {
-        if((!cedisMap.mapClusters) || (!cedisMap.mapClusters[this.currentLevel])) { return; }
-        // this.checkForZoomShift();
-        var clusters = cedisMap.mapClusters[this.currentLevel];
-        var latLngs = cedisMap.clusterLocations[this.currentLevel];
-        var equator = new google.maps.LatLng(0,0);
-        var idx = clusters.length;
-        // alert('Refreshing ' + idx + ' Loaded Clusters for level ' + this.currentLevel);
-        while(idx--) {
-            var cluster = clusters[idx];
+        if(!cedisMap.mapClusters) return;
+
+        // Order locations in clusters.
+        cedisMap.mapClusters.each(function(clusterLevel) {
+            clusterLevel.each(function(cluster) {
+                cluster.locations = cluster.locations.sortBy(function(l) { return l.locationType; }).reverse();
+            });
+        });
+
+        if (!cedisMap.mapClusters[this.currentLevel]) return;
+
+        cedisMap.mapClusters[this.currentLevel].each(function(cluster) {
             cluster.refresh();
-            // if((cluster) && (!latLngs[idx].equals(equator))) {
-            //    alert('Refreshing cluster ' + idx + ': ' + cluster.title);
-            //    cluster.refresh();
-            //}
-        }
+        });
+
         if((interviewSelection.length > 0) && (interviewSelection.length < 4)) {
             this.resetMapBoundsToSelection();
         }
@@ -703,20 +703,7 @@ Cluster.prototype = {
         if (this.locations.indexOf(location) == -1) {
             this.locations.push(location);
             location.setCluster(this);
-            this.locations = this.locations.sortBy(function(l){return l.locationType; }).reverse();
-            var loc = this.locations.first();
-            this.title = loc.title;
-            this.setIconByType(loc.getLocationType(loc.locationType));
-            if((this.level == 0) && (this.locations.length > 1)) {
-                this.title = this.title.concat(' (+' + (this.locations.length-1) + ')');
-            }
-            this.marker.setZIndex(loc.locationType * 10 + 100);
-            this.numberShown = this.locations.select(function(l) { return l.display(); }).length;
-            if(this.numberShown < 1) {
-                this.marker.setVisible(false);
-            }
             this.rendered = false;
-            // this.redraw();
         }
     },
 
@@ -763,25 +750,22 @@ Cluster.prototype = {
     },
 
     refresh: function() {
-        var locs = this.displayLocations();
-        if(locs.length != 0) {
-            var dLoc = locs.first();
-            var loc = dLoc[1].first();
-            // debugMsg(locs.length + ' locations still at "' + this.title + '\n loc = ' + loc);
-            // redraw with new title & icon
+        // Refresh metadata.
+        var displayedLocs = this.locations.select(function(l) { return l.display(); });
+        this.numberShown = displayedLocs.length;
+
+        // Redraw.
+        if(this.numberShown > 0) {
+            var loc = displayedLocs.first();
             this.title = loc.title;
-            this.setIconByType(loc.getLocationType(loc.locationType));
-            // recalculate number of locations shown
-            var num = 0;
-            var idx = locs.length;
-            while(idx--) {
-                num = num + locs[idx][1].length;
+            if(this.level == 0 && displayedLocs.length > 1) {
+                this.title = this.title.concat(' (+' + (displayedLocs.length-1) + ')');
             }
-            this.numberShown = num;
-            if(this.visible && (this.numberShown > 0)) { this.marker.setVisible(true); }
+            this.setIconByType(loc.getLocationType(loc.locationType));
+            this.marker.setZIndex(loc.locationType * 10 + 100);
+            if (this.visible) this.marker.setVisible(true);
             this.redraw();
         } else {
-            this.numberShown = 0;
             this.marker.setVisible(false);
         }
     },
@@ -995,6 +979,7 @@ ClusterIcon.prototype.draw = function() {
             this.div_.style.top = (pos.y - 20) + 'px';
             this.div_.style.left = (pos.x - 20) + 'px';
             this.div_.innerHTML = this.cluster.numberShown.toString();
+            this.div_.title = this.cluster.title;
         } else {
             this.setVisible(false);
         }
