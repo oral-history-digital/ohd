@@ -84,7 +84,7 @@ InteractiveMap.prototype = {
         var clusterOptions = this.options.cluster || {};
         this.clusterManager = new ClusterManager(this.map,clusterOptions);
 
-        searchWithinBounds();
+        this.searchWithinBounds();
 
         return this.map;
     },
@@ -95,18 +95,18 @@ InteractiveMap.prototype = {
         }
     },
     searchWithinBounds: function() {
-        new Ajax.Request(cedisMap.locationSearch.options.indexURL, {
+        new Ajax.Request(this.options.indexURL, {
             parameters: { 'authenticity_token': this.options.auth_token },
             method: 'GET',
-            onSuccess: cedisMap.locationSearch.initializeProgressBar
+            onSuccess: this.initializeProgressBar.bind(this)
         });
     },
     initializeProgressBar: function(response) {
-        cedisMap.locationSearch.loadPageNumber = response.responseJSON.pages;
-        cedisMap.locationSearch.progress.start(cedisMap.locationSearch.loadPageNumber);
-        cedisMap.locationSearch.currentLoadPage = 0;
-        cedisMap.locationSearch.loading = true;
-        cedisMap.locationSearch.retrieveDataPage();
+        this.loadPageNumber = response.responseJSON.pages;
+        this.progress.start(this.loadPageNumber);
+        this.currentLoadPage = 0;
+        this.loading = true;
+        this.retrieveDataPage();
     },
     retrieveDataPage: function() {
        this.currentLoadPage = this.currentLoadPage + 1;
@@ -114,38 +114,35 @@ InteractiveMap.prototype = {
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
                 parameters: { 'authenticity_token': this.options.auth_token },
                 method: 'GET',
-                onSuccess: cedisMap.locationSearch.initializeDataPage
+                onSuccess: this.initializeDataPage.bind(this)
             });
         } else {
             this.loading = false;
             this.progress.updateBar(1);
             this.progress.hide();
-            cedisMap.locationSearch.clusterManager.refreshLoadedClusters();
+            this.clusterManager.refreshLoadedClusters();
             this.checkForIntro();
         }
     },
     initializeDataPage: function(response) {
+        var that = this;
         if(response.responseJSON.locations) {
-          response.responseJSON.locations.each(function(location){
-                var locationInfo = cedisMap.locationSearch.locationInfo(location);
-                var referenceClass = cedisMap.locationSearch.locationReference(location.referenceType, location.locationType);
-                var interviewURL = cedisMap.locationSearch.options.urlRoot + '/interviews/' + location.interviewId;
-                var skip = false;
-                if(isNaN(location.latitude) || isNaN(location.longitude)) {
-                    skip = true;
-                } else if((Number(location.latitude) == 0) || (Number(location.longitude) == 0)) {
-                    skip = true;
+            response.responseJSON.locations.each(function(location, index) {
+                // Skip invalid locations.
+                if(isNaN(location.latitude) || isNaN(location.longitude)
+                        || Number(location.latitude) == 0 || Number(location.longitude) == 0) {
+                    return;
                 }
-                if(!skip) {
-                    cedisMap.locationSearch.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);
-                }
+
+                var locationInfo = that.locationInfo(location);
+                var referenceClass = that.locationReference(location.referenceType, location.locationType);
+                var interviewURL = that.options.urlRoot + '/interviews/' + location.interviewId;
+                that.clusterManager.addLocation(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL);
             });
-
         }
-        cedisMap.locationSearch.progress.updateBar(1);
-
-        cedisMap.locationSearch.retrieveDataPage();
-
+        this.progress.updateBar(1);
+        // IE does not unblock on async Ajax requests, so give it a break.
+        setTimeout(this.retrieveDataPage.bind(this), 0);
     },
     // presents an infoWindow for the marker and location at index position
     locationInfo: function(location) {
@@ -256,6 +253,3 @@ function parseGeoLocParameter(param) {
     return latLng;
 }
 
-function searchWithinBounds() {
-    cedisMap.locationSearch.searchWithinBounds();
-}
