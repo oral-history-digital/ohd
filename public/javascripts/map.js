@@ -8,10 +8,9 @@ InteractiveMap.prototype = {
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            indexURL: '/orte.json',
-            dataURL: '/orte/satz',
-            dateStamp: '20121027',
-            auth_token: 'please provide!' /* very important to provide this live */
+            indexURL: '/webservice/orte.json',
+            dataURL: '/webservice/orte/satz'
+            dateStamp: '20121027'
         };
         if (options != null) {
             this.options = options;
@@ -96,7 +95,6 @@ InteractiveMap.prototype = {
     },
     searchWithinBounds: function() {
         new Ajax.Request(this.options.indexURL, {
-            parameters: { 'authenticity_token': this.options.auth_token },
             method: 'GET',
             onSuccess: this.initializeProgressBar.bind(this)
         });
@@ -112,7 +110,6 @@ InteractiveMap.prototype = {
        this.currentLoadPage = this.currentLoadPage + 1;
         if (this.currentLoadPage < (this.loadPageNumber + 1)) {
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
-                parameters: { 'authenticity_token': this.options.auth_token },
                 method: 'GET',
                 onSuccess: this.initializeDataPage.bind(this)
             });
@@ -188,7 +185,8 @@ InteractiveMap.prototype = {
       var introTab = $(_this.options.introId);
       new Ajax.Updater( _this.options.introId,
                         _this.options.introURL,
-                        {   parameters: { 'authenticity_token': this.options.auth_token },
+                        {
+                            method: 'GET',
                             evalScripts: true,
                             onComplete: (function(){ _this.initTutorial(); })
                         }
