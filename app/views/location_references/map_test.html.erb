@@ -74,17 +74,17 @@
                 var locationInfo = readLocationInfo(location);
                 var referenceClass = locationReference(location.referenceType, location.locationType);
                 var interviewURL = '/interviews/' + location.interviewId;
-                var skip = false;
-                if(isNaN(location.latitude) || isNaN(location.longitude)) {
-                    skip = true;
-                } else if((Number(location.latitude) == 0) || (Number(location.longitude) == 0)) {
-                    skip = true;
+                var valid = true, latLng;
+                if(isNaN(location.latitude) || isNaN(location.longitude)
+                        || Number(location.latitude) == 0 || Number(location.longitude) == 0) {
+                    valid = false;
                 }
-                if(!skip) {
-                    addLocationData(location.location, new google.maps.LatLng(location.latitude, location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL, true);
+                if(valid) {
+                  latLng = new google.maps.LatLng(location.latitude, location.longitude);
                 } else {
-                    addLocationData(location.location, ('latLng: ' + location.latitude + ';' +  location.longitude), location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL, false);
+                  latLng = 'latLng: ' + location.latitude + ';' +  location.longitude;
                 }
+                addLocationData(location.location, latLng, location.interviewId, locationInfo, location.region, location.country, referenceClass, interviewURL, valid);
           });
         }
         getNextPage();

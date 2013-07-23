@@ -178,9 +178,6 @@ function numToArchiveId(num) {
 }
 
 var ClusterManager = Class.create();
-var Location = Class.create();
-var Cluster = Class.create();
-
 ClusterManager.prototype = {
     initialize: function(map, options) {
 
@@ -286,18 +283,6 @@ ClusterManager.prototype = {
             // only add clusters on the current level to the draw roster
             this.freshClusters.push(cluster);
         }
-    },
-
-    // bundle cluster rendering together
-    renderMarkers: function() {
-        // TODO: iterate over mapClusters[this.currentLevel]
-        // set rendered to true then draw
-        var clusters = this.freshClusters;
-        var idx = clusters.length;
-        while(idx--) {
-           clusters[idx].draw();
-        }
-        this.freshClusters = [];
     },
 
     refreshLoadedClusters: function() {
@@ -582,6 +567,7 @@ ClusterManager.prototype = {
     }
 };
 
+var Location = Class.create();
 Location.prototype = {
     initialize: function(id, latLng, level, interviewId, htmlText, divClass, linkURL, locDisplay) {
         this.info = htmlText;
@@ -629,9 +615,6 @@ Location.prototype = {
                 changed = true;
             }
         }
-        if(changed && this.cluster) {
-            //this.cluster.refresh();
-        }
         return changed;
     },
 
@@ -670,6 +653,7 @@ Location.prototype = {
 };
 
 // constructor arguments are: lat/lng and the hierarchical grouping level
+var Cluster = Class.create();
 Cluster.prototype = {
     initialize: function(latLng, level, visible) {
         var locationSearch = cedisMap.locationSearch;
@@ -682,21 +666,19 @@ Cluster.prototype = {
         this.level = level;
         this.width = 0;
         this.numberShown = 0;
-        this.marker = null;
         if(level == 0) {
             var marker = new google.maps.Marker({
                 position: latLng,
                 icon: this.icon,
                 flat: true
             });
-            this.marker = marker;
             google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.showInfoBox(marker); });
         } else {
             var marker = new ClusterIcon(this, cedisMap.locationSearch.map, latLng);
-            this.marker = marker;
-            debugMsg('Created ClusterIcon ' + marker);
             google.maps.event.addListener(marker, 'click',  function() { cedisMap.locationSearch.clusterManager.zoomOneLevel(marker); });
         }
+        this.marker = marker;
+
         if(!cedisMap.clusterLocations[this.level]) { cedisMap.clusterLocations[this.level] = []; }
         if(!cedisMap.mapClusters[this.level]) { cedisMap.mapClusters[this.level] = []; }
         cedisMap.clusterLocations[this.level].push(latLng.toString());
@@ -745,7 +727,7 @@ Cluster.prototype = {
     },
 
     redraw: function() {
-        if(!this.visible) { return; }
+        if(!this.visible) return;
         if(this.numberShown > 0) {
             if(this.level == 0) {
                 this.marker.setIcon(this.icon);
@@ -760,7 +742,6 @@ Cluster.prototype = {
     show: function() {
         this.visible = true;
         this.marker.rendered = false;
-        if(this.numberShown > 0) { this.marker.setVisible(true); }
         this.refresh();
     },
 
@@ -880,15 +861,6 @@ Cluster.prototype = {
       // reverse the numbering again
       von = locNumber - von + 1;
       bis = locNumber - bis + 1;
-      /*
-      var msg = '';
-      pages.each(function(p) {
-         msg = msg + '\n\n' + p.collect(function(l){
-             return l[1].id;
-         }).join('|');
-      });
-      debugMsg(this.locations.length + ' locations shown in ' + locs.length + ' groups:\npage = ' + page + '\n' + pages.length + ' pages total\nvon = ' + von + '\nbis = ' + bis + '\ntotalPages = ' + totalPages + '\ntotalLines = ' + totalLines + '\n' + msg);
-      */
       if(totalPages > 1) {
           var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
           html = html +'<ul class="pagination">';
@@ -956,20 +928,13 @@ ClusterIcon.prototype.initialize = function(cluster, map, center) {
     this.div_ = null;
     // visibility is toggled just by search/filter state
     this.visible_ = true;
+    this.rendered = false;
     this.circle = null;
     this.color = this.cluster.color;
-    if(this.cluster.title == 'Luxemburg') {
-        debugOn = true;
-    }
-    debugMsg('Going to call setMap for ClusterIcon at ' + center);
 };
 
 ClusterIcon.prototype.zoomIntoCluster = function() {
     cedisMap.locationSearch.clusterManager.zoomOneLevel(this);
-};
-
-ClusterIcon.prototype.onAdd = function() {
-    this.createDiv();
 };
 
 ClusterIcon.prototype.createDiv = function() {
@@ -1013,7 +978,6 @@ ClusterIcon.prototype.getImagePath = function(color) {
 }
 
 ClusterIcon.prototype.draw = function() {
-    debugMsg('Drawing ClusterIcon...');
     if (this.visible_) {
         var pos = this.getPosFromLatLng(this.center_);
         if(pos) {
@@ -1035,7 +999,6 @@ ClusterIcon.prototype.draw = function() {
             this.setVisible(false);
         }
     }
-    debugMsg('Drawn:\n div = ' + this.div_ + '\n\nhtml: ' + this.div_.innerHTML);
 };
 
 ClusterIcon.prototype.onRemove = function() {
