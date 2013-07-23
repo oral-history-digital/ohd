@@ -175,8 +175,7 @@ function numToArchiveId(num) {
     return ('za' + numPart);
 }
 
-var ClusterManager = Class.create();
-ClusterManager.prototype = {
+var ClusterManager = Class.create({
     initialize: function(map, options) {
 
         this.map = map;
@@ -539,10 +538,9 @@ ClusterManager.prototype = {
         var endTime = (new Date).getTime();
         debugMsg(desc + '\nTime taken: ' + (endTime - startTime) + ' ms.');
     }
-};
+});
 
-var Location = Class.create();
-Location.prototype = {
+var Location = Class.create({
     initialize: function(id, latLng, level, interviewId, htmlText, divClass, linkURL, locDisplay) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
@@ -624,7 +622,7 @@ Location.prototype = {
     getHtml: function() {
         return ('<li class="' + this.getLocationType() + '" onclick="window.open(\'' + this.linkURL + '\', \'_blank\');" style="cursor: pointer;">' + this.info + '</li>');
     }
-};
+});
 
 /*
   The lifecycle of a cluster is:
@@ -661,8 +659,7 @@ Location.prototype = {
        hidden, if it was hidden before and now has displayed locations, it
        must be shown.
 */
-var Cluster = Class.create();
-Cluster.prototype = {
+var Cluster = Class.create({
     // Pre-initialization of the cluster.
     // Constructor arguments are: lat/lng and the hierarchical grouping level.
     initialize: function(latLng, level, visible) {
@@ -904,115 +901,117 @@ Cluster.prototype = {
         html = html + locInfo +  '</ul>';
         return html;
     }
-};
+});
 
+// Wrap Google's OverlayView so that we can inherit from it.
+var OverlayView = Class.create();
+OverlayView.prototype = new google.maps.OverlayView();
 
-var ClusterIcon = Class.create();
-ClusterIcon.prototype = new google.maps.OverlayView();
+var ClusterIcon = Class.create(OverlayView, {
+    initialize: function(cluster, map, center) {
+        this.cluster = cluster;
+        this.map_ = map;
+        this.center_ = center;
+        this.visible_ = false;
 
-ClusterIcon.prototype.initialize = function(cluster, map, center) {
-    this.cluster = cluster;
-    this.map_ = map;
-    this.center_ = center;
-    this.visible_ = false;
+        this.div_ = null;
+        this.circle_ = null;
+        this.zIndex_ = 0;
 
-    this.div_ = null;
-    this.circle_ = null;
-    this.zIndex_ = 0;
+        this.initialized_ = false;
+    },
 
-    this.initialized_ = false;
-};
+    zoomIntoCluster: function() {
+        cedisMap.locationSearch.clusterManager.zoomOneLevel(this);
+    },
 
-ClusterIcon.prototype.zoomIntoCluster = function() {
-    cedisMap.locationSearch.clusterManager.zoomOneLevel(this);
-};
+    getImagePath: function(color) {
+        return cedisMap.locationSearch.options.urlRoot + '/images/circle_' + color + '.png';
+    },
 
-ClusterIcon.prototype.getImagePath = function(color) {
-    return cedisMap.locationSearch.options.urlRoot + '/images/circle_' + color + '.png';
-};
+    // Initial instantiation of the marker - called only once.
+    onAdd: function() {
+        var panes = this.getPanes();
+        if(!this.div_) {
+            this.div_ = new Element('div', {id: this.cluster.title, title: this.cluster.title, style: 'display: ' + (this.cluster.isVisible() ? 'inline-block' : 'none')});
+            this.div_.className = ('cluster-icon level-' + this.cluster.level);
+            this.div_.innerHTML = '&nbsp;';
+            panes.overlayMouseTarget.appendChild(this.div_);
 
-// Initial instantiation of the marker - called only once.
-ClusterIcon.prototype.onAdd = function() {
-    var panes = this.getPanes();
-    if(!this.div_) {
-        this.div_ = new Element('div', {id: this.cluster.title, title: this.cluster.title, style: 'display: ' + (this.cluster.isVisible() ? 'inline-block' : 'none')});
-        this.div_.className = ('cluster-icon level-' + this.cluster.level);
-        this.div_.innerHTML = '&nbsp;';
-        panes.overlayMouseTarget.appendChild(this.div_);
+            // add interaction
+            var that = this;
+            google.maps.event.addDomListener(this.div_, 'click', function() {
+                that.zoomIntoCluster();
+            });
+        }
+        if(!this.circle_) {
+            // create an image circle
+            this.circle_ = new Element('img', {src: this.getImagePath(this.cluster.color), id: this.cluster.title + '_circle', style: 'display: ' + (this.cluster.isVisible() ? 'block' : 'none')});
+            this.circle_.className = ('cluster-circle level-' + this.cluster.level);
+            panes.overlayMouseTarget.appendChild(this.circle_);
+        }
+        this.initialized_ = true;
+    },
 
-        // add interaction
-        var that = this;
-        google.maps.event.addDomListener(this.div_, 'click', function() {
-            that.zoomIntoCluster();
-        });
+    // Updating the marker - called whenever the marker changes.
+    draw: function() {
+        if(this.visible_) {
+            var pos = this.getPosFromLatLng(this.center_);
+
+            this.circle_.src = this.getImagePath(this.cluster.color);
+            var radius = this.imgRadius(this.cluster.numberShown);
+            this.circle_.style.top = (pos.y - (radius/2) -1) + 'px';
+            this.circle_.style.left = (pos.x - (radius/2) -1) + 'px';
+            this.circle_.style.width = radius + 'px';
+            this.circle_.style.height = radius + 'px';
+
+            this.div_.style.top = (pos.y - 20) + 'px';
+            this.div_.style.left = (pos.x - 20) + 'px';
+            this.div_.innerHTML = this.cluster.numberShown.toString();
+            this.div_.title = this.cluster.title;
+            this.div_.style.zIndex = this.zIndex_;
+
+            this.div_.style.display = 'inline-block';
+            this.circle_.style.display = 'block';
+        } else {
+            this.div_.style.display = 'none';
+            this.circle_.style.display = 'none';
+        }
+    },
+
+    onRemove: function() {
+        if (this.div_ && this.div_.parentNode) {
+            this.circle_.setVisible(false);
+            this.div_.stopObserving('click');
+            Element.remove(this.div_);
+        }
+    },
+
+    getPosFromLatLng: function(latLng) {
+        var pos = this.getProjection().fromLatLngToDivPixel(latLng);
+        pos.x = pos.x.toFixed();
+        pos.y = pos.y.toFixed();
+        return pos;
+    },
+
+    getPosition: function() {
+        return this.center_;
+    },
+
+    setZIndex: function(z) {
+        this.zIndex_ = z;
+    },
+
+    setVisible: function(display) {
+        if (display == this.visible_) return;
+        this.visible_ = display;
+        if (this.initialized_) this.draw();
+    },
+
+    imgRadius: function(totals) {
+        var log = Math.log(totals+3);
+        var zoom = cedisMap.locationSearch.map.getZoom();
+        var radius = Math.floor(25.0 + (zoom/6) * (log * log * 0.5 * zoom + (zoom * totals/100.0)));
+        return radius;
     }
-    if(!this.circle_) {
-        // create an image circle
-        this.circle_ = new Element('img', {src: this.getImagePath(this.cluster.color), id: this.cluster.title + '_circle', style: 'display: ' + (this.cluster.isVisible() ? 'block' : 'none')});
-        this.circle_.className = ('cluster-circle level-' + this.cluster.level);
-        panes.overlayMouseTarget.appendChild(this.circle_);
-    }
-    this.initialized_ = true;
-};
-
-// Updating the marker - called whenever the marker changes.
-ClusterIcon.prototype.draw = function() {
-    if(this.visible_) {
-        var pos = this.getPosFromLatLng(this.center_);
-
-        this.circle_.src = this.getImagePath(this.cluster.color);
-        var radius = imgRadius(this.cluster.numberShown);
-        this.circle_.style.top = (pos.y - (radius/2) -1) + 'px';
-        this.circle_.style.left = (pos.x - (radius/2) -1) + 'px';
-        this.circle_.style.width = radius + 'px';
-        this.circle_.style.height = radius + 'px';
-
-        this.div_.style.top = (pos.y - 20) + 'px';
-        this.div_.style.left = (pos.x - 20) + 'px';
-        this.div_.innerHTML = this.cluster.numberShown.toString();
-        this.div_.title = this.cluster.title;
-        this.div_.style.zIndex = this.zIndex_;
-
-        this.div_.style.display = 'inline-block';
-        this.circle_.style.display = 'block';
-    } else {
-        this.div_.style.display = 'none';
-        this.circle_.style.display = 'none';
-    }
-};
-
-ClusterIcon.prototype.onRemove = function() {
-    if (this.div_ && this.div_.parentNode) {
-        this.circle_.setVisible(false);
-        this.div_.stopObserving('click');
-        Element.remove(this.div_);
-    }
-};
-
-ClusterIcon.prototype.getPosFromLatLng = function(latLng) {
-    var pos = this.getProjection().fromLatLngToDivPixel(latLng);
-    pos.x = pos.x.toFixed();
-    pos.y = pos.y.toFixed();
-    return pos;
-};
-
-ClusterIcon.prototype.getPosition = function() {
-    return this.center_;
-};
-
-ClusterIcon.prototype.setZIndex = function(z) {
-    this.zIndex_ = z;
-};
-
-ClusterIcon.prototype.setVisible = function(display) {
-    if (display == this.visible_) return;
-    this.visible_ = display;
-    if (this.initialized_) this.draw();
-};
-
-function imgRadius(totals) {
-    var log = Math.log(totals+3);
-    var zoom = cedisMap.locationSearch.map.getZoom();
-    var radius = Math.floor(25.0 + (zoom/6) * (log * log * 0.5 * zoom + (zoom * totals/100.0)));
-    return radius;
-}
+});
