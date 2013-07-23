@@ -102,9 +102,6 @@
         Effect.toggle('explanation_filter','appear', { duration: 0.5 });
     });
 
-    var privacy_acceptance = readCookie('za-gm-priv');
-    var map = null;
-
     /* tutorial JS */
     var currentSlideNum = 1;
     function adjustSlideNum(move) {
@@ -165,7 +162,7 @@
     }
 
     function initPrivacySettings() {
-        var accept = (privacy_acceptance != null);
+        var accept = (readCookie('za-gm-priv') != null);
         $$('.remember_privacy').each(function(checkbox){
             checkbox.checked = accept;
             Element.observe(checkbox, 'change', togglePrivacyCookie);
