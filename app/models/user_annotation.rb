@@ -6,6 +6,10 @@ class UserAnnotation < UserContent
   # It can be published as a shared annotation. However, this publication
   # is subject to an approval process by the editorial team.
 
+  named_scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
+  named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
+  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and properties LIKE ?', 'Segment', "%media_id: #{m_id}%"] } }
+
   workflow do
     state :private do
       event :submit, :transitions_to => :proposed
@@ -19,10 +23,12 @@ class UserAnnotation < UserContent
     state :postponed do
       event :accept, :transitions_to => :shared
       event :reject, :transitions_to => :rejected
+      event :retract, :transitions_to => :private
     end
     state :shared do
       event :withdraw, :transitions_to => :postponed
       event :remove, :transitions_to => :rejected
+      event :retract, :transitions_to => :private
     end
     state :rejected do
       event :review, :transitions_to => :proposed
@@ -30,6 +36,13 @@ class UserAnnotation < UserContent
   end
 
   validates_format_of :reference_type, :with => /^Segment$/
+
+  # validates for existing media_id
+  def validate
+    unless read_property(:media_id) =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
+      errors.add :properties, 'Invalid Media ID given.'
+    end
+  end
 
   # TODO: change this: add a user_annotation as user_content,
   # this object also carries the workflow.
@@ -65,6 +78,14 @@ class UserAnnotation < UserContent
     write_property :author, name
   end
 
+  def media_id
+    read_property :media_id
+  end
+
+  def media_id=(mid)
+    write_property :media_id, mid
+  end
+
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
@@ -74,10 +95,9 @@ class UserAnnotation < UserContent
     title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')
     attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = reference.interview.archive_id
-    attr[:properties] = {
-        :author => [user.first_name, user.last_name].join(' '),
-        :text => read_property(:text) || ''
-    }
+    @properties ||= {}
+    @properties[:author] ||= [user.first_name, user.last_name].join(' ')
+    attr[:properties] = @properties
     attr
   end
 
@@ -89,6 +109,10 @@ class UserAnnotation < UserContent
 
   def delete_annotation
 
+  end
+
+  def self.default_id_hash(instance)
+    Base64.encode64(instance.send(:read_property, :media_id) || 'blank').sub(/\\n$/,'')
   end
 
 end

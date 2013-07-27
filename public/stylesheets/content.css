@@ -754,3 +754,42 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
     display: block;
     color: #999281;
 }
+
+#annotate_segment {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    z-index: 200;
+}
+
+#annotate_segment span {
+    font-size: 85%;
+}
+
+#modal_window div #annotations_form label {
+    display: block;
+    width: 100%;
+}
+
+#annotations_form textarea {
+    float: left;
+    height: 180px;
+}
+
+#annotations_form button[type='submit'] {
+    float: left;
+}
+
+label.checkbox {
+    padding-left: 18px;
+    text-indent: -18px;
+}
+label.checkbox input[type='checkbox'] {
+    height: 0.9em;
+    width: 0.9em;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+}

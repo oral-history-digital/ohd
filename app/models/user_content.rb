@@ -9,8 +9,10 @@ class UserContent < ActiveRecord::Base
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
-  before_create :store_properties, :compile_id_hash
+  before_validation_on_create :compile_id_hash
+  before_validation :store_properties
   after_validation_on_create :check_persistence,:set_link_url
+  after_initialize :get_properties
 
   attr_accessible :user_id,
                   :title,
@@ -67,15 +69,15 @@ class UserContent < ActiveRecord::Base
     read_attribute(:description) || [I18n.t(:no_placeholder).capitalize, UserContent.human_attribute_name(:description)].join(' ')
   end
 
-  def id_hash
-    @id_hash ||= read_attribute(:id_hash)
-    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self) if @id_hash.blank?
-    @id_hash
-  end
-
   def self.default_id_hash(instance)
     refs = (instance.send(:interview_references) || %w(blank)).join(',')
     Base64.encode64(refs).sub(/\\n$/,'')
+  end
+
+  def id_hash
+    @id_hash ||= read_attribute :id_hash
+    @id_hash = compile_id_hash if @id_hash.blank?
+    @id_hash
   end
 
   # path to show the resource
@@ -94,7 +96,9 @@ class UserContent < ActiveRecord::Base
   end
 
   def compile_id_hash
-    write_attribute :id_hash, id_hash
+    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self)
+    write_attribute :id_hash, @id_hash
+    @id_hash
   end
 
   def set_link_url
