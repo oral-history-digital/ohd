@@ -213,6 +213,10 @@ body .teaserList .save_user_content {
     background-position: 0.3em -355px;
 }
 
+.item .header.user_annotation {
+    background-position: 0.3em -473px;
+}
+
 .item .handle {
     display: none;
     position: absolute;
