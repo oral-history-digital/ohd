@@ -79,7 +79,11 @@ end -%>
               end %>
           <% end -%>
           <li class="description">
+            <% if user_content.type.to_s == 'UserAnnotation' -%>
+            <%= label_tag UserAnnotation.human_attribute_name(:description) -%>
+            <% else -%>
             <%= label_tag UserContent.human_attribute_name(:description) -%>
+            <% end -%>
             <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
           </li>
         </ul>

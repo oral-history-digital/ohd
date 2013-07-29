@@ -83,7 +83,7 @@ class UserContentsController < BaseController
   # Renders the annotation edit form for annotations
   # to a particular media_id
   def segment_annotation
-    puts "\n@@@@ SEGMENT CONTENT: #{segment_content.inspect}"
+    segment_content
     respond_to do |format|
       format.html do
         render :partial => 'segment_annotation', :object => @object
@@ -104,8 +104,8 @@ class UserContentsController < BaseController
       annotation.reference = segment
       annotation.attributes = annotation.user_content_attributes
       annotation.media_id = @media_id
+      annotation.description = annotation_params['description']
       annotation.send(:compile_id_hash)
-      annotation.text = annotation_params['text']
       annotation.save!
       if annotation_params['workflow_state'] != 'private'
         annotation.submit!
@@ -118,7 +118,7 @@ class UserContentsController < BaseController
     annotation = segment_content('user_annotation')
     annotation_params = params['user_annotation']
     annotation.media_id = annotation_params['media_id']
-    annotation.text = annotation_params['text']
+    annotation.description = annotation_params['description']
     if (workstate = annotation_params['workflow_state']) != annotation.workflow_state
       if workstate == 'private' && !annotation.rejected?
         annotation.retract!

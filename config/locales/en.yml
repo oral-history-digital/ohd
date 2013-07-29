@@ -329,7 +329,8 @@ en:
         query: 'Search Criteria'
       user_annotation:
         workflow_state: 'Publication State'
-        text: 'Annotation'
+        description: 'Annotation'
+        heading: 'Section'
 
     errors:
       template:

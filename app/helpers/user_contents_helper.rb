@@ -146,8 +146,8 @@ module UserContentsHelper
     html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:segment_link, :scope => "user_interface.labels")}", { :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:workflow_state, UserAnnotation.human_attribute_name(:workflow_state)) \
                   + content_tag(:p, t(user_content.workflow_state, :scope => "user_annotations.workflow_states")))
-    annotation << content_tag(:li, label_tag(:text, UserAnnotation.human_attribute_name(:text)) \
-                  + content_tag(:p, user_content.text))
+    annotation << content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
+                  + content_tag(:p, user_content.heading))
     content_tag(:div, html, :class => "image-link") + content_tag(:ul, annotation)
   end
 
