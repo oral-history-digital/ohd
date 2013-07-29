@@ -81,6 +81,9 @@ ArchivePlayer.prototype.play = function(state) {
     this.player.play(state);
     return this;
 };
+ArchivePlayer.prototype.getState = function() {
+    return this.player.getState();
+};
 ArchivePlayer.prototype.playlistItem = function(index) {
     this.player.playlistItem(index);
     return this;

@@ -99,16 +99,16 @@ class UserContentsController < BaseController
     @media_id = annotation_params['media_id']
     segment = Segment.for_media_id(@media_id).scoped({:include => :interview}).first
     unless segment.nil?
-      annotation = UserAnnotation.new
-      annotation.user = current_user
-      annotation.reference = segment
-      annotation.attributes = annotation.user_content_attributes
-      annotation.media_id = @media_id
-      annotation.description = annotation_params['description']
-      annotation.send(:compile_id_hash)
-      annotation.save!
+      @object = UserAnnotation.new
+      @object.user = current_user
+      @object.reference = segment
+      @object.attributes = @object.user_content_attributes
+      @object.media_id = @media_id
+      @object.description = annotation_params['description']
+      @object.send(:compile_id_hash)
+      @object.save!
       if annotation_params['workflow_state'] != 'private'
-        annotation.submit!
+        @object.submit!
       end
     end
     annotation_response
@@ -242,12 +242,18 @@ class UserContentsController < BaseController
     @user_content = @object
   end
 
-  # Retrieves a user_content based on segment media_id
+  # Retrieves a user_content based on content id or segment media_id
   def segment_content(type='user_content')
     @object ||= begin
-      @media_id = params[:media_id]
       @type = params[:type] || type
-      @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
+      if params[:id].blank?
+        # find by media_id
+        @media_id = params[:media_id]
+        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
+      else
+        # retrieve by user_content.id
+        @type.camelize.constantize.find(:first, :conditions => ['id = ?', params[:id]])
+      end
     end
     @object ||= begin
       annotation = UserAnnotation.new
@@ -372,7 +378,17 @@ class UserContentsController < BaseController
       end
       format.js do
         render :update do |page|
-          page << "closeModalWindow(); archiveplayer('interview-player').play();"
+          page << "closeModalWindow(); resumeAfterAnnotation();"
+          # inject a user_annotation list element if none exists
+          page << <<JS
+var annId = 'user_annotation_#{@object.media_id}';
+if(!$(annId)) {
+  $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
+  // toggle the link to user_content#segment_annotation - doesn't work because it's picking the wrong annotation on clicking this link
+  // $(annotationsController.newAnnotationElemID).hide();
+  // $(annotationsController.existingAnnotationElemID).show();
+}
+JS
         end
       end
     end

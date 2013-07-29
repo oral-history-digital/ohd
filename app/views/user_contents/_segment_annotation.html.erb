@@ -17,7 +17,7 @@
         </label>
         <%= hidden_field_tag 'user_annotation[workflow_state]', @object.private? ? 'private' : 'shared' -%>
         <%= hidden_field_tag 'user_annotation[media_id]', segment_annotation.media_id %>
-        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('annotations_form').request(); return false;" %>
     <% end %>
   </div>
 </div>
