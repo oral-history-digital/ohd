@@ -296,7 +296,7 @@ body {
 	padding: 0;
 	/*width: 996px; *//* der IE6 braucht hier 977px statt 974px */
 	width: 996px;
-	background:#f1f1eb url(/images/archiv_mainWrapper_bg.gif) left repeat-y;
+	background:#f1f1eb url(/images/archiv_mainWrapper_bg.png) left repeat-y;
 	/*border-right:1px solid #fff;*/
 	border-bottom:1px solid #fff;
 }
