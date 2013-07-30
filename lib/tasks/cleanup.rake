@@ -16,6 +16,103 @@ namespace :cleanup do
     puts "#{updated} registrations updated."
   end
 
+  desc "harmonize user job_descriptions and research_interests"
+  task :harmonize_users_data => :environment do
+    require 'yaml'
+
+    cleanup_value = lambda do |value|
+      return 'Other' if value.blank?
+      value = case value
+                when String
+                  value.gsub('"','').strip
+                when Hash
+                  value.keys.first.to_s.gsub('"','').strip
+                else
+                  (value.to_s.split(/[.,;=>]+/).first || '').gsub('"','').strip
+              end
+    end
+    translate_field_value = lambda do |value, field|
+      I18n.t(value, :scope => "devise.registration_values.#{field}", :locale => 'de')
+    end
+    index, edited, users = 0,0,0
+
+    # store translations that have been applied
+    harmonized_jobs = {}
+    harmonized_intentions = {}
+
+    # some user_registrations appear to be invalid - store them here
+    invalid_reg_ids = []
+    invalid_user_ids = []
+
+    puts "Starting harmonization of user/registration job_descriptions and research_intentions"
+    UserRegistration.find_each do |reg|
+      index += 1
+      if index % 50 == 0
+        STDOUT.printf '.'
+        STDOUT.flush
+      end
+      begin
+        reg_info = YAML::load(reg.application_info)
+        job = cleanup_value.call(reg_info[:job_description])
+        reg_info[:job_description] = translate_field_value.call(job, :job_description)
+        intentions = cleanup_value.call(reg_info[:research_intentions])
+        reg_info[:research_intentions] = translate_field_value.call(intentions, :research_intentions)
+      rescue Exception => e
+        puts "ERROR: #{e.message}\n\nregistration: #{reg.inspect}\n\napplication_info: #{reg_info.inspect}"
+        exit
+      end
+      reg.application_info = reg_info.to_yaml
+      if reg.changed?
+        harmonized_jobs[job] ||= reg_info[:job_description]
+        harmonized_intentions[intentions] ||= reg_info[:research_intentions]
+        begin
+         reg.save!
+         edited += 1
+        rescue Exception => e
+          puts "ERROR: #{e.message}\n\nregistration: #{reg.inspect}\n\nreg.valid? => #{reg.valid?}"
+          invalid_reg_ids << reg.id
+        end
+        unless reg.user.nil?
+          reg.user.job_description = translate_field_value.call(reg.user.job_description, :job_description)
+          reg.user.research_intentions = translate_field_value.call(reg.user.research_intentions, :research_intentions)
+          begin
+            reg.user.save!
+            users += 1
+          rescue Exception => e
+            puts "ERROR: #{e.message}\n\nuser#{reg.user.inspect}\n\nuser.valid? => #{reg.user.valid?}"
+            invalid_user_ids << reg.user.id
+          end
+        end
+      end
+    end
+    puts "Saving #{harmonized_jobs.keys.size} job assignments to 'harmonized_jobs.yaml'"
+    File.open('harmonized_jobs.yaml','w+') do |f|
+      harmonized_jobs.keys.each do |k|
+        f.puts "'#{k}': '#{harmonized_jobs[k]}'"
+      end
+    end
+    puts "Saving #{harmonized_intentions.keys.size} intentions assignments to 'harmonized_intentions.yaml'"
+    File.open('harmonized_intentions.yaml','w+') do |f|
+      harmonized_intentions.keys.each do |k|
+        f.puts "'#{k}': '#{harmonized_intentions[k]}'"
+      end
+    end
+    puts "Saving #{invalid_reg_ids.size} invalid registrations to 'invalid_registrations.yaml'"
+    File.open('invalid_registrations.yaml','w+') do |f|
+      invalid_reg_ids.each do |id|
+        f.puts UserRegistration.find(id).to_yaml
+      end
+    end
+    puts "Saving #{invalid_user_ids.size} invalid users to 'invalid_users.yaml'"
+    File.open('invalid_users.yaml','w+') do |f|
+      invalid_user_ids.each do |id|
+        f.puts User.find(id).to_yaml
+      end
+    end
+
+    puts "\nDone. #{edited} user_registrations of #{index} and #{users} users harmonized."
+  end
+
   desc "make photo filenames consistent with existing resources"
   task :photos => :environment do
 
