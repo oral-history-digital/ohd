@@ -26,6 +26,7 @@ en:
   close: 'close'
   here: 'here'
   timecode: 'Timecode'
+  zu: 'for'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -276,14 +277,14 @@ en:
         one: 'content'
         other: 'contents'
       interview_reference:
-        one: 'Marked Interview'
-        other: 'Marked Interviews'
+        one: 'Interview'
+        other: 'Interviews'
       search:
-        one: 'Saved Search'
-        other: 'Saved Searches'
+        one: 'Search'
+        other: 'Searches'
       user_annotation:
-        one: 'Annotated Fragment'
-        other: 'Annotated Fragments'
+        one: 'Annotation'
+        other: 'Annotations'
 
     attributes:
       collection:
@@ -336,6 +337,15 @@ en:
       template:
         header: 'Your request could not be processed'
         body: 'The following problems occurred:'
+      models:
+        user_annotation:
+          attributes:
+            description:
+              too_long: 'Annotations may not exceed a length of 300 characters.'
+        user_content:
+          attributes:
+            description:
+              too_long: 'Notes may not exceed a length of 300 characters.'
 
   personal_data:
     male: 'male'

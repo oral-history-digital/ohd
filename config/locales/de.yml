@@ -26,6 +26,7 @@ de:
   close: 'schlie&szlig;en'
   here: 'hier'
   timecode: 'Timecode'
+  zu: 'zu'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -273,14 +274,14 @@ de:
         one: 'Inhalt'
         other: 'Inhalte'
       interview_reference:
-        one: 'Gemerktes Interview'
-        other: 'Gemerkte Interviews'
+        one: 'Interview'
+        other: 'Interviews'
       search:
-        one: 'Gespeicherte Suchanfrage'
-        other: 'Gespeicherte Suchanfragen'
+        one: 'Suchanfrage'
+        other: 'Suchanfragen'
       user_annotation:
-        one: 'Annotierter Ausschnitt'
-        other: 'Annotierte Ausschnitte'
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
 
 
     attributes:
@@ -327,13 +328,22 @@ de:
         query: 'Suchkriterien'
       user_annotation:
         workflow_state: 'Veröffentlichungsstatus'
-        description: 'Annotation'
+        description: 'Anmerkung'
         heading: 'Kapitel'
 
     errors:
       template:
         header: 'Ihre Anfrage konnte nicht bearbeitet werden'
         body: 'Folgendes Problem ist aufgetreten:'
+      models:
+        user_annotation:
+          attributes:
+            description:
+              too_long: 'Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
+        user_content:
+          attributes:
+            description:
+              too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
 
   personal_data:
     male: 'männlich'

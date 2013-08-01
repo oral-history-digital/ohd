@@ -106,12 +106,28 @@ class UserContentsController < BaseController
       @object.media_id = @media_id
       @object.description = annotation_params['description']
       @object.send(:compile_id_hash)
-      @object.save!
-      if annotation_params['workflow_state'] != 'private'
-        @object.submit!
+      if @object.save
+        if annotation_params['workflow_state'] != 'private'
+          @object.submit!
+        end
+        annotation_response
+      else
+        respond_to do |format|
+          format.html do
+            render :partial => 'segment_annotation', :object => @object
+          end
+          format.js do
+            html = render_to_string(:partial => 'segment_annotation', :object => @object)
+            render :update do |page|
+              page.replace_html :modal_window, html
+              page << "setTimeout('$(\"modal_window\").show(); new Effect.Appear(\"modal_window\");', 500);"
+              page.show :modal_window
+              page.visual_effect :appear, :modal_window
+            end
+          end
+        end
       end
     end
-    annotation_response
   end
 
   def update_annotation

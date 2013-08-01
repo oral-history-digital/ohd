@@ -1,14 +1,15 @@
 <div id="segment_annotation_<%= segment_annotation.id || 'new' -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2>Annotation zu Segment <%= segment_annotation.media_id %></h2>
+  <h2><%= UserAnnotation.human_name -%> <%= t('zu') -%> <%= segment_annotation.reference.interview.short_title -%> (<%= segment_annotation.reference.interview.archive_id -%>) <small>[<%= segment_annotation.media_id %>]</small></h2>
   <div>
+    <%= error_message_on 'object', :description %>
     <% form_url = @object.new_record? ? create_annotation_user_contents_path(:method => :post) : update_annotation_user_content_path(@object) %>
     <% remote_form_for @object,
                        :url => form_url,
                        :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
                        :complete => "new Effect.Fade('shades');",
                        :html => { :id => "annotations_form" } do |f| %>
-        <label><%= t(:user_annotation, :scope => 'user_interface.user_content') -%></label>
+        <label name="user_annotation[description]"><%= t(:user_annotation, :scope => 'user_interface.user_content') -%></label>
         <%= f.text_area :description %>
         <div class="hint" style="width: 165px; margin-top: 80px; display: inline; clear: none;"><%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%></div>
         <label id="workflow_state_label" name="workflow_state" class="checkbox">

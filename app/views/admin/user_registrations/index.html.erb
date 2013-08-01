@@ -10,7 +10,7 @@
   <%= @last_name.blank? ? '' : "&nbsp;,#{t(:last_name, :scope => 'devise.registration_fields')}: '#{@last_name}*'" -%>
   <%= @country.blank? ? '' : "&nbsp; aus #{t(@country, :scope => 'user_countries')}" -%>
 </h1>
-<h4><%= link_to '&raquo;&nbsp;Tabellendownload (als .CSV)', request.url.index('?') ? request.url.sub('?', '.csv?') : (request.url + '.csv')  %></h4>
+<h4><%= link_to '&raquo;&nbsp;Tabellendownload (als .CSV)', admin_user_registrations_path(params.merge({:format => :csv}))  %></h4>
 
 <table class='userTable userIndex' cellspacing='0' cellpadding='0' border='0'>
   <tbody>

@@ -84,8 +84,11 @@ class UserAnnotation < UserContent
   # except the link_url, which is generated in the view
   def user_content_attributes
     attr = {}
-    title_tokens = [Segment.human_name]
-    title_tokens << reference.media_id
+    title_tokens = [UserAnnotation.human_name]
+    title_tokens << I18n.t('zu')
+    title_tokens << reference.interview.short_title
+    title_tokens << "(#{reference.interview.archive_id})"
+    title_tokens << reference.tape_number
     title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')
     attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = reference.interview.archive_id
@@ -93,7 +96,7 @@ class UserAnnotation < UserContent
     @properties[:author] ||= [user.first_name, user.last_name].join(' ')
     heading_segment = Segment.headings.for_media_id(reference.media_id).first
     unless heading_segment.nil?
-      @properties[:heading] = [heading_segment.section, heading_segment.subheading || heading_segment.mainheading].join(' ')
+      @properties[:heading] = [heading_segment.section, heading_segment.subheading.blank? ? heading_segment.mainheading : heading_segment.subheading].join(' ')
     end
     attr[:properties] = @properties
     attr
