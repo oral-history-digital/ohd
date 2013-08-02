@@ -765,6 +765,15 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 #annotate_segment span {
     font-size: 85%;
 }
+#annotate_segment span a {
+    padding: 2px 14px 2px 2px;
+    background: transparent url('/images/annotation-icon.png') right 2px no-repeat;
+}
+#annotate_segment span a:hover {
+    text-decoration: none;
+    color: #fff;
+    background-color: #990000;
+}
 
 #modal_window div #annotations_form label {
     display: block;

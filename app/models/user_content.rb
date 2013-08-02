@@ -6,6 +6,8 @@ class UserContent < ActiveRecord::Base
 
   CONTENT_TYPES = [ :search, :interview_reference, :user_annotation ]
 
+  ANNOTATION_LIMIT = 300
+
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
@@ -26,7 +28,7 @@ class UserContent < ActiveRecord::Base
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
   validates_uniqueness_of :id_hash, :scope => :user_id
-  validates_length_of :description, :maximum => 300
+  validates_length_of :description, :maximum => ANNOTATION_LIMIT
 
   def after_initialize
     get_properties
