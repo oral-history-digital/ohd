@@ -44,7 +44,7 @@
                     <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
                 <% else %>
                     <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
-                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index', :locale => @locale }, :class => "workbook" %>
+                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => "workbook" %>
                     <span class='red'>&nbsp;|&nbsp;</span>
                     <% end %>
                     <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>

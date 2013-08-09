@@ -115,7 +115,7 @@ module UserContentsHelper
     end
     return image_html if interview.nil?
     html = link_to(image_html, interview_path(:id => interview.archive_id), :target => '_blank')
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_, :scope => 'user_interface.labels')} #{Interview.human_name}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
@@ -145,7 +145,7 @@ module UserContentsHelper
            end
     html = link_to_segment(segment, '', false, false, image_html, { :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:segment_link, :scope => "user_interface.labels")}", { :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:show_, :scope => "user_interface.labels")} #{Segment.human_name}", { :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript

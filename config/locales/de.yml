@@ -112,6 +112,7 @@ de:
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
+      show_: 'zum'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
