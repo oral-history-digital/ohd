@@ -124,6 +124,7 @@ en:
     actions:
       edit: 'edit'
       update: 'update'
+      save: 'save'
       reset: 'cancel'
       add: 'add'
       annotate_segment: 'write Annotation'

@@ -122,6 +122,7 @@ de:
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'
+      save: 'speichern'
       reset: 'abbrechen'
       add: 'hinzuf&uuml;gen'
       annotate_segment: 'Anmerkung verfassen'

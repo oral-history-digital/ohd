@@ -280,14 +280,22 @@ h5.formHeader {
 
 #innerContent form input[type=text],
 #innerContent form input[type=password],
-#innerContent form textarea {
+#innerContent form textarea,
+#modal_window form input[type=text],
+#modal_window form input[type=password],
+#modal_window form textarea {
     background-color: #fff;
     margin-bottom: 0.33em;
     color: #666666;
     border:1px solid #666666;
 }
 
-#innerContent form input[type=submit] {
+#innerContent form input[type=submit],
+#innerContent form input[type=button],
+#innerContent form input[type=reset],
+#modal_window form input[type=submit],
+#modal_window form input[type=button],
+#modal_window form input[type=reset] {
     color: #fff;
     background-color: #840f08;
     margin-top: 8px;
@@ -295,6 +303,24 @@ h5.formHeader {
     border: 0px none;
     font-size: 90%;
     cursor: pointer;
+    opacity: 0.8;
+}
+
+#innerContent form input[type=submit]:hover,
+#innerContent form input[type=button]:hover,
+#innerContent form input[type=reset]:hover,
+#modal_window form input[type=submit]:hover,
+#modal_window form input[type=button]:hover,
+#modal_window form input[type=reset]:hover {
+    opacity: 1.0;
+}
+
+#innerContent form input[type=button].cancel,
+#innerContent form input[type=reset],
+#modal_window form input[type=button].cancel,
+#modal_window form input[type=reset] {
+    background-color: #b2afa1;
+    color: #660000;
 }
 
 #innerContent .save_user_content form input[type=submit] {
