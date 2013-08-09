@@ -55,11 +55,11 @@ ActionController::Routing::Routes.draw do |map|
                                             :interview => :get,
                                             :person_name => :get }
 
-  map.connect 'arbeitsmappe', :locale => :de, :controller => :user_contents, :action => :index
+  map.connect 'arbeitsmappe', :controller => :user_contents, :action => :index
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
 
   map.resources :user_contents,
-                :member => { :topics => :get, :update_topics => :put, :update_annotation => :put },
+                :member => { :topics => :get, :update_topics => :put, :update_annotation => :put, :publish => :post, :retract => :post },
                 :collection => { :sort => :post, :segment_annotation => :get, :create_annotation => :post }
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'

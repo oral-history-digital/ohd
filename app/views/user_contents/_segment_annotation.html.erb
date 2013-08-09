@@ -10,9 +10,13 @@
                        :complete => "new Effect.Fade('shades');",
                        :html => { :id => "annotations_form" } do |f| %>
         <label name="user_annotation[description]"><%= t(:user_annotation, :scope => 'user_interface.user_content') -%></label>
-        <%= f.text_area :description %>
+        <%= f.text_area :description, segment_annotation.private? ? {} : {:readonly => 'readonly', :class => 'readonly'} %>
         <div class="hint" style="width: 165px; margin-top: 80px; display: inline; clear: none;">
+          <% if segment_annotation.private? -%>
           <%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%>
+          <% else -%>
+          <%= t(:published_annotation_change_notice, :scope => 'user_interface.messages') -%>
+          <% end -%>
         </div>
         <label id="workflow_state_label" name="workflow_state" class="checkbox">
           <%= check_box_tag 'raw_workflow_state', 'shared', !@object.private?, { :class => @object.private? ? 'private' : 'shared', :onclick => "$('user_annotation_workflow_state').value = $('raw_workflow_state').checked ? 'shared' : 'private'; $('raw_workflow_state').toggleClassName('shared');"} %>

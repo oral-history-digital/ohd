@@ -504,6 +504,13 @@ body .teaserList .save_user_content {
     color: #990000;
 }
 
+#innerContent form input[type='text'].readonly,
+#innerContent form textarea.readonly,
+#modal_window form input[type='text'].readonly,
+#modal_window form textarea.readonly {
+    background: #e4e4da !important;
+}
+
 #mainWrapper .inline-editor form input[type="text"],
 #modal_window .inline-editor form input[type="text"],
 #mainWrapper .inline-editor form textarea,

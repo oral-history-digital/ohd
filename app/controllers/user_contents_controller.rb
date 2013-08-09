@@ -136,6 +136,7 @@ class UserContentsController < BaseController
     annotation_params = params['user_annotation']
     annotation.media_id = annotation_params['media_id']
     annotation.description = annotation_params['description']
+    annotation.save
     if (workstate = annotation_params['workflow_state']) != annotation.workflow_state
       if workstate == 'private' && !annotation.rejected?
         annotation.retract!
@@ -143,8 +144,17 @@ class UserContentsController < BaseController
         annotation.submit!
       end
     end
-    annotation.save
     annotation_response
+  end
+
+  def publish
+    object.submit!
+    item_update_response
+  end
+
+  def retract
+    object.retract!
+    item_update_response
   end
 
   update do
@@ -401,11 +411,28 @@ class UserContentsController < BaseController
 var annId = 'user_annotation_#{@object.media_id}';
 if(!$(annId)) {
   $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
-  // toggle the link to user_content#segment_annotation - doesn't work because it's picking the wrong annotation on clicking this link
-  // $(annotationsController.newAnnotationElemID).hide();
-  // $(annotationsController.existingAnnotationElemID).show();
+  // toggle the link to user_content#segment_annotation
+  $(annotationsController.newAnnotationElemID).hide();
+  $(annotationsController.existingAnnotationElemID).show();
+  archiveplayer('interview-player').userAnnotationID = #{@object.id};
 }
 JS
+        end
+      end
+    end
+  end
+
+  def item_update_response
+    respond_to do |format|
+      format.html do
+        redirect_to request.referer
+      end
+      format.js do
+        item_update = render_to_string(:partial => 'user_content', :object => @object)
+        # didn't get highlighting to work without messing with background images etc.
+        render :update do |page|
+          page.visual_effect(:fade, 'shades', { :from => 0.6 })
+          page.replace("user_content_#{@object.id}", item_update)
         end
       end
     end

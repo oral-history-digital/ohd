@@ -38,6 +38,13 @@ end -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
+            <% if user_content.type.to_s == 'UserAnnotation' -%>
+                <% if user_content.private? -%>
+                    <li><%= link_to_remote t(:publish, :scope => 'user_interface.user_content'), :url => publish_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_publish_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
+                <% else -%>
+                    <li><%= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
+                <% end -%>
+            <% end -%>
             <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); setItemStatus(this.up('.actions'), false)" %></li>
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get })}" %></li>
             <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
@@ -93,10 +100,15 @@ end -%>
           <li class="description">
             <% if user_content.type.to_s == 'UserAnnotation' -%>
             <%= label_tag UserAnnotation.human_attribute_name(:description) -%>
+                <% if user_content.private? -%>
+                    <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
+                <% else -%>
+                    <p><%= user_content.description -%></p>
+                <% end -%>
             <% else -%>
             <%= label_tag UserContent.human_attribute_name(:description) -%>
-            <% end -%>
             <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
+            <% end -%>
           </li>
         </ul>
       <div class="<%= user_content.type.to_s == 'Search' ? 'references' : 'reference' -%>">

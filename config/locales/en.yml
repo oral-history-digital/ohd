@@ -51,6 +51,7 @@ en:
     hilfe_zu_technischen_fragen: 'faq_technical'
     map_tutorial: 'map_tutorial'
     anmerkungsrichtlinien: 'annotation_guidelines'
+    annotation_guidelines: 'annotation_guidelines'
 
   page_urls:
     archive: 'archive'
@@ -64,6 +65,7 @@ en:
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    annotation_guidelines: 'annotation_guidelines'
 
   tasks:
     interviewers: 'Interviewer'
@@ -161,6 +163,8 @@ en:
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'
+      publish: 'Publish'
+      retract: 'Retract Publication'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
@@ -191,6 +195,9 @@ en:
       delete_content: "The reference to (%{content}) will be deleted. Do you want to proceed?"
       need_javascript: "To utilize the archive's features you need to enable Javascript. Please use standards compliant browser and settings."
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
+      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
+      confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
+      published_annotation_change_notice: 'Your annotation cannot be edited while marked for publication. You may retract your annotation in order to subsequently make changes.'
 
   privacy:
       label: 'Privacy Disclaimer'
@@ -349,6 +356,7 @@ en:
           attributes:
             description:
               too_long: 'Annotations may not exceed a length of 300 characters.'
+              modification_not_allowed: "Changes to an annotation's text are not allowed after publication."
         user_content:
           attributes:
             description:
