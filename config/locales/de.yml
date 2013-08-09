@@ -325,6 +325,8 @@ de:
         collection: 'Teilsammlung'
       segment:
         media_id: 'Segment-ID'
+        transcript: 'Transkription'
+        translation: 'Transkription (übersetzt)'
       user_content:
         title: 'Titel'
         description: 'Notiz'

@@ -777,7 +777,7 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 
 #modal_window div #annotations_form label {
     display: block;
-    width: 100%;
+    width: 85%;
 }
 
 #annotations_form textarea {

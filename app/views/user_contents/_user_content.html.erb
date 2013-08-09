@@ -66,13 +66,25 @@ end -%>
                 </li>
               <% when 'UserAnnotation' -%>
                 <% interview = user_content.reference.interview -%>
+                <li class="language_info">
+                    <%= label_tag t((interview.video? ? :video_interview : :audio_interview), :scope => 'user_interface.labels') %>
+                    <p>
+                      <%= interview.languages.map{|lang| t(lang, :scope => 'categories.languages')}.join('/') -%>&nbsp;
+                      <% unless interview.language == 'Deutsch' -%>
+                          (<%= interview.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>)
+                      <% end -%>
+                    </p>
+                  </li>
                 <li class="segment_info">
-                  <%= label_tag Segment.human_attribute_name(:media_id) -%>
-                  <p><%= user_content.reference.media_id -%></p>
-                  <%= label_tag Tape.human_name -%>
-                  <p><%= user_content.reference.tape.number -%></p>
-                  <%= label_tag t(:timecode) -%>
-                  <p><%=  timecode_without_tape user_content.reference.timecode %></p>
+                  <%= label_tag Segment.human_name -%>
+                  <p><%= Tape.human_name -%>&nbsp;<%= user_content.reference.tape.number -%>
+                    &nbsp;<%=  timecode_without_tape user_content.reference.timecode %>
+                    [<%= user_content.reference.media_id -%>]
+                  </p>
+                <li>
+                <li class="publication_info">
+                  <%= label_tag :workflow_state, UserAnnotation.human_attribute_name(:workflow_state) -%>
+                  <p><%= t(user_content.workflow_state, :scope => "user_annotations.workflow_states") -%></p>
                 </li>
               <%  else
                     false

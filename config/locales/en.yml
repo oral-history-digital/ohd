@@ -327,6 +327,8 @@ en:
         collection: 'Subset'
       segment:
         media_id: 'Fragment-ID'
+        transcript: 'Transcript'
+        translation: 'Transcript (German translation)'
       user_content:
         title: 'Title'
         description: 'Note'
