@@ -346,6 +346,7 @@ en:
         workflow_state: 'Publication State'
         description: 'Annotation'
         heading: 'Section'
+        media_id: 'Media ID'
 
     errors:
       template:
@@ -374,6 +375,7 @@ en:
       postponed: 'Postponed by Editors'
       shared: 'Shared (Public)'
       rejected: 'Private (Publication Rejected)'
+      all: 'Alle'
 
   media:
     video_interview: 'Video interview'
@@ -686,6 +688,7 @@ en:
     import: 'Import'
     statistics: 'Statistik'
     permissions: 'Rechte'
+    user_annotations: 'Anmerkungen'
 
   import:
     tapes: 'Medien/Bänder'

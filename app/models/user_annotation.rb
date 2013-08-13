@@ -12,6 +12,8 @@ class UserAnnotation < UserContent
   named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
   named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and properties LIKE ?', 'Segment', "%media_id: #{m_id}%"] } }
 
+  STATES = %w(private proposed postponed rejected shared)
+
   workflow do
     state :private do
       event :submit, :transitions_to => :proposed
