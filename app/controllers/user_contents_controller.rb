@@ -148,12 +148,12 @@ class UserContentsController < BaseController
   end
 
   def publish
-    object.submit!
+    object.submit! if object.private?
     item_update_response
   end
 
   def retract
-    object.retract!
+    object.retract! unless object.private?
     item_update_response
   end
 
