@@ -1,14 +1,10 @@
 <li id="user_annotation_<%= user_annotation.id -%>" class="user_annotation closed">
         <span class="data author">
-          <%= link_to_function user_annotation.author, "$('user_annotation_#{user_annotation.id}').toggleClassName('closed');", :class => 'more' %>
-          <%#= link_to_remote annotation.user,
-                             :update => "user_annotation_#{annotation.id}",
-                             :url => admin_user_registration_path(user.user),
-                             :method => :get,
-                             :complete => "$('#{interview['archive_id']}_spinner').remove();",
-                             :html => { :class => "more",
-                                        :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
-                             }%>
+          <%= link_to_function user_annotation.author, "$('user_annotation_#{user_annotation.id}').toggleClassName('closed');", :class => 'more', :title => "Details" %>
+          <br/>
+          <small style="padding-left: 18px;">
+            <%= link_to '&raquo;&nbsp;zum Profil', edit_admin_user_registration_path(user_annotation.user.user_registration), :target => '_blank' %>
+          </small>
         </span>
         <span class="segment">
           <%= link_to_segment user_annotation.reference, '', false, false, content_tag(:span, user_annotation.media_id + '<br/>' + content_tag(:span, user_annotation.reference.interview.full_title, :class => 'name')), {:target => '_blank'} %>

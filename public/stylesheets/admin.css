@@ -264,6 +264,10 @@ a.userTableButtonLink:hover {
 #user_annotations .segment {
     width: 140px;
 }
+#user_annotations .author small a:hover {
+    color: #990000;
+    text-decoration: underline;
+}
 #user_annotations .submission_date,
 #user_annotations #submission_sort {
     float: right;
