@@ -77,6 +77,10 @@ class UserAnnotation < UserContent
     write_property :media_id, mid
   end
 
+  def archive_id
+    media_id[/^za\d{3}/i].downcase
+  end
+
   def translated=(trans)
     write_property :translated, trans
   end

@@ -20,4 +20,8 @@ class Annotation < ActiveRecord::Base
     media_id[/_\d{2}_\d{2}/].sub(/^_\d{2}_/, '').to_i
   end
 
+  def archive_id
+    media_id[/^za\d{3}/i].downcase
+  end
+
 end

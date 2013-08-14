@@ -18,6 +18,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
     object.accept!
     @flash = 'Nutzeranmerkung veröffentlicht.'
     render_workflow_change
+    expire_annotation_cache
   end
 
   def reject
@@ -30,12 +31,14 @@ class Admin::UserAnnotationsController < Admin::BaseController
     object.remove!
     @flash = 'Nutzeranmerkung aus dem Archiv entfernt.'
     render_workflow_change
+    expire_annotation_cache
   end
 
   def withdraw
     object.withdraw!
     @flash = 'Nutzeranmerkung aus der Veröffentlichung zurückgezogen.'
     render_workflow_change
+    expire_annotation_cache
   end
 
   def postpone
@@ -46,7 +49,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
 
   def review
     object.review!
-    @flash = 'Rückstellung der Nutzeranmerkung aufgehoben.'
+    @flash = 'Ablehnung der Nutzeranmerkung aufgehoben.'
     render_workflow_change
   end
 
@@ -94,6 +97,10 @@ class Admin::UserAnnotationsController < Admin::BaseController
         end
       end
     end
+  end
+
+  def expire_annotation_cache
+    expire_fragment(fragment_cache_key("annotations_#{@object.archive_id}"))
   end
 
 end
