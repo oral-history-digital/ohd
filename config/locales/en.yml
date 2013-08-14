@@ -374,8 +374,24 @@ en:
       proposed: 'Proposed for Publication'
       postponed: 'Postponed by Editors'
       shared: 'Shared (Public)'
-      rejected: 'Private (Publication Rejected)'
+      rejected: 'Publication Rejected'
       all: 'Alle'
+    workflow_actions:
+      accept: 'publish'
+      postpone: 'postpone'
+      reject: 'reject'
+      withdraw: 'withdraw'
+      retract: 'retract'
+      remove: 'remove'
+      review: 'further review'
+    workflow_action_tooltips:
+      accept: 'Accept annotation for publication'
+      postpone: 'Postpone publication until further notice'
+      reject: 'Reject proposal for publication'
+      withdraw: 'Withdraw the annotation from publication'
+      retract: 'Withdraw the annotation from publication'
+      remove: 'Remove annotation from publication in the archive'
+      review: 'Resubmit annotation for publication after review'
 
   media:
     video_interview: 'Video interview'

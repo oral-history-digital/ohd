@@ -1,0 +1,50 @@
+<li id="user_annotation_<%= user_annotation.id -%>" class="user_annotation closed">
+        <span class="data author">
+          <%= link_to_function user_annotation.author, "$('user_annotation_#{user_annotation.id}').toggleClassName('closed');", :class => 'more' %>
+          <%#= link_to_remote annotation.user,
+                             :update => "user_annotation_#{annotation.id}",
+                             :url => admin_user_registration_path(user.user),
+                             :method => :get,
+                             :complete => "$('#{interview['archive_id']}_spinner').remove();",
+                             :html => { :class => "more",
+                                        :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
+                             }%>
+        </span>
+        <span class="segment">
+          <%= link_to_segment user_annotation.reference, '', false, false, content_tag(:span, user_annotation.media_id + '<br/>' + content_tag(:span, user_annotation.reference.interview.full_title, :class => 'name')), {:target => '_blank'} %>
+        </span>
+        <span class="data status">
+          <%= t(user_annotation.workflow_state, :scope => 'user_annotations.workflow_states') -%>
+        </span>
+        <span class="data submission_date">
+          <span style="display: none;">
+            <%= user_annotation.submitted_at -%>
+          </span>
+          <%= formatted_time user_annotation.submitted_at, '<span style="font-weight: normal !important; width: 132px;">? (Feb 2013 o. früher)</span>' -%>
+        </span>
+
+  <div id="annotation_info_<%= user_annotation.id -%>" class="details">
+    <div class="textbox">
+      &quot;<%= user_annotation.description %>&quot;
+    </div>
+    <div class="actions">
+      <% if %(proposed postponed).include?(user_annotation.workflow_state) -%>
+          <%= workflow_action_for(:user_annotations, :accept, user_annotation) %>
+      <% end -%>
+      <% if user_annotation.proposed? -%>
+          <%= workflow_action_for(:user_annotations, :postpone, user_annotation, true) %>
+      <% end -%>
+      <% if user_annotation.rejected? -%>
+          <%= workflow_action_for(:user_annotations, :review, user_annotation) %>
+      <% end -%>
+      <% if user_annotation.shared? -%>
+          <%= workflow_action_for(:user_annotations, :withdraw, user_annotation, true) %>
+          <%= workflow_action_for(:user_annotations, :remove, user_annotation, true) %>
+      <% end -%>
+      <% if %(proposed postponed).include?(user_annotation.workflow_state) -%>
+          <%= workflow_action_for(:user_annotations, :reject, user_annotation, true) %>
+      <% end -%>
+    </div>
+  </div>
+
+</li>

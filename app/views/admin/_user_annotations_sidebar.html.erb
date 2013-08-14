@@ -3,7 +3,7 @@
   <ul>
     <li>
       <label for="workflow_state">Veröffentlichungsstatus</label>
-      <% seloptions = options_for_select((UserAnnotation::STATES + ['all']).map{|o| [t(o, :scope => 'user_annotations.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
+      <% seloptions = options_for_select((UserAnnotation::PUBLICATION_STATES + ['all']).map{|o| [t(o, :scope => 'user_annotations.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
       <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
     </li>
     <li>

@@ -231,4 +231,15 @@ JS
     string.sub(/\[\d+\]\s+/,'')
   end
 
+  # provides buttons for workflow state changes
+  def workflow_action_for(model, action, instance, cancel=false)
+    model_name = model.to_s.underscore.pluralize
+    button_to_remote t(action.to_s, :scope => "#{model_name}.workflow_actions"),
+                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),
+                        :before => "new Effect.Appear('shades', { to: 0.6 })",
+                        :complete => "new Effect.Fade('shades', { from: 0.6 })"},
+                     { :class => cancel ? 'cancel' : 'submit',
+                       :title => t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")}
+  end
+
 end

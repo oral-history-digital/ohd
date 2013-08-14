@@ -21,43 +21,7 @@
     </div>
   </div>
   <ul class="list">
-    <% @user_annotations.each do |annotation| -%>
-      <li id="user_annotation_<%= annotation.id -%>" class="user_annotation closed">
-        <span class="data author">
-          <%= link_to_function annotation.author, "$('user_annotation_#{annotation.id}').toggleClassName('closed');", :class => 'more' %>
-          <%#= link_to_remote annotation.user,
-                             :update => "user_annotation_#{annotation.id}",
-                             :url => admin_user_registration_path(user.user),
-                             :method => :get,
-                             :complete => "$('#{interview['archive_id']}_spinner').remove();",
-                             :html => { :class => "more",
-                                        :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
-                             }%>
-        </span>
-        <span class="segment">
-          <%= link_to_segment annotation.reference, '', false, false, content_tag(:span, annotation.media_id + '<br/>' + content_tag(:span, annotation.reference.interview.full_title, :class => 'name')), {:target => '_blank'} %>
-        </span>
-        <span class="data status">
-          <%= t(annotation.workflow_state, :scope => 'user_annotations.workflow_states') -%>
-        </span>
-        <span class="data submission_date">
-          <span style="display: none;">
-            <%= annotation.submitted_at -%>
-          </span>
-          <%= formatted_time annotation.submitted_at, '<span style="font-weight: normal !important; width: 132px;">? (Feb 2013 o. früher)</span>' -%>
-        </span>
-
-        <div id="annotation_info_<%= annotation.id -%>" class="details">
-          <div class="textbox">
-            &quot;<%= annotation.description %>&quot;
-          </div>
-          <div class="actions">
-            <%= button_to_function 'Aktivieren', '' %>
-          </div>
-        </div>
-
-      </li>
-    <% end -%>
+    <%= render :partial => 'user_annotation', :collection => @user_annotations -%>
   </ul>
 </div>
 

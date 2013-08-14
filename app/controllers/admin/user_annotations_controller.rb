@@ -16,38 +16,38 @@ class Admin::UserAnnotationsController < Admin::BaseController
 
   def accept
     object.accept!
-    flash['alert'] = 'Nutzeranmerkung veröffentlicht.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Nutzeranmerkung veröffentlicht.'
+    render_workflow_change
   end
 
   def reject
     object.reject!
-    flash['alert'] = 'Nutzeranmerkung abgelehnt.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Nutzeranmerkung abgelehnt.'
+    render_workflow_change
   end
 
   def remove
     object.remove!
-    flash['alert'] = 'Nutzeranmerkung aus dem Archiv entfernt.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Nutzeranmerkung aus dem Archiv entfernt.'
+    render_workflow_change
   end
 
   def withdraw
     object.withdraw!
-    flash['alert'] = 'Nutzeranmerkung aus der Veröffentlichung zurückgezogen.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Nutzeranmerkung aus der Veröffentlichung zurückgezogen.'
+    render_workflow_change
   end
 
   def postpone
     object.postpone!
-    flash['alert'] = 'Veröffentlichung der Nutzeranmerkung zurückgestellt.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Veröffentlichung der Nutzeranmerkung zurückgestellt.'
+    render_workflow_change
   end
 
   def review
     object.review!
-    flash['alert'] = 'Rückstellung der Nutzeranmerkung aufgehoben.'
-    redirect_to admin_user_annotation_path(@object)
+    @flash = 'Rückstellung der Nutzeranmerkung aufgehoben.'
+    render_workflow_change
   end
 
   private
@@ -78,6 +78,22 @@ class Admin::UserAnnotationsController < Admin::BaseController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     @user_annotations = UserAnnotation.find(:all, :conditions => conditions, :include => :user, :order => "submitted_at DESC")
+  end
+
+  def render_workflow_change
+    respond_to do |format|
+      format.html do
+        flash[:alert] = @flash
+        redirect_to admin_user_annotations_path(params)
+      end
+      format.js do
+        flash.now[:alert] = @flash
+        annotation_html = render_to_string(:partial => 'user_annotation', :object => @object)
+        render :update do |page|
+          page.replace("user_annotation_#{@object.id}", annotation_html)
+        end
+      end
+    end
   end
 
 end

@@ -372,8 +372,24 @@ de:
       proposed: 'Vorgeschlagen zur Veröffentlichung'
       postponed: 'Zurückgestellt durch die Redaktion'
       shared: 'Veröffentlicht'
-      rejected: 'Privat (Veröffentlichung abgelehnt)'
+      rejected: 'Veröffentlichung abgelehnt'
       all: 'Alle'
+    workflow_actions:
+      accept: 'veröffentlichen'
+      postpone: 'zurückstellen'
+      reject: 'ablehnen'
+      withdraw: 'zurückziehen'
+      retract: 'zurückziehen'
+      remove: 'entfernen'
+      review: 'weiter bearbeiten'
+    workflow_action_tooltips:
+      accept: 'Die Veröffentlichung der Anmerkung akzeptieren'
+      postpone: 'Die Anmerkung in einen Wartezustand zur Überprüfung überführen'
+      reject: 'Die Veröffentlichung der Anmerkung ablehnen'
+      withdraw: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
+      retract: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
+      remove: 'Die Anmerkung aus der Veröffentlichung Archiv entfernen'
+      review: 'Die Anmerkung zur Wiederbearbeitung vorlegen'
 
   media:
     video_interview: 'Videointerview'

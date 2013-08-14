@@ -69,6 +69,18 @@ span.new_registrations a {
     margin-top: 15px;
 }
 
+#administration input[type=submit]:hover,
+#administration input[type=button]:hover,
+#administration input[type=reset]:hover {
+    opacity: 1.0;
+}
+
+#administration input[type=button].cancel,
+#administration input[type=reset] {
+    background-color: #b2afa1;
+    color: #660000;
+}
+
 #administration .userTable td.userTableList {
     font-size: 85%;
 }
@@ -213,6 +225,9 @@ a.userTableButtonLink:hover {
     display: inline-block;
     margin-right: 10px;
 }
+#user_annotations .user_annotation span {
+    font-size: 95%;
+}
 #user_annotations .status,
 #interview_imports .last_import,
 #interview_imports .time,
@@ -266,7 +281,7 @@ a.userTableButtonLink:hover {
 #user_annotations .details .textbox {
     width: 45%;
     padding: 8px;
-    margin-right: 10%;
+    margin-right: 12px;
     border: 1px solid #ccc;
 }
 #user_annotations .details div {
