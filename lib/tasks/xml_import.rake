@@ -36,7 +36,7 @@ namespace :xml_import do
     require 'open4'
 
     repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    @logfile = File.join(RAILS_ROOT, 'log', "import.log")
+    @logfile = File.join(Rails.root, 'log', "import.log")
     puts "\nLogging import from #{repo_dir} to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
@@ -98,7 +98,7 @@ namespace :xml_import do
 
     require 'open4'
     repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    @logfile = File.join(RAILS_ROOT, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
+    @logfile = File.join(Rails.root, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
@@ -169,7 +169,7 @@ namespace :xml_import do
   task :all_locations => :environment do
     require 'open4'
     repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    @logfile = File.join(RAILS_ROOT, 'log', "import_locations_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
+    @logfile = File.join(Rails.root, 'log', "import_locations_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
       Dir.glob(File.join(repo_dir, 'za**')).each do |dir|

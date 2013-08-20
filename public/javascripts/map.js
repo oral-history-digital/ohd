@@ -170,13 +170,13 @@ var InteractiveMap = Class.create({
     },
 
     // presents an infoWindow for the marker and location at index position
-    locationInfo: function(location) {
-      var reference = this.translate(location.referenceType);
-      var info = '';
-      info += '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
-      info += '<p class="referenceDetails">';
-      info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
-      return info;
+    locationInfo: function(location, referenceClass) {
+        var reference = this.translate(referenceClass);
+        var info = '';
+        info += '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
+        info += '<p class="referenceDetails">';
+        info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
+        return info;
     },
 
     locationReference: function(refStr, type) {
