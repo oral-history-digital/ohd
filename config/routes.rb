@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_map 'karte', :controller => :location_references, :action => :map
   map.localized_public_map ':locale/map', :controller => :location_references, :action => :map
-  map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame
+  map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame, :locale => :de
   map.localized_map_frame ':locale/mapframe', :controller => :location_references, :action => :map_frame
 
   map.namespace :admin do |admin|
