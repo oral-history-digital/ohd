@@ -238,21 +238,6 @@ class LocationReference < ActiveRecord::Base
     begin
       y = 110.6 * lat.to_f
       x = 75 * lon.to_f
-#      # scale latitude distance by latitude spline approximation
-#      s_scales = [[0, 111.3], [30, 96.39], [45, 78.7], [51.4795, 69.29], [60, 55.65], [90, 48]]
-#      y_prev = 0
-#      prev_scale = 111.3
-#      y = 0
-#      lati = lat.to_f.abs
-#      s_scales.each do |l|
-#        if l.first > lati
-#          scale =  ((lati - y_prev) / (l.first - y_prev) * l.last) + ((l.first - lati) / (l.first - y_prev) * prev_scale)
-#          y += scale * (lati - y_prev)
-#        end
-#        y_prev = l.first
-#        prev_scale = l.last
-#      end
-#      y = y * (lat.to_f / lat.to_f.abs)
       [y.round, x.round] # lat, lng
     rescue FloatDomainError
       [ nil, nil ]
@@ -324,23 +309,6 @@ class LocationReference < ActiveRecord::Base
     nil unless coordinate =~ /^[A-Z]+$/
     value = LocationReference.grid_decode(coordinate)
     LocationReference.grid_encode(value + diff)
-=begin
-
-    alpha = ('A'..'Z').to_a.index coordinate[/^\w/]
-    numeric = coordinate[/\d+$/].to_i
-    alpha_diff = diff.abs  % 26
-    numeric_diff = (diff.abs / 26).truncate * (diff == 0 ? 1 : (diff / diff.abs))
-    alpha = alpha + (diff == 0 ? 1 : (diff / diff.abs)) * alpha_diff
-    while (alpha < 0)
-      alpha += 26
-      numeric_diff -= 1
-    end
-    while (alpha > 25)
-      alpha -= 26
-      numeric_diff += 1
-    end
-    ('A'..'Z').to_a[alpha] + (0..99).to_a[(numeric + numeric_diff)].to_s.rjust(2,'0')
-=end
   end
 
   # yields a raster of quadrants around a grid coordinate pair

@@ -3,7 +3,7 @@ ARCHIVE_MANAGEMENT_DIR = 'redaktionssystem'
 
 REPOSITORY_DIR = 'archiv_dis'
 
-if RAILS_ENV == 'production'
+if Rails.env == 'production'
   ActiveRecord.path_to_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
   ActiveRecord.path_to_photo_storage = '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/bilder'
 else

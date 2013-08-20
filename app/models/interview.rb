@@ -3,7 +3,7 @@ class Interview < ActiveRecord::Base
   NUMBER_OF_INTERVIEWS = Interview.count :all
 
   belongs_to :collection
-  
+
   has_many  :photos,
             :dependent => :destroy
 
@@ -69,7 +69,7 @@ class Interview < ActiveRecord::Base
   has_many  :imports,
             :as => :importable,
             :dependent => :delete_all
-  
+
   has_attached_file :still_image,
                     :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
                     :url => (ApplicationController.relative_url_root || '') + "/interviews/stills/:basename_still_:style.:extension",
@@ -154,7 +154,7 @@ DEF
     text :categories, :boost => 20 do
       ([self.archive_id] + Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first).to_s }).join(' ')
     end
-    
+
     string :person_name, :using => :full_title, :stored => true
   end
 
@@ -391,12 +391,12 @@ DEF
       category_names.each do |name|
       category = case type
                    when 'Lebensmittelpunkt'
-                    classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
-                    classified_name = classified_name[/^de,/].blank? ? classified_name : name
-                    Category.find_or_initialize_by_category_type_and_name(type, classified_name)
+                     classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
+                     classified_name = classified_name[/^de,/].blank? ? classified_name : name
+                     Category.find_or_initialize_by_category_type_and_name(type, classified_name)
                    else
-                    Category.find_or_initialize_by_category_type_and_name type, name
-      end
+                     Category.find_or_initialize_by_category_type_and_name type, name
+                 end
       category.save if category.new_record? || category.changed?
       begin
         if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
@@ -414,35 +414,8 @@ DEF
 
   def create_categories_from(data, type)
     category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
-#    unless category_names.empty?
-#      # Remove all previous categorizations
-#      categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
-#      # must be reloaded for the later creation to work
-#      categorizations.reload
-#    end
     @category_import ||= {}
     @category_import[type.to_s] = category_names
-#    category_names.each do |name|
-#      category = case type
-#                   when 'Lebensmittelpunkt'
-#                    classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
-#                    classified_name = classified_name[/^de,/].blank? ? classified_name : name
-#                    Category.find_or_initialize_by_category_type_and_name(type, classified_name)
-#                   else
-#                    Category.find_or_initialize_by_category_type_and_name type, name
-#      end
-#      category.save if category.new_record? || category.changed?
-#      begin
-#        if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
-#          categorizations << Categorization.new{|c|
-#            c.category_id = category.id
-#            c.category_type = type
-#          }
-#        end
-#      rescue Exception => e
-#        puts e.message
-#      end
-#    end
   end
 
   def set_contributor_field_from(field,association)
