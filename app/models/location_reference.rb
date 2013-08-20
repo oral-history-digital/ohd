@@ -400,7 +400,6 @@ class LocationReference < ActiveRecord::Base
   # Assign relevant conditional info from setter fields to DB columns
   def accumulate_field_info
     accumulation_fields = {
-        :camp_category => :location_type,
         :camp_name => :location_name,
         :additional_alias_names => :alias_location_names
     }
@@ -409,6 +408,7 @@ class LocationReference < ActiveRecord::Base
         send("#{field}=", instance_eval("@#{variable}"))
       end
     end
+    self.location_type = 'Location' if self.location_type.blank?
     self.latitude = @exact_latitude if defined?(@exact_latitude) && !@exact_latitude.blank?
     self.longitude = @exact_longitude if defined?(@exact_longitude) && !@exact_longitude.blank?
     self.classified = ((@workflow_state || '').strip == 'classified')

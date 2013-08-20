@@ -216,9 +216,9 @@ en:
       companies: 'Companies'
       deportations: 'Place of Deportation'
       places_of_birth: 'Places of Birth'
-      postwar_residences: 'Residences Post 1945'
+      postwar_residences: 'Residences After 1945'
       postwar_camps: 'Camps 1945 Onward'
-      home_locations: 'Place of Residence'
+      home_locations: 'Last Place of Residence'
       mentions: 'Mentioned Places'
 
   plugins:
@@ -599,10 +599,10 @@ en:
       forced_labor_location:  'Forced Labor'
       forced_labor_camp:      'Camp'
       forced_labor_company:   'Forced Labor'
-      deportation_location:   'Deportation'
+      deportation_location:   'Place of Deportation'
       place_of_birth:         'Place of Birth'
-      home_location:          'Home'
-      return_location:        'Place of Living after 1945'
+      home_location:          'Last Place of Residence'
+      return_location:        'Residence after 1945'
       interview:              'Mention'
 
   external_links:
