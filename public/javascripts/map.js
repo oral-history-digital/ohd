@@ -142,8 +142,8 @@ var InteractiveMap = Class.create({
                 }
 
                 // Load valid locations.
-                var locationInfo = this.locationInfo(locationToLoad);
                 var referenceClass = this.locationReference(locationToLoad.referenceType, locationToLoad.locationType);
+                var locationInfo = this.locationInfo(locationToLoad, referenceClass);
                 var interviewURL = this.options.urlRoot + '/interviews/' + locationToLoad.interviewId;
                 this.clusterManager.addLocation(
                     locationToLoad.location,
@@ -180,30 +180,34 @@ var InteractiveMap = Class.create({
     },
 
     locationReference: function(refStr, type) {
-        if(['Camp','Lager'].indexOf(type) > -1) {
-                if(refStr == 'forced_labor_location') {
-                    return 'forced_labor_camp';
+        switch (type) {
+            case 'Camp':
+                switch (refStr) {
+                    case 'forced_labor_location': return 'forced_labor_camp';
+                    case 'return_location': return 'postwar_camp';
                 }
-                if(refStr == 'return_location') {
-                    return 'postwar_camp';
-                }
-            } else if(['Company','Firma'].indexOf(type) > -1) {
-                if(refStr == 'forced_labor_location') {
-                    return 'forced_labor_company';
-                }
-            }
+                break;
+
+            case 'Company':
+                if (refStr == 'forced_labor_location') return 'forced_labor_company';
+                break;
+        }
         return refStr;
     },
 
     translate: function(str) {
-        if(str.startsWith('forced_labor')) { return 'Zwangsarbeit -'; }
-        if(str == 'deportation_location') { return 'Deportation -'; }
-        if(str == 'place_of_birth') { return 'Geburtsort -'; }
-        if(str == 'home_location') { return 'Lebensmittelpunkt -'; }
-        if(str == 'return_location') { return 'Wohnort nach 1945 -'; }
-        if(str == 'postwar_camp') { return 'Lager nach 1945 -'; }
-        if(str == 'interview') { return 'Erwähnung bei'; }
-        return str;
+        translation_map = {
+            forced_labor_location: 'Einsatzort -',
+            forced_labor_camp: 'Lager -',
+            forced_labor_company: 'Firma -',
+            deportation_location: 'Deportationsort -',
+            place_of_birth: 'Geburtsort -',
+            home_location: 'Wohnort -',
+            return_location: 'Wohnort ab 1945 -',
+            postwar_camp: 'Lager ab 1945 -',
+            interview: 'Erwähnung bei'
+        };
+        return translation_map[str];
     },
 
     checkForIntro: function() {

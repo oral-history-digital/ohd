@@ -233,9 +233,9 @@ de:
       companies: 'Firmen'
       deportations: 'Deportationsorte'
       places_of_birth: 'Geburtsorte'
-      postwar_residences: 'Wohnorte nach 1945'
+      postwar_residences: 'Wohnorte ab 1945'
       postwar_camps: 'Lager ab 1945'
-      home_locations: 'Wohnort'
+      home_locations: 'Letzter Wohnort'
       mentions: 'Erwähnungen'
 
   plugins:
@@ -319,7 +319,7 @@ de:
         deportation: 'Deportationsort (heutiger Name), Jahr'
         punishment: 'Strafma&szlig;namen'
         liberation_date: 'Datum der Befreiung'
-        return_locations: 'Wohnorte nach 1945'
+        return_locations: 'Wohnorte ab 1945'
         return_date: 'Datum der R&uuml;ckkehr'
         countries: 'Wohnort (Land)'
         duration: 'Art und L&auml;nge des Interviews'
@@ -671,13 +671,13 @@ de:
 
   locations:
     types:
-      forced_labor_location:  'Zwangsarbeit'
+      forced_labor_location:  'Einsatzort'
       forced_labor_camp:      'Lager'
-      forced_labor_company:   'Zwangsarbeit'
-      deportation_location:   'Deportation'
+      forced_labor_company:   'Firma'
+      deportation_location:   'Deportationsort'
       place_of_birth:         'Geburtsort'
-      home_location:          'Lebensmittelpunkt'
-      return_location:        'Wohnort nach 1945'
+      home_location:          'Letzter Wohnort'
+      return_location:        'Wohnort ab 1945'
       interview:              'Erwähnung'
 
   external_links:
