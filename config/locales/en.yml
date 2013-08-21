@@ -165,12 +165,13 @@ en:
       saved: 'saved content'
       publish: 'Publish'
       retract: 'Retract Publication'
+      chars_allowed: 'allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this fragment'
       annotation_explanation: 'Useful annotations and further information may be submitted for publication in the archive. Otherwise, your annotations remain accessible only to you.'
-      publish_annotation: 'Would you like your annotation to be published and displayed to all users? By checking, you agree to our'
+      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the'
       publish_annotation2: ''
       annotation_guidelines: 'Annotation Guidelines.'
     sort:
@@ -197,7 +198,7 @@ en:
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
       confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
       confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
-      published_annotation_change_notice: 'Your annotation cannot be edited while marked for publication. You may retract your annotation in order to subsequently make changes.'
+      published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
 
   privacy:
       label: 'Privacy Disclaimer'

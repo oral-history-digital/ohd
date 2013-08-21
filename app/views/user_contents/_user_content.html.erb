@@ -39,7 +39,7 @@ end -%>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
             <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); setItemStatus(this.up('.actions'), false)" %></li>
-            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get })}" %></li>
+            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content, :context => 'user_contents'), { :method => :get })}" %></li>
             <% if user_content.type.to_s == 'UserAnnotation' -%>
                 <% if user_content.private? -%>
                     <li><%= link_to_remote t(:publish, :scope => 'user_interface.user_content'), :url => publish_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_publish_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>

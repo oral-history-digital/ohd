@@ -1,6 +1,13 @@
 <div id="segment_annotation_<%= segment_annotation.id || 'new' -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= UserAnnotation.human_name -%> <%= t('zu') -%> <%= segment_annotation.reference.interview.short_title -%> (<%= segment_annotation.reference.interview.archive_id -%>) <small>[<%= segment_annotation.media_id %>]</small></h2>
+  <h2><%= UserAnnotation.human_name -%> <%= t('zu') -%>
+    <%= segment_annotation.reference.interview.short_title -%>
+    (<%= segment_annotation.reference.interview.archive_id -%>),
+    <small>
+      <%= Tape.human_name -%>&nbsp;<%= segment_annotation.reference.tape.number -%>,
+      <%= (segment_annotation.reference.timecode || "::.").to_s.split('.').first.sub(/^\[\d+\]\s+/,'') -%>
+    </small>
+  </h2>
   <div>
     <%= error_message_on 'object', :description %>
     <% form_url = @object.new_record? ? create_annotation_user_contents_path(:method => :post) : update_annotation_user_content_path(@object) %>
@@ -9,9 +16,15 @@
                        :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
                        :complete => "new Effect.Fade('shades');",
                        :html => { :id => "annotations_form" } do |f| %>
-        <label name="user_annotation[description]"><%= t(:user_annotation, :scope => 'user_interface.user_content') -%></label>
+        <label name="user_annotation[description]">
+          <%= t(:user_annotation, :scope => 'user_interface.user_content') -%>
+        </label>
         <%= f.text_area :description, segment_annotation.private? ? {} : {:readonly => 'readonly', :class => 'readonly'} %>
-        <div class="hint" style="width: 165px; margin-top: 80px; display: inline; clear: none;">
+        <div class="hint" style="width: 165px; margin-top: 0px; display: inline; clear: none;">
+          <span id="chars_allowed"><%= UserContent::ANNOTATION_LIMIT -%></span>&nbsp;
+          <%= t(:chars_allowed, :scope => 'user_interface.user_content') -%>
+        </div>
+        <div class="hint" style="width: 165px; margin-top: 55px; display: inline; clear: none;">
           <% if segment_annotation.private? -%>
           <%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%>
           <% else -%>
@@ -34,3 +47,27 @@
     <% end %>
   </div>
 </div>
+
+<% javascript_tag do %>
+<%# Javascript for the dynamic character count %>
+var maxLength = <%= UserContent::ANNOTATION_LIMIT %>;
+var currentLabelColor = '';
+var textEl = 'user_annotation_description';
+var labelEl = 'chars_allowed';
+function showCharLimit() {
+    var len = maxLength - $(textEl).value.length;
+    var label = $(labelEl);
+    label.innerHTML = len;
+    if((len < 0) && (currentLabelColor != 'red')) {
+        $(labelEl).addClassName('red');
+        currentLabelColor = 'red';
+    } else {
+        if((len >= 0) && (currentLabelColor == 'red')) {
+            $(labelEl).removeClassName('red');
+            currentLabelColor = '';
+        }
+    }
+}
+showCharLimit();
+Event.observe(textEl, 'keyup', showCharLimit);
+<% end %>
