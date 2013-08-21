@@ -295,6 +295,9 @@ de:
       user_annotation:
         one: 'Anmerkung'
         other: 'Anmerkungen'
+      annotation:
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
 
 
     attributes:
@@ -370,7 +373,7 @@ de:
   user_annotations:
     workflow_states:
       private: 'Privat'
-      proposed: 'Vorgeschlagen zur Veröffentlichung'
+      proposed: 'In Prüfung zur Veröffentlichung'
       postponed: 'Zurückgestellt durch die Redaktion'
       shared: 'Veröffentlicht'
       rejected: 'Veröffentlichung abgelehnt'

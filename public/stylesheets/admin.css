@@ -69,6 +69,10 @@ span.new_registrations a {
     margin-top: 15px;
 }
 
+#administration select {
+    text-transform: capitalize;
+}
+
 #administration input[type=submit]:hover,
 #administration input[type=button]:hover,
 #administration input[type=reset]:hover {

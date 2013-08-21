@@ -7,7 +7,7 @@
           </small>
         </span>
         <span class="segment">
-          <%= link_to_segment user_annotation.reference, '', false, false, content_tag(:span, user_annotation.media_id + '<br/>' + content_tag(:span, user_annotation.reference.interview.full_title, :class => 'name')), {:target => '_blank'} %>
+          <%= link_to_segment user_annotation.reference, '', false, false, content_tag(:span, "#{user_annotation.timecode_string}" + '<br/>' + content_tag(:span, "#{user_annotation.reference.interview.short_title} (#{user_annotation.reference.interview.archive_id})" , :class => 'name')), {:target => '_blank'} %>
         </span>
         <span class="data status">
           <%= t(user_annotation.workflow_state, :scope => 'user_annotations.workflow_states') -%>

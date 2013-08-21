@@ -12,6 +12,8 @@ class Annotation < ActiveRecord::Base
   # displayable user and editorial annotations per interview
   named_scope :displayable, lambda{|interview| { :conditions => ["media_id LIKE ?", interview.archive_id.upcase.concat('%')]}}
 
+  after_destroy {|annotation| annotation.index}
+
   def start_time
     Timecode.new(timecode).time
   end
@@ -22,6 +24,15 @@ class Annotation < ActiveRecord::Base
 
   def archive_id
     media_id[/^za\d{3}/i].downcase
+  end
+
+  def segment
+    @segment ||= Segment.for_media_id(media_id).first
+  end
+
+  # TODO: implement an asynchronous indexing strategy
+  def index
+    # mark a segment and an interview for reindexing
   end
 
 end

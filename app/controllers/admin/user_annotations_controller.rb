@@ -79,6 +79,9 @@ class Admin::UserAnnotationsController < Admin::BaseController
       condition_args << "%media_id: #{ActiveRecord::Base.connection.quote(@filters['media_id'].upcase)[1..-2]}%"
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
+    # never show private annotations
+    conditionals << "workflow_state != ?"
+    condition_args << "private"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     @user_annotations = UserAnnotation.find(:all, :conditions => conditions, :include => :user, :order => "submitted_at DESC")
   end

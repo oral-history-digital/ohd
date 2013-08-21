@@ -298,6 +298,9 @@ en:
       user_annotation:
         one: 'Annotation'
         other: 'Annotations'
+      annotation:
+        one: 'Annotation'
+        other: 'Annotations'
 
     attributes:
       collection:
@@ -372,7 +375,7 @@ en:
   user_annotations:
     workflow_states:
       private: 'Private'
-      proposed: 'Proposed for Publication'
+      proposed: 'Under Review for Publication'
       postponed: 'Postponed by Editors'
       shared: 'Shared (Public)'
       rejected: 'Publication Rejected'
