@@ -15,6 +15,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
   end
 
   def accept
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.accept!
     @flash = 'Nutzeranmerkung veröffentlicht.'
     render_workflow_change
@@ -22,12 +23,14 @@ class Admin::UserAnnotationsController < Admin::BaseController
   end
 
   def reject
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.reject!
     @flash = 'Nutzeranmerkung abgelehnt.'
     render_workflow_change
   end
 
   def remove
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.remove!
     @flash = 'Nutzeranmerkung aus dem Archiv entfernt.'
     render_workflow_change
@@ -35,6 +38,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
   end
 
   def withdraw
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.withdraw!
     @flash = 'Nutzeranmerkung aus der Veröffentlichung zurückgezogen.'
     render_workflow_change
@@ -42,12 +46,14 @@ class Admin::UserAnnotationsController < Admin::BaseController
   end
 
   def postpone
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.postpone!
     @flash = 'Veröffentlichung der Nutzeranmerkung zurückgestellt.'
     render_workflow_change
   end
 
   def review
+    object.update_attribute(:description, params['description']) unless params['description'].blank?
     object.review!
     @flash = 'Ablehnung der Nutzeranmerkung aufgehoben.'
     render_workflow_change

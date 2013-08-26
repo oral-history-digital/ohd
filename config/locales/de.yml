@@ -168,7 +168,7 @@ de:
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
       user_annotation: 'Ihre Anmerkung zum Ausschnitt'
-      annotation_explanation: 'Nützliche Anmerkungen und weitere Informationen können Sie durch eine Freigabe zur Veröffentlichung in das Archiv einreichen. Ansonsten sind Ihre Notizen nur für Sie einsehbar.'
+      annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
       publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den'
       publish_annotation2: 'zu.'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
