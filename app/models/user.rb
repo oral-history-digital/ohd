@@ -153,7 +153,10 @@ SQL
   end
 
   def email=(address)
-    user_account.email=(address)
+    user_account.update_attribute :email, address
+    user_account.reload
+    user_registration.update_attribute :email, address
+    user_registration.reload
   end
 
   def admin?
