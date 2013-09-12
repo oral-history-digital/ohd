@@ -787,4 +787,23 @@ namespace :cleanup do
 
   end
 
+  desc "assigns segments directly via associations to annotations"
+  task :assign_annotation_segments => :environment do
+
+    puts "Assigning segments to all annotations via association"
+    count = 0
+    index = 0
+    total = Annotation.count :all
+
+    Annotation.find_each(:conditions => "segment_id IS NULL") do |annotation|
+      annotation.assign_segment
+      count += 1 if annotation.save
+      if (index += 1) % 10 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+    end
+
+    puts "\ndone. Updated #{count} of #{total} total Annotations."
+  end
+
 end

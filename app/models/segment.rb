@@ -15,6 +15,8 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
+  has_many  :annotations
+
   Category::ARCHIVE_CATEGORIES.each do |category|
     self.class_eval <<DEF
     def #{category.first.to_s.singularize}_ids
@@ -77,16 +79,6 @@ DEF
     end
     string :person_name, :stored => false do
       (full_title + ' ' + alias_names).squeeze(' ')
-    end
-    text :annotations, :boost => 10 do
-      str = ''
-      Annotation.for_segment(self).each do |annotation|
-        str << annotation.author + ' ' + annotation.text + ' '
-      end
-      unless str.blank?
-        str = ['de','en'].map{|locale| Annotation.human_name(:locale => locale)}.join(' ').concat(str)
-      end
-      str
     end
   end
 
