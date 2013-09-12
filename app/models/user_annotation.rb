@@ -155,7 +155,6 @@ class UserAnnotation < UserContent
         a.interview_id = reference.interview_id
         a.user_content_id = self.id
       end
-      annotation.index
       self.reload
     end
   end

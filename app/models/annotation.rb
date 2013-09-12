@@ -13,7 +13,6 @@ class Annotation < ActiveRecord::Base
   # displayable user and editorial annotations per interview
   named_scope :displayable, lambda{|interview| { :conditions => ["media_id LIKE ?", interview.archive_id.upcase.concat('%')]}}
 
-  after_destroy {|annotation| annotation.index}
   before_create {|annotation| annotation.assign_segment}
 
   def start_time
