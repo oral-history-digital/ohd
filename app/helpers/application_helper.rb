@@ -53,15 +53,15 @@ module ApplicationHelper
   end
 
   #
-  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false, link_text=nil, options={})
+  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false)
     interview = segment.interview
     item = segment.tape.number
     position = segment.start_time.round
-    link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
+    link_text = show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : "Zum Interview-Ausschnitt"
     if @object.is_a?(Interview) || ajax
       link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
     else
-      link_to link_text, interview_path(interview, :item => item, :position => position), options
+      link_to link_text, interview_path(interview, :item => item, :position => position)
     end
   end
 
@@ -139,12 +139,9 @@ module ApplicationHelper
 
   # modal window dialog
   def javascript_open_modal_window(ajax_url, options={})
-    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }
-    dynamic_params = (options[:dynamic_parameters] || {}).to_a.map{|p| "#{p.first}: #{p.last}"}
-    params = (params + dynamic_params).join(', ')
+    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }.join(', ')
     method = options[:method] || :get
     callback = options[:callback] || ''
-    before_callback = (options[:on_create] || '').concat(';')
     nodeclass = options[:class] || ''
     <<JS
 var windowEl = $('modal_window');
@@ -162,10 +159,9 @@ windowEl.innerHTML = '';
 new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
 $('ajax-spinner').show;
 new Ajax.Updater('modal_window', '#{ajax_url}',
-  { parameters: {#{params}},
+  { parameters: '#{params}',
     method: '#{method}',
     evalScripts: true,
-    onCreate:  function(){#{before_callback}},
     onFailure: function(){$('ajax-spinner').hide(); new Effect.Fade('shades', { from: 0.6 })},
     onSuccess: function(){$('ajax-spinner').hide(); new Effect.Appear('modal_window', { duration: 0.3 }); $('modal_window').addClassName('edit');#{callback}}
     });
@@ -192,7 +188,7 @@ JS
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
     if request.xhr?
-      link_to('X', '#', :id => ('modal_window_close'), :onclick => "closeModalWindow(); return false;")
+      link_to('X', '#', :id => ('modal_window_close'), :onclick => "new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); return false;")
     end
   end
 
@@ -227,19 +223,6 @@ JS
     end
   end
 
-  def timecode_without_tape(string)
-    string.sub(/\[\d+\]\s+/,'')
-  end
 
-  # provides buttons for workflow state changes
-  def workflow_action_for(model, action, instance, cancel=false)
-    model_name = model.to_s.underscore.pluralize
-    button_to_remote t(action.to_s, :scope => "#{model_name}.workflow_actions"),
-                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),
-                       :before => "new Effect.Appear('shades', { to: 0.6 });",
-                       :complete => "new Effect.Fade('shades', { from: 0.6 })"},
-                     { :class => cancel ? 'cancel' : 'submit',
-                       :title => t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")}
-  end
 
 end

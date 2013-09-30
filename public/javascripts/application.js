@@ -205,10 +205,3 @@ function toggleFormAction(id) {
   $(id + '_reset').toggle();
   $(id + '_spinner').toggle();
 }
-
-function closeModalWindow() {
-  new Effect.Fade('shades', { from: 0.6, to: 0, duration: 0.4 });
-  var win = $('modal_window');
-  win.hide();
-  win.innerHTML = '';
-}

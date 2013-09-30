@@ -52,42 +52,9 @@
         <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
     </div>
     //-->
-    <div id="annotate_segment">
-      <span id="annotate_new_segment" class="new" style="display: none;">
-        <%= link_to_function t(:annotate_segment, :scope => 'user_interface.actions'),
-                             javascript_open_modal_window(segment_annotation_user_contents_path,
-                             {:parameters => {'type' => 'UserAnnotation'},
-                             :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
-                             :on_create => "pauseOnAnnotation()"
-                             }),
-                             :class => 'annotate-action' -%>
-      </span>
-      <span id="annotate_existing_segment" class="existing" style="display: none;">
-        <%= link_to_function t(:show_existing_annotation, :scope => 'user_interface.actions'),
-                             javascript_open_modal_window(segment_annotation_user_contents_path,
-                             {:parameters => {:type => 'UserAnnotation'},
-                             :dynamic_parameters => {:id => 'archiveplayer(\'interview-player\').userAnnotationID'},
-                             :on_create => "pauseOnAnnotation()"
-                             }),
-                             :class => 'annotate-action'-%>
-      </span>
-    </div>
   </div>
 
   <% javascript_tag do %>
     var headings = null;
-
-    function pauseOnAnnotation() {
-      var playerWrapper = archiveplayer('interview-player');
-      if(playerWrapper.getState() == 'PLAYING') {
-        playerWrapper.pause();
-      }
-    }
-    function resumeAfterAnnotation() {
-      var playerWrapper = archiveplayer('interview-player');
-      if(playerWrapper.getState() == 'IDLE') {
-        playerWrapper.play();
-      }
-    }
   <% end %>
 </div>

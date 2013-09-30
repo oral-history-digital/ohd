@@ -15,8 +15,6 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
-  has_many  :annotations
-
   Category::ARCHIVE_CATEGORIES.each do |category|
     self.class_eval <<DEF
     def #{category.first.to_s.singularize}_ids
@@ -45,7 +43,7 @@ DEF
     # make sure we have a tape assigned
     if self.tape.nil?
       tape_media_id = (media_id || '')[/za\d{3}_\d{2}_\d{2}/i]
-      interview_archive_id = (media_id || '')[/za\d{3}/i].downcase
+      interview_archive_id = (media_id || '')[/za\d{3}/i]
       interview ||= Interview.find_by_archive_id(interview_archive_id)
       raise "No interview found for archive_id='#{interview_archive_id}'" if interview.nil?
       interview_id = interview.id
@@ -157,11 +155,6 @@ DEF
 
   def joined_transcript_and_translation
     ((transcript || '') + ' ' + (translation || '')).strip
-  end
-
-  # not a true association, this is primarily used during Solr indexing
-  def annotations
-    Annotation.for_segment(self)
   end
 
   # returns the segment that leads the chapter

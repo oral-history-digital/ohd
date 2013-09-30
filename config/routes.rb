@@ -33,7 +33,6 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
     admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
     admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
-    admin.resources :user_annotations, { :member => { :accept => :post, :reject => :post, :remove => :post, :withdraw => :post, :postpone => :post, :review => :post }}
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
     admin.user_export     'benutzerverwaltung.:format', :controller => :user_registrations, :action => :index
     admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index
@@ -56,12 +55,12 @@ ActionController::Routing::Routes.draw do |map|
                                             :interview => :get,
                                             :person_name => :get }
 
-  map.connect 'arbeitsmappe', :controller => :user_contents, :action => :index
+  map.connect 'arbeitsmappe', :locale => :de, :controller => :user_contents, :action => :index
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
 
   map.resources :user_contents,
-                :member => { :topics => :get, :update_topics => :put, :update_annotation => :put, :publish => :post, :retract => :post },
-                :collection => { :sort => :post, :segment_annotation => :get, :create_annotation => :post }
+                :member => { :topics => :get, :update_topics => :put },
+                :collection => { :sort => :post }
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 

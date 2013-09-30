@@ -3,7 +3,7 @@
   <ul>
     <li>
       <label for="workflow_state">Registrierungsstatus</label>
-      <% seloptions = options_for_select((UserRegistration::STATES + ['all']).map{|o| [t(o, :scope => 'devise.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
+      <% seloptions = options_for_select((['all'] + UserRegistration::STATES).map{|o| [t(o, :scope => 'devise.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
       <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
     </li>
     <li>

@@ -25,8 +25,6 @@ en:
   for: 'for'
   close: 'close'
   here: 'here'
-  timecode: 'Timecode'
-  zu: 'for'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -50,8 +48,6 @@ en:
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
     map_tutorial: 'map_tutorial'
-    anmerkungsrichtlinien: 'annotation_guidelines'
-    annotation_guidelines: 'annotation_guidelines'
 
   page_urls:
     archive: 'archive'
@@ -65,7 +61,6 @@ en:
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
-    annotation_guidelines: 'annotation_guidelines'
 
   tasks:
     interviewers: 'Interviewer'
@@ -96,7 +91,6 @@ en:
       interview: 'Interview'
       video_interview: 'Video-Interview'
       audio_interview: 'Audio-Interview'
-      segment_link: 'to Fragment'
       forced_labor_data: 'Forced Labor Data'
       biography: 'Biography of'
       transcript: 'Transcript'
@@ -116,7 +110,6 @@ en:
       workbook: 'workbook'
       show_all: 'show all'
       show_interview: 'show Interview'
-      show_: 'show'
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
       filter_contents: 'Contents shown'
@@ -127,11 +120,8 @@ en:
     actions:
       edit: 'edit'
       update: 'update'
-      save: 'save'
       reset: 'cancel'
       add: 'add'
-      annotate_segment: 'write Annotation'
-      show_existing_annotation: 'View Annotation'
     player:
       back: 'previous'
       forward: 'next'
@@ -163,17 +153,9 @@ en:
       delete: 'Delete'
       save: 'save content'
       saved: 'saved content'
-      publish: 'Publish'
-      retract: 'Retract Publication'
-      chars_allowed: 'allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
-      user_annotation: 'Your annotation to this fragment'
-      annotation_explanation: 'Your annotations can be found in your workbook area.'
-      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the'
-      publish_annotation2: ''
-      annotation_guidelines: 'Annotation Guidelines.'
     sort:
       activate: 'sort contents'
       cancel: 'cancel'
@@ -196,9 +178,6 @@ en:
       delete_content: "The reference to (%{content}) will be deleted. Do you want to proceed?"
       need_javascript: "To utilize the archive's features you need to enable Javascript. Please use standards compliant browser and settings."
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
-      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
-      confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
-      published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
 
   privacy:
       label: 'Privacy Disclaimer'
@@ -277,9 +256,6 @@ en:
       tape:
         one: 'Tape'
         other: 'Tapes'
-      segment:
-        one: 'Fragment'
-        other: 'Fragments'
       collection:
         one: 'Subset'
         other: 'Subsets'
@@ -290,17 +266,11 @@ en:
         one: 'content'
         other: 'contents'
       interview_reference:
-        one: 'Interview'
-        other: 'Interviews'
+        one: 'Marked Interview'
+        other: 'Marked Interviews'
       search:
-        one: 'Search'
-        other: 'Searches'
-      user_annotation:
-        one: 'Annotation'
-        other: 'Annotations'
-      annotation:
-        one: 'Annotation'
-        other: 'Annotations'
+        one: 'Saved Search'
+        other: 'Saved Searches'
 
     attributes:
       collection:
@@ -338,64 +308,20 @@ en:
         segmentators: 'Segmentator'
         language: 'Language'
         collection: 'Subset'
-      segment:
-        media_id: 'Fragment-ID'
-        transcript: 'Transcript'
-        translation: 'Transcript (German translation)'
       user_content:
         title: 'Title'
-        description: 'Comment'
+        description: 'Note'
         query: 'Search Criteria'
-      user_annotation:
-        workflow_state: 'Publication State'
-        description: 'Annotation'
-        heading: 'Section'
-        media_id: 'Media ID'
 
     errors:
       template:
         header: 'Your request could not be processed'
         body: 'The following problems occurred:'
-      models:
-        user_annotation:
-          attributes:
-            description:
-              too_long: 'Annotations may not exceed a length of 300 characters.'
-              modification_not_allowed: "Changes to an annotation's text are not allowed after publication."
-        user_content:
-          attributes:
-            description:
-              too_long: 'Notes may not exceed a length of 300 characters.'
 
   personal_data:
     male: 'male'
     female: 'female'
     born: 'born in'
-
-  user_annotations:
-    workflow_states:
-      private: 'Private'
-      proposed: 'Under Review for Publication'
-      postponed: 'Postponed by Editors'
-      shared: 'Shared (Public)'
-      rejected: 'Publication Rejected'
-      all: 'Alle'
-    workflow_actions:
-      accept: 'publish'
-      postpone: 'postpone'
-      reject: 'reject'
-      withdraw: 'withdraw'
-      retract: 'retract'
-      remove: 'remove'
-      review: 'further review'
-    workflow_action_tooltips:
-      accept: 'Accept annotation for publication'
-      postpone: 'Postpone publication until further notice'
-      reject: 'Reject proposal for publication'
-      withdraw: 'Withdraw the annotation from publication'
-      retract: 'Withdraw the annotation from publication'
-      remove: 'Remove annotation from publication in the archive'
-      review: 'Resubmit annotation for publication after review'
 
   media:
     video_interview: 'Video interview'
@@ -708,7 +634,6 @@ en:
     import: 'Import'
     statistics: 'Statistik'
     permissions: 'Rechte'
-    user_annotations: 'Anmerkungen'
 
   import:
     tapes: 'Medien/Bänder'

@@ -9,9 +9,8 @@
                          :html => { :id => "topics_form" } do |f| %>
         <label><%= t(:user_tags, :scope => 'user_interface.user_content') -%></label>
         <%= topics_select('tags', { :id => "topics-#{@object.id}", :class => 'chzn-select' }, @object.tags.map(&:name)) -%>
-        <div class="hint" style="width: 165px; margin-top: 10px; display: inline; clear: none;"><%= t(:tags_explanation, :scope => 'user_interface.user_content') -%></div>
-        <%= hidden_field_tag 'context', @context -%>
         <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+        <div class="hint" style="width: 165px; margin-top: 10px; display: inline; clear: none;"><%= t(:tags_explanation, :scope => 'user_interface.user_content') -%></div>
       <% end %>
   </div>
 </div>

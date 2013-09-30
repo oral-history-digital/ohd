@@ -61,8 +61,6 @@ class UserContentsController < BaseController
     end
   end
 
-  # The show action is used to request info on any existing
-  # context-based user_content, or the ability to create a new one (on a 404).
   show do
     wants.html do
       if @object.nil? || @object.new_record?
@@ -78,83 +76,6 @@ class UserContentsController < BaseController
         render :partial => 'show', :object => @object
       end
     end
-  end
-
-  # Renders the annotation edit form for annotations
-  # to a particular media_id
-  def segment_annotation
-    segment_content
-    respond_to do |format|
-      format.html do
-        render :partial => 'segment_annotation', :object => @object
-      end
-      format.js do
-        render :partial => 'segment_annotation', :object => @object
-      end
-    end
-  end
-
-  def create_annotation
-    annotation_params = params['user_annotation']
-    @media_id = annotation_params['media_id']
-    segment = Segment.for_media_id(@media_id).scoped({:include => :interview}).first
-    unless segment.nil?
-      @object = UserAnnotation.new
-      @object.user = current_user
-      @object.reference = segment
-      @object.attributes = @object.user_content_attributes
-      @object.media_id = @media_id
-      @object.translated = annotation_params['translated'] == 'true'
-      @object.description = annotation_params['description']
-      @object.send(:compile_id_hash)
-      if @object.save
-        if annotation_params['workflow_state'] != 'private'
-          @object.submit!
-        end
-        annotation_response
-      else
-        respond_to do |format|
-          format.html do
-            render :partial => 'segment_annotation', :object => @object
-          end
-          format.js do
-            html = render_to_string(:partial => 'segment_annotation', :object => @object)
-            render :update do |page|
-              page.replace_html :modal_window, html
-              page << "setTimeout('$(\"modal_window\").show(); new Effect.Appear(\"modal_window\");', 500);"
-              page.show :modal_window
-              page.visual_effect :appear, :modal_window
-            end
-          end
-        end
-      end
-    end
-  end
-
-  def update_annotation
-    annotation = segment_content('user_annotation')
-    annotation_params = params['user_annotation']
-    annotation.media_id = annotation_params['media_id']
-    annotation.description = annotation_params['description']
-    annotation.save
-    if (workstate = annotation_params['workflow_state']) != annotation.workflow_state
-      if workstate == 'private' && !annotation.rejected?
-        annotation.retract!
-      elsif annotation.private?
-        annotation.submit!
-      end
-    end
-    annotation_response
-  end
-
-  def publish
-    object.submit! if object.private?
-    item_update_response
-  end
-
-  def retract
-    object.retract! unless object.private?
-    item_update_response
   end
 
   update do
@@ -173,7 +94,6 @@ class UserContentsController < BaseController
   # render the topics form
   def topics
     object
-    @context = params['context'] # need context for rendering correct response
     respond_to do |format|
       format.html do
         render :partial => 'topics'
@@ -208,7 +128,7 @@ class UserContentsController < BaseController
         end
       end
       format.js do
-        item_update = (params['context'] =~ /user_contents/) \
+        item_update = (request.referer =~ /user_contents/) \
           ? render_to_string(:partial => 'user_content', :object => @object) \
           : render_to_string(:partial => 'show', :object => (@user_content = @object))
         # didn't get highlighting to work without messing with background images etc.
@@ -268,28 +188,6 @@ class UserContentsController < BaseController
       end
     end
     @user_content = @object
-  end
-
-  # Retrieves a user_content based on content id or segment media_id
-  def segment_content(type='user_content')
-    @object ||= begin
-      @type = params[:type] || type
-      if params[:id].blank?
-        # find by media_id
-        @media_id = params[:media_id]
-        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
-      else
-        # retrieve by user_content.id
-        @type.camelize.constantize.find(:first, :conditions => ['id = ?', params[:id]])
-      end
-    end
-    @object ||= begin
-      annotation = UserAnnotation.new
-      annotation.user = current_user
-      annotation.media_id = @media_id
-      annotation.reference = Segment.for_media_id(@media_id).first
-      annotation
-    end
   end
 
   def model_name
@@ -396,46 +294,6 @@ class UserContentsController < BaseController
         item.position = current_pos
       end
       current_pos += pos_per_step
-    end
-  end
-
-  def annotation_response
-    respond_to do |format|
-      format.html do
-        redirect_to request.referer
-      end
-      format.js do
-        render :update do |page|
-          page << "closeModalWindow(); resumeAfterAnnotation();"
-          # inject a user_annotation list element if none exists
-          page << <<JS
-var annId = 'user_annotation_#{@object.media_id}';
-if(!$(annId)) {
-  $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
-  // toggle the link to user_content#segment_annotation
-  $(annotationsController.newAnnotationElemID).hide();
-  $(annotationsController.existingAnnotationElemID).show();
-  archiveplayer('interview-player').userAnnotationID = #{@object.id};
-}
-JS
-        end
-      end
-    end
-  end
-
-  def item_update_response
-    respond_to do |format|
-      format.html do
-        redirect_to request.referer
-      end
-      format.js do
-        item_update = render_to_string(:partial => 'user_content', :object => @object)
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
-      end
     end
   end
 

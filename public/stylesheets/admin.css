@@ -69,22 +69,6 @@ span.new_registrations a {
     margin-top: 15px;
 }
 
-#administration select {
-    text-transform: capitalize;
-}
-
-#administration input[type=submit]:hover,
-#administration input[type=button]:hover,
-#administration input[type=reset]:hover {
-    opacity: 1.0;
-}
-
-#administration input[type=button].cancel,
-#administration input[type=reset] {
-    background-color: #b2afa1;
-    color: #660000;
-}
-
 #administration .userTable td.userTableList {
     font-size: 85%;
 }
@@ -208,12 +192,12 @@ a.userTableButtonLink:hover {
     font-size: 85%;
     font-weight: bold;
 }
-#administration ul.list li {
+#interview_imports .import,
+#admin_users .user {
     list-style-item: none;
     background-image: none;
     padding: 5px 0;
     border-top: 1px dotted;
-    clear: both;
 }
 #administration .list {
     border-bottom: 1px dotted;
@@ -223,29 +207,21 @@ a.userTableButtonLink:hover {
     float: right;
     margin-right: 6px;
 }
-#user_annotations span,
 #interview_imports span,
 #admin_users span {
     display: inline-block;
     margin-right: 10px;
 }
-#user_annotations .user_annotation span {
-    font-size: 95%;
-}
-#user_annotations .status,
 #interview_imports .last_import,
 #interview_imports .time,
 #admin_users .last_login {
     float: right;
     width: 132px;
 }
-#user_annotations .list .author,
-#user_annotations .list .name,
 #interview_imports .import .archive_id,
 #interview_imports .import .last_import,
 #admin_users .user .name {
     font-weight: bold;
-    vertical-align: top;
 }
 #admin_users .name{
     width: 222px;
@@ -264,53 +240,7 @@ a.userTableButtonLink:hover {
     padding-left: 16px;
 }
 
-#user_annotations .author {
-    width: 180px;
-}
-#user_annotations .segment {
-    width: 140px;
-}
-#user_annotations .author small a:hover {
-    color: #990000;
-    text-decoration: underline;
-}
-#user_annotations .submission_date,
-#user_annotations #submission_sort {
-    float: right;
-    width: 140px;
-    text-align: right;
-}
-#user_annotations .list .submission_date {
-    padding-right: 30px;
-}
-#user_annotations .list .details {
-    width: 100%;
-    display: inline-block;
-    padding-left: 16px;
-    padding-top: 8px;
-}
-#user_annotations .details .textbox {
-    width: 45%;
-    padding: 8px;
-    margin-right: 12px;
-    border: 1px solid #ccc;
-    float: left;
-}
-#user_annotations .details div {
-    float: left;
-    clear: none;
-    display: block;
-}
-#user_annotations .details div.actions {
-    float: right;
-    width: 320px;
-}
-#user_annotations .details textarea {
-    float: left;
-}
-
-#user_annotations .author a,
-#interview_imports .archive_id a{
+#interview_imports .archive_id a {
     text-decoration: none;
     color: #000;
 }

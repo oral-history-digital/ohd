@@ -25,8 +25,6 @@ de:
   for: 'f&uuml;r'
   close: 'schlie&szlig;en'
   here: 'hier'
-  timecode: 'Timecode'
-  zu: 'zu'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -50,8 +48,6 @@ de:
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
     karteneinfuehrung: 'map_tutorial'
-    anmerkungsrichtlinien: 'annotation_guidelines'
-    annotation_guidelines: 'annotation_guidelines'
 
   page_urls: #outbound translation ('pretty' urls)
     archive: 'archiv'
@@ -65,7 +61,6 @@ de:
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
     map_tutorial: 'karteneinfuehrung'
-    annotation_guidelines: 'anmerkungsrichtlinien'
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
@@ -94,7 +89,6 @@ de:
       interview: 'Interview'
       video_interview: 'Videointerview'
       audio_interview: 'Audiointerview'
-      segment_link: 'zum Ausschnitt'
       forced_labor_data: 'Daten zur Zwangsarbeit'
       biography: 'Biographie von'
       transcript: 'Transkript'
@@ -114,7 +108,6 @@ de:
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
-      show_: 'zum'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
@@ -125,11 +118,8 @@ de:
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'
-      save: 'speichern'
       reset: 'abbrechen'
       add: 'hinzuf&uuml;gen'
-      annotate_segment: 'Anmerkung verfassen'
-      show_existing_annotation: 'Anmerkung lesen'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
@@ -161,17 +151,9 @@ de:
       delete: 'Entfernen'
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
-      publish: 'Veröffentlichen'
-      retract: 'Veröffentlichung zurückziehen'
-      chars_allowed: 'verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
-      user_annotation: 'Ihre Anmerkung zum Ausschnitt'
-      annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den'
-      publish_annotation2: 'zu.'
-      annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'
@@ -194,9 +176,6 @@ de:
       delete_content: "Sie entfernen den Verweis auf (%{content}). Wollen Sie fortfahren?"
       need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
       need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
-      confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere Richtlinien für Anmerkungen (siehe FAQs).'
-      confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
-      published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'
@@ -274,9 +253,6 @@ de:
       tape:
         one: 'Band'
         other: 'Bänder'
-      segment:
-        one: 'Ausschnitt'
-        other: 'Ausschnitte'
       collection:
         one: 'Teilsammlung'
         other: 'Teilsammlungen'
@@ -287,17 +263,11 @@ de:
         one: 'Inhalt'
         other: 'Inhalte'
       interview_reference:
-        one: 'Interview'
-        other: 'Interviews'
+        one: 'Gemerktes Interview'
+        other: 'Gemerkte Interviews'
       search:
-        one: 'Suchanfrage'
-        other: 'Suchanfragen'
-      user_annotation:
-        one: 'Anmerkung'
-        other: 'Anmerkungen'
-      annotation:
-        one: 'Anmerkung'
-        other: 'Anmerkungen'
+        one: 'Gespeicherte Suchanfrage'
+        other: 'Gespeicherte Suchanfragen'
 
 
     attributes:
@@ -336,64 +306,20 @@ de:
         segmentators: 'Segmentierung'
         language: 'Sprache'
         collection: 'Teilsammlung'
-      segment:
-        media_id: 'Segment-ID'
-        transcript: 'Transkription'
-        translation: 'Transkription (übersetzt)'
       user_content:
         title: 'Titel'
         description: 'Notiz'
         query: 'Suchkriterien'
-      user_annotation:
-        workflow_state: 'Veröffentlichungsstatus'
-        description: 'Anmerkung'
-        heading: 'Kapitel'
-        media_id: 'Medien ID'
 
     errors:
       template:
         header: 'Ihre Anfrage konnte nicht bearbeitet werden'
         body: 'Folgendes Problem ist aufgetreten:'
-      models:
-        user_annotation:
-          attributes:
-            description:
-              too_long: 'Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
-              modification_not_allowed: 'Überarbeitung des Anmerkungstextes ist nach Veröffentlichung nicht mehr gestattet.'
-        user_content:
-          attributes:
-            description:
-              too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
 
   personal_data:
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'
-
-  user_annotations:
-    workflow_states:
-      private: 'Privat'
-      proposed: 'In Prüfung zur Veröffentlichung'
-      postponed: 'Zurückgestellt durch die Redaktion'
-      shared: 'Veröffentlicht'
-      rejected: 'Veröffentlichung abgelehnt'
-      all: 'Alle'
-    workflow_actions:
-      accept: 'veröffentlichen'
-      postpone: 'zurückstellen'
-      reject: 'ablehnen'
-      withdraw: 'zurückziehen'
-      retract: 'zurückziehen'
-      remove: 'entfernen'
-      review: 'weiter bearbeiten'
-    workflow_action_tooltips:
-      accept: 'Die Veröffentlichung der Anmerkung akzeptieren'
-      postpone: 'Die Anmerkung in einen Wartezustand zur Überprüfung überführen'
-      reject: 'Die Veröffentlichung der Anmerkung ablehnen'
-      withdraw: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
-      retract: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
-      remove: 'Die Anmerkung aus der Veröffentlichung Archiv entfernen'
-      review: 'Die Anmerkung zur Wiederbearbeitung vorlegen'
 
   media:
     video_interview: 'Videointerview'
@@ -714,7 +640,6 @@ de:
     import: 'Import'
     statistics: 'Statistik'
     permissions: 'Rechte'
-    user_annotations: 'Anmerkungen'
 
   import:
     tapes: 'Medien/Bänder'

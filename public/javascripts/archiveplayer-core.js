@@ -31,6 +31,7 @@ var ArchivePlayer = function(container) {
   this.currentSection = null;
   this.currentVolume = 80;
   this.savedVolume = 80;
+  this.firstStart = true;
   this.volumeWidth = null;
   this.slidesControllers = {};
 };
@@ -38,31 +39,23 @@ var ArchivePlayer = function(container) {
 ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
     __archivePlayerPlaying = this;
     this.config = setupConfig;
-    this.archiveConfig = Object.clone(setupArchiveConfig);
-    /* this.archiveConfig is not carried over to the archiveplayer(container) object
-       instead, it seems to be discarded. Need to attach variables directly to player.
-     */
-    this.player.viewerStartPosition = this.archiveConfig.position;
-    if(this.player.viewerStartPosition > 0) {
-        this.player.initialSeek = true;
-    }
-    this.config["segments.listener"] = "__archivePlayerGlobalSegmentsListener";
-    this.config["segments.container"] = this.container;
+    this.archiveConfig = setupArchiveConfig;
     if(this.archiveConfig.segmentFile) {
         this.config['segments.file'] = this.archiveConfig.segmentFile;
     }
+    this.config["segments.listener"] = "__archivePlayerGlobalSegmentsListener";
+    this.config["segments.container"] = this.container;
+    this.config["events.onReady"] = "function() { alert('ready!'); }";
     if(this.archiveConfig['onSegment']) {
         this.onSegment = this.archiveConfig['onSegment'];
     }
-    this.config.events = {
-        onReady: function() {
-            var playerModule = archiveplayer(this.container);
-            playerModule.goToStartPosition();
-            playerModule.player.setMute(false);
-            playerModule.changeMuteImage(false);
-        }
-    };
     this.player.setup(this.config);
+    this.player.onReady(function() {
+        var playerModule = archiveplayer(this.container);
+        if(playerModule.archiveConfig.position) { playerModule.goToStartPosition(); }
+        this.player.setMute(false);
+        playerModule.changeMuteImage(false);
+    });
     this.player.onPlay(function() {
         __archivePlayerPlaying = true;
     });
@@ -87,9 +80,6 @@ ArchivePlayer.prototype.pause = function(state) {
 ArchivePlayer.prototype.play = function(state) {
     this.player.play(state);
     return this;
-};
-ArchivePlayer.prototype.getState = function() {
-    return this.player.getState();
 };
 ArchivePlayer.prototype.playlistItem = function(index) {
     this.player.playlistItem(index);
@@ -246,16 +236,14 @@ ArchivePlayer.prototype.writeSegmentInformation = function(event) {
     }
 };
 
-/* TODO: ensure onSegment is called after seeking */
+
 ArchivePlayer.prototype.goToStartPosition = function() {
-    if(this.player.viewerStartPosition > 0) {
-        this.player.setMute(true).seek(this.player.viewerStartPosition).onTime(function(event) {
-            if(this.initialSeek) {
-                this.setMute(false).pause();
-                this.initialSeek = false;
-            }
-        });
-    }
+    this.player.setMute(true).seek(this.archiveConfig.position).onTime(function(event) {
+      if(this.firstStart == true) {
+        this.player.pause().setMute(false);
+        this.firstStart = false;
+      }
+    });
 };
 
 /* Global segments listener for all players */

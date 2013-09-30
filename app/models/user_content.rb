@@ -4,16 +4,13 @@ class UserContent < ActiveRecord::Base
 
   include ActionController::UrlWriter
 
-  CONTENT_TYPES = [ :search, :interview_reference, :user_annotation ]
-
-  ANNOTATION_LIMIT = 300
+  CONTENT_TYPES = [ :search, :interview_reference ]
 
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
-  before_validation_on_create :compile_id_hash
-  before_validation :store_properties
-  after_validation_on_create :check_persistence,:set_link_url
+  before_create :store_properties, :compile_id_hash, :set_link_url
+  after_validation_on_create :check_persistence
 
   attr_accessible :user_id,
                   :title,
@@ -28,11 +25,6 @@ class UserContent < ActiveRecord::Base
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
   validates_uniqueness_of :id_hash, :scope => :user_id
-  validates_length_of :description, :maximum => ANNOTATION_LIMIT
-
-  def after_initialize
-    get_properties
-  end
 
   def write_property(name, value)
     get_properties[name.to_s] = value
@@ -51,10 +43,8 @@ class UserContent < ActiveRecord::Base
     @properties = case props
       when Array
         props.inject({}){|h,v| h[v.first] = v.last; h }
-      when Hash
-        props
       else
-        YAML::load(props.to_s) || {}
+        props
     end
   end
 
@@ -77,15 +67,15 @@ class UserContent < ActiveRecord::Base
     read_attribute(:description) || [I18n.t(:no_placeholder).capitalize, UserContent.human_attribute_name(:description)].join(' ')
   end
 
+  def id_hash
+    @id_hash ||= read_attribute(:id_hash)
+    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self) if @id_hash.blank?
+    @id_hash
+  end
+
   def self.default_id_hash(instance)
     refs = (instance.send(:interview_references) || %w(blank)).join(',')
     Base64.encode64(refs).sub(/\\n$/,'')
-  end
-
-  def id_hash
-    @id_hash ||= read_attribute :id_hash
-    @id_hash = compile_id_hash if @id_hash.blank?
-    @id_hash
   end
 
   # path to show the resource
@@ -100,17 +90,15 @@ class UserContent < ActiveRecord::Base
   private
 
   def store_properties
-    write_attribute :properties, @properties.stringify_keys.to_yaml
+    write_attribute :properties, @properties.to_yaml
   end
 
   def compile_id_hash
-    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self)
-    write_attribute :id_hash, @id_hash
-    @id_hash
+    write_attribute :id_hash, id_hash
   end
 
   def set_link_url
-    update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
+    write_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
   end
 
   def check_persistence
