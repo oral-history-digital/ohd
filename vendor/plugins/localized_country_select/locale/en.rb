@@ -100,7 +100,6 @@
 			:GU => "Guam",
 			:GW => "Guinea-Bissau",
 			:GY => "Guyana",
-			:HK => "Hong Kong SAR China",
 			:HK => "Hong Kong",
 			:HM => "Heard Island and McDonald Islands",
 			:HN => "Honduras",
@@ -156,7 +155,6 @@
 			:ML => "Mali",
 			:MM => "Myanmar",
 			:MN => "Mongolia",
-			:MO => "Macau SAR China",
 			:MO => "Macau",
 			:MP => "Northern Mariana Islands",
 			:MQ => "Martinique",
@@ -269,7 +267,7 @@
 			:ZM => "Zambia",
 			:ZW => "Zimbabwe",
 			:ZZ => "Unknown or Invalid Region",
-    } 
+    }
 
   }
 }
