@@ -9,6 +9,7 @@ class Admin::BaseController < BaseController
   private
 
   def set_locale
+    @valid_locales = ['de']
     @locale = 'de'
     session[:locale] = @locale
     I18n.locale = @locale

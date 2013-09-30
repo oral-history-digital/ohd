@@ -28,14 +28,7 @@
         <div id="baseHeaderNavigation">
           <ul>
             <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
-            <li>
-              <% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
-              <% if I18n.locale.to_s =~ /^de/i %>
-                <%= link_to "English", url_for({:locale => :en, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "English version" %>
-              <% else %>
-                <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
-              <% end %>
-            </li>
+            <%= render :partial => '/locale_chooser' %>
           </ul>
         </div>
       </div>

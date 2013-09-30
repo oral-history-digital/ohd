@@ -719,3 +719,7 @@ en:
     contributions: 'Beteiligte Mitarbeiter'
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
+
+  _locale_chooser:
+    language_choice: "English"
+    language_choice_title: "English Version"

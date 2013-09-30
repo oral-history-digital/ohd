@@ -17,14 +17,7 @@
         <div id="baseHeaderNavigation">
           <ul>
             <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
-            <li>
-              <% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
-              <% if I18n.locale.to_s =~ /^de/i %>
-                <%= link_to "English", url_for({:locale => :en, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "English version" %>
-              <% else %>
-                <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
-              <% end %>
-            </li>
+            <%= render :partial => '/locale_chooser' %>
             <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => current_locale), :title => "Übersichtskarte der biografischen Stationen" %></li>
             <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %> </li>
             <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => current_locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>

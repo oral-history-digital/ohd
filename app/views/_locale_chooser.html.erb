@@ -1,0 +1,10 @@
+<% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
+<% @valid_locales.each do |available_locale| %>
+  <% unless I18n.locale.to_s =~ Regexp.new("^#{available_locale}", Regexp::IGNORECASE) %>
+    <li>
+      <%= link_to t('.language_choice', :locale => available_locale),
+                  url_for({:locale => available_locale, :action => action_name, :controller => controller_name}.merge(nonlocale_params)),
+                  :title => t('.language_choice_title', :locale => available_locale) %>
+    </li>
+  <% end %>
+<% end %>
