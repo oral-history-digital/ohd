@@ -51,7 +51,7 @@ end -%>
           </ul>
         </div>
         <ul class="properties">
-          <% unless user_content.reference.nil? -%>
+          <% unless (user_content.type.to_s != 'Search' && user_content.reference.nil?) || (user_content.type.to_s == 'Search' && user_content.properties['query'].nil?) -%>
               <% case user_content.type.to_s
                   when 'Search'
                     %>

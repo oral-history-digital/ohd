@@ -37,12 +37,7 @@
       <% additional_params.each do |attribute| %>
         <li class="<%= attribute %>">
           <span class='label'><%= Interview.human_attribute_name(attribute) %></span>
-          <% if attribute == 'countries' %>
-            <%# don't translate %>
-            <%= format_value result.send(attribute) %>
-          <% else %>
-            <%= format_value [ result.send(attribute) ].flatten.map{|a| t(a.to_s, :scope => "categories.#{attribute}")}.join(', ') %>
-          <% end %>
+          <%= format_value [ result.send(attribute) ].flatten.map{|a| t(a.to_s, :scope => "categories.#{attribute}")}.join(', ') %>
         </li>
       <% end %>
     </ul>
