@@ -6,7 +6,7 @@ module InterviewHelper
     if content.length < limit+81
       content
     else
-      teaser = truncate(content, limit)
+      teaser = truncate(content, :length => limit)
       teaser_id = id + '_teaser'
       full_id = id + '_full'
       more_link = link_to_function(t(:more, :scope => 'user_interface.labels') + '&nbsp;&raquo;', "$('#{teaser_id}').hide(); new Effect.BlindDown('#{full_id}');")
@@ -77,7 +77,7 @@ module InterviewHelper
     interview.languages.map do |lang|
       lang_name = t(lang, :scope => 'mediaplayer.languages')
       if truncate_language_names && lang_name.length > 8
-        truncate(lang_name, 5, '.')
+        truncate(lang_name, :length => 5, :omission => '.')
       else
         lang_name
       end

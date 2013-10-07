@@ -13,7 +13,7 @@
    end -%>
 <span id="user_content_<%= user_content.id -%>" class="save_user_content">
   <% if tags_exist -%>
-  <%= link_to_function truncate(label, 30), "$('user_content_#{user_content.id}_actions').toggle();", :class => 'saved' %>
+  <%= link_to_function truncate(label, :length => 30), "$('user_content_#{user_content.id}_actions').toggle();", :class => 'saved' %>
   <% else -%>
   <%= link_to "»#{t(:apply_topics, :scope => 'user_interface.user_content')}", '#', :class => 'saved', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get, :class => 'topics' })}" %>
   <% end -%>

@@ -84,7 +84,7 @@ module ApplicationHelper
     pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(' + query_string + ')\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
     match_text = segment.translation[pattern] || segment.transcript[pattern]
     match_text = if match_text.nil?
-      truncate(segment.translation, 180)
+      truncate(segment.translation, :length => 180)
     else
       str = ((segment.translation.index(match_text) || segment.transcript.index(match_text)) == 0) ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
