@@ -9,31 +9,19 @@ collection:
   responsibles: 'responsibles'
   notes: 'notes'
 
-# remove old problematic language import
-# - use the xml_import:languages instead to split dual-language records
-#language:
-#  key_attribute: 'name'
-#  name: 'name'
-#  class_name: 'category'
-#  class_type: 'Sprache'
-#  type_field: 'category_type'
-
 interview:
   key_attribute: 'archive_id'
   archive-id: 'archive_id'
   associated_models:
     captions: 'segments'
-  #collection-id: 'collection_id'
   duration: 'duration'
   full-title: 'full_title'
   interview-date: 'interview_date'
-  #language-id: 'language_id'
   still-content-type: 'still_image_content_type'
   still-file-name: 'still_image_file_name'
   still-file-size: 'still_image_file_size'
   translated: 'translated'
   video:  'video'
-  #version-number: not used yet
   original-citation: 'original_citation'
   translated-citation: 'translated_citation'
   citation-timecode: 'citation_timecode'
@@ -69,7 +57,7 @@ interview-team-member:
   first-name: 'first_name'
   last-name: 'last_name'
   task: 'contribution_type'
-  
+
 
 photo:
   key_attribute: 'photo_file_name'

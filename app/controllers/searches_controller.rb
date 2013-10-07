@@ -209,5 +209,5 @@ class SearchesController < BaseController
     @query_params.delete(:page) if @query_params[:page] == 1
     @query_params
   end
-  
+
 end

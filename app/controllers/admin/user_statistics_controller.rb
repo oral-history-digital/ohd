@@ -8,7 +8,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       wants.csv { csv_export }
     end
   end
-  
+
   private
 
   def csv_export
