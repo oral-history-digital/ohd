@@ -1,5 +1,5 @@
 class Admin::BaseController < BaseController
-  include ExceptionNotifiable
+  include ExceptionNotification::Notifiable
 
   before_filter :authenticate_admin_account
   skip_before_filter  :check_user_authentication!

@@ -79,11 +79,6 @@ namespace :deploy do
     # text_materials
     run "rm -rf #{release_path}/assets/archive_text_materials"
     run "ln -s #{shared_path}/assets/archive_text_materials #{release_path}/assets/archive_text_materials"
-    # symlink the prebuilt unicode gem
-    run "rm -rf #{release_path}/vendor/gems/unicode-0.3.1"
-    if environment == :demo
-      run "ln -s #{shared_path}/vendor/gems/unicode-0.3.1 #{release_path}/vendor/gems/unicode-0.3.1"
-    end
   end
 
   task :rewrite_stylesheet_urls, :roles => :app do

@@ -14,37 +14,11 @@ Rails::Initializer.run do |config|
   # -- all .rb files in that directory are automatically loaded.
 
   # Add additional load paths for your own custom dirs
-  config.autoload_paths += %W( #{RAILS_ROOT}/lib/search_filters.rb )
+  config.autoload_paths += %W(#{RAILS_ROOT}/lib/search_filters.rb)
 
   config.autoload_once_paths += %W( #{RAILS_ROOT}/lib/search_filters.rb )
 
-  # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "sqlite3-ruby", :lib => "sqlite3"
-  # config.gem "aws-s3", :lib => "aws/s3"
-
-  config.gem 'rsolr'
-  config.gem 'rsolr-ext'
-  config.gem 'escape'
-  config.gem 'daemons' # for sunspot
-  config.gem 'sunspot' , :lib => 'sunspot', :version => '0.10.8'
-  config.gem 'sunspot_rails', :lib => 'sunspot/rails', :version => '0.11.5'
-  config.gem 'unicode'
-  config.gem 'acts_as_taggable_on_steroids', :version => '1.2'
-
-  config.gem 'fastercsv'
-
-  config.gem 'smurf'
-
-  config.gem 'warden', :version => '0.10.7'
-  config.gem 'devise', :version => '1.0.8'
-
-  config.gem 'archive-authentication'
-  config.gem 'archive-authorization'
-  config.gem 'archive-player'
-
-  config.gem 'rack-maintenance'
+  # Gem configuration (config.gem ...): We use bundler, please place gem configuration into the Gemfile.
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
