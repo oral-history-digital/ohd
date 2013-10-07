@@ -17,10 +17,11 @@ class ApplicationController < ActionController::Base
   before_filter :current_search_for_side_panel
 
   def set_locale
-    @locale = params[:locale] || session[:locale] || 'de'
+    @valid_locales ||= Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}.sort
+    @locale ||= (params[:locale] || session[:locale] || 'de').to_s
+    @locale = 'de' unless @valid_locales.include?(@locale)
     session[:locale] = @locale
     I18n.locale = @locale
-    I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
   end
 
   # resetting the remember_me_token on CSRF failure
