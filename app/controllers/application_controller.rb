@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :current_search_for_side_panel
 
-  def set_locale  
+  def set_locale
     @locale = params[:locale] || session[:locale] || 'de'
     session[:locale] = @locale
     I18n.locale = @locale

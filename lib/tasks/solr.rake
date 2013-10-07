@@ -4,7 +4,7 @@ namespace :solr do
   task :start do
 
     require 'net/http'
-    
+
     solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
 
     solr_port = solr_config['solr']['port']

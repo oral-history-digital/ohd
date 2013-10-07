@@ -33,7 +33,7 @@ module ApplicationHelper
 
   def save_search_link(search)
     link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
-                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })  
+                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
   # Formats attributes for display
@@ -122,7 +122,7 @@ module ApplicationHelper
     end
   end
 
-  # returns an area_id string per 
+  # returns an area_id string per
   def current_area_id
     case controller_name
       when /searches/
