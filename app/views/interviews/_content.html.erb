@@ -17,7 +17,7 @@
 
   <% show_segments = [:search_results, :locations ].include?(featured_content) -%>
   <% show_locations = (featured_content == :locations ) && defined?(@location) && !@location.nil? -%>
-  <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term') : @search.fulltext -%>
+  <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
   <% remote_form_for content,
                      :url => interview_searches_path,

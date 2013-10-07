@@ -17,7 +17,7 @@ module UserContentsHelper
         category_ids = query.values.flatten.inject([]){|ids, value| ids << value if (value.to_i != 0); ids }.uniq
         preloaded_categories = category_ids.empty? ? [] : Category.find(:all, :conditions => "id IN (#{category_ids.join(',')})")
         fulltext = query.delete('fulltext')
-        str = fulltext.nil? ? [] : [ t('fulltext').to_s + ': "' + fulltext.to_s + '"' ]
+        str = fulltext.nil? ? [] : [ t('fulltext', :scope => :facets).to_s + ': "' + fulltext.to_s + '"' ]
         str += query.keys.inject([]) do |out, key|
           values = query[key]
           case values
@@ -29,9 +29,9 @@ module UserContentsHelper
                   category_values << t(cat.name, :scope => "categories.#{key}")
                 end
               end
-              out << t(key).to_s + ': ' + category_values.join(', ')
+              out << t(key, :scope => :facets).to_s + ': ' + category_values.join(', ')
             else
-              out << t(key).to_s + ': ' + values.to_s
+              out << t(key, :scope => :facets).to_s + ': ' + values.to_s
           end
           out
         end

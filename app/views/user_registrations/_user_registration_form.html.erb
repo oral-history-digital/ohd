@@ -20,7 +20,7 @@
                   when :boolean, 'Boolean'
                       f.check_box(field.to_sym) + content_tag(:span, t(field.to_s + '_explanation', :scope => 'devise.registration_fields'), :style => 'float: none;')
                   when :country, 'Country'
-                      f.localized_country_select(:country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by], :include_blank => t(:select, :scope => 'devise.registration_fields'))
+                      f.country_select(:country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by], :include_blank => t(:select, :scope => 'devise.registration_fields'))
                   else
                       f.text_field(field.to_sym)
                   end, :class => 'formInput'

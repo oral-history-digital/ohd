@@ -10,7 +10,6 @@ en:
   contact: "Contact"
   legal_notice: "Legal notice"
   faq: "FAQ"
-  search_term: 'search term'
   more: 'more'
   back: 'back'
   forward: 'continue'
@@ -686,18 +685,19 @@ en:
     kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
 
-  forced_labor_group: 'Group'
-  forced_labor_groups: 'Groups'
-  forced_labor_field: 'Deployment Area'
-  forced_labor_fields: 'Deployment Areas'
-  forced_labor_habitation: 'Internment Conditions'
-  forced_labor_habitations: 'Internment Conditions' # need singular for category_type
-  person_name: 'Name of the Interviewee'
-  language: 'Language'
-  languages: 'Language'
-  country: 'Place of Residence (Country)'
-  countries: 'Place of Residence (Country)'
-  fulltext: 'Search Term'
+  facets:
+    forced_labor_group: 'Group'
+    forced_labor_groups: 'Groups'
+    forced_labor_field: 'Deployment Area'
+    forced_labor_fields: 'Deployment Areas'
+    forced_labor_habitation: 'Internment Conditions'
+    forced_labor_habitations: 'Internment Conditions' # need singular for category_type
+    person_name: 'Name of the Interviewee'
+    language: 'Language'
+    languages: 'Language'
+    country: 'Place of Residence (Country)'
+    countries: 'Place of Residence (Country)'
+    fulltext: 'Search Term'
 
   photos:
     image: 'Photo'

@@ -15,7 +15,6 @@ ru:
   more: '##ru##'
   back: '##ru##'
   forward: '##ru##'
-  search_term: '##ru##'
   translated: '##ru##'
   all: '##ru##'
   select_all: '##ru##'
@@ -617,19 +616,19 @@ ru:
     kontakt: '##ru##'
     impressum: '##ru##'
 
-
-  forced_labor_group: '##ru##'
-  forced_labor_groups: '##ru##'
-  forced_labor_field: '##ru##'
-  forced_labor_fields: '##ru##'
-  forced_labor_habitation: '##ru##'
-  forced_labor_habitations: '##ru##' # need singular for category_type
-  person_name: '##ru##'
-  language: '##ru##'
-  languages: '##ru##' # need singular for category_type
-  country: '##ru##'
-  countries: '##ru##' # need singular for category_type
-  fulltext: '##ru##'
+  facets:
+    forced_labor_group: '##ru##'
+    forced_labor_groups: '##ru##'
+    forced_labor_field: '##ru##'
+    forced_labor_fields: '##ru##'
+    forced_labor_habitation: '##ru##'
+    forced_labor_habitations: '##ru##' # need singular for category_type
+    person_name: '##ru##'
+    language: '##ru##'
+    languages: '##ru##' # need singular for category_type
+    country: '##ru##'
+    countries: '##ru##'
+    fulltext: '##ru##'
 
   photos:
     image: '##ru##'

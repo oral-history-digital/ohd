@@ -1,7 +1,7 @@
 <% facet_dom_id = "selected_#{active_facet}" %>
 <% query = query.to_a unless query.is_a?(Array) %>
 <div id="<%= facet_dom_id %>" class="active-facet">
-  <span class="facet-name"><%= t(active_facet.singularize) %>:</span>
+  <span class="facet-name"><%= t active_facet.singularize, :scope => :facets %>:</span>
 
   <% is_category = Category.is_category?(active_facet) %>
 

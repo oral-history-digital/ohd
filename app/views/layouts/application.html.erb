@@ -57,7 +57,7 @@
               function clearFulltextField(id) {
                 var elem = $(id);
                 if(elem) {
-                  if(elem.value == '<%= t('search_term') %>') {
+                  if(elem.value == '<%= t('search_term', :scope => 'user_interface.search') %>') {
                     elem.value = '';
                   }
                 }

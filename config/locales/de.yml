@@ -15,7 +15,6 @@ de:
   more: 'mehr'
   back: 'zur&uuml;ck'
   forward: 'weiter'
-  search_term: 'Suchbegriff'
   translated: 'übersetzt'
   all: 'alle'
   select_all: 'alle ausw&auml;hlen'
@@ -691,19 +690,19 @@ de:
     kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
 
-
-  forced_labor_group: 'Gruppe'
-  forced_labor_groups: 'Gruppen'
-  forced_labor_field: 'Einsatzbereich'
-  forced_labor_fields: 'Einsatzbereiche'
-  forced_labor_habitation: 'Unterbringung / Inhaftierung'
-  forced_labor_habitations: 'Unterbringung' # need singular for category_type
-  person_name: 'Name der Interviewten'
-  language: 'Sprache'
-  languages: 'Sprache' # need singular for category_type
-  country: 'Wohnort (Land)'
-  countries: 'Lebensmittelpunkt' # need singular for category_type
-  fulltext: 'Suchbegriff'
+  facets:
+    forced_labor_group: 'Gruppe'
+    forced_labor_groups: 'Gruppen'
+    forced_labor_field: 'Einsatzbereich'
+    forced_labor_fields: 'Einsatzbereiche'
+    forced_labor_habitation: 'Unterbringung / Inhaftierung'
+    forced_labor_habitations: 'Unterbringung' # need singular for category_type
+    person_name: 'Name der Interviewten'
+    language: 'Sprache'
+    languages: 'Sprache' # need singular for category_type
+    country: 'Wohnort (Land)'
+    countries: 'Lebensmittelpunkt' # need singular for category_type
+    fulltext: 'Suchbegriff'
 
   photos:
     image: 'Bild'
