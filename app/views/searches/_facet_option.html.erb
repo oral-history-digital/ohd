@@ -37,7 +37,7 @@
                 <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
                 <%# translate language parts individually %>
                 <% category_titles = category.is_a?(String) ? [ category ] : (facet_name == 'languages' ? category.name.split('/') : [ category.name ]) %>
-                <%# don't translate country names #%>
+                <%# translate facet names #%>
                 <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{facet_name}")} %>
                 <span class="facet-name"><%= category_titles.join('/') %></span>
                 <% if f.last != 0 %>

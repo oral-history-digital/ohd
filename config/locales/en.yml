@@ -280,7 +280,7 @@ en:
         responsibles: 'Head of Project'
         interviewers: 'Interviewer'
         homepage: 'Homepage'
-        notes: 'Additional Remarks:'
+        notes: 'Additional Remarks'
         interviews: 'Interviewees'
       interview:
         person_name: 'Name'

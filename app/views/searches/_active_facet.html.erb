@@ -13,8 +13,8 @@
     <% query.each_with_index do |category, index| %>
         <%# translate language parts individually %>
         <% category_titles = category.is_a?(String) ? [ category ] : (active_facet == 'languages' ? category.name.split('/') : [ category.name ]) %>
-        <%# don't translate country names #%>
-        <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{active_facet}")} unless active_facet == 'countries' %>
+        <%# translate facet name #%>
+        <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{active_facet}")} %>
     <li><%= category_titles.join('/') -%><%= (index == query.size-1) ? '' : ','-%></li>
     <% end %>
 
