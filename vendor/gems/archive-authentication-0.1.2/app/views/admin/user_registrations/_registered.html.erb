@@ -1,8 +1,0 @@
-<% [ :remove ].each do |event| %>
-    <a id="<%= "#{event}_user_registration" %>" class="tooltipButton">
-        <%= submit_tag "#{t(event, :scope => "devise.workflow_events")}", :name => event.to_s, :onclick => "document.getElementById('workflow_event').value = '#{event}';" %>
-        <div class="tooltip">
-          <%= t(event.to_s + '_info', :scope => "devise.workflow_events") %>
-        </div>
-    </a>
-<% end %>
