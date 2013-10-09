@@ -2,9 +2,9 @@
 <h2><%= "#{@object.first_name} #{@object.last_name} &mdash; #{link_to @object.email, "mailto:#{@object.email}"}" %></h2>
 
 <% unless @object.user.nil? -%>
-<div id="edit_user_button">
-    <%= button_to_remote 'Nutzerdaten bearbeiten', { :method => :get, :url => admin_user_path(User.find_by_user_registration_id(@object.id)) } -%>
-</div>
+  <div id="edit_user_button">
+      <%= button_to_remote 'Nutzerdaten bearbeiten', { :method => :get, :url => admin_user_path(User.find_by_user_registration_id(@object.id)) } -%>
+  </div>
 <% end -%>
 
 <%= render :partial => 'newsletter', :object => @object %>
@@ -15,10 +15,10 @@
     <tbody>
       <tr class="underlined">
         <td style="width:40%;">
-          <strong>Status</strong> <%= "#{t(@object.current_state.to_sym, :scope => "devise.workflow_states")}" %>
+          <strong>Status</strong> <%= "#{t(@object.current_state.to_sym, :scope => 'devise.workflow_states')}" %>
         </td>
         <td>
-          <strong><%= t(:requested_at, :scope => "devise.registration_fields") %></strong>
+          <strong><%= t(:requested_at, :scope => 'devise.registration_fields') %></strong>
           <%= formatted_time @object.created_at %>
         </td>
       </tr>

@@ -17,7 +17,7 @@ module ZWAR
         def path_to_storage
           @@path_to_storage || './public'
         end
-        
+
         def path_to_photo_storage=(path)
           @@path_to_photo_storage=path
         end

@@ -18,19 +18,19 @@
 <table style="width: 600px; background-color: #f9f9f7;">
   <tbody>
   <% if @results.size == 0 %>
-  
+
     <tr><td style="padding: 10px;" colspan="2">Your search parameters did not yield any results.</td></tr>
-  
+
   <% else %>
-  
+
     <tr>
       <td style="padding: 10px;" colspan="2">
         <strong><%= @results.size %> Results <%= params[:location].blank? ? '' : "for '#{params[:location]}' " %>found in the archive "Forced Labor 1939-1945":</strong>
       </td>
     </tr>
-  
+
     <% @results.each do |result| %>
-  
+
       <tr style="border-top: dotted 1px #000; cursor: pointer;" onclick="window.open(this.down('a').href, '_<%= current_user_account.nil? ? 'self' : 'blank' -%>'); Event.stop(event);">
         <td style="width: 250px; padding: 10px;">
           <span style="color: #999281;"><%= t(result.location_type, :scope => "location_categories") %></span><br>

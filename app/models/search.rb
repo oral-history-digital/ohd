@@ -239,7 +239,6 @@ DEF
     @query_facets = nil
     @query_hash = nil
     @segments = {}
-    # puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
 
@@ -290,7 +289,7 @@ DEF
         adjust_solr_params do |params|
           params[:defType] = 'lucene'
           #params[:qt] = 'standard'
-          
+
           # fulltext search
           unless fulltext.blank?
             params[:q] = fulltext.downcase

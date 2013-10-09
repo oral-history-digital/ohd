@@ -29,7 +29,6 @@ class BaseController < ResourceController::Base
         eval block
       end
     else
-      #puts "@@@ LOCALE: #{@locale}\nOPTIONS: #{options.inspect}\n\nEXTRA: #{extra_options.inspect}\n@@@"
       render(options, extra_options)
     end
   end
@@ -37,7 +36,6 @@ class BaseController < ResourceController::Base
   def localize_template_path(path)
     return path if @locale.blank?
     path_tokens = path.split('/')
-    # puts "\n@@@ PATH TOKENS: #{path_tokens.join(' / ')}\n@@@\n"
     template_name = path_tokens.pop
     path = path_tokens.join('/')
     path << '/' unless path.blank?

@@ -6,7 +6,7 @@ namespace :users do
     require 'yaml'
 
     data = []
-    
+
     data << ['Anrede', 'Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bundesland']
 
     offset=0
