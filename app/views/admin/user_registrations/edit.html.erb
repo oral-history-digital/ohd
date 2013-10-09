@@ -41,20 +41,24 @@
     <tbody>
       <tr class="underlined">
         <td>
-          <strong><%= t("tos_agreement", :scope => "devise.registration_fields") %></strong>
-          <%= @object.tos_agreement ? 'zugestimmt' : 'keine Zustimmung' %>
-          <%= hidden_field_tag :workflow_event, '', :id => "workflow_event" %>
+          <strong><%= t(:tos_agreement, :scope => 'devise.registration_fields') %></strong>
+          <%= t((@object.tos_agreement ? :agreed : :not_agreed), :scope => 'devise.registration_fields') %>
+        </td>
+        <td>
+          <strong><%= t(:priv_agreement, :scope => 'devise.registration_fields') %></strong>
+          <%= t((@object.priv_agreement ? :agreed : :not_agreed), :scope => 'devise.registration_fields') %>
         </td>
       </tr>
       <tr>
-        <td>
+        <td colspan="2">
           <strong>Anmerkungen</strong>
-          <%= f.text_area :admin_comments, :style => "height:90px; width: 240px;" %>
+          <%= f.text_area :admin_comments, :style => 'height:90px; width: 240px;' %>
         </td>
       </tr>
       <tr>
-        <td>
+        <td colspan="2">
           <div id="workflow_actions">
+            <%= hidden_field_tag :workflow_event, '', :id => 'workflow_event' %>
             <%= render :partial => @object.current_state.to_s, :object => @object %>
           </div>
         </td>

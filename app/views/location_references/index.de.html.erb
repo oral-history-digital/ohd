@@ -4,11 +4,13 @@
 <p style="font-weight: bold; margin-top: 0.33em;">
   Zur Benutzung des Archivs "Zwangsarbeit 1939-1945" m&uuml;ssen Sie
   <%= link_to 'registriert', registrieren_path %> sein und die
-  <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
-  Eine Suche innerhalb der Interviews ist ebenfalls erst
-  nach der Registrierung möglich.<br><br>
-  Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der
-  Zeitzeuginnen und Zeitzeugen sind die Namen anonymisiert.
+  <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
+  sowie die <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
+  anerkennen. Eine Suche innerhalb der Interviews ist ebenfalls erst
+  nach der Registrierung möglich.
+</p>
+<p style="font-weight: bold; margin-top: 0.33em;">
+  Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes sind die Namen anonymisiert.
 </p>
 <% end %>
 

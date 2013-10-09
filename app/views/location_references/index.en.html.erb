@@ -4,9 +4,12 @@
 <p style="font-weight: bold; margin-top: 0.33em;">
   Usage of the archive "Forced Labor 1939-1945" requires you to be
   <%= link_to 'registered', en_register_path %> and to agree to the
-  <%= external_link(:terms_of_use, :nutzungsbedingungen) %>.
+  <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> as well as to
+  the <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
   Access to and search within the interviews is also possible after
-  registration only.<br><br>
+  registration only.
+</p>
+<p style="font-weight: bold; margin-top: 0.33em;">
   In order to protect the privacy rights of the interviewees the names of
   the witnesses have been anonymized on this page.
 </p>

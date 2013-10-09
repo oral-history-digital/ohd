@@ -5,7 +5,7 @@ ru:
   archive: '##ru##'
   interactive_map: '##ru##'
   collections_map: '##ru##'
-  terms_of_use: '##ru##'
+  usage_request: '##ru##'
   team: '##ru##'
   contact: '##ru##'
   legal_notice: '##ru##'
@@ -166,8 +166,7 @@ ru:
       player_no_javascript: '##ru##'
       search_no_javascript: '##ru##'
       check_flash_version: '##ru##'
-      registration_needed1: '##ru##'
-      registration_needed2: '##ru##'
+      registration_needed: '##ru##'
       password_change_instructions1: '##ru##'
       password_change_instructions2: '##ru##'
       no_saved_contents: '##ru##'
@@ -238,11 +237,6 @@ ru:
     Okt: '##ru##'
     Nov: '##ru##'
     Dez: '##ru##'
-
-  devise:
-    registration_fields:
-      tos_agreement_explanation1: '##ru##'
-      tos_agreement_explanation2: '##ru##'
 
   activerecord:
     models:
@@ -612,6 +606,8 @@ ru:
   external_links:
     notice: '##ru##'
     nutzungsbedingungen: '##ru##'
+    datenschutzbestimmungen: '##ru##'
+    nutzungsantrag: '##ru##'
     team: '##ru##'
     kontakt: '##ru##'
     impressum: '##ru##'

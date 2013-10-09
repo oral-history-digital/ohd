@@ -1,6 +1,8 @@
 <ul>
   <li class="copyright"><%= t(:status_update, :scope => 'user_interface.labels') %>:<%= last_import.strftime('%d.%m.%Y') %></li>
-  <li><%= external_link(:terms_of_use, :nutzungsbedingungen) %></li>
+  <li><%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %></li>
+  <li class="pipe">|</li>
+  <li><%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %></li>
   <li class="pipe">|</li>
   <li><%= external_link(:team, :team) %></li>
   <li class="pipe">|</li>

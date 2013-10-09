@@ -30,9 +30,8 @@
 
 <p>
   Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
-  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern,
-  die während der Zeit des Nationalsozialismus Zwangsarbeit geleistet haben.
-  Das Archiv setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
+  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern.
+  Es setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
   finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
   in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
   Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
@@ -40,14 +39,22 @@
 </p>
 
 <% if current_user_account.nil? %>
-<p style="font-weight: bold;">
-  Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der Zeitzeuginnen und Zeitzeugen m&uuml;ssen
-  Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
-  die <%= external_link(:terms_of_use, :nutzungsbedingungen) %> anerkennen.
-</p>
+  <p style="font-weight: bold;">
+    Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
+    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
+    die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
+  </p>
 <% else %>
-<br/>
-<p>Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller Länge, die wir unter unseren <%= external_link(:terms_of_use, :nutzungsbedingungen) %> im Web bereitstellen können.</p>
+  <br/>
+  <p>
+    Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller L&auml;nge, die
+    wir unter unseren <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> und
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> im Web bereitstellen
+    k&ouml;nnen. Um Materialen aus dem Online-Archiv bestellen und gegebenenfalls weiter
+    verarbeiten zu k&ouml;nnen, m&uuml;ssen Sie in einem ersten Schritt einen
+    <%= external_link(:usage_request, :nutzungsantrag) %>  stellen.
+  </p>
 <% end %>
 
 <br style="clear: both;"/>

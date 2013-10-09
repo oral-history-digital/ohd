@@ -47,9 +47,11 @@
 <% end -%>
 
 <div style="float: right; width: 45%; margin-right: 10px; margin-top: 12px; line-height: 1.6em;">
-  <p><%= t(:registration_needed1, :scope => 'user_interface.messages') %>&nbsp;
-  <%= external_link(:terms_of_use, :nutzungsbedingungen) %>&nbsp;
-  <%= t(:registration_needed2, :scope => 'user_interface.messages') %></p>
+  <p>
+    <%= t :registration_needed, :scope => 'user_interface.messages',
+            :terms_of_use => external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen),
+            :privacy_policy => external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
+  </p>
   <p id="registration_link" style="margin-top:6px;"><%= t('devise.registrations.not_yet_registered') %>&nbsp;<%= link_to t('devise.registrations.link_to'), registrieren_path %>
   </p>
 </div>
