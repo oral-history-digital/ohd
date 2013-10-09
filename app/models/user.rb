@@ -32,79 +32,6 @@ class User < ActiveRecord::Base
   delegate  :email, :login,
             :to => :user_account
 
-
-  define_registration_fields [
-            { :name => 'appellation',
-              :values => [  'Frau',
-                            'Herr',
-                            'Frau Dr.',
-                            'Herr Dr.',
-                            'Frau PD Dr.',
-                            'Herr PD Dr.',
-                            'Frau Prof.',
-                            'Herr Prof.' ] },
-            'first_name',
-            'last_name',
-            'email',
-            { :name => 'job_description',
-              :values => [  'Dozentin/Dozent',
-                            'Filmemacherin/Filmemacher',
-                            'Journalistin/Journalist',
-                            'Lehrerin/Lehrer',
-                            'Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten)',
-                            'Schülerin/Schüler',
-                            'Studentin/Student',
-                            'Sonstiges'],
-              :mandatory => false },
-            { :name => 'research_intentions',
-              :values => [ 'Ausstellung',
-                           'Bildungsarbeit',
-                           'Dissertation',
-                           'Dokumentarfilm',
-                           'Familienforschung',
-                           'Kunstprojekt',
-                           'Persönliches Interesse',
-                           'Schulprojekt/Referat',
-                           'Universitäre Lehre',
-                           'Wissenschaftliche Publikation',
-                           'Pressepublikation',
-                           'Sonstiges' ] },
-            { :name => 'comments',
-              :type => :text },
-            { :name => 'organization',
-              :mandatory => false },
-            { :name => 'homepage',
-              :mandatory => false },
-            'street',
-            'zipcode',
-            'city',
-            { :name => 'state',
-              :mandatory => false,
-              :values => [  'Bayern',
-                            'Baden-Württemberg',
-                            'Saarland',
-                            'Hessen',
-                            'Rheinland-Pfalz',
-                            'Nordrhein-Westfalen',
-                            'Niedersachsen',
-                            'Thüringen',
-                            'Sachsen-Anhalt',
-                            'Sachsen',
-                            'Brandenburg',
-                            'Berlin',
-                            'Mecklenburg-Vorpommern',
-                            'Hamburg',
-                            'Bremen',
-                            'Schleswig-Holstein',
-                            'außerhalb Deutschlands' ]},
-            { :name => 'country',
-              :type => :country },
-            { :name => 'receive_newsletter',
-              :mandatory => false,
-              :type => :boolean }
-            
-          ]
-
   after_save :refresh_roles
 
   # direct accessor for roles:
@@ -167,5 +94,29 @@ SQL
     Tag.for_user(self)
   end
 
+  # Authenticate a user based on configured attribute keys. Returns the
+  # authenticated user if it's valid or nil.
+  def authenticate(attributes={})
+    return unless Devise.authentication_keys.all? { |k| attributes[k].present? }
+    conditions = attributes.slice(*Devise.authentication_keys)
+    auth_proxy = find_for_authentication(conditions)
+    auth_proxy.user if auth_proxy.try(:valid_for_authentication?, attributes)
+  end
+
+  private
+
+  # Find first record based on conditions given (ie by the sign in form).
+  # Overwrite to add customized conditions, create a join, or maybe use a
+  # namedscope to filter records while authenticating.
+  # Example:
+  #
+  #   def self.find_for_authentication(conditions={})
+  #     conditions[:active] = true
+  #     find(:first, :conditions => conditions)
+  #   end
+  #
+  def find_for_authentication(conditions)
+    UserAccount.find(:first, :conditions => conditions)
+  end
 
 end

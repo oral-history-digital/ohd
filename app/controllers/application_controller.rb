@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   before_filter :current_search_for_side_panel
 
   def set_locale
-    @valid_locales ||= Dir.glob(File.join(RAILS_ROOT, 'config', 'locales', '*.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}.sort
+    @valid_locales ||= Dir.glob(File.join(Rails.root, 'config', 'locales', '??.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}.sort
     @locale ||= (params[:locale] || session[:locale] || 'de').to_s
     @locale = 'de' unless @valid_locales.include?(@locale)
     session[:locale] = @locale

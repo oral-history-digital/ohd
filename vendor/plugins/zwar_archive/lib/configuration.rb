@@ -34,4 +34,4 @@ module ZWAR
 
 end
 
-ActiveRecord.send(:include, ZWAR::Configuration::ActiveRecord)
+ActiveRecord.send :include, ZWAR::Configuration::ActiveRecord

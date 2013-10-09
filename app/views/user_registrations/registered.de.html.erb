@@ -1,0 +1,16 @@
+<h1>Eine Registrierung f&uuml;r <span><%= @user_registration.email %></span> liegt bereits vor</h1>
+
+<p>Die von Ihnen angegebene E-Mail Adresse ist bereits f&uuml;r das Archiv "Zwangsarbeit 1939-1945" registriert.</p>
+
+<% case @user_registration.workflow_state
+    when 'checked' %>
+<p>Ihr Zugang muss nur noch aktiviert werden. Die f&uuml;r die Zugangsaktivierung notwendigen Informationen wurden Ihnen soeben nochmals per E-Mail zugesandt.</p>
+<%  when 'unchecked' %>
+<p>Ihr Zugang wird derzeit noch von unseren Mitarbeitern &uuml;berpr&uuml;ft. Bitte haben Sie noch etwas Geduld oder fragen per E-Mail nach unter <a href="mailto:mail@zwangsarbeit-archiv.de">mail@zwangsarbeit-archiv.de</a>.</p>
+<%  else %>
+<p>Ihr Zugang ist bereits aktiv. Falls Sie Ihre Zugangsdaten nicht mehr kennen, folgen Sie bitte diesem Link: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+<% end %>
+
+<br/>
+
+<p><a href="http://www.zwangsarbeit-archiv.de/sammlung" style="font-weight: bold;">Hier</a> erfahren Sie mehr &uuml;ber die Sammlung des Projektes "Zwangsarbeit 1939-1945".</p>

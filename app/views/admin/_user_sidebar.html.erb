@@ -14,7 +14,7 @@
     <% [:job_description, :state, :research_intentions].each do |field| -%>
     <li>
       <label for="<%= field.to_s -%>"><%= t(field, :scope => 'devise.registration_fields') %></label>
-      <% seloptions = options_for_select([['Alle', 'all']] + User.registration_fields[field][:values].map{|o| [t(o, :scope => ('devise.registration_values.' + field.to_s)), o]}, :selected => params[field]) -%>
+      <% seloptions = options_for_select([['Alle', 'all']] + UserRegistration.registration_fields[field][:values].map{|o| [t(o, :scope => ('devise.registration_values.' + field.to_s)), o]}, :selected => params[field]) -%>
       <%= select_tag field, seloptions, :class => 'filter' %>
     </li>
     <% end -%>

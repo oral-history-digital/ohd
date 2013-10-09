@@ -1,0 +1,16 @@
+<h1>The email address <%= @user_registration.email %> is already registered</h1>
+
+<p>The email address you provided is already registered for using the archive "Forced Labor 1939-1945".</p>
+
+<% case @user_registration.workflow_state
+    when 'checked' %>
+<p>Your account still needs to be activated. Information for activating your account has now been sent again to you via email.</p>
+<%  when 'unchecked' %>
+<p>Your account information is in the process of being checked by our team. Please wait until you receive a response or ask about the status of your registration at <a href="mailto:mail@zwangsarbeit-archiv.de">mail@zwangsarbeit-archiv.de</a>.</p>
+<%  else %>
+<p>Your account has already been activated. If you don't have access to your login details, please follow this link: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+<% end %>
+
+<br/>
+
+<p>You can find out more about the collection of interviews of the archive "Forced Labor 1939-1945" <a href="http://www.zwangsarbeit-archiv.de/sammlung" style="font-weight: bold;">here</a>.</p>
