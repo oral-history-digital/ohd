@@ -234,7 +234,7 @@ de:
       places_of_birth: 'Geburtsorte'
       postwar_residences: 'Wohnorte ab 1945'
       postwar_camps: 'Lager ab 1945'
-      home_locations: 'Letzter Wohnort'
+      home_locations: 'Letzte Wohnorte'
       mentions: 'Erwähnungen'
 
   plugins:

@@ -233,11 +233,11 @@ en:
       forced_labor_locations: 'Forced Labor Sites'
       camps: 'Camps and Prisons'
       companies: 'Companies'
-      deportations: 'Place of Deportation'
+      deportations: 'Places of Deportation'
       places_of_birth: 'Places of Birth'
-      postwar_residences: 'Residences After 1945'
-      postwar_camps: 'Camps 1945 Onward'
-      home_locations: 'Last Place of Residence'
+      postwar_residences: 'Places of Residence since 1945'
+      postwar_camps: 'Camps since 1945'
+      home_locations: 'Last Places of Residence'
       mentions: 'Mentioned Places'
 
   plugins:
