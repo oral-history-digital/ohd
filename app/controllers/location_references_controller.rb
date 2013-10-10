@@ -83,10 +83,8 @@ class LocationReferencesController < BaseController
 
   # language= parameter overrides all
   def set_locale
-    @locale = params[:language] || params[:locale] || session[:locale] || 'de'
-    session[:locale] = @locale
-    I18n.locale = @locale
-    I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
+    @locale = params[:language]
+    super
   end
 
   def query(paginate=false)

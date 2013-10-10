@@ -10,9 +10,7 @@ class Admin::BaseController < BaseController
 
   def set_locale
     @locale = 'de'
-    session[:locale] = @locale
-    I18n.locale = @locale
-    I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
+    super
   end
 
   def authenticate_admin_account

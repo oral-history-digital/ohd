@@ -20,14 +20,6 @@ class BaseController < ResourceController::Base
 
   private
 
-  def set_locale
-    @locale = params[:locale].to_s || session[:locale] || 'de'
-    @locale = 'de' unless @@valid_locales.include?(@locale)
-    session[:locale] = @locale
-    I18n.locale = @locale
-    I18n.load_path += Dir[ File.join(RAILS_ROOT, 'lib', 'locale', '*.{rb,yml}') ]
-  end
-
   def render_localized(options = nil, extra_options = {}, &block)
     if !options[:template].blank?
       options[:template] = localize_template_path(options[:template])
