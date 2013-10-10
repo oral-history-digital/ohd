@@ -364,6 +364,10 @@ form.user_registration textarea {
     border-color: #990000;
 }
 
+td>div.fieldWithErrors {
+    display: inline;
+}
+
 #errorExplanation {
     margin-bottom: 0.5em;
 }

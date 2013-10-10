@@ -5,7 +5,7 @@ en:
   archive: "Archive"
   interactive_map: "Map"
   collections_map: "Collections"
-  terms_of_use: "Terms of Use"
+  usage_request: 'application form'
   team: 'Team'
   contact: "Contact"
   legal_notice: "Legal notice"
@@ -169,8 +169,7 @@ en:
       player_no_javascript: 'Please activate JavaScript in your web browser!'
       search_no_javascript: 'Please activate Javascript to use the interactive search function!'
       check_flash_version: 'Please install the latest Flash Player! Disable ad blockers for this web site!'
-      registration_needed1: 'In order to protect the privacy rights of the interviewees you must be registered and agree to the'
-      registration_needed2: 'before using the archive.'
+      registration_needed: 'In order to protect privacy rights you must be registered and agree to the %{terms_of_use} as well as the %{privacy_policy} before using the archive.'
       password_change_instructions1: 'Please enter the email address you used to register. You will then receive a link to re-enter a password via email.'
       password_change_instructions2: 'Please choose a new password for your account.'
       no_saved_contents: 'There are no saved contents in your workbook yet.'
@@ -242,11 +241,6 @@ en:
     Okt: 'Oct'
     Nov: 'Nov'
     Dez: 'Dec'
-
-  devise:
-    registration_fields:
-      tos_agreement_explanation1: 'I agree to the '
-      tos_agreement_explanation2: '.'
 
   activerecord:
     models:
@@ -608,6 +602,8 @@ en:
   external_links:
     notice: 'External link'
     nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/hinweise_zum_datenschutz/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/en/sammlung/archivmaterial/nutzungsantrag/index.html'
     team: 'http://www.zwangsarbeit-archiv.de/en/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'

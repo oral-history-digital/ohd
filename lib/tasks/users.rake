@@ -97,6 +97,7 @@ namespace :users do
       registration.first_name       = row.field("'(Vorname|First name)'")
       registration.last_name        = row.field("'(Nachname|Last name)'")
       registration.tos_agreement    = (row.field("'(Nutzungsbedingungen|Terms of Use)'") =~ /^j/i)
+      registration.priv_agreement   = (row.field("'(Datenschutzbestimmungen|Privacy Policy)'") =~ /^j/i)
       registration.workflow_state   = row.field("Status")
 
       # application-info:
@@ -144,6 +145,7 @@ namespace :users do
       registration.first_name       = attributes['firstname'].to_s
       registration.last_name        = attributes['lastname'].to_s
       registration.tos_agreement    = (attributes['tos_agreement'].to_s.strip == 'Ja')
+      registration.priv_agreement   = (attributes['priv_agreement'].to_s.strip == 'Ja')
       registration.workflow_state   = attributes['status'].to_s
 
       # application-info:
@@ -201,6 +203,7 @@ namespace :users do
         registration.first_name       = attributes['given_name'].to_s.strip
         registration.last_name        = attributes['surname'].to_s.strip
         registration.tos_agreement    = true
+        registration.priv_agreement   = false
         registration.workflow_state   = 'registriert'
 
         # application-info:
@@ -264,6 +267,7 @@ namespace :users do
             registration.first_name       = name_parts.first
             registration.last_name        = name_parts[1]
             registration.tos_agreement    = true
+            registration.priv_agreement   = true
             registration.workflow_state   = 'registriert'
 
             # application-info:
@@ -446,6 +450,7 @@ namespace :users do
       reg.email = account.email
       reg.login = account.login
       reg.tos_agreement = true
+      reg.priv_agreement = true
       reg.job_description = 'Projektmitarbeiter'
       reg.research_intentions = 'Projektmitarbeit'
       reg.comments = 'keine Angaben'

@@ -5,7 +5,7 @@ de:
   archive: 'Archiv'
   interactive_map: 'Karte'
   collections_map: 'Teilsammlungen'
-  terms_of_use: 'Nutzungsbedingungen'
+  usage_request: 'Nutzungsantrag'
   team: 'Team'
   contact: 'Kontakt'
   legal_notice: 'Impressum'
@@ -167,8 +167,7 @@ de:
       player_no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
       search_no_javascript: 'Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen!'
       check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
-      registration_needed1: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes der Zeitzeuginnen und Zeitzeugen m&uuml;ssen Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" registriert sein und die'
-      registration_needed2: 'anerkennen.'
+      registration_needed: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" registriert sein und die %{terms_of_use} sowie die %{privacy_policy} anerkennen.'
       password_change_instructions1: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich bei uns registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
@@ -239,11 +238,6 @@ de:
     Okt: 'Okt'
     Nov: 'Nov'
     Dez: 'Dez'
-
-  devise:
-    registration_fields:
-      tos_agreement_explanation1: 'Ich stimme den '
-      tos_agreement_explanation2: ' zu.'
 
   activerecord:
     models:
@@ -613,6 +607,8 @@ de:
   external_links:
     notice: 'Externer Link'
     nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/hinweise_zum_datenschutz/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/archivmaterial/nutzungsantrag/index.html'
     team: 'http://www.zwangsarbeit-archiv.de/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
