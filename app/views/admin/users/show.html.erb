@@ -15,7 +15,7 @@
     <tr>
       <td>
         <strong><%= t(:appellation, :scope => "devise.registration_fields") %></strong>
-        <%= form_edit_field_for @user, :appellation, :select => select(:user, :appellation, options_for_select(User.registration_fields[:appellation][:values].map{|v| [v,v] })) %>
+        <%= form_edit_field_for @user, :appellation, :select => select(:user, :appellation, options_for_select(UserRegistration.registration_fields[:appellation][:values].map{|v| [v,v] })) %>
       </td>
       <td>
         <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
@@ -48,7 +48,7 @@
     <tr>
       <td>
         <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
-        <% field_def = User.registration_fields[:job_description] -%>
+        <% field_def = UserRegistration.registration_fields[:job_description] -%>
         <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
         <%= form_edit_field_for @user, :job_description, :select => select(:user,
                                                                            :job_description,

@@ -40,7 +40,6 @@ Rails::Initializer.run do |config|
   config.gem 'warden', :version => '0.10.7'
   config.gem 'devise', :version => '1.0.8'
 
-  config.gem 'archive-authentication'
   config.gem 'archive-authorization'
   config.gem 'archive-player'
 

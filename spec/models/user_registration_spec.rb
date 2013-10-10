@@ -38,7 +38,6 @@ describe UserRegistration, 'when newly created' do
   end
 
   it "should be created if all the required fields are there" do
-    puts "\nRegistration: #{@registration.inspect}\nvalid: #{@registration.valid?}\nErrors: #{@registration.errors.full_messages}"
     @registration.should_not be_new_record
   end
 
@@ -74,7 +73,7 @@ describe UserRegistration, 'on registration' do
   before :each do
     UserRegistration.delete_all
     UserAccount.delete_all
-    @registration = generate_registration#
+    @registration = generate_registration
     @time_of_registration = Time.now
     @registration.register!
   end
@@ -109,22 +108,24 @@ describe UserRegistration, 'on registration' do
     @registration.should be_checked
   end
 
-  it "should set activated_at on activation" do
-    activation_time = Time.now
-    @registration.activate!
-    @registration.activated_at.should be_a(Time)
-    @registration.activated_at.should > (activation_time - 1.minute)
-    @registration.activated_at.should < (activation_time + 1.minute)
-  end
-
   it "should be activatable once the user account is confirmed" do
     # mock the account confirmation here and test it in the account spec
     @registration.user_account = mock_model(UserAccount)
-    @registration.user_account.should_receive(:confirmed_at).and_return(Time.now - 5.minutes)
     @registration.user_account.should_receive(:encrypted_password).and_return('dhfjdshjfhsjd')
     @registration.user_account.should_receive(:password_salt).and_return('jdhjfhsdfjg')
     @registration.activate!
     @registration.should be_registered
+  end
+
+  it "should set activated_at on activation" do
+    activation_time = Time.now
+    @registration.user_account = mock_model(UserAccount)
+    @registration.user_account.should_receive(:encrypted_password).and_return('dhfjdshjfhsjd')
+    @registration.user_account.should_receive(:password_salt).and_return('jdhjfhsdfjg')
+    @registration.activate!
+    @registration.activated_at.should be_a(Time)
+    @registration.activated_at.should > (activation_time - 1.minute)
+    @registration.activated_at.should < (activation_time + 1.minute)
   end
 
 end
@@ -152,7 +153,7 @@ describe UserRegistration, 'on rejection' do
 end
 
 describe UserRegistration, 'on activation after account activation' do
-  
+
   before :all do
     UserRegistration.delete_all
     UserAccount.delete_all
@@ -230,7 +231,7 @@ describe UserRegistration, 'on postponing' do
       @registration.user_account.should be_nil
     else
       @registration.user_account.should_not be_active
-    end  
+    end
   end
 
   it "should not have a confirmation token set" do
@@ -344,5 +345,12 @@ end
 # Generates a new registration with mandatory fields and makes sure the
 # email address is generated randomly each time
 def generate_registration
-  UserRegistration.create $registration_fields.merge({ :email => (0..8).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '@' + (0..10).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '.de'})
+  UserRegistration.create $registration_fields.merge(
+                              {
+                                  :email => (0..8).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '@' +
+                                      (0..10).map{ $rand_chars[rand($rand_chars.length)]  }.join.downcase + '.de',
+                                  :tos_agreement => true,
+                                  :priv_agreement => true
+                              }
+                          )
 end

@@ -4,6 +4,7 @@ describe SessionsController do
   integrate_views
 
   before :each do
+    @controller.stub(:current_search_for_side_panel).and_return(nil)
     @warden = mock(Warden)
     request.env['warden'] = @warden
     @user = mock_model UserAccount,

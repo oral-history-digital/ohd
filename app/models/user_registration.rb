@@ -15,10 +15,137 @@ class UserRegistration < ActiveRecord::Base
   validates_uniqueness_of :email, :on => :create
 
   validates_acceptance_of :tos_agreement, :accept => true
+  validates_acceptance_of :priv_agreement, :accept => true
 
   before_create :serialize_form_parameters
 
   named_scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
+
+  # fields expected for the user registration
+  def self.define_registration_fields(fields)
+    @@registration_fields = {}
+    @@registration_field_names = []
+    raise "Invalid user_registration_fields for User: type #{fields.class.name}, expected Array" unless fields.is_a?(Array)
+    fields.each_with_index do |field, index|
+      case field
+        when Hash
+          name = field[:name].to_s.to_sym
+          @@registration_field_names << name
+          @@registration_fields[name] = { :position => index,
+                                          :mandatory => field[:mandatory].nil? ? true : field[:mandatory],
+                                          :type => field[:type] || :string,
+                                          :translate => field[:translate].nil? ? true : field[:translate],
+                                          :values => field[:values] || [] }
+        else
+          name = field.to_s.to_sym
+          @@registration_field_names << name
+          @@registration_fields[name] = { :position => index,
+                                          :mandatory => true,
+                                          :translate => true,
+                                          :type => :string,
+                                          :values => [] }
+      end
+    end
+    @@registration_field_names.each do |field|
+      next if [:email, :first_name, :last_name, :tos_agreement, :priv_agreement].include?(field)
+      class_eval <<EVAL
+              def #{field}
+                @#{field}
+              end
+
+              def #{field}=(value)
+                @#{field} = value
+              end
+EVAL
+    end
+    class_eval <<DEF
+              def after_initialize
+                (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
+                  self.send(attr.to_s + "=", value)
+                end
+              end
+DEF
+  end
+
+  def self.registration_field_names
+    @@registration_field_names
+  end
+
+  def self.registration_fields
+    @@registration_fields
+  end
+
+  define_registration_fields [
+                                 { :name => 'appellation',
+                                   :values => [  'Frau',
+                                                 'Herr',
+                                                 'Frau Dr.',
+                                                 'Herr Dr.',
+                                                 'Frau PD Dr.',
+                                                 'Herr PD Dr.',
+                                                 'Frau Prof.',
+                                                 'Herr Prof.' ] },
+                                 'first_name',
+                                 'last_name',
+                                 'email',
+                                 { :name => 'job_description',
+                                   :values => [  'Dozentin/Dozent',
+                                                 'Filmemacherin/Filmemacher',
+                                                 'Journalistin/Journalist',
+                                                 'Lehrerin/Lehrer',
+                                                 'Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten)',
+                                                 'Schülerin/Schüler',
+                                                 'Studentin/Student',
+                                                 'Sonstiges'],
+                                   :mandatory => false },
+                                 { :name => 'research_intentions',
+                                   :values => [ 'Ausstellung',
+                                                'Bildungsarbeit',
+                                                'Dissertation',
+                                                'Dokumentarfilm',
+                                                'Familienforschung',
+                                                'Kunstprojekt',
+                                                'Persönliches Interesse',
+                                                'Schulprojekt/Referat',
+                                                'Universitäre Lehre',
+                                                'Wissenschaftliche Publikation',
+                                                'Pressepublikation',
+                                                'Sonstiges' ] },
+                                 { :name => 'comments',
+                                   :type => :text },
+                                 { :name => 'organization',
+                                   :mandatory => false },
+                                 { :name => 'homepage',
+                                   :mandatory => false },
+                                 'street',
+                                 'zipcode',
+                                 'city',
+                                 { :name => 'state',
+                                   :mandatory => false,
+                                   :values => [  'Bayern',
+                                                 'Baden-Württemberg',
+                                                 'Saarland',
+                                                 'Hessen',
+                                                 'Rheinland-Pfalz',
+                                                 'Nordrhein-Westfalen',
+                                                 'Niedersachsen',
+                                                 'Thüringen',
+                                                 'Sachsen-Anhalt',
+                                                 'Sachsen',
+                                                 'Brandenburg',
+                                                 'Berlin',
+                                                 'Mecklenburg-Vorpommern',
+                                                 'Hamburg',
+                                                 'Bremen',
+                                                 'Schleswig-Holstein',
+                                                 'außerhalb Deutschlands' ]},
+                                 { :name => 'country',
+                                   :type => :country },
+                                 { :name => 'receive_newsletter',
+                                   :mandatory => false,
+                                   :type => :boolean }
+
+                             ]
 
   def after_initialize
     @skip_mail_delivery = false
@@ -167,7 +294,7 @@ class UserRegistration < ActiveRecord::Base
 
   def serialize_form_parameters
     serialized_form_params = {}
-    (User.registration_field_names - [:email, :first_name, :last_name, :tos_agreement]).each do |field|
+    (UserRegistration.registration_field_names - [:email, :first_name, :last_name, :tos_agreement, :priv_agreement]).each do |field|
       serialized_form_params[field.to_sym] = self.send(field)
     end
     require 'yaml'

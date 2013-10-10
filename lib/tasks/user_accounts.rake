@@ -1,8 +1,3 @@
-require(File.join(File.dirname(__FILE__),'../../../..', 'config', 'boot'))
-
-require 'rake/rdoctask'
-require 'tasks/rails'
-
 namespace :user_accounts do
 
     namespace :import do

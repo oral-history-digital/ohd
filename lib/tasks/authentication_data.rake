@@ -1,8 +1,3 @@
-require(File.join(File.dirname(__FILE__),'../../../..', 'config', 'boot'))
-
-require 'rake/rdoctask'
-require 'tasks/rails'
-
 namespace :authentication_data do
 
   desc "report on and maintain authentication data integrity"
@@ -71,6 +66,7 @@ namespace :authentication_data do
             registration.first_name       = name_parts.first
             registration.last_name        = name_parts[1]
             registration.tos_agreement    = true
+            registration.priv_agreement   = false
             registration.workflow_state   = 'registriert'
 
             # application-info:

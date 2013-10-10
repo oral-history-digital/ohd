@@ -16,3 +16,5 @@ SCOPE
 
   end
 end
+
+Tag.send :include, ZWAR::TagExtension
