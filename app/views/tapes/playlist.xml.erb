@@ -9,7 +9,7 @@
         <image><%= tape.interview.still_image.url(:original) %></image>
         <meta rel="segments"><%= transcript_interview_tape_path(:id => tape.id, :format => :xml) %></meta>
         <meta rel="start"><%= @interview.video? ? 10 : 1 -%></meta>
-        <meta rel="streamer">rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv</meta>
+        <meta rel="streamer">rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv</meta>
         <% if media_extension[:hd] -%>
         <meta rel="hd.file"><%= tape.media_file media_extension[:hd] %></meta>
         <% end -%>
