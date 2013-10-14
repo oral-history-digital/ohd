@@ -58,13 +58,6 @@ class UserRegistration < ActiveRecord::Base
               end
 EVAL
     end
-    class_eval <<DEF
-              def after_initialize
-                (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
-                  self.send(attr.to_s + "=", value)
-                end
-              end
-DEF
   end
 
   def self.registration_field_names
@@ -148,6 +141,9 @@ DEF
                              ]
 
   def after_initialize
+    (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
+      self.send(attr.to_s + "=", value)
+    end
     @skip_mail_delivery = false
   end
 
