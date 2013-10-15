@@ -16,7 +16,6 @@ class LocationReferencesController < BaseController
     end
     wants.html do
       # this is only rendered when calling 'ortssuche.html' explicitly!
-      # render :text => { 'results' => @results.map{|i| i.json_attrs } }.to_json
       render :action => :index
     end
     wants.json do
