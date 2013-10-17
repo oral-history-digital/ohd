@@ -40,7 +40,7 @@ module Paperclip
           FileUtils.mkdir_p(File.dirname(path(style_name)))
           log("saving #{path(style_name)}")
           FileUtils.mv(file.path, path(style_name))
-          FileUtils.chmod(0644, path(style_name))
+          FileUtils.chmod(0664, path(style_name))
         end
         @queued_for_write = {}
       end
