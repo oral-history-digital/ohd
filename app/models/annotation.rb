@@ -17,7 +17,7 @@ class Annotation < ActiveRecord::Base
   named_scope :for_segment, lambda{|segment| { :conditions => ["media_id > ?", Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id], :order => "media_id ASC", :limit => 1 }}
 
   # displayable user and editorial annotations per interview
-  named_scope :displayable, lambda{|interview| { :conditions => ["media_id LIKE ?", interview.archive_id.upcase.concat('%')]}}
+  named_scope :displayable, lambda{|interview| { :conditions => ["media_id LIKE ?", interview.archive_id.upcase.concat('%')], :order => "user_content_id ASC"}}
 
   # Validation: either interview_id or user_content_id must be nil
   validates_numericality_of :interview_id,
