@@ -15,6 +15,8 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
+  # Important: don't use a dependent => :destroy or :delete
+  # on these, as they are user-generated
   has_many  :annotations
 
   Category::ARCHIVE_CATEGORIES.each do |category|
@@ -195,14 +197,21 @@ DEF
   # This is used to reassociate all segment-based user_content,
   # i.e. user_annotations and their annotations.
   def reassign_user_content
+    # As we don't know the subsequent segments media_id yet,
+    # theoretically all the trailing annotations would have to
+    # be assigned to each segment, so that annotations on the last
+    # segment get assigned to each of the interviews segments in turn.
+    # To avoid this, I'm using an arbitrary media_id range of media_id..media_id+12
+    # which in practice should be safe for reassigning to the correct segment, while
+    # minimizing subsequent reassignments.
     UserAnnotation.find_each( \
         :conditions => \
-        ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 10)], \
+        ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)], \
         :include => :annotation \
         ) do |user_annotation|
       user_annotation.update_attribute :reference_id, self.id
       unless user_annotation.annotation.nil?
-        user_annotation.annotation.update :segment_id, self.id
+        user_annotation.annotation.update_attribute :segment_id, self.id
       end
     end
   end

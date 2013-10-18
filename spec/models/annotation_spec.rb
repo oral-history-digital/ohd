@@ -21,7 +21,6 @@ describe Annotation, 'upon creation' do
     @annotation.segment.should == @segment2
   end
 
-
 end
 
 def init_segments

@@ -146,7 +146,7 @@ class UserAnnotation < UserContent
         a.author = author
         a.media_id = reference.media_id
         a.timecode = reference.timecode
-        a.interview_id = reference.interview_id
+        # don't assign an interview_id
         a.user_content_id = self.id
       end
       self.reload
