@@ -113,6 +113,7 @@ class UserContentsController < BaseController
         end
         annotation_response
       else
+        puts "\n\n --- CREATE ANNOTATION FAILED:\n#{@object.inspect}\n\nvalid? - #{@object.valid? ? 'yes' : 'no'}/nERRORS: #{@object.errors.full_messages}-- @@"
         respond_to do |format|
           format.html do
             render :partial => 'segment_annotation', :object => @object
@@ -272,11 +273,11 @@ class UserContentsController < BaseController
 
   # Retrieves a user_content based on content id or segment media_id
   def segment_content(type='user_content')
+    @media_id = params[:media_id]
     @object ||= begin
       @type = params[:type] || type
       if params[:id].blank?
         # find by media_id
-        @media_id = params[:media_id]
         @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
       else
         # retrieve by user_content.id

@@ -66,7 +66,7 @@
         <%= link_to_function t(:show_existing_annotation, :scope => 'user_interface.actions'),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {:type => 'UserAnnotation'},
-                             :dynamic_parameters => {:id => 'archiveplayer(\'interview-player\').userAnnotationID'},
+                             :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
                              :on_create => "pauseOnAnnotation()"
                              }),
                              :class => 'annotate-action'-%>
