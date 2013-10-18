@@ -12,7 +12,7 @@ class UserAnnotation < UserContent
   named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
-  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE %', 'Segment', m_id] } }
+  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
 
   PUBLICATION_STATES = %w(proposed postponed rejected shared)
   STATES = PUBLICATION_STATES + %w(private)
@@ -162,7 +162,7 @@ class UserAnnotation < UserContent
   end
 
   def self.default_id_hash(instance)
-    Base64.encode64(instance.send(:read_property, :media_id) || 'blank').sub(/\\n$/,'')
+    Base64.encode64(instance.send(:media_id) || 'blank').sub(/\\n$/,'')
   end
 
 end
