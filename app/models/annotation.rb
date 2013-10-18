@@ -6,6 +6,12 @@ class Annotation < ActiveRecord::Base
 
   belongs_to :interview
   belongs_to :user_content
+
+  # the segment association is fragile, because a re-import will recreate
+  # the segments - while user generated annotations will not be re-created,
+  # thus outdating their foreign keys.
+  # For this reason, a segment#after_create callback is implemented
+  # that reassociates the user_annotation and annotation content.
   belongs_to :segment
 
   named_scope :for_segment, lambda{|segment| { :conditions => ["media_id > ?", Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id], :order => "media_id ASC", :limit => 1 }}
