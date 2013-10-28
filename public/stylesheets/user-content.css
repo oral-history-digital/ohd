@@ -464,6 +464,9 @@ body .teaserList .save_user_content {
     margin: 2px 0;
     position: relative;
 }
+#mainWrapper .title .inline-editor form.inline {
+    margin-left: 20px;
+}
 
 #modal_window .inline-editor form.inline {
    margin-top: 0;
