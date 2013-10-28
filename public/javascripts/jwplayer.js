@@ -88,7 +88,7 @@ jwplayer.utils.append = function (a, b) {
     a.appendChild(b)
 };
 jwplayer.utils.isIE = function () {
-    return (!+"\v1")
+    return Prototype.Browser.IE
 };
 jwplayer.utils.isIOS = function () {
     var a = navigator.userAgent.toLowerCase();
