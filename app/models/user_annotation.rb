@@ -37,7 +37,7 @@ class UserAnnotation < UserContent
       event :withdraw, :transitions_to => :postponed
       # removed by moderation, no resubmission possible
       event :remove, :transitions_to => :rejected
-      # retracted by used
+      # retracted by user
       event :retract, :transitions_to => :private
     end
     state :rejected do

@@ -7,10 +7,10 @@ class Annotation < ActiveRecord::Base
   belongs_to :interview
   belongs_to :user_content
 
-  # the segment association is fragile, because a re-import will recreate
+  # The segment association is fragile, because a re-import will recreate
   # the segments - while user generated annotations will not be re-created,
   # thus outdating their foreign keys.
-  # For this reason, a segment#after_create callback is implemented
+  # For this reason, a segment#before_create callback is implemented
   # that reassociates the user_annotation and annotation content.
   belongs_to :segment
 
