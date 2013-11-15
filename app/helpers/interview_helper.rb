@@ -85,7 +85,7 @@ module InterviewHelper
   end
 
   def format_transcript(text)
-    h(text).gsub(/~([^~]*)~/,'<em>\1</em>').gsub(/\s+([.,?;])/,'\1').sub(/^\s*[A-Z]{2,4}:/,'').strip
+    h(text).gsub(/~([^~]*)~/,'<em>\1</em>').gsub(/\s+([.,?;])/,'\1').strip
   end
 
   def location_to_param(name)
