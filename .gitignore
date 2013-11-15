@@ -1,7 +1,9 @@
 .idea/
 .rvmrc
+assets/
 config/database.yml
 db/schema.rb
 log/
 solr/data/
 sunspot-solr.pid
+tmp/
