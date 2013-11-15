@@ -102,8 +102,8 @@ class UserAccount < ActiveRecord::Base
     # remove all current password info,
     # regenerate a confirmation_token and
     # reset deactivated_at
-    self.encrypted_password = nil
-    self.password_salt = nil
+    self.encrypted_password = ''
+    self.password_salt = ''
     self.generate_confirmation_token
     self.deactivated_at = nil
     self.confirmed_at = nil
