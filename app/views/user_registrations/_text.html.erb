@@ -1,5 +1,5 @@
-<% case session[:locale]
-  when /^en/i %>
+<% case I18n.locale
+  when :en %>
     <p>
       Registration is required for research in the archive “Forced Labor 1939-1945". The
       <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>

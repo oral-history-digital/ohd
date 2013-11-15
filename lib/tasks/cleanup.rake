@@ -24,7 +24,7 @@ namespace :cleanup do
               end
     end
     translate_field_value = lambda do |value, field|
-      I18n.t(value, :scope => "devise.registration_values.#{field}", :locale => 'de')
+      I18n.t(value, :scope => "devise.registration_values.#{field}", :locale => :de)
     end
     index, edited, users = 0,0,0
 

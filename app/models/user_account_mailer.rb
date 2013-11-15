@@ -8,7 +8,8 @@ class UserAccountMailer < ActionMailer::Base
   end
 
   def account_activation_instructions(registration, account)
-    @mail_locale = (registration.nil? ? nil : registration.default_locale).to_s.upcase
+    @mail_locale = ((registration.nil? || registration.default_locale.nil?) ? I18n.default_locale : registration.default_locale).to_sym
+    @mail_locale = I18n.default_locale unless I18n.available_locales.include? @mail_locale
     @login = account.login
     mail_headers_and_info account, registration
     @url = confirm_account_url(:confirmation_token => account.confirmation_token, :protocol => 'https')
@@ -18,7 +19,7 @@ class UserAccountMailer < ActionMailer::Base
   private
 
   def mail_headers_and_info(account, registration=nil)
-    if defined?(@mail_locale) && @mail_locale == 'EN'
+    if defined?(@mail_locale) && @mail_locale == :en
       subject       "Your account for the archive 'Forced Labor 1939-1945'"
     else
       subject      "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"

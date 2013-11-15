@@ -3,7 +3,7 @@
 <% search ||= Search.new %>
 
 <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
-<% cache [ @locale, result.to_param, 'result', additional_params.join('+') ].join('/') do -%>
+<% cache [ I18n.locale.to_s, result.to_param, 'result', additional_params.join('+') ].join('/') do -%>
 
   <div class="baseContainerTeaserImage">
     <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title %>

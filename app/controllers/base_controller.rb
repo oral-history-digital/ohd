@@ -34,14 +34,13 @@ class BaseController < ResourceController::Base
   end
 
   def localize_template_path(path)
-    return path if @locale.blank?
     path_tokens = path.split('/')
     template_name = path_tokens.pop
     path = path_tokens.join('/')
     path << '/' unless path.blank?
     template_name << '.html.erb' unless template_name.include?('.')
     template_name_parts = template_name.split('.')
-    path << template_name_parts.shift << ".#{@locale}." << template_name_parts.join('.')
+    path << template_name_parts.shift << ".#{I18n.locale}." << template_name_parts.join('.')
   end
 
   def render_csv(filename)

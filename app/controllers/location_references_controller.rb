@@ -80,9 +80,8 @@ class LocationReferencesController < BaseController
   private
 
   # language= parameter overrides all
-  def set_locale
-    @locale = params[:language]
-    super
+  def set_locale(locale = nil, valid_locales = [])
+    super((params[:language] || I18n.default_locale).to_sym)
   end
 
   def query(paginate=false)

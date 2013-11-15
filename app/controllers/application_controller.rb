@@ -16,12 +16,15 @@ class ApplicationController < ActionController::Base
 
   before_filter :current_search_for_side_panel
 
-  def set_locale
-    @valid_locales ||= Dir.glob(File.join(Rails.root, 'config', 'locales', '??.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}.sort
-    @locale ||= (params[:locale] || session[:locale] || 'de').to_s
-    @locale = 'de' unless @valid_locales.include?(@locale)
-    session[:locale] = @locale
-    I18n.locale = @locale
+  def set_locale(locale = nil, valid_locales = [])
+    locale ||= (params[:locale] || I18n.default_locale).to_sym
+    valid_locales = I18n.available_locales if valid_locales.empty?
+    locale = I18n.default_locale unless valid_locales.include?(locale)
+    I18n.locale = locale
+  end
+
+  def default_url_options(options={})
+    { :locale => I18n.locale }
   end
 
   # resetting the remember_me_token on CSRF failure

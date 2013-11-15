@@ -13,11 +13,6 @@ module ApplicationHelper
     link_to t(name), external_url(page_token), :title => t(:notice, :scope => 'external_links'), :target => '_blank'
   end
 
-  def current_locale
-    code = params[:locale] || session[:locale]
-    code.nil? ? :de : code.to_sym
-  end
-
   def current_search_path
     if !@search.is_a?(Search) || @search.query_hash.blank?
       new_search_url
@@ -207,7 +202,7 @@ JS
   def formatted_time(time, nilstring='&mdash;', formatstring='%d.%m.%Y %H:%M', de_suffix=' Uhr')
     case time
       when Time
-        time.strftime(formatstring) + ((@locale || '').to_sym == :de ? de_suffix : '')
+        time.strftime(formatstring) + (I18n.locale == :de ? de_suffix : '')
       when String
         # converts the base DB storage format of time string representations
         time.sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+(\d{2})\D+(\d{2}).*/,'\3.\2.\1 \4:\5')

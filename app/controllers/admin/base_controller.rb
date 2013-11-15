@@ -8,10 +8,8 @@ class Admin::BaseController < BaseController
 
   private
 
-  def set_locale
-    @valid_locales = ['de']
-    @locale = 'de'
-    super
+  def set_locale(locale = :nil, valid_locales = [])
+    super I18n.default_locale, [I18n.default_locale]
   end
 
   def authenticate_admin_account

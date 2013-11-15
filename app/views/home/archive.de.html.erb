@@ -71,7 +71,7 @@
   Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
   <br/>
     <%= link_to 'Beschreibung der Kategorien »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "recherchemoeglichkeiten"),
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :de, :anchor => "recherchemoeglichkeiten"),
                 :title => "Welche Recherchemöglichkeiten gibt es?" %>
     <br/>
 </p>
@@ -89,7 +89,7 @@
   Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
   <br/>
     <%= link_to 'Beschreibung der Volltextsuche »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'de', :anchor => "suche-allgemein"),
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :de, :anchor => "suche-allgemein"),
                 :title => "Wie kann ich die Volltextsuche nutzen?" %>
     <br/>
 </p>
@@ -97,7 +97,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => 'de') -%>">
+    <a href="<%= localized_public_map_url(:locale => :de) -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Karte"/>
     </a>
   </div>
@@ -107,7 +107,7 @@
   Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
   <br/>
     <%= link_to 'zur Kartenrecherche »',
-                localized_public_map_url(:locale => 'de'),
+                localized_public_map_url(:locale => :de),
                 :title => "Kartenrecherche" %>
     <br/>
 </p>
@@ -115,7 +115,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => 'de') -%>">
+    <a href="<%= localized_interview_collections_url(:locale => :de) -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Teilsammlungen"/>
     </a>
   </div>
@@ -124,7 +124,7 @@
 <p>
   Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
   <br/>
-    <%= link_to "zur Karte der Teilsammlungen »", localized_interview_collections_url(:locale => 'de'), :title => "Geografische Verteilung der Teilsammlungen" %>
+    <%= link_to "zur Karte der Teilsammlungen »", localized_interview_collections_url(:locale => :de), :title => "Geografische Verteilung der Teilsammlungen" %>
     <br/>
 </p>
 
@@ -133,7 +133,7 @@
 <p>
   Über die
   <%= link_to (t :faq),
-              localized_home_path(:page_id=> t("faq_index", :scope => 'page_urls'), :locale => 'de'),
+              localized_home_path(:page_id=> t("faq_index", :scope => 'page_urls'), :locale => :de),
               :title => "Fragen und Antworten zur Nutzung des Archivs" %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:

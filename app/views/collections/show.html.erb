@@ -1,4 +1,4 @@
-<% cache [ @locale, @collection.project_id ].join('/') do -%>
+<% cache [ I18n.locale.to_s, @collection.project_id ].join('/') do -%>
 <h1><%= Collection.human_name %> &quot;<%= t(@collection.name, :scope => 'collections.name') %>&quot;</h1>
 
 <p>

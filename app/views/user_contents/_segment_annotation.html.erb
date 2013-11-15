@@ -37,7 +37,7 @@
         <label id="workflow_state_label" name="workflow_state" class="checkbox">
           <%= check_box_tag 'raw_workflow_state', 'shared', !@object.private?, { :class => @object.private? ? 'private' : 'shared', :onclick => "$('user_annotation_workflow_state').value = $('raw_workflow_state').checked ? 'shared' : 'private'; $('raw_workflow_state').toggleClassName('shared');"} %>
           <%= t(:publish_annotation, :scope => 'user_interface.user_content') %>
-          <%= link_to t(:annotation_guidelines, :scope => 'user_interface.user_content'), localized_home_path({:locale => current_locale, :page_id => "anmerkungsrichtlinien"}), :target => '_blank' -%>
+          <%= link_to t(:annotation_guidelines, :scope => 'user_interface.user_content'), localized_home_path({:locale => I18n.locale, :page_id => "anmerkungsrichtlinien"}), :target => '_blank' -%>
           <%= t(:publish_annotation2, :scope => 'user_interface.user_content') -%>
         </label>
         <%= hidden_field_tag 'user_annotation[workflow_state]', @object.private? ? 'private' : 'shared' -%>

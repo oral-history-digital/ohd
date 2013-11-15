@@ -120,7 +120,7 @@
         $$('#map-wrapper .preload-map').each(function(el){
             el.removeClassName('preload-map');
         });
-        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => @locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', dateStamp: '<%= map_data_datestamp -%>' });
+        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', dateStamp: '<%= map_data_datestamp -%>' });
     }
 
     function loadClusters() {
@@ -128,7 +128,7 @@
     }
 
     function loadMaps() {
-        var src =  "https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=<%= @locale || 'de' -%>&callback=loadClusters";
+        var src =  "https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=<%= I18n.locale.to_s -%>&callback=loadClusters";
         loadScript(src, null);
     }
 

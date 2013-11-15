@@ -4,7 +4,7 @@
     <p>
       <%= t(:nojs_message, :scope => 'plugins') %>
     </p>
-    <a href="http://activatejavascript.org/<%= @locale || 'de' -%>" target="_blank"><%= t(:nojs_link, :scope => 'plugins') -%></a>
+    <a href="http://activatejavascript.org/<%= I18n.locale.to_s -%>" target="_blank"><%= t(:nojs_link, :scope => 'plugins') -%></a>
   </div>
   <br class="clear" style="padding-bottom: 20px;"/>
 </noscript>

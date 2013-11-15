@@ -1,6 +1,6 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.zwangsarbeit-archiv.de<%= (current_locale.to_s == 'en') ? '/en' : '' -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
+        <a href="http://www.zwangsarbeit-archiv.de<%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
           <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
@@ -16,11 +16,11 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
+            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => "0" %></li>
             <%= render :partial => '/locale_chooser' %>
-            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => current_locale), :title => "Übersichtskarte der biografischen Stationen" %></li>
-            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %> </li>
-            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => current_locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => "Übersichtskarte der biografischen Stationen" %></li>
+            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => "Geografische Verteilung der Teilsammlungen" %> </li>
+            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => I18n.locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
           </ul>
         </div>
       </div>

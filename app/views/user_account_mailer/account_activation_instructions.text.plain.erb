@@ -1,4 +1,4 @@
-<% if @mail_locale != 'EN' -%>
+<% if (I18n.available_locales - [:en]).include? @mail_locale -%>
 Sehr geehrte/r <%= @user_name %>,
 
 wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @login %>
@@ -10,14 +10,14 @@ Mit freundlichen Grüßen,
 
 Das Archiv-Team "Zwangsarbeit 1939-1945, Erinnerungen und Geschichte"
 <% end -%>
-<% unless %w(DE EN).include?(@mail_locale) -%>
+<% if (I18n.available_locales - [:en, :de]).include? @mail_locale -%>
 
 ------------------------------------------------------------
 English version below
 ------------------------------------------------------------
 
 <% end -%>
-<% if @mail_locale != 'DE' -%>
+<% if (I18n.available_locales - [:de]).include? @mail_locale -%>
 Dear <%= @user_name %>,
 
 we confirm your account registration to our archive. Your username is: <%= @login %>

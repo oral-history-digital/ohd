@@ -66,7 +66,7 @@
   Content Categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
   <br/>
     <%= link_to 'description of categories »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "recherchemoeglichkeiten") %>
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :en, :anchor => "recherchemoeglichkeiten") %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -83,14 +83,14 @@
   Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
   <br/>
     <%= link_to 'explanation of fulltext search »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => 'en', :anchor => "suche-allgemein") %>
+                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :en, :anchor => "suche-allgemein") %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => 'en') -%>">
+    <a href="<%= localized_public_map_url(:locale => :en) -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Map"/>
     </a>
   </div>
@@ -100,14 +100,14 @@
   An interactive map shows sites of biographical relevance to the interviewees: place of birth, deportation, camps, companies and prisons, places of residence after 1945.
   <br/>
     <%= link_to 'interactive map »',
-                localized_public_map_url(:locale => 'en') %>
+                localized_public_map_url(:locale => :en) %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => 'en') -%>">
+    <a href="<%= localized_interview_collections_url(:locale => :en) -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Collections"/>
     </a>
   </div>
@@ -116,7 +116,7 @@
 <p>
   The overview map of the project's collections illustrate the provenance of the archive and provide a regional access.
   <br/>
-    <%= link_to "overview map of collections »", localized_interview_collections_url(:locale => 'en') %>
+    <%= link_to "overview map of collections »", localized_interview_collections_url(:locale => :en) %>
     <br/>
 </p>
 

@@ -155,7 +155,7 @@ class SearchesController < BaseController
   # even on AJAX requests
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
-      flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions', :locale => session[:locale] || I18n.locale)
+      flash[:alert] = t(:unauthenticated_search, :scope => 'devise.sessions', :locale => I18n.locale)
       session[:query] = Search.from_params(params).query_params
       if ACTIONS_FOR_DEFAULT_REDIRECT.include?(action_name)
         session[:"user_account.return_to"] = new_search_url
