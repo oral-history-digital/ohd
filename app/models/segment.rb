@@ -15,8 +15,8 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
-  # Important: don't use a dependent => :destroy or :delete
-  # on these, as they are user-generated
+  # Important: don't use a :dependent => :destroy or :delete
+  # on these, as they are user-generated.
   has_many  :annotations
 
   Category::ARCHIVE_CATEGORIES.each do |category|
@@ -170,9 +170,8 @@ DEF
 
   # returns the segment that leads the chapter
   def section_lead_segment
-    Segment.find :first,
-                 :conditions => ["interview_id = ? AND section = ?", interview_id, section],
-                 :order => "media_id ASC"
+    Segment.first :conditions => ["interview_id = ? AND section = ?", interview_id, section],
+                  :order => "media_id ASC"
   end
 
   def self.media_id_successor(mid)
@@ -204,11 +203,11 @@ DEF
     # To avoid this, I'm using an arbitrary media_id range of media_id..media_id+12
     # which in practice should be safe for reassigning to the correct segment, while
     # minimizing subsequent reassignments.
-    UserAnnotation.find_each( \
-        :conditions => \
-        ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)], \
-        :include => :annotation \
-        ) do |user_annotation|
+    UserAnnotation.find_each(
+        :conditions =>
+            ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)],
+        :include => :annotation
+    ) do |user_annotation|
       user_annotation.update_attribute :reference_id, self.id
       unless user_annotation.annotation.nil?
         user_annotation.annotation.update_attribute :segment_id, self.id

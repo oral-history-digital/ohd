@@ -15,7 +15,6 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   config.autoload_paths += %W(#{RAILS_ROOT}/lib/search_filters.rb)
-
   config.autoload_once_paths += %W( #{RAILS_ROOT}/lib/search_filters.rb )
 
   # Gem configuration (config.gem ...): We use bundler, please place gem configuration into the Gemfile.

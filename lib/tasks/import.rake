@@ -25,7 +25,7 @@ namespace :import do
     doc = open(xml_file) { |f| Hpricot.XML(f) }
 
     puts "Adding Collections data..."
-    
+
     collection_ids = {}
     (doc/:collection).each do |collection|
       platform_collection = Collection.create :name => (collection/'title').inner_html
@@ -63,7 +63,7 @@ namespace :import do
           attributes[f] = (interview/:person/f.gsub('_', '-')).inner_html
         end
         platform_interview.update_attributes attributes
-        
+
         platform_interview.update_attributes :first_name => (interview/:person/'firstname').inner_html,
                                              :last_name => (interview/:person/'firstname').inner_html,
                                              :other_first_names => (interview/:person/'middle-names').inner_html
@@ -87,7 +87,7 @@ namespace :import do
                                                    :interview_id => platform_interview.id,
                                                    :category_id => category_type_object.id
           end
-          
+
         end
 
         # editors
@@ -97,7 +97,7 @@ namespace :import do
         editors = {}
         (interview/'interview-team-member').each do |member|
           task = (member/'task').inner_html
-          if (task == 'segmentation' and !platform_interview.segmented) or (task == 'research' and !platform_interview.researched)            
+          if (task == 'segmentation' and !platform_interview.segmented) or (task == 'research' and !platform_interview.researched)
             name = nil
           else
             name = "#{(member/'first-name').inner_html} #{(member/'last-name').inner_html}"

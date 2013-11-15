@@ -112,7 +112,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
     conditionals << "workflow_state != ?"
     condition_args << "private"
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_annotations = UserAnnotation.find(:all, :conditions => conditions, :include => :user, :order => "submitted_at DESC")
+    @user_annotations = UserAnnotation.all(:conditions => conditions, :include => :user, :order => "submitted_at DESC")
   end
 
   def render_workflow_change

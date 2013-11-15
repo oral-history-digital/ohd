@@ -3,7 +3,7 @@ namespace :cleanup do
   desc "cleans up UserRegistration#created_at"
   task :user_creation_dates => :environment do
     puts "Cleaning up problematic creation dates for UserRegistration:"
-    ids = UserRegistration.find(:all, :conditions => ["created_at = ?", '0000-00-00 00:00:00']).map(&:id)
+    ids = UserRegistration.all(:conditions => ["created_at = ?", '0000-00-00 00:00:00']).map(&:id)
     updated = UserRegistration.update_all "created_at = '#{Time.gm(2010,1,1).to_s(:db)}'", "id IN (#{ids.join(',')})"
     puts "#{updated} registrations updated."
   end
@@ -116,7 +116,7 @@ namespace :cleanup do
 
     while offset < total
 
-      Photo.find(:all, :limit => "#{offset},#{batch}").each do |photo|
+      Photo.all(:limit => "#{offset},#{batch}").each do |photo|
 
         if !File.exists?(photo.photo.path)
 
@@ -152,7 +152,7 @@ namespace :cleanup do
 
     puts "\nChecking user registrations for malformed emails and missing accounts..."
 
-    registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
+    registration = UserRegistration.all(:conditions => "workflow_state = 'checked'").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
 
     while !registration.nil?
       if registration.email =~ /\s+/
@@ -171,14 +171,14 @@ namespace :cleanup do
       end
       puts
 
-      registration = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
+      registration = UserRegistration.all(:conditions => "workflow_state = 'checked' AND activated_at IS NULL").select{|ur| (ur.email =~ Devise::EMAIL_REGEX).nil?}.first
     end
 
 
     puts "\n\nChecking for more than one user registration per account...\n"
 
-    UserRegistration.find(:all, :having => "count(user_account_id) > 1", :group => 'user_account_id').each do |registration|
-      multiples = UserRegistration.find(:all, :conditions => ['user_account_id = ?', registration.user_account_id])
+    UserRegistration.all(:having => "count(user_account_id) > 1", :group => 'user_account_id').each do |registration|
+      multiples = UserRegistration.all(:conditions => ['user_account_id = ?', registration.user_account_id])
       number = multiples.size
       removables = multiples.select{|reg| reg != reg.user_account.user_registration }
       if removables.size == number
@@ -199,7 +199,7 @@ namespace :cleanup do
 
     puts "\n\nChecking registered user registrations that are stuck in 'checked' state to activate..."
 
-    registrations = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
+    registrations = UserRegistration.all(:conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
     last_size = 0
 
     while !registrations.empty? && registrations.size == 150 && registrations.size != last_size
@@ -216,12 +216,11 @@ namespace :cleanup do
           exit
         end
       end
-      registrations = UserRegistration.find(:all, :conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
+      registrations = UserRegistration.all(:conditions => "workflow_state = 'checked' AND activated_at IS NULL", :limit => "0,150")
     end
 
 
   end
-
 
   desc "Parses a logfile and sets newsletter settings according to the registration info sent"
   task :parse_log_for_newsletter, [:file] => :environment do |task,args|
@@ -304,7 +303,7 @@ namespace :cleanup do
   task :fix_countries => :environment do
 
     interviews = begin
-      Interview.find(:all).select{|i| i.countries.size != 1}
+      Interview.all.select{|i| i.countries.size != 1}
     end
 
     puts "#{interviews.size} interviews with wrong number of countries. Starting to fix"
@@ -317,7 +316,7 @@ namespace :cleanup do
     end
 
     puts "\n\nRe-mapping non-standardized country names"
-    countries = Category.find(:all, :conditions => "category_type = 'Lebensmittelpunkt'")
+    countries = Category.all(:conditions => "category_type = 'Lebensmittelpunkt'")
     mapping_table = {}
     countries.each do |country|
       t_name = I18n.translate(country.name, :scope => 'location.countries', :locale => :de)
@@ -340,7 +339,7 @@ namespace :cleanup do
     Rake::Task['solr:reindex:interview_data'].execute({:ids => interviews.map(&:archive_id).join(",")})
 
     puts "\nDeleting all unnecessary country categories"
-    cats = Category.find(:all, :joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "categories.category_type = 'Lebensmittelpunkt' AND cz.id IS NULL")
+    cats = Category.all(:joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "categories.category_type = 'Lebensmittelpunkt' AND cz.id IS NULL")
     puts "#{cats.size} countries found"
     cats.each{|c| puts c.name; c.destroy }
 
@@ -381,7 +380,7 @@ namespace :cleanup do
   desc "Fixes forced labor groups - duplicates"
   task :forced_labor_groups => :environment do
 
-    group_names = Category.find(:all, :select => "name", :conditions => "category_type = 'Gruppen'", :group => 'name').map(&:name)
+    group_names = Category.all(:select => "name", :conditions => "category_type = 'Gruppen'", :group => 'name').map(&:name)
 
     valid_group_names = group_names.map{|g| I18n.t(g, :scope => 'categories.forced_labor_groups', :locale => :de)}.uniq.delete_if{|g| !g[/^de\./].blank?}
 
@@ -409,7 +408,7 @@ namespace :cleanup do
       else
         Category.find_by_name_and_category_type(invalid_to_valid[group],'Gruppen').id
       end
-      interviews << Categorization.find(:all, :conditions => "category_id = #{category.id}").map(&:interview_id)
+      interviews << Categorization.all(:conditions => "category_id = #{category.id}").map(&:interview_id)
       if valid_id
         Categorization.update_all "category_id = #{valid_id}", "category_id = #{category.id}"
         puts " - mapping all categorizations for '#{group}' (#{category.id}) to '#{invalid_to_valid[group]}' (#{valid_id})"
@@ -423,7 +422,7 @@ namespace :cleanup do
 
     # Find and remove duplicate categorizations
     puts "\nChecking for duplicate category associations"
-    Categorization.find(:all, :conditions => "category_type = 'Gruppen'", :group => "interview_id", :having => "COUNT(*) > COUNT(category_id)").map(&:interview_id).each do |interview_id|
+    Categorization.all(:conditions => "category_type = 'Gruppen'", :group => "interview_id", :having => "COUNT(*) > COUNT(category_id)").map(&:interview_id).each do |interview_id|
       interview = Interview.find interview_id
       next if interview.nil?
       puts interview.archive_id
@@ -440,7 +439,7 @@ namespace :cleanup do
     interviews = interviews.flatten.uniq
     unless interviews.empty?
       puts "#{interviews.size} interviews to reindex:"
-      archive_ids = Interview.find(:all, :select => "archive_id", :conditions => "id IN (#{interviews.join(",")})").map(&:archive_id)
+      archive_ids = Interview.all(:select => "archive_id", :conditions => "id IN (#{interviews.join(",")})").map(&:archive_id)
       Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_ids.join(",")})
     end
 
@@ -456,7 +455,7 @@ namespace :cleanup do
 
     puts "Checking for unused categories:"
 
-    cats = Category.find(:all, :joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "cz.id IS NULL")
+    cats = Category.all(:joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "cz.id IS NULL")
     puts "#{cats.size} unused categories found#{cats.size > 0 ? ' - deleting.' : ''}"
     cats.each do |category|
       puts "#{category.category_type}: #{category.name} deleted."
@@ -464,7 +463,7 @@ namespace :cleanup do
     end
 
     puts "Done."
-    
+
   end
 
 
@@ -475,7 +474,7 @@ namespace :cleanup do
 
     Category.find_each do |category|
 
-      duplicate_categorizations = Categorization.find(:all, :conditions => "category_id = #{category.id}", :group => "interview_id", :having => "count(interview_id) > 1")
+      duplicate_categorizations = Categorization.all(:conditions => "category_id = #{category.id}", :group => "interview_id", :having => "count(interview_id) > 1")
 
       duplicate_categorizations.each do |categorization|
         removed = Categorization.delete_all "interview_id = #{categorization.interview_id} AND category_id = #{categorization.category_id} AND id != #{categorization.id}"
@@ -497,7 +496,7 @@ namespace :cleanup do
   desc "Removes empty location references"
   task :remove_empty_locations => :environment do
 
-    empty_locs = LocationReference.find :all, :conditions => "name REGEXP '^.{1,2}$'"
+    empty_locs = LocationReference.all :conditions => "name REGEXP '^.{1,2}$'"
 
     puts "\nChecking #{empty_locs.size} location_references for empty descriptors."
     deleted = 0

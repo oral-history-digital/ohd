@@ -198,7 +198,7 @@ JS
 
   # provides a date stamp for the locations data to circumvent rigid caching
   def map_data_datestamp
-    date = Import.find :first, :select => "time", :conditions => "time < '#{DateTime.now.beginning_of_week.to_s(:db)}'", :order => "time DESC"
+    date = Import.first :select => "time", :conditions => "time < '#{DateTime.now.beginning_of_week.to_s(:db)}'", :order => "time DESC"
     date = date.nil? ? DateTime.now.beginning_of_week : date.time
     date.strftime('%Y%m%d')
   end
