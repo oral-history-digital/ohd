@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/jerico-dev/globalize2.git
-  revision: 78f63318a0ec85120216d60da31aa0a99207c61e
+  revision: b6ebeb7a8d1e9729655f1f4cb2945cc6072a4544
   branch: master
   specs:
     globalize2 (0.2.0)
