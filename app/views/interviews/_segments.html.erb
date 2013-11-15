@@ -11,7 +11,7 @@
         <% section = segment.section -%>
         <% if current_section_segment -%>
     <li id="segments_section-<%= section -%>" class="section-heading">
-      <% heading = current_section_segment.subheading.blank? ? current_section_segment.mainheading : current_section_segment.subheading -%>
+      <% heading = current_section_segment.subheading(I18n.locale).blank? ? current_section_segment.mainheading(I18n.locale) : current_section_segment.subheading(I18n.locale) -%>
       In&nbsp;<span class="heading">&#147;<%= heading -%>&#148;</span>:
     </li>
         <% end -%>

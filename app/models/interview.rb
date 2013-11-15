@@ -118,9 +118,11 @@ DEF
     end
     text :headings, :boost => 20 do
       indexing_headings = ''
-      segments.headings.each do |segment|
-        indexing_headings << ' ' + segment.mainheading unless segment.mainheading.blank?
-        indexing_headings << ' ' + segment.subheading unless segment.subheading.blank?
+      segments.with_heading.each do |segment|
+        I18n.available_locales.each do |locale|
+          indexing_headings << ' ' + segment.mainheading(locale) unless segment.mainheading(locale).blank?
+          indexing_headings << ' ' + segment.subheading(locale) unless segment.subheading(locale).blank?
+        end
       end
       indexing_headings.squeeze(' ')
     end
@@ -241,7 +243,7 @@ DEF
   end
 
   def has_headings?
-    segments.headings.count > 0 ? true : false
+    segments.with_heading.count > 0 ? true : false
   end
 
   def segmented?
@@ -367,7 +369,7 @@ DEF
   def set_workflow_flags
     if segments.size > 0
       write_attribute :segmented, true
-      if segments.headings.size > 0
+      if segments.with_heading.size > 0
         write_attribute :researched, true
       end
       unless proofreaders.blank?

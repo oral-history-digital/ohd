@@ -18,37 +18,37 @@ module InterviewHelper
 
   # transforms the headings array into a hash structure
   # which renders the hierarchy better
-  def hashed_headings_from_array(headings)
+  def hashed_headings_from_array(segments_with_heading)
     headings_hash = {}
 
     section_number = 0
 
-    headings.each do |heading|
+    segments_with_heading.each do |segment_with_heading|
       # values for the player seeking
-      player_item = (heading.tape.number-1).to_s
-      player_pos = heading.start_time.floor.to_s
+      player_item = (segment_with_heading.tape.number - 1).to_s
+      player_pos = segment_with_heading.start_time.floor.to_s
       # html
       heading_id = "heading_" + player_item + "_" + player_pos
 
-      if !heading.mainheading.blank?
+      unless segment_with_heading.mainheading(I18n.locale).blank?
         section_number = headings_hash.keys.size + 1
         headings_hash[section_number] = {
-                :title => heading.mainheading,
-                :item => player_item,
-                :timecode => heading.raw_timecode.to_s,
-                :pos => player_pos,
-                :id => heading_id,
-                :subheadings => []
+            :title => segment_with_heading.mainheading(I18n.locale),
+            :item => player_item,
+            :timecode => segment_with_heading.raw_timecode.to_s,
+            :pos => player_pos,
+            :id => heading_id,
+            :subheadings => []
         }
       end
-      if !heading.subheading.blank? && !headings_hash[section_number].nil?
+      unless segment_with_heading.subheading(I18n.locale).blank? || headings_hash[section_number].nil?
         # add the subheading to the current mainheading
         headings_hash[section_number][:subheadings] << {
-                :title => heading.subheading,
-                :item => player_item,
-                :timecode => heading.raw_timecode.to_s,
-                :pos => player_pos,
-                :id => heading_id
+            :title => segment_with_heading.subheading(I18n.locale),
+            :item => player_item,
+            :timecode => segment_with_heading.raw_timecode.to_s,
+            :pos => player_pos,
+            :id => heading_id
         }
       end
     end

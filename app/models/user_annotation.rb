@@ -107,9 +107,9 @@ class UserAnnotation < UserContent
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
     @properties[:author] ||= [user.first_name, user.last_name].join(' ')
-    heading_segment = Segment.headings.for_media_id(reference.media_id).first
+    heading_segment = Segment.with_heading.for_media_id(reference.media_id).first
     unless heading_segment.nil?
-      @properties[:heading] = [heading_segment.section, heading_segment.subheading.blank? ? heading_segment.mainheading : heading_segment.subheading].join(' ')
+      @properties[:heading] = [heading_segment.section, heading_segment.subheading(I18n.locale).blank? ? heading_segment.mainheading(I18n.locale) : heading_segment.subheading(I18n.locale)].join(' ')
     end
     attr[:properties] = @properties
     attr
@@ -142,7 +142,7 @@ class UserAnnotation < UserContent
     update_attribute :shared, true
     if annotation.nil?
       annotation = Annotation.create do |a|
-        a.text = description
+        a.text = description # This implicitly creates an annotation text with the default locale.
         a.author = author
         a.media_id = reference.media_id
         a.timecode = reference.timecode

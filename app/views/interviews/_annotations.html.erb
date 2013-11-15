@@ -1,10 +1,12 @@
 <% cache "annotations_#{@interview.archive_id}" do -%>
 <ul class="annotations-list">
-    <% Annotation.displayable(@interview).each do |annotation| -%>
-    <li id="annotation_<%= annotation.id -%>" class="annotation <%= annotation.media_id -%>" style="display: none;">
-      <span class="author"><%= t(:label, :scope => "user_interface.annotations")-%> (<%=  annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => "user_interface.annotations")) -%>)</span>
-      <%= annotation.text %>
-    </li>
+    <% Annotation.for_interview(@interview).each do |annotation| -%>
+      <% unless annotation.text(I18n.locale).blank? %>
+        <li id="annotation_<%= annotation.id -%>" class="annotation <%= annotation.media_id -%>" style="display: none;">
+          <span class="author"><%= t(:label, :scope => 'user_interface.annotations')-%> (<%=  annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => 'user_interface.annotations')) -%>)</span>
+          <%= annotation.text(I18n.locale) %>
+        </li>
+      <% end -%>
     <% end -%>
 </ul>
 <% end -%>

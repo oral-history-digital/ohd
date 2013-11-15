@@ -1,3 +1,5 @@
+require 'globalize'
+
 class Segment < ActiveRecord::Base
 
   belongs_to :interview
@@ -27,10 +29,16 @@ class Segment < ActiveRecord::Base
 DEF
   end
 
-  named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
+  named_scope :with_heading,
+              :joins => :translations,
+              :conditions => [ 'segment_translations.locale = ? AND (segment_translations.mainheading IS NOT NULL OR segment_translations.subheading IS NOT NULL)', I18n.default_locale.to_s ],
+              :include => :translations
+
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
   named_scope :for_media_id, lambda {|mid| { :conditions => ["segments.media_id < ?", Segment.media_id_successor(mid)], :order => "media_id DESC", :limit => 1 }}
+
+  translates :mainheading, :subheading
 
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
@@ -41,22 +49,21 @@ DEF
   # validates_uniqueness_of :media_id
   validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
 
+  validates_associated :interview
   validates_associated :tape
 
   after_create :reassign_user_content
 
   def before_validation_on_create
-    # make sure we have a tape assigned
+    # Make sure we have a tape assigned.
     if self.tape.nil?
-      tape_media_id = (media_id || '')[/za\d{3}_\d{2}_\d{2}/i]
-      interview_archive_id = (media_id || '')[/za\d{3}/i].downcase
-      interview ||= Interview.find_by_archive_id(interview_archive_id)
-      raise "No interview found for archive_id='#{interview_archive_id}'" if interview.nil?
-      interview_id = interview.id
-      tape = Tape.find_or_initialize_by_media_id_and_interview_id(tape_media_id, interview_id)
-      raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{interview_id}" if tape.nil?
-      tape.save
-      tape.segments << self
+      raise "Interview ID missing." if self.interview_id.nil?
+
+      tape_media_id = (self.media_id || '')[/za\d{3}_\d{2}_\d{2}/i]
+      tape = Tape.first(:conditions => {:media_id => tape_media_id, :interview_id => self.interview_id})
+      raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{self.interview_id}" if tape.nil?
+
+      self.tape_id = tape.id
     end
   end
 
@@ -65,8 +72,20 @@ DEF
     string :media_id, :stored => true
     string :timecode
     text :joined_transcript_and_translation
-    text :mainheading, :boost => 10
-    text :subheading, :boost => 10
+    text :mainheading, :boost => 10 do
+      mainheading = ''
+      I18n.available_locales.each do |locale|
+        mainheading << ' ' + mainheading(locale) unless mainheading(locale).blank?
+      end
+      mainheading.strip
+    end
+    text :subheading, :boost => 10 do
+      subheading = ''
+      I18n.available_locales.each do |locale|
+        subheading << ' ' + subheading(locale) unless subheading(locale).blank?
+      end
+      subheading.strip
+    end
     text :locations, :boost => 5 do
       str = ''
       location_references.each do |location|

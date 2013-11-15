@@ -6,23 +6,18 @@ class TextMaterial < ActiveRecord::Base
                     :url => (ActionController::Base.relative_url_root || '') + '/interviews/:interview/text_materials/:basename.:extension',
                     :path => ':rails_root/assets/archive_text_materials/:interview/:basename.:extension'
 
-  DOCUMENT_TYPES = [
-    'Biography',
-    'Transcript',
-    'Translation'
-  ]
+  DOCUMENT_TYPES = %w(Biography Transcript Translation)
 
-  named_scope :of_type, lambda{|type| {:conditions => ['document_type = ?', type ] }}
-  named_scope :for_file, lambda{|filename| { :conditions => ['document_file_name = ?', (filename || '') + '.pdf' ]}}
+  named_scope :of_type, lambda{|type| {:conditions => [ 'document_type = ?', type ] }}
+  named_scope :for_file, lambda{|filename| { :conditions => [ 'document_file_name = ?', (filename || '') + '.pdf' ]}}
+  named_scope :for_locale, lambda{|locale| { :conditions => {:locale => locale.to_s}}}
 
   validates_attachment_presence :document
-  # validates_attachment_size does not work here
   validates_numericality_of :document_file_size, :greater_than => 0, :allow_nil => false
-  validates_attachment_content_type :document, :content_type => [ 'application/pdf', 'application/x-pdf', 'x-application/pdf' ]
-  # validates_presence_of :interview_id
+  validates_attachment_content_type :document, :content_type => [ 'application/pdf', 'application/x-pdf', 'x-application/pdf' ], :message => "Nur PDF-Dateien sind zulässig."
   validates_presence_of :document_type
-  validates_inclusion_of :document_type, :in => DOCUMENT_TYPES, :message => "Nur PDF-Dateien sind zulässig."
-  validates_uniqueness_of :interview_id, :scope => :document_type
+  validates_inclusion_of :document_type, :in => DOCUMENT_TYPES, :message => "Unzulässiger Dokumententyp."
+  validates_uniqueness_of :locale, :scope => [:interview_id, :document_type]
 
   def document_types
     DOCUMENT_TYPES

@@ -1,93 +1,101 @@
 require 'nokogiri'
+require 'globalize'
 
 # Optional Mapping Definitions:
 #
-# key_attribute: used as the unique key for the find_or_initialize
-#
 # class_name: class to be instantiated rather than the node name
 #
-# class_type/type_field: static value and field for type-scoping (for instance for STI-classes)
+# key_attributes:
+#  - Set to "none" when updates of existing records are not allowed, e.g. in combination with "delete_all" (see below).
+#  - Set to the unique primary or alternate key to be used with find_or_initialize (format: "attribute[|attribute[...]]").
+#    NB: It is not necessary to include "interview_id" to the unique key as this attribute will be implicitly added.
 #
-# scope_field: additional unique field that scopes the find_or_initialize by to allow scoped duplicates
+# delete_all: call a delete_all on has_many associations before evaluating an array-type node
 #
-# delete_all: calls a delete_all on has_many associations before evaluating an array-type node
-#
-# skip_invalid: doesn't cause an error on invalid objects, just skips them
+# skip_invalid: do not cause an error on invalid objects, just skip them
 
 class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
-  MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
+  MAPPING_FILE = File.join(Rails.root, 'config/xml_import_mappings.yml')
 
   SANITY_CHECKS = %w(export xml-schema created-at current-migration agreement published)
 
   # A few entities need to waive the checks so we can interpret agreement & published values
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
 
-  def initialize(filename, incremental=true, selective=false)
-    @incremental = !(incremental.nil? || incremental == false)
+  def initialize(filename, selective=false)
+    # Check whether we load a selection of contexts only.
     @selection = selective ? selective.split(/[,;\s]/).map{|s| [s.pluralize, s.singularize]}.flatten : []
     unless @selection.empty?
       puts "\nRestricting import to '#{@selection.join(", ")}'.\n"
     end
+
+    # Load XML-to-model mapping meta data.
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
+
+    # Load the interview to be imported.
     @archive_id = (filename.split('/').last[/za\d{3}/i] || '').downcase
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
     @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
+
+    # Prepare sanit checking.
     self.import_sanity_levels = SANITY_CHECKS
-    @@interview_associations = Interview.reflect_on_all_associations.map{|assoc| [ assoc.name, assoc.macro ]}
+
     super()
   end
 
   def start_document
-    @imported = { 'interviews' => [] }
+    # Variables used to version imports.
+
+    # To check whether we already imported a file.
+    @date_of_export = nil
+    # migration to store in imports table
+    @migration = nil
+
+
+    # Variables used for attribute assignment...
+
     # The current object class that serves as an import context
     # for all sub-nodes
     @current_context = nil
     # Sub-Typing of context...
-    @current_context_type = nil
     @current_node_name = nil
-    @current_subcontext = nil # not used right now
-    # The element-to-attribute (or sub-context) mapping for said context
+    # The element-to-attribute mapping for said context
     @current_mapping = {}
-    # The current mapping levels of the current node, in order (depth)
+    # The mapping levels of the current node, in order (depth)
     @mapping_levels = []
-    # The name of the current mapping levels of the current node
-    @current_mapping_level = nil
-
-    @last_main_node = ''
-
+    # The attribute hash of the current context.
+    @attributes = {}
+    # The currently active locale.
+    @current_locale = I18n.default_locale
+    # Whether the currently parsed attribute is translated.
+    @translated_attribute = false
+    # The text content of the current node (usually an attribute value) in the current locale.
     @current_data = ''
+    # Flag whether we are still parsing.
+    @parsing = true
+    # Flag used to exclude nodes not within the context selection.
+    @parse_within_selection = false
 
+
+    # Variables used for reporting...
+
+    # Import statistics.
+    @imported = { 'interviews' => [] }
+
+    # Progress and reporting.
+    @last_main_node = ''
     @node_index = 0
 
-    # store skipped tag names here to avoid duplicate reporting of errors
-    @skipped_tag_names = []
-
-    # The assocations of the current context
-    @associations = {}
-    # Associated data to the current context
-    @associated_data = {}
-
-    @attributes = {}
-
-    # The instance being built for the current context
-    @current_instance = nil
-    # This is the id used by the xml source
+    # Report source-to-target (platform-to-archive) ID assignment.
     @source_id = nil
-    # This is a mapping hash of source to local ids
     @source_to_local_id_mapping = {}
-    # flag whether we are still parsing
-    @parsing = true
-    # flag for parsing nodes at a deeper nesting level than selection
-    @parse_within_selection = false
-    # for setting the import time
-    @date_of_export = nil
-    # migration to store in imports table
-    @migration = nil
+
+    # Store skipped (=unassignable) tag names to avoid duplicate reporting of errors.
+    @skipped_tag_names = []
   end
 
   def end_document
-    # puts "\n\n@@@attributes inspection:\n#{@attributes.inspect}\n\n"
     if @parsing
       begin
         @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
@@ -133,20 +141,22 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     puts
   end
 
-  def start_element(name, attributes={})
+  def start_element(name, node_attributes={})
     if SANITY_CHECKS.include?(name)
-      # perform a sanity check
+
+      # Perform pre-node sanity check.
       case name
+
         when 'export'
-          attributes = node_attributes_to_hash(attributes)
+          node_attributes = node_attributes_to_hash(node_attributes)
           includes_all_mandatory_attributes = true
           %w(archive-id created-at quality).each do |attr|
-            includes_all_mandatory_attributes = false unless attributes.keys.include?(attr)
+            includes_all_mandatory_attributes = false unless node_attributes.keys.include?(attr)
           end
           if includes_all_mandatory_attributes
             increment_import_sanity 'xml-schema'
           end
-          export_archive_id = attributes['archive-id']
+          export_archive_id = node_attributes['archive-id']
           if export_archive_id != @archive_id
             report_sanity_check_failure_for 'export', "Mismatch of archive_ids: File-based=#{@archive_id}, based on XML attribute=#{export_archive_id}. Aborting."
           else
@@ -154,7 +164,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           end
 
           sanity_check = 'created-at'
-          export_date_attr = attributes[sanity_check]
+          export_date_attr = node_attributes[sanity_check]
           if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
@@ -167,254 +177,96 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           end
 
           # set the inferior quality flag
-          @interview.inferior_quality = (attributes['quality'].strip.first.to_i < 2)
+          @interview.inferior_quality = (node_attributes['quality'].strip.first.to_i < 2)
 
         else
-          # handle the data on closing the element
+          # These are post-node sanity checks that will be handled when closing the node.
+
       end
 
     elsif !(parsing?(name) && passes_import_sanity_checks(name))
-      # skip this element if not parsing
+      # Skip this element if not parsing.
       return
 
     elsif @mapping_levels.empty?
 
-      if @mappings.keys.include?(name)
-        if @last_main_node != name
-          STDOUT.printf "\n#{name}"; STDOUT.flush
-          @last_main_node = name
-        end
-        set_context(name)
-
-      elsif @mappings.keys.include?(name.singularize)
+      if name != name.singularize and @mappings.keys.include?(name.singularize)
+        # Start a collection node.
         if @last_main_node != name.singularize
           STDOUT.printf "\n#{name}"; STDOUT.flush
           @last_main_node = name.singularize
         end
         # check to see if we need to clear all associated items first
         item_mapping = @mappings[name.singularize]
-        if item_mapping.is_a?(Hash) && !item_mapping.empty?
-          key_attribute = item_mapping['key_attribute']
-          if (!key_attribute.nil? && %w(nil none).include?(key_attribute)) \
-              || item_mapping['delete_all']
-            # send the association a delete_all!
-            klass = (item_mapping['class_name'] || name.singularize).camelize.constantize
-            if klass.column_names.include?('interview_id') && !@interview.new_record?
-              STDOUT.printf " (deleted #{klass.delete_all(:interview_id => @interview.id)} #{klass.name.pluralize})"
-              STDOUT.flush
-            end
+        if item_mapping.is_a?(Hash) and item_mapping['delete_all']
+          # send the association a delete_all!
+          klass = (item_mapping['class_name'] || name.singularize).camelize.constantize
+          if klass.column_names.include?('interview_id') && !@interview.new_record?
+            num_deleted_records = klass.delete_all(:interview_id => @interview.id)
+            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
+            STDOUT.flush
           end
         end
 
-      elsif @associations.keys.include?(name.to_sym)
-        # somehow define a sub-context
-        set_subcontext(name)
+      elsif @mappings.keys.include?(name)
+        # Start an instance node.
+        if @last_main_node != name
+          STDOUT.printf "\n#{name}"; STDOUT.flush
+          @last_main_node = name
+        end
+        set_context(name)
 
       else
-        # We open another mapping level for the current context
-        open_mapping_level(name)
-        # assign according to attribute-mapping
-        set_current_attribute(name)
+        # Start unmapped collection, instance or attribute.
+
       end
-    else
-      # We open another mapping level for the current context
+
+    elsif @current_attribute.nil?
+      # Start an attribute node.
       open_mapping_level(name)
-      # assign according to attribute-mapping
       set_current_attribute(name)
+
+    else
+      # Start a locale node.
+      raise "Found invalid locale '#{name}' in import data." unless I18n.available_locales.include? name.to_sym
+      @current_locale = name.to_sym
+      @translated_attribute = true
+
     end
   end
 
   def end_element(name)
     @current_data.strip!
     if SANITY_CHECKS.include?(name)
-      # handle sanity checks
-      case name
-        when 'current-migration'
-          import_migration = Import.current_migration.strip
-          if import_migration != @current_data.strip
-            if import_migration > @current_data.strip
-              puts "Importing data from an older migration than '#{import_migration}': #{@current_data}."
-            else
-              puts "Importing data from a new migration '#{@current_data}'."
-            end
-          end
-          @migration = @current_data
-          increment_import_sanity name
+      return unless sanity_check_passes?(name)
 
-        when 'agreement'
-          if @current_data.strip == 'true'
-            puts "Agreement condition: satisfied."
-            increment_import_sanity name
-          else
-            puts "Does not satisfy agreement conditions - stopping import!"
-            @parsing = false
-            return
-          end
-
-        when 'published'
-          if @current_data.strip == 'true'
-            puts "Publish condition: satisfied."
-            increment_import_sanity name
-          else
-            puts "Does not satisfy publish condition (#{@current_data}) - stopping import!"
-            @parsing = false
-            return
-          end
-
-        when 'quality'
-          @interview.quality = @current_data.strip.to_f
-
-        else
-          # do nothing here
-      end
-      @current_data = ''
-      return
-
-    elsif !(parsing?(name))
+    elsif not parsing?(name)
       # do nothing
 
-    elsif !@current_context.nil? && @current_node_name == name && !attributes.empty?
-      # Wrap up the instance for the current context
-      key_attribute = %w(none nil).include?(@mappings[name]['key_attribute']) ? nil : (@mappings[name]['key_attribute'] || 'id').to_sym
-      @type_scope = {}
-      if @current_mapping.keys.include?('type_field')
-        type_field = @current_mapping['type_field']  || 'type'
-        @type_scope[type_field] = @current_mapping['class_type'] || name.camelize.capitalize
+    elsif not @current_context.nil?
 
-      elsif @current_mapping.keys.include?('scope_field')
-        @type_scope[@current_mapping['scope_field']] = attributes[@current_mapping['scope_field'].to_sym]
-      end
-      case @current_context.name
-        when 'Interview'
-          # simply assign the attributes to the interview
-          raise "Archive-ID mismatch:\nFile: #{@archive_id}\nData: #{attributes[:archive_id]}" unless attributes[:archive_id] == @archive_id
-          assign_attributes_to_instance(@interview)
-        else
-          @instance = if key_attribute.nil?
-                        @current_context.new
-                      elsif @type_scope.empty?
-                        if @current_context.columns.map(&:name).include?('interview_id')
-                          @current_context.send("find_or_initialize_by_#{key_attribute}_and_interview_id", attributes[key_attribute], @interview.id)
-                        else
-                          @current_context.send("find_or_initialize_by_#{key_attribute}", attributes[key_attribute])
-                        end
-                      else
-                        type_field = @type_scope.keys.first
-                        @current_context.send("find_or_initialize_by_#{key_attribute}_and_#{type_field}", attributes[key_attribute], @type_scope[type_field])
-                      end
+      if @current_node_name == name && !attributes.empty?
+        # Close instance node.
+        finalize_instance(name)
+      elsif @mapping_levels.last == name
+        # Close attribute node.
+        finalize_attribute(name)
 
-          if (@node_index += 1) % 15 == 12
-            STDOUT.printf '.'; STDOUT.flush
-          end
-
-          assign_attributes_to_instance(@instance)
-
-          # assign to interview association based on context_name
-          association = @@interview_associations.assoc(@current_context.name.underscore.pluralize.to_sym) || @@interview_associations.assoc(@current_context.name.underscore.to_sym)
-          # assign to interview association based on tag name
-          association ||= @@interview_associations.assoc(name.to_sym) || @@interview_associations.assoc(name.to_s.singularize.to_sym) || @@interview_associations.assoc(name.to_s.pluralize.to_sym)
-
-          unless association.nil?
-            # don't check the interview if we have a belongs_to association
-            unless association.last == :belongs_to
-              @interview.save if @interview.new_record?
-            end
-            unless @instance.valid? || @current_mapping['skip_invalid']
-              puts "\nERROR: #{@instance.class.name} '#{@instance}' invalid:\n#{@instance.inspect}\n\nError Messages:\n#{@instance.errors.full_messages.join("\n")}\n"
-            end
-            case association.last
-              when :has_many
-                $instance = @instance
-                @interview.instance_eval { eval "#{association.first.to_s} << $instance unless #{association.first.to_s}.include?($instance)" }
-              when :belongs_to
-                @instance.save
-                @interview.send("#{association.first}_id=", @instance.id)
-              else
-                if @instance.new_record?
-                  @instance = @interview.instance_eval { eval "build_#{association.first.to_s}" }
-                  assign_attributes_to_instance(@instance)
-                else
-                  $instance = @instance
-                  @interview.instance_eval { eval "#{association.first.to_s} = $instance" }
-                end
-            end
-          end
-          unless @instance.save
-            puts "\n=>> skipping #{@instance.inspect}\nErrors: #{@instance.errors.full_messages}"
-            interview = @instance.respond_to?('interview') ? @instance.interview : @interview
-            if !interview.nil?
-              puts "\nInterview (valid=#{interview.valid?}: #{interview.inspect}\nErrors on Interview; #{interview.errors.full_messages}" if !interview.errors.empty? || interview.new_record?
-            end
-            # remove the instance from the interview association again if invalid and skipping
-            if @current_mapping['skip_invalid'] && !association.nil?
-              case association.last
-                when :has_many
-                  @interview.send("#{association.first}").delete(@instance)
-                when :has_one
-                  @interview.send("#{association.first}=", nil)
-              end
-            end
-          end
-          errors = [ @instance.errors.full_messages.to_s, @instance.inspect ]
-          associations = @instance.class.reflect_on_all_associations.select{|assoc| assoc.macro == :belongs_to && assoc.name != :interview }
-          associations.each do |assoc|
-            associated_instance = @instance.send(assoc.name.to_s)
-            unless associated_instance.nil? || associated_instance.errors.empty?
-              errors << associated_instance.errors.full_messages.to_s
-              errors << associated_instance.inspect
-            end
-          end
-          raise "ERROR on #{@instance.class.name}:\n#{errors.join("\n")}" unless (@instance.valid? || @current_mapping['skip_invalid'])
-      end
-
-      unless @source_id.nil?
-        @source_to_local_id_mapping[@current_context.name.underscore] ||= {}
-        @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = @instance.id
-      end
-      save_associated_data
-      unless @instance.new_record?
-        @imported[@current_context.name.underscore.pluralize] ||= []
-        @imported[@current_context.name.underscore.pluralize] = @imported[@current_context.name.underscore.pluralize] << (key_attribute.nil? ? @instance.id : @instance[key_attribute.to_sym])
-      end
-      close_context(name)
-
-    elsif !@current_context.nil?
-      # handle as an attribute node
-
-      # ID node: set source ID if not set already
-      if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
-        @source_id ||= @current_data.to_i
-      end
-
-      # if we have a foreign key, try to associate with an existing object
-      if name =~ /[_-]id$/
-        potential_parents = @associations.select{|a| a =~ name.sub(/[_-]id$/,'') }
-        unless potential_parents.empty?
-          parent_association = @current_context.reflect_on_association(potential_parents.first)
-          unless parent_association.macro == :belongs_to
-            parent = parent_association.class_name.constantize.find(@source_to_local_id_mapping[parent_association.class_name.underscore][@current_data.to_i])
-            assign_attribute(name.sub(/[_-]id$/,'_id'), parent.id) unless parent.nil?
-          end
-        end
-      end
-
-      # Add to the attributes for the current context or associations
-      assign_data @current_data
-
-      if @associations.include?(name.to_sym) && !@current_subcontext.nil?
-        # close as sub-context
-        close_subcontext(name)
       else
-        # Close the current mapping level and return to
-        # one level higher up.
-        close_mapping_level(name)
+        # Close locale node.
+        raise "Found invalid locale '#{name}' in import data." unless I18n.available_locales.include? name.to_sym
+
+        # Assign a localized attribute value in the current context.
+        assign_attribute(@current_attribute, @current_data) unless @current_attribute.nil?
+        @current_data = ''
+
       end
+
+    else
+      # Close unmapped instance or attribute node.
 
     end
 
-    # clean-up in any case
-    @current_data = ''
-    @parse_within_selection = false if @selection.include?(name)
   end
 
   def characters(text)
@@ -426,21 +278,19 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   # implement a check for selective imports
   def parsing?(name)
     selection_toggle = case @selection
-      when []
-        true
-      when Array
-        @selection.include?(name) \
-          || @selection.include?(@current_context)
-    end
+                         when []
+                           true
+                         when Array
+                           @selection.include?(name) || @selection.include?(@current_context)
+                       end
     @parse_within_selection = true if selection_toggle
-    @parsing && (selection_toggle || @parse_within_selection)
+    @parsing && @parse_within_selection
   end
 
   # Initializes the state for the current context,
   # setting the current_mapping and mapping_levels.
   def set_context(klass)
     @current_node_name = klass
-    @current_subcontext = nil
     @mapping_levels = [klass]
     @current_mapping = @mappings[klass]
     begin
@@ -458,15 +308,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @current_context = @current_mapping['class_name'].camelize.constantize
       end
     end
-    @associations = {}
-    @current_context.reflect_on_all_associations.each do |assoc|
-      @associations[assoc.name] = assoc.name
-    end
-    if @current_mapping['associated_models'].is_a?(Hash)
-      @current_mapping['associated_models'].each do |expected,name|
-        @associations[expected.to_sym] = name.to_sym
-      end
-    end
     reset_attributes_for(@current_context.name)
     @current_attribute = nil
   end
@@ -475,70 +316,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def close_context(klass)
     raise "Context Mismatch on closing: (current: #{@current_context.name}, called: #{klass}" unless klass == @current_node_name
     reset_attributes_for(@current_context.name)
+    @parse_within_selection = false if @selection.include?(@current_context.name)
     @current_context = nil
     @current_node_name = nil
-    @current_subcontext = nil
     @mapping_levels = []
     @current_mapping = {}
-    @associations = {}
-    @associated_data = {}
     @source_id = nil
     @current_attribute = nil
-  end
-
-  # Initializes the state for a new associated context to
-  # the main context.
-  # Deal differently with has_many and belongs_to/has_one
-  def set_subcontext(klass)
-    associated_class = @associations[(klass || 'none').to_sym]
-    unless @current_context.reflect_on_association(associated_class).nil?
-        @current_subcontext = @current_context.reflect_on_association(associated_class)
-        @associations = {}
-        @current_subcontext.class_name.constantize.reflect_on_all_associations.each do |assoc|
-          @associations[assoc.name] = assoc.name
-        end
-        @associated_data[@current_subcontext.name] = \
-          (@current_subcontext.name.to_s.pluralize == klass.underscore) ? [] : {}
-    end
-    @associated_tag = klass
-    open_mapping_level klass
-  end
-
-  # Resets the state between associated contexts by
-  # returning to the next context level higher up.
-  def close_subcontext(klass)
-    raise "Subcontext Mismatch on closing: (current: #{@current_subcontext.name}, called: #{klass}" unless klass == @associated_tag
-    @current_subcontext = nil
-    close_mapping_level klass
-    unless @current_context.nil?
-      @associations = {}
-      @current_context.reflect_on_all_associations.each do |assoc|
-        @associations[assoc.name] = assoc.name
-      end
-    end
-    refresh_current_mapping
-  end
-
-  # assigns data to either the associated_data object (for sub-context)
-  # or attributes (for context)
-  def assign_data(data)
-    unless @current_attribute.nil?
-      if @associated_data.empty?
-        # write to attributes
-        assign_attribute(@current_attribute, data)
-      elsif !@current_subcontext.nil? && !@associated_data[@current_subcontext.name].nil?
-        # write to associated data
-        if @associated_data[@current_subcontext.name].is_a?(Array)
-          if @associated_data[@current_subcontext.name].empty?
-            @associated_data[@current_subcontext.name] << { @current_attribute => data }
-          else
-            @associated_data[@current_subcontext.name].last[@current_attribute] = data
-          end
-        else
-          @associated_data[@current_subcontext.name][@current_attribute] = data
-        end
-      end
-    end
+    @current_data = ''
   end
 
   # Opens a level of mapping, going deeper.
@@ -546,15 +331,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # don't open mapping levels if they don't define a mapping
     return if @mapping_levels.empty? && !@mappings.keys.include?(node)
     @mapping_levels << node
-
-    # TODO: if we have a new tag of the existing sub-context,
-    # add another associated_data element to the array
-    if !@current_subcontext.nil?
-      if @current_subcontext.name.to_s.singularize == node.underscore.singularize && @associated_data[@current_subcontext.name].is_a?(Array)
-        @associated_data[@current_subcontext.name] << {}
-      end
-    end
-
     refresh_current_mapping
   end
 
@@ -577,10 +353,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def close_mapping_level(node)
     @mapping_levels.pop if @mapping_levels.last == node
     @current_data = ''
+    @current_locale = I18n.default_locale
+    @translated_attribute = false
     refresh_current_mapping
-    unless @current_attribute.nil? || @current_subcontext.nil? || @associated_data[@current_subcontext.name].nil?
-      #puts "Associated Data for #{@current_subcontext.name}: #{@associated_data[@current_subcontext.name].inspect}"
-    end
     @current_attribute = nil
   end
 
@@ -592,51 +367,155 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @current_mapping = @mapping_levels.inject(@mappings.dup){|m,l| m.is_a?(Hash) ? m[l] : {} }
   end
 
-  # saves all associated data of an instance
-  def save_associated_data
-    unless @instance.id.nil?
-      associations = @instance.class.reflect_on_all_associations
-      @associated_data.keys.each do |name|
-        matching_associations = associations.select{|assoc| assoc.name == name}
-        raise "No such association: '#{name}' for #{@instance.class.name}." if matching_associations.empty?
-        association = matching_associations.first
-        if association.macro == :has_many
-          @associated_data[association.name].each do |object_attributes|
-            next if object_attributes.blank? || object_attributes.empty?
-            # build a new instance on the association collection
-            new_object = @instance.send(association.name).send("build", object_attributes)
-            new_object.save
-            puts "Saved (#{new_object.valid?}): #{new_object.inspect}"
-            raise new_object.errors.full_messages.to_s unless new_object.valid?
-          end
-        else
-          # build the associated object directly on the instance
-          new_object = @instance.send("build_#{association.name}", @associated_data[associate])
-          new_object.save
-          puts "Saved (#{new_object.valid?}): #{new_object.inspect}"
-          raise new_object.errors.full_messages.to_s unless new_object.valid?
-        end
-      end
-    end
+  def assign_attribute(name, value)
+    @attributes[@current_context.name] ||= {}
+    @attributes[@current_context.name][name.to_sym] ||= {}
+    @attributes[@current_context.name][name.to_sym][@current_locale] = value.is_a?(String) ? value.strip : value
   end
 
   def attributes
     @attributes[@current_context.name] ||= {}
   end
 
-  def assign_attribute(name, value)
-    @attributes[@current_context.name] ||= {}
-    @attributes[@current_context.name][name.to_sym] = value.is_a?(String) ? value.strip : value
+  def finalize_attribute(name)
+    # ID node: set source ID if not set already
+    if name == 'id' && @mapping_levels.last == 'id' && @mapping_levels[-2] == @current_context.name.underscore
+      @source_id ||= @current_data.to_i
+    end
+
+    # Add to the attributes for the current context.
+    assign_attribute(@current_attribute, @current_data) unless @current_attribute.nil? || @translated_attribute
+
+    # Close the current mapping level and return to
+    # one level higher up.
+    close_mapping_level(name)
+  end
+
+  def finalize_instance(name)
+
+    case @current_context.name
+      when 'Interview'
+
+        # Assign the attributes to the interview but don't save yet.
+        raise "Archive-ID mismatch:\nFile: #{@archive_id}\nData: #{attributes[:archive_id][I18n.default_locale]}" unless attributes[:archive_id][I18n.default_locale] == @archive_id
+        current_instance = @interview
+        assign_attributes_to_instance(current_instance)
+
+      else
+
+        key_attribute_hash = {}
+        key_attributes = %w(none nil).include?(@mappings[name]['key_attributes']) ? [] : (@mappings[name]['key_attributes'] || 'id').split('|').map(&:to_sym)
+        key_attributes.each do |key_attribute|
+          key_attribute_hash[key_attribute.to_s] = if attributes[key_attribute].nil?
+                                                     nil
+                                                   else
+                                                     raise 'Expected all key attributes to be available in default locale.' if attributes[key_attribute][I18n.default_locale].nil?
+                                                     attributes[key_attribute][I18n.default_locale]
+                                                   end
+        end
+
+        belongs_to_interview = @current_context.column_names.include?('interview_id')
+        current_instance = if key_attribute_hash.empty?
+                      # We are in "insert-only" mode and may therefore not update existing records.
+                      if belongs_to_interview
+                        @current_context.new :interview_id => @interview.id
+                      else
+                        @current_context.new
+                      end
+                    else
+                      # We update existing records if we find one by the (alternate) key.
+                      if belongs_to_interview
+                        key_attribute_hash['interview_id'] = @interview.id
+                      end
+                      dynamic_finder_name = 'find_or_initialize_by_' + key_attribute_hash.keys.sort.join('_and_')
+                      dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
+                      @current_context.send(dynamic_finder_name, *dynamic_finder_params)
+                    end
+
+        # Progression feedback.
+        if (@node_index += 1) % 15 == 12
+          STDOUT.printf '.'; STDOUT.flush
+        end
+
+        assign_attributes_to_instance(current_instance)
+
+        begin
+          current_instance.save!
+
+        rescue ActiveRecord::RecordInvalid
+
+          # Produce validation messages including all associations.
+          errors = [ current_instance.inspect, current_instance.errors.full_messages.to_s ]
+          associations = current_instance.class.reflect_on_all_associations.select { |assoc| assoc.macro == :belongs_to && assoc.name != :interview }
+          associations.each do |assoc|
+            associated_instance = current_instance.send(assoc.name.to_s)
+            unless associated_instance.nil? || associated_instance.errors.empty?
+              errors << associated_instance.errors.full_messages.to_s
+              errors << associated_instance.inspect
+            end
+          end
+
+          message = "ERROR on #{current_instance.class.name}:\n#{errors.join("\n")}"
+
+          if @current_mapping['skip_invalid']
+            puts "\n\n#{message}"
+          else
+            raise message
+          end
+        end
+
+        # Remember the instance type and ID for import statistics.
+        unless current_instance.new_record?
+          instance_id = if key_attributes.empty?
+                          current_instance.id
+                        else
+                          key_attributes.map { |att| current_instance[att] }.join('|')
+                        end
+          @imported[@current_context.name.underscore.pluralize] ||= []
+          @imported[@current_context.name.underscore.pluralize] << instance_id
+        end
+
+    end
+
+    unless @source_id.nil?
+      @source_to_local_id_mapping[@current_context.name.underscore] ||= {}
+      @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = current_instance.id
+    end
+
+    close_context(name)
   end
 
   # handle assignment to content_columns and setter methods
   def assign_attributes_to_instance(instance)
     db_columns = instance.class.content_columns.map{|c| c.name }
-    attributes.select{|k,v| !db_columns.include?(k.to_s)}.each do |attr,value|
-      instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
+    attributes.select{|k,v| !db_columns.include?(k.to_s)}.each do |attr, locales|
+      locales.each do |locale, value|
+        if instance.class.translates?
+          instance.class.with_locale(locale) do
+            instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
+          end
+        else
+          instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
+        end
+      end
       @attributes[@current_context.name].delete(attr)
     end
-    instance.attributes = attributes
+    attributes_by_locale = {}
+    attributes.each do |attr, locales|
+      locales.each do |locale, value|
+        attributes_by_locale[locale] ||= {}
+        attributes_by_locale[locale][attr] = value
+      end
+    end
+    attributes_by_locale.each do |locale, attrs|
+      if instance.class.translates?
+        instance.class.with_locale(locale) do
+          instance.attributes = attrs
+        end
+      else
+        instance.attributes = attrs
+      end
+    end
   end
 
   def reset_attributes_for(klass)
@@ -656,6 +535,52 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     attr_hash
   end
 
+  # Do post-node sanity checks.
+  def sanity_check_passes?(name)
+
+    case name
+      when 'current-migration'
+        import_migration = Import.current_migration.strip
+        if import_migration != @current_data.strip
+          if import_migration > @current_data.strip
+            puts "Importing data from an older migration than '#{import_migration}': #{@current_data}."
+          else
+            puts "Importing data from a new migration '#{@current_data}'."
+          end
+        end
+        @migration = @current_data
+        increment_import_sanity name
+
+      when 'agreement'
+        if @current_data.strip == 'true'
+          puts "Agreement condition: satisfied."
+          increment_import_sanity name
+        else
+          puts "Does not satisfy agreement conditions - stopping import!"
+          @parsing = false
+          return false
+        end
+
+      when 'published'
+        if @current_data.strip == 'true'
+          puts "Publish condition: satisfied."
+          increment_import_sanity name
+        else
+          puts "Does not satisfy publish condition (#{@current_data}) - stopping import!"
+          @parsing = false
+          return false
+        end
+
+      when 'quality'
+        @interview.quality = @current_data.strip.to_f
+
+      else
+        # These are pre-node sanity checks that have already been handled.
+
+    end
+    @current_data = ''
+    true
+  end
 
   # Import Sanity - set a precondition for a successful save
   # Each sanity level must be cleared before a successful validation
