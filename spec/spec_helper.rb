@@ -26,6 +26,9 @@ Spork.prefork do
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
   end
+
+  # ZWAR apps shared spec helpers.
+  require 'archive-shared/spec-support'
 end
 
 # The Spork.each_run block is run each time you run your specs.  In case you

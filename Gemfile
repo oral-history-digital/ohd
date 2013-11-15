@@ -13,8 +13,12 @@ gem 'exception_notification', '~> 2.3.0'
 gem 'workflow'
 gem 'will_paginate', '~> 2.3'
 gem 'paperclip', '~> 2.7.5'
+gem 'archive-shared'
 gem 'archive-authorization'
 gem 'archive-player'
+gem 'globalize2',
+    :git => 'git://github.com/jerico-dev/globalize2.git',
+    :branch => 'master'
 gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
 gem 'resource_controller', :require => false, # Requiring resource_controller loads ApplicationController too early!
     :git => 'git://github.com/jerico-dev/resource_controller.git',
