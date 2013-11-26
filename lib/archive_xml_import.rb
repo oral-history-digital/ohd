@@ -278,7 +278,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   end
 
   def characters(text)
-    @current_data << text.to_s
+    @current_data << text.to_s unless @current_context.nil?
   end
 
   private
@@ -503,6 +503,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
           end
         else
+          raise "Unexpected locale '#{locale}' for non-translated attribute '#{attr}'." if locale != I18n.default_locale
           instance.send("#{attr}=", value) if instance.respond_to?("#{attr}=")
         end
       end
@@ -521,6 +522,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           instance.attributes = attrs
         end
       else
+        raise "Unexpected locale '#{locale}' for non-translated object: #{attrs.inspect}." if locale != I18n.default_locale
         instance.attributes = attrs
       end
     end
