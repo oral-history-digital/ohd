@@ -63,11 +63,13 @@ module ApplicationHelper
   def segment_excerpt_for_match(segment, original_query='', width=10)
     # TODO: reduce word count in both directions on interpunctuation
     # handle wildcards
-    query_string = original_query.gsub(/\*/,'\w*')
+    query_string = Regexp.escape(original_query).gsub('\*','\w*')
+    transcript = segment.transcript.gsub(/[*~]([^*~]*)[*~]/,'\1')
+    translation = segment.translation.gsub(/[*~]([^*~]*)[*~]/,'\1')
     unless query_string.index(' ').nil?
       # check if an expression matches directly
       r = Regexp.new query_string, Regexp::IGNORECASE
-      if (segment.translation[r] || segment.transcript[r]).blank?
+      if (translation[r] || transcript[r]).blank?
         # and multiple expressions
         query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
         query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
@@ -75,16 +77,15 @@ module ApplicationHelper
       end
     end
     query_string.gsub!('_',' ')
-    # pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(' + query_string + ')\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
-    match_text = segment.translation[pattern] || segment.transcript[pattern]
-    match_text = if match_text.nil?
-      truncate(segment.translation, :length => 180)
+    match_text = translation[pattern] || transcript[pattern]
+    if match_text.nil?
+      truncate(translation, :length => 180)
     else
-      str = ((segment.translation.index(match_text) || segment.transcript.index(match_text)) == 0) ? '' : '&hellip;'
+      str = ((translation.index(match_text) || transcript.index(match_text)) == 0) ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
       "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
-    end.gsub(/~([^~]*)~/,'<em>\1</em>')
+    end
   end
 
   def zwar_paginate(collection, params=nil)
