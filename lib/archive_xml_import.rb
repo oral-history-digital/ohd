@@ -202,6 +202,14 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           # send the association a delete_all!
           klass = (item_mapping['class_name'] || name.singularize).camelize.constantize
           if klass.column_names.include?('interview_id') && !@interview.new_record?
+            # We use Klass.delete_all() to delete records as it's much more efficient than destroy_all().
+            # NB: this does not respect :dependent => :delete/:destroy configuration so we have
+            # to manually delete dependent translations to avoid orphans.
+            if klass.translates?
+              ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
+              num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
+              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations.)"
+            end
             num_deleted_records = klass.delete_all(:interview_id => @interview.id)
             STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
             STDOUT.flush
