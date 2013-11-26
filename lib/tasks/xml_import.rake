@@ -46,7 +46,7 @@ namespace :xml_import do
         statusmsg = "\n#{archive_id} [#{number-imported}] (#{Time.now.strftime('%d.%m.%y-%H:%M')}):"
 
         # First: XML import
-        Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+        Open4::popen4("rake xml_import:incremental[#{xmlfile}] --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
@@ -63,7 +63,7 @@ namespace :xml_import do
           statusmsg << "import completed for #{archive_id}."
           imported += 1
           # Second: XML language cleanup/import
-          Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
+          Open4::popen4("rake xml_import:languages[#{archive_id}] --trace") do |pid, stdin, stdout, stderr|
             stdout.each_line {|line| puts line }
             errors = []
             stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
@@ -103,7 +103,7 @@ namespace :xml_import do
         archive_id = xmlfile.to_s[/za\d{3}/i]
         puts "\n\nStarting import processes for archive id: #{archive_id}"
         # First: XML import
-        Open4::popen4("rake xml_import:incremental file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
+        Open4::popen4("rake xml_import:incremental[#{xmlfile}] --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
@@ -114,7 +114,7 @@ namespace :xml_import do
           end
         end
         # Second: XML language cleanup/import
-        Open4::popen4("rake xml_import:languages id=#{archive_id} --trace") do |pid, stdin, stdout, stderr|
+        Open4::popen4("rake xml_import:languages[#{archive_id}] --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
