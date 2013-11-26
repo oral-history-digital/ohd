@@ -71,8 +71,11 @@
               new Ajax.Autocompleter(   'search_person_name',
                                         'person_name_suggestions',
                                         '<%= person_name_searches_path %>',
-                                        { parameters: '<%= @search.serialized_query_params(false) %>',
-                                          method: 'get' });
+                                        {
+                                          parameters: '<%= @search.serialized_query_params(false) %>',
+                                          method: 'get',
+                                          minChars: 2
+                                        });
 
             <% end %>
 
