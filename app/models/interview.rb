@@ -7,13 +7,15 @@ class Interview < ActiveRecord::Base
   belongs_to :collection
 
   has_many  :photos,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => :interview
 
   has_many :text_materials,
            :dependent => :destroy
 
   has_many  :tapes,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => :interview
 
   has_many  :segments,
             :dependent => :destroy

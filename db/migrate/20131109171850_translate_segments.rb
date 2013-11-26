@@ -4,18 +4,22 @@ class TranslateSegments < ActiveRecord::Migration
     Segment.create_translation_table! :mainheading => :string, :subheading => :string
 
     # Migrate existing data to the translation table.
-    execute "INSERT INTO segment_translations(segment_id, locale, mainheading, subheading, created_at, updated_at) SELECT id, 'de', mainheading, subheading, NOW(), NOW() FROM segments WHERE mainheading IS NOT NULL OR subheading IS NOT NULL"
+    execute "INSERT INTO segment_translations(segment_id, locale, mainheading, subheading, created_at, updated_at) SELECT id, 'de', mainheading, subheading, NOW(), NOW() FROM segments WHERE (mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')"
 
     # Drop the migrated columns.
     remove_columns :segments, :mainheading, :subheading
 
     # Add an index to improve location_segments import performance.
     add_index :segments, :media_id
+
+    # Add an index to improve playlist generation performance.
+    add_index :segments, :tape_id
   end
 
   def self.down
-    # Drop index.
-    add_index :segments, :media_id
+    # Drop indexes.
+    remove_index :segments, :tape_id
+    remove_index :segments, :media_id
 
     # Re-create the original columns.
     add_column :segments, :mainheading, :string
