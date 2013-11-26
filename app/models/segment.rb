@@ -116,12 +116,6 @@ DEF
       end
       str
     end
-    Category::ARCHIVE_CATEGORIES.each do |category|
-      integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
-    end
-    string :person_name, :stored => false do
-      (full_title + ' ' + alias_names).squeeze(' ')
-    end
   end
 
   def archive_id
@@ -179,10 +173,6 @@ DEF
 
   def language_id
     interview.language_id
-  end
-
-  def full_title
-    interview.full_title || ''
   end
 
   def alias_names
