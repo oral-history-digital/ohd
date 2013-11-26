@@ -119,9 +119,9 @@ DEF
     text :headings, :boost => 20 do
       indexing_headings = ''
       segments.with_heading.each do |segment|
-        I18n.available_locales.each do |locale|
-          indexing_headings << ' ' + segment.mainheading(locale) unless segment.mainheading(locale).blank?
-          indexing_headings << ' ' + segment.subheading(locale) unless segment.subheading(locale).blank?
+        segment.translations.each do |translation|
+          indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
+          indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
         end
       end
       indexing_headings.squeeze(' ')

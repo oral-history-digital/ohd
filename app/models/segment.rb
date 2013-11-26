@@ -74,15 +74,15 @@ DEF
     text :joined_transcript_and_translation
     text :mainheading, :boost => 10 do
       mainheading = ''
-      I18n.available_locales.each do |locale|
-        mainheading << ' ' + mainheading(locale) unless mainheading(locale).blank?
+      translations.each do |translation|
+        mainheading << ' ' + translation.mainheading unless translation.blank?
       end
       mainheading.strip
     end
     text :subheading, :boost => 10 do
       subheading = ''
-      I18n.available_locales.each do |locale|
-        subheading << ' ' + subheading(locale) unless subheading(locale).blank?
+      translations.each do |translation|
+        subheading << ' ' + translation.subheading unless translation.subheading.blank?
       end
       subheading.strip
     end
