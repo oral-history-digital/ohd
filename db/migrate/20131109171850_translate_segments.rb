@@ -14,10 +14,16 @@ class TranslateSegments < ActiveRecord::Migration
 
     # Add an index to improve playlist generation performance.
     add_index :segments, :tape_id
+
+    # Improve interview_id index to also support segment search.
+    remove_index :segments, :interview_id
+    add_index :segments, [:interview_id, :section]
   end
 
   def self.down
     # Drop indexes.
+    remove_index :segments, [:interview_id, :section]
+    add_index :segments, :interview_id
     remove_index :segments, :tape_id
     remove_index :segments, :media_id
 
