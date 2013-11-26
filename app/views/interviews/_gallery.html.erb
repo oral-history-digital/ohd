@@ -4,7 +4,7 @@
         <ul id="image_row" style="width:<%= (@interview.photos.size * 117) %>px;">
         <% @interview.photos.each_with_index do |photo, index| %>
           <li class="slide">
-            <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.full_title[/^[^,.;]/]}]", :title => (photo.caption.blank? ? "" : photo.caption)  %>
+            <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.full_title[/^[^,;]+/]}]", :title => (photo.caption.blank? ? "" : photo.caption)  %>
           </li>
         <% end %>
         </ul>

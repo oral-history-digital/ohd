@@ -16,7 +16,6 @@ class SearchesController < BaseController
   def query
     @search = Search.from_params(@query_params || params)
     @search.search!
-    #reinstate_category_state
     @search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
@@ -28,7 +27,6 @@ class SearchesController < BaseController
         render :template => '/interviews/index.html'
       end
       format.js do
-        #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
         results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
         service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
         search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
@@ -36,7 +34,6 @@ class SearchesController < BaseController
           page.replace_html 'innerContent', results_html
           page.replace_html 'baseServices', service_html
           page.replace_html 'baseContainerRight', search_facets_html
-          # page << "setQueryHashInURL('#{@search.query_hash}');"
         end
       end
     end
@@ -85,10 +82,7 @@ class SearchesController < BaseController
   index do
     before do
       @search = Search.from_params(@query_params || params)
-      #puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
-      #puts "REFRESH SEARCH: #{@search.inspect}"
       @search.search!
-      #reinstate_category_state
       @search.segment_search!
       @search.open_category = params['open_category']
       @interviews = @search.results
@@ -100,7 +94,6 @@ class SearchesController < BaseController
       render :template => '/interviews/index.html'
     end
     wants.js do
-      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
@@ -180,28 +173,7 @@ class SearchesController < BaseController
     end
   end
 
-  # This method parses the reinstate[] parameter (array) to set the
-  # category settings on the current search (preferrably after conducting the search).
-  def reinstate_category_state
-    unless params[:reinstate].blank? || !params[:reinstate].is_a?(Array)
-
-      params[:reinstate].each do |category_param|
-
-        category = category_param.sub(/_\d+$/,'')
-        id = category_param[/\d+$/].to_i
-
-        if @search.respond_to?(category)
-
-          @search.send("#{category}=", (@search.send(category) || []) << id)
-
-        end
-
-      end
-
-    end
-  end
-
-  # override the usual handling of session before parameters in side-panel searches
+  # Override the usual handling of session before parameters in side-panel searches
   # here: local params override session!
   def current_query_params
     @query_params = Search.from_params(params).query_params

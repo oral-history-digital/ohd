@@ -111,7 +111,7 @@ end
 
 
 def init_user
-  @user = User.find(:first) || User.create do |user|
+  @user = User.first || User.create do |user|
     user.first_name = 'Xago'
     user.last_name = 'Yoyo'
   end

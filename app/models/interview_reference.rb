@@ -4,7 +4,7 @@ class InterviewReference < UserContent
     if list_of_archive_ids.is_a?(String)
       list_of_archive_ids = list_of_archive_ids.scan(/za\d{3}/i).map{|id| id.downcase }
     end
-    self.reference = Interview.find_by_archive_id list_of_archive_ids.first
+    self.reference = Interview.find_by_archive_id(list_of_archive_ids.first)
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end
 

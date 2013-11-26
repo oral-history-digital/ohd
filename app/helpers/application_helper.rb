@@ -104,7 +104,7 @@ module ApplicationHelper
   def last_import
     $last_import_date ||= begin
       last_import = Import.last.first
-      last_import ||= Interview.find(:first, :order => "created_at DESC")
+      last_import ||= Interview.first(:order => "created_at DESC")
       case last_import
         when Import
           last_import.time

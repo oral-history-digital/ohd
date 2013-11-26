@@ -30,22 +30,24 @@ class Search < UserContent
   RESULTS_PER_PAGE = 12
 
   FACET_FIELDS = [
-                      :person_name,
-                      :forced_labor_groups,
-                      :forced_labor_fields,
-                      :forced_labor_habitations,
-                      :languages,
-                      :countries
+      :person_name,
+      :forced_labor_groups,
+      :forced_labor_fields,
+      :forced_labor_habitations,
+      :languages,
+      :countries
   ]
 
-  NON_FACET_FIELDS = [ :fulltext,
-                      :partial_person_name,
-                      :page ]
+  NON_FACET_FIELDS = [
+      :fulltext,
+      :partial_person_name,
+      :page
+  ]
 
   # This contains a list of accessible attributes that are not
   # considered query params and will not be kept in a stored search.
   NON_QUERY_ACCESSIBLES = [
-                      :open_category
+      :open_category
   ]
 
   QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map{|a| a.to_s }
@@ -53,8 +55,8 @@ class Search < UserContent
   ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
 
   IGNORE_SEARCH_TERMS = [
-    I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
-    I18n.t('search_term', :scope => 'user_interface.search', :locale => :en)
+      I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
+      I18n.t('search_term', :scope => 'user_interface.search', :locale => :en)
   ]
 
   # Accessors for each query param *except* *fulltext*
@@ -127,7 +129,6 @@ DEF
   # The query parameters in hashed form.
   def query_hash
     @query_hash ||= Search.encode_parameters(query_params)
-    @query_hash
   end
 
   def page
@@ -150,39 +151,37 @@ DEF
     @facets ||= {}
     facet_name = name
     facet_name = (name.to_s.singularize << "_ids") unless Category::ARCHIVE_CATEGORIES.assoc(name.to_sym).nil?
-    @facets[facet_name.to_sym] ||= \
-    if @search.is_a?(Sunspot::Search)
-      facet = @search.facet(facet_name.to_sym)
-      # puts "FACET NAME: #{facet_name}  => #{facet}"
-      if facet.blank?
-        []
-      elsif facet.rows.blank?
-        if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
-          # yield all categories with a count of zero
-          Category.send(name).map{|c| [ c, 0 ]}
+    @facets[facet_name.to_sym] ||=
+        if @search.is_a?(Sunspot::Search)
+          facet = @search.facet(facet_name.to_sym)
+          if facet.blank?
+            []
+          elsif facet.rows.blank?
+            if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
+              # yield all categories with a count of zero
+              Category.send(name).map{|c| [ c, 0 ]}
+            else
+              []
+            end
+          elsif facet.rows.first.instance.nil?
+            # non-category facet - return an array of all values and counts
+            facet.rows.map{|f| [ f.value, f.count ]}
+          else
+            # category facet - return an array of all instances with number of corresponding hits
+            facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
+          end
         else
           []
         end
-      elsif facet.rows.first.instance.nil?
-        # non-category facet - return an array of all values and counts
-        facet.rows.map{|f| [ f.value, f.count ]}
-      else
-        # category facet - return an array of all instances with number of corresponding hits
-        facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
-      end
-    else
-      []
-    end
   end
 
   # Returns the query params - this is needed for link generation from a given query, for instance.
   def query_params
-    query = {}
-    QUERY_PARAMS.each do |query_param|
+    QUERY_PARAMS.inject({}) do |query, query_param|
       query_value = self.send(query_param)
       query[query_param] = query_value unless query_value.nil?
+      query
     end
-    query
   end
 
   # Returns a string-serialized version of the query params for use as
@@ -242,27 +241,10 @@ DEF
     @search
   end
 
-  # this is for test purposes only
-  def search_for_keyword(word)
-    Sunspot.search Interview do
-
-      keywords word.downcase
-
-      adjust_solr_params do |p|
-        p.delete(:defType)
-      end
-
-    end
-  end
-
-
   def matching_segments_for(archive_id)
     archive_id.upcase! if archive_id.is_a?(String)
-    match = @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
-    # puts "\n\n@@@@ MATCHING SEGMENTS FOR #{archive_id.inspect}:\n#{match.inspect}"
-    match
+    @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
   end
-
 
   # Performs a sub-search for matching segments on the facetted search
   # result set.
@@ -274,11 +256,6 @@ DEF
     unless fulltext.blank? || interview_ids.empty?
       subsearch = Sunspot.search Segment do
 
-        # keyword search on fulltext only - for DisMax queries
-        # keywords fulltext.downcase #do
-        #  highlight :transcript, :translation
-        #end
-
         with(:archive_id).any_of interview_ids
 
         paginate :page => 1, :per_page => 120
@@ -288,7 +265,6 @@ DEF
         # lucene search
         adjust_solr_params do |params|
           params[:defType] = 'lucene'
-          #params[:qt] = 'standard'
 
           # fulltext search
           unless fulltext.blank?
@@ -298,21 +274,12 @@ DEF
 
       end
 
-      # puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
-
-      # puts "\n\n@@@@ RAW RESULTS:"
-      # first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
-      # puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
-
-      # iterate over results, not subsearch!
-
+      # Iterate over results, not subsearch!
       @results.each do |interview|
-
 
         subsearch.hits.select{|h| h.instance.archive_id == interview.archive_id }.each do |segment_result|
 
           segment = segment_result.instance
-          #puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
 
            if @segments[interview.archive_id.upcase].is_a?(Array)
              @segments[interview.archive_id.upcase] << segment
@@ -328,7 +295,6 @@ DEF
     end
   end
 
-
   def self.from_params(query_params=nil)
     if query_params.blank?
       if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
@@ -341,21 +307,18 @@ DEF
       search_params.merge!(query_params)
       search = Search.new do |search|
         QUERY_PARAMS.each do |attr|
-          # puts "-> setting search query param: #{attr} = #{query_params[attr]}"
-          search.send(attr+'=', search_params[attr.to_s]) unless search_params[attr.to_s].blank?
-          # puts "search.#{attr} = #{search.send(attr.to_s)}"
+          search.send("#{attr}=", search_params[attr.to_s]) unless search_params[attr.to_s].blank?
         end
       end
-      # puts "Search.query_params = #{search.query_params}"
       search
     end
   end
 
   def self.in_interview(id, fulltext)
     search_results = if id.is_a?(Integer)
-      Interview.find(:all, :conditions => ['id = ?', id])
+      Interview.all(:conditions => ['id = ?', id])
     else
-      Interview.find(:all, :conditions => ['archive_id = ?', id])
+      Interview.all(:conditions => ['archive_id = ?', id])
     end
     Search.new do |search|
       search.results = search_results
@@ -532,7 +495,12 @@ DEF
     if query.blank?
       ''
     else
-      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!]+/,'').gsub(/([\(\)])/,'\\\\\1').gsub(/\(\W+\)?/,''))
+      query.mb_chars.
+          downcase.
+          gsub("\\",'').
+          gsub(/^[\*\?\+\-\{\}\[\]~!]+/,'').
+          gsub(/([\(\)])/,'\\\\\1').
+          gsub(/\(\W+\)?/,'')
     end
   end
 
@@ -549,14 +517,14 @@ DEF
         param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
-    Base64.encode64(param_tokens.join('|')).gsub("\n",'').gsub('/','_') # replace Base64 slashes with underscore!
+    Base64.encode64(param_tokens.join('|')).gsub("\n", '').gsub('/', '_') # replace Base64 slashes with underscore!
   end
 
   def self.decode_parameters(hash)
-    params_str = Base64.decode64(hash.gsub('_','/'))
+    params_str = Base64.decode64(hash.gsub('_', '/'))
     params = {}
     params_str.split('|').each do |token|
-      p_code = (token[/^[a-z]+=/] || '').sub('=','')
+      p_code = (token[/^[a-z]+=/] || '').sub('=', '')
       next if p_code.blank?
       p_value = token.sub(p_code + '=', '')
       p_key = nil

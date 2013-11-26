@@ -56,21 +56,21 @@ module UserContentsHelper
             :url => update_path,
             :method => :put,
             :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
-            :complete => "togglingContent = 0;",
+            :complete => 'togglingContent = 0;',
             :html => options.merge({:class => 'inline'})
     })
     js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
-    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
+    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable', :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
-        form_html += if(text_area)
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
+        form_html += if text_area
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)') \
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)')
         end
         form_html += hidden_field_tag :context, context
-        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => "update", :onclick => "togglingContent = 1;")
+        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update', :onclick => 'togglingContent = 1;')
         buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
         form_html + buttons_html + spinner_html
@@ -91,9 +91,9 @@ module UserContentsHelper
       if archive_id =~ /^za\d{3}$/
         image = interview_stills.select{|still| still.archive_id == archive_id }.first
         image_file = if image.nil? || image.still_image_file_name.nil?
-          image_path("/archive_images/missing_still.jpg")
+          image_path('/archive_images/missing_still.jpg')
         else
-          image_path(File.join("/interviews/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+          image_path(File.join('/interviews/stills', image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
         end
         list << content_tag(:li, image_tag(image_file, :alt => archive_id, :title => "#{image.full_title(I18n.locale)} (#{archive_id})"))
       end
@@ -107,9 +107,9 @@ module UserContentsHelper
   # render a singular interview reference detail for interview or segment items
   def reference_details_for_interview(interview)
     image_file = if interview.nil? || interview.still_image_file_name.nil?
-      image_path("/archive_images/missing_still.jpg")
+      image_path('/archive_images/missing_still.jpg')
     else
-      image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
+      image_path(File.join('/interviews/stills', interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
     end
     image_html = if interview.nil?
       image_tag(image_file)
@@ -129,7 +129,7 @@ module UserContentsHelper
     # habitations
     biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
                   + content_tag(:p, interview.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ')))
-    content_tag(:div, html, :class => "image-link") + content_tag(:ul, biographic)
+    content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end
 
   # render a singular interview reference detail for segment with or without annotation
@@ -137,9 +137,9 @@ module UserContentsHelper
     segment = user_content.reference
     interview = segment.interview unless segment.nil?
     image_file = if interview.nil? || interview.still_image_file_name.nil?
-                   image_path("/archive_images/missing_still.jpg")
+                   image_path('/archive_images/missing_still.jpg')
                  else
-                   image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
+                   image_path(File.join('/interviews/stills', interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
                  end
     image_html = if interview.nil?
              image_tag(image_file)
@@ -148,12 +148,12 @@ module UserContentsHelper
            end
     html = link_to_segment(segment, '', false, false, image_html, { :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:show_, :scope => "user_interface.labels")} #{Segment.human_name}", { :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:show_, :scope => 'user_interface.labels')} #{Segment.human_name}", { :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript
     annotation << content_tag(:li, label_tag(Segment.human_attribute_name(transcript_field)) + content_tag(:p, segment.send(transcript_field)))
-    content_tag(:div, html, :class => "image-link") + content_tag(:ul, annotation)
+    content_tag(:div, html, :class => 'image-link') + content_tag(:ul, annotation)
   end
 
   def topics_select(name, options={}, selected=[])

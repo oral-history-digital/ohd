@@ -466,7 +466,6 @@ namespace :cleanup do
 
   end
 
-
   desc "Removes duplicate categorizations - two or more assignments to exactly the same category for an interview"
   task :remove_duplicate_categories => :environment do
 
@@ -491,7 +490,6 @@ namespace :cleanup do
     puts "Done."
 
   end
-
 
   desc "Removes empty location references"
   task :remove_empty_locations => :environment do

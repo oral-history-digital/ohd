@@ -32,12 +32,30 @@ DEF
 
   named_scope :with_heading,
               :joins => :translations,
-              :conditions => [ 'segment_translations.locale = ? AND (segment_translations.mainheading IS NOT NULL OR segment_translations.subheading IS NOT NULL)', I18n.default_locale.to_s ],
-              :include => :translations
+              :conditions => [
+                  "segment_translations.locale = ?
+                  AND (
+                    (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
+                    OR
+                    (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
+                  )",
+                  I18n.default_locale.to_s
+              ],
+              :include => [:tape, :translations]
 
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
-  named_scope :for_media_id, lambda {|mid| { :conditions => ["segments.media_id < ?", Segment.media_id_successor(mid)], :order => "media_id DESC", :limit => 1 }}
+  named_scope :for_media_id,
+              lambda {|mid|
+                {
+                    :conditions => [
+                        "segments.media_id < ?",
+                        Segment.media_id_successor(mid)
+                    ],
+                    :order => "media_id DESC",
+                    :limit => 1
+                }
+              }
 
   translates :mainheading, :subheading
 

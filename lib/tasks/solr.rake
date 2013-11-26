@@ -5,7 +5,7 @@ namespace :solr do
 
     require 'net/http'
 
-    solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
+    solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[Rails.env]
 
     solr_port = solr_config['solr']['port']
     solr_gem_spec = Bundler.load.specs.find{|s| s.name == 'sunspot' }
@@ -23,7 +23,7 @@ namespace :solr do
     rescue Errno::ECONNREFUSED #not responding
       Dir.chdir(solr_path) do
         if RUBY_PLATFORM.include?('mswin32')
-          exec "start #{'"'}solr_#{ENV['RAILS_ENV']}_#{solr_port}#{'"'} /min java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
+          exec "start #{'"'}solr_#{ENV['Rails.env']}_#{solr_port}#{'"'} /min java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
         else
           pid = fork do
             #STDERR.close
@@ -31,8 +31,8 @@ namespace :solr do
           end
         end
         sleep(5)
-        File.open("#{log_dir}/#{ENV['RAILS_ENV']}_pid", "w"){ |f| f << pid}
-        puts "#{ENV['RAILS_ENV']} Solr started successfully on #{solr_port}, pid: #{pid}."
+        File.open("#{log_dir}/#{ENV['Rails.env']}_pid", "w"){ |f| f << pid}
+        puts "#{ENV['Rails.env']} Solr started successfully on #{solr_port}, pid: #{pid}."
       end
     end
 
@@ -42,8 +42,6 @@ namespace :solr do
   task :connect => :environment do
     solr_connection
   end
-
-
 
   namespace :delete do
 
@@ -111,12 +109,12 @@ namespace :solr do
 
       ids.each do |archive_id|
         query = if archive_id == '*'
-          'type:' + type
+                  'type:' + type
                 else
-          q = 'archive_id_ss:' + archive_id
-          q += 'AND type:' + type if type != '*'
-          q
-        end
+                  q = 'archive_id_ss:' + archive_id
+                  q += 'AND type:' + type if type != '*'
+                  q
+                end
         solr_connection.delete_by_query query
         puts archive_id + ' (' + type + ')'
       end
@@ -147,10 +145,12 @@ namespace :solr do
 
       puts "\nIndexing #{total} interviews..."
 
-      while(offset<total)
+      while offset<total
 
-        Interview.find(:all, :conditions => conditions,
-                       :limit => "#{offset},#{batch}").each do |interview|
+        Interview.all(
+            :conditions => conditions,
+            :limit => "#{offset},#{batch}"
+        ).each do |interview|
           interview.index
         end
 
@@ -187,9 +187,9 @@ namespace :solr do
 
       puts "\nIndexing #{total} segments..."
 
-      while(offset<total)
+      while offset<total
 
-        Segment.find(:all, :joins => joins, :conditions => conds, :limit => "#{offset},#{batch}").each do |segment|
+        Segment.all(:joins => joins, :conditions => conds, :limit => "#{offset},#{batch}").each do |segment|
           begin
             segment.index
           rescue Exception => e
@@ -218,8 +218,13 @@ namespace :solr do
     task :locations, [:interviews ] => :environment do |task,args|
 
       archive_id = (args[:interviews] || '').scan(/za\d{3}/i)
-      interviews = Interview.find :all,
-                                  :conditions => archive_id.empty? ? nil : archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"
+      interviews = Interview.all(
+          :conditions => if archive_id.empty? then
+                           nil
+                         else
+                           archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"
+                         end
+      )
 
       conditions = "duplicate IS NOT TRUE"
       conditions += archive_id.empty? ? "" : " AND interview_id IN ('#{interviews.map(&:id).join("','")}')"
@@ -286,11 +291,11 @@ namespace :solr do
     desc "randomly reindex a number of interviews"
     task :randomly,[:number] => ["solr:connect", :environment] do |task,args|
       number = args[:number] || ENV['number'] || Interview.count(:all)
-      ids = Interview.find(:all, :select => :id, :order => "RAND()")[0..(number.to_i-1)].map(&:id)
+      ids = Interview.all(:select => :id, :order => "RAND()")[0..(number.to_i-1)].map(&:id)
       puts "Randomly indexing #{ids.size} interviews..."
       index = ids.size
       id = ids.shift
-      while(id)
+      while id
         interview = Interview.find(id.to_i)
         unless interview.nil?
           STDOUT.printf "\n\n======= [#{index}]\n#{interview.archive_id}"
@@ -345,15 +350,15 @@ namespace :solr do
   end
 
   def solr_connection
-    unless defined?($SOLR)
-      solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[RAILS_ENV]
+    if defined?($SOLR)
+      $SOLR
+    else
+      solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[Rails.env]
 
       url = "http://#{solr_config['solr']['hostname']}:#{solr_config['solr']['port']}/#{solr_config['solr']['path'].strip.gsub(/^\//, '')}"
       puts "Connecting to: '#{url}'"
 
       $SOLR = RSolr.connect :url => url
-    else
-      $SOLR
     end
   end
 

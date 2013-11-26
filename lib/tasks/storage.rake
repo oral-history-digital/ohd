@@ -88,9 +88,9 @@ namespace :storage do
 
     puts "Importing interview stills for #{total} interviews:"
 
-    while(offset < total) do
+    while offset < total do
 
-      Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
+      Interview.all(:limit => "#{offset},#{batch}", :readonly => false).each do |interview|
 
         archive_id = interview.archive_id.downcase
 
@@ -139,9 +139,9 @@ namespace :storage do
 
     puts "Checking media files for #{total} interviews:"
 
-    while(offset < total) do
+    while offset < total do
 
-      Interview.find(:all, :limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
+      Interview.all(:limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
 
         dir = interview.archive_id.upcase
         archive_path = File.join(ActiveRecord.path_to_storage, dir, "#{dir}_archive", 'data', 'av')
@@ -213,7 +213,7 @@ namespace :storage do
           end
 
           # check the video flag
-          if interview.video == true
+          if interview.video
             puts "ERROR: #{interview.archive_id} set as video but only has audio media files!"
             wrong_video << interview.archive_id
             interview.update_attribute :video, false
@@ -222,7 +222,7 @@ namespace :storage do
         else
 
           # check the video flag
-          unless interview.video == true
+          unless interview.video
             puts "ERROR: #{interview.archive_id} set as audio but has video media files!"
             wrong_audio << interview.archive_id
             interview.update_attribute :video, true

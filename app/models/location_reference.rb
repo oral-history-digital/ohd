@@ -372,19 +372,17 @@ class LocationReference < ActiveRecord::Base
       end
 
       unless raster.empty?
-        # puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
         self.with(:quadrant).any_of(raster)
       end
 
-      unless query[:page].blank?
-        self.paginate :page => query[:page].to_i, :per_page => 50
-      else
+      if query[:page].blank?
         self.paginate :page => 1, :per_page => 800
+      else
+        self.paginate :page => query[:page].to_i, :per_page => 50
       end
 
       adjust_solr_params do |params|
         params[:defType] = 'lucene'
-        #params[:qt] = 'standard'
 
         # fulltext search
         unless location.blank?

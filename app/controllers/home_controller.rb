@@ -3,7 +3,7 @@ class HomeController < BaseController
 
   NO_LAYOUT = %w(map_tutorial)
 
-  STATIC_PAGES = (Dir.entries(File.join(RAILS_ROOT, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
+  STATIC_PAGES = (Dir.entries(File.join(Rails.root, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
   skip_before_filter :check_user_authentication!
 
@@ -21,5 +21,5 @@ class HomeController < BaseController
       raise ActionController::UnknownAction
     end
   end
-  
+
 end
