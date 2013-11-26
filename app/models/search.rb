@@ -216,12 +216,12 @@ DEF
     @page = (current_query_params.delete('page') || 1).to_i
 
     if current_query_params.blank?
-      @search = blank_search(@page)
+      @search = unfiltered_interview_search(@page)
 
     else
       if current_query_params['partial_person_name'].blank?
         # fulltext search
-        @search = standard_lucene_search current_query_params, @page
+        @search = filtered_interview_search current_query_params, @page
 
       else
         # search for partial person names for autocompletion
@@ -229,6 +229,7 @@ DEF
 
       end
     end
+    @search.execute!
     @hits = @search.total
     @results = @search.results
 
@@ -362,86 +363,22 @@ DEF
   private
 
   # the default blank search - nothing but facets
-  def blank_search(page=1)
-    Sunspot.search Interview do
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
-    end
+  def unfiltered_interview_search(page = 1)
+    build_unfiltered_interview_query(page)
   end
 
-  # normal interview search
-  def standard_search(query, page=1)
-    # SOLR query
-    Sunspot.search Interview do
-
-      # fulltext search
-      unless query['fulltext'].blank?
-        keywords Unicode.downcase(Search.lucene_escape(query['fulltext']))
-      end
+  # Do a standard search with the lucene handler.
+  def filtered_interview_search(query, page = 1)
+    build_filtered_interview_query(query, page) do
 
       # person name facet
       unless query['person_name'].blank?
-        self.with :person_name, query['person_name']
+        with :person_name, query['person_name']
       end
-
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
-      end
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
-    end
-  end
-
-  # do a standard search with the lucene handler
-  def standard_lucene_search(query, page=1)
-    # SOLR query
-    fulltext_query = Search.lucene_escape(query['fulltext'])
-    Sunspot.search Interview do
-
-      # person name facet
-      unless query['person_name'].blank?
-        self.with :person_name, query['person_name']
-      end
-
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
-      end
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
 
       adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-        #params[:qt] = 'standard'
-
         # fulltext search
+        fulltext_query = Search.lucene_escape(query['fulltext'])
         unless fulltext_query.blank?
           params[:q] = fulltext_query
         end
@@ -450,15 +387,14 @@ DEF
     end
   end
 
-  # search for autocomplete on person_name
+  # Search for autocomplete on person_name.
   def person_name_search(query, page=1)
-    # SOLR query
-    fulltext_query = Search.lucene_escape(query['fulltext'])
-    Sunspot.search Interview do
+    build_filtered_interview_query(query, page) do
 
       # search for partial person names for autocompletion
       keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
 
+      fulltext_query = Search.lucene_escape(query['fulltext'])
       unless fulltext_query.blank?
         text_fields do
           any_of do
@@ -468,10 +404,39 @@ DEF
         end
       end
 
+    end
+  end
+
+  # Build a basic lucene query filtered on categories.
+  def build_filtered_interview_query(query, page, &attributes)
+
+    search = build_unfiltered_interview_query(page) do
+
       # category facets
       Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+        with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
       end
+
+      adjust_solr_params do |params|
+        params[:defType] = 'lucene'
+      end
+
+    end
+
+    search.build(&attributes)
+
+  end
+
+  # Build a basic query with attributes common
+  # to all interview queries.
+  def build_unfiltered_interview_query(page, &attributes)
+    search = Sunspot.new_search(Interview)
+
+    # Build the query.
+    search.build(&attributes) if block_given?
+
+    # Add query attributes common to all interview queries.
+    search.build do
 
       facet :person_name,
             :forced_labor_group_ids,
@@ -482,10 +447,6 @@ DEF
 
       paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
-
-      adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-      end
 
     end
   end
