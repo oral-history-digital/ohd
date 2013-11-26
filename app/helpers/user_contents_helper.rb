@@ -14,30 +14,43 @@ module UserContentsHelper
   def query_hash_to_string(query)
     case query
       when Hash
-        category_ids = query.values.flatten.inject([]){|ids, value| ids << value if (value.to_i != 0); ids }.uniq
-        preloaded_categories = category_ids.empty? ? [] : Category.find(:all, :conditions => "id IN (#{category_ids.join(',')})")
+        # Render fulltext search.
         fulltext = query.delete('fulltext')
-        str = fulltext.nil? ? [] : [ t('fulltext', :scope => :facets).to_s + ': "' + fulltext.to_s + '"' ]
+        str = fulltext.nil? ? [] : [ "#{t(:fulltext, :scope => :facets)}: \"#{fulltext}\"" ]
+
+        # Preload queried categories by ID.
+        category_ids = query.values.flatten.inject([]){|ids, value| ids << value.to_i if (value.to_i != 0); ids }.uniq
+        preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ] )
+
+        # Render categories and keywords.
         str += query.keys.inject([]) do |out, key|
           values = query[key]
           case values
             when Array
+              # Category search...
+              # Retrieve translated category names for category IDs.
               category_values = []
               values.map do |v|
-                cat = preloaded_categories.select{|c| c.id == v.to_i}.first
+                cat = preloaded_categories.detect{|c| c.id == v.to_i}
                 unless cat.nil?
                   category_values << t(cat.name, :scope => "categories.#{key}")
                 end
               end
-              out << t(key, :scope => :facets).to_s + ': ' + category_values.join(', ')
+              out << "#{t(key, :scope => :facets)}: #{category_values.join(', ')}"
+
             else
-              out << t(key, :scope => :facets).to_s + ': ' + values.to_s
+              # Keyword search...
+              out << "#{t(key, :scope => :facets)}: #{values}"
+
           end
           out
         end
         str.join('; ')
+
       else
+        # Fallback - TODO: obsolete?
         query.to_s
+
     end
   end
 
@@ -135,7 +148,7 @@ module UserContentsHelper
   # render a singular interview reference detail for segment with or without annotation
   def reference_details_for_segment(user_content)
     segment = user_content.reference
-    interview = segment.interview unless segment.nil?
+    interview = segment.interview
     image_file = if interview.nil? || interview.still_image_file_name.nil?
                    image_path('/archive_images/missing_still.jpg')
                  else
