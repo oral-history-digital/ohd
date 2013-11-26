@@ -20,7 +20,7 @@ class TapesController < BaseController
   private
 
   def parent_object
-    @interview = Interview.find_by_archive_id(params[:interview_id])
+    @interview = Interview.find_by_archive_id(params[:interview_id], :include => :translations)
   end
 
   def object

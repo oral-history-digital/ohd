@@ -2,7 +2,7 @@
 
 <div class="contentImagesLeft">
 <% if current_user_account.nil? -%>
-<% @interview = Interview.find_by_archive_id 'za465' -%>
+<% @interview = Interview.find_by_archive_id('za465', :include => :translations) -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) -%>">
         <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />

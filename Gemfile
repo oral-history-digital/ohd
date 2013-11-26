@@ -59,3 +59,7 @@ group :development, :test do
   gem 'spork', '~> 0.8.0'
 end
 
+group :test do
+  # Fixtures replacement:
+  gem 'factory_girl', '~> 2'
+end

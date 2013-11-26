@@ -25,6 +25,10 @@ Spork.prefork do
     # in your config/boot.rb
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
+
+    # Make FactoryGirl's DSL available in RSpec so that we don't have
+    # to type FactoryGirl.something() all the time.
+    config.include FactoryGirl::Syntax::Methods
   end
 
   # ZWAR apps shared spec helpers.

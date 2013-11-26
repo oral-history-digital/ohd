@@ -53,6 +53,8 @@ GEM
     escape (0.0.4)
     eventmachine (1.0.3)
     exception_notification (2.3.3.0)
+    factory_girl (2.6.4)
+      activesupport (>= 2.3.9)
     fastercsv (1.5.5)
     ffi (1.9.0)
     formatador (0.2.4)
@@ -163,6 +165,7 @@ DEPENDENCIES
   devise (= 1.0.8)
   escape
   exception_notification (~> 2.3.0)
+  factory_girl (~> 2)
   fastercsv
   globalize2!
   guard-rspec

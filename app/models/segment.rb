@@ -2,7 +2,8 @@ require 'globalize'
 
 class Segment < ActiveRecord::Base
 
-  belongs_to :interview
+  belongs_to :interview,
+             :include => :translations
 
   belongs_to :tape
 

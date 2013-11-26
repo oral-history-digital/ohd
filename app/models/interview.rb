@@ -1,3 +1,5 @@
+require 'globalize'
+
 class Interview < ActiveRecord::Base
 
   NUMBER_OF_INTERVIEWS = Interview.count :all
@@ -96,6 +98,8 @@ DEF
             :source => :category,
             :conditions => "categories.category_type = 'Sprache'"
 
+  translates :full_title
+
   validates_associated :collection
   validates_presence_of :full_title, :archive_id
   validates_uniqueness_of :archive_id
@@ -147,7 +151,7 @@ DEF
     end
 
     text :person_name, :boost => 20 do
-      (full_title + (alias_names || '')).squeeze(' ')
+      (translations.map(&:full_title).join(' ') + (" #{alias_names}" || '')).strip.squeeze(' ')
     end
 
     Category::ARCHIVE_CATEGORIES.each do |category|
@@ -203,10 +207,7 @@ DEF
   end
 
   def short_title
-    return '' if full_title.blank?
-    # this is the old form: Baschlai, S.
-    # @short_title ||= full_title[/^[^,;]+, \w/] + "."
-    # new form is: Sinaida Baschlai
+    return '' if full_title(I18n.locale).blank?
     @short_title ||= [first_name, (last_name || '').sub(/\s*\([^(]+\)\s*$/,'')].join(' ')
   end
 
@@ -216,8 +217,12 @@ DEF
   end
 
   def anonymous_title
-    return '' if full_title.blank?
-    @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'
+    title = full_title(I18n.locale)
+    return '' if title.blank? || title.match(/[,;]/).nil?
+    @anon_title ||= [
+        title.match(/([,;]\s+?)([^\s]+)/)[2],
+        title[/^\w/]
+    ].compact.join(' ') + '.'
   end
 
   def year_of_birth

@@ -50,7 +50,7 @@
     <% interview.text_materials.for_locale(I18n.locale).each do |text_material| %>
       <li>
         <% link_text = "#{t(text_material.document_type, :scope => 'user_interface.labels')}" %>
-        <% link_text << " #{interview.full_title[/^[^,]+,\s+\w/]}." if text_material.document_type == "Biography" %>
+        <% link_text << " #{interview.full_title(I18n.locale)[/^[^,;]+,\s+\w/]}." if text_material.document_type == "Biography" %>
         <% link_text << " (pdf)" %>
         <%= link_to link_text, text_material.document.url, :target => '_blank' %>
       </li>

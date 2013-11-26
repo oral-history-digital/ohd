@@ -14,7 +14,7 @@ class InterviewReference < UserContent
     attr = {}
     title_tokens = [Interview.human_name]
     title_tokens << reference.archive_id.upcase
-    title_tokens << reference.full_title
+    title_tokens << reference.full_title(I18n.locale)
     attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = reference.archive_id
     attr[:properties] = {
