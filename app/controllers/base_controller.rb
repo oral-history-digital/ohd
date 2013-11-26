@@ -1,20 +1,7 @@
 class BaseController < ResourceController::Base
-  include ExceptionNotification::Notifiable
-
-  helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   before_filter :check_user_authentication!
-
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
-
-  prepend_before_filter :set_locale
-
-  include SearchFilters
-
-  before_filter :current_search_for_side_panel,
-                :determine_user
+  before_filter :determine_user
 
   private
 

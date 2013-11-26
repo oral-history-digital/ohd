@@ -5,6 +5,7 @@ class InterviewsController < BaseController
   helper :interview
 
   before_filter :featured_location, :only => :show
+  skip_before_filter :current_search_for_side_panel, :except => :show
 
   actions :show
 
@@ -51,7 +52,7 @@ class InterviewsController < BaseController
   # as their parameter - this overrides the
   # resource controller finder for them
   def object
-    @object ||= @search.results.select{|i| i.archive_id == param }.first unless @search.results.nil?
+    @object ||= @search.results.select{|i| i.archive_id == param }.first unless @search.nil? or @search.results.nil?
     @object ||= end_of_association_chain.find_by_archive_id(param) unless param.nil?
     @object
   end

@@ -7,8 +7,8 @@ class LocationReferencesController < BaseController
   layout :check_for_iframe_render
 
   skip_before_filter :check_user_authentication!
-  skip_before_filter :current_search
-  skip_before_filter :init_sidepanel_search
+  skip_before_filter :current_search_for_side_panel
+  before_filter :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
 
   index do
     before do

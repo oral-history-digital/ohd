@@ -4,11 +4,11 @@ class SearchesController < BaseController
 
   prepend_before_filter :redirect_unauthenticated_users
 
-  # handle search initialization specifically
+  # Handle search initialization.
   before_filter :current_query_params
   skip_before_filter :current_search_for_side_panel
 
-  before_filter :determine_user, :only => :query
+  before_filter :determine_user, :only => [ :query, :index ]
   before_filter :remove_search_term_from_params
 
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']

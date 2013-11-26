@@ -2,10 +2,6 @@ class TapesController < BaseController
 
   before_filter :parent_object
 
-  skip_before_filter :current_query_params
-
-  skip_before_filter :current_search
-
   skip_before_filter :current_search_for_side_panel
 
   def playlist
