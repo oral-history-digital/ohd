@@ -217,6 +217,42 @@ namespace :cleanup do
     puts "\ndone. Updated #{count} of #{total} total Annotations."
   end
 
+  # since the use-case is the same for both of these actions, they are grouped into
+  # one task that recovers lost segment_ids
+  desc "assigns segments directly to annotations and user_contents that have an invalid segment_id"
+  task :reassign_lost_segments => :environment do
+
+    puts "Assigning segments to all annotations that currently are missing their segment"
+    count = 0
+    index = 0
+    total = Annotation.count :all, :conditions => "segments.id IS NULL", :include => :segment
+
+    Annotation.find_each(:conditions => "segments.id IS NULL", :include => :segment) do |annotation|
+      annotation.assign_segment
+      count += 1 if annotation.save
+      if (index += 1) % 10 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+    end
+    puts "\ndone. Updated #{count} of #{total} total Annotations with missing segments."
+
+    puts "Assigning segments to all user_annotations that currently are missing their reference"
+    count = 0
+    index = 0
+    refjoin = "LEFT JOIN segments ON user_contents.reference_id = segments.id AND user_contents.reference_type = 'Segment'"
+    total = UserAnnotation.count :all, :conditions => "segments.id IS NULL", :joins => refjoin
+
+    UserAnnotation.find_each(:conditions => "segments.id IS NULL", :joins => refjoin, :readonly => false) do |user_annotation|
+      user_annotation.reference = Segment.find_by_media_id(user_annotation.media_id)
+      count += 1 if user_annotation.save
+      if (index += 1) % 10 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+    end
+    puts "\ndone. Updated #{count} of #{total} total UserAnnotations with missing references."
+
+  end
+
   desc "removes assigned interviews for user-generated annotations to prevent deletion on import"
   task :unassign_user_annotation_interview => :environment do
 

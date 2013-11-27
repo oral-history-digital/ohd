@@ -67,14 +67,10 @@ class Annotation < ActiveRecord::Base
   end
 
   def assign_segment
-    if interview_id.blank?
-      # interview_id set means editorially curated and imported
-      # annotation, which don't have a segment association set
-      segment = Segment.for_media_id(media_id).first
-      unless segment.nil?
-        self.segment_id = segment.id
-        self.timecode = segment.timecode
-      end
+    segment = Segment.for_media_id(media_id).first
+    unless segment.nil?
+      self.segment_id = segment.id
+      self.timecode = segment.timecode
     end
   end
 
