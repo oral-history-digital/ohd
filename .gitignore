@@ -1,5 +1,6 @@
 .idea/
 .rvmrc
+assets/
 config/database.yml
 db/schema.rb
 log/
