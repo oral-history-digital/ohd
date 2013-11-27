@@ -169,7 +169,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
                 return value
               when 'country'
                 return value if value.length > 2
-                'user_countries'
+                'countries'
               when 'workflow_state'
                 'devise.workflow_states'
               else
