@@ -168,8 +168,7 @@ de:
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
       user_annotation: 'Ihre Anmerkung zum Ausschnitt'
       annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den'
-      publish_annotation2: 'zu.'
+      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
       save: 'Interview merken'
