@@ -34,7 +34,7 @@ GEM
       activesupport (= 2.3.18)
     activesupport (2.3.18)
     archive-authorization (0.0.1)
-    archive-player (0.2.1)
+    archive-player (0.2.3)
       activesupport (~> 2.3)
     archive-shared (0.0.1)
     capistrano (2.15.5)
