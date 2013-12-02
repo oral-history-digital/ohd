@@ -339,6 +339,12 @@ en:
         description: 'Comment'
         query: 'Search Criteria'
       user_annotation:
+        author: 'Author'
+        archive_id: 'Archive-ID'
+        timecode_string: 'Timecode'
+        submitted_at: 'Date of Submission'
+        description: 'Annotation Text'
+        link_url: 'Link'
         workflow_state: 'Publication State'
         description: 'Annotation'
         heading: 'Section'

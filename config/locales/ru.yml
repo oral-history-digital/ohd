@@ -303,6 +303,17 @@ ru:
         title: '##ru##'
         description: '##ru##'
         query: '##ru##'
+      user_annotation:
+        author: '##ru##'
+        archive_id: '##ru##'
+        timecode_string: '##ru##'
+        submitted_at: '##ru##'
+        description: '##ru##'
+        link_url: '##ru##'
+        workflow_state: '##ru##'
+        description: '##ru##'
+        heading: '##ru##'
+        media_id: '##ru##'
 
     errors:
       template:

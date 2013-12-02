@@ -11,6 +11,24 @@ class Admin::UserAnnotationsController < Admin::BaseController
       format.js do
         render :layout => false
       end
+      format.csv do
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Cache-Control'] = 'no-cache, must-revalidate'
+        response.headers['Content-Type'] = 'text/comma-separated-values'
+        fields = %w(author archive_id media_id timecode_string submitted_at workflow_state description link_url)
+        csv = [fields.map{|f| translate_field_or_value(f) }.join("\t")]
+        @user_annotations.each do |r|
+          r_csv = []
+          fields.each do |f|
+            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '')
+          end
+          csv << r_csv.join("\t")
+        end
+        send_data(csv.join("\n"),
+                  { :filename => "Nutzeranmerkungen-#{@filters.keys.map{|k| translate_field_or_value(k, @filters[k])}.join("_")}-#{Time.now.strftime('%d.%m.%Y')}.csv",
+                    :disposition => 'attachment',
+                    :type => 'text/comma-separated-values' })
+      end
     end
   end
 
@@ -133,6 +151,36 @@ class Admin::UserAnnotationsController < Admin::BaseController
 
   def expire_annotation_cache
     expire_fragment(fragment_cache_key("annotations_#{@object.archive_id}"))
+  end
+
+  def translate_field_or_value(field, value=nil)
+    unless value.nil?
+      if value.is_a?(Time)
+        return value.strftime('%d.%m.%Y %H:%M Uhr')
+      end
+      if value.blank?
+        return ''
+      end
+      if value == true
+        return 'ja'
+      end
+      value.strip! if value.is_a?(String)
+      scope = case field
+                when 'author', 'media_id', 'description', 'archive_id', 'timecode_string'
+                  return value
+                when 'reference'
+                  return value.to_s
+                when 'link_url'
+                  return File.join([request.host_with_port, ApplicationController.relative_url_root, value].compact)
+                when 'workflow_state'
+                  'user_annotations.workflow_states'
+                else
+                  'activerecord.attributes.user_annotation.' + field.to_s
+              end
+      t(value, :scope => scope, :locale => :de)
+    else
+      t(field, :scope => 'activerecord.attributes.user_annotation', :locale => :de)
+    end
   end
 
 end
