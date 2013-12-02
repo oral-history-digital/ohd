@@ -136,6 +136,18 @@ class UserAnnotation < UserContent
     delete_annotation
   end
 
+  # path to show the resource
+  def get_content_path
+    if reference.nil?
+      # just a failsafe - this could fail workbook view rendering
+      super.get_content_path
+    else
+      item = reference.tape.number
+      position = reference.start_time.round
+      interview_path(reference.interview, :item => item, :position => position)
+    end
+  end
+
   private
 
   def create_annotation
