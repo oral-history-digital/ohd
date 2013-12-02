@@ -117,10 +117,12 @@ module InterviewHelper
   end
 
   def interview_player(interview)
+    item = !params['item'].blank? ? params['item'].to_i-1 : nil
+    position = !params['position'].blank? ? params['position'] : nil
     JWPlayer.new(playlist_interview_tapes_path(interview, :format => :xml),
                              :id => 'interview-player',
-                             :item => (params[:item] != nil ? (params[:item].to_i-1) : nil),
-                             :position => (params[:position] != nil ? params[:position] : nil),
+                             :item => (item),
+                             :position => (position),
                              :hd_plugin => interview.video?)
   end
 
