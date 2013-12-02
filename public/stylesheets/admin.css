@@ -232,6 +232,9 @@ a.userTableButtonLink:hover {
 #user_annotations .user_annotation span {
     font-size: 95%;
 }
+#user_annotations .details textarea {
+    width: 320px;
+}
 #user_annotations .status,
 #interview_imports .last_import,
 #interview_imports .time,
