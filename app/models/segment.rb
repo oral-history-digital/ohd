@@ -7,12 +7,6 @@ class Segment < ActiveRecord::Base
 
   belongs_to :tape
 
-  has_one   :previous_segment,
-            :class_name => 'Segment'
-
-  has_one   :following_segment,
-            :class_name => 'Segment'
-
   has_many  :location_segments
 
   has_many  :location_references,
