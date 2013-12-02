@@ -4,11 +4,6 @@ class LocationReference < ActiveRecord::Base
   # (see Redaktionssystem: Location, Camp, Company, LocationName, PhysicalLocation...)
   # All this information is flattened into one table here.
 
-  # TODO: enforce singular location names and separate location names (at least per interview)
-  # from references in different categories (birth, deportation etc). Or store the categories
-  # in a struct or individual flags, so that multiple are possible. Otherwise location_segments
-  # will only be related to a single category, each.
-
   CITY_LEVEL = 0
   REGION_LEVEL = 1
   COUNTRY_LEVEL = 2
@@ -53,7 +48,6 @@ class LocationReference < ActiveRecord::Base
     text :alias_names, :boost => 3
     text :location_name, :boost => 6
     text :alias_location_names
-    string :quadrant
     string :location_type, :stored => true
     string :reference_type, :stored => true
     string :interviewee, :stored => true do
@@ -132,9 +126,6 @@ class LocationReference < ActiveRecord::Base
   end
 
   # setter functions
-  def camp_type=(category='')
-    @camp_category = category
-  end
 
   def camp_name=(name='')
     @camp_name = name
@@ -144,22 +135,27 @@ class LocationReference < ActiveRecord::Base
     @company_name = name
   end
 
-  def add_main_alias=(alias_names='')
-    @main_aliases ||= []
-    @main_aliases += (alias_names || '').split(/\s+?[;,]\s+?/)
-  end
-
   def additional_alias=(alias_names='')
     @additional_alias_names ||= []
     @additional_alias_names += (alias_names || '').split(/\s+?[;,]\s+?/)
   end
 
   def camp_alias_names=(alias_names='')
-    self.add_main_alias=alias_names
+    self.additional_alias=alias_names
   end
 
   def company_alias_names=(alias_names='')
-    self.add_main_alias=alias_names
+    self.additional_alias=alias_names
+  end
+
+  def camp_type=(category='')
+    @camp_category = category
+  end
+
+  # currently there is no usage for the camp_classification anywhere
+  # so this value isn't stored
+  def camp_classification=(classification)
+    @camp_classification = classification
   end
 
   def city_name=(alias_names='')
@@ -222,158 +218,10 @@ class LocationReference < ActiveRecord::Base
     @exact_longitude ||= read_attribute(:longitude)
   end
 
-
-  # returns approximated "flat" grid coordinates as distance from Berlin
-  def coordinates
-    coord = LocationReference.coordinates_for(latitude, longitude)
-    return coord if coord.first.nil?
-    [LocationReference.null_coordinates.first + coord.first, LocationReference.null_coordinates.last + coord.last]
-  end
-
-  def self.null_coordinates
-    @@reference_coord ||= LocationReference.coordinates_for('90','180') # wrap west of Alaska and north of Polar circle
-  end
-
-  def self.coordinates_for(lat, lon)
-    begin
-      y = 110.6 * lat.to_f
-      x = 75 * lon.to_f
-      [y.round, x.round] # lat, lng
-    rescue FloatDomainError
-      [ nil, nil ]
-    end
-  end
-
-  def grid_x
-    @grid_coord ||= grid_coordinates
-    @grid_coord.last
-  end
-
-  def grid_y
-    @grid_coord ||= grid_coordinates
-    @grid_coord.first
-  end
-
-  def quadrant
-    @grid_coord ||= grid_coordinates
-    (@grid_coord.first || '-').to_s + '=' + (@grid_coord.last || '-').to_s
-  end
-
-  def grid_coordinates
-    coord = coordinates
-    return [ nil, nil ] if coord.first.nil?
-    @grid_coord = []
-    coord.each do |distance|
-      @grid_coord << LocationReference.distance_to_grid_coordinate(distance)
-    end
-    @grid_coord
-  end
-
-  # sorting algorithm for grid coordinates
-  GRID_SORT = lambda do |a,b|
-    # first the numerical part
-    order = a.to_s[/\d+$/].to_i <=> b.to_s[/\d+$/].to_i
-    # next the alphabetical part
-    order = a.to_s[/^\w+/] <=> b.to_s[/^\w+/] if order == 0
-    order
-  end
-
-  def self.grid_encode(units)
-    while(units > 26 * 26) do
-      units = units - 26 * 26
-    end
-    ('A'..'Z').to_a[(units / 26).floor] + ('A'..'Z').to_a[units % 26]
-  end
-
-  def self.grid_decode(gridcode)
-    tokens = gridcode.scan(/\w{1}/)
-    value = 0
-    scale = 1
-    while !tokens.empty?
-      alpha = tokens.pop
-      value += ('A'..'Z').to_a.index(alpha) * scale
-      scale = scale * 26
-    end
-    value
-  end
-
-  def self.distance_to_grid_coordinate(distance)
-    return nil if distance.nil?
-    grid_units = (distance.abs / 1000).round # 250 km per grid unit
-    # puts "GridIndices for distance = #{distance}: #{grid_units / 26}:#{(grid_units2 / 10).round}:#{grid_units2 % 10}"
-    LocationReference.grid_encode(grid_units)
-  end
-
-  def self.grid_diff_coordinate(coordinate, diff)
-    coordinate = coordinate.to_s
-    nil unless coordinate =~ /^[A-Z]+$/
-    value = LocationReference.grid_decode(coordinate)
-    LocationReference.grid_encode(value + diff)
-  end
-
-  # yields a raster of quadrants around a grid coordinate pair
-  def self.surrounding_quadrant_raster_for(coordinates)
-    raster = []
-    x = coordinates.first
-    y = coordinates.last
-    # 5 x 5 raster centered on the coordinate
-    (-2..2).each do |diff_x|
-      (-2..2).each do |diff_y|
-        # skip border coordinates
-        next if diff_x.abs == 2 && diff_x.abs == diff_y.abs
-        rx = x.nil? ? nil : LocationReference.grid_diff_coordinate(x, diff_x)
-        ry = y.nil? ? nil : LocationReference.grid_diff_coordinate(y, diff_y)
-        raster << (rx || '???').to_s + '=' + (ry || '???').to_s
-      end
-    end
-    raster
-  end
-
-  # yields a raster of quadrants for a bounding set of coordinate pairs
-  def self.bounding_quadrant_raster_for(coord1, coord2)
-    raster = []
-    x_limits = [ coord2.first, coord1.first ].sort # don't sort like this: .sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
-    y_limits = [ coord2.last, coord1.last ].sort # don't sort like this: .sort{|a,b| LocationReference::GRID_SORT.call(a,b)}
-    puts "\n@@@ X_LIMITS: #{x_limits.inspect}\n Y_LIMITS: #{y_limits.inspect}"
-    x = x_limits.first #LocationReference.grid_diff_coordinate(x_limits.first, -1)
-    while x <=  LocationReference.grid_diff_coordinate(x_limits.last, 1)
-      y = y_limits.first #LocationReference.grid_diff_coordinate(y_limits.first, -1)
-      while y <=  LocationReference.grid_diff_coordinate(y_limits.last, 1)
-        raster << (x || '???').to_s + '=' + (y || '???').to_s
-        y = LocationReference.grid_diff_coordinate(y, 1)
-      end
-      x = LocationReference.grid_diff_coordinate(x, 1)
-    end
-    puts "\n@@@ Location Query in raster:\n#{raster.inspect}\n@@@"
-    raster
-  end
-
   def self.search(query={})
     Sunspot.search LocationReference do
 
       location = Search.lucene_escape(query[:location])
-
-      lon = query[:longitude].nil? ? nil : query[:longitude].to_f
-      lat = query[:latitude].nil? ? nil : query[:latitude].to_f
-
-      lon2 = query[:longitude2].nil? ? nil : query[:longitude2].to_f
-      lat2 = query[:latitude2].nil? ? nil : query[:latitude2].to_f
-
-      raster = []
-      unless lon.nil? && lat.nil?
-        raster = if lon2.nil? || lat2.nil?
-          loc = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
-          LocationReference.surrounding_quadrant_raster_for(loc.grid_coordinates)
-        else
-          loc1 = LocationReference.new{|l| l.latitude = lat; l.longitude = lon }
-          loc2 = LocationReference.new{|l| l.latitude = lat2; l.longitude = lon2 }
-          LocationReference.bounding_quadrant_raster_for(loc1.grid_coordinates, loc2.grid_coordinates)
-        end
-      end
-
-      unless raster.empty?
-        self.with(:quadrant).any_of(raster)
-      end
 
       if query[:page].blank?
         self.paginate :page => 1, :per_page => 800
@@ -399,16 +247,19 @@ class LocationReference < ActiveRecord::Base
   def accumulate_field_info
     accumulation_fields = {
         :camp_name => :location_name,
-        :additional_alias_names => :alias_location_names
+        :company_name => :location_name,
+        :exact_latitude => :latitude,
+        :exact_longitude => :longitude,
+        :camp_category => :place_subtype
     }
     accumulation_fields.each do |variable, field|
       if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
         send("#{field}=", instance_eval("@#{variable}"))
       end
     end
+    self.alias_location_names = ((self.alias_location_names || '').concat("; #{@additional_alias_names}"))\
+      .split(/\s+?[;,]\s+?/).delete_if{|p| p.blank?}.join('; ')
     self.location_type = 'Location' if self.location_type.blank?
-    self.latitude = @exact_latitude if defined?(@exact_latitude) && !@exact_latitude.blank?
-    self.longitude = @exact_longitude if defined?(@exact_longitude) && !@exact_longitude.blank?
     self.classified = ((@workflow_state || '').strip == 'classified')
     true
   end
