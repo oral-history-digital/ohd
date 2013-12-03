@@ -24,6 +24,8 @@ ru:
   for: '##ru##'
   close: '##ru##'
   here: '##ru##'
+  timecode: '##ru##'
+  zu: '##ru##'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -47,6 +49,8 @@ ru:
     faq_technical: '##ru##'
     hilfe_zu_technischen_fragen: '##ru##'
     karteneinfuehrung: '##ru##'
+    anmerkungsrichtlinien: '##ru##'
+    annotation_guidelines: '##ru##'
 
   page_urls: #outbound translation ('pretty' urls)
     archive: '##ru##'
@@ -60,6 +64,7 @@ ru:
     faq_searching: '##ru##'
     faq_technical: '##ru##'
     map_tutorial: '##ru##'
+    annotation_guidelines: '##ru##'
 
   tasks:
     interviewers: '##ru##'
@@ -88,6 +93,7 @@ ru:
       interview: '##ru##'
       video_interview: '##ru##'
       audio_interview: '##ru##'
+      segment_link: '##ru##'
       forced_labor_data: '##ru##'
       biography: '##ru##'
       transcript: '##ru##'
@@ -107,6 +113,7 @@ ru:
       workbook: '##ru##'
       show_all: '##ru##'
       show_interview: '##ru##'
+      show_: '##ru##'
       maximize_all: '##ru##'
       minimize_all: '##ru##'
       filter_contents: '##ru##'
@@ -117,8 +124,11 @@ ru:
     actions:
       edit: '##ru##'
       update: '##ru##'
+      save: '##ru##'
       reset: '##ru##'
       add: '##ru##'
+      annotate_segment: '##ru##'
+      show_existing_annotation: '##ru##'
     player:
       back: '##ru##'
       forward: '##ru##'
@@ -150,9 +160,16 @@ ru:
       delete: '##ru##'
       save: '##ru##'
       saved: '##ru##'
+      publish: '##ru##'
+      retract: '##ru##'
+      chars_allowed: '##ru##'
       tags_explanation: '##ru##'
       user_tags: '##ru##'
       tag_filters: '##ru##'
+      user_annotation: '##ru##'
+      annotation_explanation: '##ru##'
+      publish_annotation: '##ru##'
+      annotation_guidelines: '##ru##'
     interview_reference:
       save: '##ru##'
       saved: '##ru##'
@@ -174,6 +191,9 @@ ru:
       delete_content: "##ru##"
       need_javascript: "##ru##"
       need_ie8: "##ru##"
+      confirm_publish_content: '##ru##'
+      confirm_retract_content: '##ru##'
+      published_annotation_change_notice: '##ru##'
 
   privacy:
     label: '##ru##'
@@ -246,6 +266,9 @@ ru:
       tape:
         one: '##ru##'
         other: '##ru##'
+      segment:
+        one: '##ru##'
+        other: '##ru##'
       collection:
         one: '##ru##'
         other: '##ru##'
@@ -259,6 +282,12 @@ ru:
         one: '##ru##'
         other: '##ru##'
       search:
+        one: '##ru##'
+        other: '##ru##'
+      user_annotation:
+        one: '##ru##'
+        other: '##ru##'
+      annotation:
         one: '##ru##'
         other: '##ru##'
 
@@ -299,6 +328,10 @@ ru:
         segmentators: '##ru##'
         language: '##ru##'
         collection: '##ru##'
+      segment:
+        media_id: '##ru##'
+        transcript: '##ru##'
+        translation: '##ru##'
       user_content:
         title: '##ru##'
         description: '##ru##'
@@ -319,11 +352,46 @@ ru:
       template:
         header: '##ru##'
         body: '##ru##'
+      models:
+        user_annotation:
+          attributes:
+            description:
+              too_long: '##ru##'
+              modification_not_allowed: '##ru##'
+        user_content:
+          attributes:
+            description:
+              too_long: '##ru##'
 
   personal_data:
     male: '##ru##'
     female: '##ru##'
     born: '##ru##'
+
+  user_annotations:
+    workflow_states:
+      private: '##ru##'
+      proposed: '##ru##'
+      postponed: '##ru##'
+      shared: '##ru##'
+      rejected: '##ru##'
+      all: '##ru##'
+    workflow_actions:
+      accept: '##ru##'
+      postpone: '##ru##'
+      reject: '##ru##'
+      withdraw: '##ru##'
+      retract: '##ru##'
+      remove: '##ru##'
+      review: '##ru##'
+    workflow_action_tooltips:
+      accept: '##ru##'
+      postpone: '##ru##'
+      reject: '##ru##'
+      withdraw: '##ru##'
+      retract: '##ru##'
+      remove: '##ru##'
+      review: '##ru##'
 
   media:
     video_interview: '##ru##'
@@ -646,6 +714,7 @@ ru:
     import: '##ru##'
     statistics: '##ru##'
     permissions: '##ru##'
+    user_annotations: '##ru##'
 
   import:
     tapes: '##ru##'
