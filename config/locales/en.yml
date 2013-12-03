@@ -190,10 +190,11 @@ en:
       password_change_instructions2: 'Please choose a new password for your account.'
       no_saved_contents: 'There are no saved contents in your workbook yet.'
       quality_disclaimer: "The lectorate of the transcript und translation of this interview is not yet finished."
-      delete_content: "The reference to (%{content}) will be deleted. Do you want to proceed?"
+      delete_content: "The %{content} will be deleted from your workbook. Do you want to proceed?"
       need_javascript: "To utilize the archive's features you need to enable Javascript. Please use standards compliant browser and settings."
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
-      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
+      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our %{annotation_guidelines}.'
+      publish_alteration_notice: 'Published annotations cannot be edited, but you may retract them for alteration and subsequently resubmit them for publication.'
       confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
       published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
 

@@ -12,7 +12,7 @@ class UserContentsController < BaseController
 
   skip_before_filter :current_search_for_side_panel
 
-  before_filter :authorize_owner!, :only => [ :update, :destroy ]
+  before_filter :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
   rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
   create do
@@ -148,9 +148,37 @@ class UserContentsController < BaseController
     annotation_response
   end
 
+  def publish_notice
+    object
+    @context = params['context'] # need context for rendering correct response
+    respond_to do |format|
+      format.html do
+        render :partial => 'publish_notice'
+      end
+      format.js do
+        render :layout => false, :partial => 'publish_notice'
+      end
+    end
+  end
+
   def publish
     object.submit! if object.private?
-    item_update_response
+    respond_to do |format|
+      format.html do
+        redirect_to user_contents_path
+      end
+      format.js do
+        item_update = (params['context'] =~ /user_contents/) \
+          ? render_to_string(:partial => 'user_content', :object => @object) \
+          : render_to_string(:partial => 'show', :object => (@user_content = @object))
+        # didn't get highlighting to work without messing with background images etc.
+        render :update do |page|
+          page << "$('modal_window').hide();"
+          page.visual_effect(:fade, 'shades', { :from => 0.6 })
+          page.replace("user_content_#{@object.id}", item_update)
+        end
+      end
+    end
   end
 
   def retract

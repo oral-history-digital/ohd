@@ -192,6 +192,7 @@ ru:
       need_javascript: "##ru##"
       need_ie8: "##ru##"
       confirm_publish_content: '##ru##'
+      publish_alteration_notice: '##ru##'
       confirm_retract_content: '##ru##'
       published_annotation_change_notice: '##ru##'
 

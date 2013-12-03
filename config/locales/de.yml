@@ -188,10 +188,11 @@ de:
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
       quality_disclaimer: "Transkription und Übersetzung zu diesem Interview sind nicht abschließend lektoriert."
-      delete_content: "Sie entfernen den Verweis auf (%{content}). Wollen Sie fortfahren?"
+      delete_content: "Sie löschen %{content} aus der Arbeitsmappe. Wollen Sie fortfahren?"
       need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
       need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
-      confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere Richtlinien für Anmerkungen (siehe FAQs).'
+      confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere %{annotation_guidelines}.'
+      publish_alteration_notice: 'Veröffentlichte Anmerkungen können nicht mehr geändert werden, Sie können sie aber zur Bearbeitung wieder zurück ziehen und ggf neu einreichen zur Veröffentlichung.'
       confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
       published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
 

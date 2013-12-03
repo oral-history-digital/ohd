@@ -1,0 +1,30 @@
+<div id="publish_<%= @object.id -%>">
+  <%= modal_window_close_button_on_javascript_request -%>
+  <h2><%= @object.title -%>&nbsp;<%= t(:publish, :scope => 'user_interface.user_content').downcase -%></h2>
+  <div>
+      <% remote_form_for @object,
+                         :url => publish_user_content_path(@object),
+                         :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
+                         :complete => "new Effect.Fade('shades');",
+                         :html => { :id => "publish_form" } do |f| %>
+        <%= hidden_field_tag 'context', @context -%>
+        <%= hidden_field_tag 'type', params[:type] || 'UserAnnotation' -%>
+        <div>
+          <p>
+            <%= t(:confirm_publish_content, :scope => "user_interface.messages",
+                  :content => @object.type.constantize.human_name + ' "' + (@object.title || '') + '"',
+                  :annotation_guidelines => link_to(t(:annotation_guidelines, :scope => 'user_interface.user_content'),
+                                                    localized_home_path({:locale => I18n.locale, :page_id => "anmerkungsrichtlinien"}),
+                                                    :target => '_blank')) -%>
+          </p>
+          <p>
+            <%= t(:publish_alteration_notice, :scope => 'user_interface.messages') %>
+          </p>
+        </div>
+        <span style="clear: both; float: left;">
+            <%= f.submit t(:publish, :scope => 'user_interface.user_content'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+            <%= button_to_function t(:reset, :scope => 'user_interface.actions'), 'closeModalWindow(); return false;', :class => 'cancel' %>
+        </span>
+      <% end %>
+  </div>
+</div>
