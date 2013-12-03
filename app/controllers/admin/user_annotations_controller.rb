@@ -20,7 +20,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
         @user_annotations.each do |r|
           r_csv = []
           fields.each do |f|
-            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '')
+            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '').gsub(/[,;]+/,'')
           end
           csv << r_csv.join("\t")
         end
