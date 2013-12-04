@@ -12,7 +12,7 @@
         <div>
           <p>
             <%= t(:confirm_publish_content, :scope => "user_interface.messages",
-                  :content => @object.type.constantize.human_name + ' "' + (@object.title || '') + '"',
+                  :content => '"' + (@object.title || '') + '"',
                   :annotation_guidelines => link_to(t(:annotation_guidelines, :scope => 'user_interface.user_content'),
                                                     external_url(:annotation_guidelines),
                                                     :target => '_blank')) -%>
