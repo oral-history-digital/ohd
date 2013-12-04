@@ -260,7 +260,6 @@ var AnnotationsDisplayController = Class.create({
         if(!this.existingAnnotationElem) {
             this.existingAnnotationElem = $(annotationsController.existingAnnotationElemID);
         }
-        // the following part is not working/breaking atm
         if(this.newAnnotationElem && this.existingAnnotationElem) {
             if(userAnnotation) {
                 // show the link/button to existing annotation

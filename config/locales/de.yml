@@ -5,6 +5,7 @@ de:
   archive: 'Archiv'
   interactive_map: 'Karte'
   collections_map: 'Teilsammlungen'
+  usage_request: 'Nutzungsantrag'
   team: 'Team'
   contact: 'Kontakt'
   legal_notice: 'Impressum'
@@ -14,7 +15,6 @@ de:
   more: 'mehr'
   back: 'zur&uuml;ck'
   forward: 'weiter'
-  search_term: 'Suchbegriff'
   translated: 'übersetzt'
   all: 'alle'
   select_all: 'alle ausw&auml;hlen'
@@ -168,8 +168,7 @@ de:
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
       user_annotation: 'Ihre Anmerkung zum Ausschnitt'
       annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den'
-      publish_annotation2: 'zu.'
+      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
       save: 'Interview merken'
@@ -679,8 +678,9 @@ de:
 
   external_links:
     notice: 'Externer Link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/hinweise_zum_datenschutz/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/archivmaterial/nutzungsantrag/index.html'
     team: 'http://www.zwangsarbeit-archiv.de/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
@@ -719,3 +719,7 @@ de:
     contributions: 'Beteiligte Mitarbeiter'
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
+
+  _locale_chooser:
+    language_choice: "Deutsch"
+    language_choice_title: "Deutsche Version"

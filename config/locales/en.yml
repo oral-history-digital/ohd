@@ -171,8 +171,7 @@ en:
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this fragment'
       annotation_explanation: 'Your annotations can be found in your workbook area.'
-      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the'
-      publish_annotation2: ''
+      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the %{annotation_guidelines}'
       annotation_guidelines: 'Annotation Guidelines.'
     sort:
       activate: 'sort contents'
