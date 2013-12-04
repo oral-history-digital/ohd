@@ -10,7 +10,6 @@ en:
   contact: "Contact"
   legal_notice: "Legal notice"
   faq: "FAQ"
-  search_term: 'search term'
   more: 'more'
   back: 'back'
   forward: 'continue'
@@ -24,7 +23,7 @@ en:
   no_placeholder: 'no'
   for: 'for'
   close: 'close'
-  here: 'hier'
+  here: 'here'
   timecode: 'Timecode'
   zu: 'for'
 
@@ -191,10 +190,11 @@ en:
       password_change_instructions2: 'Please choose a new password for your account.'
       no_saved_contents: 'There are no saved contents in your workbook yet.'
       quality_disclaimer: "The lectorate of the transcript und translation of this interview is not yet finished."
-      delete_content: "The reference to (%{content}) will be deleted. Do you want to proceed?"
+      delete_content: "The %{content} will be deleted from your workbook. Do you want to proceed?"
       need_javascript: "To utilize the archive's features you need to enable Javascript. Please use standards compliant browser and settings."
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
-      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
+      confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our %{annotation_guidelines}.'
+      publish_alteration_notice: 'Published annotations cannot be edited, but you may retract them for alteration and subsequently resubmit them for publication.'
       confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
       published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
 
@@ -220,7 +220,7 @@ en:
       tabname: 'Legend / Filters'
       title:  'Legend and Filters'
       filter_header: 'Filter the map view by type of location'
-      grouping_label: 'Clustering by<br/>Region/Country'
+      grouping_label: 'Clustering by Region/Country'
       grouping_header: 'Enabling/disabling clustering on low zoom levels'
       more_help: 'Need help? Learn more'
     explanation:
@@ -233,7 +233,7 @@ en:
       forced_labor_locations: 'Forced Labor Sites'
       camps: 'Camps and Prisons'
       companies: 'Companies'
-      deportations: 'Places of Deportation'
+      deportations: 'Place of Deportation'
       places_of_birth: 'Places of Birth'
       postwar_residences: 'Places of Residence since 1945'
       postwar_camps: 'Camps since 1945'
@@ -261,6 +261,11 @@ en:
     Okt: 'Oct'
     Nov: 'Nov'
     Dez: 'Dec'
+
+  devise:
+    registration_fields:
+      tos_agreement_explanation1: 'I agree to the '
+      tos_agreement_explanation2: '.'
 
   activerecord:
     models:
@@ -303,7 +308,7 @@ en:
         responsibles: 'Head of Project'
         interviewers: 'Interviewer'
         homepage: 'Homepage'
-        notes: 'Additional Remarks'
+        notes: 'Additional Remarks:'
         interviews: 'Interviewees'
       interview:
         person_name: 'Name'
@@ -720,3 +725,7 @@ en:
     contributions: 'Beteiligte Mitarbeiter'
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
+
+  _locale_chooser:
+    language_choice: "English"
+    language_choice_title: "English Version"
