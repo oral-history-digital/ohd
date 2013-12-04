@@ -1,17 +1,16 @@
 namespace :solr do
 
   desc "starting the Solr server - for testing: this has more verbose output that sunspot:solr:start"
-  task :start do
+  task :start => :environment do
 
     require 'net/http'
 
+    solr_home = File.join(File.dirname(__FILE__), '..', '..', 'solr')
+
     solr_config = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'config', 'sunspot.yml'))[Rails.env]
-
     solr_port = solr_config['solr']['port']
-    solr_gem_spec = Bundler.load.specs.find{|s| s.name == 'sunspot' }
-    solr_path = File.join(solr_gem_spec.full_gem_path, 'solr')
-
-    log_dir = File.join(File.dirname(__FILE__), '..', '..', 'log')
+    solr_hostname = solr_config['solr']['hostname']
+    solr_log_level = solr_config['solr']['log_level']
 
     begin
       n = Net::HTTP.new('127.0.0.1', solr_port)
@@ -21,19 +20,8 @@ namespace :solr do
       puts "Port #{solr_port} in use" and return
 
     rescue Errno::ECONNREFUSED #not responding
-      Dir.chdir(solr_path) do
-        if RUBY_PLATFORM.include?('mswin32')
-          exec "start #{'"'}solr_#{ENV['Rails.env']}_#{solr_port}#{'"'} /min java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
-        else
-          pid = fork do
-            #STDERR.close
-            exec "java -Dsolr.data.dir=#{File.join(log_dir, '..', 'solr', 'data')} -Djetty.logs=#{log_dir} -Djetty.port=#{solr_port} -jar start.jar"
-          end
-        end
-        sleep(5)
-        File.open("#{log_dir}/#{ENV['Rails.env']}_pid", "w"){ |f| f << pid}
-        puts "#{ENV['Rails.env']} Solr started successfully on #{solr_port}, pid: #{pid}."
-      end
+      puts "#{ENV['Rails.env']} Solr starting on #{solr_hostname}:#{solr_port}."
+      exec "sunspot-solr run -s #{solr_home} -b #{solr_hostname} -p #{solr_port} -l #{solr_log_level}"
     end
 
   end

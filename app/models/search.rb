@@ -252,25 +252,20 @@ DEF
   def segment_search!
     @segments = {}
     fulltext = self.query_params['fulltext']
-
     interview_ids = @results.map{|i| i.archive_id }
     unless fulltext.blank? || interview_ids.empty?
       subsearch = Sunspot.search Segment do
 
         with(:archive_id).any_of interview_ids
 
+        keywords fulltext
+
         paginate :page => 1, :per_page => 120
 
         order_by :timecode, :asc
 
-        # lucene search
         adjust_solr_params do |params|
-          params[:defType] = 'lucene'
-
-          # fulltext search
-          unless fulltext.blank?
-            params[:q] = fulltext.downcase
-          end
+          params[:defType] = 'edismax'
         end
 
       end
@@ -323,7 +318,7 @@ DEF
     end
     Search.new do |search|
       search.results = search_results
-      search.fulltext = Search.lucene_escape(fulltext)
+      search.fulltext = fulltext
     end
   end
 
@@ -390,35 +385,30 @@ DEF
   # Search for autocomplete on person_name.
   def person_name_search(query, page=1)
     build_filtered_interview_query(query, page) do
-
-      # search for partial person names for autocompletion
-      keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
-
-      fulltext_query = Search.lucene_escape(query['fulltext'])
-      unless fulltext_query.blank?
-        text_fields do
-          any_of do
-            with :transcript, fulltext_query
-            with :categories, fulltext_query
-          end
-        end
+      # Search for partial person names for autocompletion.
+      # NB: We cannot use ... with :person_name ... here as
+      # wildcards ('*') in restrictions will be escaped in
+      # sunspot although the edismax parser supports them.
+      adjust_solr_params do |params|
+        params[:fq] << "person_name_text:#{query['partial_person_name']}*"
       end
-
     end
   end
 
-  # Build a basic lucene query filtered on categories.
+  # Build a basic solr query filtered on categories.
   def build_filtered_interview_query(query, page, &attributes)
 
     search = build_unfiltered_interview_query(page) do
 
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+      # Fulltext search.
+      fulltext_query = query['fulltext']
+      unless fulltext_query.blank?
+        keywords fulltext_query
       end
 
-      adjust_solr_params do |params|
-        params[:defType] = 'lucene'
+      # Category facets.
+      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+        with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
       end
 
     end
@@ -448,20 +438,12 @@ DEF
       paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
       order_by :person_name, :asc
 
-    end
-  end
+      adjust_solr_params do |params|
+        # Use the edismax parser for wildcard support and
+        # more feature-rich query syntax.
+        params[:defType] = 'edismax'
+      end
 
-  # Escapes lucene query for safe querying with the Lucene Parser
-  def self.lucene_escape(query)
-    if query.blank?
-      ''
-    else
-      query.mb_chars.
-          downcase.
-          gsub("\\",'').
-          gsub(/^[\*\?\+\-\{\}\[\]~!]+/,'').
-          gsub(/([\(\)])/,'\\\\\1').
-          gsub(/\(\W+\)?/,'')
     end
   end
 

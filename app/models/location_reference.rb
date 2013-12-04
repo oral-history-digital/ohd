@@ -221,7 +221,7 @@ class LocationReference < ActiveRecord::Base
   def self.search(query={})
     Sunspot.search LocationReference do
 
-      location = Search.lucene_escape(query[:location])
+      keywords query[:location]
 
       if query[:page].blank?
         self.paginate :page => 1, :per_page => 800
@@ -230,12 +230,7 @@ class LocationReference < ActiveRecord::Base
       end
 
       adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-
-        # fulltext search
-        unless location.blank?
-          params[:q] = location
-        end
+        params[:defType] = 'edismax'
       end
 
     end

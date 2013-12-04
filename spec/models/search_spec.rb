@@ -33,33 +33,6 @@ describe Search, 'utilizing hashed parameters' do
 
 end
 
-describe Search, 'when escaping dangerous characters from fulltext arguments' do
-
-  it "should escape parentheses" do
-    @fulltext = 'Eich (Rheinhessen)'
-    Search.lucene_escape(@fulltext).should === 'eich \(rheinhessen\)'#=~ /^Eich\s+Rheinhessen$/i
-  end
-
-  it "should escape parentheses when using the hashed query params" do
-    @hash = Search.encode_parameters({:fulltext => 'Eich (Rheinhessen)'})
-    @query = Search.decode_parameters(@hash)
-    @fulltext = @query[:fulltext] || @query['fulltext']
-    Search.lucene_escape(@fulltext).should === 'eich \(rheinhessen\)' #=~ /^Eich\s+Rheinhessen$/i
-  end
-
-  it "should escape single leading parentheses" do
-    @fulltext = 'Eich (Rhein'
-    Search.lucene_escape(@fulltext).should === 'eich \(rhein' # =~ /^Eich\s+Rhein$/i
-  end
-
-  it "should escape single trailing parentheses" do
-    @fulltext = 'Eich Rhein)'
-    Search.lucene_escape(@fulltext).should === 'eich rhein\)' # =~ /^Eich\s+Rhein$/i
-  end
-
-end
-
-
 describe Search, 'when saving as a UserContent' do
 
   before(:all) do

@@ -39,8 +39,8 @@ class SearchesController < BaseController
     end
   end
 
-  # calculates a hash for the query parameters and redirects to this hash-url
-  # Note: this doesn't call the lucene search engine!
+  # Calculates a hash for the query parameters and redirects to this hash-url.
+  # Note: this doesn't call the solr search engine!
   new_action do
     before do
       # The session query search is NOT used here at all!

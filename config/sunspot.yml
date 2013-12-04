@@ -1,21 +1,25 @@
 # Sunspot Solr configuration
 
 defaults: &defaults
-  solr:
     hostname: localhost
     port: 8985
-    path: /solr
+    path: /solr/default
+    log_level: WARNING
 
 development:
-  <<: *defaults
+  solr:
+    <<: *defaults
+    log_level: INFO
 
 test:
-  <<: *defaults
   solr:
+    <<: *defaults
     port: 8986
 
 production:
-  <<: *defaults
   solr:
+    <<: *defaults
     port: 8090
     path: /solr_zwar_demo
+    # read_timeout: 2
+    # open_timeout: 0.5

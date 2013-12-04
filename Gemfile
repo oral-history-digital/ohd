@@ -25,12 +25,7 @@ gem 'resource_controller', :require => false, # Requiring resource_controller lo
     :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
-gem 'rsolr', '~> 0.9.7'
-gem 'rsolr-ext', '~> 0.9.6'
-gem 'escape'
-gem 'daemons' # for sunspot
-gem 'sunspot' , '0.10.8'
-gem 'sunspot_rails', '0.11.5', :require => 'sunspot/rails'
+gem 'sunspot_rails', '~> 2.0.0' # Version requirement can be dropped when upgrading to Rails 3.x
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids',
     :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
@@ -54,6 +49,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'sunspot_solr' # A simple Solr installation with good defaults for development and testing.
   gem 'guard-rspec'
   # Faster tests:
   gem 'spork', '~> 0.8.0'
