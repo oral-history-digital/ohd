@@ -50,6 +50,7 @@ de:
     hilfe_zu_technischen_fragen: 'faq_technical'
     karteneinfuehrung: 'map_tutorial'
     anmerkungsrichtlinien: 'annotation_guidelines'
+    annotation_guidelines: 'annotation_guidelines'
 
   page_urls: #outbound translation ('pretty' urls)
     archive: 'archiv'
@@ -63,6 +64,7 @@ de:
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
     map_tutorial: 'karteneinfuehrung'
+    annotation_guidelines: 'anmerkungsrichtlinien'
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
@@ -158,6 +160,8 @@ de:
       delete: 'Entfernen'
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
+      publish: 'Veröffentlichen'
+      retract: 'Veröffentlichung zurückziehen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
@@ -187,6 +191,9 @@ de:
       delete_content: "Sie entfernen den Verweis auf (%{content}). Wollen Sie fortfahren?"
       need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
       need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
+      confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere Richtlinien für Anmerkungen (siehe FAQs).'
+      confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
+      published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, solange sie für die Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurück ziehen und anschließend bearbeiten.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'
@@ -340,6 +347,7 @@ de:
           attributes:
             description:
               too_long: 'Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
+              modification_not_allowed: 'Überarbeitung des Anmerkungstextes ist nach Veröffentlichung nicht mehr gestattet.'
         user_content:
           attributes:
             description:

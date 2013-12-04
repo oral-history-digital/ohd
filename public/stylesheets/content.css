@@ -759,7 +759,7 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
     position: absolute;
     top: 2px;
     right: 8px;
-    z-index: 200;
+    z-index: 95;
 }
 
 #annotate_segment span {

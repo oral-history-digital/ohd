@@ -36,11 +36,18 @@ class UserAnnotation < UserContent
   end
 
   validates_format_of :reference_type, :with => /^Segment$/
+  validates_uniqueness_of :reference_id, :scope => :user_id
 
-  # validates for existing media_id
+  # 1. validates for existing media_id
+  # 2. disable changes to description if not private or proposed
   def validate
     unless read_property(:media_id) =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
       errors.add :properties, 'Invalid Media ID given.'
+    end
+    if description_changed?
+      unless private?
+        errors.add :description, :modification_not_allowed
+      end
     end
   end
 
