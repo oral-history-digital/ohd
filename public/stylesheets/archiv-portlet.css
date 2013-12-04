@@ -354,13 +354,21 @@ form.user_registration textarea {
     height: 100px;
 }
 
-.formLabel .fieldWithErrors label {
+.formError {
+    color: #990000;
+}
+
+.formLabel .fieldWithErrors label,
+.fieldWithErrors label {
     color: #840f08;
 }
 
 #innerContent .formInput div.fieldWithErrors input[type=text],
 #innerContent .formInput div.fieldWithErrors textarea,
-#innerContent .formInput div.fieldWithErrors select {
+#innerContent .formInput div.fieldWithErrors select,
+#modal_window div.fieldWithErrors input[type=text],
+#modal_window div.fieldWithErrors textarea,
+#modal_window div.fieldWithErrors select {
     border-color: #990000;
 }
 

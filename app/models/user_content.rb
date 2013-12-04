@@ -12,7 +12,6 @@ class UserContent < ActiveRecord::Base
   before_validation_on_create :compile_id_hash
   before_validation :store_properties
   after_validation_on_create :check_persistence,:set_link_url
-  after_initialize :get_properties
 
   attr_accessible :user_id,
                   :title,
@@ -27,6 +26,11 @@ class UserContent < ActiveRecord::Base
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
   validates_uniqueness_of :id_hash, :scope => :user_id
+  validates_length_of :description, :maximum => 300
+
+  def after_initialize
+    get_properties
+  end
 
   def write_property(name, value)
     get_properties[name.to_s] = value
