@@ -1,6 +1,6 @@
 class Admin::UserAnnotationsController < Admin::BaseController
 
-  actions :index, :show
+  actions :index, :show, :update
 
   def index
     collection
@@ -10,6 +10,29 @@ class Admin::UserAnnotationsController < Admin::BaseController
       end
       format.js do
         render :layout => false
+      end
+    end
+  end
+
+  # admin#update may only change description (independent of workflow_state!)
+  def update
+    object.update_attribute :description, object_params['description']
+    # also update the published annotation object
+    unless @object.annotation.nil?
+      @object.annotation.update_attribute :text, object_params['description']
+    end
+    respond_to do |format|
+      format.html do
+        # this is just a fallback
+        render :action => :index
+      end
+      format.js do
+        html = render_to_string :partial => 'user_annotation', :object => @object, :locals => {:container_open => true}, :layout => false
+        render :update do |page|
+          page.replace "user_annotation_#{@object.id}", html
+          page.visual_effect :fade, 'shades'
+          page << "$('ajax_spinner').hide()"
+        end
       end
     end
   end
@@ -100,7 +123,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
       end
       format.js do
         flash.now[:alert] = @flash
-        annotation_html = render_to_string(:partial => 'user_annotation', :object => @object)
+        annotation_html = render_to_string(:partial => 'user_annotation', :object => @object, :locals => {:container_open => true})
         render :update do |page|
           page.replace("user_annotation_#{@object.id}", annotation_html)
         end

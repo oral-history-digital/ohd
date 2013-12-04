@@ -301,6 +301,13 @@ a.userTableButtonLink:hover {
     clear: none;
     display: block;
 }
+#user_annotations .details div.actions {
+    float: right;
+    width: 320px;
+}
+#user_annotations .details textarea {
+    float: left;
+}
 
 #user_annotations .author a,
 #interview_imports .archive_id a{

@@ -1,4 +1,4 @@
-<li id="user_annotation_<%= user_annotation.id -%>" class="user_annotation closed">
+<li id="user_annotation_<%= user_annotation.id -%>" class="user_annotation<%= (defined?(container_open) && container_open) ? '' : ' closed' -%>">
         <span class="data author" style="font-size: 90%; position: relative;">
           <%# contents are in reverse display order to enable sorting by name %>
           <span style="padding-left: 18px; margin-top: 1.8em;">
@@ -22,25 +22,23 @@
         </span>
 
   <div id="annotation_info_<%= user_annotation.id -%>" class="details">
-    <%= text_area_tag 'description', user_annotation.description, :id => "description_#{user_annotation.id}", :width => '220px;', :class => 'textbox' %>
-    <%# TODO: use a form to submit, and modify a hidden field on change of the textarea -%>
+    <%= annotation_inline_edit_for(user_annotation, :width => '220px;', :class => 'textbox') -%>
     <div class="actions">
-      <% param_hash = { :description => "description_#{user_annotation.id}"} -%>
       <% if %(proposed postponed).include?(user_annotation.workflow_state) -%>
-          <%= workflow_action_for(:user_annotations, :accept, user_annotation, false, param_hash) %>
+          <%= workflow_action_for(:user_annotations, :accept, user_annotation, false) %>
       <% end -%>
       <% if user_annotation.proposed? -%>
-          <%= workflow_action_for(:user_annotations, :postpone, user_annotation, true, param_hash) %>
+          <%= workflow_action_for(:user_annotations, :postpone, user_annotation, true) %>
       <% end -%>
       <% if user_annotation.rejected? -%>
-          <%= workflow_action_for(:user_annotations, :review, user_annotation, false, param_hash) %>
+          <%= workflow_action_for(:user_annotations, :review, user_annotation, false) %>
       <% end -%>
       <% if user_annotation.shared? -%>
-          <%= workflow_action_for(:user_annotations, :withdraw, user_annotation, true, param_hash) %>
-          <%= workflow_action_for(:user_annotations, :remove, user_annotation, true, param_hash) %>
+          <%= workflow_action_for(:user_annotations, :withdraw, user_annotation, true) %>
+          <%= workflow_action_for(:user_annotations, :remove, user_annotation, true) %>
       <% end -%>
       <% if %(proposed postponed).include?(user_annotation.workflow_state) -%>
-          <%= workflow_action_for(:user_annotations, :reject, user_annotation, true, param_hash) %>
+          <%= workflow_action_for(:user_annotations, :reject, user_annotation, true) %>
       <% end -%>
     </div>
   </div>

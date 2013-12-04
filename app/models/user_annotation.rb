@@ -149,7 +149,6 @@ class UserAnnotation < UserContent
         # don't assign an interview_id
         a.user_content_id = self.id
       end
-      annotation.index
       self.reload
     end
   end

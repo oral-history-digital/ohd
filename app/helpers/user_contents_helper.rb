@@ -43,7 +43,6 @@ module UserContentsHelper
 
   def in_place_edit_for(user_content, attribute, options={})
     value = user_content.send(attribute)
-    value = '&nbsp;' * 8 if value.blank?
     id = "user_content_#{user_content.id}_#{attribute}"
     display_id = id + '_display'
     form_id = id + '_form'
@@ -61,7 +60,7 @@ module UserContentsHelper
             :html => options.merge({:class => 'inline'})
     })
     js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
-    html = content_tag(:span, value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
+    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
