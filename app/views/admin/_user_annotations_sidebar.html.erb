@@ -37,6 +37,7 @@
         var queryURL = window.location.pathname + '?' + currentFilters.toQueryString();
         new Ajax.Updater('innerContent', queryURL, {
             method: 'get',
+            evalScripts: true,
             onLoading: function() { new Effect.Appear('shades', { from: 0, to: 0.4 }); $('submit_filters').hide(); },
             onComplete: function() { new Effect.Fade('shades', { from: 0.4, to: 0 }); }
         });

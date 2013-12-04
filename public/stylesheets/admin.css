@@ -69,6 +69,10 @@ span.new_registrations a {
     margin-top: 15px;
 }
 
+#administration select {
+    text-transform: capitalize;
+}
+
 #administration input[type=submit]:hover,
 #administration input[type=button]:hover,
 #administration input[type=reset]:hover {
@@ -260,7 +264,9 @@ a.userTableButtonLink:hover {
     padding-left: 16px;
 }
 
-#user_annotations .author,
+#user_annotations .author {
+    width: 180px;
+}
 #user_annotations .segment {
     width: 140px;
 }
@@ -272,6 +278,7 @@ a.userTableButtonLink:hover {
 #user_annotations #submission_sort {
     float: right;
     width: 140px;
+    text-align: right;
 }
 #user_annotations .list .submission_date {
     padding-right: 30px;
@@ -287,6 +294,7 @@ a.userTableButtonLink:hover {
     padding: 8px;
     margin-right: 12px;
     border: 1px solid #ccc;
+    float: left;
 }
 #user_annotations .details div {
     float: left;

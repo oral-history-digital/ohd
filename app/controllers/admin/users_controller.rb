@@ -7,12 +7,23 @@ class Admin::UsersController < Admin::BaseController
     end
     wants.js do
       html = render_to_string :template => '/admin/users/show.html', :layout => false
-      # render :text => html, :layout => false
-
       render :update do |page|
         page.replace_html 'modal_window', :text => html, :layout => false
         page.visual_effect :appear, 'modal_window'
         page.visual_effect :appear, 'shades'
+      end
+    end
+  end
+
+  update.response do |wants|
+    wants.html do
+      redirect_to edit_admin_user_registration_path(object.user_registration_id)
+    end
+    wants.js do
+      render :update do |page|
+        page.visual_effect :fade, 'modal_window'
+        page.visual_effect :fade, 'shades'
+        page << "window.location.reload(true);"
       end
     end
   end

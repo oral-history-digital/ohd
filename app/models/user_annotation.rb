@@ -81,6 +81,10 @@ class UserAnnotation < UserContent
     media_id[/^za\d{3}/i].downcase
   end
 
+  def timecode_string
+    @timecode_string ||= "#{Tape.human_name} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
+  end
+
   def translated=(trans)
     write_property :translated, trans
   end
@@ -117,6 +121,10 @@ class UserAnnotation < UserContent
     attr
   end
 
+  def submit
+    update_attribute :submitted_at, Time.now
+  end
+
   def accept
     create_annotation
   end
@@ -130,6 +138,7 @@ class UserAnnotation < UserContent
   end
 
   def retract
+    update_attribute :submitted_at, nil
     delete_annotation
   end
 
@@ -146,6 +155,7 @@ class UserAnnotation < UserContent
         a.interview_id = reference.interview_id
         a.user_content_id = self.id
       end
+      annotation.index
       self.reload
     end
   end

@@ -1,4 +1,4 @@
-<h1>Nutzeranmerkungen (<%= t(params['workflow_state'] || 'proposed', :scope => 'user_annotations.workflow_states') %>)</h1>
+<h1><%= @user_annotations.size == 0 ? t(:no_placeholder).capitalize : @user_annotations.size -%> Nutzeranmerkungen (<%= t(params['workflow_state'] || 'proposed', :scope => 'user_annotations.workflow_states') %>)</h1>
 
 <div id="user_annotations">
   <div id="sorting_controls">
@@ -9,13 +9,13 @@
         <span class="author">
            Autor
         </span>
-        <span class="segment">
+        <span class="segment" style="margin-left: -6px;">
           Segment / Zeitzeuge
         </span>
         <span class="status">
           Status
         </span>
-        <span class="submission_date">
+        <span class="submission_date" style="text-align: left; padding-right: 10px;">
           Einreichung am
         </span>
     </div>

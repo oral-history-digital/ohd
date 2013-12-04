@@ -170,7 +170,7 @@ en:
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this fragment'
-      annotation_explanation: 'Useful annotations and further information may be submitted for publication in the archive. Otherwise, your annotations remain accessible only to you.'
+      annotation_explanation: 'Your annotations can be found in your workbook area.'
       publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the'
       publish_annotation2: ''
       annotation_guidelines: 'Annotation Guidelines.'
@@ -292,6 +292,9 @@ en:
       user_annotation:
         one: 'Annotation'
         other: 'Annotations'
+      annotation:
+        one: 'Annotation'
+        other: 'Annotations'
 
     attributes:
       collection:
@@ -366,7 +369,7 @@ en:
   user_annotations:
     workflow_states:
       private: 'Private'
-      proposed: 'Proposed for Publication'
+      proposed: 'Under Review for Publication'
       postponed: 'Postponed by Editors'
       shared: 'Shared (Public)'
       rejected: 'Publication Rejected'

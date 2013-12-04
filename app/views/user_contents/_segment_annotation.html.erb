@@ -21,15 +21,18 @@
         </label>
         <%= f.text_area :description, segment_annotation.private? ? {} : {:readonly => 'readonly', :class => 'readonly'} %>
         <div class="hint" style="width: 165px; margin-top: 0px; display: inline; clear: none;">
-          <span id="chars_allowed"><%= UserContent::ANNOTATION_LIMIT -%></span>&nbsp;
-          <%= t(:chars_allowed, :scope => 'user_interface.user_content') -%>
-        </div>
-        <div class="hint" style="width: 165px; margin-top: 55px; display: inline; clear: none;">
-          <% if segment_annotation.private? -%>
-          <%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%>
-          <% else -%>
-          <%= t(:published_annotation_change_notice, :scope => 'user_interface.messages') -%>
-          <% end -%>
+          <span>
+            <span id="chars_allowed"><%= UserContent::ANNOTATION_LIMIT -%></span>&nbsp;
+            <%= t(:chars_allowed, :scope => 'user_interface.user_content') -%>
+          </span>
+          <br/>
+          <span style="margin-top: <%= segment_annotation.private? ? '125' : '10' -%>px; display: inline-block;">
+            <%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%>
+            <% unless segment_annotation.private? -%>
+            <br/><br/>
+            <%= t(:published_annotation_change_notice, :scope => 'user_interface.messages') -%>
+            <% end -%>
+          </span>
         </div>
         <label id="workflow_state_label" name="workflow_state" class="checkbox">
           <%= check_box_tag 'raw_workflow_state', 'shared', !@object.private?, { :class => @object.private? ? 'private' : 'shared', :onclick => "$('user_annotation_workflow_state').value = $('raw_workflow_state').checked ? 'shared' : 'private'; $('raw_workflow_state').toggleClassName('shared');"} %>

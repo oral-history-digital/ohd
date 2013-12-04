@@ -78,6 +78,16 @@ DEF
     string :person_name, :stored => false do
       (full_title + ' ' + alias_names).squeeze(' ')
     end
+    text :annotations, :boost => 10 do
+      str = ''
+      Annotation.for_segment(self).each do |annotation|
+        str << annotation.author + ' ' + annotation.text + ' '
+      end
+      unless str.blank?
+        str = ['de','en'].map{|locale| Annotation.human_name(:locale => locale)}.join(' ').concat(str)
+      end
+      str
+    end
   end
 
   def archive_id
@@ -155,6 +165,11 @@ DEF
 
   def joined_transcript_and_translation
     ((transcript || '') + ' ' + (translation || '')).strip
+  end
+
+  # not a true association, this is primarily used during Solr indexing
+  def annotations
+    Annotation.for_segment(self)
   end
 
   # returns the segment that leads the chapter

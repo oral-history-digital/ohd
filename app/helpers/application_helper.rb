@@ -232,12 +232,14 @@ JS
   end
 
   # provides buttons for workflow state changes
-  def workflow_action_for(model, action, instance, cancel=false)
+  def workflow_action_for(model, action, instance, cancel=false, param_fields = {})
     model_name = model.to_s.underscore.pluralize
+    param_fields = {}
+    # TODO: create a submit button that changes the action url of the surrounding form
     button_to_remote t(action.to_s, :scope => "#{model_name}.workflow_actions"),
-                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),
-                        :before => "new Effect.Appear('shades', { to: 0.6 })",
-                        :complete => "new Effect.Fade('shades', { from: 0.6 })"},
+                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),:create => "this.request.parameters = { #{param_fields.keys.map{|k| "#{k}: $('#{param_fields[k]}'"}.join(", ")} }",
+                       :before => "new Effect.Appear('shades', { to: 0.6 });",
+                       :complete => "new Effect.Fade('shades', { from: 0.6 })"},
                      { :class => cancel ? 'cancel' : 'submit',
                        :title => t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")}
   end

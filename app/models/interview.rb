@@ -144,6 +144,11 @@ DEF
       str.squeeze(' ')
     end
 
+    text :annotations, :boost => 16 do
+      annotations_text = Annotation.displayable(self).map{|a| [a.author, a.text].join(' ')}.join(' ')
+      annotations_text.blank? ? '' : ['de','en'].map{|locale| Annotation.human_name(:locale => locale)}.join(' ').concat(annotations_text)
+    end
+
     text :person_name, :boost => 20 do
       (full_title + (alias_names || '')).squeeze(' ')
     end
