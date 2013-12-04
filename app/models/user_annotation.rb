@@ -48,8 +48,6 @@ class UserAnnotation < UserContent
   # this object also carries the workflow.
   # THEN create an annotation object that is equivalent on publishing!
 
-  # TODO: need to complete user_content functionality
-
   def accept
     create_annotation
   end
@@ -60,14 +58,6 @@ class UserAnnotation < UserContent
 
   def withdraw
     delete_annotation
-  end
-
-  def text
-    read_property :text
-  end
-
-  def text=(blurb)
-    write_property :text, blurb
   end
 
   def author
@@ -86,6 +76,10 @@ class UserAnnotation < UserContent
     write_property :media_id, mid
   end
 
+  def heading
+    read_property :heading
+  end
+
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
@@ -97,6 +91,10 @@ class UserAnnotation < UserContent
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
     @properties[:author] ||= [user.first_name, user.last_name].join(' ')
+    heading_segment = Segment.headings.for_media_id(reference.media_id).first
+    unless heading_segment.nil?
+      @properties[:heading] = [heading_segment.section, heading_segment.subheading || heading_segment.mainheading].join(' ')
+    end
     attr[:properties] = @properties
     attr
   end

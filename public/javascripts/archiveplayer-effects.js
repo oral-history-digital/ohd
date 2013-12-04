@@ -266,6 +266,8 @@ var AnnotationsDisplayController = Class.create({
                 // show the link/button to existing annotation
                 this.newAnnotationElem.hide();
                 this.existingAnnotationElem.show();
+                // userAnnotationID points to an existing Annotation
+                this.userAnnotationID = parseInt(userAnnotation.innerHTML.gsub(/\s/,''));
             } else {
                 // show the link/button to new annotation
                 this.existingAnnotationElem.hide();

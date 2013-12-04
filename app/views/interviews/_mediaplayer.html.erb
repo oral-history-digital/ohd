@@ -57,16 +57,16 @@
         <%= link_to_function '&raquo;&nbsp;'.concat(t(:annotate_segment, :scope => 'user_interface.actions')),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                                                           {:parameters => {'type' => 'UserAnnotation'},
-                                                           :dynamic_parameters => {:media_id => 'archiveplayer("interview-player").segmentMediaID'},
-                                                           :on_create => "archiveplayer('interview-player').pause()"
+                                                           :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
+                                                           :on_create => "pauseOnAnnotation()"
              })-%>
       </span>
       <span id="annotate_existing_segment" class="existing" style="display: none;">
         <%= link_to_function '&raquo;&nbsp;'.concat(t(:show_existing_annotation, :scope => 'user_interface.actions')),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {:type => 'UserAnnotation'},
-                             :dynamic_parameters => {:id => "$('user_annotation_' + archiveplayer('interview-player').segmentMediaID).innerHTML.gsub(/\s/,'')"},
-                             :on_create => "archiveplayer('interview-player').pause()"
+                             :dynamic_parameters => {:id => 'archiveplayer(\'interview-player\').userAnnotationID'},
+                             :on_create => "pauseOnAnnotation()"
                              }) -%>
       </span>
     </div>
@@ -74,5 +74,18 @@
 
   <% javascript_tag do %>
     var headings = null;
+
+    function pauseOnAnnotation() {
+      var playerWrapper = archiveplayer('interview-player');
+      if(playerWrapper.getState() == 'PLAYING') {
+        playerWrapper.pause();
+      }
+    }
+    function resumeAfterAnnotation() {
+      var playerWrapper = archiveplayer('interview-player');
+      if(playerWrapper.getState() == 'IDLE') {
+        playerWrapper.play();
+      }
+    }
   <% end %>
 </div>

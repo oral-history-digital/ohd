@@ -208,5 +208,7 @@ function toggleFormAction(id) {
 
 function closeModalWindow() {
   new Effect.Fade('shades', { from: 0.6, to: 0, duration: 0.4 });
-  $('modal_window').hide();
+  var win = $('modal_window');
+  win.hide();
+  win.innerHTML = '';
 }

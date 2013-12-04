@@ -320,7 +320,8 @@ de:
         query: 'Suchkriterien'
       user_annotation:
         workflow_state: 'Veröffentlichungsstatus'
-        text: 'Annotation'
+        description: 'Annotation'
+        heading: 'Kapitel'
 
     errors:
       template:

@@ -9,7 +9,7 @@
                        :complete => "new Effect.Fade('shades');",
                        :html => { :id => "annotations_form" } do |f| %>
         <label><%= t(:user_annotation, :scope => 'user_interface.user_content') -%></label>
-        <%= f.text_area :text %>
+        <%= f.text_area :description %>
         <div class="hint" style="width: 165px; margin-top: 80px; display: inline; clear: none;"><%= t(:annotation_explanation, :scope => 'user_interface.user_content') -%></div>
         <label id="workflow_state_label" name="workflow_state" class="checkbox">
           <%= check_box_tag 'raw_workflow_state', 'shared', !@object.private?, { :class => @object.private? ? 'private' : 'shared', :onclick => "$('user_annotation_workflow_state').value = $('raw_workflow_state').checked ? 'shared' : 'private'; $('raw_workflow_state').toggleClassName('shared');"} %>
@@ -17,7 +17,7 @@
         </label>
         <%= hidden_field_tag 'user_annotation[workflow_state]', @object.private? ? 'private' : 'shared' -%>
         <%= hidden_field_tag 'user_annotation[media_id]', segment_annotation.media_id %>
-        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('annotations_form').request(); return false;" %>
     <% end %>
   </div>
 </div>
