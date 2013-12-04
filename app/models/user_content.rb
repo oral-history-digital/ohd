@@ -51,8 +51,10 @@ class UserContent < ActiveRecord::Base
     @properties = case props
       when Array
         props.inject({}){|h,v| h[v.first] = v.last; h }
-      else
+      when Hash
         props
+      else
+        YAML::load(props.to_s) || {}
     end
   end
 

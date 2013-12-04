@@ -43,7 +43,7 @@ DEF
     # make sure we have a tape assigned
     if self.tape.nil?
       tape_media_id = (media_id || '')[/za\d{3}_\d{2}_\d{2}/i]
-      interview_archive_id = (media_id || '')[/za\d{3}/i]
+      interview_archive_id = (media_id || '')[/za\d{3}/i].downcase
       interview ||= Interview.find_by_archive_id(interview_archive_id)
       raise "No interview found for archive_id='#{interview_archive_id}'" if interview.nil?
       interview_id = interview.id
