@@ -61,6 +61,8 @@ class UserContentsController < BaseController
     end
   end
 
+  # The show action is used to request info on any existing
+  # context-based user_content, or the ability to create a new one (on a 404).
   show do
     wants.html do
       if @object.nil? || @object.new_record?
@@ -76,6 +78,56 @@ class UserContentsController < BaseController
         render :partial => 'show', :object => @object
       end
     end
+  end
+
+  # Renders the annotation edit form for annotations
+  # to a particular media_id
+  def segment_annotation
+    puts "\n@@@@ SEGMENT CONTENT: #{segment_content.inspect}"
+    respond_to do |format|
+      format.html do
+        render :partial => 'segment_annotation', :object => @object
+      end
+      format.js do
+        render :partial => 'segment_annotation', :object => @object
+      end
+    end
+  end
+
+  def create_annotation
+    annotation_params = params['user_annotation']
+    @media_id = annotation_params['media_id']
+    segment = Segment.for_media_id(@media_id).scoped({:include => :interview}).first
+    unless segment.nil?
+      annotation = UserAnnotation.new
+      annotation.user = current_user
+      annotation.reference = segment
+      annotation.attributes = annotation.user_content_attributes
+      annotation.media_id = @media_id
+      annotation.send(:compile_id_hash)
+      annotation.text = annotation_params['text']
+      annotation.save!
+      if annotation_params['workflow_state'] != 'private'
+        annotation.submit!
+      end
+    end
+    annotation_response
+  end
+
+  def update_annotation
+    annotation = segment_content('user_annotation')
+    annotation_params = params['user_annotation']
+    annotation.media_id = annotation_params['media_id']
+    annotation.text = annotation_params['text']
+    if (workstate = annotation_params['workflow_state']) != annotation.workflow_state
+      if workstate == 'private' && !annotation.rejected?
+        annotation.retract!
+      elsif annotation.private?
+        annotation.submit!
+      end
+    end
+    annotation.save
+    annotation_response
   end
 
   update do
@@ -190,6 +242,22 @@ class UserContentsController < BaseController
     @user_content = @object
   end
 
+  # Retrieves a user_content based on segment media_id
+  def segment_content(type='user_content')
+    @object ||= begin
+      @media_id = params[:media_id]
+      @type = params[:type] || type
+      @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
+    end
+    @object ||= begin
+      annotation = UserAnnotation.new
+      annotation.user = current_user
+      annotation.media_id = @media_id
+      annotation.reference = Segment.for_media_id(@media_id).first
+      annotation
+    end
+  end
+
   def model_name
     @type = params[:type].blank? ? 'user_content' : params[:type].underscore
   end
@@ -294,6 +362,19 @@ class UserContentsController < BaseController
         item.position = current_pos
       end
       current_pos += pos_per_step
+    end
+  end
+
+  def annotation_response
+    respond_to do |format|
+      format.html do
+        redirect_to request.referer
+      end
+      format.js do
+        render :update do |page|
+          page << "closeModalWindow(); archiveplayer('interview-player').play();"
+        end
+      end
     end
   end
 

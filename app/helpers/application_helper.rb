@@ -139,9 +139,12 @@ module ApplicationHelper
 
   # modal window dialog
   def javascript_open_modal_window(ajax_url, options={})
-    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }.join(', ')
+    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }
+    dynamic_params = (options[:dynamic_parameters] || {}).to_a.map{|p| "#{p.first}: #{p.last}"}
+    params = (params + dynamic_params).join(', ')
     method = options[:method] || :get
     callback = options[:callback] || ''
+    before_callback = (options[:on_create] || '').concat(';')
     nodeclass = options[:class] || ''
     <<JS
 var windowEl = $('modal_window');
@@ -159,9 +162,10 @@ windowEl.innerHTML = '';
 new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
 $('ajax-spinner').show;
 new Ajax.Updater('modal_window', '#{ajax_url}',
-  { parameters: '#{params}',
+  { parameters: {#{params}},
     method: '#{method}',
     evalScripts: true,
+    onCreate:  function(){#{before_callback}},
     onFailure: function(){$('ajax-spinner').hide(); new Effect.Fade('shades', { from: 0.6 })},
     onSuccess: function(){$('ajax-spinner').hide(); new Effect.Appear('modal_window', { duration: 0.3 }); $('modal_window').addClassName('edit');#{callback}}
     });
@@ -188,7 +192,7 @@ JS
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
     if request.xhr?
-      link_to('X', '#', :id => ('modal_window_close'), :onclick => "new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); return false;")
+      link_to('X', '#', :id => ('modal_window_close'), :onclick => "closeModalWindow(); return false;")
     end
   end
 

@@ -1,10 +1,20 @@
+<% cache "annotations_#{@interview.archive_id}" do -%>
 <ul class="annotations-list">
-    <% annotations.each do |annotation| -%>
+    <% Annotation.displayable(@interview).each do |annotation| -%>
     <li id="annotation_<%= annotation.id -%>" class="annotation <%= annotation.media_id -%>" style="display: none;">
       <span class="author"><%= t(:label, :scope => "user_interface.annotations")-%> (<%=  annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => "user_interface.annotations")) -%>)</span>
       <%= annotation.text %>
     </li>
     <% end -%>
+</ul>
+<% end -%>
+
+<ul id="user_annotations_list" style="display: none !important;">
+  <% UserAnnotation.for_interview(@interview).for_user(current_user).each do |user_annotation| -%>
+    <li id="user_annotation_<%= user_annotation.media_id -%>">
+      <%= user_annotation.id -%>
+    </li>
+  <% end -%>
 </ul>
 
 <% javascript_tag do %>

@@ -121,6 +121,8 @@ de:
       update: 'aktualisieren'
       reset: 'abbrechen'
       add: 'hinzuf&uuml;gen'
+      annotate_segment: 'Anmerkung zum Ausschnitt'
+      show_existing_annotation: 'zur eigenen Anmerkung'
     player:
       back: 'zur&uuml;ck'
       forward: 'vor'
@@ -155,6 +157,9 @@ de:
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
+      user_annotation: 'Ihre Anmerkung zum Segment'
+      annotation_explanation: 'Nützliche Anmerkungen und weitere Informationen können Sie durch eine Freigabe zur Veröffentlichung in das Archiv einreichen. Ansonsten sind Ihre Notizen nur für Sie einsehbar.'
+      publish_annotation: 'Wünschen Sie, dass Ihre Anmerkung (nach einer redaktionellen Prüfung) veröffentlicht und allen Nutzern angezeigt wird?'
     interview_reference:
       save: 'Interview merken'
       saved: 'Interview gemerkt'

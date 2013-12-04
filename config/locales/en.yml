@@ -124,6 +124,8 @@ en:
       update: 'update'
       reset: 'cancel'
       add: 'add'
+      annotate_segment: 'Annotate Fragment'
+      show_existing_annotation: 'View Annotation'
     player:
       back: 'previous'
       forward: 'next'
@@ -158,6 +160,9 @@ en:
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
+      user_annotation: 'Your annotation to this fragment'
+      annotation_explanation: 'Useful annotations and further information may be submitted for publication in the archive. Otherwise, your annotations remain accessible only to you.'
+      publish_annotation: 'Would you like your annotation to be published (after editorial review) and displayed to all users?'
     sort:
       activate: 'sort contents'
       cancel: 'cancel'

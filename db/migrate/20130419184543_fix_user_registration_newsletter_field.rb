@@ -1,6 +1,11 @@
 class FixUserRegistrationNewsletterField < ActiveRecord::Migration
 
   def self.up
+    # cleanup of created_at datetime values
+    say_with_time 'cleanup of incorrect datetime values in user_registrations.created_at' do
+      Rake::Task['cleanup:user_creation_dates'].execute
+    end
+
     change_table :user_registrations do |t|
       t.boolean :newsletter_signup, :default => false
     end

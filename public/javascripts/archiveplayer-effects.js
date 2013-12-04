@@ -217,6 +217,11 @@ var AnnotationsDisplayController = Class.create({
         this.annotationPattern = /^\w{2}\d+_\d+_\d+_\d+$/;
         this.player.annotations = this.annotationsContainer.select('.annotation');
         this.player.onSegment = this.onSegment;
+        this.newAnnotationElemID = 'annotate_new_segment';
+        this.newAnnotationElem = null;
+        this.existingAnnotationElemID = 'annotate_existing_segment';
+        this.existingAnnotationElem = null;
+        this.segmentMediaID = '';
     },
     onSegment: function(event) {
         var matching = false;
@@ -244,6 +249,28 @@ var AnnotationsDisplayController = Class.create({
             annContainer.hide();
         } else {
             new Effect.Appear(annContainer.id, { duration: 0.25, queue: 'end' });
+        }
+
+        // UserAnnotations
+        this.segmentMediaID = segmentMediaRange.split(/[-,;]+/).sort().first();
+        var userAnnotation = $('user_annotation_' + this.segmentMediaID);
+        if(!this.newAnnotationElem) {
+            this.newAnnotationElem = $(annotationsController.newAnnotationElemID);
+        }
+        if(!this.existingAnnotationElem) {
+            this.existingAnnotationElem = $(annotationsController.existingAnnotationElemID);
+        }
+        // the following part is not working/breaking atm
+        if(this.newAnnotationElem && this.existingAnnotationElem) {
+            if(userAnnotation) {
+                // show the link/button to existing annotation
+                this.newAnnotationElem.hide();
+                this.existingAnnotationElem.show();
+            } else {
+                // show the link/button to new annotation
+                this.existingAnnotationElem.hide();
+                this.newAnnotationElem.show();
+            }
         }
     },
     nextMediaID: function(someMediaID) {

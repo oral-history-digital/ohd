@@ -52,6 +52,24 @@
         <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
     </div>
     //-->
+    <div id="annotate_segment">
+      <span id="annotate_new_segment" class="new" style="display: none;">
+        <%= link_to_function '&raquo;&nbsp;'.concat(t(:annotate_segment, :scope => 'user_interface.actions')),
+                             javascript_open_modal_window(segment_annotation_user_contents_path,
+                                                          {:parameters => {'type' => 'UserAnnotation'},
+                                                           :dynamic_parameters => {:media_id => 'archiveplayer("interview-player").segmentMediaID'},
+                                                           :on_create => "archiveplayer('interview-player').pause()"
+             })-%>
+      </span>
+      <span id="annotate_existing_segment" class="existing" style="display: none;">
+        <%= link_to_function '&raquo;&nbsp;'.concat(t(:show_existing_annotation, :scope => 'user_interface.actions')),
+                             javascript_open_modal_window(segment_annotation_user_contents_path,
+                             {:parameters => {:type => 'UserAnnotation'},
+                             :dynamic_parameters => {:id => "$('user_annotation_' + archiveplayer('interview-player').segmentMediaID).innerHTML.gsub(/\s/,'')"},
+                             :on_create => "archiveplayer('interview-player').pause()"
+                             }) -%>
+      </span>
+    </div>
   </div>
 
   <% javascript_tag do %>

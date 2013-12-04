@@ -59,8 +59,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
 
   map.resources :user_contents,
-                :member => { :topics => :get, :update_topics => :put },
-                :collection => { :sort => :post }
+                :member => { :topics => :get, :update_topics => :put, :update_annotation => :put },
+                :collection => { :sort => :post, :segment_annotation => :get, :create_annotation => :post }
 
   map.resources :user_registrations, :path_prefix => 'anmeldung'
 
