@@ -18,7 +18,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
         @user_registrations.each do |r|
           r_csv = []
           fields.each do |f|
-            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '')
+            r_csv << translate_field_or_value(f, r.send(f.to_sym) || '').gsub(/[,;]+/,'')
           end
           csv << r_csv.join("\t")
         end
@@ -169,7 +169,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
                 return value
               when 'country'
                 return value if value.length > 2
-                'user_countries'
+                'countries'
               when 'workflow_state'
                 'devise.workflow_states'
               else

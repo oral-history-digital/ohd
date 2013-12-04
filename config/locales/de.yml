@@ -337,6 +337,12 @@ de:
         description: 'Notiz'
         query: 'Suchkriterien'
       user_annotation:
+        author: 'Autor'
+        archive_id: 'Archiv-ID'
+        timecode_string: 'Timecode'
+        submitted_at: 'Einreichung am'
+        description: 'Anmerkungstext'
+        link_url: 'Link'
         workflow_state: 'Veröffentlichungsstatus'
         description: 'Anmerkung'
         heading: 'Kapitel'
