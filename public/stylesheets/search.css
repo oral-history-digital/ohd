@@ -216,7 +216,6 @@ fieldset.facet-field .autocomplete {
 	font-size: 95%;
 	width: 120px;
 	height: 19px;
-
 }
 
 span.hits {
@@ -276,10 +275,15 @@ float:left;
     font-weight: bold;
 }
 
-#searchInput {
-	border:1px solid #666;
-	width: 200px;
-	margin: 20px 0 11px 0;
+.searchInput {
+    border: 1px solid #ccc;
+	width: 218px;
+}
+
+.baseInputSearch {
+    border-color: #666;
+    margin: 20px 0 11px 0;
+    width: 200px;
 }
 
 #searchButton {
