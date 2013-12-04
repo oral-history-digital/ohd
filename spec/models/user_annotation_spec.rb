@@ -55,7 +55,13 @@ describe UserAnnotation, 'when a submittal for publishing is accepted' do
     annotation.text.should == @user_annotation.description
     annotation.author.should == @user_annotation.author
     annotation.media_id.should == @user_annotation.media_id
-    annotation.interview_id.should == @user_annotation.reference.interview_id
+    annotation.interview_id.should be_nil
+  end
+
+  it "should have an annotation object on which is it not valid to set an interview_id" do
+    annotation = @user_annotation.annotation
+    annotation.interview_id = @segment.interview_id
+    annotation.should_not be_valid
   end
 
   it "should not have an annotation associated and not have the shared flag set when retracted by the user" do
@@ -98,7 +104,7 @@ describe UserAnnotation, "when postponed by moderation" do
     @user_annotation.annotation.text.should == @user_annotation.description
     @user_annotation.annotation.author.should == @user_annotation.author
     @user_annotation.annotation.media_id.should == @user_annotation.media_id
-    @user_annotation.annotation.interview_id.should == @user_annotation.reference.interview_id
+    @user_annotation.annotation.interview_id.should be_nil
   end
 
 end

@@ -10,7 +10,9 @@ class UserAnnotation < UserContent
 
   named_scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
   named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
-  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and properties LIKE ?', 'Segment', "%media_id: #{m_id}%"] } }
+  # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
+  # compatibility to previous, property-based implementation (could be optimized later if not needed)
+  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
 
   PUBLICATION_STATES = %w(proposed postponed rejected shared)
   STATES = PUBLICATION_STATES + %w(private)
@@ -51,8 +53,8 @@ class UserAnnotation < UserContent
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
   def validate
-    unless read_property(:media_id) =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
-      errors.add :properties, 'Invalid Media ID given.'
+    unless media_id =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
+      errors.add :media_id, 'Invalid Media ID given.'
     end
     if description_changed?
       unless private?
@@ -67,14 +69,6 @@ class UserAnnotation < UserContent
 
   def author=(name)
     write_property :author, name
-  end
-
-  def media_id
-    read_property :media_id
-  end
-
-  def media_id=(mid)
-    write_property :media_id, mid
   end
 
   def archive_id
@@ -152,7 +146,7 @@ class UserAnnotation < UserContent
         a.author = author
         a.media_id = reference.media_id
         a.timecode = reference.timecode
-        a.interview_id = reference.interview_id
+        # don't assign an interview_id
         a.user_content_id = self.id
       end
       annotation.index
@@ -169,7 +163,7 @@ class UserAnnotation < UserContent
   end
 
   def self.default_id_hash(instance)
-    Base64.encode64(instance.send(:read_property, :media_id) || 'blank').sub(/\\n$/,'')
+    Base64.encode64(instance.send(:media_id) || 'blank').sub(/\\n$/,'')
   end
 
 end

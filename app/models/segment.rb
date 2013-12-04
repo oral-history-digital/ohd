@@ -15,6 +15,10 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
+  # Important: don't use a dependent => :destroy or :delete
+  # on these, as they are user-generated
+  has_many  :annotations
+
   Category::ARCHIVE_CATEGORIES.each do |category|
     self.class_eval <<DEF
     def #{category.first.to_s.singularize}_ids
@@ -26,7 +30,7 @@ DEF
   named_scope :headings, :conditions => ["CHAR_LENGTH(mainheading) > 0 OR CHAR_LENGTH(subheading) > 0"]
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
-  named_scope :for_media_id, lambda {|mid| { :conditions => ["segments.media_id < ?", mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i+1).to_s.rjust(4,'0'))], :order => "media_id DESC", :limit => 1 }}
+  named_scope :for_media_id, lambda {|mid| { :conditions => ["segments.media_id < ?", Segment.media_id_successor(mid)], :order => "media_id DESC", :limit => 1 }}
 
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
@@ -38,6 +42,8 @@ DEF
   validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
 
   validates_associated :tape
+
+  after_create :reassign_user_content
 
   def before_validation_on_create
     # make sure we have a tape assigned
@@ -77,16 +83,6 @@ DEF
     end
     string :person_name, :stored => false do
       (full_title + ' ' + alias_names).squeeze(' ')
-    end
-    text :annotations, :boost => 10 do
-      str = ''
-      Annotation.for_segment(self).each do |annotation|
-        str << annotation.author + ' ' + annotation.text + ' '
-      end
-      unless str.blank?
-        str = ['de','en'].map{|locale| Annotation.human_name(:locale => locale)}.join(' ').concat(str)
-      end
-      str
     end
   end
 
@@ -179,11 +175,45 @@ DEF
                  :order => "media_id ASC"
   end
 
+  def self.media_id_successor(mid)
+    Segment.media_id_diff(mid, 1)
+  end
+
+  def self.media_id_predecessor(mid)
+    Segment.media_id_diff(mid, -1)
+  end
+
+  def self.media_id_diff(mid, diff)
+    mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i + diff.to_i).to_s.rjust(4,'0'))
+  end
+
   private
 
   # remove workflow comments
   def filter_annotation(text)
     text.gsub(/\{[\s{]+[^{}]+[\s}]+\}\s?/,'')
+  end
+
+  # This is used to reassociate all segment-based user_content,
+  # i.e. user_annotations and their annotations.
+  def reassign_user_content
+    # As we don't know the subsequent segments media_id yet,
+    # theoretically all the trailing annotations would have to
+    # be assigned to each segment, so that annotations on the last
+    # segment get assigned to each of the interviews segments in turn.
+    # To avoid this, I'm using an arbitrary media_id range of media_id..media_id+12
+    # which in practice should be safe for reassigning to the correct segment, while
+    # minimizing subsequent reassignments.
+    UserAnnotation.find_each( \
+        :conditions => \
+        ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)], \
+        :include => :annotation \
+        ) do |user_annotation|
+      user_annotation.update_attribute :reference_id, self.id
+      unless user_annotation.annotation.nil?
+        user_annotation.annotation.update_attribute :segment_id, self.id
+      end
+    end
   end
 
 end

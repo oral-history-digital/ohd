@@ -787,4 +787,43 @@ namespace :cleanup do
 
   end
 
+  desc "assigns segments directly via associations to annotations"
+  task :assign_annotation_segments => :environment do
+
+    puts "Assigning segments to all annotations via association"
+    count = 0
+    index = 0
+    total = Annotation.count :all
+
+    Annotation.find_each(:conditions => "segment_id IS NULL") do |annotation|
+      annotation.assign_segment
+      count += 1 if annotation.save
+      if (index += 1) % 10 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+    end
+
+    puts "\ndone. Updated #{count} of #{total} total Annotations."
+  end
+
+  desc "removes assigned interviews for user-generated annotations to prevent deletion on import"
+  task :unassign_user_annotation_interview => :environment do
+
+    puts "Removing assigned interviews on user-generated annotations"
+    count = 0
+    index = 0
+    total = UserAnnotation.count(:all, :conditions => "annotations.id IS NOT NULL", :include => :annotation)
+
+    UserAnnotation.find_each(:conditions => "annotations.id IS NOT NULL", :include => :annotation) do |user_annotation|
+      user_annotation.annotation.update_attribute :interview_id, nil
+      count += 1 if user_annotation.annotation.save
+      if (index += 1) % 10 == 0
+        STDOUT.printf '.'; STDOUT.flush
+      end
+    end
+
+    puts "\ndone. Updated #{count} of #{total} total user-generated Annotations."
+
+  end
+
 end
