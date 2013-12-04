@@ -14,7 +14,7 @@
             <%= t(:confirm_publish_content, :scope => "user_interface.messages",
                   :content => @object.type.constantize.human_name + ' "' + (@object.title || '') + '"',
                   :annotation_guidelines => link_to(t(:annotation_guidelines, :scope => 'user_interface.user_content'),
-                                                    localized_home_path({:locale => I18n.locale, :page_id => "anmerkungsrichtlinien"}),
+                                                    external_url(:annotation_guidelines),
                                                     :target => '_blank')) -%>
           </p>
           <p>
