@@ -6,16 +6,23 @@ namespace :user_content do
     puts "Setting link_url for linkless user_contents:"
 
     index = 0
-    UserContent.find_each(:conditions => "link_url IS NULL") do |content|
-      content.send(:set_link_url)
-      content.save
-      if (index += 1) % 30 == 1
-        STDOUT.printf '.'
-        STDOUT.flush
+    updated = {}
+    UserContent.count(:all, :group => :type).keys.each do |type|
+      puts "\n#{type}:"
+      klass = type.constantize
+      updated[type] = 0
+      klass.find_each(:conditions => "link_url IS NULL") do |content|
+        content.send(:set_link_url)
+        content.save
+        updated[type] += 1
+        if (index += 1) % 30 == 1
+          STDOUT.printf '.'
+          STDOUT.flush
+        end
       end
     end
 
-    puts "done. #{index} user_contents updated."
+    puts "done. #{updated.keys.map{|k| "#{updated[k]} #{k.underscore.pluralize}"}.join(', ')} updated."
 
   end
 
