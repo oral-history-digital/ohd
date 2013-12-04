@@ -24,6 +24,7 @@ de:
   for: 'f&uuml;r'
   close: 'schlie&szlig;en'
   here: 'hier'
+  timecode: 'Timecode'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -88,6 +89,7 @@ de:
       interview: 'Interview'
       video_interview: 'Videointerview'
       audio_interview: 'Audiointerview'
+      segment_link: 'zum Ausschnitt'
       forced_labor_data: 'Daten zur Zwangsarbeit'
       biography: 'Biographie von'
       transcript: 'Transkript'
@@ -246,6 +248,9 @@ de:
       tape:
         one: 'Band'
         other: 'Bänder'
+      segment:
+        one: 'Ausschnitt'
+        other: 'Ausschnitte'
       collection:
         one: 'Teilsammlung'
         other: 'Teilsammlungen'
@@ -261,6 +266,9 @@ de:
       search:
         one: 'Gespeicherte Suchanfrage'
         other: 'Gespeicherte Suchanfragen'
+      user_annotation:
+        one: 'Annotierter Ausschnitt'
+        other: 'Annotierte Ausschnitte'
 
 
     attributes:
@@ -299,10 +307,15 @@ de:
         segmentators: 'Segmentierung'
         language: 'Sprache'
         collection: 'Teilsammlung'
+      segment:
+        media_id: 'Segment-ID'
       user_content:
         title: 'Titel'
         description: 'Notiz'
         query: 'Suchkriterien'
+      user_annotation:
+        workflow_state: 'Veröffentlichungsstatus'
+        text: 'Annotation'
 
     errors:
       template:
@@ -313,6 +326,14 @@ de:
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'
+
+  user_annotations:
+    workflow_states:
+      private: 'Privat'
+      proposed: 'Vorgeschlagen zur Veröffentlichung'
+      postponed: 'Zurückgestellt durch die Redaktion'
+      shared: 'Veröffentlicht'
+      rejected: 'Privat (Veröffentlichung abgelehnt)'
 
   media:
     video_interview: 'Videointerview'

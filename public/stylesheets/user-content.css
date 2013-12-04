@@ -408,12 +408,30 @@ body .teaserList .save_user_content {
 }
 
 #user_contents .details .reference .image-link {
+    position: relative;
+    width: 118px;
+    height: 108px;
     float: left;
     margin: 2px 10px 0 0;
 }
 
 #user_contents .reference .image-link * {
     clear: left;
+}
+
+#user_contents .reference .image-link span.time-overlay {
+    position: absolute;
+    clear: none;
+    float: none;
+    top: 72px;
+    left: 0;
+    width: 100px;
+    padding: 0 8px;
+    background-color: #000;
+    color: #fff;
+    opacity: 0.6;
+    filter:alpha(opacity=60);
+    text-align: right;
 }
 
 #user_contents .details .reference img {

@@ -5,6 +5,7 @@ en:
   archive: "Archive"
   interactive_map: "Map"
   collections_map: "Collections"
+  usage_request: 'application form'
   team: 'Team'
   contact: "Contact"
   legal_notice: "Legal notice"
@@ -23,7 +24,8 @@ en:
   no_placeholder: 'no'
   for: 'for'
   close: 'close'
-  here: 'here'
+  here: 'hier'
+  timecode: 'Timecode'
 
   # TODO: page_paths and page_urls contain obsolete external pages
   # make sure these aren't references anywhere and remove them
@@ -90,6 +92,7 @@ en:
       interview: 'Interview'
       video_interview: 'Video-Interview'
       audio_interview: 'Audio-Interview'
+      segment_link: 'to Fragment'
       forced_labor_data: 'Forced Labor Data'
       biography: 'Biography of'
       transcript: 'Transcript'
@@ -249,6 +252,9 @@ en:
       tape:
         one: 'Tape'
         other: 'Tapes'
+      segment:
+        one: 'Fragment'
+        other: 'Fragments'
       collection:
         one: 'Subset'
         other: 'Subsets'
@@ -264,6 +270,9 @@ en:
       search:
         one: 'Saved Search'
         other: 'Saved Searches'
+      user_annotation:
+        one: 'Annotated Fragment'
+        other: 'Annotated Fragments'
 
     attributes:
       collection:
@@ -301,10 +310,15 @@ en:
         segmentators: 'Segmentator'
         language: 'Language'
         collection: 'Subset'
+      segment:
+        media_id: 'Fragment-ID'
       user_content:
         title: 'Title'
         description: 'Note'
         query: 'Search Criteria'
+      user_annotation:
+        workflow_state: 'Publication State'
+        text: 'Annotation'
 
     errors:
       template:
@@ -315,6 +329,14 @@ en:
     male: 'male'
     female: 'female'
     born: 'born in'
+
+  user_annotations:
+    workflow_states:
+      private: 'Private'
+      proposed: 'Proposed for Publication'
+      postponed: 'Postponed by Editors'
+      shared: 'Shared (Public)'
+      rejected: 'Private (Publication Rejected)'
 
   media:
     video_interview: 'Video interview'
@@ -600,8 +622,9 @@ en:
 
   external_links:
     notice: 'External link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/hinweise_zum_datenschutz/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/en/sammlung/archivmaterial/nutzungsantrag/index.html'
     team: 'http://www.zwangsarbeit-archiv.de/en/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'

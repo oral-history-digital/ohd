@@ -21,6 +21,11 @@ class Timecode
     @timecode ||= Timecode::format_duration(@time)
   end
 
+  # pure time info without tape numeral
+  def tape_independent_timecode
+    timecode.sub(/\[\d+\]\s+/,'')
+  end
+
   def time=(time)
     @timecode = nil
     @time = time

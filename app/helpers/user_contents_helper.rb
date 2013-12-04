@@ -128,6 +128,29 @@ module UserContentsHelper
     content_tag(:div, html, :class => "image-link") + content_tag(:ul, biographic)
   end
 
+  # render a singular interview reference detail for segment with or without annotation
+  def reference_details_for_segment(user_content)
+    segment = user_content.reference
+    interview = segment.interview unless segment.nil?
+    image_file = if interview.nil? || interview.still_image_file_name.nil?
+                   image_path("/archive_images/missing_still.jpg")
+                 else
+                   image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
+                 end
+    html = if interview.nil?
+             image_tag(image_file)
+           else
+             image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+           end
+    html << content_tag(:span, segment.timecode, :class => 'time-overlay')
+    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:segment_link, :scope => "user_interface.labels")}", { :target => '_blank'}))
+    annotation = content_tag(:li, label_tag(:workflow_state, UserAnnotation.human_attribute_name(:workflow_state)) \
+                  + content_tag(:p, t(user_content.workflow_state, :scope => "user_annotations.workflow_states")))
+    annotation << content_tag(:li, label_tag(:text, UserAnnotation.human_attribute_name(:text)) \
+                  + content_tag(:p, user_content.text))
+    content_tag(:div, html, :class => "image-link") + content_tag(:ul, annotation)
+  end
+
   def topics_select(name, options={}, selected=[])
     tag_values = options_for_select((current_user ? current_user.tags : []).map{|t| [t.name, t.name] }, selected)
     select_tag(name, tag_values, options.merge({'data-placeholder' => t(:please_select, :scope => 'user_interface.labels'), :multiple => true}))

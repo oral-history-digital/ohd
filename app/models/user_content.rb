@@ -4,13 +4,13 @@ class UserContent < ActiveRecord::Base
 
   include ActionController::UrlWriter
 
-  CONTENT_TYPES = [ :search, :interview_reference ]
+  CONTENT_TYPES = [ :search, :interview_reference, :user_annotation ]
 
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
-  before_create :store_properties, :compile_id_hash, :set_link_url
-  after_validation_on_create :check_persistence
+  before_create :store_properties, :compile_id_hash
+  after_validation_on_create :check_persistence,:set_link_url
 
   attr_accessible :user_id,
                   :title,
@@ -98,7 +98,7 @@ class UserContent < ActiveRecord::Base
   end
 
   def set_link_url
-    write_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
+    update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
   end
 
   def check_persistence

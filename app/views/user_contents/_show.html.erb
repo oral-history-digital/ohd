@@ -1,3 +1,8 @@
+<%# This partial is used to show user_content save status and topics.
+    It is the view for inclusion of links to save the current type of user_content:
+    - Suche speichern
+    - Interview merken etc.
+    For rendering user_contents in the workbook, refer to _user_content.html.erb -%>
 <% user_content ||= @user_content.reload
    content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore
    tags_exist = !user_content.tags.empty?

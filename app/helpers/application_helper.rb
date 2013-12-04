@@ -53,15 +53,15 @@ module ApplicationHelper
   end
 
   #
-  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false)
+  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false, link_text=nil, options={})
     interview = segment.interview
     item = segment.tape.number
     position = segment.start_time.round
-    link_text = show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : "Zum Interview-Ausschnitt"
+    link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
     if @object.is_a?(Interview) || ajax
       link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
     else
-      link_to link_text, interview_path(interview, :item => item, :position => position)
+      link_to link_text, interview_path(interview, :item => item, :position => position), options
     end
   end
 
@@ -223,6 +223,8 @@ JS
     end
   end
 
-
+  def timecode_without_tape(string)
+    string.sub(/\[\d+\]\s+/,'')
+  end
 
 end
