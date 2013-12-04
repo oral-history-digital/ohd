@@ -111,6 +111,7 @@ de:
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
+      show_: 'zum'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
@@ -121,6 +122,7 @@ de:
     actions:
       edit: 'bearbeiten'
       update: 'aktualisieren'
+      save: 'speichern'
       reset: 'abbrechen'
       add: 'hinzuf&uuml;gen'
       annotate_segment: 'Anmerkung verfassen'

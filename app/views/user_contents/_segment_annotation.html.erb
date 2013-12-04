@@ -23,7 +23,10 @@
         <%= hidden_field_tag 'user_annotation[workflow_state]', @object.private? ? 'private' : 'shared' -%>
         <%= hidden_field_tag 'user_annotation[media_id]', segment_annotation.media_id %>
         <%= hidden_field_tag 'user_annotation[translated]', false %>
-        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "$('user_annotation_translated').value = $('translated').hasClassName('active'); new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('annotations_form').request(); return false;" %>
+        <span style="clear: both; float: left;">
+            <%= f.submit t(:save, :scope => 'user_interface.actions'), :onclick => "$('user_annotation_translated').value = $('translated').hasClassName('active'); new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('annotations_form').request(); return false;" %>
+            <%= button_to_function t(:reset, :scope => 'user_interface.actions'), 'closeModalWindow(); return false;', :class => 'cancel' %>
+        </span>
     <% end %>
   </div>
 </div>

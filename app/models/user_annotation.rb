@@ -80,6 +80,7 @@ class UserAnnotation < UserContent
     write_property :translated, trans
   end
 
+  # does the annotation refer to the original or translated transcript?
   def translated?
     trans = read_property :translated
     trans.nil? ? true : trans

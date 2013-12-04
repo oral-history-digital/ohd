@@ -114,6 +114,7 @@ en:
       workbook: 'workbook'
       show_all: 'show all'
       show_interview: 'show Interview'
+      show_: 'show'
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
       filter_contents: 'Contents shown'
@@ -124,6 +125,7 @@ en:
     actions:
       edit: 'edit'
       update: 'update'
+      save: 'save'
       reset: 'cancel'
       add: 'add'
       annotate_segment: 'write Annotation'
@@ -325,7 +327,7 @@ en:
         translation: 'Transcript (German translation)'
       user_content:
         title: 'Title'
-        description: 'Note'
+        description: 'Comment'
         query: 'Search Criteria'
       user_annotation:
         workflow_state: 'Publication State'
