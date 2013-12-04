@@ -1,0 +1,39 @@
+<h1>Nutzeranmerkungen (<%= t(params['workflow_state'] || 'proposed', :scope => 'user_annotations.workflow_states') %>)</h1>
+
+<div id="user_annotations">
+  <div id="sorting_controls">
+    <span id="id_sort" class="sort" data-sort="author">sortieren nach Autor</span>
+    <span id="status_sort" class="sort" data-sort="status" style="float: right;">sortieren nach Stand</span>
+    <span id="submission_sort" class="sort" data-sort="submission_date">sortieren nach Datum</span>
+    <div class="labels">
+        <span class="author">
+           Autor
+        </span>
+        <span class="segment">
+          Segment / Zeitzeuge
+        </span>
+        <span class="status">
+          Status
+        </span>
+        <span class="submission_date">
+          Einreichung am
+        </span>
+    </div>
+  </div>
+  <ul class="list">
+    <%= render :partial => 'user_annotation', :collection => @user_annotations -%>
+  </ul>
+</div>
+
+<% javascript_tag do -%>
+    var annotationslist = new List('user_annotations', { valueNames: ['author', 'submission_date', 'status'], page: 600 });
+<% end -%>
+
+<% unless request.xhr? -%>
+    <% content_for :title do -%>
+        Nutzeranmerkungen
+    <% end -%>
+    <% content_for :sidebar do -%>
+        <%= render :partial => '/admin/user_annotations_sidebar.html.erb' -%>
+    <% end -%>
+<% end -%>

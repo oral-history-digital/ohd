@@ -6,9 +6,14 @@ class UserAnnotation < UserContent
   # It can be published as a shared annotation. However, this publication
   # is subject to an approval process by the editorial team.
 
+  has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
+
   named_scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
   named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
   named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and properties LIKE ?', 'Segment', "%media_id: #{m_id}%"] } }
+
+  PUBLICATION_STATES = %w(proposed postponed rejected shared)
+  STATES = PUBLICATION_STATES + %w(private)
 
   workflow do
     state :private do
@@ -26,14 +31,19 @@ class UserAnnotation < UserContent
       event :retract, :transitions_to => :private
     end
     state :shared do
+      # withdrawn by moderation - subject to alteration
       event :withdraw, :transitions_to => :postponed
+      # removed by moderation, no resubmission possible
       event :remove, :transitions_to => :rejected
+      # retracted by used
       event :retract, :transitions_to => :private
     end
     state :rejected do
       event :review, :transitions_to => :proposed
     end
   end
+
+  attr_accessible :description, :title, :position
 
   validates_format_of :reference_type, :with => /^Segment$/
   validates_uniqueness_of :reference_id, :scope => :user_id
@@ -51,22 +61,6 @@ class UserAnnotation < UserContent
     end
   end
 
-  # TODO: change this: add a user_annotation as user_content,
-  # this object also carries the workflow.
-  # THEN create an annotation object that is equivalent on publishing!
-
-  def accept
-    create_annotation
-  end
-
-  def remove
-    delete_annotation
-  end
-
-  def withdraw
-    delete_annotation
-  end
-
   def author
     read_property :author
   end
@@ -81,6 +75,10 @@ class UserAnnotation < UserContent
 
   def media_id=(mid)
     write_property :media_id, mid
+  end
+
+  def archive_id
+    media_id[/^za\d{3}/i].downcase
   end
 
   def translated=(trans)
@@ -119,14 +117,45 @@ class UserAnnotation < UserContent
     attr
   end
 
+  def accept
+    create_annotation
+  end
+
+  def withdraw
+    delete_annotation
+  end
+
+  def remove
+    delete_annotation
+  end
+
+  def retract
+    delete_annotation
+  end
+
   private
 
   def create_annotation
-
+    update_attribute :shared, true
+    if annotation.nil?
+      annotation = Annotation.create do |a|
+        a.text = description
+        a.author = author
+        a.media_id = reference.media_id
+        a.timecode = reference.timecode
+        a.interview_id = reference.interview_id
+        a.user_content_id = self.id
+      end
+      self.reload
+    end
   end
 
   def delete_annotation
-
+    update_attribute :shared, false
+    unless annotation.nil?
+      annotation.destroy
+      self.reload
+    end
   end
 
   def self.default_id_hash(instance)

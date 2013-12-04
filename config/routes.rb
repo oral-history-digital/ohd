@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
     admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
     admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
+    admin.resources :user_annotations, { :member => { :accept => :post, :reject => :post, :remove => :post, :withdraw => :post, :postpone => :post, :review => :post }}
     admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
     admin.user_export     'benutzerverwaltung.:format', :controller => :user_registrations, :action => :index
     admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index

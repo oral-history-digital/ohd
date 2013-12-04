@@ -165,12 +165,13 @@ en:
       saved: 'saved content'
       publish: 'Publish'
       retract: 'Retract Publication'
+      chars_allowed: 'allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this fragment'
       annotation_explanation: 'Useful annotations and further information may be submitted for publication in the archive. Otherwise, your annotations remain accessible only to you.'
-      publish_annotation: 'Would you like your annotation to be published and displayed to all users? By checking, you agree to our'
+      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the'
       publish_annotation2: ''
       annotation_guidelines: 'Annotation Guidelines.'
     sort:
@@ -196,7 +197,7 @@ en:
       need_ie8: "Your browser does not support the necessary features for accessing the archive. Please update your browser to a current and standards compliant version (Firefox, Safari, Opera, IE version 8 and above)."
       confirm_publish_content: 'Do you really want your %{content} to be published and viewed by all users of the archive? By confirming you accept our guidelines for publication (see FAQs for reference).'
       confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
-      published_annotation_change_notice: 'Your annotation cannot be edited while marked for publication. You may retract your annotation in order to subsequently make changes.'
+      published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
 
   privacy:
       label: 'Privacy Disclaimer'
@@ -340,6 +341,7 @@ en:
         workflow_state: 'Publication State'
         description: 'Annotation'
         heading: 'Section'
+        media_id: 'Media ID'
 
     errors:
       template:
@@ -367,7 +369,24 @@ en:
       proposed: 'Proposed for Publication'
       postponed: 'Postponed by Editors'
       shared: 'Shared (Public)'
-      rejected: 'Private (Publication Rejected)'
+      rejected: 'Publication Rejected'
+      all: 'Alle'
+    workflow_actions:
+      accept: 'publish'
+      postpone: 'postpone'
+      reject: 'reject'
+      withdraw: 'withdraw'
+      retract: 'retract'
+      remove: 'remove'
+      review: 'further review'
+    workflow_action_tooltips:
+      accept: 'Accept annotation for publication'
+      postpone: 'Postpone publication until further notice'
+      reject: 'Reject proposal for publication'
+      withdraw: 'Withdraw the annotation from publication'
+      retract: 'Withdraw the annotation from publication'
+      remove: 'Remove annotation from publication in the archive'
+      review: 'Resubmit annotation for publication after review'
 
   media:
     video_interview: 'Video interview'
@@ -682,6 +701,7 @@ en:
     import: 'Import'
     statistics: 'Statistik'
     permissions: 'Rechte'
+    user_annotations: 'Anmerkungen'
 
   import:
     tapes: 'Medien/Bänder'

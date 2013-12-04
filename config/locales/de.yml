@@ -162,12 +162,13 @@ de:
       saved: 'Inhalt gemerkt'
       publish: 'Veröffentlichen'
       retract: 'Veröffentlichung zurückziehen'
+      chars_allowed: 'verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
-      user_annotation: 'Ihre Anmerkung zum Segment'
+      user_annotation: 'Ihre Anmerkung zum Ausschnitt'
       annotation_explanation: 'Nützliche Anmerkungen und weitere Informationen können Sie durch eine Freigabe zur Veröffentlichung in das Archiv einreichen. Ansonsten sind Ihre Notizen nur für Sie einsehbar.'
-      publish_annotation: 'Wünschen Sie, dass Ihre Anmerkung veröffentlicht und allen Nutzern angezeigt wird? Hiermit stimmen Sie unseren'
+      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den'
       publish_annotation2: 'zu.'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
@@ -193,7 +194,7 @@ de:
       need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
       confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere Richtlinien für Anmerkungen (siehe FAQs).'
       confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
-      published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, solange sie für die Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurück ziehen und anschließend bearbeiten.'
+      published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'
@@ -337,6 +338,7 @@ de:
         workflow_state: 'Veröffentlichungsstatus'
         description: 'Anmerkung'
         heading: 'Kapitel'
+        media_id: 'Medien ID'
 
     errors:
       template:
@@ -364,7 +366,24 @@ de:
       proposed: 'Vorgeschlagen zur Veröffentlichung'
       postponed: 'Zurückgestellt durch die Redaktion'
       shared: 'Veröffentlicht'
-      rejected: 'Privat (Veröffentlichung abgelehnt)'
+      rejected: 'Veröffentlichung abgelehnt'
+      all: 'Alle'
+    workflow_actions:
+      accept: 'veröffentlichen'
+      postpone: 'zurückstellen'
+      reject: 'ablehnen'
+      withdraw: 'zurückziehen'
+      retract: 'zurückziehen'
+      remove: 'entfernen'
+      review: 'weiter bearbeiten'
+    workflow_action_tooltips:
+      accept: 'Die Veröffentlichung der Anmerkung akzeptieren'
+      postpone: 'Die Anmerkung in einen Wartezustand zur Überprüfung überführen'
+      reject: 'Die Veröffentlichung der Anmerkung ablehnen'
+      withdraw: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
+      retract: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
+      remove: 'Die Anmerkung aus der Veröffentlichung Archiv entfernen'
+      review: 'Die Anmerkung zur Wiederbearbeitung vorlegen'
 
   media:
     video_interview: 'Videointerview'
@@ -686,6 +705,7 @@ de:
     import: 'Import'
     statistics: 'Statistik'
     permissions: 'Rechte'
+    user_annotations: 'Anmerkungen'
 
   import:
     tapes: 'Medien/Bänder'

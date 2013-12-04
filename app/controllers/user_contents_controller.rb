@@ -148,12 +148,12 @@ class UserContentsController < BaseController
   end
 
   def publish
-    object.submit!
+    object.submit! if object.private?
     item_update_response
   end
 
   def retract
-    object.retract!
+    object.retract! unless object.private?
     item_update_response
   end
 
@@ -173,6 +173,7 @@ class UserContentsController < BaseController
   # render the topics form
   def topics
     object
+    @context = params['context'] # need context for rendering correct response
     respond_to do |format|
       format.html do
         render :partial => 'topics'
@@ -207,7 +208,7 @@ class UserContentsController < BaseController
         end
       end
       format.js do
-        item_update = (request.referer =~ /user_contents/) \
+        item_update = (params['context'] =~ /user_contents/) \
           ? render_to_string(:partial => 'user_content', :object => @object) \
           : render_to_string(:partial => 'show', :object => (@user_content = @object))
         # didn't get highlighting to work without messing with background images etc.
