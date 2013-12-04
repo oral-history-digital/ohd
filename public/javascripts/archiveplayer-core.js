@@ -39,9 +39,7 @@ ArchivePlayer.prototype.setup = function(setupConfig, setupArchiveConfig) {
     __archivePlayerPlaying = this;
     this.config = setupConfig;
     this.archiveConfig = Object.clone(setupArchiveConfig);
-    /* this.archiveConfig is not carried over to the archiveplayer(container) object
-       instead, it seems to be discarded. Need to attach variables directly to player.
-     */
+
     this.player.viewerStartPosition = this.archiveConfig.position;
     if(this.player.viewerStartPosition > 0) {
         this.player.initialSeek = true;
@@ -246,7 +244,6 @@ ArchivePlayer.prototype.writeSegmentInformation = function(event) {
     }
 };
 
-/* TODO: ensure onSegment is called after seeking */
 ArchivePlayer.prototype.goToStartPosition = function() {
     if(this.player.viewerStartPosition > 0) {
         this.player.setMute(true).seek(this.player.viewerStartPosition).onTime(function(event) {
