@@ -5,7 +5,6 @@ en:
   archive: "Archive"
   interactive_map: "Map"
   collections_map: "Collections"
-  usage_request: 'application form'
   team: 'Team'
   contact: "Contact"
   legal_notice: "Legal notice"
@@ -601,9 +600,8 @@ en:
 
   external_links:
     notice: 'External link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/en/sammlung/archivmaterial/nutzungsantrag/index.html'
     team: 'http://www.zwangsarbeit-archiv.de/en/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
