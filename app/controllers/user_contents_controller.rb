@@ -104,6 +104,7 @@ class UserContentsController < BaseController
       @object.reference = segment
       @object.attributes = @object.user_content_attributes
       @object.media_id = @media_id
+      @object.translated = annotation_params['translated'] == 'true'
       @object.description = annotation_params['description']
       @object.send(:compile_id_hash)
       if @object.save

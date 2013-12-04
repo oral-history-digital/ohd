@@ -76,6 +76,15 @@ class UserAnnotation < UserContent
     write_property :media_id, mid
   end
 
+  def translated=(trans)
+    write_property :translated, trans
+  end
+
+  def translated?
+    trans = read_property :translated
+    trans.nil? ? true : trans
+  end
+
   def heading
     read_property :heading
   end

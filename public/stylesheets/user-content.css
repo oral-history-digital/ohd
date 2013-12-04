@@ -430,10 +430,13 @@ body .teaserList .save_user_content {
     top: 72px;
     left: 0;
     width: 100px;
-    padding: 0 8px;
+    padding: 0 9px;
     background-color: #000;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 125%;
     color: #fff;
-    opacity: 0.6;
+    opacity: 0.75;
     filter:alpha(opacity=60);
     text-align: right;
 }

@@ -50,6 +50,7 @@ en:
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    anmerkungsrichtlinien: 'annotation_guidelines'
 
   page_urls:
     archive: 'archive'
@@ -125,7 +126,7 @@ en:
       update: 'update'
       reset: 'cancel'
       add: 'add'
-      annotate_segment: 'Annotate Fragment'
+      annotate_segment: 'write Annotation'
       show_existing_annotation: 'View Annotation'
     player:
       back: 'previous'
@@ -163,7 +164,9 @@ en:
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this fragment'
       annotation_explanation: 'Useful annotations and further information may be submitted for publication in the archive. Otherwise, your annotations remain accessible only to you.'
-      publish_annotation: 'Would you like your annotation to be published (after editorial review) and displayed to all users?'
+      publish_annotation: 'Would you like your annotation to be published and displayed to all users? By checking, you agree to our'
+      publish_annotation2: ''
+      annotation_guidelines: 'Annotation Guidelines.'
     sort:
       activate: 'sort contents'
       cancel: 'cancel'
@@ -318,6 +321,8 @@ en:
         collection: 'Subset'
       segment:
         media_id: 'Fragment-ID'
+        transcript: 'Transcript'
+        translation: 'Transcript (German translation)'
       user_content:
         title: 'Title'
         description: 'Note'
