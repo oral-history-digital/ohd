@@ -30,7 +30,7 @@ class Search < UserContent
   RESULTS_PER_PAGE = 12
 
   FACET_FIELDS = [
-      :person_name,
+      :interview_id,
       :forced_labor_groups,
       :forced_labor_fields,
       :forced_labor_habitations,
@@ -95,7 +95,16 @@ DEF
     @results
   end
 
-  # used to construct the autocomplete searches for person names
+  # Textual person name searches.
+  def person_name=(person_name)
+    @person_name = person_name
+  end
+
+  def person_name
+    @person_name
+  end
+
+  # Used to construct the autocomplete searches for person names.
   def partial_person_name=(name_token)
     @partial_person_name = name_token
   end
@@ -104,7 +113,7 @@ DEF
     @partial_person_name
   end
 
-  # filter the ignore (default label) words from fulltext
+  # Filter the ignore (default label) words from fulltext.
   def fulltext=(term)
     self.write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
   end
@@ -146,29 +155,36 @@ DEF
   end
 
   # The facet method returns an array of facet rows in the
-  # format: <tt>[ category_instance, count ]</tt>.
+  # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
     facet_name = name
     facet_name = (name.to_s.singularize << "_ids") unless Category::ARCHIVE_CATEGORIES.assoc(name.to_sym).nil?
     @facets[facet_name.to_sym] ||=
-        if @search.is_a?(Sunspot::Search)
+        if @search
           facet = @search.facet(facet_name.to_sym)
           if facet.blank?
             []
           elsif facet.rows.blank?
             if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
               # yield all categories with a count of zero
-              Category.send(name).map{|c| [ c, 0 ]}
+              Category.send(name).map { |c| [c, 0] }
             else
               []
             end
           elsif facet.rows.first.instance.nil?
-            # non-category facet - return an array of all values and counts
-            facet.rows.map{|f| [ f.value, f.count ]}
+            raise 'Expected facet instance.'
           else
-            # category facet - return an array of all instances with number of corresponding hits
-            facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
+            # Return an array of all instances with number of corresponding hits.
+            facet.rows.map { |f| [f.instance, f.count] }.
+                sort do |a, b|
+                  if a.first.is_a?(Category)
+                    a.first.name <=> b.first.name
+                  elsif a.first.is_a?(Interview)
+                    a.first.full_title(I18n.locale) <=> b.first.full_title(I18n.locale)
+                  else raise 'Unknown facet object type.'
+                end
+            end
           end
         else
           []
@@ -301,6 +317,14 @@ DEF
     else
       search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
       search_params.merge!(query_params)
+
+      # Filter that translates a person name search into an interview search.
+      person_name = search_params.delete('person_name')
+      unless person_name.blank?
+        interviews = Interview.all(:select => 'DISTINCT interviews.id', :joins => :translations, :conditions => {:interview_translations => {:full_title => person_name}})
+        search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
+      end
+
       search = Search.new do |search|
         QUERY_PARAMS.each do |attr|
           search.send("#{attr}=", search_params[attr.to_s]) unless search_params[attr.to_s].blank?
@@ -362,21 +386,13 @@ DEF
     build_unfiltered_interview_query(page)
   end
 
-  # Do a standard search with the lucene handler.
+  # Do a filtered interview search.
   def filtered_interview_search(query, page = 1)
     build_filtered_interview_query(query, page) do
 
-      # person name facet
-      unless query['person_name'].blank?
-        with :person_name, query['person_name']
-      end
-
-      adjust_solr_params do |params|
-        # fulltext search
-        fulltext_query = Search.lucene_escape(query['fulltext'])
-        unless fulltext_query.blank?
-          params[:q] = fulltext_query
-        end
+      # Person/Interview facet.
+      unless query['interview_id'].blank?
+        with :interview_id, query['interview_id']
       end
 
     end
@@ -428,7 +444,7 @@ DEF
     # Add query attributes common to all interview queries.
     search.build do
 
-      facet :person_name,
+      facet :interview_id,
             :forced_labor_group_ids,
             :forced_labor_field_ids,
             :forced_labor_habitation_ids,
@@ -436,7 +452,7 @@ DEF
             :country_ids
 
       paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
+      order_by :"person_name_#{I18n.locale}", :asc
 
       adjust_solr_params do |params|
         # Use the edismax parser for wildcard support and
@@ -482,7 +498,7 @@ DEF
   end
 
   def self.codify_parameter_name(name)
-    name.split('_').map{|i|i.first.downcase}.join('')
+    name.split('_').map{|i| i.first.downcase}.join('')
   end
 
 end

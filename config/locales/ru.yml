@@ -698,7 +698,7 @@ ru:
     forced_labor_fields: '##ru##'
     forced_labor_habitation: '##ru##'
     forced_labor_habitations: '##ru##' # need singular for category_type
-    person_name: '##ru##'
+    interview_id: '##ru##'
     language: '##ru##'
     languages: '##ru##' # need singular for category_type
     country: '##ru##'

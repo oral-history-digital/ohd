@@ -29,11 +29,11 @@
     </noscript>
 
     <% facets.query_facets.each do |facet| %>
-    <%= render :partial => '/searches/active_facet', :object => facet.first, :locals => { :query => facet.last } %>
+      <%= render :partial => '/searches/active_facet', :object => facet.first, :locals => { :query => facet.last } %>
     <% end %>
 
     <% facets.unqueried_facets.each do |facet| %>
-    <%= render :partial => '/searches/facet_option', :object => facet, :locals => { :search_facets => search_facets, :category_facet => facets.send(facet.first).is_a?(Array)} %>
+      <%= render :partial => '/searches/facet_option', :object => facet, :locals => { :search_facets => search_facets, :category_facet => facets.send(facet.first).is_a?(Array)} %>
     <% end %>
 
   <% end %>

@@ -698,7 +698,7 @@ de:
     forced_labor_fields: 'Einsatzbereiche'
     forced_labor_habitation: 'Unterbringung / Inhaftierung'
     forced_labor_habitations: 'Unterbringung' # need singular for category_type
-    person_name: 'Name der Interviewten'
+    interview_id: 'Name der Interviewten'
     language: 'Sprache'
     languages: 'Sprache' # need singular for category_type
     country: 'Wohnort (Land)'

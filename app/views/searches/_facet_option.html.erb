@@ -1,8 +1,8 @@
 <% facet_name = facet_option.first.to_s %>
 <% facet_entries = facet_option.last %>
 <% category_facet = Category.is_category?(facet_name) %>
-<% fulltext_list = !category_facet && (facet_entries.size < 13) %>
-<% facet_closed = (search_facets.object.send(facet_name) || []).empty? %> <%# && search_facets.object.open_category != facet_name %>
+<% item_list = !category_facet && (facet_entries.size < 13) %>
+<% facet_closed = ((search_facets.object.send(facet_name) || []).empty? and search_facets.object.open_category != facet_name) %>
 
   <div id="<%= facet_name %>"class="fragmentTitle <%= facet_closed ? 'closed' : 'open'%>">
 
@@ -15,7 +15,7 @@
 
     <% else %>
 
-    <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || fulltext_list %>);" class="<%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
+    <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || item_list %>);" class="<%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
       <img title="" src="<%= image_path 'pfeil_rot_rechts.gif' %>" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="Pfeil rechts" />
       <img title="" src="<%= image_path 'pfeil_rot_unten.gif' %>" id="<%= facet_name %>_query_open" class="arrow-open" alt="Pfeil unten" />
       <%= t facet_name.to_s.singularize, :scope => :facets %>
@@ -28,41 +28,40 @@
 
           <% current_categories = search_facets.object.send(facet_name) || [] %>
 
-        <ul>
-          <% facet_entries.each do |f| %>
+          <ul>
+            <% facet_entries.each do |f| %>
 
-            <% category = f.first %>
+              <% category = f.first %>
 
-            <li class="facet<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" id="<%= "facet_#{facet_name}_#{category[:id]}" -%>">
-                <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
-                <%# translate language parts individually %>
-                <% category_titles = category.is_a?(String) ? [ category ] : (facet_name == 'languages' ? category.name.split('/') : [ category.name ]) %>
-                <%# translate facet names #%>
-                <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{facet_name}")} %>
-                <span class="facet-name"><%= category_titles.join('/') %></span>
-                <% if f.last != 0 %>
-                <span class="facet-count">(<%= f.last %>)</span>
-                <% end %>
-            </li>
-
-          <% end %>
-        </ul>
-
-        <% else %>
-          <%# Fulltext Facet %>
-
-          <% if fulltext_list and !facet_entries.empty? %>
-        <ul>
-            <% facet_entries.each do |name| %>
-
-            <li><%= link_to_remote name.first, :url => url_for(:controller => :searches, :action => :new, :person_name => name.first ), :method => :get %></li>
+              <li class="facet<%= current_categories.include?(category[:id]) ? ' checked' : '' %>" onclick="checkCategory('<%= "#{facet_name}_#{category[:id]}" %>', this);" id="<%= "facet_#{facet_name}_#{category[:id]}" -%>">
+                  <%= check_box_tag "#{facet_name}[]", category[:id], current_categories.include?(category[:id]), { :id => "#{facet_name}_#{category[:id]}", :class => (facet_name.to_s + ' checkbox') } %>
+                  <%# translate language parts individually %>
+                  <% category_titles = category.is_a?(String) ? [ category ] : (facet_name == 'languages' ? category.name.split('/') : [ category.name ]) %>
+                  <%# translate facet names #%>
+                  <% category_titles = category_titles.map{|ct| t(ct, :scope => "categories.#{facet_name}")} %>
+                  <span class="facet-name"><%= category_titles.join('/') %></span>
+                  <% if f.last != 0 %>
+                  <span class="facet-count">(<%= f.last %>)</span>
+                  <% end %>
+              </li>
 
             <% end %>
-        </ul>
+          </ul>
+
+        <% elsif facet_name == 'interview_id' %>
+          <%# Interview/Person Facet %>
+
+          <% if item_list and !facet_entries.empty? %>
+
+            <ul>
+              <% facet_entries.each do |name| %>
+                <li><%= link_to_remote name.first.full_title(I18n.locale), :url => url_for(:controller => :searches, :action => :new, :interview_id => [name.first.id] ), :method => :get %></li>
+              <% end %>
+            </ul>
 
           <% else %>
 
-            <%= search_facets.text_field :person_name, { :size => 25, :name => 'person_name' } %>
+            <%= search_facets.text_field :person_name, { :size => 25, :name => 'person_name', :class => 'searchInput' } %>
 
             <div id="person_name_suggestions" class="autocomplete"></div>
 

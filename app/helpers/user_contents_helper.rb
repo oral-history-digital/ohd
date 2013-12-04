@@ -18,25 +18,36 @@ module UserContentsHelper
         fulltext = query.delete('fulltext')
         str = fulltext.nil? ? [] : [ "#{t(:fulltext, :scope => :facets)}: \"#{fulltext}\"" ]
 
+        # Preload interview by ID.
+        interview_ids = (query['interview_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
+        preloaded_interviews = interview_ids.empty? ? [] : Interview.all(:conditions => [ 'id IN (?)', interview_ids ])
+
         # Preload queried categories by ID.
-        category_ids = query.values.flatten.inject([]){|ids, value| ids << value.to_i if (value.to_i != 0); ids }.uniq
+        category_ids = query.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
         preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ] )
 
-        # Render categories and keywords.
+        # Render keywords, categories and interviews.
         str += query.keys.inject([]) do |out, key|
           values = query[key]
           case values
             when Array
               # Category search...
               # Retrieve translated category names for category IDs.
-              category_values = []
+              facet_values = []
               values.map do |v|
-                cat = preloaded_categories.detect{|c| c.id == v.to_i}
-                unless cat.nil?
-                  category_values << t(cat.name, :scope => "categories.#{key}")
+                if key == 'interview_id'
+                  int = preloaded_interviews.detect{|i| i.id = v.to_i}
+                  unless int.nil?
+                    facet_values << int.full_title(I18n.locale)
+                  end
+                else
+                  cat = preloaded_categories.detect{|c| c.id == v.to_i}
+                  unless cat.nil?
+                    facet_values << t(cat.name, :scope => "categories.#{key}")
+                  end
                 end
               end
-              out << "#{t(key, :scope => :facets)}: #{category_values.join(', ')}"
+              out << "#{t(key, :scope => :facets)}: #{facet_values.join(', ')}"
 
             else
               # Keyword search...

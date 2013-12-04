@@ -1,5 +1,5 @@
 <% query_params = search.query_params || { :forced_labor_group => '*' } %>
-<% additional_params = query_params.keys - [ 'languages', 'person_name', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
+<% additional_params = query_params.keys - [ 'interview_id', 'languages', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
 <% search ||= Search.new %>
 
 <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">

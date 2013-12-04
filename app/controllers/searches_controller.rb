@@ -5,8 +5,9 @@ class SearchesController < BaseController
   prepend_before_filter :redirect_unauthenticated_users
 
   # Handle search initialization.
-  before_filter :current_query_params
+  before_filter :rename_person_name_param, :only => :person_name
   skip_before_filter :current_search_for_side_panel
+  before_filter :current_query_params
 
   before_filter :determine_user, :only => [ :query, :index ]
   before_filter :remove_search_term_from_params
@@ -121,8 +122,7 @@ class SearchesController < BaseController
   end
 
   def person_name
-    query_params = params.merge({:partial_person_name => params.delete('person_name')})
-    @search = Search.from_params(query_params)
+    @search = Search.from_params(params)
     begin
       @search.search!
     rescue Sunspot
@@ -143,6 +143,10 @@ class SearchesController < BaseController
   end
 
   private
+
+  def rename_person_name_param
+    params.merge!({:partial_person_name => params.delete('person_name')})
+  end
 
   # redirect users to login if they're unauthenticated
   # even on AJAX requests

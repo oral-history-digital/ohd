@@ -113,6 +113,7 @@ DEF
   after_save :set_categories
 
   searchable :auto_index => false do
+    integer :interview_id, :using => :id, :stored => true, :references => Interview
     string :archive_id, :stored => true
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -152,10 +153,6 @@ DEF
       str.squeeze(' ')
     end
 
-    text :person_name, :boost => 20 do
-      (translations.map(&:full_title).join(' ') + (" #{alias_names}" || '')).strip.squeeze(' ')
-    end
-
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
@@ -163,7 +160,17 @@ DEF
       ([self.archive_id] + Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first).to_s }).join(' ')
     end
 
-    string :person_name, :using => :full_title, :stored => true
+    # Create localized attributes so that we can order
+    # interviews in all languages.
+    I18n.available_locales.each do |locale|
+      string :"person_name_#{locale}", :stored => true do
+        full_title(locale)
+      end
+    end
+    text :person_name, :boost => 20 do
+      (translations.map(&:full_title).join(' ') + (" #{alias_names}" || '')).strip.squeeze(' ')
+    end
+
   end
 
 

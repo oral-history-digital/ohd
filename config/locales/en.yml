@@ -693,7 +693,7 @@ en:
     forced_labor_fields: 'Deployment Areas'
     forced_labor_habitation: 'Internment Conditions'
     forced_labor_habitations: 'Internment Conditions' # need singular for category_type
-    person_name: 'Name of the Interviewee'
+    interview_id: 'Name of the Interviewee'
     language: 'Language'
     languages: 'Language'
     country: 'Place of Residence (Country)'
