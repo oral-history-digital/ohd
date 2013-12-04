@@ -49,8 +49,6 @@ de:
     faq_technical: 'faq_technical'
     hilfe_zu_technischen_fragen: 'faq_technical'
     karteneinfuehrung: 'map_tutorial'
-    anmerkungsrichtlinien: 'annotation_guidelines'
-    annotation_guidelines: 'annotation_guidelines'
 
   page_urls: #outbound translation ('pretty' urls)
     archive: 'archiv'
@@ -64,7 +62,6 @@ de:
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
     map_tutorial: 'karteneinfuehrung'
-    annotation_guidelines: 'anmerkungsrichtlinien'
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'
@@ -692,7 +689,6 @@ de:
     team: 'http://www.zwangsarbeit-archiv.de/team'
     kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
-
 
   forced_labor_group: 'Gruppe'
   forced_labor_groups: 'Gruppen'

@@ -19,6 +19,16 @@ class Annotation < ActiveRecord::Base
   # displayable user and editorial annotations per interview
   named_scope :displayable, lambda{|interview| { :conditions => ["media_id LIKE ?", interview.archive_id.upcase.concat('%')], :order => "user_content_id ASC"}}
 
+  # Validation: either interview_id or user_content_id must be nil
+  validates_numericality_of :interview_id,
+                            :allow_nil => true,
+                            :less_than => 0,
+                            :unless => Proc.new{|i| i.user_content_id.nil?}
+  validates_numericality_of :user_content_id,
+                            :allow_nil => true,
+                            :less_than => 0,
+                            :unless => Proc.new{|i| i.interview_id.nil?}
+
   before_create {|annotation| annotation.assign_segment}
 
   def start_time
@@ -34,10 +44,14 @@ class Annotation < ActiveRecord::Base
   end
 
   def assign_segment
-    segment = Segment.for_media_id(media_id).first
-    unless segment.nil?
-      self.segment_id = segment.id
-      self.timecode = segment.timecode
+    if interview_id.blank?
+      # interview_id set means editorially curated and imported
+      # annotation, which don't have a segment association set
+      segment = Segment.for_media_id(media_id).first
+      unless segment.nil?
+        self.segment_id = segment.id
+        self.timecode = segment.timecode
+      end
     end
   end
 
