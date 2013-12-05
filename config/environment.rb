@@ -39,4 +39,6 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :de
   config.i18n.available_locales = [ :de, :en, :ru ]
 
+  # RailsLTS config
+  config.rails_lts_options = { :default => :compatible }
 end
