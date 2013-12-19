@@ -120,7 +120,7 @@
         $$('#map-wrapper .preload-map').each(function(el){
             el.removeClassName('preload-map');
         });
-        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t(:map_tutorial, :scope => 'page_urls')) -%>', introId: 'initial_map_tutorial', dateStamp: '<%= map_data_datestamp -%>' });
+        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t('page_urls.map_tutorial')) -%>', introId: 'initial_map_tutorial', dateStamp: '<%= map_data_datestamp -%>' });
     }
 
     function loadClusters() {

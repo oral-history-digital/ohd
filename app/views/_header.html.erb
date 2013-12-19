@@ -1,7 +1,7 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="http://www.zwangsarbeit-archiv.de<%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
-          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
+          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
         <h2 class="info">Zwangsarbeit 1939-1945</h2>
@@ -16,11 +16,11 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => "0" %></li>
+            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
             <%= render :partial => '/locale_chooser' %>
-            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => "Übersichtskarte der biografischen Stationen" %></li>
-            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => "Geografische Verteilung der Teilsammlungen" %> </li>
-            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => I18n.locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => 'Übersichtskarte der biografischen Stationen' %></li>
+            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => 'Geografische Verteilung der Teilsammlungen' %> </li>
+            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => 'Fragen und Antworten zur Nutzung des Archivs' %></li>
           </ul>
         </div>
       </div>
@@ -37,7 +37,7 @@
                     <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
                 <% else %>
                     <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
-                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => "workbook" %>
+                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => 'workbook' %>
                     <span class='red'>&nbsp;|&nbsp;</span>
                     <% end %>
                     <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>

@@ -8,7 +8,7 @@
         <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title -%>
           <br/>
-          <%= @interview.video %> Interview, <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %> Interview, <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -19,7 +19,7 @@
         <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title -%>
           <br/>
-          <%= @interview.video %> Interview, <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %> Interview, <%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -65,7 +65,7 @@
   Content Categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
   <br/>
     <%= link_to 'description of categories »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :en, :anchor => "recherchemoeglichkeiten") %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'recherchemoeglichkeiten') %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -82,7 +82,7 @@
   Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
   <br/>
     <%= link_to 'explanation of fulltext search »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :en, :anchor => "suche-allgemein") %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'suche-allgemein') %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -115,10 +115,10 @@
 <p>
   The overview map of the project's collections illustrate the provenance of the archive and provide a regional access.
   <br/>
-    <%= link_to "overview map of collections »", localized_interview_collections_url(:locale => :en) %>
+    <%= link_to 'overview map of collections »', localized_interview_collections_url(:locale => :en) %>
     <br/>
 </p>
 
 <hr style="clear: both;"/>
 <h2 class="clear">FAQs</h2>
-<p>Please see the <%= link_to 'Help Page', home_path(:page_id=> t("faq_index", :scope => 'page_urls')) %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
+<p>Please see the <%= link_to 'Help Page', home_path(:page_id=> t('page_urls.faq_index')) %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>

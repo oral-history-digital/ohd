@@ -8,8 +8,21 @@ class HomeController < BaseController
   skip_before_filter :check_user_authentication!
 
   def show
-    page_label = params[:page_id].blank? ? 'home' : params[:page_id]
-    @page_action = I18n.t(page_label, :scope => 'page_paths')
+    @page_action = (
+      if params[:page_id].blank?
+        # Display the home page by default.
+        'archive'
+      else
+        # Reverse lookup the page action for the given pretty URL
+        (I18n.backend.send(:translations)[I18n.locale][:page_urls].index(params[:page_id]) || '')
+      end
+    ).to_s
+
+    if @page_action.blank?
+      # Redirect to the home page if the page id is not valid.
+      return redirect_to :page_id => I18n.t('archive', :scope => :page_urls)
+    end
+
     without_layout = NO_LAYOUT.include?(@page_action)
     if STATIC_PAGES.include?(@page_action)
       if without_layout

@@ -26,44 +26,13 @@ en:
   timecode: 'Timecode'
   zu: 'for'
 
-  # TODO: page_paths and page_urls contain obsolete external pages
-  # make sure these aren't references anywhere and remove them
-  page_paths:
-    archive: 'archive'
-    archiv: 'archive'
-    home: 'archive'
-    faq:  'faq_index'
-    hilfe:  'faq_index'
-    terms_of_use: 'terms_of_use'
-    nutzungsbedingungen: 'terms_of_use'
-    team: 'team'
-    contact: 'contact'
-    kontakt: 'contact'
-    imprint: 'impressum'
-    impressum: 'impressum'
-    faq_contents: 'faq_archive_contents'
-    hilfe_zu_inhalten: 'faq_archive_contents'
-    faq_search: 'faq_searching'
-    hilfe_zur_suche: 'faq_searching'
-    faq_technical: 'faq_technical'
-    hilfe_zu_technischen_fragen: 'faq_technical'
-    map_tutorial: 'map_tutorial'
-    anmerkungsrichtlinien: 'annotation_guidelines'
-    annotation_guidelines: 'annotation_guidelines'
-
   page_urls:
     archive: 'archive'
-    home: 'archive'
     faq_index: 'faq'
-    terms_of_use: 'terms_of_use'
-    team: 'team'
-    contact: 'contact'
-    impressum: 'imprint'
     faq_archive_contents: 'faq_contents'
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
-    annotation_guidelines: 'annotation_guidelines'
 
   tasks:
     interviewers: 'Interviewer'

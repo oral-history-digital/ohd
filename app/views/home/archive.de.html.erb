@@ -8,7 +8,7 @@
         <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title -%>
           <br/>
-          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -19,7 +19,7 @@
         <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title -%>
           <br/>
-          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(" / ") %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -69,8 +69,8 @@
   Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
   <br/>
     <%= link_to 'Beschreibung der Kategorien »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :de, :anchor => "recherchemoeglichkeiten"),
-                :title => "Welche Recherchemöglichkeiten gibt es?" %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'recherchemoeglichkeiten'),
+                :title => 'Welche Recherchemöglichkeiten gibt es?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -87,8 +87,8 @@
   Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
   <br/>
     <%= link_to 'Beschreibung der Volltextsuche »',
-                localized_home_path(:page_id=> t("faq_searching", :scope => 'page_urls'), :locale => :de, :anchor => "suche-allgemein"),
-                :title => "Wie kann ich die Volltextsuche nutzen?" %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'suche-allgemein'),
+                :title => 'Wie kann ich die Volltextsuche nutzen?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -106,7 +106,7 @@
   <br/>
     <%= link_to 'zur Kartenrecherche »',
                 localized_public_map_url(:locale => :de),
-                :title => "Kartenrecherche" %>
+                :title => 'Kartenrecherche' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -122,7 +122,7 @@
 <p>
   Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
   <br/>
-    <%= link_to "zur Karte der Teilsammlungen »", localized_interview_collections_url(:locale => :de), :title => "Geografische Verteilung der Teilsammlungen" %>
+    <%= link_to 'zur Karte der Teilsammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Geografische Verteilung der Teilsammlungen' %>
     <br/>
 </p>
 
@@ -131,8 +131,8 @@
 <p>
   Über die
   <%= link_to (t :faq),
-              localized_home_path(:page_id=> t("faq_index", :scope => 'page_urls'), :locale => :de),
-              :title => "Fragen und Antworten zur Nutzung des Archivs" %>
+              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :de),
+              :title => 'Fragen und Antworten zur Nutzung des Archivs' %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
   <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">

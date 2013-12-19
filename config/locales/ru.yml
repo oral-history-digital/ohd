@@ -26,44 +26,13 @@ ru:
   timecode: '##ru##'
   zu: '##ru##'
 
-  # TODO: page_paths and page_urls contain obsolete external pages
-  # make sure these aren't references anywhere and remove them
-  page_paths: #inbound translation
+  page_urls: # Pretty URLs for static pages.
     archive: '##ru##'
-    archiv: '##ru##'
-    home: '##ru##'
-    faq: '##ru##'
-    hilfe: '##ru##'
-    terms_of_use: '##ru##'
-    nutzungsbedingungen: '##ru##'
-    team: '##ru##'
-    contact: '##ru##'
-    kontakt: '##ru##'
-    imprint: '##ru##'
-    impressum: '##ru##'
-    faq_contents: '##ru##'
-    hilfe_zu_inhalten: '##ru##'
-    faq_search: '##ru##'
-    hilfe_zur_suche: '##ru##'
-    faq_technical: '##ru##'
-    hilfe_zu_technischen_fragen: '##ru##'
-    karteneinfuehrung: '##ru##'
-    anmerkungsrichtlinien: '##ru##'
-    annotation_guidelines: '##ru##'
-
-  page_urls: #outbound translation ('pretty' urls)
-    archive: '##ru##'
-    home: '##ru##'
     faq_index: '##ru##'
-    terms_of_use: '##ru##'
-    team: '##ru##'
-    contact: '##ru##'
-    impressum: '##ru##'
     faq_archive_contents: '##ru##'
     faq_searching: '##ru##'
     faq_technical: '##ru##'
     map_tutorial: '##ru##'
-    annotation_guidelines: '##ru##'
 
   tasks:
     interviewers: '##ru##'
