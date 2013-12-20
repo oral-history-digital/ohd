@@ -27,7 +27,7 @@ class LocationSegment < ActiveRecord::Base
   end
 
   def media_id=(id_string)
-    if (id_string =~ /^ZA\d{3}_\d{2}_\d{2}_\d{4}/i)
+    if id_string =~ /^ZA\d{3}_\d{2}_\d{2}_\d{4}/i
       @media_id = id_string
     else
       raise "Assigning illegal media_id = '#{id_string}'"

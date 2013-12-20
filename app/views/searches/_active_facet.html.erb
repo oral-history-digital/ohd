@@ -19,6 +19,7 @@
     <% end %>
 
   <% elsif active_facet == 'interview_id' %>
+
     <% query = query.map{|i| i.to_i != 0 ? begin; Interview.find(i); rescue; nil; end : nil }.compact %>
 
     <% query.each do |interview| %>
@@ -26,6 +27,7 @@
         <li><%= name_token %></li>
       <% end %>
     <% end %>
+
   <% end %>
   </ul>
 

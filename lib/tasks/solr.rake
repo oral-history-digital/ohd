@@ -207,7 +207,7 @@ namespace :solr do
 
       archive_id = (args[:interviews] || '').scan(/za\d{3}/i)
       interviews = Interview.all(
-          :conditions => if archive_id.empty? then
+          :conditions => if archive_id.empty?
                            nil
                          else
                            archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"

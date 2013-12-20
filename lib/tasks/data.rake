@@ -23,8 +23,8 @@ namespace :data do
   desc "Report on archive contents"
   task :content_report => :environment do
 
-    @interviews = Interview.find :all
-    last_import = Import.find(:all).last
+    @interviews = Interview.all
+    last_import = Import.all.last
     puts "\nReport on Archive Contents from #{(last_import.nil? ? Time.gm(2010,9,23).strftime('%d.%m.%Y') : last_import.time)}"
     puts "========================================================="
     puts "Interview total:            #{@interviews.size.to_s.rjust(6)}"

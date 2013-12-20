@@ -15,11 +15,10 @@ namespace :users do
 
     puts "\n#{total} Registrations to write as CSV."
 
-    while(offset<total)
-      UserRegistration.find(:all,
-                            :conditions => ['receive_newsletter = ?', true],
-                            :limit => "#{offset},#{batch}",
-                            :include => [ :user ]).each do |r|
+    while offset<total
+      UserRegistration.all(:conditions => ['receive_newsletter = ?', true],
+                           :limit => "#{offset},#{batch}",
+                           :include => [ :user ]).each do |r|
         appellation = YAML::load(r.application_info)[:appellation]
         u = r.user || User.new
         data << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, u.state ]
@@ -56,11 +55,10 @@ namespace :users do
 
     puts "\n#{total} Registrations to write as CSV."
 
-    while(offset<total)
-      UserRegistration.find(:all,
-                            :conditions => ['workflow_state = ? OR workflow_state = ?', 'checked', 'registered'],
-                            :limit => "#{offset},#{batch}",
-                            :include => [ :user ]).each do |r|
+    while offset<total
+      UserRegistration.all(:conditions => ['workflow_state = ? OR workflow_state = ?', 'checked', 'registered'],
+                           :limit => "#{offset},#{batch}",
+                           :include => [ :user ]).each do |r|
         appellation = YAML::load(r.application_info)[:appellation]
         u = r.user || User.new
         data << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, u.state ]
@@ -246,15 +244,9 @@ namespace :users do
 
     while offset < total
 
-      UserAccount.find(:all, :limit => "#{offset},#{batch}").each do |account|
+      UserAccount.all(:limit => "#{offset},#{batch}").each do |account|
         next unless account.user.nil? || account.user_registration.nil?
-        unless account.user_registration.nil?
-          # don't create users if not registered
-          next unless account.user_registration.registered?
-          # we have a registration, now create a user for them
-          account.user_registration.send(:initialize_user)
-          puts account.user.to_s
-        else
+        if account.user_registration.nil?
           # create this user registration
 
           registration = UserRegistration.find_or_initialize_by_email(account.email)
@@ -264,27 +256,27 @@ namespace :users do
 
             registration.login = account.login
             name_parts = account.email.split(/[@.]/)
-            registration.first_name       = name_parts.first
-            registration.last_name        = name_parts[1]
-            registration.tos_agreement    = true
-            registration.priv_agreement   = true
-            registration.workflow_state   = 'registriert'
+            registration.first_name = name_parts.first
+            registration.last_name = name_parts[1]
+            registration.tos_agreement = true
+            registration.priv_agreement = true
+            registration.workflow_state = 'registriert'
 
             # application-info:
-            registration.appellation      = 'Herr oder Frau'
-            registration.job_description  = 'Sonstiges'
-            registration.research_intentions  = 'keine Angabe'
-            registration.comments         = 'keine Angaben'
-            registration.organization     = 'keine Angabe'
-            registration.homepage         = ''
-            registration.street           = 'keine Angabe'
-            registration.zipcode          = '--'
-            registration.city             = 'keine Angabe'
-            registration.state            = 'keine Angabe'
-            registration.country          = 'Deutschland'
+            registration.appellation = 'Herr oder Frau'
+            registration.job_description = 'Sonstiges'
+            registration.research_intentions = 'keine Angabe'
+            registration.comments = 'keine Angaben'
+            registration.organization = 'keine Angabe'
+            registration.homepage = ''
+            registration.street = 'keine Angabe'
+            registration.zipcode = '--'
+            registration.city = 'keine Angabe'
+            registration.state = 'keine Angabe'
+            registration.country = 'Deutschland'
 
-            registration.admin_comments   = ''
-            registration.processed_at     = Time.now
+            registration.admin_comments = ''
+            registration.processed_at = Time.now
 
             registration.skip_mail_delivery!
             registration.send(:serialize_form_parameters)
@@ -315,6 +307,12 @@ namespace :users do
 
           end
 
+        else
+          # don't create users if not registered
+          next unless account.user_registration.registered?
+          # we have a registration, now create a user for them
+          account.user_registration.send(:initialize_user)
+          puts account.user.to_s
         end
 
       end
@@ -420,7 +418,7 @@ namespace :users do
 
     while offset < total
 
-      UserRegistration.find(:all, :conditions => conditions, :limit => "#{offset},#{batch}", :include => :user ).each do |registration|
+      UserRegistration.all(:conditions => conditions, :limit => "#{offset},#{batch}", :include => :user ).each do |registration|
         next unless registration.user.nil?
         next if registration.user_account.nil?
         registration.send(:initialize_user)

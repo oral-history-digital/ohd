@@ -3,7 +3,7 @@ namespace :xml_import do
   desc "incremental import of data"
   task :incremental, [:file, :reindex] => :environment do |task,args|
     file = args[:file] || ENV['file']
-    reindex = !args[:reindex].blank?
+    reindex = !(args[:reindex] || ENV['reindex']).blank?
     require 'nokogiri'
 
     raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file.to_s)
@@ -13,11 +13,11 @@ namespace :xml_import do
 
     archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
     if reindex
-      unless Interview.find_by_archive_id(archive_id).nil?
-        # NOTE: run the reindexing separately to allow for cleanup.
-        Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
-      else
+      if Interview.find_by_archive_id(archive_id).nil?
         puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
+      else
+        # NOTE: run the reindexing separately to allow for cleanup.
+        Rake::Task['solr:reindex:by_archive_id'].execute({ :ids => archive_id })
       end
     end
 
