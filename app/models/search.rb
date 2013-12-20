@@ -232,16 +232,16 @@ DEF
     @page = (current_query_params.delete('page') || 1).to_i
 
     if current_query_params.blank?
-      @search = unfiltered_interview_search(@page)
+      @search = self.class.unfiltered_interview_search(@page)
 
     else
       if current_query_params['partial_person_name'].blank?
         # fulltext search
-        @search = filtered_interview_search current_query_params, @page
+        @search = self.class.filtered_interview_search current_query_params, @page
 
       else
         # search for partial person names for autocompletion
-        @search = person_name_search current_query_params, @page
+        @search = self.class.person_name_search current_query_params, @page
 
       end
     end
@@ -307,46 +307,6 @@ DEF
     end
   end
 
-  def self.from_params(query_params=nil)
-    if query_params.blank?
-      if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
-        @@default_search = nil
-        @@default_search_cache_time = Time.now
-      end
-      @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
-    else
-      search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
-      search_params.merge!(query_params)
-
-      # Filter that translates a person name search into an interview search.
-      person_name = search_params.delete('person_name')
-      unless person_name.blank?
-        interviews = Interview.all(:select => 'DISTINCT interviews.id', :joins => :translations, :conditions => {:interview_translations => {:full_title => person_name}})
-        search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
-      end
-
-      search = Search.new do |search|
-        QUERY_PARAMS.each do |attr|
-          search.send("#{attr}=", search_params[attr.to_s]) unless search_params[attr.to_s].blank?
-        end
-      end
-      search
-    end
-  end
-
-  def self.in_interview(id, fulltext)
-    search_results = if id.is_a?(Integer)
-      Interview.all(:conditions => ['id = ?', id])
-    else
-      Interview.all(:conditions => ['archive_id = ?', id])
-    end
-    Search.new do |search|
-      search.results = search_results
-      search.fulltext = fulltext
-    end
-  end
-
-
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
@@ -374,131 +334,177 @@ DEF
     search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
   end
 
-  # sets the query hash as id_hash instead of serialized interview references (default)
-  def self.default_id_hash(instance)
-    instance.query_hash.blank? ? instance.read_property('query_hash') || 'blank_search' : instance.query_hash
-  end
+  class << self
 
-  private
-
-  # the default blank search - nothing but facets
-  def unfiltered_interview_search(page = 1)
-    build_unfiltered_interview_query(page)
-  end
-
-  # Do a filtered interview search.
-  def filtered_interview_search(query, page = 1)
-    build_filtered_interview_query(query, page) do
-
-      # Person/Interview facet.
-      unless query['interview_id'].blank?
-        with :interview_id, query['interview_id']
-      end
-
-    end
-  end
-
-  # Search for autocomplete on person_name.
-  def person_name_search(query, page=1)
-    build_filtered_interview_query(query, page) do
-      # Search for partial person names for autocompletion.
-      # NB: We cannot use ... with :person_name ... here as
-      # wildcards ('*') in restrictions will be escaped in
-      # sunspot although the edismax parser supports them.
-      adjust_solr_params do |params|
-        params[:fq] << "person_name_text:#{query['partial_person_name']}*"
+    def in_interview(id, fulltext)
+      search_results = if id.is_a?(Integer)
+                         Interview.all(:conditions => ['id = ?', id])
+                       else
+                         Interview.all(:conditions => ['archive_id = ?', id])
+                       end
+      Search.new do |search|
+        search.results = search_results
+        search.fulltext = fulltext
       end
     end
-  end
 
-  # Build a basic solr query filtered on categories.
-  def build_filtered_interview_query(query, page, &attributes)
+    def from_params(query_params=nil)
+      if query_params.blank?
+        if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
+          @@default_search = nil
+          @@default_search_cache_time = Time.now
+        end
+        @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
+      else
+        search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
+        search_params.merge!(query_params)
 
-    search = build_unfiltered_interview_query(page) do
+        # Translate a person name search into an interview search.
+        person_name = search_params.delete('person_name')
+        unless person_name.blank?
+          interviews = build_unfiltered_interview_query(1) do
+                         with(:"person_name_#{I18n.locale}").any_of person_name
+                       end.
+                       execute!.
+                       results
+          search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
+        end
 
-      # Fulltext search.
-      fulltext_query = query['fulltext']
-      unless fulltext_query.blank?
-        keywords fulltext_query
+        Search.new do |search|
+          QUERY_PARAMS.each do |attr|
+            search.send("#{attr}=", search_params[attr.to_s]) unless search_params[attr.to_s].blank?
+          end
+        end
+      end
+    end
+
+    # transforms a parameter hashtable to a hashed string
+    def encode_parameters(params)
+      param_tokens = []
+      params.stringify_keys!
+      (QUERY_PARAMS - ['page']).each do |p|
+        unless params[p].blank?
+          param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
+        end
+      end
+      Base64.encode64(param_tokens.join('|')).gsub("\n", '').gsub('/', '_') # replace Base64 slashes with underscore!
+    end
+
+    def decode_parameters(hash)
+      params_str = Base64.decode64(hash.gsub('_', '/'))
+      params = {}
+      params_str.split('|').each do |token|
+        p_code = (token[/^[a-z]+=/] || '').sub('=', '')
+        next if p_code.blank?
+        p_value = token.sub(p_code + '=', '')
+        p_key = nil
+        (QUERY_PARAMS - ['page']).each do |param_name|
+          p_key = param_name if Search.codify_parameter_name(param_name) == p_code
+        end
+        # make sure arrays of ids are instantiated as such:
+        numeric_values = p_value.scan(/\"\d+\"/)
+        params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
+      end
+      params
+    end
+
+    def codify_parameter_name(name)
+      name.split('_').map{|i| i.first.downcase}.join('')
+    end
+
+    # sets the query hash as id_hash instead of serialized interview references (default)
+    def default_id_hash(instance)
+      instance.query_hash.blank? ? instance.read_property('query_hash') || 'blank_search' : instance.query_hash
+    end
+
+    def valid_page_number(page)
+      page.to_i > 0 ? page.to_i : 1
+    end
+
+    # the default blank search - nothing but facets
+    def unfiltered_interview_search(page = 1)
+      build_unfiltered_interview_query(page)
+    end
+
+    # Do a filtered interview search.
+    def filtered_interview_search(query, page = 1)
+      build_filtered_interview_query(query, page) do
+
+        # Person/Interview facet.
+        unless query['interview_id'].blank?
+          with :interview_id, query['interview_id']
+        end
+
+      end
+    end
+
+    # Search for autocomplete on person_name.
+    def person_name_search(query, page=1)
+      build_filtered_interview_query(query, page) do
+        # Search for partial person names for autocompletion.
+        # NB: We cannot use ... with :person_name ... here as
+        # wildcards ('*') in restrictions will be escaped in
+        # sunspot although the edismax parser supports them.
+        adjust_solr_params do |params|
+          params[:fq] << "person_name_text:#{query['partial_person_name']}*"
+        end
+      end
+    end
+
+    private
+
+    # Build a basic solr query filtered on categories.
+    def build_filtered_interview_query(query, page, &attributes)
+
+      search = build_unfiltered_interview_query(page) do
+
+        # Fulltext search.
+        fulltext_query = query['fulltext']
+        unless fulltext_query.blank?
+          keywords fulltext_query
+        end
+
+        # Category facets.
+        Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+          with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+        end
+
       end
 
-      # Category facets.
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
-      end
+      search.build(&attributes)
 
     end
 
-    search.build(&attributes)
+    # Build a basic query with attributes common
+    # to all interview queries.
+    def build_unfiltered_interview_query(page, &attributes)
+      search = Sunspot.new_search(Interview)
 
-  end
+      # Build the query.
+      search.build(&attributes) if block_given?
 
-  # Build a basic query with attributes common
-  # to all interview queries.
-  def build_unfiltered_interview_query(page, &attributes)
-    search = Sunspot.new_search(Interview)
+      # Add query attributes common to all interview queries.
+      search.build do
 
-    # Build the query.
-    search.build(&attributes) if block_given?
+        facet :interview_id,
+              :forced_labor_group_ids,
+              :forced_labor_field_ids,
+              :forced_labor_habitation_ids,
+              :language_ids,
+              :country_ids
 
-    # Add query attributes common to all interview queries.
-    search.build do
+        paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
+        order_by :"person_name_#{I18n.locale}", :asc
 
-      facet :interview_id,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
+        adjust_solr_params do |params|
+          # Use the edismax parser for wildcard support and
+          # more feature-rich query syntax.
+          params[:defType] = 'edismax'
+        end
 
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :"person_name_#{I18n.locale}", :asc
-
-      adjust_solr_params do |params|
-        # Use the edismax parser for wildcard support and
-        # more feature-rich query syntax.
-        params[:defType] = 'edismax'
-      end
-
-    end
-  end
-
-  def self.valid_page_number(page)
-    page.to_i > 0 ? page.to_i : 1
-  end
-
-  # transforms a parameter hashtable to a hashed string
-  def self.encode_parameters(params)
-    param_tokens = []
-    params.stringify_keys!
-    (QUERY_PARAMS - ['page']).each do |p|
-      unless params[p].blank?
-        param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
       end
     end
-    Base64.encode64(param_tokens.join('|')).gsub("\n", '').gsub('/', '_') # replace Base64 slashes with underscore!
-  end
 
-  def self.decode_parameters(hash)
-    params_str = Base64.decode64(hash.gsub('_', '/'))
-    params = {}
-    params_str.split('|').each do |token|
-      p_code = (token[/^[a-z]+=/] || '').sub('=', '')
-      next if p_code.blank?
-      p_value = token.sub(p_code + '=', '')
-      p_key = nil
-      (QUERY_PARAMS - ['page']).each do |param_name|
-        p_key = param_name if Search.codify_parameter_name(param_name) == p_code
-      end
-      # make sure arrays of ids are instantiated as such:
-      numeric_values = p_value.scan(/\"\d+\"/)
-      params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
-    end
-    params
-  end
-
-  def self.codify_parameter_name(name)
-    name.split('_').map{|i| i.first.downcase}.join('')
   end
 
 end

@@ -8,7 +8,8 @@ class LocationReference < ActiveRecord::Base
   REGION_LEVEL = 1
   COUNTRY_LEVEL = 2
 
-  belongs_to :interview
+  belongs_to :interview,
+             :include => :translations
 
   delegate  :archive_id,
             :video,
@@ -51,7 +52,7 @@ class LocationReference < ActiveRecord::Base
     string :location_type, :stored => true
     string :reference_type, :stored => true
     string :interviewee, :stored => true do
-      self.interview.anonymous_title
+      self.interview.anonymous_title(I18n.locale)
     end
     string :language, :stored => true do
       self.interview.languages.to_s
@@ -68,7 +69,7 @@ class LocationReference < ActiveRecord::Base
     json = {}
     return json if self.interview.nil?
     json['interviewId'] = self.interview.archive_id
-    json['interviewee'] = self.interview.anonymous_title
+    json['interviewee'] = self.interview.anonymous_title(I18n.locale)
     json['language'] = self.interview.languages.to_s
     json['translated'] = self.interview.translated
     json['interviewType'] = self.interview.video

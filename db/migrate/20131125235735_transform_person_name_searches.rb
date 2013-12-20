@@ -1,10 +1,17 @@
+# This migration requires a fully up-to-date solr index!
 class TransformPersonNameSearches < ActiveRecord::Migration
   def self.up
     Search.all(:conditions => "properties like '%person_name:%'").each do |uc|
       properties = uc.properties
       person_name = properties['query'].delete('person_name')
-      interviews = Interview.all(:select => 'DISTINCT interviews.id', :joins => :translations, :conditions => {:interview_translations => {:full_title => person_name}})
-      raise "Did not find interview for person_name: #{person_name}" if interviews.blank?
+      interviews = Search.instance_eval do |search_class|
+                     build_unfiltered_interview_query(1) do
+                       with(:"person_name_#{I18n.locale}").any_of person_name
+                     end.
+                     execute!.
+                     results
+                   end
+      raise "Did not find unique interview for person_name: #{person_name}" if interviews.size != 1
       properties['query']['interview_id'] = interviews.map(&:id)
       uc.properties = properties
       uc.save!

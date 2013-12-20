@@ -99,7 +99,7 @@ class UserAnnotation < UserContent
     attr = {}
     title_tokens = [UserAnnotation.human_name]
     title_tokens << I18n.t('zu')
-    title_tokens << reference.interview.short_title
+    title_tokens << reference.interview.short_title(I18n.locale)
     title_tokens << "(#{reference.interview.archive_id})"
     title_tokens << reference.tape_number
     title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')

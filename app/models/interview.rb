@@ -100,10 +100,11 @@ DEF
             :source => :category,
             :conditions => "categories.category_type = 'Sprache'"
 
-  translates :full_title
+  translates :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details
+  self.translation_class.validates_presence_of :last_name
 
   validates_associated :collection
-  validates_presence_of :full_title, :archive_id
+  validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
   validates_attachment_content_type :still_image,
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
@@ -168,7 +169,15 @@ DEF
       end
     end
     text :person_name, :boost => 20 do
-      (translations.map(&:full_title).join(' ') + (" #{alias_names}" || '')).strip.squeeze(' ')
+      (
+        translations.map do |t|
+          build_full_title_from_name_parts(
+              t.last_name, t.name_affix, t.first_name, t.other_first_names
+          )
+        end.join(' ') + (" #{alias_names}" || '')
+      ).
+      strip.
+      squeeze(' ')
     end
 
   end
@@ -180,7 +189,7 @@ DEF
   end
 
   def to_s
-    short_title
+    short_title(I18n.locale)
   end
 
   def media_id
@@ -215,23 +224,44 @@ DEF
     write_attribute :duration, time
   end
 
-  def short_title
-    return '' if full_title(I18n.locale).blank?
-    @short_title ||= [first_name, (last_name || '').sub(/\s*\([^(]+\)\s*$/,'')].join(' ')
+  def build_full_title_from_name_parts(last_name, name_affix, first_name, other_first_names)
+    last_name ||= ''
+
+    lastname_with_affix = if name_affix.blank?
+                            last_name
+                          else
+                            I18n.t('interview_title_patterns.lastname_with_affix', :lastname => last_name, :affix => name_affix)
+                          end
+
+    first_names = []
+    first_names << first_name unless first_name.blank?
+    first_names << other_first_names unless other_first_names.blank?
+
+    if first_names.empty?
+      lastname_with_affix
+    else
+      I18n.t('interview_title_patterns.lastname_firstname', :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
+    end
   end
 
-  # display form of last name without addeda (geb etc.)
-  def last_name_short
-    last_name.sub(/\s+\(.*\)$/,'')
+  def full_title(locale)
+    build_full_title_from_name_parts(
+        last_name(locale),
+        name_affix(locale),
+        first_name(locale),
+        other_first_names(locale)
+    )
   end
 
-  def anonymous_title
-    title = full_title(I18n.locale)
-    return '' if title.blank? || title.match(/[,;]/).nil?
-    @anon_title ||= [
-        title.match(/([,;]\s+?)([^\s]+)/)[2],
-        title[/^\w/]
-    ].compact.join(' ') + '.'
+  def short_title(locale)
+    [first_name(locale), last_name(locale)].join(' ')
+  end
+
+  def anonymous_title(locale)
+    name_parts = []
+    name_parts << first_name(locale) unless first_name(locale).blank?
+    name_parts << "#{last_name(locale).strip.chars.first}."
+    name_parts.join(' ')
   end
 
   def year_of_birth

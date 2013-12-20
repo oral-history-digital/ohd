@@ -4,9 +4,16 @@ describe Interview do
   include TranslationTestHelper
 
   let(:translated_object) { build(:interview) }
-  describe '@full_title' do
-    let(:translated_attribute) { :full_title }
-    it_should_behave_like 'a translated attribute'
+
+  TRANSLATED_ATTS = [ :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details ]
+
+  TRANSLATED_ATTS.each do |attr|
+
+    describe "@#{attr}" do
+      let(:translated_attribute) { attr }
+      it_should_behave_like 'a translated attribute'
+    end
+
   end
 
 end

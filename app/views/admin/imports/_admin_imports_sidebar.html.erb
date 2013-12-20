@@ -12,7 +12,7 @@
       <ul class="details">
         <% yesterdays.each do |import| -%>
             <li>
-              <%= link_to "#{import.importable.archive_id} (#{import.importable.last_name_short}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
+              <%= link_to "#{import.importable.archive_id} (#{import.importable.short_name}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
             </li>
         <% end -%>
       </ul>
@@ -22,7 +22,7 @@
       <ul class="details">
         <% rest_of_week.each do |import| -%>
             <li>
-              <%= link_to "#{import.importable.archive_id} (#{import.importable.last_name_short}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
+              <%= link_to "#{import.importable.archive_id} (#{import.importable.short_name}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
             </li>
         <% end -%>
       </ul>

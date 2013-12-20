@@ -56,6 +56,10 @@ ru:
     clip: '##ru##'
     clips: '##ru##'
 
+  interview_title_patterns:
+    lastname_with_affix: '%{lastname} (##ru## %{affix})'
+    lastname_firstname: '%{last_name_with_affix} %{first_names}'
+
   user_interface:
     labels:
       interview: '##ru##'

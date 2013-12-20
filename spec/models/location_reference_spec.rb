@@ -5,7 +5,8 @@ describe LocationReference, 'when importing as different location types' do
   let(:interview) do
     Interview.create \
         :archive_id => 'za908',
-        :full_title => 'Iryna Golchova',
+        :first_name => 'Iryna',
+        :last_name => 'Golchova',
         :country_of_origin => 'Ukraine'
   end
 

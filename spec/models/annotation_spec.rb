@@ -7,7 +7,8 @@ describe Annotation, 'upon creation' do
   let(:interview) do
     Interview.create \
         :archive_id => 'za907',
-        :full_title => 'Abraham Lincoln',
+        :first_name => 'Abraham',
+        :last_name => 'Lincoln',
         :country_of_origin => 'Vereinigte Staaten'
   end
 

@@ -1,7 +1,7 @@
 <div id="segment_annotation_<%= segment_annotation.id || 'new' -%>">
   <%= modal_window_close_button_on_javascript_request -%>
   <h2><%= UserAnnotation.human_name -%> <%= t('zu') -%>
-    <%= segment_annotation.reference.interview.short_title -%>
+    <%= segment_annotation.reference.interview.short_title(I18n.locale) -%>
     (<%= segment_annotation.reference.interview.archive_id -%>),
     <small>
       <%= Tape.human_name -%>&nbsp;<%= segment_annotation.reference.tape.number -%>,

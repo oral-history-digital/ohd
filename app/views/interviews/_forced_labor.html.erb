@@ -23,10 +23,10 @@
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
         <span class="value"><%= expand forced_labor.forced_labor_fields.map{|f| t(f, :scope => 'categories.forced_labor_fields')}.join(', ') %></span>
       </li>
-      <% unless forced_labor.forced_labor_details.blank? %>
+      <% unless forced_labor.forced_labor_details(I18n.locale).blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_details %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_details(I18n.locale) %></span>
       </li>
       <% end %>
       <li>
@@ -45,10 +45,10 @@
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
         <span class="value"><%= expand forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
       </li>
-      <% unless forced_labor.return_date.blank? %>
+      <% unless forced_labor.return_date(I18n.locale).blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_date) %></span>
-        <span class="value"><%= format_date forced_labor.return_date %></span>
+        <span class="value"><%= format_date forced_labor.return_date(I18n.locale) %></span>
       </li>
       <% end %>
     </ul>
