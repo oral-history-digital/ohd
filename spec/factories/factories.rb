@@ -7,4 +7,9 @@ FactoryGirl.define do
     other_first_names 'Iwanowitsch'
   end
 
+  factory :category do
+    name 'test category'
+    category_type 'test cat type'
+  end
+
 end

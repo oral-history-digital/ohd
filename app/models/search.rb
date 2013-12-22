@@ -179,7 +179,7 @@ DEF
             facet.rows.map { |f| [f.instance, f.count] }.
                 sort do |a, b|
                   if a.first.is_a?(Category)
-                    a.first.name <=> b.first.name
+                    a.first.name(I18n.locale) <=> b.first.name(I18n.locale)
                   elsif a.first.is_a?(Interview)
                     a.first.full_title(I18n.locale) <=> b.first.full_title(I18n.locale)
                   else raise 'Unknown facet object type.'

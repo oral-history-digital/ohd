@@ -57,7 +57,7 @@ de:
     clips: 'Ausschnitte'
 
   interview_title_patterns:
-    lastname_with_affix: '%{lastname} (geb. %{affix})'
+    lastname_with_affix: '%{lastname} (%{affix})'
     lastname_firstname: '%{lastname_with_affix}, %{first_names}'
 
   user_interface:

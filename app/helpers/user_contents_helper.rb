@@ -16,7 +16,7 @@ module UserContentsHelper
       when Hash
         # Render fulltext search.
         fulltext = query.delete('fulltext')
-        str = fulltext.nil? ? [] : [ "#{t(:fulltext, :scope => :facets)}: \"#{fulltext}\"" ]
+        str = fulltext.nil? ? [] : [ "#{t('facets.fulltext')}: \"#{fulltext}\"" ]
 
         # Preload interview by ID.
         interview_ids = (query['interview_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
@@ -24,7 +24,7 @@ module UserContentsHelper
 
         # Preload queried categories by ID.
         category_ids = query.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
-        preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ] )
+        preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ], :include => :translations)
 
         # Render keywords, categories and interviews.
         str += query.keys.inject([]) do |out, key|
@@ -43,7 +43,7 @@ module UserContentsHelper
                 else
                   cat = preloaded_categories.detect{|c| c.id == v.to_i}
                   unless cat.nil?
-                    facet_values << t(cat.name, :scope => "categories.#{key}")
+                    facet_values << cat.name(I18n.locale)
                   end
                 end
               end
@@ -149,10 +149,10 @@ module UserContentsHelper
                   + content_tag(:p, t(interview.collection, :scope => 'collections.name')))
     # forced labor groups
     biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
-                  + content_tag(:p, interview.forced_labor_groups.map{|f| t(f, :scope => 'categories.forced_labor_groups')}.join(', ')))
+                  + content_tag(:p, interview.forced_labor_groups.map{|f| f.name(I18n.locale)}.join(', ')))
     # habitations
     biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
-                  + content_tag(:p, interview.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ')))
+                  + content_tag(:p, interview.forced_labor_habitations.map{|l| l.name(I18n.locale)}.join(', ')))
     content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end
 

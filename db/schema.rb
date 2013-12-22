@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131202165747) do
+ActiveRecord::Schema.define(:version => 20131220210330) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -37,11 +37,8 @@ ActiveRecord::Schema.define(:version => 20131202165747) do
   add_index "annotations", ["segment_id"], :name => "index_annotations_on_segment_id"
 
   create_table "categories", :force => true do |t|
-    t.string "name"
     t.string "category_type"
   end
-
-  add_index "categories", ["name"], :name => "index_categories_on_name"
 
   create_table "categorizations", :force => true do |t|
     t.integer "category_id",   :null => false
@@ -50,6 +47,16 @@ ActiveRecord::Schema.define(:version => 20131202165747) do
   end
 
   add_index "categorizations", ["category_type", "interview_id"], :name => "index_categorizations_on_category_type_and_interview_id"
+
+  create_table "category_translations", :force => true do |t|
+    t.integer  "category_id"
+    t.string   "locale"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "category_translations", ["category_id"], :name => "index_category_translations_on_category_id"
 
   create_table "collections", :force => true do |t|
     t.string   "name"

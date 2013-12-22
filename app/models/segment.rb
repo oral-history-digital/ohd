@@ -12,7 +12,7 @@ class Segment < ActiveRecord::Base
   has_many  :location_references,
             :through => :location_segments
 
-  # Important: don't use a :dependent => :destroy or :delete
+  # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
   has_many  :annotations
 

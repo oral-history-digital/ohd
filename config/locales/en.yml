@@ -59,7 +59,7 @@ en:
     saved: 'saved search'
 
   interview_title_patterns:
-    lastname_with_affix: '%{lastname} (born %{affix})'
+    lastname_with_affix: '%{lastname} (%{affix})'
     lastname_firstname: '%{last_name_with_affix}, %{first_names}'
 
   user_interface:

@@ -92,13 +92,15 @@ DEF
   has_many  :categorizations
 
   has_many :categories,
-           :through => :categorizations
+           :through => :categorizations,
+           :include => :translations
 
   has_many :languages,
             :class_name => 'Category',
             :through => :categorizations,
             :source => :category,
-            :conditions => "categories.category_type = 'Sprache'"
+            :conditions => "categories.category_type = 'Sprache'",
+            :include => :translations
 
   translates :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details
   self.translation_class.validates_presence_of :last_name
@@ -436,11 +438,11 @@ DEF
       categorizations.reload
       category_names.each do |name|
       category = case type
-                   when 'Lebensmittelpunkt'
+                   when 'Lebensmittelpunkt' # Todo: remove this!
                      classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
                      classified_name = classified_name[/^de,/].blank? ? classified_name : name
                      Category.find_or_initialize_by_category_type_and_name(type, classified_name)
-                   else
+                   else # Todo: will not work with translated name.
                      Category.find_or_initialize_by_category_type_and_name type, name
                  end
       category.save if category.new_record? || category.changed?
@@ -459,7 +461,7 @@ DEF
   end
 
   def create_categories_from(data, type)
-    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
+    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip } # TODO: simplify this (same for lang and others)
     @category_import ||= {}
     @category_import[type.to_s] = category_names
   end

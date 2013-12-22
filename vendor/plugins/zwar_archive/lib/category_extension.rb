@@ -21,7 +21,8 @@ module ZWAR
                     :class_name => 'Category',
                     :through => :#{category_type}_categorizations,
                     :source => :category,
-                    :conditions => "categories.category_type = '#{name}'"
+                    :conditions => "categories.category_type = '#{name}',
+                    :include => :translations"
 CAT
 
       end
