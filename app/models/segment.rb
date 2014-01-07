@@ -88,7 +88,7 @@ DEF
     text :mainheading, :boost => 10 do
       mainheading = ''
       translations.each do |translation|
-        mainheading << ' ' + translation.mainheading unless translation.blank?
+        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
       end
       mainheading.strip
     end
