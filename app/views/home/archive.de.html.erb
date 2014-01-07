@@ -8,7 +8,7 @@
         <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) -%>
           <br/>
-          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %>-Interview,&nbsp;<%= @interview.languages.map(&:to_s).map(&:downcase).join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -19,7 +19,7 @@
         <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) -%>
           <br/>
-          <%= @interview.video %>-Interview,&nbsp;<%= @interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages').downcase}.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= @interview.video %>-Interview,&nbsp;<%= @interview.languages.map(&:to_s).map(&:downcase).join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>

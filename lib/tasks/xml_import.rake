@@ -62,18 +62,8 @@ namespace :xml_import do
         else
           statusmsg << "import completed for #{archive_id}."
           imported += 1
-          # Second: XML language cleanup/import
-          Open4::popen4("rake xml_import:languages[#{archive_id}] --trace") do |pid, stdin, stdout, stderr|
-            stdout.each_line {|line| puts line }
-            errors = []
-            stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
-            unless errors.empty?
-              errmsg = "\nImport der Sprachdaten für Interview (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
-              puts errmsg
-            end
-          end
 
-          # Third: Reindexing of interview
+          # Second: Reindexing of interview
           Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
 
           statusmsg << "imported data from #{interview.imports.last.time}."
@@ -113,18 +103,7 @@ namespace :xml_import do
             puts errmsg
           end
         end
-        # Second: XML language cleanup/import
-        Open4::popen4("rake xml_import:languages[#{archive_id}] --trace") do |pid, stdin, stdout, stderr|
-          stdout.each_line {|line| puts line }
-          errors = []
-          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
-          unless errors.empty?
-            errmsg = "\nImport der Sprachdaten für Interview (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
-            logfile << errmsg
-            puts errmsg
-          end
-        end
-        # Third: Reindexing of interview
+        # Second: Reindexing of interview
         Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
         statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
         logfile << statusmsg
@@ -188,33 +167,6 @@ namespace :xml_import do
         puts
       end
     end
-  end
-
-
-  desc "checks and assigns interview languages in case there are problems during xml import"
-  task :languages, [:id] => :environment do |task,args|
-    require 'nokogiri'
-
-    id = args[:id]
-
-    puts "\nChecking and updating languages for #{id.blank? ? 'all interviews' : id}:"
-    repo_dir = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR)
-    if id.blank?
-      # all interviews
-      repo_dir = File.join(repo_dir, 'za**')
-    else
-      # specific interview
-      repo_dir = File.join(repo_dir, id.downcase)
-    end
-    Dir.glob(File.join(repo_dir, 'data', 'za*.xml')).each do |xmlfile|
-      archive_id = (xmlfile.split('/').last[/za\d{3}/i] || '').downcase
-      next if archive_id.blank?
-      puts archive_id
-      @parser = Nokogiri::XML::SAX::Parser.new(LanguageXMLImport.new(xmlfile))
-      @parser.parse(File.read(xmlfile))
-      puts
-    end
-
   end
 
 end

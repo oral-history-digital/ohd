@@ -23,7 +23,7 @@ module UserContentsHelper
         preloaded_interviews = interview_ids.empty? ? [] : Interview.all(:conditions => [ 'id IN (?)', interview_ids ])
 
         # Preload queried categories by ID.
-        category_ids = query.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
+        category_ids = query.reject{|key,value| key=='interview_id'}.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
         preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ], :include => :translations)
 
         # Render keywords, categories and interviews.
@@ -149,10 +149,10 @@ module UserContentsHelper
                   + content_tag(:p, t(interview.collection, :scope => 'collections.name')))
     # forced labor groups
     biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
-                  + content_tag(:p, interview.forced_labor_groups.map{|f| f.name(I18n.locale)}.join(', ')))
+                  + content_tag(:p, interview.forced_labor_groups.join(', ')))
     # habitations
     biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
-                  + content_tag(:p, interview.forced_labor_habitations.map{|l| l.name(I18n.locale)}.join(', ')))
+                  + content_tag(:p, interview.forced_labor_habitations.join(', ')))
     content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end
 
@@ -176,7 +176,7 @@ module UserContentsHelper
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript
-    annotation << content_tag(:li, label_tag(Segment.human_attribute_name(transcript_field)) + content_tag(:p, segment.send(transcript_field)))
+    annotation << content_tag(:li, label_tag(Segment.human_attribute_name(transcript_field)) + content_tag(:p, segment.send(transcript_field).gsub(/\*([^*]+:)\*/, '<em>\1</em>')))
     content_tag(:div, html, :class => 'image-link') + content_tag(:ul, annotation)
   end
 

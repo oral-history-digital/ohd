@@ -49,7 +49,7 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.all(:conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
+      @results = LocationReference.all(:conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => { :categories => :translations } })
       respond_to do |wants|
         wants.html do
           render :action => :index
@@ -81,17 +81,19 @@ class LocationReferencesController < BaseController
 
   # language= parameter overrides all
   def set_locale(locale = nil, valid_locales = [])
-    super((params[:language] || I18n.default_locale).to_sym)
+    super((params[:language] || params[:locale] || I18n.default_locale).to_sym)
   end
 
   def query(paginate=false)
     query = {}
     query[:location] = params['location']
-    query[:longitude] = params['longitude'] unless params['longitude'].blank?
-    query[:latitude] = params['latitude'] unless params['latitude'].blank?
-    query[:longitude2] = params['longitude2'] unless params['longitude2'].blank?
-    query[:latitude2] = params['latitude2'] unless params['latitude2'].blank?
-    query[:page] = params[:page] || 1 if !params[:page].blank? || paginate
+    if paginate
+      query[:page] = if params[:page].blank?
+                       1
+                     else
+                       params[:page].to_i
+                     end
+    end
     query
   end
 

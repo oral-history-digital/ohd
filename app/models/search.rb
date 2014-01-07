@@ -158,17 +158,20 @@ DEF
   # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    facet_name = name
-    facet_name = (name.to_s.singularize << "_ids") unless Category::ARCHIVE_CATEGORIES.assoc(name.to_sym).nil?
-    @facets[facet_name.to_sym] ||=
+    facet_name = (if Category::is_category?(name)
+                   name.to_s.singularize << '_ids'
+                 else
+                   name
+                 end).to_sym
+    @facets[facet_name] ||=
         if @search
-          facet = @search.facet(facet_name.to_sym)
+          facet = @search.facet(facet_name)
           if facet.blank?
             []
           elsif facet.rows.blank?
-            if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
-              # yield all categories with a count of zero
-              Category.send(name).map { |c| [c, 0] }
+            if Category::is_category?(name)
+              # Yield all categories with a count of zero.
+              Category.send(name).sort_by(&:to_s).map{|c| [c, 0]}
             else
               []
             end

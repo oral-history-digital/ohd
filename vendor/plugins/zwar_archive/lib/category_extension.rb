@@ -10,19 +10,24 @@ module ZWAR
 
       def is_categorized_by(category_type, name, options={})
 
+        category_type = category_type.to_s
+
         self.class_eval <<CAT
 
           has_many  :#{category_type}_categorizations,
                     :class_name => 'Categorization',
                     :conditions => "categorizations.category_type = '#{name}'"
 
-          # TODO: an add method that creates an entry on the JOIN table
           has_many  :#{category_type},
                     :class_name => 'Category',
                     :through => :#{category_type}_categorizations,
                     :source => :category,
-                    :conditions => "categories.category_type = '#{name}',
-                    :include => :translations"
+                    :conditions => "categories.category_type = '#{name}'",
+                    :include => :translations
+
+          def #{category_type.singularize}_ids
+            #{category_type}_categorizations.map(&:category_id)
+          end
 CAT
 
       end

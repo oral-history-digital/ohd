@@ -82,11 +82,6 @@ class Interview < ActiveRecord::Base
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
-    self.class_eval <<DEF
-    def #{category.first.to_s.singularize}_ids
-      @#{category.first.to_s.singularize}_ids ||= #{category.first.to_s}_categorizations.map{|c| c.category_id }
-    end
-DEF
   end
 
   has_many  :categorizations
@@ -94,13 +89,6 @@ DEF
   has_many :categories,
            :through => :categorizations,
            :include => :translations
-
-  has_many :languages,
-            :class_name => 'Category',
-            :through => :categorizations,
-            :source => :category,
-            :conditions => "categories.category_type = 'Sprache'",
-            :include => :translations
 
   translates :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details
   self.translation_class.validates_presence_of :last_name
@@ -159,8 +147,17 @@ DEF
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
+    # Index all categories with their translations into a single text field.
     text :categories, :boost => 20 do
-      ([self.archive_id] + Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first).to_s }).join(' ')
+      cats = [self.archive_id]
+      cats += Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first)}.
+          # Make a flat list of all categories of this interview.
+          flatten.
+          # Retrieve translations for the categories.
+          map do |cat|
+            cat.translations.map{|t| t.name}.join(' ')
+          end
+      cats.join(' ')
     end
 
     # Create localized attributes so that we can order
@@ -297,7 +294,7 @@ DEF
   end
 
   def right_to_left
-    languages.map{|l| l.name }.include?('Hebräisch') ? true : false
+    languages.map(&:to_s).include?('Hebräisch') ? true : false
   end
 
   def citation_hash
@@ -328,6 +325,10 @@ DEF
     unless data.match(/[,();]+/)
       create_categories_from(data, 'Lebensmittelpunkt')
     end
+  end
+
+  def languages=(data)
+    create_categories_from(data.gsub('/', '|'), 'Sprache')
   end
 
   def still_image_file_name=(filename)
@@ -430,40 +431,81 @@ DEF
   end
 
   def set_categories
-    (@category_import || {}).keys.each do |type|
-      category_names = @category_import[type]
-      # Remove all previous categorizations
+    (@category_import || {}).each do |type, category_data|
+
+      next if type.blank?
+
+      # Remove all previous categorizations for the given type.
       categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
-      # must be reloaded for the later creation to work
+      # Must be reloaded for the later creation to work.
       categorizations.reload
-      category_names.each do |name|
-      category = case type
-                   when 'Lebensmittelpunkt' # Todo: remove this!
-                     classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
-                     classified_name = classified_name[/^de,/].blank? ? classified_name : name
-                     Category.find_or_initialize_by_category_type_and_name(type, classified_name)
-                   else # Todo: will not work with translated name.
-                     Category.find_or_initialize_by_category_type_and_name type, name
-                 end
-      category.save if category.new_record? || category.changed?
-      begin
-        if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
-          categorizations << Categorization.new{|c|
-            c.category_id = category.id
-            c.category_type = type
-          }
+
+      # Re-arrange localized category data by entry.
+      category_entries = []
+      category_data.each do |locale, category_names|
+        category_names.each_with_index do |name, index|
+          category_entries[index] ||= {}
+          category_entries[index][locale] = name
         end
-      rescue Exception => e
-        puts e.message
       end
-    end
+
+      category_entries.each do |localized_names|
+
+        # We expect at least a translation for the default locale.
+        default_name = localized_names[I18n.default_locale]
+        next if default_name.blank?
+
+        # Create a category with this name if it doesn't already exists.
+        category = Category.first(
+            :joins => :translations,
+            :conditions => [
+                'categories.category_type=? AND category_translations.name=? AND category_translations.locale=?',
+                type, default_name, I18n.default_locale.to_s
+            ],
+            :readonly => false
+        )
+        unless category
+          category = Category.new :category_type => type
+        end
+
+        # Set the localized names of the category.
+        category_changed = false
+        localized_names.each do |locale, name|
+          # Rail's dirty detection doesn't work with Globalize2's
+          # original code. We therefore have to manually identify changes.
+          next if category.name(locale) == name
+
+          category_changed = true
+          Category.with_locale(locale) do
+            category.name = name
+          end
+        end
+
+        category.save! if category.new_record? || category_changed
+
+        # Create a categorization for this category if it doesn't already exist.
+        begin
+          if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
+            categorizations << Categorization.new{|c|
+              c.category_id = category.id
+              c.category_type = type
+            }
+          end
+        rescue StandardError => e
+          puts e.message
+        end
+
+      end
     end
   end
 
   def create_categories_from(data, type)
-    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip } # TODO: simplify this (same for lang and others)
+    raise 'Invalid category type' unless %w(Gruppen Unterbringung Einsatzbereiche Lebensmittelpunkt Sprache).include? type
+    category_names = data.split('|').map{|n| n.strip }
     @category_import ||= {}
-    @category_import[type.to_s] = category_names
+    @category_import[type.to_s] ||= {}
+    import_locale = self.class.locale || I18n.locale
+    @category_import[type.to_s][import_locale] = category_names
   end
 
   def set_contributor_field_from(field,association)

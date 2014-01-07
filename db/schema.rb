@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20131220210330) do
 
   create_table "categories", :force => true do |t|
     t.string "category_type"
+    t.string "code"
   end
 
   create_table "categorizations", :force => true do |t|

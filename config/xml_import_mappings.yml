@@ -24,6 +24,9 @@ interview:
   citation-timecode: 'citation_timecode'
   citation-media-id: 'citation_media_id'
 
+  language:
+    name: 'languages'
+
   person:
     alias-names: 'alias_names'
     gender: 'gender'

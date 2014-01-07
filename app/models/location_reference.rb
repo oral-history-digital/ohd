@@ -44,25 +44,10 @@ class LocationReference < ActiveRecord::Base
   after_save :update_interview_category
 
   searchable :auto_index => false do
-    string :archive_id, :stored => true
     text :name, :boost => 12
     text :alias_names, :boost => 3
     text :location_name, :boost => 6
     text :alias_location_names
-    string :location_type, :stored => true
-    string :reference_type, :stored => true
-    string :interviewee, :stored => true do
-      self.interview.anonymous_title(I18n.locale)
-    end
-    string :language, :stored => true do
-      self.interview.languages.to_s
-    end
-    string :interview_type, :stored => true do
-      self.interview.video ? 'video' : 'audio'
-    end
-    string :experience_groups, :stored => true do
-      self.interview.forced_labor_groups.map{|g| g.name }.join(", ")
-    end
   end
 
   def json_attrs(include_hierarchy=false)
@@ -70,12 +55,12 @@ class LocationReference < ActiveRecord::Base
     return json if self.interview.nil?
     json['interviewId'] = self.interview.archive_id
     json['interviewee'] = self.interview.anonymous_title(I18n.locale)
-    json['language'] = self.interview.languages.to_s
+    json['language'] = self.interview.languages.join('/')
     json['translated'] = self.interview.translated
     json['interviewType'] = self.interview.video
     json['referenceType'] = self.reference_type
     unless include_hierarchy
-      json['experienceGroup'] = self.interview.forced_labor_groups.map{|g| g.name }.join(", ")
+      json['experienceGroup'] = self.interview.forced_labor_groups.join(', ')
     end
     json['location'] = name
     json['locationType'] = location_type
