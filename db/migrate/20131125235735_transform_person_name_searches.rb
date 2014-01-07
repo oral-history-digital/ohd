@@ -4,6 +4,7 @@ class TransformPersonNameSearches < ActiveRecord::Migration
     Search.all(:conditions => "properties like '%person_name:%'").each do |uc|
       properties = uc.properties
       person_name = properties['query'].delete('person_name')
+      next if person_name.blank?
       interviews = Search.instance_eval do |search_class|
                      build_unfiltered_interview_query(1) do
                        with(:"person_name_#{I18n.locale}").any_of person_name
