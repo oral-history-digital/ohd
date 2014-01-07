@@ -153,31 +153,31 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def translate_field_or_value(field, value=nil)
-    unless value.nil?
+    if value.nil?
+      t(field, :scope => 'devise.registration_fields', :locale => :de)
+    else
       if value.is_a?(Time)
         return value.strftime('%d.%m.%Y %H:%M Uhr')
       end
       if value.blank?
         return ''
       end
-      if value == true
+      if value
         return 'ja'
       end
       value.strip! if value.is_a?(String)
       scope = case field
-              when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
-                return value
-              when 'country'
-                return value if value.length > 2
-                'countries'
-              when 'workflow_state'
-                'devise.workflow_states'
-              else
-                'devise.registration_values.' + field.to_s
-            end
+                when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
+                  value
+                when 'country'
+                  return value if value.length > 2
+                  'countries'
+                when 'workflow_state'
+                  'devise.workflow_states'
+                else
+                  'devise.registration_values.' + field.to_s
+              end
       t(value, :scope => scope, :locale => :de)
-    else
-      t(field, :scope => 'devise.registration_fields', :locale => :de)
     end
   end
 

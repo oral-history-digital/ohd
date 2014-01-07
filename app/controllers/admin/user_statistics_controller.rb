@@ -13,7 +13,7 @@ class Admin::UserStatisticsController < Admin::BaseController
 
   def csv_export
 
-    mapping_file = File.join(RAILS_ROOT, 'config', 'statistics_mappings.yml')
+    mapping_file = File.join(Rails.root, 'config', 'statistics_mappings.yml')
     mappings = YAML::load_file(mapping_file)
 
     @list = [ :header, :count ]

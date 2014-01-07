@@ -176,7 +176,8 @@ DEF
             raise 'Expected facet instance.'
           else
             # Return an array of all instances with number of corresponding hits.
-            facet.rows.map { |f| [f.instance, f.count] }.
+            facet.rows.
+                map { |f| [f.instance, f.count] }.
                 sort do |a, b|
                   if a.first.is_a?(Category)
                     a.first.name(I18n.locale) <=> b.first.name(I18n.locale)

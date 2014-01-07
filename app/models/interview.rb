@@ -425,7 +425,7 @@ DEF
   end
 
   def set_country_category
-    # set from country_of_origin as a fallback
+    # Set from country_of_origin as a fallback.
     create_categories_from(self.country_of_origin, 'Lebensmittelpunkt') if self.countries.empty?
   end
 

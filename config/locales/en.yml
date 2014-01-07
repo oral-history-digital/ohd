@@ -668,9 +668,9 @@ en:
     forced_labor_habitations: 'Internment Conditions' # need singular for category_type
     interview_id: 'Name of the Interviewee'
     language: 'Language'
-    languages: 'Language'
+    languages: 'Language' # need singular for category_type
     country: 'Place of Residence (Country)'
-    countries: 'Place of Residence (Country)'
+    countries: 'Place of Residence (Country)' # need singular for category_type
     fulltext: 'Search Term'
 
   photos:

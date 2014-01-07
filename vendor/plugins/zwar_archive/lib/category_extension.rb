@@ -31,7 +31,6 @@ CAT
 
   end
 
-
 end
 
 ActiveRecord::Base.send :include, ZWAR::CategoryExtension

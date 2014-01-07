@@ -97,8 +97,8 @@ class LocationReferencesController < BaseController
 
   def perform_search
     paginate = request.xhr? ? false : true
-    @location_search = LocationReference.search(query(paginate))
-    @results = @location_search.results
+    location_search = LocationReference.search(query(paginate))
+    @results = location_search.results
   end
 
   def check_for_iframe_render

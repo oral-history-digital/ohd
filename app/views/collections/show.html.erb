@@ -4,8 +4,9 @@
 <p>
   <strong><%= Collection.human_attribute_name('countries') %>:</strong>
   <br />
-  <% countries = (@collection.countries || '').split(",") %>
-  <%= countries.map{|f| t(f.strip, :scope => 'location.countries')}.join(", ") %>
+  <% countries = (@collection.countries || '').split(',') %>
+  <%# TODO: Move country translations to the database. %>
+  <%= countries.map{|f| t(f.strip, :scope => 'location.countries')}.join(', ') %>
 </p>
 
 <p>

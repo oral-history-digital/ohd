@@ -161,8 +161,6 @@ namespace :solr do
       ids = ids.split(/\W+/) unless ids.nil?
 
       # Segments
-      batch=25
-      offset=0
       joins = "RIGHT JOIN tapes ON tapes.id = segments.tape_id"
       conds = "segments.id IS NOT NULL"
       if ids.nil?
@@ -171,29 +169,21 @@ namespace :solr do
         joins << " RIGHT JOIN interviews ON interviews.id = tapes.interview_id"
         conds << " AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
       end
-      total = Segment.count :all, :joins => joins, :conditions => conds
 
+      total = Segment.count :all, :joins => joins, :conditions => conds
       puts "\nIndexing #{total} segments..."
 
-      while offset<total
+      Segment.find_each(:joins => joins, :conditions => conds) do |segment|
 
-        Segment.all(:joins => joins, :conditions => conds, :limit => "#{offset},#{batch}").each do |segment|
-          begin
-            segment.index
-          rescue Exception => e
-            puts "#{e.class.name} on #{segment.inspect}\n#{e.message}"
-            exit
-          end
+        begin
+          segment.index
+        rescue StandardError => e
+          puts "#{e.class.name} on #{segment.inspect}\n#{e.message}"
+          exit
         end
 
-        if offset/batch % 400 == 0
-          STDOUT.printf "[#{offset}]"
-        else
-          STDOUT.printf '.'
-        end
+        STDOUT.printf '.'
         STDOUT::flush
-
-        offset += batch
       end
 
       Sunspot.commit

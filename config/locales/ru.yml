@@ -675,7 +675,7 @@ ru:
     language: '##ru##'
     languages: '##ru##' # need singular for category_type
     country: '##ru##'
-    countries: '##ru##'
+    countries: '##ru##' # need singular for category_type
     fulltext: '##ru##'
 
   photos:

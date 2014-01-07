@@ -30,7 +30,6 @@ interview:
     country-of-origin: 'country_of_origin'
     date-of-birth: 'date_of_birth'
     deportation-date: 'deportation_date'
-    deportation-location: 'deportation_location' # TODO: Obsolete? Does this still appear in generated XML?
     details-of-origin: 'details_of_origin'
     firstname: 'first_name'
     middle-names: 'other_first_names'
@@ -40,11 +39,8 @@ interview:
     punishment: 'punishment'
     liberation-date: 'liberation_date'
     return-date: 'return_date'
-    group: 'forced_labor_groups' # TODO: Obsolete?
     forced-labor-groups: 'forced_labor_groups'
-    forced-labor-habitation: 'forced_labor_habitations' # TODO: Obsolete?
     forced-labor-habitations: 'forced_labor_habitations'
-    forced-labor-field: 'forced_labor_fields' # TODO: Obsolete?
     forced-labor-fields: 'forced_labor_fields'
 
 interview-team-member:

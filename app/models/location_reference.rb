@@ -26,14 +26,14 @@ class LocationReference < ActiveRecord::Base
   named_scope :return, { :conditions => "reference_type = 'return_location'" }
   named_scope :deportation, { :conditions => "reference_type = 'deportation_location'" }
 
-  named_scope :with_segments, { :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
-                                :conditions => "location_segments.id IS NOT NULL",
-                                :group => "location_references.id" }
+  named_scope :with_segments, { :joins => 'LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id',
+                                :conditions => 'location_segments.id IS NOT NULL',
+                                :group => 'location_references.id' }
 
   named_scope :with_segments_from_interview, lambda {|i| {
-                                :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
-                                :conditions => ["location_segments.id IS NOT NULL AND location_references.interview_id = ?",i.id],
-                                :group => "location_references.id" }}
+                                :joins => 'LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id',
+                                :conditions => ['location_segments.id IS NOT NULL AND location_references.interview_id = ?',i.id],
+                                :group => 'location_references.id' }}
 
   validates_presence_of :name, :reference_type
   validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
@@ -194,7 +194,7 @@ class LocationReference < ActiveRecord::Base
       when String
         data.strip
       when Array
-        data.uniq.delete_if{|i| i.blank? }.join("; ")
+        data.uniq.delete_if{|i| i.blank? }.join('; ')
     end
     write_attribute :alias_location_names, result
   end
@@ -266,8 +266,10 @@ class LocationReference < ActiveRecord::Base
       when 'place_of_birth'
         interview.update_attribute :birth_location, name
       when 'home_location'
-        # set the home location on the interview
+        # Set the home location on the interview.
         interview.home_location = @country_name || name.split(',').last
+      else
+        # Do nothing.
     end
   end
 
