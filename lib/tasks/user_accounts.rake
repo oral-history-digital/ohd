@@ -33,7 +33,7 @@ namespace :user_accounts do
             user.password_salt = Base64.encode64(Base64.decode64(user.encrypted_password)[-4,4])
             begin
               user.save!
-            rescue Exception => e
+            rescue StandardError => e
               puts "ERROR: #{e.message}\n#{user.inspect}\n#{user.errors.full_messages}\n"
               next
             end

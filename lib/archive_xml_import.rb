@@ -109,7 +109,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           import = @interview.imports.create{|imp| imp.migration = @migration.strip; imp.time = @date_of_export; imp.content = @imported }
           puts "Finished import for #{@interview.archive_id}: #{import.inspect}"
         end
-      rescue Exception => e
+      rescue StandardError => e
         msg = [e.message]
         unless e.backtrace.blank?
           msg = msg + [ e.backtrace ]

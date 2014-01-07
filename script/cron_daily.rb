@@ -29,7 +29,7 @@ def run_as_process(name, call)
       stderr.each_line {|line| errors << line unless line.empty?}
       @logger.log "\n#{name} - FEHLER:\n#{errors.join("")}" unless errors.empty?
     end
-  rescue Exception => e
+  rescue StandardError => e
     @logger.log "\n#{name} - ABORTED: #{e.message}\n#{e.respond_to?('backtrace') ? (e.backtrace || '') : ''}"
     STDOUT.flush
   end

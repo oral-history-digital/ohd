@@ -358,7 +358,7 @@ DEF
           @@default_search = nil
           @@default_search_cache_time = Time.now
         end
-        @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
+        @@default_search ||= begin Search.new{|base| base.search! }; rescue StandardError; Search.new; end;
       else
         search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
         search_params.merge!(query_params)

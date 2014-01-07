@@ -298,7 +298,7 @@ namespace :users do
               end
               puts registration.user.to_s
 
-            rescue Exception => e
+            rescue StandardError => e
               puts "ERROR: #{e.message}"
             end
 

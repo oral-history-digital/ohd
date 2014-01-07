@@ -44,7 +44,7 @@ namespace :locations do
           region[:lat] = location['lat']
           region[:long] = location['lng']
           coordinates_retrieved = true
-        rescue Exception => e
+        rescue StandardError => e
           puts "Error on parsing request: http://" + service_url + path
           puts "ERROR: #{e.message}#{defined?(e.backtrace) ? "\n" + ((e.backtrace || '').to_s) : ''}"
         end
