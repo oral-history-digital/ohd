@@ -36,8 +36,7 @@
     <li>
       <span class="label"><%= Interview.human_attribute_name('collection') %></span>
       <span class="value">
-        <%= t(interview.collection, :scope => 'collections.name') %>
-        <%#= as a link: link_to t(interview.collection, :scope => 'collections.name'), interview_collection_path(:project_id => interview.collection.project_id) %>
+        <%= interview.collection %>
       </span>
     </li>
     <li>

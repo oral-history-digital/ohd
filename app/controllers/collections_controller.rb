@@ -13,7 +13,7 @@ class CollectionsController < BaseController
   private
 
   def object
-    @object = Collection.find_by_project_id(param) unless param.nil?
+    @object = Collection.find_by_project_id(param, :include => :translations) unless param.nil?
     raise ActiveRecord::RecordNotFound if @object.nil?
     @object
   end
@@ -23,7 +23,7 @@ class CollectionsController < BaseController
   end
 
   def collection
-    end_of_association_chain.find(:all, :order => "name ASC")
+    Collection.all(:include => :translations).sort_by(&:to_s)
   end
 
 end

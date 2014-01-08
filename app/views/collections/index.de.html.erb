@@ -20,7 +20,7 @@
 
   <% @collections.each do |collection| %>
 
-    <li><%= link_to t(collection.name, :scope => 'collections.name'), url_for(:controller => :collections, :action => :show, :project_id => collection.project_id) %></li>
+    <li><%= link_to collection.name(I18n.locale), url_for(:controller => :collections, :action => :show, :project_id => collection.project_id) %></li>
 
   <% end %>
 

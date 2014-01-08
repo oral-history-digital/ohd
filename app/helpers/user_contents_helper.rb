@@ -146,7 +146,7 @@ module UserContentsHelper
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
-                  + content_tag(:p, t(interview.collection, :scope => 'collections.name')))
+                  + content_tag(:p, interview.collection))
     # forced labor groups
     biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
                   + content_tag(:p, interview.forced_labor_groups.join(', ')))
