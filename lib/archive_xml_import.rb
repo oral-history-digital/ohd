@@ -450,6 +450,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         begin
           current_instance.save!
 
+          # Link the interview to the current instance if the
+          # interview belongs to the current instance (e.g. a collection).
+          if @interview.respond_to?("#{name}_id=")
+            @interview.send("#{name}_id=", current_instance.id)
+          end
+
         rescue ActiveRecord::RecordInvalid
 
           # Produce validation messages including all associations.
