@@ -11,11 +11,11 @@
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('interviewers') %></span>
-      <span class="value"><%= interview.interviewers.blank? ? t(:not_specified, :scope => 'status') : interview.interviewers %></span>
+      <span class="value"><%= interview.interviewers(I18n.locale).blank? ? t(:not_specified, :scope => 'status') : interview.interviewers(I18n.locale) %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('transcriptors') %></span>
-      <span class="value"><%= interview.transcriptors.blank? ? t(:not_specified, :scope => 'status') : interview.transcriptors %></span>
+      <span class="value"><%= interview.transcriptors(I18n.locale).blank? ? t(:not_specified, :scope => 'status') : interview.transcriptors(I18n.locale) %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
@@ -25,7 +25,7 @@
       </span>
     </li>
     <% %w( translators researchers proofreaders segmentators ).each do |attr| %>
-      <% value = interview.send(attr) %>
+      <% value = interview.send(attr, I18n.locale) %>
       <% unless value.blank? %>
     <li>
       <span class="label"><%= Interview.human_attribute_name(attr) %></span>

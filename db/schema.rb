@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131220210330) do
+ActiveRecord::Schema.define(:version => 20140108150239) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -80,9 +80,18 @@ ActiveRecord::Schema.define(:version => 20131220210330) do
 
   add_index "contributions", ["interview_id"], :name => "index_contributions_on_interview_id"
 
+  create_table "contributor_translations", :force => true do |t|
+    t.integer  "contributor_id"
+    t.string   "locale"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contributor_translations", ["contributor_id"], :name => "index_contributor_translations_on_contributor_id"
+
   create_table "contributors", :force => true do |t|
-    t.string  "first_name"
-    t.string  "last_name"
     t.boolean "interview",     :default => false
     t.boolean "camera",        :default => false
     t.boolean "transcription", :default => false
@@ -120,6 +129,12 @@ ActiveRecord::Schema.define(:version => 20131220210330) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "interviewers"
+    t.string   "proofreaders"
+    t.string   "segmentators"
+    t.string   "transcriptors"
+    t.string   "translators"
+    t.text     "researchers"
   end
 
   add_index "interview_translations", ["interview_id"], :name => "index_interview_translations_on_interview_id"
@@ -143,12 +158,6 @@ ActiveRecord::Schema.define(:version => 20131220210330) do
     t.boolean  "segmented",                              :default => false
     t.boolean  "researched",                             :default => false
     t.boolean  "proofread",                              :default => false
-    t.string   "interviewers"
-    t.string   "transcriptors"
-    t.string   "translators"
-    t.text     "researchers"
-    t.string   "proofreaders"
-    t.string   "segmentators"
     t.text     "alias_names"
     t.string   "interview_date"
     t.text     "forced_labor_locations"

@@ -4,7 +4,7 @@ class Contribution < ActiveRecord::Base
   # a contribution to the Archive in a specific area (contribution_type)
 
   belongs_to :interview
-  belongs_to :contributor
+  belongs_to :contributor, :include => :translations
 
   validates_associated :interview, :contributor
   validates_presence_of :contribution_type
@@ -33,7 +33,18 @@ class Contribution < ActiveRecord::Base
   def set_contributor
     if self.contributor.nil?
       # Find or create the contributor
-      self.contributor = Contributor.find_or_initialize_by_first_name_and_last_name first_name, last_name
+      self.contributor = Contributor.first(
+        :joins => :translations,
+        :conditions => [
+            'contributor_translations.first_name = ? AND contributor_translations.last_name = ? AND contributor_translations.locale = ?',
+            first_name, last_name, I18n.default_locale.to_s
+        ],
+        :readonly => false
+      )
+      self.contributor ||= Contributor.new(
+          :first_name => first_name,
+          :last_name => last_name
+      )
       case contribution_type
         when 'transcript'
           self.contributor.transcription = true
@@ -48,7 +59,7 @@ class Contribution < ActiveRecord::Base
             self.contributor.other = true
           end
       end
-      self.contributor.save if self.contributor.new_record? || self.contributor.changed?
+      self.contributor.save!
     end
   end
 

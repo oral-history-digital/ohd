@@ -90,7 +90,11 @@ class Interview < ActiveRecord::Base
            :through => :categorizations,
            :include => :translations
 
-  translates :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details
+  translates :first_name, :other_first_names, :last_name, :name_affix,
+             :details_of_origin, :return_date, :forced_labor_details,
+             :interviewers, :transcriptors, :translators,
+             :proofreaders, :segmentators, :researchers
+
   self.translation_class.validates_presence_of :last_name
 
   validates_associated :collection
@@ -419,7 +423,7 @@ class Interview < ActiveRecord::Base
       if segments.with_heading.size > 0
         write_attribute :researched, true
       end
-      unless proofreaders.blank?
+      unless proofreaders(I18n.default_locale).blank?
         write_attribute :proofread, true
       end
     end
@@ -508,10 +512,23 @@ class Interview < ActiveRecord::Base
     @category_import[type.to_s][import_locale] = category_names
   end
 
-  def set_contributor_field_from(field,association)
+  def set_contributor_field_from(field, association)
     field_contributors = self.send(association)
-    self.send field.to_s + '=',
-      field_contributors.map{|c| [ c.last_name, c.first_name ].compact.join(', ')}.join("; ")
+
+    # Build one contributor list per locale.
+    contributors_per_locale = {}
+    field_contributors.each do |contributor|
+      contributor.translations.each do |t|
+        contributors_per_locale[t.locale.to_sym] ||= []
+        contributors_per_locale[t.locale.to_sym] << [ t.last_name, t.first_name ].compact.join(', ')
+      end
+    end
+
+    contributors_per_locale.each do |locale, contributors|
+      self.class.with_locale(locale) do
+        self.send "#{field}=", contributors.join('; ')
+      end
+    end
   end
 
 end

@@ -30,7 +30,7 @@
 <p>
   <strong><%= Collection.human_attribute_name('interviewers') %>:</strong>
   <br />
-  <%= @collection.interviewers %>
+  <%= @collection.interviewers(I18n.locale) %>
 </p>
 
 <h2><%= Collection.human_attribute_name('interviews') %></h2>

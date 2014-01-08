@@ -5,7 +5,12 @@ describe Interview do
 
   let(:translated_object) { build(:interview) }
 
-  TRANSLATED_ATTS = [ :first_name, :other_first_names, :last_name, :name_affix, :details_of_origin, :return_date, :forced_labor_details ]
+  TRANSLATED_ATTS = [
+      :first_name, :other_first_names, :last_name, :name_affix,
+      :details_of_origin, :return_date, :forced_labor_details,
+      :interviewers, :transcriptors, :translators,
+      :proofreaders, :segmentators, :researchers
+  ]
 
   TRANSLATED_ATTS.each do |attr|
 
