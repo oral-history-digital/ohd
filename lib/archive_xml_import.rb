@@ -38,7 +38,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
     @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
 
-    # Prepare sanit checking.
+    # Prepare sanity checking.
     self.import_sanity_levels = SANITY_CHECKS
 
     super()
@@ -424,21 +424,21 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
         belongs_to_interview = @current_context.column_names.include?('interview_id')
         current_instance = if key_attribute_hash.empty?
-                      # We are in "insert-only" mode and may therefore not update existing records.
-                      if belongs_to_interview
-                        @current_context.new :interview_id => @interview.id
-                      else
-                        @current_context.new
-                      end
-                    else
-                      # We update existing records if we find one by the (alternate) key.
-                      if belongs_to_interview
-                        key_attribute_hash['interview_id'] = @interview.id
-                      end
-                      dynamic_finder_name = 'find_or_initialize_by_' + key_attribute_hash.keys.sort.join('_and_')
-                      dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
-                      @current_context.send(dynamic_finder_name, *dynamic_finder_params)
-                    end
+                             # We are in "insert-only" mode and may therefore not update existing records.
+                             if belongs_to_interview
+                               @current_context.new :interview_id => @interview.id
+                             else
+                               @current_context.new
+                             end
+                           else
+                             # We update existing records if we find one by the (alternate) key.
+                             if belongs_to_interview
+                               key_attribute_hash['interview_id'] = @interview.id
+                             end
+                             dynamic_finder_name = 'find_or_initialize_by_' + key_attribute_hash.keys.sort.join('_and_')
+                             dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
+                             @current_context.send(dynamic_finder_name, *dynamic_finder_params)
+                           end
 
         # Progression feedback.
         if (@node_index += 1) % 15 == 12

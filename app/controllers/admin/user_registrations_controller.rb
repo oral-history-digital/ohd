@@ -95,15 +95,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   private
 
-=begin
-  def object
-    @object = UserRegistration.find(params[:id])
-    @user_account = @object.user_account
-    @user = @user_account ? @user_account.user : nil
-    @user_registration = @object
-  end
-=end
-
   def collection
     @filters = {}
     conditionals = []
