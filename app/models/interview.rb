@@ -75,10 +75,10 @@ class Interview < ActiveRecord::Base
             :dependent => :delete_all
 
   has_attached_file :still_image,
-                    :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
-                    :url => (ApplicationController.relative_url_root || '') + "/interviews/stills/:basename_still_:style.:extension",
-                    :path => ":rails_root/assets/archive_images/stills/:basename_still_:style.:extension",
-                    :default_url => "/archive_images/missing_still.jpg"
+                    :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
+                    :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
+                    :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
+                    :default_url => '/archive_images/missing_still.jpg'
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
@@ -385,7 +385,7 @@ class Interview < ActiveRecord::Base
     location_references.forced_labor.each do |location|
       locations << location.short_name.strip
     end
-    update_attribute :forced_labor_locations, locations.join("; ")
+    update_attribute :forced_labor_locations, locations.join('; ')
   end
 
   def set_return_locations!
@@ -393,7 +393,7 @@ class Interview < ActiveRecord::Base
     location_references.return.each do |location|
       locations << location.short_name.strip
     end
-    update_attribute :return_locations, locations.join("; ")
+    update_attribute :return_locations, locations.join('; ')
   end
 
   def set_deportation_location!
@@ -401,7 +401,7 @@ class Interview < ActiveRecord::Base
     location_references.deportation.each do |location|
       locations << location.short_name.strip
     end
-    update_attribute :deportation_location, locations.join("; ")
+    update_attribute :deportation_location, locations.join('; ')
   end
 
   def set_contributor_fields!

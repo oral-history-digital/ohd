@@ -27,10 +27,10 @@
     <% %w( translators researchers proofreaders segmentators ).each do |attr| %>
       <% value = interview.send(attr, I18n.locale) %>
       <% unless value.blank? %>
-    <li>
-      <span class="label"><%= Interview.human_attribute_name(attr) %></span>
-      <span class="value"><%= expand(value || t(:not_specified, :scope => 'status'), attr, 130) %></span>
-    </li>
+        <li>
+          <span class="label"><%= Interview.human_attribute_name(attr) %></span>
+          <span class="value"><%= expand(value || t(:not_specified, :scope => 'status'), attr, 130) %></span>
+        </li>
       <% end %>
     <% end %>
     <li>
