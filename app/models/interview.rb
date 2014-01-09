@@ -241,7 +241,7 @@ class Interview < ActiveRecord::Base
     lastname_with_affix = if name_affix.blank?
                             last_name
                           else
-                            I18n.t('interview_title_patterns.lastname_with_affix', :locale => locale, :lastname => last_name, :affix => name_affix)
+                            I18n.t('interview_title_patterns.lastname_with_affix', :locale => used_locale, :lastname => last_name, :affix => name_affix)
                           end
 
     # Build first name.
@@ -255,7 +255,7 @@ class Interview < ActiveRecord::Base
     if first_names.empty?
       lastname_with_affix
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
+      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
     end
   end
 
