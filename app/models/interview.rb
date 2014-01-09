@@ -174,9 +174,7 @@ class Interview < ActiveRecord::Base
     text :person_name, :boost => 20 do
       (
         translations.map do |t|
-          build_full_title_from_name_parts(
-              t.last_name, t.name_affix, t.first_name, t.other_first_names
-          )
+          build_full_title_from_name_parts(t.locale)
         end.join(' ') + (" #{alias_names}" || '')
       ).
       strip.
@@ -227,33 +225,42 @@ class Interview < ActiveRecord::Base
     write_attribute :duration, time
   end
 
-  def build_full_title_from_name_parts(last_name, name_affix, first_name, other_first_names)
-    last_name ||= ''
+  def build_full_title_from_name_parts(locale)
+    locale = locale.to_sym
 
+    # Check whether we've got the requested locale. If not fall back to the
+    # default locale.
+    used_locale = Globalize.fallbacks(locale).each do |l|
+      break l unless translations.select{|t| t.locale.to_sym == l}.blank?
+    end
+    return nil unless used_locale.is_a?(Symbol)
+
+    # Build last name with a locale-specific pattern.
+    last_name = last_name(used_locale) || ''
+    name_affix = name_affix(used_locale)
     lastname_with_affix = if name_affix.blank?
                             last_name
                           else
-                            I18n.t('interview_title_patterns.lastname_with_affix', :lastname => last_name, :affix => name_affix)
+                            I18n.t('interview_title_patterns.lastname_with_affix', :locale => locale, :lastname => last_name, :affix => name_affix)
                           end
 
+    # Build first name.
     first_names = []
+    first_name = first_name(used_locale)
     first_names << first_name unless first_name.blank?
+    other_first_names = other_first_names(used_locale)
     first_names << other_first_names unless other_first_names.blank?
 
+    # Combine first and last name with a locale-specific pattern.
     if first_names.empty?
       lastname_with_affix
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
+      I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
     end
   end
 
   def full_title(locale)
-    build_full_title_from_name_parts(
-        last_name(locale),
-        name_affix(locale),
-        first_name(locale),
-        other_first_names(locale)
-    )
+    build_full_title_from_name_parts(locale)
   end
 
   def short_title(locale)
