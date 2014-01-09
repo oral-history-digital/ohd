@@ -87,7 +87,7 @@ namespace :xml_import do
     @logfile = File.join(Rails.root, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
-      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
+      Dir.glob(File.join(repo_dir, 'za**')).sort.each do |dir|
         xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
         next if xmlfile.blank?
         archive_id = xmlfile.to_s[/za\d{3}/i]
