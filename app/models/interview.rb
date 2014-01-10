@@ -26,7 +26,8 @@ class Interview < ActiveRecord::Base
   has_many  :location_segments
 
   has_many :annotations,
-           :dependent => :delete_all
+           :dependent => :delete_all,
+           :include => :translations
 
   has_many  :contributions,
             :dependent => :delete_all
