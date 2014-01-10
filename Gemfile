@@ -43,7 +43,15 @@ gem 'rspec', '~> 1.3', :require => false
 gem 'rspec-rails', '~> 1.3', :require => false
 
 group :development do
+  gem 'guard-spork'
   gem 'ruby-debug-ide'
   gem 'ruby-debug-base'
   gem 'capistrano'
 end
+
+group :development, :test do
+  gem 'guard-rspec'
+  # Faster tests:
+  gem 'spork', '~> 0.8.0'
+end
+
