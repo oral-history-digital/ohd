@@ -17,7 +17,9 @@ gem 'archive-authentication'
 gem 'archive-authorization'
 gem 'archive-player'
 gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
-gem 'resource_controller', :require => false # Requiring resource_controller loads ApplicationController too early!
+gem 'resource_controller', :require => false, # Requiring resource_controller loads ApplicationController too early!
+    :git => 'git://github.com/jerico-dev/resource_controller.git',
+    :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
 gem 'rsolr', '~> 0.9.7'
