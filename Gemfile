@@ -6,7 +6,7 @@ ruby '1.8.7'
 # Most version restrictions are due to rails 2.3 compat and may probably
 # be removed when upgrading to 3.x.
 
-gem 'rails', '~> 2.3'
+gem 'rails', :git => 'https://github.com/makandra/rails.git', :branch => '2-3-lts'
 gem 'rake'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0'
