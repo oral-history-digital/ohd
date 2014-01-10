@@ -92,7 +92,7 @@ namespace :authentication_data do
             begin
               registration.save!
               new_registrations += 1
-            rescue StandardError => e
+            rescue => e
               puts "\nINVALID REGISTRATION: #{registration.inspect}"
               puts "ERROR: #{e.message}\n"
               invalid_user_accounts << account
@@ -112,7 +112,7 @@ namespace :authentication_data do
                 registration.send(:initialize_user)
               end
 
-            rescue StandardError => e
+            rescue => e
               puts "ERROR: #{e.message}"
             end
           end

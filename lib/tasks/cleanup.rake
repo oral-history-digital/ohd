@@ -49,7 +49,7 @@ namespace :cleanup do
         reg_info[:job_description] = translate_field_value.call(job, :job_description)
         intentions = cleanup_value.call(reg_info[:research_intentions])
         reg_info[:research_intentions] = translate_field_value.call(intentions, :research_intentions)
-      rescue StandardError => e
+      rescue => e
         puts "ERROR: #{e.message}\n\nregistration: #{reg.inspect}\n\napplication_info: #{reg_info.inspect}"
         exit
       end
@@ -60,7 +60,7 @@ namespace :cleanup do
         begin
          reg.save!
          edited += 1
-        rescue StandardError => e
+        rescue => e
           puts "ERROR: #{e.message}\n\nregistration: #{reg.inspect}\n\nreg.valid? => #{reg.valid?}"
           invalid_reg_ids << reg.id
         end
@@ -70,7 +70,7 @@ namespace :cleanup do
           begin
             reg.user.save!
             users += 1
-          rescue StandardError => e
+          rescue => e
             puts "ERROR: #{e.message}\n\nuser#{reg.user.inspect}\n\nuser.valid? => #{reg.user.valid?}"
             invalid_user_ids << reg.user.id
           end

@@ -502,7 +502,7 @@ class Interview < ActiveRecord::Base
               c.category_type = type
             }
           end
-        rescue StandardError => e
+        rescue => e
           puts e.message
         end
 

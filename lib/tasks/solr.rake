@@ -177,7 +177,7 @@ namespace :solr do
 
         begin
           segment.index
-        rescue StandardError => e
+        rescue => e
           puts "#{e.class.name} on #{segment.inspect}\n#{e.message}"
           exit
         end
