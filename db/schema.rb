@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140108185815) do
+ActiveRecord::Schema.define(:version => 20140110133249) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -222,13 +222,22 @@ ActiveRecord::Schema.define(:version => 20140108185815) do
 
   add_index "location_segments", ["location_reference_id"], :name => "index_location_segments_on_location_reference_id"
 
+  create_table "photo_translations", :force => true do |t|
+    t.integer  "photo_id"
+    t.string   "locale"
+    t.text     "caption"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "photo_translations", ["photo_id"], :name => "index_photo_translations_on_photo_id"
+
   create_table "photos", :force => true do |t|
     t.integer  "interview_id"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.text     "caption"
   end
 
   create_table "segment_translations", :force => true do |t|

@@ -8,7 +8,7 @@ class Interview < ActiveRecord::Base
 
   has_many  :photos,
             :dependent => :destroy,
-            :include => :interview
+            :include => [ :interview, :translations ]
 
   has_many :text_materials,
            :dependent => :destroy
