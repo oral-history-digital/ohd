@@ -8,7 +8,7 @@
     </li>
     <li>
       <label for="country"><%= t(:country, :scope => 'devise.registration_fields') %></label>
-      <% seloptions = localized_country_options_for_select(params['country'], [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
+      <% seloptions = country_options_for_select(params['country'], [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]) %>
       <%= select_tag(:country, "<option value='all'>Alle</option>" + seloptions, :class => 'filter') -%>
     </li>
     <% [:job_description, :state, :research_intentions].each do |field| -%>

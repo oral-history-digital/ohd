@@ -176,7 +176,7 @@ class SearchesController < BaseController
   # on the server-side, in case this is missed by the JS client code.
   def remove_search_term_from_params
     unless params.blank? || params[:fulltext].blank?
-      params.delete(:fulltext) if params[:fulltext] == t('search_term')
+      params.delete(:fulltext) if params[:fulltext] == t('search_term', :scope => 'user_interface.search')
     end
   end
 

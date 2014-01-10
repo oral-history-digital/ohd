@@ -37,7 +37,7 @@ class Admin::UserStatisticsController < Admin::BaseController
           end
         end
         sum = category_result.last
-        row_title = category == 'Land' ? I18n.t(label, :scope => :user_countries, :locale => :de) : label
+        row_title = category == 'Land' ? I18n.t(label, :scope => :countries, :locale => :de) : label
         if @rows.include?(label)
           @rows[label][:sum] += sum
         else

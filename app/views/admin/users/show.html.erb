@@ -39,7 +39,7 @@
       </td>
       <td>
         <strong><%= t(:country, :scope => 'devise.registration_fields') %></strong>
-        <%= form_edit_field_for @user, :country, :select => localized_country_select(:user, :country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]), :value => t(@user.country, :scope => "user_countries") %>
+        <%= form_edit_field_for @user, :country, :select => country_select(:user, :country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]), :value => t(@user.country, :scope => "countries") %>
       </td>
     </tr>
     <tr>

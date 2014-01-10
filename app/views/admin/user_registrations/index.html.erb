@@ -9,7 +9,7 @@
   <%= filter_str.empty? ? '' : "&nbsp;(nur #{filter_str})" -%>
   <%= @first_name.blank? ? '' : "&nbsp;,#{t(:first_name, :scope => 'devise.registration_fields')}: '#{@first_name}*'" -%>
   <%= @last_name.blank? ? '' : "&nbsp;,#{t(:last_name, :scope => 'devise.registration_fields')}: '#{@last_name}*'" -%>
-  <%= @country.blank? ? '' : "&nbsp; aus #{t(@country, :scope => 'user_countries')}" -%>
+  <%= @country.blank? ? '' : "&nbsp; aus #{t(@country, :scope => 'countries')}" -%>
 </h1>
 <h4><%= link_to '&raquo;&nbsp;Tabellendownload (als .CSV)', admin_user_registrations_path(params.merge({:format => :csv}))  %></h4>
 
