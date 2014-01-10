@@ -1,5 +1,5 @@
 set :application, "zwar_archiv"
-set :repository,  "https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/trunk"
+set :repository,  "https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/branches/integration"
 set :scm, "subversion"
 set :use_sudo, false
 
