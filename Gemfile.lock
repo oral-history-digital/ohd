@@ -26,8 +26,6 @@ GEM
     activeresource (2.3.18)
       activesupport (= 2.3.18)
     activesupport (2.3.18)
-    archive-authentication (0.1.2)
-      devise (= 1.0.8)
     archive-authorization (0.0.1)
     archive-player (0.2.1)
       activesupport (~> 2.3)
@@ -144,7 +142,6 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_taggable_on_steroids!
-  archive-authentication
   archive-authorization
   archive-player
   capistrano

@@ -13,7 +13,6 @@ gem 'exception_notification', '~> 2.3.0'
 gem 'workflow'
 gem 'will_paginate', '~> 2.3'
 gem 'paperclip', '~> 2.7.5'
-gem 'archive-authentication'
 gem 'archive-authorization'
 gem 'archive-player'
 gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
