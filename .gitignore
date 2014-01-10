@@ -4,4 +4,4 @@ config/database.yml
 db/schema.rb
 log/
 solr/data/
-vendor/gems/archive-player-0.2.0
+sunspot-solr.pid
