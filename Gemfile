@@ -46,6 +46,7 @@ group :development do
   gem 'ruby-debug-ide'
   gem 'ruby-debug-base'
   gem 'capistrano'
+  gem 'thin' # Required to test ZWAR in IE from a virtual machine (works around WebRick's reverse DNS lookup bug).
 end
 
 group :development, :test do
