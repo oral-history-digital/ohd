@@ -12,7 +12,6 @@ class LocationReferencesController < BaseController
 
   index do
     before do
-      store_query_in_session if current_user.nil?
       perform_search
     end
     wants.html do
@@ -102,10 +101,6 @@ class LocationReferencesController < BaseController
     paginate = request.xhr? ? false : true
     @location_search = LocationReference.search(query(paginate))
     @results = @location_search.results
-  end
-
-  def store_query_in_session
-    session[:landing_page_url] = request.request_uri
   end
 
   def check_for_iframe_render
