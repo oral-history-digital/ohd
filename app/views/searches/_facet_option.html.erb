@@ -8,14 +8,14 @@
 
     <% if category_facet && facet_entries.empty? %>
 
-      <h2 class='disabled'>
+      <h2 class='more disabled'>
         <img title="" src="<%= image_path 'pfeil_rot_rechts.gif' %>" id="<%= facet_name %>_query_closed" alt="Pfeil rechts" />
         <%= t facet_name.to_s.singularize, :scope => :facets %>
       </h2>
 
     <% else %>
 
-      <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || item_list %>);" class="<%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
+      <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || item_list %>);" class="more <%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
         <img title="" src="<%= image_path 'pfeil_rot_rechts.gif' %>" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="Pfeil rechts" />
         <img title="" src="<%= image_path 'pfeil_rot_unten.gif' %>" id="<%= facet_name %>_query_open" class="arrow-open" alt="Pfeil unten" />
         <%= t facet_name.to_s.singularize, :scope => :facets %>

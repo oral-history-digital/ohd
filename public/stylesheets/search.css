@@ -277,13 +277,12 @@ float:left;
 
 .searchInput {
     border: 1px solid #ccc;
-	width: 218px;
+    width: 200px;
 }
 
 .baseInputSearch {
     border-color: #666;
     margin: 20px 0 11px 0;
-    width: 200px;
 }
 
 #searchButton {
