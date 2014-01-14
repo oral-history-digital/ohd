@@ -35,7 +35,7 @@
           }%>
         </span>
         <span class="interview">
-          <a name="imports_for_<%= interview['archive_id'] -%>"><%= interview.short_title(I18n.locale) -%></a>
+          <a name="imports_for_<%= interview['archive_id'] -%>"><%= interview['short_title'] -%></a>
           <%= link_to '&raquo;', interview_path(:id => interview['archive_id']), :target => '_blank', :alt => "zum Interview im Archiv" -%>
         </span>
         <span class="data last_import">
