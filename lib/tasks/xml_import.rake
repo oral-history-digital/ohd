@@ -56,7 +56,7 @@ namespace :xml_import do
           end
         end
 
-        # post-processing - 2 subtasks
+        # Post-processing.
         if interview.nil? || interview.imports.last.created_at < (Time.now - 3.minutes)
           statusmsg << "skipped #{xmlfile}."
         else
