@@ -284,6 +284,23 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @current_data << text.to_s unless @current_context.nil?
   end
 
+  def passes_import_sanity_checks(name = nil)
+    if @sanity_checks.empty?
+      true
+    else
+      unless name.nil?
+        return true unless (@mappings.keys - ENTITIES_WAIVING_CHECKS).include?(name)
+      end
+      unless defined?(@reported_failed_sanity_checks)
+        puts "\nERROR - FAILED SANITY CHECKS (on #{name}):"
+        puts @sanity_checks.keys.map{|k| k.to_s + ': ' + @sanity_checks[k].to_s}.join("\n")
+        @reported_failed_sanity_checks = true
+        @parsing = false
+      end
+      false
+    end
+  end
+
   private
 
   # implement a check for selective imports
@@ -576,6 +593,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         end
 
       when 'published'
+        return false if @current_context.nil?
         if @current_data.strip == 'true'
           puts "Publish condition: satisfied."
           increment_import_sanity name
@@ -632,20 +650,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   def import_sanity_message_for(name)
     "Did not pass sanity check for #{name} (missing info in XML?)."
-  end
-
-  def passes_import_sanity_checks(name)
-    if @sanity_checks.empty? || !(@mappings.keys - ENTITIES_WAIVING_CHECKS).include?(name)
-      true
-    else
-      unless defined?(@reported_failed_sanity_checks)
-        puts "\nERROR - FAILED SANITY CHECKS (on #{name}):"
-        puts @sanity_checks.keys.map{|k| k.to_s + ': ' + @sanity_checks[k].to_s}.join("\n")
-        @reported_failed_sanity_checks = true
-        @parsing = false
-      end
-      false
-    end
   end
 
 end

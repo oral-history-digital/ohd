@@ -13,7 +13,7 @@ namespace :xml_import do
 
     archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
     if reindex
-      if Interview.find_by_archive_id(archive_id).nil?
+      if Interview.find_by_archive_id(archive_id).nil? or not @parser.document.passes_import_sanity_checks
         puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
       else
         # NOTE: run the reindexing separately to allow for cleanup.
@@ -49,7 +49,7 @@ namespace :xml_import do
         Open4::popen4("rake xml_import:incremental[#{xmlfile}] --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
-          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
             errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
             puts errmsg
@@ -92,19 +92,17 @@ namespace :xml_import do
         next if xmlfile.blank?
         archive_id = xmlfile.to_s[/za\d{3}/i]
         puts "\n\nStarting import processes for archive id: #{archive_id}"
-        # First: XML import
-        Open4::popen4("rake xml_import:incremental[#{xmlfile}] --trace") do |pid, stdin, stdout, stderr|
+        # XML import
+        Open4::popen4("rake xml_import:incremental[#{xmlfile},true] --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
-          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+          stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
             errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
             logfile << errmsg
             puts errmsg
           end
         end
-        # Second: Reindexing of interview
-        Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
         statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
         logfile << statusmsg
         puts statusmsg
