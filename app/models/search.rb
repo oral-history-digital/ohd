@@ -181,14 +181,22 @@ DEF
             # Return an array of all instances with number of corresponding hits.
             facet.rows.
                 map { |f| [f.instance, f.count] }.
+                reject do |f|
+                  if f.first.is_a?(Category)
+                    f.first.name(I18n.locale).blank?
+                  elsif f.first.is_a?(Interview)
+                    f.first.full_title(I18n.locale).blank?
+                  else
+                    true
+                  end
+                end.
                 sort do |a, b|
                   if a.first.is_a?(Category)
                     a.first.name(I18n.locale) <=> b.first.name(I18n.locale)
                   elsif a.first.is_a?(Interview)
                     a.first.full_title(I18n.locale) <=> b.first.full_title(I18n.locale)
-                  else raise 'Unknown facet object type.'
+                  end
                 end
-            end
           end
         else
           []
