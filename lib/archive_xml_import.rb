@@ -253,12 +253,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     elsif not @current_context.nil?
 
-      if @current_node_name == name && !attributes.empty?
+      if @current_node_name == name
         # Close instance node.
-        finalize_instance(name)
+        finalize_instance(name) unless attributes.empty?
+        close_context(name)
+
       elsif @mapping_levels.last == name
         # Close attribute node.
         finalize_attribute(name)
+        close_mapping_level(name)
 
       else
         # Close locale node.
@@ -393,10 +396,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     # Add to the attributes for the current context.
     assign_attribute(@current_attribute, @current_data) unless @current_attribute.nil? || @translated_attribute
-
-    # Close the current mapping level and return to
-    # one level higher up.
-    close_mapping_level(name)
   end
 
   def finalize_instance(name)
@@ -496,7 +495,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       @source_to_local_id_mapping[@current_context.name.underscore][@source_id] = current_instance.id
     end
 
-    close_context(name)
   end
 
   # handle assignment to content_columns and setter methods
