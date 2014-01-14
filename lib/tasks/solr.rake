@@ -126,26 +126,20 @@ namespace :solr do
       ids = ids.scan(/za\d{3}/i) unless ids.nil?
 
       # Interviews
-      batch=25
-      offset=0
       conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
       total = Interview.count :all, :conditions => conditions
 
       puts "\nIndexing #{total} interviews..."
 
-      while offset<total
-
-        Interview.all(
-            :conditions => conditions,
-            :limit => "#{offset},#{batch}"
-        ).each do |interview|
+      Interview.find_each(:conditions => conditions) do |interview|
+        begin
           interview.index
+        rescue => e
+          puts "#{e.class.name} on #{interview.inspect}\n#{e.message}"
         end
 
         STDOUT.printf '.'
         STDOUT::flush
-
-        offset += batch
       end
 
       Sunspot.commit
@@ -174,12 +168,10 @@ namespace :solr do
       puts "\nIndexing #{total} segments..."
 
       Segment.find_each(:joins => joins, :conditions => conds) do |segment|
-
         begin
           segment.index
         rescue => e
           puts "#{e.class.name} on #{segment.inspect}\n#{e.message}"
-          exit
         end
 
         STDOUT.printf '.'
@@ -217,7 +209,11 @@ namespace :solr do
       LocationReference.find_each(:conditions => conditions, :batch_size => 50) do |location|
         next if location.interview.blank?
         next unless location.classified
-        location.index
+        begin
+          location.index
+        rescue => e
+          puts "#{e.class.name} on #{location.inspect}\n#{e.message}"
+        end
         STDOUT.printf '.'
         STDOUT::flush
       end

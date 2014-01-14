@@ -103,10 +103,9 @@ namespace :xml_import do
             puts errmsg
           end
         end
-        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
+        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}.\n"
         logfile << statusmsg
         puts statusmsg
-        sleep 2
         puts
       end
     end
