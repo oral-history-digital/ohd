@@ -78,7 +78,6 @@ namespace :deploy do
     end
     run "rm -rf #{release_path}/assets/archive_images"
     run "ln -s #{shared_path}/assets/archive_images #{release_path}/assets/archive_images"
-    run "cp #{release_path}/db/import_files/missing_still.png #{release_path}/assets/archive_images"
     # text_materials
     run "rm -rf #{release_path}/assets/archive_text_materials"
     run "ln -s #{shared_path}/assets/archive_text_materials #{release_path}/assets/archive_text_materials"

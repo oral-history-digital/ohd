@@ -79,7 +79,7 @@ class Interview < ActiveRecord::Base
                     :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
                     :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
-                    :default_url => '/archive_images/missing_still.jpg'
+                    :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
   Category::ARCHIVE_CATEGORIES.each do |category|
     send :is_categorized_by, category.first, category.last
