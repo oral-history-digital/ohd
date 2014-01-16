@@ -8,7 +8,7 @@ set :use_sudo, false
 set :deploy_to, "/data/applications/zwar/#{application}"
 set :deploy_via, :remote_cache
 set :copy_exclude, [".git/*", ".svn/*", ".DS_Store", "deploy.rb", "production.rb", "Capfile", "database.yml", "solr.yml", "sunspot.yml"]
-set :bundle_dir, "/data/bundle"
+set :bundle_dir, "/data/bundle/01"
 
 set :environment, :undefined
 
