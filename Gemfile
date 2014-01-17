@@ -1,4 +1,4 @@
-source 'https://dev.cedis.fu-berlin.de/geminabox/'
+source 'http://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
 ruby '1.8.7'
