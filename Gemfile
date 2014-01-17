@@ -1,12 +1,12 @@
-source 'http://dev.cedis.fu-berlin.de/geminabox/'
-source 'https://rubygems.org'
+source 'https://dev.cedis.fu-berlin.de/geminabox/'
+source 'http://rubygems.org'
 
 ruby '1.8.7'
 
 # Most version restrictions are due to rails 2.3 compat and may probably
 # be removed when upgrading to 3.x.
 
-gem 'rails', :git => 'https://github.com/makandra/rails.git', :branch => '2-3-lts'
+gem 'rails', :git => 'http://github.com/makandra/rails.git', :branch => '2-3-lts'
 gem 'rake'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0'
@@ -17,18 +17,18 @@ gem 'archive-shared'
 gem 'archive-authorization'
 gem 'archive-player'
 gem 'globalize2',
-    :git => 'git://github.com/jerico-dev/globalize2.git',
+    :git => 'http://github.com/jerico-dev/globalize2.git',
     :branch => 'master'
 gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
 gem 'resource_controller', :require => false, # Requiring resource_controller loads ApplicationController too early!
-    :git => 'git://github.com/jerico-dev/resource_controller.git',
+    :git => 'http://github.com/jerico-dev/resource_controller.git',
     :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
 gem 'sunspot_rails', '~> 2.0.0' # Version requirement can be dropped when upgrading to Rails 3.x
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids',
-    :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
+    :git => 'http://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
     :branch => 'master'
 gem 'localized_country_select', '0.0.1'
 gem 'warden', '0.10.7'
