@@ -1,19 +1,19 @@
 GIT
-  remote: git://github.com/jerico-dev/acts_as_taggable_on_steroids.git
+  remote: http://github.com/jerico-dev/acts_as_taggable_on_steroids.git
   revision: fe06dcce1102116b1b44b586c30e2cf6d32264db
   branch: master
   specs:
     acts_as_taggable_on_steroids (1.3)
 
 GIT
-  remote: git://github.com/jerico-dev/resource_controller.git
+  remote: http://github.com/jerico-dev/resource_controller.git
   revision: 78502d8a72a4df5ebe54f5e6194a7704b80ece5b
   branch: master
   specs:
     resource_controller (0.6.6)
 
 GIT
-  remote: https://github.com/makandra/rails.git
+  remote: http://github.com/makandra/rails.git
   revision: bcf87a3aad2bd395bf6d40a2a96006440cd84052
   branch: 2-3-lts
   specs:
@@ -37,7 +37,7 @@ GIT
 
 GEM
   remote: https://dev.cedis.fu-berlin.de/geminabox/
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     archive-authorization (0.0.1)
     archive-player (0.2.3)
