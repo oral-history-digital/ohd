@@ -26,7 +26,7 @@ def run_as_process(name, call)
     Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && #{call}") do |pid, stdin, stdout, stderr|
       stdout.each_line {|line| puts line}
       errors = []
-      stderr.each_line {|line| errors << line unless line.empty?}
+      stderr.each_line {|line| errors << line unless line.empty? or line =~ /^\*\* (Invoke|Execute)/}
       @logger.log "\n#{name} - FEHLER:\n#{errors.join("")}" unless errors.empty?
     end
   rescue => e

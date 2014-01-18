@@ -114,7 +114,7 @@ namespace :xml_import do
     Open4::popen4("rake cleanup:remove_empty_locations --trace") do |pid, stdin, stdout, stderr|
       stdout.each_line {|line| puts line }
       errors = []
-      stderr.each_line {|line| errors << line unless line.empty? || line =~ /^config.gem/}
+      stderr.each_line {|line| errors << line unless line.empty? or line =~ /^\*\* (Invoke|Execute)/}
       unless errors.empty?
         errmsg = "\nFEHLER:\n#{errors.join("\n")}"
         @logfile << errmsg
@@ -150,7 +150,7 @@ namespace :xml_import do
         Open4::popen4("rake xml_import:locations file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
-          stderr.each_line {|line| errors << line unless line.empty?}
+          stderr.each_line {|line| errors << line unless line.empty? or line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
             errmsg = "\nImport der Ortsdaten aus (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
             logfile << errmsg
