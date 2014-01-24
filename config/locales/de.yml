@@ -503,5 +503,9 @@ de:
     text_materials: 'Begleitmaterialien'
 
   _locale_chooser:
-    language_choice: "Deutsch"
-    language_choice_title: "Deutsche Version"
+    language_choice: 'Deutsch'
+    language_choice_title: 'Deutsche Version'
+
+  searches:
+    person_names:
+      no_persons_found: 'keine Personen gefunden'

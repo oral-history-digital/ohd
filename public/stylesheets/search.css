@@ -135,14 +135,20 @@ fieldset.facet-field .autocomplete {
     z-index: 5;
 }
 
-.autocomplete span {
-    display: block;
-    width: 100%;
+.baseListBox .autocomplete li {
+    color: #666666;
     font-size: 80%;
 }
 
-.autocomplete span a {
+.baseListBox .autocomplete ul {
+    width: 202px;
+    padding: 0;
+}
+
+.baseListBox .autocomplete li a {
     color: #666666;
+    display: block;
+    padding: 1px 0 2px 0;
     text-decoration: none;
 }
 

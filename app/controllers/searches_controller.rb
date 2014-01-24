@@ -133,11 +133,7 @@ class SearchesController < BaseController
         # ?
       end
       format.js do
-        if @search.results.empty?
-          render :text => '<span>keine Personen gefunden</span>'
-        else
-          render :partial => 'person_name', :collection => @search.results
-        end
+        render :partial => 'person_names', :object => @search.results.reject{|pn| pn.full_title(I18n.locale).blank?}
       end
     end
   end

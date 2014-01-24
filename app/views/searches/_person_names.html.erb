@@ -1,0 +1,7 @@
+<ul>
+  <% if person_names.blank? %>
+    <li><%=t '.no_persons_found' %></li>
+  <% else %>
+    <%= render :partial => 'person_name', :collection => person_names %>
+  <% end %>
+</ul>
