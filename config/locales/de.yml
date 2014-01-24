@@ -1,3 +1,54 @@
+# This file contains translations used in text document templates.
+
+# Obs translator:
+
+# Please translate the quoted texts only.
+
+# Example:
+#   frontpage: 'Frontpage'
+# becomes
+#   frontpage: 'Deckblatt'    GOOD!
+# and NOT
+#   deckblatt: 'Deckblatt'    WRONG!
+# or whatever.
+
+# Lines starting with hash symbols (#) are comments. Please do NOT translate
+# comments.
+
+# Texts may contain placeholders. These placeholders take the form %{something}.
+# You may change the position of the placeholder but you may not change or
+# translate its content!
+
+# Example:
+#   colored_car: '%{color} car'
+# should be translated (e.g. in French) as
+#   colored_car: 'voiture %{color}'     GOOD!
+# but NOT as
+#   colored_car: 'voiture %{couleur}',  WRONG!
+#   colored_car: 'voiture couleur'      WRONG!
+# or whatever.
+
+# Sometimes you'll find that placeholders themselves refer to translatable
+# texts. In this case we'll comment on how the translated text is being used in
+# context so that you can translate the two texts together.
+
+# Example:
+#   transcript_with_german_translation: 'Transkript%{german_translation}'
+#   german_translation: ' in deutscher Übersetzung'
+# could be translated (e.g. in English) as
+#   transcript_with_german_translation: '%{german_translation}Transcript'
+#   german_translation: 'German '                                         GOOD!
+# which would result in 'German Transcript' and NOT as
+#   transcript_with_german_translation: 'Transcript%{german_translation}'
+#   german_translation: 'German translation'                              WRONG!
+# as this would result in 'TranscriptGerman translation' which is bad grammar
+# and does not contain the required space.
+
+# If you change the order of the placeholder then make sure that you place
+# spaces in the right place. See that in the above example the space in
+# german_translation has moved from the beginning (' in deutscher Übersetzung')
+# to the end ('German ').
+
 de:
   home: 'Startseite'
   home_link: 'Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
