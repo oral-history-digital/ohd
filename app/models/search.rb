@@ -301,7 +301,7 @@ DEF
       # Iterate over results, not subsearch!
       @results.each do |interview|
 
-        subsearch.hits.select{|h| h.instance.archive_id == interview.archive_id }.each do |segment_result|
+        subsearch.hits.select{|h| not h.instance.blank? and h.instance.archive_id == interview.archive_id }.each do |segment_result|
 
           segment = segment_result.instance
 
