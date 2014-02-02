@@ -2,6 +2,6 @@
 assets/
 config/database.yml
 log/
-solr/data/
+solr/data
 sunspot-solr.pid
 tmp/
