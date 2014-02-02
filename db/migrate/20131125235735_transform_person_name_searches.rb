@@ -12,7 +12,10 @@ class TransformPersonNameSearches < ActiveRecord::Migration
                      execute!.
                      results
                    end
-      raise "Did not find unique interview for person_name: #{person_name}" if interviews.size != 1
+      if interviews.size != 1
+        say "Did not find unique interview for person_name: #{person_name}"
+        next
+      end
       properties['query']['interview_id'] = interviews.map(&:id)
       uc.properties = properties
       uc.save!

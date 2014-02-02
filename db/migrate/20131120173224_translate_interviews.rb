@@ -12,7 +12,17 @@ class TranslateInterviews < ActiveRecord::Migration
 
   def self.up
     # Create globalize2 table.
-    Interview.create_translation_table! TRANSLATED_COLUMNS
+    # NB: We do this manually so that the migration remains compatible with
+    # later changes to this table.
+    create_table :interview_translations do |t|
+      t.references :interview
+      t.string :locale
+      TRANSLATED_COLUMNS.each do |column_name, column_type|
+        t.send(column_type, column_name)
+      end
+      t.timestamps
+    end
+    add_index :interview_translations, :interview_id
 
     # Migrate existing data to the translation table.
     execute "INSERT INTO interview_translations(interview_id, locale, first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, created_at, updated_at)

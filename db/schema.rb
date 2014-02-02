@@ -62,12 +62,12 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
   create_table "collection_translations", :force => true do |t|
     t.integer  "collection_id"
     t.string   "locale"
-    t.string   "responsibles"
-    t.string   "countries"
     t.text     "notes"
-    t.string   "institution"
-    t.string   "name"
+    t.string   "countries"
+    t.string   "responsibles"
     t.text     "interviewers"
+    t.string   "name"
+    t.string   "institution"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -138,12 +138,12 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "interviewers"
-    t.string   "proofreaders"
-    t.string   "segmentators"
     t.string   "transcriptors"
-    t.string   "translators"
     t.text     "researchers"
+    t.string   "segmentators"
+    t.string   "proofreaders"
+    t.string   "interviewers"
+    t.string   "translators"
   end
 
   add_index "interview_translations", ["interview_id"], :name => "index_interview_translations_on_interview_id"
@@ -243,8 +243,8 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
   create_table "segment_translations", :force => true do |t|
     t.integer  "segment_id"
     t.string   "locale"
-    t.string   "subheading"
     t.string   "mainheading"
+    t.string   "subheading"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -354,9 +354,9 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
     t.integer  "reference_id"
     t.string   "reference_type"
     t.integer  "position",                            :default => 1
-    t.string   "workflow_state",                      :default => "private"
     t.datetime "submitted_at"
     t.datetime "published_at"
+    t.string   "workflow_state",                      :default => "private"
     t.string   "media_id"
   end
 
