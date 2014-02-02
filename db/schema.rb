@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
     t.string   "return_date"
     t.text     "forced_labor_details"
     t.string   "first_name"
-    t.string   "name_affix"
+    t.string   "birth_name"
     t.string   "other_first_names"
     t.string   "last_name"
     t.datetime "created_at"

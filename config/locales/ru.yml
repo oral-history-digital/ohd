@@ -58,8 +58,8 @@ ru:
     clips: '##ru##'
 
   interview_title_patterns:
-    lastname_with_affix: '%{lastname} (%{affix})'
-    lastname_firstname: '%{lastname_with_affix} %{first_names}'
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname} %{first_names}'
 
   user_interface:
     labels:

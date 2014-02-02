@@ -37,7 +37,7 @@ interview:
     firstname: 'first_name'
     middle-names: 'other_first_names'
     lastname: 'last_name'
-    name-affix: 'name_affix'
+    birth-name: 'birth_name'
     forced-labor-details: 'forced_labor_details'
     punishment: 'punishment'
     liberation-date: 'liberation_date'

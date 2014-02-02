@@ -8,7 +8,7 @@ class TranslateInterviews < ActiveRecord::Migration
       :forced_labor_details => :text
   }
 
-  TRANSLATED_COLUMNS = MIGRATED_COLUMNS.merge :name_affix => :string
+  TRANSLATED_COLUMNS = MIGRATED_COLUMNS.merge :birth_name => :string
 
   def self.up
     # Create globalize2 table.

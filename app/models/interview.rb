@@ -91,7 +91,7 @@ class Interview < ActiveRecord::Base
            :through => :categorizations,
            :include => :translations
 
-  translates :first_name, :other_first_names, :last_name, :name_affix,
+  translates :first_name, :other_first_names, :last_name, :birth_name,
              :details_of_origin, :return_date, :forced_labor_details,
              :interviewers, :transcriptors, :translators,
              :proofreaders, :segmentators, :researchers
@@ -238,12 +238,12 @@ class Interview < ActiveRecord::Base
 
     # Build last name with a locale-specific pattern.
     last_name = last_name(used_locale) || ''
-    name_affix = name_affix(used_locale)
-    lastname_with_affix = if name_affix.blank?
-                            last_name
-                          else
-                            I18n.t('interview_title_patterns.lastname_with_affix', :locale => used_locale, :lastname => last_name, :affix => name_affix)
-                          end
+    birth_name = birth_name(used_locale)
+    lastname_with_birthname = if birth_name.blank?
+                                last_name
+                              else
+                                I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                              end
 
     # Build first name.
     first_names = []
@@ -254,9 +254,9 @@ class Interview < ActiveRecord::Base
 
     # Combine first and last name with a locale-specific pattern.
     if first_names.empty?
-      lastname_with_affix
+      lastname_with_birthname
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_affix => lastname_with_affix, :first_names => first_names.join(' '))
+      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
     end
   end
 

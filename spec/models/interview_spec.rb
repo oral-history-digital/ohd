@@ -6,7 +6,7 @@ describe Interview do
   let(:translated_object) { build(:interview) }
 
   TRANSLATED_ATTS = [
-      :first_name, :other_first_names, :last_name, :name_affix,
+      :first_name, :other_first_names, :last_name, :birth_name,
       :details_of_origin, :return_date, :forced_labor_details,
       :interviewers, :transcriptors, :translators,
       :proofreaders, :segmentators, :researchers
