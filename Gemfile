@@ -12,7 +12,10 @@ gem 'mysql'
 gem 'exception_notification', '~> 2.3.0'
 gem 'workflow'
 gem 'will_paginate', '~> 2.3'
-gem 'paperclip', '~> 2.7.5'
+gem 'paperclip',
+    :git => 'git://github.com/jerico-dev/paperclip.git',
+    :branch => 'v2.7'
+gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
 gem 'archive-authorization'
 gem 'archive-player'
 gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
