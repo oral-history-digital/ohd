@@ -109,8 +109,8 @@ ru:
     clips: 'фрагменты'
 
   interview_title_patterns:
-    lastname_with_affix: '%{lastname} (%{affix})'
-    lastname_firstname: '%{lastname_with_affix}, %{first_names}'
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
   user_interface:
     labels:
@@ -503,5 +503,5 @@ ru:
     text_materials: 'Сопровождающие материалы'
 
   _locale_chooser:
-    language_choice: "Немецкий"
-    language_choice_title: "Немецкая версия"
+    language_choice: "Русский"
+    language_choice_title: "Русская версия"
