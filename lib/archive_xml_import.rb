@@ -198,40 +198,23 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         end
         # check to see if we need to clear all associated items first
         item_mapping = @mappings[name.singularize]
-        if item_mapping.is_a?(Hash)
+        if item_mapping.is_a?(Hash) and item_mapping['delete_all']
           db_entity = (item_mapping['class_name'] || name.singularize)
           klass = db_entity.camelize.constantize
-          if item_mapping['delete_all']
-            # send the association a delete_all!
-            if klass.column_names.include?('interview_id') && !@interview.new_record?
-              # We use Klass.delete_all() to delete records as it's much more efficient than destroy_all().
-              # NB: this does not respect :dependent => :delete/:destroy configuration so we have
-              # to manually delete dependent translations to avoid orphans.
-              if klass.translates?
-                ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
-                num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
-                STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations.)"
-              end
-              num_deleted_records = klass.delete_all(:interview_id => @interview.id)
-              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
+          # send the association a delete_all!
+          if klass.column_names.include?('interview_id') && !@interview.new_record?
+            # We use Klass.delete_all() to delete records as it's much more efficient than destroy_all().
+            # NB: this does not respect :dependent => :delete/:destroy configuration so we have
+            # to manually delete dependent translations to avoid orphans.
+            if klass.translates?
+              ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
+              num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
+              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations.)"
             end
+            num_deleted_records = klass.delete_all(:interview_id => @interview.id)
+            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
+            STDOUT.flush
           end
-          if item_mapping['delete_orphans_from']
-            dependent_db_entity = item_mapping['delete_orphans_from']
-            dependent_class = dependent_db_entity.camelize.constantize
-            orphaned_ids = dependent_class.all(
-                :select => "#{dependent_db_entity.pluralize}.id",
-                :joins => "LEFT JOIN #{db_entity.pluralize} ON #{dependent_db_entity.pluralize}.id = #{db_entity.pluralize}.#{dependent_db_entity}_id",
-                :conditions => "#{db_entity.pluralize}.id IS NULL"
-            )
-            if dependent_class.translates?
-              num_deleted_records = dependent_class.translation_class.delete_all("#{dependent_db_entity}_id" => orphaned_ids)
-              STDOUT.printf " (deleted #{num_deleted_records} orphaned #{dependent_class.name} translations.)"
-            end
-            num_deleted_records = dependent_class.delete_all(:id => orphaned_ids)
-            STDOUT.printf " (deleted #{num_deleted_records} orphaned #{dependent_class.name.pluralize})"
-          end
-          STDOUT.flush
         end
 
       elsif @mappings.keys.include?(name)

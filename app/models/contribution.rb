@@ -59,7 +59,7 @@ class Contribution < ActiveRecord::Base
       end
     end
     # If no existing contributor was found then create a new one.
-    self.contributor ||= Contributor.new
+    self.contributor ||= self.build_contributor
     # Update translated names.
     @name.each do |locale, name_translation|
       Contributor.with_locale(locale) do
@@ -82,6 +82,7 @@ class Contribution < ActiveRecord::Base
         end
     end
     self.contributor.save!
+    self.contributor_id = self.contributor.id
   end
 
 end
