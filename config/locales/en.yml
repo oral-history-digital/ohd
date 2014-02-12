@@ -457,5 +457,17 @@ en:
     language_choice: "English"
     language_choice_title: "English Version"
 
+  searches:
+    person_names:
+      no_persons_found: 'no persons found'
+
   user_account_mailer:
     subject: "Your account for the archive 'Forced Labor 1939-1945'"
+
+  _head:
+    title: 'Forced Labor 1939-1945: The Online-Archive "Forced Labor 1939-1945"'
+    meta_keywords: 'audiovisual oral history archive, forced labor, 1939-1945'
+
+  layouts:
+    iframe:
+      title: 'Forced Labor 1939-1945: Map "Forced Labor 1939-1945"'

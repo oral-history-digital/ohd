@@ -512,3 +512,11 @@ de:
 
   user_account_mailer:
     subject: "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"
+
+  _head:
+    title: 'Zwangsarbeit 1939-1945: Das Online-Archiv "Zwangsarbeit 1939-1945"'
+    meta_keywords: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
+
+  layouts:
+    iframe:
+      title: 'Zwangsarbeit 1939-1945: Karte "Zwangsarbeit 1939-1945"'

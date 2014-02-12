@@ -506,5 +506,17 @@ ru:
     language_choice: "Русский"
     language_choice_title: "Русская версия"
 
+  searches:
+    person_names:
+      no_persons_found: '##ru##'
+
   user_account_mailer:
     subject: '##ru##'
+
+  _head:
+    title: '##ru##'
+    meta_keywords: '##ru##'
+
+  layouts:
+    iframe:
+      title: '##ru##'
