@@ -54,6 +54,11 @@ Spork.each_run do
   # Requires supporting files with custom matchers and macros, etc,
   # in ./support/ and its subdirectories.
   Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+
+  if Spork.using_spork?
+    # Reload factories.
+    FactoryGirl.reload
+  end
 end
 
 # Any code that is left outside the two Spork blocks will be run during preforking
