@@ -4,7 +4,7 @@ config.middleware.use 'Rack::Maintenance',
    :file => Rails.root.join('tmp', 'maintenance.html')
 
 # Path Prefix for demo deployment on FnF
-config.action_controller.relative_url_root = "/archiv"
+config.action_controller.relative_url_root = '/archiv'
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
@@ -39,9 +39,9 @@ config.cache_store = :file_store, 'tmp/cache'
 SERVER_HOST = Socket.gethostname
 
 ActionMailer::Base.smtp_settings = {
-  :address => "mail.fu-berlin.de",
-  :port => 25,
-  :domain => "zwangsarbeit-archiv.de"
+    :address => 'mail.fu-berlin.de',
+    :port => 25,
+    :domain => 'zwangsarbeit-archiv.de'
 }
 
 config.action_mailer.default_url_options = {
@@ -50,7 +50,7 @@ config.action_mailer.default_url_options = {
 config.action_mailer.delivery_method = :smtp
 
 config.after_initialize do
-  ExceptionNotification::Notifier.exception_recipients = %w(jrietema@cedis.fu-berlin.de jerico.dev@gmail.com)
-  ExceptionNotification::Notifier.sender_address = "team@zwangsarbeit-archiv.de"
-  ExceptionNotification::Notifier.email_prefix = "[ERROR] "
+  ExceptionNotification::Notifier.exception_recipients = %w(jerico.dev@gmail.com)
+  ExceptionNotification::Notifier.sender_address = 'team@zwangsarbeit-archiv.de'
+  ExceptionNotification::Notifier.email_prefix = '[ERROR] '
 end

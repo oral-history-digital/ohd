@@ -17,7 +17,7 @@ describe UserAccount, 'with a password' do
 
   it 'should not generate encrypted password if password is blank' do
     @account2 = UserAccount.new
-    @account2.attributes = { :login => 'aneumann2', :email => "a2.neumann@mad.de" }
+    @account2.attributes = { :login => 'aneumann2', :email => 'a2.neumann@mad.de' }
     @account2.save
     @account2.encrypted_password.should be_blank
   end
@@ -35,7 +35,7 @@ describe UserAccount, 'with a password' do
     @account.should be_confirmed
   end
 
-  it "should have class methods from the lib" do
+  it 'should have class methods from the lib' do
     UserAccount.respond_to?('authenticate').should be_true
   end
 
@@ -56,18 +56,18 @@ describe UserAccount, 'without a password' do
     @account.save
   end
 
-  it "should not be confirmable without password" do
+  it 'should not be confirmable without password' do
     @account.should_not be_confirmed
     lambda{@account.confirm!(nil, nil)}.should_not raise_exception
     @account.should_not be_confirmed
   end
 
-  it "should have an error on the password field on a confirmation attempt" do
+  it 'should have an error on the password field on a confirmation attempt' do
     @account.confirm!('', '')
     @account.errors[:password].should_not be_nil
   end
 
-  it "should have an error on the password confirmation field if not supplied" do
+  it 'should have an error on the password confirmation field if not supplied' do
     @account.confirm!('protected!',nil)
     @account.errors[:password_confirmation].should_not be_nil
   end
@@ -77,7 +77,7 @@ describe UserAccount, 'without a password' do
     @account.errors[:password].should_not be_nil
   end
 
-  it "should confirm without errors if both password and confirmation are supplied" do
+  it 'should confirm without errors if both password and confirmation are supplied' do
     @account.confirm!('validpass','validpass')
     @account.errors.should be_empty
     @account.should be_confirmed

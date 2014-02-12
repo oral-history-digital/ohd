@@ -1,14 +1,14 @@
 namespace :cleanup do
 
-  desc "cleans up UserRegistration#created_at"
+  desc 'cleans up UserRegistration#created_at'
   task :user_creation_dates => :environment do
-    puts "Cleaning up problematic creation dates for UserRegistration:"
-    ids = UserRegistration.all(:conditions => ["created_at = ?", '0000-00-00 00:00:00']).map(&:id)
+    puts 'Cleaning up problematic creation dates for UserRegistration:'
+    ids = UserRegistration.all(:conditions => ['created_at = ?', '0000-00-00 00:00:00']).map(&:id)
     updated = UserRegistration.update_all "created_at = '#{Time.gm(2010,1,1).to_s(:db)}'", "id IN (#{ids.join(',')})"
     puts "#{updated} registrations updated."
   end
 
-  desc "harmonize user job_descriptions and research_interests"
+  desc 'harmonize user job_descriptions and research_interests'
   task :harmonize_users_data => :environment do
     require 'yaml'
 
@@ -36,7 +36,7 @@ namespace :cleanup do
     invalid_reg_ids = []
     invalid_user_ids = []
 
-    puts "Starting harmonization of user/registration job_descriptions and research_intentions"
+    puts 'Starting harmonization of user/registration job_descriptions and research_intentions'
     UserRegistration.find_each do |reg|
       index += 1
       if index % 50 == 0
@@ -110,27 +110,27 @@ namespace :cleanup do
   desc "Removes unused categories - those that aren't used by any interviews"
   task :unused_categories => :environment do
 
-    puts "Checking for unused categories:"
+    puts 'Checking for unused categories:'
 
-    cats = Category.all(:joins => "LEFT JOIN categorizations AS cz ON cz.category_id = categories.id", :conditions => "cz.id IS NULL")
+    cats = Category.all(:joins => 'LEFT JOIN categorizations AS cz ON cz.category_id = categories.id', :conditions => 'cz.id IS NULL')
     puts "#{cats.size} unused categories found#{cats.size > 0 ? ' - deleting.' : ''}"
     cats.each do |category|
       puts "#{category.category_type}: #{category.name} deleted."
       category.destroy
     end
 
-    puts "Done."
+    puts 'Done.'
 
   end
 
-  desc "Removes duplicate categorizations - two or more assignments to exactly the same category for an interview"
+  desc 'Removes duplicate categorizations - two or more assignments to exactly the same category for an interview'
   task :remove_duplicate_categories => :environment do
 
-    puts "Checking duplicates for #{Category.count(:all)} categories:"
+    puts "Checking duplicates for #{Category.count} categories:"
 
     Category.find_each do |category|
 
-      duplicate_categorizations = Categorization.all(:conditions => "category_id = #{category.id}", :group => "interview_id", :having => "count(interview_id) > 1")
+      duplicate_categorizations = Categorization.all(:conditions => "category_id = #{category.id}", :group => 'interview_id', :having => 'count(interview_id) > 1')
 
       duplicate_categorizations.each do |categorization|
         removed = Categorization.delete_all "interview_id = #{categorization.interview_id} AND category_id = #{categorization.category_id} AND id != #{categorization.id}"
@@ -144,11 +144,11 @@ namespace :cleanup do
 
     end
 
-    puts "Done."
+    puts 'Done.'
 
   end
 
-  desc "Removes empty location references"
+  desc 'Removes empty location references'
   task :remove_empty_locations => :environment do
 
     empty_locs = LocationReference.all :conditions => "name REGEXP '^.{1,2}$'"
@@ -198,15 +198,15 @@ namespace :cleanup do
 
   end
 
-  desc "assigns segments directly via associations to annotations"
+  desc 'assigns segments directly via associations to annotations'
   task :assign_annotation_segments => :environment do
 
-    puts "Assigning segments to all annotations via association"
+    puts 'Assigning segments to all annotations via association'
     count = 0
     index = 0
-    total = Annotation.count :all
+    total = Annotation.count
 
-    Annotation.find_each(:conditions => "segment_id IS NULL") do |annotation|
+    Annotation.find_each(:conditions => 'segment_id IS NULL') do |annotation|
       annotation.assign_segment
       count += 1 if annotation.save
       if (index += 1) % 10 == 0
@@ -219,15 +219,15 @@ namespace :cleanup do
 
   # since the use-case is the same for both of these actions, they are grouped into
   # one task that recovers lost segment_ids
-  desc "assigns segments directly to annotations and user_contents that have an invalid segment_id"
+  desc 'assigns segments directly to annotations and user_contents that have an invalid segment_id'
   task :reassign_lost_segments => :environment do
 
-    puts "Assigning segments to all annotations that currently are missing their segment"
+    puts 'Assigning segments to all annotations that currently are missing their segment'
     count = 0
     index = 0
-    total = Annotation.count :all, :conditions => "segments.id IS NULL", :include => :segment
+    total = Annotation.count :conditions => 'segments.id IS NULL', :include => :segment
 
-    Annotation.find_each(:conditions => "segments.id IS NULL", :include => :segment) do |annotation|
+    Annotation.find_each(:conditions => 'segments.id IS NULL', :include => :segment) do |annotation|
       annotation.assign_segment
       count += 1 if annotation.save
       if (index += 1) % 10 == 0
@@ -236,13 +236,13 @@ namespace :cleanup do
     end
     puts "\ndone. Updated #{count} of #{total} total Annotations with missing segments."
 
-    puts "Assigning segments to all user_annotations that currently are missing their reference"
+    puts 'Assigning segments to all user_annotations that currently are missing their reference'
     count = 0
     index = 0
     refjoin = "LEFT JOIN segments ON user_contents.reference_id = segments.id AND user_contents.reference_type = 'Segment'"
-    total = UserAnnotation.count :all, :conditions => "segments.id IS NULL", :joins => refjoin
+    total = UserAnnotation.count :conditions => 'segments.id IS NULL', :joins => refjoin
 
-    UserAnnotation.find_each(:conditions => "segments.id IS NULL", :joins => refjoin, :readonly => false) do |user_annotation|
+    UserAnnotation.find_each(:conditions => 'segments.id IS NULL', :joins => refjoin, :readonly => false) do |user_annotation|
       user_annotation.reference = Segment.find_by_media_id(user_annotation.media_id)
       count += 1 if user_annotation.save
       if (index += 1) % 10 == 0
@@ -253,15 +253,15 @@ namespace :cleanup do
 
   end
 
-  desc "removes assigned interviews for user-generated annotations to prevent deletion on import"
+  desc 'removes assigned interviews for user-generated annotations to prevent deletion on import'
   task :unassign_user_annotation_interview => :environment do
 
-    puts "Removing assigned interviews on user-generated annotations"
+    puts 'Removing assigned interviews on user-generated annotations'
     count = 0
     index = 0
-    total = UserAnnotation.count(:all, :conditions => "annotations.id IS NOT NULL", :include => :annotation)
+    total = UserAnnotation.count(:conditions => 'annotations.id IS NOT NULL', :include => :annotation)
 
-    UserAnnotation.find_each(:conditions => "annotations.id IS NOT NULL", :include => :annotation) do |user_annotation|
+    UserAnnotation.find_each(:conditions => 'annotations.id IS NOT NULL', :include => :annotation) do |user_annotation|
       user_annotation.annotation.update_attribute :interview_id, nil
       count += 1 if user_annotation.annotation.save
       if (index += 1) % 10 == 0

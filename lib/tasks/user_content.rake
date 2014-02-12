@@ -3,15 +3,15 @@ namespace :user_content do
   desc "Sets link_urls for all user_contents that don't have them"
   task :set_link_urls => :environment do
 
-    puts "Setting link_url for linkless user_contents:"
+    puts 'Setting link_url for linkless user_contents:'
 
     index = 0
     updated = {}
-    UserContent.count(:all, :group => :type).keys.each do |type|
+    UserContent.count(:group => :type).keys.each do |type|
       puts "\n#{type}:"
       klass = type.constantize
       updated[type] = 0
-      klass.find_each(:conditions => "link_url IS NULL") do |content|
+      klass.find_each(:conditions => 'link_url IS NULL') do |content|
         content.send(:set_link_url)
         content.save
         updated[type] += 1
@@ -26,10 +26,10 @@ namespace :user_content do
 
   end
 
-  desc "Removes invalid user_contents"
+  desc 'Removes invalid user_contents'
   task :delete_invalid => :environment do
 
-    puts "Checking for and deleting invalid user_contents:"
+    puts 'Checking for and deleting invalid user_contents:'
 
     index = 0
     deleted = 0

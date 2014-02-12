@@ -33,7 +33,7 @@ class LocationReferencesController < BaseController
     response.headers['Cache-Control'] = "public, max-age=1209600"
     if params[:page].blank? || params[:page].to_i < 1
       # deliver number of pages
-      @pages = (LocationReference.count(:all, :conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 2
+      @pages = (LocationReference.count(:conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 2
       respond_to do |wants|
         wants.html do
           render :text => @pages

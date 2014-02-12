@@ -1,11 +1,11 @@
 namespace :storage do
 
-  desc "imports interview stills"
+  desc 'imports interview stills'
   task :import_interview_stills => :environment do
 
     batch = 25
     offset = 0
-    total = Interview.count(:all)
+    total = Interview.count
 
     puts "Importing interview stills for #{total} interviews:"
 
@@ -19,7 +19,7 @@ namespace :storage do
 
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
 
-          file_name = file.split("/").last
+          file_name = file.split('/').last
 
           if file_name.match(/^za\d{3}\.(png|jpg)$/i)
 
@@ -41,15 +41,15 @@ namespace :storage do
 
   end
 
-  desc "looks for tapes in the context"
+  desc 'looks for tapes in the context'
   task :lookup_tapes => :environment do
 
-    joins = "LEFT JOIN tapes ON tapes.interview_id = interviews.id"
-    conditions = "tapes.id IS NULL"
+    joins = 'LEFT JOIN tapes ON tapes.interview_id = interviews.id'
+    conditions = 'tapes.id IS NULL'
 
     batch = 25
     offset = 0
-    total = Interview.count(:all, :joins => joins, :conditions => conditions )
+    total = Interview.count(:joins => joins, :conditions => conditions )
 
     wrong_audio = []
     wrong_video = []
@@ -118,7 +118,7 @@ namespace :storage do
 
           # check for audio files
 
-          Dir.glob(File.join(archive_path, 'mp3', "*.mp3")).each do |file|
+          Dir.glob(File.join(archive_path, 'mp3', '*.mp3')).each do |file|
 
             media_id = file.split('/').last.sub(/\.mp3$/,'')
 

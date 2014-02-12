@@ -1,6 +1,6 @@
 namespace :solr do
 
-  desc "starting the Solr server - for testing: this has more verbose output that sunspot:solr:start"
+  desc 'starting the Solr server - for testing: this has more verbose output that sunspot:solr:start'
   task :start => :environment do
 
     require 'net/http'
@@ -26,14 +26,14 @@ namespace :solr do
 
   end
 
-  desc "initializes the Solr connection"
+  desc 'initializes the Solr connection'
   task :connect => :environment do
     solr_connection
   end
 
   namespace :delete do
 
-    desc "fully delete the index"
+    desc 'fully delete the index'
     task :all => 'solr:connect' do
 
       puts "\nDeleting index..."
@@ -42,11 +42,11 @@ namespace :solr do
       solr_connection.delete_by_query '*:*'
       solr_connection.commit
 
-      puts "done"
+      puts 'done'
 
     end
 
-    desc "delete the index for interviews"
+    desc 'delete the index for interviews'
     task :interviews => 'solr:connect' do
 
       puts "\nDeleting index for interviews..."
@@ -55,12 +55,12 @@ namespace :solr do
       solr_connection.delete_by_query 'type:Interview'
       solr_connection.commit
 
-      puts "done."
+      puts 'done.'
 
     end
 
 
-    desc "delete the index for segments"
+    desc 'delete the index for segments'
     task :segments => 'solr:connect' do
 
       puts "\nDeleting index for segments..."
@@ -69,24 +69,24 @@ namespace :solr do
       solr_connection.delete_by_query 'type:Segment'
       solr_connection.commit
 
-      puts "done."
+      puts 'done.'
 
     end
 
 
-    desc "delete the index for locations"
+    desc 'delete the index for locations'
     task :locations => 'solr:connect' do
 
       puts "\nDeleting the index for locations"
       solr_connection.delete_by_query 'type:LocationReference'
       solr_connection.commit
 
-      puts "done."
+      puts 'done.'
 
     end
 
 
-    desc "deletes interviews with given ids (archive_ids)"
+    desc 'deletes interviews with given ids (archive_ids)'
     task :by_archive_id, [ :ids, :type ] => 'solr:connect' do |task, args|
 
       ids = args[:ids].blank? ? '*' : args[:ids]
@@ -116,10 +116,10 @@ namespace :solr do
 
   namespace :index do
 
-    desc "builds the index from a clean slate"
+    desc 'builds the index from a clean slate'
     task :build => ['solr:index:interviews', 'solr:index:segments']
 
-    desc "builds the index for interviews"
+    desc 'builds the index for interviews'
     task :interviews, [ :ids ] => :environment do |task, args|
 
       ids = args[:ids] || 'za283,za017' # nil
@@ -127,7 +127,7 @@ namespace :solr do
 
       # Interviews
       conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
-      total = Interview.count :all, :conditions => conditions
+      total = Interview.count :conditions => conditions
 
       puts "\nIndexing #{total} interviews..."
 
@@ -148,23 +148,23 @@ namespace :solr do
 
     end
 
-    desc "builds the index for segments"
+    desc 'builds the index for segments'
     task :segments, [ :interviews ] => :environment do |task, args|
 
       ids = args[:interviews] || 'za283,za017' # nil
       ids = ids.split(/\W+/) unless ids.nil?
 
       # Segments
-      joins = "RIGHT JOIN tapes ON tapes.id = segments.tape_id"
-      conds = "segments.id IS NOT NULL"
+      joins = 'RIGHT JOIN tapes ON tapes.id = segments.tape_id'
+      conds = 'segments.id IS NOT NULL'
       if ids.nil?
-        joins << " AND tapes.interview_id IS NOT NULL"
+        joins << ' AND tapes.interview_id IS NOT NULL'
       else
-        joins << " RIGHT JOIN interviews ON interviews.id = tapes.interview_id"
+        joins << ' RIGHT JOIN interviews ON interviews.id = tapes.interview_id'
         conds << " AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
       end
 
-      total = Segment.count :all, :joins => joins, :conditions => conds
+      total = Segment.count :joins => joins, :conditions => conds
       puts "\nIndexing #{total} segments..."
 
       Segment.find_each(:joins => joins, :conditions => conds) do |segment|
@@ -184,7 +184,7 @@ namespace :solr do
 
     end
 
-    desc "Builds the location register index"
+    desc 'Builds the location register index'
     task :locations, [:interviews ] => :environment do |task,args|
 
       archive_id = (args[:interviews] || '').scan(/za\d{3}/i)
@@ -196,10 +196,10 @@ namespace :solr do
                          end
       )
 
-      conditions = "duplicate IS NOT TRUE"
-      conditions += archive_id.empty? ? "" : " AND interview_id IN ('#{interviews.map(&:id).join("','")}')"
+      conditions = 'duplicate IS NOT TRUE'
+      conditions += archive_id.empty? ? '' : " AND interview_id IN ('#{interviews.map(&:id).join("','")}')"
 
-      puts "\nIndexing #{LocationReference.count(:all, :conditions => conditions)} locations:"
+      puts "\nIndexing #{LocationReference.count(:conditions => conditions)} locations:"
       unless archive_id.empty?
         archive_id.each do |id|
           puts id
@@ -230,14 +230,14 @@ namespace :solr do
 
   namespace :reindex do
 
-    desc "reindex the archive contents for Solr search"
+    desc 'reindex the archive contents for Solr search'
     task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments', 'solr:index:locations'] do
-      puts "Reindexing complete."
+      puts 'Reindexing complete.'
     end
 
-    desc "one by one reindexing of all interviews"
-    task :one_by_one => [ "solr:connect", :environment ] do
-      puts "Gradually reindexing all interviews:"
+    desc 'one by one reindexing of all interviews'
+    task :one_by_one => [ 'solr:connect', :environment ] do
+      puts 'Gradually reindexing all interviews:'
       Interview.find_each do |interview|
         STDOUT.printf "\n\n=======\n#{interview.archive_id}"
         STDOUT.flush
@@ -247,8 +247,8 @@ namespace :solr do
       end
     end
 
-    desc "reindexes interviews that have been imported less than hours= ago."
-    task :new, [:hours] => ["solr:connect", :environment] do |task,args|
+    desc 'reindexes interviews that have been imported less than hours= ago.'
+    task :new, [:hours] => ['solr:connect', :environment] do |task,args|
       interval = args[:hours] || ENV['hours'] || 20
       puts "Indexing interviews that have been imported #{interval} hours or less ago:"
       count = 0
@@ -262,10 +262,10 @@ namespace :solr do
       puts "\nDone. Indexed #{count} interviews."
     end
 
-    desc "randomly reindex a number of interviews"
-    task :randomly,[:number] => ["solr:connect", :environment] do |task,args|
-      number = args[:number] || ENV['number'] || Interview.count(:all)
-      ids = Interview.all(:select => :id, :order => "RAND()")[0..(number.to_i-1)].map(&:id)
+    desc 'randomly reindex a number of interviews'
+    task :randomly,[:number] => ['solr:connect', :environment] do |task,args|
+      number = args[:number] || ENV['number'] || Interview.count
+      ids = Interview.all(:select => :id, :order => 'RAND()')[0..(number.to_i-1)].map(&:id)
       puts "Randomly indexing #{ids.size} interviews..."
       index = ids.size
       id = ids.shift
@@ -283,15 +283,15 @@ namespace :solr do
       end
     end
 
-    desc "reindex interviews"
+    desc 'reindex interviews'
     task :interviews => ['solr:delete:interviews', 'solr:index:interviews'] do
-      puts "Reindexing interviews complete."
+      puts 'Reindexing interviews complete.'
     end
 
-    desc "reindex interviews by archive_id"
+    desc 'reindex interviews by archive_id'
     task :by_archive_id, [ :ids ] => 'solr:connect' do |task, args|
       ids = args[:ids] || nil
-      raise "no ids given! Use the ids= argument to provide a list of archive_ids" if ids.nil?
+      raise 'no ids given! Use the ids= argument to provide a list of archive_ids' if ids.nil?
 
       Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids })
       Rake::Task['solr:index:interviews'].execute({ :ids => ids })
@@ -299,7 +299,7 @@ namespace :solr do
       Rake::Task['solr:index:locations'].execute({ :interviews => ids })
     end
 
-    desc "reindex interview data only"
+    desc 'reindex interview data only'
     task :interview_data, [:ids] => 'solr:connect' do |task, args|
       ids = args[:ids] || nil
       if ids.nil?
@@ -311,14 +311,14 @@ namespace :solr do
       end
     end
 
-    desc "reindex segments"
+    desc 'reindex segments'
     task :segments => ['solr:delete:segments', 'solr:index:segments'] do
-      puts "Reindexing segments complete."
+      puts 'Reindexing segments complete.'
     end
 
-    desc "reindex locations"
+    desc 'reindex locations'
     task :locations => ['solr:delete:locations', 'solr:index:locations'] do
-      puts "Reindexing locations complete."
+      puts 'Reindexing locations complete.'
     end
 
   end

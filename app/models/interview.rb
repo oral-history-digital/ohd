@@ -2,7 +2,7 @@ require 'globalize'
 
 class Interview < ActiveRecord::Base
 
-  NUMBER_OF_INTERVIEWS = Interview.count :all
+  NUMBER_OF_INTERVIEWS = Interview.count
 
   belongs_to :collection
 

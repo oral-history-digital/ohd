@@ -5,7 +5,7 @@ namespace :user_accounts do
       task :from_yaml, [:file] => :environment do |task, args|
 
         file = args[:file] || ENV['file']
-        raise "No file argument specified (file=). Aborting." if file.nil?
+        raise 'No file argument specified (file=). Aborting.' if file.nil?
         raise "No such file: #{file}. Try again." unless File.exists?(file)
 
         puts 'KCODE: ' + (ENV['KCODE'] || 'none').to_s

@@ -1,18 +1,18 @@
 namespace :authentication_data do
 
-  desc "report on and maintain authentication data integrity"
+  desc 'report on and maintain authentication data integrity'
   task :maintenance => :environment do
 
     # first destroy all inconsistent UserRegistrations
-    destroyed = UserRegistration.find(:all, :conditions => "user_account_id IS NULL AND workflow_state = 'registered'").each do |r|
+    destroyed = UserRegistration.all(:conditions => "user_account_id IS NULL AND workflow_state = 'registered'").each do |r|
       r.destroy
     end.size
     puts "\n#{destroyed} inconsistent registrations removed." if destroyed > 0
 
     # Phase 1: Remove multiple registrations for the same account
     registrations_deleted = nil
-    UserRegistration.count(:all, :group => "user_account_id").delete_if{|k,v| v < 2 }.each do |id, num|
-      multiplicates = UserRegistration.find(:all, :conditions => ['user_account_id = ?', id])
+    UserRegistration.count(:group => 'user_account_id').delete_if{|k,v| v < 2 }.each do |id, num|
+      multiplicates = UserRegistration.all(:conditions => ['user_account_id = ?', id])
       valid_registration = multiplicates.select{|r| r.registered? }.first
       (multiplicates - [ valid_registration ]).each do |r|
         r.destroy
@@ -32,7 +32,7 @@ namespace :authentication_data do
 
     batch = 25
     offset = 0
-    total = UserAccount.count :all
+    total = UserAccount.count
 
     new_registrations = 0
     new_users = 0
@@ -42,7 +42,7 @@ namespace :authentication_data do
 
     while offset < total
 
-      UserAccount.find(:all, :limit => "#{offset},#{batch}").each do |account|
+      UserAccount.all(:limit => "#{offset},#{batch}").each do |account|
         next unless account.user.nil? || account.user_registration.nil?
         unless account.user_registration.nil?
           # don't create users if not registered
@@ -129,7 +129,7 @@ namespace :authentication_data do
 
     # Phase 3: user -> user_account assignment via user_registrations
     accounts_assigned = nil
-    User.find(:all, :conditions => "user_account_id IS NULL").each do |user|
+    User.all(:conditions => 'user_account_id IS NULL').each do |user|
       unless user.user_registration.nil? || user.user_registration.user_account_id.nil?
         user.update_attribute :user_account_id, user.user_registration.user_account_id
         accounts_assigned ||= 0
@@ -146,7 +146,7 @@ namespace :authentication_data do
     # Phase 4: two accounts - one registration and user
     # Split these into separate registrations and users
     split_registrations = nil
-    UserAccount.find(:all).select{|a| a.user.nil? }.each do |account|
+    UserAccount.all.select{|a| a.user.nil? }.each do |account|
       reg1 = UserRegistration.find_by_email(account.email)
       next if reg1.nil?
       account1 = reg1.user_account
@@ -189,40 +189,40 @@ namespace :authentication_data do
 
     # Problem scenario reports:
     # A) Accounts where no user could be created
-    accounts = UserAccount.find(:all)
+    accounts = UserAccount.all
     no_users = accounts.select{|a| a.user.nil? }
     unless no_users.empty?
       puts "\n#{no_users.size} accounts without users:"
       no_users.each do |account|
         puts "[#{account.id}]: #{account.login} (#{account.email})"
       end
-      puts "These accounts have invalid info and may cause problems!"
+      puts 'These accounts have invalid info and may cause problems!'
     end
     accounts_without_users = no_users.size
     accounts_without_registrations = accounts.select{|a| a.user_registration.nil? }.size
 
     # B) Users that don't have an assigned user account
-    users = User.find(:all)
+    users = User.all
     no_accounts = users.select{|u| u.user_account.nil? }
     unless no_accounts.empty?
       puts "\n#{no_accounts.size} users without accounts:"
       no_accounts.each do |user|
         puts "[#{user.id}]: #{user} (RegId #{user.user_registration_id})"
       end
-      puts "These people cannot log in!"
+      puts 'These people cannot log in!'
     end
     users_without_accounts = no_accounts.size
     users_without_registrations = users.select{|u| u.user_registration.nil? }.size
 
     # C) Registrations that don't have a user
-    complete_registrations = UserRegistration.find(:all, :conditions => "workflow_state = 'registered'")
+    complete_registrations = UserRegistration.all(:conditions => "workflow_state = 'registered'")
     reg_no_users = complete_registrations.select{|r| r.user.nil? }
     unless reg_no_users.empty?
       puts "\n#{reg_no_users.size} completed registrations without user:"
       reg_no_users.each do |reg|
         puts "[#{reg.id}]: #{reg.email} (AccountId: #{reg.user_account_id})"
       end
-      puts "These registrations may cause problems!"
+      puts 'These registrations may cause problems!'
     end
     registrations_without_users = reg_no_users.size
 
@@ -233,20 +233,20 @@ namespace :authentication_data do
       reg_no_accounts.each do |reg|
         puts "[#{reg.id}]: #{reg.email} (User: #{reg.user} [#{(reg.user || {})[:id]}])"
       end
-      puts "These people cannot log in!"
+      puts 'These people cannot log in!'
     end
     registrations_without_accounts = reg_no_accounts.size
 
     # Print the tabular summary
     puts "\nSummary:"
-    puts "               Total  |  no user  | no account | no registration"
-    puts "----------------------+-----------+------------+----------------"
+    puts '               Total  |  no user  | no account | no registration'
+    puts '----------------------+-----------+------------+----------------'
     puts "Accounts:      #{accounts.size.to_s.rjust(6,' ')} |  #{accounts_without_users.to_s.rjust(6,' ')}   |       --   |    #{accounts_without_registrations.to_s.rjust(6,' ')}"
-    puts "----------------------+-----------+------------+----------------"
+    puts '----------------------+-----------+------------+----------------'
     puts "Users:         #{users.size.to_s.rjust(6,' ')} |      --   |   #{users_without_accounts.to_s.rjust(6,' ')}   |    #{users_without_registrations.to_s.rjust(6,' ')}"
-    puts "----------------------+-----------+------------+----------------"
+    puts '----------------------+-----------+------------+----------------'
     puts "Registrations: #{complete_registrations.size.to_s.rjust(6,' ')} |  #{registrations_without_users.to_s.rjust(6,' ')}   |   #{registrations_without_accounts.to_s.rjust(6,' ')}   |        --"
-    puts "----------------------------------------------------------------"
+    puts '----------------------------------------------------------------'
 
   end
 

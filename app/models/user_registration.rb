@@ -338,7 +338,7 @@ EVAL
     login = ideal_login
     # try email address if it's not too long and contains the last name
     try_email = (self.email.length < 20) && self.email.downcase.index(self.last_name.downcase)
-    while UserAccount.count(:all, :conditions => ['login = ?', login]) > 0
+    while UserAccount.count(:conditions => ['login = ?', login]) > 0
       if try_email
         login = self.email
         try_email = false

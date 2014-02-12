@@ -6,7 +6,6 @@ class Devise::ArchiveFailure < Devise::FailureApp
   # Thus location storage and redirects need to be scope-agnostic.
   def respond!
     options = @env['warden.options']
-    scope   = options[:scope]
 
     redirect_path = anmelden_path
     query_string = query_string_for(options)

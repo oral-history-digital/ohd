@@ -152,7 +152,7 @@ namespace :web_statistics do
 
     (1..month_num).each do |month|
       time = Time.gm(2011,1,1) + month.months
-      count = UserAccount.count(:all, :conditions => ["last_sign_in_at < ?", time.to_s(:db)])
+      count = UserAccount.count(:conditions => ["last_sign_in_at < ?", time.to_s(:db)])
       csv = [ (time - 1.month).year, (time - 1.month).month, count ]
       system "echo '#{csv.join("\t")}' >> #{csv_file}"
     end
@@ -180,16 +180,16 @@ namespace :web_statistics do
     values = (1..9).to_a
 
     values.each do |val|
-      num = UserAccount.count :all, :conditions => ['sign_in_count = ?', val]
+      num = UserAccount.count :conditions => ['sign_in_count = ?', val]
       csv = [val, num]
       system "echo '#{csv.join("\t")}' >> #{csv_file}"
     end
 
-    num = UserAccount.count :all, :conditions => ['sign_in_count > 9']
+    num = UserAccount.count :conditions => ['sign_in_count > 9']
 
     csv = ['10+', num]
     system "echo '#{csv.join("\t")}' >> #{csv_file}"
-    
+
     puts "Written usage statistics by total logins to #{csv_file}"
 
   end
