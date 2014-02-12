@@ -1,4 +1,4 @@
-<h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
+<h1>Онлайн-архив "Подневольный труд 1939-1945"</h1>
 
 <div class="contentImagesLeft">
 <% if current_user_account.nil? -%>
@@ -29,29 +29,20 @@
 <p></p>
 
 <p>
-  Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
-  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern.
-  Es setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
-  finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
-  in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
-  Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
-  für Bildung und Wissenschaft zur Verfügung.
+  Онлайн-архив &quot;Подневольный труд 1939-1945&quot; содержит интервью почти с 600 бывшими невольниками и невольницами труда из 26 стран.
+  Архив состоит из нескольких частичных собраний, составленных в 2005-2006 гг. различными учреждениями по всему миру при финансовой поддержке фонда &quot;Память, ответственность и будущее&quot;.
+  Цифровой архив сохраняет данные свидетельства времени для будущих поколений и предоставляет их в пользование образованию и науке.
 </p>
 
 <% if current_user_account.nil? %>
   <p style="font-weight: bold;">
-    Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
-    die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
-    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
+    В порядке защиты прав личности для использования архива "Подневольный труд 1939-1945" Вы должны быть зарегистрированы <%= link_to 'angemeldet', anmelden_path %> и принять как <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>, так и <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
   </p>
 <% else %>
   <br/>
   <p>
-    Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller L&auml;nge, die
-    wir unter unseren <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> und
-    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> im Web bereitstellen
-    k&ouml;nnen.
+    В качестве зарегистрированного пользователя Вы имеет доступ ко всем интервью в полном объёме, предоставленные в распоряжение в сети Интернет, при условии, что будут соблюдены <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> и
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
   </p>
 <% end %>
 
@@ -60,17 +51,17 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="#">
-      <img src="<%= image_path('teaser/kategorien.png') -%>" alt="Kategorien"/>
+      <img src="<%= image_path('teaser/kategorien.png') -%>" alt="Категории"/>
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Kategorien-Suche</h3>
+<h3 style="margin-top: 8px;">Поиск по категориям</h3>
 <p>
-  Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
+  Категории в поисковой панели в правом краю экрана, отображающие содержание, позволяют ознакомиться с систематикой архива и служат тематически структурированному доступу в архив.
   <br/>
-    <%= link_to 'Beschreibung der Kategorien »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'recherchemoeglichkeiten'),
-                :title => 'Welche Recherchemöglichkeiten gibt es?' %>
+    <%= link_to 'Описание категорий »',
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'recherchemoeglichkeiten'),
+                :title => 'Какие возможности поиска существуют?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -78,64 +69,63 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="#">
-      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Volltextsuche"/>
+      <img src="<%= image_path('teaser/volltext.png') -%>" alt="Полнотекстовый поиск"/>
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Volltextsuche</h3>
+<h3 style="margin-top: 8px;">Полнотекстовый поиск</h3>
 <p>
-  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
+  Полнотекстовый поиск посредством поисковой панели справа предоставляет возможность интуитивного доступа к архиву с помощью ключевых понятий, чётко соответствующих цели Ваших изысканий.
   <br/>
-    <%= link_to 'Beschreibung der Volltextsuche »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'suche-allgemein'),
-                :title => 'Wie kann ich die Volltextsuche nutzen?' %>
+    <%= link_to 'Описание полнотекстового поиска »',
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'suche-allgemein'),
+                :title => 'Как я могу использовать полнотекстовый поиск?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :de) -%>">
-      <img src="<%= image_path('teaser/karte.png') -%>" alt="Karte"/>
+    <a href="<%= localized_public_map_url(:locale => :ru) -%>">
+      <img src="<%= image_path('teaser/karte.png') -%>" alt="Карта"/>
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Kartenrecherche</h3>
+<h3 style="margin-top: 8px;">Поиск по карте</h3>
 <p>
-  Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
+  С помощью интерактивной карты предоставляется возможность поиска информации о биографических этапах интервьюируемых: место рождения, место депортации, лагерь, фирмы и места заключения, места жительства с 1945 г.
   <br/>
-    <%= link_to 'zur Kartenrecherche »',
-                localized_public_map_url(:locale => :de),
-                :title => 'Kartenrecherche' %>
+    <%= link_to 'К поиску по карте »',
+                localized_public_map_url(:locale => :ru),
+                :title => 'Поиск по карте' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :de) -%>">
-      <img src="<%= image_path('teaser/collections.png') -%>" alt="Teilsammlungen"/>
+    <a href="<%= localized_interview_collections_url(:locale => :ru) -%>">
+      <img src="<%= image_path('teaser/collections.png') -%>" alt="Частичные собрания"/>
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Übersicht der Teilsammlungen</h3>
+<h3 style="margin-top: 8px;">Обзор частичных собраний</h3>
 <p>
-  Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
+  Обзор географического распределения частичных собраний позволяет ознакомиться с историей возникновения архива и обеспечивает региональный подход.
   <br/>
-    <%= link_to 'zur Karte der Teilsammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Geografische Verteilung der Teilsammlungen' %>
+    <%= link_to 'К карте частичных собраний »', localized_interview_collections_url(:locale => :ru), :title => 'Географическое распределение частичных собраний' %>
     <br/>
 </p>
 
 <hr style="clear: both;"/>
-<h2 class="clear">Fragen und Antworten</h2>
+<h2 class="clear">Вопросы и ответы</h2>
 <p>
   Über die
   <%= link_to (t :faq),
-              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :de),
-              :title => 'Fragen und Antworten zur Nutzung des Archivs' %>
-  auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
-  Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
-  <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">
+              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :ru),
+              :title => 'Вопросы и ответы, касающиеся использования архива' %>
+  На данной страничке Вы найдёте технические указания или указания по содержанию, касающиеся использования архива. Если Ваши вопросы всё-таки останутся без ответа, напишите нам письмо на следующий электронный адрес:
+  <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Контакт">
     mail@zwangsarbeit-archiv.de
   </a>
 </p>
