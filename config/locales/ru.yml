@@ -505,3 +505,6 @@ ru:
   _locale_chooser:
     language_choice: "Русский"
     language_choice_title: "Русская версия"
+
+  user_account_mailer:
+    subject: '##ru##'

@@ -509,3 +509,6 @@ de:
   searches:
     person_names:
       no_persons_found: 'keine Personen gefunden'
+
+  user_account_mailer:
+    subject: "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"

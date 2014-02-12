@@ -456,3 +456,6 @@ en:
   _locale_chooser:
     language_choice: "English"
     language_choice_title: "English Version"
+
+  user_account_mailer:
+    subject: "Your account for the archive 'Forced Labor 1939-1945'"

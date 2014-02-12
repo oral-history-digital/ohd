@@ -198,7 +198,7 @@ EVAL
     self.processed_at = Time.now
     save
     unless @skip_mail_delivery
-      UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
+      UserAccountMailer.deliver_account_activation_instructions(self.user_account)
     end
   end
 
@@ -225,7 +225,7 @@ EVAL
     else
       self.user_account.reactivate!
       if self.user_account.valid? and !@skip_mail_delivery
-        UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
+        UserAccountMailer.deliver_account_activation_instructions(self.user_account)
       end
     end
   end
@@ -243,7 +243,7 @@ EVAL
     user_account.generate_confirmation_token if user_account.confirmation_token.blank?
     user_account.confirmation_sent_at = Time.now
     user_account.save
-    UserAccountMailer.deliver_account_activation_instructions(self, self.user_account)
+    UserAccountMailer.deliver_account_activation_instructions(self.user_account)
   end
 
   def full_name
