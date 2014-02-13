@@ -48,8 +48,25 @@
 # spaces in the right place. See that in the above example the space in
 # german_translation has moved from the beginning (' in deutscher Übersetzung')
 # to the end ('German ').
-
 de:
+  dictionary:
+    project_name: &project_name 'Zwangsarbeit 1939-1945: Das Online-Archiv "Zwangsarbeit 1939-1945"'
+
+    back_to_top_template: &back_to_top_template
+      back_to_top: 'Zum Seitenanfang'
+      image_back_to_top: 'Bild: Sprungmarke nach oben'
+
+    header_template: &header_template
+      info: *project_name
+      skip: 'Springe direkt zu:'
+      content: 'Inhalt'
+      service_navigation: 'Service-Navigation'
+      logoff: 'Abmelden'
+
+    print_version_template: &print_version_template
+      print_preview_only: 'Diese Grafiken werden nur in der Druckvorschau verwendet:'
+      print_logo: 'Druckversion des Logos'
+
   home: 'Startseite'
   home_link: 'Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
   logo_title: 'Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
@@ -70,7 +87,7 @@ de:
   select_all: 'alle ausw&auml;hlen'
   admin_area: 'Administratoren-Bereich'
   and: 'und'
-  no_placeholder: 'keine'
+  no_placeholder: 'Keine %{content}'
   for: 'f&uuml;r'
   close: 'schlie&szlig;en'
   here: 'hier'
@@ -502,21 +519,66 @@ de:
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
 
+# The following entries have been named by convention.
+
+  _admin_header:
+    << : *header_template
+
+  _head:
+    title: *project_name
+    meta_keywords: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
+
+  _header:
+    << : *header_template
+    map_link_title: 'Übersichtskarte der biografischen Stationen'
+    collections_link_title: 'Geografische Verteilung der Teilsammlungen'
+    faq_link_title: 'Fragen und Antworten zur Nutzung des Archivs'
+
   _locale_chooser:
     language_choice: 'Deutsch'
     language_choice_title: 'Deutsche Version'
 
+  interviews:
+    content:
+      search_in_interview: 'Suchen in &#145;%{content}&#146;'
+
+  layouts:
+    admin:
+      << : *print_version_template
+    application:
+      << : *print_version_template
+      << : *back_to_top_template
+    iframe:
+      title: 'Zwangsarbeit 1939-1945: Karte "Zwangsarbeit 1939-1945"'
+    interview:
+      << : *print_version_template
+    workspace:
+      << : *print_version_template
+      << : *back_to_top_template
+
+  public:
+    '404':
+      << : *header_template
+      << : *print_version_template
+    '422':
+      << : *header_template
+      << : *print_version_template
+    '500':
+      << : *header_template
+      << : *print_version_template
+
   searches:
+    active_facet:
+      remove: 'entfernen'
+    facet_option:
+      arrow_down: 'Pfeil unten'
+      arrow_right: 'Pfeil rechts'
+      update: 'aktualisieren'
+    facets:
+      search: 'suchen'
     person_names:
       no_persons_found: 'keine Personen gefunden'
 
   user_account_mailer:
     subject: "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"
 
-  _head:
-    title: 'Zwangsarbeit 1939-1945: Das Online-Archiv "Zwangsarbeit 1939-1945"'
-    meta_keywords: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
-
-  layouts:
-    iframe:
-      title: 'Zwangsarbeit 1939-1945: Karte "Zwangsarbeit 1939-1945"'

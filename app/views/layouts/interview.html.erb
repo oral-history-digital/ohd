@@ -79,8 +79,8 @@
     <hr class="divider" />
 
     <div id="printlogo">
-        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+      <p class="info"><em><%= t('.print_preview_only') %></em></p>
+      <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
     </div>
 
 </body>

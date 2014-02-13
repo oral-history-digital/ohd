@@ -27,7 +27,7 @@
   <% end %>
   </ul>
 
-  <%= link_to_function 'entfernen', :class=>'facet-remove', :title => 'entfernen' do |page|
+  <%= link_to_function 'entfernen', :class=>'facet-remove', :title => t('.remove') do |page|
       page[facet_dom_id].visual_effect :switch_off
       query.each do |facet_object|
         page << "Element.remove('#{active_facet}_#{facet_object[:id]}');"

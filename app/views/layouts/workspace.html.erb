@@ -22,7 +22,7 @@
             <h2 class="info">Service-Funktionen</h2>
             <p class="title"><%= truncate(users_first_name, :length => 20) -%><%= users_first_name.last == 's' ? "'" : 's' -%><br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
             <div id="baseHeaderSearch">
-            
+
             </div>
 
             <div id="submit_search" class="action">
@@ -60,7 +60,7 @@
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <a href="#seitenanfang" title="<%= t('.back_to_top') %>"><img src="<%= image_path 'sprungmarke.gif' %>" alt="<%= t('.image_back_to_top') %>" border="0" title="<%= t('.back_to_top') %>" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -89,8 +89,8 @@
     <hr class="divider" />
 
     <div id="printlogo">
-        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-        <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+      <p class="info"><em><%= t('.print_preview_only') %></em></p>
+      <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
     </div>
 
 </body>

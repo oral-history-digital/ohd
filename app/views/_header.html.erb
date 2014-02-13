@@ -4,23 +4,23 @@
           <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <h2 class="info"><%= t '.info'  %></h2>
         <hr class="divider" />
         <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+          <em><%= t '.skip' %></em> <a href="#inhalt"><%= t '.content' %></a>
         </p>
 
         <hr class="divider" />
         <h2 class="info">
-          Service-Navigation
+          <%= t '.service_navigation' %>
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
             <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
             <%= render :partial => '/locale_chooser' %>
-            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => 'Übersichtskarte der biografischen Stationen' %></li>
-            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => 'Geografische Verteilung der Teilsammlungen' %> </li>
-            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => 'Fragen und Antworten zur Nutzung des Archivs' %></li>
+            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>
+            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %> </li>
+            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => t('.faq_link_title') %></li>
           </ul>
         </div>
       </div>
@@ -30,7 +30,7 @@
       <div id="baseLogout" class="portlet logoutPortlet">
           <form action="" method="post">
             <fieldset>
-              <legend>Abmelden</legend>
+              <legend><%= t '.logoff' %></legend>
               <p id="logoutUserLogin">
                 <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>

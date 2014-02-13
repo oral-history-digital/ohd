@@ -290,7 +290,7 @@ class Interview < ActiveRecord::Base
   end
 
   def video
-    read_attribute(:video) ? 'Video' : 'Audio'
+    I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio')
   end
 
   def video?

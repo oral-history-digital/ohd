@@ -21,16 +21,16 @@
           <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
         </a>
 
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <h2 class="info"><%= t 'public.422.info'  %></h2>
         <hr class="divider" />
         <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+          <em><%= t 'public.422.skip' %></em> <a href="#inhalt"><%= t 'public.422.content' %></a>
         </p>
 
         <hr class="divider" />
 
         <h2 class="info">
-          Service-Navigation
+          <%= t 'public.422.service_navigation' %>
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
@@ -62,7 +62,7 @@
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= image_path 'sprungmarke.gif' %>" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <a href="#seitenanfang" title="<%= t('public.422.back_to_top') %>"><img src="<%= image_path 'sprungmarke.gif' %>" alt="<%= t('public.422.image_back_to_top') %>" border="0" title="<%= t('public.422.back_to_top') %>" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -92,8 +92,8 @@
   <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
 
   <div id="printlogo">
-    <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-    <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+    <p class="info"><em><%= t('public.422.print_preview_only') %></em></p>
+    <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('public.422.print_logo') %>" alt="<%= t('public.422.print_logo') %>" />
   </div>
 
 </body>

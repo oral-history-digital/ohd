@@ -15,15 +15,15 @@
           </ul>
         </div>
 
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <h2 class="info"><%= t '.info'  %></h2>
         <hr class="divider" />
         <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+          <em><%= t '.skip' %></em> <a href="#inhalt"><%= t '.content' %></a>
         </p>
 
         <hr class="divider" />
         <h2 class="info">
-          Service-Navigation
+          <%= t '.service_navigation' %>
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
@@ -38,7 +38,7 @@
       <div id="baseLogout" class="portlet logoutPortlet">
           <form action="" method="post">
             <fieldset>
-              <legend>Abmelden</legend>
+              <legend><%= t '.logoff' %></legend>
               <p id="logoutUserLogin">
                 <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>

@@ -30,7 +30,7 @@
                                 :id => "search_in_interview" } do |search| %>
 
     <div id="interviewSearch">
-        <h2><label for="fulltext"><%= t(:search, :scope => 'user_interface.labels').capitalize %> in &#145;<%= content %>&#146;</label></h2>
+        <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
         <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
         <%= hidden_field_tag 'id', @interview.archive_id %>
         <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>

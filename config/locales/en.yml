@@ -1,4 +1,22 @@
 en:
+  dictionary:
+    project_name: &project_name 'Forced Labor 1939-1945: The Online-Archive "Forced Labor 1939-1945"'
+
+    back_to_top_template: &back_to_top_template
+      back_to_top: 'Back to the top'
+      image_back_to_top: 'Image: back to top'
+
+    header_template: &header_template
+      info: *project_name
+      skip: 'jump directly to:'
+      content: 'content'
+      service_navigation: 'service navigation'
+      logoff: 'logoff'
+
+    print_version_template: &print_version_template
+      print_preview_only: 'These images will only be shown in print preview:'
+      print_logo: 'print logo'
+
   home: "Home"
   home_link: 'To project start page for: Forced Labor 1939-1945. Memory and History'
   logo_title: 'Logo of the project: Forced Labor 1939-1945. Memory and History'
@@ -19,7 +37,7 @@ en:
   next: 'next&nbsp;&raquo;'
   admin_area: 'Admin Area'
   and: 'and'
-  no_placeholder: 'no'
+  no_placeholder: 'No %{content}'
   for: 'for'
   close: 'close'
   here: 'here'
@@ -453,21 +471,65 @@ en:
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
 
+# The following entries have been named by convention.
+
+  _admin_header:
+    << : *header_template
+
+  _head:
+    title: *project_name
+    meta_keywords: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
+
+  _header:
+    << : *header_template
+    map_link_title: 'geographic overview map of biographic history'
+    collections_link_title: 'geographic distribution of archive collections'
+    faq_link_title: 'questions and answers on how to use the archive'
+
   _locale_chooser:
     language_choice: "English"
     language_choice_title: "English Version"
 
+  interviews:
+    content:
+      search_in_interview: 'Search in &#145;%{content}&#146;'
+
+  layouts:
+    admin:
+      << : *print_version_template
+    application:
+      << : *print_version_template
+      << : *back_to_top_template
+    iframe:
+      title: 'Forced Labor 1939-1945: Map "Forced Labor 1939-1945"'
+    interview:
+      << : *print_version_template
+    workspace:
+      << : *print_version_template
+      << : *back_to_top_template
+
+  public:
+    '404':
+      << : *header_template
+      << : *print_version_template
+    '422':
+      << : *header_template
+      << : *print_version_template
+    '500':
+      << : *header_template
+      << : *print_version_template
+
   searches:
+    active_facet:
+      remove: 'remove'
+    facet_option:
+      arrow_down: 'arrow down'
+      arrow_right: 'arrow right'
+      update: 'update'
+    facets:
+      search: 'search'
     person_names:
       no_persons_found: 'no persons found'
 
   user_account_mailer:
     subject: "Your account for the archive 'Forced Labor 1939-1945'"
-
-  _head:
-    title: 'Forced Labor 1939-1945: The Online-Archive "Forced Labor 1939-1945"'
-    meta_keywords: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
-
-  layouts:
-    iframe:
-      title: 'Forced Labor 1939-1945: Map "Forced Labor 1939-1945"'
