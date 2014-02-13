@@ -508,15 +508,15 @@ ru:
 
   searches:
     person_names:
-      no_persons_found: '##ru##'
+      no_persons_found: 'Персоны не найдены'
 
   user_account_mailer:
-    subject: '##ru##'
+    subject: "Ваш доступ к архиву 'Подневольный труд 1939-1945'"
 
   _head:
-    title: '##ru##'
-    meta_keywords: '##ru##'
+    title: 'Подневольный труд 1939-1945: Онлайн-архив "Подневольный труд 1939-1945"'
+    meta_keywords: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
 
   layouts:
     iframe:
-      title: '##ru##'
+      title: 'Подневольный труд 1939-1945: Карта "Подневольный труд 1939-1945"'
