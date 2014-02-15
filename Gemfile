@@ -1,23 +1,23 @@
 source 'https://dev.cedis.fu-berlin.de/geminabox/'
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 ruby '1.8.7'
 
 # Most version restrictions are due to rails 2.3 compat and may probably
 # be removed when upgrading to 3.x.
 
+gem 'rdoc'
 gem 'rails', :git => 'git://github.com/makandra/rails.git', :branch => '2-3-lts'
 gem 'rake'
 gem 'mysql'
-gem 'exception_notification', '~> 2.3.0'
+gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
 gem 'workflow'
-gem 'will_paginate', '~> 2.3'
+gem 'will_paginate', '~> 2.3' # Version restriction for Rails 2.3.
 gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
-    :branch => 'v2.7'
+    :branch => 'v2.7' # Version restriction for Rails 2.3.
 gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
 gem 'archive-shared'
-gem 'archive-authorization'
 gem 'archive-player'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',
@@ -28,6 +28,10 @@ gem 'resource_controller', :require => false, # Requiring resource_controller lo
     :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
+
+# Gems specific to archive_zwar:
+
+gem 'archive-authorization'
 gem 'sunspot_rails', '~> 2.0.0' # Version requirement can be dropped when upgrading to Rails 3.x
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids',
@@ -39,12 +43,11 @@ gem 'devise', '1.0.8'
 gem 'smurf'
 gem 'rack-maintenance'
 
-gem 'rdoc', '~> 3.12.0' # required for our version of rubygems
-gem 'rspec', '~> 1.3', :require => false
-gem 'rspec-rails', '~> 1.3', :require => false
 
 group :development do
+  # Automatic tests
   gem 'guard-spork'
+  gem 'guard-rspec'
   gem 'ruby-debug-ide'
   gem 'ruby-debug-base'
   gem 'capistrano'
@@ -53,12 +56,18 @@ end
 
 group :development, :test do
   gem 'sunspot_solr' # A simple Solr installation with good defaults for development and testing.
-  gem 'guard-rspec'
+  gem 'rspec', :require => false
+  gem 'rspec-rails', :require => false
   # Faster tests:
-  gem 'spork', '~> 0.8.0'
+  gem 'spork', '~> 0.8.0' # Version restriction for Rails 2.3.
 end
 
 group :test do
   # Fixtures replacement:
-  gem 'factory_girl', '~> 2'
+  gem 'factory_girl', '~> 2' # Later versions require ruby 1.9.
+  # Integration tests:
+  gem 'capybara', '1.1.4' # Later versions require ruby 1.9.
+  gem 'cucumber-rails', '0.3.2', :require => false # Version restriction for Rails 2.3.
+  gem 'selenium-webdriver'
+  gem 'database_cleaner', '<= 1.0.1' # Later versions break Rails 2.3
 end
