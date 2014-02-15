@@ -48,6 +48,7 @@ group :development do
   # Automatic tests
   gem 'guard-spork'
   gem 'guard-rspec'
+  gem 'guard-cucumber', '0.7.5' # Version restriction can be released when we upgrade cucumber to version 1.2.0 or later.
   gem 'ruby-debug-ide'
   gem 'ruby-debug-base'
   gem 'capistrano'
@@ -56,7 +57,7 @@ end
 
 group :development, :test do
   gem 'sunspot_solr' # A simple Solr installation with good defaults for development and testing.
-  gem 'rspec', :require => false
+  gem 'rspec', :require => 'spec' # The require-statement is needed for email_spec to work correctly.
   gem 'rspec-rails', :require => false
   # Faster tests:
   gem 'spork', '~> 0.8.0' # Version restriction for Rails 2.3.
@@ -67,7 +68,9 @@ group :test do
   gem 'factory_girl', '~> 2' # Later versions require ruby 1.9.
   # Integration tests:
   gem 'capybara', '1.1.4' # Later versions require ruby 1.9.
+  gem 'cucumber', '1.1.0' # Version restriction for Rails 2.3.
   gem 'cucumber-rails', '0.3.2', :require => false # Version restriction for Rails 2.3.
   gem 'selenium-webdriver'
   gem 'database_cleaner', '<= 1.0.1' # Later versions break Rails 2.3
+  gem 'email_spec', '0.6.6' # Version restriction for Rails 2.3.
 end

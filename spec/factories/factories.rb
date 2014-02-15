@@ -5,6 +5,7 @@ FactoryGirl.define do
     last_name 'Abkowitsch'
     first_name 'Iossif'
     other_first_names 'Iwanowitsch'
+    country_of_origin 'Russland'
   end
 
   factory :category do

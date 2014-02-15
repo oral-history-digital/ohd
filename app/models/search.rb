@@ -175,8 +175,6 @@ DEF
             else
               []
             end
-          elsif facet.rows.first.instance.nil?
-            raise 'Expected facet instance.'
           else
             # Return an array of all instances with number of corresponding hits.
             facet.rows.

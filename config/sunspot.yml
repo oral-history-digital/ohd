@@ -14,7 +14,11 @@ development:
 test:
   solr:
     <<: *defaults
-    port: 8986
+
+cucumber:
+  solr:
+    <<: *defaults
+    log_level: INFO
 
 production:
   solr:
