@@ -13,7 +13,7 @@ end -%>
   <div class="handle">
     <a href="#"><%= @user_content_index + 1 -%>.</a>
   </div>
-    <div class="header <%= user_content.type.to_s.underscore -%>">
+    <div class="header <%= user_content.class.to_s.underscore -%>">
       <span class="title">
         <%= in_place_edit_for user_content, :title -%>
         <a name="user_content_<%= user_content.id -%>" style="display: none;">&nbsp;</a>
@@ -40,18 +40,18 @@ end -%>
             <li><hr/></li>
             <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); setItemStatus(this.up('.actions'), false)" %></li>
             <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content, :context => 'user_contents'), { :method => :get })}" %></li>
-            <% if user_content.type.to_s == 'UserAnnotation' -%>
+            <% if user_content.class.to_s == 'UserAnnotation' -%>
                 <% if user_content.private? -%>
                     <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(publish_notice_user_content_path(user_content, :context => 'user_contents', :type => 'UserAnnotation'), { :method => :get })}" %></li>
                 <% else -%>
-                    <li><%= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.type.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
+                    <li><%= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.class.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
                 <% end -%>
             <% end -%>
             <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => '"' + (user_content.title || '') + '"') %></li>
           </ul>
         </div>
         <ul class="properties">
-          <% unless (user_content.type.to_s != 'Search' && user_content.reference.nil?) || (user_content.type.to_s == 'Search' && user_content.properties['query'].nil?) -%>
+          <% unless (user_content.class.to_s != 'Search' && user_content.reference.nil?) || (user_content.class.to_s == 'Search' && user_content.properties['query'].nil?) -%>
               <% case user_content
                   when Search
                     %>
@@ -98,7 +98,7 @@ end -%>
               end %>
           <% end -%>
           <li class="description">
-            <% if user_content.type.to_s == 'UserAnnotation' -%>
+            <% if user_content.class.to_s == 'UserAnnotation' -%>
             <%= label_tag UserAnnotation.human_attribute_name(:description) -%>
                 <% if user_content.private? -%>
                     <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
@@ -111,7 +111,7 @@ end -%>
             <% end -%>
           </li>
         </ul>
-      <div class="<%= user_content.type.to_s == 'Search' ? 'references' : 'reference' -%>">
+      <div class="<%= user_content.class.to_s == 'Search' ? 'references' : 'reference' -%>">
         <%= case user_content
             when Search
               reference_details_for_search(user_content)
