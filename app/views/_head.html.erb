@@ -5,9 +5,12 @@
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="keywords" content="<%= t '.meta_keywords' %>" />
 
-    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'chosen', 'content', 'eaz-content', 'archiv-portlet', 'lightbox', 'user-content', 'search', 'map', 'transfer' %>
+    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'chosen', 'content', 'eaz-content', 'archiv-portlet', 'lightbox', 'user-content', 'search', 'map', 'transfer', 'jquery-ui/jquery-ui' %>
     <%= stylesheet_link_tag 'print', :media => :print %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <%= javascript_include_tag 'prototype', 'application', 'chosen', 'effects', 'controls', 'default', 'dragdrop', :cache => 'site' %>
+    <%= javascript_include_tag 'prototype', 'application', 'chosen', 'effects', 'controls', 'default', 'dragdrop', 'jquery.min', 'jquery-ui.min', :cache => 'site' %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+    <% end %>
