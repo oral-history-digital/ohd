@@ -63,7 +63,11 @@
                   source: '<%= person_name_searches_path @search.query_params.reject{|k,v| k == 'page'} -%>',
                   minLength: 2,
                   select: function( event, ui ) {
-                    jQuery(this).closest('form').submit();
+                    // asynchronously submit the form - this is necessary
+                    // for the form input to transfer the assigned value
+                    // when clicking on it.
+                    $this = jQuery(this)
+                    setTimeout( function() { $this.closest('form').submit(); }, 0 );
                   },
                   response: function(event, ui) {
                     if (ui.content.length === 0) {
