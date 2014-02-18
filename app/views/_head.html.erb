@@ -10,7 +10,8 @@
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <%= javascript_include_tag 'prototype', 'application', 'chosen', 'effects', 'controls', 'default', 'dragdrop', 'jquery.min', 'jquery-ui.min', :cache => 'site' %>
+    <%= javascript_include_tag 'prototype', 'application', 'chosen', 'effects', 'controls', 'default', 'dragdrop', :cache => 'site-prototype' %>
+    <%= javascript_include_tag 'jquery.min', 'jquery-ui.min' %>
     <% javascript_tag do %>
       jQuery.noConflict();
     <% end %>
