@@ -573,11 +573,10 @@ de:
     facet_option:
       arrow_down: 'Pfeil unten'
       arrow_right: 'Pfeil rechts'
+      no_persons_found: 'keine Personen gefunden'
       update: 'aktualisieren'
     facets:
       search: 'suchen'
-    person_names:
-      no_persons_found: 'keine Personen gefunden'
 
   user_account_mailer:
     subject: "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"

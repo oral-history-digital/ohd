@@ -56,20 +56,23 @@
             <% else %>
 
               <%= search_facets.text_field :person_name, { :size => 25, :name => 'person_name', :class => 'searchInput' } %>
-
-              <div id="person_name_suggestions" class="autocomplete"></div>
+              <div id="empty-message"></div>
 
               <% javascript_tag do %>
-
-                new Ajax.Autocompleter(   'search_person_name',
-                                          'person_name_suggestions',
-                                          '<%= person_name_searches_path %>',
-                                          {
-                                            parameters: '<%= @search.serialized_query_params(false) %>',
-                                            method: 'get',
-                                            minChars: 2
-                                          });
-
+                jQuery('#search_person_name').autocomplete({
+                  source: '<%= person_name_searches_path @search.query_params.reject{|k,v| k == 'page'} -%>',
+                  minLength: 2,
+                  select: function( event, ui ) {
+                    jQuery(this).closest('form').submit();
+                  },
+                  response: function(event, ui) {
+                    if (ui.content.length === 0) {
+                      jQuery("#empty-message").text('<%=t '.no_persons_found' %>');
+                    } else {
+                      jQuery("#empty-message").empty();
+                    }
+                  }
+                });
               <% end %>
 
             <% end %>

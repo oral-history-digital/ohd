@@ -129,11 +129,8 @@ class SearchesController < BaseController
       @search.results = []
     end
     respond_to do |format|
-      format.html do
-        # ?
-      end
-      format.js do
-        render :partial => 'person_names', :object => @search.results.reject{|pn| pn.full_title(I18n.locale).blank?}
+      format.json do
+        render :json => @search.results.map{|pn| pn.full_title(I18n.locale)}.reject(&:blank?)
       end
     end
   end
@@ -141,7 +138,7 @@ class SearchesController < BaseController
   private
 
   def rename_person_name_param
-    params.merge!({:partial_person_name => params.delete('person_name')})
+    params.merge!({:partial_person_name => params.delete('term')})
   end
 
   # redirect users to login if they're unauthenticated

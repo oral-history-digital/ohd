@@ -128,30 +128,6 @@
     font-size:90%;
 }
 
-/* Autocompleter */
-fieldset.facet-field .autocomplete {
-    background: #f8f8f8;
-    opacity: 0.9;
-    z-index: 5;
-}
-
-.baseListBox .autocomplete li {
-    color: #666666;
-    font-size: 80%;
-}
-
-.baseListBox .autocomplete ul {
-    width: 202px;
-    padding: 0;
-}
-
-.baseListBox .autocomplete li a {
-    color: #666666;
-    display: block;
-    padding: 1px 0 2px 0;
-    text-decoration: none;
-}
-
 /* transcript excerpts and segment selection */
 .baseContainerTeaserExcerpts .segment {
     display: none;

@@ -525,11 +525,10 @@ en:
     facet_option:
       arrow_down: 'arrow down'
       arrow_right: 'arrow right'
+      no_persons_found: 'no persons found'
       update: 'update'
     facets:
       search: 'search'
-    person_names:
-      no_persons_found: 'no persons found'
 
   user_account_mailer:
     subject: "Your account for the archive 'Forced Labor 1939-1945'"

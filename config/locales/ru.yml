@@ -574,11 +574,10 @@ ru:
     facet_option:
       arrow_down: '##ru##'
       arrow_right: '##ru##'
+      no_persons_found: 'Персоны не найдены'
       update: '##ru##'
     facets:
       search: '##ru##'
-    person_names:
-      no_persons_found: 'Персоны не найдены'
 
   user_account_mailer:
     subject: "Ваш доступ к архиву 'Подневольный труд 1939-1945'"
