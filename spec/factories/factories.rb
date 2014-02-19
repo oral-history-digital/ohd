@@ -1,10 +1,10 @@
 FactoryGirl.define do
 
   factory :interview do
-    archive_id 'za767'
-    last_name 'Abkowitsch'
-    first_name 'Iossif'
-    other_first_names 'Iwanowitsch'
+    archive_id 'za465'
+    last_name 'Baschlaj'
+    first_name 'Sinaida'
+    other_first_names 'Iwanowna'
     country_of_origin 'Russland'
   end
 

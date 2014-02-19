@@ -25,29 +25,32 @@ Spork.prefork do
 
   # Configure the capybara test strategy.
   test_strategy = (ENV['TEST_STRATEGY'] || :chrome).to_sym
-  if test_strategy == :sauce
-    # Configure capybara for SauceLabs browsertests.
-    Capybara.register_driver :sauce do |app|
-      browser = 'internet_explorer'
-      caps = Selenium::WebDriver::Remote::Capabilities.send(browser)
-      caps.version = '9'
-      caps.platform = 'Windows 7'
-      caps[:name] = "ZWAR Automated Browsertest: #{caps.platform} - #{browser.capitalize} #{caps.version}"
-      Capybara::Selenium::Driver.new(
-          app,
-          :browser => :remote,
-          :url => 'http://jerico-dev:9f0edcb2-ac9c-46c6-9da9-290888bf1218@ondemand.saucelabs.com:80/wd/hub',
-          :desired_capabilities => caps
-      )
-    end
-    # Only certain ports are allowed by SauceLabs, see "Accessing applications
-    # on localhost" at https://saucelabs.com/docs/connect.
-    Capybara.server_port = 9000
-  else
-    # Configure capybara with local chromium.
-    Capybara.register_driver :chrome do |app|
-      Capybara::Selenium::Driver.new(app, :browser => :chrome)
-    end
+  case test_strategy
+    when :sauce
+      # Configure capybara for SauceLabs browsertests.
+      Capybara.register_driver :sauce do |app|
+        browser = 'internet_explorer'
+        caps = Selenium::WebDriver::Remote::Capabilities.send(browser)
+        caps.version = '9'
+        caps.platform = 'Windows 7'
+        caps[:name] = "ZWAR Automated Browsertest: #{caps.platform} - #{browser.capitalize} #{caps.version}"
+        Capybara::Selenium::Driver.new(
+            app,
+            :browser => :remote,
+            :url => 'http://jerico-dev:9f0edcb2-ac9c-46c6-9da9-290888bf1218@ondemand.saucelabs.com:80/wd/hub',
+            :desired_capabilities => caps
+        )
+      end
+      # Only certain ports are allowed by SauceLabs, see "Accessing applications
+      # on localhost" at https://saucelabs.com/docs/connect.
+      Capybara.server_port = 9000
+    when :chrome
+      # Configure capybara with local chromium.
+      Capybara.register_driver :chrome do |app|
+        Capybara::Selenium::Driver.new(app, :browser => :chrome)
+      end
+    else
+      # noop
   end
   Capybara.default_driver = test_strategy
 
@@ -61,6 +64,8 @@ Spork.prefork do
   DatabaseCleaner::strategy = :truncation
 
   require 'factory_girl'
+
+  require 'spec/expectations'
 
   require 'email_spec' # add this line if you use spork
   require 'email_spec/cucumber'

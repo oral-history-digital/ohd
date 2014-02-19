@@ -153,7 +153,7 @@ describe UserRegistration, 'on activation after account activation' do
   let :registration do
     registration = create :user_registration
     registration.register!
-    registration.user_account.confirm!('password','password')
+    registration.user_account.confirm!('password', 'password')
     registration.activate!
     registration
   end
@@ -185,7 +185,7 @@ describe UserRegistration, 'on removal' do
   let :registration do
     registration = create :user_registration
     registration.register!
-    registration.user_account.confirm!('password','password')
+    registration.user_account.confirm!('password', 'password')
     registration.activate!
     registration.remove!
     registration
@@ -300,7 +300,7 @@ describe UserRegistration, 'on reactivation after removing' do
   let :registration do
     registration = create :user_registration
     registration.register!
-    registration.user_account.confirm!('password','password')
+    registration.user_account.confirm!('password', 'password')
     registration.activate!
     registration.remove!
     registration.reactivate!
