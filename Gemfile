@@ -61,6 +61,8 @@ group :development, :test do
   gem 'rspec-rails', :require => false
   # Faster tests:
   gem 'spork', '~> 0.8.0' # Version restriction for Rails 2.3.
+  gem 'rest-client' # Required for access to Sauce's REST API.
+  gem 'json' # Required for access to Sauce's REST API.
 end
 
 group :test do
@@ -70,7 +72,7 @@ group :test do
   gem 'capybara', '1.1.4' # Later versions require ruby 1.9.
   gem 'cucumber', '1.1.0' # Version restriction for Rails 2.3.
   gem 'cucumber-rails', '0.3.2', :require => false # Version restriction for Rails 2.3.
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '2.35.1' # Later versions depend on rubyzip 1.0.0 which requires Ruby 1.9.
   gem 'database_cleaner', '<= 1.0.1' # Later versions break Rails 2.3
   gem 'email_spec', '0.6.6' # Version restriction for Rails 2.3.
 end

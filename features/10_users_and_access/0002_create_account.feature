@@ -1,4 +1,4 @@
-Feature: create account
+Feature: 0002 create account
 
   In order to protect their privacy interviewees want their data to be protected
   behind a secure login.
@@ -13,4 +13,4 @@ Feature: create account
     And I press the "send registration" button
 
     Then I should be on the registration confirmation page
-    And there I should see a success message
+    And I should see a success message

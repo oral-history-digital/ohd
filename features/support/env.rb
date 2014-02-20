@@ -26,33 +26,33 @@ Spork.prefork do
   # Configure the capybara test strategy.
   test_strategy = (ENV['TEST_STRATEGY'] || :chrome).to_sym
   case test_strategy
-    when :sauce
-      # Configure capybara for SauceLabs browsertests.
-      Capybara.register_driver :sauce do |app|
-        browser = 'internet_explorer'
-        caps = Selenium::WebDriver::Remote::Capabilities.send(browser)
-        caps.version = '9'
-        caps.platform = 'Windows 7'
-        caps[:name] = "ZWAR Automated Browsertest: #{caps.platform} - #{browser.capitalize} #{caps.version}"
+    when :firefox
+      # Access Firefox through a remote Selenium server as the local integration
+      # requires Ruby 1.9.
+      Capybara.register_driver :firefox do |app|
         Capybara::Selenium::Driver.new(
-            app,
-            :browser => :remote,
-            :url => 'http://jerico-dev:9f0edcb2-ac9c-46c6-9da9-290888bf1218@ondemand.saucelabs.com:80/wd/hub',
-            :desired_capabilities => caps
+            app, :browser => :remote, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.send('firefox')
         )
       end
-      # Only certain ports are allowed by SauceLabs, see "Accessing applications
-      # on localhost" at https://saucelabs.com/docs/connect.
-      Capybara.server_port = 9000
+
     when :chrome
       # Configure capybara with local chromium.
       Capybara.register_driver :chrome do |app|
         Capybara::Selenium::Driver.new(app, :browser => :chrome)
       end
+
     else
-      # noop
+      # For the :sauce test strategy everything will be handled in the
+      # saucelab_integration.rb support file, see there.
+
+      # Set the SauceLabs username and access key in your environment
+      # if you want to execute remote tests (SAUCE_USERNAME/SAUCE_ACCESS_KEY).
+
+      # Other test strategies (e.g. rack) do not require special handling.
   end
   Capybara.default_driver = test_strategy
+  Capybara.javascript_driver = test_strategy
+
 
   # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
   # order to ease the transition to Capybara we set the default here. If you'd

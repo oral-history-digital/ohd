@@ -228,7 +228,7 @@ DEF
 
     else
       if current_query_params['partial_person_name'].blank?
-        # fulltext search
+        # fulltext/category search
         @search = self.class.filtered_interview_search current_query_params, @page
 
       else

@@ -4,6 +4,6 @@ rerun_opts = rerun.to_s.strip.empty? ? "--format #{ENV['CUCUMBER_FORMAT'] || 'pr
 std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip"
 %>
 default: --drb <%= std_opts %> features
-sauce: <%= std_opts %> --format html features --out tmp/sauce-results.html TEST_STRATEGY=sauce
+sauce: <%= std_opts %> --format html features --out tmp/test_results/cucumber-results-<%= Time.now.strftime('%Y%m%d-%H%M%S') %>.html TEST_STRATEGY=sauce
 wip: --drb --tags @wip:3 --wip features
 rerun: --drb <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip

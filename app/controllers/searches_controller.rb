@@ -153,8 +153,11 @@ class SearchesController < BaseController
         session[:"user_account.return_to"] = request.request_uri
       end
       if request.xhr?
-        render :update do |page|
-          page << "window.location.href = '#{new_user_account_session_url}';"
+        if request.accepts.include? Mime.const_get(:JSON)
+          # Send a special autocomplete list that can be intercepted.
+          render :json => [{:label => "redirect_to", :value => new_user_account_session_url}]
+        else
+          render :js => "window.location.href = '#{new_user_account_session_url}';"
         end
       else
         redirect_to new_user_account_session_url

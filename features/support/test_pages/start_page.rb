@@ -36,15 +36,15 @@ class TestPages::StartPage < TestPages::ApplicationPage
     'Sie sind jetzt angemeldet.'
   end
 
-  def interviewee_name_facet_element
-    '#interview_id'
-  end
-
-  def search_sidebar_element
-    '#baseContainerRight'
-  end
-
   def enter_part_of_an_interviewee_name_into_the_name_search_box
     fill_autocomplete 'search_person_name', :select => 'Baschlai', :with => 'ba'
+  end
+
+  def desired_interviewee_name_element
+    "li.ui-menu-item a:contains('Baschlai')"
+  end
+
+  def autocomplete_result_list_element
+    'ul.ui-autocomplete'
   end
 end

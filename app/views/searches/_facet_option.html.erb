@@ -73,7 +73,15 @@
                     if (ui.content.length === 0) {
                       jQuery("#empty-message").text('<%=t '.no_persons_found' %>');
                     } else {
-                      jQuery("#empty-message").empty();
+                      if (ui.content.length === 1 && ui.content[0]['label'] === 'redirect_to') {
+                        // This is a special redirect message after an unauthorized access.
+                        window.location.href = ui.content[0]['value']
+                        // Remove the fake message to avoid it being temporarily shown to the user.
+                        ui.content.pop()
+                      } else {
+                        // We got a normal result list.
+                        jQuery("#empty-message").empty();
+                      }
                     }
                   }
                 });

@@ -1,13 +1,9 @@
 class TestPages::SearchResultsPage < TestPages::ApplicationPage
-  def set_the_selected_interview(interview)
-    @interview = interview
+  def the_selected_interview_element
+    [".baseContainerTeaser", {:count => 1}]
   end
 
-  def the_selected_interview
-    @interview
-  end
-
-  def results_list
+  def results_list_element
     '.teaserList'
   end
 end

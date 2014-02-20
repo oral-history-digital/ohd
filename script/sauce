@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Check whether the required user name and access key have been set in the environment
+if [ -z "$SAUCE_USERNAME" -o -z "$SAUCE_ACCESS_KEY" ]; then
+  echo "Please set SAUCE_USERNAME and SAUCE_ACCESS_KEY in your environment."
+  exit 1
+fi
+
+export TEST_STRATEGY=sauce
+if [ -n "$1" ]; then
+   export SAUCE_BROWSER="$1"
+   echo "Using browser profile $1..."
+fi
+
+cucumber --profile sauce

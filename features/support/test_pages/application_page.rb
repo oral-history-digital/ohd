@@ -12,10 +12,17 @@ class TestPages::ApplicationPage < TestPages::Page
 
     page.execute_script "jQuery('##{field}').focus()"
     page.execute_script "jQuery('##{field}').keydown()"
+  end
 
-    selector = "ul.ui-autocomplete li.ui-menu-item" #a:contains('#{options[:select]}')"
-    page.should have_selector(selector)
+  def search_sidebar_element
+    '#baseContainerRight'
+  end
 
-    page.execute_script %Q{ jQuery("#{selector}").mouseenter().click() }
+  def interviewee_name_facet_element
+    '#interview_id h2' # in the search sidebar
+  end
+
+  def a_name_filter_element
+    '#selected_interview_id' # in the search sidebar
   end
 end

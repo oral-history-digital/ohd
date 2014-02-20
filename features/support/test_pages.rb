@@ -10,9 +10,10 @@ module TestPages
 
   def get_page_by_name(page_name)
     page_parts = page_name.split(/\s+/) << 'page'
-    "::TestPages::#{page_parts.join('_').camelize}".constantize.instance
+    @pages ||= {}
+    @pages[page_name] ||= "::TestPages::#{page_parts.join('_').camelize}".constantize.new
+    @pages[page_name]
   end
-  module_function :get_page_by_name
 
   def goto_page(page_name)
     page_instance = get_page_by_name(page_name)
@@ -29,9 +30,11 @@ module TestPages
     @current_page
   end
 
-  require 'singleton'
+  def clear_pages
+    @pages = []
+  end
+
   class Page
-    include ::Singleton
     include ::Capybara::DSL
     include ::FactoryGirl::Syntax::Methods
     include ::Spec::Matchers
@@ -39,3 +42,7 @@ module TestPages
 end
 
 World(TestPages)
+
+After do
+  clear_pages
+end

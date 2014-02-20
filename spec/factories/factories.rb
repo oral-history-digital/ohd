@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :interview do
     archive_id 'za465'
-    last_name 'Baschlaj'
+    last_name 'Baschlai'
     first_name 'Sinaida'
     other_first_names 'Iwanowna'
     country_of_origin 'Russland'
