@@ -25,13 +25,14 @@ module Sauce
     class << self
 
       def around_hook(scenario, block)
-        # Which browser/platform to test?
+        # Which browser/platform/build to test?
         browser = (ENV['SAUCE_BROWSER'] || Sauce::DEFAULT_BROWSER).to_sym
         browser = Sauce::DEFAULT_BROWSER unless Sauce::BROWSERS.keys.include? browser
         browser_config = Sauce::BROWSERS[browser]
+        build = ENV['SAUCE_BUILD'] || Time.now.strftime('%Y%m%d')
 
         # Configure capybara for SauceLabs browser tests.
-        configure_capybara(browser, browser_config, scenario)
+        configure_capybara(browser, browser_config, scenario, build)
 
         # Run the scenario.
         block.call
@@ -45,10 +46,10 @@ module Sauce
         reset_capybara
 
         # Update the job status with the scenario status.
-        RestAPI::Jobs.update_fields job_id, 'passed' => !scenario.failed?
+        RestAPI::Jobs.update_fields job_id, :passed => !scenario.failed?
 
         # Download and persist job assets.
-        download_job_assets(job_id, scenario, browser_config)
+        download_job_assets(job_id, scenario, browser_config, build)
       end
 
       private
@@ -66,26 +67,27 @@ module Sauce
       end
 
       def platform_name(browser_config)
-        "#{browser_config[:browser].capitalize} #{browser_config[:version]} - #{browser_config[:platform]}"
+        "#{browser_config[:browser].capitalize} #{browser_config[:version]} - #{browser_config[:platform]}".gsub(/\s+/, ' ')
       end
 
       def name_from_scenario_and_platform(scenario, browser_config)
         "#{scenario_name(scenario)} [#{platform_name(browser_config)}]"
       end
 
-      def asset_dir_from_scenario_and_platform(scenario, browser_config)
-        scenario_dir = scenario_name(scenario).gsub(/ ->? /, '_').gsub(/\s+/, '_')
-        platform_dir = platform_name(browser_config).gsub(' - ', '_').gsub(/\s+/, '_')
-        File.join(Rails.root, 'tmp', 'test_results', scenario_dir.downcase, platform_dir.downcase, Time.now.strftime('%Y%m%d-%H%M%S'))
+      def asset_dir_from_scenario_and_platform(scenario, browser_config, build)
+        scenario_dir = scenario_name(scenario).gsub(/ ->? /, '_').gsub(/\s+/, '_').downcase
+        platform_dir = platform_name(browser_config).gsub(' - ', '_').gsub(/\s+/, '_').downcase
+        File.join(Rails.root, 'tmp', 'test_results', scenario_dir, platform_dir, build)
       end
 
-      def configure_capybara(browser, browser_config, scenario)
+      def configure_capybara(browser, browser_config, scenario, build)
         driver_name = "sauce-#{browser.to_s.downcase}".to_sym
         Capybara.register_driver driver_name do |app|
           caps = Selenium::WebDriver::Remote::Capabilities.send(browser_config[:browser])
           caps.version = browser_config[:version]
           caps.platform = browser_config[:platform]
           caps[:name] = name_from_scenario_and_platform(scenario, browser_config)
+          caps[:build] = build
           sauce_user, sauce_accesskey = Sauce.get_credentials
           Capybara::Selenium::Driver.new(
               app,
@@ -116,8 +118,8 @@ module Sauce
         Capybara.default_driver = :sauce
       end
 
-      def download_job_assets(job_id, scenario, browser_config)
-        job_dir = asset_dir_from_scenario_and_platform(scenario, browser_config)
+      def download_job_assets(job_id, scenario, browser_config, build)
+        job_dir = asset_dir_from_scenario_and_platform(scenario, browser_config, build)
         FileUtils.mkdir_p job_dir
 
         # Save a file with the job id.

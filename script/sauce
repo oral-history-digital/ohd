@@ -12,4 +12,6 @@ if [ -n "$1" ]; then
    echo "Using browser profile $1..."
 fi
 
+export SAUCE_BUILD=`date +%Y%m%d`
+
 cucumber --profile sauce
