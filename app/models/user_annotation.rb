@@ -42,6 +42,7 @@ class UserAnnotation < UserContent
     end
     state :rejected do
       event :review, :transitions_to => :proposed
+      event :retract, :transitions_to => :private
     end
   end
 
