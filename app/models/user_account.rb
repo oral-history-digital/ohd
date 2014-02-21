@@ -12,6 +12,9 @@ class UserAccount < ActiveRecord::Base
 
   has_one :user_registration
 
+  has_many :user_account_ips,
+           :class_name => 'UserAccountIP'
+
   attr_accessible :email, :login, :password, :password_confirmation, :remember_me
 
   validates_uniqueness_of :login

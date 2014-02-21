@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131102165747) do
+ActiveRecord::Schema.define(:version => 20140217102649) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "interview_id"
@@ -240,6 +240,17 @@ ActiveRecord::Schema.define(:version => 20131102165747) do
     t.string  "document_file_name"
     t.string  "document_content_type"
     t.integer "document_file_size"
+  end
+
+  create_table "usage_reports", :force => true do |t|
+    t.string   "ip"
+    t.string   "action",                         :null => false
+    t.string   "resource_id",     :limit => 20
+    t.integer  "user_account_id"
+    t.string   "query",           :limit => 100
+    t.string   "facets",          :limit => 300
+    t.datetime "logged_at",                      :null => false
+    t.datetime "created_at"
   end
 
   create_table "user_account_ips", :force => true do |t|

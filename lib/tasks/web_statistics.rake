@@ -1,138 +1,147 @@
 namespace :web_statistics do
 
   desc "generate usage statistics with indy from the production log"
-  task :usage, [:month, :year, :file] => :environment do |task,args|
+  task :usage, [:file] => :environment do |task,args|
 
     require 'fileutils'
 
-    month = args[:month]
-    year = args[:year] || Time.now.year
-
     file = args[:file]
-
-    bot_ips = []
-    bots = []
-
-    user_ids = {}
-    unknown_ips = []
-    visiting_ips = []
-    sign_ins = {}
-
-    raise "Please provide a month and year argument for log parsing!" if month.blank? || !(1..12).to_a.include?(month.to_i)
-
     raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exists?(file)
 
-    monthnames = %w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
+    last_report = UsageReport.find(:first, :order => "logged_at DESC")
+    report_time = (last_report.nil? ? Time.gm(2008) : last_report.logged_at).to_s
 
-    dater = '\[(\d{2}/' + monthnames[month.to_i-1] + '/' + year.to_s + '[^\]]+)]'
-    r = Regexp.new('^(\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4})\s*-[^-]+-\s*' + dater + '\s*"(GET|POST)\s+([^\s]+)\s+HTTP/1.1"\s*(\d+)\s*\d+\s*"([^"]+)"\s+"([^"]+)"')
+    puts "Adding usage_report entries starting from #{report_time}."
 
-    fields = [:user_id, :ip, :time, :method, :request, :status, :referer, :user_agent]
-
-    csv_file = "zwar-log-#{year}-#{month}.csv"
-    if File.exists?(csv_file)
-      FileUtils.rm(csv_file)
-    end
-    system "touch #{csv_file}"
-    csv_header = fields.map{|f| f.to_s.capitalize }.join("\t")
-    system "echo '#{csv_header}' >> #{csv_file}"
+    user_ids = {}
+    started_adding_records = false
 
     i = 0
     c = 0
+    iv = 0
+    invalids = []
+
+    # This is the prefix of the Rails 3.2+ default log format
+    r_3_2_prefix = /^[A-Z], \[[-0-9A-Z\s.:#]+\]\s+[A-Z]{4,6}\s+--\s+:\s*/
+
+    # Strategy: look at multi-line patterns
+    # opening with a start line (Processing...)
+    # potentially containing a parameter line
+    # closing with a Completed line
+
+    # it recognizes different tokens/patterns across those lines:
+    # timestamp
+    r_time = Regexp.new("\s\\d{4}-\\d{2}-\\d{2}\s+\\d{2}:\\d{2}(:\\d{2})?")
+
+    # Start match
+    r_start = /^\s*Processing\s+/
+    # a HTTP verb
+    r_verb = /(GET|PUT|POST|DELETE)/
+    # a resource path / url - use the 2nd match term!
+    r_path = /(:|"|')\/{1,2}([-\w\d_.]+\/([-\w\d_]+\/)*[-\w\d_\.]+)/
+    # path prefixes to remove from absolute urls
+    r_path_prefix = /\/?(zwangsarbeit-archiv.de|archiv)/
+    # an action token
+    r_action = /[\w_]+#[\w_]+/
+    # requester IP
+    r_ip = /(\d{1,3}\.){3}\d{1,4}/
+    # a set of parameters
+    r_params = /Parameters: (\{.*\})[^{}]+$/
 
     File.open(file, 'r') do |log|
 
+      tokens = {}
+
       log.each_line do |line|
 
-        if (i += 1) % 2000 == 0
+        if (i += 1) % 250000 == 0
           STDOUT.printf '.'
           STDOUT.flush
         end
 
-        record = line.match(r)
-        unless record.blank?
-          results = {}
-          fields[1..10].each_with_index do |field, index|
-            item = record[index+1]
-            results[field] = item
-          end
+        # Remove Rails 3.2+ log line prefix
+        line.sub(r_3_2_prefix, '')
 
-          # ignore Bots
-          next if bot_ips.include?(results[:ip])
-          if results[:request] == '/robots.txt'
-            # add to bots
-            bot_ips << results[:ip]
-            bots << results[:user_agent] unless bots.include?(results[:user_agent])
-            next
-          end
+        if line.match(r_start)
+          unless tokens.empty? || tokens[:logged_at].blank?
+            # Create an access record (UsageReport instance) for the data tokens
+            # Don't instantiate a new object each cycle, but keep an unsaved one in memory
+            # UsageReport contains all the logic of what is stores (perhaps through an initializer.yml)
 
-          # check if the request path is interesting
-          if results[:method] == 'POST'
-            # skip person searches - they don't include parameters on POST
-            next if results[:request] == '/archiv/suche/person_name'
-            next if results[:request] == '/archiv/searches/person_name'
+            # if the Record is valid, it is saved.
 
-            # store sign_ins
-            if results[:request] == '/archiv/user_accounts/sign_in'
-              sign_ins[results[:ip]] ||= {:times => 0, :last => ''}
-              hour = results[:time][/\d{2}\/\w{3}\/\d{4}:\d{2}/]
-              if hour != sign_ins[results[:ip]][:last]
-                sign_ins[results[:ip]][:times] = sign_ins[results[:ip]][:times] + 1
-                sign_ins[results[:ip]][:last] = hour
+            # Question: aggregate access to a resource (interview, map etc) or keep individual requests?
+            # - requests per day and user (but aggregate within those scopes)
+            # - login, interview and pdf's, searches, interactive map
+
+            user_account_id = user_ids[tokens[:ip]]
+            if user_account_id.nil? && !tokens[:ip].nil?
+              account_ip = UserAccountIP.find_by_ip(tokens[:ip])
+              unless account_ip.nil?
+                user_account_id = account_ip.user_account_id
+                user_ids[tokens[:ip]] = account_ip.user_account_id
               end
             end
-          else
-            # don't track requests for specific files
-            next if results[:request].index('.') != nil
-          end
 
-          # add to visiting ips
-          visiting_ips << results[:ip] unless visiting_ips.include?(results[:ip])
+            record = UsageReport.new
+            record.logged_at = tokens[:logged_at]
+            record.action = tokens[:action]
+            record.verb = tokens[:verb]
+            record.ip = tokens[:ip]
+            record.user_account_id = user_account_id unless user_account_id.nil?
+            record.parameters = tokens[:parameters]
 
-          # check user_id
-          user_id = user_ids[results[:ip]]
-          unless unknown_ips.include?(results[:ip])
-            if user_id.nil?
-              user_id ||= UserAccountIP.find_by_ip(results[:ip])
-              unless user_id.nil?
-                user_id = user_id.user_account_id
-                user_ids[results[:ip]] = user_id
-              else
-                unknown_ips << results[:ip]
-              end
+            if record.valid?
+              record.save
+              c+=1
+            elsif UsageReport::TRACKED_ACTIONS.include?(record.action)
+              invalids << "Record INVALID from: #{tokens.inspect}\nRecord: #{record.inspect}"
+              iv += 1
             end
           end
-          results[:user_id] = user_id || 'unbekannt'
+          tokens = {}
+          # try to match new entry tokens
+          time_token = line.match(r_time)
 
-          # add results to csv
-          csv_line = fields.map{|f| results[f] }.join("\t")
-          system "echo '#{csv_line}' >> #{csv_file}"
+          # skip entries until the report time was reached
+          next if time_token[0].strip < report_time
 
-          c += 1
+          if !started_adding_records
+            puts "Starting to add records [from #{time_token[0]}]:"
+            started_adding_records = true
+          end
 
+          verb_token = line.match(r_verb)
+          ip_token = line.match(r_ip)
+          if time_token && verb_token && ip_token
+            tokens = {
+                :logged_at => time_token[0].strip,
+                :verb => verb_token[0].strip,
+                :ip => ip_token[0].strip
+            }
+          end
+        end
+
+        # these entries can be assigned on the first or subsequent lines
+        unless tokens.empty? || tokens[:logged_at].blank?
+          # try to match parameters, action or path
+          parameter_token = line.match(r_params)
+          tokens[:parameters] = eval(parameter_token[1]) unless parameter_token.blank?
+          path_token = line.match(r_path)
+          tokens[:path] = path_token[2].gsub(r_path_prefix,'').strip if tokens[:path].blank? && !path_token.blank?
+          action_token = line.match(r_action)
+          tokens[:action] = action_token[0].strip if tokens[:action].blank? && !action_token.blank?
         end
 
       end
 
     end
 
-    csv_file = "zwar-sign-ins-#{year}-#{month}.csv"
-    if File.exists?(csv_file)
-      FileUtils.rm(csv_file)
-    end
-    system "touch #{csv_file}"
-    sign_in_fields = [:ip, :sign_ins, :last]
-    system "echo '#{sign_in_fields.map{|f| f.to_s }.join("\t")}' >> #{csv_file}"
-
-    sign_ins.keys.each do |ip|
-      csv = [ ip ]
-      csv << sign_ins[ip][:times]
-      csv << sign_ins[ip][:last]
-      system "echo '#{csv.join("\t")}' >> #{csv_file}"
+    invalids.each do |report|
+      puts report
     end
 
-    puts "\nDone! #{i} lines of log parsed, #{c} lines written to csv table.\n#{visiting_ips.size} distinct archive_users, #{sign_ins.keys.size} sign ins, #{user_ids.values.uniq.size} known visiting users and #{bots.size} bots found."
-
+    puts "Done parsing since #{report_time}.\n#{i} lines parsed, #{c} usage records created. #{iv} invalid usage reports for tracked actions."
   end
 
 
