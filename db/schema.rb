@@ -307,6 +307,17 @@ ActiveRecord::Schema.define(:version => 20140110133249) do
 
   add_index "text_materials", ["interview_id", "document_type", "locale"], :name => "index_text_materials_unique_document", :unique => true
 
+  create_table "usage_reports", :force => true do |t|
+    t.string   "ip"
+    t.string   "action",                         :null => false
+    t.string   "resource_id",     :limit => 20
+    t.integer  "user_account_id"
+    t.string   "query",           :limit => 100
+    t.string   "facets",          :limit => 300
+    t.datetime "logged_at",                      :null => false
+    t.datetime "created_at"
+  end
+
   create_table "user_account_ips", :force => true do |t|
     t.integer  "user_account_id"
     t.string   "ip"
