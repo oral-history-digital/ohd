@@ -560,12 +560,15 @@ ru:
   public:
     '404':
       << : *header_template
+      << : *back_to_top_template
       << : *print_version_template
     '422':
       << : *header_template
+      << : *back_to_top_template
       << : *print_version_template
     '500':
       << : *header_template
+      << : *back_to_top_template
       << : *print_version_template
 
   searches:

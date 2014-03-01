@@ -36,4 +36,8 @@ class ApplicationController < ActionController::Base
     sign_out :user
   end
 
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
 end

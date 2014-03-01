@@ -11,26 +11,23 @@ class InterviewsController < BaseController
 
   show do
     wants.html do
-      if @object.nil?
-        # render a 404 error
-        render_optional_error_file(:not_found)
-      else
-        render :show
-      end
+      not_found if @object.nil?
+      render :show
     end
   end
 
   def text_materials
     material = object.text_materials.for_file(params[:filename].capitalize).first
-    head(:not_found) if material.nil?
+    not_found if material.nil?
     response.headers['Cache-Control'] = 'no-store'
     send_file material.document.path, :disposition => 'inline', :type => material.document.content_type #, :x_sendfile => true
   end
 
   def photos
     style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/,'').to_sym
+    not_found if object.blank?
     photo = object.photos.for_file(params[:filename].capitalize).first
-    head(:not_found) if photo.nil?
+    not_found if photo.nil? or not File.exist?(photo.photo.path(style))
     response.headers['Cache-Control'] = 'no-store'
     send_data File.open(photo.photo.path(style)).read, :filename => photo.photo_file_name, :disposition => 'inline', :type => photo.photo.content_type
   end
@@ -38,10 +35,10 @@ class InterviewsController < BaseController
   def stills
     archive_id = (params[:filename] || '')[/^\w{2}\d{3}/i].downcase
     @object = Interview.find_by_archive_id(archive_id)
-    head(:not_found) if @object.nil?
+    not_found if @object.nil?
     style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/,'').to_sym
     image = @object.still_image
-    head(:bad_request) if image.nil?
+    not_found if image.nil? or not File.exist?(image.path(style))
     response.headers['Cache-Control'] = 'private'
     send_data File.open(image.path(style)).read, :filename => @object.still_image_file_name, :disposition => 'inline', :type => image.content_type
   end
