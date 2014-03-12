@@ -9,7 +9,7 @@ namespace :web_statistics do
     raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exists?(file)
 
     last_report = UsageReport.find(:first, :order => "logged_at DESC")
-    report_time = (last_report.nil? ? Time.gm(2008) : last_report.logged_at).to_s
+    report_time = (last_report.nil? ? '2008-01-01' : last_report.logged_at).to_s
 
     puts "Adding usage_report entries starting from #{report_time}."
 
@@ -99,7 +99,9 @@ namespace :web_statistics do
               iv += 1
             end
           end
+
           tokens = {}
+
           # try to match new entry tokens
           time_token = line.match(r_time)
 

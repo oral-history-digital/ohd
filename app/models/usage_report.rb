@@ -117,6 +117,13 @@ class UsageReport < ActiveRecord::Base
     ]
   end
 
+  def self.create_reports(date)
+    UsageReport.create_logins_report(date)
+    UsageReport.create_interview_access_report(date)
+    UsageReport.create_searches_report(date)
+    UsageReport.create_map_report(date)
+  end
+
   def self.create_logins_report(date)
     login_reports = UsageReport.logged_in_month(date).logins.scoped({:include => :user_account})
     timeframes = [:total,0..999,0..1,1..2,2..3,4..6,6..12,12..999]
@@ -186,7 +193,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Loginstatistik-#{date.year}-#{date.month}.csv"
+    name = "Loginstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -233,13 +240,13 @@ class UsageReport < ActiveRecord::Base
     sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
     sorted_resources = resources.to_a.sort{|a,b| b.last <=> a.last }.map{|r| r.first}
     data = []
-    row = %w(Archiv-ID Zugriffe Nutzer) + sorted_resources + sorted_countries.map{|c| UsageReport.country_name(c)}
+    row = %w(Archiv-ID Aufrufe Nutzer) + sorted_resources + sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
     ([:any] + sorted_archive_ids).each do |id|
       row = []
       record = case id
                  when :any
-                   row << 'Alle'
+                   row << 'Insgesamt'
                    row << interview_access[:total][:any]
                    row << interview_access[:users].size
                    interview_access[:total]
@@ -258,11 +265,11 @@ class UsageReport < ActiveRecord::Base
       data << row
     end
 
-    puts "Interview-Zugriffe im Monat #{date.month} #{date.year}:"
+    puts "Interview-Aufrufe im Monat #{date.month} #{date.year}:"
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Interviewstatistik-#{date.year}-#{date.month}.csv"
+    name = "Interviewstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -309,7 +316,7 @@ class UsageReport < ActiveRecord::Base
     sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
     sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last }.map{|f| f.first}
     data = []
-    row = %w(Suchbegriff Zugriffe Nutzer)
+    row = %w(Suchbegriff Aufrufe Nutzer)
     row += sorted_facets.map{|f| I18n.t(f, :scope => 'activerecord.attributes.interview', :locale => :de)}
     row += sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
@@ -332,11 +339,11 @@ class UsageReport < ActiveRecord::Base
       end
       data << row
     end
-    puts "Such-Zugriffe im Monat #{date.month} #{date.year}:"
+    puts "Suchzugriffe im Monat #{date.month} #{date.year}:"
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Suchstatistik-#{date.year}-#{date.month}.csv"
+    name = "Suchstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -362,9 +369,9 @@ class UsageReport < ActiveRecord::Base
       end
     end
     data = []
-    row = ['Land','Zugriffe','Unangemeldete Zugriffe', 'Angemeldete Nutzer']
+    row = ['Land','Aufrufe','Unangemeldete Aufrufe', 'Angemeldete Nutzer']
     data << row
-    row = ['Alle']
+    row = ['Insgesamt']
     row << requests[:total][:total]
     row << requests[:total][:anonymous]
     row << requests[:total][:users].size
@@ -376,11 +383,11 @@ class UsageReport < ActiveRecord::Base
       row << requests[country][:users].size
       data << row
     end
-    puts "Karten-Zugriffe im Monat #{date.month} #{date.year}:"
+    puts "Karten-Aufrufe im Monat #{date.month} #{date.year}:"
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Kartenstatistik-#{date.year}-#{date.month}.csv"
+    name = "Kartenstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
