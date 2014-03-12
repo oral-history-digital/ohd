@@ -3,10 +3,13 @@ class UsageReport < ActiveRecord::Base
   belongs_to :user_account
 
   LOGIN_ACTION = 'SessionsController#create'
+  VIEW_INTERVIEW = 'InterviewsController#show'
+  INTERVIEW_MATERIALS = 'InterviewsController#text_materials'
 
   TRACKED_ACTIONS = [
       LOGIN_ACTION,
-      'InterviewsController#show',
+      VIEW_INTERVIEW,
+      INTERVIEW_MATERIALS,
       'SearchesController#query',
       'LocationReferencesController#map_frame'
   ]
@@ -17,14 +20,15 @@ class UsageReport < ActiveRecord::Base
 
   named_scope :logged_in_month, lambda{|date| {:conditions => {:logged_at => date.beginning_of_month..date.end_of_month}}}
   named_scope :logins, {:conditions => {:action => LOGIN_ACTION}}
+  named_scope :interviews, {:conditions => {:action => [VIEW_INTERVIEW, INTERVIEW_MATERIALS]}}
 
   def validate
     case action
       when LOGIN_ACTION
         validate_user_account
-      when 'InterviewsController#show'
+      when VIEW_INTERVIEW
         validate_archive_id
-      when 'InterviewsController#text_materials'
+      when INTERVIEW_MATERIALS
         validate_archive_id
         unless facets.match(/^za\d{3}_\w{2,4}/i)
           errors.add_to_base('Incorrect or missing filename parameter for text materials request')
@@ -68,6 +72,36 @@ class UsageReport < ActiveRecord::Base
     @login
   end
 
+  # resolve country from user data or geolocation
+  def country
+    require 'net/http'
+    require 'uri'
+    @@geolocation_base ||= 'http://freegeoip.net/csv'
+    @@resolved_ips ||= {}
+    # check user country or IP geolocation
+    # add to country row and specific_range column
+    # use freegeoip.net/csv/{ip} - "ip","DE","Germany"
+    country = nil
+    if self.user_account && self.user_account.user
+      country = self.user_account.user.country.upcase
+    else
+      if @@resolved_ips.keys.include?(self.ip)
+        country = @@resolved_ips[self.ip]
+      else
+        geolocation = URI.parse([@@geolocation_base, self.ip].join('/'))
+        res = Net::HTTP.get_response(geolocation)
+        if(res.is_a?(Net::HTTPSuccess))
+          response = (res.body || '').split(',').map{|p| p.gsub('"','').strip}
+          if response.is_a?(Array) && response.first == self.ip
+            country = response[1]
+            @@resolved_ips[self.ip] = country
+          end
+        end
+      end
+    end
+    country
+  end
+
   # Returns an array of datetime representing the start of months that are covered by reports
   def self.months_covered
     [ UsageReport.first(:order => "logged_at ASC", :conditions => "logged_at LIKE '%-01 %'").logged_at,
@@ -76,10 +110,6 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.create_logins_report(date)
-    require 'net/http'
-    require 'uri'
-    geolocation_base = 'http://freegeoip.net/csv'
-    resolved_ips = {}
     login_reports = UsageReport.logged_in_month(date).logins.scoped({:include => :user_account})
     timeframes = [:total,0..999,0..1,1..2,2..3,4..6,6..12,12..999]
     logins = {:total => 0, :users => []}
@@ -91,24 +121,7 @@ class UsageReport < ActiveRecord::Base
       # check user country or IP geolocation
       # add to country row and specific_range column
       # use freegeoip.net/csv/{ip} - "ip","DE","Germany"
-      country = nil
-      if r.user_account && r.user_account.user
-        country = r.user_account.user.country.upcase
-      else
-        if resolved_ips.keys.include?(r.ip)
-          country = resolved_ips[r.ip]
-        else
-          geolocation = URI.parse([geolocation_base, r.ip].join('/'))
-          res = Net::HTTP.get_response(geolocation)
-          if(res.is_a?(Net::HTTPSuccess))
-            response = (res.body || '').split(',')
-            if response.is_a?(Array) && response.first == r.ip
-              country = response[1]
-              resolved_ips[r.ip] = country
-            end
-          end
-        end
-      end
+      country = r.country
       logins_per_country[country] ||= {:total => 0, :users => []}
       logins_per_country[country][:total] += 1
 
@@ -139,7 +152,7 @@ class UsageReport < ActiveRecord::Base
     end
     sorted_countries.sort!{|a,b| b.last <=> a.last }
 
-    puts "Logins per Country (#{resolved_ips.keys.size} geolocation calls)"
+    puts "Logins per Country:"
     puts (['Ctry  ', 'unique '.rjust(6)] + timeframes.map{|r| r.to_s.rjust(6,' ')}).join("|")
     puts (['all   ', logins[:users].size.to_s.rjust(6)] + timeframes.map{|r| logins[r].to_s.rjust(6,' ')}).join("|")
     ([[nil, 0]] + sorted_countries).each do |entry|
@@ -148,7 +161,79 @@ class UsageReport < ActiveRecord::Base
         (logins_per_country[country][r] || 0).to_s.rjust(6,' ')
       }).join("|")
     end
+  end
 
+  def self.create_interview_access_report(date)
+    reports = UsageReport.logged_in_month(date).interviews.scoped({:include => :user_account})
+    interview_access = {:total => {}, :users => []}
+    countries = {}
+    resources = {}
+    archive_ids = {}
+    reports.each do |report|
+      archive_id = report.resource_id
+      archive_ids[archive_id] ||= 0
+      archive_ids[archive_id] += 1
+      country = report.country
+      countries[country] ||= 0
+      countries[country] += 1
+      resource = report.facets.blank? ? 'Interview' : report.facets.downcase.sub("#{archive_id}_",'')
+      resources[resource] ||= 0
+      resources[resource] += 1
+      interview_access[:total][:any] ||= 0
+      interview_access[:total][:any] += 1
+      interview_access[:total][country] ||= 0
+      interview_access[:total][country] += 1
+      interview_access[:total][resource] ||= 0
+      interview_access[:total][resource] += 1
+      interview_access[archive_id] ||= {:total => 0}
+      interview_access[archive_id][:total] += 1
+      interview_access[archive_id][country] ||= 0
+      interview_access[archive_id][country] += 1
+      interview_access[archive_id][resource] ||= 0
+      interview_access[archive_id][resource] += 1
+      interview_access[archive_id][:users] ||= []
+      unless report.user_account_id.blank?
+        unless interview_access[:users].include?(report.user_account_id)
+          interview_access[:users] << report.user_account_id
+        end
+        unless interview_access[archive_id][:users].include?(report.user_account_id)
+          interview_access[archive_id][:users] << report.user_account_id
+        end
+      end
+    end
+    sorted_archive_ids = archive_ids.to_a.sort{|a,b| b.last <=> a.last }.map{|i| i.first}
+    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
+    sorted_resources = resources.to_a.sort{|a,b| b.last <=> a.last }.map{|r| r.first}
+    data = []
+    row = %w(Archiv-ID Zugriffe Nutzer) + sorted_resources + sorted_countries
+    data << row
+    ([:any] + sorted_archive_ids).each do |id|
+      row = []
+      record = case id
+                 when :any
+                   row << 'Alle'
+                   row << interview_access[:total][:any]
+                   row << interview_access[:users].size
+                   interview_access[:total]
+                 else
+                   row << id
+                   row << interview_access[id][:total]
+                   row << interview_access[id][:users].size
+                   interview_access[id]
+               end
+      sorted_resources.each do |resource|
+        row << record[resource]
+      end
+      sorted_countries.each do |country|
+        row << record[country]
+      end
+      data << row
+    end
+
+    puts "Interview-Zugriffe im Monat #{date.month} #{date.year}:"
+    data.each do |row|
+      puts row.map{|i| i.to_s.rjust(8)}.join('|')
+    end
 
   end
 
