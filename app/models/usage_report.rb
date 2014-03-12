@@ -186,7 +186,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Logins-#{date.year}-#{date.month}.csv"
+    name = "Loginstatistik-#{date.year}-#{date.month}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -262,7 +262,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Interviews-#{date.year}-#{date.month}.csv"
+    name = "Interviewstatistik-#{date.year}-#{date.month}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -336,7 +336,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Suche-#{date.year}-#{date.month}.csv"
+    name = "Suchstatistik-#{date.year}-#{date.month}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -380,7 +380,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Karte-#{date.year}-#{date.month}.csv"
+    name = "Kartenstatistik-#{date.year}-#{date.month}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -392,7 +392,7 @@ class UsageReport < ActiveRecord::Base
 
   def self.save_report_file(name, data)
     require 'fileutils'
-    dir = File.join(RAILS_ROOT, 'assets', 'reports')
+    dir = UsageReport.report_file_path
     FileUtils.mkdir(dir) unless File.directory?(dir)
     filename = File.join(dir, name)
     FileUtils.rm(filename) if File.exist?(filename)
@@ -401,6 +401,10 @@ class UsageReport < ActiveRecord::Base
         file << '"' + rec.join("\"\t\"")+"\"\n"
       end
     end
+  end
+
+  def self.report_file_path(name=nil)
+    File.join([RAILS_ROOT, 'assets', 'reports', name].compact)
   end
 
   protected

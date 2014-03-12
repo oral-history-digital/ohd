@@ -6,6 +6,17 @@
 
 <p><%= link_to 'Aktuelle Benutzerstatistik', admin_user_statistics_url(:format => :csv) %></p>
 
+<h1>Zugriffsstatistiken</h1>
+<% @tiered_reports.keys.sort.reverse.each_with_index do |year, index| %>
+<p class="usage_reports"><h4 id="toggle_<%= year %>" class="<%= index != 0 ? 'closed' : ''%>"><%= link_to_function year, "$('reports_#{year}').toggle(); $('toggle_#{year}').toggleClassName('closed');", :class => 'more' %></h4>
+   <ul id="reports_<%= year %>" style="<%= index != 0 ? 'display: none;' : '' %>">
+     <% @tiered_reports[year].each do |file| %>
+     <li><%= link_to file, usage_report_admin_user_statistics_url(:filename => file) %></li>
+     <% end %>
+   </ul>
+</p>
+<% end %>
+
 <% unless request.xhr? -%>
     <% content_for :title do -%>
         Statistik
