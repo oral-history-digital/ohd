@@ -2,16 +2,18 @@ class UsageReport < ActiveRecord::Base
 
   belongs_to :user_account
 
-  LOGIN_ACTION = 'SessionsController#create'
-  VIEW_INTERVIEW = 'InterviewsController#show'
-  INTERVIEW_MATERIALS = 'InterviewsController#text_materials'
+  LOGIN = 'SessionsController#create'
+  INTERVIEW = 'InterviewsController#show'
+  MATERIALS = 'InterviewsController#text_materials'
+  SEARCHES = 'SearchesController#query'
+  MAP = 'LocationReferencesController#map_frame'
 
   TRACKED_ACTIONS = [
-      LOGIN_ACTION,
-      VIEW_INTERVIEW,
-      INTERVIEW_MATERIALS,
-      'SearchesController#query',
-      'LocationReferencesController#map_frame'
+      LOGIN,
+      INTERVIEW,
+      MATERIALS,
+      SEARCHES,
+      MAP
   ]
 
   validates_presence_of :logged_at
@@ -19,23 +21,24 @@ class UsageReport < ActiveRecord::Base
   validates_inclusion_of :action, :in => TRACKED_ACTIONS
 
   named_scope :logged_in_month, lambda{|date| {:conditions => {:logged_at => date.beginning_of_month..date.end_of_month}}}
-  named_scope :logins, {:conditions => {:action => LOGIN_ACTION}}
-  named_scope :interviews, {:conditions => {:action => [VIEW_INTERVIEW, INTERVIEW_MATERIALS]}}
+  named_scope :logins, {:conditions => {:action => LOGIN}}
+  named_scope :interviews, {:conditions => {:action => [INTERVIEW, MATERIALS]}}
+  named_scope :searches, {:conditions => {:action => SEARCHES}}
 
   def validate
     case action
-      when LOGIN_ACTION
+      when LOGIN
         validate_user_account
-      when VIEW_INTERVIEW
+      when INTERVIEW
         validate_archive_id
-      when INTERVIEW_MATERIALS
+      when MATERIALS
         validate_archive_id
         unless facets.match(/^za\d{3}_\w{2,4}/i)
           errors.add_to_base('Incorrect or missing filename parameter for text materials request')
         end
-      when 'SearchesController#query'
+      when SEARCHES
         # validate_user_account
-      when 'LocationReferencesController#map_frame'
+      when MAP
         # nothing
       else
         # nothing - should not be valid
@@ -70,6 +73,10 @@ class UsageReport < ActiveRecord::Base
 
   def login
     @login
+  end
+
+  def facets
+    @facets ||= (YAML.load(read_attribute(:facets) || '') || {})
   end
 
   # resolve country from user data or geolocation
@@ -234,8 +241,81 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-
   end
+
+  def self.create_searches_report(date)
+    reports = UsageReport.logged_in_month(date).searches.scoped({:include => :user_account})
+    searches = {:total => {:total => 0, :users => []}}
+    queries = {}
+    facets = {}
+    countries = {}
+    reports.each do |report|
+      query = report.query
+      person = report.facets['person_name']
+      country = report.country
+      countries[country] ||= 0
+      countries[country] += 1
+      searches[:total][country] ||= 0
+      searches[:total][country] += 1
+      searches[:total][:total] += 1
+      if query.blank? && !person.blank?
+        query = person
+      end
+      queries[query] ||= 0
+      queries[query] += 1
+      searches[query] ||= {:total => 0, :users => []}
+      searches[query][:total] += 1
+      searches[query][country] ||= 0
+      searches[query][country] += 1
+      report.facets.each_pair do |facet, values|
+        next if facet == 'person_name'
+        facets[facet] ||= 0
+        facets[facet] += 1
+        searches[query][facet] ||= 0
+        searches[query][facet] += 1
+        searches[:total][facet] ||= 0
+        searches[:total][facet] += 1
+      end
+      unless report.user_account.nil?
+        searches[:total][:users] << report.user_account_id unless searches[:total][:users].include?(report.user_account_id)
+        searches[query][:users] << report.user_account_id unless searches[query][:users].include?(report.user_account_id)
+      end
+    end
+    sorted_queries = queries.to_a.sort{|a,b| b.last <=> a.last }.map{|q| q.first}
+    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
+    sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last }.map{|f| f.first}
+    data = []
+    row = %w(Suchbegriff Zugriffe Nutzer) + sorted_facets + sorted_countries
+    data << row
+    (['Insgesamt'] + sorted_queries).each do |q|
+      row = []
+      record = case q
+                 when 'Insgesamt'
+                   searches[:total]
+                 else
+                   searches[q]
+               end
+      row << q
+      row << record[:total]
+      row << record[:users].size
+      sorted_facets.each do |f|
+        row << record[f] || 0
+      end
+      sorted_countries.each do |country|
+        row << record[country] || 0
+      end
+      data << row
+    end
+    puts "#{sorted_queries.size} Suchbegriffe"
+    puts "#{sorted_facets.size} Facetten"
+    puts "#{sorted_countries.size} Länder"
+    puts "Such-Zugriffe im Monat #{date.month} #{date.year}:"
+    data.each do |row|
+      puts row.map{|i| i.to_s.rjust(8)}.join('|')
+    end
+    nil
+  end
+
 
   protected
 
