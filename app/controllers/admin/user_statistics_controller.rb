@@ -3,10 +3,24 @@ class Admin::UserStatisticsController < Admin::BaseController
   require 'csv'
 
   def index
+    @usage_reports = Dir.glob(File.join(UsageReport.report_file_path, '*.csv')).map{|f| f.split('/').last}
+    @tiered_reports = {}
+    @usage_reports.each do |r|
+      year = r[/\d{4}/]
+      @tiered_reports[year] ||= []
+      @tiered_reports[year] << r
+    end
     respond_to do |wants|
       wants.html
       wants.csv { csv_export }
     end
+  end
+
+  def usage_report
+    filename = params['filename']
+    response.headers['Cache-Control'] = 'no-store'
+    @file = File.join(UsageReport.report_file_path, filename)
+    send_file @file, :disposition => 'inline', :type => 'text/csv'
   end
   
   private
