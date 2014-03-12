@@ -321,6 +321,7 @@ en:
         proofreaders: 'Proofreader'
         segmentators: 'Segmentator'
         language: 'Language'
+        languages: 'Languages'
         collection: 'Subset'
       segment:
         media_id: 'Fragment-ID'

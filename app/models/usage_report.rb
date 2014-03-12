@@ -24,6 +24,7 @@ class UsageReport < ActiveRecord::Base
   named_scope :logins, {:conditions => {:action => LOGIN}}
   named_scope :interviews, {:conditions => {:action => [INTERVIEW, MATERIALS]}}
   named_scope :searches, {:conditions => {:action => SEARCHES}}
+  named_scope :maps, {:conditions => {:action => MAP}}
 
   def validate
     case action
@@ -119,6 +120,14 @@ class UsageReport < ActiveRecord::Base
   def self.create_logins_report(date)
     login_reports = UsageReport.logged_in_month(date).logins.scoped({:include => :user_account})
     timeframes = [:total,0..999,0..1,1..2,2..3,4..6,6..12,12..999]
+    timeframe_titles = ['Logins insgesamt',
+                        'Logins verifizierter Nutzer',
+                        'Erstanmeldung vor max. 1 Monat',
+                        '1 bis 2 Monate',
+                        '2 bis 3 Monate',
+                        '4 bis 6 Monate',
+                        '6 bis 12 Monate',
+                        'vor 12 oder mehr Monaten']
     logins = {:total => 0, :users => []}
     logins_per_country = {nil => {:total => 0, :users => []}}
     timeframes.each{|t| logins[t] = 0}
@@ -159,15 +168,27 @@ class UsageReport < ActiveRecord::Base
     end
     sorted_countries.sort!{|a,b| b.last <=> a.last }
 
-    puts "Logins per Country:"
-    puts (['Ctry  ', 'unique '.rjust(6)] + timeframes.map{|r| r.to_s.rjust(6,' ')}).join("|")
-    puts (['all   ', logins[:users].size.to_s.rjust(6)] + timeframes.map{|r| logins[r].to_s.rjust(6,' ')}).join("|")
+    data = []
+    row = ['Land', 'Nutzer'] + timeframe_titles
+    data << row
+    row = ['Alle', logins[:users].size] + timeframes.map{|r| logins[r].to_s}
+    data << row
     ([[nil, 0]] + sorted_countries).each do |entry|
       country = entry.first
-      puts ([(country || '?').ljust(6,' '), logins_per_country[country][:users].size.to_s.rjust(6)] + timeframes.map{|r|
-        (logins_per_country[country][r] || 0).to_s.rjust(6,' ')
-      }).join("|")
+      row = [UsageReport.country_name(country) || '?']
+      row << logins_per_country[country][:users].size
+      timeframes.each do |r|
+        row << logins_per_country[country][r] || '0'
+      end
+      data << row
     end
+    puts "Logins im Monat #{date.month} #{date.year}:"
+    data.each do |row|
+      puts row.map{|i| i.to_s.rjust(8)}.join('|')
+    end
+    name = "Logins-#{date.year}-#{date.month}.csv"
+    puts "Saving to #{name}..."
+    UsageReport.save_report_file(name, data)
   end
 
   def self.create_interview_access_report(date)
@@ -212,7 +233,7 @@ class UsageReport < ActiveRecord::Base
     sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
     sorted_resources = resources.to_a.sort{|a,b| b.last <=> a.last }.map{|r| r.first}
     data = []
-    row = %w(Archiv-ID Zugriffe Nutzer) + sorted_resources + sorted_countries
+    row = %w(Archiv-ID Zugriffe Nutzer) + sorted_resources + sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
     ([:any] + sorted_archive_ids).each do |id|
       row = []
@@ -241,6 +262,9 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
+    name = "Interviews-#{date.year}-#{date.month}.csv"
+    puts "Saving to #{name}..."
+    UsageReport.save_report_file(name, data)
   end
 
   def self.create_searches_report(date)
@@ -268,7 +292,7 @@ class UsageReport < ActiveRecord::Base
       searches[query][country] ||= 0
       searches[query][country] += 1
       report.facets.each_pair do |facet, values|
-        next if facet == 'person_name'
+        next if %w(person_name fulltext).include?(facet)
         facets[facet] ||= 0
         facets[facet] += 1
         searches[query][facet] ||= 0
@@ -285,7 +309,9 @@ class UsageReport < ActiveRecord::Base
     sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
     sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last }.map{|f| f.first}
     data = []
-    row = %w(Suchbegriff Zugriffe Nutzer) + sorted_facets + sorted_countries
+    row = %w(Suchbegriff Zugriffe Nutzer)
+    row += sorted_facets.map{|f| I18n.t(f, :scope => 'activerecord.attributes.interview', :locale => :de)}
+    row += sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
     (['Insgesamt'] + sorted_queries).each do |q|
       row = []
@@ -306,16 +332,76 @@ class UsageReport < ActiveRecord::Base
       end
       data << row
     end
-    puts "#{sorted_queries.size} Suchbegriffe"
-    puts "#{sorted_facets.size} Facetten"
-    puts "#{sorted_countries.size} Länder"
     puts "Such-Zugriffe im Monat #{date.month} #{date.year}:"
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    nil
+    name = "Suche-#{date.year}-#{date.month}.csv"
+    puts "Saving to #{name}..."
+    UsageReport.save_report_file(name, data)
   end
 
+  def self.create_map_report(date)
+    reports = UsageReport.logged_in_month(date).maps.scoped({:include => :user_account})
+    requests = {:total => {:total => 0, :anonymous => 0, :users => []}}
+    countries = {}
+    reports.each do |r|
+      country = r.country
+      countries[country] ||= 0
+      countries[country] += 1
+      uid = r.user_account_id
+      requests[:total][:total] += 1
+      requests[country] ||= {:total => 0, :anonymous => 0, :users => []}
+      requests[country][:total] += 1
+      if uid.nil?
+        requests[country][:anonymous] += 1
+        requests[:total][:anonymous] += 1
+      else
+        requests[country][:users] << uid unless requests[country][:users].include?(uid)
+        requests[:total][:users] << uid unless requests[:total][:users].include?(uid)
+      end
+    end
+    data = []
+    row = ['Land','Zugriffe','Unangemeldete Zugriffe', 'Angemeldete Nutzer']
+    data << row
+    row = ['Alle']
+    row << requests[:total][:total]
+    row << requests[:total][:anonymous]
+    row << requests[:total][:users].size
+    data << row
+    countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}.each do |country|
+      row = [UsageReport.country_name(country)]
+      row << requests[country][:total]
+      row << requests[country][:anonymous]
+      row << requests[country][:users].size
+      data << row
+    end
+    puts "Karten-Zugriffe im Monat #{date.month} #{date.year}:"
+    data.each do |row|
+      puts row.map{|i| i.to_s.rjust(8)}.join('|')
+    end
+    name = "Karte-#{date.year}-#{date.month}.csv"
+    puts "Saving to #{name}..."
+    UsageReport.save_report_file(name, data)
+  end
+
+  def self.country_name(code)
+    return 'Unbekannt' if code.nil?
+    I18n.translate(:countries, :locale => :de)[code.to_sym]
+  end
+
+  def self.save_report_file(name, data)
+    require 'fileutils'
+    dir = File.join(RAILS_ROOT, 'assets', 'reports')
+    FileUtils.mkdir(dir) unless File.directory?(dir)
+    filename = File.join(dir, name)
+    FileUtils.rm(filename) if File.exist?(filename)
+    File.open(filename, 'w') do |file|
+      data.each do |rec|
+        file << '"' + rec.join("\"\t\"")+"\"\n"
+      end
+    end
+  end
 
   protected
 

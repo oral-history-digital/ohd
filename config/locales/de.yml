@@ -369,6 +369,7 @@ de:
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
         language: 'Sprache'
+        languages: 'Sprachen'
         collection: 'Teilsammlung'
       segment:
         media_id: 'Segment-ID'
