@@ -15,7 +15,7 @@
 <% @tiered_reports.keys.sort.reverse.each_with_index do |year, index| %>
 <p class="usage_reports"><h4 id="toggle_<%= year %>" class="<%= index != 0 ? 'closed' : ''%>"><%= link_to_function year, "$('reports_#{year}').toggle(); $('toggle_#{year}').toggleClassName('closed');", :class => 'more', :style => "color: #000; font-weight: bold;" %></h4>
    <ul id="reports_<%= year %>" style="<%= index != 0 ? 'display: none;' : '' %>">
-     <% @tiered_reports[year].sort{|a,b| a[/\d+\./].to_i <=> b[/\d+\./].to_i}.each do |file| %>
+     <% @tiered_reports[year].sort{|a,b| a[/\d+\./].concat(a[/^\w/]) <=> b[/\d+\./].concat(b[/^\w/])}.each do |file| %>
      <li style="font-size: 0.85em; background-position: 0 5px; width: 22%; display: inline-block;"><%= link_to file, usage_report_admin_user_statistics_url(:filename => file) %></li>
      <% end %>
    </ul>

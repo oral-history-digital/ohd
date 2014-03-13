@@ -54,18 +54,23 @@ class UsageReport < ActiveRecord::Base
   def parameters=(params)
     @parameters = (params || {}).symbolize_keys
     case action
-      when 'SessionsController#create'
+      when LOGIN
         # use login for later assignment of user_account
-        @login = @parameters[:user_account]['login']
-      when 'InterviewsController#show'
+        @login = @parameters[:user_account].blank? ? nil : @parameters[:user_account]['login']
+      when INTERVIEW
         self.resource_id = @parameters[:id]
-      when 'InterviewsController#text_materials'
+      when MATERIALS
         self.resource_id = @parameters[:id]
         self.facets = [@parameters[:filename], @parameters[:extension]].compact.join('.')
-      when 'SearchesController#query'
+      when SEARCHES
         unless @parameters[:suche].blank?
           query_params = Search.decode_parameters @parameters[:suche]
-          self.query = query_params.delete(:fulltext)
+          self.query = query_params.delete('fulltext')
+          query_params.keys.each do |p|
+            next if p == 'person_name' # leave person_name unchanged
+            value = query_params[p]
+            query_params[p] = value.is_a?(Array) ? value.size : value.split(',').size
+          end
           self.facets = query_params
         end
       else
@@ -77,7 +82,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def facets
-    @facets ||= (YAML.load(read_attribute(:facets) || '') || {})
+    @facets ||= (YAML.load(read_attribute(:facets).to_s || '') || {})
   end
 
   # resolve country from user data or geolocation
@@ -193,7 +198,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Loginstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
+    name = "Loginstatistik-#{date.year}-#{date.month.to_s.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -269,7 +274,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Interviewstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
+    name = "Interviewstatistik-#{date.year}-#{date.month.to_s.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -290,7 +295,7 @@ class UsageReport < ActiveRecord::Base
       searches[:total][country] += 1
       searches[:total][:total] += 1
       if query.blank? && !person.blank?
-        query = person
+        query = person.to_s
       end
       queries[query] ||= 0
       queries[query] += 1
@@ -299,7 +304,7 @@ class UsageReport < ActiveRecord::Base
       searches[query][country] ||= 0
       searches[query][country] += 1
       report.facets.each_pair do |facet, values|
-        next if %w(person_name fulltext).include?(facet)
+        next if facet == 'fulltext'
         facets[facet] ||= 0
         facets[facet] += 1
         searches[query][facet] ||= 0
@@ -343,7 +348,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Suchstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
+    name = "Suchstatistik-#{date.year}-#{date.month.to_s.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -387,7 +392,7 @@ class UsageReport < ActiveRecord::Base
     data.each do |row|
       puts row.map{|i| i.to_s.rjust(8)}.join('|')
     end
-    name = "Kartenstatistik-#{date.year}-#{date.month.rjust(2,'0')}.csv"
+    name = "Kartenstatistik-#{date.year}-#{date.month.to_s.rjust(2,'0')}.csv"
     puts "Saving to #{name}..."
     UsageReport.save_report_file(name, data)
   end
@@ -432,9 +437,18 @@ class UsageReport < ActiveRecord::Base
           errors.add(:user_account_id, :missing)
         end
       else
-        errors.add(:user_account_id, :missing)
+        errors.add(:user_account_id, :missing) unless assign_user_account_by_ip
       end
     end
+  end
+
+  def assign_user_account_by_ip
+    user_account_ip = UserAccountIP.find_by_ip(self.ip)
+    unless user_account_ip.nil?
+      self.user_account_id = user_account_ip.user_account_id
+      return true
+    end
+    false
   end
 
   def validate_archive_id
