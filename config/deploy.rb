@@ -81,6 +81,9 @@ namespace :deploy do
     # text_materials
     run "rm -rf #{release_path}/assets/archive_text_materials"
     run "ln -s #{shared_path}/assets/archive_text_materials #{release_path}/assets/archive_text_materials"
+    # reports
+    run "rm -rf #{release_path}/assets/reports"
+    run "ln -s #{shared_path}/assets/reports #{release_path}/assets/reports"
   end
 
   task :rewrite_stylesheet_urls, :roles => :app do
