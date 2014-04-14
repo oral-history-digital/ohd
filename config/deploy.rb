@@ -36,15 +36,26 @@ task :demo do
   role :db, "fnf.cedis.fu-berlin.de"
 end
 
-desc "prepare to act on the test environment"
-task :staging do
+desc "prepare to act on the staging environment (ZWAR)"
+task :zwar_staging do
   set :environment, :production
   set :application, 'zwar_archiv'
   set :keep_releases, 3
-  set :deploy_to, "/data/applications/#{application}"
-  role :app, "160.45.170.236"
-  role :web, "160.45.170.236"
-  role :db,  "160.45.170.236", :primary => true
+  set :deploy_to, "/data/applications/staging/#{application}"
+  role :app, "160.45.170.50"
+  role :web, "160.45.170.50"
+  role :db,  "160.45.170.50", :primary => true
+end
+
+desc "prepare to act on the staging environment (Hagen)"
+task :hagen_staging do
+  set :environment, :production
+  set :application, 'hagen_archiv'
+  set :keep_releases, 3
+  set :deploy_to, "/data/applications/staging/#{application}"
+  role :app, "160.45.170.50"
+  role :web, "160.45.170.50"
+  role :db,  "160.45.170.50", :primary => true
 end
 
 desc "prepare to act on the test environment (shared with the bugtracker)"
