@@ -9,8 +9,6 @@ var debugOn = false;
 
 var clustersOffset = 6;
 
-var interviewSelection = [];
-
 var filterControls = [];
 
 function debugMsg(msg) {
@@ -66,19 +64,6 @@ function storeMapConfigurationCookie() {
     }
     // intro
     document.cookie = 'zk-i=1;';
-    /*
-    // interview selection - not included in cookie at present
-    var interviews = [];
-    var idx = interviewSelection.length;
-    while(idx--) {
-        interviews.push(numToArchiveId(interviewSelection[idx]));
-    }
-    if(interviews.length > 0) {
-        document.cookie = 'i=' + encodeURIComponent(interviews.join(',')) + '; expires=' + expiry;
-    } else {
-        document.cookie = 'i=; expires=' + now;
-    }
-    */
 }
 
 function parseCookieValue(cookieConfig, key) {
@@ -192,13 +177,6 @@ var ClusterManager = Class.create({
         if(!cedisMap.clusterLocations) { cedisMap.clusterLocations = []; }
         if(!cedisMap.mapClusters) { cedisMap.mapClusters = []; }
 
-        if(options.interviewRange) {
-            if(Object.isArray(options.interviewRange) && (options.interviewRange.length > 0)) {
-                this.setInterviewRange(options.interviewRange);
-                this.updateInterviewTab();
-            }
-        }
-
         if((options.clusters) && (parseInt(options.clusters)) > 0) {
             clustersOffset = 0;
             $$('.cluster_toggle').each(function(el){el.removeClassName('clusters-off');});
@@ -264,7 +242,6 @@ var ClusterManager = Class.create({
             cluster = new Cluster(latLng, level, (level == this.currentLevel));
         }
         cluster.addLocation(location);
-        location.checkInterviewInclusion(interviewSelection);
     },
 
     addClustersToMap: function() {
@@ -276,10 +253,6 @@ var ClusterManager = Class.create({
                 cluster.addToMap();
             });
         });
-
-        if((interviewSelection.length > 0) && (interviewSelection.length < 4)) {
-            this.resetMapBoundsToSelection();
-        }
     },
 
     composeHtmlText: function(html, klass) {
@@ -463,75 +436,6 @@ var ClusterManager = Class.create({
 
     },
 
-    // supply an Array of archiveIds or a single one
-    setInterviewRange: function(ids) {
-        if(!Object.isArray(ids)) {
-            ids = [ ids ];
-        }
-        var idx = ids.length;
-        interviewSelection = [];
-        while(idx--) {
-            var id = parseArchiveId(ids[idx]);
-            interviewSelection.push(id);
-        }
-        this.dynamicBounds = (ids.length < 3);
-        if(ids.length < 12) {
-            clustersOffset = 6;
-            $('cluster_toggle').addClassName('clusters-off');
-        }
-    },
-
-    updateInterviewTab: function() {
-        // update interview_selection info
-        var str = (interviewSelection.length == 0) ? 'alle' : ((interviewSelection.length == 1) ? numToArchiveId(interviewSelection.first()) : '' + interviewSelection.length);
-        while(str.length < 3) {
-            str = '&nbsp;&nbsp;' + str;
-        }
-        $('interview_selection_toggle').innerHTML = 'Interviews: ' + str;
-        // TODO: dynamically add toggles for single interview ids per original selection.
-    },
-
-    applyInterviewSelection: function() {
-        // hide clusters when less than 20 interviews
-        if((interviewSelection.length > 0) && (interviewSelection.length < 20)) {
-            $('cluster_toggle').addClassName('clusters-off');
-            clustersOffset = 8;
-            cedisMap.locationSearch.clusterManager.checkForZoomShift();
-        }
-        var level = 3;
-        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
-        var changedClusters = [];
-        while(level--) {
-            var locs = cedisMap.mapLocations[level];
-            var ldx = locs.length;
-            while(ldx--) {
-                var loc = locs[ldx];
-                var changed = loc.checkInterviewInclusion(interviewSelection);
-                if(changed && (level == currentLevel) && changedClusters.indexOf(loc.cluster) == -1) {
-                    changedClusters.push(loc.cluster);
-                }
-            }
-        }
-        var cdx = changedClusters.length;
-        while(cdx--) {
-            changedClusters[cdx].refresh();
-        }
-    },
-
-    resetMapBoundsToSelection: function() {
-        var bounds = new google.maps.LatLngBounds();
-        var clusters = cedisMap.mapClusters[this.currentLevel];
-        var idx = clusters.length;
-        while(idx--) {
-            var cluster = clusters[idx];
-            if(cluster.isVisible()) {
-                bounds.extend(cluster.getPosition());
-            }
-        }
-        // delegate map reset to InteractiveMap
-        cedisMap.locationSearch.setMapBounds(bounds);
-    },
-
     benchmark: function(test, desc) {
         var startTime = (new Date).getTime();
         test.call();
@@ -588,23 +492,6 @@ var Location = Class.create({
             }
         }
         return changed;
-    },
-
-    checkInterviewInclusion: function(idArray) {
-        var previousSelected = this.displaySelection;
-        var idx = idArray.length;
-        if(idx > 0) {
-            this.displaySelection = false;
-            while(idx--) {
-                if(idArray[idx] == this.interviewId) {
-                    this.displaySelection = true;
-                    break;
-                }
-            }
-        } else {
-            this.displaySelection = true;
-        }
-        return(this.displaySelection != previousSelected);
     },
 
     getPriority: function(type) {
@@ -851,14 +738,14 @@ var Cluster = Class.create({
       von = locNumber - von + 1;
       bis = locNumber - bis + 1;
       if(totalPages > 1) {
-          var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
+          var dataSetStr = (von == bis) ? (I18n.t('map.pagination.place') + ' ' + von) : (I18n.t('map.pagination.places') +     ' ' + von + '-' + bis);
           html += '<ul class="pagination">';
           var pageIndex = 1;
           while(totalPages > 0) {
               html += '<li' + ((page == pageIndex) ? ' class="active"' : '') + ' onclick="cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
               totalPages--;
           }
-          html += '</ul><span class="pages">' + dataSetStr + ' von ' + locs.length + '</span>';
+          html += '</ul><span class="pages">' + dataSetStr + ' ' + I18n.t('map.pagination.of') + ' ' + locs.length + '</span>';
       }
       var style = '';
       if(this.width > 0) { style = ' width: ' + this.width + 'px;'}
@@ -878,12 +765,11 @@ var Cluster = Class.create({
         if(totalPages > 1) {
             var von = ((page-1)*4) +1;
             var bis = (page*4 > this.locations.length) ? this.locations.length : page*4;
-            var dataSetStr = (von == bis) ? ('Ort ' + von) : ('Orte ' + von + '-' + bis);
-            html = html + '<span>' + dataSetStr + ' von ' + this.locations.length + '&nbsp;</span><ul class="pagination">';
+            var dataSetStr = (von == bis) ? (I18n.t('map.pagination.place') + ' ' + von) : (I18n.t('map.pagination.places') + ' ' + von + '-' + bis);
+            html = html + '<span>' + dataSetStr + ' ' + I18n.t('map.pagination.of') + ' ' + this.locations.length + '&nbsp;</span><ul class="pagination">';
             var pageIndex = 1;
             while(totalPages > 0) {
                 html = html + '<li style="list-style-type: none; float: left; border: 1px solid; cursor: pointer;" onclick="cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');">' + (pageIndex++) + '</li>';
-                // html = html + '<li style="list-style-type: none; float: left; border: 1px solid;"><a href="#" onclick="javascript:cedisMap.locationSearch.clusterManager.showClusterPage(' + pageIndex + ');" class="' + (pageIndex == page ? 'current' : '') + '" style="display: block; float: left;">' + (pageIndex++) + '</li>';
                 totalPages--;
             }
             html = html + '</ul>';

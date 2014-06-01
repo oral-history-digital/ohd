@@ -270,7 +270,7 @@ ru:
       finish: '%{close} инструкцию, если Вы готовы.'
     labels:
       forced_labor_locations: 'Места проведения работ'
-      camps: 'Лагеря und места заключения'
+      camps: 'Лагеря и места заключения'
       companies: 'Фирмы'
       deportations: 'Места депортации'
       places_of_birth: 'Места рождения'
@@ -278,6 +278,10 @@ ru:
       postwar_camps: 'Лагеря с 1945'
       home_locations: 'Последние места жительства'
       mentions: 'Упоминания'
+    pagination:
+      place: '##ru##'
+      places: '##ru##'
+      of: '##ru##'
 
   plugins:
     noflash: 'Необходим Adobe Flash'
@@ -472,8 +476,11 @@ ru:
       deportation_location:   'Место депортации'
       place_of_birth:         'Место рождения'
       home_location:          'Последнее место жительства'
+      home_location_in_map:   '##ru##'
       return_location:        'Место жительства с 1945'
+      postwar_camp:           '##ru##'
       interview:              'Упоминание'
+      interview_in_map:       '##ru##'
 
   external_links:
     notice: 'Внешняя ссылка'

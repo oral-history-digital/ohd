@@ -7,9 +7,8 @@ var InteractiveMap = Class.create({
             latitude: 49.1,
             longitude: 16.3,
             zoom: 5,
-            indexURL: '/orte.json',
-            dataURL: '/orte/satz',
-            dateStamp: '20121027'
+            dateStamp: '20121027',
+            locale: 'de'
         };
         if (options != null) {
             this.options = options;
@@ -19,8 +18,6 @@ var InteractiveMap = Class.create({
         if(!this.options.latitude) { this.options.latitude = defaults.latitude; }
         if(!this.options.longitude) { this.options.longitude = defaults.longitude; }
         if(!this.options.zoom) { this.options.zoom = defaults.zoom; }
-        if(!this.options.indexURL) { this.options.indexURL = defaults.indexURL; }
-        if(!this.options.dataURL) { this.options.dataURL = defaults.dataURL; }
         if(!this.options.dateStamp) { this.options.dateStamp = defaults.dateStamp; }
 
         this.currentLoadPage = 0;
@@ -29,8 +26,9 @@ var InteractiveMap = Class.create({
 
         // URL root
         this.options.urlRoot = window.location.pathname.split('/')[1] == 'archiv' ? '/archiv' : '';
-        this.options.dataURL = this.options.urlRoot + '/webservice/' + this.options.dateStamp + this.options.dataURL;
-        this.options.indexURL = this.options.urlRoot + '/webservice/' + this.options.dateStamp + this.options.indexURL;
+        var baseUrl = this.options.urlRoot + '/' + this.options.locale + '/webservice/locations/' + this.options.dateStamp
+        this.options.indexURL = baseUrl + '.json';
+        this.options.dataURL = baseUrl + '/page';
 
         cedisMap.locationSearch = this;
 
@@ -109,7 +107,7 @@ var InteractiveMap = Class.create({
 
     retrieveLocationsBatch: function() {
         this.currentLoadPage = this.currentLoadPage + 1;
-        if (this.currentLoadPage < (this.loadPageNumber + 1)) {
+        if (this.currentLoadPage <= this.loadPageNumber) {
             var that = this;
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
                 method: 'GET',
@@ -175,7 +173,7 @@ var InteractiveMap = Class.create({
         var info = '';
         info += '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
         info += '<p class="referenceDetails">';
-        info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ' (übersetzt)' : '') + '</p>';
+        info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ', ' + I18n.t('status.translated') : '') + '</p>';
         return info;
     },
 
@@ -197,15 +195,15 @@ var InteractiveMap = Class.create({
 
     translate: function(str) {
         translation_map = {
-            forced_labor_location: 'Einsatzort -',
-            forced_labor_camp: 'Lager -',
-            forced_labor_company: 'Firma -',
-            deportation_location: 'Deportationsort -',
-            place_of_birth: 'Geburtsort -',
-            home_location: 'Wohnort -',
-            return_location: 'Wohnort ab 1945 -',
-            postwar_camp: 'Lager ab 1945 -',
-            interview: 'Erwähnung bei'
+            forced_labor_location: I18n.t('locations.types.forced_labor_location') + ' -',
+            forced_labor_camp: I18n.t('locations.types.forced_labor_camp') + ' -',
+            forced_labor_company: I18n.t('locations.types.forced_labor_company') + ' -',
+            deportation_location: I18n.t('locations.types.deportation_location') + ' -',
+            place_of_birth: I18n.t('locations.types.place_of_birth') + ' -',
+            home_location: I18n.t('locations.types.home_location_in_map') + ' -',
+            return_location: I18n.t('locations.types.return_location') + ' -',
+            postwar_camp: I18n.t('locations.types.postwar_camp') + ' -',
+            interview: I18n.t('locations.types.interview_in_map')
         };
         return translation_map[str];
     },
@@ -241,12 +239,6 @@ function mapSetup(id, options) {
     var storedConfig = readMapConfigurationCookie();
     var parameters = location.search.parseQuery([separator = '&']);
 
-    // interview selections
-    var selectionOfInterviews = parameters.interviews || [];
-    if(selectionOfInterviews.length > 0) {
-        selectionOfInterviews = selectionOfInterviews.split(/\s*,\s*/);
-    }
-
     var filterSettings = location.search.parseQuery([separator = '&']).filters;
     var filterOptions = [];
     if(filterSettings) {
@@ -270,8 +262,7 @@ function mapSetup(id, options) {
     if(!options.mapBounds) { options.mapBound = bounds; }
     if(!options.cluster) { options.cluster = {
             filters: filterOptions.flatten(),
-            clusters: clusterOption,
-            interviewRange: [selectionOfInterviews].flatten()
+            clusters: clusterOption
     };}
 
     new InteractiveMap(id, options);

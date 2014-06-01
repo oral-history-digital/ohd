@@ -1,10 +1,10 @@
-<ul style="float: right;">
+﻿<ul style="float: right;">
     <!-- Slide 1 //-->
-    <li class="hint slide-1"><h3 style="margin: 0;">Karteneinf&uuml;hrung: Teil 1 - Filter<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
+    <li class="hint slide-1"><h3 style="margin: 0;">Инструкция по использованию карты: Часть 1 - Фильтр<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
     <li class="hint slide-1">
-      <p>Die &Uuml;bersichtskarte zu den Ortsangaben der Zwangsarbeiter enth&auml;lt unterschiedliche Angaben biographischer Relevanz. Welche von diesen dargestellt werden sollen ist der &Uuml;bersichtlichkeit halber jederzeit &uuml;ber sogenannte Filter direkt ausw&auml;hlbar.</p>
+      <p>Обзорная карта с указаниями местонахождения подневольных рабочих содержит различные сведения биографической важности. Для большей наглядности с помощью так называемых фильтров можно в любое время выбрать, какие сведения должны быть отображены, а какие нет.</p>
     </li>
-    <li class="hint slide-1"><p>Bitte w&auml;hlen Sie nun die Arten von Angaben aus, die Sie interessieren und beobachten dabei die Darstellung der Orte auf der Karte:</p></li>
+    <li class="hint slide-1"><p>Пожалуйста, выберите вид сведений, которые Вас интересуют, и пронаблюдайте отображение местонахождений на карте:</p></li>
     <li class="map_filter_off forced_labor_location slide-1"><span><%= t(:forced_labor_locations, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off forced_labor_camp slide-1"><span><%= t(:camps, :scope => 'map.labels') -%></span>
     <li class="map_filter_off forced_labor_company slide-1"><span><%= t(:companies, :scope => 'map.labels') -%></span></li>
@@ -15,35 +15,35 @@
     <li class="map_filter_off home_location slide-1"><span><%= t(:home_locations, :scope => 'map.labels') -%></span></li>
     <li class="map_filter_off interview slide-1"><span><%= t(:mentions, :scope => 'map.labels') -%></span></li>
     <li class="hint slide-1">
-      <p>Ihre Einstellungen werden im Browser gespeichert und bei der n&auml;chsten Kartenansicht automatisch verwendet.</p>
+      <p>Ваши настройки будут сохранены в браузере и использованы автоматически при следующем просмотре карты.</p>
     </li>
 
     <!-- Slide 2 //-->
-    <li class="hint slide-2"><h3 style="margin: 0;">Karteneinf&uuml;hrung: Teil 2 - Gruppierung<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
+    <li class="hint slide-2"><h3 style="margin: 0;">Инструкция по использованию карты: Часть 2 - Разбивка на группы<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
     <li class="hint slide-2">
-      <p>Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts "Gruppierungen..." unter den Filtern.</p>
+      <p>Для ясности при низкой степени увеличения указания местонахождения могут быть скомбинированы по странам и регионам. Данную функцию можно в любое время деактивировать посредством отмены пункта "Разбивка на группы..." в фильтрах.</p>
     </li>
     <li class="cluster_toggle clusters-off slide-2" onclick="toggleClusters();"><span><%= t(:grouping_label, :scope => 'map.legend') -%></span></li>
     <li class="hint slide-2">
-      <p>Die Anzahl der beinhalteten Ortsangaben wird durch die Gr&ouml;&szlig;e der Kreise und der angezeigten Nummern signalisiert. Ein Klick auf das Zentrum einer Gruppierung f&uuml;hrt auf die n&auml;chste Detailebene.</p>
+      <p>Количество охваченных местонахождений сигнализируется с помощью размера кружков и отображённых чисел. Нажатие на центр кружка или сгруппированных данных приведёт на следующий детальный уровень информации.</p>
     </li>
     <li class="hint slide-2">
-      <p>Die Filter und Gruppierungsoption stehen Ihnen jederzeit zur Verfügung.<img class="imageRight" src="<%= image_path('map/tut_legend_de.png') -%>"/> Wählen Sie nur die Schaltfläche "<%= t(:tabname, :scope => 'map.legend') -%>" oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das Kreuz oben rechts in der Legende schließt diese wieder.</p>
+      <p>Фильтрами и возможностью разбивки на группы Вы можете воспользоваться в любое время.<img class="imageRight" src="<%= image_path('map/tut_legend_ru.png') -%>"/> Для отображения возможностей фильтра Вам нужно только нажать на кнопку "<%= t(:tabname, :scope => 'map.legend') -%>" вверху справа. Нажав на крестик вверху справа в легенде, Вы можете снова скрыть фильтры.</p>
     </li>
 
     <!-- Slide 3 //-->
-    <li class="hint slide-3"><h3 style="margin: 0;">Karteneinf&uuml;hrung: Teil 3 - Interviews<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
+    <li class="hint slide-3"><h3 style="margin: 0;">Инструкция по использованию карты: Часть 3 - Интервью<a href="#" onclick="new Effect.Fade('initial_map_tutorial');" class="window-close"><%= t(:close) -%></a></h3></li>
     <li class="hint slide-3">
-      <p>Wenn Sie einen Ort auf der Karte ausw&auml;hlen, erhalten Sie weitergehende Informationen zur Ortsangabe und zu den betreffenden Interviews.</p>
+      <p>При выборе места на карте Вы получите дальнейшую информацию, касающуюся данного местонахождения и соответствующих интервью.</p>
     </li>
     <li class="hint slide-3">
-      <img src="<%= image_path('map/tut_interview_de.png') -%>" alt="Information zum Interview"/>
+      <img src="<%= image_path('map/tut_interview_ru.png') -%>" alt="Информация, касающаяся интервью"/>
     </li>
-    <li class="hint slide-3">Die Angaben zum Interview f&uuml;hren Sie direkt zu den betreffenden Stellen im Interview - vorausgesetzt, Sie sind im Archiv registriert.</li>
-    <li class="hint slide-3">Sollten Sie noch nicht im Archiv registriert sein, k&ouml;nnen Sie sich &uuml;ber unser <%= link_to 'Formular f&uuml;r die Archivnutzung registrieren', registrieren_path, :target => '_blank' -%>.</li>
+    <li class="hint slide-3">Данные, касающиеся интервью, приведут Вас напрямую к соответствующим фрагментам в интервью при условии, что Вы зарегистрированы в архиве.</li>
+    <li class="hint slide-3">Если Вы ещё не зарегистрированы в архиве, Вы можете заполнить наш <%= link_to 'Формуляр для использования архива и зарегистрироваться', registrieren_path, :target => '_blank' -%>.</li>
 
     <!-- Slide Actions //-->
     <li class="hint links">
-      <p><a class="back not-slide-1" href="#" onclick="adjustSlideNum(-1);">&laquo;&nbsp;zurück</a><span class="not-slide-1">&nbsp;oder&nbsp;</span><a class="forward not-slide-3" href="#" onclick="adjustSlideNum(1);">weiter&nbsp;&raquo;</a><a class="finish slide-3" href="#" onclick="endTutorial();">&raquo;&nbsp;Einf&uuml;hrung beenden</a></p>
+      <p><a class="back not-slide-1" href="#" onclick="adjustSlideNum(-1);">&laquo;&nbsp;назад</a><span class="not-slide-1">&nbsp;или&nbsp;</span><a class="forward not-slide-3" href="#" onclick="adjustSlideNum(1);">далее&nbsp;&raquo;</a><a class="finish slide-3" href="#" onclick="endTutorial();">&raquo;&nbsp;Закрыть инструкцию</a></p>
     </li>
 </ul>

@@ -60,8 +60,7 @@ describe LocationReference, 'when importing as different location types' do
   it 'will include the camp_aliases as alias_names when place_type is Camp' do
     name = 'Mehringhof'
     camp = init_location(segment, name, 'Camp', nil)
-    camp.alias_location_names.should include(name.reverse)
-    camp.alias_location_names.should include('Berlin')
+    camp.alias_location_names.split('; ').should include(name.reverse)
   end
 
   it 'will store a Camp\'s type classification in place_subtype' do
@@ -78,7 +77,6 @@ def init_location(reference, name, type, subtype)
   LocationReference.create do |loc|
     loc.name = name
     loc.location_name = name
-    loc.alias_location_names = 'Berlin'
     loc.interview = reference.interview
     loc.reference_type = 'forced_labor_location'
     loc.latitude = '52.4'

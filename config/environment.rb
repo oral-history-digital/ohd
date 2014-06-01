@@ -39,6 +39,9 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :de
   config.i18n.available_locales = [ :de, :en, :ru ]
 
+  # I18n for JS
+  config.middleware.use "SimplesIdeias::I18n::Middleware"
+
   # RailsLTS config
   config.rails_lts_options = { :default => :compatible }
 end

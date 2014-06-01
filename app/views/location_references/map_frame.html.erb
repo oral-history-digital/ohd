@@ -79,7 +79,7 @@
         </li>
       </ul>
     </div>
-    <div id="initial_map_tutorial" class="preload-map map-overlay slide-1" style="display: none;">&nbsp;</div>
+    <div id="initial_map_tutorial" class="preload-map map-overlay slide-1 <%= I18n.locale.to_s %>" style="display: none;">&nbsp;</div>
 
     <div id="interview_selection_toggle" class="preload-map" style="display: none;">Interviews: alle</div>
 
@@ -120,7 +120,7 @@
         $$('#map-wrapper .preload-map').each(function(el){
             el.removeClassName('preload-map');
         });
-        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t('page_urls.map_tutorial')) -%>', introId: 'initial_map_tutorial', dateStamp: '<%= map_data_datestamp -%>' });
+        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t('page_urls.map_tutorial')) -%>', introId: 'initial_map_tutorial', locale: '<%= I18n.locale.to_s %>', dateStamp: '<%= map_data_datestamp -%>' });
     }
 
     function loadClusters() {

@@ -22,8 +22,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
-  map.public_locations_total_pages 'webservice/:date/orte.:format', :controller => :location_references, :action => :full_index
-  map.public_locations_by_page 'webservice/:date/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_total_pages ':locale/webservice/locations/:date.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_by_page ':locale/webservice/locations/:date/page.:page.:format', :controller => :location_references, :action => :full_index
 
   map.public_map 'karte', :controller => :location_references, :action => :map
   map.localized_public_map ':locale/map', :controller => :location_references, :action => :map

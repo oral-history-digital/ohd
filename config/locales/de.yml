@@ -277,6 +277,10 @@ de:
       postwar_camps: 'Lager ab 1945'
       home_locations: 'Letzte Wohnorte'
       mentions: 'Erwähnungen'
+    pagination:
+      place: 'Ort'
+      places: 'Orte'
+      of: 'von'
 
   plugins:
     noflash: 'Adobe Flash ben&ouml;tigt'
@@ -471,9 +475,12 @@ de:
       forced_labor_company:   'Firma'
       deportation_location:   'Deportationsort'
       place_of_birth:         'Geburtsort'
-      home_location:          'Letzter Wohnort'
+      home_location:          'Wohnort'
+      home_location_in_map:   'Letzter Wohnort'
       return_location:        'Wohnort ab 1945'
+      postwar_camp:           'Lager ab 1945'
       interview:              'Erwähnung'
+      interview_in_map:       'Erwähnung bei'
 
   external_links:
     notice: 'Externer Link'

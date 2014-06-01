@@ -38,6 +38,7 @@ gem 'acts_as_taggable_on_steroids',
     :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
     :branch => 'master'
 gem 'localized_country_select', '0.0.1'
+gem 'i18n-js'
 gem 'warden', '0.10.7'
 gem 'devise', '1.0.8'
 gem 'smurf'

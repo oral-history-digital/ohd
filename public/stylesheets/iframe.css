@@ -22,6 +22,11 @@
     left: 361px;
 }
 
+#mapFrame #initial_map_tutorial.ru {
+    left: 321px;
+    width: 368px;
+}
+
 #mapFrame .map-overlay {
     top: 30px;
 }

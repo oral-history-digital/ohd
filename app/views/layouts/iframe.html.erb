@@ -15,8 +15,12 @@
 
     <%= javascript_include_tag :defaults, :cache => 'site' %>
     <%= javascript_include_tag 'map', 'progress_bar', :cache => 'mapping' %>
+    <%= javascript_include_tag "i18n", "translations" %>
+    <script type="text/javascript">
+        I18n.defaultLocale = "<%= I18n.default_locale %>";
+        I18n.locale = "<%= I18n.locale %>";
+    </script>
 </head>
-
 <body id="mapFrame" style="background-image: none;">
 
     <div id="baseContent" style="padding:0; width: <%= (@map_options ||= {})['width'] || 695 -%>px;">

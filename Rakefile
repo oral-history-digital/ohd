@@ -8,3 +8,6 @@ require 'rake/testtask'
 require 'rdoc/task'
 
 require 'tasks/rails'
+
+require 'i18n-js'
+require 'i18n-js/rake'

@@ -49,7 +49,11 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.all(:conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => { :categories => :translations } })
+      @results = LocationReference.all(
+          :conditions => "duplicate IS NOT TRUE",
+          :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}",
+          :include => [:translations, {:interview => {:languages => :translations}}]
+      )
       respond_to do |wants|
         wants.html do
           render :action => :index

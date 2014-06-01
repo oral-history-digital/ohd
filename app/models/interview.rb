@@ -21,7 +21,8 @@ class Interview < ActiveRecord::Base
             :dependent => :destroy
 
   has_many  :location_references,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => :translations
 
   has_many  :location_segments
 
@@ -96,7 +97,12 @@ class Interview < ActiveRecord::Base
              :interviewers, :transcriptors, :translators,
              :proofreaders, :segmentators, :researchers
 
-  self.translation_class.validates_presence_of :last_name
+  validate :has_standard_name
+  def has_standard_name
+    if self.last_name(I18n.default_locale).blank?
+      errors.add(:last_name, ' must be set for default locale (=standard name).')
+    end
+  end
 
   validates_associated :collection
   validates_presence_of :archive_id
@@ -135,8 +141,10 @@ class Interview < ActiveRecord::Base
       location_references.each do |location|
         weight = location.location_segments.count
         weight = 10 if weight == 0
-        indexing_location_refs[location.name] ||= 0
-        indexing_location_refs[location.name] += weight
+        I18n.available_locales.each do |locale|
+          indexing_location_refs[location.name(locale)] ||= 0
+          indexing_location_refs[location.name(locale)] += weight
+        end
         (location.alias_location_names || '').split(/;\s+/).each do |name|
           indexing_location_refs[name] ||= 0
           indexing_location_refs[name] += weight
@@ -271,7 +279,7 @@ class Interview < ActiveRecord::Base
   def anonymous_title(locale)
     name_parts = []
     name_parts << first_name(locale) unless first_name(locale).blank?
-    name_parts << "#{last_name(locale).strip.chars.first}."
+    name_parts << "#{(last_name(locale).blank? ? '' : last_name(locale)).strip.chars.first}."
     name_parts.join(' ')
   end
 

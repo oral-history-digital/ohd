@@ -2,13 +2,13 @@
 
 <div class="contentImagesLeft">
 <% if current_user_account.nil? -%>
-<% @interview = Interview.find_by_archive_id 'za465' -%>
+<% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:languages => :translations}]) -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) -%>">
         <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) -%>
           <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>, <%= @interview.languages.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.languages.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
@@ -19,14 +19,14 @@
         <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) -%>
           <br/>
-          <%= @interview.video %> Interview, <%= @interview.languages.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.languages.join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
 <% end -%>
 </div>
 
-<p> </p>
+<p></p>
 
 <p>The online archive “Forced Labor 1939-1945” contains interviews with nearly 600 former
   forced laborers from 26 countries. The collection is made up of various subsets, which were
@@ -35,7 +35,7 @@
   for the future and makes them available for educational and research purposes.</p>
 
 <% if current_user_account.nil? %>
-<p style="font-weight: bold; margin-top: 0.33em;">
+<p style="font-weight: bold">
   In order to protect privacy rights you must be <%= link_to 'logged in', en_login_path %> and agree to the
   <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> as well as
   the <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
@@ -65,7 +65,8 @@
   Content categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
   <br/>
     <%= link_to 'description of categories »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'recherchemoeglichkeiten') %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'recherchemoeglichkeiten'),
+                :title => 'Which research features are available?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -82,7 +83,8 @@
   Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
   <br/>
     <%= link_to 'explanation of fulltext search »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'suche-allgemein') %>
+                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'suche-allgemein'),
+                :title => 'How should I use full text search?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -99,7 +101,8 @@
   An interactive map shows sites of biographical relevance to the interviewees: place of birth, deportation, camps, companies and prisons, places of residence after 1945.
   <br/>
     <%= link_to 'interactive map »',
-                localized_public_map_url(:locale => :en) %>
+                localized_public_map_url(:locale => :en),
+                :title => 'interactive Map' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -115,10 +118,10 @@
 <p>
   The overview map of the project's collections illustrate the provenance of the archive and provide a regional access.
   <br/>
-    <%= link_to 'overview map of collections »', localized_interview_collections_url(:locale => :en) %>
+    <%= link_to 'overview map of collections »', localized_interview_collections_url(:locale => :en), :title => 'geographic distribution of interview collections' %>
     <br/>
 </p>
 
 <hr style="clear: both;"/>
 <h2 class="clear">FAQs</h2>
-<p>Please see the <%= link_to 'Help Page', home_path(:page_id=> t('page_urls.faq_index')) %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>
+<p>Please see the <%= link_to 'Help Page', home_path(:page_id=> t('page_urls.faq_index')), :title => 'Q&A concerning archive features.' %> for technical advice or if you have any questions about the archive contents or using the archive. If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a></p>

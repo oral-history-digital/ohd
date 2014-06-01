@@ -32,7 +32,7 @@ class Category < ActiveRecord::Base
     self.globalize.stash.each do |locale, translation|
       name = translation[:name]
       unless name.blank?
-        existing = self.class.all(
+        existing = self.class.count(
             :joins => :translations,
             :conditions => {
                 :category_type => self.category_type,
@@ -40,7 +40,7 @@ class Category < ActiveRecord::Base
                 'category_translations.name' => name
             }
         )
-        errors.add(:name, 'must be unique within locale and category type') if existing.size > 0
+        errors.add(:name, 'must be unique within locale and category type') if existing > 0
       end
     end
   end

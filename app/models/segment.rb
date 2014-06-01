@@ -10,7 +10,8 @@ class Segment < ActiveRecord::Base
   has_many  :location_segments
 
   has_many  :location_references,
-            :through => :location_segments
+            :through => :location_segments,
+            :include => :translations
 
   # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
@@ -102,7 +103,7 @@ DEF
     text :locations, :boost => 5 do
       str = ''
       location_references.each do |location|
-        str << ' ' + location.name
+        str << ' ' + location.translations.map(&:name).join(' ')
         (location.alias_location_names || '').split(/;\s+/).each do |name|
           str << ' ' + name
         end

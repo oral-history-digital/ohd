@@ -1,3 +1,5 @@
+require 'globalize'
+
 class LocationReference < ActiveRecord::Base
 
   # LocationReference is a model to encapsulate all locations-based register data
@@ -22,6 +24,8 @@ class LocationReference < ActiveRecord::Base
   has_many  :segments,
             :through => :location_segments
 
+  translates :name, :location_name, :region_name, :country_name
+
   named_scope :forced_labor, { :conditions => "reference_type = 'forced_labor_location'" }
   named_scope :return, { :conditions => "reference_type = 'return_location'" }
   named_scope :deportation, { :conditions => "reference_type = 'deportation_location'" }
@@ -35,18 +39,57 @@ class LocationReference < ActiveRecord::Base
                                 :conditions => ['location_segments.id IS NOT NULL AND location_references.interview_id = ?',i.id],
                                 :group => 'location_references.id' }}
 
-  validates_presence_of :name, :reference_type
-  validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
+  validates_presence_of :reference_type
   validates_associated  :interview
+
+  validate :name_must_be_unique_within_locale_and_reference_type
+  def name_must_be_unique_within_locale_and_reference_type
+    # The globalize2 stash contains new translations that
+    # will be written on save. These must be validated.
+    self.globalize.stash.each do |locale, translation|
+      name = translation[:name]
+      unless name.blank?
+        existing = self.class.count(
+            :joins => :translations,
+            :conditions => {
+                :interview_id => self.interview_id,
+                :reference_type => self.reference_type,
+                'location_reference_translations.locale' => locale.to_s,
+                'location_reference_translations.name' => name
+            }
+        )
+        errors.add(:name, " '#{name}' must be unique within locale and reference type") if existing > 0
+      end
+    end
+  end
+
+  validate :has_standard_name
+  def has_standard_name
+    if self.name(I18n.default_locale).blank?
+      errors.add(:name, ' must be set for default locale (=standard name).')
+    end
+  end
 
   before_save :accumulate_field_info
 
   after_save :update_interview_category
 
   searchable :auto_index => false do
-    text :name, :boost => 12
+    text :name, :boost => 12 do
+      name = ''
+      translations.each do |translation|
+        name << ' ' + translation.name unless translation.name.blank?
+      end
+      name.strip
+    end
     text :alias_names, :boost => 3
-    text :location_name, :boost => 6
+    text :location_name, :boost => 6 do
+      location_name = ''
+      translations.each do |translation|
+        location_name << ' ' + translation.location_name unless translation.location_name.blank?
+      end
+      location_name.strip
+    end
     text :alias_location_names
   end
 
@@ -62,18 +105,18 @@ class LocationReference < ActiveRecord::Base
     unless include_hierarchy
       json['experienceGroup'] = self.interview.forced_labor_groups.join(', ')
     end
-    json['location'] = name
+    json['location'] = name(I18n.locale)
     json['locationType'] = location_type
     json['longitude'] = exact_longitude
     json['latitude'] = exact_latitude
     if include_hierarchy
       json['country'] = {
-              'name' => country_name,
+              'name' => country_name(I18n.locale),
               'latitude' => country_latitude,
               'longitude' => country_longitude
       }
       json['region'] = {
-              'name' => region_name,
+              'name' => region_name(I18n.locale),
               'latitude' => region_latitude,
               'longitude' => region_longitude
       }
@@ -113,12 +156,14 @@ class LocationReference < ActiveRecord::Base
 
   # setter functions
 
-  def camp_name=(name='')
-    @camp_name = name
+  def camp_name=(name='', locale = I18n.default_locale)
+    @camp_name ||= {}
+    @camp_name[locale] = name
   end
 
-  def company_name=(name='')
-    @company_name = name
+  def company_name=(name='', locale = I18n.default_locale)
+    @company_name ||= {}
+    @company_name[locale] = name
   end
 
   def additional_alias=(alias_names='')
@@ -144,10 +189,9 @@ class LocationReference < ActiveRecord::Base
     @camp_classification = classification
   end
 
-  def city_name=(alias_names='')
-    @city_name = alias_names
+  def city_name=(alias_names='', locale = I18n.default_locale)
     write_attribute :hierarchy_level, CITY_LEVEL
-    self.additional_alias=@city_name
+    self.additional_alias=alias_names
   end
 
   def city_alias_names=(alias_names='')
@@ -157,7 +201,7 @@ class LocationReference < ActiveRecord::Base
   def region_name=(alias_names='')
     self.additional_alias=alias_names
     write_attribute :hierarchy_level, REGION_LEVEL unless self.hierarchy_level == CITY_LEVEL
-    write_attribute :region_name, alias_names
+    globalize.write(self.class.locale || I18n.default_locale, :region_name, alias_names)
   end
 
   def region_alias_names=(alias_names='')
@@ -167,7 +211,7 @@ class LocationReference < ActiveRecord::Base
   def country_name=(alias_names='')
     self.additional_alias=alias_names
     write_attribute :hierarchy_level, COUNTRY_LEVEL if self.hierarchy_level.nil?
-    write_attribute :country_name, alias_names
+    globalize.write(self.class.locale || I18n.default_locale, :country_name, alias_names)
   end
 
   def country_alias_names=(alias_names='')
@@ -175,13 +219,8 @@ class LocationReference < ActiveRecord::Base
   end
 
   def alias_location_names=(data)
-    result = case data
-      when String
-        data.strip
-      when Array
-        data.uniq.delete_if{|i| i.blank? }.join('; ')
-    end
-    write_attribute :alias_location_names, result
+    raise unless data.is_a? Array
+    write_attribute :alias_location_names, data.uniq.delete_if{|i| i.blank? }.join('; ')
   end
 
   def workflow_state=(state)
@@ -234,12 +273,20 @@ class LocationReference < ActiveRecord::Base
         :camp_category => :place_subtype
     }
     accumulation_fields.each do |variable, field|
-      if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
+      next if instance_eval "!defined?(@#{variable}) or @#{variable}.blank?"
+      if instance_eval "@#{variable}.is_a? Hash"
+        # translated field
+        instance_eval("@#{variable}").each do |locale, translation|
+          LocationReference.with_locale(locale) do
+            send("#{field}=", translation)
+          end
+        end
+      else
+        # not translated
         send("#{field}=", instance_eval("@#{variable}"))
       end
     end
-    self.alias_location_names = ((self.alias_location_names || '').concat("; #{@additional_alias_names}"))\
-      .split(/\s+?[;,]\s+?/).delete_if{|p| p.blank?}.join('; ')
+    self.alias_location_names = (@additional_alias_names || [])
     self.location_type = 'Location' if self.location_type.blank?
     self.classified = ((@workflow_state || '').strip == 'classified')
     true

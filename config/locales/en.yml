@@ -230,6 +230,10 @@ en:
       postwar_camps: 'Camps since 1945'
       home_locations: 'Last Places of Residence'
       mentions: 'Mentioned Places'
+    pagination:
+      place: 'place'
+      places: 'places'
+      of: 'of'
 
   plugins:
     noflash: 'Adobe Flash required'
@@ -423,9 +427,12 @@ en:
       forced_labor_company:   'Forced Labor'
       deportation_location:   'Place of Deportation'
       place_of_birth:         'Place of Birth'
-      home_location:          'Last Place of Residence'
-      return_location:        'Residence after 1945'
+      home_location:          'Place of Residence'
+      home_location_in_map:   'Last Place of Residence'
+      return_location:        'Residence since 1945'
+      postwar_camp:           'Camp since 1945'
       interview:              'Mention'
+      interview_in_map:       'Mentioned in'
 
   external_links:
     notice: 'External link'

@@ -22,8 +22,7 @@ module ZWAR
                     :class_name => 'Category',
                     :through => :#{category_type}_categorizations,
                     :source => :category,
-                    :conditions => "categories.category_type = '#{name}'",
-                    :include => :translations
+                    :conditions => "categories.category_type = '#{name}'"
 
           def #{category_type.singularize}_ids
             #{category_type}_categorizations.map(&:category_id)
