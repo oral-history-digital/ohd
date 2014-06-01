@@ -272,6 +272,7 @@ class LocationReference < ActiveRecord::Base
       when 'home_location'
         # set the home location on the interview
         interview.home_location = @country_name || name.split(',').last
+        interview.save!
     end
   end
 
