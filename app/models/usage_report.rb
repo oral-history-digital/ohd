@@ -46,7 +46,6 @@ class UsageReport < ActiveRecord::Base
     end
   end
 
-
   def verb=(verb)
     @verb = verb
   end
@@ -67,7 +66,7 @@ class UsageReport < ActiveRecord::Base
           query_params = Search.decode_parameters @parameters[:suche]
           self.query = query_params.delete('fulltext')
           query_params.keys.each do |p|
-            next if p == 'person_name' # leave person_name unchanged
+            next if p == 'partial_person_name' # leave person_name unchanged
             value = query_params[p]
             query_params[p] = value.is_a?(Array) ? value.size : value.split(',').size
           end
@@ -287,7 +286,7 @@ class UsageReport < ActiveRecord::Base
     countries = {}
     reports.each do |report|
       query = report.query
-      person = report.facets['person_name']
+      person = report.facets['partial_person_name']
       country = report.country
       countries[country] ||= 0
       countries[country] += 1
@@ -416,7 +415,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.report_file_path(name=nil)
-    File.join([RAILS_ROOT, 'assets', 'reports', name].compact)
+    File.join([Rails.root, 'assets', 'reports', name].compact)
   end
 
   protected
@@ -424,15 +423,15 @@ class UsageReport < ActiveRecord::Base
   def validate_user_account
     if user_account_id.nil?
       if !login.blank?
-        # this happens only on 'SessionController#create' actions,
-        # but there is no need to check for that here
+        # This happens only on 'SessionController#create' actions,
+        # but there is no need to check for that here.
         # NOTE: theoretically, it is possible that someone attempts
         # a login with another accounts login details. Also, this
         # method cannot discern unsuccessful login attempts.
         user_account = UserAccount.find_by_login(login)
         unless user_account.nil?
           self.user_account_id = user_account.id
-          UserAccountIP.create({ :user_account_id => user_account.id, :ip => self.ip })
+          UserAccountIp.create({ :user_account_id => user_account.id, :ip => self.ip })
         else
           errors.add(:user_account_id, :missing)
         end
@@ -443,7 +442,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def assign_user_account_by_ip
-    user_account_ip = UserAccountIP.find_by_ip(self.ip)
+    user_account_ip = UserAccountIp.find_by_ip(self.ip)
     unless user_account_ip.nil?
       self.user_account_id = user_account_ip.user_account_id
       return true

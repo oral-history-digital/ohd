@@ -8,7 +8,7 @@ namespace :web_statistics do
     file = args[:file]
     raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exists?(file)
 
-    last_report = UsageReport.find(:first, :order => "logged_at DESC")
+    last_report = UsageReport.first(:order => "logged_at DESC")
     report_time = (last_report.nil? ? '2008-01-01' : last_report.logged_at).to_s
 
     puts "Adding usage_report entries starting from #{report_time}."
@@ -66,7 +66,7 @@ namespace :web_statistics do
           unless tokens.empty? || tokens[:logged_at].blank?
             # Create an access record (UsageReport instance) for the data tokens
             # Don't instantiate a new object each cycle, but keep an unsaved one in memory
-            # UsageReport contains all the logic of what is stores (perhaps through an initializer.yml)
+            # UsageReport contains all the logic of what it stores (perhaps through an initializer.yml)
 
             # if the Record is valid, it is saved.
 
@@ -76,7 +76,7 @@ namespace :web_statistics do
 
             user_account_id = user_ids[tokens[:ip]]
             if user_account_id.nil? && !tokens[:ip].nil?
-              account_ip = UserAccountIP.find_by_ip(tokens[:ip])
+              account_ip = UserAccountIp.find_by_ip(tokens[:ip])
               unless account_ip.nil?
                 user_account_id = account_ip.user_account_id
                 user_ids[tokens[:ip]] = account_ip.user_account_id

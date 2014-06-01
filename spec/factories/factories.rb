@@ -13,9 +13,21 @@ FactoryGirl.define do
     category_type 'test cat type'
   end
 
+  factory :usage_report do
+    ip '213.43.9.136'
+    logged_at (Time.now - 2.months).to_s(:db)
+    action UsageReport::LOGIN
+    parameters {}
+  end
+
   factory :user_account do
     login 'aneumann2'
     email 'a.neumann2@mad.de'
+  end
+
+  factory :user_account_ip do
+    user_account
+    ip '212.10.86.234'
   end
 
   sequence :email do |n|

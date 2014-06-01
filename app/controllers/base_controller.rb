@@ -62,12 +62,12 @@ class BaseController < ResourceController::Base
     unless current_user.nil?
       current_ip = current_user.proxy_owner.current_sign_in_ip || request.remote_ip
       if session[:current_ip] != current_ip
-        tracked_ip = UserAccountIP.find_or_initialize_by_ip_and_user_account_id(current_ip, current_user.proxy_owner.id)
+        tracked_ip = UserAccountIp.find_or_initialize_by_ip_and_user_account_id(current_ip, current_user.proxy_owner.id)
         begin
           tracked_ip.save if tracked_ip.new_record?
         rescue
           # prevent unexpected errors from causing status 500
-          tracked_ip = UserAccountIP.new({:ip => current_ip})
+          tracked_ip = UserAccountIp.new({:ip => current_ip})
         end
         session[:current_ip] = tracked_ip.ip
       end
