@@ -5,17 +5,13 @@ describe Annotation, 'upon creation' do
   include TranslationTestHelper
 
   let(:interview) do
-    Interview.create \
-        :archive_id => 'za907',
-        :first_name => 'Abraham',
-        :last_name => 'Lincoln',
-        :country_of_origin => 'Vereinigte Staaten'
+    Interview.with_locale(:de) do
+      create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln', :country_of_origin => 'Vereinigte Staaten'
+    end
   end
 
   let(:tape) do
-    Tape.create \
-        :media_id => 'ZA907_01_01',
-        :interview => interview
+    create :tape, :interview => interview
   end
 
   let(:segment1) do

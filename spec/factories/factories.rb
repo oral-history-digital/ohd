@@ -1,5 +1,10 @@
 FactoryGirl.define do
 
+  factory :category do
+    name 'test category'
+    category_type 'test cat type'
+  end
+
   factory :interview do
     archive_id 'za465'
     last_name 'Baschlai'
@@ -8,9 +13,9 @@ FactoryGirl.define do
     country_of_origin 'Russland'
   end
 
-  factory :category do
-    name 'test category'
-    category_type 'test cat type'
+  factory :tape do
+    media_id 'ZA907_01_01'
+    interview
   end
 
   factory :usage_report do
