@@ -15,7 +15,7 @@ namespace :storage do
 
         archive_id = interview.archive_id.downcase
 
-        photo_path = File.join(ActiveRecord.path_to_photo_storage, '../interview_stills')
+        photo_path = File.join(ActiveRecord.path_to_photo_storage, 'interview_stills')
 
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
 
@@ -23,7 +23,7 @@ namespace :storage do
 
           if file_name.match(/^za\d{3}\.(png|jpg)$/i)
 
-            if interview.still_image_file_name == nil
+            if interview.still_image_file_name == nil or not File.exists?(interview.still_image_file_name)
               interview.still_image = File.open(file)
               interview.save!
               puts "#{file_name} added"
