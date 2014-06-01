@@ -294,15 +294,20 @@ class LocationReference < ActiveRecord::Base
 
   # Creates a relevant interview field (forced labor locations etc)
   def update_interview_category
-    case reference_type.to_s
-      when 'place_of_birth'
-        interview.update_attribute :birth_location, name
-      when 'home_location'
-        # Set the home location on the interview.
-        interview.home_location = @country_name || name.split(',').last
-      else
-        # Do nothing.
+    return unless ['place_of_birth', 'home_location'].include? reference_type.to_s
+    translations.each do |t|
+      locale = t.locale.to_sym
+      Interview.with_locale(locale) do
+        case reference_type.to_s
+          when 'place_of_birth'
+            interview.birth_location = name(locale)
+          when 'home_location'
+            # Set the home location on the interview.
+            interview.home_location = country_name(locale) || name(locale).split(',').last
+        end
+      end
     end
+    interview.save!
   end
 
 end

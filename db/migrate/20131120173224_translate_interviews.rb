@@ -5,7 +5,8 @@ class TranslateInterviews < ActiveRecord::Migration
       :last_name => :string,
       :details_of_origin => :string,
       :return_date => :string,
-      :forced_labor_details => :text
+      :forced_labor_details => :text,
+      :birth_location => :string
   }
 
   TRANSLATED_COLUMNS = MIGRATED_COLUMNS.merge :birth_name => :string
@@ -25,9 +26,9 @@ class TranslateInterviews < ActiveRecord::Migration
     add_index :interview_translations, :interview_id
 
     # Migrate existing data to the translation table.
-    execute "INSERT INTO interview_translations(interview_id, locale, first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, created_at, updated_at)
-             SELECT id, 'de', first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, NOW(), NOW() FROM interviews
-             WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL"
+    execute "INSERT INTO interview_translations(interview_id, locale, first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, created_at, updated_at)
+             SELECT id, 'de', first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, NOW(), NOW() FROM interviews
+             WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL OR birth_location IS NOT NULL"
 
     # Drop obsolete column.
     remove_columns :interviews, MIGRATED_COLUMNS.keys

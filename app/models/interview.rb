@@ -93,7 +93,7 @@ class Interview < ActiveRecord::Base
            :include => :translations
 
   translates :first_name, :other_first_names, :last_name, :birth_name,
-             :details_of_origin, :return_date, :forced_labor_details,
+             :details_of_origin, :return_date, :forced_labor_details, :birth_location,
              :interviewers, :transcriptors, :translators,
              :proofreaders, :segmentators, :researchers
 
@@ -289,11 +289,11 @@ class Interview < ActiveRecord::Base
   end
 
   # uses the birth location (if available) or country_of_origin
-  def country_of_birth
-    if birth_location.nil? || birth_location.blank?
+  def country_of_birth(locale = I18n.default_locale)
+    if birth_location(locale).nil? || birth_location(locale).blank?
       country_of_origin
     else
-      birth_location.split(/,\s*/).last
+      birth_location(locale).split(/,\s*/).last
     end
   end
 
