@@ -55,7 +55,7 @@ ru:
 
     back_to_top_template: &back_to_top_template
       back_to_top: 'В начало страницы'
-      image_back_to_top: 'Значок 'вверх''
+      image_back_to_top: "Значок 'вверх'"
 
     header_template: &header_template
       info: *project_name
