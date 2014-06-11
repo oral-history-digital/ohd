@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/jerico-dev/paperclip.git
-  revision: 719d7fe0e52c0ac0c498f514de27d4a1a2ee645a
+  revision: 39f40dc03950584773c94fd6070b2b668d61c4c8
   branch: v2.7
   specs:
     paperclip (2.7.5)
