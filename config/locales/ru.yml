@@ -54,19 +54,19 @@ ru:
     project_name: &project_name 'Подневольный труд 1939-1945: Онлайн-архив "Подневольный труд 1939-1945"'
 
     back_to_top_template: &back_to_top_template
-      back_to_top: '##ru##'
-      image_back_to_top: '##ru##'
+      back_to_top: 'В начало страницы'
+      image_back_to_top: 'Значок 'вверх''
 
     header_template: &header_template
       info: *project_name
-      skip: '##ru##'
-      content: '##ru##'
-      service_navigation: '##ru##'
-      logoff: '##ru##'
+      skip: 'Перейти сразу к'
+      content: 'Контент'
+      service_navigation: 'Сервисная навигация'
+      logoff: 'Выйти'
 
     print_version_template: &print_version_template
-      print_preview_only: '##ru##'
-      print_logo: '##ru##'
+      print_preview_only: 'Данные графические изображения используются только в предварительном просмотре перед печатью.'
+      print_logo: 'Печатная версия логотипа'
 
   home: 'Главная'
   home_link: 'На главную страницу проекта: Подневольный труд 1939-1945. Воспоминания и история'
@@ -279,9 +279,9 @@ ru:
       home_locations: 'Последние места жительства'
       mentions: 'Упоминания'
     pagination:
-      place: '##ru##'
-      places: '##ru##'
-      of: '##ru##'
+      place: 'Место'
+      places: 'Места'
+      of: 'из'
 
   plugins:
     noflash: 'Необходим Adobe Flash'
@@ -475,12 +475,12 @@ ru:
       forced_labor_company:   'Фирма'
       deportation_location:   'Место депортации'
       place_of_birth:         'Место рождения'
-      home_location:          'Последнее место жительства'
-      home_location_in_map:   '##ru##'
+      home_location:          'Место жительства'
+      home_location_in_map:   'Последнее место жительства'
       return_location:        'Место жительства с 1945'
-      postwar_camp:           '##ru##'
+      postwar_camp:           'Лагерь с 1945'
       interview:              'Упоминание'
-      interview_in_map:       '##ru##'
+      interview_in_map:       'Упоминание в'
 
   external_links:
     notice: 'Внешняя ссылка'
@@ -538,9 +538,9 @@ ru:
 
   _header:
     << : *header_template
-    map_link_title: '##ru##'
-    collections_link_title: '##ru##'
-    faq_link_title: '##ru##'
+    map_link_title: 'Обзорная карта биографических этапов'
+    collections_link_title: 'Географическое распределение частичных собраний'
+    faq_link_title: 'Вопросы и ответы по использованию архива'
 
   _locale_chooser:
     language_choice: "Русский"
@@ -548,7 +548,7 @@ ru:
 
   interviews:
     content:
-      search_in_interview: '##ru##'
+      search_in_interview: 'Поиск в &#145;%{content}&#146;'
 
   layouts:
     admin:
@@ -580,14 +580,14 @@ ru:
 
   searches:
     active_facet:
-      remove: '##ru##'
+      remove: 'удалить'
     facet_option:
-      arrow_down: '##ru##'
-      arrow_right: '##ru##'
+      arrow_down: 'Cтрелка вниз'
+      arrow_right: 'Cтрелка вправо'
       no_persons_found: 'Персоны не найдены'
-      update: '##ru##'
+      update: 'обновить'
     facets:
-      search: '##ru##'
+      search: 'поиск'
 
   user_account_mailer:
     subject: "Ваш доступ к архиву 'Подневольный труд 1939-1945'"
