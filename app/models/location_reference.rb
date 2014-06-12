@@ -126,18 +126,18 @@ class LocationReference < ActiveRecord::Base
     json
   end
 
-  def short_name
+  def short_name(locale = I18n.default_locale)
     @short_name ||= '' + \
       begin
         built_name = []
         if classified
           # then we can just ignore the region (second name part) if given
-          built_name = name.split(',').map{|p| p.strip}
+          built_name = name(locale).split(',').map{|p| p.strip}
           if built_name.size == 3
             built_name.delete_at(1)
           end
         else
-          name.split(';').each do |location|
+          name(locale).split(';').each do |location|
             parts = location.split(',').map{|p| p.strip}
             parts.each do |part|
               remove = false

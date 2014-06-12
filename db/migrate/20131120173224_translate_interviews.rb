@@ -6,7 +6,10 @@ class TranslateInterviews < ActiveRecord::Migration
       :details_of_origin => :string,
       :return_date => :string,
       :forced_labor_details => :text,
-      :birth_location => :string
+      :birth_location => :string,
+      :forced_labor_locations => :text,
+      :return_locations => :text,
+      :deportation_location => :string
   }
 
   TRANSLATED_COLUMNS = MIGRATED_COLUMNS.merge :birth_name => :string
@@ -26,9 +29,9 @@ class TranslateInterviews < ActiveRecord::Migration
     add_index :interview_translations, :interview_id
 
     # Migrate existing data to the translation table.
-    execute "INSERT INTO interview_translations(interview_id, locale, first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, created_at, updated_at)
-             SELECT id, 'de', first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, NOW(), NOW() FROM interviews
-             WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL OR birth_location IS NOT NULL"
+    execute "INSERT INTO interview_translations(interview_id, locale, first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, forced_labor_locations, return_locations, deportation_location, created_at, updated_at)
+             SELECT id, 'de', first_name, other_first_names, last_name, details_of_origin, return_date, forced_labor_details, birth_location, forced_labor_locations, return_locations, deportation_location, NOW(), NOW() FROM interviews
+             WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL OR birth_location IS NOT NULL OR forced_labor_locations IS NOT NULL OR return_locations IS NOT NULL OR deportation_location IS NOT NULL"
 
     # Drop obsolete column.
     remove_columns :interviews, MIGRATED_COLUMNS.keys

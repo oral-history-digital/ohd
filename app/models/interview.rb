@@ -95,7 +95,8 @@ class Interview < ActiveRecord::Base
   translates :first_name, :other_first_names, :last_name, :birth_name,
              :details_of_origin, :return_date, :forced_labor_details, :birth_location,
              :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+             :proofreaders, :segmentators, :researchers,
+             :forced_labor_locations, :return_locations, :deportation_location
 
   validate :has_standard_name
   def has_standard_name
@@ -396,28 +397,23 @@ class Interview < ActiveRecord::Base
     @quality || 2.0
   end
 
-  def set_forced_labor_locations!
-    locations = []
-    location_references.forced_labor.each do |location|
-      locations << location.short_name.strip
+  def set_locations!
+    {
+        :forced_labor => :forced_labor_locations,
+        :return => :return_locations,
+        :deportation => :deportation_location
+    }.each do |location_reference_type, interview_attribute|
+      I18n.available_locales.each do |locale|
+        Interview.with_locale(locale) do
+          locations = []
+          location_references.send(location_reference_type).each do |location|
+            locations << location.short_name(locale).strip
+          end
+          send("#{interview_attribute}=", locations.join('; '))
+        end
+      end
     end
-    update_attribute :forced_labor_locations, locations.join('; ')
-  end
-
-  def set_return_locations!
-    locations = []
-    location_references.return.each do |location|
-      locations << location.short_name.strip
-    end
-    update_attribute :return_locations, locations.join('; ')
-  end
-
-  def set_deportation_location!
-    locations = []
-    location_references.deportation.each do |location|
-      locations << location.short_name.strip
-    end
-    update_attribute :deportation_location, locations.join('; ')
+    save!
   end
 
   def set_contributor_fields!
