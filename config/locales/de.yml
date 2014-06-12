@@ -67,6 +67,9 @@ de:
       print_preview_only: 'Diese Grafiken werden nur in der Druckvorschau verwendet:'
       print_logo: 'Druckversion des Logos'
 
+    timecode:
+      minimal: '%{hours}h%{minutes}min'
+
   home: 'Startseite'
   home_link: 'Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
   logo_title: 'Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'

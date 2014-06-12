@@ -17,6 +17,9 @@ en:
       print_preview_only: 'These images will only be shown in print preview:'
       print_logo: 'print logo'
 
+    timecode:
+      minimal: '%{hours}h%{minutes}min'
+
   home: "Home"
   home_link: 'To project start page for: Forced Labor 1939-1945. Memory and History'
   logo_title: 'Logo of the project: Forced Labor 1939-1945. Memory and History'
