@@ -1,6 +1,6 @@
 <div id="containerForcedLabor"  class="container">
     <ul class="data">
-      <% if forced_labor.birth_location(locale).nil? -%>
+      <% if forced_labor.birth_location(I18n.locale).nil? -%>
           <li>
             <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
             <span class="value"><%= format_date forced_labor.date_of_birth %></span>
@@ -8,7 +8,7 @@
       <% else -%>
           <li>
             <span class="label"><%= Interview.human_attribute_name(:birth_location) %></span>
-            <span class="value"><%= forced_labor.birth_location(locale) %>,&nbsp;<%= format_date forced_labor.date_of_birth%></span>
+            <span class="value"><%= forced_labor.birth_location(I18n.locale) %>,&nbsp;<%= format_date forced_labor.date_of_birth%></span>
           </li>
       <% end -%>
       <li>
@@ -17,7 +17,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= deportation_for(forced_labor) %></span>
+        <span class="value"><%= deportation_for(forced_labor, I18n.locale) %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
@@ -31,7 +31,7 @@
       <% end %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_locations) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_locations %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_locations(I18n.locale) %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
@@ -43,7 +43,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
-        <span class="value"><%= expand forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
+        <span class="value"><%= expand forced_labor.return_locations(I18n.locale) || t(:unknown, :scope => 'status') %></span>
       </li>
       <% unless forced_labor.return_date(I18n.locale).blank? %>
       <li>

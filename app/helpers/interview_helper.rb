@@ -92,9 +92,9 @@ module InterviewHelper
     (name || '').gsub(/[\s,;]+/,'+')
   end
 
-  def deportation_for(interview)
-    unless interview.deportation_location.blank?
-      [ interview.deportation_location, format_date(interview.deportation_date) ].compact.join(',&nbsp;')
+  def deportation_for(interview, locale = I18n.default_locale)
+    unless interview.deportation_location(locale).blank?
+      [ interview.deportation_location(locale), format_date(interview.deportation_date) ].compact.join(',&nbsp;')
     else
       t(:not_deported, :scope => 'status')
     end
