@@ -336,6 +336,12 @@ DEF
     end
 
     def from_params(query_params=nil)
+      # Clear the default search field contents from the query
+      # on the server-side, in case this is missed by the JS client code.
+      unless query_params.blank? || query_params[:fulltext].blank?
+        query_params.delete(:fulltext) if query_params[:fulltext] == t('search_term', :scope => 'user_interface.search')
+      end
+
       if query_params.blank?
         if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
           @@default_search = nil

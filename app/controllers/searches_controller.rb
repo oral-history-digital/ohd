@@ -10,7 +10,6 @@ class SearchesController < BaseController
   before_filter :current_query_params
 
   before_filter :determine_user, :only => [ :query, :index ]
-  before_filter :remove_search_term_from_params
 
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
@@ -145,6 +144,7 @@ class SearchesController < BaseController
   # even on AJAX requests
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
+      set_locale
       flash[:alert] = t(:unauthenticated_search, :scope => 'devise.sessions', :locale => I18n.locale)
       session[:query] = Search.from_params(params).query_params
       if ACTIONS_FOR_DEFAULT_REDIRECT.include?(action_name)
@@ -162,14 +162,6 @@ class SearchesController < BaseController
       else
         redirect_to new_user_account_session_url
       end
-    end
-  end
-
-  # This method clears the default search field contents from the query
-  # on the server-side, in case this is missed by the JS client code.
-  def remove_search_term_from_params
-    unless params.blank? || params[:fulltext].blank?
-      params.delete(:fulltext) if params[:fulltext] == t('search_term', :scope => 'user_interface.search')
     end
   end
 
