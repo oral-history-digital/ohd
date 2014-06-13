@@ -14,7 +14,7 @@ class TranslateCategories < ActiveRecord::Migration
               'Service du Travail obligatoire' => 'Service du travail obligatoire (Forced Labor Service)',
               'Italienische Militärinternierte' => 'Italian Military Internees',
               'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)' => 'Religiously Persecuted',
-              'Germanisiertes Kind' => 'Germanized Children ',
+              'Germanisiertes Kind' => 'Germanized Children',
               'Keine Angabe' => 'Not Specified '
           },
           'Einsatzbereiche' => {
