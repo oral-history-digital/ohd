@@ -339,7 +339,12 @@ DEF
       # Clear the default search field contents from the query
       # on the server-side, in case this is missed by the JS client code.
       unless query_params.blank? || query_params[:fulltext].blank?
-        query_params.delete(:fulltext) if query_params[:fulltext] == t('search_term', :scope => 'user_interface.search')
+        ignored_search_terms = I18n.available_locales.map do |locale|
+          t('search_term', :scope => 'user_interface.search', :locale => locale)
+        end
+        if ignored_search_terms.include? query_params[:fulltext]
+          query_params.delete(:fulltext)
+        end
       end
 
       if query_params.blank?
