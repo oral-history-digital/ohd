@@ -54,10 +54,6 @@ class Search < UserContent
 
   ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
 
-  IGNORE_SEARCH_TERMS = I18n.available_locales.map do |locale|
-      I18n.t('search_term', :scope => 'user_interface.search', :locale => locale)
-  end
-
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
   (ACCESSIBLES - [ 'fulltext' ]).each do |query_param|
@@ -114,7 +110,7 @@ DEF
 
   # Filter the ignore (default label) words from fulltext.
   def fulltext=(term)
-    self.write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+    self.write_property(:fulltext, term)
   end
 
   def fulltext
