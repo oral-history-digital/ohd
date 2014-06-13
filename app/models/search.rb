@@ -54,10 +54,9 @@ class Search < UserContent
 
   ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
 
-  IGNORE_SEARCH_TERMS = [
-      I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
-      I18n.t('search_term', :scope => 'user_interface.search', :locale => :en)
-  ]
+  IGNORE_SEARCH_TERMS = I18n.available_locales.map do |locale|
+      I18n.t('search_term', :scope => 'user_interface.search', :locale => locale)
+  end
 
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
