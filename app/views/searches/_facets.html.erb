@@ -16,8 +16,8 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
-        <% search_facets.object.fulltext = t('search_term', :scope => 'user_interface.search') if search_facets.object.fulltext.blank? %>
-        <%= search_facets.text_field :fulltext, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch searchInput', :title => t('fulltext_title', :scope => 'user_interface.search'), :onFocus => "clearFulltextField('searchInput');" %>
+        <% current_search_text = (search_facets.object.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : search_facets.object.fulltext -%>
+        <%= search_facets.text_field :fulltext, :value=> current_search_text, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch searchInput', :title => t('fulltext_title', :scope => 'user_interface.search'), :onFocus => "clearFulltextField('searchInput');" %>
         <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => t('.search'), :type => :image, :src => image_path('pfeil_rot_rechts.gif'), :onclick => "submitViaAjax(); false;" %>
         <%= hidden_field_tag 'open_category', '', :id => 'open_category' %>
     </div>
