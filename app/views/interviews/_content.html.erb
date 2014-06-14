@@ -1,81 +1,73 @@
 <div id="interviewContentNavigation" class="baseListBox">
 
-  <% featured_content = if params[:location_name].blank?
-      if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
-        # table of contents displayed
-        :headings
-      else
-        # segment search
-        :search_results
-      end
-  elsif content.location_references.empty?
-    :search_results
-  else
-    # segments for location
-    :locations
-  end -%>
+    <% featured_content = if params[:location_name].blank?
+                            if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
+                              # table of contents displayed
+                              :headings
+                            else
+                              # segment search
+                              :search_results
+                            end
+                          elsif content.location_references.empty?
+                            :search_results
+                          else
+                            # segments for location
+                            :locations
+                          end -%>
 
-  <% show_segments = [:search_results, :locations ].include?(featured_content) -%>
-  <% show_locations = (featured_content == :locations ) && defined?(@location) && !@location.nil? -%>
-  <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
+    <% show_segments = [:search_results, :locations].include?(featured_content) -%>
+    <% show_locations = (featured_content == :locations) && defined?(@location) && !@location.nil? -%>
+    <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
-  <% remote_form_for content,
-                     :url => interview_searches_path,
-                     :method => :get,
-                     :update => 'search-results',
-                     :before => "$('interview_search_overlay').show()",
-                     :complete => "$('interview_search_overlay').hide();$('search-results-toggle').show();openContainer('search-results-toggle',true);",
-                     :html => { :action => '',
-                                :name => "search-in-interview",
-                                :id => "search_in_interview" } do |search| %>
+    <% remote_form_for content,
+                       :url => interview_searches_path,
+                       :method => :get,
+                       :update => 'search-results',
+                       :before => "$('interview_search_overlay').show()",
+                       :complete => "$('interview_search_overlay').hide();$('search-results-toggle').show();openContainer('search-results-toggle',true);",
+                       :html => {:action => '',
+                                 :name => "search-in-interview",
+                                 :id => "search_in_interview"} do |search| %>
 
-    <div id="interviewSearch">
-        <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
-        <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
-        <%= hidden_field_tag 'id', @interview.archive_id %>
-        <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>
+        <div id="interviewSearch">
+            <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
+            <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
+            <%= hidden_field_tag 'id', @interview.archive_id %>
+            <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>
+        </div>
+
+    <% end %>
+
+    <% javascript_tag do %>
+        $('interview_fulltext').value = '<%= current_search_text %>';
+    <% end %>
+
+    <% show_headings = (featured_content == :headings) %>
+    <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed' %> container-toggle" onclick="toggleContainer('headings-toggle', true, true);">
+        <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
+    </div>
+    <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
+        <%= render :partial => 'headings', :object => content, :locals => {:player => @player} %>
     </div>
 
-  <% end %>
+    <% if show_locations -%>
+        <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
+        <% fulltext = ([@location.location_name] + (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
+    <% else -%>
+        <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
+        <% fulltext = @search.fulltext -%>
+    <% end -%>
+    <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed' %> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true, true);">
+        <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
+        <% if show_segments %>
+            <span class="hits">(<%= @segments.size %>)</span>
+        <% end %>
+    </div>
+    <div id="search-results" class="accordion-container container" style="<%= show_segments ? '' : 'display:none;' %>">
+        <%= render :partial => 'segments', :object => @segments, :local => {:fulltext => fulltext} %>
+    </div>
 
-  <% javascript_tag do %>
-      $('interview_fulltext').value = '<%= current_search_text %>';
-  <% end %>
-
-  <% if show_locations -%>
-      <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
-      <% fulltext = ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
-  <% else -%>
-      <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
-      <% fulltext = @search.fulltext -%>
-  <% end -%>
-  <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed'%> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true, true);">
-    <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
-    <% if show_segments %>
-    <span class="hits">(<%= @segments.size %>)</span>
-    <% end %>
-  </div>
-  <div id="search-results" class="accordion-container container" style="<%= show_segments ? '' : 'display:none;'%>">
-    <%= render :partial => 'segments', :object => @segments, :local => { :fulltext => fulltext } %>
-  </div>
-
-  <% show_headings = (featured_content == :headings) %>
-  <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed'%> container-toggle" onclick="toggleContainer('headings-toggle', true, true);">
-    <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
-  </div>
-  <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
-    <%= render :partial => 'headings', :object => content, :locals => { :player => @player } %>
-  </div>
-
-  <% javascript_tag do -%>
-    function subcontainerToggle(id) {
-        var toggle = $(id);
-        var subcontainer = toggle.next('ul');
-        subcontainer.toggle();
-        toggle.toggleClassName('closed');
-    }
-  <% end -%>
-
-  <div id="interview_search_overlay" class="overlay" style="display:none;"><img class="spinner_search" src="<%= image_path 'spinner.gif' %>" title="" alt="" /></div>
+    <div id="interview_search_overlay" class="overlay" style="display:none;">
+        <img class="spinner_search" src="<%= image_path 'spinner.gif' %>" title="" alt=""/></div>
 
 </div>
