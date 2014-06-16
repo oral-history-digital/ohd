@@ -70,7 +70,7 @@ class TranslateCategories < ActiveRecord::Migration
               'Polnisch' => 'Polish',
               'Serbisch' => 'Serbian',
               'Ungarisch' => 'Hungarian',
-              'Slowakisch' => 'Slovak',
+              'Slowakisch' => 'Slovakian',
               'Tschechisch' => 'Czech',
               'Slowenisch' => 'Slovenian',
               'Katalanisch' => 'Catalan',
