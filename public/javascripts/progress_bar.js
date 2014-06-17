@@ -114,7 +114,7 @@ progressBar = function(opts) {
       }
 
       var percent = Math.round((current/total)*100);
-      bar.style.width = percent;
+      bar.style.width = percent + '%';
       text.innerHTML = I18n.t('map.progress.loaded', {percent: percent});
 
     } else if (!total){

@@ -240,7 +240,7 @@ de:
   privacy:
     label: 'Hinweis zum Datenschutz'
     terms: 'Nutzungsbedingungen'
-    confirm: 'Zustimmen und externe Inhalte laden'
+    confirm: 'Zustimmen und Karte laden'
     more_here: 'Näheres erfahren Sie hier'
     google_acceptance: 'Durch den Klick erkennen Sie die Google Nutzungsbedingungen an'
     google_notice: 'Wenn Sie folgende Inhalte durch einen Klick aktivieren, werden Nutzerdaten (insbesondere Ihre IP-Adresse) an Google übertragen, dort gespeichert, und unter Umständen mit weiteren Profilinformationen (z.B. Google+ etc.) dieses Anbieters abgeglichen.'
@@ -474,7 +474,7 @@ de:
   locations:
     types:
       forced_labor_location:  'Einsatzort'
-      forced_labor_camp:      'Lager'
+      forced_labor_camp:      'Lager oder Haftstätte'
       forced_labor_company:   'Firma'
       deportation_location:   'Deportationsort'
       place_of_birth:         'Geburtsort'

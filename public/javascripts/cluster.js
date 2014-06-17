@@ -452,7 +452,7 @@ var Location = Class.create({
         this.interviewId = parseArchiveId(interviewId);
         this.latLng = latLng;
         this.level = level;
-        this.linkURL = linkURL + '/in/' + encodeURIComponent(id.gsub('/', ' ').gsub(/[()-+&.!,;]+/, " ").gsub(/\s+/, "+"));
+        this.linkURL = linkURL + '/in/' + encodeURIComponent(id.gsub('/', ' ').gsub(/[()-+&.!,;]+/, " ").gsub(/\s+/, "+")) + '?locale=' + I18n.locale;
         this.displayFilter = locDisplay;
         this.displaySelection = true;
         this.cluster = null;

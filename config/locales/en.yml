@@ -192,7 +192,7 @@ en:
   privacy:
       label: 'Privacy Disclaimer'
       terms: 'Terms of Use'
-      confirm: 'confirm and load external content'
+      confirm: 'confirm and load map'
       more_here: 'Learn more here'
       google_acceptance: "By clicking you accept Google's terms of use"
       google_notice: 'If you accept to show the following content via click, Google will receive user data (especially your IP address). Google will store this data and may evaluate it together with other profile information (e.g. Google+ etc.).'
@@ -216,12 +216,12 @@ en:
       more_help: 'Need help? Learn more'
     explanation:
       title: 'How to use the map'
-      filter: '%{image}Use the filters on the right side to select the categories of places you want to see (Forced Labor Sites, Camps and Prisons etc.). No places will be shown if all filters are deselected (grey).'
+      filter: '%{image}Use the filters on the right side to select the categories of places you want to see (Places of Forced Labor, Camps and Prisons etc.). No places will be shown if all filters are deselected (grey).'
       clustering: '%{image}For more clarity in low zoom, locations may be bundled by country and region. This function may be deactivated by unchecking &quot;Clustering...&quot; below the filters.'
       legend: 'The &quot;Filters&quot; and &quot;Clustering&quot; options are always available. %{image}Just choose the &quot;Legend/Filters&quot; button on the top right to see available filters. A Click on the &quot;X&quot; (top right) closes this option again.'
       finish: '%{close} these instructions when you are done.'
     labels:
-      forced_labor_locations: 'Forced Labor Sites'
+      forced_labor_locations: 'Places of Forced Labor'
       camps: 'Camps and Prisons'
       companies: 'Companies'
       deportations: 'Places of Deportation'
@@ -425,9 +425,9 @@ en:
 
   locations:
     types:
-      forced_labor_location:  'Forced Labor'
-      forced_labor_camp:      'Camp'
-      forced_labor_company:   'Forced Labor'
+      forced_labor_location:  'Place of Forced Labor'
+      forced_labor_camp:      'Camp or Prison'
+      forced_labor_company:   'Company'
       deportation_location:   'Place of Deportation'
       place_of_birth:         'Place of Birth'
       home_location:          'Place of Residence'
