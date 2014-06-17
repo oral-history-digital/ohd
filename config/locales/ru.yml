@@ -283,8 +283,8 @@ ru:
       places: 'Места'
       of: 'из'
     progress:
-      loading: '##ru##'
-      loaded: '##ru##'
+      loading: 'Пожалуйста, подождите...'
+      loaded: '%{percent}% загружено'
 
   plugins:
     noflash: 'Необходим Adobe Flash'
@@ -553,7 +553,7 @@ ru:
     content:
       search_in_interview: 'Поиск в &#145;%{content}&#146;'
     segments:
-      in: '##ru##'
+      in: 'В'
     search:
       all_interviews: &interviews_search_all_interviews 'все&nbsp;интервью'
       one_selected: &interviews_search_one_selected '1&nbsp;интервью&nbsp;в&nbsp;выборе'
