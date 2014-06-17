@@ -61,16 +61,20 @@ module ApplicationHelper
   end
 
   def segment_excerpt_for_match(segment, original_query='', width=10)
-    # TODO: reduce word count in both directions on interpunctuation
-    # handle wildcards
+    # TODO: Reduce word count in both directions on interpunctuation.
+    # TODO: Handle wildcards.
+
+    # Implement fallback rule for segments
+    # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+    transcript = if I18n.locale == :de then segment.translation else segment.transcript end
+    transcript.gsub!(/[*~]([^*~]*)[*~]/,'\1')
+
     query_string = Regexp.escape(original_query).gsub('\*','\w*')
-    transcript = segment.transcript.gsub(/[*~]([^*~]*)[*~]/,'\1')
-    translation = segment.translation.gsub(/[*~]([^*~]*)[*~]/,'\1')
     unless query_string.index(' ').nil?
-      # check if an expression matches directly
-      r = Regexp.new query_string, Regexp::IGNORECASE
-      if (translation[r] || transcript[r]).blank?
-        # and multiple expressions
+      # Check if the expression matches directly.
+      pattern = Regexp.new query_string, Regexp::IGNORECASE
+      if transcript[pattern].blank?
+        # If not: change the query string to match multiple expressions.
         query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
         query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
         query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
@@ -78,11 +82,11 @@ module ApplicationHelper
     end
     query_string.gsub!('_',' ')
     pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(' + query_string + ')\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
-    match_text = translation[pattern] || transcript[pattern]
+    match_text = transcript[pattern]
     if match_text.nil?
-      truncate(translation, :length => 180)
+      truncate(transcript, :length => 180)
     else
-      str = ((translation.index(match_text) || transcript.index(match_text)) == 0) ? '' : '&hellip;'
+      str = transcript.index(match_text) == 0 ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
       "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
     end
