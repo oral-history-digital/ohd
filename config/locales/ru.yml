@@ -596,7 +596,7 @@ ru:
     facet_option:
       arrow_down: 'Cтрелка вниз'
       arrow_right: 'Cтрелка вправо'
-      no_persons_found: 'Персоны не найдены'
+      no_persons_found: 'Имя не найдено'
       update: 'обновить'
     facets:
       search: 'поиск'
