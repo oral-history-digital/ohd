@@ -3,11 +3,13 @@
 <div id="baseHeaderSearch">
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to "#{t(:all)}&nbsp;#{Interview.human_name(:count => search.hits)}", current_search_path, :method => :post %>
-    <% elsif search.hits > 0 %>
-      <%= link_to "#{search.hits} #{Interview.human_name(:count => search.hits)}&nbsp;#{t(:in_the_current_search, :scope => 'user_interface.labels')}", current_search_path, :method => :post %>
+      <%= link_to t('.all_interviews'), current_search_path, :method => :post %>
+    <% elsif search.hits > 1 %>
+      <%= link_to t('.many_selected', :search_hits => search.hits), current_search_path, :method => :post %>
+    <% elsif search.hits == 1 %>
+      <%= link_to t('.one_selected'), current_search_path, :method => :post %>
     <% else %>
-      <%= "#{t(:not_found, :scope => 'user_interface.search')}&nbsp;#{Interview.human_name(:count => 0)}&nbsp;#{t(:in_the_current_search, :scope => 'user_interface.labels')}" %>
+      <%= t('.no_interviews_found') %>
     <% end %>
   </span>
 </div>

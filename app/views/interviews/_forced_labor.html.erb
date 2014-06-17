@@ -13,7 +13,7 @@
       <% end -%>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_groups) %></span>
-        <span class="value"><%= forced_labor.forced_labor_groups.join(', ') %></span>
+        <span class="value"><%= forced_labor.forced_labor_groups.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
@@ -21,7 +21,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_fields.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_fields.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
       <% unless forced_labor.forced_labor_details(I18n.locale).blank? %>
       <li>
@@ -35,7 +35,7 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_habitations.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_habitations.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>

@@ -360,31 +360,11 @@ br.spacer {
 	height: 30px;
 }
 
-/* Copyright */
-#baseContainerFooter div.left {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	width: 570px;
-	padding-bottom: 10px;
-}
-
-/* Datum */
-#baseContainerFooter div.right {
-	position: absolute;
-	top: 10px;
-	left: 690px;
-	width: 168px;
-	text-align: right;
-	padding-bottom: 10px;
-}
-
 /* Footer Nav */
 #baseContainerFooter ul {
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	width: 600px;
     margin: 0;
     padding: 0 0 10px 0;
 }

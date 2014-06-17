@@ -86,7 +86,6 @@ de:
   back: 'zur&uuml;ck'
   forward: 'weiter'
   translated: 'übersetzt'
-  all: 'alle'
   select_all: 'alle ausw&auml;hlen'
   admin_area: 'Administratoren-Bereich'
   and: 'und'
@@ -153,7 +152,6 @@ de:
       status_update: 'Stand'
       search_the_archive: 'Suche im Archiv'
       search_the_interview: 'Suche im Interview'
-      in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
@@ -184,7 +182,6 @@ de:
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'
-      not_found: 'keine'
       reset: 'zur&uuml;cksetzen'
       save: 'Suche speichern'
       saved: 'Suche gespeichert'
@@ -284,6 +281,9 @@ de:
       place: 'Ort'
       places: 'Orte'
       of: 'von'
+    progress:
+      loading: 'Bitte warten...'
+      loaded: '%{percent}% geladen'
 
   plugins:
     noflash: 'Adobe Flash ben&ouml;tigt'
@@ -552,6 +552,15 @@ de:
   interviews:
     content:
       search_in_interview: 'Suchen in &#145;%{content}&#146;'
+    segments:
+      in: 'In'
+    search:
+      all_interviews: &interviews_search_all_interviews 'alle&nbsp;Interviews'
+      one_selected: &interviews_search_one_selected 'ein&nbsp;Interview&nbsp;ausgewählt'
+      many_selected: &interviews_search_many_selected '%{search_hits}&nbsp;Interviews&nbsp;ausgewählt'
+      no_interviews_found: &interviews_search_no_interviews_found 'keine&nbsp;Interviews&nbsp;ausgewählt'
+    result:
+      segment_link: 'zum Ausschnitt: Band %{tape_nr}, %{timecode}'
 
   layouts:
     admin:
@@ -591,6 +600,11 @@ de:
       update: 'aktualisieren'
     facets:
       search: 'suchen'
+    search:
+      all_interviews: *interviews_search_all_interviews
+      one_selected: *interviews_search_one_selected
+      many_selected: *interviews_search_many_selected
+      no_interviews_found: *interviews_search_no_interviews_found
 
   user_account_mailer:
     subject: "Ihr Zugang zum Archiv 'Zwangsarbeit 1939-1945'"

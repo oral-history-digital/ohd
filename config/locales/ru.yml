@@ -69,7 +69,7 @@ ru:
       print_logo: 'Печатная версия логотипа'
 
     timecode:
-      minimal: '%{hours}ч.%{minutes}мин.'
+      minimal: '%{hours}ч. %{minutes}мин.'
 
   home: 'Главная'
   home_link: 'На главную страницу проекта: Подневольный труд 1939-1945. Воспоминания и история'
@@ -79,7 +79,7 @@ ru:
   collections_map: 'Частичные собрания'
   team: 'Команда'
   contact: 'Контакт'
-  legal_notice: 'Импрессум'
+  legal_notice: 'Правовая информация'
   faq: 'Помощь'
   previous: '&laquo;&nbsp;предыдущая'
   next: 'следующая&nbsp;&raquo;'
@@ -87,7 +87,6 @@ ru:
   back: 'назад'
   forward: 'далее'
   translated: 'перевод'
-  all: 'все'
   select_all: 'выбрать все'
   admin_area: 'область администратора'
   and: 'и'
@@ -154,7 +153,6 @@ ru:
       status_update: 'Состояние на'
       search_the_archive: 'Поиск в архиве'
       search_the_interview: 'Поиск в интервью'
-      in_the_current_search: 'в&nbsp;выборе'
       workbook: 'Рабочая тетрадь'
       show_all: 'показать все'
       show_interview: 'к интервью'
@@ -185,7 +183,6 @@ ru:
     search:
       search_term: 'Ключевое понятие'
       fulltext_title: 'Введите здесь ключевое понятие'
-      not_found: 'не найден'
       reset: 'отмена'
       save: 'Поиск сохранить'
       saved: 'Поиск сохранён'
@@ -285,6 +282,9 @@ ru:
       place: 'Место'
       places: 'Места'
       of: 'из'
+    progress:
+      loading: '##ru##'
+      loaded: '##ru##'
 
   plugins:
     noflash: 'Необходим Adobe Flash'
@@ -552,6 +552,15 @@ ru:
   interviews:
     content:
       search_in_interview: 'Поиск в &#145;%{content}&#146;'
+    segments:
+      in: '##ru##'
+    search:
+      all_interviews: &interviews_search_all_interviews 'все&nbsp;интервью'
+      one_selected: &interviews_search_one_selected '1&nbsp;интервью&nbsp;в&nbsp;выборе'
+      many_selected: &interviews_search_many_selected '%{search_hits}&nbsp;интервью&nbsp;выбрано'
+      no_interviews_found: &interviews_search_no_interviews_found 'интервью&nbsp;не&nbsp;найдено'
+    result:
+      segment_link: 'к фрагменту: запись %{tape_nr}, %{timecode}'
 
   layouts:
     admin:
@@ -591,6 +600,11 @@ ru:
       update: 'обновить'
     facets:
       search: 'поиск'
+    search:
+      all_interviews: *interviews_search_all_interviews
+      one_selected: *interviews_search_one_selected
+      many_selected: *interviews_search_many_selected
+      no_interviews_found: *interviews_search_no_interviews_found
 
   user_account_mailer:
     subject: "Ваш доступ к архиву 'Подневольный труд 1939-1945'"

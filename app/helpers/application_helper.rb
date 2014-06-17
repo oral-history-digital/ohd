@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def reset_search_link(options={})
-    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + image_tag(image_path 'suche_reset1.gif'),
+    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;' + image_tag(image_path 'suche_reset1.gif'),
                    options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 

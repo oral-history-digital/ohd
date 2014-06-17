@@ -22,4 +22,5 @@ translations:
   - "*.status.translated"
   - "*.locations.types.*"
   - "*.map.pagination.*"
+  - "*.map.progress.*"
 

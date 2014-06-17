@@ -257,9 +257,9 @@ ru:
         'Hamburg': 'Гамбург'
         'Bremen': 'Бремен'
         'Schleswig-Holstein': 'Шлезвиг-Гольштейн'
-        'außerhalb Deutschlands': 'außerhalb Deutschlands'
-        'au?erhalb Deutschlands': 'außerhalb Deutschlands'
-        'au?rhalb Deutschlands': 'außerhalb Deutschlands'
+        'außerhalb Deutschlands': 'за пределами Германии'
+        'au?erhalb Deutschlands': 'за пределами Германии'
+        'au?rhalb Deutschlands': 'за пределами Германии'
         'Outside Germany': 'за пределами ФРГ'
         'outside Germany': 'за пределами ФРГ'
 
