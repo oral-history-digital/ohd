@@ -11,7 +11,7 @@ class Contributor < ActiveRecord::Base
             :through => :contributions
 
   translates :first_name, :last_name
-  self.translation_class.validates_uniqueness_of :first_name, :scope => :last_name
+  self.translation_class.validates_uniqueness_of :first_name, :scope => [:locale, :last_name]
 
   validates_presence_of :last_name
 
