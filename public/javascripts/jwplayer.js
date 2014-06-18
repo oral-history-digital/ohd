@@ -929,7 +929,7 @@ playerReady = function (b) {
     a.embed.jsonToFlashvars = function (d) {
         var c = "";
         for (key in d) {
-            c += key + "=" + escape(d[key]) + "&"
+            c += key + "=" + encodeURIComponent(d[key]) + "&"
         }
         return c.substring(0, c.length - 1)
     };

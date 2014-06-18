@@ -531,8 +531,8 @@ class Interview < ActiveRecord::Base
     contributors_per_locale = {}
     field_contributors.each do |contributor|
       contributor.translations.each do |t|
-        contributors_per_locale[t.locale.to_sym] ||= []
-        contributors_per_locale[t.locale.to_sym] << [ t.last_name, t.first_name ].compact.join(', ')
+        contributors_per_locale[t.locale] ||= []
+        contributors_per_locale[t.locale] << [ t.last_name, t.first_name ].compact.join(t.locale == :ru ? ' ' : ', ')
       end
     end
 
