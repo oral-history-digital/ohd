@@ -18,9 +18,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(Rails.root, 'config/xml_import_mappings.yml')
 
-  SANITY_CHECKS = %w(export xml-schema created-at current-migration agreement published)
+  SANITY_CHECKS = %w(export xml-schema created-at current-migration published)
 
-  # A few entities need to waive the checks so we can interpret agreement & published values
+  # A few entities need to waive the checks so we can interpret the publishing field
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
 
   def initialize(filename, selective=false)
