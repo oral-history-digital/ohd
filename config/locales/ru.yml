@@ -345,10 +345,10 @@ ru:
     attributes:
       collection:
         name: 'Имя'
-        countries: 'Интервью в'
-        institution: 'Интервьюер'
+        countries: 'Страна'
+        institution: 'Организация'
         responsibles: 'Ответственные'
-        interviewers: 'Интервьюируемые'
+        interviewers: 'Интервьюер'
         homepage: 'Сайт'
         notes: 'Дальнейшие примечания'
         interviews: 'Интервьюируемый'
