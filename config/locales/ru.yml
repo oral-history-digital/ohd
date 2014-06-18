@@ -370,7 +370,7 @@ ru:
         countries: 'Место жительства (страна)'
         duration: 'Вид и продолжительность интервью'
         interview_date: 'Дата проведения'
-        interviewers: 'Проведение интервью'
+        interviewers: 'Интервьюер'
         transcriptors: 'Транскрипция'
         translators: 'Перевод'
         researchers: 'Раскрытие содержания'
