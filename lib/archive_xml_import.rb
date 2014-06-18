@@ -18,9 +18,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   MAPPING_FILE = File.join(RAILS_ROOT, 'config/xml_import_mappings.yml')
 
-  SANITY_CHECKS = %w(export xml-schema created-at current-migration agreement published)
+  SANITY_CHECKS = %w(export xml-schema created-at current-migration published)
 
-  # A few entities need to waive the checks so we can interpret agreement & published values
+  # A few entities need to waive the checks so we can interpret the "published" field.
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
 
   def initialize(filename, incremental=true, selective=false)
@@ -240,16 +240,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           end
           @migration = @current_data
           increment_import_sanity name
-
-        when 'agreement'
-          if @current_data.strip == 'true'
-            puts "Agreement condition: satisfied."
-            increment_import_sanity name
-          else
-            puts "Does not satisfy agreement conditions - stopping import!"
-            @parsing = false
-            return
-          end
 
         when 'published'
           if @current_data.strip == 'true'
