@@ -44,19 +44,16 @@ class Contribution < ActiveRecord::Base
   private
 
   def update_contributor
-    # Try to find an existing contributor
+    # Try to find an existing contributor by standard name.
     if self.contributor.nil?
-      @name.each do |locale, name_translation|
-        self.contributor = Contributor.first(
-          :joins => :translations,
-          :conditions => [
-              'contributor_translations.first_name = ? AND contributor_translations.last_name = ? AND contributor_translations.locale = ?',
-              name_translation[:first_name], name_translation[:last_name], locale.to_s
-          ],
-          :readonly => false
-        )
-        break unless self.contributor.nil?
-      end
+      self.contributor = Contributor.first(
+        :joins => :translations,
+        :conditions => [
+            'contributor_translations.first_name = ? AND contributor_translations.last_name = ? AND contributor_translations.locale = ?',
+            @name[:de][:first_name], @name[:de][:last_name], 'de'
+        ],
+        :readonly => false
+      )
     end
     # If no existing contributor was found then create a new one.
     self.contributor ||= self.build_contributor
