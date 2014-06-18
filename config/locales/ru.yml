@@ -474,7 +474,7 @@ ru:
   locations:
     types:
       forced_labor_location:  'Место проведения работ'
-      forced_labor_camp:      'Лагерь или место заключения'
+      forced_labor_camp:      'Лагерь или тюрьма'
       forced_labor_company:   'Фирма'
       deportation_location:   'Место депортации'
       place_of_birth:         'Место рождения'
