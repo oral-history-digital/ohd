@@ -586,16 +586,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         @migration = @current_data
         increment_import_sanity name
 
-      when 'agreement'
-        if @current_data.strip == 'true'
-          puts "Agreement condition: satisfied."
-          increment_import_sanity name
-        else
-          puts "Does not satisfy agreement conditions - stopping import!"
-          @parsing = false
-          return false
-        end
-
       when 'published'
         return false if @current_context.nil?
         if @current_data.strip == 'true'
