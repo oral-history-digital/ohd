@@ -114,8 +114,8 @@ de:
     researchers: 'Erschlie&szlig;ung'
 
   status:
-    translated: '&uuml;bersetzt'
-    not_translated: 'ohne &Uuml;bersetzung'
+    translated: 'mit dt. &Uuml;bersetzung'
+    not_translated: 'ohne dt. &Uuml;bersetzung'
     unknown: 'unbekannt'
     date_unknown: 'Datum unbekannt'
     not_specified: 'keine Angabe'

@@ -115,7 +115,7 @@ ru:
     researchers: 'Раскрытие содержания'
 
   status:
-    translated: 'перевод'
+    translated: 'с немецким переводом'
     not_translated: 'перевод отсутствует'
     unknown: 'не установлено'
     date_unknown: 'дата неизвестна'

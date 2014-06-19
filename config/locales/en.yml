@@ -64,8 +64,8 @@ en:
     researchers: 'Indexing and Summary'
 
   status:
-    translated: 'translated'
-    not_translated: 'untranslated'
+    translated: 'with German translation'
+    not_translated: 'without German translation'
     unknown: 'Unknown'
     date_unknown: 'Date unknown'
     not_specified: 'Not Specified'
