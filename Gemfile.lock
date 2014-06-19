@@ -59,7 +59,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     archive-authorization (0.0.1)
-    archive-player (0.2.4)
+    archive-player (0.2.5)
       activesupport (>= 2.3.5)
     archive-shared (0.0.2)
     builder (3.2.2)
@@ -216,7 +216,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_taggable_on_steroids!
   archive-authorization
-  archive-player (>= 0.2.4)
+  archive-player (>= 0.2.5)
   archive-shared (>= 0.0.2)
   capistrano
   capybara (= 1.1.4)
