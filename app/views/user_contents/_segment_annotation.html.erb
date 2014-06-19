@@ -1,6 +1,6 @@
 <div id="segment_annotation_<%= segment_annotation.id || 'new' -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= UserAnnotation.human_name -%> <%= t('zu') -%>
+  <h2><%= UserAnnotation.human_name -%><%= t('user_interface.annotations.connective') -%>
     <%= segment_annotation.reference.interview.short_title(I18n.locale) -%>
     (<%= segment_annotation.reference.interview.archive_id -%>),
     <small>
@@ -22,8 +22,7 @@
         <%= f.text_area :description, segment_annotation.private? ? {} : {:readonly => 'readonly', :class => 'readonly'} %>
         <div class="hint" style="width: 165px; margin-top: 0px; display: inline; clear: none;">
           <span>
-            <span id="chars_allowed"><%= UserContent::ANNOTATION_LIMIT -%></span>&nbsp;
-            <%= t(:chars_allowed, :scope => 'user_interface.user_content') -%>
+            <%= t(:chars_allowed, :scope => 'user_interface.user_content', :chars_allowed => UserContent::ANNOTATION_LIMIT) -%>
           </span>
           <br/>
           <span style="margin-top: <%= segment_annotation.private? ? '125' : '10' -%>px; display: inline-block;">

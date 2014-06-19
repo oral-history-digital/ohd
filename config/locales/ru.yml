@@ -95,7 +95,6 @@ ru:
   close: 'закрыть'
   here: 'здесь'
   timecode: 'временной код'
-  zu: 'к'
   german: 'Немецкий'
 
   page_urls: # Pretty URLs for static pages.
@@ -179,12 +178,13 @@ ru:
       goto_citation: 'к цитируемому фрагменту'
     annotations:
       label: 'Комментарий'
+      connective: ': '
       editorial: 'Редакция'
     search:
       search_term: 'Ключевое понятие'
       fulltext_title: 'Введите здесь ключевое понятие'
       reset: 'отмена'
-      save: 'Поиск сохранить'
+      save: 'сохранить результаты поиска'
       saved: 'Поиск сохранён'
     status:
       not_signed_in: 'Вы не зарегистрированы'
@@ -204,7 +204,7 @@ ru:
       saved: 'Контент сохранен'
       publish: 'Опубликовать'
       retract: 'Отменить публикацию'
-      chars_allowed: 'имеющиеся в распоряжении знаки'
+      chars_allowed: 'доступно следующее<br/>количество знаков:&nbsp;<span id="chars_allowed">%{chars_allowed}</span>'
       tags_explanation: 'Темы помогут Вам группировать и сортировать Ваши сохранённые результаты.'
       user_tags: 'Выберите темы или введите новые понятия для характеризации контента:'
       tag_filters: 'Темы могут быть заданы с помощью &quot;правки&quot; отдельного контента.'

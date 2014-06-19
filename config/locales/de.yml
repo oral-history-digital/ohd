@@ -94,7 +94,6 @@ de:
   close: 'schlie&szlig;en'
   here: 'hier'
   timecode: 'Timecode'
-  zu: 'zu'
   german: 'Deutsch'
 
   page_urls: # Pretty URLs for static pages.
@@ -178,6 +177,7 @@ de:
       goto_citation: 'zum zitierten Ausschnitt'
     annotations:
       label: 'Anmerkung'
+      connective: ' zu'
       editorial: 'Redaktion'
     search:
       search_term: 'Suchbegriff'
@@ -203,7 +203,7 @@ de:
       saved: 'Inhalt gemerkt'
       publish: 'Veröffentlichen'
       retract: 'Veröffentlichung zurückziehen'
-      chars_allowed: 'verfügbare erlaubte Zeichen'
+      chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'

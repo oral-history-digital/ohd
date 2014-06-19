@@ -44,7 +44,6 @@ en:
   close: 'close'
   here: 'here'
   timecode: 'Timecode'
-  zu: 'for'
   german: 'German'
 
   page_urls:
@@ -130,6 +129,7 @@ en:
       goto_citation: 'go to cited passage'
     annotations:
       label: 'Annotation'
+      connective: ' for'
       editorial: 'Editors'
     search:
       search_term: 'search term'
@@ -155,7 +155,7 @@ en:
       saved: 'saved content'
       publish: 'Publish'
       retract: 'Retract Publication'
-      chars_allowed: 'allowed characters remaining'
+      chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
