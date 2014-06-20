@@ -11,12 +11,12 @@
       <%= content_tag(:div,
                       formatted_languages(@interview),
                       :id => "original",
-                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
+                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
                       :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
       <% if @interview.translated? && @interview.segmented? %>
         <%= content_tag(:div, t(:german),
                         :id => "translated",
-                        :class => "captions_trans active",
+                        :class => "captions_trans#{I18n.locale == :de ? ' active' : ''}",
                         :onClick => "$('#{@player.segments_container_id_for 'translation'}').show();$('#{@player.segments_container_id_for 'transcript'}').hide();$('original').removeClassName('active');$('translated').addClassName('active');") %>
       <% end %>
     <% end %>

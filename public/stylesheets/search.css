@@ -189,67 +189,67 @@
 /* fbeier */
 
 #baseHeaderSearch {
-	/*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
-	padding: 0;
-	position: absolute;
-	top: 26px;
-	left: 10px;
-	margin: 0;
-	font-size: 95%;
-	width: 120px;
-	height: 19px;
+    /*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
+    padding: 0;
+    position: absolute;
+    top: 26px;
+    left: 10px;
+    margin: 0;
+    font-size: 95%;
+    width: 120px;
+    height: 19px;
 }
 
 span.hits {
-	/*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
-	display: block;
-	padding: 0 12px 0 0;
-	width: 200px;
-	height: 19px;
+    /*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
+    display: block;
+    padding: 0 12px 0 0;
+    width: 200px;
+    height: 19px;
 }
 
 span.hits a,
 .mainSearch a {
-	color: #fff;
-	display: block;
-	background: url(/images/suchpfeil.gif) top right no-repeat;
-	background-position: 103px 4px;
-	padding: 0 12px 0 0;
-	width: 200px;
-	height: 19px;
-	text-decoration: none;
+    color: #fff;
+    display: block;
+    background: url(/images/suchpfeil.gif) top right no-repeat;
+    background-position: 103px 4px;
+    padding: 0 12px 0 0;
+    width: 200px;
+    height: 19px;
+    text-decoration: none;
 }
 
 span.hits a:hover,
 .mainSearch a:hover {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 #submit_search {
-	float:right;
-	margin:10px 10px 0 0;
+    float:right;
+    margin:10px 10px 0 0;
 }
 
 #searchReset {
-	position: absolute;
-	top: 4px;
-	right: 10px;
+    position: absolute;
+    top: 4px;
+    right: 10px;
     z-index: 10;
 }
 
 #searchReset a {
-	color: #8b0f09;
-	font-size: 85%;
+    color: #8b0f09;
+    font-size: 85%;
 }
 
 #searchReset a:hover {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 #baseServices p {
 float:left;
-	font-weight: bold;
-	font-size: 110%;
+    font-weight: bold;
+    font-size: 110%;
 }
 
 .searchString {
@@ -268,90 +268,109 @@ float:left;
 }
 
 #searchButton {
-	margin: 0 0 0 8px;
+    margin: 0 0 0 8px;
 
 }
 
 .fragmentTitle {
-	border-bottom: 1px solid #f1f1eb;
-	padding: 2px 10px;
+    border-bottom: 1px solid #f1f1eb;
+    padding: 2px 10px;
     position: relative;
 }
 
 .fragmentTitle.open {
-	padding-bottom:10px;
+    padding-bottom:10px;
 }
 
 
 .facet_refresh {
-	position: absolute;
-	top: 0px;
-	right: 10px;
+    position: absolute;
+    top: 0px;
+    right: 10px;
 }
 
 .spinner_search {
-	position: absolute;
-	top: 60px;
-	left: 113px;
+    position: absolute;
+    top: 60px;
+    left: 113px;
 }
 
 /* Ebene Video (Suche im Interview, Inhaltsverzeichnis, MeinBereich)*/
 /* **************************************************************** */
 
 #interviewContentNavigation {
-	background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
+    background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
 }
 
 #search_in_interview {
-	padding:60px 0 0 0;
-	border-bottom: 1px solid #F1F1EB;
+    padding:60px 0 0 0;
+    border-bottom: 1px solid #F1F1EB;
 
 }
 
 #back_to_search {
-	margin: 10px 10px 0 0;
-	float:right;
+    margin: 10px 10px 0 0;
+    float:right;
 }
 
 .fragmentTitle label {
-	display:block;
-	padding-top: 5px;
-	color:#8B0F09;
-	font-size:90%;
-	font-weight:bold;
+    display:block;
+    padding-top: 5px;
+    color:#8B0F09;
+    font-size:90%;
+    font-weight:bold;
 }
 
 #interview_fulltext {
 
-	margin:5px 0 10px 0px;
-	width: 200px;
-	border:1px solid #ccc;
+    margin:5px 0 10px 0px;
+    width: 200px;
+    border:1px solid #ccc;
 }
 
 #seach_in_interview_submit {
-	position:absolute;
-	margin:5px 0 0 5px;
+    position:absolute;
+    margin:5px 0 0 5px;
 }
 
 .container-toggle {
-	clear:right;
-	height:20px;
-	text-indent: 22px;
-	padding-top: 6px;
-	border-bottom: 1px solid #F1F1EB;
-	cursor: pointer;
+    clear:right;
+    height:20px;
+    text-indent: 22px;
+    padding-top: 6px;
+    border-bottom: 1px solid #F1F1EB;
+    cursor: pointer;
+    position: relative;
 }
 
 .container-toggle.open {
-	background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
+    background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
 }
 
 .container-toggle.closed {
-	background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
+    background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
+}
+
+.container-toggle img {
+    position: absolute;
+    top: 7px;
+    right: 20px;
+    width: 12px;
+}
+
+.container-toggle .tooltip {
+    top: auto;
+    left: auto;
+    bottom: 25px;
+    right: 10px;
+    width: auto;
+    max-width: 230px;
+    text-indent: 0;
+    text-align: center;
 }
 
 #interviewSearch {
-	padding-left: 10px;
+    padding-left: 10px;
 }
 
 #interviewSearch h2 {

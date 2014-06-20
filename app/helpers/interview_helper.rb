@@ -18,22 +18,20 @@ module InterviewHelper
 
   # transforms the headings array into a hash structure
   # which renders the hierarchy better
-  def hashed_headings_from_array(segments_with_heading)
+  def hashed_headings_from_array(segments_with_heading, headings_locale)
     headings_hash = {}
-
     section_number = 0
-
     segments_with_heading.each do |segment_with_heading|
-      # values for the player seeking
+      # Values for the player seeking.
       player_item = (segment_with_heading.tape.number - 1).to_s
       player_pos = segment_with_heading.start_time.floor.to_s
-      # html
+      # HTML id.
       heading_id = "heading_" + player_item + "_" + player_pos
 
-      unless segment_with_heading.mainheading(I18n.locale).blank?
+      unless segment_with_heading.mainheading(headings_locale).blank?
         section_number = headings_hash.keys.size + 1
         headings_hash[section_number] = {
-            :title => segment_with_heading.mainheading(I18n.locale),
+            :title => segment_with_heading.mainheading(headings_locale),
             :item => player_item,
             :timecode => segment_with_heading.raw_timecode.to_s,
             :pos => player_pos,
@@ -41,10 +39,10 @@ module InterviewHelper
             :subheadings => []
         }
       end
-      unless segment_with_heading.subheading(I18n.locale).blank? || headings_hash[section_number].nil?
-        # add the subheading to the current mainheading
+      unless segment_with_heading.subheading(headings_locale).blank? || headings_hash[section_number].nil?
+        # Add the subheading to the current mainheading.
         headings_hash[section_number][:subheadings] << {
-            :title => segment_with_heading.subheading(I18n.locale),
+            :title => segment_with_heading.subheading(headings_locale),
             :item => player_item,
             :timecode => segment_with_heading.raw_timecode.to_s,
             :pos => player_pos,
@@ -138,6 +136,18 @@ module InterviewHelper
       time = seg.timecode
     end
     segments
+  end
+
+  # Identify the display locale for objects like segment headings, editorial annotations and photo captions:
+  # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+  # - If the UI-language is German then show translations in German.
+  # - For the other UI-languages show translations in the chosen UI-language if available, otherwise show them in German, too.
+  def display_locale(translated_object)
+    if I18n.locale != :de and translated_object.translations.map(&:locale).include? I18n.locale
+      I18n.locale
+    else
+      :de
+    end
   end
 
 end

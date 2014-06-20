@@ -1,6 +1,6 @@
 <% cache [ I18n.locale.to_s, @interview.to_param, 'headings'].join('/') do -%>
 
-  <% headings_hash = hashed_headings_from_array(@interview.segments.with_heading || []) %>
+  <% headings_hash = hashed_headings_from_array(@interview.segments.with_heading || [], headings_locale) %>
   <%= (@player ||= interview_player(@interview)).headings_container(headings_hash) %>
 
 <% end %><%# cache %>

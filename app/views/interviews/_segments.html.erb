@@ -1,25 +1,39 @@
 <% if @segments.empty? %>
     <%= t(:no_segments_result, :scope => 'user_interface.messages') %>
 <% else %>
-<% fulltext ||= (defined?(@location) && !@location.blank?) ? ([ @location.location_name ] +  (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
-<% fulltext ||= @search.fulltext -%>
-<ul class='segment-list'>
-  <% section = nil -%>
-  <% @segments.each_with_index do |segment,index| -%>
-    <% if segment.section && segment.section != section -%>
-        <% current_section_segment = segment.section_lead_segment -%>
-        <% section = segment.section -%>
-        <% if current_section_segment -%>
-            <li id="segments_section-<%= section -%>" class="section-heading">
-              <% heading = current_section_segment.subheading(I18n.locale).blank? ? current_section_segment.mainheading(I18n.locale) : current_section_segment.subheading(I18n.locale) -%>
-              <%=t('.in')%>&nbsp;<span class="heading">&#147;<%= heading -%>&#148;</span>:
+    <% fulltext ||= (defined?(@location) && !@location.blank?) ? ([@location.location_name] + (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
+    <% fulltext ||= @search.fulltext -%>
+    <ul class='segment-list'>
+        <% section = nil -%>
+        <% @segments.each_with_index do |segment, index| -%>
+            <% if segment.section && segment.section != section -%>
+                <% section = segment.section -%>
+                <% current_section_segment = segment.section_lead_segment -%>
+                <%
+                   # Implement the language fallback rule for headings:
+                   # - Only show the heading if it's available in the current UI language or in the interview's original language.
+                   # - If both languages are available then prefer the UI language over the interview language.
+                   # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+                   available_heading_locales = current_section_segment.translations.map { |t| I18n.three_letter_locale(t.locale) }
+                   heading_locale = if available_heading_locales.include?(I18n.three_letter_locale) then
+                                      I18n.locale
+                                    elsif not (available_heading_locales & current_section_segment.interview.transcript_locales).empty?
+                                      I18n.locale((available_heading_locales & current_section_segment.interview.transcript_locales).first)
+                                    else
+                                      nil
+                                    end
+                %>
+                <% if current_section_segment and not heading_locale.blank? -%>
+                    <li id="segments_section-<%= section -%>" class="section-heading">
+                        <% heading = current_section_segment.subheading(heading_locale).blank? ? current_section_segment.mainheading(heading_locale) : current_section_segment.subheading(heading_locale) -%>
+                        <%= t('.in') %>&nbsp;<span class="heading">&#147;<%= heading -%>&#148;</span>:
+                    </li>
+                <% end -%>
+            <% end -%>
+            <!-- <span class="index"><%= index + 1 -%>.</span> //-->
+            <li id="segment_<%= segment.media_id %>" class="segment">
+                <%= link_to_segment segment, fulltext || '$$$', true, true %>
             </li>
         <% end -%>
-    <% end -%>
-    <!-- <span class="index"><%= index + 1-%>.</span> //-->
-    <li id="segment_<%= segment.media_id %>" class="segment">
-        <%= link_to_segment segment, fulltext || '$$$', true, true %>
-    </li>
-  <% end -%>
-</ul>
+    </ul>
 <% end -%>

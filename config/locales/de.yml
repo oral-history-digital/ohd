@@ -140,9 +140,9 @@ de:
       biography: 'Biographie von'
       transcript: 'Transkript'
       translation: 'Übersetzung'
-      Biography: 'Biographie von'
-      Transcript: 'Transkript'
-      Translation: 'Übersetzung des Transkripts'
+      Biography: 'Biographie'
+      Transcript: 'Transkript - Original'
+      Translation: 'Transkript - Dt. Übersetzung'
       search_results: 'Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
@@ -236,6 +236,9 @@ de:
       publish_alteration_notice: 'Veröffentlichte Anmerkungen können nicht mehr geändert werden, Sie können sie aber zur Bearbeitung wieder zurück ziehen und ggf neu einreichen zur Veröffentlichung.'
       confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
       published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
+      no_headings_in_your_language: 'Das Inhaltsverzeichnis dieses Interviews ist nur in deutscher Sprache verfügbar.'
+      no_annotations_in_your_language: 'Diese Anmerkung ist leider nicht in Ihrer Sprache verfügbar.'
+      no_photo_captions_in_your_language: 'Hinweis: Diese Fotobeschreibung ist leider nicht in Ihrer Sprache verfügbar.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'

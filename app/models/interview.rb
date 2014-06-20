@@ -212,6 +212,10 @@ class Interview < ActiveRecord::Base
     languages.join('/')
   end
 
+  def transcript_locales
+    languages.map{|l| l.code.split('/')}.flatten
+  end
+
   def duration
     @duration ||= Timecode.new read_attribute(:duration)
   end

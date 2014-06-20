@@ -10,7 +10,6 @@ class TextMaterial < ActiveRecord::Base
 
   named_scope :of_type, lambda{|type| {:conditions => [ 'document_type = ?', type ] }}
   named_scope :for_file, lambda{|filename| { :conditions => [ 'document_file_name = ?', (filename || '') + '.pdf' ]}}
-  named_scope :for_locale, lambda{|locale| { :conditions => {:locale => locale.to_s}}}
 
   validates_attachment_presence :document
   validates_numericality_of :document_file_size, :greater_than => 0, :allow_nil => false

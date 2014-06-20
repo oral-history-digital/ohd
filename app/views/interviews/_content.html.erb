@@ -42,12 +42,21 @@
         $('interview_fulltext').value = '<%= current_search_text %>';
     <% end %>
 
+    <% headings_locale = display_locale(@interview.segments.with_heading.first) %>
     <% show_headings = (featured_content == :headings) %>
     <div id="headings-toggle" class="<%= show_headings ? 'open' : 'closed' %> container-toggle" onclick="toggleContainer('headings-toggle', true, true);">
-        <h2><%= t('headings', :scope => 'user_interface.labels') %></h2>
+        <h2>
+            <%= t('headings', :scope => 'user_interface.labels') %>
+        </h2>
+        <% if headings_locale != I18n.locale then %>
+            <a id="heading_locale_help_text" class="tooltipButton">
+                <%= image_tag(image_path('icon_info.svg'), :onclick => 'var e = arguments[0] || window.event; e.stopPropagation(); return false;', :class => 'svg') %>
+                <div class="tooltip"><%= I18n.t('user_interface.messages.no_headings_in_your_language') -%></div>
+            </a>
+        <% end %>
     </div>
     <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
-        <%= render :partial => 'headings', :object => content, :locals => {:player => @player} %>
+        <%= render :partial => 'headings', :object => content, :locals => {:player => @player, :headings_locale => headings_locale} %>
     </div>
 
     <% if show_locations -%>
