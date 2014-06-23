@@ -51,7 +51,7 @@
     //-->
     <div id="annotate_segment">
       <span id="annotate_new_segment" class="new" style="display: none;">
-        <%= link_to_function t(:annotate_segment, :scope => 'user_interface.actions'),
+        <%= link_to_function t('user_interface.actions.annotate_segment'),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {'type' => 'UserAnnotation'},
                              :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
@@ -60,7 +60,7 @@
                              :class => 'annotate-action' -%>
       </span>
       <span id="annotate_existing_segment" class="existing" style="display: none;">
-        <%= link_to_function t(:show_existing_annotation, :scope => 'user_interface.actions'),
+        <%= link_to_function t('user_interface.actions.show_existing_annotation'),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {:type => 'UserAnnotation'},
                              :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},

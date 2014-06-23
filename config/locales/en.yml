@@ -93,8 +93,6 @@ en:
       transcript: 'Transcript'
       translation: 'German Translation'
       Biography: 'Biography'
-      Transcript: 'Transcript - Original'
-      Translation: 'Transcript - German Translation'
       search_results: 'Search Results'
       headings: 'Table of Contents'
       my_search: 'My Search'
@@ -120,8 +118,8 @@ en:
       save: 'save'
       reset: 'cancel'
       add: 'add'
-      annotate_segment: 'write Annotation'
-      show_existing_annotation: 'View Annotation'
+      annotate_segment: 'write annotation'
+      show_existing_annotation: 'view annotation'
     player:
       back: 'previous'
       forward: 'next'
@@ -159,7 +157,7 @@ en:
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
       user_tags: 'Choose available topics or enter new topic names to characterize this content:'
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
-      user_annotation: 'Your annotation to this fragment'
+      user_annotation: 'Your annotation to this segment'
       annotation_explanation: 'Your annotations can be found in your workbook area.'
       publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the %{annotation_guidelines}'
       annotation_guidelines: 'Annotation Guidelines.'
@@ -188,9 +186,9 @@ en:
       publish_alteration_notice: 'Published annotations cannot be edited, but you may retract them for alteration and subsequently resubmit them for publication.'
       confirm_retract_content: 'Do you really want to retract your %{content} from publication in the archive?'
       published_annotation_change_notice: 'Your annotation cannot be edited since it is marked for publication. You may retract your annotation in order to subsequently make changes, and resubmit it.'
-      no_headings_in_your_language: 'The table of contents of this interview<br/>is only available in German.'
-      no_annotations_in_your_language: 'Unfortunately this annotation is not available in your language.'
-      no_photo_captions_in_your_language: 'Please note: Unfortunately this photo caption is not available in your language.'
+      no_headings_in_your_language: 'The table of contents of this interview<br/>is only available in %{languages}.'
+      no_annotations_in_your_language: 'This annotation is only available in %{languages}.'
+      no_photo_captions_in_your_language: 'Please note: This photo caption is only available in %{languages}.'
 
   privacy:
       label: 'Privacy Disclaimer'
@@ -272,8 +270,8 @@ en:
         one: 'Tape'
         other: 'Tapes'
       segment:
-        one: 'Fragment'
-        other: 'Fragments'
+        one: 'Segment'
+        other: 'Segments'
       collection:
         one: 'Subset'
         other: 'Subsets'
@@ -334,7 +332,7 @@ en:
         languages: 'Languages'
         collection: 'Subset'
       segment:
-        media_id: 'Fragment-ID'
+        media_id: 'Segment-ID'
         transcript: 'Transcript'
         translation: 'Transcript (German translation)'
       user_content:

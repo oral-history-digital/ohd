@@ -138,16 +138,21 @@ module InterviewHelper
     segments
   end
 
-  # Identify the display locale for objects like segment headings, editorial annotations and photo captions:
+  # Identify the display locale for editorial content like segment headings, editorial annotations and photo captions:
   # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
-  # - If the UI-language is German then show translations in German.
-  # - For the other UI-languages show translations in the chosen UI-language if available, otherwise show them in German, too.
+  # - Show translations in the chosen UI-language if available, otherwise show them in German.
   def display_locale(translated_object)
-    if I18n.locale != :de and translated_object.translations.map(&:locale).include? I18n.locale
+    if translated_object.translations.map(&:locale).include? I18n.locale
       I18n.locale
     else
       :de
     end
+  end
+
+  # Return a human-readable list of available translations for the given database object.
+  def available_languages(translated_object)
+    language_codes = translated_object.translations.map{|t| I18n.three_letter_locale(t.locale)}
+    Category.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
   end
 
 end

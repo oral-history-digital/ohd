@@ -142,8 +142,6 @@ ru:
       transcript: 'Транскрипт'
       translation: 'Перевод'
       Biography: 'Биография'
-      Transcript: '##ru##'
-      Translation: '##ru##'
       search_results: 'Результаты поиска'
       headings: 'Содержание'
       my_search: 'Мой поиск'

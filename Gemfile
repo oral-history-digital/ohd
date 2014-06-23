@@ -17,7 +17,7 @@ gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
     :branch => 'v2.7' # Version restriction for Rails 2.3.
 gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
-gem 'archive-shared', '>= 0.0.3'
+gem 'archive-shared', '>= 0.0.4'
 gem 'archive-player', '>= 0.2.5'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',

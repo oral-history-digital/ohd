@@ -44,7 +44,7 @@ end -%>
                 <% if user_content.private? -%>
                     <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(publish_notice_user_content_path(user_content, :context => 'user_contents', :type => 'UserAnnotation'), { :method => :get })}" %></li>
                 <% else -%>
-                    <li><%= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.class.to_s.constantize.human_name + ' "' + (user_content.title || '') + '"') %></li>
+                    <li><%= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.class.to_s.constantize.human_name_in_sentence + ' "' + (user_content.title || '') + '"') %></li>
                 <% end -%>
             <% end -%>
             <li><%= link_to_remote t(:delete, :scope => 'user_interface.user_content'), :url => user_content_path(user_content), :method => :delete, :before => visual_effect(:fade, "user_content_#{user_content.id}_actions", :duration => 0.4), :confirm => t(:delete_content, :scope => "user_interface.messages", :content => '"' + (user_content.title || '') + '"') %></li>

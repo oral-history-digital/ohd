@@ -61,7 +61,7 @@ GEM
     archive-authorization (0.0.1)
     archive-player (0.2.5)
       activesupport (>= 2.3.5)
-    archive-shared (0.0.3)
+    archive-shared (0.0.4)
     builder (3.2.2)
     capistrano (2.15.5)
       highline
@@ -217,7 +217,7 @@ DEPENDENCIES
   acts_as_taggable_on_steroids!
   archive-authorization
   archive-player (>= 0.2.5)
-  archive-shared (>= 0.0.3)
+  archive-shared (>= 0.0.4)
   capistrano
   capybara (= 1.1.4)
   cucumber (= 1.1.0)

@@ -2,8 +2,7 @@
 
   <% if defined?(@search) && !@search.hits.blank? %>
     <h2>
-      <% interviews_hn = Interview.human_name(:count => @search.hits).mb_chars %>
-      <%= "#{@search.hits} #{I18n.locale == :de ? interviews_hn : interviews_hn.downcase }" %>
+      <%= "#{@search.hits} #{Interview.human_name_in_sentence(:count => @search.hits)}" %>
       <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
     </h2>
     <% if defined?(@search) && (@search.query_params.keys.size > 1) && (@search.hits > 0) -%>

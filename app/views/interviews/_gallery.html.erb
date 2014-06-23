@@ -7,7 +7,7 @@
              photo_caption_locale = display_locale(photo)
              photo_caption = (photo.caption(photo_caption_locale).blank? ? '' : photo.caption(photo_caption_locale))
              if photo_caption_locale != I18n.locale then
-               photo_caption += " (#{I18n.t('user_interface.messages.no_photo_captions_in_your_language')})"
+               photo_caption += " (#{I18n.t('user_interface.messages.no_photo_captions_in_your_language', :languages => available_languages(photo))})"
              end
           %>
           <li class="slide">
