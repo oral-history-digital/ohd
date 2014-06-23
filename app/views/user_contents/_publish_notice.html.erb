@@ -1,6 +1,6 @@
 <div id="publish_<%= @object.id -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= @object.title -%>&nbsp;<%= t(:publish, :scope => 'user_interface.user_content').downcase -%></h2>
+  <h2><%= t(:publish_something, :scope => 'user_interface.user_content', :something => @object.title) -%></h2>
   <div>
       <% remote_form_for @object,
                          :url => publish_user_content_path(@object),
@@ -22,7 +22,7 @@
           </p>
         </div>
         <span style="clear: both; float: left;">
-            <%= f.submit t(:publish, :scope => 'user_interface.user_content'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+            <%= f.submit t(:publish, :scope => 'user_interface.user_content').downcase, :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
             <%= button_to_function t(:reset, :scope => 'user_interface.actions'), 'closeModalWindow(); return false;', :class => 'cancel' %>
         </span>
       <% end %>

@@ -6,7 +6,7 @@
 
   <p>Click the link below to unlock your account:</p>
 
-  <p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+  <p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :en) %></p>
 <% when :ru -%>
   <p>Здравствуйте <%= @resource.email %>!</p>
 
@@ -14,7 +14,7 @@
 
   <p>Пожалуйста, перейдите по указанной ссылке, чтобы разблокировать Ваш доступ:</p>
 
-  <p><%= link_to 'Разблокировать доступ', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+  <p><%= link_to 'Разблокировать доступ', unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :ru) %></p>
 <% else -%>
   <p>Hallo <%= @resource.email %>!</p>
 
@@ -22,5 +22,5 @@
 
   <p>Bitte folgen Sie diesem Link, um Ihren Zugang wieder zu aktivieren:</p>
 
-  <p><%= link_to 'Zugang wieder aktivieren', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+  <p><%= link_to 'Zugang wieder aktivieren', unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :de) %></p>
 <% end -%>

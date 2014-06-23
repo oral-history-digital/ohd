@@ -40,7 +40,6 @@ en:
   admin_area: 'Admin Area'
   and: 'and'
   no_placeholder: 'No %{content}'
-  for: 'for'
   close: 'close'
   here: 'here'
   timecode: 'Timecode'
@@ -73,8 +72,8 @@ en:
 
   search:
     no_clips: 'no segments'
-    clip: 'segment'
-    clips: 'segments'
+    clip: '1 segment'
+    clips: '%{count} segments'
     save: 'save search'
     saved: 'saved search'
 
@@ -93,7 +92,7 @@ en:
       transcript: 'Transcript'
       translation: 'German Translation'
       Biography: 'Biography'
-      search_results: 'Search Results'
+      search_results: '%{count} Search Results'
       headings: 'Table of Contents'
       my_search: 'My Search'
       search: 'search'
@@ -103,8 +102,8 @@ en:
       search_the_interview: 'search the interview'
       workbook: 'workbook'
       show_all: 'show all'
-      show_interview: 'show Interview'
-      show_: 'show'
+      show_interview: 'show interview'
+      show_segment: 'show segment'
       maximize_all: 'maximize all'
       minimize_all: 'minimize all'
       filter_contents: 'Contents shown'
@@ -141,6 +140,7 @@ en:
       view: 'View'
       edit: 'Edit'
       topics: 'Topics'
+      topics_for: 'Topics&nbsp;for'
       all_topics: 'All topics'
       edit_topics: 'Edit topics'
       apply_topics: 'Set topic'
@@ -152,6 +152,7 @@ en:
       save: 'save content'
       saved: 'saved content'
       publish: 'Publish'
+      publish_something: 'Publish&nbsp;%{something}'
       retract: 'Retract Publication'
       chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'
@@ -159,8 +160,8 @@ en:
       tag_filters: 'Topics may be assigned by &quot;editing&quot; the individual contents.'
       user_annotation: 'Your annotation to this segment'
       annotation_explanation: 'Your annotations can be found in your workbook area.'
-      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the %{annotation_guidelines}'
-      annotation_guidelines: 'Annotation Guidelines.'
+      publish_annotation: 'I would like this annotation to be published and displayed to all users registered for the archive. I agree to the %{annotation_guidelines}.'
+      annotation_guidelines: 'Annotation Guidelines'
     sort:
       activate: 'sort contents'
       cancel: 'cancel'
@@ -189,6 +190,7 @@ en:
       no_headings_in_your_language: 'The table of contents of this interview<br/>is only available in %{languages}.'
       no_annotations_in_your_language: 'This annotation is only available in %{languages}.'
       no_photo_captions_in_your_language: 'Please note: This photo caption is only available in %{languages}.'
+      dont_show_again: 'Do not show this message again.'
 
   privacy:
       label: 'Privacy Disclaimer'

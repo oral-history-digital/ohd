@@ -49,19 +49,26 @@
     <% unless matching_segments.empty? %>
       <div id="interview_<%= result.archive_id.upcase %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
 
-        <h5><%= matching_segments.size == 0 ? t(:no_clips, :scope => 'search') : pluralize(matching_segments.size, t(:clip, :scope => 'search'), t(:clips, :scope => 'search')) %>
-          <ul class="segment_pagination">
-            <% matching_segments[0..8].each_with_index do |segment, index| %>
-              <li id="<%= segment.media_id %>_link" <%= index == 0 ? " class='current'" : '' %>>
-                <%= link_to_function (index+1).to_s, "showSegment('#{result.archive_id.upcase}','#{segment.media_id}')" %>
-              </li>
+        <h5>
+            <% if matching_segments.size == 0 then %>
+                <%= t(:no_clips, :scope => 'search') %>
+            <% elsif matching_segments.size == 1 then %>
+                <%= t(:clip, :scope => 'search') %>
+            <% else %>
+                <%= t(:clips, :scope => 'search', :count => matching_segments.size) %>
             <% end %>
-            <% if matching_segments.size > 9 %>
-              <li>
-                <%= link_to t(:more), interview_path(result) %>
-              </li>
-            <% end %>
-          </ul>
+            <ul class="segment_pagination">
+              <% matching_segments[0..8].each_with_index do |segment, index| %>
+                <li id="<%= segment.media_id %>_link" <%= index == 0 ? " class='current'" : '' %>>
+                  <%= link_to_function (index+1).to_s, "showSegment('#{result.archive_id.upcase}','#{segment.media_id}')" %>
+                </li>
+              <% end %>
+              <% if matching_segments.size > 9 %>
+                <li>
+                  <%= link_to t(:more), interview_path(result) %>
+                </li>
+              <% end %>
+            </ul>
         </h5>
 
         <% matching_segments[0..9].each_with_index do |segment, index| %>

@@ -90,7 +90,6 @@ de:
   admin_area: 'Administratoren-Bereich'
   and: 'und'
   no_placeholder: 'Keine %{content}'
-  for: 'f&uuml;r'
   close: 'schlie&szlig;en'
   here: 'hier'
   timecode: 'Timecode'
@@ -123,8 +122,8 @@ de:
 
   search:
     no_clips: 'keine Ausschnitte'
-    clip: 'Ausschnitt'
-    clips: 'Ausschnitte'
+    clip: '1 Ausschnitt'
+    clips: '%{count} Ausschnitte'
 
   interview_title_patterns:
     lastname_with_birthname: '%{lastname} (%{birthname})'
@@ -141,7 +140,7 @@ de:
       transcript: 'Transkript'
       translation: 'Übersetzung'
       Biography: 'Biographie'
-      search_results: 'Suchergebnisse'
+      search_results: '%{count} Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
       search: 'suchen'
@@ -152,7 +151,7 @@ de:
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
-      show_: 'zum'
+      show_segment: 'zum Ausschnitt'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
@@ -189,6 +188,7 @@ de:
       view: 'Ansicht'
       edit: 'Bearbeiten'
       topics: 'Themen'
+      topics_for: 'Themen&nbsp;f&uuml;r'
       all_filters: 'Alle Inhaltsarten'
       select_all_filters: 'Alle Inhaltsarten ausw&auml;hlen'
       all_topics: 'Alle Themen'
@@ -200,6 +200,7 @@ de:
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
       publish: 'Veröffentlichen'
+      publish_something: '%{something}&nbsp;veröffentlichen'
       retract: 'Veröffentlichung zurückziehen'
       chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
@@ -207,7 +208,7 @@ de:
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
       user_annotation: 'Ihre Anmerkung zum Ausschnitt'
       annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu'
+      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu.'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
       save: 'Interview merken'
@@ -237,6 +238,7 @@ de:
       no_headings_in_your_language: 'Das Inhaltsverzeichnis dieses Interviews ist nur in %{languages} verfügbar.'
       no_annotations_in_your_language: 'Diese Anmerkung ist nur in %{languages} verfügbar.'
       no_photo_captions_in_your_language: 'Hinweis: Diese Fotobeschreibung ist nur in %{languages} verfügbar.'
+      dont_show_again: 'Diese Meldung nicht mehr anzeigen.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'

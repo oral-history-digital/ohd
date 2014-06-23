@@ -23,7 +23,7 @@ de:
       resend: 'Passwort ändern'
       link: 'Passwort vergessen?'
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, mit denen Sie Ihr Passwort zurücksetzen können.'
-      updated: 'Ihr Passwort wurde erfolgreich geändert. Sie sind jetzt angemeldet.'
+      updated: 'Ihr Passwort wurde erfolgreich geändert.'
     confirmations:
       link: 'Zugangsbestätigung nicht erhalten?'
       resend: 'Bestätigung anfordern'

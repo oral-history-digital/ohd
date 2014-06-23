@@ -105,7 +105,7 @@ module UserContentsHelper
 
   # render the interview references for a search item
   def reference_details_for_search(search)
-    html = content_tag(:span, "#{search.properties['hits'] || t(:none)} #{t(:search_results, :scope => 'user_interface.labels')}")
+    html = content_tag(:span, t(:search_results, :scope => 'user_interface.labels', :count => search.properties['hits'] || t(:none)))
     interview_stills = Interview.all(
         :select => 'id, archive_id, still_image_file_name',
         :include => :translations,
@@ -142,7 +142,7 @@ module UserContentsHelper
     end
     return image_html if interview.nil?
     html = link_to(image_html, interview_path(:id => interview.archive_id), :target => '_blank')
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_, :scope => 'user_interface.labels')} #{Interview.human_name_in_sentence}", interview_path(:id => interview.archive_id), :target => '_blank'))
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
@@ -172,7 +172,7 @@ module UserContentsHelper
            end
     html = link_to_segment(segment, '', false, false, image_html, { :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:show_, :scope => 'user_interface.labels')} #{Segment.human_name_in_sentence}", { :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}", { :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript

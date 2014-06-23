@@ -20,7 +20,7 @@
         <div id="baseServices" class="workbook">
 
             <h2 class="info">Service-Funktionen</h2>
-            <p class="title"><%= truncate(users_first_name, :length => 20) -%><%= users_first_name.last == 's' ? "'" : 's' -%><br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
+            <p class="title"><%= truncate(users_first_name, :length => 20) -%><%= I18n.locale == :en ? "'" : '' -%><%= (users_first_name.last == 's' or not [:de, :en].include?(I18n.locale)) ? '' : 's' -%><br/><%= t(:workbook, :scope => 'user_interface.labels') %></p>
             <div id="baseHeaderSearch">
 
             </div>

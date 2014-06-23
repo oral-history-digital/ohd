@@ -176,7 +176,7 @@ JS
     cookie_condition = cookie.nil? ? 'var openDialog = true; var cookieDialog = ""' : <<JS_COND
 var cookiestr = readCookie('#{cookie}');
 var openDialog = (cookiestr) ? false : true;
-var cookieDialog = "<div class='checkbox_notification'><label class='checkbox'><input type='checkbox' class='checkbox' value='true' onChange=\\"toggleCookieStore('#{cookie}');\\"></input>Diese Meldung nicht mehr anzeigen.</label></div>";
+var cookieDialog = "<div class='checkbox_notification'><label class='checkbox'><input type='checkbox' class='checkbox' value='true' onChange=\\"toggleCookieStore('#{cookie}');\\"></input>#{I18n.t('user_interface.messages.dont_show_again')}</label></div>";
 JS_COND
     <<JS
 #{cookie_condition}
