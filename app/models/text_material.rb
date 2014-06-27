@@ -28,14 +28,14 @@ class TextMaterial < ActiveRecord::Base
     return if filename.blank?
     filename = (filename || '').sub!(/\w{3,4}$/,'pdf')
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
+      archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       @assigned_filename = filename
       # construct the import file path
       # TODO: if the quality setting is not at least 2.0, use the original material, which is:
       # the oldest file matching the pattern in REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + 'archive', 'versions/bm'
       filepath = if !interview.nil? and interview.quality < 2.0
         # use the original text materials
-        versions_dir = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[/za\d{3}_\w+/])
+        versions_dir = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}_\\w+/")])
         ctime = Time.now
         original_file = nil
         Dir.glob(versions_dir + '*.pdf').each do |file|

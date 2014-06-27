@@ -21,7 +21,7 @@ namespace :storage do
 
           file_name = file.split('/').last
 
-          if file_name.match(/^za\d{3}\.(png|jpg)$/i)
+          if file_name.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}\\.(png|jpg)$", Regexp::IGNORECASE))
 
             if interview.still_image_file_name == nil or not File.exists?(interview.still_image_file_name)
               interview.still_image = File.open(file)

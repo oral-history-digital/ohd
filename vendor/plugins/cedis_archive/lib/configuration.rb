@@ -1,4 +1,4 @@
-module ZWAR
+module CeDiS
 
   module Configuration
 
@@ -34,4 +34,4 @@ module ZWAR
 
 end
 
-ActiveRecord.send :include, ZWAR::Configuration::ActiveRecord
+ActiveRecord.send :include, CeDiS::Configuration::ActiveRecord

@@ -17,8 +17,8 @@ gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
     :branch => 'v2.7' # Version restriction for Rails 2.3.
 gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
-gem 'archive-shared', '>= 0.0.4'
-gem 'archive-player', '>= 0.2.5'
+gem 'archive-shared', '>= 0.0.5'
+gem 'archive-player', '>= 0.2.7'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',
     :branch => 'master'
@@ -29,8 +29,7 @@ gem 'resource_controller', :require => false, # Requiring resource_controller lo
 gem 'fastercsv'
 gem 'open4'
 
-# Gems specific to archive_zwar:
-
+# Gems specific to public archive app:
 gem 'archive-authorization'
 gem 'sunspot_rails', '~> 2.0.0' # Version requirement can be dropped when upgrading to Rails 3.x
 gem 'unicode'
@@ -53,7 +52,7 @@ group :development do
   gem 'ruby-debug-ide'
   gem 'ruby-debug-base'
   gem 'capistrano'
-  gem 'thin' # Required to test ZWAR in IE from a virtual machine (works around WebRick's reverse DNS lookup bug).
+  gem 'thin' # Required to test the archive in IE from a virtual machine (works around WebRick's reverse DNS lookup bug).
 end
 
 group :development, :test do

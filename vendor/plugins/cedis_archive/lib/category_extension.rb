@@ -1,4 +1,4 @@
-module ZWAR
+module CeDiS
 
   module CategoryExtension
 
@@ -37,4 +37,4 @@ CAT
 
 end
 
-ActiveRecord::Base.send :include, ZWAR::CategoryExtension
+ActiveRecord::Base.send :include, CeDiS::CategoryExtension

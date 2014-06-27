@@ -1,16 +1,16 @@
 <h1>Регистрация <span><%= @user_registration.email %></span> уже имеется </h1>
 
-<p>Указанный Вами электронный адрес уже зарегистрирован в системе архива "Подневольный труд 1939-1945".</p>
+<p>Указанный Вами электронный адрес уже зарегистрирован в системе архива "<%= CeDiS.config.project_name['ru'] %>".</p>
 
 <% case @user_registration.workflow_state
      when 'checked' %>
     <p>Вам нужно лишь активировать Ваш доступ. Необходимая для активации доступа информация была только что повторно выслана на Ваш электронный адрес.</p>
 <%  when 'unchecked' %>
-    <p>Ваш доступ проверяется нашими сотрудниками. Мы просим Вас подождать или обратиться с запросом по следующему электронному адресу: <a href="mailto:mail@zwangsarbeit-archiv.de">mail@zwangsarbeit-archiv.de</a>.</p>
+    <p>Ваш доступ проверяется нашими сотрудниками. Мы просим Вас подождать или обратиться с запросом по следующему электронному адресу: <a href="mailto:<%= CeDiS.config.contact_email %>"><%= CeDiS.config.contact_email %></a>.</p>
 <%  else %>
     <p>Ваш доступ уже активен. Если Вы не помните Ваши данные для доступа, перейдите, пожалуйста, по следующей ссылке: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
 <% end %>
 
 <br/>
 
-<p><a href="http://www.zwangsarbeit-archiv.de/sammlung" style="font-weight: bold;">Здесь</a> Вы получите подробную информацию о собрании проекта "Подневольный труд 1939-1945".</p>
+<p><a href="http://www.<%= CeDiS.config.project_domain %>/sammlung" style="font-weight: bold;">Здесь</a> Вы получите подробную информацию о собрании проекта "<%= CeDiS.config.project_name['ru'] %>".</p>

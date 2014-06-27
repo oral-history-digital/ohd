@@ -11,7 +11,7 @@ namespace :xml_import do
     @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file))
     @parser.parse(File.read(file))
 
-    archive_id = (file.split('/').last[/za\d{3}/i] || '').downcase
+    archive_id = (file.split('/').last[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
     if reindex
       if Interview.find_by_archive_id(archive_id).nil? or not @parser.document.passes_import_sanity_checks
         puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
@@ -35,10 +35,10 @@ namespace :xml_import do
     @logfile = File.join(Rails.root, 'log', "import.log")
     puts "\nLogging import from #{repo_dir} to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
-      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
-        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+      Dir.glob(File.join(repo_dir, "#{CeDiS.config.project_initials.downcase}**")).each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', "#{CeDiS.config.project_initials.downcase}*.xml")).first
         next if xmlfile.blank? || imported >= number
-        archive_id = xmlfile.to_s[/za\d{3}/i]
+        archive_id = xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]
         puts "\n[#{number}]\nStarting import processes for archive id: #{archive_id}"
         files_checked += 1
 
@@ -51,7 +51,7 @@ namespace :xml_import do
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
-            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]} - FEHLER:\n#{errors.join("\n")}"
             puts errmsg
           end
         end
@@ -87,10 +87,10 @@ namespace :xml_import do
     @logfile = File.join(Rails.root, 'log', "import_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
-      Dir.glob(File.join(repo_dir, 'za**')).sort.each do |dir|
-        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+      Dir.glob(File.join(repo_dir, "#{CeDiS.config.project_initials.downcase}**")).sort.each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', "#{CeDiS.config.project_initials.downcase}*.xml")).first
         next if xmlfile.blank?
-        archive_id = xmlfile.to_s[/za\d{3}/i]
+        archive_id = xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]
         puts "\n\nStarting import processes for archive id: #{archive_id}"
         # XML import
         Open4::popen4("rake xml_import:incremental[#{xmlfile},true] --trace") do |pid, stdin, stdout, stderr|
@@ -98,12 +98,12 @@ namespace :xml_import do
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
-            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]} - FEHLER:\n#{errors.join("\n")}"
             logfile << errmsg
             puts errmsg
           end
         end
-        statusmsg = "finished import of #{xmlfile.to_s[/za\d{3}/i]}.\n"
+        statusmsg = "finished import of #{xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]}.\n"
         logfile << statusmsg
         puts statusmsg
         puts
@@ -132,20 +132,20 @@ namespace :xml_import do
     @logfile = File.join(Rails.root, 'log', "import_locations_#{Time.now.strftime('%d.%m.%Y.%H-%M')}.log")
     puts "\nLogging import to #{@logfile}"
     File.open(@logfile,'w+') do |logfile|
-      Dir.glob(File.join(repo_dir, 'za**')).each do |dir|
-        xmlfile = Dir.glob(File.join(dir, 'data', 'za*.xml')).first
+      Dir.glob(File.join(repo_dir, "#{CeDiS.config.project_initials.downcase}**")).each do |dir|
+        xmlfile = Dir.glob(File.join(dir, 'data', "#{CeDiS.config.project_initials.downcase}*.xml")).first
         next if xmlfile.blank?
         Open4::popen4("rake xml_import:locations file=#{xmlfile} --trace") do |pid, stdin, stdout, stderr|
           stdout.each_line {|line| puts line }
           errors = []
           stderr.each_line {|line| errors << line unless line.empty? or line =~ /^\*\* (Invoke|Execute)/}
           unless errors.empty?
-            errmsg = "\nImport der Ortsdaten aus (#{xmlfile.to_s[/za\d{3}/i]} - FEHLER:\n#{errors.join("\n")}"
+            errmsg = "\nImport der Ortsdaten aus (#{xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]} - FEHLER:\n#{errors.join("\n")}"
             logfile << errmsg
             puts errmsg
           end
         end
-        statusmsg = "finished locations import of #{xmlfile.to_s[/za\d{3}/i]}. Pausing for 2 seconds.\n"
+        statusmsg = "finished locations import of #{xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]}. Pausing for 2 seconds.\n"
         logfile << statusmsg
         puts statusmsg
         sleep 2

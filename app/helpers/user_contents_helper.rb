@@ -112,7 +112,7 @@ module UserContentsHelper
         :conditions =>['archive_id IN (?)', search.interview_references]
     )
     image_list = search.interview_references.inject('') do |list, archive_id|
-      if archive_id =~ /^za\d{3}$/
+      if archive_id =~ Regexp.new("^#{CeDiS.config.project_initials.downcase}\\d{3}$")
         image = interview_stills.select{|still| still.archive_id == archive_id }.first
         image_file = if image.nil? || image.still_image_file_name.nil?
           image_path('/archive_images/missing_still.jpg')

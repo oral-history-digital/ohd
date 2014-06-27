@@ -18,10 +18,10 @@ class UserAccountMailer < ActionMailer::Base
     @user_name = registration.nil? ? account.display_name : registration.full_name
     @login = account.login
 
-    subject      I18n.t 'user_account_mailer.subject', :locale => @mail_locale
-    from         'mail@zwangsarbeit-archiv.de'
+    subject      I18n.t 'user_account_mailer.subject', :locale => @mail_locale, :project_name => CeDiS.config.project_name[@mail_locale.to_s]
+    from         "mail@#{CeDiS.config.project_domain}"
     recipients   account.email
-    bcc          'mail@zwangsarbeit-archiv.de'
+    bcc          'mail@#{CeDiS.config.project_domain}'
     sent_on      Time.now
   end
 

@@ -1,5 +1,5 @@
-= ZWAR Archive 2.0+
-This is the web application for Zwangsarbeit-Archiv 2.0.
+= CeDiS Archive 2.0+
+This is the web application for CeDiS-Archiv 2.0.
 
 == Application Setup
 1. generate the database.yml and setup the databases (<tt>rake db:create</tt> or <tt>rake db:create:all</tt>)

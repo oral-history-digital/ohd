@@ -51,14 +51,11 @@
 
 ru:
   dictionary:
-    project_name: &project_name 'Подневольный труд 1939-1945: Онлайн-архив "Подневольный труд 1939-1945"'
-
     back_to_top_template: &back_to_top_template
       back_to_top: 'В начало страницы'
       image_back_to_top: "Значок 'вверх'"
 
     header_template: &header_template
-      info: *project_name
       skip: 'Перейти сразу к'
       content: 'Контент'
       service_navigation: 'Сервисная навигация'
@@ -72,8 +69,8 @@ ru:
       minimal: '%{hours}ч. %{minutes}мин.'
 
   home: 'Главная'
-  home_link: 'На главную страницу проекта: Подневольный труд 1939-1945. Воспоминания и история'
-  logo_title: 'Логотип проекта: Подневольный труд 1939-1945. Воспоминания и история'
+  home_link: 'На главную страницу проекта: %{project_name}'
+  logo_title: 'Логотип проекта: %{project_name}'
   archive: 'Архив'
   interactive_map: 'Карта'
   collections_map: 'Частичные собрания'
@@ -224,7 +221,7 @@ ru:
       player_no_javascript: 'Для правильного отображения медиаплеера должен быть активирован Java-скрипт в вашем браузере!'
       search_no_javascript: 'Для использования интерактивного поиска активируйте, пожалуйста, Java-скрипт!'
       check_flash_version: 'Пожалуйста, проверьте, установлена ли у Вас актуальная версия проигрывателя Flash-Player. При необходимости деактивируйте для данного сайта программы, фильтрующие содержимое сайта, как, например, блокировщик рекламы.'
-      registration_needed: 'В порядке защиты прав личности для использования архива "Подневольный труд 1939-1945" Вы должны быть зарегистрированы и принять как %{terms_of_use}, так и %{privacy_policy}.'
+      registration_needed: 'В порядке защиты прав личности для использования архива "%{project_name}" Вы должны быть зарегистрированы и принять как %{terms_of_use}, так и %{privacy_policy}.'
       password_change_instructions1: 'Пожалуйста, укажите свой электронный адрес, под которым Вы зарегистрировались на нашем сайте. На Ваш электронный адрес будет выслана ссылка, с помощью которой Вы сможете восстановить пароль.'
       password_change_instructions2: 'Пожалуйста, выберите новый пароль для получения доступа.'
       no_saved_contents: 'Ваша рабочая тетрадь не содержит какой-либо сохранённой информации.'
@@ -291,7 +288,7 @@ ru:
 
   plugins:
     noflash: 'Необходим Adobe Flash'
-    noflash_message: 'Для отображения интервью архива &quot;Подневольный труд 1939-1945. Воспоминания и история&quot; Вам необходима актульная версия проигрывателя Adobe Flash Players.'
+    noflash_message: 'Для отображения интервью архива &quot;%{project_name}&quot; Вам необходима актульная версия проигрывателя Adobe Flash Players.'
     noflash_link: '» Загрузите Adobe Flash Player'
     nojs: 'Активировать Java-скрипт'
     nojs_message: 'Для использования архива необходимо активировать Java-скрипт в Вашем браузере. Без Java-скрипта Вы не сможете перемещаться по контенту или загружать интервью.'
@@ -538,10 +535,6 @@ ru:
   _admin_header:
     << : *header_template
 
-  _head:
-    title: *project_name
-    meta_keywords: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
-
   _header:
     << : *header_template
     map_link_title: 'Обзорная карта биографических этапов'
@@ -572,7 +565,7 @@ ru:
       << : *print_version_template
       << : *back_to_top_template
     iframe:
-      title: 'Подневольный труд 1939-1945: Карта "Подневольный труд 1939-1945"'
+      title: '%{project_name}: Карта'
     interview:
       << : *print_version_template
     workspace:
@@ -610,5 +603,5 @@ ru:
       no_interviews_found: *interviews_search_no_interviews_found
 
   user_account_mailer:
-    subject: "Ваш доступ к архиву 'Подневольный труд 1939-1945'"
+    subject: "Ваш доступ к архиву '%{project_name}'"
 

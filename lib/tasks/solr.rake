@@ -91,7 +91,7 @@ namespace :solr do
 
       ids = args[:ids].blank? ? '*' : args[:ids]
       type = args[:type] || '*'
-      ids = ids[/za\d{3}/].nil? ? [ids] : ids.split(/\W+/)
+      ids = ids[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}")].nil? ? [ids] : ids.split(/\W+/)
 
       puts "\nDeleting the index for #{ids.first == '*' ? 'all' : ids.size} interviews..."
 
@@ -122,8 +122,8 @@ namespace :solr do
     desc 'builds the index for interviews'
     task :interviews, [ :ids ] => :environment do |task, args|
 
-      ids = args[:ids] || 'za283,za017' # nil
-      ids = ids.scan(/za\d{3}/i) unless ids.nil?
+      ids = args[:ids] || nil
+      ids = ids.scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)) unless ids.nil?
 
       # Interviews
       conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
@@ -151,7 +151,7 @@ namespace :solr do
     desc 'builds the index for segments'
     task :segments, [ :interviews ] => :environment do |task, args|
 
-      ids = args[:interviews] || 'za283,za017' # nil
+      ids = args[:interviews] || nil
       ids = ids.split(/\W+/) unless ids.nil?
 
       # Segments
@@ -187,7 +187,7 @@ namespace :solr do
     desc 'Builds the location register index'
     task :locations, [:interviews ] => :environment do |task,args|
 
-      archive_id = (args[:interviews] || '').scan(/za\d{3}/i)
+      archive_id = (args[:interviews] || '').scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
       interviews = Interview.all(
           :conditions => if archive_id.empty?
                            nil

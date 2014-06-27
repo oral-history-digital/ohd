@@ -3,7 +3,7 @@
   <% if defined?(@search) && !@search.hits.blank? %>
     <h2>
       <%= "#{@search.hits} #{Interview.human_name_in_sentence(:count => @search.hits)}" %>
-      <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
+      <%= cedar_paginate @interviews, { :suche => @search.query_hash } %>
     </h2>
     <% if defined?(@search) && (@search.query_params.keys.size > 1) && (@search.hits > 0) -%>
       <%= render :partial => "user_contents/save", :object => @search %>
@@ -13,7 +13,7 @@
   <%= render :partial => '/interviews/result', :collection => @interviews || [], :locals => { :search => @search } %>
 
   <% if defined?(@search) && !@search.hits.blank? %>
-  <%= zwar_paginate @interviews, { :suche => @search.query_hash } %>
+  <%= cedar_paginate @interviews, { :suche => @search.query_hash } %>
   <% end %>
 
 </div>

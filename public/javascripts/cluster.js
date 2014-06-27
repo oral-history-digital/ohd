@@ -152,14 +152,6 @@ function parseArchiveId(archiveId) {
     return (Object.isString(archiveId)) ? parseInt(archiveId.sub(/[^\d]+/,'').sub(/^0+/,'')) : archiveId;
 }
 
-function numToArchiveId(num) {
-    var numPart = '' + num;
-    while(numPart.length < 3) {
-        numPart = '0' + numPart;
-    }
-    return ('za' + numPart);
-}
-
 var ClusterManager = Class.create({
     initialize: function(map, options) {
 

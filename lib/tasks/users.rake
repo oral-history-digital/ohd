@@ -31,7 +31,7 @@ namespace :users do
   desc "Initialize admins"
   task :init_admins => :environment do
 
-    admins = { :fgrandel => %w(Herr Jan Rietema) }
+    admins = { :fgrandel => %w(Herr Florian Grandel) }
 
     admins.each do |login, name_parts|
       account = UserAccount.find_by_login login.to_s
@@ -48,7 +48,7 @@ namespace :users do
       reg.research_intentions = 'Projektmitarbeit'
       reg.comments = 'keine Angaben'
       reg.organization = 'CeDiS FU-Berlin'
-      reg.homepage = 'www.zwangsarbeit-archiv.de'
+      reg.homepage = "www.#{CeDiS.config.project_domain}"
       reg.street = 'Ihnestr. 24'
       reg.zipcode = '14195'
       reg.city = 'Berlin'

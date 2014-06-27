@@ -1,4 +1,4 @@
-module ZWAR
+module CeDiS
 
   module Sunspot
 

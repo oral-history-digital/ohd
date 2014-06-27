@@ -31,7 +31,7 @@ namespace :web_statistics do
 
     # it recognizes different tokens/patterns across those lines:
     # timestamp
-    r_time = Regexp.new("\s\\d{4}-\\d{2}-\\d{2}\s+\\d{2}:\\d{2}(:\\d{2})?")
+    r_time = Regexp.new("\\s\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}(:\\d{2})?")
 
     # Start match
     r_start = /^\s*Processing\s+/
@@ -40,7 +40,7 @@ namespace :web_statistics do
     # a resource path / url - use the 2nd match term!
     r_path = /(:|"|')\/{1,2}([-\w\d_.]+\/([-\w\d_]+\/)*[-\w\d_\.]+)/
     # path prefixes to remove from absolute urls
-    r_path_prefix = /\/?(zwangsarbeit-archiv.de|archiv)/
+    r_path_prefix = Regexp.new("/?(#{CeDiS.config.project_domain}|archiv)")
     # an action token
     r_action = /[\w_]+#[\w_]+/
     # requester IP
@@ -154,7 +154,7 @@ namespace :web_statistics do
 
     month_num = Time.now.month - 1 + (Time.now.year - 2011) * 12
 
-    csv_file = "zwar-logins-nach-monat.csv"
+    csv_file = "#{CeDiS.config.project_shortname}-logins-nach-monat.csv"
     if File.exists?(csv_file)
       FileUtils.rm(csv_file)
     end
@@ -178,7 +178,7 @@ namespace :web_statistics do
 
     require 'fileutils'
 
-    csv_file = "zwar-logins-gesamt.csv"
+    csv_file = "#{CeDiS.config.project_shortname}-logins-gesamt.csv"
     if File.exists?(csv_file)
       FileUtils.rm(csv_file)
     end

@@ -1,4 +1,4 @@
-module ZWAR
+module CeDiS
 
   module TagExtension
 
@@ -17,4 +17,4 @@ SCOPE
   end
 end
 
-Tag.send :include, ZWAR::TagExtension
+Tag.send :include, CeDiS::TagExtension

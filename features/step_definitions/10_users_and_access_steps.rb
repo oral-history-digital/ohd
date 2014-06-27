@@ -1,4 +1,4 @@
-Given /^I have a ZWAR user account$/ do
+Given /^I have a CeDiS Archive user account$/ do
   # The user account will be created when instantiating the login page
   get_page_by_name('login')
 end

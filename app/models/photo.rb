@@ -22,7 +22,7 @@ class Photo < ActiveRecord::Base
     # assign the photo - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
+      archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       @assigned_filename = filename
       # construct the import file path
       filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'photos', (filename || '').split('/').last.to_s)

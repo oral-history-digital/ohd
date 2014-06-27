@@ -6,7 +6,7 @@
     <p><%= link_to 'Activate your access now', @url %></p>
     <br/>
     <p>Best regards,</p>
-    <p>The archive team "Forced Labor 1939-1945, Memory and History"</p>
+    <p>The archive team "<%= CeDiS.config.project_name['en'] %>"</p>
   <% when :ru -%>
     <p>Уважаемый/ая <%= @user_name %>,</p>
     <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @login %></p>
@@ -14,7 +14,7 @@
     <p><%= link_to 'Активировать доступ сейчас', @url %></p>
     <br/>
     <p>С уважением,</p>
-    <p>Команда архива "Подневольный труд 1939-1945. Воспоминания и история"</p>
+    <p>Команда архива "<%= CeDiS.config.project_name['ru'] %>"</p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_name %>,</p>
     <p>wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @login %></p>
@@ -22,5 +22,5 @@
     <p><%= link_to 'Zugang jetzt aktivieren', @url %></p>
     <br/>
     <p>Mit freundlichen Grüßen,</p>
-    <p>Das Archiv-Team "Zwangsarbeit 1939-1945, Erinnerungen und Geschichte"</p>
+    <p>Das Archiv-Team "<%= CeDiS.config.project_name['de'] %>"</p>
 <% end -%>

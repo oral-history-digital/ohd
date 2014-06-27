@@ -39,18 +39,18 @@ config.cache_store = :file_store, 'tmp/cache'
 SERVER_HOST = Socket.gethostname
 
 ActionMailer::Base.smtp_settings = {
-    :address => 'mail.fu-berlin.de',
+    :address => CeDiS.config.smtp_server,
     :port => 25,
-    :domain => 'zwangsarbeit-archiv.de'
+    :domain => CeDiS.config.project_domain
 }
 
 config.action_mailer.default_url_options = {
-    :host => 'zwangsarbeit-archiv.de'
+    :host => CeDiS.config.project_domain
 }
 config.action_mailer.delivery_method = :smtp
 
 config.after_initialize do
   ExceptionNotification::Notifier.exception_recipients = %w(jerico.dev@gmail.com)
-  ExceptionNotification::Notifier.sender_address = 'team@zwangsarbeit-archiv.de'
+  ExceptionNotification::Notifier.sender_address = CeDiS.config.contact_email
   ExceptionNotification::Notifier.email_prefix = '[ERROR] '
 end

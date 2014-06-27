@@ -68,7 +68,7 @@ class UserContent < ActiveRecord::Base
 
   def interview_references=(list_of_archive_ids)
     if list_of_archive_ids.is_a?(String)
-      list_of_archive_ids = list_of_archive_ids.scan(/za\d{3}/i).map{|id| id.downcase }
+      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
     end
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end

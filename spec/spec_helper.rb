@@ -25,7 +25,7 @@ Spork.prefork do
     config.include FactoryGirl::Syntax::Methods
   end
 
-  # ZWAR apps shared spec helpers.
+  # Editorial and public archive apps shared spec helpers.
   require 'archive-shared/spec-support'
 end
 

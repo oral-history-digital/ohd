@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-    <title>Fehler 404: Zwangsarbeit 1939-1945: Seite nicht gefunden / Error 404: Page Not Found / Ошибка 404: Страница не найдена</title>
+    <title>Fehler 404: Seite nicht gefunden / Error 404: Page Not Found / Ошибка 404: Страница не найдена</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="pragma" content="no-cache" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
-    <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
 
     <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'content', 'eaz-content', 'lightbox', 'archiv-portlet', 'search', 'transfer' %>
 
@@ -17,11 +16,11 @@
     <div id="headerIdentityWrapper">
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.zwangsarbeit-archiv.de<%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
-          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
+        <a href="http://www.<%= CeDiS.config.project_domain %><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
+          <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info"><%= t 'public.404.info'  %></h2>
+        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s] %></h2>
         <hr class="divider" />
         <p class="skip">
           <em><%= t 'public.404.skip' %></em> <a href="#inhalt"><%= t 'public.404.content' %></a>
@@ -102,7 +101,7 @@
 
   <div id="printlogo">
     <p class="info"><em><%= t('public.404.print_preview_only') %></em></p>
-    <img src="<%= image_path 'zwar_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('public.404.print_logo') %>" alt="<%= t('public.404.print_logo') %>" />
+    <img src="<%= image_path 'project_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('public.404.print_logo') %>" alt="<%= t('public.404.print_logo') %>" />
   </div>
 
 </body>

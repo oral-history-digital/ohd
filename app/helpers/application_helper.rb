@@ -94,7 +94,7 @@ module ApplicationHelper
     end
   end
 
-  def zwar_paginate(collection, params=nil)
+  def cedar_paginate(collection, params=nil)
     params.delete_if{|k,v| v.blank? }
     will_paginate collection,
                   { :previous_label => I18n.t(:previous),

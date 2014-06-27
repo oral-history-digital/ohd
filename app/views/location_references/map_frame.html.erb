@@ -138,9 +138,9 @@
     function togglePrivacyCookie() {
         var privacy_checkbox = this;
         if(privacy_checkbox.checked) {
-            writeCookie('za-gm-priv', '<%= Time.now.strftime('%Y%m%d%H%M') -%>v3.9', 180);
+            writeCookie('cedar-gm-priv', '<%= Time.now.strftime('%Y%m%d%H%M') -%>v3.9', 180);
         } else {
-            writeCookie('za-gm-priv', '', 0);
+            writeCookie('cedar-gm-priv', '', 0);
         }
         $$('.remember_privacy').each(function(checkbox){
             if(checkbox.id != privacy_checkbox.id) {
@@ -160,7 +160,7 @@
     }
 
     function initPrivacySettings() {
-        var accept = (readCookie('za-gm-priv') != null);
+        var accept = (readCookie('cedar-gm-priv') != null);
         $$('.remember_privacy').each(function(checkbox){
             checkbox.checked = accept;
             Element.observe(checkbox, 'change', togglePrivacyCookie);

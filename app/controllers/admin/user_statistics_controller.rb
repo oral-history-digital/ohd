@@ -115,7 +115,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    render_csv("#{Time.now.strftime("%Y-%m-%d-%H%M")}-ZWAR-Benutzerstatistik")
+    render_csv("#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{CeDiS.config.project_shortname}-Benutzerstatistik")
   end
 
 end

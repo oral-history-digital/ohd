@@ -5,6 +5,7 @@ RAILS_GEM_VERSION = '2.3.18' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'project_config'
 
 AUTHORIZATION_MIXIN = "items and groups"
 
@@ -36,8 +37,8 @@ Rails::Initializer.run do |config|
 
   # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  config.i18n.default_locale = :de
-  config.i18n.available_locales = [ :de, :en, :ru ]
+  config.i18n.available_locales = CeDiS.config.available_locales.map(&:to_sym)
+  config.i18n.default_locale = CeDiS.config.default_locale.to_sym
 
   # I18n for JS
   config.middleware.use "SimplesIdeias::I18n::Middleware"

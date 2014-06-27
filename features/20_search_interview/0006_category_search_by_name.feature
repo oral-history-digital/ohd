@@ -5,7 +5,7 @@ Feature: 0006 category search by name
 
   Scenario: interviewee name search with autocomplete
 
-    Given I have a ZWAR user account
+    Given I have a CeDiS Archive user account
     And I am logged in
     And I am on the start page
 

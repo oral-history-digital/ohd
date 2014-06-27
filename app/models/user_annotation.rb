@@ -54,7 +54,7 @@ class UserAnnotation < UserContent
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
   def validate
-    unless media_id =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
+    unless media_id =~ Regexp.new("#{CeDiS.config.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
       errors.add :media_id, 'Invalid Media ID given.'
     end
     if description_changed?
@@ -73,7 +73,7 @@ class UserAnnotation < UserContent
   end
 
   def archive_id
-    media_id[/^za\d{3}/i].downcase
+    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
   def timecode_string
