@@ -52,9 +52,9 @@ class LocationReference < ActiveRecord::Base
         existing = self.class.count(
             :joins => :translations,
             :conditions => [
-                'location_references.id<>? AND location_references.interview_id=? AND location_references.reference_type=?
+                '(location_references.id<>? OR ? IS NULL) AND location_references.interview_id=? AND location_references.reference_type=?
                  AND location_reference_translations.locale=? AND location_reference_translations.name=?',
-                id, interview_id, reference_type, locale.to_s, name
+                id, id, interview_id, reference_type, locale.to_s, name
             ]
         )
         errors.add(:name, " '#{name}' must be unique within locale and reference type") if existing > 0

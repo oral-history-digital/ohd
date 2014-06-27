@@ -35,8 +35,8 @@ class Category < ActiveRecord::Base
         existing = self.class.count(
             :joins => :translations,
             :conditions => [
-                'categories.id<>? AND categories.category_type=? AND category_translations.locale=? AND category_translations.name=?',
-                id, category_type, locale.to_s, name
+                '(categories.id<>? OR ? IS NULL) AND categories.category_type=? AND category_translations.locale=? AND category_translations.name=?',
+                id, id, category_type, locale.to_s, name
             ]
         )
         errors.add(:name, 'must be unique within locale and category type') if existing > 0
