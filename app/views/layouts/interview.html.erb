@@ -62,7 +62,7 @@
 
         <% if !@interview.nil? && @interview.inferior_quality && @interview.segmented -%>
         <p id="quality_disclaimer">
-          <%= t(:quality_disclaimer, :scope => 'user_interface.messages') %>
+          <%= t('user_interface.messages.quality_disclaimer') %>
         </p>
         <% end -%>
 

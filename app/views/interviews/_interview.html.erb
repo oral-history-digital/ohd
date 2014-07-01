@@ -46,29 +46,33 @@
   </ul>
 
     <ul id="interviewDocuments">
-        <li>
-            <%= "#{t('user_interface.labels.Biography')}" %> (pdf)
-            <% interview.text_materials.of_type('Biography').map{|tm| {:language => I18n.three_letter_locale(tm.locale.to_sym), :tm => tm}}.sort_by{|doc| doc[:language]}.each do |doc| %>
-                [<%= link_to doc[:language], doc[:tm].document.url, :target => '_blank' %>]
-            <% end %>
-        </li>
-        <li>
-            <%= "#{t('user_interface.labels.transcript')}" %> (pdf)
-            <% [
-                   {
-                       :language => interview.transcript_locales.join('/'),
-                       :tm => interview.text_materials.of_type('Transcript').detect { |tm| tm.locale.to_sym == I18n.locale }
-                   },
-                   {
-                       :language => 'deu',
-                       :tm => interview.text_materials.of_type('Translation').detect { |tm| tm.locale.to_sym == :de }
-                   }
-               ].sort_by{|doc| doc[:language]}.each do |doc| %>
-                <% unless doc[:tm].nil? %>
+        <% if interview.text_materials.of_type('Biography').size > 0 %>
+            <li>
+                <%= "#{t('user_interface.labels.Biography')}" %> (pdf)
+                <% interview.text_materials.of_type('Biography').map{|tm| {:language => I18n.three_letter_locale(tm.locale.to_sym), :tm => tm}}.sort_by{|doc| doc[:language]}.each do |doc| %>
                     [<%= link_to doc[:language], doc[:tm].document.url, :target => '_blank' %>]
                 <% end %>
-            <% end %>
-        </li>
+            </li>
+        <% end %>
+        <% if interview.text_materials.of_type('Transcript').size + interview.text_materials.of_type('Translation').size > 0 %>
+            <li>
+                <%= "#{t('user_interface.labels.transcript')}" %> (pdf)
+                <% [
+                       {
+                           :language => interview.transcript_locales.join('/'),
+                           :tm => interview.text_materials.of_type('Transcript').detect { |tm| tm.locale.to_sym == I18n.locale }
+                       },
+                       {
+                           :language => 'deu',
+                           :tm => interview.text_materials.of_type('Translation').detect { |tm| tm.locale.to_sym == :de }
+                       }
+                   ].sort_by{|doc| doc[:language]}.each do |doc| %>
+                    <% unless doc[:tm].nil? %>
+                        [<%= link_to doc[:language], doc[:tm].document.url, :target => '_blank' %>]
+                    <% end %>
+                <% end %>
+            </li>
+        <% end %>
     </ul>
 
 </div>

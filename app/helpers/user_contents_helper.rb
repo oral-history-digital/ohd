@@ -105,7 +105,7 @@ module UserContentsHelper
 
   # render the interview references for a search item
   def reference_details_for_search(search)
-    html = content_tag(:span, t(:search_results, :scope => 'user_interface.labels', :count => search.properties['hits'] || t(:none)))
+    html = content_tag(:span, t(:search_results_with_count, :scope => 'user_interface.labels', :count => search.properties['hits'] || t(:none)))
     interview_stills = Interview.all(
         :select => 'id, archive_id, still_image_file_name',
         :include => :translations,

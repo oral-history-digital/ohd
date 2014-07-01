@@ -67,7 +67,7 @@
         <% fulltext = @search.fulltext -%>
     <% end -%>
     <div id="search-results-toggle" class="<%= show_segments ? 'open' : 'closed' %> container-toggle" style="<%= show_segments ? '' : 'display:none;' %>" onclick="toggleContainer('search-results-toggle', true, true);">
-        <h2><%= t('search_results', :scope => 'user_interface.labels') %></h2>
+        <h2><%= t('user_interface.labels.search_results') %></h2>
         <% if show_segments %>
             <span class="hits">(<%= @segments.size %>)</span>
         <% end %>
