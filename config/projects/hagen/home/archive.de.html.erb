@@ -1,4 +1,4 @@
-<h1>Das Online-Archiv "Interviewsammlung Hagen"</h1>
+<h1>Das Online-Archiv "<%= CeDiS.config.project_name['de'] %>"</h1>
 
 <div class="contentImagesLeft">
 <% @interview = Interview.first -%>
@@ -16,14 +16,14 @@
 <p></p>
 
 <p>
-  Das Online-Archiv &quot;Interviewsammlung Hagen&quot; beinhaltet Zeitzeugen-Interviews
+  Das Online-Archiv &quot;<%= CeDiS.config.project_name['de'] %>&quot; beinhaltet Zeitzeugen-Interviews
   von ...
 </p>
 
 <% if current_user_account.nil? %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "Interviewsammlung Hagen" <%= link_to 'angemeldet', anmelden_path %> sein und
+    Sie zur Benutzung des Archivs "<%= CeDiS.config.project_name['de'] %>" <%= link_to 'angemeldet', anmelden_path %> sein und
     die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
     <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
   </p>
