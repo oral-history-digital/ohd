@@ -48,7 +48,7 @@
         <h2>
             <%= t('headings', :scope => 'user_interface.labels') %>
         </h2>
-        <% if headings_locale != I18n.locale then %>
+        <% if headings_locale != I18n.locale and not @interview.segments.with_heading.first.blank? then %>
             <a id="heading_locale_help_text" class="tooltipButton">
                 <%= image_tag(image_path('icon_info.svg'), :onclick => 'var e = arguments[0] || window.event; e.stopPropagation(); return false;', :class => 'svg') %>
                 <div class="tooltip"><%= I18n.t('user_interface.messages.no_headings_in_your_language', :languages => available_languages(@interview.segments.with_heading.first)) -%></div>

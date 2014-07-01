@@ -145,7 +145,7 @@ module InterviewHelper
     if translated_object and translated_object.translations.map(&:locale).include?(I18n.locale)
       I18n.locale
     else
-      :de
+      I18n.default_locale
     end
   end
 
