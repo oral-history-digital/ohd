@@ -1,47 +1,29 @@
-<h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
+<h1>Das Online-Archiv "Interviewsammlung Hagen"</h1>
 
 <div class="contentImagesLeft">
-<% if current_user_account.nil? -%>
-<% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:languages => :translations}]) -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
-          <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.languages.map(&:to_s).map(&:downcase).join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% else -%>
-<% @interview = random_featured_interview -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
-          <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.languages.map(&:to_s).map(&:downcase).join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% end -%>
+<% @interview = Interview.first -%>
+<div class="contentImage200">
+<a href="<%= interview_path(:id => @interview.archive_id) -%>">
+    <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
+    <h6><%= @interview.short_title(I18n.locale) -%>
+      <br/>
+      <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.languages.map(&:to_s).map(&:downcase).join(' / ') %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+    </h6>
+</a>
+</div>
 </div>
 
 <p></p>
 
 <p>
-  Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
-  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern.
-  Es setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
-  finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
-  in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
-  Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
-  für Bildung und Wissenschaft zur Verfügung.
+  Das Online-Archiv &quot;Interviewsammlung Hagen&quot; beinhaltet Zeitzeugen-Interviews
+  von ...
 </p>
 
 <% if current_user_account.nil? %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
+    Sie zur Benutzung des Archivs "Interviewsammlung Hagen" <%= link_to 'angemeldet', anmelden_path %> sein und
     die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
     <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
   </p>
@@ -100,17 +82,6 @@
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Kartenrecherche</h3>
-<p>
-  Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
-  <br/>
-    <%= link_to 'zur Kartenrecherche »',
-                localized_public_map_url(:locale => :de),
-                :title => 'Kartenrecherche' %>
-    <br/>
-</p>
-<br style="clear: both;"/>
-
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="<%= localized_interview_collections_url(:locale => :de) -%>">
@@ -136,6 +107,6 @@
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
   <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">
-    mail@zwangsarbeit-archiv.de
+    mail@hagen-archiv.de
   </a>
 </p>

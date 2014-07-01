@@ -362,7 +362,7 @@ class Interview < ActiveRecord::Base
     if !defined?(@assigned_filename) || @assigned_filename != filename
       archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       # construct the import file path
-      filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
+      filepath = File.join(CeDiS.config.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
       if File.exists?(filepath)
         if @assigned_filename != filename
           @assigned_filename = filename

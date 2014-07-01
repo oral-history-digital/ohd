@@ -15,7 +15,7 @@ namespace :storage do
 
         archive_id = interview.archive_id.downcase
 
-        photo_path = File.join(ActiveRecord.path_to_photo_storage, 'interview_stills')
+        photo_path = File.join(CeDiS.config.photo_storage_dir, 'interview_stills')
 
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
 
@@ -65,7 +65,7 @@ namespace :storage do
       Interview.all(:limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
 
         dir = interview.archive_id.upcase
-        archive_path = File.join(ActiveRecord.path_to_storage, dir, "#{dir}_archive", 'data', 'av')
+        archive_path = File.join(CeDiS.config.storage_dir, dir, "#{dir}_archive", 'data', 'av')
 
         puts "ERROR: no archive directory for #{dir}!" unless File.directory?(archive_path)
 

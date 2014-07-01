@@ -25,7 +25,7 @@ class Photo < ActiveRecord::Base
       archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       @assigned_filename = filename
       # construct the import file path
-      filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'photos', (filename || '').split('/').last.to_s)
+      filepath = File.join(CeDiS.config.archive_management_dir, archive_id, 'photos', (filename || '').split('/').last.to_s)
       if !File.exists?(filepath)
         puts "\nERROR: missing photo file, skipping: #{filepath}"
       else

@@ -36,7 +36,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     # Load the interview to be imported.
     @archive_id = (filename.split('/').last[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
-    @interview = Interview.find_or_initialize_by_archive_id(@archive_id)
+    @interview = Interview.find_by_archive_id(@archive_id)
+    @interview ||= Interview.create(:archive_id => @archive_id, :last_name => 'preliminary')
 
     # Prepare sanity checking.
     self.import_sanity_levels = SANITY_CHECKS

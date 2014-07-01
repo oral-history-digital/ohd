@@ -30,12 +30,10 @@ class TextMaterial < ActiveRecord::Base
     if !defined?(@assigned_filename) || @assigned_filename != filename
       archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       @assigned_filename = filename
-      # construct the import file path
-      # TODO: if the quality setting is not at least 2.0, use the original material, which is:
-      # the oldest file matching the pattern in REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + 'archive', 'versions/bm'
+      # Construct the import file path.
       filepath = if !interview.nil? and interview.quality < 2.0
         # use the original text materials
-        versions_dir = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}_\\w+/")])
+        versions_dir = File.join(CeDiS.config.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}_\\w+/")])
         ctime = Time.now
         original_file = nil
         Dir.glob(versions_dir + '*.pdf').each do |file|
@@ -44,9 +42,9 @@ class TextMaterial < ActiveRecord::Base
         original_file
       else
         # use the specified document path or the default Repository content
-        doc_path = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'text', (filename || '').split('/').last.to_s)
+        doc_path = File.join(CeDiS.config.archive_management_dir, archive_id, 'text', (filename || '').split('/').last.to_s)
         unless File.exists?(doc_path)
-          doc_path = File.join(ActiveRecord.path_to_storage, REPOSITORY_DIR, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
+          doc_path = File.join(CeDiS.config.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
         end
         doc_path
       end

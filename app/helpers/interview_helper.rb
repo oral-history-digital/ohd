@@ -142,7 +142,7 @@ module InterviewHelper
   # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
   # - Show translations in the chosen UI-language if available, otherwise show them in German.
   def display_locale(translated_object)
-    if translated_object.translations.map(&:locale).include? I18n.locale
+    if translated_object and translated_object.translations.map(&:locale).include?(I18n.locale)
       I18n.locale
     else
       :de

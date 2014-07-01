@@ -5,31 +5,6 @@ class BaseController < ResourceController::Base
 
   private
 
-  def render_localized(options = nil, extra_options = {}, &block)
-    if !options[:template].blank?
-      options[:template] = localize_template_path(options[:template])
-    elsif !options[:action].blank?
-      options[:action] = localize_template_path(options[:action].to_s)
-    end
-    if block_given?
-      render(options, extra_options) do
-        eval block
-      end
-    else
-      render(options, extra_options)
-    end
-  end
-
-  def localize_template_path(path)
-    path_tokens = path.split('/')
-    template_name = path_tokens.pop
-    path = path_tokens.join('/')
-    path << '/' unless path.blank?
-    template_name << '.html.erb' unless template_name.include?('.')
-    template_name_parts = template_name.split('.')
-    path << template_name_parts.shift << ".#{I18n.locale}." << template_name_parts.join('.')
-  end
-
   def render_csv(filename)
     filename += '.csv'
 
