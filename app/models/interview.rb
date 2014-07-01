@@ -374,6 +374,10 @@ class Interview < ActiveRecord::Base
     create_categories_from(data.gsub('/', '|'), 'Sprache')
   end
 
+  def language_codes=(data)
+    create_categories_from(data.gsub('/', '|'), 'Sprache', :code)
+  end
+
   def still_image_file_name=(filename)
     # assign the photo - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
@@ -480,17 +484,20 @@ class Interview < ActiveRecord::Base
 
       # Re-arrange localized category data by entry.
       category_entries = []
-      category_data.each do |locale, category_names|
-        category_names.each_with_index do |name, index|
-          category_entries[index] ||= {}
-          category_entries[index][locale] = name
+      category_data.each do |locale, category_atts|
+        category_atts.each do |attribute, values|
+          values.each_with_index do |value, index|
+            category_entries[index] ||= {}
+            category_entries[index][locale] ||= {}
+            category_entries[index][locale][attribute] = value
+          end
         end
       end
 
-      category_entries.each do |localized_names|
+      category_entries.each do |localized_attributes|
 
-        # We expect at least a translation for the default locale.
-        default_name = localized_names[I18n.default_locale]
+        # We expect at least a category name for the default locale.
+        default_name = localized_attributes[I18n.default_locale][:name]
         next if default_name.blank?
 
         # Create a category with this name if it doesn't already exists.
@@ -508,15 +515,16 @@ class Interview < ActiveRecord::Base
 
         # Set the localized names of the category.
         category_changed = false
-        localized_names.each do |locale, name|
+        localized_attributes.each do |locale, attributes|
           # Rail's dirty detection doesn't work with Globalize2's
           # original code. We therefore have to manually identify changes.
-          next if category.name(locale) == name
+          next if category.name(locale) == attributes[:name] and (attributes[:code].blank? or category.code == attributes[:code])
 
           category_changed = true
           Category.with_locale(locale) do
-            category.name = name
+            category.name = attributes[:name]
           end
+          category.code = attributes[:code] unless attributes[:code].blank?
         end
 
         category.save! if category.new_record? || category_changed
@@ -537,13 +545,16 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def create_categories_from(data, type)
-    raise 'Invalid category type' unless %w(Gruppen Unterbringung Einsatzbereiche Lebensmittelpunkt Sprache).include? type
+  def create_categories_from(data, type, attribute = :name)
+    return if data.blank?
+    raise 'Invalid category type' unless Category::ARCHIVE_CATEGORIES.map(&:second).include? type
+    raise 'Invalid attribute' unless [:name, :code].include? attribute
     category_names = data.split('|').map{|n| n.strip }
     @category_import ||= {}
     @category_import[type.to_s] ||= {}
     import_locale = self.class.locale || I18n.locale
-    @category_import[type.to_s][import_locale] = category_names
+    @category_import[type.to_s][import_locale] ||= {}
+    @category_import[type.to_s][import_locale][attribute] = category_names
   end
 
   def set_contributor_field_from(field, association)

@@ -26,6 +26,7 @@ interview:
 
   language:
     name: 'languages'
+    code: 'language_codes'
 
   person:
     alias-names: 'alias_names'
