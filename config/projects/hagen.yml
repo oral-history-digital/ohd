@@ -4,23 +4,23 @@ available_locales:
 default_locale: de
 
 project_name:
-  de: 'Hagen Interviewsammlung'
+  de: 'Oral History Archive'
 
 project_id: 'hagen'
 
-project_shortname: 'HAGIS'
+project_shortname: 'OHA'
 
 project_initials: 'HA'
 
-project_domain: 'hagen-archiv.de'
+project_domain: 'oral-history-archive.org'
 
 cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
 
-streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/hagen-archiv'
+streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/oral-history-archive'
 
 meta_keywords:
   de: ''
 
-contact_email: 'mail@hagen-archiv.de'
+contact_email: 'mail@oral-history-archive.org'
 
 smtp_server: 'mail.fu-berlin.de'
