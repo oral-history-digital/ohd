@@ -155,4 +155,13 @@ module InterviewHelper
     Category.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
   end
 
+  def language_adj_case(languages)
+    languages = [languages] unless languages.is_a? Array
+    languages = languages.map(&:to_s).map(&:mb_chars)
+    if I18n.locale == :en
+      languages.map(&:capitalize)
+    else
+      languages.map(&:downcase)
+    end
+  end
 end

@@ -487,14 +487,22 @@ ru:
       interview_in_map:       'Упоминание в'
 
   external_links:
+    # TODO: Umstellen auf russ. Version, s. kommentierte Links unten.
     notice: 'Внешняя ссылка'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team: 'http://www.zwangsarbeit-archiv.de/ru/team'
-    kontakt: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
-    impressum: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
+    #nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    #nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    #datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    #annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    team: 'http://www.zwangsarbeit-archiv.de/team'
+    #team: 'http://www.zwangsarbeit-archiv.de/ru/team'
+    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
+    #kontakt: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
+    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
+    #impressum: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   facets:
     forced_labor_group: 'Группа'

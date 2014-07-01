@@ -18,7 +18,7 @@
   </div>
   <% if result.segmented? %>
   <div id="teaser_<%= result.archive_id %>_tooltip" class="floatingToolTip" style="display: none;">
-    <%= t(:subtitles, :scope => 'media') %> in <%= result.language %><%= result.translated? ? (' ' + t('and') + ' ' + t('german') ) : ''%>.
+    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.languages).join('/') %><%= result.translated? ? ('&nbsp;-&nbsp;' + language_adj_case(t('german')).first ) : ''%>.
     <% if result.has_headings? %>
     <br/>
     <%= t(:has_headings, :scope => 'media') %>.
