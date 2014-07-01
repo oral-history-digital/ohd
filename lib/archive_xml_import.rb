@@ -20,7 +20,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
   SANITY_CHECKS = %w(export xml-schema created-at current-migration published)
 
-  # A few entities need to waive the checks so we can interpret the publishing field
+  # A few entities need to waive the checks so we can interpret the publishing field.
   ENTITIES_WAIVING_CHECKS = %w(collection language interview person)
 
   def initialize(filename, selective=false)
@@ -175,7 +175,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             end
           end
 
-          # set the inferior quality flag
+          # Set the inferior quality flag.
           @interview.inferior_quality = (node_attributes['quality'].strip.first.to_i < 2)
 
         else

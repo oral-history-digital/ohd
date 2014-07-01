@@ -97,7 +97,7 @@ class LocationReference < ActiveRecord::Base
     return json if self.interview.nil?
     json['interviewId'] = self.interview.archive_id
     json['interviewee'] = self.interview.anonymous_title(I18n.locale)
-    json['language'] = self.interview.languages.join('/')
+    json['language'] = self.interview.language
     json['translated'] = self.interview.translated
     json['interviewType'] = self.interview.video
     json['referenceType'] = self.reference_type

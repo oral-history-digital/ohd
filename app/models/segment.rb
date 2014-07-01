@@ -166,10 +166,6 @@ DEF
     start_time + duration
   end
 
-  def language_id
-    interview.language_id
-  end
-
   def alias_names
     interview.alias_names || ''
   end

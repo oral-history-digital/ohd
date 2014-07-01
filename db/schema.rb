@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140619094401) do
+ActiveRecord::Schema.define(:version => 20140627154734) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -111,10 +111,6 @@ ActiveRecord::Schema.define(:version => 20140619094401) do
     t.boolean "other",         :default => false
   end
 
-  create_table "home_locations", :force => true do |t|
-    t.string "name"
-  end
-
   create_table "imports", :force => true do |t|
     t.integer  "importable_id"
     t.string   "importable_type"
@@ -164,7 +160,6 @@ ActiveRecord::Schema.define(:version => 20140619094401) do
     t.string   "deportation_date"
     t.string   "punishment"
     t.string   "liberation_date"
-    t.integer  "language_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "segmented",                              :default => false
@@ -182,10 +177,6 @@ ActiveRecord::Schema.define(:version => 20140619094401) do
     t.string   "citation_media_id"
     t.string   "citation_timecode",        :limit => 18
     t.datetime "indexed_at"
-  end
-
-  create_table "languages", :force => true do |t|
-    t.string "name", :null => false
   end
 
   create_table "location_reference_translations", :force => true do |t|

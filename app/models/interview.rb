@@ -82,8 +82,27 @@ class Interview < ActiveRecord::Base
                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
+  def self.is_categorized_by(category_type, name)
+    category_type = category_type.to_s
+    self.class_eval <<-CAT
+      has_many  :#{category_type}_categorizations,
+                :class_name => 'Categorization',
+                :conditions => "categorizations.category_type = '#{name}'"
+
+      has_many  :#{category_type},
+                :class_name => 'Category',
+                :through => :#{category_type}_categorizations,
+                :source => :category,
+                :conditions => "categories.category_type = '#{name}'"
+
+      def #{category_type.singularize}_ids
+        #{category_type}_categorizations.map(&:category_id)
+      end
+    CAT
+  end
+
   Category::ARCHIVE_CATEGORIES.each do |category|
-    send :is_categorized_by, category.first, category.last
+    is_categorized_by(category.first, category.last)
   end
 
   has_many  :categorizations
@@ -207,7 +226,6 @@ class Interview < ActiveRecord::Base
     nil
   end
 
-  # Compatibility for old singular language association
   def language
     languages.join('/')
   end
