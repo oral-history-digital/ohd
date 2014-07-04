@@ -1,4 +1,4 @@
-﻿<h1>Результаты поиска местонахождения</h1>
+<h1>Результаты поиска местонахождения</h1>
 
 <% if current_user_account.nil? %>
     <p style="font-weight: bold; margin-top: 0.33em;">
@@ -40,7 +40,7 @@
                     <br/>
           <span style="font-size: 8pt; font-weight: normal;">
             <%= format_value result.interview.forced_labor_groups.join(', ') %><br>
-              <%= result.interview.languages.join(' / ') %><%= result.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
+              <%= result.interview.languages.join(' / ') %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
               <%= result.interview.video %> <%= format_value result.interview.duration %>
           </span>
                 </td>

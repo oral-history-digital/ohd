@@ -20,7 +20,7 @@
     <li>
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
       <span class="value"><%= interview.languages.join(' / ') -%><% unless interview.language.downcase == "deutsch" -%>,
-        <%= interview.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
+        <%= interview.translated? ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
         <% end -%>
       </span>
     </li>
