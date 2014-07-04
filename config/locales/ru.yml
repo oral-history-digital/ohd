@@ -234,9 +234,9 @@ ru:
       publish_alteration_notice: 'Опубликованные комментарии не могут быть больше изменены, но Вы можете отозвать их для правки и при необходимости снова подать на публикацию.'
       confirm_retract_content: 'Вы хотите отменить Ваш %{content} перед публикацией?'
       published_annotation_change_notice: 'Ваш комментарий не может быть изменён, т.к. помечен для публикации. Вы можете отозвать комментарий, редактировать его и снова подать на публикацию.'
-      no_headings_in_your_language: '##ru##'
-      no_annotations_in_your_language: '##ru##'
-      no_photo_captions_in_your_language: '##ru##'
+      no_headings_in_your_language: 'Содержание данного интервью доступно только на следующем языке: %{languages}.'
+      no_annotations_in_your_language: 'Данный комментарий доступен только на следующем языке: %{languages}.'
+      no_photo_captions_in_your_language: 'Ссылка: Данное описание фотографии доступно только на следующем языке: %{languages}.'
       dont_show_again: 'Больше не показывать это сообщение.'
 
   privacy:
