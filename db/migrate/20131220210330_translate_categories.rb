@@ -44,11 +44,11 @@ class TranslateCategories < ActiveRecord::Migration
               'zu Hause' => 'At Home',
               'am Arbeitsplatz' => 'At the Place of Work',
               'Ghetto' => 'Ghetto',
-              'Privatunterkunft' => 'Private Lodgings',
+              'Privatunterkunft' => 'Private Lodging',
               'Sonstiges' => 'Other',
               'Keine Angabe' => 'Not Specified',
               'KZ-Außenlager' => 'Concentration Camp Sub-Camp',
-              'AEL' => 'Arbeitserziehungslager (“Work Education Camps”)'
+              'AEL' => 'Arbeitserziehungslager (“Work Education Camp”)'
           },
           'Sprache' => {
               'Russisch' => 'Russian',
