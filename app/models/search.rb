@@ -185,9 +185,9 @@ DEF
                 end.
                 sort do |a, b|
                   if a.first.is_a?(Category)
-                    a.first.name(I18n.locale) <=> b.first.name(I18n.locale)
+                    Unicode::strcmp(a.first.name(I18n.locale), b.first.name(I18n.locale))
                   elsif a.first.is_a?(Interview)
-                    a.first.full_title(I18n.locale) <=> b.first.full_title(I18n.locale)
+                    Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
                   end
                 end
           end
