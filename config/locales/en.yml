@@ -150,7 +150,7 @@ en:
       save: 'save content'
       saved: 'saved content'
       publish: 'Publish'
-      publish_something: 'Publish&nbsp;%{something}'
+      publish_something: 'Publish&nbsp;"%{something}"'
       retract: 'Retract Publication'
       chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;allowed characters remaining'
       tags_explanation: 'Topics are useful for grouping and sorting your saved results.'

@@ -198,7 +198,7 @@ de:
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
       publish: 'Veröffentlichen'
-      publish_something: '%{something}&nbsp;veröffentlichen'
+      publish_something: '"%{something}"&nbsp;veröffentlichen'
       retract: 'Veröffentlichung zurückziehen'
       chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
