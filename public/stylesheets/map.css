@@ -143,6 +143,7 @@ iframe {
 
 #baseContent ul.locationReferenceList {
   clear: both;
+  white-space: nowrap;
 }
 
 #baseContent ul.locationReferenceList li {
