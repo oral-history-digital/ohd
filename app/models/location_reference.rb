@@ -15,7 +15,7 @@ class LocationReference < ActiveRecord::Base
 
   delegate  :archive_id,
             :video,
-            :translated,
+            :translated?,
             :to => :interview
 
   has_many  :location_segments,
