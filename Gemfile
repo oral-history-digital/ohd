@@ -12,6 +12,8 @@ gem 'rake'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
 gem 'workflow'
+gem 'i18n-js'
+gem 'i18n', '<= 0.5.3' # We rely on ruby 1.9-style string interpolation ('...%{something}...' % {:something => '...'}) which has been removed from i18n after this version.
 gem 'will_paginate', '~> 2.3' # Version restriction for Rails 2.3.
 gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
@@ -37,7 +39,6 @@ gem 'acts_as_taggable_on_steroids',
     :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
     :branch => 'master'
 gem 'localized_country_select', '0.0.1'
-gem 'i18n-js'
 gem 'warden', '0.10.7'
 gem 'devise', '1.0.8'
 gem 'smurf'
