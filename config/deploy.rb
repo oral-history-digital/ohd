@@ -1,6 +1,6 @@
 require 'bundler/capistrano'
 
-set :repository, 'https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/branches/integration'
+set :repository, 'https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/trunk'
 set :environment, :production
 set :scm, 'subversion'
 set :use_sudo, false
