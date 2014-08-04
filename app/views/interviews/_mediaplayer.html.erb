@@ -40,15 +40,6 @@
       <%= @player.segments_container_for 'translation', :span, { :style => (@interview.translated? ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
     <% end %>
     </div>
-    <%#TODO: back and forward buttons %>
-    <!--
-    <div class="back">
-        <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
-    </div>
-    <div class="forward">
-        <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
-    </div>
-    //-->
     <div id="annotate_segment">
       <span id="annotate_new_segment" class="new" style="display: none;">
         <%= link_to_function t('user_interface.actions.annotate_segment'),
@@ -73,6 +64,15 @@
 
   <% javascript_tag do %>
     var headings = null;
+
+    <%# Fallback rules. %>
+    <% if @interview.translated? && @interview.segmented? && I18n.locale == :de %>
+      $('<%= @player.segments_container_id_for 'transcript' %>').hide();
+      $('<%= @player.segments_container_id_for 'translation' %>').show();
+    <% else %>
+      $('<%= @player.segments_container_id_for 'transcript' %>').show();
+      $('<%= @player.segments_container_id_for 'translation' %>').hide();
+    <% end %>
 
     function pauseOnAnnotation() {
       var playerWrapper = archiveplayer('interview-player');
