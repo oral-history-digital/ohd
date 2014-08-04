@@ -35,12 +35,11 @@ class TranslateCollections < ActiveRecord::Migration
               'Russland – Memorial Moskau' => 'Russia – Memorial Moscow',
               'Russland – Akademie Moskau' => 'Russia – Academy of Sciences, Moscow',
               'Russland – Memorial Petersburg' => 'Russia – Memorial, St. Petersburg',
-              'Russland – Universität Woronesch' => 'Russia – Regional Center Voronezh',
               'Russland – Regionalzentrum Woronesch' => 'Russia – Regional Center Voronezh',
               'Serbien – Universität Salzburg' => 'Serbia – University of Salzburg',
               'Slowakei – TLI Budapest' => 'Slovakia – TLI Budapest',
-              'Ungarn – TLI Budapest' => 'Ungarn – TLI Budapest',
-              'Ukraine – EIC Lwiw' => 'Ukraine - EIC Lwiw',
+              'Ungarn – TLI Budapest' => 'Hungary – TLI Budapest',
+              'Ukraine – EIC Lwiw' => 'Ukraine – EIC Lwiw',
               'Slowakei – ZP Prag' => 'Slovakia – ZP Prague',
               'Slowenien – Museum Ljubljana' => 'Slovenia – Museum Ljubljana',
               'USA – Breman Atlanta' => 'USA – Breman Atlanta',
@@ -48,7 +47,7 @@ class TranslateCollections < ActiveRecord::Migration
               'Spanien – AHFO Barcelona' => 'Spain – AHFO Barcelona',
               'Zeugen Auschwitzprozess - FBI Frankfurt' => 'Frankfurt Auschwitz Trials Witnesses – FBI Frankfurt',
               'Südafrika – LNP Jerusalem' => 'South Africa – LNP Jerusalem',
-              'Tschechien – ZP Prag' => 'Tschechien – ZP Prag',
+              'Tschechien – ZP Prag' => 'Czech Republic – ZP Prague',
               'Ukraine – Universität Charkiw' => 'Ukraine – Kharkiv University'
           },
           :countries => {
