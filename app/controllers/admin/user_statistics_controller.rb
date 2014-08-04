@@ -22,12 +22,12 @@ class Admin::UserStatisticsController < Admin::BaseController
     @file = File.join(UsageReport.report_file_path, filename)
     send_file @file, :disposition => 'inline', :type => 'text/csv'
   end
-  
+
   private
 
   def csv_export
 
-    mapping_file = File.join(RAILS_ROOT, 'config', 'statistics_mappings.yml')
+    mapping_file = File.join(Rails.root, 'config', 'statistics_mappings.yml')
     mappings = YAML::load_file(mapping_file)
 
     @list = [ :header, :count ]
@@ -115,7 +115,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    render_csv("#{Time.now.strftime("%Y-%m-%d-%H%M")}-ZWAR-Benutzerstatistik")
+    render_csv("#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{CeDiS.config.project_shortname}-Benutzerstatistik")
   end
 
 end

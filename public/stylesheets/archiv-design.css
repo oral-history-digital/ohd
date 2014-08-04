@@ -212,31 +212,7 @@ body {
 	padding: 0;
 }
 
-#baseHeaderSearch{
-	/* definiert in search.css */
-}
-
-#baseHeaderSearch .baseInputSearch { /* input */
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 0;
-	padding: 0 0 0 3px;
-	height: 1.6em;
-	width: 12em;
-	background-color: #fff;
-	border: 1px solid #999;
-	font-size: 95%;
-}
-
-#baseHeaderSearch .buttonText {
-	position: absolute;
-	top: 0.3em;
-
-
-	right: 0;
-	border: none;
-}
+/* Volltextsuche und Facetten definiert in search.css */
 
 /* Layout fuQuickLinks
    -----------------------------------------------------------------------------
@@ -384,31 +360,11 @@ br.spacer {
 	height: 30px;
 }
 
-/* Copyright */
-#baseContainerFooter div.left {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	width: 570px;
-	padding-bottom: 10px;
-}
-
-/* Datum */
-#baseContainerFooter div.right {
-	position: absolute;
-	top: 10px;
-	left: 690px;
-	width: 168px;
-	text-align: right;
-	padding-bottom: 10px;
-}
-
 /* Footer Nav */
 #baseContainerFooter ul {
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	width: 600px;
     margin: 0;
     padding: 0 0 10px 0;
 }

@@ -1,7 +1,7 @@
-<% case session[:locale]
-  when /^en/i %>
+<% case I18n.locale
+  when :en %>
     <p>
-      Registration is required for research in the archive “Forced Labor 1939-1945". The
+      Registration is required for research in the archive “<%= CeDiS.config.project_name['en'] %>". The
       <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
       explain for whom and for which purposes the archive can be used. The
       <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
@@ -10,9 +10,19 @@
     <p>
       Within two working days of sending your data you will receive a response and/or your login data.
     </p>
+  <% when :ru %>
+    <p>
+        Для поиска информации в архиве "<%= CeDiS.config.project_name['ru'] %>" необходима регистрация.
+        <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
+        разъясняют, кто и в каких целях может использовать архив.
+        <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> разъясняют, почему и какие сведения нами обрабатываются и каким образом используются.
+    </p>
+    <p>
+        В течение двух рабочих дней после отправки Ваших данных Вы получите ответное письмо или Ваши данные для доступа.
+    </p>
   <% else %>
     <p>
-      F&uuml;r die Recherche im Archiv "Zwangsarbeit 1939-1945" ist eine Registrierung notwendig.
+      F&uuml;r die Recherche im Archiv "<%= CeDiS.config.project_name['de'] %>" ist eine Registrierung notwendig.
       Die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
       erkl&auml;ren, f&uuml;r wen und f&uuml;r welche Zwecke das Archiv nutzbar ist. Die
       <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> erl&auml;utern, warum wir

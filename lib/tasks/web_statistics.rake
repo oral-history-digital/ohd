@@ -8,7 +8,7 @@ namespace :web_statistics do
     file = args[:file]
     raise "No such file: #{file.inspect}! Please provide a valid log file via the file= argument." unless File.exists?(file)
 
-    last_report = UsageReport.find(:first, :order => "logged_at DESC")
+    last_report = UsageReport.first(:order => "logged_at DESC")
     report_time = (last_report.nil? ? '2008-01-01' : last_report.logged_at).to_s
 
     puts "Adding usage_report entries starting from #{report_time}."
@@ -31,7 +31,7 @@ namespace :web_statistics do
 
     # it recognizes different tokens/patterns across those lines:
     # timestamp
-    r_time = Regexp.new("\s\\d{4}-\\d{2}-\\d{2}\s+\\d{2}:\\d{2}(:\\d{2})?")
+    r_time = Regexp.new("\\s\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}(:\\d{2})?")
 
     # Start match
     r_start = /^\s*Processing\s+/
@@ -40,7 +40,7 @@ namespace :web_statistics do
     # a resource path / url - use the 2nd match term!
     r_path = /(:|"|')\/{1,2}([-\w\d_.]+\/([-\w\d_]+\/)*[-\w\d_\.]+)/
     # path prefixes to remove from absolute urls
-    r_path_prefix = /\/?(zwangsarbeit-archiv.de|archiv)/
+    r_path_prefix = Regexp.new("/?(#{CeDiS.config.project_domain}|archiv)")
     # an action token
     r_action = /[\w_]+#[\w_]+/
     # requester IP
@@ -66,7 +66,7 @@ namespace :web_statistics do
           unless tokens.empty? || tokens[:logged_at].blank?
             # Create an access record (UsageReport instance) for the data tokens
             # Don't instantiate a new object each cycle, but keep an unsaved one in memory
-            # UsageReport contains all the logic of what is stores (perhaps through an initializer.yml)
+            # UsageReport contains all the logic of what it stores (perhaps through an initializer.yml)
 
             # if the Record is valid, it is saved.
 
@@ -76,7 +76,7 @@ namespace :web_statistics do
 
             user_account_id = user_ids[tokens[:ip]]
             if user_account_id.nil? && !tokens[:ip].nil?
-              account_ip = UserAccountIP.find_by_ip(tokens[:ip])
+              account_ip = UserAccountIp.find_by_ip(tokens[:ip])
               unless account_ip.nil?
                 user_account_id = account_ip.user_account_id
                 user_ids[tokens[:ip]] = account_ip.user_account_id
@@ -154,7 +154,7 @@ namespace :web_statistics do
 
     month_num = Time.now.month - 1 + (Time.now.year - 2011) * 12
 
-    csv_file = "zwar-logins-nach-monat.csv"
+    csv_file = "#{CeDiS.config.project_shortname}-logins-nach-monat.csv"
     if File.exists?(csv_file)
       FileUtils.rm(csv_file)
     end
@@ -163,7 +163,7 @@ namespace :web_statistics do
 
     (1..month_num).each do |month|
       time = Time.gm(2011,1,1) + month.months
-      count = UserAccount.count(:all, :conditions => ["last_sign_in_at < ?", time.to_s(:db)])
+      count = UserAccount.count(:conditions => ["last_sign_in_at < ?", time.to_s(:db)])
       csv = [ (time - 1.month).year, (time - 1.month).month, count ]
       system "echo '#{csv.join("\t")}' >> #{csv_file}"
     end
@@ -178,7 +178,7 @@ namespace :web_statistics do
 
     require 'fileutils'
 
-    csv_file = "zwar-logins-gesamt.csv"
+    csv_file = "#{CeDiS.config.project_shortname}-logins-gesamt.csv"
     if File.exists?(csv_file)
       FileUtils.rm(csv_file)
     end
@@ -191,16 +191,16 @@ namespace :web_statistics do
     values = (1..9).to_a
 
     values.each do |val|
-      num = UserAccount.count :all, :conditions => ['sign_in_count = ?', val]
+      num = UserAccount.count :conditions => ['sign_in_count = ?', val]
       csv = [val, num]
       system "echo '#{csv.join("\t")}' >> #{csv_file}"
     end
 
-    num = UserAccount.count :all, :conditions => ['sign_in_count > 9']
+    num = UserAccount.count :conditions => ['sign_in_count > 9']
 
     csv = ['10+', num]
     system "echo '#{csv.join("\t")}' >> #{csv_file}"
-    
+
     puts "Written usage statistics by total logins to #{csv_file}"
 
   end

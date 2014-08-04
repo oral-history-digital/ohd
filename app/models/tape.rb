@@ -1,14 +1,13 @@
 class Tape < ActiveRecord::Base
 
   belongs_to :interview
-          
+
   has_many  :segments,
-              :order => 'media_id ASC, timecode ASC'
+            :order => 'media_id ASC, timecode ASC',
+            :include => :tape
 
   validates_presence_of :media_id, :interview_id
   validates_uniqueness_of :media_id
-  
-  # validates_associated :interview
 
   def number
     @number ||= media_id[/\d+$/].to_i
@@ -25,5 +24,5 @@ class Tape < ActiveRecord::Base
   def media_file(extension)
     "#{interview.archive_id.upcase}/#{interview.archive_id.upcase}_archive/data/av/#{extension}/#{media_id.upcase}.#{extension}"
   end
-  
+
 end

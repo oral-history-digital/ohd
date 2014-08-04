@@ -111,7 +111,7 @@ end
 
 
 def init_user
-  @user = User.find(:first) || User.create do |user|
+  @user = User.first || User.create do |user|
     user.first_name = 'Xago'
     user.last_name = 'Yoyo'
   end
@@ -120,7 +120,8 @@ end
 def init_segment
   @interview ||= Interview.create do |interview|
     interview.archive_id = 'za907'
-    interview.full_title = 'Abraham Lincoln'
+    interview.first_name = 'Abraham'
+    interview.last_name = 'Lincoln'
     interview.country_of_origin = 'Vereinigte Staaten'
   end
   @tape ||= Tape.create do |tape|

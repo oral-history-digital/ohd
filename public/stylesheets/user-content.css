@@ -165,7 +165,7 @@ body .teaserList .save_user_content {
 }
 
 #toggle_links #finalize_sorting {
-    background-position: 0.3em -1141px;
+    background-position: 0.3em -1141px;    
     display: none;
 }
 #toggle_links .active #finalize_sorting {
@@ -495,7 +495,7 @@ body .teaserList .save_user_content {
 
 #modal_window .inline-editor form.inline {
    margin-top: 0;
-   display: inline-block;
+   display: inline-block; 
 }
 
 #user_contents .header .title,

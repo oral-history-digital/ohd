@@ -2,47 +2,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-    <title>Fehler 500: Interner Serverfehler / Error 500: Internal Server Error</title>
+    <title>Fehler 500: Interner Serverfehler / Error 500: Internal Server Error / Ошибка 500: Внутренняя ошибка сервера</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="pragma" content="no-cache" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
-    <meta name="keywords" content="Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht " />
 
-    <link href="/archiv/stylesheets/archiv-standard.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/archiv-design.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/content.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/eaz-content.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/lightbox.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/archiv-portlet.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/search.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/archiv/stylesheets/transfer.css" media="screen" rel="stylesheet" type="text/css" />
+    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'content', 'eaz-content', 'lightbox', 'archiv-portlet', 'search', 'transfer' %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 </head>
 
 <body>
     <div id="headerIdentityWrapper">
-              <div id="baseHeader">
+      <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.zwangsarbeit-archiv.de" title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" accesskey="H" lang="en">
-          <img title="Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte" src="/archiv/images/zwar_logo_de.gif" class="baseHeaderLogo" alt="Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte"/>
+        <a href="http://www.<%= CeDiS.config.project_domain %><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
+          <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s] %></h2>
         <hr class="divider" />
         <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+          <em><%= t 'public.500.skip' %></em> <a href="#inhalt"><%= t 'public.500.content' %></a>
         </p>
 
         <hr class="divider" />
 
         <h2 class="info">
-          Service-Navigation
+          <%= t 'public.500.service_navigation' %>
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><a href="/archiv ">Startseite</a></li>
+            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => "0" %></li>
           </ul>
         </div>
       </div>
@@ -64,15 +56,15 @@
             <a name="inhalt" accesskey="I"></a>
 
             <div id="innerContent">
-              <h1>Fehler 500: Interner Serverfehler / Error 500: Internal Server Error</h1>
+              <h1>Fehler 500: Interner Serverfehler / Error 500: Internal Server Error / Ошибка 500: Внутренняя ошибка сервера</h1>
               <hr/>
-              <h2>Der Server konnte Ihre Anfrage wegen eines internen Fehler oder einer Fehlkonfiguration nicht bearbeiten. / The server encountered an internal error or misconfiguration and was unable to complete your request.</h2>
+              <h2>Der Server konnte Ihre Anfrage wegen eines internen Fehlers oder einer Fehlkonfiguration nicht bearbeiten. / The server encountered an internal error or misconfiguration and was unable to complete your request. / Сервер не мог обработать Ваш запрос из-за внутренней ошибки или ошибки конфигурации.</h2>
 
-              <p>Der Server-Administrator ist &uuml;ber dieses Problem benachrichtigt worden, und wir bem&uuml;hen uns um eine umgehende L&ouml;sung des Problems. / The server administrator has been notified of this issue and will try to provide a solution shorty.</p>
+              <p>Der Server-Administrator ist &uuml;ber dieses Problem benachrichtigt worden, und wir bem&uuml;hen uns um eine umgehende L&ouml;sung des Problems. / The server administrator has been notified of this issue and will try to provide a solution shorty. / Администратор сервера был извещён о возникшей проблеме, и мы прилагаем все усилия для её скорейшего разрешения.</p>
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="/archiv/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <a href="#seitenanfang" title="<%= t('public.500.back_to_top') %>"><img src="<%= image_path 'sprungmarke.gif' %>" alt="<%= t('public.500.image_back_to_top') %>" border="0" title="<%= t('public.500.back_to_top') %>" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -95,19 +87,16 @@
 
     <hr class="divider" />
 
-    <div id="baseContainerFooter">
+    <div id="baseContainerFooter"></div>
 
-            </div>
+  </div>
 
-    <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
+  <!-- Info: Die folgenden Symbole werden nur in der Druckvorschau (separates Popup) und bei der Ausgabe auf einem Drucker verwendet/eingeblendet.-->
 
-    <div id="printlogo">
-        <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-        <img src="/archiv/images/zwar_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
-
-    </div>
-
-    <!-- /noindex -->
+  <div id="printlogo">
+    <p class="info"><em><%= t('public.505.print_preview_only') %></em></p>
+    <img src="<%= image_path 'project_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('public.505.print_logo') %>" alt="<%= t('public.505.print_logo') %>" />
+  </div>
 
 </body>
 </html>

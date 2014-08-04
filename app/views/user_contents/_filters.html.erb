@@ -56,7 +56,7 @@
           <span class="show-unchecked"><%= t(:select_all_topics, :scope => 'user_interface.user_content') -%></span>
         </span>
       </li>
-      <% current_user.tags.sort{|a,b| a.name <=> b.name }.each do |tag| -%>
+      <% current_user.tags.sort{|a,b| Unicode::strcmp(a.name, b.name) }.each do |tag| -%>
         <% active = tag_filters.include?(tag.name) -%>
       <li class="facet<%= active ? ' checked' : '' -%>" onclick="checkFilter('<%= "tagfilter_#{tag}" %>', this);">
         <%= check_box_tag "tag_filters[#{tag}]", 1, active, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>

@@ -5,22 +5,19 @@
   <div class="playerControl">
 
     <div id="language_select">
-    <% if @interview.language.downcase == 'deutsch' %>
-      <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.languages.map{|f| t(f, :scope => 'mediaplayer.languages')}.join(' / ') %></a>
+    <% if @interview.language == 'Deutsch' %>
+      <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.language %></a>
     <% else %>
       <%= content_tag(:div,
                       formatted_languages(@interview),
                       :id => "original",
-                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented?) ? ' active' : ''}",
+                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
                       :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
       <% if @interview.translated? && @interview.segmented? %>
-        <%= content_tag(:div,
-                        t('Deutsch', :scope => 'mediaplayer.languages'),
+        <%= content_tag(:div, t(:german),
                         :id => "translated",
-                        :class => "captions_trans active",
+                        :class => "captions_trans#{I18n.locale == :de ? ' active' : ''}",
                         :onClick => "$('#{@player.segments_container_id_for 'translation'}').show();$('#{@player.segments_container_id_for 'transcript'}').hide();$('original').removeClassName('active');$('translated').addClassName('active');") %>
-      <% else %>
-        <a id="translated" class="captions_trans disabled" href="javascript:void(0);"><%= t('Deutsch', :scope => 'mediaplayer.languages') %></a>
       <% end %>
     <% end %>
     </div>
@@ -43,18 +40,9 @@
       <%= @player.segments_container_for 'translation', :span, { :style => (@interview.translated? ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
     <% end %>
     </div>
-    <%#TODO: back and forward buttons %>
-    <!--
-    <div class="back">
-        <%= link_to_function(t('back', :scope => 'user_interface.player'), 'void(0);') %>
-    </div>
-    <div class="forward">
-        <%= link_to_function(t('forward', :scope => 'user_interface.player'), 'void(0);') %>
-    </div>
-    //-->
     <div id="annotate_segment">
       <span id="annotate_new_segment" class="new" style="display: none;">
-        <%= link_to_function t(:annotate_segment, :scope => 'user_interface.actions'),
+        <%= link_to_function t('user_interface.actions.annotate_segment'),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {'type' => 'UserAnnotation'},
                              :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
@@ -63,10 +51,10 @@
                              :class => 'annotate-action' -%>
       </span>
       <span id="annotate_existing_segment" class="existing" style="display: none;">
-        <%= link_to_function t(:show_existing_annotation, :scope => 'user_interface.actions'),
+        <%= link_to_function t('user_interface.actions.show_existing_annotation'),
                              javascript_open_modal_window(segment_annotation_user_contents_path,
                              {:parameters => {:type => 'UserAnnotation'},
-                             :dynamic_parameters => {:id => 'archiveplayer(\'interview-player\').userAnnotationID'},
+                             :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
                              :on_create => "pauseOnAnnotation()"
                              }),
                              :class => 'annotate-action'-%>
@@ -76,6 +64,15 @@
 
   <% javascript_tag do %>
     var headings = null;
+
+    <%# Fallback rules. %>
+    <% if @interview.translated? && @interview.segmented? && I18n.locale == :de %>
+      $('<%= @player.segments_container_id_for 'transcript' %>').hide();
+      $('<%= @player.segments_container_id_for 'translation' %>').show();
+    <% else %>
+      $('<%= @player.segments_container_id_for 'transcript' %>').show();
+      $('<%= @player.segments_container_id_for 'translation' %>').hide();
+    <% end %>
 
     function pauseOnAnnotation() {
       var playerWrapper = archiveplayer('interview-player');

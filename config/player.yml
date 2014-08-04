@@ -1,6 +1,6 @@
 default:
   flashplayer:                '/swf/player.swf'
-  skin:                       '/swf/zwar.swf'
+  skin:                       '/swf/skin.swf'
   backcolor:                  '990000'
   frontcolor:                 '999999'
   lightcolor:                 'ffffff'

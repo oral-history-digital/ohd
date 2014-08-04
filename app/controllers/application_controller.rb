@@ -5,26 +5,27 @@ class ApplicationController < ActionController::Base
   include ExceptionNotification::Notifiable
 
   helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  prepend_before_filter :set_locale
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  filter_parameter_logging :password # Scrub sensitive parameters from your log
 
   include SearchFilters
-
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
-
   before_filter :current_search_for_side_panel
 
-  def set_locale  
-    @valid_locales ||= Dir.glob(File.join(Rails.root, 'config', 'locales', '??.yml')).map{|l| (l.split('/').last || '')[/^[a-z]+/]}.sort
-    @locale ||= (params[:locale] || session[:locale] || 'de').to_s
-    @locale = 'de' unless @valid_locales.include?(@locale)
-    session[:locale] = @locale
-    I18n.locale = @locale
+  prepend_before_filter :set_locale
+  def set_locale(locale = nil, valid_locales = [])
+    locale ||= (params[:locale] || I18n.default_locale).to_sym
+    valid_locales = I18n.available_locales if valid_locales.empty?
+    locale = I18n.default_locale unless valid_locales.include?(locale)
+    I18n.locale = locale
   end
 
-  # resetting the remember_me_token on CSRF failure
+  # Append the locale to all requests.
+  def default_url_options(options={})
+    options.merge({ :locale => I18n.locale })
+  end
+
+  # Resetting the remember_me_token on CSRF failure.
   def handle_unverified_request
     begin
       super
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
     end
     cookies.delete 'remember_user_token'
     sign_out :user
+  end
+
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
   end
 
 end

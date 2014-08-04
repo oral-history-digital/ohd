@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'open4'
+require 'project_config'
 
 class SimpleScriptLogger
 
@@ -26,15 +27,15 @@ def run_as_process(name, call)
     Open4::popen4("cd #{File.join(File.dirname(__FILE__),'..')} && #{call}") do |pid, stdin, stdout, stderr|
       stdout.each_line {|line| puts line}
       errors = []
-      stderr.each_line {|line| errors << line unless line.empty?}
+      stderr.each_line {|line| errors << line unless line.empty? or line =~ /^\*\* (Invoke|Execute)/}
       @logger.log "\n#{name} - FEHLER:\n#{errors.join("")}" unless errors.empty?
     end
-  rescue Exception => e
+  rescue => e
     @logger.log "\n#{name} - ABORTED: #{e.message}\n#{e.respond_to?('backtrace') ? (e.backtrace || '') : ''}"
     STDOUT.flush
   end
 end
 
 # Import up to 50 interviews
-run_as_process 'Datenimport', 'rake xml_import:limited number=25 -t'
+run_as_process 'Datenimport', 'rake import:interviews:limited number=25 -t'
 

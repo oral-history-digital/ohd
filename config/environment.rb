@@ -5,6 +5,7 @@ RAILS_GEM_VERSION = '2.3.18' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'project_config'
 
 AUTHORIZATION_MIXIN = "items and groups"
 
@@ -14,9 +15,8 @@ Rails::Initializer.run do |config|
   # -- all .rb files in that directory are automatically loaded.
 
   # Add additional load paths for your own custom dirs
-  config.autoload_paths += %W(#{RAILS_ROOT}/lib/search_filters.rb)
-
-  config.autoload_once_paths += %W( #{RAILS_ROOT}/lib/search_filters.rb )
+  config.autoload_paths += %W(#{Rails.root}/lib/search_filters.rb)
+  config.autoload_once_paths += %W( #{Rails.root}/lib/search_filters.rb )
 
   # Gem configuration (config.gem ...): We use bundler, please place gem configuration into the Gemfile.
 
@@ -35,9 +35,14 @@ Rails::Initializer.run do |config|
   # Run "rake -D time" for a list of tasks for finding time zone names.
   config.time_zone = 'UTC'
 
-  # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+  # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  config.i18n.default_locale = :de
+  config.i18n.available_locales = CeDiS.config.available_locales.map(&:to_sym)
+  config.i18n.default_locale = CeDiS.config.default_locale.to_sym
+
+  # I18n for JS
+  config.middleware.use "SimplesIdeias::I18n::Middleware"
+
   # RailsLTS config
   config.rails_lts_options = { :default => :compatible }
 end

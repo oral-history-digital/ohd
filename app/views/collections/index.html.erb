@@ -1,0 +1,61 @@
+<% cache [I18n.locale, 'collections'].join('/') do -%>
+    <% case I18n.locale
+        when :de %>
+            <h1>Geografische Verteilung der Teilsammlungen</h1>
+
+            <div class="abstract">
+                <p>
+                    <span>Das Archiv umfasst 32 Teilsammlungen von Interviews. Diese von verschiedenen
+                        Interview-Projekten in 26 Ländern erarbeiteten Teilsammlungen bilden die
+                        Grundstruktur des Archivs. Über die Karte können diese angewählt werden.</span>
+                </p>
+            </div>
+
+            <embed align="left" width="696" height="450" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" name="eaz_karte" bgcolor="#f1f1eb" quality="high" src="<%= ActionController::Base.relative_url_root %>/swf/teilsammlungen_karte.swf">
+
+            <div class="clear">&nbsp;</div>
+
+
+            <h2>Übersicht über die Teilsammlungen</h2>
+        <% when :en %>
+            <h1>Geographical Distribution of the Subsets of the Collection</h1>
+
+            <div class="abstract">
+                <p>
+                    <span>The archive contains 32 subsets of interviews. The subsets were compiled
+                        from various interview projects in 26 countries and provide the framework for
+                        the archive. These can be selected by clicking on the map below.</span>
+                </p>
+            </div>
+
+            <embed align="left" width="696" height="450" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" name="eaz_karte" bgcolor="#f1f1eb" quality="high" src="<%= ActionController::Base.relative_url_root %>/swf/teilsammlungen_karte_en.swf">
+
+            <div class="clear">&nbsp;</div>
+
+
+            <h2>Overview of Subsets of the Collection </h2>
+        <% when :ru %>
+            <h1>Географическое распределение частичных собраний</h1>
+
+            <div class="abstract">
+                <p>
+                    <span>Архив содержит 32 частичных собрания интервью. Данные частичные собрания,
+                        разработанные в рамках различных интервью-проектов в 26 странах, образуют главную
+                        структуру архива.</span>
+                </p>
+            </div>
+
+            <%= image_tag("#{ActionController::Base.relative_url_root}/swf/teilsammlungen_karte_ru.png") %>
+
+            <h2>Обзор частичных собраний</h2>
+    <% end %>
+<ul>
+
+  <% @collections.each do |collection| %>
+
+    <li><%= link_to collection.name(I18n.locale), url_for(:controller => :collections, :action => :show, :project_id => collection.project_id) %></li>
+
+  <% end %>
+
+</ul>
+<% end -%><%# cache -%>

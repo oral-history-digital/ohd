@@ -30,32 +30,29 @@ class Search < UserContent
   RESULTS_PER_PAGE = 12
 
   FACET_FIELDS = [
-                      :person_name,
-                      :forced_labor_groups,
-                      :forced_labor_fields,
-                      :forced_labor_habitations,
-                      :languages,
-                      :countries
+      :interview_id,
+      :forced_labor_groups,
+      :forced_labor_fields,
+      :forced_labor_habitations,
+      :languages,
+      :countries
   ]
 
-  NON_FACET_FIELDS = [ :fulltext,
-                      :partial_person_name,
-                      :page ]
+  NON_FACET_FIELDS = [
+      :fulltext,
+      :partial_person_name,
+      :page
+  ]
 
   # This contains a list of accessible attributes that are not
   # considered query params and will not be kept in a stored search.
   NON_QUERY_ACCESSIBLES = [
-                      :open_category
+      :open_category
   ]
 
   QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map{|a| a.to_s }
 
   ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
-
-  IGNORE_SEARCH_TERMS = [
-    I18n.t('search_term', :scope => 'user_interface.search', :locale => :de),
-    I18n.t('search_term', :scope => 'user_interface.search', :locale => :en)
-  ]
 
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
@@ -93,7 +90,16 @@ DEF
     @results
   end
 
-  # used to construct the autocomplete searches for person names
+  # Textual person name searches.
+  def person_name=(person_name)
+    @person_name = person_name
+  end
+
+  def person_name
+    @person_name
+  end
+
+  # Used to construct the autocomplete searches for person names.
   def partial_person_name=(name_token)
     @partial_person_name = name_token
   end
@@ -102,9 +108,9 @@ DEF
     @partial_person_name
   end
 
-  # filter the ignore (default label) words from fulltext
+  # Filter the ignore (default label) words from fulltext.
   def fulltext=(term)
-    self.write_property(:fulltext, term) unless IGNORE_SEARCH_TERMS.include?(term)
+    self.write_property(:fulltext, term)
   end
 
   def fulltext
@@ -127,7 +133,6 @@ DEF
   # The query parameters in hashed form.
   def query_hash
     @query_hash ||= Search.encode_parameters(query_params)
-    @query_hash
   end
 
   def page
@@ -145,62 +150,59 @@ DEF
   end
 
   # The facet method returns an array of facet rows in the
-  # format: <tt>[ category_instance, count ]</tt>.
+  # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    facet_name = name
-    facet_name = (name.to_s.singularize << "_ids") unless Category::ARCHIVE_CATEGORIES.assoc(name.to_sym).nil?
-    @facets[facet_name.to_sym] ||= \
-    if @search.is_a?(Sunspot::Search)
-      facet = @search.facet(facet_name.to_sym)
-      # puts "FACET NAME: #{facet_name}  => #{facet}"
-      if facet.blank?
-        []
-      elsif facet.rows.blank?
-        if Category::ARCHIVE_CATEGORIES.flatten.include?(facet_name.to_sym)
-          # yield all categories with a count of zero
-          Category.send(name).map{|c| [ c, 0 ]}
+    facet_name = (if Category::is_category?(name)
+                   name.to_s.singularize << '_ids'
+                 else
+                   name
+                 end).to_sym
+    @facets[facet_name] ||=
+        if @search
+          facet = @search.facet(facet_name)
+          if facet.blank?
+            []
+          elsif facet.rows.blank?
+            if Category::is_category?(name)
+              # Yield all categories with a count of zero.
+              Category.send(name).sort_by(&:to_s).map{|c| [c, 0]}
+            else
+              []
+            end
+          else
+            # Return an array of all instances with number of corresponding hits.
+            facet.rows.
+                map { |f| [f.instance, f.count] }.
+                reject do |f|
+                  if f.first.is_a?(Category)
+                    f.first.name(I18n.locale).blank?
+                  elsif f.first.is_a?(Interview)
+                    f.first.full_title(I18n.locale).blank?
+                  else
+                    true
+                  end
+                end.
+                sort do |a, b|
+                  if a.first.is_a?(Category)
+                    Unicode::strcmp(a.first.name(I18n.locale), b.first.name(I18n.locale))
+                  elsif a.first.is_a?(Interview)
+                    Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
+                  end
+                end
+          end
         else
           []
         end
-      elsif facet.rows.first.instance.nil?
-        # non-category facet - return an array of all values and counts
-        facet.rows.map{|f| [ f.value, f.count ]}
-      else
-        # category facet - return an array of all instances with number of corresponding hits
-        facet.rows.map{|f| [ f.instance, f.count ] }.sort{|a,b| a.first.name <=> b.first.name }
-      end
-    else
-      []
-    end
   end
 
   # Returns the query params - this is needed for link generation from a given query, for instance.
   def query_params
-    query = {}
-    QUERY_PARAMS.each do |query_param|
+    QUERY_PARAMS.inject({}) do |query, query_param|
       query_value = self.send(query_param)
       query[query_param] = query_value unless query_value.nil?
+      query
     end
-    query
-  end
-
-  # Returns a string-serialized version of the query params for use as
-  # url parameters.
-  def serialized_query_params(include_page=true)
-    query_params.to_a.map do |param|
-      str = []
-      next if param.first.to_s == 'page' && !include_page
-      if param.last.is_a?(Array)
-        # this is an Array field
-        param.last.each do |value|
-          str << param.first.to_s + '[]=' + value.to_s
-        end
-      else
-        str << param.first.to_s + '=' + param.last.to_s
-      end
-      str.join('&')
-    end.join('&')
   end
 
   # This method queries the Solr search server for matching
@@ -217,19 +219,20 @@ DEF
     @page = (current_query_params.delete('page') || 1).to_i
 
     if current_query_params.blank?
-      @search = blank_search(@page)
+      @search = self.class.unfiltered_interview_search(@page)
 
     else
       if current_query_params['partial_person_name'].blank?
-        # fulltext search
-        @search = standard_lucene_search current_query_params, @page
+        # fulltext/category search
+        @search = self.class.filtered_interview_search current_query_params, @page
 
       else
         # search for partial person names for autocompletion
-        @search = person_name_search current_query_params, @page
+        @search = self.class.person_name_search current_query_params, @page
 
       end
     end
+    @search.execute!
     @hits = @search.total
     @results = @search.results
 
@@ -239,81 +242,43 @@ DEF
     @query_facets = nil
     @query_hash = nil
     @segments = {}
-    # puts "\n@@@@@\nSEARCH! -> #{@hits} hits found\nquery_params = #{current_query_params.inspect}\nQUERY: #{@query.inspect}\n\nRESULTS:\n#{@results.inspect}\n@@@@@\n\n"
     @search
   end
 
-  # this is for test purposes only
-  def search_for_keyword(word)
-    Sunspot.search Interview do
-
-      keywords word.downcase
-
-      adjust_solr_params do |p|
-        p.delete(:defType)
-      end
-
-    end
-  end
-
-
   def matching_segments_for(archive_id)
     archive_id.upcase! if archive_id.is_a?(String)
-    match = @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
-    # puts "\n\n@@@@ MATCHING SEGMENTS FOR #{archive_id.inspect}:\n#{match.inspect}"
-    match
+    @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
   end
-
 
   # Performs a sub-search for matching segments on the facetted search
   # result set.
   def segment_search!
     @segments = {}
     fulltext = self.query_params['fulltext']
-
     interview_ids = @results.map{|i| i.archive_id }
     unless fulltext.blank? || interview_ids.empty?
       subsearch = Sunspot.search Segment do
 
-        # keyword search on fulltext only - for DisMax queries
-        # keywords fulltext.downcase #do
-        #  highlight :transcript, :translation
-        #end
-
         with(:archive_id).any_of interview_ids
+
+        keywords fulltext
 
         paginate :page => 1, :per_page => 120
 
         order_by :timecode, :asc
 
-        # lucene search
         adjust_solr_params do |params|
-          params[:defType] = 'lucene'
-          #params[:qt] = 'standard'
-          
-          # fulltext search
-          unless fulltext.blank?
-            params[:q] = fulltext.downcase
-          end
+          params[:defType] = 'edismax'
         end
 
       end
 
-      # puts "\nSEGMENT SUBSEARCH: #{subsearch.query.to_params.inspect}\nfound #{subsearch.total} segments."
-
-      # puts "\n\n@@@@ RAW RESULTS:"
-      # first_seg = subsearch.hits.select{|h| h.class_name != 'Interview' }.first
-      # puts "First Segment = #{first_seg.primary_key}: #{first_seg.to_s}"  unless first_seg.nil?
-
-      # iterate over results, not subsearch!
-
+      # Iterate over results, not subsearch!
       @results.each do |interview|
 
-
-        subsearch.hits.select{|h| h.instance.archive_id == interview.archive_id }.each do |segment_result|
+        subsearch.hits.select{|h| not h.instance.blank? and h.instance.archive_id == interview.archive_id }.each do |segment_result|
 
           segment = segment_result.instance
-          #puts "Highlights for segment: #{segment.media_id} = #{segment_result.highlights('translation').inspect}"
 
            if @segments[interview.archive_id.upcase].is_a?(Array)
              @segments[interview.archive_id.upcase] << segment
@@ -328,42 +293,6 @@ DEF
 
     end
   end
-
-
-  def self.from_params(query_params=nil)
-    if query_params.blank?
-      if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
-        @@default_search = nil
-        @@default_search_cache_time = Time.now
-      end
-      @@default_search ||= begin Search.new{|base| base.search! }; rescue Exception; Search.new; end;
-    else
-      search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
-      search_params.merge!(query_params)
-      search = Search.new do |search|
-        QUERY_PARAMS.each do |attr|
-          # puts "-> setting search query param: #{attr} = #{query_params[attr]}"
-          search.send(attr+'=', search_params[attr.to_s]) unless search_params[attr.to_s].blank?
-          # puts "search.#{attr} = #{search.send(attr.to_s)}"
-        end
-      end
-      # puts "Search.query_params = #{search.query_params}"
-      search
-    end
-  end
-
-  def self.in_interview(id, fulltext)
-    search_results = if id.is_a?(Integer)
-      Interview.find(:all, :conditions => ['id = ?', id])
-    else
-      Interview.find(:all, :conditions => ['archive_id = ?', id])
-    end
-    Search.new do |search|
-      search.results = search_results
-      search.fulltext = Search.lucene_escape(fulltext)
-    end
-  end
-
 
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
@@ -392,187 +321,188 @@ DEF
     search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
   end
 
-  # sets the query hash as id_hash instead of serialized interview references (default)
-  def self.default_id_hash(instance)
-    instance.query_hash.blank? ? instance.read_property('query_hash') || 'blank_search' : instance.query_hash
-  end
+  class << self
 
-  private
-
-  # the default blank search - nothing but facets
-  def blank_search(page=1)
-    Sunspot.search Interview do
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
+    def in_interview(id, fulltext)
+      search_results = if id.is_a?(Integer)
+                         Interview.all(:conditions => ['id = ?', id])
+                       else
+                         Interview.all(:conditions => ['archive_id = ?', id])
+                       end
+      Search.new do |search|
+        search.results = search_results
+        search.fulltext = fulltext
+      end
     end
-  end
 
-  # normal interview search
-  def standard_search(query, page=1)
-    # SOLR query
-    Sunspot.search Interview do
-
-      # fulltext search
-      unless query['fulltext'].blank?
-        keywords Unicode.downcase(Search.lucene_escape(query['fulltext']))
-      end
-
-      # person name facet
-      unless query['person_name'].blank?
-        self.with :person_name, query['person_name']
-      end
-
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
-      end
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
-    end
-  end
-
-  # do a standard search with the lucene handler
-  def standard_lucene_search(query, page=1)
-    # SOLR query
-    fulltext_query = Search.lucene_escape(query['fulltext'])
-    Sunspot.search Interview do
-
-      # person name facet
-      unless query['person_name'].blank?
-        self.with :person_name, query['person_name']
-      end
-
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
-      end
-
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
-      adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-        #params[:qt] = 'standard'
-
-        # fulltext search
-        unless fulltext_query.blank?
-          params[:q] = fulltext_query
+    def from_params(query_params=nil)
+      # Clear the default search field contents from the query
+      # on the server-side, in case this is missed by the JS client code.
+      unless query_params.blank? or query_params['fulltext'].blank?
+        ignored_search_terms = I18n.available_locales.map do |locale|
+          I18n.t('search_term', :scope => 'user_interface.search', :locale => locale)
+        end
+        if ignored_search_terms.include? query_params['fulltext']
+          query_params.delete('fulltext')
         end
       end
 
-    end
-  end
+      if query_params.blank?
+        if !defined?(@@default_search_cache_time) || (Time.now - @@default_search_cache_time > 1.hour)
+          @@default_search = nil
+          @@default_search_cache_time = Time.now
+        end
+        @@default_search ||= begin Search.new{|base| base.search! }; rescue; Search.new; end;
+      else
+        search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
+        search_params.merge!(query_params)
 
-  # search for autocomplete on person_name
-  def person_name_search(query, page=1)
-    # SOLR query
-    fulltext_query = Search.lucene_escape(query['fulltext'])
-    Sunspot.search Interview do
+        # Translate a person name search into an interview search.
+        person_name = search_params.delete('person_name')
+        unless person_name.blank?
+          interviews = build_unfiltered_interview_query(1) do
+                         with(:"person_name_#{I18n.locale}").any_of person_name
+                       end.
+                       execute!.
+                       results
+          search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
+        end
 
-      # search for partial person names for autocompletion
-      keywords 'person_name_text:' + query['partial_person_name'].downcase + '*', :fields => 'person_name'
-
-      unless fulltext_query.blank?
-        text_fields do
-          any_of do
-            with :transcript, fulltext_query
-            with :categories, fulltext_query
+        Search.new do |search|
+          QUERY_PARAMS.each do |attr|
+            search.send("#{attr}=", search_params[attr.to_s]) unless search_params[attr.to_s].blank?
           end
         end
       end
+    end
 
-      # category facets
-      Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-        self.with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+    # transforms a parameter hashtable to a hashed string
+    def encode_parameters(params)
+      param_tokens = []
+      params.stringify_keys!
+      (QUERY_PARAMS - ['page']).each do |p|
+        unless params[p].blank?
+          param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
+        end
+      end
+      Base64.encode64(param_tokens.join('|')).gsub("\n", '').gsub('/', '_') # replace Base64 slashes with underscore!
+    end
+
+    def decode_parameters(hash)
+      params_str = Base64.decode64(hash.gsub('_', '/'))
+      params = {}
+      params_str.split('|').each do |token|
+        p_code = (token[/^[a-z]+=/] || '').sub('=', '')
+        next if p_code.blank?
+        p_value = token.sub(p_code + '=', '')
+        p_key = nil
+        (QUERY_PARAMS - ['page']).each do |param_name|
+          p_key = param_name if Search.codify_parameter_name(param_name) == p_code
+        end
+        # make sure arrays of ids are instantiated as such:
+        numeric_values = p_value.scan(/\"\d+\"/)
+        params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
+      end
+      params
+    end
+
+    def codify_parameter_name(name)
+      name.split('_').map{|i| i.first.downcase}.join('')
+    end
+
+    # sets the query hash as id_hash instead of serialized interview references (default)
+    def default_id_hash(instance)
+      instance.query_hash.blank? ? instance.read_property('query_hash') || 'blank_search' : instance.query_hash
+    end
+
+    def valid_page_number(page)
+      page.to_i > 0 ? page.to_i : 1
+    end
+
+    # the default blank search - nothing but facets
+    def unfiltered_interview_search(page = 1)
+      build_unfiltered_interview_query(page)
+    end
+
+    # Do a filtered interview search.
+    def filtered_interview_search(query, page = 1)
+      build_filtered_interview_query(query, page) do
+
+        # Person/Interview facet.
+        unless query['interview_id'].blank?
+          with :interview_id, query['interview_id']
+        end
+
+      end
+    end
+
+    # Search for autocomplete on person_name.
+    def person_name_search(query, page=1)
+      build_filtered_interview_query(query, page) do
+        # Search for partial person names for autocompletion.
+        # NB: We cannot use ... with :person_name ... here as
+        # wildcards ('*') in restrictions will be escaped in
+        # sunspot although the edismax parser supports them.
+        adjust_solr_params do |params|
+          params[:fq] << "person_name_text:#{query['partial_person_name']}*"
+        end
+      end
+    end
+
+    private
+
+    # Build a basic solr query filtered on categories.
+    def build_filtered_interview_query(query, page, &attributes)
+
+      search = build_unfiltered_interview_query(page) do
+
+        # Fulltext search.
+        fulltext_query = query['fulltext']
+        unless fulltext_query.blank?
+          keywords fulltext_query
+        end
+
+        # Category facets.
+        Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
+          with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+        end
+
       end
 
-      facet :person_name,
-            :forced_labor_group_ids,
-            :forced_labor_field_ids,
-            :forced_labor_habitation_ids,
-            :language_ids,
-            :country_ids
-
-      paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      order_by :person_name, :asc
-
-      adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-      end
+      search.build(&attributes)
 
     end
-  end
 
-  # Escapes lucene query for safe querying with the Lucene Parser
-  def self.lucene_escape(query)
-    if query.blank?
-      ''
-    else
-      Unicode.downcase(query.gsub("\\",'').gsub(/^[\*\?\+\-\{\}\[\]~!]+/,'').gsub(/([\(\)])/,'\\\\\1').gsub(/\(\W+\)?/,''))
-    end
-  end
+    # Build a basic query with attributes common
+    # to all interview queries.
+    def build_unfiltered_interview_query(page, &attributes)
+      search = Sunspot.new_search(Interview)
 
-  def self.valid_page_number(page)
-    page.to_i > 0 ? page.to_i : 1
-  end
+      # Build the query.
+      search.build(&attributes) if block_given?
 
-  # transforms a parameter hashtable to a hashed string
-  def self.encode_parameters(params)
-    param_tokens = []
-    params.stringify_keys!
-    (QUERY_PARAMS - ['page']).each do |p|
-      unless params[p].blank?
-        param_tokens << Search.codify_parameter_name(p) + '=' + (params[p].is_a?(Array) ? params[p].inspect : params[p].to_s)
+      # Add query attributes common to all interview queries.
+      search.build do
+
+        facet :interview_id,
+              :forced_labor_group_ids,
+              :forced_labor_field_ids,
+              :forced_labor_habitation_ids,
+              :language_ids,
+              :country_ids
+
+        paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
+        order_by :"person_name_#{I18n.locale}", :asc
+
+        adjust_solr_params do |params|
+          # Use the edismax parser for wildcard support and
+          # more feature-rich query syntax.
+          params[:defType] = 'edismax'
+        end
+
       end
     end
-    Base64.encode64(param_tokens.join('|')).gsub("\n",'').gsub('/','_') # replace Base64 slashes with underscore!
-  end
 
-  def self.decode_parameters(hash)
-    params_str = Base64.decode64(hash.gsub('_','/'))
-    params = {}
-    params_str.split('|').each do |token|
-      p_code = (token[/^[a-z]+=/] || '').sub('=','')
-      next if p_code.blank?
-      p_value = token.sub(p_code + '=', '')
-      p_key = nil
-      (QUERY_PARAMS - ['page']).each do |param_name|
-        p_key = param_name if Search.codify_parameter_name(param_name) == p_code
-      end
-      # make sure arrays of ids are instantiated as such:
-      numeric_values = p_value.scan(/\"\d+\"/)
-      params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
-    end
-    params
-  end
-
-  def self.codify_parameter_name(name)
-    name.split('_').map{|i|i.first.downcase}.join('')
   end
 
 end

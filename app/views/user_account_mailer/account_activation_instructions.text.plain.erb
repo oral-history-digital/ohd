@@ -1,23 +1,5 @@
-<% if @mail_locale != 'EN' -%>
-Sehr geehrte/r <%= @user_name %>,
-
-wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @login %>
-
-Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang hier zu aktivieren und ein neues Passwort zu wählen:
-<%= @url %>
-
-Mit freundlichen Grüßen,
-
-Das Archiv-Team "Zwangsarbeit 1939-1945, Erinnerungen und Geschichte"
-<% end -%>
-<% unless %w(DE EN).include?(@mail_locale) -%>
-
-------------------------------------------------------------
-English version below
-------------------------------------------------------------
-
-<% end -%>
-<% if @mail_locale != 'DE' -%>
+<% case @mail_locale
+when :en -%>
 Dear <%= @user_name %>,
 
 we confirm your account registration to our archive. Your username is: <%= @login %>
@@ -27,5 +9,27 @@ To enable your access to the new archive platform, we ask you to activate your a
 
 Best regards,
 
-The archive team "Forced Labor 1939-1945, Memory and History"
+The archive team "<%= CeDiS.config.project_name['en'] %>"
+<% when :ru -%>
+Уважаемый/ая <%= @user_name %>,
+
+настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @login %>
+
+Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:
+<%= @url %>
+
+С уважением,
+
+Команда архива "<%= CeDiS.config.project_name['ru'] %>"
+<% else -%>
+Sehr geehrte/r <%= @user_name %>,
+
+wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @login %>
+
+Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang hier zu aktivieren und ein neues Passwort zu wählen:
+<%= @url %>
+
+Mit freundlichen Grüßen,
+
+Das Archiv-Team "<%= CeDiS.config.project_name['de'] %>"
 <% end -%>

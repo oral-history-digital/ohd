@@ -1,24 +1,24 @@
 <% query_params = search.query_params || { :forced_labor_group => '*' } %>
-<% additional_params = query_params.keys - [ 'languages', 'person_name', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
+<% additional_params = query_params.keys - [ 'interview_id', 'languages', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
 <% search ||= Search.new %>
 
 <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
-<% cache [ @locale, result.to_param, 'result', additional_params.join('+') ].join('/') do -%>
+<% cache [ I18n.locale.to_s, result.to_param, 'result', additional_params.join('+') ].join('/') do -%>
 
   <div class="baseContainerTeaserImage">
-    <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title %>
+    <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title(I18n.locale) %>
     <% if result.segmented? %>
       <div class="baseContainerTeaserSubtitled" onmouseover="$('teaser_<%= result.archive_id %>_tooltip').show();" onmouseout="$('teaser_<%= result.archive_id %>_tooltip').hide();">
-        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.languages.map{|l| t(l.to_s, :scope => 'language_codes')}.join('/') %><%= result.translated? ? "&nbsp;-&nbsp;#{t('Deutsch', :scope => 'language_codes')}" : '' %>
+        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.languages.map(&:code).join('/') %><%= result.translated? ? "&nbsp;-&nbsp;deu" : '' %>
         <% if result.has_headings? %>
-        <%= image_tag(image_path('inhaltsverzeichnis.png'), :style => "float: right; padding: 1px 1px 0 6px;") %>
+        <%= image_tag(image_path('inhaltsverzeichnis.png'), :style => 'float: right; padding: 1px 1px 0 6px;') %>
         <% end %>
       </div>
     <% end %>
   </div>
   <% if result.segmented? %>
   <div id="teaser_<%= result.archive_id %>_tooltip" class="floatingToolTip" style="display: none;">
-    <%= t(:subtitles, :scope => 'media') %> in <%= result.languages.map{|l| t(l.to_s, :scope => "categories.languages")}.join('/') %><%= result.translated? ? (' ' + t('and') + ' ' + t('Deutsch', :scope => "categories.languages") ) : ''%>.
+    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.languages).join('/') %><%= result.translated? ? ('&nbsp;-&nbsp;' + language_adj_case(t('german')).first ) : ''%>.
     <% if result.has_headings? %>
     <br/>
     <%= t(:has_headings, :scope => 'media') %>.
@@ -26,9 +26,9 @@
   </div>
   <% end %>
   <div class="baseContainerTeaserText">
-    <h3><%= link_to result.short_title, interview_path(result), :title => result.short_title %></h3>
+    <h3><%= link_to result.short_title(I18n.locale), interview_path(result), :title => result.short_title(I18n.locale) %></h3>
     <ul>
-      <li class="languages"><%= result.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= result.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
+      <li class="languages"><%= result.language %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
       <li class="media_type"><%= result.video %> <span class="duration"><%= format_value result.duration %></span>
       </li>
       <% additional_params << 'countries' if additional_params.empty? && query_params['countries'].is_a?(Array) %>
@@ -37,7 +37,7 @@
       <% additional_params.each do |attribute| %>
         <li class="<%= attribute %>">
           <span class='label'><%= Interview.human_attribute_name(attribute) %></span>
-          <%= format_value [ result.send(attribute) ].flatten.map{|a| t(a.to_s, :scope => "categories.#{attribute}")}.join(', ') %>
+          <%= format_value [ result.send(attribute) ].flatten.map(&:to_s).join(I18n.locale == :ru ? ' / ' : ', ') %>
         </li>
       <% end %>
     </ul>
@@ -49,28 +49,32 @@
     <% unless matching_segments.empty? %>
       <div id="interview_<%= result.archive_id.upcase %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
 
-        <h5><%= matching_segments.size == 0 ? t(:no_clips, :scope => 'search') : pluralize(matching_segments.size, t(:clip, :scope => 'search'), t(:clips, :scope => 'search')) %>
-          <ul class="segment_pagination">
-            <% matching_segments[0..8].each_with_index do |segment, index| %>
-              <li id="<%= segment.media_id %>_link" <%= index == 0 ? " class='current'" : '' %>>
-                <%= link_to_function (index+1).to_s, "showSegment('#{result.archive_id.upcase}','#{segment.media_id}')" %>
-              </li>
+        <h5>
+            <% if matching_segments.size == 0 then %>
+                <%= t(:no_clips, :scope => 'search') %>
+            <% elsif matching_segments.size == 1 then %>
+                <%= t(:clip, :scope => 'search') %>
+            <% else %>
+                <%= t(:clips, :scope => 'search', :count => matching_segments.size) %>
             <% end %>
-            <% if matching_segments.size > 9 %>
-              <li>
-                <%= link_to t(:more), interview_path(result) %>
-              </li>
-            <% end %>
-          </ul>
+            <ul class="segment_pagination">
+              <% matching_segments[0..8].each_with_index do |segment, index| %>
+                <li id="<%= segment.media_id %>_link" <%= index == 0 ? " class='current'" : '' %>>
+                  <%= link_to_function (index+1).to_s, "showSegment('#{result.archive_id.upcase}','#{segment.media_id}')" %>
+                </li>
+              <% end %>
+              <% if matching_segments.size > 9 %>
+                <li>
+                  <%= link_to t(:more), interview_path(result) %>
+                </li>
+              <% end %>
+            </ul>
         </h5>
 
         <% matching_segments[0..9].each_with_index do |segment, index| %>
-          <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? " visible" : '' %>">
-            <span class="timecode"><%= segment.timecode %></span>
-            <span class="tape"> <%= Tape.human_name + ' ' + segment.tape.number.to_s %></span>
-
+          <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? ' visible' : '' %>">
             <p class="transcript">&ldquo;<%= segment_excerpt_for_match(segment, search.fulltext || '', 12) %>&rdquo;</p>
-            <%= link_to_segment segment %>
+            <%= link_to_segment segment, '', false, false, t('.segment_link', :tape_nr => segment.tape.number.to_s, :timecode => segment.read_attribute(:timecode).gsub(/\.\d+$/, '')) %>
           </div>
         <% end %>
 

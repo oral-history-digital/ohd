@@ -1,0 +1,616 @@
+# This file contains translations used in text document templates.
+
+# Obs translator:
+
+# Please translate the quoted texts only.
+
+# Example:
+#   frontpage: 'Frontpage'
+# becomes
+#   frontpage: 'Deckblatt'    GOOD!
+# and NOT
+#   deckblatt: 'Deckblatt'    WRONG!
+# or whatever.
+
+# Lines starting with hash symbols (#) are comments. Please do NOT translate
+# comments.
+
+# Texts may contain placeholders. These placeholders take the form %{something}.
+# You may change the position of the placeholder but you may not change or
+# translate its content!
+
+# Example:
+#   colored_car: '%{color} car'
+# should be translated (e.g. in French) as
+#   colored_car: 'voiture %{color}'     GOOD!
+# but NOT as
+#   colored_car: 'voiture %{couleur}',  WRONG!
+#   colored_car: 'voiture couleur'      WRONG!
+# or whatever.
+
+# Sometimes you'll find that placeholders themselves refer to translatable
+# texts. In this case we'll comment on how the translated text is being used in
+# context so that you can translate the two texts together.
+
+# Example:
+#   transcript_with_german_translation: 'Transkript%{german_translation}'
+#   german_translation: ' in deutscher Übersetzung'
+# could be translated (e.g. in English) as
+#   transcript_with_german_translation: '%{german_translation}Transcript'
+#   german_translation: 'German '                                         GOOD!
+# which would result in 'German Transcript' and NOT as
+#   transcript_with_german_translation: 'Transcript%{german_translation}'
+#   german_translation: 'German translation'                              WRONG!
+# as this would result in 'TranscriptGerman translation' which is bad grammar
+# and does not contain the required space.
+
+# If you change the order of the placeholder then make sure that you place
+# spaces in the right place. See that in the above example the space in
+# german_translation has moved from the beginning (' in deutscher Übersetzung')
+# to the end ('German ').
+
+ru:
+  dictionary:
+    back_to_top_template: &back_to_top_template
+      back_to_top: 'В начало страницы'
+      image_back_to_top: "Значок 'вверх'"
+
+    header_template: &header_template
+      skip: 'Перейти сразу к'
+      content: 'Контент'
+      service_navigation: 'Сервисная навигация'
+      logoff: 'Выйти'
+
+    print_version_template: &print_version_template
+      print_preview_only: 'Данные графические изображения используются только в предварительном просмотре перед печатью.'
+      print_logo: 'Печатная версия логотипа'
+
+    timecode:
+      minimal: '%{hours}ч. %{minutes}мин.'
+
+  home: 'Главная'
+  home_link: 'На главную страницу проекта: %{project_name}'
+  logo_title: 'Логотип проекта: %{project_name}'
+  archive: 'Архив'
+  interactive_map: 'Карта'
+  collections_map: 'Частичные собрания'
+  team: 'Команда'
+  contact: 'Контакт'
+  legal_notice: 'Правовая информация'
+  faq: 'Помощь'
+  previous: '&laquo;&nbsp;предыдущая'
+  next: 'следующая&nbsp;&raquo;'
+  more: 'подробнее'
+  back: 'назад'
+  forward: 'далее'
+  translated: 'перевод'
+  select_all: 'выбрать все'
+  admin_area: 'область администратора'
+  and: 'и'
+  no_placeholder: '%{content} отсутствует'
+  close: 'закрыть'
+  here: 'здесь'
+  timecode: 'временной код'
+  german: 'Немецкий'
+
+  page_urls: # Pretty URLs for static pages.
+    archive: 'archive'
+    faq_index: 'faq'
+    faq_archive_contents: 'faq_contents'
+    faq_searching: 'faq_search'
+    faq_technical: 'faq_technical'
+    map_tutorial: 'map_tutorial'
+
+  tasks:
+    interviewers: 'Проведение интервью'
+    transcriptors: 'Транскрипция'
+    translators: 'Перевод'
+    proofreaders: 'Редактирование'
+    segmentators: 'Сегментация'
+    researchers: 'Раскрытие содержания'
+
+  status:
+    translated: 'с немецким переводом'
+    not_translated: 'перевод отсутствует'
+    unknown: 'не установлено'
+    date_unknown: 'дата неизвестна'
+    not_specified: 'сведения отсутствуют'
+    not_deported: 'не депортирован/а'
+    other: 'прочее'
+
+  search:
+    no_clips: 'фрагменты не найдены'
+    clip: 'Найдено фрагментов: 1'
+    clips: 'Найдено фрагментов: %{count}'
+
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname} %{first_names}'
+
+  user_interface:
+    labels:
+      interview: 'Интервью'
+      video_interview: 'Видеоинтервью'
+      audio_interview: 'Аудиоинтервью'
+      segment_link: 'к фрагменту'
+      forced_labor_data: 'Сведения о работе'
+      biography: 'Биография'
+      transcript: 'Транскрипт'
+      translation: 'Перевод'
+      Biography: 'Биография'
+      search_results: 'Результаты поиска'
+      search_results_with_count: 'Результаты поиска: %{count}'
+      headings: 'Содержание'
+      my_search: 'Мой поиск'
+      search: 'поиск'
+      back_to_search: 'к поиску'
+      status_update: 'Состояние на'
+      search_the_archive: 'Поиск в архиве'
+      search_the_interview: 'Поиск в интервью'
+      workbook: 'Рабочая тетрадь'
+      show_all: 'показать все'
+      show_interview: 'к интервью'
+      show_segment: 'к фрагменту'
+      maximize_all: 'увеличить все'
+      minimize_all: 'уменьшить все'
+      filter_contents: 'Фильтр контента'
+      filter_by_tag: 'Фильтр тем'
+      more: 'подробнее'
+      less: 'кратко'
+      please_select: 'Пожалуйста, выберите...'
+    actions:
+      edit: 'правка'
+      update: 'обновить'
+      save: 'сохранить'
+      reset: 'отмена'
+      add: 'добавить'
+      annotate_segment: 'Написать комментарий'
+      show_existing_annotation: 'Прочитать комментарий'
+    player:
+      back: 'назад'
+      forward: 'вперёд'
+      no_transcript: 'Субтитры к данному интервью на данный момент отсутствуют.'
+      goto_citation: 'к цитируемому фрагменту'
+    annotations:
+      label: 'Комментарий'
+      connective: ': '
+      editorial: 'Редакция'
+    search:
+      search_term: 'Ключевое понятие'
+      fulltext_title: 'Введите здесь ключевое понятие'
+      reset: 'отмена'
+      save: 'сохранить результаты поиска'
+      saved: 'Поиск сохранён'
+    status:
+      not_signed_in: 'Вы не вошли в систему'
+    user_content:
+      view: 'Вид'
+      edit: 'Правка'
+      topics: 'Темы'
+      topics_for: 'Темы'
+      all_filters: 'Все виды контента'
+      select_all_filters: 'Выбрать все виды контента'
+      all_topics: 'Все темы'
+      edit_topics: 'Правка тем'
+      apply_topics: 'Указать тему'
+      all_contents_for_topic: 'Все контенты по теме'
+      select_all_topics: 'Выбрать все темы'
+      delete: 'Удалить'
+      save: 'Запомнить контент'
+      saved: 'Контент сохранен'
+      publish: 'Опубликовать'
+      publish_something: 'Опубликовать&nbsp;"%{something}"'
+      retract: 'Отменить публикацию'
+      chars_allowed: 'Доступно следующее<br/>количество знаков:&nbsp;<span id="chars_allowed">%{chars_allowed}</span>'
+      tags_explanation: 'Темы помогут Вам группировать и сортировать сохранённые результаты.'
+      user_tags: 'Выберите темы или введите новые понятия для характеризации контента:'
+      tag_filters: 'Темы могут быть заданы с помощью команды &quot;правка&quot; отдельного контента.'
+      user_annotation: 'Ваши комментарии к фрагменту'
+      annotation_explanation: 'Ваши комментарии Вы можете просмотреть в Вашей рабочей тетради.'
+      publish_annotation: 'Я хочу опубликовать данный комментарий так, чтобы он был виден всем зарегистрированным пользователям архива. Я принимаю %{annotation_guidelines}.'
+      annotation_guidelines: 'Правила публикации комментариев'
+    interview_reference:
+      save: 'Запомнить интервью'
+      saved: 'Интервью сохранено'
+    sort:
+      activate: 'сортировать'
+      cancel: 'отмена'
+      update: 'обновить'
+    messages:
+      no_segments_result: 'Фрагменты, соответствующие поиску, не найдены.'
+      player_not_loaded: 'Медиаплеер загрузить не удалось!'
+      player_no_javascript: 'Для правильного отображения медиаплеера должен быть активирован Java-скрипт в вашем браузере!'
+      search_no_javascript: 'Для использования интерактивного поиска активируйте, пожалуйста, Java-скрипт!'
+      check_flash_version: 'Пожалуйста, проверьте, установлена ли у Вас актуальная версия проигрывателя Flash-Player. При необходимости деактивируйте для данного сайта программы, фильтрующие содержимое сайта, как, например, блокировщик рекламы.'
+      registration_needed: 'В целях защиты прав личности Вам необходимо зарегистрироваться и принять как %{terms_of_use}, так и %{privacy_policy}.'
+      password_change_instructions1: 'Пожалуйста, укажите свой электронный адрес, под которым Вы зарегистрировались на нашем сайте. На Ваш электронный адрес будет выслана ссылка, с помощью которой Вы сможете восстановить пароль.'
+      password_change_instructions2: 'Пожалуйста, выберите новый пароль для получения доступа.'
+      no_saved_contents: 'Ваша рабочая тетрадь не содержит какой-либо сохранённой информации.'
+      quality_disclaimer: "Транскрипция и перевод данного интервью не были окончательно отредактированы."
+      delete_content: "Вы удаляете %{content} из рабочей тетради. Вы хотите продолжить?"
+      need_javascript: "Для использования функций архива Вы должны активировать Java-скрипт. Пожалуйста, используйте соответствующие стандартам браузеры и настройки."
+      need_ie8: "Ваш браузер не позволяет использовать функции архива. Пожалуйста, используйте актуальный, соответствующий стандартам браузер (Firefox, Safari, Opera, IE с версии 8)."
+      confirm_publish_content: 'Вы действительно хотите опубликовать Ваш %{content} так, чтобы он был виден всем пользователям архива? В таком случае, настоящим Вы принимаете наши %{annotation_guidelines}.'
+      publish_alteration_notice: 'Опубликованные комментарии не могут быть больше изменены, но Вы можете отозвать их для правки и при необходимости снова подать на публикацию.'
+      confirm_retract_content: 'Вы хотите отменить Ваш %{content} перед публикацией?'
+      published_annotation_change_notice: 'Ваш комментарий не может быть изменён, т.к. помечен для публикации. Вы можете отозвать комментарий, редактировать его и снова подать на публикацию.'
+      no_headings_in_your_language: 'Содержание данного интервью доступно только на следующем языке: %{languages}.'
+      no_annotations_in_your_language: 'Данный комментарий доступен только на следующем языке: %{languages}.'
+      no_photo_captions_in_your_language: 'Ссылка: Данное описание фотографии доступно только на следующем языке: %{languages}.'
+      dont_show_again: 'Больше не показывать это сообщение.'
+
+  privacy:
+    label: 'Защита данных'
+    terms: 'Правила пользования сайтом'
+    confirm: 'Подтвердить и загрузить карту'
+    more_here: 'Подробная информация здесь'
+    google_acceptance: 'Нажав, Вы принимаете условия использования Google'
+    google_notice: 'Если Вы нажатием активируете следующий контент, данные пользователей (в особенности, айпи-адрес) будут переданы в Google, сохранены, и, при известных условиях, согласованы с дальнейшими профильными данными данного провайдера.'
+    remember_settings: 'Всегда допускать загрузку контента Google Карты'
+
+  help:
+    sort:
+      title: 'Инструкция: Сортировка контента'
+      text1: 'Контент в активном окне можно сортировать посредством Drag & Drop с помощью отображённого слева движка.'
+      text2: 'Цвет движка контента, который Вы хотели бы сместить, изменяется на красный. Если последовательность Вас устраивает, необходимо подтвердить её с помощью кнопки "обновить" в верхней панели команд; только после этого последовательность будет окончательно сохранена.'
+
+  map:
+    noframes: 'Вложенный контент не может быть отображён в Вашем браузере. Вы можете загрузить контент напрямую %{here}.'
+    legend:
+      tabname: 'Легенда / Фильтр'
+      title:  'Легенда и фильтр'
+      filter_header: 'Фильтр данных окна Карта по видам указания места'
+      grouping_label: 'Разбивка на группы на<br/>уровне регион/страна'
+      grouping_header: 'Разбивку на группы при низкой степени увеличения включить или выключить'
+      more_help: 'Необходима помощь? Подробные разъяснения Вы найдёте'
+    explanation:
+      title: 'Разъяснения функций карты'
+      filter: 'Выберите категорию места, %{image}которую бы Вы хотели отобразить на карте (места проведения работ, лагерь или место заключения и т.д.). Для этого используйте фильтр справа. Если выбор всех типов мест отменён (серый цвет), показ местонахождения невозможен.'
+      clustering: 'Для ясности при низкой степени увеличения указания местонахождения могут быть скомбинированы по странам и регионам. %{image}Данную функцию можно в любое время деактивировать посредством отмены пункта &quot;Разбивка на группы...&quot; в фильтрах.'
+      legend: 'Данной возможностью выбора Вы можете воспользоваться в любое время. %{image}Выберите теперь кнопку &quot;Легенда/Фильтр&quot; в верхнем правом углу, чтобы отобразить возможности фильтра. Нажатие на &quot;X&quot; вверху снова скрывает фильтр.'
+      finish: '%{close} инструкцию, если Вы готовы.'
+    labels:
+      forced_labor_locations: 'Места проведения работ'
+      camps: 'Лагеря и места заключения'
+      companies: 'Фирмы'
+      deportations: 'Места депортации'
+      places_of_birth: 'Места рождения'
+      postwar_residences: 'Места жительства с 1945'
+      postwar_camps: 'Лагеря с 1945'
+      home_locations: 'Последние места жительства'
+      mentions: 'Упоминания'
+    pagination:
+      place: 'Место'
+      places: 'Места'
+      of: 'из'
+    progress:
+      loading: 'Пожалуйста, подождите...'
+      loaded: '%{percent}% загружено'
+
+  plugins:
+    noflash: 'Необходим Adobe Flash'
+    noflash_message: 'Для отображения интервью архива &quot;%{project_name}&quot; Вам необходима актульная версия проигрывателя Adobe Flash Players.'
+    noflash_link: '» Загрузите Adobe Flash Player'
+    nojs: 'Активировать Java-скрипт'
+    nojs_message: 'Для использования архива необходимо активировать Java-скрипт в Вашем браузере. Без Java-скрипта Вы не сможете перемещаться по контенту или загружать интервью.'
+    nojs_link: '» Как я могу активировать Java-скрипт?'
+
+  months:
+    Jan: 'Янв'
+    Feb: 'Фев'
+    Mar: 'Март'
+    Apr: 'Апр'
+    Mai: 'Май'
+    Jun: 'Июнь'
+    Jul: 'Июль'
+    Aug: 'Авг'
+    Sep: 'Сен'
+    Okt: 'Окт'
+    Nov: 'Ноя'
+    Dez: 'Дек'
+
+  activerecord:
+    models:
+      interview:
+        one: 'Интервью'
+        other: 'Интервью'
+      tape:
+        one: 'Запись'
+        other: 'Записи'
+      segment:
+        one: 'Фрагмент'
+        other: 'Фрагменты'
+      collection:
+        one: 'Частичное собрание'
+        other: 'Частичные собрания'
+      photo:
+        one: 'Фотография'
+        other: 'Фотографии'
+      user_content:
+        one: 'Контент'
+        other: 'Контенты'
+      interview_reference:
+        one: 'Интервью'
+        other: 'Интервью'
+      search:
+        one: 'Поисковый запрос'
+        other: 'Поисковые запросы'
+      user_annotation:
+        one: 'Комментарий'
+        other: 'Комментарии'
+      annotation:
+        one: 'Комментарий'
+        other: 'Комментарии'
+
+
+    attributes:
+      collection:
+        name: 'Имя'
+        countries: 'Страна'
+        institution: 'Организация'
+        responsibles: 'Ответственные'
+        interviewers: 'Интервьюер'
+        homepage: 'Сайт'
+        notes: 'Дальнейшие примечания'
+        interviews: 'Интервьюируемый'
+      interview:
+        person_name: 'Имя'
+        archive_id: 'Архивный номер'
+        forced_labor_groups: 'Группа'
+        forced_labor_fields: 'Сфера деятельности'
+        forced_labor_habitations: 'Размещение / Заключение'
+        forced_labor_locations: 'Лагеря и места проведения работ'
+        forced_labor_details: 'Сведения о работе'
+        birth_date: 'Дата рождения'
+        birth_location: 'Место рождения (сегодняшнее название)'
+        deportation: 'Место депортации (сегодняшнее название), год'
+        punishment: 'Меры наказания'
+        liberation_date: 'Дата освобождения'
+        return_locations: 'Места жительства с 1945'
+        return_date: 'Дата возвращения'
+        countries: 'Место жительства (страна)'
+        duration: 'Вид и продолжительность интервью'
+        interview_date: 'Дата проведения'
+        interviewers: 'Интервьюер'
+        transcriptors: 'Транскрипция'
+        translators: 'Перевод'
+        researchers: 'Раскрытие содержания'
+        proofreaders: 'Редактирование'
+        segmentators: 'Сегментация'
+        language: 'Язык'
+        collection: 'Частичное собрание'
+      segment:
+        media_id: 'Номер сегмента'
+        transcript: 'Транскрипция'
+        translation: 'Транскрипция (перевод)'
+      user_content:
+        title: 'Заглавие'
+        description: 'Заметка'
+        query: 'Критерии поиска'
+      user_annotation:
+        author: 'Автор'
+        archive_id: 'Архивный номер'
+        timecode_string: 'Временной код'
+        submitted_at: 'Дата внесения'
+        description: 'Текст комментария'
+        link_url: 'Ссылка'
+        workflow_state: 'Статус публикации'
+        description: 'Комментарий'
+        heading: 'Глава'
+        media_id: 'Номер носителя информации'
+
+    errors:
+      template:
+        header: 'Мы не можем обработать Ваш запрос'
+        body: 'Возникла следующая проблема:'
+      models:
+        user_annotation:
+          attributes:
+            description:
+              too_long: 'Комментарии не должны превышать 300 знаков.'
+              modification_not_allowed: 'Правка текста комментария после публикации невозможна.'
+        user_content:
+          attributes:
+            description:
+              too_long: 'Ваши заметки не должны превышать 300 знаков.'
+
+  personal_data:
+    male: 'муж.'
+    female: 'жен.'
+    born: 'рожд.'
+
+  user_annotations:
+    workflow_states:
+      private: 'частная'
+      proposed: 'На проверке с целью публикации'
+      postponed: 'Отложен со стороны редакции'
+      shared: 'Опубликован'
+      rejected: 'Публикация отклонена'
+      all: 'Все'
+    workflow_actions:
+      accept: 'опубликовать'
+      postpone: 'отложить'
+      reject: 'отклонить'
+      withdraw: 'отозвать'
+      retract: 'отозвать'
+      remove: 'оменить'
+      review: 'дальнейшая правка'
+    workflow_action_tooltips:
+      accept: 'Принять публикацию комментария'
+      postpone: 'Перевести комментарий в модус ожидания с целью проверки'
+      reject: 'Отклонить публикацию комментария'
+      withdraw: 'Отозвать публикацию комментария'
+      retract: 'Отозвать публикацию комментария'
+      remove: 'Удалить комментарий из архива'
+      review: 'Представить комментарий на повторную правку'
+
+  media:
+    video_interview: 'Видеоинтервью'
+    audio_interview: 'Аудиоинтервью'
+    video: 'Видео'
+    audio: 'Аудио'
+    tape: 'Запись'
+    of_tapes: 'из'
+    low_quality: 'среднее качеств'
+    high_quality: 'высокое качество'
+    subtitled: 'Субтитры в наличии'
+    subtitles: 'Субтитры'
+    has_headings: 'Содержание в наличии'
+
+  location_categories:
+    'Ort': 'Место'
+    'Firma': 'Фирма'
+    'Lager': 'Лагерь'
+    'Gefängnis': 'Тюрьма'
+    'KZ': 'Концлагерь'
+    'zu Hause': 'Дома'
+    'am Arbeitsplatz': 'На рабочем месте'
+    'Ghetto': 'Гетто'
+    'Privatunterkunft': 'Частное жильё'
+    'Sonstiges': 'Прочее'
+    'Keine Angabe': 'Сведения отсутствуют'
+    'AEL': 'ИТЛ'
+    'KZ-Außenlager': 'Внешний лагерь концлагеря'
+
+  locations:
+    types:
+      forced_labor_location:  'Место проведения работ'
+      forced_labor_camp:      'Лагерь или тюрьма'
+      forced_labor_company:   'Фирма'
+      deportation_location:   'Место депортации'
+      place_of_birth:         'Место рождения'
+      home_location:          'Место жительства'
+      home_location_in_map:   'Последнее место жительства'
+      return_location:        'Место жительства с 1945'
+      postwar_camp:           'Лагерь с 1945'
+      interview:              'Упоминание'
+      interview_in_map:       'Упоминание в'
+
+  external_links:
+    # TODO: Umstellen auf russ. Version, s. kommentierte Links unten.
+    notice: 'Внешняя ссылка'
+    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
+    #nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
+    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    #nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    #datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    #annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    team: 'http://www.zwangsarbeit-archiv.de/team'
+    #team: 'http://www.zwangsarbeit-archiv.de/ru/team'
+    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
+    #kontakt: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
+    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
+    #impressum: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
+
+  facets:
+    forced_labor_group: 'Группа'
+    forced_labor_groups: 'Группы'
+    forced_labor_field: 'Сфера деятельности'
+    forced_labor_fields: 'Сферы деятельности'
+    forced_labor_habitation: 'Размещение / Заключение'
+    forced_labor_habitations: 'Размещение' # need singular for category_type
+    interview_id: 'Имя интервьюируемого'
+    language: 'Язык'
+    languages: 'Язык' # need singular for category_type
+    country: 'Место жительства (страна)'
+    countries: 'Центр жизненных интересов' # need singular for category_type
+    fulltext: 'Ключевое понятие'
+
+  photos:
+    image: 'Фотография'
+    of: 'из'
+
+  admin_nav:
+    user_registrations: 'Пользователь'
+    import: 'Импорт'
+    statistics: 'Статистика'
+    permissions: 'Права'
+    user_annotations: 'Комментарии'
+
+  import:
+    tapes: 'Носители информации/Записи'
+    segments: 'Сегменты субтитров'
+    annotations: 'Комментарии  редакции'
+    location_references: 'Запись в регистр касательно места'
+    locations_segments: 'Ссылка на место в сегментах субтитров'
+    contributions: 'Участвующие сотрудники'
+    photos: 'Фотографии'
+    text_materials: 'Сопровождающие материалы'
+
+# The following entries have been named by convention.
+
+  _admin_header:
+    << : *header_template
+
+  _header:
+    << : *header_template
+    map_link_title: 'Обзорная карта биографических этапов'
+    collections_link_title: 'Географическое распределение частичных собраний'
+    faq_link_title: 'Вопросы и ответы по использованию архива'
+
+  _locale_chooser:
+    language_choice: "Русский"
+    language_choice_title: "Русская версия"
+
+  interviews:
+    content:
+      search_in_interview: 'Поиск в &#145;%{content}&#146;'
+    segments:
+      in: 'В'
+    search:
+      all_interviews: &interviews_search_all_interviews 'все&nbsp;интервью'
+      one_selected: &interviews_search_one_selected '1&nbsp;интервью&nbsp;в&nbsp;выборе'
+      many_selected: &interviews_search_many_selected '%{search_hits}&nbsp;интервью&nbsp;выбрано'
+      no_interviews_found: &interviews_search_no_interviews_found 'интервью&nbsp;не&nbsp;найдено'
+    result:
+      segment_link: 'к фрагменту: запись %{tape_nr}, %{timecode}'
+
+  layouts:
+    admin:
+      << : *print_version_template
+    application:
+      << : *print_version_template
+      << : *back_to_top_template
+    iframe:
+      title: '%{project_name}: Карта'
+    interview:
+      << : *print_version_template
+    workspace:
+      << : *print_version_template
+      << : *back_to_top_template
+
+  public:
+    '404':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+    '422':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+    '500':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+
+  searches:
+    active_facet:
+      remove: 'удалить'
+    facet_option:
+      arrow_down: 'Cтрелка вниз'
+      arrow_right: 'Cтрелка вправо'
+      no_persons_found: 'Имя не найдено'
+      update: 'обновить'
+    facets:
+      search: 'поиск'
+    search:
+      all_interviews: *interviews_search_all_interviews
+      one_selected: *interviews_search_one_selected
+      many_selected: *interviews_search_many_selected
+      no_interviews_found: *interviews_search_no_interviews_found
+
+  user_account_mailer:
+    subject: "Ваш доступ к архиву '%{project_name}'"
+

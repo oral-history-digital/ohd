@@ -27,3 +27,9 @@ guard 'rspec', :version => 1, :all_after_pass => false, :all_on_start => false, 
   watch('app/controllers/application_controller.rb')  { 'spec/controllers' }
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
 end
+
+guard 'cucumber', :all_after_pass => false, :all_on_start => false, :cli => '--drb' do
+  watch(%r{^features/.+\.feature$})
+  watch(%r{^features/support/.+$})          { 'features' }
+  watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
+end

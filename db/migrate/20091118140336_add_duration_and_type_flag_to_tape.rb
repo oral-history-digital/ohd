@@ -23,9 +23,10 @@ class AddDurationAndTypeFlagToTape < ActiveRecord::Migration
 
 
     puts "setting to segmented on existing interviews"
-    Interview.find( :all,
-                      :joins => 'RIGHT JOIN tapes on tapes.interview_id = interviews.id',
-                      :readonly => false).each do |interview|
+    Interview.all(
+        :joins => 'RIGHT JOIN tapes on tapes.interview_id = interviews.id',
+        :readonly => false
+    ).each do |interview|
       interview.update_attribute :segmented, true
       STDOUT::printf '.'
       STDOUT.flush
@@ -46,7 +47,7 @@ class AddDurationAndTypeFlagToTape < ActiveRecord::Migration
     remove_column :interviews, :segmented
     remove_column :interviews, :researched
     remove_column :interviews, :proofread
-    
+
   end
 
 end

@@ -1,35 +1,34 @@
-<% cache [ @locale, @collection.project_id ].join('/') do -%>
-<h1><%= Collection.human_name %> &quot;<%= t(@collection.name, :scope => 'collections.name') %>&quot;</h1>
+<% cache [ I18n.locale.to_s, @collection.project_id ].join('/') do -%>
+<h1><%= Collection.human_name %> &quot;<%= @collection.name(I18n.locale) %>&quot;</h1>
 
 <p>
   <strong><%= Collection.human_attribute_name('countries') %>:</strong>
   <br />
-  <% countries = (@collection.countries || '').split(",") %>
-  <%= countries.map{|f| t(f.strip, :scope => 'location.countries')}.join(", ") %>
+  <%= @collection.countries(I18n.locale) %>
 </p>
 
 <p>
   <strong><%= Collection.human_attribute_name('institution') %>:</strong>
   <br />
-  <%= @collection.institution %>
+  <%= @collection.institution(I18n.locale) %>
 </p>
 
 <p>
   <strong><%= Collection.human_attribute_name('responsibles') %>:</strong>
   <br />
-  <%= @collection.responsibles %>
+  <%= @collection.responsibles(I18n.locale) %>
 </p>
 
 <p>
   <strong><%= Collection.human_attribute_name('notes') %>:</strong>
   <br />
-  <%= @collection.notes %>
+  <%= @collection.notes(I18n.locale) %>
 </p>
 
 <p>
   <strong><%= Collection.human_attribute_name('interviewers') %>:</strong>
   <br />
-  <%= @collection.interviewers %>
+  <%= @collection.interviewers(I18n.locale) %>
 </p>
 
 <h2><%= Collection.human_attribute_name('interviews') %></h2>

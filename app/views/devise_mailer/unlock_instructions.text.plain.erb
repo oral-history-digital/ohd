@@ -1,18 +1,25 @@
-Hallo <%= @resource.email %>!
-
-Ihr Zugang wurde aufgrund von zu vielen erfolglosen Login-Versuchen gesperrt.
-
-Bitte folgen Sie diesem Link, um Ihren Zugang wieder zu aktivieren:
-
-<%= unlock_url(@resource, :unlock_token => @resource.unlock_token) %>
-
-_________________________________________________
-
-
+<% case I18n.locale
+     when :en -%>
 Hello <%= @resource.email %>!
 
 Your account has been locked due to an excessive amount of unsuccessful sign in attempts.
 
 Click the link below to unlock your account:
 
-<%= unlock_url(@resource, :unlock_token => @resource.unlock_token) %>
+<%= unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :en) %>
+<% when :ru -%>
+Здравствуйте <%= @resource.email %>!
+
+Ваш доступ был заблокирован ввиду многочисленных безуспешных попыток входа в систему.
+Пожалуйста, перейдите по указанной ссылке, чтобы разблокировать Ваш доступ:
+
+<%= unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :ru) %>
+<% else -%>
+Hallo <%= @resource.email %>!
+
+Ihr Zugang wurde aufgrund von zu vielen erfolglosen Login-Versuchen gesperrt.
+
+Bitte folgen Sie diesem Link, um Ihren Zugang wieder zu aktivieren:
+
+<%= unlock_url(@resource, :unlock_token => @resource.unlock_token, :locale => :de) %>
+<% end -%>

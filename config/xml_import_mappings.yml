@@ -1,5 +1,5 @@
 collection:
-  key_attribute: 'project_id'
+  key_attributes: 'project_id'
   project-id: 'project_id'
   title: 'name'
   countries: 'countries'
@@ -9,35 +9,24 @@ collection:
   responsibles: 'responsibles'
   notes: 'notes'
 
-# remove old problematic language import
-# - use the xml_import:languages instead to split dual-language records
-#language:
-#  key_attribute: 'name'
-#  name: 'name'
-#  class_name: 'category'
-#  class_type: 'Sprache'
-#  type_field: 'category_type'
-
 interview:
-  key_attribute: 'archive_id'
+  key_attributes: 'archive_id'
   archive-id: 'archive_id'
-  associated_models:
-    captions: 'segments'
-  #collection-id: 'collection_id'
   duration: 'duration'
-  full-title: 'full_title'
   interview-date: 'interview_date'
-  #language-id: 'language_id'
   still-content-type: 'still_image_content_type'
   still-file-name: 'still_image_file_name'
   still-file-size: 'still_image_file_size'
   translated: 'translated'
   video:  'video'
-  #version-number: not used yet
   original-citation: 'original_citation'
   translated-citation: 'translated_citation'
   citation-timecode: 'citation_timecode'
   citation-media-id: 'citation_media_id'
+
+  language:
+    name: 'languages'
+    code: 'language_codes'
 
   person:
     alias-names: 'alias_names'
@@ -45,34 +34,30 @@ interview:
     country-of-origin: 'country_of_origin'
     date-of-birth: 'date_of_birth'
     deportation-date: 'deportation_date'
-    deportation-location: 'deportation_location'
     details-of-origin: 'details_of_origin'
     firstname: 'first_name'
-    lastname: 'last_name'
     middle-names: 'other_first_names'
-    full-name: 'full_title'
+    lastname: 'last_name'
+    birth-name: 'birth_name'
     forced-labor-details: 'forced_labor_details'
     punishment: 'punishment'
     liberation-date: 'liberation_date'
     return-date: 'return_date'
-    group: 'forced_labor_groups'
     forced-labor-groups: 'forced_labor_groups'
-    forced-labor-habitation: 'forced_labor_habitations'
     forced-labor-habitations: 'forced_labor_habitations'
-    forced-labor-field: 'forced_labor_fields'
     forced-labor-fields: 'forced_labor_fields'
 
 interview-team-member:
   class_name: 'contribution'
   delete_all: true
+  delete_orphans_from: 'contributor'
   skip_invalid: true
   first-name: 'first_name'
   last-name: 'last_name'
   task: 'contribution_type'
-  
 
 photo:
-  key_attribute: 'photo_file_name'
+  key_attributes: 'photo_file_name'
   delete_all: true
   skip_invalid: true # I don't like it, but at least they get reported
   image-file-name: 'photo_file_name'
@@ -86,15 +71,16 @@ tape:
 
 text-material:
   class_name: 'text_material'
-  key_attribute: 'document_type'
+  key_attributes: 'document_type|locale'
   delete_all: true
   document-type: 'document_type'
   document-file-name: 'document_file_name'
+  locale: 'locale'
   skip_invalid: true
 
 caption:
-  key_attribute: 'none'
   class_name: 'segment'
+  key_attributes: 'none'
   delete_all: true
   media-id: 'media_id'
   timecode: 'timecode'
@@ -109,11 +95,10 @@ caption:
   speaker: 'speaker'
 
 location:
-  key_attribute: 'none'
-  scope_field: 'reference_type'
+  class_name: 'location_reference'
+  key_attributes: 'none'
   delete_all: true
   skip_invalid: true
-  class_name: 'location_reference'
   place-type: 'location_type'
   descriptor: 'name'
   related-to: 'reference_type'
@@ -151,18 +136,17 @@ location:
     longitude: 'exact_longitude'
 
 locations-segment:
-  key_attribute: 'none'
-  skip_invalid: true
   class_name: 'location_segment'
+  key_attributes: 'none'
+  skip_invalid: true
   media-id: 'media_id'
   descriptor: 'descriptor'
 
 annotation:
-  key_attribute: 'none'
+  key_attributes: 'none'
   delete_all: true
   skip_invalid: true
   author: 'author'
   media-id: 'media_id'
   timecode: 'timecode'
   text: 'text'
-

@@ -1,33 +1,26 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.zwangsarbeit-archiv.de<%= (current_locale.to_s == 'en') ? '/en' : '' -%>" title="<%= t(:home_link) %>" accesskey="H" lang="<%= current_locale.to_s %>">
-          <%= image_tag(image_path("zwar_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link), :alt => t(:logo_title)) %>
+        <a href="http://www.<%= CeDiS.config.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
+          <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info">Zwangsarbeit 1939-1945</h2>
+        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s]  %></h2>
         <hr class="divider" />
         <p class="skip">
-          <em>Springe direkt zu:</em> <a href="#inhalt">Inhalt</a>
+          <em><%= t '.skip' %></em> <a href="#inhalt"><%= t '.content' %></a>
         </p>
 
         <hr class="divider" />
         <h2 class="info">
-          Service-Navigation
+          <%= t '.service_navigation' %>
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), localized_root_url(:locale => current_locale), :accesskey => "0" %></li>
-            <li>
-              <% nonlocale_params = params.dup; nonlocale_params.delete(:locale); nonlocale_params.delete(:language) %>
-              <% if I18n.locale.to_s =~ /^de/i %>
-                <%= link_to "English", url_for({:locale => :en, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "English version" %>
-              <% else %>
-                <%= link_to "Deutsch", url_for({:locale => :de, :action => action_name, :controller => controller_name}.merge(nonlocale_params)), :title => "Deutsche Version" %>
-              <% end %>
-            </li>
-            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => current_locale), :title => "Übersichtskarte der biografischen Stationen" %></li>
-            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => current_locale), :title => "Geografische Verteilung der Teilsammlungen" %> </li>
-            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t("faq_index", :scope => 'page_urls'),  :locale => current_locale), :title => "Fragen und Antworten zur Nutzung des Archivs" %></li>
+            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
+            <%= render :partial => '/locale_chooser' %>
+            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>
+            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %> </li>
+            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => t('.faq_link_title') %></li>
           </ul>
         </div>
       </div>
@@ -37,14 +30,14 @@
       <div id="baseLogout" class="portlet logoutPortlet">
           <form action="" method="post">
             <fieldset>
-              <legend>Abmelden</legend>
+              <legend><%= t '.logoff' %></legend>
               <p id="logoutUserLogin">
                 <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
                     <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
                 <% else %>
                     <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
-                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => "workbook" %>
+                    <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => 'workbook' %>
                     <span class='red'>&nbsp;|&nbsp;</span>
                     <% end %>
                     <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>

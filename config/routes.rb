@@ -22,8 +22,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
   map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
-  map.public_locations_total_pages 'webservice/:date/orte.:format', :controller => :location_references, :action => :full_index
-  map.public_locations_by_page 'webservice/:date/orte/satz.:page.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_total_pages ':locale/webservice/locations/:date.:format', :controller => :location_references, :action => :full_index
+  map.public_locations_by_page ':locale/webservice/locations/:date/page.:page.:format', :controller => :location_references, :action => :full_index
 
   map.public_map 'karte', :controller => :location_references, :action => :map
   map.localized_public_map ':locale/map', :controller => :location_references, :action => :map
@@ -54,9 +54,13 @@ ActionController::Routing::Routes.draw do |map|
   map.search_by_page 'suchen/:page', :controller => :searches, :action => :query
   map.search 'suchen', :controller => :searches, :action => :query
 
-  map.resources :searches, :collection => { :query => :post,
-                                            :interview => :get,
-                                            :person_name => :get }
+  map.with_options :path_prefix => ':locale' do |localized|
+    localized.resources :searches, :collection => {
+        :query => :post,
+        :interview => :get,
+        :person_name => :get
+    }
+  end
 
   map.connect 'arbeitsmappe', :controller => :user_contents, :action => :index
   map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
@@ -72,8 +76,8 @@ ActionController::Routing::Routes.draw do |map|
   map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
 
   # EN
-  map.en_login        'sign_in',      :controller => :sessions, :action => :new, :locale => 'en'
-  map.en_register     'register',     :controller => :user_registrations, :action => :new, :locale => 'en'
+  map.en_login        'sign_in',      :controller => :sessions, :action => :new, :locale => :en
+  map.en_register     'register',     :controller => :user_registrations, :action => :new, :locale => :en
 
   map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
   map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
@@ -82,17 +86,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.devise_for :user_accounts
 
-  map.connect 'de/:page_id', :locale => :de, :controller => :home, :action => :show
-  map.connect 'de/:controller/:action', :locale => :de
-  map.connect 'de/:controller/:action/:id', :locale => :de
-  map.connect 'de/:controller/:action/:id.:format', :locale => :de
-  map.connect 'de', :locale => :de, :controller => :home, :action => :show
-
-  map.connect 'en/:page_id', :locale => :en, :controller => :home, :action => :show
-  map.connect 'en/:controller/:action', :locale => :en
-  map.connect 'en/:controller/:action/:id', :locale => :en
-  map.connect 'en/:controller/:action/:id.:format', :locale => :en
-  map.connect 'en', :locale => :en, :controller => :home, :action => :show
+  I18n.available_locales.each do |locale|
+    map.connect "#{locale}/:page_id", :locale => locale, :controller => :home, :action => :show
+    map.connect "#{locale}/:controller/:action", :locale => locale
+    map.connect "#{locale}/:controller/:action/:id", :locale => locale
+    map.connect "#{locale}/:controller/:action/:id.:format", :locale => locale
+    map.connect "#{locale}", :locale => locale, :controller => :home, :action => :show
+  end
 
   map.home ':page_id', :controller => :home, :action => :show
   map.localized_root ':locale', :controller => :home, :action => :show

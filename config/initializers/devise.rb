@@ -3,8 +3,8 @@
 
 Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = "mail@zwangsarbeit-archiv.de"
-  
+  config.mailer_sender = CeDiS.config.contact_email
+
   # Configure the content type of DeviseMailer mails (defaults to text/html")
   # config.mailer_content_type = "text/plain"
 
@@ -110,7 +110,7 @@ Devise.setup do |config|
 
   # Configure default_url_options if you are using dynamic segments in :path_prefix
   # for devise_for.
-  # config.default_url_options do
-  #   { :locale => I18n.locale }
-  # end
+  config.default_url_options do
+    { :locale => I18n.locale }
+  end
 end

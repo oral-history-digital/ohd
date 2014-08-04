@@ -1,0 +1,26 @@
+available_locales:
+  - de
+
+default_locale: de
+
+project_name:
+  de: 'Oral History Archive'
+
+project_id: 'hagen'
+
+project_shortname: 'OHA'
+
+project_initials: 'HA'
+
+project_domain: 'oral-history-archive.org'
+
+cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
+
+streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/oral-history-archive'
+
+meta_keywords:
+  de: ''
+
+contact_email: 'mail@oral-history-archive.org'
+
+smtp_server: 'mail.fu-berlin.de'

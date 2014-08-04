@@ -5,13 +5,9 @@
     width: 695px;
 }
 
-#mapFrame #interview_selection_toggle,
 #mapFrame #explanation_filter_toggle {
     top: 3px;
-}
-
-#mapFrame #explanation_filter_toggle {
-    left: 569px;
+    left: 559px;
 }
 
 #mapFrame #explanation_filter {
@@ -20,6 +16,11 @@
 
 #mapFrame #initial_map_tutorial {
     left: 361px;
+}
+
+#mapFrame #initial_map_tutorial.ru {
+    left: 321px;
+    width: 368px;
 }
 
 #mapFrame .map-overlay {

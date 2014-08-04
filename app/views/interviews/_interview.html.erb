@@ -11,33 +11,32 @@
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('interviewers') %></span>
-      <span class="value"><%= interview.interviewers.blank? ? t(:not_specified, :scope => 'status') : interview.interviewers %></span>
+      <span class="value"><%= interview.interviewers(I18n.locale).blank? ? t(:not_specified, :scope => 'status') : interview.interviewers(I18n.locale) %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('transcriptors') %></span>
-      <span class="value"><%= interview.transcriptors.blank? ? t(:not_specified, :scope => 'status') : interview.transcriptors %></span>
+      <span class="value"><%= interview.transcriptors(I18n.locale).blank? ? t(:not_specified, :scope => 'status') : interview.transcriptors(I18n.locale) %></span>
     </li>
     <li>
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
-      <span class="value"><%= interview.languages.map{|f| t(f, :scope => 'categories.languages')}.join(' / ') -%><% unless interview.language.downcase == "deutsch" -%>,
-        <%= interview.translated ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
+      <span class="value"><%= interview.languages.join(' / ') -%><% unless interview.language.downcase == "deutsch" -%>,
+        <%= interview.translated? ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
         <% end -%>
       </span>
     </li>
     <% %w( translators researchers proofreaders segmentators ).each do |attr| %>
-      <% value = interview.send(attr) %>
+      <% value = interview.send(attr, I18n.locale) %>
       <% unless value.blank? %>
-    <li>
-      <span class="label"><%= Interview.human_attribute_name(attr) %></span>
-      <span class="value"><%= expand(value || t(:not_specified, :scope => 'status'), attr, 130) %></span>
-    </li>
+        <li>
+          <span class="label"><%= Interview.human_attribute_name(attr) %></span>
+          <span class="value"><%= expand(value || t(:not_specified, :scope => 'status'), attr, 130) %></span>
+        </li>
       <% end %>
     <% end %>
     <li>
       <span class="label"><%= Interview.human_attribute_name('collection') %></span>
       <span class="value">
-        <%= t(interview.collection, :scope => 'collections.name') %>
-        <%#= as a link: link_to t(interview.collection, :scope => 'collections.name'), interview_collection_path(:project_id => interview.collection.project_id) %>
+        <%= interview.collection %>
       </span>
     </li>
     <li>
@@ -47,14 +46,33 @@
   </ul>
 
     <ul id="interviewDocuments">
-      <% interview.text_materials.each do |text_material| %>
-        <li>
-          <% link_text = "#{t(text_material.document_type, :scope => 'user_interface.labels')}" %>
-          <% link_text << " #{interview.full_title[/^[^,]+,\s+\w/]}." if text_material.document_type == "Biography" %>
-          <% link_text << " (pdf)" %>
-          <%= link_to link_text, text_material.document.url, :target => '_blank' %>
-        </li>
-      <% end %>
+        <% if interview.text_materials.of_type('Biography').size > 0 %>
+            <li>
+                <%= "#{t('user_interface.labels.Biography')}" %> (pdf)
+                <% interview.text_materials.of_type('Biography').map{|tm| {:language => I18n.three_letter_locale(tm.locale.to_sym), :tm => tm}}.sort_by{|doc| doc[:language]}.each do |doc| %>
+                    [<%= link_to doc[:language], doc[:tm].document.url, :target => '_blank' %>]
+                <% end %>
+            </li>
+        <% end %>
+        <% if interview.text_materials.of_type('Transcript').size + interview.text_materials.of_type('Translation').size > 0 %>
+            <li>
+                <%= "#{t('user_interface.labels.transcript')}" %> (pdf)
+                <% [
+                       {
+                           :language => interview.transcript_locales.join('/'),
+                           :tm => interview.text_materials.of_type('Transcript').detect { |tm| tm.locale.to_sym == I18n.locale }
+                       },
+                       {
+                           :language => 'deu',
+                           :tm => interview.text_materials.of_type('Translation').detect { |tm| tm.locale.to_sym == :de }
+                       }
+                   ].sort_by{|doc| doc[:language]}.each do |doc| %>
+                    <% unless doc[:tm].nil? %>
+                        [<%= link_to doc[:language], doc[:tm].document.url, :target => '_blank' %>]
+                    <% end %>
+                <% end %>
+            </li>
+        <% end %>
     </ul>
 
 </div>

@@ -37,7 +37,7 @@ class UserAnnotation < UserContent
       event :withdraw, :transitions_to => :postponed
       # removed by moderation, no resubmission possible
       event :remove, :transitions_to => :rejected
-      # retracted by used
+      # retracted by user
       event :retract, :transitions_to => :private
     end
     state :rejected do
@@ -54,7 +54,7 @@ class UserAnnotation < UserContent
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
   def validate
-    unless media_id =~ /ZA\d{3}_\d{2}_\d{2}_\d{4}/
+    unless media_id =~ Regexp.new("#{CeDiS.config.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
       errors.add :media_id, 'Invalid Media ID given.'
     end
     if description_changed?
@@ -73,7 +73,7 @@ class UserAnnotation < UserContent
   end
 
   def archive_id
-    media_id[/^za\d{3}/i].downcase
+    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
   def timecode_string
@@ -98,9 +98,8 @@ class UserAnnotation < UserContent
   # except the link_url, which is generated in the view
   def user_content_attributes
     attr = {}
-    title_tokens = [UserAnnotation.human_name]
-    title_tokens << I18n.t('zu')
-    title_tokens << reference.interview.short_title
+    title_tokens = [UserAnnotation.human_name + I18n.t('user_interface.annotations.connective')]
+    title_tokens << reference.interview.short_title(I18n.locale)
     title_tokens << "(#{reference.interview.archive_id})"
     title_tokens << reference.tape_number
     title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')
@@ -108,9 +107,9 @@ class UserAnnotation < UserContent
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
     @properties[:author] ||= [user.first_name, user.last_name].join(' ')
-    heading_segment = Segment.headings.for_media_id(reference.media_id).first
+    heading_segment = Segment.with_heading.for_media_id(reference.media_id).first
     unless heading_segment.nil?
-      @properties[:heading] = [heading_segment.section, heading_segment.subheading.blank? ? heading_segment.mainheading : heading_segment.subheading].join(' ')
+      @properties[:heading] = [heading_segment.section, heading_segment.subheading(I18n.locale).blank? ? heading_segment.mainheading(I18n.locale) : heading_segment.subheading(I18n.locale)].join(' ')
     end
     attr[:properties] = @properties
     attr
@@ -155,7 +154,7 @@ class UserAnnotation < UserContent
     update_attribute :shared, true
     if annotation.nil?
       annotation = Annotation.create do |a|
-        a.text = description
+        a.text = description # This implicitly creates an annotation text with the default locale.
         a.author = author
         a.media_id = reference.media_id
         a.timecode = reference.timecode

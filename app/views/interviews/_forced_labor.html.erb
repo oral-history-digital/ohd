@@ -1,41 +1,41 @@
 <div id="containerForcedLabor"  class="container">
     <ul class="data">
-      <% if forced_labor.birth_location.nil? -%>
-      <li>
-        <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
-        <span class="value"><%= format_date forced_labor.date_of_birth %></span>
-      </li>
+      <% if forced_labor.birth_location(I18n.locale).nil? -%>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
+            <span class="value"><%= format_date forced_labor.date_of_birth %></span>
+          </li>
       <% else -%>
-      <li>
-        <span class="label"><%= Interview.human_attribute_name(:birth_location) %></span>
-        <span class="value"><%= forced_labor.birth_location %>,&nbsp;<%= format_date forced_labor.date_of_birth%></span>
-      </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:birth_location) %></span>
+            <span class="value"><%= forced_labor.birth_location(I18n.locale) %>,&nbsp;<%= format_date forced_labor.date_of_birth%></span>
+          </li>
       <% end -%>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_groups) %></span>
-        <span class="value"><%= forced_labor.forced_labor_groups.map{|f| t(f, :scope => 'categories.forced_labor_groups')}.join(', ') %></span>
+        <span class="value"><%= forced_labor.forced_labor_groups.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
-        <span class="value"><%= deportation_for(forced_labor) %></span>
+        <span class="value"><%= deportation_for(forced_labor, I18n.locale) %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_fields.map{|f| t(f, :scope => 'categories.forced_labor_fields')}.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_fields.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
-      <% unless forced_labor.forced_labor_details.blank? %>
+      <% unless forced_labor.forced_labor_details(I18n.locale).blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_details %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_details(I18n.locale) %></span>
       </li>
       <% end %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_locations) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_locations %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_locations(I18n.locale) %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
-        <span class="value"><%= expand forced_labor.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ') %></span>
+        <span class="value"><%= expand forced_labor.forced_labor_habitations.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
@@ -43,12 +43,12 @@
       </li>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
-        <span class="value"><%= expand forced_labor.return_locations || t(:unknown, :scope => 'status') %></span>
+        <span class="value"><%= expand forced_labor.return_locations(I18n.locale) || t(:unknown, :scope => 'status') %></span>
       </li>
-      <% unless forced_labor.return_date.blank? %>
+      <% unless forced_labor.return_date(I18n.locale).blank? %>
       <li>
         <span class="label"><%= Interview.human_attribute_name(:return_date) %></span>
-        <span class="value"><%= format_date forced_labor.return_date %></span>
+        <span class="value"><%= format_date forced_labor.return_date(I18n.locale) %></span>
       </li>
       <% end %>
     </ul>

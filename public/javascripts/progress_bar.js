@@ -73,7 +73,6 @@ progressBar = function(opts) {
   tstyle.width         = '100%';
   tstyle.border        = '5px';
   tstyle.textAlign     = 'center';
-  // tstyle.verticalAlign = 'bottom';
 
   var bar = document.createElement('div');
   bar.id                    = 'pg_bar';
@@ -98,7 +97,7 @@ progressBar = function(opts) {
       total = total_;
       current = 0;
       bar.style.width = '0%';
-      text.innerHTML = 'Loading...';
+      text.innerHTML = I18n.t('map.progress.loading');
       div.style.display = 'block';
     }
 
@@ -114,9 +113,9 @@ progressBar = function(opts) {
         current = 0;
       }
 
-      var percent = Math.round((current/total)*100)+'%';
-      bar.style.width = percent;
-      text.innerHTML = percent + ' loaded';
+      var percent = Math.round((current/total)*100);
+      bar.style.width = percent + '%';
+      text.innerHTML = I18n.t('map.progress.loaded', {percent: percent});
 
     } else if (!total){
       return total;

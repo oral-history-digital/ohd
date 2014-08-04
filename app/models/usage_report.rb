@@ -34,7 +34,7 @@ class UsageReport < ActiveRecord::Base
         validate_archive_id
       when MATERIALS
         validate_archive_id
-        unless facets.match(/^za\d{3}_\w{2,4}/i)
+        unless facets.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
           errors.add_to_base('Incorrect or missing filename parameter for text materials request')
         end
       when SEARCHES
@@ -45,7 +45,6 @@ class UsageReport < ActiveRecord::Base
         # nothing - should not be valid
     end
   end
-
 
   def verb=(verb)
     @verb = verb
@@ -67,7 +66,7 @@ class UsageReport < ActiveRecord::Base
           query_params = Search.decode_parameters @parameters[:suche]
           self.query = query_params.delete('fulltext')
           query_params.keys.each do |p|
-            next if p == 'person_name' # leave person_name unchanged
+            next if p == 'partial_person_name' # leave person_name unchanged
             value = query_params[p]
             query_params[p] = value.is_a?(Array) ? value.size : value.split(',').size
           end
@@ -178,7 +177,7 @@ class UsageReport < ActiveRecord::Base
     logins_per_country.keys.compact.each do |country|
       sorted_countries << [country, logins_per_country[country][:total]]
     end
-    sorted_countries.sort!{|a,b| b.last <=> a.last }
+    sorted_countries.sort!{|a,b| Unicode::strcmp(b.last, a.last) }
 
     data = []
     row = ['Land', 'Nutzer'] + timeframe_titles
@@ -242,8 +241,8 @@ class UsageReport < ActiveRecord::Base
       end
     end
     sorted_archive_ids = archive_ids.to_a.sort{|a,b| b.last <=> a.last }.map{|i| i.first}
-    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
-    sorted_resources = resources.to_a.sort{|a,b| b.last <=> a.last }.map{|r| r.first}
+    sorted_countries = countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}
+    sorted_resources = resources.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|r| r.first}
     data = []
     row = %w(Archiv-ID Aufrufe Nutzer) + sorted_resources + sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
@@ -287,7 +286,7 @@ class UsageReport < ActiveRecord::Base
     countries = {}
     reports.each do |report|
       query = report.query
-      person = report.facets['person_name']
+      person = report.facets['partial_person_name']
       country = report.country
       countries[country] ||= 0
       countries[country] += 1
@@ -317,9 +316,9 @@ class UsageReport < ActiveRecord::Base
         searches[query][:users] << report.user_account_id unless searches[query][:users].include?(report.user_account_id)
       end
     end
-    sorted_queries = queries.to_a.sort{|a,b| b.last <=> a.last }.map{|q| q.first}
-    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}
-    sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last }.map{|f| f.first}
+    sorted_queries = queries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|q| q.first}
+    sorted_countries = countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}
+    sorted_facets = facets.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|f| f.first}
     data = []
     row = %w(Suchbegriff Aufrufe Nutzer)
     row += sorted_facets.map{|f| I18n.t(f, :scope => 'activerecord.attributes.interview', :locale => :de)}
@@ -381,7 +380,7 @@ class UsageReport < ActiveRecord::Base
     row << requests[:total][:anonymous]
     row << requests[:total][:users].size
     data << row
-    countries.to_a.sort{|a,b| b.last <=> a.last }.map{|c| c.first}.each do |country|
+    countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}.each do |country|
       row = [UsageReport.country_name(country)]
       row << requests[country][:total]
       row << requests[country][:anonymous]
@@ -416,7 +415,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.report_file_path(name=nil)
-    File.join([RAILS_ROOT, 'assets', 'reports', name].compact)
+    File.join([Rails.root, 'assets', 'reports', name].compact)
   end
 
   protected
@@ -424,15 +423,15 @@ class UsageReport < ActiveRecord::Base
   def validate_user_account
     if user_account_id.nil?
       if !login.blank?
-        # this happens only on 'SessionController#create' actions,
-        # but there is no need to check for that here
+        # This happens only on 'SessionController#create' actions,
+        # but there is no need to check for that here.
         # NOTE: theoretically, it is possible that someone attempts
         # a login with another accounts login details. Also, this
         # method cannot discern unsuccessful login attempts.
         user_account = UserAccount.find_by_login(login)
         unless user_account.nil?
           self.user_account_id = user_account.id
-          UserAccountIP.create({ :user_account_id => user_account.id, :ip => self.ip })
+          UserAccountIp.create({ :user_account_id => user_account.id, :ip => self.ip })
         else
           errors.add(:user_account_id, :missing)
         end
@@ -443,7 +442,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def assign_user_account_by_ip
-    user_account_ip = UserAccountIP.find_by_ip(self.ip)
+    user_account_ip = UserAccountIp.find_by_ip(self.ip)
     unless user_account_ip.nil?
       self.user_account_id = user_account_ip.user_account_id
       return true
@@ -452,7 +451,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def validate_archive_id
-    unless resource_id.match(/za\d{3}/i)
+    unless resource_id.match(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
       errors.add(:resource_id, :invalid)
     end
   end

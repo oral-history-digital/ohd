@@ -1,28 +1,34 @@
+require 'globalize'
+
 class Interview < ActiveRecord::Base
 
-  NUMBER_OF_INTERVIEWS = Interview.count :all
+  NUMBER_OF_INTERVIEWS = Interview.count
 
   belongs_to :collection
 
   has_many  :photos,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => [ :interview, :translations ]
 
   has_many :text_materials,
            :dependent => :destroy
 
   has_many  :tapes,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => :interview
 
   has_many  :segments,
             :dependent => :destroy
 
   has_many  :location_references,
-            :dependent => :destroy
+            :dependent => :destroy,
+            :include => :translations
 
   has_many  :location_segments
 
   has_many :annotations,
-           :dependent => :delete_all
+           :dependent => :delete_all,
+           :include => :translations
 
   has_many  :contributions,
             :dependent => :delete_all
@@ -71,33 +77,55 @@ class Interview < ActiveRecord::Base
             :dependent => :delete_all
 
   has_attached_file :still_image,
-                    :styles => { :thumb => "88x66", :small => "140x105", :original => "400x300>" },
-                    :url => (ApplicationController.relative_url_root || '') + "/interviews/stills/:basename_still_:style.:extension",
-                    :path => ":rails_root/assets/archive_images/stills/:basename_still_:style.:extension",
+                    :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
+                    :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
+                    :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
+  def self.is_categorized_by(category_type, name)
+    category_type = category_type.to_s
+    self.class_eval <<-CAT
+      has_many  :#{category_type}_categorizations,
+                :class_name => 'Categorization',
+                :conditions => "categorizations.category_type = '#{name}'"
+
+      has_many  :#{category_type},
+                :class_name => 'Category',
+                :through => :#{category_type}_categorizations,
+                :source => :category,
+                :conditions => "categories.category_type = '#{name}'"
+
+      def #{category_type.singularize}_ids
+        #{category_type}_categorizations.map(&:category_id)
+      end
+    CAT
+  end
+
   Category::ARCHIVE_CATEGORIES.each do |category|
-    send :is_categorized_by, category.first, category.last
-    self.class_eval <<DEF
-    def #{category.first.to_s.singularize}_ids
-      @#{category.first.to_s.singularize}_ids ||= #{category.first.to_s}_categorizations.map{|c| c.category_id }
-    end
-DEF
+    is_categorized_by(category.first, category.last)
   end
 
   has_many  :categorizations
 
   has_many :categories,
-           :through => :categorizations
+           :through => :categorizations,
+           :include => :translations
 
-  has_many :languages,
-            :class_name => 'Category',
-            :through => :categorizations,
-            :source => :category,
-            :conditions => "categories.category_type = 'Sprache'"
+  translates :first_name, :other_first_names, :last_name, :birth_name,
+             :details_of_origin, :return_date, :forced_labor_details, :birth_location,
+             :interviewers, :transcriptors, :translators,
+             :proofreaders, :segmentators, :researchers,
+             :forced_labor_locations, :return_locations, :deportation_location
+
+  validate :has_standard_name
+  def has_standard_name
+    if self.last_name(I18n.default_locale).blank?
+      errors.add(:last_name, ' must be set for default locale (=standard name).')
+    end
+  end
 
   validates_associated :collection
-  validates_presence_of :full_title, :archive_id
+  validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
   validates_attachment_content_type :still_image,
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
@@ -107,6 +135,7 @@ DEF
   after_save :set_categories
 
   searchable :auto_index => false do
+    integer :interview_id, :using => :id, :stored => true, :references => Interview
     string :archive_id, :stored => true
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -118,9 +147,11 @@ DEF
     end
     text :headings, :boost => 20 do
       indexing_headings = ''
-      segments.headings.each do |segment|
-        indexing_headings << ' ' + segment.mainheading unless segment.mainheading.blank?
-        indexing_headings << ' ' + segment.subheading unless segment.subheading.blank?
+      segments.with_heading.each do |segment|
+        segment.translations.each do |translation|
+          indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
+          indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
+        end
       end
       indexing_headings.squeeze(' ')
     end
@@ -130,8 +161,10 @@ DEF
       location_references.each do |location|
         weight = location.location_segments.count
         weight = 10 if weight == 0
-        indexing_location_refs[location.name] ||= 0
-        indexing_location_refs[location.name] += weight
+        I18n.available_locales.each do |locale|
+          indexing_location_refs[location.name(locale)] ||= 0
+          indexing_location_refs[location.name(locale)] += weight
+        end
         (location.alias_location_names || '').split(/;\s+/).each do |name|
           indexing_location_refs[name] ||= 0
           indexing_location_refs[name] += weight
@@ -144,18 +177,39 @@ DEF
       str.squeeze(' ')
     end
 
-    text :person_name, :boost => 20 do
-      (full_title + (alias_names || '')).squeeze(' ')
-    end
-
     Category::ARCHIVE_CATEGORIES.each do |category|
       integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
     end
+    # Index all categories with their translations into a single text field.
     text :categories, :boost => 20 do
-      ([self.archive_id] + Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first).to_s }).join(' ')
+      cats = [self.archive_id]
+      cats += Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first)}.
+          # Make a flat list of all categories of this interview.
+          flatten.
+          # Retrieve translations for the categories.
+          map do |cat|
+            cat.translations.map{|t| t.name}.join(' ')
+          end
+      cats.join(' ')
     end
 
-    string :person_name, :using => :full_title, :stored => true
+    # Create localized attributes so that we can order
+    # interviews in all languages.
+    I18n.available_locales.each do |locale|
+      string :"person_name_#{locale}", :stored => true do
+        full_title(locale)
+      end
+    end
+    text :person_name, :boost => 20 do
+      (
+        translations.map do |t|
+          build_full_title_from_name_parts(t.locale)
+        end.join(' ') + (" #{alias_names}" || '')
+      ).
+      strip.
+      squeeze(' ')
+    end
+
   end
 
 
@@ -165,16 +219,19 @@ DEF
   end
 
   def to_s
-    short_title
+    short_title(I18n.locale)
   end
 
   def media_id
     nil
   end
 
-  # Compatibility for old singular language association
   def language
     languages.join('/')
+  end
+
+  def transcript_locales
+    languages.map{|l| l.code.split('/')}.flatten
   end
 
   def duration
@@ -200,22 +257,53 @@ DEF
     write_attribute :duration, time
   end
 
-  def short_title
-    return '' if full_title.blank?
-    # this is the old form: Baschlai, S.
-    # @short_title ||= full_title[/^[^,;]+, \w/] + "."
-    # new form is: Sinaida Baschlai
-    @short_title ||= [first_name, (last_name || '').sub(/\s*\([^(]+\)\s*$/,'')].join(' ')
+  def build_full_title_from_name_parts(locale)
+    locale = locale.to_sym
+
+    # Check whether we've got the requested locale. If not fall back to the
+    # default locale.
+    used_locale = Globalize.fallbacks(locale).each do |l|
+      break l unless translations.select{|t| t.locale.to_sym == l}.blank?
+    end
+    return nil unless used_locale.is_a?(Symbol)
+
+    # Build last name with a locale-specific pattern.
+    last_name = last_name(used_locale) || ''
+    birth_name = birth_name(used_locale)
+    lastname_with_birthname = if birth_name.blank?
+                                last_name
+                              else
+                                I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                              end
+
+    # Build first name.
+    first_names = []
+    first_name = first_name(used_locale)
+    first_names << first_name unless first_name.blank?
+    other_first_names = other_first_names(used_locale)
+    first_names << other_first_names unless other_first_names.blank?
+
+    # Combine first and last name with a locale-specific pattern.
+    if first_names.empty?
+      lastname_with_birthname
+    else
+      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+    end
   end
 
-  # display form of last name without addeda (geb etc.)
-  def last_name_short
-    last_name.sub(/\s+\(.*\)$/,'')
+  def full_title(locale)
+    build_full_title_from_name_parts(locale)
   end
 
-  def anonymous_title
-    return '' if full_title.blank?
-    @anon_title ||= [full_title.match(/([,;]\s+?)([^\s]+)/)[2], full_title[/^\w/]].compact.join(' ') + '.'
+  def short_title(locale)
+    [first_name(locale), last_name(locale)].join(' ')
+  end
+
+  def anonymous_title(locale)
+    name_parts = []
+    name_parts << first_name(locale) unless first_name(locale).blank?
+    name_parts << "#{(last_name(locale).blank? ? '' : last_name(locale)).strip.chars.first}."
+    name_parts.join(' ')
   end
 
   def year_of_birth
@@ -224,16 +312,16 @@ DEF
   end
 
   # uses the birth location (if available) or country_of_origin
-  def country_of_birth
-    if birth_location.nil? || birth_location.blank?
+  def country_of_birth(locale = I18n.default_locale)
+    if birth_location(locale).nil? || birth_location(locale).blank?
       country_of_origin
     else
-      birth_location.split(/,\s*/).last
+      birth_location(locale).split(/,\s*/).last
     end
   end
 
   def video
-    read_attribute(:video) ? 'Video' : 'Audio'
+    I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio')
   end
 
   def video?
@@ -241,7 +329,7 @@ DEF
   end
 
   def has_headings?
-    segments.headings.count > 0 ? true : false
+    segments.with_heading.count > 0 ? true : false
   end
 
   def segmented?
@@ -249,7 +337,7 @@ DEF
   end
 
   def right_to_left
-    languages.map{|l| l.name }.include?('Hebräisch') ? true : false
+    languages.map(&:to_s).include?('Hebräisch') ? true : false
   end
 
   def citation_hash
@@ -282,13 +370,21 @@ DEF
     end
   end
 
+  def languages=(data)
+    create_categories_from(data.gsub('/', '|'), 'Sprache')
+  end
+
+  def language_codes=(data)
+    create_categories_from(data.gsub('/', '|'), 'Sprache', :code)
+  end
+
   def still_image_file_name=(filename)
     # assign the photo - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[/^za\d{3}/i] || '').downcase
+      archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       # construct the import file path
-      filepath = File.join(ActiveRecord.path_to_storage, ARCHIVE_MANAGEMENT_DIR, archive_id, 'stills', (filename || '').split('/').last.to_s)
+      filepath = File.join(CeDiS.config.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
       if File.exists?(filepath)
         if @assigned_filename != filename
           @assigned_filename = filename
@@ -327,28 +423,23 @@ DEF
     @quality || 2.0
   end
 
-  def set_forced_labor_locations!
-    locations = []
-    location_references.forced_labor.each do |location|
-      locations << location.short_name.strip
+  def set_locations!
+    {
+        :forced_labor => :forced_labor_locations,
+        :return => :return_locations,
+        :deportation => :deportation_location
+    }.each do |location_reference_type, interview_attribute|
+      I18n.available_locales.each do |locale|
+        Interview.with_locale(locale) do
+          locations = []
+          location_references.send(location_reference_type).each do |location|
+            locations << location.short_name(locale).strip
+          end
+          send("#{interview_attribute}=", locations.join('; '))
+        end
+      end
     end
-    update_attribute :forced_labor_locations, locations.join("; ")
-  end
-
-  def set_return_locations!
-    locations = []
-    location_references.return.each do |location|
-      locations << location.short_name.strip
-    end
-    update_attribute :return_locations, locations.join("; ")
-  end
-
-  def set_deportation_location!
-    locations = []
-    location_references.deportation.each do |location|
-      locations << location.short_name.strip
-    end
-    update_attribute :deportation_location, locations.join("; ")
+    save!
   end
 
   def set_contributor_fields!
@@ -367,61 +458,122 @@ DEF
   def set_workflow_flags
     if segments.size > 0
       write_attribute :segmented, true
-      if segments.headings.size > 0
+      if segments.with_heading.size > 0
         write_attribute :researched, true
       end
-      unless proofreaders.blank?
+      unless proofreaders(I18n.default_locale).blank?
         write_attribute :proofread, true
       end
     end
   end
 
   def set_country_category
-    # set from country_of_origin as a fallback
+    # Set from country_of_origin as a fallback.
     create_categories_from(self.country_of_origin, 'Lebensmittelpunkt') if self.countries.empty?
   end
 
   def set_categories
-    (@category_import || {}).keys.each do |type|
-      category_names = @category_import[type]
-      # Remove all previous categorizations
+    (@category_import || {}).each do |type, category_data|
+
+      next if type.blank?
+
+      # Remove all previous categorizations for the given type.
       categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
-      # must be reloaded for the later creation to work
+      # Must be reloaded for the later creation to work.
       categorizations.reload
-      category_names.each do |name|
-      category = case type
-                   when 'Lebensmittelpunkt'
-                     classified_name = I18n.translate(name, :scope => "location.countries", :locale => :de)
-                     classified_name = classified_name[/^de,/].blank? ? classified_name : name
-                     Category.find_or_initialize_by_category_type_and_name(type, classified_name)
-                   else
-                     Category.find_or_initialize_by_category_type_and_name type, name
-                 end
-      category.save if category.new_record? || category.changed?
-      begin
-        if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
-          categorizations << Categorization.new{|c|
-            c.category_id = category.id
-            c.category_type = type
-          }
+
+      # Re-arrange localized category data by entry.
+      category_entries = []
+      category_data.each do |locale, category_atts|
+        category_atts.each do |attribute, values|
+          values.each_with_index do |value, index|
+            category_entries[index] ||= {}
+            category_entries[index][locale] ||= {}
+            category_entries[index][locale][attribute] = value
+          end
         end
-      rescue Exception => e
-        puts e.message
+      end
+
+      category_entries.each do |localized_attributes|
+
+        # We expect at least a category name for the default locale.
+        default_name = localized_attributes[I18n.default_locale][:name]
+        next if default_name.blank?
+
+        # Create a category with this name if it doesn't already exists.
+        category = Category.first(
+            :joins => :translations,
+            :conditions => [
+                'categories.category_type=? AND category_translations.name=? AND category_translations.locale=?',
+                type, default_name, I18n.default_locale.to_s
+            ],
+            :readonly => false
+        )
+        unless category
+          category = Category.new :category_type => type
+        end
+
+        # Set the localized names of the category.
+        category_changed = false
+        localized_attributes.each do |locale, attributes|
+          # Rail's dirty detection doesn't work with Globalize2's
+          # original code. We therefore have to manually identify changes.
+          next if category.name(locale) == attributes[:name] and (attributes[:code].blank? or category.code == attributes[:code])
+
+          category_changed = true
+          Category.with_locale(locale) do
+            category.name = attributes[:name]
+          end
+          category.code = attributes[:code] unless attributes[:code].blank?
+        end
+
+        category.save! if category.new_record? || category_changed
+
+        # Create a categorization for this category if it doesn't already exist.
+        begin
+          if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
+            categorizations << Categorization.new{|c|
+              c.category_id = category.id
+              c.category_type = type
+            }
+          end
+        rescue => e
+          puts e.message
+        end
+
       end
     end
-    end
   end
 
-  def create_categories_from(data, type)
-    category_names = data.split(type == 'Sprache'  ? '/' : '|').map{|n| n.strip }
+  def create_categories_from(data, type, attribute = :name)
+    return if data.blank?
+    raise 'Invalid category type' unless Category::ARCHIVE_CATEGORIES.map(&:second).include? type
+    raise 'Invalid attribute' unless [:name, :code].include? attribute
+    category_names = data.split('|').map{|n| n.strip }
     @category_import ||= {}
-    @category_import[type.to_s] = category_names
+    @category_import[type.to_s] ||= {}
+    import_locale = self.class.locale || I18n.locale
+    @category_import[type.to_s][import_locale] ||= {}
+    @category_import[type.to_s][import_locale][attribute] = category_names
   end
 
-  def set_contributor_field_from(field,association)
+  def set_contributor_field_from(field, association)
     field_contributors = self.send(association)
-    self.send field.to_s + '=',
-      field_contributors.map{|c| [ c.last_name, c.first_name ].compact.join(', ')}.join("; ")
+
+    # Build one contributor list per locale.
+    contributors_per_locale = {}
+    field_contributors.each do |contributor|
+      contributor.translations.each do |t|
+        contributors_per_locale[t.locale] ||= []
+        contributors_per_locale[t.locale] << [ t.last_name, t.first_name ].compact.join(t.locale == :ru ? ' ' : ', ')
+      end
+    end
+
+    contributors_per_locale.each do |locale, contributors|
+      self.class.with_locale(locale) do
+        self.send "#{field}=", contributors.join('; ')
+      end
+    end
   end
 
 end

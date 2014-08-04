@@ -5,7 +5,7 @@ namespace :user_accounts do
       task :from_yaml, [:file] => :environment do |task, args|
 
         file = args[:file] || ENV['file']
-        raise "No file argument specified (file=). Aborting." if file.nil?
+        raise 'No file argument specified (file=). Aborting.' if file.nil?
         raise "No such file: #{file}. Try again." unless File.exists?(file)
 
         puts 'KCODE: ' + (ENV['KCODE'] || 'none').to_s
@@ -33,7 +33,7 @@ namespace :user_accounts do
             user.password_salt = Base64.encode64(Base64.decode64(user.encrypted_password)[-4,4])
             begin
               user.save!
-            rescue Exception => e
+            rescue => e
               puts "ERROR: #{e.message}\n#{user.inspect}\n#{user.errors.full_messages}\n"
               next
             end

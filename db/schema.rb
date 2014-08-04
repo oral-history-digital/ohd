@@ -9,13 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131104102649) do
+ActiveRecord::Schema.define(:version => 20140627154734) do
+
+  create_table "annotation_translations", :force => true do |t|
+    t.integer  "annotation_id"
+    t.string   "locale"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "annotation_translations", ["annotation_id"], :name => "index_annotation_translations_on_annotation_id"
 
   create_table "annotations", :force => true do |t|
     t.integer  "interview_id"
     t.string   "author"
     t.string   "media_id",        :null => false
-    t.text     "text",            :null => false
     t.string   "timecode",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,11 +37,9 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
   add_index "annotations", ["segment_id"], :name => "index_annotations_on_segment_id"
 
   create_table "categories", :force => true do |t|
-    t.string "name"
     t.string "category_type"
+    t.string "code"
   end
-
-  add_index "categories", ["name"], :name => "index_categories_on_name"
 
   create_table "categorizations", :force => true do |t|
     t.integer "category_id",   :null => false
@@ -42,13 +49,32 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
 
   add_index "categorizations", ["category_type", "interview_id"], :name => "index_categorizations_on_category_type_and_interview_id"
 
-  create_table "collections", :force => true do |t|
+  create_table "category_translations", :force => true do |t|
+    t.integer  "category_id"
+    t.string   "locale"
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "category_translations", ["category_id"], :name => "index_category_translations_on_category_id"
+
+  create_table "collection_translations", :force => true do |t|
+    t.integer  "collection_id"
+    t.string   "locale"
+    t.text     "interviewers"
     t.string   "countries"
     t.string   "institution"
-    t.string   "responsibles"
     t.text     "notes"
-    t.text     "interviewers"
+    t.string   "responsibles"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "collection_translations", ["collection_id"], :name => "index_collection_translations_on_collection_id"
+
+  create_table "collections", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "homepage"
@@ -63,9 +89,18 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
 
   add_index "contributions", ["interview_id"], :name => "index_contributions_on_interview_id"
 
+  create_table "contributor_translations", :force => true do |t|
+    t.integer  "contributor_id"
+    t.string   "locale"
+    t.string   "last_name"
+    t.string   "first_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contributor_translations", ["contributor_id"], :name => "index_contributor_translations_on_contributor_id"
+
   create_table "contributors", :force => true do |t|
-    t.string  "first_name"
-    t.string  "last_name"
     t.boolean "interview",     :default => false
     t.boolean "camera",        :default => false
     t.boolean "transcription", :default => false
@@ -74,10 +109,6 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
     t.boolean "segmentation",  :default => false
     t.boolean "documentation", :default => false
     t.boolean "other",         :default => false
-  end
-
-  create_table "home_locations", :force => true do |t|
-    t.string "name"
   end
 
   create_table "imports", :force => true do |t|
@@ -91,43 +122,51 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
 
   add_index "imports", ["importable_id", "importable_type"], :name => "index_imports_on_importable_id_and_importable_type"
 
+  create_table "interview_translations", :force => true do |t|
+    t.integer  "interview_id"
+    t.string   "locale"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.text     "forced_labor_locations"
+    t.string   "other_first_names"
+    t.text     "return_locations"
+    t.string   "details_of_origin"
+    t.string   "return_date"
+    t.string   "birth_name"
+    t.text     "forced_labor_details"
+    t.string   "deportation_location"
+    t.string   "birth_location"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "transcriptors"
+    t.string   "translators"
+    t.text     "researchers"
+    t.string   "interviewers"
+    t.string   "proofreaders"
+    t.string   "segmentators"
+  end
+
+  add_index "interview_translations", ["interview_id"], :name => "index_interview_translations_on_interview_id"
+
   create_table "interviews", :force => true do |t|
     t.string   "archive_id"
     t.integer  "collection_id"
-    t.string   "full_title"
     t.boolean  "gender"
     t.string   "date_of_birth"
     t.string   "country_of_origin"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
-    t.string   "details_of_origin"
     t.string   "deportation_date"
-    t.string   "deportation_location"
-    t.text     "forced_labor_details"
     t.string   "punishment"
     t.string   "liberation_date"
-    t.integer  "language_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "segmented",                              :default => false
     t.boolean  "researched",                             :default => false
     t.boolean  "proofread",                              :default => false
-    t.string   "interviewers"
-    t.string   "transcriptors"
-    t.string   "translators"
-    t.text     "researchers"
-    t.string   "proofreaders"
-    t.string   "segmentators"
-    t.string   "first_name"
-    t.string   "other_first_names"
-    t.string   "last_name"
     t.text     "alias_names"
     t.string   "interview_date"
-    t.text     "forced_labor_locations"
-    t.string   "birth_location"
-    t.text     "return_locations"
-    t.string   "return_date"
     t.string   "still_image_file_name"
     t.string   "still_image_content_type"
     t.integer  "still_image_file_size"
@@ -140,15 +179,22 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
     t.datetime "indexed_at"
   end
 
-  create_table "languages", :force => true do |t|
-    t.string "name", :null => false
+  create_table "location_reference_translations", :force => true do |t|
+    t.integer  "location_reference_id"
+    t.string   "locale"
+    t.string   "country_name"
+    t.string   "location_name"
+    t.string   "name"
+    t.string   "region_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "location_reference_translations", ["location_reference_id"], :name => "index_da9a0d484ad266ba1cb1495bae382a31d60ac2d6"
 
   create_table "location_references", :force => true do |t|
     t.integer "interview_id"
-    t.string  "name"
     t.string  "alias_names"
-    t.string  "location_name"
     t.text    "alias_location_names"
     t.string  "longitude"
     t.string  "latitude"
@@ -156,10 +202,8 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
     t.string  "description"
     t.string  "reference_type"
     t.boolean "classified",           :default => true
-    t.string  "region_name"
     t.string  "region_latitude"
     t.string  "region_longitude"
-    t.string  "country_name"
     t.string  "country_latitude"
     t.string  "country_longitude"
     t.integer "hierarchy_level"
@@ -167,8 +211,8 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
     t.string  "place_subtype"
   end
 
-  add_index "location_references", ["interview_id", "name"], :name => "index_location_references_on_interview_id_and_name"
   add_index "location_references", ["interview_id"], :name => "index_location_references_on_interview_id"
+  add_index "location_references", ["interview_id"], :name => "index_location_references_on_interview_id_and_name"
 
   create_table "location_segments", :force => true do |t|
     t.integer "location_reference_id"
@@ -178,38 +222,56 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
 
   add_index "location_segments", ["location_reference_id"], :name => "index_location_segments_on_location_reference_id"
 
+  create_table "photo_translations", :force => true do |t|
+    t.integer  "photo_id"
+    t.string   "locale"
+    t.text     "caption"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "photo_translations", ["photo_id"], :name => "index_photo_translations_on_photo_id"
+
   create_table "photos", :force => true do |t|
     t.integer  "interview_id"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.text     "caption"
   end
+
+  create_table "segment_translations", :force => true do |t|
+    t.integer  "segment_id"
+    t.string   "locale"
+    t.string   "mainheading"
+    t.string   "subheading"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "segment_translations", ["segment_id"], :name => "index_segment_translations_on_segment_id"
 
   create_table "segments", :force => true do |t|
     t.integer  "tape_id"
     t.string   "media_id"
     t.string   "timecode"
-    t.string   "transcript",           :limit => 2000
-    t.string   "translation",          :limit => 2000
+    t.string   "transcript",      :limit => 2000
+    t.string   "translation",     :limit => 2000
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "duration",                             :precision => 5, :scale => 2
+    t.decimal  "duration",                        :precision => 5, :scale => 2
     t.integer  "sequence_number"
     t.integer  "tape_number"
     t.string   "speaker"
-    t.boolean  "speaker_change",                                                     :default => false
-    t.boolean  "chapter_change",                                                     :default => false
-    t.integer  "previous_segment_id"
-    t.integer  "following_segment_id"
+    t.boolean  "speaker_change",                                                :default => false
+    t.boolean  "chapter_change",                                                :default => false
     t.string   "section"
-    t.string   "mainheading",          :limit => 250
-    t.string   "subheading",           :limit => 250
     t.integer  "interview_id"
   end
 
-  add_index "segments", ["interview_id"], :name => "index_segments_on_interview_id"
+  add_index "segments", ["interview_id", "section"], :name => "index_segments_on_interview_id_and_section"
+  add_index "segments", ["media_id"], :name => "index_segments_on_media_id"
+  add_index "segments", ["tape_id"], :name => "index_segments_on_tape_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -240,7 +302,10 @@ ActiveRecord::Schema.define(:version => 20131104102649) do
     t.string  "document_file_name"
     t.string  "document_content_type"
     t.integer "document_file_size"
+    t.string  "locale",                :limit => 5, :default => "de", :null => false
   end
+
+  add_index "text_materials", ["interview_id", "document_type", "locale"], :name => "index_text_materials_unique_document", :unique => true
 
   create_table "usage_reports", :force => true do |t|
     t.string   "ip"

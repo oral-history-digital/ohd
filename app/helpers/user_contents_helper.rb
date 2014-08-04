@@ -14,30 +14,54 @@ module UserContentsHelper
   def query_hash_to_string(query)
     case query
       when Hash
-        category_ids = query.values.flatten.inject([]){|ids, value| ids << value if (value.to_i != 0); ids }.uniq
-        preloaded_categories = category_ids.empty? ? [] : Category.find(:all, :conditions => "id IN (#{category_ids.join(',')})")
+        # Render fulltext search.
         fulltext = query.delete('fulltext')
-        str = fulltext.nil? ? [] : [ t('fulltext', :scope => :facets).to_s + ': "' + fulltext.to_s + '"' ]
+        str = fulltext.nil? ? [] : [ "#{t('facets.fulltext')}: \"#{fulltext}\"" ]
+
+        # Preload interview by ID.
+        interview_ids = (query['interview_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
+        preloaded_interviews = interview_ids.empty? ? [] : Interview.all(:conditions => [ 'id IN (?)', interview_ids ])
+
+        # Preload queried categories by ID.
+        category_ids = query.reject{|key,value| key=='interview_id'}.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
+        preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ], :include => :translations)
+
+        # Render keywords, categories and interviews.
         str += query.keys.inject([]) do |out, key|
           values = query[key]
           case values
             when Array
-              category_values = []
+              # Category search...
+              # Retrieve translated category names for category IDs.
+              facet_values = []
               values.map do |v|
-                cat = preloaded_categories.select{|c| c.id == v.to_i}.first
-                unless cat.nil?
-                  category_values << t(cat.name, :scope => "categories.#{key}")
+                if key == 'interview_id'
+                  int = preloaded_interviews.detect{|i| i.id = v.to_i}
+                  unless int.nil?
+                    facet_values << int.full_title(I18n.locale)
+                  end
+                else
+                  cat = preloaded_categories.detect{|c| c.id == v.to_i}
+                  unless cat.nil?
+                    facet_values << cat.name(I18n.locale)
+                  end
                 end
               end
-              out << t(key, :scope => :facets).to_s + ': ' + category_values.join(', ')
+              out << "#{t(key, :scope => :facets)}: #{facet_values.join(', ')}"
+
             else
-              out << t(key, :scope => :facets).to_s + ': ' + values.to_s
+              # Keyword search...
+              out << "#{t(key, :scope => :facets)}: #{values}"
+
           end
           out
         end
         str.join('; ')
+
       else
+        # Fallback - TODO: obsolete?
         query.to_s
+
     end
   end
 
@@ -56,21 +80,21 @@ module UserContentsHelper
             :url => update_path,
             :method => :put,
             :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
-            :complete => "togglingContent = 0;",
+            :complete => 'togglingContent = 0;',
             :html => options.merge({:class => 'inline'})
     })
     js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
-    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => "inline-editable", :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
+    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable', :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
       form_remote_tag(form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
-        form_html += if(text_area)
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)") \
+        form_html += if text_area
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)') \
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => "Event.stop(event)")
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)')
         end
         form_html += hidden_field_tag :context, context
-        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => "update", :onclick => "togglingContent = 1;")
+        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update', :onclick => 'togglingContent = 1;')
         buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
         form_html + buttons_html + spinner_html
@@ -81,17 +105,21 @@ module UserContentsHelper
 
   # render the interview references for a search item
   def reference_details_for_search(search)
-    html = content_tag(:span, "#{search.properties['hits'] || t(:none)} #{t(:search_results, :scope => 'user_interface.labels')}")
-    interview_stills = Interview.find(:all, :select => 'archive_id, full_title, still_image_file_name', :conditions => "archive_id IN ('#{search.interview_references.join("','")}')")
+    html = content_tag(:span, t(:search_results_with_count, :scope => 'user_interface.labels', :count => search.properties['hits'] || t(:none)))
+    interview_stills = Interview.all(
+        :select => 'id, archive_id, still_image_file_name',
+        :include => :translations,
+        :conditions =>['archive_id IN (?)', search.interview_references]
+    )
     image_list = search.interview_references.inject('') do |list, archive_id|
-      if archive_id =~ /^za\d{3}$/
+      if archive_id =~ Regexp.new("^#{CeDiS.config.project_initials.downcase}\\d{3}$")
         image = interview_stills.select{|still| still.archive_id == archive_id }.first
         image_file = if image.nil? || image.still_image_file_name.nil?
-          image_path("/archive_images/missing_still.jpg")
+          image_path('/archive_images/missing_still.jpg')
         else
-          image_path(File.join("/interviews/stills", image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
+          image_path(File.join('/interviews/stills', image.still_image_file_name.sub(/\.\w{3,4}$/,'_still_thumb\0')))
         end
-        list << content_tag(:li, image_tag(image_file, :alt => archive_id, :title => "#{image.full_title} (#{archive_id})"))
+        list << content_tag(:li, image_tag(image_file, :alt => archive_id, :title => "#{image.full_title(I18n.locale)} (#{archive_id})"))
       end
       list
     end
@@ -103,53 +131,53 @@ module UserContentsHelper
   # render a singular interview reference detail for interview or segment items
   def reference_details_for_interview(interview)
     image_file = if interview.nil? || interview.still_image_file_name.nil?
-      image_path("/archive_images/missing_still.jpg")
+      image_path('/archive_images/missing_still.jpg')
     else
-      image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
+      image_path(File.join('/interviews/stills', interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
     end
     image_html = if interview.nil?
       image_tag(image_file)
     else
-      image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+      image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title(I18n.locale)} (#{interview.archive_id})")
     end
     return image_html if interview.nil?
     html = link_to(image_html, interview_path(:id => interview.archive_id), :target => '_blank')
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_, :scope => 'user_interface.labels')} #{Interview.human_name}", interview_path(:id => interview.archive_id), :target => '_blank'))
+    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
-                  + content_tag(:p, t(interview.collection, :scope => 'collections.name')))
+                  + content_tag(:p, interview.collection))
     # forced labor groups
     biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
-                  + content_tag(:p, interview.forced_labor_groups.map{|f| t(f, :scope => 'categories.forced_labor_groups')}.join(', ')))
+                  + content_tag(:p, interview.forced_labor_groups.join(', ')))
     # habitations
     biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
-                  + content_tag(:p, interview.forced_labor_habitations.map{|l| t(l, :scope => 'categories.forced_labor_habitations')}.join(', ')))
-    content_tag(:div, html, :class => "image-link") + content_tag(:ul, biographic)
+                  + content_tag(:p, interview.forced_labor_habitations.join(', ')))
+    content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end
 
   # render a singular interview reference detail for segment with or without annotation
   def reference_details_for_segment(user_content)
     segment = user_content.reference
-    interview = segment.interview unless segment.nil?
+    interview = segment.interview
     image_file = if interview.nil? || interview.still_image_file_name.nil?
-                   image_path("/archive_images/missing_still.jpg")
+                   image_path('/archive_images/missing_still.jpg')
                  else
-                   image_path(File.join("/interviews/stills", interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
+                   image_path(File.join('/interviews/stills', interview.still_image_file_name.sub(/\.\w{3,4}$/,'_still_small\0')))
                  end
     image_html = if interview.nil?
              image_tag(image_file)
            else
-             image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title} (#{interview.archive_id})")
+             image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title(I18n.locale)} (#{interview.archive_id})")
            end
     html = link_to_segment(segment, '', false, false, image_html, { :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo; #{t(:show_, :scope => "user_interface.labels")} #{Segment.human_name}", { :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}", { :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript
-    annotation << content_tag(:li, label_tag(Segment.human_attribute_name(transcript_field)) + content_tag(:p, segment.send(transcript_field)))
-    content_tag(:div, html, :class => "image-link") + content_tag(:ul, annotation)
+    annotation << content_tag(:li, label_tag(Segment.human_attribute_name(transcript_field)) + content_tag(:p, segment.send(transcript_field).gsub(/\*([^*]+:)\*/, '<em>\1</em>')))
+    content_tag(:div, html, :class => 'image-link') + content_tag(:ul, annotation)
   end
 
   def topics_select(name, options={}, selected=[])

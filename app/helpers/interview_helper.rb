@@ -6,7 +6,7 @@ module InterviewHelper
     if content.length < limit+81
       content
     else
-      teaser = truncate(content, limit)
+      teaser = truncate(content, :length => limit)
       teaser_id = id + '_teaser'
       full_id = id + '_full'
       more_link = link_to_function(t(:more, :scope => 'user_interface.labels') + '&nbsp;&raquo;', "$('#{teaser_id}').hide(); new Effect.BlindDown('#{full_id}');")
@@ -18,37 +18,35 @@ module InterviewHelper
 
   # transforms the headings array into a hash structure
   # which renders the hierarchy better
-  def hashed_headings_from_array(headings)
+  def hashed_headings_from_array(segments_with_heading, headings_locale)
     headings_hash = {}
-
     section_number = 0
-
-    headings.each do |heading|
-      # values for the player seeking
-      player_item = (heading.tape.number-1).to_s
-      player_pos = heading.start_time.floor.to_s
-      # html
+    segments_with_heading.each do |segment_with_heading|
+      # Values for the player seeking.
+      player_item = (segment_with_heading.tape.number - 1).to_s
+      player_pos = segment_with_heading.start_time.floor.to_s
+      # HTML id.
       heading_id = "heading_" + player_item + "_" + player_pos
 
-      if !heading.mainheading.blank?
+      unless segment_with_heading.mainheading(headings_locale).blank?
         section_number = headings_hash.keys.size + 1
         headings_hash[section_number] = {
-                :title => heading.mainheading,
-                :item => player_item,
-                :timecode => heading.raw_timecode.to_s,
-                :pos => player_pos,
-                :id => heading_id,
-                :subheadings => []
+            :title => segment_with_heading.mainheading(headings_locale),
+            :item => player_item,
+            :timecode => segment_with_heading.raw_timecode.to_s,
+            :pos => player_pos,
+            :id => heading_id,
+            :subheadings => []
         }
       end
-      if !heading.subheading.blank? && !headings_hash[section_number].nil?
-        # add the subheading to the current mainheading
+      unless segment_with_heading.subheading(headings_locale).blank? || headings_hash[section_number].nil?
+        # Add the subheading to the current mainheading.
         headings_hash[section_number][:subheadings] << {
-                :title => heading.subheading,
-                :item => player_item,
-                :timecode => heading.raw_timecode.to_s,
-                :pos => player_pos,
-                :id => heading_id
+            :title => segment_with_heading.subheading(headings_locale),
+            :item => player_item,
+            :timecode => segment_with_heading.raw_timecode.to_s,
+            :pos => player_pos,
+            :id => heading_id
         }
       end
     end
@@ -75,9 +73,9 @@ module InterviewHelper
   def formatted_languages(interview)
     truncate_language_names = interview.languages.size > 1
     interview.languages.map do |lang|
-      lang_name = t(lang, :scope => 'mediaplayer.languages')
+      lang_name = lang.to_s
       if truncate_language_names && lang_name.length > 8
-        truncate(lang_name, 5, '.')
+        truncate(lang_name, :length => 5, :omission => '.')
       else
         lang_name
       end
@@ -85,16 +83,16 @@ module InterviewHelper
   end
 
   def format_transcript(text)
-    h(text).gsub(/~([^~]*)~/,'<em>\1</em>').gsub(/\s+([.,?;])/,'\1').sub(/^\s*[A-Z]{2,4}:/,'').strip
+    h(text).gsub(/[~*]([^~*]*)[~*]/,'<em>\1</em>').gsub(/\s+([.,?;])/,'\1').strip
   end
 
   def location_to_param(name)
     (name || '').gsub(/[\s,;]+/,'+')
   end
 
-  def deportation_for(interview)
-    unless interview.deportation_location.blank?
-      [ interview.deportation_location, format_date(interview.deportation_date) ].compact.join(',&nbsp;')
+  def deportation_for(interview, locale = I18n.default_locale)
+    unless interview.deportation_location(locale).blank?
+      [ interview.deportation_location(locale), format_date(interview.deportation_date) ].compact.join(',&nbsp;')
     else
       t(:not_deported, :scope => 'status')
     end
@@ -140,4 +138,30 @@ module InterviewHelper
     segments
   end
 
+  # Identify the display locale for editorial content like segment headings, editorial annotations and photo captions:
+  # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+  # - Show translations in the chosen UI-language if available, otherwise show them in German.
+  def display_locale(translated_object)
+    if translated_object and translated_object.translations.map(&:locale).include?(I18n.locale)
+      I18n.locale
+    else
+      I18n.default_locale
+    end
+  end
+
+  # Return a human-readable list of available translations for the given database object.
+  def available_languages(translated_object)
+    language_codes = translated_object.translations.map{|t| I18n.three_letter_locale(t.locale)}
+    Category.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
+  end
+
+  def language_adj_case(languages)
+    languages = [languages] unless languages.is_a? Array
+    languages = languages.map(&:to_s).map(&:mb_chars)
+    if I18n.locale == :en
+      languages.map(&:capitalize)
+    else
+      languages.map(&:downcase)
+    end
+  end
 end

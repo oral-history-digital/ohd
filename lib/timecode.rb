@@ -49,7 +49,7 @@ class Timecode
   end
 
   def minimal
-    (estimate? ? '~' : '') + timecode[0..1].gsub(/^0(.+)/, '\1') + "h " + timecode[3..4] + "min"
+    (estimate? ? '~' : '') + I18n.t('dictionary.timecode.minimal', :hours => timecode[0..1].gsub(/^0(.+)/, '\1'), :minutes => timecode[3..4]) # timecode[0..1].gsub(/^0(.+)/, '\1') + "h " + timecode[3..4] + "min"
   end
 
   # calculates the numeric time difference in seconds

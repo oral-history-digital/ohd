@@ -1,0 +1,40 @@
+available_locales:
+  - de
+  - en
+  - ru
+
+default_locale: de
+
+project_name: # Will be used in titles, emails, etc.
+  de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
+  en: 'Forced Labor 1939-1945. Memory and History.'
+  ru: 'Подневольный труд 1939-1945. Воспоминания и история.'
+
+project_id: 'zwar'
+
+project_shortname: 'ZWAR'
+
+project_initials: 'ZA' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+
+project_domain: 'zwangsarbeit-archiv.de'
+
+# Please mount the CIFS storage server locally like this (read-only for normal users!):
+# sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
+# /etc/fstab:
+#     //eaz-diga.cedis.fu-berlin.de/data /mnt/eaz-diga.cedis.fu-berlin.de/data cifs noauto,sec=ntlmv2,credentials=/etc/cifs.credentials,uid=root,gid=root,nosetuids,file_mode=0644,dir_mode=0755 0 0
+# /etc/cifs.credentials (create the file with permissions 600 and enter your CIFS credentials)
+#     username=...
+#     password=...
+# If you want to simulate the mount locally you can either place a symlink or mount --bind
+cifs_share: '/mnt/eaz-diga.cedis.fu-berlin.de/data/'
+
+streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv'
+
+meta_keywords:
+  de: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
+  en: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
+  ru: '##ru##'
+
+contact_email: 'mail@zwangsarbeit-archiv.de'
+
+smtp_server: 'mail.fu-berlin.de'

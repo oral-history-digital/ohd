@@ -13,11 +13,6 @@ module ApplicationHelper
     link_to t(name), external_url(page_token), :title => t(:notice, :scope => 'external_links'), :target => '_blank'
   end
 
-  def current_locale
-    code = params[:locale] || session[:locale]
-    code.nil? ? :de : code.to_sym
-  end
-
   def current_search_path
     if !@search.is_a?(Search) || @search.query_hash.blank?
       new_search_url
@@ -27,13 +22,13 @@ module ApplicationHelper
   end
 
   def reset_search_link(options={})
-    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + image_tag(image_path 'suche_reset1.gif'),
+    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;' + image_tag(image_path 'suche_reset1.gif'),
                    options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
   def save_search_link(search)
     link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
-                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })  
+                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
   # Formats attributes for display
@@ -66,33 +61,40 @@ module ApplicationHelper
   end
 
   def segment_excerpt_for_match(segment, original_query='', width=10)
-    # TODO: reduce word count in both directions on interpunctuation
-    # handle wildcards
-    query_string = original_query.gsub(/\*/,'\w*')
+    # TODO: Reduce word count in both directions on interpunctuation.
+    # TODO: Handle wildcards.
+
+    # Implement fallback rule for segments:
+    # - Show the German translation of segments when German is the current UI locale.
+    # - Otherwise show the original language of the transcript.
+    # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+    transcript = if I18n.locale == :de then segment.translation else segment.transcript end
+    transcript.gsub!(/[*~]([^*~]*)[*~]/,'\1')
+
+    query_string = Regexp.escape(original_query).gsub('\*','\w*')
     unless query_string.index(' ').nil?
-      # check if an expression matches directly
-      r = Regexp.new query_string, Regexp::IGNORECASE
-      if (segment.translation[r] || segment.transcript[r]).blank?
-        # and multiple expressions
+      # Check if the expression matches directly.
+      pattern = Regexp.new query_string, Regexp::IGNORECASE
+      if transcript[pattern].blank?
+        # If not: change the query string to match multiple expressions.
         query_string.gsub!(/([^'"]+)\s+([^'"]+)/,'\1_\2')
         query_string.gsub!(/(\S+)\s+(\S+)/,'\1|\2')
         query_string.gsub!(/(['"])+([^'"]*)\1/,'(\2)')
       end
     end
     query_string.gsub!('_',' ')
-    # pattern = Regexp.new '[^\.;]*\W' + (query_string.blank? ? '' : (query_string + '\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE
     pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(' + query_string + ')\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
-    match_text = segment.translation[pattern] || segment.transcript[pattern]
-    match_text = if match_text.nil?
-      truncate(segment.translation, 180)
+    match_text = transcript[pattern]
+    if match_text.nil?
+      truncate(transcript, :length => 180)
     else
-      str = ((segment.translation.index(match_text) || segment.transcript.index(match_text)) == 0) ? '' : '&hellip;'
+      str = transcript.index(match_text) == 0 ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
       "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
-    end.gsub(/~([^~]*)~/,'<em>\1</em>')
+    end
   end
 
-  def zwar_paginate(collection, params=nil)
+  def cedar_paginate(collection, params=nil)
     params.delete_if{|k,v| v.blank? }
     will_paginate collection,
                   { :previous_label => I18n.t(:previous),
@@ -102,15 +104,13 @@ module ApplicationHelper
   end
 
   def random_featured_interview
-    interview = Interview.find :first, :conditions => "(researched IS TRUE) AND (still_image_file_name IS NOT NULL)", :order => "RAND()"
-    interview ||= Interview.find_by_archive_id 'za465'
-    interview
+    Interview.first(:conditions => "(researched IS TRUE) AND (still_image_file_name IS NOT NULL)", :include => :translations, :order => "RAND()")
   end
 
   def last_import
     $last_import_date ||= begin
       last_import = Import.last.first
-      last_import ||= Interview.find(:first, :order => "created_at DESC")
+      last_import ||= Interview.first(:order => "created_at DESC")
       case last_import
         when Import
           last_import.time
@@ -122,7 +122,7 @@ module ApplicationHelper
     end
   end
 
-  # returns an area_id string per 
+  # returns an area_id string per
   def current_area_id
     case controller_name
       when /searches/
@@ -176,7 +176,7 @@ JS
     cookie_condition = cookie.nil? ? 'var openDialog = true; var cookieDialog = ""' : <<JS_COND
 var cookiestr = readCookie('#{cookie}');
 var openDialog = (cookiestr) ? false : true;
-var cookieDialog = "<div class='checkbox_notification'><label class='checkbox'><input type='checkbox' class='checkbox' value='true' onChange=\\"toggleCookieStore('#{cookie}');\\"></input>Diese Meldung nicht mehr anzeigen.</label></div>";
+var cookieDialog = "<div class='checkbox_notification'><label class='checkbox'><input type='checkbox' class='checkbox' value='true' onChange=\\"toggleCookieStore('#{cookie}');\\"></input>#{I18n.t('user_interface.messages.dont_show_again')}</label></div>";
 JS_COND
     <<JS
 #{cookie_condition}
@@ -198,7 +198,7 @@ JS
 
   # provides a date stamp for the locations data to circumvent rigid caching
   def map_data_datestamp
-    date = Import.find :first, :select => "time", :conditions => "time < '#{DateTime.now.beginning_of_week.to_s(:db)}'", :order => "time DESC"
+    date = Import.first :select => "time", :conditions => "time < '#{DateTime.now.beginning_of_week.to_s(:db)}'", :order => "time DESC"
     date = date.nil? ? DateTime.now.beginning_of_week : date.time
     date.strftime('%Y%m%d')
   end
@@ -207,7 +207,7 @@ JS
   def formatted_time(time, nilstring='&mdash;', formatstring='%d.%m.%Y %H:%M', de_suffix=' Uhr')
     case time
       when Time
-        time.strftime(formatstring) + ((@locale || '').to_sym == :de ? de_suffix : '')
+        time.strftime(formatstring) + (I18n.locale == :de ? de_suffix : '')
       when String
         # converts the base DB storage format of time string representations
         time.sub(/(\d{4})\D+(\d{2})\D+(\d{2})\D+(\d{2})\D+(\d{2}).*/,'\3.\2.\1 \4:\5')

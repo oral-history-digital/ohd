@@ -92,7 +92,7 @@ a#modal_window_close {
 .checkbox_notification .checkbox input[type='checkbox'],
 .checkbox_notification .checkbox input.checkbox {
     position: relative;
-    top: -1px;
+    top: 3px;
 }
 
 #modal_window .chzn-select {

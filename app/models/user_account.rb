@@ -2,8 +2,6 @@ class UserAccount < ActiveRecord::Base
   unloadable
 
   devise :database_authenticatable,
-         # handle Confirmations less automatically
-         # :confirmable,
          :rememberable,
          :recoverable,
          :trackable
@@ -13,7 +11,7 @@ class UserAccount < ActiveRecord::Base
   has_one :user_registration
 
   has_many :user_account_ips,
-           :class_name => 'UserAccountIP'
+           :class_name => 'UserAccountIp'
 
   attr_accessible :email, :login, :password, :password_confirmation, :remember_me
 
@@ -22,10 +20,10 @@ class UserAccount < ActiveRecord::Base
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise::EMAIL_REGEX
-  validates_length_of       :password, :within => 5..20, :allow_blank => true
+  validates_length_of :password, :within => 5..20, :allow_blank => true
 
   # NOTE: validates_confirmation_of won't work on virtual attributes!
-  # This is why add a custom validation method later.
+  # This is why we add a custom validation method later.
   # validates_confirmation_of :password
 
   # password confirmation validation
@@ -38,7 +36,7 @@ class UserAccount < ActiveRecord::Base
       end
     end
   end
-  
+
 
   def generate_confirmation_token
     self.confirmation_token = Devise.friendly_token
@@ -80,7 +78,7 @@ class UserAccount < ActiveRecord::Base
   end
 
   # Overwrites active? from Devise::Models::Activatable for confirmation
-  # by verifying whether an user is active to sign in or not. If the user
+  # by verifying whether a user is active to sign in or not. If the user
   # is already confirmed, it should never be blocked. Otherwise we need to
   # calculate if the confirm time has not expired for this user.
   def active?
@@ -134,7 +132,10 @@ class UserAccount < ActiveRecord::Base
   # It also stops on any validation errors, or if there is no
   # password info given.
   def unless_confirmed
-    unless confirmed?
+    if confirmed?
+      self.class.add_error_on(self, :email, :already_confirmed)
+      false
+    else
       if !valid?
         false
       elsif encrypted_password.blank?
@@ -143,9 +144,6 @@ class UserAccount < ActiveRecord::Base
       else
         yield
       end
-    else
-      self.class.add_error_on(self, :email, :already_confirmed)
-      false
     end
   end
 

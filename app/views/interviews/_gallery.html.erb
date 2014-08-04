@@ -3,8 +3,15 @@
     <div id="gallery_content">
         <ul id="image_row" style="width:<%= (@interview.photos.size * 117) %>px;">
         <% @interview.photos.each_with_index do |photo, index| %>
+          <%
+             photo_caption_locale = display_locale(photo)
+             photo_caption = (photo.caption(photo_caption_locale).blank? ? '' : photo.caption(photo_caption_locale))
+             if photo_caption_locale != I18n.locale then
+               photo_caption += " (#{I18n.t('user_interface.messages.no_photo_captions_in_your_language', :languages => available_languages(photo))})"
+             end
+          %>
           <li class="slide">
-            <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.full_title[/^[^,.;]/]}]", :title => (photo.caption.blank? ? "" : photo.caption)  %>
+            <%= link_to image_tag(photo.photo.url(:thumb)), image_path(photo.photo.url(:original)), :rel => "lightbox[#{@interview.archive_id}]", :title => photo_caption  %>
           </li>
         <% end %>
         </ul>

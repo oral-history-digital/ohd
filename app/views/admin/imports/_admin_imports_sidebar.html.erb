@@ -8,21 +8,21 @@
 
   <ul>
     <li id="imports_yesterday" class="closed">
-      <h3 class="more" onclick="$('imports_yesterday').toggleClassName('closed');"><%= yesterdays.size -%> seit gestern</h4>
+      <h3 class="more" onclick="$('imports_yesterday').toggleClassName('closed');"><%= yesterdays.size -%> seit gestern</h3>
       <ul class="details">
         <% yesterdays.each do |import| -%>
             <li>
-              <%= link_to "#{import.importable.archive_id} (#{import.importable.last_name_short}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
+              <%= link_to "#{import.importable.archive_id} (#{import.importable.short_title(I18n.locale)}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
             </li>
         <% end -%>
       </ul>
     </li>
     <li id="imports_last_week" class="closed">
-      <h3 class="more" onclick="$('imports_last_week').toggleClassName('closed');"><%= rest_of_week.size -%> in der vergangenen Woche</h4>
+      <h3 class="more" onclick="$('imports_last_week').toggleClassName('closed');"><%= rest_of_week.size -%> in der vergangenen Woche</h3>
       <ul class="details">
         <% rest_of_week.each do |import| -%>
             <li>
-              <%= link_to "#{import.importable.archive_id} (#{import.importable.last_name_short}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
+              <%= link_to "#{import.importable.archive_id} (#{import.importable.short_title(I18n.locale)}) am #{formatted_date(import.created_at)} &raquo;", "#imports_for_#{import.importable.archive_id}" -%>
             </li>
         <% end -%>
       </ul>

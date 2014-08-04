@@ -4,7 +4,7 @@
    @country = @filters.delete('country') -%>
 <% filter_str = (@filters || {}).keys.map{|k| t(@filters[k], :scope => "devise.registration_values.#{k}").capitalize }.join(' &mdash; ') %>
 <h1>
-  <%= @user_registrations.size == 0 ? t(:no_placeholder).capitalize : @user_registrations.size -%>
+  <%= @user_registrations.size == 0 ? 'Keine' : @user_registrations.size -%>
   <%= @workflow_state == 'Alle' ? '' : (@workflow_state.last == 'e' ? @workflow_state : @workflow_state + 'e') + '&nbsp;' -%>Nutzer
   <%= filter_str.empty? ? '' : "&nbsp;(nur #{filter_str})" -%>
   <%= @first_name.blank? ? '' : "&nbsp;,#{t(:first_name, :scope => 'devise.registration_fields')}: '#{@first_name}*'" -%>

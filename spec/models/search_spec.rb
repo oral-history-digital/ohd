@@ -5,7 +5,7 @@ describe Search, 'utilizing hashed parameters' do
   before(:all) do
     @query1 = { :fulltext => 'Selekt*' }
     @query2 = { :page => 2, :forced_labor_groups => '13,17' }
-    @query3 = { :person_name => 'Bartolomäus Bracht', :fulltext => 'Dachau' }
+    @query3 = { :interview_id => '517', :fulltext => 'Dachau' }
     @query4 = { :page => 1, :fulltext => 'Hunger', :countries => ['5','12','15'], :languages => ['21','34'] }
     @query5 = { :fulltext => 'za016' }
     @queries = [ @query1, @query2, @query3, @query4, @query5 ]
@@ -32,33 +32,6 @@ describe Search, 'utilizing hashed parameters' do
   end
 
 end
-
-describe Search, 'when escaping dangerous characters from fulltext arguments' do
-
-  it "should escape parentheses" do
-    @fulltext = 'Eich (Rheinhessen)'
-    Search.lucene_escape(@fulltext).should === 'eich \(rheinhessen\)'#=~ /^Eich\s+Rheinhessen$/i
-  end
-
-  it "should escape parentheses when using the hashed query params" do
-    @hash = Search.encode_parameters({:fulltext => 'Eich (Rheinhessen)'})
-    @query = Search.decode_parameters(@hash)
-    @fulltext = @query[:fulltext] || @query['fulltext']
-    Search.lucene_escape(@fulltext).should === 'eich \(rheinhessen\)' #=~ /^Eich\s+Rheinhessen$/i
-  end
-
-  it "should escape single leading parentheses" do
-    @fulltext = 'Eich (Rhein'
-    Search.lucene_escape(@fulltext).should === 'eich \(rhein' # =~ /^Eich\s+Rhein$/i
-  end
-
-  it "should escape single trailing parentheses" do
-    @fulltext = 'Eich Rhein)'
-    Search.lucene_escape(@fulltext).should === 'eich rhein\)' # =~ /^Eich\s+Rhein$/i
-  end
-
-end
-
 
 describe Search, 'when saving as a UserContent' do
 

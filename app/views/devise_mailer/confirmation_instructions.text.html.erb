@@ -1,13 +1,20 @@
-<p>Willkommen <%= @resource.email %>!</p>
+<% case I18n.locale
+  when :en -%>
+    <p>Welcome <%= @resource.email %>!</p>
 
-<p>Sie können Ihren Zugang jetzt bestätigen unter dem nachfolgenden Link:</p>
+    <p>You can confirm your account through the link below:</p>
 
-<p><%= link_to 'Zugang jetzt bestätigen', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+    <p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :en) %></p>
+  <% when :ru -%>
+    <p>Добро пожаловать <%= @resource.email %>!</p>
 
-<hr/>
+    <p>Вы можете подтвердить Ваш доступ, перейдя по следующей ссылкеS:</p>
 
-<p>Welcome <%= @resource.email %>!</p>
+    <p><%= link_to 'Подтвердить доступ сейчас', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :ru) %></p>
+  <% else -%>
+    <p>Willkommen <%= @resource.email %>!</p>
 
-<p>You can confirm your account through the link below:</p>
+    <p>Sie können Ihren Zugang jetzt bestätigen unter dem nachfolgenden Link:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+    <p><%= link_to 'Zugang jetzt bestätigen', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :de) %></p>
+<% end -%>

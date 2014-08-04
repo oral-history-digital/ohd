@@ -1,4 +1,4 @@
-<% user_content_type = save.type.to_s.underscore -%>
+<% user_content_type = save.class.to_s.underscore -%>
 <div id="save_<%= user_content_type -%>">
 <% unless current_user.nil? -%>
     <span class="save_user_content" style="display:none;">

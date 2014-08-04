@@ -1,0 +1,51 @@
+<h1>Результаты поиска местонахождения</h1>
+
+<% if current_user_account.nil? %>
+    <p style="font-weight: bold; margin-top: 0.33em;">
+        Для использования архива "<%= CeDiS.config.project_name['ru'] %>" Вы должны быть зарегистрированы -
+        <%= link_to 'регистрация', registrieren_path %> - и принять <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
+        и <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>. Поиск в интервью возможен также только после регистрации.
+    </p>
+    <p style="font-weight: bold; margin-top: 0.33em;">
+        По причинам защиты прав личности имена были анонимизированы.
+    </p>
+<% end %>
+
+<p>&nbsp;</p>
+
+
+<table style="width: 600px; background-color: #f9f9f7;">
+    <tbody>
+    <% if @results.size == 0 %>
+
+        <tr><td style="padding: 10px;" colspan="2">По Вашему поисковому запросу интервью не найдены.</td></tr>
+
+    <% else %>
+
+        <tr>
+            <td style="padding: 10px;" colspan="2">
+                <strong><%= @results.size %> совпадений <%= params[:location].blank? ? '' : "zu '#{params[:location]}' " %>найдено в архиве "Подневольный труд 1939-1945":</strong>
+            </td>
+        </tr>
+
+        <% @results.each do |result| %>
+
+            <tr style="border-top: dotted 1px #000; cursor: pointer;" onclick="window.open(this.down('a').href, '_<%= current_user_account.nil? ? 'self' : 'blank' -%>'); Event.stop(event);">
+                <td style="width: 250px; padding: 10px;">
+                    <span style="color: #999281;"><%= result.location_type %></span><br>
+                    <strong><%= result.name %></strong>
+                </td>
+                <td style="padding: 10px;">
+                    <%= link_to "Интервью #{result.interview.archive_id} c #{result.interview.anonymous_title(I18n.locale)}", interview_path(result.interview), { :name => "#{result.interview.archive_id}", :target => "_#{current_user_account.nil? ? 'self' : 'blank'}", :style => 'font-weight: bold;' } %>
+                    <br/>
+          <span style="font-size: 8pt; font-weight: normal;">
+            <%= format_value result.interview.forced_labor_groups.join(', ') %><br>
+              <%= result.interview.languages.join(' / ') %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
+              <%= result.interview.video %> <%= format_value result.interview.duration %>
+          </span>
+                </td>
+            </tr>
+        <% end %>
+    <% end %>
+    </tbody>
+</table>

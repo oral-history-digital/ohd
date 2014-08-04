@@ -2,7 +2,7 @@
 
 <% if current_user_account.nil? %>
 <p style="font-weight: bold; margin-top: 0.33em;">
-  Usage of the archive "Forced Labor 1939-1945" requires you to be
+  Usage of the archive "<%= CeDiS.config.project_name['en'] %>" requires you to be
   <%= link_to 'registered', en_register_path %> and to agree to the
   <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> as well as to
   the <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
@@ -21,30 +21,30 @@
 <table style="width: 600px; background-color: #f9f9f7;">
   <tbody>
   <% if @results.size == 0 %>
-  
+
     <tr><td style="padding: 10px;" colspan="2">Your search parameters did not yield any results.</td></tr>
-  
+
   <% else %>
-  
+
     <tr>
       <td style="padding: 10px;" colspan="2">
         <strong><%= @results.size %> Results <%= params[:location].blank? ? '' : "for '#{params[:location]}' " %>found in the archive "Forced Labor 1939-1945":</strong>
       </td>
     </tr>
-  
+
     <% @results.each do |result| %>
-  
+
       <tr style="border-top: dotted 1px #000; cursor: pointer;" onclick="window.open(this.down('a').href, '_<%= current_user_account.nil? ? 'self' : 'blank' -%>'); Event.stop(event);">
         <td style="width: 250px; padding: 10px;">
-          <span style="color: #999281;"><%= t(result.location_type, :scope => "location_categories") %></span><br>
+          <span style="color: #999281;"><%= t(result.location_type, :scope => 'location_categories') %></span><br>
           <strong><%= result.name %></strong>
         </td>
         <td style="padding: 10px;">
-          <%= link_to "Interview #{result.interview.archive_id} with #{result.interview.anonymous_title}", interview_path(result.interview), { :name => "#{result.interview.archive_id}", :target => "_#{current_user_account.nil? ? 'self' : 'blank'}", :style => 'font-weight: bold;' } %>
+          <%= link_to "Interview #{result.interview.archive_id} with #{result.interview.anonymous_title(I18n.locale)}", interview_path(result.interview), { :name => "#{result.interview.archive_id}", :target => "_#{current_user_account.nil? ? 'self' : 'blank'}", :style => 'font-weight: bold;' } %>
           <br/>
           <span style="font-size: 8pt; font-weight: normal;">
-            <%= format_value [ result.interview.send('forced_labor_groups') ].flatten.map{|a| t(a.to_s, :scope => "categories.#{'forced_labor_groups'}")}.join(', ') %><br>
-            <%= result.interview.language.split('/').map{|l| t(l.to_s, :scope => 'categories.languages')}.join(" / ") %><%= result.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
+            <%= format_value result.interview.forced_labor_groups.join(', ') %><br>
+            <%= result.interview.languages.join(' / ') %><%= result.translated? ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>,
             <%= result.interview.video %> <%= format_value result.interview.duration %>
           </span>
         </td>

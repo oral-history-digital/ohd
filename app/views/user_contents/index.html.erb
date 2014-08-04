@@ -22,14 +22,14 @@
     document.body.observe('click', closeOpenActions);
 
     function sortDialogInstructions() {
-        <%= javascript_instant_modal_window('sorting_instructions', 'zai-sort') %>
+        <%= javascript_instant_modal_window('sorting_instructions', 'cedari-sort') %>
     }
     function toggleCookieStore(key) {
-        var cookieContent = readCookie('zai-sort');
+        var cookieContent = readCookie('cedari-sort');
         if(!(cookieContent) || cookieContent.blank()) {
-            writeCookie('zai-sort','<%= Time.now.to_s.split(/\s+/).reverse.join('-').gsub(' ','') -%>', true);
+            writeCookie('cedari-sort','<%= Time.now.to_s.split(/\s+/).reverse.join('-').gsub(' ','') -%>', true);
         } else {
-            writeCookie('zai-sort', null, false);
+            writeCookie('cedari-sort', null, false);
         }
     }
 

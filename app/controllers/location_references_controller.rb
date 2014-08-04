@@ -7,8 +7,8 @@ class LocationReferencesController < BaseController
   layout :check_for_iframe_render
 
   skip_before_filter :check_user_authentication!
-  skip_before_filter :current_search
-  skip_before_filter :init_sidepanel_search
+  skip_before_filter :current_search_for_side_panel
+  before_filter :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
 
   index do
     before do
@@ -16,7 +16,6 @@ class LocationReferencesController < BaseController
     end
     wants.html do
       # this is only rendered when calling 'ortssuche.html' explicitly!
-      # render :text => { 'results' => @results.map{|i| i.json_attrs } }.to_json
       render :action => :index
     end
     wants.json do
@@ -34,7 +33,7 @@ class LocationReferencesController < BaseController
     response.headers['Cache-Control'] = "public, max-age=1209600"
     if params[:page].blank? || params[:page].to_i < 1
       # deliver number of pages
-      @pages = (LocationReference.count(:all, :conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 2
+      @pages = (LocationReference.count(:conditions => "duplicate IS NOT TRUE") / PER_PAGE).floor + 2
       respond_to do |wants|
         wants.html do
           render :text => @pages
@@ -50,7 +49,11 @@ class LocationReferencesController < BaseController
     else
       # deliver specified page
       @page = params[:page].to_i
-      @results = LocationReference.all(:conditions => "duplicate IS NOT TRUE", :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}", :include => { :interview => :categories })
+      @results = LocationReference.all(
+          :conditions => "duplicate IS NOT TRUE",
+          :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}",
+          :include => [:translations, {:interview => {:languages => :translations}}]
+      )
       respond_to do |wants|
         wants.html do
           render :action => :index
@@ -81,26 +84,27 @@ class LocationReferencesController < BaseController
   private
 
   # language= parameter overrides all
-  def set_locale
-    @locale = params[:language]
-    super
+  def set_locale(locale = nil, valid_locales = [])
+    super((params[:language] || params[:locale] || I18n.default_locale).to_sym)
   end
 
   def query(paginate=false)
     query = {}
-    query[:location] = Search.lucene_escape(params['location'])
-    query[:longitude] = params['longitude'] unless params['longitude'].blank?
-    query[:latitude] = params['latitude'] unless params['latitude'].blank?
-    query[:longitude2] = params['longitude2'] unless params['longitude2'].blank?
-    query[:latitude2] = params['latitude2'] unless params['latitude2'].blank?
-    query[:page] = params[:page] || 1 if !params[:page].blank? || paginate
+    query[:location] = params['location']
+    if paginate
+      query[:page] = if params[:page].blank?
+                       1
+                     else
+                       params[:page].to_i
+                     end
+    end
     query
   end
 
   def perform_search
     paginate = request.xhr? ? false : true
-    @location_search = LocationReference.search(query(paginate))
-    @results = @location_search.results
+    location_search = LocationReference.search(query(paginate))
+    @results = location_search.results
   end
 
   def check_for_iframe_render

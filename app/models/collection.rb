@@ -1,11 +1,15 @@
+require 'globalize'
+
 class Collection < ActiveRecord::Base
 
   has_many :interviews
 
+  translates :name, :institution, :countries, :interviewers, :responsibles, :notes
+
   validates_presence_of :name, :project_id
 
   def to_s
-    name
+    name(I18n.locale)
   end
 
   def project_id

@@ -1,11 +1,78 @@
+# This file contains translations used in text document templates.
+
+# Obs translator:
+
+# Please translate the quoted texts only.
+
+# Example:
+#   frontpage: 'Frontpage'
+# becomes
+#   frontpage: 'Deckblatt'    GOOD!
+# and NOT
+#   deckblatt: 'Deckblatt'    WRONG!
+# or whatever.
+
+# Lines starting with hash symbols (#) are comments. Please do NOT translate
+# comments.
+
+# Texts may contain placeholders. These placeholders take the form %{something}.
+# You may change the position of the placeholder but you may not change or
+# translate its content!
+
+# Example:
+#   colored_car: '%{color} car'
+# should be translated (e.g. in French) as
+#   colored_car: 'voiture %{color}'     GOOD!
+# but NOT as
+#   colored_car: 'voiture %{couleur}',  WRONG!
+#   colored_car: 'voiture couleur'      WRONG!
+# or whatever.
+
+# Sometimes you'll find that placeholders themselves refer to translatable
+# texts. In this case we'll comment on how the translated text is being used in
+# context so that you can translate the two texts together.
+
+# Example:
+#   transcript_with_german_translation: 'Transkript%{german_translation}'
+#   german_translation: ' in deutscher Übersetzung'
+# could be translated (e.g. in English) as
+#   transcript_with_german_translation: '%{german_translation}Transcript'
+#   german_translation: 'German '                                         GOOD!
+# which would result in 'German Transcript' and NOT as
+#   transcript_with_german_translation: 'Transcript%{german_translation}'
+#   german_translation: 'German translation'                              WRONG!
+# as this would result in 'TranscriptGerman translation' which is bad grammar
+# and does not contain the required space.
+
+# If you change the order of the placeholder then make sure that you place
+# spaces in the right place. See that in the above example the space in
+# german_translation has moved from the beginning (' in deutscher Übersetzung')
+# to the end ('German ').
 de:
+  dictionary:
+    back_to_top_template: &back_to_top_template
+      back_to_top: 'Zum Seitenanfang'
+      image_back_to_top: 'Bild: Sprungmarke nach oben'
+
+    header_template: &header_template
+      skip: 'Springe direkt zu:'
+      content: 'Inhalt'
+      service_navigation: 'Service-Navigation'
+      logoff: 'Abmelden'
+
+    print_version_template: &print_version_template
+      print_preview_only: 'Diese Grafiken werden nur in der Druckvorschau verwendet:'
+      print_logo: 'Druckversion des Logos'
+
+    timecode:
+      minimal: '%{hours}h%{minutes}min'
+
   home: 'Startseite'
-  home_link: 'Zur Startseite des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
-  logo_title: 'Das Logo des Projektes: Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
+  home_link: 'Zur Startseite des Projektes: %{project_name}'
+  logo_title: 'Das Logo des Projektes: %{project_name}'
   archive: 'Archiv'
   interactive_map: 'Karte'
   collections_map: 'Teilsammlungen'
-  usage_request: 'Nutzungsantrag'
   team: 'Team'
   contact: 'Kontakt'
   legal_notice: 'Impressum'
@@ -16,48 +83,18 @@ de:
   back: 'zur&uuml;ck'
   forward: 'weiter'
   translated: 'übersetzt'
-  all: 'alle'
   select_all: 'alle ausw&auml;hlen'
   admin_area: 'Administratoren-Bereich'
   and: 'und'
-  no_placeholder: 'keine'
-  for: 'f&uuml;r'
+  no_placeholder: 'Keine %{content}'
   close: 'schlie&szlig;en'
   here: 'hier'
   timecode: 'Timecode'
-  zu: 'zu'
+  german: 'Deutsch'
 
-  # TODO: page_paths and page_urls contain obsolete external pages
-  # make sure these aren't references anywhere and remove them
-  page_paths: #inbound translation
-    archive: 'archive'
-    archiv: 'archive'
-    home: 'archive'
-    faq:  'faq_index'
-    hilfe:  'faq_index'
-    terms_of_use: 'terms_of_use'
-    nutzungsbedingungen: 'terms_of_use'
-    team: 'team'
-    contact: 'contact'
-    kontakt: 'contact'
-    imprint: 'impressum'
-    impressum: 'impressum'
-    faq_contents: 'faq_archive_contents'
-    hilfe_zu_inhalten: 'faq_archive_contents'
-    faq_search: 'faq_searching'
-    hilfe_zur_suche: 'faq_searching'
-    faq_technical: 'faq_technical'
-    hilfe_zu_technischen_fragen: 'faq_technical'
-    karteneinfuehrung: 'map_tutorial'
-
-  page_urls: #outbound translation ('pretty' urls)
+  page_urls: # Pretty URLs for static pages.
     archive: 'archiv'
-    home: 'archiv'
     faq_index: 'hilfe'
-    terms_of_use: 'nutzungsbedingungen'
-    team: 'team'
-    contact: 'kontakt'
-    impressum: 'impressum'
     faq_archive_contents: 'hilfe_zu_inhalten'
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
@@ -72,8 +109,8 @@ de:
     researchers: 'Erschlie&szlig;ung'
 
   status:
-    translated: '&uuml;bersetzt'
-    not_translated: 'ohne &Uuml;bersetzung'
+    translated: 'mit dt. &Uuml;bersetzung'
+    not_translated: 'ohne dt. &Uuml;bersetzung'
     unknown: 'unbekannt'
     date_unknown: 'Datum unbekannt'
     not_specified: 'keine Angabe'
@@ -82,8 +119,12 @@ de:
 
   search:
     no_clips: 'keine Ausschnitte'
-    clip: 'Ausschnitt'
-    clips: 'Ausschnitte'
+    clip: '1 Ausschnitt'
+    clips: '%{count} Ausschnitte'
+
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
   user_interface:
     labels:
@@ -95,10 +136,9 @@ de:
       biography: 'Biographie von'
       transcript: 'Transkript'
       translation: 'Übersetzung'
-      Biography: 'Biographie von'
-      Transcript: 'Transkript'
-      Translation: 'Übersetzung des Transkripts'
+      Biography: 'Biographie'
       search_results: 'Suchergebnisse'
+      search_results_with_count: '%{count} Suchergebnisse'
       headings: 'Inhaltsverzeichnis'
       my_search: 'Meine Recherche'
       search: 'suchen'
@@ -106,11 +146,10 @@ de:
       status_update: 'Stand'
       search_the_archive: 'Suche im Archiv'
       search_the_interview: 'Suche im Interview'
-      in_the_current_search: 'in&nbsp;der&nbsp;Auswahl'
       workbook: 'Arbeitsmappe'
       show_all: 'alle anzeigen'
       show_interview: 'zum Interview'
-      show_: 'zum'
+      show_segment: 'zum Ausschnitt'
       maximize_all: 'alle maximieren'
       minimize_all: 'alle minimieren'
       filter_contents: 'Angezeigte Inhalte'
@@ -133,11 +172,11 @@ de:
       goto_citation: 'zum zitierten Ausschnitt'
     annotations:
       label: 'Anmerkung'
+      connective: ' zu'
       editorial: 'Redaktion'
     search:
       search_term: 'Suchbegriff'
       fulltext_title: 'Suchbegriff bitte hier eingeben'
-      not_found: 'keine'
       reset: 'zur&uuml;cksetzen'
       save: 'Suche speichern'
       saved: 'Suche gespeichert'
@@ -147,6 +186,7 @@ de:
       view: 'Ansicht'
       edit: 'Bearbeiten'
       topics: 'Themen'
+      topics_for: 'Themen&nbsp;f&uuml;r'
       all_filters: 'Alle Inhaltsarten'
       select_all_filters: 'Alle Inhaltsarten ausw&auml;hlen'
       all_topics: 'Alle Themen'
@@ -158,14 +198,15 @@ de:
       save: 'Inhalt merken'
       saved: 'Inhalt gemerkt'
       publish: 'Veröffentlichen'
+      publish_something: '"%{something}"&nbsp;veröffentlichen'
       retract: 'Veröffentlichung zurückziehen'
-      chars_allowed: 'verfügbare erlaubte Zeichen'
+      chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;verfügbare erlaubte Zeichen'
       tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
       user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
       tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
       user_annotation: 'Ihre Anmerkung zum Ausschnitt'
       annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu'
+      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu.'
       annotation_guidelines: 'Richtlinien für Anmerkungen'
     interview_reference:
       save: 'Interview merken'
@@ -180,7 +221,7 @@ de:
       player_no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
       search_no_javascript: 'Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen!'
       check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
-      registration_needed: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" registriert sein und die %{terms_of_use} sowie die %{privacy_policy} anerkennen.'
+      registration_needed: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen Sie zur Benutzung des Archivs "%{project_name}" registriert sein und die %{terms_of_use} sowie die %{privacy_policy} anerkennen.'
       password_change_instructions1: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich bei uns registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
       no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
@@ -192,11 +233,15 @@ de:
       publish_alteration_notice: 'Veröffentlichte Anmerkungen können nicht mehr geändert werden, Sie können sie aber zur Bearbeitung wieder zurück ziehen und ggf neu einreichen zur Veröffentlichung.'
       confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
       published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
+      no_headings_in_your_language: 'Das Inhaltsverzeichnis dieses Interviews ist nur in %{languages} verfügbar.'
+      no_annotations_in_your_language: 'Diese Anmerkung ist nur in %{languages} verfügbar.'
+      no_photo_captions_in_your_language: 'Hinweis: Diese Fotobeschreibung ist nur in %{languages} verfügbar.'
+      dont_show_again: 'Diese Meldung nicht mehr anzeigen.'
 
   privacy:
     label: 'Hinweis zum Datenschutz'
     terms: 'Nutzungsbedingungen'
-    confirm: 'Zustimmen und externe Inhalte laden'
+    confirm: 'Zustimmen und Karte laden'
     more_here: 'Näheres erfahren Sie hier'
     google_acceptance: 'Durch den Klick erkennen Sie die Google Nutzungsbedingungen an'
     google_notice: 'Wenn Sie folgende Inhalte durch einen Klick aktivieren, werden Nutzerdaten (insbesondere Ihre IP-Adresse) an Google übertragen, dort gespeichert, und unter Umständen mit weiteren Profilinformationen (z.B. Google+ etc.) dieses Anbieters abgeglichen.'
@@ -233,10 +278,17 @@ de:
       postwar_camps: 'Lager ab 1945'
       home_locations: 'Letzte Wohnorte'
       mentions: 'Erwähnungen'
+    pagination:
+      place: 'Ort'
+      places: 'Orte'
+      of: 'von'
+    progress:
+      loading: 'Bitte warten...'
+      loaded: '%{percent}% geladen'
 
   plugins:
     noflash: 'Adobe Flash ben&ouml;tigt'
-    noflash_message: 'Um die Interviews des Archivs &quot;Zwangsarbeit 1939-1945. Erinnerungen und Geschichte&quot; wiedergeben zu können benötigen Sie eine aktuelle Version des Adobe Flash Players.'
+    noflash_message: 'Um die Interviews des Archivs &quot;%{project_name}&quot; wiedergeben zu können benötigen Sie eine aktuelle Version des Adobe Flash Players.'
     noflash_link: '» laden Sie Adobe Flash Player herunter'
     nojs: 'Javascript aktivieren'
     nojs_message: 'Für die Verwendung des Archivs ist die Aktivierung von Javascript in Ihrem Browser erforderlich. Ohne Javascript wird es nicht möglich sein, zu den Inhalten zu navigieren oder die Interviews abzurufen.'
@@ -405,193 +457,6 @@ de:
     subtitles: 'Untertitel'
     has_headings: 'Inhaltsverzeichnis liegt vor'
 
-  location:
-    in: 'in'
-    countries:
-      'Belarus': 'Belarus'
-      'Bosnien-Herzegowina': 'Bosnien-Herzegowina'
-      'Deutschland': 'Deutschland'
-      'Bulgarien': 'Bulgarien'
-      'Großbritannien': 'Großbritannien'
-      'Frankreich': 'Frankreich'
-      'Israel': 'Israel'
-      'Italien': 'Italien'
-      'Kroatien': 'Kroatien'
-      'Lettland': 'Lettland'
-      'Litauen': 'Litauen'
-      'Mazedonien': 'Mazedonien'
-      'Moldawien': 'Moldawien'
-      'Niederlande': 'Niederlande'
-      'Norwegen': 'Norwegen'
-      'Polen': 'Polen'
-      'Tschechische Republik': 'Tschechische Republik'
-      'Tschechien': 'Tschechien'
-      'Rumänien': 'Rumänien'
-      'Russland': 'Russland'
-      'Serbien': 'Serbien'
-      'Serbien-Montenegro': 'Serbien-Montenegro'
-      'Slowakei': 'Slowakei'
-      'Ungarn': 'Ungarn'
-      'Slowenien': 'Slowenien'
-      'Spanien': 'Spanien'
-      'Südafrika': 'Südafrika'
-      'Ukraine': 'Ukraine'
-      'Vereinigte Staaten': 'Vereinigte Staaten'
-      # aliases:
-      'Weißrussland': 'Belarus'
-      'Weissrussland': 'Belarus'
-      'USA': 'Vereinigte Staaten'
-
-  collections:
-    name:
-      'Belarus – RWTH Aachen': 'Belarus – RWTH Aachen'
-      'Belarus – EHU Minsk': 'Belarus – EHU Minsk'
-      'Belarus – IBB Minsk': 'Belarus – IBB Minsk'
-      'Bosnien – ISFBB Nürnberg': 'Bosnien – ISFBB Nürnberg'
-      'Bulgarien – Akademie Sofia': 'Bulgarien – Akademie Sofia'
-      'Deutschland – FernUni Hagen': 'Deutschland – FernUni Hagen'
-      'Großbritannien – FernUni Hagen': 'Großbritannien – FernUni Hagen'
-      'Frankreich – AAMRDI Grenoble': 'Frankreich – AAMRDI Grenoble'
-      'Israel – HU Jerusalem': 'Israel – HU Jerusalem'
-      'Italien – Luce Rom': 'Italien – Luce Rom'
-      'Kroatien – CM München': 'Kroatien – CM München'
-      'Lettland – IOM Genf': 'Lettland – IOM Genf'
-      'Litauen – LNP Jerusalem': 'Litauen – LNP Jerusalem'
-      'Mazedonien – IOM Genf': 'Mazedonien – IOM Genf'
-      'Moldawien – IOM Genf': 'Moldawien – IOM Genf'
-      'Niederlande – Universität Amsterdam': 'Niederlande – Universität Amsterdam'
-      'Norwegen – KIF Oslo': 'Norwegen – KIF Oslo'
-      'Polen – Karta Warschau': 'Polen – Karta Warschau'
-      'Polen – BGW Berlin': 'Polen – BGW Berlin'
-      'Polen – Podgórski Poniatowa': 'Polen – Podgórski Poniatowa'
-      'Rumänien – CSIES Bukarest': 'Rumänien – CSIES Bukarest'
-      'Russland – Memorial Moskau': 'Russland – Memorial Moskau'
-      'Russland – Akademie Moskau': 'Russland – Akademie Moskau'
-      'Russland – Memorial Petersburg': 'Russland – Memorial Petersburg'
-      'Russland – Universität Woronesch': 'Russland – Regionalzentrum Woronesch'
-      'Russland – Regionalzentrum Woronesch': 'Russland – Regionalzentrum Woronesch'
-      'Serbien – Universität Salzburg': 'Serbien – Universität Salzburg'
-      'Slowakei – TLI Budapest': 'Slowakei – TLI Budapest'
-      'Ungarn – TLI Budapest': 'Ungarn – TLI Budapest'
-      'Ukraine – EIC Lwiw': 'Ukraine - EIC Lwiw'
-      'Slowakei – ZP Prag': 'Slowakei – ZP Prag'
-      'Slowenien – Museum Ljubljana': 'Slowenien – Museum Ljubljana'
-      'USA – Breman Atlanta': 'USA – Breman Atlanta'
-      'USA – Yale New Haven': 'USA – Yale New Haven'
-      'Spanien – AHFO Barcelona': 'Spanien – AHFO Barcelona'
-      'Zeugen Auschwitzprozess - FBI Frankfurt': 'Zeugen Auschwitzprozess - FBI Frankfurt'
-      'Südafrika – LNP Jerusalem': 'Südafrika – LNP Jerusalem'
-      'Tschechien – ZP Prag': 'Tschechien – ZP Prag'
-      'Ukraine – Universität Charkiw': 'Ukraine – Universität Charkiw'
-
-  categories:
-    forced_labor_groups:
-      'Ostarbeiter/Ostarbeiterin': 'Ostarbeiter/Ostarbeiterin'
-      'Rassisch Verfolgte (Jude/Jüdin)': 'Rassistisch Verfolgte (Jude/Jüdin)'
-      'Rassistisch Verfolgte (Jude/Jüdin)': 'Rassistisch Verfolgte (Jude/Jüdin)'
-      'KZ-Häftling': 'KZ-Häftling'
-      'Rassisch Verfolgte (Sinti und Roma)': 'Rassistisch Verfolgte (Sinti und Roma)'
-      'Rassistisch Verfolgte (Sinti und Roma)': 'Rassistisch Verfolgte (Sinti und Roma)'
-      'Zwangsarbeiter/Zwangsarbeiterin (Zivilarbeiter/Zivilarbeiterin)': 'Zwangsarbeiter/Zwangsarbeiterin (Zivilarbeiter/Zivilarbeiterin)'
-      'Kriegsgefangene': 'Kriegsgefangene'
-      'Politisch Verfolgte': 'Politisch Verfolgte'
-      'Sonstige': 'Sonstige'
-      'Service du Travail obligatoire': 'Service du Travail obligatoire'
-      'Italienische Militärinternierte': 'Italienische Militärinternierte'
-      'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)': 'Religiös Verfolgte (Zeuge/Zeugin Jehovas, Serbisch-Orthodoxe in Kroatien)'
-      'Germanisiertes Kind': 'Germanisiertes Kind'
-      'Keine Angabe': 'Keine Angabe'
-    forced_labor_fields:
-      'Bau/Steine/Erden': 'Bau/Steine/Erden'
-      'Industrie': 'Industrie'
-      'Bergbau': 'Bergbau'
-      'Land- und Forstwirtschaft/Gärtnerei': 'Land- und Forstwirtschaft/Gärtnerei'
-      'Sonstiges': 'Sonstiges'
-      'Wehrmacht': 'Wehrmacht'
-      'Keine Angabe': 'Keine Angabe'
-      'Konzentrations-/Vernichtungslager': 'Konzentrations-/Vernichtungslager'
-      'Lager': 'Lager'
-      'Verkehr': 'Verkehr'
-      'Häfen und Werften': 'Häfen und Werften'
-      'Handwerk': 'Handwerk'
-      'Gewerbe': 'Gewerbe'
-      'Gesundheitswesen': 'Gesundheitswesen'
-      'Organisation Todt': 'Organisation Todt'
-      'Privathaushalt': 'Privathaushalt'
-      'Öffentliche Hand': 'Öffentliche Hand'
-      'Verwaltung': 'Verwaltung'
-    forced_labor_habitations:
-      'Lager': 'Lager'
-      'Gefängnis': 'Gefängnis'
-      'KZ': 'KZ'
-      'zu Hause': 'zu Hause'
-      'am Arbeitsplatz': 'am Arbeitsplatz'
-      'Ghetto': 'Ghetto'
-      'Privatunterkunft': 'Privatunterkunft'
-      'Sonstiges': 'Sonstiges'
-      'Keine Angabe': 'Keine Angabe'
-      'AEL': 'AEL'
-      'KZ-Außenlager': 'KZ-Außenlager'
-    languages:
-      'Russisch': 'Russisch'
-      'Bosnisch': 'Bosnisch'
-      'Romani': 'Romani'
-      'Bulgarisch': 'Bulgarisch'
-      'Deutsch': 'Deutsch'
-      'Englisch': 'Englisch'
-      'Französisch': 'Französisch'
-      'Hebräisch': 'Hebräisch'
-      'Italienisch': 'Italienisch'
-      'Kroatisch': 'Kroatisch'
-      'Lettisch': 'Lettisch'
-      'Litauisch': 'Litauisch'
-      'Mazedonisch': 'Mazedonisch'
-      'Rumänisch': 'Rumänisch'
-      'Rumänisch/Russisch': 'Rumänisch / Russisch'
-      'Niederländisch': 'Niederländisch'
-      'Norwegisch': 'Norwegisch'
-      'Polnisch': 'Polnisch'
-      'Serbisch': 'Serbisch'
-      'Ungarisch': 'Ungarisch'
-      'Slowakisch': 'Slowakisch'
-      'Slowakisch/Tschechisch': 'Slowakisch / Tschechisch'
-      'Tschechisch': 'Tschechisch'
-      'Slowenisch': 'Slowenisch'
-      'Katalanisch': 'Katalanisch'
-      'Spanisch': 'Spanisch'
-      'Ukrainisch': 'Ukrainisch'
-      'Surschik': 'Surschik'
-    countries:
-      'Belarus': 'Belarus'
-      'Bosnien-Herzegowina': 'Bosnien-Herzegowina'
-      'Deutschland': 'Deutschland'
-      'Bulgarien': 'Bulgarien'
-      'Großbritannien': 'Großbritannien'
-      'Frankreich': 'Frankreich'
-      'Israel': 'Israel'
-      'Italien': 'Italien'
-      'Kroatien': 'Kroatien'
-      'Lettland': 'Lettland'
-      'Litauen': 'Litauen'
-      'Mazedonien': 'Mazedonien'
-      'Moldawien': 'Moldawien'
-      'Niederlande': 'Niederlande'
-      'Norwegen': 'Norwegen'
-      'Polen': 'Polen'
-      'Tschechische Republik': 'Tschechische Republik'
-      'Tschechien': 'Tschechien'
-      'Rumänien': 'Rumänien'
-      'Russland': 'Russland'
-      'Serbien': 'Serbien'
-      'Serbien-Montenegro': 'Serbien-Montenegro'
-      'Slowakei': 'Slowakei'
-      'Ungarn': 'Ungarn'
-      'Slowenien': 'Slowenien'
-      'Spanien': 'Spanien'
-      'Südafrika': 'Südafrika'
-      'Ukraine': 'Ukraine'
-      'Vereinigte Staaten': 'Vereinigte Staaten'
-
   location_categories:
     'Ort': 'Ort'
     'Firma': 'Firma'
@@ -607,79 +472,19 @@ de:
     'AEL': 'AEL'
     'KZ-Außenlager': 'KZ-Außenlager'
 
-  # here are all the languages again - this time as
-  # adjectives!
-  mediaplayer:
-    languages:
-      'Russisch': 'russisch'
-      'Bosnisch': 'bosnisch'
-      'Romani': 'romani'
-      'Bulgarisch': 'bulgarisch'
-      'Deutsch': 'deutsch'
-      'Englisch': 'englisch'
-      'Französisch': 'französisch'
-      'Hebräisch': 'hebräisch'
-      'Italienisch': 'italienisch'
-      'Kroatisch': 'kroatisch'
-      'Lettisch': 'lettisch'
-      'Litauisch': 'litauisch'
-      'Mazedonisch': 'mazedonisch'
-      'Rumänisch': 'rumänisch'
-      'Rumänisch/Russisch': 'rumänisch / russisch'
-      'Niederländisch': 'niederländisch'
-      'Norwegisch': 'norwegisch'
-      'Polnisch': 'polnisch'
-      'Serbisch': 'serbisch'
-      'Ungarisch': 'ungarisch'
-      'Slowakisch': 'slowakisch'
-      'Slowakisch/Tschechisch': 'slowakisch / tschechisch'
-      'Tschechisch': 'tschechisch'
-      'Slowenisch': 'slowenisch'
-      'Katalanisch': 'katalanisch'
-      'Spanisch': 'spanisch'
-      'Ukrainisch': 'ukrainisch'
-      'Surschik': 'surschik'
-
-  language_codes:
-    'Russisch': 'rus'
-    'Bosnisch': 'bos'
-    'Romani': 'rom'
-    'Bulgarisch': 'bul'
-    'Deutsch': 'deu'
-    'Englisch': 'eng'
-    'Französisch': 'fra'
-    'Hebräisch': 'heb'
-    'Italienisch': 'ita'
-    'Kroatisch': 'hrv'
-    'Lettisch': 'lav'
-    'Litauisch': 'lit'
-    'Mazedonisch': 'mkd'
-    'Rumänisch': 'ron'
-    'Rumänisch/Russisch': 'ron/rus'
-    'Niederländisch': 'nld'
-    'Norwegisch': 'nor'
-    'Polnisch': 'pol'
-    'Serbisch': 'srp'
-    'Ungarisch': 'hun'
-    'Slowakisch': 'slk'
-    'Slowakisch/Tschechisch': 'slk/ces'
-    'Tschechisch': 'ces'
-    'Slowenisch': 'slv'
-    'Katalanisch': 'cat'
-    'Spanisch': 'spa'
-    'Ukrainisch': 'ukr'
-    'Surschik': 'ukr/rus'
-
   locations:
     types:
       forced_labor_location:  'Einsatzort'
-      forced_labor_camp:      'Lager'
+      forced_labor_camp:      'Lager oder Haftstätte'
       forced_labor_company:   'Firma'
       deportation_location:   'Deportationsort'
       place_of_birth:         'Geburtsort'
-      home_location:          'Letzter Wohnort'
+      home_location:          'Wohnort'
+      home_location_in_map:   'Letzter Wohnort'
       return_location:        'Wohnort ab 1945'
+      postwar_camp:           'Lager ab 1945'
       interview:              'Erwähnung'
+      interview_in_map:       'Erwähnung bei'
 
   external_links:
     notice: 'Externer Link'
@@ -698,7 +503,7 @@ de:
     forced_labor_fields: 'Einsatzbereiche'
     forced_labor_habitation: 'Unterbringung / Inhaftierung'
     forced_labor_habitations: 'Unterbringung' # need singular for category_type
-    person_name: 'Name der Interviewten'
+    interview_id: 'Name der Interviewten'
     language: 'Sprache'
     languages: 'Sprache' # need singular for category_type
     country: 'Wohnort (Land)'
@@ -726,6 +531,78 @@ de:
     photos: 'Bilder'
     text_materials: 'Begleitmaterialien'
 
+# The following entries have been named by convention.
+
+  _admin_header:
+    << : *header_template
+
+  _header:
+    << : *header_template
+    map_link_title: 'Übersichtskarte der biografischen Stationen'
+    collections_link_title: 'Geografische Verteilung der Teilsammlungen'
+    faq_link_title: 'Fragen und Antworten zur Nutzung des Archivs'
+
   _locale_chooser:
-    language_choice: "Deutsch"
-    language_choice_title: "Deutsche Version"
+    language_choice: 'Deutsch'
+    language_choice_title: 'Deutsche Version'
+
+  interviews:
+    content:
+      search_in_interview: 'Suchen in &#145;%{content}&#146;'
+    segments:
+      in: 'In'
+    search:
+      all_interviews: &interviews_search_all_interviews 'alle&nbsp;Interviews'
+      one_selected: &interviews_search_one_selected 'ein&nbsp;Interview&nbsp;ausgewählt'
+      many_selected: &interviews_search_many_selected '%{search_hits}&nbsp;Interviews&nbsp;ausgewählt'
+      no_interviews_found: &interviews_search_no_interviews_found 'keine&nbsp;Interviews&nbsp;ausgewählt'
+    result:
+      segment_link: 'zum Ausschnitt: Band %{tape_nr}, %{timecode}'
+
+  layouts:
+    admin:
+      << : *print_version_template
+    application:
+      << : *print_version_template
+      << : *back_to_top_template
+    iframe:
+      title: '%{project_name}: Karte'
+    interview:
+      << : *print_version_template
+    workspace:
+      << : *print_version_template
+      << : *back_to_top_template
+
+  public:
+    '404':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+    '422':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+    '500':
+      << : *header_template
+      << : *back_to_top_template
+      << : *print_version_template
+
+  searches:
+    active_facet:
+      remove: 'entfernen'
+    facet_option:
+      arrow_down: 'Pfeil unten'
+      arrow_right: 'Pfeil rechts'
+      no_persons_found: 'keine Personen gefunden'
+      update: 'aktualisieren'
+    facets:
+      search: 'suchen'
+    search:
+      all_interviews: *interviews_search_all_interviews
+      one_selected: *interviews_search_one_selected
+      many_selected: *interviews_search_many_selected
+      no_interviews_found: *interviews_search_no_interviews_found
+
+  user_account_mailer:
+    subject: "Ihr Zugang zum Archiv '%{project_name}'"
+

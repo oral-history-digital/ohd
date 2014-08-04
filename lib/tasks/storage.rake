@@ -1,134 +1,55 @@
 namespace :storage do
 
-  desc "imports photos"
-  task :import_photos => :environment do
-    
-    batch = 25
-    offset = 0
-    total = Interview.count(:all)
-    
-    puts "Importing photos for #{total} interviews:"
-    
-    while(offset < total) do
-      
-      Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
-        
-        archive_id = interview.archive_id.upcase       
-        photo_path = ActiveRecord.path_to_photo_storage
-        
-        Dir.glob(File.join(photo_path, "#{archive_id}*.{jpg,JPG,png,PNG}")).each do |file|
-          
-          file_name = file.split("/").last
-          
-          if file_name.match(/^ZA\d{3}_\d{2}\.(png|jpg)$/i)
-            
-            photo = Photo.find_by_photo_file_name file_name
-            
-            if photo == nil
-              photo = Photo.new
-              photo.photo = File.open(file)
-              photo.interview_id = interview.id
-              photo.save!
-              puts "#{file_name} added"
-            end           
-            
-          end
-          
-        end
-        
-      end
-      
-      offset += batch
-      
-    end
-    
-  end
-
-
-  desc "removes photos that are missing files"
-  task :cleanup_photos => :environment do
-
-    joins = 'RIGHT JOIN photos ON photos.interview_id = interviews.id'
-    interview_ids = Interview.count(:all, :joins => joins, :group => 'interviews.id').keys.compact
-
-    photos_removed = 0
-
-    puts "Checking and removing unavailable photos for #{interview_ids.size} interviews:"
-
-    interview_ids.each do |id|
-
-      interview = Interview.find(id)
-
-      interview.photos.each do |photo|
-
-        photo_file_path = File.join(RAILS_ROOT, 'public', photo.photo.url).sub(/\?\d+$/,'')
-
-        unless File.exists?(photo_file_path)
-          # remove the photo
-          puts "removing missing #{photo_file_path.split('/').last}"
-          photo.destroy
-          photos_removed += 1
-        end
-
-      end
-
-    end
-
-    puts "done. Removed #{photos_removed} missing photos."
-
-  end
-  
-  
-  desc "imports interview stills"
+  desc 'imports interview stills'
   task :import_interview_stills => :environment do
-    
+
     batch = 25
     offset = 0
-    total = Interview.count(:all)
-    
+    total = Interview.count
+
     puts "Importing interview stills for #{total} interviews:"
-    
-    while(offset < total) do
-      
-      Interview.find(:all, :limit => "#{offset},#{batch}", :readonly => false).each do |interview|
-        
+
+    while offset < total do
+
+      Interview.all(:limit => "#{offset},#{batch}", :readonly => false).each do |interview|
+
         archive_id = interview.archive_id.downcase
-        
-        photo_path = File.join(ActiveRecord.path_to_photo_storage, '../interview_stills')
-        
+
+        photo_path = File.join(CeDiS.config.photo_storage_dir, 'interview_stills')
+
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
-          
-          file_name = file.split("/").last
-          
-          if file_name.match(/^za\d{3}\.(png|jpg)$/i)
-            
-            if interview.still_image_file_name == nil
+
+          file_name = file.split('/').last
+
+          if file_name.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}\\.(png|jpg)$", Regexp::IGNORECASE))
+
+            if interview.still_image_file_name == nil or not File.exists?(interview.still_image_file_name)
               interview.still_image = File.open(file)
               interview.save!
               puts "#{file_name} added"
-            end           
-            
+            end
+
           end
-          
+
         end
-        
+
       end
-      
+
       offset += batch
-      
+
     end
-    
+
   end
 
-  desc "looks for tapes in the context"
+  desc 'looks for tapes in the context'
   task :lookup_tapes => :environment do
 
-    joins = "LEFT JOIN tapes ON tapes.interview_id = interviews.id"
-    conditions = "tapes.id IS NULL"
+    joins = 'LEFT JOIN tapes ON tapes.interview_id = interviews.id'
+    conditions = 'tapes.id IS NULL'
 
     batch = 25
     offset = 0
-    total = Interview.count(:all, :joins => joins, :conditions => conditions )
+    total = Interview.count(:joins => joins, :conditions => conditions )
 
     wrong_audio = []
     wrong_video = []
@@ -139,12 +60,12 @@ namespace :storage do
 
     puts "Checking media files for #{total} interviews:"
 
-    while(offset < total) do
+    while offset < total do
 
-      Interview.find(:all, :limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
+      Interview.all(:limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
 
         dir = interview.archive_id.upcase
-        archive_path = File.join(ActiveRecord.path_to_storage, dir, "#{dir}_archive", 'data', 'av')
+        archive_path = File.join(CeDiS.config.storage_dir, dir, "#{dir}_archive", 'data', 'av')
 
         puts "ERROR: no archive directory for #{dir}!" unless File.directory?(archive_path)
 
@@ -172,9 +93,9 @@ namespace :storage do
 
               # check for existing tape
               if interview.tapes.select{|t| t.media_id == media_id }.empty?
-                
+
                 puts 'ERROR: missing mp4 file for ' + media_id + '!'
-                
+
               end
 
 
@@ -197,7 +118,7 @@ namespace :storage do
 
           # check for audio files
 
-          Dir.glob(File.join(archive_path, 'mp3', "*.mp3")).each do |file|
+          Dir.glob(File.join(archive_path, 'mp3', '*.mp3')).each do |file|
 
             media_id = file.split('/').last.sub(/\.mp3$/,'')
 
@@ -213,7 +134,7 @@ namespace :storage do
           end
 
           # check the video flag
-          if interview.video == true
+          if interview.video
             puts "ERROR: #{interview.archive_id} set as video but only has audio media files!"
             wrong_video << interview.archive_id
             interview.update_attribute :video, false
@@ -222,7 +143,7 @@ namespace :storage do
         else
 
           # check the video flag
-          unless interview.video == true
+          unless interview.video
             puts "ERROR: #{interview.archive_id} set as audio but has video media files!"
             wrong_audio << interview.archive_id
             interview.update_attribute :video, true
@@ -240,7 +161,7 @@ namespace :storage do
       STDOUT.flush
 
       offset += batch
-      
+
     end
 
     puts "#{total} interviews done."
@@ -262,68 +183,5 @@ namespace :storage do
 
 
   end
-
-  desc "Import text materials"
-  task :import_text_materials => :environment do
-    require 'fileutils'
-
-    source_dir = ENV['dir'] || File.join(ActiveRecord.path_to_storage, 'archiv_dis')
-    raise 'No source directory specificed! Aborting.' unless File.directory?(source_dir)
-
-    DEST_REPOSITORY_DIR = "#{RAILS_ROOT}/public/archive_text_materials"
-    dest_dir = DEST_REPOSITORY_DIR
-
-    Interview.find(:all).each do |interview|
-
-      STDOUT::printf '.'
-      STDOUT::flush
-
-      archive_id = interview.archive_id.upcase
-      interview_dir = File.join(source_dir, "#{archive_id}", "#{archive_id}_archive", "data", "bm")
-      Dir.glob(File.join(interview_dir, "[zZ][aA]#{archive_id[/\d{3}/]}_[a-zA-Z][a-zA-Z].pdf")).each do |file|
-        filename = file.split('/').last
-        type = filename[/_\w{2}/].gsub('_', '')
-
-        document_type = case type
-          when 'bg'
-            'Biography'
-          when 'tr'
-            'Transcript'
-          when 'ue'
-            'Translation'
-          when 'pk'
-            puts("skipping '#{file}' (Datenblatt/Kurzprotokoll)")
-            next
-          when 'db'
-            puts("skipping '#{file}' (Datenblatt/Kurzprotokoll)")
-            next
-          else
-            puts("skipping '#{file}' - unidentifiable type")
-            next
-        end
-
-        dest_file = File.join(dest_dir, archive_id.downcase, filename)
-
-        text_material = TextMaterial.find(:first, :conditions => {
-                :interview_id => interview.id,
-                :document_type => document_type })
-
-        if text_material == nil
-          text_material = TextMaterial.create :interview_id => interview.id,
-                                              :document_type => document_type
-          text_material.document = File.open(file)
-          text_material.save!
-        elsif File.exists?(dest_file) \
-          && !(File.open(dest_file){|f| f.mtime } < File.open(file){|f| f.mtime })
-          puts
-          puts "Destination file '#{dest_file}' newer than source file, skipping."
-        else
-          text_material.document = File.open(file)
-          text_material.save!
-        end
-      end
-    end
-  end
-
 
 end

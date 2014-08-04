@@ -23,7 +23,7 @@ en:
       resend: 'Change password'
       link: 'Forgot password?'
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
-      updated: 'Your password was changed successfully. You are now signed in.'
+      updated: 'Your password was changed successfully.'
     confirmations:
       link: "Didn't receive confirmation instructions?"
       resend: 'Resend confirmation instructions'
@@ -121,10 +121,10 @@ en:
       priv_agreement: 'Privacy Policy'
       priv_agreement_explanation: 'I agree to the %{privacy_policy}.'
       send_newsletter: 'Newsletter'
-      send_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
+      send_newsletter_explanation: 'I subscribe to the newsletter of the project "%{project_name}".'
       receive_newsletter: 'Newsletter'
       newsletter_signup: 'Newsletter subscription'
-      receive_newsletter_explanation: 'I subscribe to the newsletter of the project Forced Labor 1939-1945.'
+      receive_newsletter_explanation: 'I subscribe to the newsletter of the project "%{project_name}".'
       requested_at: 'Request date'
       name: 'Name'
       adress: 'Address'

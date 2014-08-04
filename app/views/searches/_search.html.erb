@@ -1,14 +1,15 @@
 <h2 class="info">Service-Funktionen</h2>
 <p class="mainSearch"><%= link_to t(:search_the_archive, :scope => 'user_interface.labels'), current_search_path, :method => :post %></p>
 <div id="baseHeaderSearch">
-
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t(:all) + '&nbsp;' + Interview.human_name.pluralize, current_search_path, :method => :post %>
-    <% elsif search.hits > 0 %>
-      <%= link_to pluralize(search.hits, Interview.human_name) + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels'), current_search_path, :method => :post %>
+      <%= link_to t('.all_interviews'), current_search_path, :method => :post %>
+    <% elsif search.hits > 1 %>
+      <%= link_to t('.many_selected', :search_hits => search.hits), current_search_path, :method => :post %>
+    <% elsif search.hits == 1 %>
+      <%= link_to t('.one_selected'), current_search_path, :method => :post %>
     <% else %>
-      <%= t(:not_found, :scope => 'user_interface.search') + '&nbsp;' + Interview.human_name.pluralize + '&nbsp;' + t(:in_the_current_search, :scope => 'user_interface.labels') %>
+      <%= t('.no_interviews_found') %>
     <% end %>
   </span>
 </div>

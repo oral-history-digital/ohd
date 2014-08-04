@@ -1,3 +1,5 @@
+require 'globalize'
+
 class LocationReference < ActiveRecord::Base
 
   # LocationReference is a model to encapsulate all locations-based register data
@@ -8,11 +10,12 @@ class LocationReference < ActiveRecord::Base
   REGION_LEVEL = 1
   COUNTRY_LEVEL = 2
 
-  belongs_to :interview
+  belongs_to :interview,
+             :include => :translations
 
   delegate  :archive_id,
             :video,
-            :translated,
+            :translated?,
             :to => :interview
 
   has_many  :location_segments,
@@ -21,73 +24,98 @@ class LocationReference < ActiveRecord::Base
   has_many  :segments,
             :through => :location_segments
 
+  translates :name, :location_name, :region_name, :country_name
+
   named_scope :forced_labor, { :conditions => "reference_type = 'forced_labor_location'" }
   named_scope :return, { :conditions => "reference_type = 'return_location'" }
   named_scope :deportation, { :conditions => "reference_type = 'deportation_location'" }
 
-  named_scope :with_segments, { :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
-                                :conditions => "location_segments.id IS NOT NULL",
-                                :group => "location_references.id" }
+  named_scope :with_segments, { :joins => 'LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id',
+                                :conditions => 'location_segments.id IS NOT NULL',
+                                :group => 'location_references.id' }
 
   named_scope :with_segments_from_interview, lambda {|i| {
-                                :joins => "LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id",
-                                :conditions => ["location_segments.id IS NOT NULL AND location_references.interview_id = ?",i.id],
-                                :group => "location_references.id" }}
+                                :joins => 'LEFT JOIN location_segments ON location_segments.location_reference_id = location_references.id',
+                                :conditions => ['location_segments.id IS NOT NULL AND location_references.interview_id = ?',i.id],
+                                :group => 'location_references.id' }}
 
-  validates_presence_of :name, :reference_type
-  validates_uniqueness_of :name, :scope => [ :reference_type, :interview_id ]
+  validates_presence_of :reference_type
   validates_associated  :interview
+
+  validate :name_must_be_unique_within_locale_and_reference_type
+  def name_must_be_unique_within_locale_and_reference_type
+    # The globalize2 stash contains new translations that
+    # will be written on save. These must be validated.
+    self.globalize.stash.each do |locale, translation|
+      name = translation[:name]
+      unless name.blank?
+        existing = self.class.count(
+            :joins => :translations,
+            :conditions => [
+                '(location_references.id<>? OR ? IS NULL) AND location_references.interview_id=? AND location_references.reference_type=?
+                 AND location_reference_translations.locale=? AND location_reference_translations.name=?',
+                id, id, interview_id, reference_type, locale.to_s, name
+            ]
+        )
+        errors.add(:name, " '#{name}' must be unique within locale and reference type") if existing > 0
+      end
+    end
+  end
+
+  validate :has_standard_name
+  def has_standard_name
+    if self.name(I18n.default_locale).blank?
+      errors.add(:name, ' must be set for default locale (=standard name).')
+    end
+  end
 
   before_save :accumulate_field_info
 
   after_save :update_interview_category
 
   searchable :auto_index => false do
-    string :archive_id, :stored => true
-    text :name, :boost => 12
+    text :name, :boost => 12 do
+      name = ''
+      translations.each do |translation|
+        name << ' ' + translation.name unless translation.name.blank?
+      end
+      name.strip
+    end
     text :alias_names, :boost => 3
-    text :location_name, :boost => 6
+    text :location_name, :boost => 6 do
+      location_name = ''
+      translations.each do |translation|
+        location_name << ' ' + translation.location_name unless translation.location_name.blank?
+      end
+      location_name.strip
+    end
     text :alias_location_names
-    string :location_type, :stored => true
-    string :reference_type, :stored => true
-    string :interviewee, :stored => true do
-      self.interview.anonymous_title
-    end
-    string :language, :stored => true do
-      self.interview.languages.to_s
-    end
-    string :interview_type, :stored => true do
-      self.interview.video ? 'video' : 'audio'
-    end
-    string :experience_groups, :stored => true do
-      self.interview.forced_labor_groups.map{|g| g.name }.join(", ")
-    end
   end
 
   def json_attrs(include_hierarchy=false)
     json = {}
     return json if self.interview.nil?
     json['interviewId'] = self.interview.archive_id
-    json['interviewee'] = self.interview.anonymous_title
-    json['language'] = self.interview.languages.to_s
+    json['interviewee'] = self.interview.anonymous_title(I18n.locale)
+    json['language'] = self.interview.language
     json['translated'] = self.interview.translated
     json['interviewType'] = self.interview.video
     json['referenceType'] = self.reference_type
     unless include_hierarchy
-      json['experienceGroup'] = self.interview.forced_labor_groups.map{|g| g.name }.join(", ")
+      json['experienceGroup'] = self.interview.forced_labor_groups.join(', ')
     end
-    json['location'] = name
+    json['location'] = name(I18n.locale)
     json['locationType'] = location_type
     json['longitude'] = exact_longitude
     json['latitude'] = exact_latitude
     if include_hierarchy
       json['country'] = {
-              'name' => country_name,
+              'name' => country_name(I18n.locale),
               'latitude' => country_latitude,
               'longitude' => country_longitude
       }
       json['region'] = {
-              'name' => region_name,
+              'name' => region_name(I18n.locale),
               'latitude' => region_latitude,
               'longitude' => region_longitude
       }
@@ -97,18 +125,18 @@ class LocationReference < ActiveRecord::Base
     json
   end
 
-  def short_name
+  def short_name(locale = I18n.default_locale)
     @short_name ||= '' + \
       begin
         built_name = []
         if classified
           # then we can just ignore the region (second name part) if given
-          built_name = name.split(',').map{|p| p.strip}
+          built_name = name(locale).split(',').map{|p| p.strip}
           if built_name.size == 3
             built_name.delete_at(1)
           end
         else
-          name.split(';').each do |location|
+          name(locale).split(';').each do |location|
             parts = location.split(',').map{|p| p.strip}
             parts.each do |part|
               remove = false
@@ -127,12 +155,14 @@ class LocationReference < ActiveRecord::Base
 
   # setter functions
 
-  def camp_name=(name='')
-    @camp_name = name
+  def camp_name=(name='', locale = I18n.default_locale)
+    @camp_name ||= {}
+    @camp_name[locale] = name
   end
 
-  def company_name=(name='')
-    @company_name = name
+  def company_name=(name='', locale = I18n.default_locale)
+    @company_name ||= {}
+    @company_name[locale] = name
   end
 
   def additional_alias=(alias_names='')
@@ -158,10 +188,9 @@ class LocationReference < ActiveRecord::Base
     @camp_classification = classification
   end
 
-  def city_name=(alias_names='')
-    @city_name = alias_names
+  def city_name=(alias_names='', locale = I18n.default_locale)
     write_attribute :hierarchy_level, CITY_LEVEL
-    self.additional_alias=@city_name
+    self.additional_alias=alias_names
   end
 
   def city_alias_names=(alias_names='')
@@ -171,7 +200,7 @@ class LocationReference < ActiveRecord::Base
   def region_name=(alias_names='')
     self.additional_alias=alias_names
     write_attribute :hierarchy_level, REGION_LEVEL unless self.hierarchy_level == CITY_LEVEL
-    write_attribute :region_name, alias_names
+    globalize.write(self.class.locale || I18n.default_locale, :region_name, alias_names)
   end
 
   def region_alias_names=(alias_names='')
@@ -181,7 +210,7 @@ class LocationReference < ActiveRecord::Base
   def country_name=(alias_names='')
     self.additional_alias=alias_names
     write_attribute :hierarchy_level, COUNTRY_LEVEL if self.hierarchy_level.nil?
-    write_attribute :country_name, alias_names
+    globalize.write(self.class.locale || I18n.default_locale, :country_name, alias_names)
   end
 
   def country_alias_names=(alias_names='')
@@ -189,13 +218,8 @@ class LocationReference < ActiveRecord::Base
   end
 
   def alias_location_names=(data)
-    result = case data
-      when String
-        data.strip
-      when Array
-        data.uniq.delete_if{|i| i.blank? }.join("; ")
-    end
-    write_attribute :alias_location_names, result
+    raise unless data.is_a? Array
+    write_attribute :alias_location_names, data.uniq.delete_if{|i| i.blank? }.join('; ')
   end
 
   def workflow_state=(state)
@@ -221,7 +245,7 @@ class LocationReference < ActiveRecord::Base
   def self.search(query={})
     Sunspot.search LocationReference do
 
-      location = Search.lucene_escape(query[:location])
+      keywords query[:location]
 
       if query[:page].blank?
         self.paginate :page => 1, :per_page => 800
@@ -230,12 +254,7 @@ class LocationReference < ActiveRecord::Base
       end
 
       adjust_solr_params do |params|
-        params[:defType] = 'lucene'
-
-        # fulltext search
-        unless location.blank?
-          params[:q] = location
-        end
+        params[:defType] = 'edismax'
       end
 
     end
@@ -253,12 +272,20 @@ class LocationReference < ActiveRecord::Base
         :camp_category => :place_subtype
     }
     accumulation_fields.each do |variable, field|
-      if instance_eval "defined?(@#{variable}) && !@#{variable}.blank?"
+      next if instance_eval "!defined?(@#{variable}) or @#{variable}.blank?"
+      if instance_eval "@#{variable}.is_a? Hash"
+        # translated field
+        instance_eval("@#{variable}").each do |locale, translation|
+          LocationReference.with_locale(locale) do
+            send("#{field}=", translation)
+          end
+        end
+      else
+        # not translated
         send("#{field}=", instance_eval("@#{variable}"))
       end
     end
-    self.alias_location_names = ((self.alias_location_names || '').concat("; #{@additional_alias_names}"))\
-      .split(/\s+?[;,]\s+?/).delete_if{|p| p.blank?}.join('; ')
+    self.alias_location_names = (@additional_alias_names || [])
     self.location_type = 'Location' if self.location_type.blank?
     self.classified = ((@workflow_state || '').strip == 'classified')
     true
@@ -266,14 +293,20 @@ class LocationReference < ActiveRecord::Base
 
   # Creates a relevant interview field (forced labor locations etc)
   def update_interview_category
-    case reference_type.to_s
-      when 'place_of_birth'
-        interview.update_attribute :birth_location, name
-      when 'home_location'
-        # set the home location on the interview
-        interview.home_location = @country_name || name.split(',').last
-        interview.save!
+    return unless ['place_of_birth', 'home_location'].include? reference_type.to_s
+    translations.each do |t|
+      locale = t.locale.to_sym
+      Interview.with_locale(locale) do
+        case reference_type.to_s
+          when 'place_of_birth'
+            interview.birth_location = name(locale)
+          when 'home_location'
+            # Set the home location on the interview.
+            interview.home_location = country_name(locale) || name(locale).split(',').last
+        end
+      end
     end
+    interview.save!
   end
 
 end

@@ -113,6 +113,7 @@ class UserContentsController < BaseController
         end
         annotation_response
       else
+        puts "\n\n --- CREATE ANNOTATION FAILED:\n#{@object.inspect}\n\nvalid? - #{@object.valid? ? 'yes' : 'no'}/nERRORS: #{@object.errors.full_messages}-- @@"
         respond_to do |format|
           format.html do
             render :partial => 'segment_annotation', :object => @object
@@ -300,11 +301,11 @@ class UserContentsController < BaseController
 
   # Retrieves a user_content based on content id or segment media_id
   def segment_content(type='user_content')
+    @media_id = params[:media_id]
     @object ||= begin
       @type = params[:type] || type
       if params[:id].blank?
         # find by media_id
-        @media_id = params[:media_id]
         @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
       else
         # retrieve by user_content.id
@@ -398,7 +399,7 @@ class UserContentsController < BaseController
       includes << :tags
       sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
-    end_of_association_chain.find(:all, :conditions => sql_conditions, :include => includes, :order => "position ASC, user_contents.created_at DESC")
+    end_of_association_chain.all(:conditions => sql_conditions, :include => includes, :order => "position ASC, user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)
@@ -408,12 +409,12 @@ class UserContentsController < BaseController
       cond << id
     end
     cond.first << ')'
-    Tag.find(:all, :conditions => cond).map(&:name)
+    Tag.all(:conditions => cond).map(&:name)
   end
 
   # positional sorting by id list
   def sort_by_list(ids)
-    current_contents = UserContent.find(:all, :conditions => ["user_id = ? AND id IN (#{ids.join(',')})", current_user.id], :order => "position ASC, created_at DESC")
+    current_contents = UserContent.all(:conditions => ["user_id = ? AND id IN (#{ids.join(',')})", current_user.id], :order => "position ASC, created_at DESC")
     pos = current_contents.map(&:position)
     current_pos = (0.75 * pos.min).round
     pos_per_step = ((1.25 * pos.max - current_pos) / pos.length).floor + 1

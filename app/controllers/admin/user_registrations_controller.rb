@@ -95,15 +95,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   private
 
-=begin
-  def object
-    @object = UserRegistration.find(params[:id])
-    @user_account = @object.user_account
-    @user = @user_account ? @user_account.user : nil
-    @user_registration = @object
-  end
-=end
-
   def collection
     @filters = {}
     conditionals = []
@@ -132,7 +123,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_registrations = UserRegistration.find(:all, :conditions => conditions, :order => "created_at DESC")
+    @user_registrations = UserRegistration.all(:conditions => conditions, :order => "created_at DESC")
   end
 
   def render_newsletter
@@ -153,31 +144,31 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def translate_field_or_value(field, value=nil)
-    unless value.nil?
+    if value.nil?
+      t(field, :scope => 'devise.registration_fields', :locale => :de)
+    else
       if value.is_a?(Time)
         return value.strftime('%d.%m.%Y %H:%M Uhr')
       end
       if value.blank?
         return ''
       end
-      if value == true
+      if value
         return 'ja'
       end
       value.strip! if value.is_a?(String)
       scope = case field
-              when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
-                return value
-              when 'country'
-                return value if value.length > 2
-                'countries'
-              when 'workflow_state'
-                'devise.workflow_states'
-              else
-                'devise.registration_values.' + field.to_s
-            end
+                when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
+                  value
+                when 'country'
+                  return value if value.length > 2
+                  'countries'
+                when 'workflow_state'
+                  'devise.workflow_states'
+                else
+                  'devise.registration_values.' + field.to_s
+              end
       t(value, :scope => scope, :locale => :de)
-    else
-      t(field, :scope => 'devise.registration_fields', :locale => :de)
     end
   end
 

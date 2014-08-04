@@ -4,19 +4,18 @@ class SearchesController < BaseController
 
   prepend_before_filter :redirect_unauthenticated_users
 
-  # handle search initialization specifically
-  before_filter :current_query_params
+  # Handle search initialization.
+  before_filter :rename_person_name_param, :only => :person_name
   skip_before_filter :current_search_for_side_panel
+  before_filter :current_query_params
 
-  before_filter :determine_user, :only => :query
-  before_filter :remove_search_term_from_params
+  before_filter :determine_user, :only => [ :query, :index ]
 
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def query
     @search = Search.from_params(@query_params || params)
     @search.search!
-    #reinstate_category_state
     @search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
@@ -28,7 +27,6 @@ class SearchesController < BaseController
         render :template => '/interviews/index.html'
       end
       format.js do
-        #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
         results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
         service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
         search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
@@ -36,14 +34,13 @@ class SearchesController < BaseController
           page.replace_html 'innerContent', results_html
           page.replace_html 'baseServices', service_html
           page.replace_html 'baseContainerRight', search_facets_html
-          # page << "setQueryHashInURL('#{@search.query_hash}');"
         end
       end
     end
   end
 
-  # calculates a hash for the query parameters and redirects to this hash-url
-  # Note: this doesn't call the lucene search engine!
+  # Calculates a hash for the query parameters and redirects to this hash-url.
+  # Note: this doesn't call the solr search engine!
   new_action do
     before do
       # The session query search is NOT used here at all!
@@ -85,10 +82,7 @@ class SearchesController < BaseController
   index do
     before do
       @search = Search.from_params(@query_params || params)
-      #puts "\n REFRESH QUERY PARAMS: #{@search.query_params.inspect}"
-      #puts "REFRESH SEARCH: #{@search.inspect}"
       @search.search!
-      #reinstate_category_state
       @search.segment_search!
       @search.open_category = params['open_category']
       @interviews = @search.results
@@ -100,7 +94,6 @@ class SearchesController < BaseController
       render :template => '/interviews/index.html'
     end
     wants.js do
-      #puts "\n\n@@@ SEARCH open category: #{@search.open_category}"
       results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
       service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
       search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
@@ -128,34 +121,31 @@ class SearchesController < BaseController
   end
 
   def person_name
-    query_params = params.merge({:partial_person_name => params.delete('person_name')})
-    @search = Search.from_params(query_params)
+    @search = Search.from_params(params)
     begin
       @search.search!
     rescue Sunspot
       @search.results = []
     end
     respond_to do |format|
-      format.html do
-        # ?
-      end
-      format.js do
-        if @search.results.empty?
-          render :text => '<span>keine Personen gefunden</span>'
-        else
-          render :partial => 'person_name', :collection => @search.results
-        end
+      format.json do
+        render :json => @search.results.map{|pn| pn.full_title(I18n.locale)}.reject(&:blank?)
       end
     end
   end
 
   private
 
+  def rename_person_name_param
+    params.merge!({:partial_person_name => params.delete('term')})
+  end
+
   # redirect users to login if they're unauthenticated
   # even on AJAX requests
   def redirect_unauthenticated_users
     unless signed_in?(:user_account)
-      flash[:alert] = t('unauthenticated_search', :scope => 'devise.sessions', :locale => session[:locale] || I18n.locale)
+      set_locale
+      flash[:alert] = t(:unauthenticated_search, :scope => 'devise.sessions', :locale => I18n.locale)
       session[:query] = Search.from_params(params).query_params
       if ACTIONS_FOR_DEFAULT_REDIRECT.include?(action_name)
         session[:"user_account.return_to"] = new_search_url
@@ -163,8 +153,11 @@ class SearchesController < BaseController
         session[:"user_account.return_to"] = request.request_uri
       end
       if request.xhr?
-        render :update do |page|
-          page << "window.location.href = '#{new_user_account_session_url}';"
+        if request.accepts.include? Mime.const_get(:JSON)
+          # Send a special autocomplete list that can be intercepted.
+          render :json => [{:label => "redirect_to", :value => new_user_account_session_url}]
+        else
+          render :js => "window.location.href = '#{new_user_account_session_url}';"
         end
       else
         redirect_to new_user_account_session_url
@@ -172,36 +165,7 @@ class SearchesController < BaseController
     end
   end
 
-  # This method clears the default search field contents from the query
-  # on the server-side, in case this is missed by the JS client code.
-  def remove_search_term_from_params
-    unless params.blank? || params[:fulltext].blank?
-      params.delete(:fulltext) if params[:fulltext] == t('search_term', :scope => 'user_interface.search')
-    end
-  end
-
-  # This method parses the reinstate[] parameter (array) to set the
-  # category settings on the current search (preferrably after conducting the search).
-  def reinstate_category_state
-    unless params[:reinstate].blank? || !params[:reinstate].is_a?(Array)
-
-      params[:reinstate].each do |category_param|
-
-        category = category_param.sub(/_\d+$/,'')
-        id = category_param[/\d+$/].to_i
-
-        if @search.respond_to?(category)
-
-          @search.send("#{category}=", (@search.send(category) || []) << id)
-
-        end
-
-      end
-
-    end
-  end
-
-  # override the usual handling of session before parameters in side-panel searches
+  # Override the usual handling of session before parameters in side-panel searches
   # here: local params override session!
   def current_query_params
     @query_params = Search.from_params(params).query_params
@@ -209,5 +173,5 @@ class SearchesController < BaseController
     @query_params.delete(:page) if @query_params[:page] == 1
     @query_params
   end
-  
+
 end

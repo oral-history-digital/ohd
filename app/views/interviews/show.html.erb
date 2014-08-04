@@ -1,6 +1,6 @@
-<% cache [ @locale, @interview.to_param, 'show'].join('/') do -%>
+<% cache [ I18n.locale.to_s, @interview.to_param, 'show'].join('/') do -%>
 <div class="intervieweeTitle">
-  <h1><%= @interview.full_title %></h1>
+  <h1><%= @interview.full_title(I18n.locale) %></h1>
   <p>
     <%= @interview.gender ? t(:male, :scope => 'personal_data') : t(:female, :scope => 'personal_data') %>,
     <%= t(:born, :scope => 'personal_data') %>
