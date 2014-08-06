@@ -177,7 +177,7 @@ class UsageReport < ActiveRecord::Base
     logins_per_country.keys.compact.each do |country|
       sorted_countries << [country, logins_per_country[country][:total]]
     end
-    sorted_countries.sort!{|a,b| Unicode::strcmp(b.last, a.last) }
+    sorted_countries.sort!{|a,b| b.last <=> a.last}
 
     data = []
     row = ['Land', 'Nutzer'] + timeframe_titles
@@ -241,8 +241,8 @@ class UsageReport < ActiveRecord::Base
       end
     end
     sorted_archive_ids = archive_ids.to_a.sort{|a,b| b.last <=> a.last }.map{|i| i.first}
-    sorted_countries = countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}
-    sorted_resources = resources.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|r| r.first}
+    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last}.map{|c| c.first}
+    sorted_resources = resources.to_a.sort{|a,b| b.last <=> a.last}.map{|r| r.first}
     data = []
     row = %w(Archiv-ID Aufrufe Nutzer) + sorted_resources + sorted_countries.map{|c| UsageReport.country_name(c)}
     data << row
@@ -316,9 +316,9 @@ class UsageReport < ActiveRecord::Base
         searches[query][:users] << report.user_account_id unless searches[query][:users].include?(report.user_account_id)
       end
     end
-    sorted_queries = queries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|q| q.first}
-    sorted_countries = countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}
-    sorted_facets = facets.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|f| f.first}
+    sorted_queries = queries.to_a.sort{|a,b| b.last <=> a.last}.map{|q| q.first}
+    sorted_countries = countries.to_a.sort{|a,b| b.last <=> a.last}.map{|c| c.first}
+    sorted_facets = facets.to_a.sort{|a,b| b.last <=> a.last}.map{|f| f.first}
     data = []
     row = %w(Suchbegriff Aufrufe Nutzer)
     row += sorted_facets.map{|f| I18n.t(f, :scope => 'activerecord.attributes.interview', :locale => :de)}
@@ -380,7 +380,7 @@ class UsageReport < ActiveRecord::Base
     row << requests[:total][:anonymous]
     row << requests[:total][:users].size
     data << row
-    countries.to_a.sort{|a,b| Unicode::strcmp(b.last, a.last) }.map{|c| c.first}.each do |country|
+    countries.to_a.sort{|a,b| b.last <=> a.last}.map{|c| c.first}.each do |country|
       row = [UsageReport.country_name(country)]
       row << requests[country][:total]
       row << requests[country][:anonymous]
