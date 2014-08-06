@@ -170,9 +170,9 @@ module UserContentsHelper
            else
              image_tag(image_file, :alt => interview.archive_id, :title => "#{interview.full_title(I18n.locale)} (#{interview.archive_id})")
            end
-    html = link_to_segment(segment, '', false, false, image_html, { :target => '_blank'})
+    html = link_to_segment(segment, '', false, false, { :link_text => image_html, :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}", { :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, { :link_text => "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}", :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript

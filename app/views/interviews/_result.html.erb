@@ -74,7 +74,7 @@
         <% matching_segments[0..9].each_with_index do |segment, index| %>
           <div id="<%= segment.media_id %>" class="segment <%= index == 0 ? ' visible' : '' %>">
             <p class="transcript">&ldquo;<%= segment_excerpt_for_match(segment, search.fulltext || '', 12) %>&rdquo;</p>
-            <%= link_to_segment segment, '', false, false, t('.segment_link', :tape_nr => segment.tape.number.to_s, :timecode => segment.read_attribute(:timecode).gsub(/\.\d+$/, '')) %>
+            <%= link_to_segment segment, '', false, false, :link_text => t('.segment_link', :tape_nr => segment.tape.number.to_s, :timecode => segment.read_attribute(:timecode).gsub(/\.\d+$/, '')) %>
           </div>
         <% end %>
 

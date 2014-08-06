@@ -48,11 +48,13 @@ module ApplicationHelper
   end
 
   #
-  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false, link_text=nil, options={})
+  def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false, options={})
     interview = segment.interview
     item = segment.tape.number
     position = segment.start_time.round
-    link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
+    transcript_language = options.delete(:transcript_language)
+    link_text = options.delete(:link_text)
+    link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text, 10, transcript_language), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
     if @object.is_a?(Interview) || ajax
       link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
     else
@@ -60,15 +62,16 @@ module ApplicationHelper
     end
   end
 
-  def segment_excerpt_for_match(segment, original_query='', width=10)
-    # TODO: Reduce word count in both directions on interpunctuation.
-    # TODO: Handle wildcards.
-
-    # Implement fallback rule for segments:
-    # - Show the German translation of segments when German is the current UI locale.
-    # - Otherwise show the original language of the transcript.
-    # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
-    transcript = if I18n.locale == :de then segment.translation else segment.transcript end
+  def segment_excerpt_for_match(segment, original_query='', width=10, transcript_language=nil)
+    transcript = if transcript_language.nil?
+                   # Implement fallback rule for segments if no explicit language has been given:
+                   # - Show the German translation of segments when German is the current UI locale.
+                   # - Otherwise show the original language of the transcript.
+                   # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+                   (I18n.locale == :de ? segment.translation : segment.transcript)
+                 else
+                   (transcript_language == :translated ? segment.translation : segment.transcript)
+                 end
     transcript.gsub!(/[*~]([^*~]*)[*~]/,'\1')
 
     query_string = Regexp.escape(original_query).gsub('\*','\w*')
@@ -83,13 +86,13 @@ module ApplicationHelper
       end
     end
     query_string.gsub!('_',' ')
-    pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(' + query_string + ')\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
+    pattern = Regexp.new(('(\w+\W+)?' * width) + (query_string.blank? ? '' : ('(\w*' + query_string + '\w*)\W+')) + '(\w+\W+){0,' + width.to_s + '}', Regexp::IGNORECASE)
     match_text = transcript[pattern]
     if match_text.nil?
       truncate(transcript, :length => 180)
     else
       str = transcript.index(match_text) == 0 ? '' : '&hellip;'
-      match_text.gsub!(Regexp.new('(\W|^)(' + query_string + ')', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
+      match_text.gsub!(Regexp.new('(\W|^)(\w*' + query_string + '\w*)', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
       "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
     end
   end

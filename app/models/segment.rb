@@ -193,6 +193,13 @@ DEF
                   :order => "media_id ASC"
   end
 
+  def has_heading?
+    translation_with_heading = translations.detect do |t|
+      not (t.mainheading.blank? and t.subheading.blank?)
+    end
+    not translation_with_heading.nil?
+  end
+
   def self.media_id_successor(mid)
     Segment.media_id_diff(mid, 1)
   end

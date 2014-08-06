@@ -383,15 +383,8 @@ float:left;
     overflow-x: hidden;
 }
 
-#search-results-toggle {
-    position:relative;
-
-}
-
 #search-results-toggle .hits {
-    position:absolute;
-    top:6px;
-    left:130px;
+    display: inline;
 }
 
 #search-results.container,

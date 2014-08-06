@@ -9,7 +9,7 @@
                         (<%= annotation.author.sub(/(&mdash;|-)/, t(:editorial, :scope => 'user_interface.annotations')) -%>)
                         <% if annotation_locale != I18n.locale then %>
                             <a id="annotation_locale_help_text" class="tooltipButton">
-                                <%= image_tag(image_path('icon_info_light.svg'), :onclick => 'var e = arguments[0] || window.event; e.stopPropagation(); return false;', :class => 'svg') %>
+                                <%= image_tag(image_path('icon_info_light.png'), :onclick => 'var e = arguments[0] || window.event; e.stopPropagation(); return false;') %>
                                 <div class="tooltip"><%= I18n.t('user_interface.messages.no_annotations_in_your_language', :languages => available_languages(annotation)) -%></div>
                             </a>
                         <% end %>

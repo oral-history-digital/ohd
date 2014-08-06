@@ -9,7 +9,7 @@
           </span>
         </span>
         <span class="segment">
-          <%= link_to_segment user_annotation.reference, '', false, false, content_tag(:span, "<span style='font-weight: bold; width: 100%;'>#{user_annotation.reference.interview.archive_id}</span>#{user_annotation.reference.interview.short_title(I18n.locale)}<br/>#{user_annotation.timecode_string}" ), {:target => '_blank'} %>
+          <%= link_to_segment user_annotation.reference, '', false, false, {:link_text => content_tag(:span, "<span style='font-weight: bold; width: 100%;'>#{user_annotation.reference.interview.archive_id}</span>#{user_annotation.reference.interview.short_title(I18n.locale)}<br/>#{user_annotation.timecode_string}" ), :target => '_blank'} %>
         </span>
         <span class="data status">
           <%= t(user_annotation.workflow_state, :scope => 'user_annotations.workflow_states') -%>
