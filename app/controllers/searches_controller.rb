@@ -106,7 +106,7 @@ class SearchesController < BaseController
   end
 
   def interview
-    @search = Search.in_interview(params[:id],params[:fulltext])
+    @search = Search.in_interview(params[:id], params[:fulltext])
     @search.segment_search!
     archive_id = @search.results.first.nil? ? '' : @search.results.first.archive_id
     @segments = @search.matching_segments_for(archive_id)

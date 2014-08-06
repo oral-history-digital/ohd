@@ -13,7 +13,7 @@ class UserContent < ActiveRecord::Base
 
   before_validation_on_create :compile_id_hash
   before_validation :store_properties
-  after_validation_on_create :check_persistence,:set_link_url
+  after_validation_on_create :check_persistence, :set_link_url
 
   attr_accessible :user_id,
                   :title,

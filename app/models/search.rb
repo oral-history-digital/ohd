@@ -58,20 +58,19 @@ class Search < UserContent
   # (fulltext is actually the keywords search DB column.
   (ACCESSIBLES - [ 'fulltext' ]).each do |query_param|
     class_eval <<DEF
-    # This is the generated setter for accessing the
-    # #{query_param} query conditions.
-    def #{query_param}=(#{query_param}_query)
-      if #{query_param}_query.blank?
-        @#{query_param}= nil
-      else
-        @#{query_param}=#{query_param}_query
+      # This is the generated setter for accessing the
+      # #{query_param} query conditions.
+      def #{query_param}=(#{query_param}_query)
+        if #{query_param}_query.blank?
+          @#{query_param}= nil
+        else
+          @#{query_param}=#{query_param}_query
+        end
       end
-    end
 
-    def #{query_param}
-      @#{query_param}
-    end
-
+      def #{query_param}
+        @#{query_param}
+      end
 DEF
   end
 
@@ -106,15 +105,6 @@ DEF
 
   def partial_person_name
     @partial_person_name
-  end
-
-  # Filter the ignore (default label) words from fulltext.
-  def fulltext=(term)
-    self.write_property(:fulltext, term)
-  end
-
-  def fulltext
-    self.read_property(:fulltext)
   end
 
   # The total number of records matching the query criteria

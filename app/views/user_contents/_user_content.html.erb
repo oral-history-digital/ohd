@@ -99,15 +99,15 @@ end -%>
           <% end -%>
           <li class="description">
             <% if user_content.class.to_s == 'UserAnnotation' -%>
-            <%= label_tag UserAnnotation.human_attribute_name(:description) -%>
+                <%= label_tag UserAnnotation.human_attribute_name(:description) -%>
                 <% if user_content.private? -%>
                     <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
                 <% else -%>
                     <p><%= user_content.description -%></p>
                 <% end -%>
             <% else -%>
-            <%= label_tag UserContent.human_attribute_name(:description) -%>
-            <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
+                <%= label_tag UserContent.human_attribute_name(:description) -%>
+                <p><%= in_place_edit_for(user_content, :description, :text_area => true) -%></p>
             <% end -%>
           </li>
         </ul>
@@ -126,7 +126,7 @@ end -%>
     </div>
 
     <% javascript_tag do %>
-    Event.observe($('user_content_<%= user_content.id -%>').down('.header'), 'click', toggleUserContent);
-    contentItems = $$('#user_contents .item .details');
+        Event.observe($('user_content_<%= user_content.id -%>').down('.header'), 'click', toggleUserContent);
+        contentItems = $$('#user_contents .item .details');
     <% end %>
 </div>
