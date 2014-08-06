@@ -73,6 +73,21 @@ class UserContent < ActiveRecord::Base
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end
 
+  # The title is usually created from (translated) attributes of the
+  # referenced object (=default title) but may be overridden by the
+  # end user.
+  def title
+    user_title || default_title(I18n.locale)
+  end
+
+  def user_title
+    read_attribute(:title)
+  end
+
+  def default_title(locale)
+    raise 'must be overridden by user content implementations.'
+  end
+
   def description
     read_attribute(:description) || [I18n.t(:no_placeholder, :content => UserContent.human_attribute_name(:description))].join(' ')
   end

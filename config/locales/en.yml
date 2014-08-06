@@ -1,4 +1,10 @@
 en:
+  # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en.yml)
+  time:
+    formats:
+      short: ! '%Y-%m-%d, %H:%M'
+
+  # Global dictionary.
   dictionary:
     back_to_top_template: &back_to_top_template
       back_to_top: 'Back to the top'

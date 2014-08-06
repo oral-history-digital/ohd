@@ -49,6 +49,12 @@
 # german_translation has moved from the beginning (' in deutscher Übersetzung')
 # to the end ('German ').
 de:
+  # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/de.yml)
+  time:
+    formats:
+      short: ! '%d.%m.%Y, %H:%M Uhr'
+
+  # Global dictionary.
   dictionary:
     back_to_top_template: &back_to_top_template
       back_to_top: 'Zum Seitenanfang'

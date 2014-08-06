@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140627154734) do
+ActiveRecord::Schema.define(:version => 20140805070240) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"

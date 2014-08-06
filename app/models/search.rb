@@ -294,14 +294,18 @@ DEF
     end
   end
 
+  def default_title(locale)
+    title_tokens = [Search.human_name(:locale => locale)]
+    terms = read_property(:query)['fulltext']
+    title_tokens << "'#{terms}'" unless terms.blank?
+    title_tokens << I18n.l(created_at.localtime, :format => :short, :locale => locale)
+    title_tokens.join(' ')
+  end
+
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
     attr = {}
-    title_tokens = [Search.human_name]
-    title_tokens << "'#{fulltext}'" unless fulltext.blank?
-    title_tokens << Time.now.strftime('%d.%m.%Y %H-%M')
-    attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = @results.nil? ? (read_property(:interview_references) || []) : @results[0..4].map(&:archive_id).join(',')
     attr[:properties] = { :query => @query, :hits => @hits, :query_hash => query_hash }
     attr

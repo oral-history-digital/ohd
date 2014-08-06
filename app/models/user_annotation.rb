@@ -94,16 +94,19 @@ class UserAnnotation < UserContent
     read_property :heading
   end
 
+  def default_title(locale)
+    title_tokens = [UserAnnotation.human_name(:locale => locale) + I18n.t('user_interface.annotations.connective', :locale => locale)]
+    title_tokens << reference.interview.short_title(locale)
+    title_tokens << "(#{reference.interview.archive_id})"
+    title_tokens << reference.tape_number
+    title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')
+    title_tokens.join(' ')
+  end
+
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
     attr = {}
-    title_tokens = [UserAnnotation.human_name + I18n.t('user_interface.annotations.connective')]
-    title_tokens << reference.interview.short_title(I18n.locale)
-    title_tokens << "(#{reference.interview.archive_id})"
-    title_tokens << reference.tape_number
-    title_tokens << reference.timecode.sub(/\[\d+\]\s+/,'')
-    attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
     @properties[:author] ||= [user.first_name, user.last_name].join(' ')

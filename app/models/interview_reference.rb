@@ -8,14 +8,17 @@ class InterviewReference < UserContent
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end
 
+  def default_title(locale)
+    title_tokens = [Interview.human_name(:locale => locale)]
+    title_tokens << reference.archive_id.upcase
+    title_tokens << reference.full_title(locale)
+    title_tokens.join(' ')
+  end
+
   # provides user_content attributes for new user_content
   # except the link_url, which is generated in the view
   def user_content_attributes
     attr = {}
-    title_tokens = [Interview.human_name]
-    title_tokens << reference.archive_id.upcase
-    title_tokens << reference.full_title(I18n.locale)
-    attr[:title] = title_tokens.join(' ')
     attr[:interview_references] = reference.archive_id
     attr[:properties] = {
             :citation => '',

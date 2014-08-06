@@ -50,6 +50,12 @@
 # to the end ('German ').
 
 ru:
+  # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
+  time:
+    formats:
+      short: ! '%d.%m.%Y, %H:%M'
+
+  # Global dictionary.
   dictionary:
     back_to_top_template: &back_to_top_template
       back_to_top: 'В начало страницы'
