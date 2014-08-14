@@ -63,14 +63,15 @@ module ApplicationHelper
   end
 
   def segment_excerpt_for_match(segment, original_query='', width=10, transcript_language=nil)
-    transcript = if transcript_language.nil?
-                   # Implement fallback rule for segments if no explicit language has been given:
-                   # - Show the German translation of segments when German is the current UI locale.
-                   # - Otherwise show the original language of the transcript.
-                   # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
-                   (I18n.locale == :de and not segment.translation.empty? ? segment.translation : segment.transcript)
+    # Implement fallback rule for segments if no explicit language has been given:
+    # - Show the German translation of segments when German is the current UI locale.
+    # - Otherwise show the original language of the transcript.
+    # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
+    transcript_language ||= (I18n.locale == :de ? :translated : :original)
+    transcript = if transcript_language == :translated and not segment.translation.empty?
+                   segment.translation
                  else
-                   (transcript_language == :translated and not segment.translation.empty? ? segment.translation : segment.transcript)
+                   segment.transcript
                  end
     transcript.gsub!(/[*~]([^*~]*)[*~]/,'\1')
 
