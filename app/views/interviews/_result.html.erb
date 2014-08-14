@@ -46,7 +46,7 @@
 
 <% if query_params.keys.include?('fulltext') %>
     <% matching_segments = search.matching_segments_for(result.archive_id) %>
-    <% unless matching_segments.empty? %>
+    <% unless matching_segments.nil? %>
       <div id="interview_<%= result.archive_id.upcase %>_segments" class="baseContainerTeaserExcerpts" style="clear: left;">
 
         <h5>

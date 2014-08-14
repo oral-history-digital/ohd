@@ -68,9 +68,9 @@ module ApplicationHelper
                    # - Show the German translation of segments when German is the current UI locale.
                    # - Otherwise show the original language of the transcript.
                    # (see https://docs.google.com/document/d/1pTk4EQHVjbNjYdLXTEhV340wGt4DcHUY7PZYW6gxyGg/edit#heading=h.gtrastts25e5)
-                   (I18n.locale == :de ? segment.translation : segment.transcript)
+                   (I18n.locale == :de and not segment.translation.empty? ? segment.translation : segment.transcript)
                  else
-                   (transcript_language == :translated ? segment.translation : segment.transcript)
+                   (transcript_language == :translated and not segment.translation.empty? ? segment.translation : segment.transcript)
                  end
     transcript.gsub!(/[*~]([^*~]*)[*~]/,'\1')
 
