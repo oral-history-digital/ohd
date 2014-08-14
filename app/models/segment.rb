@@ -36,7 +36,8 @@ DEF
                   )",
                   I18n.default_locale.to_s
               ],
-              :include => [:tape, :translations]
+              :include => [:tape, :translations],
+              :order => :media_id
 
   named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
