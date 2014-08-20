@@ -13,13 +13,14 @@
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <%= javascript_include_tag :defaults, :cache => 'site' %>
-    <%= javascript_include_tag 'map', 'progress_bar', :cache => 'mapping' %>
-    <%= javascript_include_tag "i18n", "translations" %>
-    <script type="text/javascript">
+    <%= javascript_include_tag 'i18n', 'translations' %>
+    <% javascript_tag do %>
         I18n.defaultLocale = "<%= I18n.default_locale %>";
         I18n.locale = "<%= I18n.locale %>";
-    </script>
+    <% end %>
+
+    <%= javascript_include_tag :defaults, :cache => 'site' %>
+    <%= javascript_include_tag 'map', 'progress_bar', :cache => 'mapping' %>
 </head>
 <body id="mapFrame" style="background-image: none;">
 

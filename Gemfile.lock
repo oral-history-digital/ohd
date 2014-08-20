@@ -232,7 +232,7 @@ DEPENDENCIES
   guard-cucumber (= 0.7.5)
   guard-rspec
   guard-spork
-  i18n (<= 0.5.3)
+  i18n (<= 0.6.11)
   i18n-js
   json
   localized_country_select (= 0.0.1)

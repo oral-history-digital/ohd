@@ -13,7 +13,7 @@ gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
 gem 'workflow'
 gem 'i18n-js'
-gem 'i18n', '<= 0.5.3' # We rely on ruby 1.9-style string interpolation ('...%{something}...' % {:something => '...'}) which has been removed from i18n after this version.
+gem 'i18n', '<= 0.6.11' # We rely on ruby 1.9-style string interpolation ('...%{something}...' % {:something => '...'}) which has been removed from i18n after this version.
 gem 'will_paginate', '~> 2.3' # Version restriction for Rails 2.3.
 gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
