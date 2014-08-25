@@ -1,0 +1,58 @@
+<div id="containerHistoricalContext"  class="container">
+    <ul class="data">
+      <% if historical_context.birth_location(I18n.locale).nil? -%>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
+            <span class="value"><%= format_date historical_context.date_of_birth %></span>
+          </li>
+      <% else -%>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:birth_location) %></span>
+            <span class="value"><%= historical_context.birth_location(I18n.locale) %>,&nbsp;<%= format_date historical_context.date_of_birth%></span>
+          </li>
+      <% end -%>
+      <%# TODO: Distinguishing between historical contexts should be done more generically when more projects will be added in the future. %>
+      <% if historical_context.respond_to?(:forced_labor_groups) %>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:forced_labor_groups) %></span>
+            <span class="value"><%= historical_context.forced_labor_groups.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
+          </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:deportation) %></span>
+            <span class="value"><%= deportation_for(historical_context, I18n.locale) %></span>
+          </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:forced_labor_fields) %></span>
+            <span class="value"><%= expand historical_context.forced_labor_fields.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
+          </li>
+          <% unless historical_context.forced_labor_details(I18n.locale).blank? %>
+              <li>
+                <span class="label"><%= Interview.human_attribute_name(:forced_labor_details) %></span>
+                <span class="value"><%= expand historical_context.forced_labor_details(I18n.locale) %></span>
+              </li>
+          <% end %>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:forced_labor_locations) %></span>
+            <span class="value"><%= expand historical_context.forced_labor_locations(I18n.locale) %></span>
+          </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:forced_labor_habitations) %></span>
+            <span class="value"><%= expand historical_context.forced_labor_habitations.join(I18n.locale == :ru ? ' / ' : ', ') %></span>
+          </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:liberation_date) %></span>
+            <span class="value"><%= format_date historical_context.liberation_date %></span>
+          </li>
+          <li>
+            <span class="label"><%= Interview.human_attribute_name(:return_locations) %></span>
+            <span class="value"><%= expand historical_context.return_locations(I18n.locale) || t(:unknown, :scope => 'status') %></span>
+          </li>
+          <% unless historical_context.return_date(I18n.locale).blank? %>
+              <li>
+                <span class="label"><%= Interview.human_attribute_name(:return_date) %></span>
+                <span class="value"><%= format_date historical_context.return_date(I18n.locale) %></span>
+              </li>
+          <% end %>
+      <% end %>
+    </ul>
+</div>

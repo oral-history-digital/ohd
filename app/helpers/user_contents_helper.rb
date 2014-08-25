@@ -145,12 +145,17 @@ module UserContentsHelper
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
                   + content_tag(:p, interview.collection))
-    # forced labor groups
-    biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
-                  + content_tag(:p, interview.forced_labor_groups.join(', ')))
-    # habitations
-    biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
-                  + content_tag(:p, interview.forced_labor_habitations.join(', ')))
+    # TODO: Distinguish more generically between historical contexts when adding more projects.
+    if interview.respond_to?(:forced_labor_groups)
+      # forced labor groups
+      biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
+                    + content_tag(:p, interview.forced_labor_groups.join(', ')))
+    end
+    if interview.respond_to?(:forced_labor_habitations)
+      # habitations
+      biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
+                    + content_tag(:p, interview.forced_labor_habitations.join(', ')))
+    end
     content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end
 

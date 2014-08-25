@@ -16,8 +16,10 @@
       <li id="tabInterview" class="active">
         <p onclick="showInterviewTab('tabInterview');"><%= t(:interview, :scope => 'user_interface.labels') %></p>
       </li>
-      <li id="tabForcedLabor">
-        <p onclick="showInterviewTab('tabForcedLabor');"><%= t(:forced_labor_data, :scope => 'user_interface.labels') %></p>
+      <li id="tabHistoricalContext">
+        <p onclick="showInterviewTab('tabHistoricalContext');">
+            <%= t((@interview.respond_to?(:forced_labor_groups) ? :forced_labor_data : :interview_data), :scope => 'user_interface.labels') %>
+        </p>
       </li>
 
       <% javascript_tag do %>
@@ -46,7 +48,7 @@
 
   <%= render :partial => "interview", :object => @interview %>
 
-  <%= render :partial => "forced_labor", :object => @interview %>
+  <%= render :partial => "historical_context", :object => @interview %>
 
 </div>
 

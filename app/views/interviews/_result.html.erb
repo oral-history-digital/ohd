@@ -35,10 +35,12 @@
       <% additional_params << 'forced_labor_fields' if additional_params.empty? && query_params['forced_labor_fields'].is_a?(Array) %>
       <% additional_params << 'forced_labor_groups' if additional_params.empty? %>
       <% additional_params.each do |attribute| %>
-        <li class="<%= attribute %>">
-          <span class='label'><%= Interview.human_attribute_name(attribute) %></span>
-          <%= format_value [ result.send(attribute) ].flatten.map(&:to_s).join(I18n.locale == :ru ? ' / ' : ', ') %>
-        </li>
+        <% if result.respond_to?(attribute.to_s) %>
+            <li class="<%= attribute %>">
+              <span class='label'><%= Interview.human_attribute_name(attribute) %></span>
+              <%= format_value [ result.send(attribute) ].flatten.map(&:to_s).join(I18n.locale == :ru ? ' / ' : ', ') %>
+            </li>
+        <% end %>
       <% end %>
     </ul>
   </div>

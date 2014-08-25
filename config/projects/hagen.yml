@@ -12,16 +12,16 @@ project_shortname: 'LUSIR'
 
 project_initials: 'DG'
 
-project_domain: 'oral-history-archive.org'
+project_domain: 'da02.cedis.fu-berlin.de'
 
 cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
 
-streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/oral-history-archive'
+streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
 meta_keywords:
   de: ''
 
-contact_email: 'mail@oral-history-archive.org'
+contact_email: 'almut.leh@fernuni-hagen.de'
 
 smtp_server: 'mail.fu-berlin.de'
 

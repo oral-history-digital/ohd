@@ -160,7 +160,7 @@ a#modal_window_close {
   width: 95px;
 }
 
-#tabsOverview #tabForcedLabor {
+#tabsOverview #tabHistoricalContext {
   float: right;
   width: 185px;
 }
@@ -185,7 +185,7 @@ a#modal_window_close {
 
 /*Textformatierung "Interviewdetails" */
 
-#containerInterview .data li, #containerForcedLabor .data li {
+#containerInterview .data li, #containerHistoricalContext .data li {
   background-image: none;
   padding: 0 0 2px 10px;
 }
