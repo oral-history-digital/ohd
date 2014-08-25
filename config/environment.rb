@@ -37,6 +37,8 @@ Rails::Initializer.run do |config|
 
   # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+  require 'i18n'
+  I18n.enforce_available_locales = false
   config.i18n.available_locales = CeDiS.config.available_locales.map(&:to_sym)
   config.i18n.default_locale = CeDiS.config.default_locale.to_sym
 
