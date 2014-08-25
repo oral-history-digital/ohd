@@ -29,14 +29,7 @@ class Search < UserContent
 
   RESULTS_PER_PAGE = 12
 
-  FACET_FIELDS = [
-      :interview_id,
-      :forced_labor_groups,
-      :forced_labor_fields,
-      :forced_labor_habitations,
-      :languages,
-      :countries
-  ]
+  FACET_FIELDS = [:interview_id, :language_id] + CeDiS.archive_category_ids
 
   NON_FACET_FIELDS = [
       :fulltext,
@@ -56,8 +49,8 @@ class Search < UserContent
 
   # Accessors for each query param *except* *fulltext*
   # (fulltext is actually the keywords search DB column.
-  (ACCESSIBLES - [ 'fulltext' ]).each do |query_param|
-    class_eval <<DEF
+  (ACCESSIBLES - ['fulltext']).each do |query_param|
+    class_eval <<-DEF
       # This is the generated setter for accessing the
       # #{query_param} query conditions.
       def #{query_param}=(#{query_param}_query)
@@ -71,7 +64,7 @@ class Search < UserContent
       def #{query_param}
         @#{query_param}
       end
-DEF
+    DEF
   end
 
 
@@ -143,7 +136,7 @@ DEF
   # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    facet_name = (if Category::is_category?(name)
+    facet_name = (if CeDiS.is_category?(name)
                    name.to_s.singularize << '_ids'
                  else
                    name
@@ -154,9 +147,9 @@ DEF
           if facet.blank?
             []
           elsif facet.rows.blank?
-            if Category::is_category?(name)
+            if CeDiS.is_category?(name)
               # Yield all categories with a count of zero.
-              Category.send(name).sort_by(&:to_s).map{|c| [c, 0]}
+              RegistryEntry.find_all_by_category(name).sort_by(&:to_s).map{|c| [c, 0]}
             else
               []
             end
@@ -165,19 +158,19 @@ DEF
             facet.rows.
                 map { |f| [f.instance, f.count] }.
                 reject do |f|
-                  if f.first.is_a?(Category)
-                    f.first.name(I18n.locale).blank?
-                  elsif f.first.is_a?(Interview)
+                  if f.first.is_a?(Interview)
                     f.first.full_title(I18n.locale).blank?
+                  elsif f.first.is_a?(RegistryEntry) or f.first.is_a?(Language)
+                    f.first.to_s(I18n.locale).blank?
                   else
                     true
                   end
                 end.
                 sort do |a, b|
-                  if a.first.is_a?(Category)
-                    Unicode::strcmp(a.first.name(I18n.locale), b.first.name(I18n.locale))
-                  elsif a.first.is_a?(Interview)
+                  if a.first.is_a?(Interview)
                     Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
+                  else
+                    Unicode::strcmp(a.first.to_s(I18n.locale), b.first.to_s(I18n.locale))
                   end
                 end
           end
@@ -456,9 +449,14 @@ DEF
           keywords fulltext_query
         end
 
-        # Category facets.
-        Category::ARCHIVE_CATEGORIES.map{|c| c.first.to_s.singularize }.each do |category|
-          with((category + '_ids').to_sym).any_of query[category.pluralize] unless query[category.pluralize].blank?
+        # Language.
+        unless query['language_id'].blank?
+          with :language_id, query['language_id']
+        end
+
+        # Configured category facets.
+        CeDiS.archive_category_ids.map(&:to_s).each do |category_name|
+          with(("#{category_name.singularize}_ids").to_sym).any_of query[category_name] unless query[category_name].blank?
         end
 
       end
@@ -478,12 +476,8 @@ DEF
       # Add query attributes common to all interview queries.
       search.build do
 
-        facet :interview_id,
-              :forced_labor_group_ids,
-              :forced_labor_field_ids,
-              :forced_labor_habitation_ids,
-              :language_ids,
-              :country_ids
+        id_fields = [:interview_id, :language_id] + CeDiS.archive_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
+        facet *id_fields
 
         paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
         order_by :"person_name_#{I18n.locale}", :asc

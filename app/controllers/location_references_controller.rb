@@ -52,7 +52,7 @@ class LocationReferencesController < BaseController
       @results = LocationReference.all(
           :conditions => "duplicate IS NOT TRUE",
           :limit => "#{(@page-1)*PER_PAGE},#{PER_PAGE}",
-          :include => [:translations, {:interview => {:languages => :translations}}]
+          :include => [:translations, {:interview => {:language => :translations}}]
       )
       respond_to do |wants|
         wants.html do

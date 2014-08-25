@@ -70,10 +70,10 @@ module InterviewHelper
   end
 
   # formats the languages for the transcript language tabs
-  def formatted_languages(interview)
-    truncate_language_names = interview.languages.size > 1
-    interview.languages.map do |lang|
-      lang_name = lang.to_s
+  def formatted_language(interview)
+    languages = interview.language.to_s.split('/')
+    truncate_language_names = languages.size > 1
+    languages.map do |lang_name|
       if truncate_language_names && lang_name.length > 8
         truncate(lang_name, :length => 5, :omission => '.')
       else
@@ -152,16 +152,15 @@ module InterviewHelper
   # Return a human-readable list of available translations for the given database object.
   def available_languages(translated_object)
     language_codes = translated_object.translations.map{|t| I18n.three_letter_locale(t.locale)}
-    Category.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
+    Language.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
   end
 
-  def language_adj_case(languages)
-    languages = [languages] unless languages.is_a? Array
-    languages = languages.map(&:to_s).map(&:mb_chars)
+  def language_adj_case(language)
+    language = language.to_s.mb_chars
     if I18n.locale == :en
-      languages.map(&:capitalize)
+      language.capitalize
     else
-      languages.map(&:downcase)
+      language.downcase
     end
   end
 end

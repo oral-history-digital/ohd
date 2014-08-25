@@ -9,7 +9,7 @@
       <a id="original" class="captions_orig active" href="javascript:void(0);"><%= @interview.language %></a>
     <% else %>
       <%= content_tag(:div,
-                      formatted_languages(@interview),
+                      formatted_language(@interview),
                       :id => "original",
                       :class => "captions_orig#{(!@interview.translated? || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
                       :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>

@@ -1,5 +1,5 @@
 <% query_params = search.query_params || { :forced_labor_group => '*' } %>
-<% additional_params = query_params.keys - [ 'interview_id', 'languages', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
+<% additional_params = query_params.keys - [ 'interview_id', 'language_id', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
 <% search ||= Search.new %>
 
 <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
@@ -9,7 +9,7 @@
     <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title(I18n.locale) %>
     <% if result.segmented? %>
       <div class="baseContainerTeaserSubtitled" onmouseover="$('teaser_<%= result.archive_id %>_tooltip').show();" onmouseout="$('teaser_<%= result.archive_id %>_tooltip').hide();">
-        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.languages.map(&:code).join('/') %><%= result.translated? ? "&nbsp;-&nbsp;deu" : '' %>
+        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.language.code %><%= result.translated? ? "&nbsp;-&nbsp;deu" : '' %>
         <% if result.has_headings? %>
         <%= image_tag(image_path('inhaltsverzeichnis.png'), :style => 'float: right; padding: 1px 1px 0 6px;') %>
         <% end %>
@@ -18,7 +18,7 @@
   </div>
   <% if result.segmented? %>
   <div id="teaser_<%= result.archive_id %>_tooltip" class="floatingToolTip" style="display: none;">
-    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.languages).join('/') %><%= result.translated? ? ('&nbsp;-&nbsp;' + language_adj_case(t('german')).first ) : ''%>.
+    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.language) %><%= result.translated? ? ('&nbsp;-&nbsp;' + language_adj_case(t('german')) ) : ''%>.
     <% if result.has_headings? %>
     <br/>
     <%= t(:has_headings, :scope => 'media') %>.
@@ -28,7 +28,7 @@
   <div class="baseContainerTeaserText">
     <h3><%= link_to result.short_title(I18n.locale), interview_path(result), :title => result.short_title(I18n.locale) %></h3>
     <ul>
-      <li class="languages"><%= result.language %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
+      <li class="language"><%= result.language.to_s %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
       <li class="media_type"><%= result.video %> <span class="duration"><%= format_value result.duration %></span>
       </li>
       <% additional_params << 'countries' if additional_params.empty? && query_params['countries'].is_a?(Array) %>

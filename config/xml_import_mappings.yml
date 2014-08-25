@@ -12,6 +12,7 @@ collection:
 interview:
   key_attributes: 'archive_id'
   archive-id: 'archive_id'
+  language-id: 'language_id'
   duration: 'duration'
   interview-date: 'interview_date'
   still-content-type: 'still_image_content_type'
@@ -23,10 +24,6 @@ interview:
   translated-citation: 'translated_citation'
   citation-timecode: 'citation_timecode'
   citation-media-id: 'citation_media_id'
-
-  language:
-    name: 'languages'
-    code: 'language_codes'
 
   person:
     alias-names: 'alias_names'
@@ -43,9 +40,13 @@ interview:
     punishment: 'punishment'
     liberation-date: 'liberation_date'
     return-date: 'return_date'
-    forced-labor-groups: 'forced_labor_groups'
-    forced-labor-habitations: 'forced_labor_habitations'
-    forced-labor-fields: 'forced_labor_fields'
+
+language:
+  key_attributes: 'id'
+  id: 'id'
+  code: 'code'
+  name: 'name'
+  abbreviated: 'abbreviated'
 
 interview-team-member:
   class_name: 'contribution'
@@ -70,7 +71,6 @@ tape:
   delete_all: true
 
 text-material:
-  class_name: 'text_material'
   key_attributes: 'document_type|locale'
   delete_all: true
   document-type: 'document_type'
@@ -150,3 +150,61 @@ annotation:
   media-id: 'media_id'
   timecode: 'timecode'
   text: 'text'
+
+registry-entry:
+  key_attributes: 'id'
+  id: 'id'
+  entry-code: 'entry_code'
+  entry-desc: 'entry_desc'
+  latitude: 'latitude'
+  longitude: 'longitude'
+  workflow-state: 'workflow_state'
+  list-priority: 'list_priority'
+
+registry-hierarchy:
+  key_attributes: 'id'
+  id: 'id'
+  ancestor-id: 'ancestor_id'
+  descendant-id: 'descendant_id'
+  direct: 'direct'
+  count: 'internal_count'
+
+registry-name-type:
+  key_attributes: 'id'
+  id: 'id'
+  code: 'code'
+  name: 'name'
+  order-priority: 'order_priority'
+  allows-multiple: 'allows_multiple'
+  mandatory: 'mandatory'
+
+registry-name:
+  key_attributes: 'id'
+  id: 'id'
+  registry-entry-id: 'registry_entry_id'
+  registry-name-type-id: 'registry_name_type_id'
+  name-position: 'name_position'
+  descriptor: 'descriptor'
+
+registry-reference-type:
+  key_attributes: 'id'
+  id: 'id'
+  registry-entry-id: 'registry_entry_id'
+  code: 'code'
+  name: 'name'
+
+registry-reference:
+  delete_all: true
+  id: 'id'
+  registry-entry-id: 'registry_entry_id'
+  ref-object-id: 'ref_object_id'
+  ref-object-type: 'ref_object_type'
+  registry-reference-type-id: 'registry_reference_type_id'
+  ref-position: 'ref_position'
+  original-descriptor: 'original_descriptor'
+  ref-details: 'ref_details'
+  ref-comments: 'ref_comments'
+  ref-info: 'ref_info'
+  workflow-state: 'workflow_state'
+  media-id: 'alternative_id'
+  archive-id: 'alternative_id'

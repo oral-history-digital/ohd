@@ -99,7 +99,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
   def end_document
     if @parsing
       begin
-        @interview.save! and puts "Stored interview '#{@interview.to_s}' (#{@interview.archive_id})."
+        @interview.save! and puts "\nStored interview '#{@interview.to_s}' (#{@interview.archive_id})."
         @interview.set_locations!
         @interview.set_contributor_fields!
         @imported['interviews'] << @interview.archive_id
@@ -198,7 +198,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         # check to see if we need to clear all associated items first
         item_mapping = @mappings[name.singularize]
         if item_mapping.is_a?(Hash) and item_mapping['delete_all']
-          db_entity = (item_mapping['class_name'] || name.singularize)
+          db_entity = (item_mapping['class_name'] || name.gsub('-', '_').singularize)
           klass = db_entity.camelize.constantize
           # send the association a delete_all!
           if klass.column_names.include?('interview_id') && !@interview.new_record?
@@ -208,7 +208,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             if klass.translates?
               ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
               num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
-              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations.)"
+              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations)"
             end
             num_deleted_records = klass.delete_all(:interview_id => @interview.id)
             STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
@@ -236,7 +236,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
     else
       # Start a locale node.
-      raise "Found invalid locale '#{name}' in import data." unless I18n.available_locales.include? name.to_sym
+      unless (I18n.available_locales + [:alias]).include? name.to_sym
+        raise "Found invalid locale '#{name}' in import data."
+      end
       @current_locale = name.to_sym
       @translated_attribute = true
 
@@ -265,7 +267,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
       else
         # Close locale node.
-        raise "Found invalid locale '#{name}' in import data." unless I18n.available_locales.include? name.to_sym
+        unless (I18n.available_locales + [:alias]).include? name.to_sym
+          raise "Found invalid locale '#{name}' in import data."
+        end
 
         # Assign a localized attribute value in the current context.
         assign_attribute(@current_attribute, @current_data) unless @current_attribute.nil?
@@ -322,7 +326,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @mapping_levels = [klass]
     @current_mapping = @mappings[klass]
     begin
-      @current_context = klass.camelize.constantize
+      @current_context = klass.gsub('-', '_').camelize.constantize
     rescue NameError
       # Not an Error: the mapping does not correspond 1:1 to an object class
       if @current_mapping['class_name'].nil?
@@ -455,6 +459,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                              dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
                              @current_context.send(dynamic_finder_name, *dynamic_finder_params)
                            end
+
+        # NB: Workaround to bypass DAG-logic / validation in the registry hierarchy.
+        current_instance.do_not_perpetuate = true if current_instance.is_a? RegistryHierarchy
 
         # Progression feedback.
         if (@node_index += 1) % 15 == 12

@@ -18,8 +18,11 @@ gem 'will_paginate', '~> 2.3' # Version restriction for Rails 2.3.
 gem 'paperclip',
     :git => 'git://github.com/jerico-dev/paperclip.git',
     :branch => 'v2.7' # Version restriction for Rails 2.3.
+gem 'acts-as-dag',
+    :git => 'git://github.com/jerico-dev/acts-as-dag.git',
+    :branch => 'v1.x' # Version restriction for Rails 2.3.
 gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
-gem 'archive-shared', '>= 0.0.6'
+gem 'archive-shared', '>= 0.1.0'
 gem 'archive-player', '>= 0.2.7'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',
@@ -30,6 +33,7 @@ gem 'resource_controller', :require => false, # Requiring resource_controller lo
     :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
+gem 'oniguruma' # Multibyte regexp support, remove when migrating to ruby 1.9.
 
 # Gems specific to public archive app:
 gem 'archive-authorization'

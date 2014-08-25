@@ -383,7 +383,6 @@ de:
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
         language: 'Sprache'
-        languages: 'Sprachen'
         collection: 'Teilsammlung'
       segment:
         media_id: 'Segment-ID'
@@ -503,17 +502,8 @@ de:
     impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
 
   facets:
-    forced_labor_group: 'Gruppe'
-    forced_labor_groups: 'Gruppen'
-    forced_labor_field: 'Einsatzbereich'
-    forced_labor_fields: 'Einsatzbereiche'
-    forced_labor_habitation: 'Unterbringung / Inhaftierung'
-    forced_labor_habitations: 'Unterbringung' # need singular for category_type
     interview_id: 'Name der Interviewten'
-    language: 'Sprache'
-    languages: 'Sprache' # need singular for category_type
-    country: 'Wohnort (Land)'
-    countries: 'Lebensmittelpunkt' # need singular for category_type
+    language_id: 'Sprache'
     fulltext: 'Suchbegriff'
 
   photos:

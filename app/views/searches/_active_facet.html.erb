@@ -1,14 +1,15 @@
 <% facet_dom_id = "selected_#{active_facet}" %>
 <% query = query.to_a unless query.is_a?(Array) %>
+<% is_category = CeDiS.is_category?(active_facet) %>
+<% human_readable_facet_name = (is_category ? CeDiS.category_name(active_facet, I18n.locale) : t(active_facet.singularize, :scope => :facets)) %>
 <div id="<%= facet_dom_id %>" class="active-facet">
-  <span class="facet-name"><%= t active_facet.singularize, :scope => :facets %>:</span>
-
-  <% is_category = Category.is_category?(active_facet) %>
+  <span class="facet-name"><%= human_readable_facet_name %>:</span>
 
   <ul>
-  <% if is_category %>
+  <% if is_category or active_facet == 'language_id' %>
 
-    <% query = query.map{|c| c.to_i != 0 ? begin; Category.find(c); rescue; nil; end : nil }.compact %>
+    <% clazz = (is_category ? RegistryEntry : Language) %>
+    <% query = query.map{|c| c.to_i != 0 ? begin; clazz.find(c); rescue; nil; end : nil }.compact %>
 
     <% query.each_with_index do |category, index| %>
       <li><%= category.to_s -%><%= (index == query.size-1) ? '' : ','-%></li>

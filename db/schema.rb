@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140805070240) do
+ActiveRecord::Schema.define(:version => 20140820171517) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -35,29 +35,6 @@ ActiveRecord::Schema.define(:version => 20140805070240) do
   add_index "annotations", ["interview_id"], :name => "index_annotations_on_interview_id"
   add_index "annotations", ["media_id"], :name => "index_annotations_on_media_id"
   add_index "annotations", ["segment_id"], :name => "index_annotations_on_segment_id"
-
-  create_table "categories", :force => true do |t|
-    t.string "category_type"
-    t.string "code"
-  end
-
-  create_table "categorizations", :force => true do |t|
-    t.integer "category_id",   :null => false
-    t.integer "interview_id",  :null => false
-    t.string  "category_type"
-  end
-
-  add_index "categorizations", ["category_type", "interview_id"], :name => "index_categorizations_on_category_type_and_interview_id"
-
-  create_table "category_translations", :force => true do |t|
-    t.integer  "category_id"
-    t.string   "locale"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "category_translations", ["category_id"], :name => "index_category_translations_on_category_id"
 
   create_table "collection_translations", :force => true do |t|
     t.integer  "collection_id"
@@ -177,6 +154,22 @@ ActiveRecord::Schema.define(:version => 20140805070240) do
     t.string   "citation_media_id"
     t.string   "citation_timecode",        :limit => 18
     t.datetime "indexed_at"
+    t.integer  "language_id"
+  end
+
+  create_table "language_translations", :force => true do |t|
+    t.integer  "language_id"
+    t.string   "locale"
+    t.string   "abbreviated"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "language_translations", ["language_id"], :name => "index_language_translations_on_language_id"
+
+  create_table "languages", :force => true do |t|
+    t.string "code"
   end
 
   create_table "location_reference_translations", :force => true do |t|
@@ -238,6 +231,91 @@ ActiveRecord::Schema.define(:version => 20140805070240) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+  end
+
+  create_table "registry_entries", :force => true do |t|
+    t.string   "entry_code"
+    t.string   "entry_desc"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.string   "workflow_state", :null => false
+    t.boolean  "list_priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "registry_hierarchies", :force => true do |t|
+    t.integer  "ancestor_id",   :null => false
+    t.integer  "descendant_id", :null => false
+    t.boolean  "direct",        :null => false
+    t.integer  "count",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "registry_hierarchies", ["ancestor_id", "descendant_id"], :name => "index_registry_hierarchies_on_ancestor_id_and_descendant_id", :unique => true
+  add_index "registry_hierarchies", ["ancestor_id"], :name => "index_registry_hierarchies_on_ancestor_id"
+  add_index "registry_hierarchies", ["descendant_id"], :name => "index_registry_hierarchies_on_descendant_id"
+
+  create_table "registry_name_translations", :force => true do |t|
+    t.integer  "registry_name_id", :null => false
+    t.string   "locale",           :null => false
+    t.text     "descriptor"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "registry_name_translations", ["descriptor"], :name => "index_registry_name_translations_on_descriptor", :length => {"descriptor"=>"255"}
+  add_index "registry_name_translations", ["registry_name_id", "locale"], :name => "index_registry_name_translations_on_registry_name_id_and_locale", :unique => true
+  add_index "registry_name_translations", ["registry_name_id"], :name => "index_registry_name_translations_on_registry_name_id"
+
+  create_table "registry_name_types", :force => true do |t|
+    t.string  "code"
+    t.string  "name"
+    t.integer "order_priority"
+    t.boolean "allows_multiple"
+    t.boolean "mandatory"
+  end
+
+  create_table "registry_names", :force => true do |t|
+    t.integer  "registry_entry_id",     :null => false
+    t.integer  "registry_name_type_id", :null => false
+    t.integer  "name_position",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "registry_names", ["registry_entry_id", "registry_name_type_id", "name_position"], :name => "registry_names_unique_types_and_positions", :unique => true
+
+  create_table "registry_reference_type_translations", :force => true do |t|
+    t.integer  "registry_reference_type_id"
+    t.string   "locale"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "registry_reference_type_translations", ["registry_reference_type_id"], :name => "index_959822146554d9dfd5d5530d45b5cafb8c7d4067"
+
+  create_table "registry_reference_types", :force => true do |t|
+    t.integer "registry_entry_id"
+    t.string  "code"
+  end
+
+  create_table "registry_references", :force => true do |t|
+    t.integer  "registry_entry_id",                          :null => false
+    t.integer  "ref_object_id",                              :null => false
+    t.string   "ref_object_type",                            :null => false
+    t.integer  "registry_reference_type_id"
+    t.integer  "ref_position",                               :null => false
+    t.string   "original_descriptor",        :limit => 1000
+    t.string   "ref_details",                :limit => 1000
+    t.string   "ref_comments",               :limit => 1000
+    t.string   "ref_info",                   :limit => 1000
+    t.string   "workflow_state",                             :null => false
+    t.integer  "interview_id",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "segment_translations", :force => true do |t|

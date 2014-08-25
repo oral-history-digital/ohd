@@ -24,3 +24,5 @@ meta_keywords:
 contact_email: 'mail@oral-history-archive.org'
 
 smtp_server: 'mail.fu-berlin.de'
+
+archive_categories: []

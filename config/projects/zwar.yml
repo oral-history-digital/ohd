@@ -38,3 +38,16 @@ meta_keywords:
 contact_email: 'mail@zwangsarbeit-archiv.de'
 
 smtp_server: 'mail.fu-berlin.de'
+
+# Search facets can be defined from interview metadata registry references:
+# - To create a facet for references to a main registry entry, use the descriptor to identify the entry.
+# - To create a facet for references of a certain reference type, use the registry reference name for identification.
+archive_categories:
+  - id: 'forced_labor_groups'
+    descriptor: 'Gruppe'
+  - id: 'forced_labor_fields'
+    descriptor: 'Einsatzbereich'
+  - id: 'forced_labor_habitations'
+    descriptor: 'Unterbringung / Inhaftierung'
+  - id: 'countries'
+    registry_reference_type: 'Wohnort (Land)'

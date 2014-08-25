@@ -6,6 +6,8 @@ class Interview < ActiveRecord::Base
 
   belongs_to :collection
 
+  belongs_to :language
+
   has_many  :photos,
             :dependent => :destroy,
             :include => [ :interview, :translations ]
@@ -82,34 +84,24 @@ class Interview < ActiveRecord::Base
                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
-  def self.is_categorized_by(category_type, name)
-    category_type = category_type.to_s
+  has_many :registry_references,
+           :as => :ref_object,
+           :include => [:registry_entry, :registry_reference_type]
+
+  has_many :registry_entries,
+           :through => :registry_references
+
+  CeDiS.archive_category_ids.each do |category_id|
     self.class_eval <<-CAT
-      has_many  :#{category_type}_categorizations,
-                :class_name => 'Categorization',
-                :conditions => "categorizations.category_type = '#{name}'"
+      def #{category_id}
+        RegistryEntry.find_all_by_category('#{category_id}', self)
+      end
 
-      has_many  :#{category_type},
-                :class_name => 'Category',
-                :through => :#{category_type}_categorizations,
-                :source => :category,
-                :conditions => "categories.category_type = '#{name}'"
-
-      def #{category_type.singularize}_ids
-        #{category_type}_categorizations.map(&:category_id)
+      def #{category_id.to_s.singularize}_ids
+        self.#{category_id}.map(&:id)
       end
     CAT
   end
-
-  Category::ARCHIVE_CATEGORIES.each do |category|
-    is_categorized_by(category.first, category.last)
-  end
-
-  has_many  :categorizations
-
-  has_many :categories,
-           :through => :categorizations,
-           :include => :translations
 
   translates :first_name, :other_first_names, :last_name, :birth_name,
              :details_of_origin, :return_date, :forced_labor_details, :birth_location,
@@ -131,11 +123,11 @@ class Interview < ActiveRecord::Base
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
-  before_save :set_workflow_flags, :set_country_category
-  after_save :set_categories
+  before_save :set_workflow_flags
 
   searchable :auto_index => false do
     integer :interview_id, :using => :id, :stored => true, :references => Interview
+    integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -177,19 +169,20 @@ class Interview < ActiveRecord::Base
       str.squeeze(' ')
     end
 
-    Category::ARCHIVE_CATEGORIES.each do |category|
-      integer((category.first.to_s.singularize + '_ids').to_sym, :multiple => true, :stored => true, :references => Category )
+    CeDiS.archive_category_ids.each do |category_id|
+      integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
-    # Index all categories with their translations into a single text field.
+
+    # Index archive id, categories and language (with all translations) for full text category search.
     text :categories, :boost => 20 do
       cats = [self.archive_id]
-      cats += Category::ARCHIVE_CATEGORIES.map{|c| self.send(c.first)}.
-          # Make a flat list of all categories of this interview.
-          flatten.
-          # Retrieve translations for the categories.
-          map do |cat|
-            cat.translations.map{|t| t.name}.join(' ')
-          end
+      cats += (CeDiS.archive_category_ids + [:language]).
+                  # Retrieve all category objects of this interview.
+                  map{|c| self.send(c)}.flatten.
+                  # Retrieve their translations.
+                  map do |cat|
+                    I18n.available_locales.map{|l| cat.to_s(l)}.join(' ')
+                  end
       cats.join(' ')
     end
 
@@ -212,26 +205,21 @@ class Interview < ActiveRecord::Base
 
   end
 
-
   # referenced by archive_id
   def to_param
     archive_id
   end
 
-  def to_s
-    short_title(I18n.locale)
-  end
-
-  def media_id
-    nil
-  end
-
-  def language
-    languages.join('/')
+  def to_s(locale = I18n.locale)
+    short_title(locale)
   end
 
   def transcript_locales
-    languages.map{|l| l.code.split('/')}.flatten
+    language.code.split('/')
+  end
+
+  def right_to_left
+    language.code == 'heb' ? true : false
   end
 
   def duration
@@ -336,10 +324,6 @@ class Interview < ActiveRecord::Base
     !segments.empty?
   end
 
-  def right_to_left
-    languages.map(&:to_s).include?('Hebräisch') ? true : false
-  end
-
   def citation_hash
     {
       :original => read_attribute(:original_citation),
@@ -347,35 +331,6 @@ class Interview < ActiveRecord::Base
       :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
       :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
-  end
-
-  # forced_labor_groups setter for attribute-based XML import
-  def forced_labor_groups=(data)
-    create_categories_from(data, 'Gruppen')
-  end
-
-  def forced_labor_habitations=(data)
-    create_categories_from(data, 'Unterbringung')
-  end
-
-  def forced_labor_fields=(data)
-    create_categories_from(data, 'Einsatzbereiche')
-  end
-
-  def home_location=(data)
-    # only create from home_location if we have valid data (such as a singular country name)
-    # - check for parenthesis, comma, semicolon to see if we have an aggregate name
-    unless data.match(/[,();]+/)
-      create_categories_from(data, 'Lebensmittelpunkt')
-    end
-  end
-
-  def languages=(data)
-    create_categories_from(data.gsub('/', '|'), 'Sprache')
-  end
-
-  def language_codes=(data)
-    create_categories_from(data.gsub('/', '|'), 'Sprache', :code)
   end
 
   def still_image_file_name=(filename)
@@ -465,96 +420,6 @@ class Interview < ActiveRecord::Base
         write_attribute :proofread, true
       end
     end
-  end
-
-  def set_country_category
-    # Set from country_of_origin as a fallback.
-    create_categories_from(self.country_of_origin, 'Lebensmittelpunkt') if self.countries.empty?
-  end
-
-  def set_categories
-    (@category_import || {}).each do |type, category_data|
-
-      next if type.blank?
-
-      # Remove all previous categorizations for the given type.
-      categorizations.select{|c| c.category_type.nil? || c.category_type == type }.each{|c| c.destroy }
-      # Must be reloaded for the later creation to work.
-      categorizations.reload
-
-      # Re-arrange localized category data by entry.
-      category_entries = []
-      category_data.each do |locale, category_atts|
-        category_atts.each do |attribute, values|
-          values.each_with_index do |value, index|
-            category_entries[index] ||= {}
-            category_entries[index][locale] ||= {}
-            category_entries[index][locale][attribute] = value
-          end
-        end
-      end
-
-      category_entries.each do |localized_attributes|
-
-        # We expect at least a category name for the default locale.
-        default_name = localized_attributes[I18n.default_locale][:name]
-        next if default_name.blank?
-
-        # Create a category with this name if it doesn't already exists.
-        category = Category.first(
-            :joins => :translations,
-            :conditions => [
-                'categories.category_type=? AND category_translations.name=? AND category_translations.locale=?',
-                type, default_name, I18n.default_locale.to_s
-            ],
-            :readonly => false
-        )
-        unless category
-          category = Category.new :category_type => type
-        end
-
-        # Set the localized names of the category.
-        category_changed = false
-        localized_attributes.each do |locale, attributes|
-          # Rail's dirty detection doesn't work with Globalize2's
-          # original code. We therefore have to manually identify changes.
-          next if category.name(locale) == attributes[:name] and (attributes[:code].blank? or category.code == attributes[:code])
-
-          category_changed = true
-          Category.with_locale(locale) do
-            category.name = attributes[:name]
-          end
-          category.code = attributes[:code] unless attributes[:code].blank?
-        end
-
-        category.save! if category.new_record? || category_changed
-
-        # Create a categorization for this category if it doesn't already exist.
-        begin
-          if categorizations.select{|c| c.category_id == category.id && c.category_type == type }.empty?
-            categorizations << Categorization.new{|c|
-              c.category_id = category.id
-              c.category_type = type
-            }
-          end
-        rescue => e
-          puts e.message
-        end
-
-      end
-    end
-  end
-
-  def create_categories_from(data, type, attribute = :name)
-    return if data.blank?
-    raise 'Invalid category type' unless Category::ARCHIVE_CATEGORIES.map(&:second).include? type
-    raise 'Invalid attribute' unless [:name, :code].include? attribute
-    category_names = data.split('|').map{|n| n.strip }
-    @category_import ||= {}
-    @category_import[type.to_s] ||= {}
-    import_locale = self.class.locale || I18n.locale
-    @category_import[type.to_s][import_locale] ||= {}
-    @category_import[type.to_s][import_locale][attribute] = category_names
   end
 
   def set_contributor_field_from(field, association)

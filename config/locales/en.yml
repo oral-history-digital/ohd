@@ -335,7 +335,6 @@ en:
         proofreaders: 'Proofreader'
         segmentators: 'Segmentator'
         language: 'Language'
-        languages: 'Languages'
         collection: 'Subset'
       segment:
         media_id: 'Segment-ID'
@@ -455,17 +454,8 @@ en:
     impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
 
   facets:
-    forced_labor_group: 'Group'
-    forced_labor_groups: 'Groups'
-    forced_labor_field: 'Deployment Area'
-    forced_labor_fields: 'Deployment Areas'
-    forced_labor_habitation: 'Internment Conditions'
-    forced_labor_habitations: 'Internment Conditions' # need singular for category_type
     interview_id: 'Name of the Interviewee'
-    language: 'Language'
-    languages: 'Language' # need singular for category_type
-    country: 'Place of Residence (Country)'
-    countries: 'Place of Residence (Country)' # need singular for category_type
+    language_id: 'Language'
     fulltext: 'Search Term'
 
   photos:

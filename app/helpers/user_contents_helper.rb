@@ -12,57 +12,55 @@ module UserContentsHelper
   end
 
   def query_hash_to_string(query)
-    case query
-      when Hash
-        # Render fulltext search.
-        fulltext = query.delete('fulltext')
-        str = fulltext.nil? ? [] : [ "#{t('facets.fulltext')}: \"#{fulltext}\"" ]
+    # Render fulltext search.
+    fulltext = query.delete('fulltext')
+    str = fulltext.nil? ? [] : [ "#{t('facets.fulltext')}: \"#{fulltext}\"" ]
 
-        # Preload interview by ID.
-        interview_ids = (query['interview_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
-        preloaded_interviews = interview_ids.empty? ? [] : Interview.all(:conditions => [ 'id IN (?)', interview_ids ])
+    # Preload interview by ID.
+    interview_ids = (query['interview_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
+    preloaded_interviews = interview_ids.empty? ? [] : Interview.all(:conditions => [ 'id IN (?)', interview_ids ])
 
-        # Preload queried categories by ID.
-        category_ids = query.reject{|key,value| key=='interview_id'}.values.flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
-        preloaded_categories = category_ids.empty? ? [] : Category.all(:conditions => [ 'id IN (?)', category_ids ], :include => :translations)
+    # Preload language by ID.
+    language_ids = (query['language_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
+    preloaded_languages = language_ids.empty? ? [] : Language.all(:conditions => [ 'id IN (?)', language_ids ], :include => :translations)
 
-        # Render keywords, categories and interviews.
-        str += query.keys.inject([]) do |out, key|
-          values = query[key]
-          case values
-            when Array
-              # Category search...
-              # Retrieve translated category names for category IDs.
-              facet_values = []
-              values.map do |v|
-                if key == 'interview_id'
-                  int = preloaded_interviews.detect{|i| i.id = v.to_i}
-                  unless int.nil?
-                    facet_values << int.full_title(I18n.locale)
-                  end
-                else
-                  cat = preloaded_categories.detect{|c| c.id == v.to_i}
-                  unless cat.nil?
-                    facet_values << cat.name(I18n.locale)
-                  end
-                end
+    # Preload queried categories by ID.
+    category_names = CeDiS.archive_category_ids.map(&:to_s)
+    category_ids = query.select{|key,value| category_names.include? key}.map(&:second).flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
+    preloaded_categories = category_ids.empty? ? [] : RegistryEntry.all(:conditions => [ 'id IN (?)', category_ids ], :include => {:registry_names => :translations})
+
+    # Render keywords, categories and interviews.
+    str += query.keys.inject([]) do |out, key|
+      human_readable_facet_name = CeDiS.is_category?(key) ? CeDiS.category_name(key) : t(key, :scope => :facets)
+      values = query[key]
+      case values
+        when Array
+          # Category search...
+          # Retrieve translated category names for category IDs.
+          facet_values = []
+          values.map do |v|
+            if key == 'interview_id'
+              int = preloaded_interviews.detect{|i| i.id = v.to_i}
+              unless int.nil?
+                facet_values << int.full_title(I18n.locale)
               end
-              out << "#{t(key, :scope => :facets)}: #{facet_values.join(', ')}"
-
             else
-              # Keyword search...
-              out << "#{t(key, :scope => :facets)}: #{values}"
-
+              cat = (key == 'language_id' ? preloaded_languages : preloaded_categories).detect{|c| c.id == v.to_i}
+              unless cat.nil?
+                facet_values << cat.to_s(I18n.locale)
+              end
+            end
           end
-          out
-        end
-        str.join('; ')
+          out << "#{human_readable_facet_name}: #{facet_values.join(', ')}"
 
-      else
-        # Fallback - TODO: obsolete?
-        query.to_s
+        else
+          # Keyword search...
+          out << "#{human_readable_facet_name}: #{values}"
 
+      end
+      out
     end
+    str.join('; ')
   end
 
   def in_place_edit_for(user_content, attribute, options={})

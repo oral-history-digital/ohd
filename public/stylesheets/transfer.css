@@ -183,7 +183,7 @@ a#modal_window_close {
   color: #999;
 }
 
-/*Textformatierung "Interview / Daten zur Zwangsarbeit" */
+/*Textformatierung "Interviewdetails" */
 
 #containerInterview .data li, #containerForcedLabor .data li {
   background-image: none;

@@ -105,43 +105,18 @@ namespace :cleanup do
     puts "\nDone. #{edited} user_registrations of #{index} and #{users} users harmonized."
   end
 
-  # WARNING: unused categories could still be in the index
+  # WARNING: unused registry entries could still be in the index
   # MAKE SURE YOU HAVE AN UP-TO-DATE INDEX BEFORE RUNNING THIS
-  desc "Removes unused categories - those that aren't used by any interviews"
-  task :unused_categories => :environment do
+  desc "Removes unused registry entries - those that aren't used by any interviews"
+  task :unused_registry_entries => :environment do
 
-    puts 'Checking for unused categories:'
+    puts 'Checking for unused registry entries:'
 
-    cats = Category.all(:joins => 'LEFT JOIN categorizations AS cz ON cz.category_id = categories.id', :conditions => 'cz.id IS NULL')
-    puts "#{cats.size} unused categories found#{cats.size > 0 ? ' - deleting.' : ''}"
-    cats.each do |category|
-      puts "#{category.category_type}: #{category.name} deleted."
-      category.destroy
-    end
-
-    puts 'Done.'
-
-  end
-
-  desc 'Removes duplicate categorizations - two or more assignments to exactly the same category for an interview'
-  task :remove_duplicate_categories => :environment do
-
-    puts "Checking duplicates for #{Category.count} categories:"
-
-    Category.find_each do |category|
-
-      duplicate_categorizations = Categorization.all(:conditions => "category_id = #{category.id}", :group => 'interview_id', :having => 'count(interview_id) > 1')
-
-      duplicate_categorizations.each do |categorization|
-        removed = Categorization.delete_all "interview_id = #{categorization.interview_id} AND category_id = #{categorization.category_id} AND id != #{categorization.id}"
-        if removed > 0
-          puts "\n - deleted #{removed} duplicate categorization(s) for interview #{categorization.interview_id} '#{category.name}' (#{category.category_type})"
-        end
-      end
-
-      STDOUT.printf '.'
-      STDOUT.flush
-
+    res = RegistryEntry.find_all_unused
+    puts "#{res.size} unused registry entries found#{res.size > 0 ? ' - deleting.' : ''}"
+    res.each do |re|
+      puts "'#{re}' deleted."
+      re.destroy
     end
 
     puts 'Done.'

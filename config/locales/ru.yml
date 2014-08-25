@@ -511,17 +511,8 @@ ru:
     #impressum: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   facets:
-    forced_labor_group: 'Группа'
-    forced_labor_groups: 'Группы'
-    forced_labor_field: 'Сфера деятельности'
-    forced_labor_fields: 'Сферы деятельности'
-    forced_labor_habitation: 'Размещение / Заключение'
-    forced_labor_habitations: 'Размещение' # need singular for category_type
     interview_id: 'Имя интервьюируемого'
-    language: 'Язык'
-    languages: 'Язык' # need singular for category_type
-    country: 'Место жительства (страна)'
-    countries: 'Центр жизненных интересов' # need singular for category_type
+    language_id: 'Язык'
     fulltext: 'Ключевое понятие'
 
   photos:

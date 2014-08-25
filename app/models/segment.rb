@@ -17,14 +17,6 @@ class Segment < ActiveRecord::Base
   # on these, as they are user-generated.
   has_many  :annotations
 
-  Category::ARCHIVE_CATEGORIES.each do |category|
-    self.class_eval <<DEF
-    def #{category.first.to_s.singularize}_ids
-      interview.#{category.first.to_s.singularize}_ids
-    end
-DEF
-  end
-
   named_scope :with_heading,
               :joins => :translations,
               :conditions => [
