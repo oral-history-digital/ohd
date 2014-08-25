@@ -85,7 +85,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     add_column :interviews, :language_id, :integer
 
     drop_table :categorizations
-    Category.drop_translation_table!
+    drop_table :category_translations
     drop_table :categories
   end
 
@@ -94,7 +94,12 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.string :category_type
       t.string :code
     end
-    Category.create_translation_table! :name => :string
+    create_table :category_translations do |t|
+      t.references :category
+      t.string :locale
+      t.string :name
+      t.timestamps
+    end
 
     create_table :categorizations do |t|
       t.integer :category_id,   :null => false
