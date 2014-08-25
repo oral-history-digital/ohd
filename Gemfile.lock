@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jerico-dev/acts-as-dag.git
-  revision: b3e3faad2345a5ada141f8da8e17c33a15752f7a
+  revision: 9aa1ad1e126e257fc69b2e363da7318496855b77
   branch: v1.x
   specs:
     acts-as-dag (1.1.4)
