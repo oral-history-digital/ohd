@@ -13,7 +13,7 @@ namespace :import do
       # Clean the database.
       # TODO: user_accounts, user_registrations, users
       %w(
-        annotation collection contribution contributor import interview language
+        annotation collection contribution contributor import interview
         location_reference location_segment photo registry_reference registry_reference_type
         registry_entry registry_hierarchy registry_name registry_name_type segment tagging tag
         tape text_material usage_report user_account_ip user_content
