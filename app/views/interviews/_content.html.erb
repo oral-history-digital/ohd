@@ -63,7 +63,11 @@
         </h2>
     </div>
     <div id="headings" class="accordion-container container" style="height: 377px; background: #f8f8f5;<%= show_headings ? '' : 'display: none;' -%>">
-        <%= render :partial => 'headings', :object => content, :locals => {:player => @player, :headings_locale => headings_locale} %>
+        <% if @interview.segments.with_heading.first.blank? %>
+            <%= t '.work_in_progress' %>
+        <% else %>
+            <%= render :partial => 'headings', :object => content, :locals => {:player => @player, :headings_locale => headings_locale} %>
+        <% end %>
     </div>
 
     <% if show_locations -%>

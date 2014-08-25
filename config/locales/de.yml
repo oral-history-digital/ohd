@@ -546,6 +546,7 @@ de:
   interviews:
     content:
       search_in_interview: 'Suchen in &#145;%{content}&#146;'
+      work_in_progress: 'Das Inhaltsverzeichnis für dieses Interview ist noch in Bearbeitung.'
     segments:
       in: 'In'
     search:
