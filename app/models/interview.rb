@@ -106,8 +106,6 @@ class Interview < ActiveRecord::Base
                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
-  before_save :set_workflow_flags
-
   searchable :auto_index => false do
     integer :interview_id, :using => :id, :stored => true, :references => Interview
     integer :language_id, :stored => true, :references => Language
@@ -352,7 +350,7 @@ class Interview < ActiveRecord::Base
   private
 
   # segmented, researched, proofread
-  def set_workflow_flags
+  def set_workflow_flags!
     if segments.size > 0
       write_attribute :segmented, true
       if segments.with_heading.size > 0
@@ -361,6 +359,7 @@ class Interview < ActiveRecord::Base
       unless proofreaders(I18n.default_locale).blank?
         write_attribute :proofread, true
       end
+      save
     end
   end
 

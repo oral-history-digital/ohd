@@ -72,7 +72,7 @@
 
     <% if show_registry_entries -%>
         <% @segments = spaced_apart_segments(@registry_entry.registry_references.for_interview(@interview.id).map(&:ref_object)) -%>
-        <% fulltext = @registry_entry.to_s -%>
+        <% fulltext = @registry_entry.to_s(I18n.locale) -%>
     <% else -%>
         <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
         <% fulltext = @search.fulltext -%>
