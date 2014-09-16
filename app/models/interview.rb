@@ -347,8 +347,6 @@ class Interview < ActiveRecord::Base
     save
   end
 
-  private
-
   # segmented, researched, proofread
   def set_workflow_flags!
     if segments.size > 0
@@ -362,6 +360,8 @@ class Interview < ActiveRecord::Base
       save
     end
   end
+
+  private
 
   def set_contributor_field_from(field, association)
     field_contributors = self.send(association)
