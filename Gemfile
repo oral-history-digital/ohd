@@ -22,7 +22,7 @@ gem 'acts-as-dag',
     :git => 'git://github.com/jerico-dev/acts-as-dag.git',
     :branch => 'v1.x' # Version restriction for Rails 2.3.
 gem 'mime-types', '~> 1.25' # Only required as long as we use ruby 1.8.
-gem 'archive-shared', '>= 0.1.2'
+gem 'archive-shared', '>= 0.1.3'
 gem 'archive-player', '>= 0.2.7'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',
