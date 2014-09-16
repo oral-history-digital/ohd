@@ -122,7 +122,6 @@ def init_segment
     interview.archive_id = 'za907'
     interview.first_name = 'Abraham'
     interview.last_name = 'Lincoln'
-    interview.country_of_origin = 'Vereinigte Staaten'
   end
   @tape ||= Tape.create do |tape|
     tape.media_id = 'ZA907_01_01'#

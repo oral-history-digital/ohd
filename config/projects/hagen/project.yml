@@ -25,4 +25,14 @@ contact_email: 'almut.leh@fernuni-hagen.de'
 
 smtp_server: 'mail.fu-berlin.de'
 
-archive_categories: []
+person_properties:
+  - id: 'person_reference'
+    source: 'registry_entry'
+    descriptor: 'Person'
+  - id: 'birth_locations'
+    source: 'registry_reference_type'
+  - id: 'home_locations'
+    source: 'registry_reference_type'
+    use_as_facet: true
+
+uses_map: false # Currently must be "false" for all projects except ZWAR.

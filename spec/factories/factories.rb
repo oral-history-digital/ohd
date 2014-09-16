@@ -5,7 +5,6 @@ FactoryGirl.define do
     last_name 'Baschlai'
     first_name 'Sinaida'
     other_first_names 'Iwanowna'
-    country_of_origin 'Russland'
   end
 
   factory :tape do

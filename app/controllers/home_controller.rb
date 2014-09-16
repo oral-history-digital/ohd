@@ -3,7 +3,7 @@ class HomeController < BaseController
 
   NO_LAYOUT = %w(map_tutorial)
 
-  STATIC_PAGES = (Dir.entries(File.join(Rails.root, 'app/views/home', CeDiS.config.project_id)) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
+  STATIC_PAGES = (Dir.entries(File.join(Rails.root, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
   skip_before_filter :check_user_authentication!
 
@@ -56,7 +56,6 @@ class HomeController < BaseController
   def localize_template_path(path)
     path_tokens = path.split('/')
     template_name = path_tokens.pop
-    path_tokens.unshift(CeDiS.config.project_id)
     path = path_tokens.join('/')
     path << '/' unless path.blank?
     template_name << '.html.erb' unless template_name.include?('.')

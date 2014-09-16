@@ -39,15 +39,49 @@ contact_email: 'mail@zwangsarbeit-archiv.de'
 
 smtp_server: 'mail.fu-berlin.de'
 
-# Search facets can be defined from interview metadata registry references:
-# - To create a facet for references to a main registry entry, use the descriptor to identify the entry.
-# - To create a facet for references of a certain reference type, use the registry reference name for identification.
-archive_categories:
+# Interview partner properties usually depend on the historical context and must therefore be configured
+# on a per-project basis:
+# - To create a property from sub-entries of a registry entry, use the (default language) descriptor to identify the
+#   entry. The ID of the property will define the internal property name.
+# - To create a property from references of a certain reference type, use the registry reference code
+#   as ID. The clear name will be retrieved from the registry reference type table.
+# - Interview partner properties will be used as search facets when setting the facet property to 'true'. The order of
+#   entries is significant to determine in which order entries appear in the "search facet" section.
+# NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
+person_properties:
+  - id: 'person_reference'
+    source: 'registry_entry'
+    descriptor: 'Person'
+  - id: 'birth_locations'
+    source: 'registry_reference_type'
   - id: 'forced_labor_groups'
+    source: 'registry_entry'
     descriptor: 'Gruppe'
+    use_as_facet: true
   - id: 'forced_labor_fields'
+    source: 'registry_entry'
     descriptor: 'Einsatzbereich'
+    use_as_facet: true
   - id: 'forced_labor_habitations'
+    source: 'registry_entry'
     descriptor: 'Unterbringung / Inhaftierung'
-  - id: 'countries'
-    registry_reference_type: 'Wohnort (Land)'
+    use_as_facet: true
+  - id: 'home_locations'
+    source: 'registry_reference_type'
+    use_as_facet: true
+  - id: 'forced_labor_locations'
+    source: 'registry_reference_type'
+  - id: 'deportation_locations'
+    source: 'registry_reference_type'
+  - id: 'return_locations'
+    source: 'registry_reference_type'
+
+# NB: The map has not yet been generalized to work for all historical
+# contexts. It relies on ZWAR-specific registry data structures (i.e. a
+# three-level location hierarchy, companies, camps and specific registry
+# reference types like "forced labor locations").
+# If you want to use the map for a different historical context then a
+# generic map will have to be specified by the project responsibles first.
+# Therefore set this to "false" for all projects except ZWAR unless
+# you also change the corresponding map code.
+uses_map: true

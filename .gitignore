@@ -1,5 +1,5 @@
 .idea/
-assets/
+assets
 config/database.yml
 config/project.yml
 log/

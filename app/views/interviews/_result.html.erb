@@ -1,5 +1,5 @@
 <% query_params = search.query_params || { :forced_labor_group => '*' } %>
-<% additional_params = query_params.keys - [ 'interview_id', 'language_id', 'partial_person_name', 'fulltext', 'page', 'countries', 'forced_labor_fields' ] %>
+<% additional_params = query_params.keys - [ 'interview_id', 'language_id', 'partial_person_name', 'fulltext', 'page' ] %>
 <% search ||= Search.new %>
 
 <div class="baseContainerTeaser" style="clear: <%= cycle 'left', 'none' %>;">
@@ -31,10 +31,8 @@
       <li class="language"><%= result.language.to_s %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
       <li class="media_type"><%= result.video %> <span class="duration"><%= format_value result.duration %></span>
       </li>
-      <% additional_params << 'countries' if additional_params.empty? && query_params['countries'].is_a?(Array) %>
-      <% additional_params << 'forced_labor_fields' if additional_params.empty? && query_params['forced_labor_fields'].is_a?(Array) %>
-      <% additional_params << 'forced_labor_groups' if additional_params.empty? %>
-      <% additional_params.each do |attribute| %>
+      <% additional_params << CeDiS.archive_facet_category_ids.first if additional_params.empty? %>
+      <% additional_params.compact.each do |attribute| %>
         <% if result.respond_to?(attribute.to_s) %>
             <li class="<%= attribute %>">
               <span class='label'><%= Interview.human_attribute_name(attribute) %></span>

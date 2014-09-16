@@ -6,7 +6,7 @@ class UsageReport < ActiveRecord::Base
   INTERVIEW = 'InterviewsController#show'
   MATERIALS = 'InterviewsController#text_materials'
   SEARCHES = 'SearchesController#query'
-  MAP = 'LocationReferencesController#map_frame'
+  MAP = 'RegistryReferencesController#map_frame'
 
   TRACKED_ACTIONS = [
       LOGIN,

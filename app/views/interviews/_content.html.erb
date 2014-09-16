@@ -1,6 +1,6 @@
 <div id="interviewContentNavigation" class="baseListBox">
 
-    <% featured_content = if params[:location_name].blank?
+    <% featured_content = if params[:registry_entry_id].blank?
                             if @search.matching_segments_for(@interview.archive_id).empty? && content.has_headings?
                               # table of contents displayed
                               :headings
@@ -8,16 +8,16 @@
                               # segment search
                               :search_results
                             end
-                          elsif content.location_references.empty?
+                          elsif content.registry_references.empty?
                             :search_results
                           else
-                            # segments for location
-                            :locations
+                            # segments indexed with a given registry entry
+                            :registry_entry
                           end -%>
 
-    <% show_segments = [:search_results, :locations].include?(featured_content) -%>
-    <% show_locations = (featured_content == :locations) && defined?(@location) && !@location.nil? -%>
-    <% current_search_text = (show_locations || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
+    <% show_segments = [:search_results, :registry_entry].include?(featured_content) -%>
+    <% show_registry_entries = (featured_content == :registry_entry) && defined?(@registry_entry) && !@registry_entry.nil? -%>
+    <% current_search_text = (show_registry_entries || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
     <% remote_form_for content,
                        :url => interview_searches_path,
@@ -70,9 +70,9 @@
         <% end %>
     </div>
 
-    <% if show_locations -%>
-        <% @segments = spaced_apart_segments(@location.segments.for_interview(@interview)) -%>
-        <% fulltext = ([@location.location_name] + (@location.alias_location_names || '').split(/;\s*/)).join('|') -%>
+    <% if show_registry_entries -%>
+        <% @segments = spaced_apart_segments(@registry_entry.registry_references.for_interview(@interview.id).map(&:ref_object)) -%>
+        <% fulltext = @registry_entry.to_s -%>
     <% else -%>
         <% @segments = @search.matching_segments_for(@interview.archive_id) -%>
         <% fulltext = @search.fulltext -%>

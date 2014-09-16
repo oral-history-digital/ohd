@@ -28,15 +28,13 @@ interview:
   person:
     alias-names: 'alias_names'
     gender: 'gender'
-    country-of-origin: 'country_of_origin'
     date-of-birth: 'date_of_birth'
-    deportation-date: 'deportation_date'
-    details-of-origin: 'details_of_origin'
     firstname: 'first_name'
     middle-names: 'other_first_names'
     lastname: 'last_name'
     birth-name: 'birth_name'
-    forced-labor-details: 'forced_labor_details'
+    forced-labor-details: 'forced_labor_details' # TODO: Make project-specific fields configurable.
+    deportation-date: 'deportation_date'
     punishment: 'punishment'
     liberation-date: 'liberation_date'
     return-date: 'return_date'
@@ -93,54 +91,6 @@ caption:
   speaker-change: 'speaker_change'
   chapter-change: 'chapter_change'
   speaker: 'speaker'
-
-location:
-  class_name: 'location_reference'
-  key_attributes: 'none'
-  delete_all: true
-  skip_invalid: true
-  place-type: 'location_type'
-  descriptor: 'name'
-  related-to: 'reference_type'
-  camp-category: 'camp_type'
-  workflow-state: 'workflow_state'
-  physical-location:
-    name: 'location_name'
-    longitude: 'longitude'
-    latitude: 'latitude'
-    city:
-      name: 'city_name'
-      alias-names: 'city_alias_names'
-    region:
-      name: 'region_name'
-      latitude: 'region_latitude'
-      longitude: 'region_longitude'
-      alias-names: 'region_alias_names'
-    country:
-      name: 'country_name'
-      latitude: 'country_latitude'
-      longitude: 'country_longitude'
-      alias-names: 'country_alias_names'
-  camp:
-    name: 'camp_name'
-    alias-names: 'camp_alias_names'
-    classification: 'camp_classification'
-    description: 'description'
-    latitude: 'exact_latitude'
-    longitude: 'exact_longitude'
-  company:
-    name: 'company_name'
-    alias-names: 'company_alias_names'
-    description: 'description'
-    latitude: 'exact_latitude'
-    longitude: 'exact_longitude'
-
-locations-segment:
-  class_name: 'location_segment'
-  key_attributes: 'none'
-  skip_invalid: true
-  media-id: 'media_id'
-  descriptor: 'descriptor'
 
 annotation:
   key_attributes: 'none'

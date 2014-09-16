@@ -106,7 +106,7 @@ var locationTypePriorities = [
         'interview',
         'return_location',
         'home_location',
-        'place_of_birth',
+        'birth_location',
         'postwar_camp',
         'deportation_location',
         'forced_labor_location',
@@ -203,26 +203,21 @@ var ClusterManager = Class.create({
 
     },
 
-    addLocation: function(id, latLng, interviewId, htmlText, region, country, divClass, linkURL) {
+    addLocation: function(registryEntry, interviewId, htmlText, region, country, divClass, linkURL) {
         var locDisplay = this.filters.include(divClass);
-        var location = new Location(id, latLng, 0, interviewId, htmlText, divClass, linkURL, locDisplay);
-
+        var location = new Location(registryEntry, 0, interviewId, htmlText, divClass, linkURL, locDisplay);
         this.addLocationToLevel(location, 0);
 
         // region
         if(region && region.longitude && region.latitude) {
             // create the region & cluster
-            var latLng = new google.maps.LatLng(region.latitude, region.longitude);
-            var regionLoc = new Location(region.name, latLng, 1, interviewId, '', divClass, '', locDisplay);
-
+            var regionLoc = new Location(region, 1, interviewId, '', divClass, '', locDisplay);
             this.addLocationToLevel(regionLoc, 1);
         }
 
         // country
         if(country && country.longitude && country.latitude) {
-            var latLng = new google.maps.LatLng(country.latitude, country.longitude);
-            var countryLoc = new Location(country.name, latLng, 2, interviewId, '', divClass, '', locDisplay);
-
+            var countryLoc = new Location(country, 2, interviewId, '', divClass, '', locDisplay);
             this.addLocationToLevel(countryLoc, 2);
         }
     },
@@ -287,7 +282,6 @@ var ClusterManager = Class.create({
             // don't cluster by region except when using really small offsets
             level = 2;
         }
-        // debugMsg('Check for zoom shift at zoom = ' + zoom + '\nlevel = ' + level);
         if(level != this.currentLevel) {
             this.switchLevel(level);
         }
@@ -322,7 +316,7 @@ var ClusterManager = Class.create({
 
     showClusterPage: function(page) {
         if(this.shownCluster && this.activeInfo) {
-            // TODO: is there a way to change the content more gently (fade etc.)?
+            // TODO: Is there a way to change the content more gently (fade etc.)?
             this.activeInfo.setContent(this.shownCluster.displayInfo(page));
             // remember the location list's width and set as minimum
             var locationList = $('active_info_locations');
@@ -368,36 +362,6 @@ var ClusterManager = Class.create({
         }
     },
 
-    // benchmark test for markers
-    toggleAllMarkers: function() {
-        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
-        this.benchmark(function() {
-           var clusters = cedisMap.mapClusters[currentLevel];
-           var idx = clusters.length;
-           while(idx--) {
-               var marker = clusters[idx].marker;
-               marker.setVisible(!marker.getVisible());
-           }
-        }, 'Toggle all Clusters/Markers');
-    },
-
-    // benchmark test for locations
-    toggleAllLocations: function() {
-        var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
-        this.benchmark(function() {
-            var locations = cedisMap.mapLocations[currentLevel];
-            var idx = locations.length;
-            while(idx--) {
-                var location = locations[idx];
-                if(location.display) {
-                    location.hide();
-                } else {
-                    location.show();
-                }
-            }
-        },'Toggle all Locations');
-    },
-
     switchLevel: function(level) {
         var currentLevel = cedisMap.locationSearch.clusterManager.currentLevel;
         if(currentLevel == level) { return; }
@@ -437,14 +401,14 @@ var ClusterManager = Class.create({
 });
 
 var Location = Class.create({
-    initialize: function(id, latLng, level, interviewId, htmlText, divClass, linkURL, locDisplay) {
+    initialize: function(registryEntry, level, interviewId, htmlText, divClass, linkURL, locDisplay) {
         this.info = htmlText;
         this.locationType = this.getPriority(divClass);
-        this.title = id;
+        this.title = registryEntry.descriptor;
         this.interviewId = parseArchiveId(interviewId);
-        this.latLng = latLng;
+        this.latLng = new google.maps.LatLng(registryEntry.latitude, registryEntry.longitude);
         this.level = level;
-        this.linkURL = linkURL + '/in/' + encodeURIComponent(id.gsub('/', ' ').gsub(/[()-+&.!,;]+/, " ").gsub(/\s+/, "+")) + '?locale=' + I18n.locale;
+        this.linkURL = linkURL + '/in/' + registryEntry.id.toString() + '?locale=' + I18n.locale;
         this.displayFilter = locDisplay;
         this.displaySelection = true;
         this.cluster = null;

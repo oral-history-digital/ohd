@@ -100,7 +100,6 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     if @parsing
       begin
         @interview.save! and puts "\nStored interview '#{@interview.to_s}' (#{@interview.archive_id})."
-        @interview.set_locations!
         @interview.set_contributor_fields!
         @imported['interviews'] << @interview.archive_id
         if @selection.empty?

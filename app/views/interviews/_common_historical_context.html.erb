@@ -1,0 +1,11 @@
+<% if common_historical_context.birth_locations.empty? -%>
+    <li>
+        <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
+        <span class="value"><%= format_date common_historical_context.date_of_birth %></span>
+    </li>
+<% else -%>
+    <li>
+        <span class="label"><%= CeDiS.category_name(:birth_locations, I18n.locale) %></span>
+        <span class="value"><%= common_historical_context.birth_location_names(I18n.locale) %>,&nbsp;<%= format_date common_historical_context.date_of_birth%></span>
+    </li>
+<% end -%>

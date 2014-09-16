@@ -4,7 +4,7 @@ class InterviewsController < BaseController
 
   helper :interview
 
-  before_filter :featured_location, :only => :show
+  before_filter :featured_registry_entry, :only => :show
   skip_before_filter :current_search_for_side_panel, :except => :show
 
   actions :show
@@ -54,8 +54,8 @@ class InterviewsController < BaseController
     @object
   end
 
-  def featured_location
-    @location = (params[:location_name].blank? ? nil : LocationReference.with_segments_from_interview(object).select{|l| location_to_param(l.name(I18n.locale)) == params[:location_name]}.first)
+  def featured_registry_entry
+    @registry_entry = (params[:registry_entry_id].blank? ? nil : RegistryEntry.find(params[:registry_entry_id]))
   end
 
   def location_to_param(name)

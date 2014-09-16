@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140820171517) do
+ActiveRecord::Schema.define(:version => 20140831142122) do
 
   create_table "annotation_translations", :force => true do |t|
     t.integer  "annotation_id"
@@ -104,15 +104,10 @@ ActiveRecord::Schema.define(:version => 20140820171517) do
     t.string   "locale"
     t.string   "first_name"
     t.string   "last_name"
-    t.text     "forced_labor_locations"
     t.string   "other_first_names"
-    t.text     "return_locations"
-    t.string   "details_of_origin"
     t.string   "return_date"
     t.string   "birth_name"
     t.text     "forced_labor_details"
-    t.string   "deportation_location"
-    t.string   "birth_location"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "transcriptors"
@@ -130,7 +125,6 @@ ActiveRecord::Schema.define(:version => 20140820171517) do
     t.integer  "collection_id"
     t.boolean  "gender"
     t.string   "date_of_birth"
-    t.string   "country_of_origin"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
@@ -171,49 +165,6 @@ ActiveRecord::Schema.define(:version => 20140820171517) do
   create_table "languages", :force => true do |t|
     t.string "code"
   end
-
-  create_table "location_reference_translations", :force => true do |t|
-    t.integer  "location_reference_id"
-    t.string   "locale"
-    t.string   "country_name"
-    t.string   "location_name"
-    t.string   "name"
-    t.string   "region_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "location_reference_translations", ["location_reference_id"], :name => "index_da9a0d484ad266ba1cb1495bae382a31d60ac2d6"
-
-  create_table "location_references", :force => true do |t|
-    t.integer "interview_id"
-    t.string  "alias_names"
-    t.text    "alias_location_names"
-    t.string  "longitude"
-    t.string  "latitude"
-    t.string  "location_type"
-    t.string  "description"
-    t.string  "reference_type"
-    t.boolean "classified",           :default => true
-    t.string  "region_latitude"
-    t.string  "region_longitude"
-    t.string  "country_latitude"
-    t.string  "country_longitude"
-    t.integer "hierarchy_level"
-    t.boolean "duplicate",            :default => false
-    t.string  "place_subtype"
-  end
-
-  add_index "location_references", ["interview_id"], :name => "index_location_references_on_interview_id"
-  add_index "location_references", ["interview_id"], :name => "index_location_references_on_interview_id_and_name"
-
-  create_table "location_segments", :force => true do |t|
-    t.integer "location_reference_id"
-    t.integer "segment_id"
-    t.integer "interview_id"
-  end
-
-  add_index "location_segments", ["location_reference_id"], :name => "index_location_segments_on_location_reference_id"
 
   create_table "photo_translations", :force => true do |t|
     t.integer  "photo_id"

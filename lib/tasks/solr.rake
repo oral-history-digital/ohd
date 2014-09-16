@@ -74,11 +74,11 @@ namespace :solr do
     end
 
 
-    desc 'delete the index for locations'
-    task :locations => 'solr:connect' do
+    desc 'delete the index for registry references'
+    task :registry_references => 'solr:connect' do
 
-      puts "\nDeleting the index for locations"
-      solr_connection.delete_by_query 'type:LocationReference'
+      puts "\nDeleting the index for registry references"
+      solr_connection.delete_by_query 'type:RegistryReference'
       solr_connection.commit
 
       puts 'done.'
@@ -184,35 +184,30 @@ namespace :solr do
 
     end
 
-    desc 'Builds the location register index'
-    task :locations, [:interviews ] => :environment do |task,args|
+    desc 'Builds the registry reference index'
+    task :registry_references, [:interviews ] => :environment do |task,args|
 
       archive_id = (args[:interviews] || '').scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
       interviews = Interview.all(
           :conditions => if archive_id.empty?
                            nil
                          else
-                           archive_id.empty? ? nil : "archive_id IN ('#{archive_id.join("','")}')"
+                           {:archive_id => archive_id}
                          end
       )
 
-      conditions = 'duplicate IS NOT TRUE'
-      conditions += archive_id.empty? ? '' : " AND interview_id IN ('#{interviews.map(&:id).join("','")}')"
+      conditions = interviews.empty? ? nil : {:interview_id => interviews.map(&:id)}
 
-      puts "\nIndexing #{LocationReference.count(:conditions => conditions)} locations:"
+      puts "\nIndexing #{RegistryReference.count(:conditions => conditions)} registry_references:"
       unless archive_id.empty?
         archive_id.each do |id|
           puts id
         end
       end
 
-      LocationReference.find_each(:conditions => conditions, :batch_size => 50) do |location|
-        next if location.interview.blank?
-        next unless location.classified
+      RegistryReference.find_each(:conditions => conditions, :batch_size => 1000) do |registry_reference|
         begin
-          location.index
-        rescue => e
-          puts "#{e.class.name} on #{location.inspect}\n#{e.message}"
+          registry_reference.index
         end
         STDOUT.printf '.'
         STDOUT::flush
@@ -221,7 +216,6 @@ namespace :solr do
       Sunspot.commit
 
       puts "\ndone."
-
     end
 
   end
@@ -231,7 +225,7 @@ namespace :solr do
   namespace :reindex do
 
     desc 'reindex the archive contents for Solr search'
-    task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments', 'solr:index:locations'] do
+    task :all => ['solr:delete:all', 'solr:index:interviews', 'solr:index:segments', 'solr:index:registry_references'] do
       puts 'Reindexing complete.'
     end
 
@@ -296,7 +290,7 @@ namespace :solr do
       Rake::Task['solr:delete:by_archive_id'].execute({ :ids => ids })
       Rake::Task['solr:index:interviews'].execute({ :ids => ids })
       Rake::Task['solr:index:segments'].execute({ :interviews => ids })
-      Rake::Task['solr:index:locations'].execute({ :interviews => ids })
+      Rake::Task['solr:index:registry_references'].execute({ :interviews => ids })
     end
 
     desc 'reindex interview data only'
@@ -316,9 +310,9 @@ namespace :solr do
       puts 'Reindexing segments complete.'
     end
 
-    desc 'reindex locations'
-    task :locations => ['solr:delete:locations', 'solr:index:locations'] do
-      puts 'Reindexing locations complete.'
+    desc 'reindex registry_references'
+    task :registry_references => ['solr:delete:registry_references', 'solr:index:registry_references'] do
+      puts 'Reindexing registry_references complete.'
     end
 
   end

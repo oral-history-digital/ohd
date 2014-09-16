@@ -35,7 +35,7 @@ var InteractiveMap = Class.create({
         if(!this.options.images) {
             this.options.images = new Hash();
             this.options.images['default'] = new google.maps.MarkerImage(this.options.urlRoot + '/images/test_markers/interview_marker.png');
-            ['interview', 'place_of_birth', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'postwar_camp', 'home_location'].each(function(icon){
+            ['interview', 'birth_location', 'deportation_location', 'forced_labor_location', 'forced_labor_camp', 'forced_labor_company', 'return_location', 'postwar_camp', 'home_location'].each(function(icon){
                cedisMap.locationSearch.options.images[icon] = new google.maps.MarkerImage(cedisMap.locationSearch.options.urlRoot + '/images/test_markers/' + icon + '_marker.png');
             });
         }
@@ -44,7 +44,7 @@ var InteractiveMap = Class.create({
             this.options.colors = new Hash();
             this.options.colors['default'] = 'red';
             this.options.colors['interview'] = 'green';
-            this.options.colors['place_of_birth'] = 'blue';
+            this.options.colors['birth_location'] = 'blue';
             this.options.colors['home_location'] = 'blue';
             this.options.colors['return_location'] = 'blue';
             this.options.colors['postwar_camp'] = 'blue';
@@ -78,7 +78,7 @@ var InteractiveMap = Class.create({
         var clusterOptions = this.options.cluster || {};
         this.clusterManager = new ClusterManager(this.map, clusterOptions);
 
-        this.loadAllLocations();
+        this.loadAllRegistryReferences();
 
         return this.map;
     },
@@ -90,7 +90,7 @@ var InteractiveMap = Class.create({
         }
     },
 
-    loadAllLocations: function() {
+    loadAllRegistryReferences: function() {
         new Ajax.Request(this.options.indexURL, {
             method: 'GET',
             onSuccess: this.initializeProgressBar.bind(this)
@@ -102,17 +102,17 @@ var InteractiveMap = Class.create({
         this.progress.start(this.loadPageNumber);
         this.currentLoadPage = 0;
         this.loading = true;
-        this.retrieveLocationsBatch();
+        this.retrieveRegistryReferencesBatch();
     },
 
-    retrieveLocationsBatch: function() {
+    retrieveRegistryReferencesBatch: function() {
         this.currentLoadPage = this.currentLoadPage + 1;
         if (this.currentLoadPage <= this.loadPageNumber) {
             var that = this;
             new Ajax.Request((this.options.dataURL + '.' + this.currentLoadPage + '.json'), {
                 method: 'GET',
                 onSuccess: function(response) {
-                    that.loadLocationsBatch(response.responseJSON.locations.toArray())
+                    that.loadRegistryReferenceBatch(response.responseJSON)
                 }
             });
         } else {
@@ -124,38 +124,47 @@ var InteractiveMap = Class.create({
         }
     },
 
-    loadLocationsBatch: function(remainingLocations) {
-        if(remainingLocations) {
+    loadRegistryReferenceBatch: function(registryReferenceData) {
+        remainingRegistryReferences = registryReferenceData.registryReferences
+        if(remainingRegistryReferences) {
             // Load locations in batches to avoid blocking the browser
             // event loop for too long and risking a script timeout.
-            var numLoaded = 0, locationToLoad;
-            while (remainingLocations.length > 0 && numLoaded < 500) {
+            var numLoaded = 0, registryReferenceToLoad;
+            while (remainingRegistryReferences.length > 0 && numLoaded < 500) {
                 numLoaded++;
-                locationToLoad = remainingLocations.pop();
+                registryReferenceToLoad = remainingRegistryReferences.pop();
+                var registryEntry = registryReferenceData.registryEntries[registryReferenceToLoad.registryEntryId]
+                var interview = registryReferenceData.interviews[registryReferenceToLoad.interviewId]
 
-                // Skip invalid locations.
-                if(isNaN(locationToLoad.latitude) || isNaN(locationToLoad.longitude)
-                    || Number(locationToLoad.latitude) == 0 || Number(locationToLoad.longitude) == 0) {
+                // Skip and log invalid locations.
+                if(registryEntry === undefined || interview === undefined
+                        || isNaN(registryEntry.latitude) || isNaN(registryEntry.longitude)
+                        || Number(registryEntry.latitude) == 0 || Number(registryEntry.longitude) == 0) {
+                    console.log('Invalid registry reference: ', registryReferenceToLoad, registryEntry, interview)
                     continue;
                 }
 
                 // Load valid locations.
-                var referenceClass = this.locationReference(locationToLoad.referenceType, locationToLoad.locationType);
-                var locationInfo = this.locationInfo(locationToLoad, referenceClass);
-                var interviewURL = this.options.urlRoot + '/interviews/' + locationToLoad.interviewId;
+                var referenceType = this.registryReferenceType(registryReferenceToLoad.referenceType, registryEntry.mainRegisters);
+                var referenceInfo = this.referenceInfo(referenceType, interview);
+                var interviewURL = this.options.urlRoot + '/interviews/' + interview.archiveId;
+                var region, country;
+                if (registryEntry.region !== undefined) {
+                    region = registryReferenceData.registryEntries[registryEntry.region]
+                }
+                if (registryEntry.country !== undefined) {
+                    country = registryReferenceData.registryEntries[registryEntry.country]
+                }
                 this.clusterManager.addLocation(
-                    locationToLoad.location,
-                    new google.maps.LatLng(locationToLoad.latitude, locationToLoad.longitude),
-                    locationToLoad.interviewId, locationInfo,
-                    locationToLoad.region, locationToLoad.country,
-                    referenceClass, interviewURL);
+                    registryEntry, interview.archiveId, referenceInfo,
+                    region, country, referenceType, interviewURL);
             }
         }
 
-        if (remainingLocations && remainingLocations.length > 0) {
+        if (remainingRegistryReferences && remainingRegistryReferences.length > 0) {
             // We got more locations to load in the current batch: Let the
             // browser catch up then go on.
-            setTimeout((function() { this.loadLocationsBatch(remainingLocations) }).bind(this), 0);
+            setTimeout((function() { this.loadRegistryReferenceBatch(remainingRegistryReferences) }).bind(this), 0);
         } else {
             // We loaded all locations in the current batch: Try to load a new
             // batch from the web service.
@@ -163,33 +172,37 @@ var InteractiveMap = Class.create({
 
             // IE does not correctly unblock on async Ajax requests, so wrap
             // in in a timeout, too.
-            setTimeout(this.retrieveLocationsBatch.bind(this), 0);
+            setTimeout(this.retrieveRegistryReferencesBatch.bind(this), 0);
         }
     },
 
     // presents an infoWindow for the marker and location at index position
-    locationInfo: function(location, referenceClass) {
-        var reference = this.translate(referenceClass);
+    referenceInfo: function(referenceType, interview) {
+        var reference = this.translate(referenceType);
         var info = '';
-        info += '<p class="interviewReference">' + reference + '&nbsp;' + location.interviewee + ' (' + location.interviewId + ')</p>';
+        info += '<p class="interviewReference">' + reference + '&nbsp;' + interview.interviewee + ' (' + interview.archiveId + ')</p>';
         info += '<p class="referenceDetails">';
-        info += location.interviewType.capitalize() + ', ' + location.language + (location.translated ? ', ' + I18n.t('status.translated') : '') + '</p>';
+        info += interview.interviewType.capitalize() + ', ' + interview.language + (interview.translated ? ', ' + I18n.t('status.translated') : '') + '</p>';
         return info;
     },
 
-    locationReference: function(refStr, type) {
-        switch (type) {
-            case 'Camp':
-                switch (refStr) {
-                    case 'forced_labor_location': return 'forced_labor_camp';
-                    case 'return_location': return 'postwar_camp';
-                }
-                break;
+    registryReferenceType: function(refStr, registers) {
+        if (refStr === '') return 'interview'
 
-            case 'Company':
-                if (refStr == 'forced_labor_location') return 'forced_labor_company';
-                break;
+        if (refStr === 'forced_labor_location' || refStr === 'return_location') {
+            registers = registers.split(';')
+            if (registers.indexOf('Lager') > -1) {
+                switch (refStr) {
+                    case 'forced_labor_location':
+                        return 'forced_labor_camp';
+                    case 'return_location':
+                        return 'postwar_camp';
+                }
+            } else if (registers.indexOf('Firma') > -1) {
+                if (refStr === 'forced_labor_location') return 'forced_labor_company';
+            }
         }
+
         return refStr;
     },
 
@@ -199,7 +212,7 @@ var InteractiveMap = Class.create({
             forced_labor_camp: I18n.t('locations.types.forced_labor_camp') + ' -',
             forced_labor_company: I18n.t('locations.types.forced_labor_company') + ' -',
             deportation_location: I18n.t('locations.types.deportation_location') + ' -',
-            place_of_birth: I18n.t('locations.types.place_of_birth') + ' -',
+            birth_location: I18n.t('locations.types.birth_location') + ' -',
             home_location: I18n.t('locations.types.home_location_in_map') + ' -',
             return_location: I18n.t('locations.types.return_location') + ' -',
             postwar_camp: I18n.t('locations.types.postwar_camp') + ' -',

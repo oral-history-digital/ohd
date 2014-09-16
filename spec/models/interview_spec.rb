@@ -7,7 +7,7 @@ describe Interview do
 
   TRANSLATED_ATTS = [
       :first_name, :other_first_names, :last_name, :birth_name,
-      :details_of_origin, :return_date, :forced_labor_details,
+      :return_date, :forced_labor_details,
       :interviewers, :transcriptors, :translators,
       :proofreaders, :segmentators, :researchers
   ]

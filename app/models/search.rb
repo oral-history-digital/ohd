@@ -29,7 +29,7 @@ class Search < UserContent
 
   RESULTS_PER_PAGE = 12
 
-  FACET_FIELDS = [:interview_id, :language_id] + CeDiS.archive_category_ids
+  FACET_FIELDS = [:interview_id, :language_id] + CeDiS.archive_facet_category_ids
 
   NON_FACET_FIELDS = [
       :fulltext,
@@ -455,7 +455,7 @@ class Search < UserContent
         end
 
         # Configured category facets.
-        CeDiS.archive_category_ids.map(&:to_s).each do |category_name|
+        CeDiS.archive_facet_category_ids.map(&:to_s).each do |category_name|
           with(("#{category_name.singularize}_ids").to_sym).any_of query[category_name] unless query[category_name].blank?
         end
 
@@ -476,7 +476,7 @@ class Search < UserContent
       # Add query attributes common to all interview queries.
       search.build do
 
-        id_fields = [:interview_id, :language_id] + CeDiS.archive_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
+        id_fields = [:interview_id, :language_id] + CeDiS.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
         facet *id_fields
 
         paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE

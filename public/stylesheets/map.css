@@ -37,8 +37,8 @@ iframe {
     z-Index: 90;
 }
 
-.markerOverlay div.place_of_birth {
-    background-image: url(/images/test_markers/place_of_birth_marker.png);
+.markerOverlay div.birth_location {
+    background-image: url(/images/test_markers/birth_location_marker.png);
     z-Index: 85;
 }
 
@@ -207,11 +207,11 @@ iframe {
     color: #b2afa1;
 }
 
-#baseContent ul li.place_of_birth {
-    background: #fff url("/images/test_markers/popup/place_of_birth_marker.png") no-repeat;
+#baseContent ul li.birth_location {
+    background: #fff url("/images/test_markers/popup/birth_location_marker.png") no-repeat;
 }
-#baseContent ul li.place_of_birth.map_filter_off {
-    background-image: url("/images/test_markers/popup/place_of_birth_marker_off.png");
+#baseContent ul li.birth_location.map_filter_off {
+    background-image: url("/images/test_markers/popup/birth_location_marker_off.png");
     color: #b2afa1;
 }
 

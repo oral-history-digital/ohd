@@ -24,14 +24,14 @@ module UserContentsHelper
     language_ids = (query['language_id'] || []).map(&:to_i).select{|id| id != 0}.compact.uniq
     preloaded_languages = language_ids.empty? ? [] : Language.all(:conditions => [ 'id IN (?)', language_ids ], :include => :translations)
 
-    # Preload queried categories by ID.
-    category_names = CeDiS.archive_category_ids.map(&:to_s)
+    # Preload queried facet categories by ID.
+    category_names = CeDiS.archive_facet_category_ids.map(&:to_s)
     category_ids = query.select{|key,value| category_names.include? key}.map(&:second).flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
     preloaded_categories = category_ids.empty? ? [] : RegistryEntry.all(:conditions => [ 'id IN (?)', category_ids ], :include => {:registry_names => :translations})
 
     # Render keywords, categories and interviews.
     str += query.keys.inject([]) do |out, key|
-      human_readable_facet_name = CeDiS.is_category?(key) ? CeDiS.category_name(key) : t(key, :scope => :facets)
+      human_readable_facet_name = CeDiS.is_category?(key) ? CeDiS.category_name(key, I18n.locale) : t(key, :scope => :facets)
       values = query[key]
       case values
         when Array
@@ -145,7 +145,7 @@ module UserContentsHelper
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
                   + content_tag(:p, interview.collection))
-    # TODO: Distinguish more generically between historical contexts when adding more projects.
+    # TODO: Distinguish more generically between historical contexts.
     if interview.respond_to?(:forced_labor_groups)
       # forced labor groups
       biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \

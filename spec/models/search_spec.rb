@@ -6,14 +6,14 @@ describe Search, 'utilizing hashed parameters' do
     @query1 = { :fulltext => 'Selekt*' }
     @query2 = { :page => 2, :forced_labor_groups => '13,17' }
     @query3 = { :interview_id => '517', :fulltext => 'Dachau' }
-    @query4 = { :page => 1, :fulltext => 'Hunger', :countries => ['5','12','15'], :languages => ['21','34'] }
+    @query4 = { :page => 1, :fulltext => 'Hunger', :home_locations => ['5','12','15'], :language_id => ['21','34'] }
     @query5 = { :fulltext => 'za016' }
     @queries = [ @query1, @query2, @query3, @query4, @query5 ]
   end
 
   it "should encode query parameters into a hashed string" do
     @queries.each do |query|
-      Search.encode_parameters(query).should =~ /^[a-zA-Z0-9]+(==)?(\n)?$/
+      Search.encode_parameters(query).should =~ /^[a-zA-Z0-9]+={0,2}(\n)?$/
     end
   end
 
@@ -26,9 +26,9 @@ describe Search, 'utilizing hashed parameters' do
   end
 
   it "should not hash non-query or page parameters" do
-    @query = { :page => 3, :open_category => 'forced_labor_groups', :nonsense => 'faulty', :languages => ["1"]}
+    @query = { :page => 3, :open_category => 'forced_labor_groups', :nonsense => 'faulty', :language_id => ["1"]}
     Search.decode_parameters(Search.encode_parameters(@query)).should \
-      == { 'languages' => ["1"] }
+      == { 'language_id' => ["1"] }
   end
 
 end

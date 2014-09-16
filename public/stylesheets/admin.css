@@ -352,7 +352,6 @@ table.imports_for_interview td {
     font-weight: bold;
     width: 100%;
 }
-.imports_for_interview .location_references,
 .imports_for_interview .contributions {
     clear: left;
 }

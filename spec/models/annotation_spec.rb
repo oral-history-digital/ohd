@@ -6,7 +6,7 @@ describe Annotation, 'upon creation' do
 
   let(:interview) do
     Interview.with_locale(:de) do
-      create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln', :country_of_origin => 'Vereinigte Staaten'
+      create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln'
     end
   end
 

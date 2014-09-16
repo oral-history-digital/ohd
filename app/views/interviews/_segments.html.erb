@@ -1,7 +1,7 @@
 <% if @segments.empty? %>
     <%= t(:no_segments_result, :scope => 'user_interface.messages') %>
 <% else %>
-    <% fulltext ||= (defined?(@location) && !@location.blank?) ? ([@location.location_name] + (@location.alias_location_names || '').split(/;\s*/)).join('|') : nil -%>
+    <% fulltext ||= (defined?(@registry_entry) && !@registry_entry.blank?) ? @registry_entry.to_s : nil -%>
     <% fulltext ||= @search.fulltext -%>
     <% available_transcript_languages = [:original] %>
     <% available_transcript_languages << :translated if @interview.translated? %>

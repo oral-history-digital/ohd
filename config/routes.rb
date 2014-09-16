@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials
   map.photos 'interviews/:id/photos/:filename.:extension', :controller => :interviews, :action => :photos
   map.stills 'interviews/stills/:filename.:extension', :controller => :interviews, :action => :stills
-  map.interview_locations 'interviews/:id/in/:location_name', :controller => :interviews, :action => :show
+  map.interview_registry_entries 'interviews/:id/in/:registry_entry_id', :controller => :interviews, :action => :show
 
   map.resources :interviews do |interview|
 
@@ -20,15 +20,14 @@ ActionController::Routing::Routes.draw do |map|
 
   end
 
-  map.public_locations_search 'webservice/ortssuche', :controller => :location_references, :action => :index, :format => :js
-  map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :location_references, :action => :index
-  map.public_locations_total_pages ':locale/webservice/locations/:date.:format', :controller => :location_references, :action => :full_index
-  map.public_locations_by_page ':locale/webservice/locations/:date/page.:page.:format', :controller => :location_references, :action => :full_index
-
-  map.public_map 'karte', :controller => :location_references, :action => :map
-  map.localized_public_map ':locale/map', :controller => :location_references, :action => :map
-  map.map_frame 'kartenframe', :controller => :location_references, :action => :map_frame, :locale => :de
-  map.localized_map_frame ':locale/mapframe', :controller => :location_references, :action => :map_frame
+  map.public_locations_search 'webservice/ortssuche', :controller => :registry_references, :action => :index, :format => :js
+  map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :registry_references, :action => :index
+  map.public_locations_total_pages ':locale/webservice/locations/:date.:format', :controller => :registry_references, :action => :full_index
+  map.public_locations_by_page ':locale/webservice/locations/:date/page.:page.:format', :controller => :registry_references, :action => :full_index
+  map.public_map 'karte', :controller => :registry_references, :action => :map
+  map.localized_public_map ':locale/map', :controller => :registry_references, :action => :map
+  map.map_frame 'kartenframe', :controller => :registry_references, :action => :map_frame, :locale => :de
+  map.localized_map_frame ':locale/mapframe', :controller => :registry_references, :action => :map_frame
 
   map.namespace :admin do |admin|
     admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}

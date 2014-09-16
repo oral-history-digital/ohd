@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Interview < ActiveRecord::Base
+  include CeDiS::CategoryExtension
 
   NUMBER_OF_INTERVIEWS = Interview.count
 
@@ -21,12 +22,6 @@ class Interview < ActiveRecord::Base
 
   has_many  :segments,
             :dependent => :destroy
-
-  has_many  :location_references,
-            :dependent => :destroy,
-            :include => :translations
-
-  has_many  :location_segments
 
   has_many :annotations,
            :dependent => :delete_all,
@@ -84,30 +79,18 @@ class Interview < ActiveRecord::Base
                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
-  has_many :registry_references,
-           :as => :ref_object,
-           :include => [:registry_entry, :registry_reference_type]
+  has_many  :registry_references,
+            :as => :ref_object,
+            :include => [{:registry_entry => {:registry_names => :translations}}, :registry_reference_type],
+            :dependent => :destroy
 
   has_many :registry_entries,
            :through => :registry_references
 
-  CeDiS.archive_category_ids.each do |category_id|
-    self.class_eval <<-CAT
-      def #{category_id}
-        RegistryEntry.find_all_by_category('#{category_id}', self)
-      end
-
-      def #{category_id.to_s.singularize}_ids
-        self.#{category_id}.map(&:id)
-      end
-    CAT
-  end
-
   translates :first_name, :other_first_names, :last_name, :birth_name,
-             :details_of_origin, :return_date, :forced_labor_details, :birth_location,
+             :return_date, :forced_labor_details,
              :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers,
-             :forced_labor_locations, :return_locations, :deportation_location
+             :proofreaders, :segmentators, :researchers
 
   validate :has_standard_name
   def has_standard_name
@@ -148,35 +131,22 @@ class Interview < ActiveRecord::Base
       indexing_headings.squeeze(' ')
     end
 
-    text :locations, :boost => 10 do
-      indexing_location_refs = {}
-      location_references.each do |location|
-        weight = location.location_segments.count
-        weight = 10 if weight == 0
-        I18n.available_locales.each do |locale|
-          indexing_location_refs[location.name(locale)] ||= 0
-          indexing_location_refs[location.name(locale)] += weight
-        end
-        (location.alias_location_names || '').split(/;\s+/).each do |name|
-          indexing_location_refs[name] ||= 0
-          indexing_location_refs[name] += weight
-        end
-      end
-      str = ''
-      indexing_location_refs.each do |loc, weight|
-        str << ' ' + (loc + ' ') * Math.sqrt(weight).round
-      end
-      str.squeeze(' ')
+    text :registry_entries, :boost => 10 do
+      registry_references.map do |reference|
+        (I18n.available_locales + [:alias]).map do |locale|
+          reference.registry_entry.to_s(locale)
+        end.uniq.reject(&:blank?).join(' ')
+      end.join(' ')
     end
 
-    CeDiS.archive_category_ids.each do |category_id|
+    CeDiS.archive_facet_category_ids.each do |category_id|
       integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
-    # Index archive id, categories and language (with all translations) for full text category search.
+    # Index archive id, facet categories and language (with all translations) for full text category search.
     text :categories, :boost => 20 do
       cats = [self.archive_id]
-      cats += (CeDiS.archive_category_ids + [:language]).
+      cats += (CeDiS.archive_facet_category_ids + [:language]).
                   # Retrieve all category objects of this interview.
                   map{|c| self.send(c)}.flatten.
                   # Retrieve their translations.
@@ -299,15 +269,6 @@ class Interview < ActiveRecord::Base
     date.blank? ? '?' : date[/(19|20)\d{2}/]
   end
 
-  # uses the birth location (if available) or country_of_origin
-  def country_of_birth(locale = I18n.default_locale)
-    if birth_location(locale).nil? || birth_location(locale).blank?
-      country_of_origin
-    else
-      birth_location(locale).split(/,\s*/).last
-    end
-  end
-
   def video
     I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio')
   end
@@ -360,7 +321,7 @@ class Interview < ActiveRecord::Base
   def import_time
     @import_time ||= begin
       import = Import.for_interview(id).first
-      import.nil? ? (created_at || Time.gm(2009,1,1)) : import.time
+      import.nil? ? Time.gm(2009,1,1) : import.time
     end
   end
 
@@ -376,25 +337,6 @@ class Interview < ActiveRecord::Base
 
   def quality
     @quality || 2.0
-  end
-
-  def set_locations!
-    {
-        :forced_labor => :forced_labor_locations,
-        :return => :return_locations,
-        :deportation => :deportation_location
-    }.each do |location_reference_type, interview_attribute|
-      I18n.available_locales.each do |locale|
-        Interview.with_locale(locale) do
-          locations = []
-          location_references.send(location_reference_type).each do |location|
-            locations << location.short_name(locale).strip
-          end
-          send("#{interview_attribute}=", locations.join('; '))
-        end
-      end
-    end
-    save!
   end
 
   def set_contributor_fields!

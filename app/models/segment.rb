@@ -7,11 +7,10 @@ class Segment < ActiveRecord::Base
 
   belongs_to :tape
 
-  has_many  :location_segments
-
-  has_many  :location_references,
-            :through => :location_segments,
-            :include => :translations
+  has_many  :registry_references,
+            :as => :ref_object,
+            :include => [{:registry_entry => {:registry_names => :translations}}, :registry_reference_type],
+            :dependent => :destroy
 
   # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
@@ -93,16 +92,12 @@ class Segment < ActiveRecord::Base
       end
       subheading.strip
     end
-    text :locations, :boost => 5 do
-      str = ''
-      location_references.each do |location|
-        str << ' ' + location.translations.map(&:name).join(' ')
-        (location.alias_location_names || '').split(/;\s+/).each do |name|
-          str << ' ' + name
-        end
-        str.squeeze(' ')
-      end
-      str
+    text :registry_entries, :boost => 5 do
+      registry_references.map do |reference|
+        (I18n.available_locales + [:alias]).map do |locale|
+          reference.registry_entry.to_s(locale)
+        end.uniq.reject(&:blank?).join(' ')
+      end.join(' ')
     end
   end
 

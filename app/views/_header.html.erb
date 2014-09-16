@@ -18,7 +18,9 @@
           <ul>
             <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
             <%= render :partial => '/locale_chooser' %>
-            <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>
+            <% if CeDiS.config.uses_map %>
+                <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>
+            <% end %>
             <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %> </li>
             <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => t('.faq_link_title') %></li>
           </ul>
