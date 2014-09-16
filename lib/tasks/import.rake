@@ -2,7 +2,10 @@ namespace :import do
 
   namespace :setup do
     desc 'complete setup of a new project'
-    task :all => :environment do
+    task :all => [:environment, 'solr:start', :prepare_new_project, 'solr:delete:all']
+
+    desc 'clean up and prepare the database to start a new archive project'
+    task :prepare_new_project => :environment do
       conn = ActiveRecord::Base.connection
 
       puts 'Start system setup...'
