@@ -57,7 +57,8 @@ namespace :deploy do
     end
     # project configuration
     run "rm -f #{release_path}/config/project.yml"
-    run "ln -s #{release_path}/config/projects/#{project}.yml #{release_path}/config/project.yml"
+    run "ln -sf project_config/project.yml #{release_path}/config/project.yml"
+    run "ln -sfT #{release_path}/config/projects/#{project}/ #{release_path}/config/project_config"
     # stills
     run "rm -rf #{release_path}/assets/archive_images"
     run "ln -s #{shared_path}/assets/archive_images #{release_path}/assets/archive_images"
