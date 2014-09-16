@@ -3,12 +3,7 @@ class RegistryReference < BaseRegistryReference
   belongs_to :interview
 
   named_scope :for_interview, lambda { |interview_id|
-    {
-        :joins => "LEFT JOIN segments s ON registry_references.ref_object_type = 'Segment'
-                     AND registry_references.ref_object_id = s.id
-                     AND s.interview_id = #{interview_id}",
-        :conditions => "s.id IS NOT NULL OR (registry_references.ref_object_type = 'Interview' AND registry_references.ref_object_id = #{interview_id})"
-    }
+    { :conditions => {:interview_id => interview_id, :ref_object_type => 'Segment'} }
   }
 
   before_create :reconnect_reference
