@@ -129,9 +129,8 @@ var InteractiveMap = Class.create({
         if(remainingRegistryReferences) {
             // Load locations in batches to avoid blocking the browser
             // event loop for too long and risking a script timeout.
-            var numLoaded = 0, registryReferenceToLoad;
-            while (remainingRegistryReferences.length > 0 && numLoaded < 500) {
-                numLoaded++;
+            var registryReferenceToLoad;
+            while (remainingRegistryReferences.length > 0) {
                 registryReferenceToLoad = remainingRegistryReferences.pop();
                 var registryEntry = registryReferenceData.registryEntries[registryReferenceToLoad.registryEntryId]
                 var interview = registryReferenceData.interviews[registryReferenceToLoad.interviewId]

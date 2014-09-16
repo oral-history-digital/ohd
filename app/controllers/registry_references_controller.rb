@@ -40,7 +40,14 @@ class RegistryReferencesController < BaseController
 
     if params[:page].blank? || params[:page].to_i < 1
       # Deliver number of pages.
-      pages = (RegistryReference.count(scope) / PER_PAGE).floor + 2
+      distinct_references = RegistryReference.count(
+          scope.merge(
+              :select => 'DISTINCT registry_references.interview_id,
+                                   registry_references.registry_entry_id,
+                                   registry_references.registry_reference_type_id'
+          )
+      )
+      pages = (distinct_references.to_f / PER_PAGE).ceil
       respond_to do |wants|
         wants.html do
           render :text => pages
@@ -59,6 +66,13 @@ class RegistryReferencesController < BaseController
       registry_references = RegistryReference.all(
           scope.merge(
               {
+                  :select => 'MIN(registry_references.id) AS id,
+                              registry_references.interview_id,
+                              registry_references.registry_entry_id,
+                              registry_references.registry_reference_type_id',
+                  :group => 'registry_references.interview_id,
+                             registry_references.registry_entry_id,
+                             registry_references.registry_reference_type_id',
                   :limit => "#{(page-1)*PER_PAGE},#{PER_PAGE}",
                   :include => {
                       :interview => [:translations, {:language => :translations}],
@@ -136,7 +150,6 @@ class RegistryReferencesController < BaseController
     location_ids = []
     registry_references.each do |rr|
       map_data[:registryReferences] << {
-          :id => rr.id,
           :interviewId => rr.interview_id,
           :registryEntryId => rr.registry_entry_id,
           :referenceType => rr.registry_reference_type.nil? ? '' : rr.registry_reference_type.code
