@@ -14,7 +14,7 @@ namespace :import do
       raise 'Aborted' if STDIN.gets.chomp != 'yes'
 
       # Clean the database.
-      # TODO: user_accounts, user_registrations, users
+      # TODO: Should user_accounts, user_registrations, users be cleaned up, too?
       %w(
         annotation collection contribution contributor import interview language photo
         registry_reference registry_reference_type registry_entry registry_hierarchy registry_name registry_name_type
