@@ -1,5 +1,9 @@
 <div id="containerHistoricalContext"  class="container">
     <ul class="data">
         <%= render :partial => 'common_historical_context', :object => historical_context %>
+        <li>
+            <span class="label"><%= CeDiS.category_name(:pseudonym, I18n.locale) %></span>
+            <span class="value"><%= historical_context.pseudonym_names(I18n.locale) %></span>
+        </li>
     </ul>
 </div>

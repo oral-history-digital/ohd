@@ -29,10 +29,33 @@ person_properties:
   - id: 'person_reference'
     source: 'registry_entry'
     descriptor: 'Person'
+  - id: 'pseudonym'
+    source: 'registry_entry'
+    descriptor: 'Pseudonym'
+    use_as_facet: true
+  - id: 'interview_dates'
+    source: 'registry_reference_type'
+    use_as_facet: true
+  - id: 'birth_dates'
+    source: 'registry_reference_type'
+    use_as_facet: true
   - id: 'birth_locations'
     source: 'registry_reference_type'
+    use_as_facet: true
   - id: 'home_locations'
     source: 'registry_reference_type'
+    use_as_facet: true
+  - id: 'person_reference'
+    source: 'registry_entry'
+    descriptor: 'Geschlecht'
+    use_as_facet: true
+  - id: 'person_reference'
+    source: 'registry_entry'
+    descriptor: 'Stellung im Beruf'
+    use_as_facet: true
+  - id: 'person_reference'
+    source: 'registry_entry'
+    descriptor: 'Wirtschaftsbereich'
     use_as_facet: true
 
 uses_map: false # Currently must be "false" for all projects except ZWAR.
