@@ -70,7 +70,7 @@ GEM
     archive-authorization (0.0.1)
     archive-player (0.2.7)
       activesupport (>= 2.3.5)
-    archive-shared (0.1.4)
+    archive-shared (0.1.5)
     builder (3.2.2)
     capistrano (2.15.5)
       highline
