@@ -49,11 +49,15 @@ person_properties:
     source: 'registry_entry'
     descriptor: 'Geschlecht'
     use_as_facet: true
-  - id: 'person_reference'
+  - id: 'profession'
+    source: 'registry_entry'
+    descriptor: 'Beruf'
+    use_as_facet: true
+  - id: 'professional_position'
     source: 'registry_entry'
     descriptor: 'Stellung im Beruf'
     use_as_facet: true
-  - id: 'person_reference'
+  - id: 'industry'
     source: 'registry_entry'
     descriptor: 'Wirtschaftsbereich'
     use_as_facet: true
