@@ -397,7 +397,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.country_name(code)
-    return 'Unbekannt' if code.nil?
+    return 'Unbekannt' if code.blank?
     I18n.translate(:countries, :locale => :de)[code.to_sym]
   end
 
