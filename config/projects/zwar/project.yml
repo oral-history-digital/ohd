@@ -8,7 +8,7 @@ default_locale: de
 project_name: # Will be used in titles, emails, etc.
   de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
   en: 'Forced Labor 1939-1945. Memory and History.'
-  ru: 'Подневольный труд 1939-1945. Воспоминания и история.'
+  ru: 'Принудительный труд 1939-1945. Воспоминания и история.'
 
 project_id: 'zwar'
 
