@@ -20,6 +20,75 @@ namespace :data do
 
   end
 
+  desc "updates segment duration"
+  task :segment_duration, [:id] => :environment do |task,args|
+
+    id = args[:id]
+    conditions = []
+    unless id.nil?
+      interview = Interview.find_by_archive_id(id)
+      if interview.nil?
+        puts "\nNo such interview (archive_id): '#{id}'. Exiting."
+        exit
+      end
+      conditions = ["interview_id = ?", interview.id]
+    end
+
+    batch=5
+    offset=0
+    total = Tape.count(:conditions => conditions)
+
+    puts "Updating segment duration... (#{total} tapes total)"
+
+    while offset < total
+
+      Tape.all(:conditions => conditions, :include => :segments, :limit => "#{offset},#{batch}").each do |tape|
+
+        next if tape.segments.empty?
+
+        previous_segment = nil
+
+        previous_time = 0
+
+        maximum_duration = BigDecimal.new("0")
+
+        tape.segments.each do |segment|
+
+          time = Timecode.new(segment.timecode).time
+
+          unless previous_segment.nil?
+
+            duration = time - previous_time
+            duration = 999.99 if duration > 999.99
+
+            unless (duration < 0) || ((duration == previous_segment.duration))
+              Segment.update_all "duration = '#{duration.round(2)}'", "id = #{previous_segment.id}"
+            end
+
+            maximum_duration = duration if duration > maximum_duration
+
+          end
+
+          previous_segment = segment
+          previous_time = time
+
+        end
+
+        Segment.update_all "duration = '#{maximum_duration.round(2)}'", "id = #{tape.segments.last.id}"
+
+        STDOUT.printf '.'
+        STDOUT.flush
+
+      end
+
+      offset += batch
+
+    end
+
+    puts "\ndone."
+
+  end
+
   desc 'Report on archive contents'
   task :content_report => :environment do
 

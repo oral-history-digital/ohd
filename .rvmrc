@@ -19,28 +19,28 @@ environment_id="ruby-1.8.7-p371@cedarpu_trunk"
 # file. This is very fast and efficient compared to running through the entire
 # CLI and selector. If you want feedback on which environment was used then
 # insert the word 'use' after --create as this triggers verbose mode.
-if [[ -d "${rvm_path:-$HOME/.rvm}/environments"
-  && -s "${rvm_path:-$HOME/.rvm}/environments/$environment_id" ]]
-then
-  \. "${rvm_path:-$HOME/.rvm}/environments/$environment_id"
-  for __hook in "${rvm_path:-$HOME/.rvm}/hooks/after_use"*
-  do
-    if [[ -f "${__hook}" && -x "${__hook}" && -s "${__hook}" ]]
-    then \. "${__hook}" || true
-    fi
-  done
-  unset __hook
-  if (( ${rvm_use_flag:=1} >= 2 )) # display only when forced
-  then
-    if [[ $- == *i* ]] # check for interactive shells
-    then printf "%b" "Using: \E[32m$GEM_HOME\E[0m" # show the user the ruby and gemset they are using in green
-    else printf "%b" "Using: $GEM_HOME" # don't use colors in non-interactive shells
-    fi
-  fi
-else
-  # If the environment file has not yet been created, use the RVM CLI to select.
-  rvm --create  "$environment_id" || {
-    echo "Failed to create RVM environment '${environment_id}'."
-    return 1
-  }
-fi
+#if [[ -d "${rvm_path:-$HOME/.rvm}/environments"
+#  && -s "${rvm_path:-$HOME/.rvm}/environments/$environment_id" ]]
+#then
+#  \. "${rvm_path:-$HOME/.rvm}/environments/$environment_id"
+#  for __hook in "${rvm_path:-$HOME/.rvm}/hooks/after_use"*
+#  do
+#    if [[ -f "${__hook}" && -x "${__hook}" && -s "${__hook}" ]]
+#    then \. "${__hook}" || true
+#    fi
+#  done
+#  unset __hook
+#  if (( ${rvm_use_flag:=1} >= 2 )) # display only when forced
+#  then
+#    if [[ $- == *i* ]] # check for interactive shells
+#    then printf "%b" "Using: \E[32m$GEM_HOME\E[0m" # show the user the ruby and gemset they are using in green
+#    else printf "%b" "Using: $GEM_HOME" # don't use colors in non-interactive shells
+#    fi
+#  fi
+#else
+#  # If the environment file has not yet been created, use the RVM CLI to select.
+#  rvm --create  "$environment_id" || {
+#    echo "Failed to create RVM environment '${environment_id}'."
+#    return 1
+#  }
+#fi
