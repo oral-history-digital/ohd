@@ -2,6 +2,7 @@ require 'globalize'
 
 class Interview < ActiveRecord::Base
   include CeDiS::CategoryExtension
+  include Paperclip
 
   NUMBER_OF_INTERVIEWS = Interview.count
 
@@ -102,76 +103,76 @@ class Interview < ActiveRecord::Base
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
-  validates_attachment_content_type :still_image,
-                                    :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                    :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  # validates_attachment_content_type :still_image,
+  #                                   :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
+  #                                   :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
-  searchable :auto_index => false do
-    integer :interview_id, :using => :id, :stored => true, :references => Interview
-   # integer :language_id, :stored => true, :references => Language
-    string :archive_id, :stored => true
-    text :transcript, :boost => 5 do
-      indexing_interview_text = ''
-      segments.each do |segment|
-        indexing_interview_text << ' ' + segment.transcript
-        indexing_interview_text << ' ' + segment.translation
-      end
-      indexing_interview_text.squeeze(' ')
-    end
-    text :headings, :boost => 20 do
-      indexing_headings = ''
-      segments.with_heading.each do |segment|
-        segment.translations.each do |translation|
-          indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
-          indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
-        end
-      end
-      indexing_headings.squeeze(' ')
-    end
-
-    text :registry_entries, :boost => 10 do
-      registry_references.map do |reference|
-        (I18n.available_locales + [:alias]).map do |locale|
-          reference.registry_entry.to_s(locale)
-        end.uniq.reject(&:blank?).join(' ')
-      end.join(' ')
-    end
-
-    CeDiS.archive_facet_category_ids.each do |category_id|
-   #   integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
-    end
-
-    # Index archive id, facet categories and language (with all translations) for full text category search.
-    text :categories, :boost => 20 do
-      cats = [self.archive_id]
-      cats += (CeDiS.archive_facet_category_ids + [:language]).
-                  # Retrieve all category objects of this interview.
-                  map{|c| self.send(c)}.flatten.
-                  # Retrieve their translations.
-                  map do |cat|
-                    I18n.available_locales.map{|l| cat.to_s(l)}.join(' ')
-                  end
-      cats.join(' ')
-    end
-
-    # Create localized attributes so that we can order
-    # interviews in all languages.
-    I18n.available_locales.each do |locale|
-      string :"person_name_#{locale}", :stored => true do
-        full_title(locale)
-      end
-    end
-    text :person_name, :boost => 20 do
-      (
-        translations.map do |t|
-          build_full_title_from_name_parts(t.locale)
-        end.join(' ') + (" #{alias_names}" || '')
-      ).
-      strip.
-      squeeze(' ')
-    end
-
-  end
+  # searchable :auto_index => false do
+  #   integer :interview_id, :using => :id, :stored => true, :references => Interview
+  #  # integer :language_id, :stored => true, :references => Language
+  #   string :archive_id, :stored => true
+  #   text :transcript, :boost => 5 do
+  #     indexing_interview_text = ''
+  #     segments.each do |segment|
+  #       indexing_interview_text << ' ' + segment.transcript
+  #       indexing_interview_text << ' ' + segment.translation
+  #     end
+  #     indexing_interview_text.squeeze(' ')
+  #   end
+  #   text :headings, :boost => 20 do
+  #     indexing_headings = ''
+  #     segments.with_heading.each do |segment|
+  #       segment.translations.each do |translation|
+  #         indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
+  #         indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
+  #       end
+  #     end
+  #     indexing_headings.squeeze(' ')
+  #   end
+  #
+  #   text :registry_entries, :boost => 10 do
+  #     registry_references.map do |reference|
+  #       (I18n.available_locales + [:alias]).map do |locale|
+  #         reference.registry_entry.to_s(locale)
+  #       end.uniq.reject(&:blank?).join(' ')
+  #     end.join(' ')
+  #   end
+  #
+  #   CeDiS.archive_facet_category_ids.each do |category_id|
+  #  #   integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+  #   end
+  #
+  #   # Index archive id, facet categories and language (with all translations) for full text category search.
+  #   text :categories, :boost => 20 do
+  #     cats = [self.archive_id]
+  #     cats += (CeDiS.archive_facet_category_ids + [:language]).
+  #                 # Retrieve all category objects of this interview.
+  #                 map{|c| self.send(c)}.flatten.
+  #                 # Retrieve their translations.
+  #                 map do |cat|
+  #                   I18n.available_locales.map{|l| cat.to_s(l)}.join(' ')
+  #                 end
+  #     cats.join(' ')
+  #   end
+  #
+  #   # Create localized attributes so that we can order
+  #   # interviews in all languages.
+  #   I18n.available_locales.each do |locale|
+  #     string :"person_name_#{locale}", :stored => true do
+  #       full_title(locale)
+  #     end
+  #   end
+  #   text :person_name, :boost => 20 do
+  #     (
+  #       translations.map do |t|
+  #         build_full_title_from_name_parts(t.locale)
+  #       end.join(' ') + (" #{alias_names}" || '')
+  #     ).
+  #     strip.
+  #     squeeze(' ')
+  #   end
+  #
+  # end
 
   # referenced by archive_id
   def to_param

@@ -8,7 +8,7 @@ ruby '1.8.7'
 
 gem 'rdoc', '3.12.2'
 #gem 'rails', :git => 'git://github.com/makandra/rails.git', :branch => '2-3-lts'
-gem 'rails', '~>3.1.0'
+gem 'rails', '~>3.2.0'
 gem 'rake', '0.8.7'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
@@ -55,11 +55,11 @@ gem 'acts_as_taggable_on_steroids',
     :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
     :branch => 'master'
 gem 'localized_country_select', '0.0.1'
-gem 'warden', '0.10.7'
-gem 'devise', '1.1.0'
+gem 'warden', '1.1.1'
+gem 'devise', '2.1.0'
 #gem 'smurf'
 gem 'rack-maintenance'
-#gem 'celluloid', '0.11.0'
+gem 'celluloid', '0.11.0'
 
 
 group :development do

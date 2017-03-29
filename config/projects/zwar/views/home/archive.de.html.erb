@@ -1,7 +1,7 @@
 <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
 
 <div class="contentImagesLeft">
-<% if current_user_account.nil? -%>
+<% unless self.controller.respond_to? :current_user_account -%>
   <% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:language => :translations}]) -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) unless @interview.blank?-%>">
@@ -38,7 +38,7 @@
   für Bildung und Wissenschaft zur Verfügung.
 </p>
 
-<% if current_user_account.nil? %>
+<% unless self.controller.respond_to? :current_user_account %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
     Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und

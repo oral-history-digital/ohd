@@ -3,7 +3,7 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+#Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 # Be sure to restart your server when you modify this file
 
@@ -39,6 +39,24 @@ module Archive
 
 
 
+
+  # CeDiS.config.__configure(:storage_dir, File.join(CeDiS.config.cifs_share, 'archiv_backup'))
+
+  # CeDiS.config.__configure(:photo_storage_dir, File.join(CeDiS.config.storage_dir, 'bilder'))
+  # CeDiS.config.__configure(:archive_management_dir, File.join(CeDiS.config.storage_dir, 'redaktionssystem'))
+  # CeDiS.config.__configure(:repository_dir, File.join(CeDiS.config.storage_dir, 'archiv_dis'))
+  #
+  # "#{CeDiS.config.project_shortname}-Benutzerstatistik"
+  # CeDiS.config.external_links[page_token.to_s][I18n.locale.to_s]
+  # CeDiS.archive_facet_category_ids.map(&:to_s)
+  # CeDiS.is_category?(key)
+  # CeDiS.config.project_initials.downcase
+  # CeDiS.config.project_initial
+  # CeDiS.archive_facet_category_ids
+
+
+
+
   # Gem configuration (config.gem ...): We use bundler, please place gem configuration into the Gemfile.
 
   # Only load the plugins named here, in the order given (default is alphabetical).
@@ -65,7 +83,7 @@ module Archive
   config.i18n.default_locale = :de# CeDiS.config.default_locale.to_sym
 
   # I18n for JS
-  config.middleware.use "SimplesIdeias::I18n::Middleware"
+  #config.middleware.use "SimplesIdeias::I18n::Middleware"
 
 
   # RailsLTS config

@@ -1,10 +1,11 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 require 'search_filters'
+require 'exception_notification'
 
 
 class ApplicationController < ActionController::Base
-  include ExceptionNotification::Notifiable
+  #include ExceptionNotification::Notifiable
 
   helper :all # include all helpers, all the time
 

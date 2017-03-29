@@ -1,5 +1,7 @@
 module CeDiS
 
+  require 'sunspot/adapters'
+  require 'sunspot/rails'
   module Sunspot
 
     module Adapters

@@ -1,6 +1,6 @@
 class UserContent < ActiveRecord::Base
 
-  acts_as_taggable
+  #acts_as_taggable
 
 
   #include ActionController::UrlWriter
