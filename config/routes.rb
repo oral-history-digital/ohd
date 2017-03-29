@@ -1,6 +1,6 @@
 Archive::Application.routes.draw do
 
-  root :to => "home#show"
+  #root :to => "home#show"
   devise_for :user_accounts
 
   match ':locale/teilsammlung/:project_id' => 'collections#show', :as => :localized_interview_collection

@@ -1,3 +1,5 @@
+require 'devise'
+
 module Devise
 
   module Controllers

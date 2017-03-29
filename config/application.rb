@@ -34,6 +34,8 @@ module Archive
 
   config.default_url_options ={ :locale => I18n.locale }
 
+  config.action_controller.include_all_helpers = true
+
 
   #config.gem 'resource_controller'
 

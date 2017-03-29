@@ -1,7 +1,7 @@
 source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
-ruby '1.8.7'
+ruby '1.9.3'
 
 # Most version restrictions are due to rails 2.3 compat and may probably
 # be removed when upgrading to 3.x.
@@ -9,7 +9,7 @@ ruby '1.8.7'
 gem 'rdoc', '3.12.2'
 #gem 'rails', :git => 'git://github.com/makandra/rails.git', :branch => '2-3-lts'
 gem 'rails', '~>3.2.0'
-gem 'rake', '0.8.7'
+gem 'rake', '~>0.9.0'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
 gem 'workflow'
@@ -45,7 +45,7 @@ gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
 #    :branch => 'master'
 gem 'fastercsv'
 gem 'open4'
-gem 'oniguruma' # Multibyte regexp support, remove when migrating to ruby 1.9.
+#gem 'oniguruma' # Multibyte regexp support, remove when migrating to ruby 1.9.
 
 # Gems specific to public archive app:
 gem 'archive-authorization'
@@ -68,7 +68,7 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-cucumber', '0.7.5' # Version restriction can be released when we upgrade cucumber to version 1.2.0 or later.
   gem 'ruby-debug-ide'
-  gem 'ruby-debug-base'
+  #gem 'ruby-debug-base'
   gem 'capistrano'
   gem 'thin' # Required to test the archive in IE from a virtual machine (works around WebRick's reverse DNS lookup bug).
 end

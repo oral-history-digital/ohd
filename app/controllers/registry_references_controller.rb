@@ -1,3 +1,5 @@
+require 'action_dispatch/routing/mapper'
+
 class RegistryReferencesController < BaseController
 
   PER_PAGE = 3000

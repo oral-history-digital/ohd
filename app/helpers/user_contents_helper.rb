@@ -124,7 +124,7 @@ module UserContentsHelper
       list
     end
     html << content_tag(:ul, image_list)
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_all, :scope => 'user_interface.labels')}", search_by_hash_path(:suche => search.properties['query_hash']), :target => '_blank'))
+   # html << content_tag(:span, link_to("»&nbsp;#{t(:show_all, :scope => 'user_interface.labels')}", search_by_hash_path(:suche => search.properties['query_hash']), :target => '_blank'))
     html
   end
 
@@ -142,7 +142,7 @@ module UserContentsHelper
     end
     return image_html if interview.nil?
     html = link_to(image_html, interview_path(:id => interview.archive_id), :target => '_blank')
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
+    #html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
