@@ -16,7 +16,7 @@ class Segment < ActiveRecord::Base
   # on these, as they are user-generated.
   has_many  :annotations
 
-  named_scope :with_heading,
+  scope :with_heading,
               :joins => :translations,
               :conditions => [
                   "segment_translations.locale = ?
@@ -30,9 +30,9 @@ class Segment < ActiveRecord::Base
               :include => [:tape, :translations],
               :order => :media_id
 
-  named_scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
+  scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
 
-  named_scope :for_media_id,
+  scope :for_media_id,
               lambda {|mid|
                 {
                     :conditions => [
@@ -60,7 +60,9 @@ class Segment < ActiveRecord::Base
 
   after_create :reassign_user_content
 
-  def before_validation_on_create
+  before_validation :do_before_validation_on_create, :on => :create
+
+  def do_before_validation_on_create
     # Make sure we have a tape assigned.
     if self.tape.nil?
       raise "Interview ID missing." if self.interview_id.nil?

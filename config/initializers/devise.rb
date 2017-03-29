@@ -1,9 +1,13 @@
+
+
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
 
 Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = CeDiS.config.contact_email
+
+  require 'devise/orm/active_record'
 
   # Configure the content type of DeviseMailer mails (defaults to text/html")
   # config.mailer_content_type = "text/plain"
@@ -91,7 +95,7 @@ Devise.setup do |config|
   # Use the archive-authentication failure app to handle unscoped
   # authentication failures better.
   config.warden do |manager|
-    manager.failure_app = Devise::ArchiveFailure
+    #manager.failure_app = Devise::ArchiveFailure
   end
 
 
@@ -110,7 +114,5 @@ Devise.setup do |config|
 
   # Configure default_url_options if you are using dynamic segments in :path_prefix
   # for devise_for.
-  config.default_url_options do
-    { :locale => I18n.locale }
-  end
+
 end

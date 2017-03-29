@@ -1,3 +1,5 @@
+require 'tags_helper'
+
 module UserContentsHelper
 
   include TagsHelper # acts_as_taggable_on_steroids

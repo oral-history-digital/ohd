@@ -5,7 +5,7 @@
 <% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:language => :translations}]) -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
+        <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) -%>
           <br/>
           <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s %><%= @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>

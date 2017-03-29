@@ -7,13 +7,13 @@ class Import < ActiveRecord::Base
 
   before_create :set_time, :set_current_migration
 
-  named_scope :last, { :limit => "0,1", :order => "time DESC" }
+  scope :last, { :limit => "0,1", :order => "time DESC" }
 
-  named_scope :for_interview, lambda{|id| {  :conditions => ["importable_type = ? AND importable_id = ?", 'Interview', id],
+  scope :for_interview, lambda{|id| {  :conditions => ["importable_type = ? AND importable_id = ?", 'Interview', id],
                                             :limit => "0,1",
                                             :order => "time DESC" }}
 
-  named_scope :recent_for, lambda{|type| { :conditions => ["importable_type = ? AND created_at > ?", type, (Time.now - 1.week).to_s(:db)], :include => :importable, :order => "created_at DESC"} }
+  scope :recent_for, lambda{|type| { :conditions => ["importable_type = ? AND created_at > ?", type, (Time.now - 1.week).to_s(:db)], :include => :importable, :order => "created_at DESC"} }
 
   def self.current_migration
     @@current_migration ||= begin

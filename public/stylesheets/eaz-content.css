@@ -292,7 +292,7 @@ h5 {
   float: left;
   padding: 0 6px;
   background: url(/images/lang_btn_bg_a.gif);
-}
+    }
 
 #language_select .captions_orig.disabled,
 #language_select .captions_trans.disabled {

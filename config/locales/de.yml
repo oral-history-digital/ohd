@@ -258,7 +258,7 @@ de:
     sort:
       title: 'Anleitung: Inhalte sortieren'
       text1: 'Die Inhalte in der aktuellen Ansicht können durch Drag & Drop mit Hilfe der am linken Rand eingeblendeten Schieber sortiert werden.'
-      text2: 'Geänderte Inhalte werden durch die rote Farbe des Schiebers hervorgehoben. Wenn Sie mit der Reihenfolge zufrieden sind müssen Sie diese durch &quot;aktualisieren&quot; in der oberen Aktionsleiste bestätigen - erst dann wird die Reihenfolge dauerhaft übernommen.'
+      text2: 'Geänderte Inhalte werden durch die Farbe des Schiebers hervorgehoben. Wenn Sie mit der Reihenfolge zufrieden sind müssen Sie diese durch &quot;aktualisieren&quot; in der oberen Aktionsleiste bestätigen - erst dann wird die Reihenfolge dauerhaft übernommen.'
 
   map:
     noframes: 'Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber %{here} direkt aufrufen.'
@@ -479,13 +479,6 @@ de:
 
   external_links:
     notice: 'Externer Link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team: 'http://www.zwangsarbeit-archiv.de/team'
-    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
-    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
 
   facets:
     interview_id: 'Name der Interviewten'
@@ -532,6 +525,8 @@ de:
     content:
       search_in_interview: 'Suchen in &#145;%{content}&#146;'
       work_in_progress: 'Das Inhaltsverzeichnis für dieses Interview ist noch in Bearbeitung.'
+    historical_context:
+      birth_year: 'Jahrgang'
     segments:
       in: 'In'
     search:

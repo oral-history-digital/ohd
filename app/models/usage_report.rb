@@ -20,11 +20,11 @@ class UsageReport < ActiveRecord::Base
   validates_presence_of :action
   validates_inclusion_of :action, :in => TRACKED_ACTIONS
 
-  named_scope :logged_in_month, lambda{|date| {:conditions => {:logged_at => date.beginning_of_month..date.end_of_month}}}
-  named_scope :logins, {:conditions => {:action => LOGIN}}
-  named_scope :interviews, {:conditions => {:action => [INTERVIEW, MATERIALS]}}
-  named_scope :searches, {:conditions => {:action => SEARCHES}}
-  named_scope :maps, {:conditions => {:action => MAP}}
+  scope :logged_in_month, lambda{|date| {:conditions => {:logged_at => date.beginning_of_month..date.end_of_month}}}
+  scope :logins, {:conditions => {:action => LOGIN}}
+  scope :interviews, {:conditions => {:action => [INTERVIEW, MATERIALS]}}
+  scope :searches, {:conditions => {:action => SEARCHES}}
+  scope :maps, {:conditions => {:action => MAP}}
 
   def validate
     case action

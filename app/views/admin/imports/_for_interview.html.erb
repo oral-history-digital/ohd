@@ -26,7 +26,7 @@
           Stand vom <%= formatted_date import.time -%>
         </td>
         <td id="import_<%= import.id -%>">
-          <%= link_to_remote "&raquo;&nbsp;Details anzeigen",
+          <%#= link_to_remote "&raquo;&nbsp;Details anzeigen",
                            :update => "import_#{import.id}",
                            :url => admin_import_path(import),
                            :method => :get,

@@ -4,11 +4,11 @@
 <% if current_user_account.nil? -%>
   <% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:language => :translations}]) -%>
   <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path 'Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
+    <a href="<%= interview_path(:id => @interview.archive_id) unless @interview.blank?-%>">
+        <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale)  unless @interview.blank?-%>" title="" width="200" height="150" />
+        <h6><%= @interview.short_title(I18n.locale) unless @interview.blank?-%>
           <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s.downcase %><%= @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= !@interview.blank? && t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s.downcase unless @interview.blank? %><%=  !@interview.blank? && @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>

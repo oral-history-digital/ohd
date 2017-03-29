@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+
+require 'user_account'
   require 'archive-authorization'
 
   attr_protected :admin
@@ -91,7 +93,7 @@ SQL
   end
 
   def tags
-    Tag.for_user(self)
+    Tag.for_user(self) unless Tag.nil?
   end
 
   # Authenticate a user based on configured attribute keys. Returns the

@@ -2,11 +2,11 @@ class RegistryReference < BaseRegistryReference
 
   belongs_to :interview
 
-  named_scope :for_interview, lambda { |interview_id|
+  scope :for_interview, lambda { |interview_id|
     { :conditions => {:interview_id => interview_id, :ref_object_type => 'Segment'} }
   }
 
-  before_create :reconnect_reference
+  before_validation :reconnect_reference
 
   # Set an alternative ID that will allow us to re-connect the
   # reference in the context of the public archive.

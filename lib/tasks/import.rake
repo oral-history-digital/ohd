@@ -75,7 +75,7 @@ namespace :import do
           xmlfile = Dir.glob(File.join(dir, 'data', "#{CeDiS.config.project_initials.downcase}*.xml")).first
           next if xmlfile.blank? || imported >= number
           archive_id = xmlfile.to_s[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)]
-          puts "\n[#{number}]\nStarting import processes for archive id: #{archive_id}"
+          puts "\n[#{number-imported}]\nStarting import processes for archive id: #{archive_id}"
           files_checked += 1
 
           interview = Interview.find_by_archive_id(archive_id)
@@ -93,7 +93,7 @@ namespace :import do
           end
 
           # Post-processing.
-          if interview.nil? || interview.imports.last.created_at < (Time.now - 3.minutes)
+          if interview.nil?
             statusmsg << "skipped #{xmlfile}."
           else
             statusmsg << "import completed for #{archive_id}."

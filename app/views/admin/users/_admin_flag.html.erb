@@ -2,7 +2,7 @@
     <% if admin_flag.admin? -%>
         <%=  button_to_remote 'Admin-Rechte entfernen', { :url => flag_admin_user_path(admin_flag, :admin => false), :loading => "$('admin_#{admin_flag.id}_spinner').show()", :complete => "$('admin_#{admin_flag.id}_spinner').hide()", :confirm => "Sollen die Rechte für '#{admin_flag.first_name} #{admin_flag.last_name}' wirklich entfernt werden?\nDieser Nutzer kann sich dann nicht mehr in der Administrationsoberfläche betätigen." } %>
     <% else -%>
-        <%=  link_to_remote '&raquo; Admin-Rechte geben', { :url => flag_admin_user_path(admin_flag, :admin => true), :loading => "$('admin_#{admin_flag.id}_spinner').show()", :complete => "$('admin_#{admin_flag.id}_spinner').hide()", :style => "font-size: 85%;" } %>
+        <%#=  link_to_remote '&raquo; Admin-Rechte geben', { :url => flag_admin_user_path(admin_flag, :admin => true), :loading => "$('admin_#{admin_flag.id}_spinner').show()", :complete => "$('admin_#{admin_flag.id}_spinner').hide()", :style => "font-size: 85%;" } %>
     <% end -%>
   <span id="admin_<%= admin_flag.id -%>_spinner" style="display: none;">
     <%= image_tag 'loading.gif' %>

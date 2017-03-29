@@ -19,7 +19,7 @@ class UserRegistration < ActiveRecord::Base
 
   before_create :serialize_form_parameters
 
-  named_scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
+  scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
 
   # fields expected for the user registration
   def self.define_registration_fields(fields)
@@ -133,12 +133,8 @@ EVAL
                                                  'Schleswig-Holstein',
                                                  'außerhalb Deutschlands' ]},
                                  { :name => 'country',
-                                   :type => :country },
-                                 { :name => 'receive_newsletter',
-                                   :mandatory => false,
-                                   :type => :boolean }
-
-                             ]
+                                   :type => :country }
+                             ] + (CeDiS.config.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false, :type => :boolean }] : [])
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|

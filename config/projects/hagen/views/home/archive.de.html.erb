@@ -1,4 +1,4 @@
-<h1>Das Online-Archiv "<%= CeDiS.config.project_name['de'] %>"</h1>
+<h1>Online-Archiv "<%= CeDiS.config.project_name['de'] %>" im Institut für Geschichte und Biographie</h1>
 
 <div class="contentImagesLeft">
 <% @interview = Interview.first -%>
@@ -17,8 +17,22 @@
 <p></p>
 
 <p>
-  Das Online-Archiv &quot;<%= CeDiS.config.project_name['de'] %>&quot; beinhaltet Zeitzeugen-Interviews
-  von ...
+    Das Online-Archiv "Deutsches Gedächtnis" ist eine Kooperation des Instituts für
+    <%= link_to 'Geschichte und Biographie', 'https://www.fernuni-hagen.de/geschichteundbiographie/' %>
+    der FernUniversität in Hagen mit dem
+    <%= link_to 'Center für Digitale Systeme (CeDiS)', 'http://www.cedis.fu-berlin.de/' %> (Hyperlink) der Freien Universität Berlin.
+    Sein Aufbau wurde gefördert durch das Ministerium für Innovation, Wissenschaft und Forschung des Landes Nordrhein-Westfalen
+    in der Programmlinie "Infrastrukturelle Förderung für die GGW in NRW".
+</p>
+
+<p>
+    Das Online-Archiv "Deutsches Gedächtnis" bietet Zugang zu einer Auswahl von Zeitzeugeninterviews aus dem Archiv "Deutsches
+    Gedächtnis". Von den rund 3.000 lebensgeschichtlichen Interviews mit Zeitzeugen zu einer Vielzahl von Aspekten der deutschen
+    Geschichte sind derzeit <%= Interview.count %> Interviews online. Das Online-Archiv wird ständig erweitert.
+    Die Interviews im Online-Archiv stammen aus dem Projekt
+    <%= link_to '"Lebensgeschichte und Sozialkultur im Ruhrgebiet 1930-1960"', url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %>.
+    Interviews aus weiteren Projekten des Instituts für Geschichte und Biographie sind in Vorbereitung für die Bereitstellung
+    im Online-Archiv.
 </p>
 
 <% if current_user_account.nil? %>
@@ -83,12 +97,14 @@
     </a>
   </div>
 </div>
-<h3 style="margin-top: 8px;">Übersicht der Teilsammlungen</h3>
+<h3 style="margin-top: 8px;">Sammlungen/Projekte</h3>
 <p>
-  Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
+  Die Übersicht über Sammlungen und Projekte informiert über die derzeit online verfügbaren Projektbestände des
+  Archivs "Deutsches Gedächtnis" und bietet Informationen über die Forschungsprojekte, in denen die Interviews
+  erhoben wurden.
   <br/>
-    <%= link_to 'zur Karte der Teilsammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Geografische Verteilung der Teilsammlungen' %>
-    <br/>
+  <%= link_to 'zur Übersicht der Sammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Übersicht über Sammlungen und Projekte' %>
+  <br/>
 </p>
 
 <hr style="clear: both;"/>
@@ -100,7 +116,7 @@
               :title => 'Fragen und Antworten zur Nutzung des Archivs' %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
-  <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">
-    mail@hagen-archiv.de
+  <a href="mailto:deutsches-gedaechtnis@fernuni-hagen.de" target="_blank" title="Kontakt">
+      deutsches-gedaechtnis@fernuni-hagen.de
   </a>
 </p>

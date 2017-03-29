@@ -29,6 +29,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def admin
+    puts('admin')
     conditionals = ['admin IS TRUE']
     condition_args = []
     %w(first_name last_name login).each do |param|

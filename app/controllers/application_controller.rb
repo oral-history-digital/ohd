@@ -1,5 +1,7 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
+require 'search_filters'
+
 
 class ApplicationController < ActionController::Base
   include ExceptionNotification::Notifiable
@@ -7,11 +9,14 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  filter_parameter_logging :password # Scrub sensitive parameters from your log
+  #filter_parameter_logging :password # Scrub sensitive parameters from your log
 
   include SearchFilters
   before_filter :current_search_for_side_panel
 
+  def default_url_options(options={})
+    { :locale => I18n.locale }
+  end
   prepend_before_filter :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || I18n.default_locale).to_sym

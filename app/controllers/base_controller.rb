@@ -1,4 +1,4 @@
-class BaseController < ResourceController::Base
+class BaseController < ApplicationController #ResourceController::Base
 
   before_filter :check_user_authentication!
   before_filter :determine_user

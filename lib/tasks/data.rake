@@ -20,6 +20,7 @@ namespace :data do
 
   end
 
+
   desc "updates segment duration"
   task :segment_duration, [:id] => :environment do |task,args|
 

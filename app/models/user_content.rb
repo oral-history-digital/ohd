@@ -2,7 +2,8 @@ class UserContent < ActiveRecord::Base
 
   acts_as_taggable
 
-  include ActionController::UrlWriter
+
+  #include ActionController::UrlWriter
 
   CONTENT_TYPES = [ :search, :interview_reference, :user_annotation ]
 
@@ -11,9 +12,12 @@ class UserContent < ActiveRecord::Base
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
-  before_validation_on_create :compile_id_hash
+  #before_validation_on_create :compile_id_hash
+  before_validation :compile_id_hash, :on => :create
+
   before_validation :store_properties
-  after_validation_on_create :check_persistence, :set_link_url
+  #after_validation_on_create :check_persistence, :set_link_url
+  after_validation :check_persistence, :set_link_url, :on => :create
 
   attr_accessible :user_id,
                   :title,

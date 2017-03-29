@@ -22,7 +22,7 @@
           <%= formatted_time @object.created_at %>
         </td>
       </tr>
-    <% if FileTest.exists?(File.join(RAILS_ROOT, 'app', 'views', 'users', '_application_info.html.erb')) %>
+    <% if FileTest.exists?(File.join(Rails.root, 'app', 'views', 'users', '_application_info.html.erb')) %>
       <%=  render :partial => '/users/application_info', :object => @object %>
     <% else %>
       <% @object.form_parameters.each do |field_name, value| %>

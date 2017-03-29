@@ -409,7 +409,7 @@ class UserContentsController < BaseController
       cond << id
     end
     cond.first << ')'
-    Tag.all(:conditions => cond).map(&:name)
+    Tag.all(:conditions => cond).map(&:name) unless Tag.nil?
   end
 
   # positional sorting by id list

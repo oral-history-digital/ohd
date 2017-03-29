@@ -15,11 +15,11 @@ class CreateUserAccountsInMainDatabase < ActiveRecord::Migration
     add_index :user_accounts, :login, :unique => true
     add_index :user_accounts, [ :login, :deactivated_at ]
 
-    require 'yaml'
-    auth_settings = ENV['RAILS_ENV'] == 'test' ? 'authentication_test' : 'authentication'
-    db_conf = YAML::load_file(File.join(RAILS_ROOT, 'config/database.yml'))[auth_settings]
+    #require 'yaml'
+    #auth_settings = ENV['RAILS_ENV'] == 'test' ? 'authentication_test' : 'authentication'
+    #db_conf = YAML::load_file(File.join(Rails.root, 'config/database.yml'))[auth_settings]
 
-    puts "\nPlease import a DB dump of user_account data from the '#{db_conf['database']}' database NOW.\n"
+    #puts "\nPlease import a DB dump of user_account data from the '#{db_conf['database']}' database NOW.\n"
   end
 
   def self.down

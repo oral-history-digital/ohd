@@ -6,7 +6,7 @@
 
 <div class="baseListBox">
 
-  <% remote_form_for facets,
+  <%# remote_form_for facets,
                      :url => new_search_path,
                      :method => :get,
                      :html => { :action => new_search_path,
@@ -16,27 +16,27 @@
                                 :id => "search_facets" } do |search_facets| %>
 
     <div class="fragmentTitle">
-        <% current_search_text = (search_facets.object.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : search_facets.object.fulltext -%>
-        <%= search_facets.text_field :fulltext, :value=> current_search_text, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch searchInput', :title => t('fulltext_title', :scope => 'user_interface.search'), :onFocus => "clearFulltextField('searchInput');" %>
-        <%= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => t('.search'), :type => :image, :src => image_path('pfeil_rot_rechts.gif'), :onclick => "submitViaAjax(); false;" %>
-        <%= hidden_field_tag 'open_category', '', :id => 'open_category' %>
+        <%# current_search_text = (search_facets.object.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : search_facets.object.fulltext -%>
+        <%#= search_facets.text_field :fulltext, :value=> current_search_text, :name => 'fulltext', :id => 'searchInput', :class => 'baseInputSearch searchInput', :title => t('fulltext_title', :scope => 'user_interface.search'), :onFocus => "clearFulltextField('searchInput');" %>
+        <%#= search_facets.submit 'suchen', :class => 'search', :id => 'searchButton', :alt => t('.search'), :type => :image, :src => image_path('pfeil_rot_rechts.gif'), :onclick => "submitViaAjax(); false;" %>
+        <%#= hidden_field_tag 'open_category', '', :id => 'open_category' %>
     </div>
 
     <noscript>
       <div class="warning">
-        <h4><%= t('search_no_javascript', :scope => 'user_interface.messages') %></h4>
+        <h4><%#= t('search_no_javascript', :scope => 'user_interface.messages') %></h4>
       </div>
     </noscript>
 
-    <% facets.query_facets.each do |facet| %>
-      <%= render :partial => '/searches/active_facet', :object => facet.first, :locals => { :query => facet.last } %>
-    <% end %>
+    <%# facets.query_facets.each do |facet| %>
+      <%#= render :partial => '/searches/active_facet', :object => facet.first, :locals => { :query => facet.last } %>
+    <%# end %>
 
-    <% facets.unqueried_facets.each do |facet| %>
-      <%= render :partial => '/searches/facet_option', :object => facet, :locals => { :search_facets => search_facets, :category_facet => facets.send(facet.first).is_a?(Array)} %>
-    <% end %>
+    <%# facets.unqueried_facets.each do |facet| %>
+      <%#= render :partial => '/searches/facet_option', :object => facet, :locals => { :search_facets => search_facets, :category_facet => facets.send(facet.first).is_a?(Array)} %>
+    <%# end %>
 
-  <% end %>
+  <%# end %>
 
   <% unless facets.open_category.blank? %>
     <% javascript_tag do %>

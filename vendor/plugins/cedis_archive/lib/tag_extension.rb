@@ -14,7 +14,9 @@ module CeDiS
 SCOPE
     end
 
+
+
   end
 end
 
-Tag.send :include, CeDiS::TagExtension
+#Tag.send :include, CeDiS::TagExtension unless Tag.nil?

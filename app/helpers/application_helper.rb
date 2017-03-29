@@ -3,7 +3,7 @@ module ApplicationHelper
 
   def external_url(page_token)
     begin
-      url_for t(page_token.to_s, :scope => 'external_links')
+      url_for CeDiS.config.external_links[page_token.to_s][I18n.locale.to_s]
     rescue
       ''
     end
@@ -22,12 +22,12 @@ module ApplicationHelper
   end
 
   def reset_search_link(options={})
-    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;' + image_tag(image_path 'suche_reset1.gif'),
+    #link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;' + image_tag(image_path 'suche_reset1.gif'),
                    options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
   def save_search_link(search)
-    link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
+    #link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
                    options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 

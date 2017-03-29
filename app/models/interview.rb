@@ -73,11 +73,11 @@ class Interview < ActiveRecord::Base
             :as => :importable,
             :dependent => :delete_all
 
-  has_attached_file :still_image,
-                    :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
-                    :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
-                    :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
-                    :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
+  # has_attached_file :still_image,
+  #                   :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
+  #                   :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
+  #                   :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
+  #                   :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
   has_many  :registry_references,
             :as => :ref_object,
@@ -87,10 +87,10 @@ class Interview < ActiveRecord::Base
   has_many :registry_entries,
            :through => :registry_references
 
-  translates :first_name, :other_first_names, :last_name, :birth_name,
-             :return_date, :forced_labor_details,
-             :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+  # translates :first_name, :other_first_names, :last_name, :birth_name,
+  #            :return_date, :forced_labor_details,
+  #            :interviewers, :transcriptors, :translators,
+  #            :proofreaders, :segmentators, :researchers
 
   validate :has_standard_name
   def has_standard_name
@@ -108,7 +108,7 @@ class Interview < ActiveRecord::Base
 
   searchable :auto_index => false do
     integer :interview_id, :using => :id, :stored => true, :references => Interview
-    integer :language_id, :stored => true, :references => Language
+   # integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -138,7 +138,7 @@ class Interview < ActiveRecord::Base
     end
 
     CeDiS.archive_facet_category_ids.each do |category_id|
-      integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+   #   integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
     # Index archive id, facet categories and language (with all translations) for full text category search.

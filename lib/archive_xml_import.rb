@@ -462,6 +462,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
         # NB: Workaround to bypass DAG-logic / validation in the registry hierarchy.
         current_instance.do_not_perpetuate = true if current_instance.is_a? RegistryHierarchy
+        current_instance.do_not_validate_parents = true if current_instance.is_a? RegistryEntry
 
         # Progression feedback.
         if (@node_index += 1) % 15 == 12
@@ -479,20 +480,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             @interview.send("#{name}_id=", current_instance.id)
           end
 
-        rescue ActiveRecord::RecordInvalid
+        rescue ActiveRecord::RecordInvalid => e
 
-          # Produce validation messages including all associations.
-          errors = [ current_instance.inspect, current_instance.errors.full_messages.to_s ]
-          associations = current_instance.class.reflect_on_all_associations.select { |assoc| assoc.macro == :belongs_to && assoc.name != :interview }
-          associations.each do |assoc|
-            associated_instance = current_instance.send(assoc.name.to_s)
-            unless associated_instance.nil? || associated_instance.errors.empty?
-              errors << associated_instance.errors.full_messages.to_s
-              errors << associated_instance.inspect
-            end
-          end
-
-          message = "ERROR on #{current_instance.class.name}:\n#{errors.join("\n")}"
+          # Produce a meaningful validation message.
+          errors = [ e.record.inspect, e.record.errors.full_messages.to_s ]
+          message = "ERROR on #{e.record.class.name}:\n#{errors.join("\n")}"
 
           if @current_mapping['skip_invalid']
             puts "\n\n#{message}"

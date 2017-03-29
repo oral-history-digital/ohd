@@ -18,6 +18,44 @@ project_initials: 'ZA' # Use two upper case initials. These will be used for fil
 
 project_domain: 'zwangsarbeit-archiv.de'
 
+# TODO: Umstellen russ. Links, s. kommentierte Links unten.
+external_links:
+  nutzungsbedingungen:
+    de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
+    en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
+    ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
+  nutzungsantrag:
+    de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+  datenschutzbestimmungen:
+    de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+  annotation_guidelines:
+    de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+  team:
+    de: 'http://www.zwangsarbeit-archiv.de/team'
+    en: 'http://www.zwangsarbeit-archiv.de/en/team'
+    ru: 'http://www.zwangsarbeit-archiv.de/team'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
+  kontakt:
+    de: 'http://www.zwangsarbeit-archiv.de/kontakt'
+    en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
+    ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
+  impressum:
+    de: 'http://www.zwangsarbeit-archiv.de/impressum'
+    en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
+    ru: 'http://www.zwangsarbeit-archiv.de/impressum'
+    #ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
+
 # Please mount the CIFS storage server locally like this (read-only for normal users!):
 # sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
 # /etc/fstab:
@@ -85,3 +123,5 @@ person_properties:
 # Therefore set this to "false" for all projects except ZWAR unless
 # you also change the corresponding map code.
 uses_map: true
+
+has_newsletter: true

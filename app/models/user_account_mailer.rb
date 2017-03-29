@@ -19,10 +19,10 @@ class UserAccountMailer < ActionMailer::Base
     @login = account.login
 
     subject      I18n.t 'user_account_mailer.subject', :locale => @mail_locale, :project_name => CeDiS.config.project_name[@mail_locale.to_s]
-    from         "mail@#{CeDiS.config.project_domain}"
+    from         "#{CeDiS.config.contact_email}"
     recipients   account.email
-    bcc          'mail@#{CeDiS.config.project_domain}'
-    sent_on      Time.now
+    bcc          "#{CeDiS.config.contact_email}"
+    date      Time.now
   end
 
 end

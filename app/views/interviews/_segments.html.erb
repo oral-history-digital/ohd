@@ -29,7 +29,8 @@
         %>
         <ul class='segment-list <%= transcript_language.to_s %><%=
             if (transcript_language == :translated and I18n.locale == :de) or
-                (transcript_language == :original and I18n.locale != :de)
+                (transcript_language == :original and I18n.locale != :de) or
+                (available_transcript_languages.size == 1)
               ' active'
             else
               ''

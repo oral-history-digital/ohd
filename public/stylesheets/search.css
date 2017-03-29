@@ -208,11 +208,11 @@ span.hits {
 }
 
 span.hits a,
-.mainSearch a {
+.mainSearch a:link,
+.mainSearch a:hover,
+.mainSearch a:visited {
     color: #fff;
     display: block;
-    background: url(/images/suchpfeil.gif) top right no-repeat;
-    background-position: 103px 4px;
     padding: 0 12px 0 0;
     width: 200px;
     height: 19px;

@@ -45,6 +45,39 @@ class Search < UserContent
 
   QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map{|a| a.to_s }
 
+  def self::param_codes(params)
+    num_letters = 0
+    result = { '' => params }
+    unique = false
+
+    until unique do
+      unique = true
+
+      result.select do |code, params|
+               code == '' or params.size > 1
+             end.
+             each do |last_code, params|
+               result.delete(last_code)
+               params.each do |param|
+                 code = param.split('_').map{|param_part| param_part[0..num_letters].downcase}.join('')
+                 result[code] ||= []
+                 result[code] << param
+                 unique = false if result[code].size > 1
+               end
+             end
+
+      num_letters += 1
+    end
+
+    result.reduce({}) do |param_codes, tuple|
+      code, param_as_array = tuple
+      param_codes[code] = param_as_array[0]
+      param_codes
+    end
+  end
+
+  PARAM_CODES = self::param_codes(QUERY_PARAMS)
+
   ACCESSIBLES = FACET_FIELDS + NON_QUERY_ACCESSIBLES + NON_FACET_FIELDS
 
   # Accessors for each query param *except* *fulltext*
@@ -382,10 +415,7 @@ class Search < UserContent
         p_code = (token[/^[a-z]+=/] || '').sub('=', '')
         next if p_code.blank?
         p_value = token.sub(p_code + '=', '')
-        p_key = nil
-        (QUERY_PARAMS - ['page']).each do |param_name|
-          p_key = param_name if Search.codify_parameter_name(param_name) == p_code
-        end
+        p_key = PARAM_CODES[p_code]
         # make sure arrays of ids are instantiated as such:
         numeric_values = p_value.scan(/\"\d+\"/)
         params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
@@ -393,8 +423,8 @@ class Search < UserContent
       params
     end
 
-    def codify_parameter_name(name)
-      name.split('_').map{|i| i.first.downcase}.join('')
+    def codify_parameter_name(param)
+      PARAM_CODES.invert[param]
     end
 
     # sets the query hash as id_hash instead of serialized interview references (default)
@@ -477,7 +507,8 @@ class Search < UserContent
       search.build do
 
         id_fields = [:interview_id, :language_id] + CeDiS.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
-        facet *id_fields
+
+        facet #*id_fields
 
         paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
         order_by :"person_name_#{I18n.locale}", :asc

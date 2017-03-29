@@ -8,8 +8,8 @@ class TextMaterial < ActiveRecord::Base
 
   DOCUMENT_TYPES = %w(Biography Transcript Translation)
 
-  named_scope :of_type, lambda{|type| {:conditions => [ 'document_type = ?', type ] }}
-  named_scope :for_file, lambda{|filename| { :conditions => [ 'document_file_name = ?', (filename || '') + '.pdf' ]}}
+  scope :of_type, lambda{|type| {:conditions => [ 'document_type = ?', type ] }}
+  scope :for_file, lambda{|filename| { :conditions => [ 'document_file_name = ?', (filename || '') + '.pdf' ]}}
 
   validates_attachment_presence :document
   validates_numericality_of :document_file_size, :greater_than => 0, :allow_nil => false

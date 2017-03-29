@@ -8,11 +8,11 @@ class UserAnnotation < UserContent
 
   has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
 
-  named_scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
-  named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
+  scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
+  scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
-  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
+  scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
 
   PUBLICATION_STATES = %w(proposed postponed rejected shared)
   STATES = PUBLICATION_STATES + %w(private)

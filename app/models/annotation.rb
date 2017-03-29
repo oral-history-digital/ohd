@@ -16,7 +16,7 @@ class Annotation < ActiveRecord::Base
   # that reassociates the user_annotation and annotation content.
   belongs_to :segment
 
-  named_scope :for_segment,
+  scope :for_segment,
               lambda{|segment|
                 {
                     :conditions => [
@@ -28,7 +28,7 @@ class Annotation < ActiveRecord::Base
                     :include => :translations
                 }
               }
-  named_scope :for_interview,
+  scope :for_interview,
               lambda{|interview|
                 {
                     :conditions => [

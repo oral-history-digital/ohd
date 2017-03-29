@@ -4,7 +4,7 @@ available_locales:
 default_locale: de
 
 project_name:
-  de: 'Oral History Archive'
+  de: 'Deutsches Gedächtnis'
 
 project_id: 'hagen'
 
@@ -14,6 +14,22 @@ project_initials: 'DG'
 
 project_domain: 'da02.cedis.fu-berlin.de'
 
+external_links:
+  nutzungsbedingungen:
+    de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.html'
+  nutzungsantrag:
+    de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/registrierung.html'
+  datenschutzbestimmungen:
+    de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.html'
+  annotation_guidelines:
+    de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+  team:
+    de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.html'
+  kontakt:
+    de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.html'
+  impressum:
+    de: 'http://www.fernuni-hagen.de/impressum.shtml'
+
 cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
 
 streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
@@ -21,7 +37,7 @@ streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
 meta_keywords:
   de: ''
 
-contact_email: 'almut.leh@fernuni-hagen.de'
+contact_email: 'deutsches-gedaechtnis@fernuni-hagen.de'
 
 smtp_server: 'mail.fu-berlin.de'
 
@@ -32,6 +48,10 @@ person_properties:
   - id: 'pseudonym'
     source: 'registry_entry'
     descriptor: 'Pseudonym'
+    use_as_facet: true
+  - id: 'gender'
+    source: 'registry_entry'
+    descriptor: 'Geschlecht'
     use_as_facet: true
   - id: 'interview_dates'
     source: 'registry_reference_type'
@@ -44,10 +64,6 @@ person_properties:
     use_as_facet: true
   - id: 'home_locations'
     source: 'registry_reference_type'
-    use_as_facet: true
-  - id: 'person_reference'
-    source: 'registry_entry'
-    descriptor: 'Geschlecht'
     use_as_facet: true
   - id: 'profession'
     source: 'registry_entry'
@@ -62,4 +78,6 @@ person_properties:
     descriptor: 'Wirtschaftsbereich'
     use_as_facet: true
 
-uses_map: false # Currently must be "false" for all projects except ZWAR.
+uses_map: false # Must be "false" for all projects except ZWAR until the map has been generalized.
+
+has_newsletter: false

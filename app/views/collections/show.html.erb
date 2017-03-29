@@ -22,7 +22,7 @@
 <p>
   <strong><%= Collection.human_attribute_name('notes') %>:</strong>
   <br />
-  <%= @collection.notes(I18n.locale) %>
+  <%= (@collection.notes(I18n.locale) || '').gsub("\n", '<br/>') %>
 </p>
 
 <p>
