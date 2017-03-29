@@ -1,5 +1,5 @@
 
-
+require 'devise'
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
 
@@ -25,7 +25,7 @@ Devise.setup do |config|
   # authentication tools as :clearance_sha1, :authlogic_sha512 (then you should set
   # stretches above to 20 for default behavior) and :restful_authentication_sha1
   # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :archive
+  #config.encryptor = :archive
 
   # Configure which keys are used when authenticating an user. By default is
   # just :email. You can configure it to use [:username, :subdomain], so for
@@ -36,6 +36,9 @@ Devise.setup do |config|
 
   # TODO: activate once the form supports it:
   config.authentication_keys = [:login]
+
+
+  config.secret_key = '854c703db9ebcf012f04ff7f74e89ceefbcea8384cb62005889c4101ab8a23a39d7c4da5c0dbe2baa2ba6af329d991d8b7ea67ce88b3470583716b26f28d82a9'
 
   # The realm used in Http Basic Authentication
   # config.http_authentication_realm = "Application"

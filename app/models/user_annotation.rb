@@ -46,7 +46,7 @@ class UserAnnotation < UserContent
     end
   end
 
-  attr_accessible :description, :title, :position
+  #attr_accessible :description, :title, :position
 
   validates_format_of :reference_type, :with => /^Segment$/
   validates_uniqueness_of :reference_id, :scope => :user_id
