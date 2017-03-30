@@ -1,7 +1,9 @@
 source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
-ruby '1.9.3'
+ruby '2.1.2'
+
+gem 'listen',  '3.0.8'
 
 # Most version restrictions are due to rails 2.3 compat and may probably
 # be removed when upgrading to 3.x.
