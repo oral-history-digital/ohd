@@ -4,15 +4,9 @@ This is the web application for CeDiS-Archiv 2.0.
 == Application Setup
 1. generate the database.yml and setup the databases (<tt>rake db:create</tt> or <tt>rake db:create:all</tt>)
 2. run the migrations: <tt>rake db:migrate</tt>
-3. import the data: <tt>rake data:setup</tt>
-4. import collections data: <tt>rake import:collections ./db/import_files/collections.csv</tt>
-5. create collection ids: <tt>rake data:collection_titles</tt>
-
-If you need to import the data partially or via the individual steps, the last part
-breaks down into these tasks:
-a) <tt>rake import:metadata ./db/import_files/interviews.csv</tt>
-b) <tt>rake import:tapes ./db/import_files/tapes.csv</tt>
-c) <tt>rake import:segments ./db/import_files/segments.csv</tt> (this might take a while)
+3. create symlinks for config/project.xml and views/home
+4. mount //eaz-diga.cedis.fu-berlin.de/data to /mnt/eaz-diga.cedis.fu-berlin.de/data as described in project.yml
+5. rake import:interviews:full
 
 == Solr Setup and Indexing
 Try to start the Solr server in the Jetty container by running:
