@@ -1,7 +1,7 @@
 source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
-ruby '2.3.3'
+ruby '2.4.0'
 
 #gem 'listen',  '3.0.8'
 
