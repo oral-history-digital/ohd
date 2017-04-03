@@ -10,7 +10,7 @@ ruby '2.3.3'
 
 gem 'rdoc', '3.12.2'
 #gem 'rails', :git => 'git://github.com/makandra/rails.git', :branch => '2-3-lts'
-gem 'rails', '~>4.0.0'
+gem 'rails', '~>4.1.0'
 #gem 'rake', '~>0.9.0'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.

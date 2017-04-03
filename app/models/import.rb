@@ -7,7 +7,7 @@ class Import < ActiveRecord::Base
 
   before_create :set_time, :set_current_migration
 
-  scope :last, { :limit => "0,1", :order => "time DESC" }
+ # scope :last, { :limit => "0,1", :order => "time DESC" }
 
   scope :for_interview, lambda{|id| {  :conditions => ["importable_type = ? AND importable_id = ?", 'Interview', id],
                                             :limit => "0,1",

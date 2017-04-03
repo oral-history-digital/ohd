@@ -2,7 +2,7 @@
 
 <div class="contentImagesLeft">
 <% unless self.controller.respond_to? :current_user_account -%>
-  <% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:language => :translations}]) -%>
+  <% @interview = Interview.find_by_archive_id('za465')#, :include => [:translations, {:language => :translations}]) -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) unless @interview.blank?-%>">
         <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale)  unless @interview.blank?-%>" title="" width="200" height="150" />
