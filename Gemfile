@@ -10,7 +10,7 @@ ruby '2.3.3'
 
 gem 'rdoc', '3.12.2'
 #gem 'rails', :git => 'git://github.com/makandra/rails.git', :branch => '2-3-lts'
-gem 'rails', '~>4.1.0'
+gem 'rails', '~>4.2.0'
 #gem 'rake', '~>0.9.0'
 gem 'mysql'
 gem 'exception_notification', '~> 2.3.0' # Version restriction for Rails 2.3.
@@ -41,7 +41,7 @@ gem 'archive-player', '>= 0.2.7'
 gem 'globalize2',
     :git => 'git://github.com/jerico-dev/globalize2.git',
     :branch => 'master'
-gem 'nokogiri', '~> 1.5.0' # Version 1.6 requires ruby 1.9.
+gem 'nokogiri'#, '~> 1.5.0' # Version 1.6 requires ruby 1.9.
 #gem 'resource_controller', :require => false, # Requiring resource_controller loads ApplicationController too early!
 #    :git => 'git://github.com/jerico-dev/resource_controller.git',
 #    :branch => 'master'
@@ -57,8 +57,8 @@ gem 'acts_as_taggable_on_steroids',
     :git => 'git://github.com/jerico-dev/acts_as_taggable_on_steroids.git',
     :branch => 'master'
 gem 'localized_country_select', '0.0.1'
-gem 'warden', '~>1.2.3'
-gem 'devise', '3.1.0'
+gem 'warden'#, '~>1.2.3'
+gem 'devise'#, '3.1.0'
 #gem 'smurf'
 gem 'rack-maintenance'
 gem 'celluloid', '0.11.0'

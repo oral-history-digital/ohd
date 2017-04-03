@@ -131,9 +131,9 @@ Archive::Application.routes.draw do
   #get 'user_accounts' => 'home#index', :as => :devise_for
   #devise_for :user_account
   get 'en/:page_id' => 'home#show', :locale => :en
-  get 'en/:controller/:action' => '#index', :locale => :en
-  get 'en/:controller/:action/:id' => '#index', :locale => :en
-  get 'en/:controller/:action/:id.:format' => '#index', :locale => :en
+  #get 'en/:controller/:action' => '#index', :locale => :en
+  #get 'en/:controller/:action/:id' => '#index', :locale => :en
+  #get 'en/:controller/:action/:id.:format' => '#index', :locale => :en
   get 'en' => 'home#show', :locale => :en
   get ':page_id' => 'home#show', :as => :home
   get ':locale' => 'home#show', :as => :localized_root
