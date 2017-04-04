@@ -1,3 +1,6 @@
+require 'archive_xml_import'
+
+
 namespace :import do
 
   namespace :setup do

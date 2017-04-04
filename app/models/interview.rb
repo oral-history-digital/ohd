@@ -88,10 +88,10 @@ class Interview < ActiveRecord::Base
   # has_many :registry_entries,
   #          :through => :registry_references
   #
-  # # translates :first_name, :other_first_names, :last_name, :birth_name,
-  # #            :return_date, :forced_labor_details,
-  # #            :interviewers, :transcriptors, :translators,
-  # #            :proofreaders, :segmentators, :researchers
+  translates :first_name, :other_first_names, :last_name, :birth_name,
+             :return_date, :forced_labor_details,
+             :interviewers, :transcriptors, :translators,
+             :proofreaders, :segmentators, :researchers
 
   validate :has_standard_name
   def has_standard_name
