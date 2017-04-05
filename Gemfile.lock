@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/globalize/globalize
-  revision: 5c0896c3f34bb52e63f7bf3c08324f68238a445c
+  revision: 94bfa2770094544d05169c8da86c21156ed12cf7
   specs:
     globalize (5.1.0.beta1)
       activemodel (>= 4.2, < 5.1)
@@ -123,6 +123,9 @@ GEM
     cucumber-wire (0.0.1)
     daemons (1.2.4)
     database_cleaner (1.5.3)
+    debase (0.2.1)
+      debase-ruby_core_source
+    debase-ruby_core_source (0.9.9)
     devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -361,6 +364,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  debase
   devise
   email_spec
   exception_notification

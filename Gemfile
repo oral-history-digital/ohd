@@ -39,7 +39,7 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-cucumber'
   gem 'ruby-debug-ide'
-  #gem 'ruby-debug-base'
+  gem 'debase'
   gem 'capistrano'
   gem 'thin'
 end

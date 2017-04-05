@@ -8,7 +8,7 @@
         <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale)  unless @interview.blank?-%>" title="" width="200" height="150" />
         <h6><%= @interview.short_title(I18n.locale) unless @interview.blank?-%>
           <br/>
-          <%= !@interview.blank? && t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s.downcase unless @interview.blank? %><%=  !@interview.blank? && @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%= !@interview.blank? && t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%#= @interview.language.to_s.downcase unless @interview.blank? %><%#=  !@interview.blank? && @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
