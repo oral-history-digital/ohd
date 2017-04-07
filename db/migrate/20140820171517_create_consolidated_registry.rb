@@ -61,7 +61,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.references :registry_entry
       t.string :code
     end
-    RegistryReferenceType.create_translation_table! :name => :string
+    #RegistryReferenceType.create_translation_table! :name => :string
 
     create_table :registry_references do |t|
       t.references :registry_entry, :null => false
@@ -80,7 +80,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     create_table :languages do |t|
       t.string :code
     end
-    Language.create_translation_table! :abbreviated => :string, :name => :string
+    #Language.create_translation_table! :abbreviated => :string, :name => :string
 
     add_column :interviews, :language_id, :integer
 

@@ -5,7 +5,7 @@ class TranslateUserContentTitle < ActiveRecord::Migration
     # Delete all user content titles that correspond to their default
     # title in any of the supported languages. These titles will be
     # generated (and translated) dynamically from now on.
-    UserContent.find_each(:conditions => 'title IS NOT NULL') do |user_content|
+    UserContent.where('title IS NOT NULL' ).find_each do |user_content|
       I18n.available_locales.each do |locale|
         user_title = user_content.user_title.clone
 

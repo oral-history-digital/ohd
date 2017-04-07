@@ -9,7 +9,7 @@ class CreateLocationSegments < ActiveRecord::Migration
     end
 
     add_index :location_segments, :location_reference_id
-    add_index :location_segments, [:location_reference_id, :interview_id]
+    add_index :location_segments, [:location_reference_id, :interview_id], name: 'location_segments_reference_and_interview'
 
   end
 

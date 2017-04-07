@@ -32,8 +32,12 @@ class TranslateContributors < ActiveRecord::Migration
     end
 
     # Drop obsolete column.
-    remove_columns :contributors, CONTRIBUTOR_COLUMNS.keys
-    remove_columns :interviews, INTERVIEW_COLUMNS.keys
+    CONTRIBUTOR_COLUMNS.each do |column, type|
+      remove_column :contributors, column
+    end
+    INTERVIEW_COLUMNS.each do |column, type|
+      remove_column :interviews, column
+    end
   end
 
   def self.down

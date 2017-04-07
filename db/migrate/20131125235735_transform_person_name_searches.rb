@@ -1,7 +1,7 @@
 # This migration requires a fully up-to-date solr index!
 class TransformPersonNameSearches < ActiveRecord::Migration
   def self.up
-    Search.all(:conditions => "properties like '%person_name:%'").each do |uc|
+    Search.where("properties like '%person_name:%'").each do |uc|
       properties = uc.properties
       person_name = properties['query'].delete('person_name')
       next if person_name.blank?
@@ -23,7 +23,7 @@ class TransformPersonNameSearches < ActiveRecord::Migration
   end
 
   def self.down
-    Search.all(:conditions => "properties like '%interview_id:%'").each do |uc|
+    Search.where("properties like '%interview_id:%'").each do |uc|
       properties = uc.properties
       interview_id = properties['query'].delete('interview_id').first.to_i
       interview = Interview.find(interview_id)

@@ -125,7 +125,7 @@ class TranslateCollections < ActiveRecord::Migration
     end
 
     # Drop obsolete column.
-    remove_columns :collections, TRANSLATED_COLUMNS.keys
+    #remove_columns :collections, TRANSLATED_COLUMNS.keys
   end
 
   def self.down

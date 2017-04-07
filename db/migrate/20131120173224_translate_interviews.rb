@@ -34,8 +34,8 @@ class TranslateInterviews < ActiveRecord::Migration
              WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL OR birth_location IS NOT NULL OR forced_labor_locations IS NOT NULL OR return_locations IS NOT NULL OR deportation_location IS NOT NULL"
 
     # Drop obsolete column.
-    remove_columns :interviews, MIGRATED_COLUMNS.keys
-    remove_columns :interviews, :full_title
+    #remove_columns :interviews, MIGRATED_COLUMNS.keys
+    #remove_columns :interviews, :full_title
   end
 
   def self.down
