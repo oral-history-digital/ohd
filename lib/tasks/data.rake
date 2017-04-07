@@ -24,20 +24,19 @@ namespace :data do
   desc "updates segment duration"
   task :segment_duration, [:id] => :environment do |task,args|
 
+    total = 0
     id = args[:id]
-    conditions = []
     unless id.nil?
-      interview = Interview.find_by_archive_id(id)
+      interview = Interview.where(archive_id: id).first
       if interview.nil?
         puts "\nNo such interview (archive_id): '#{id}'. Exiting."
         exit
       end
-      conditions = ["interview_id = ?", interview.id]
+      total = Tape.count(interview_id: interview.id)
     end
 
     batch=5
     offset=0
-    total = Tape.count(:conditions => conditions)
 
     puts "Updating segment duration... (#{total} tapes total)"
 
