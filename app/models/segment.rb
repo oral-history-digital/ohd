@@ -2,14 +2,13 @@ require 'globalize'
 
 class Segment < ActiveRecord::Base
 
-  belongs_to :interview,
-             :include => :translations
+  belongs_to :interview, -> { includes(:translations) }
 
   belongs_to :tape
 
   has_many  :registry_references,
+            -> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },
             :as => :ref_object,
-            :include => [{:registry_entry => {:registry_names => :translations}}, :registry_reference_type],
             :dependent => :destroy
 
   # NB: Don't use a :dependent => :destroy or :delete
@@ -17,32 +16,24 @@ class Segment < ActiveRecord::Base
   has_many  :annotations
 
   scope :with_heading,
-              :joins => :translations,
-              :conditions => [
-                  "segment_translations.locale = ?
-                  AND (
-                    (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
-                    OR
-                    (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
-                  )",
-                  I18n.default_locale.to_s
-              ],
-              :include => [:tape, :translations],
-              :order => :media_id
+              -> { joins(:translations)
+                   .where("segment_translations.locale = ?", I18n.default_locale.to_s)
+                   .where(%W(
+                     (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
+                      OR
+                     (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
+                   ))
+                   .includes(:tape, :translations)
+                   .order(:media_id)
+                 }
 
-  scope :for_interview, lambda {|i| {:conditions => ['segments.interview_id = ?', i.id]} }
+  scope :for_interview, ->(interview){ where('segments.interview_id = ?', i.id) }
 
-  scope :for_media_id,
-              lambda {|mid|
-                {
-                    :conditions => [
-                        "segments.media_id < ?",
-                        Segment.media_id_successor(mid)
-                    ],
-                    :order => "media_id DESC",
-                    :limit => 1
-                }
-              }
+  scope :for_media_id, ->(mid) {
+    where("segments.media_id < ?", Segment.media_id_successor(mid))
+    .order("media_id DESC")
+    .limit(1)
+  }
 
   translates :mainheading, :subheading
 
@@ -53,7 +44,7 @@ class Segment < ActiveRecord::Base
   # NOTE: NO UNIQUENESS OF MEDIA_ID!
   # due to segment splitting as captions, the media id can be repeated!!
   # validates_uniqueness_of :media_id
-  validates_format_of :media_id, :with => /^[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}$/i
+  validates_format_of :media_id, :with => /\A[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}\z/i
 
   validates_associated :interview
   validates_associated :tape
@@ -75,33 +66,33 @@ class Segment < ActiveRecord::Base
     end
   end
 
-  searchable :auto_index => false do
-    string :archive_id, :stored => true
-    string :media_id, :stored => true
-    string :timecode
-    text :joined_transcript_and_translation
-    text :mainheading, :boost => 10 do
-      mainheading = ''
-      translations.each do |translation|
-        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
-      end
-      mainheading.strip
-    end
-    text :subheading, :boost => 10 do
-      subheading = ''
-      translations.each do |translation|
-        subheading << ' ' + translation.subheading unless translation.subheading.blank?
-      end
-      subheading.strip
-    end
-    text :registry_entries, :boost => 5 do
-      registry_references.map do |reference|
-        (I18n.available_locales + [:alias]).map do |locale|
-          reference.registry_entry.to_s(locale)
-        end.uniq.reject(&:blank?).join(' ')
-      end.join(' ')
-    end
-  end
+  #searchable :auto_index => false do
+    #string :archive_id, :stored => true
+    #string :media_id, :stored => true
+    #string :timecode
+    #text :joined_transcript_and_translation
+    #text :mainheading, :boost => 10 do
+      #mainheading = ''
+      #translations.each do |translation|
+        #mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
+      #end
+      #mainheading.strip
+    #end
+    #text :subheading, :boost => 10 do
+      #subheading = ''
+      #translations.each do |translation|
+        #subheading << ' ' + translation.subheading unless translation.subheading.blank?
+      #end
+      #subheading.strip
+    #end
+    #text :registry_entries, :boost => 5 do
+      #registry_references.map do |reference|
+        #(I18n.available_locales + [:alias]).map do |locale|
+          #reference.registry_entry.to_s(locale)
+        #end.uniq.reject(&:blank?).join(' ')
+      #end.join(' ')
+    #end
+  #end
 
   def archive_id
     @archive_id || interview.archive_id

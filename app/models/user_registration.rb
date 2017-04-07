@@ -9,7 +9,7 @@ class UserRegistration < ActiveRecord::Base
   has_one :user, :dependent => :destroy
 
   validates_format_of :email,
-                      :with => Devise::EMAIL_REGEX,
+                      :with => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
                       :on => :create
 
   validates_uniqueness_of :email, :on => :create
@@ -19,7 +19,7 @@ class UserRegistration < ActiveRecord::Base
 
   before_create :serialize_form_parameters
 
-  scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
+  scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
 
   # fields expected for the user registration
   def self.define_registration_fields(fields)

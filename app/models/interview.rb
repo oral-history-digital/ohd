@@ -10,84 +10,84 @@ class Interview < ActiveRecord::Base
 
   belongs_to :language
 
-  # has_many  :photos,
-  #           :dependent => :destroy,
-  #           :include => [ :interview, :translations ]
-  #
-  # has_many :text_materials,
-  #          :dependent => :destroy
-  #
-  # has_many  :tapes,
-  #           :dependent => :destroy,
-  #           :include => :interview
-  #
-  # has_many  :segments,
-  #           :dependent => :destroy
-  #
-  # has_many :annotations,
-  #          :dependent => :delete_all,
-  #          :include => :translations
-  #
-  # has_many  :contributions,
-  #           :dependent => :delete_all
-  #
-  # has_many  :contributors,
-  #           :through => :contributions
-  #
-  # has_many  :interview_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type = 'interview'"
-  #
-  # has_many  :transcript_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type = 'transcript'"
-  #
-  # has_many  :translation_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type = 'translation'"
-  #
-  # has_many  :proofreading_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type IN ('proofreading','proof_reading')"
-  #
-  # has_many  :segmentation_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type = 'segmentation'"
-  #
-  # has_many  :documentation_contributors,
-  #           :class_name => 'Contributor',
-  #           :source => :contributor,
-  #           :through => :contributions,
-  #           :conditions => "contributions.contribution_type = 'research'"
-  #
-  # has_many  :imports,
-  #           :as => :importable,
-  #           :dependent => :delete_all
-  #
-  # # has_attached_file :still_image,
-  # #                   :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
-  # #                   :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
-  # #                   :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
-  # #                   :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
-  #
-  # has_many  :registry_references,
-  #           :as => :ref_object,
-  #           :include => [{:registry_entry => {:registry_names => :translations}}, :registry_reference_type],
-  #           :dependent => :destroy
-  #
-  # has_many :registry_entries,
-  #          :through => :registry_references
-  #
+  has_many  :photos,
+            -> { includes(:interview, :translations) },
+            :dependent => :destroy
+
+  has_many :text_materials,
+           :dependent => :destroy
+
+  has_many  :tapes,
+            -> { includes(:interview) },
+            :dependent => :destroy
+
+  has_many  :segments,
+            :dependent => :destroy
+
+  has_many :annotations,
+            -> { includes(:translations) },
+           :dependent => :delete_all
+
+  has_many  :contributions,
+            :dependent => :delete_all
+
+  has_many  :contributors,
+            :through => :contributions
+
+  has_many  :interview_contributors,
+            -> { where("contributions.contribution_type = 'interview'") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :transcript_contributors,
+            -> { where("contributions.contribution_type = 'transcript'") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :translation_contributors,
+            -> { where("contributions.contribution_type = 'translation'") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :proofreading_contributors,
+            -> { where("contributions.contribution_type IN ('proofreading','proof_reading')") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :segmentation_contributors,
+            -> { where("contributions.contribution_type = 'segmentation'") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :documentation_contributors,
+            -> { where("contributions.contribution_type = 'research'") },
+            :class_name => 'Contributor',
+            :source => :contributor,
+            :through => :contributions
+
+  has_many  :imports,
+            :as => :importable,
+            :dependent => :delete_all
+
+  # has_attached_file :still_image,
+  #                   :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
+  #                   :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
+  #                   :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
+  #                   :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
+
+  has_many  :registry_references,
+            -> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },
+            :as => :ref_object,
+            :dependent => :destroy
+
+  has_many :registry_entries,
+           :through => :registry_references
+
   translates :first_name, :other_first_names, :last_name, :birth_name,
              :return_date, :forced_labor_details,
              :interviewers, :transcriptors, :translators,

@@ -3,8 +3,7 @@ class Tape < ActiveRecord::Base
   belongs_to :interview
 
   has_many  :segments,
-            :order => 'media_id ASC, timecode ASC',
-            :include => :tape
+            -> { order('media_id ASC, timecode ASC').includes(:tape) }
 
   validates_presence_of :media_id, :interview_id
   validates_uniqueness_of :media_id
