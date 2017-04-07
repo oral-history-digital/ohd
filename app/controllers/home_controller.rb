@@ -5,7 +5,7 @@ class HomeController < BaseController
 
   STATIC_PAGES = (Dir.entries(File.join(Rails.root, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
 
-  skip_before_filter :check_user_authentication!
+  skip_before_action :check_user_authentication!
 
   def show
     @page_action = (
