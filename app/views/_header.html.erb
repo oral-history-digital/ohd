@@ -38,7 +38,7 @@
 
               <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
-                    <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
+                    <%= link_to t(:link, :scope => 'devise.sessions'), new_user_account_session_path, :name => 'buttonLogin' %>
                 <% else %>
                     <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
                     <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => 'workbook' %>

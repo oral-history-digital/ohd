@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
-  #root :to => "home#show"
-  devise_for :user_accounts
+  root to: "home#show"
+
+  scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
+    devise_for :user_accounts#, path: 'auth'
+  end
 
   get ':locale/teilsammlung/:project_id' => 'collections#show', :as => :localized_interview_collection
   get 'teilsammlung/:project_id' => 'collections#show', :as => :interview_collection
@@ -119,15 +122,15 @@ Rails.application.routes.draw do
 
   end
 
-  resources :user_registrations
-  get 'login' => 'sessions#new', :as => :anmelden
-  get 'registrieren' => 'user_registrations#new', :as => :registrieren
-  get 'sign_in' => 'sessions#new', :as => :en_login, :locale => :en
-  get 'register' => 'user_registrations#new', :as => :en_register, :locale => :en
-  get 'zugang_aktivieren/:confirmation_token' => 'user_registrations#activate', :as => :confirm_account, :method => :get
-  get 'zugangsaktivierung/:confirmation_token' => 'user_registrations#confirm_activation', :as => :post_confirm_account, :method => :post
-  get 'passwort_vergessen' => 'passwords#new', :as => :reset_password
-  get 'neues_passwort/:reset_password_token' => 'passwords#edit', :as => :change_password
+  #resources :user_registrations
+  #get 'login' => 'sessions#new', :as => :anmelden
+  #get 'registrieren' => 'user_registrations#new', :as => :registrieren
+  #get 'sign_in' => 'sessions#new', :as => :en_login, :locale => :en
+  #get 'register' => 'user_registrations#new', :as => :en_register, :locale => :en
+  #get 'zugang_aktivieren/:confirmation_token' => 'user_registrations#activate', :as => :confirm_account, :method => :get
+  #get 'zugangsaktivierung/:confirmation_token' => 'user_registrations#confirm_activation', :as => :post_confirm_account, :method => :post
+  #get 'passwort_vergessen' => 'passwords#new', :as => :reset_password
+  #get 'neues_passwort/:reset_password_token' => 'passwords#edit', :as => :change_password
   #get 'user_accounts' => 'home#index', :as => :devise_for
   #devise_for :user_account
   get 'en/:page_id' => 'home#show', :locale => :en
