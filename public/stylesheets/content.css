@@ -759,7 +759,7 @@ Auszeichnungen fuer Organigramme // spezielle Tabellenformatierungen
 }
 #annotate_segment span a {
     padding: 2px 14px 2px 2px;
-    background: transparent url('/images/annotation-icon.png') right 2px no-repeat;
+    background: transparent url('/assets/annotation-icon.png') right 2px no-repeat;
 }
 #annotate_segment span a:hover {
     text-decoration: none;

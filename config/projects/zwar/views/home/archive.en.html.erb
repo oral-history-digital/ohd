@@ -36,7 +36,7 @@
 
 <% if current_user_account.nil? %>
 <p style="font-weight: bold">
-  In order to protect privacy rights you must be <%= link_to 'logged in', en_login_path %> and agree to the
+  In order to protect privacy rights you must be <%= link_to 'logged in', new_user_account_session_path %> and agree to the
   <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> as well as
   the <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
   before being granted access to the archive.
