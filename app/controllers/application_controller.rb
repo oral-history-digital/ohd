@@ -13,12 +13,9 @@ class ApplicationController < ActionController::Base
   #filter_parameter_logging :password # Scrub sensitive parameters from your log
 
   include SearchFilters
-  before_filter :current_search_for_side_panel
+  before_action :current_search_for_side_panel
 
-  def default_url_options(options={})
-    { :locale => I18n.locale }
-  end
-  prepend_before_filter :set_locale
+  prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || I18n.default_locale).to_sym
     valid_locales = I18n.available_locales if valid_locales.empty?

@@ -7,7 +7,7 @@
                                {:action => action_name, :controller => controller_name}
                              else
                                # Reverse lookup the translation for the current page_id.
-                               translation_id = (I18n.backend.send(:translations)[I18n.locale][:page_urls].index(params[:page_id]) || '')
+                               translation_id = (I18n.backend.send(:translations)[I18n.locale][:page_urls].key(params[:page_id]) || '')
                                {:action => :show, :controller => :home, :page_id => I18n.t(translation_id, :scope => :page_urls, :locale => available_locale)}
                              end
                link_params[:locale] = available_locale
