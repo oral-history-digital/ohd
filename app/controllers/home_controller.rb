@@ -15,7 +15,7 @@ class HomeController < BaseController
       else
         # Reverse lookup the page action for the given pretty URL
         I18n.backend.send(:load_translations) unless I18n.backend.initialized?
-        (I18n.backend.send(:translations)[I18n.locale][:page_urls].index(params[:page_id]) || '')
+        (I18n.backend.send(:translations)[I18n.locale][:page_urls].key(params[:page_id]) || '')
       end
     ).to_s
 
