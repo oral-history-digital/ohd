@@ -29,10 +29,12 @@
             <a name="inhalt" accesskey="I"></a>
 
             <div id="innerContent">
-                <% unless flash[:alert].blank? %>
-                  <div id="flashAlert">
-                  <%= flash[:alert] %>
-                  </div>
+              <% [:notice, :alert].each do |msg| %>
+                  <% unless flash[msg].blank? %>
+                    <div id="flash<%= msg.to_s.camelcase %>">
+                    <%= flash[msg] %>
+                    </div>
+                  <% end %>
                 <% end %>
                 <%= yield %>
             </div>
