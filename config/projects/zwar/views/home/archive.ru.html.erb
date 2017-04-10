@@ -13,7 +13,7 @@
     </a>
   </div>
 <% else -%>
-<% @interview = random_featured_interview -%>
+<% @interview = Interview.random_featured -%>
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) -%>">
         <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
