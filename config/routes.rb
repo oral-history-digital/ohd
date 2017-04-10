@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root to: "home#show"
+  root to: "home#archive"
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts#, path: 'auth'
