@@ -383,6 +383,7 @@ DEPENDENCIES
   nokogiri
   open4
   paperclip
+  pry
   rack-maintenance
   rails (~> 5.0.0)
   rdoc

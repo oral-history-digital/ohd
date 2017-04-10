@@ -42,6 +42,7 @@ group :development do
   gem 'debase'
   gem 'capistrano'
   gem 'thin'
+  gem 'pry'
 end
 
 group :development, :test do
