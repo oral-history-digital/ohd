@@ -9,4 +9,19 @@ class HomeController < BaseController
   def archive
   end
 
+  def faq_archive_contents
+  end
+
+  def faq_index
+  end
+
+  def faq_searching
+  end
+
+  def faq_technical
+  end
+
+  def map_tutorial
+  end
+
 end
