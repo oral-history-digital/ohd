@@ -6,4 +6,7 @@ class HomeController < BaseController
     render layout: false
   end
 
+  def archive
+  end
+
 end
