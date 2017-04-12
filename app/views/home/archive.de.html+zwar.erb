@@ -17,7 +17,7 @@
 <% unless self.controller.respond_to? :current_user_account %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
+    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
     die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
     <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
   </p>
