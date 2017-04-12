@@ -44,6 +44,11 @@ class ApplicationController < ActionController::Base
   def set_variant
     request.variant = Rails.configuration.x.project
   end
+  
+  def project
+    Rails.configuration.x.project
+  end
+  helper_method :project
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
