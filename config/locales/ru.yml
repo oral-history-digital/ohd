@@ -74,7 +74,7 @@ ru:
     timecode:
       minimal: '%{hours}ч. %{minutes}мин.'
 
-  home: 'Главная'
+  start_page: 'Главная'
   home_link: 'На главную страницу проекта: %{project_name}'
   logo_title: 'Логотип проекта: %{project_name}'
   archive: 'Архив'

@@ -23,7 +23,7 @@ en:
     timecode:
       minimal: '%{hours}h%{minutes}min'
 
-  home: "Home"
+  start_page: "Home"
   home_link: 'To project start page for: %{project_name}'
   logo_title: 'Logo of the project: %{project_name}'
   archive: "Archive"
