@@ -1,0 +1,11 @@
+en:
+  home:
+    faq_index:
+      zwar:
+        title: "Using the Archive – Frequently Asked Questions"
+        questions_about_archive: 'Questions About the Archive Contents'
+        questions_about_searching: 'Questions About Searching'
+        technical_questions: 'Technical Questions'
+        guidelines_pub_ann: 'Our Guidelines for Publication of User Annotations'
+        closing_text: 'In this section you can find technical advice as well as information about the archive contents and using the archive.'
+        further_questions: 'If your questions cannot be answered here, please contact:'

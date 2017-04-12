@@ -1,0 +1,11 @@
+en:
+  home:
+    faq_index:
+      zwar:
+        title: 'Fragen und Antworten zur Nutzung des Archivs'
+        questions_about_archive: 'Inhaltliche Fragen'
+        questions_about_searching: 'Fragen zur Recherche'
+        technical_questions: 'Fragen rund um die Technik'
+        guidelines_pub_ann: 'Unsere Richtlinien für die Veröffentlichung von Nutzer-Anmerkungen'
+        closing_text: 'In diesem Bereich finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.'
+        further_questions: 'Sollten Ihre Fragen hier nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:'
