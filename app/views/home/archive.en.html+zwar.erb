@@ -85,7 +85,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :en) -%>">
+    <a href="<%= collections_path -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Collections"/>
     </a>
   </div>
@@ -94,7 +94,7 @@
 <p>
   The overview map of the project's collections illustrate the provenance of the archive and provide a regional access.
   <br/>
-    <%= link_to 'overview map of collections »', localized_interview_collections_url(:locale => :en), :title => 'geographic distribution of interview collections' %>
+    <%= link_to 'overview map of collections »', collections_path, :title => 'geographic distribution of interview collections' %>
     <br/>
 </p>
 

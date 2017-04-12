@@ -55,6 +55,10 @@ en:
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    collections: 'collections'
+    text_meterials: 'text_materials'
+    interviews: 'interviews'
+    stills: 'stills'
 
   tasks:
     interviewers: 'Interviewer'

@@ -105,6 +105,11 @@ de:
     faq_searching: 'hilfe_zur_suche'
     faq_technical: 'hilfe_zu_technischen_fragen'
     map_tutorial: 'karteneinfuehrung'
+    collections: 'teilsammlungen'
+    text_meterials: 'text_materialien'
+    interviews: 'interviews'
+    stills: 'stills'
+
 
   tasks:
     interviewers: 'Interviewf&uuml;hrung'

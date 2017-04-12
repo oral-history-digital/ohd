@@ -89,7 +89,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :de) -%>">
+    <a href="<%= collections_path -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Teilsammlungen"/>
     </a>
   </div>
@@ -98,7 +98,7 @@
 <p>
   Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
   <br/>
-    <%= link_to 'zur Karte der Teilsammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Geografische Verteilung der Teilsammlungen' %>
+    <%= link_to 'zur Karte der Teilsammlungen »', collections_path, :title => 'Geografische Verteilung der Teilsammlungen' %>
     <br/>
 </p>
 

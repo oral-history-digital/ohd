@@ -106,6 +106,10 @@ ru:
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    collections: 'teilsammlungen'
+    text_meterials: 'text_materialien'
+    interviews: 'interviews'
+    stills: 'stills'
 
   tasks:
     interviewers: 'Проведение интервью'

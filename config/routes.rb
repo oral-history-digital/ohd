@@ -10,30 +10,33 @@ Rails.application.routes.draw do
         get site => "home##{site}", as: site
         get '/'  => "home#archive", as: :home
       end
+
+      resources :collections, only: [:show, :index]
+      resources :interviews, only: [:show, :index] do
+        #member do 
+          #get :text_materials
+          #get :photos
+        #end
+        #collection do 
+          #get :stills
+        #end
+        #resources :registry_entries, only: [:show]
+        resources :tapes do
+          collection do
+            get :playlist
+          end
+          member do
+            get :transcript
+          end
+        end
+      end
     end
   end
 
-  get ':locale/teilsammlung/:project_id' => 'collections#show', :as => :localized_interview_collection
-  get 'teilsammlung/:project_id' => 'collections#show', :as => :interview_collection
-  get ':locale/teilsammlungen' => 'collections#index', :as => :localized_interview_collections
-  get 'teilsammlungen' => 'collections#index', :as => :interview_collections
-  get 'interviews/:id/text_materials/:filename.:extension' => 'interviews#text_materials', :as => :text_materials
-  get 'interviews/:id/photos/:filename.:extension' => 'interviews#photos', :as => :photos
-  get 'interviews/stills/:filename.:extension' => 'interviews#stills', :as => :stills
-  get 'interviews/:id/in/:registry_entry_id' => 'interviews#show', :as => :interview_registry_entries
-  resources :interviews do
-
-
-    resources :tapes do
-      collection do
-        get :playlist
-      end
-      member do
-        get :transcript
-      end
-
-    end
-  end
+  #get 'interviews/:id/text_materials/:filename.:extension' => 'interviews#text_materials', :as => :text_materials
+  #get 'interviews/:id/photos/:filename.:extension' => 'interviews#photos', :as => :photos
+  #get 'interviews/stills/:filename.:extension' => 'interviews#stills', :as => :stills
+  #get 'interviews/:id/in/:registry_entry_id' => 'interviews#show', :as => :interview_registry_entries
 
   get 'webservice/ortssuche' => 'registry_references#index', :as => :public_locations_search, :format => :js
   get 'webservice/ortssuche.:format' => 'registry_references#index', :as => :public_locations_search_by_format

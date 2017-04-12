@@ -80,7 +80,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :ru) -%>">
+    <a href="<%= collections_path -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Частичные собрания"/>
     </a>
   </div>
@@ -89,7 +89,7 @@
 <p>
   Обзор географического распределения частичных собраний позволяет ознакомиться с историей возникновения архива и обеспечивает региональный подход.
   <br/>
-    <%= link_to 'К карте частичных собраний »', localized_interview_collections_url(:locale => :ru), :title => 'Географическое распределение частичных собраний' %>
+    <%= link_to 'К карте частичных собраний »', collections_path, :title => 'Географическое распределение частичных собраний' %>
     <br/>
 </p>
 
