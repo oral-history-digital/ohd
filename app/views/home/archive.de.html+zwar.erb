@@ -71,7 +71,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :de) -%>">
+    <a href="<%= public_map_path -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Karte"/>
     </a>
   </div>
@@ -80,9 +80,7 @@
 <p>
   Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
   <br/>
-    <%= link_to 'zur Kartenrecherche »',
-                localized_public_map_url(:locale => :de),
-                :title => 'Kartenrecherche' %>
+    <%= link_to 'zur Kartenrecherche »', public_map_path, title: 'Kartenrecherche' %>
     <br/>
 </p>
 <br style="clear: both;"/>

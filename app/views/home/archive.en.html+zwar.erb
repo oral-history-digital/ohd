@@ -67,7 +67,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :en) -%>">
+    <a href="<%= public_map_path -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Map"/>
     </a>
   </div>
@@ -76,9 +76,7 @@
 <p>
   An interactive map shows sites of biographical relevance to the interviewees: place of birth, deportation, camps, companies and prisons, places of residence after 1945.
   <br/>
-    <%= link_to 'interactive map »',
-                localized_public_map_url(:locale => :en),
-                :title => 'interactive Map' %>
+    <%= link_to 'interactive map »', public_map_path, title: 'interactive Map' %>
     <br/>
 </p>
 <br style="clear: both;"/>

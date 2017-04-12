@@ -62,7 +62,7 @@
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :ru) -%>">
+    <a href="<%= public_map_path -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Карта"/>
     </a>
   </div>
@@ -71,9 +71,7 @@
 <p>
   С помощью интерактивной карты предоставляется возможность поиска информации о биографических этапах интервьюируемых: место рождения, место депортации, лагерь, фирмы и места заключения, места жительства с 1945 г.
   <br/>
-    <%= link_to 'К поиску по карте »',
-                localized_public_map_url(:locale => :ru),
-                :title => 'Поиск по карте' %>
+    <%= link_to 'К поиску по карте »', public_map_path, title: 'Поиск по карте' %>
     <br/>
 </p>
 <br style="clear: both;"/>

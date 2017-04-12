@@ -7,9 +7,12 @@ Rails.application.routes.draw do
 
     localized do
       %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
-        get site => "home##{site}", as: site
-        get '/'  => "home#archive", as: :home
+        get site, to: "home##{site}", as: site
+        get '/',  to: "home#archive", as: :home
       end
+
+      get 'map', to: 'registry_references#map', :as => :public_map
+      get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
 
       resources :collections, only: [:show, :index]
       resources :interviews, only: [:show, :index] do
@@ -42,10 +45,10 @@ Rails.application.routes.draw do
   get 'webservice/ortssuche.:format' => 'registry_references#index', :as => :public_locations_search_by_format
   get ':locale/webservice/locations/:date.:format' => 'registry_references#full_index', :as => :public_locations_total_pages
   get ':locale/webservice/locations/:date/page.:page.:format' => 'registry_references#full_index', :as => :public_locations_by_page
-  get 'karte' => 'registry_references#map', :as => :public_map
-  get ':locale/map' => 'registry_references#map', :as => :localized_public_map
-  get 'kartenframe' => 'registry_references#map_frame', :as => :map_frame, :locale => :de
-  get ':locale/mapframe' => 'registry_references#map_frame', :as => :localized_map_frame
+  #get 'karte' => 'registry_references#map', :as => :public_map
+  #get ':locale/map' => 'registry_references#map', :as => :localized_public_map
+  #get 'kartenframe' => 'registry_references#map_frame', :as => :map_frame, :locale => :de
+  #get ':locale/mapframe' => 'registry_references#map_frame', :as => :localized_map_frame
   namespace :admin do
     resources :users do
       collection do

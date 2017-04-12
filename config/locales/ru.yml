@@ -106,6 +106,8 @@ ru:
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    map: 'map'
+    mapframe: 'mapframe'
     collections: 'teilsammlungen'
     text_meterials: 'text_materialien'
     interviews: 'interviews'
