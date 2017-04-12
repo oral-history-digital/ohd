@@ -8,6 +8,7 @@ GIT
       request_store (~> 1.0)
 
 GEM
+  remote: https://dev.cedis.fu-berlin.de/geminabox/
   remote: https://rubygems.org/
   specs:
     actioncable (5.0.2)
