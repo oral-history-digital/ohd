@@ -99,7 +99,7 @@ ru:
   timecode: 'временной код'
   german: 'Немецкий'
 
-  page_urls: # Pretty URLs for static pages.
+  routes: # Pretty URLs for static pages.
     archive: 'archive'
     faq_index: 'faq'
     faq_archive_contents: 'faq_contents'

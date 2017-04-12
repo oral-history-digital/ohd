@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
 
-  root to: "home#archive"
+  root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
-    devise_for :user_accounts#, path: 'auth'
+    devise_for :user_accounts
+
+    localized do
+      %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
+        get site => "home##{site}", as: site
+        get '/'  => "home#archive", as: :home
+      end
+    end
   end
 
   get ':locale/teilsammlung/:project_id' => 'collections#show', :as => :localized_interview_collection
@@ -133,14 +140,14 @@ Rails.application.routes.draw do
   #get 'neues_passwort/:reset_password_token' => 'passwords#edit', :as => :change_password
   #get 'user_accounts' => 'home#index', :as => :devise_for
   #devise_for :user_account
-  get 'en/:page_id' => 'home#show', :locale => :en
+  #get 'en/:page_id' => 'home#show', :locale => :en
   #get 'en/:controller/:action' => '#index', :locale => :en
   #get 'en/:controller/:action/:id' => '#index', :locale => :en
   #get 'en/:controller/:action/:id.:format' => '#index', :locale => :en
-  get 'en' => 'home#show', :locale => :en
-  get ':page_id' => 'home#show', :as => :home
-  get ':locale' => 'home#show', :as => :localized_root
-  get ':locale/:page_id' => 'home#show', :as => :localized_home
-  get '/' => 'home#show'
+  #get 'en' => 'home#show', :locale => :en
+  #get ':page_id' => 'home#show', :as => :home
+  #get ':locale' => 'home#show', :as => :localized_root
+  #get ':locale/:page_id' => 'home#show', :as => :localized_home
+  #get '/' => 'home#show'
   get '/:controller(/:action(/:id))'
 end

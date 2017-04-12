@@ -36,8 +36,8 @@
   Категории в поисковой панели в правом краю экрана, отображающие содержание, позволяют ознакомиться с систематикой архива и служат тематически структурированному доступу в архив.
   <br/>
     <%= link_to 'Описание категорий »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'recherchemoeglichkeiten'),
-                :title => 'Какие возможности поиска существуют?' %>
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Какие возможности поиска существуют?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -54,8 +54,8 @@
   Полнотекстовый поиск посредством поисковой панели справа предоставляет возможность интуитивного доступа к архиву с помощью ключевых понятий, чётко соответствующих цели Ваших изысканий.
   <br/>
     <%= link_to 'Описание полнотекстового поиска »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'suche-allgemein'),
-                :title => 'Как я могу использовать полнотекстовый поиск?' %>
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'Как я могу использовать полнотекстовый поиск?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -106,10 +106,7 @@
 </p>
 <h2 class="clear">Вопросы и ответы</h2>
 <p>
-  В разделе
-  <%= link_to (t :faq),
-              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :ru),
-              :title => 'Вопросы и ответы, касающиеся использования архива' %>
+  В разделе <%= link_to t(:faq), faq_index_path, title: 'Вопросы и ответы, касающиеся использования архива' %>
   Вы найдёте ответы на вопросы, касающиеся технической стороны архива или его содержания. Если Ваши вопросы всё-таки останутся без ответа, напишите нам письмо на следующий электронный адрес:
   <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Контакт">
     mail@zwangsarbeit-archiv.de

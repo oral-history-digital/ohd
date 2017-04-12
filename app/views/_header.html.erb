@@ -16,7 +16,7 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
+            <li><%= link_to t(:home), home_path, accesskey: '0' %></li>
             <%= render :partial => '/locale_chooser' %>
             <% if CeDiS.config.uses_map %>
                 <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>

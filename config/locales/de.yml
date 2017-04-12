@@ -98,7 +98,7 @@ de:
   timecode: 'Timecode'
   german: 'Deutsch'
 
-  page_urls: # Pretty URLs for static pages.
+  routes: # Pretty URLs for static pages.
     archive: 'archiv'
     faq_index: 'hilfe'
     faq_archive_contents: 'hilfe_zu_inhalten'

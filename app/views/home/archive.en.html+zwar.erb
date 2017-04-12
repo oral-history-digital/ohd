@@ -41,8 +41,8 @@
   Content categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
   <br/>
     <%= link_to 'description of categories »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'recherchemoeglichkeiten'),
-                :title => 'Which research features are available?' %>
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Which research features are available?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -59,8 +59,8 @@
   Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
   <br/>
     <%= link_to 'explanation of fulltext search »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :en, :anchor => 'suche-allgemein'),
-                :title => 'How should I use full text search?' %>
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'How should I use full text search?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -111,7 +111,7 @@
 </p>
 <h2 class="clear">FAQs</h2>
 <p>
-    Please see the <%= link_to 'Help Page', home_path(:page_id=> t('page_urls.faq_index')), :title => 'Q&A concerning archive features.' %>
+    Please see the <%= link_to t(:faq), faq_index_path, title: 'Q&A concerning archive features.' %>
     for technical advice or if you have any questions about the archive contents or using the archive.
     If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a>
 </p>

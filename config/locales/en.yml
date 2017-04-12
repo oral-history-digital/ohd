@@ -48,7 +48,7 @@ en:
   timecode: 'Timecode'
   german: 'German'
 
-  page_urls:
+  routes:
     archive: 'archive'
     faq_index: 'faq'
     faq_archive_contents: 'faq_contents'
