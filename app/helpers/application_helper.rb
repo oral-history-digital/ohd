@@ -107,10 +107,6 @@ module ApplicationHelper
                   }
   end
 
-  def random_featured_interview
-    Interview.first(:conditions => "(researched IS TRUE) AND (still_image_file_name IS NOT NULL)", :include => :translations, :order => "RAND()")
-  end
-
   def last_import
     # $last_import_date ||= begin
     #   last_import = Import.last.first

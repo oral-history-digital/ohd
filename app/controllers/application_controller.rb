@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   include SearchFilters
   before_action :current_search_for_side_panel
 
+  before_action :set_variant
+
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || I18n.default_locale).to_sym
@@ -38,6 +40,15 @@ class ApplicationController < ActionController::Base
     cookies.delete 'remember_user_token'
     sign_out :user
   end
+
+  def set_variant
+    request.variant = Rails.configuration.x.project
+  end
+  
+  def project
+    Rails.configuration.x.project
+  end
+  helper_method :project
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')

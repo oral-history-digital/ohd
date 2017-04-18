@@ -29,6 +29,7 @@ gem 'sunspot_rails'
 gem 'unicode'
 gem 'acts_as_taggable_on_steroids'
 gem 'localized_country_select'
+gem 'route_translator'
 gem 'devise'
 gem 'rack-maintenance'
 gem 'celluloid'
@@ -42,6 +43,7 @@ group :development do
   gem 'debase'
   gem 'capistrano'
   gem 'thin'
+  gem 'pry'
 end
 
 group :development, :test do

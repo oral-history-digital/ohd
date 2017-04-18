@@ -23,7 +23,7 @@ en:
     timecode:
       minimal: '%{hours}h%{minutes}min'
 
-  home: "Home"
+  start_page: "Home"
   home_link: 'To project start page for: %{project_name}'
   logo_title: 'Logo of the project: %{project_name}'
   archive: "Archive"
@@ -48,13 +48,19 @@ en:
   timecode: 'Timecode'
   german: 'German'
 
-  page_urls:
+  routes:
     archive: 'archive'
     faq_index: 'faq'
     faq_archive_contents: 'faq_contents'
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    map: 'map'
+    mapframe: 'mapframe'
+    collections: 'collections'
+    text_meterials: 'text_materials'
+    interviews: 'interviews'
+    stills: 'stills'
 
   tasks:
     interviewers: 'Interviewer'

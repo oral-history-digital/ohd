@@ -74,7 +74,7 @@ ru:
     timecode:
       minimal: '%{hours}ч. %{minutes}мин.'
 
-  home: 'Главная'
+  start_page: 'Главная'
   home_link: 'На главную страницу проекта: %{project_name}'
   logo_title: 'Логотип проекта: %{project_name}'
   archive: 'Архив'
@@ -99,13 +99,19 @@ ru:
   timecode: 'временной код'
   german: 'Немецкий'
 
-  page_urls: # Pretty URLs for static pages.
+  routes: # Pretty URLs for static pages.
     archive: 'archive'
     faq_index: 'faq'
     faq_archive_contents: 'faq_contents'
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    map: 'map'
+    mapframe: 'mapframe'
+    collections: 'teilsammlungen'
+    text_meterials: 'text_materialien'
+    interviews: 'interviews'
+    stills: 'stills'
 
   tasks:
     interviewers: 'Проведение интервью'

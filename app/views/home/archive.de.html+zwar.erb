@@ -1,30 +1,6 @@
 <h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
 
-<div class="contentImagesLeft">
-<% unless self.controller.respond_to? :current_user_account -%>
-  <% @interview = Interview.find_by_archive_id('za465')#, :include => [:translations, {:language => :translations}]) -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) unless @interview.blank?-%>">
-        <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale)  unless @interview.blank?-%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) unless @interview.blank?-%>
-          <br/>
-          <%= !@interview.blank? && t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%#= @interview.language.to_s.downcase unless @interview.blank? %><%#=  !@interview.blank? && @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% else -%>
-  <% @interview = random_featured_interview -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
-          <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s.downcase %><%= @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% end -%>
-</div>
+<%= render 'teaser' %>
 
 <p></p>
 
@@ -41,7 +17,7 @@
 <% unless self.controller.respond_to? :current_user_account %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', anmelden_path %> sein und
+    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
     die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
     <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
   </p>
@@ -69,8 +45,8 @@
   Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
   <br/>
     <%= link_to 'Beschreibung der Kategorien »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'recherchemoeglichkeiten'),
-                :title => 'Welche Recherchemöglichkeiten gibt es?' %>
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Welche Recherchemöglichkeiten gibt es?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -87,15 +63,15 @@
   Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
   <br/>
     <%= link_to 'Beschreibung der Volltextsuche »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :de, :anchor => 'suche-allgemein'),
-                :title => 'Wie kann ich die Volltextsuche nutzen?' %>
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'Wie kann ich die Volltextsuche nutzen?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :de) -%>">
+    <a href="<%= public_map_path -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Karte"/>
     </a>
   </div>
@@ -104,16 +80,14 @@
 <p>
   Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
   <br/>
-    <%= link_to 'zur Kartenrecherche »',
-                localized_public_map_url(:locale => :de),
-                :title => 'Kartenrecherche' %>
+    <%= link_to 'zur Kartenrecherche »', public_map_path, title: 'Kartenrecherche' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :de) -%>">
+    <a href="<%= collections_path -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Teilsammlungen"/>
     </a>
   </div>
@@ -122,7 +96,7 @@
 <p>
   Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
   <br/>
-    <%= link_to 'zur Karte der Teilsammlungen »', localized_interview_collections_url(:locale => :de), :title => 'Geografische Verteilung der Teilsammlungen' %>
+    <%= link_to 'zur Karte der Teilsammlungen »', collections_path, :title => 'Geografische Verteilung der Teilsammlungen' %>
     <br/>
 </p>
 
@@ -142,9 +116,7 @@
 <h2 class="clear">Fragen und Antworten</h2>
 <p>
   Über die
-  <%= link_to (t :faq),
-              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :de),
-              :title => 'Fragen und Antworten zur Nutzung des Archivs' %>
+  <%= link_to t(:faq), faq_index_path, title: 'Fragen und Antworten zur Nutzung des Archivs' %>
   auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
   Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
   <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">

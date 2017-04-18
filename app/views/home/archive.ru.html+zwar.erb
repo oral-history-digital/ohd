@@ -1,30 +1,6 @@
 <h1>Онлайн-архив "Принудительный труд 1939-1945"</h1>
 
-<div class="contentImagesLeft">
-<% if current_user_account.nil? -%>
-<% @interview = Interview.find_by_archive_id('za465', :include => [:translations, {:language => :translations}]) -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path 'teaser/Baschlai.jpg' %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
-          <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s %><%= @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% else -%>
-<% @interview = random_featured_interview -%>
-  <div class="contentImage200">
-    <a href="<%= interview_path(:id => @interview.archive_id) -%>">
-        <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
-          <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s %><%= @interview.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
-        </h6>
-    </a>
-  </div>
-<% end -%>
-</div>
+<%= render 'teaser' %>
 
 <p></p>
 
@@ -60,8 +36,8 @@
   Категории в поисковой панели в правом краю экрана, отображающие содержание, позволяют ознакомиться с систематикой архива и служат тематически структурированному доступу в архив.
   <br/>
     <%= link_to 'Описание категорий »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'recherchemoeglichkeiten'),
-                :title => 'Какие возможности поиска существуют?' %>
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Какие возможности поиска существуют?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
@@ -78,15 +54,15 @@
   Полнотекстовый поиск посредством поисковой панели справа предоставляет возможность интуитивного доступа к архиву с помощью ключевых понятий, чётко соответствующих цели Ваших изысканий.
   <br/>
     <%= link_to 'Описание полнотекстового поиска »',
-                localized_home_path(:page_id=> t('page_urls.faq_searching'), :locale => :ru, :anchor => 'suche-allgemein'),
-                :title => 'Как я могу использовать полнотекстовый поиск?' %>
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'Как я могу использовать полнотекстовый поиск?' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_public_map_url(:locale => :ru) -%>">
+    <a href="<%= public_map_path -%>">
       <img src="<%= image_path('teaser/karte.png') -%>" alt="Карта"/>
     </a>
   </div>
@@ -95,16 +71,14 @@
 <p>
   С помощью интерактивной карты предоставляется возможность поиска информации о биографических этапах интервьюируемых: место рождения, место депортации, лагерь, фирмы и места заключения, места жительства с 1945 г.
   <br/>
-    <%= link_to 'К поиску по карте »',
-                localized_public_map_url(:locale => :ru),
-                :title => 'Поиск по карте' %>
+    <%= link_to 'К поиску по карте »', public_map_path, title: 'Поиск по карте' %>
     <br/>
 </p>
 <br style="clear: both;"/>
 
 <div class="contentImagesLeft">
   <div class="contentImage100">
-    <a href="<%= localized_interview_collections_url(:locale => :ru) -%>">
+    <a href="<%= collections_path -%>">
       <img src="<%= image_path('teaser/collections.png') -%>" alt="Частичные собрания"/>
     </a>
   </div>
@@ -113,7 +87,7 @@
 <p>
   Обзор географического распределения частичных собраний позволяет ознакомиться с историей возникновения архива и обеспечивает региональный подход.
   <br/>
-    <%= link_to 'К карте частичных собраний »', localized_interview_collections_url(:locale => :ru), :title => 'Географическое распределение частичных собраний' %>
+    <%= link_to 'К карте частичных собраний »', collections_path, :title => 'Географическое распределение частичных собраний' %>
     <br/>
 </p>
 
@@ -130,10 +104,7 @@
 </p>
 <h2 class="clear">Вопросы и ответы</h2>
 <p>
-  В разделе
-  <%= link_to (t :faq),
-              localized_home_path(:page_id=> t('page_urls.faq_index'), :locale => :ru),
-              :title => 'Вопросы и ответы, касающиеся использования архива' %>
+  В разделе <%= link_to t(:faq), faq_index_path, title: 'Вопросы и ответы, касающиеся использования архива' %>
   Вы найдёте ответы на вопросы, касающиеся технической стороны архива или его содержания. Если Ваши вопросы всё-таки останутся без ответа, напишите нам письмо на следующий электронный адрес:
   <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Контакт">
     mail@zwangsarbeit-archiv.de
