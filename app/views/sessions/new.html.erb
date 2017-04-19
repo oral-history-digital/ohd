@@ -12,7 +12,7 @@
 <div id="no-flash" style="display: none; padding-bottom: 20px;">
   <div class="box" style="width: 90%;">
       <h1><%= t(:noflash, :scope => 'plugins') -%>!</h1>
-      <p><%= t(:noflash_message, :scope => 'plugins', :project_name => CeDiS.config.project_name[I18n.locale.to_s]) -%></p>
+      <p><%= t(:noflash_message, :scope => 'plugins', :project_name => Project.project_name[I18n.locale.to_s]) -%></p>
       <a href="http://get.adobe.com/flashplayer" target="_blank"><%= t(:noflash_link, :scope => 'plugins') -%></a>
   </div>
   <br class="clear"/>
@@ -51,7 +51,7 @@
     <%= t :registration_needed, :scope => 'user_interface.messages',
             :terms_of_use => external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen),
             :privacy_policy => external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen),
-            :project_name => CeDiS.config.project_name[I18n.locale.to_s] %>
+            :project_name => Project.project_name[I18n.locale.to_s] %>
   </p>
   <p id="registration_link" style="margin-top:6px;"><%= t('devise.registrations.not_yet_registered') %>&nbsp;<%= link_to t('devise.registrations.link_to'), new_user_account_registration_path %>
   </p>

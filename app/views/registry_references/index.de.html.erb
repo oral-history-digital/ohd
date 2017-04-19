@@ -2,7 +2,7 @@
 
 <% if current_user_account.nil? %>
 <p style="font-weight: bold; margin-top: 0.33em;">
-  Zur Benutzung des Archivs "<%= CeDiS.config.project_name['de'] %>" m&uuml;ssen Sie
+  Zur Benutzung des Archivs "<%= Project.project_name['de'] %>" m&uuml;ssen Sie
   <%= link_to 'registriert', new_user_account_registration_path %> sein und die
   <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
   sowie die <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>

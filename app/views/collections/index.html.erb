@@ -1,5 +1,5 @@
 <% cache [I18n.locale, 'collections'].join('/') do -%>
-    <% if CeDiS.config.uses_map %>
+    <% if Project.uses_map %>
         <% case I18n.locale
             when :de %>
                 <h1>Geografische Verteilung der Teilsammlungen</h1>
@@ -53,7 +53,7 @@
     <% else %>
         <% case I18n.locale
            when :de %>
-                <h1>Sammlungen und Projekte im Online-Archiv "<%= CeDiS.config.project_name['de'] %>"</h1>
+                <h1>Sammlungen und Projekte im Online-Archiv "<%= Project.project_name['de'] %>"</h1>
         <% end %>
     <% end %>
     <ul>
@@ -67,6 +67,6 @@
     </ul>
 
     <br/>
-    <p>Weitere Sammlungen und Projekte aus dem Archiv "<%= CeDiS.config.project_name['de'] %>" sind in Vorbereitung.</p>
+    <p>Weitere Sammlungen und Projekte aus dem Archiv "<%= Project.project_name['de'] %>" sind in Vorbereitung.</p>
 
 <% end -%><%# cache -%>
