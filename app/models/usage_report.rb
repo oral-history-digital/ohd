@@ -34,7 +34,7 @@ class UsageReport < ActiveRecord::Base
         validate_archive_id
       when MATERIALS
         validate_archive_id
-        unless facets.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
+        unless facets.match(Regexp.new("^#{Project.project_initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
           errors.add_to_base('Incorrect or missing filename parameter for text materials request')
         end
       when SEARCHES
@@ -451,7 +451,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def validate_archive_id
-    unless resource_id.match(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
+    unless resource_id.match(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE))
       errors.add(:resource_id, :invalid)
     end
   end

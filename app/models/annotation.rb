@@ -63,7 +63,7 @@ class Annotation < ActiveRecord::Base
   end
 
   def archive_id
-    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
+    media_id[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
   def assign_segment

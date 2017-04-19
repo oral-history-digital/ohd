@@ -134,7 +134,7 @@ EVAL
                                                  'außerhalb Deutschlands' ]},
                                  { :name => 'country',
                                    :type => :country }
-                             ] + (CeDiS.config.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false, :type => :boolean }] : [])
+                             ] + (Project.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false, :type => :boolean }] : [])
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
