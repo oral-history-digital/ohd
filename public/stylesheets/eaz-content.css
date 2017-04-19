@@ -279,7 +279,7 @@ h5 {
 #language_select .captions_orig, #language_select .captions_trans {
   float: left;
   padding: 0 6px;
-  background: url(/images/lang_btn_bg_n.gif);
+  background: url(/assets/lang_btn_bg_n.gif);
   color: #fff;
   cursor: pointer;
 }
@@ -291,13 +291,13 @@ h5 {
   color: #8B0f09;
   float: left;
   padding: 0 6px;
-  background: url(/images/lang_btn_bg_a.gif);
+  background: url(/assets/lang_btn_bg_a.gif);
     }
 
 #language_select .captions_orig.disabled,
 #language_select .captions_trans.disabled {
   color: #999;
-  background: url(/images/lang_btn_bg_n.gif);
+  background: url(/assets/lang_btn_bg_n.gif);
 }
 
 .playerControl .itemselection {
@@ -458,7 +458,7 @@ h5 {
   text-align: left;
   color: #fff;
   padding: 2px 5px;
-  background-image: url(/images/pixel_schwarz_33.png);
+  background-image: url(/assets/pixel_schwarz_33.png);
   cursor: help;
 }
 
@@ -620,19 +620,19 @@ h5 {
 }
 
 .unmute {
-  background: transparent url(/images/player_speaker_n.gif) top left no-repeat;
+  background: transparent url(/assets/player_speaker_n.gif) top left no-repeat;
 }
 
 .mute {
-  background: transparent url(/images/player_speaker_mute_n.gif) top left no-repeat;
+  background: transparent url(/assets/player_speaker_mute_n.gif) top left no-repeat;
 }
 
 .unmute:hover {
-  background: transparent url(/images/player_speaker_a.gif) top left no-repeat;
+  background: transparent url(/assets/player_speaker_a.gif) top left no-repeat;
 }
 
 .mute:hover {
-  background: transparent url(/images/player_speaker_mute_a.gif) top left no-repeat;
+  background: transparent url(/assets/player_speaker_mute_a.gif) top left no-repeat;
 }
 
 #volumeSelect {

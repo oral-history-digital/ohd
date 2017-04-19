@@ -9,7 +9,7 @@
     <% elsif search.hits == 1 %>
       <%= link_to t('.one_selected'), current_search_path, :method => :post %>
     <% else %>
-      <%= t('.no_interviews_found') %>
+      <%= t('.no_interviews_found').html_safe %>
     <% end %>
   </span>
 </div>

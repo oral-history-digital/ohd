@@ -77,7 +77,7 @@
     right: 10px;
     text-indent: -3000px;
     overflow: hidden;
-    background: transparent url(/images/close.png) top right no-repeat;
+    background: transparent url(/assets/close.png) top right no-repeat;
     height: 14px;
     width: 14px;
 }
@@ -116,11 +116,11 @@
     padding-left: 19px;
     display: block;
     width: 240px;
-    background: transparent url(/images/checkbox_n.gif) left 2px no-repeat;
+    background: transparent url(/assets/checkbox_n.gif) left 2px no-repeat;
 }
 
 .facet-field .facet.checked {
-    background-image: url(/images/checkbox_a2.gif);
+    background-image: url(/assets/checkbox_a2.gif);
 }
 
 .facet-field .facet .facet-name {
@@ -298,7 +298,7 @@ float:left;
 /* **************************************************************** */
 
 #interviewContentNavigation {
-    background: #e4e4da url(/images/interviewContentNavigation_bg.gif) top repeat-x;
+    background: #e4e4da url(/assets/interviewContentNavigation_bg.gif) top repeat-x;
 }
 
 #search_in_interview {
@@ -343,11 +343,11 @@ float:left;
 }
 
 .container-toggle.open {
-    background: transparent url(/images/pfeil_rot_unten.gif) 6px 8px no-repeat;
+    background: transparent url(/assets/pfeil_rot_unten.gif) 6px 8px no-repeat;
 }
 
 .container-toggle.closed {
-    background: transparent url(/images/pfeil_rot_rechts.gif) 6px 8px no-repeat;
+    background: transparent url(/assets/pfeil_rot_rechts.gif) 6px 8px no-repeat;
 }
 
 .container-toggle img {
@@ -413,11 +413,11 @@ float:left;
 .accordion-container .subcontainer-toggle {
     cursor: pointer;
     padding-left: 10px;
-    background: url("/images/minus.gif") no-repeat scroll left 0.3em transparent;
+    background: url("/assets/minus.gif") no-repeat scroll left 0.3em transparent;
 }
 
 .accordion-container .subcontainer-toggle.closed {
-    background: url("/images/plus.gif") no-repeat scroll left 0.3em transparent;
+    background: url("/assets/plus.gif") no-repeat scroll left 0.3em transparent;
 }
 
 .accordion-container ul.segment-list {
@@ -481,11 +481,11 @@ float:left;
 }
 
 .mainheading.closed .section {
-    background: transparent url(/images/plus.gif) left 0.5em no-repeat;
+    background: transparent url(/assets/plus.gif) left 0.5em no-repeat;
 }
 
 .mainheading.open .section {
-    background: transparent url(/images/minus.gif) left 0.5em no-repeat;
+    background: transparent url(/assets/minus.gif) left 0.5em no-repeat;
 }
 
 .mainheading.closed .subheadings {
@@ -576,6 +576,6 @@ float:left;
 
 /* ###### Interactives (save etc) ###### */
 #search-page .save_user_content a.save {
-    background: url(/images/suche_speichern.png) top left no-repeat transparent;
+    background: url(/assets/suche_speichern.png) top left no-repeat transparent;
     padding-left: 16px;
 }
