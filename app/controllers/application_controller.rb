@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_variant
-    request.variant = Project.name
+    request.variant = Project.name.to_sym
   end
   
   def not_found
