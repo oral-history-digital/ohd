@@ -68,6 +68,11 @@ default: &default
   # If you want to simulate the mount locally you can either place a symlink or mount --bind
   cifs_share: '/mnt/eaz-diga.cedis.fu-berlin.de/data/'
 
+  storage_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
+  photo_storage_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/bilder'
+  archive_management_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/redaktionssystem'
+  repository_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
+
   streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
   meta_keywords:

@@ -34,6 +34,11 @@ default: &default
 
   cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
 
+  storage_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup'
+  photo_storage_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/bilder'
+  archive_management_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/redaktionssystem'
+  repository_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
+
   streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
   meta_keywords:
