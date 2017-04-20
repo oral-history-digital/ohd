@@ -32,7 +32,7 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="#">
-      <img src="<%= image_path('teaser/categories.png') -%>" alt="Categories"/>
+      <img src="<%= image_path("#{Rails.configuration.x.project}/teaser/categories.png") %>" alt="Categories"/>
     </a>
   </div>
 </div>
@@ -50,7 +50,7 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="#">
-      <img src="<%= image_path('teaser/fulltext.png') -%>" alt="Fulltext Search"/>
+      <img src="<%= image_path("#{Rails.configuration.x.project}/teaser/fulltext.png") %>" alt="Fulltext Search"/>
     </a>
   </div>
 </div>
@@ -68,7 +68,7 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="<%= public_map_path -%>">
-      <img src="<%= image_path('teaser/karte.png') -%>" alt="Map"/>
+      <img src="<%= image_path("#{Rails.configuration.x.project}/teaser/karte.png") %>" alt="Map"/>
     </a>
   </div>
 </div>
@@ -84,7 +84,7 @@
 <div class="contentImagesLeft">
   <div class="contentImage100">
     <a href="<%= collections_path -%>">
-      <img src="<%= image_path('teaser/collections.png') -%>" alt="Collections"/>
+      <img src="<%= image_path("#{Rails.configuration.x.project}/teaser/collections.png") %>" alt="Collections"/>
     </a>
   </div>
 </div>
