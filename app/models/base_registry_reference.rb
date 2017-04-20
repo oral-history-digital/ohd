@@ -5,7 +5,7 @@ class BaseRegistryReference < ActiveRecord::Base
 
   belongs_to :ref_object, :polymorphic => true
   belongs_to :registry_entry,
-             :include => [:registry_names, {:main_registers => :registry_names}]
+             -> { includes(registry_names: {}, {main_registers: :registry_names}) }
   belongs_to :registry_reference_type
 
   validates_presence_of :ref_object, :registry_entry
@@ -17,18 +17,14 @@ class BaseRegistryReference < ActiveRecord::Base
   # which means that duplicate records with registry_reference_type_id == NULL will not be identified.
   validates_uniqueness_of :ref_position, :registry_entry_id, :scope => [:ref_object_type, :ref_object_id, :registry_reference_type_id]
 
-  named_scope :with_type, lambda { |code|
-    {
-        :joins => :registry_reference_type,
-        :include => :registry_reference_type,
-        :conditions => { :registry_reference_type => {:code => code.to_s} }
-    }
+  scope :with_type, -> (code) {
+        joins(:registry_reference_type).
+        includes(:registry_reference_type).
+        where(registry_reference_type: {code: code.to_s} )
   }
 
-  named_scope :with_type_id, lambda { |id|
-    {
-        :conditions => {:registry_reference_type_id => id}
-    }
+  scope :with_type_id, -> (id) {
+        where(registry_reference_type_id: id)
   }
 
   def to_hash(options = {})

@@ -10,10 +10,8 @@ class Language < ActiveRecord::Base
 
   class << self
     def find_by_name(name)
-      Language.first(
-          :joins => :translations, :include => :translations,
-          :conditions => [ 'language_translations.locale = ? AND language_translations.name = ?', 'de', name ]
-      )
+      Language.joins(:translations).includes(:translations).
+          where('language_translations.locale = ? AND language_translations.name = ?', 'de', name).first
     end
 
     def german
@@ -25,7 +23,7 @@ class Language < ActiveRecord::Base
     end
 
     def options
-      Language.all(:include => :translations).sort_by(&:name)
+      Language.all.includes(:translations).sort_by(&:name)
     end
   end
 

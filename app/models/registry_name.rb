@@ -8,12 +8,10 @@ class RegistryName < ActiveRecord::Base
   translates :descriptor
 
   named_scope :ordered_by_type,
-              :joins => :registry_name_type,
-              :order => 'registry_name_types.order_priority, registry_names.name_position'
+              -> { joins(:registry_name_type).
+                   order('registry_name_types.order_priority, registry_names.name_position') }
 
-  named_scope :with_type, lambda { |code|
-    { :conditions => { :registry_name_types => {:code => code.to_s} } }
-  }
+  named_scope :with_type, -> (code) { where(registry_name_types: {code: code.to_s} }
 
   def descriptor_with_locales=(data)
     begin

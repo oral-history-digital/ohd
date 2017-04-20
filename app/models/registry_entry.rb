@@ -12,10 +12,11 @@ class RegistryEntry < ActiveRecord::Base
 
   INVALID_ENTRY_TEXT = 'Missing Translation'
 
-  ONIGURUMA_OPTIONS = {:options => Oniguruma::OPTION_IGNORECASE, :encoding => Oniguruma::ENCODING_UTF8}
+  #ONIGURUMA_OPTIONS = {:options => Oniguruma::OPTION_IGNORECASE, :encoding => Oniguruma::ENCODING_UTF8}
+  ONIGURUMA_OPTIONS = {:options => 'i', :encoding => 'utf8'}
 
   has_many :registry_names,
-           :include => [:translations, :registry_name_type],
+           -> { includes(:translations, :registry_name_type) },
            :dependent => :destroy
 
   has_many :registry_references,
@@ -31,9 +32,9 @@ class RegistryEntry < ActiveRecord::Base
   has_dag_links :link_class_name => 'RegistryHierarchy'
 
   has_many :main_registers,
+           -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
            :through => :links_as_descendant,
-           :source => :ancestor,
-           :conditions => 'EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)'
+           :source => :ancestor
 
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
@@ -55,43 +56,43 @@ class RegistryEntry < ActiveRecord::Base
     children.count == 0 and registry_references.count == 0
   end
 
-  named_scope :with_state, lambda { |workflow_state|
-    {:conditions => {:workflow_state => workflow_state}}
+  scope :with_state, -> (workflow_state) {
+    where(workflow_state: workflow_state)
   }
 
   # Order registry entries lexicographically by name even when they
   # consist of several distinct registry names (ie. several name
   # types or name positions).
-  named_scope :ordered_by_name,
-              :joins =>
-                  "INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id
+  scope :ordered_by_name,
+        -> { joins( %Q(
+                   INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id
                    INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id
-                   INNER JOIN registry_name_translations stdname ON registry_names.id = stdname.registry_name_id AND stdname.locale = '#{I18n.default_locale}'",
-              :include => {:registry_names => [:translations, :registry_name_type]},
-              :group => 'registry_entries.id',
-              :order => 'registry_entries.list_priority DESC, GROUP_CONCAT(DISTINCT stdname.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")'
+                   INNER JOIN registry_name_translations stdname ON registry_names.id = stdname.registry_name_id AND stdname.locale = '#{I18n.default_locale}'
+             )).
+             includes(registry_names: [:translations, :registry_name_type]).
+             group('registry_entries.id').
+             order('registry_entries.list_priority DESC, GROUP_CONCAT(DISTINCT stdname.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
+           }
 
   # Filter registry entries that have reference types defined on them.
-  named_scope :with_reference_types,
-              # The following is an INNER JOIN which will
-              # automatically filter registry entries that
-              # actually have registry reference types
-              # defined.
-              :joins => :registry_reference_types,
-              # NB: Grouping doesn't work correctly with
-              # the .size/.count method! Counting the number of
-              # available reference types has to be done after
-              # retrieving them.
-              :group => 'registry_entries.id'
+  scope :with_reference_types,
+        # The following is an INNER JOIN which will
+        # automatically filter registry entries that
+        # actually have registry reference types
+        # defined.
+        -> { joins(:registry_reference_types).
+        # NB: Grouping doesn't work correctly with
+        # the .size/.count method! Counting the number of
+        # available reference types has to be done after
+        # retrieving them.
+        group('registry_entries.id') }
 
-  named_scope :with_reference_to, lambda { |referenced_object|
-    {
-        :joins => :registry_references,
-        :conditions => [
+  scope :with_reference_to, -> (referenced_object) {
+        joins(:registry_references).
+        where(
             'registry_references.ref_object_id = ? AND registry_references.ref_object_type = ?',
             referenced_object.id, referenced_object.class.to_s
-        ]
-    }
+        )
   }
 
   class << self
