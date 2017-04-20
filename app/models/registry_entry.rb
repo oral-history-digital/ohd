@@ -123,12 +123,11 @@ class RegistryEntry < ActiveRecord::Base
                      # No root node has been given. Find the top
                      # level root node of the registry. (By definition
                      # there should be exactly one!)
-                     first(
-                         :select => 'DISTINCT registry_entries.id',
-                         :joins => 'LEFT JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id',
-                         :conditions => 'registry_hierarchies.id IS NULL',
-                         :include => {:registry_names => :translations}
-                     )
+                     select('DISTINCT registry_entries.id').
+                     joins('LEFT JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id').
+                     where('registry_hierarchies.id IS NULL').
+                     includes(registry_names: :translations).
+                     first
                    else
                      # Root node information has been given. Resolve
                      # it to a registry entry.
@@ -514,6 +513,7 @@ class RegistryEntry < ActiveRecord::Base
     def find_all_by_name(name, locale = I18n.default_locale, options = {})
       parsed_name = parse_name(name)
 
+      includes = options[include] || {}
       joins = []
       conditions = []
       parsed_name.each do |name_type, descriptors|
@@ -537,14 +537,10 @@ class RegistryEntry < ActiveRecord::Base
         send(:sanitize_sql_array, condition)
       end.join(' AND ')
 
-      all(
-          :select => 'DISTINCT registry_entries.*',
-          :joins => joins,
-          :include => {
-              :registry_names => [:registry_name_type, :translations]
-          }.merge((options[:include] || {})),
-          :conditions => conditions
-      )
+      select('DISTINCT registry_entries.*).'
+      joins(joins).
+      includes(registry_names: [:registry_name_type, :translations], includes).
+      where(conditions)
     end
 
     def find_by_name(name, locale = I18n.default_locale, options = {})
@@ -631,17 +627,16 @@ class RegistryEntry < ActiveRecord::Base
     # Find all registry entries which are neither referenced themselves nor
     # any of their descendants are being referenced.
     def find_all_unused()
-      all(
-          :joins => 'LEFT JOIN registry_references AS rr ON rr.registry_entry_id = registry_entries.id',
-          :conditions => 'rr.id IS NULL
-                          AND NOT EXISTS (
-                            SELECT *
-                            FROM registry_references rr
-                            INNER JOIN registry_hierarchies rh
-                              ON rr.registry_entry_id = rh.descendant_id
-                            WHERE registry_entries.id = rh.ancestor_id
-                          )'
-      )
+      joins('LEFT JOIN registry_references AS rr ON rr.registry_entry_id = registry_entries.id').
+      where('rr.id IS NULL
+              AND NOT EXISTS (
+                SELECT *
+                FROM registry_references rr
+                INNER JOIN registry_hierarchies rh
+                  ON rr.registry_entry_id = rh.descendant_id
+                WHERE registry_entries.id = rh.ancestor_id
+              )'
+           )
     end
 
     # Find all registry entries that belong to a configured
@@ -668,11 +663,9 @@ class RegistryEntry < ActiveRecord::Base
         when RegistryReferenceType
           if referenced_object.blank?
             # Search all distinct registry entries referenced with the given type.
-            all(
-                :joins => :registry_references,
-                :conditions => {:registry_references => {:registry_reference_type_id => category_object.id}},
-                :group => 'registry_entries.id'
-            )
+            joins(:registry_references).
+            where(registry_references: {registry_reference_type_id: category_object.id}).
+            group('registry_entries.id')
           else
             # Search all registry entries referenced from the referenced object with the given type.
             # NB: These must be unique entries (enforced by a unique index on references).
@@ -723,9 +716,8 @@ class RegistryEntry < ActiveRecord::Base
       allowed_name_types |= registry_names.map{ |n| n.registry_name_type.to_sym }
 
       # Order supported types and return them as objects.
-      @allowed_name_types = RegistryNameType.all(
-          :conditions => {:code => allowed_name_types.map(&:to_s)},
-          :order => 'order_priority'
+      @allowed_name_types = RegistryNameType.where(code: allowed_name_types.map(&:to_s)).
+                                            order('order_priority')
       )
     end
     @allowed_name_types
