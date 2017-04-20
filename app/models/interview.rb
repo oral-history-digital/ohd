@@ -1,7 +1,7 @@
 require 'globalize'
 
 class Interview < ActiveRecord::Base
-  include CeDiS::CategoryExtension
+  include Project::CategoryExtension
   include Paperclip
 
   NUMBER_OF_INTERVIEWS = Interview.count
@@ -138,14 +138,14 @@ class Interview < ActiveRecord::Base
   #     end.join(' ')
   #   end
   #
-  #   CeDiS.archive_facet_category_ids.each do |category_id|
+  #   Project.archive_facet_category_ids.each do |category_id|
   #  #   integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
   #   end
   #
   #   # Index archive id, facet categories and language (with all translations) for full text category search.
   #   text :categories, :boost => 20 do
   #     cats = [self.archive_id]
-  #     cats += (CeDiS.archive_facet_category_ids + [:language]).
+  #     cats += (Project.archive_facet_category_ids + [:language]).
   #                 # Retrieve all category objects of this interview.
   #                 map{|c| self.send(c)}.flatten.
   #                 # Retrieve their translations.

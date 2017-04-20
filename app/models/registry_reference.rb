@@ -85,7 +85,7 @@ class RegistryReference < BaseRegistryReference
     json['language'] = interview.language.to_s
     json['translated'] = interview.translated
     json['interviewType'] = interview.video ? 'video' : 'audio'
-    CeDiS.archive_category_ids.each do |category_id|
+    Project.archive_category_ids.each do |category_id|
       json[category_id.to_s] = self.interview.send("#{category_id.to_s.singularize}_names")
     end
     json['descriptor'] = registry_entry.to_s(I18n.locale)

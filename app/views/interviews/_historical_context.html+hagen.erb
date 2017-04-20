@@ -1,7 +1,7 @@
 <div id="containerHistoricalContext"  class="container">
     <ul class="data">
         <li>
-            <span class="label"><%= CeDiS.category_name(:pseudonym, I18n.locale) %></span>
+            <span class="label"><%= Project.category_name(:pseudonym, I18n.locale) %></span>
             <span class="value"><%= historical_context.pseudonym_names(I18n.locale) %></span>
         </li>
         <li>
@@ -9,19 +9,19 @@
             <span class="value"><%= format_date historical_context.date_of_birth %></span>
         </li>
         <li>
-            <span class="label"><%= CeDiS.category_name(:birth_locations, I18n.locale) %></span>
+            <span class="label"><%= Project.category_name(:birth_locations, I18n.locale) %></span>
             <span class="value"><%= historical_context.birth_location_names(I18n.locale) %></span>
         </li>
         <li>
-            <span class="label"><%= CeDiS.category_name(:home_locations, I18n.locale) %></span>
+            <span class="label"><%= Project.category_name(:home_locations, I18n.locale) %></span>
             <span class="value"><%= expand historical_context.home_location_names %></span>
         </li>
         <li>
-            <span class="label"><%= CeDiS.category_name(:profession, I18n.locale) %></span>
+            <span class="label"><%= Project.category_name(:profession, I18n.locale) %></span>
             <span class="value"><%= historical_context.profession_names %> (<%= historical_context.professional_position_names %>)</span>
         </li>
         <li>
-            <span class="label"><%= CeDiS.category_name(:industry, I18n.locale) %></span>
+            <span class="label"><%= Project.category_name(:industry, I18n.locale) %></span>
             <span class="value"><%= historical_context.industry_names || '&mdash;' %></span>
         </li>
     </ul>

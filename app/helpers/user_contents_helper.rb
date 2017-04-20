@@ -27,13 +27,13 @@ module UserContentsHelper
     preloaded_languages = language_ids.empty? ? [] : Language.all(:conditions => [ 'id IN (?)', language_ids ], :include => :translations)
 
     # Preload queried facet categories by ID.
-    category_names = CeDiS.archive_facet_category_ids.map(&:to_s)
+    category_names = Project.archive_facet_category_ids.map(&:to_s)
     category_ids = query.select{|key,value| category_names.include? key}.map(&:second).flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
     preloaded_categories = category_ids.empty? ? [] : RegistryEntry.all(:conditions => [ 'id IN (?)', category_ids ], :include => {:registry_names => :translations})
 
     # Render keywords, categories and interviews.
     str += query.keys.inject([]) do |out, key|
-      human_readable_facet_name = CeDiS.is_category?(key) ? CeDiS.category_name(key, I18n.locale) : t(key, :scope => :facets)
+      human_readable_facet_name = Project.is_category?(key) ? Project.category_name(key, I18n.locale) : t(key, :scope => :facets)
       values = query[key]
       case values
         when Array

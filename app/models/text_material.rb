@@ -33,7 +33,7 @@ class TextMaterial < ActiveRecord::Base
       # Construct the import file path.
       filepath = if !interview.nil? and interview.quality < 2.0
         # use the original text materials
-        versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}_\\w+/")])
+        versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{Project.project_initials.downcase}\\d{3}_\\w+/")])
         ctime = Time.now
         original_file = nil
         Dir.glob(versions_dir + '*.pdf').each do |file|
