@@ -12,7 +12,7 @@
 
 <% if current_user_account.nil? %>
   <p style="font-weight: bold;">
-    В целях защиты прав личности для использования архива "Принудительный труд 1939-1945" Вы должны <%= link_to 'войти в систему', anmelden_path %> и принять как <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>, так и <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
+    В целях защиты прав личности для использования архива "Принудительный труд 1939-1945" Вы должны <%= link_to 'войти в систему', new_user_account_session_path %> и принять как <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>, так и <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
   </p>
 <% else %>
   <br/>

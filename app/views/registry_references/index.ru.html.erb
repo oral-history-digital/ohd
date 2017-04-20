@@ -3,7 +3,7 @@
 <% if current_user_account.nil? %>
     <p style="font-weight: bold; margin-top: 0.33em;">
         Для использования архива "<%= CeDiS.config.project_name['ru'] %>" Вы должны быть зарегистрированы -
-        <%= link_to 'регистрация', registrieren_path %> - и принять <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
+        <%= link_to 'регистрация', new_user_account_registration_path %> - и принять <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
         и <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>. Поиск в интервью возможен также только после регистрации.
     </p>
     <p style="font-weight: bold; margin-top: 0.33em;">
