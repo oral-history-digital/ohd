@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require_tree .
+//= require jquery
+//= require jquery_ujs
 
 UTF8 = {
 	encode: function(s){

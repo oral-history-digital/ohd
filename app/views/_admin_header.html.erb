@@ -44,7 +44,7 @@
                 <% if current_user_account.nil? %>
                     <%= link_to t(:link, :scope => 'devise.sessions'), new_user_account_session_path, :name => 'buttonLogin' %>
                 <% else %>
-                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>
+                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout', method: :delete %>
                 <% end %>
               </p>
             <% unless flash[:notice].blank? %>
