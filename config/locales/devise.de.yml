@@ -1,286 +1,60 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
 de:
   devise:
-    sessions:
-      link: 'Anmelden'
-      signed_in: 'Sie sind jetzt angemeldet.'
-      signed_out: 'Sie sind jetzt abgemeldet.'
-      unauthenticated: 'Für diese Aktion ist eine Anmeldung erforderlich.'
-      unauthenticated_search: 'Um die Suche zu nutzen, müssen Sie sich erst anmelden.'
-      unconfirmed: 'Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden können.'
-      locked: 'Ihr Zugang wurde gesperrt.'
-      invalid: 'Username oder Passwort ist ungültig.'
-      invalid_token: 'Ungültiger Authentifizierungscode.'
-      timeout: 'Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.'
-      inactive: 'Ihr Zugang ist zur Zeit deaktiviert.'
-      remember_me: 'angemeldet bleiben'
-      logout: 'abmelden'
-    passwords:
-      change: 'Ihr Passwort ändern'
-      forgot: 'Sie haben Ihr Passwort vergessen?'
-      password: 'Passwort'
-      password_confirmation: 'Passwort wiederholen'
-      submit: 'Passwort jetzt ändern'
-      resend: 'Passwort ändern'
-      link: 'Passwort vergessen?'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, mit denen Sie Ihr Passwort zurücksetzen können.'
-      updated: 'Ihr Passwort wurde erfolgreich geändert.'
     confirmations:
-      link: 'Zugangsbestätigung nicht erhalten?'
-      resend: 'Bestätigung anfordern'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
-      confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
-      invalid_token: 'Der angegebene Link ist nicht mehr gültig. Vermutlich ist Ihr Zugang bereits freigeschaltet. Bitte verwenden Sie die "Passwort vergessen" Funktion, falls Sie sich nicht anmelden können.'
-      password_missing: 'Zur Bestätigung müssen Sie ein Passwort auswählen.'
-      password_confirmation_missing: 'Die Passwort-Wiederholung stimmt nicht mit Ihrem Passwort überein.'
-    registrations:
-      link: 'Registrierung'
-      not_yet_registered: 'Noch nicht registriert?'
-      link_to: 'Zur Registrierung &raquo;'
-      submit: 'Registrierung senden'
-      activate: 'Zugangsaktivierung für'
-      activate_submit: 'absenden'
-      activate_text: 'Bitte wählen Sie ein geeignetes Passwort für Ihren Zugang.'
-      successful: 'Ihre Registrierung ist bei uns eingegangen.'
-      signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
-      updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
-      destroyed: 'Ihre Zugangsdaten wurden erfolgreich gelöscht.'
-      welcome: 'Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie sind jetzt angemeldet. Bitte halten Sie Ihren Benutzernamen und Ihr Passwort bei Ihrem nächsten Besuch bereit.'
-    unlocks:
-      link: 'Zugang reaktivieren'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Anweisungen, wie Sie Ihren Zugang reaktivieren können.'
-      unlocked: 'Ihr Zugang wurde erfolgreich reaktiviert. Sie sind jetzt angemeldet.'
+      confirmed: "Vielen Dank für Deine Registrierung. Bitte melde dich jetzt an."
+      confirmed_and_signed_in: "Vielen Dank für Deine Registrierung. Du bist jetzt angemeldet."
+      send_instructions: "Du erhältst in wenigen Minuten eine E-Mail, mit der Du Deine Registrierung bestätigen kannst."
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Du Deine Registrierung bestätigen kannst."
+    failure:
+      already_authenticated: "Du bist bereits angemeldet."
+      inactive: "Dein Account ist nicht aktiv."
+      invalid: "Ungültige Anmeldedaten."
+      invalid_token: "Der Anmelde-Token ist ungültig."
+      locked: "Dein Account ist gesperrt."
+      not_found_in_database: "E-Mail-Adresse oder Passwort ungültig."
+      timeout: "Deine Sitzung ist abgelaufen, bitte melde Dich erneut an."
+      unauthenticated: "Du musst Dich anmelden oder registrieren, bevor Du fortfahren kannst."
+      unconfirmed: "Du musst Deinen Account bestätigen, bevor Du fortfahren kannst."
     mailer:
-      confirmation_instructions: 'Schritte für die Freischaltung Ihres Zugangs'
-      reset_password_instructions: 'Schritte für die Wiederherstellung Ihres Passwortes'
-      unlock_instructions: 'Schritte für die Reaktivierung Ihres Zugangs'
-
-    user_interface:
-      status:
-        not_signed_in: 'nicht angemeldet'
-
-    labels:
-      send_now: 'Jetzt zuschicken'
-    authentication_keys:
-      login: 'Benutzer(in)'
-      email: 'E-Mail'
-      password: 'Passwort'
-
-    workflow_states:
-      new_registration: 'Neuanmeldung'
-      new_registrations: 'Neuanmeldungen'
-      unchecked: 'unbeantwortet'
-      checked: 'geprüft'
-      registered: 'registriert'
-      deactivated: 'deaktiviert'
-      postponed: 'zurückgestellt'
-      rejected: 'abgelehnt'
-      all: 'alle'
-
-    workflow_events:
-      register: 'registrieren'
-      register_info: 'Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.'
-      reject: 'ablehnen'
-      reject_info: 'Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).'
-      resend_info: 'Daten erneut senden'
-      resend_info_info: 'Der Link für die Zugangsaktivierung wird dem Benutzer erneut zugesandt (per E-Mail).'
-      deactivate: 'deaktivieren'
-      deactivate_info: 'Der Zugang des Nutzers wird deaktiviert (der Nutzer erhält keine E-Mail und kann sich nicht mehr einloggen).'
-      reactivate: 'wiederaufnehmen'
-      reactivate_info: 'Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.'
-      postpone: 'zurückstellen'
-      postpone_info: 'Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte separate E-Mail und Anmerkung schreiben).'
-      activate: 'aktivieren'
-      activate_info: 'Der Zugang des Nutzers wird direkt aktiviert (bitte den Nutzer separat über seine Zugangsdaten informieren).'
-      expire: 'verfallen lassen'
-      expire_info: 'Die Anfrage zurückstellen, da der Nutzer nicht reagiert und seinen Zugang nicht aktiviert (keine E-Mail).'
-      remove: 'deaktivieren'
-      remove_info: 'Der Zugang des Nutzers wird deaktiviert (bitte den Nutzer in einer separaten E-Mail informieren).'
-
-    registration_fields:
-      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
-      select: 'Bitte auswählen'
-      appellation: 'Anrede'
-      first_name: 'Vorname'
-      last_name: 'Nachname'
-      job_description: 'Beruf'
-      email: 'E-Mail'
-      research_intentions: 'Recherche-Anliegen'
-      comments: 'Präzisierung des Anliegens'
-      organization: 'Institution'
-      school: 'Schule'
-      homepage: 'Homepage der Institution'
-      street: 'Straße'
-      zipcode: 'PLZ'
-      city: 'Ort'
-      state: 'Bundesland'
-      country: 'Land'
-      tos_agreement: 'Nutzungsbedingungen'
-      tos_agreement_explanation: 'Ich stimme den %{terms_of_use} zu.'
-      priv_agreement: 'Datenschutzbestimmungen'
-      priv_agreement_explanation: 'Ich stimme den %{privacy_policy} zu.'
-      agreed: 'zugestimmt'
-      not_agreed: 'keine Zustimmung'
-      send_newsletter: 'Newsletter'
-      send_newsletter_explanation: 'Ich möchte den Newsletter des Projektes "%{project_name}" abonnieren.'
-      receive_newsletter: 'Newsletter'
-      newsletter_signup: 'Newsletter-Abonnement'
-      receive_newsletter_explanation: 'Ich möchte den Newsletter des Projektes "%{project_name}" abonnieren.'
-      requested_at: 'Datum der Anfrage'
-      name: 'Name'
-      adress: 'Anschrift'
-      workflow_state: 'Registrierungsstatus'
-      login: 'Benutzername'
-      created_at: 'Datum der Registrierung'
-
-    registration_values:
-      appellation:
-        'Frau': 'Frau'
-        'Ms.': 'Frau'
-        'Ms': 'Frau'
-        'Herr': 'Herr'
-        'Mr.': 'Herr'
-        'Mr': 'Herr'
-        'Frau Dr': 'Frau Dr'
-        'Herr Dr': 'Herr Dr'
-        'Dr': 'Dr'
-        'Dr PhD': 'Dr'
-        'Frau PD Dr': 'Frau PD Dr'
-        'Herr PD Dr': 'Herr PD Dr'
-        'PD Dr': 'PD Dr'
-        'Frau Prof': 'Frau Prof'
-        'Herr Prof': 'Herr Prof'
-        'Herr Pro': 'Herr Prof'
-        'Prof': 'Prof'
-      job_description:
-        'Dozentin/Dozent': 'Dozent(in)/Forscher(in)'
-        'Dozent(in)/Forscher(in)': 'Dozent(in)/Forscher(in)'
-        'Dozent': 'Dozent(in)/Forscher(in)'
-        'Wissenschaftlerin/Wissenschaftler': 'Dozent(in)/Forscher(in)'
-        'Lecturer/Researcher': 'Dozent(in)/Forscher(in)'
-        'Lecturer': 'Dozent(in)/Forscher(in)'
-        'Filmemacherin/Filmemacher': 'Filmemacher(in)'
-        'Filmemacher(in)': 'Filmemacher(in)'
-        'Filmmaker': 'Filmemacher(in)'
-        'Journalistin/Journalist': 'Journalist(in)'
-        'Journalist(in)': 'Journalist(in)'
-        'Journalist': 'Journalist(in)'
-        'Lehrerin/Lehrer': 'Lehrer(in)'
-        'Lehrer(in)': 'Lehrer(in)'
-        'Teacher': 'Lehrer(in)'
-        'Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeiter(in) (Museen/Gedenkstatten)':
-        'Mitarbeiter(in) (Museen/Gedenkstätten)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Staff Member (museums/memorial sites)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Staff Member (Museums/Memorial Sites)': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Mitarbeit': 'Mitarbeiter(in) (Museen/Gedenkstätten)'
-        'Projektmitarbeiter': 'Mitarbeit'
-        'Mitarbeiterin': 'Mitarbeit'
-        'Schülerin/Schüler': 'Schüler(in)'
-        'Sch?lerin/Sch?ler': 'Schüler(in)'
-        'Sch\xC3\xBClerin/Sch\xC3\xBCler': 'Schüler(in)'
-        'Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n': 'Schüler(in)'
-        'Sch\xC3\xBCler(in)': 'Schüler(in)'
-        'Schüler(in)': 'Schüler(in)'
-        'Sch?ler(in)': 'Schüler(in)'
-        'School Student': 'Schüler(in)'
-        'Studentin/Student': 'Student(in)'
-        'Student(in)': 'Student(in)'
-        'University Student': 'Student(in)'
-        'Sonstiges': 'Sonstiges'
-        'k.A.': 'Sonstiges'
-        '': 'Sonstiges'
-        'Other': 'Sonstiges'
-      research_intentions:
-        'Ausstellung': 'Ausstellung'
-        'Exhibition': 'Ausstellung'
-        'Bildungsarbeit': 'Bildungsarbeit'
-        'Teaching': 'Bildungsarbeit'
-        'Educational Work': 'Bildungsarbeit'
-        'Schulunterricht': 'Bildungsarbeit'
-        'Dissertation': 'Dissertation'
-        'Dissertation/Habilitation': 'Dissertation'
-        'Dokumentarfilm': 'Dokumentarfilm'
-        'Documentary Film': 'Dokumentarfilm'
-        'Documentary': 'Dokumentarfilm'
-        'Familienforschung': 'Familienforschung'
-        'Genealogy': 'Familienforschung'
-        'Genealogical Research': 'Familienforschung'
-        'Kunstprojekt': 'Kunstprojekt'
-        'Art Project': 'Kunstprojekt'
-        'Persönliches Interesse': 'Persönliches Interesse'
-        'Pers\xC3\xB6nliches Interesse': 'Persönliches Interesse'
-        'Pers?nliches Interesse': 'Persönliches Interesse'
-        'Pers?ches Interesse': 'Persönliches Interesse'
-        'Private Interest/Other': 'Persönliches Interesse'
-        'Personal Interest': 'Persönliches Interesse'
-        'Personliches Interesse': 'Persönliches Interesse'
-        'Schulprojekt/Referat': 'Schulprojekt/Referat'
-        'School Project/Presentation': 'Schulprojekt/Referat'
-        'Universitäre Lehre': 'Universitäre Lehre'
-        'Universitäre Lehre/Studium': 'Universitäre Lehre'
-        'University Teaching/Studies': 'Universitäre Lehre'
-        'Universit\xC3\xA4re Lehre': 'Universitäre Lehre'
-        'Universit?re Lehre': 'Universitäre Lehre'
-        'Universit\xC3\xA4re Lehre/Studium': 'Universitäre Lehre'
-        'University Course/Lecture': 'Universitäre Lehre'
-        'Wissenschaftliche Publikation': 'Wissenschaftliche Publikation'
-        'Scholarly Publication': 'Wissenschaftliche Publikation'
-        'Publikation': 'Wissenschaftliche Publikation'
-        'Publication': 'Wissenschaftliche Publikation'
-        'Pressepublikation': 'Pressepublikation'
-        'Publication in Press': 'Pressepublikation'
-        'Press Publication': 'Pressepublikation'
-        'Sonstiges': 'Sonstiges'
-        'Mitarbeit': 'Sonstiges'
-        'Projektmitarbeit': 'Sonstiges'
-        'Other': 'Sonstiges'
-      state:
-        'Bayern': 'Bayern'
-        'Baden-Württemberg': 'Baden-Württemberg'
-        'Baden-W?rttemberg': 'Baden-Württemberg'
-        'Saarland': 'Saarland'
-        'Hessen': 'Hessen'
-        'Rheinland-Pfalz': 'Rheinland-Pfalz'
-        'Nordrhein-Westfalen': 'Nordrhein-Westfalen'
-        'Niedersachsen': 'Niedersachsen'
-        'Thüringen': 'Thüringen'
-        'Th?ringen': 'Thüringen'
-        'Sachsen-Anhalt': 'Sachsen-Anhalt'
-        'Sachsen': 'Sachsen'
-        'Brandenburg': 'Brandenburg'
-        'Berlin': 'Berlin'
-        'Mecklenburg-Vorpommern': 'Mecklenburg-Vorpommern'
-        'Hamburg': 'Hamburg'
-        'Bremen': 'Bremen'
-        'Schleswig-Holstein': 'Schleswig-Holstein'
-        'außerhalb Deutschlands': 'außerhalb Deutschlands'
-        'au?erhalb Deutschlands': 'außerhalb Deutschlands'
-        'au?rhalb Deutschlands': 'außerhalb Deutschlands'
-        'Outside Germany': 'außerhalb Deutschlands'
-        'outside Germany': 'außerhalb Deutschlands'
-
-  activerecord:
-    errors:
-      models:
-        user_account:
-          attributes:
-            password:
-              confirmation: 'und -wiederholung stimmen nicht überein.'
-              too_short: 'ist zu kurz.'
-              too_long: 'ist zu lang.'
-        user_registration:
-          attributes:
-            email:
-              taken: "ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen."
-      messages:
-        blank: 'fehlt'
-    attributes:
-      user_account:
-        email: 'E-Mail'
-        login: 'Benutzername'
-        password: 'Passwort'
-        password_confirmation: 'Passwort-Wiederholung'
+      confirmation_instructions:
+        subject: "Anleitung zur Bestätigung Deines Accounts"
+      reset_password_instructions:
+        subject: "Anleitung um Dein Passwort zurückzusetzen"
+      unlock_instructions:
+        subject: "Anleitung um Deinen Account freizuschalten"
+    omniauth_callbacks:
+      failure: "Du konntest nicht Deinem %{kind}-Account angemeldet werden, weil '%{reason}'."
+      success: "Du hast Dich erfolgreich mit Deinem %{kind}-Account angemeldet."
+    passwords:
+      no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
+      send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen kannst."
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen können."
+      updated: "Dein Passwort wurde geändert. Du bist jetzt angemeldet."
+      updated_not_active: "Dein Passwort wurde geändert."
+    registrations:
+      destroyed: "Dein Account wurde gelöscht."
+      signed_up: "Du hast dich erfolgreich registriert."
+      signed_up_but_inactive: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account inaktiv ist."
+      signed_up_but_locked: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account gesperrt ist."
+      signed_up_but_unconfirmed: "Du hast Dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account noch nicht bestätigt ist. Du erhältst in Kürze eine E-Mail mit der Anleitung, wie Du Deinen Account freischalten kannst."
+      update_needs_confirmation: "Deine Daten wurden aktualisiert, aber Du musst Deine neue E-Mail-Adresse bestätigen. Du erhälsts in wenigen Minuten eine E-Mail, mit der Du die Änderung Deiner E-Mail-Adresse abschließen kannst."
+      updated: "Deine Daten wurden aktualisiert."
+    sessions:
+      signed_in: "Erfolgreich angemeldet."
+      signed_out: "Erfolgreich abgemeldet."
+    unlocks:
+      send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren können."
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst."
+      unlocked: "Dein Account wurde entsperrt. Du bist jetzt angemeldet."
+  errors:
+    messages:
+      already_confirmed: "wurde bereits bestätigt"
+      confirmation_period_expired: "muss innerhalb %{period} bestätigt werden, bitte fordere einen neuen Link an"
+      expired: "ist abgelaufen, bitte neu anfordern"
+      not_found: "nicht gefunden"
+      not_locked: "ist nicht gesperrt"
+      not_saved:
+        one: "Konnte %{resource} nicht speichern: ein Fehler."
+        other: "Konnte %{resource} nicht speichern: %{count} Fehler."
