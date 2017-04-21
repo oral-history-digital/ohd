@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
     <%= render :partial => '/head' %>
-    <%= stylesheet_link_tag 'admin' %>
+    <%#= stylesheet_link_tag 'admin' %>
     <%= javascript_include_tag 'builder', 'interview', 'carousel', 'lightbox', 'list.min', 'swfobject', :cache => 'admin' %>
 </head>
 
@@ -66,7 +66,7 @@
 
     <div id="printlogo">
       <p class="info"><em><%= t('.print_preview_only') %></em></p>
-      <img src="<%= image_path 'project_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
+      <img src="<%= image_path "#{Rails.configuration.x.project}/project_logo_print.gif" %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
     </div>
 
 </body>

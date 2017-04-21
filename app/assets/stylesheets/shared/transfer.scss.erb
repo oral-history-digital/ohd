@@ -1,0 +1,453 @@
+/* @override http://10.211.55.3:3000/stylesheets/transfer.css?1260291649 */
+
+.RTL {
+    direction: RTL;
+    text-align: justify !important;
+}
+.LTR {
+    direction: LTR;
+}
+
+#overlay {
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    z-index: 100;
+    width: 100%;
+    display: block;
+    padding: 15% 0 0 33%;
+}
+
+#overlay #ajax-spinner {
+    background: transparent url(<%= image_path "#{Rails.configuration.x.project}/large_spinner.gif" %>) top left no-repeat;
+    width: 33%;
+    height: 120px;
+    opacity: 1;
+}
+
+.workbook #overlay {
+    height: 88%;
+}
+
+/* overlay and container for the modal interaction window */
+#shades {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 333;
+    opacity: 0.4;
+    background-color: #666;
+}
+
+#modal_window {
+    position: fixed;
+    top: 25%;
+    left: 30%;
+    z-index: 350;
+    min-height: 30%;
+    width: 40%;
+    min-width: 536px;
+    padding: 1em;
+    background-color: #F8F8F8;
+    box-shadow: 4px 5px 6px 5px #666;
+    -moz-box-shadow: 4px 5px 6px 5px #666;
+    -webkit-box-shadow: 4px 5px 6px 5px #666;
+}
+
+#ajax_spinner,
+#shades #ajax-spinner {
+    height: 64px;
+    width: 64px;
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    background: transparent url(<%= image_path "#{Rails.configuration.x.project}/large_spinner.gif" %>) center no-repeat;
+}
+
+a#modal_window_close {
+    float: right;
+    display: block;
+    color: #fff;
+    height: 14px;
+    width: 14px;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: transparent url(<%= image_path "#{Rails.configuration.x.project}/lightbox/close.gif" %>) center no-repeat;
+}
+
+#modal_window h2 + div,
+#modal_window h2 + p {
+    margin-top: 1em;
+}
+
+#modal_window .checkbox_notification {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    color: #6F6C5D;
+    font-size: 85%;
+}
+
+.checkbox_notification .checkbox input[type='checkbox'],
+.checkbox_notification .checkbox input.checkbox {
+    position: relative;
+    top: 3px;
+}
+
+#modal_window .chzn-select {
+    width: 320px;
+}
+
+#fragmentOverview {
+  float: left;
+  font-size: 95%;
+  clear: both;
+  width: 280px;
+  height: 495px;
+  padding: 0 15px 0 0;
+  margin: 0 0 15px 0;
+}
+
+#fragmentOverview h1 {
+  padding: 0px;
+  margin: 0px;
+}
+
+#fragmentOverview table {
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+#fragmentOverview th {
+  padding: 8px 0 0 0;
+}
+
+#fragmentOverview td {
+  padding: 0;
+}
+
+#fragmentOverview td ul {
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+#tabsOverview {
+  width: 280px;
+  margin: 0;
+  padding: 0;
+}
+
+#tabsOverview ul {
+  margin: 0;
+  padding: 0;
+  width: 280px;
+  background-color: #fff;
+}
+
+#tabsOverview ul li {
+  padding: 3px 0px;
+  text-indent: 20px;
+  height: 21px;
+  float: left;
+  background-color: #e4e4da;
+  cursor: pointer;
+  list-style: none;
+  background-image: none;
+}
+
+#tabsOverview #tabInterview {
+  width: 95px;
+}
+
+#tabsOverview #tabHistoricalContext {
+  float: right;
+  width: 185px;
+}
+
+#tabsOverview li p {
+  padding: 2px 0 0 0;
+  color: #9f1313;
+  font-weight: bold;
+}
+
+#tabsOverview li:hover p {
+  color: #990000;
+}
+
+#tabsOverview li.active {
+  background-color: #fff;
+}
+
+#tabsOverview  p {
+  color: #999;
+}
+
+/*Textformatierung "Interviewdetails" */
+
+#containerInterview .data li, #containerHistoricalContext .data li {
+  background-image: none;
+  padding: 0 0 2px 10px;
+}
+
+.data li {
+  background-image: none;
+  list-style-type: none;
+}
+
+.data li .label {
+  color: #999281;
+  display: block;
+  font-size: 85%;
+  margin-bottom: -4px;
+}
+
+.data li .value a {
+  font-size: 85%;
+  padding-left: 4px;
+}
+
+#captions_wrapper {
+  position: relative;
+  float: left;
+  width: 400px;
+  background-color: #fff;
+}
+
+.citation {
+    margin-top: 30px;
+    padding: 4px 12px 6px 26px;
+    background: transparent url(/images/quote_glyph.png) top left no-repeat;
+    font-style: italic;
+    color: #999281;
+}
+
+.citation a {
+    clear: both;
+    float: right;
+    margin-right: 12px;
+    font-size: 85%;
+    text-decoration: none;
+    font-style: normal;
+    padding-left: 4px;
+}
+
+.back a, .forward a {
+  display: block;
+  width: 100%;
+  color: #999;
+  text-decoration: none;
+  padding-left: 10px;
+  font-size: 80%;
+}
+
+.containerVideo .back,
+.containerVideo .forward {
+  position: absolute;
+  z-index: 8;
+  top: 1px;
+  width: 65px;
+  margin-left: 325px;
+  background: url(<%= image_path "#{Rails.configuration.x.project}/btn_caption_back.gif" %>) 0 -3px no-repeat;
+}
+
+.containerVideo div .forward {
+  top: 122px;
+  background: url(<%= image_path "#{Rails.configuration.x.project}/btn_caption_forward.gif" %>) 0px 2px no-repeat;
+}
+
+.back a:hover, .forward a:hover {
+  color: #333;
+}
+
+#captions,
+#captions .captions-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 20px 10px;
+  text-align: left;
+  height: 100px;
+  width: 380px;
+  overflow: hidden;
+}
+
+#captions .captions-slide {
+  z-index: 3;
+}
+
+.no-transcript #captions .notice {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 400px;
+  font-size: 80%;
+  color: #999281;
+  text-align: center;
+}
+
+#mediaContainer.no-transcript #language_select a {
+  color: #999999;
+}
+
+#mediaContainer.no-transcript #language_select a.active {
+  color: #999281;
+}
+
+#containerHeadings li.mainheading {
+  font-style: normal;
+}
+
+#containerHeadings li.subheading {
+  margin-left: 10px;
+  font-style: normal;
+}
+
+#containerHeadings img.invisible {
+  display: none;
+}
+
+#containerHeadings li.current {
+  font-weight: bold;
+}
+
+#containerHeadings li.current li {
+  font-weight: normal;
+}
+
+#containerHeadings ul li {
+  background: none;
+  padding-left: 0;
+}
+
+.rtl {
+  writing-mode: tb-rl;
+  text-align: right;
+}
+
+#qualityToggler {
+  position: absolute;
+  padding: 0;
+  top: 20px;
+  left: 10px;
+  font-size: 8pt;
+  text-align: center;
+  line-height: normal;
+  z-index: 10;
+  cursor: pointer;
+}
+
+#qualityToggler span {
+  background: url(<%= image_path "#{Rails.configuration.x.project}/schwarz75.png" %>);
+  color: #fff;
+  padding: 5px;
+}
+
+#qualityToggler span:first-child {
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-bottom-left-radius: 2px;
+  -webkit-border-top-left-radius: 2px;
+  -moz-border-top-left-radius: 2px;
+}
+
+#qualityToggler span:last-child {
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-bottom-right-radius: 2px;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-top-right-radius: 2px;
+}
+
+#qualityToggler span.active {
+  background: url(<%=  image_path "#{Rails.configuration.x.project}/weiss75.png" %>);
+  color: #000;
+}
+
+div.player {
+  position: relative;
+}
+
+#mediaContainer {
+  position: relative;
+}
+
+#extendedControlbar {
+  position: absolute;
+  top: 284px;
+  left: 0;
+  display: inline-block;
+  width: auto;
+  height: 20px;
+  background-color: #aa2d2d;
+  padding: 0;
+  color: #999999;
+  font-size: 8pt;
+}
+
+#extendedControlbar span {
+  display: inline;
+  margin: 0;
+  width: 80px;
+  padding: 4px 5px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #990000;
+}
+
+#extendedControlbar span.active {
+  color: #fff;
+  background-color: #a21818;
+  height: 20px;
+  cursor: auto;
+}
+
+#extendedControlbar-low {
+  margin-left: 1px;
+}
+
+table.useraccounts {
+  width: 100%;
+}
+
+table.useraccounts th,
+table.useraccounts td {
+  padding: 5px;
+  font-size: 12px;
+}
+
+table.useraccounts tr.even {
+  background-color: #E4E4DA;
+}
+
+tr.user-registration-basic {
+  cursor: pointer;
+  background-color: #F1F1EB;
+}
+
+div.user-registration-details {
+
+}
+
+tr.user-registration-basic .arrow-opened {
+  display: none;
+}
+
+tr.user-registration-open .arrow-closed {
+  display: none;
+}
+
+tr.user-registration-open .arrow-opened {
+  display: inline;
+}
+
+#lightbox-container form {
+}
+
+#quality_disclaimer {
+    position: absolute;
+    bottom: 22px;
+    right: 5px;
+    width: 260px;
+    font-size: 85%;
+    color: #666666;
+}

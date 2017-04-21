@@ -1,7 +1,7 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
         <a href="http://www.<%= Project.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
-          <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => Project.project_name[I18n.locale])) %>
+          <%= image_tag(image_path("#{Rails.configuration.x.project}/project_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => Project.project_name[I18n.locale])) %>
         </a>
 
         <div id="mainNavigation">

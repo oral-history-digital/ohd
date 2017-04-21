@@ -5,8 +5,11 @@
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
 
-    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'chosen', 'content', 'eaz-content', 'archiv-portlet', 'lightbox', 'user-content', 'search', 'map', 'transfer', 'jquery-ui/jquery-ui' %>
-    <%= stylesheet_link_tag 'print', :media => :print %>
+    <%= stylesheet_link_tag 'application' %>
+
+
+    <%#= stylesheet_link_tag 'zwar/archiv-standard', 'zwar/archiv-design', 'zwar/chosen', 'zwar/content', 'zwar/eaz-content', 'zwar/archiv-portlet', 'zwar/lightbox', 'zwar/user-content', 'zwar/search', 'zwar/map', 'zwar/transfer', 'jquery-ui/jquery-ui' %>
+    <%#= stylesheet_link_tag 'zwar/print', :media => :print %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 

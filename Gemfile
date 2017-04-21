@@ -22,6 +22,8 @@ gem 'nokogiri'
 gem 'fastercsv'
 gem 'open4'
 
+gem 'sass-rails'
+
 # Gems specific to public archive app:
 gem 'archive-authorization'
 gem 'sunspot_rails'
