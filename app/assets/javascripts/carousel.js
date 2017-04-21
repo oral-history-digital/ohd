@@ -23,6 +23,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
+//= require effects
+
 Carousel = Class.create(Abstract, {
 	initialize: function (scroller, slides, controls, options) {
 		this.scrolling	= false;

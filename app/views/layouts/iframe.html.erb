@@ -9,19 +9,16 @@
     <meta name="keywords" content="<%= CeDiS.config.meta_keywords[I18n.locale.to_s] %>" />
 
   <%= stylesheet_link_tag 'application' %>
-    <%#= stylesheet_link_tag 'zwar/archiv-standard', 'zwar/archiv-design', 'zwar/content', 'zwar/eaz-content', 'zwar/archiv-portlet', 'zwar/lightbox', 'zwar/map', 'iframe', 'zwar/transfer' %>
-    <%#= stylesheet_link_tag 'zwar/print', :media => :print %>
+  <%= javascript_include_tag 'application' %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <%= javascript_include_tag 'i18n', 'translations' %>
     <% javascript_tag do %>
         I18n.defaultLocale = "<%= I18n.default_locale %>";
         I18n.locale = "<%= I18n.locale %>";
     <% end %>
 
-    <%= javascript_include_tag :defaults, :cache => 'site' %>
-    <%= javascript_include_tag 'map', 'progress_bar', :cache => 'mapping' %>
+
 </head>
 <body id="mapFrame" style="background-image: none;">
 

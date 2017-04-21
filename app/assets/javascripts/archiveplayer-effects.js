@@ -2,6 +2,8 @@
  * requires Prototpye
  **/
 
+//= require prototype
+
 var ArchivePlayerSlidesController = Class.create({
   
   initialize: function(captionsContainer, slideClass) {
