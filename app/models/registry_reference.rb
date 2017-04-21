@@ -2,8 +2,8 @@ class RegistryReference < BaseRegistryReference
 
   belongs_to :interview
 
-  scope :for_interview, lambda { |interview_id|
-    { :conditions => {:interview_id => interview_id, :ref_object_type => 'Segment'} }
+  scope :for_interview, -> (interview_id) { 
+    where({interview_id: interview_id, ref_object_type: 'Segment'}) 
   }
 
   before_validation :reconnect_reference
@@ -85,7 +85,7 @@ class RegistryReference < BaseRegistryReference
     json['language'] = interview.language.to_s
     json['translated'] = interview.translated
     json['interviewType'] = interview.video ? 'video' : 'audio'
-    CeDiS.archive_category_ids.each do |category_id|
+    Project.archive_category_ids.each do |category_id|
       json[category_id.to_s] = self.interview.send("#{category_id.to_s.singularize}_names")
     end
     json['descriptor'] = registry_entry.to_s(I18n.locale)

@@ -1,9 +1,9 @@
-    <title><%= CeDiS.config.project_name[I18n.locale.to_s] %></title>
+    <title><%= Project.project_name[I18n.locale.to_s] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="pragma" content="no-cache" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
-    <meta name="keywords" content="<%= CeDiS.config.meta_keywords[I18n.locale.to_s] %>" />
+    <meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
 
     <%= stylesheet_link_tag 'application' %>
     <%= javascript_include_tag 'application' %>

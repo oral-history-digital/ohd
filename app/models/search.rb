@@ -29,7 +29,7 @@ class Search < UserContent
 
   RESULTS_PER_PAGE = 12
 
-  FACET_FIELDS = [:interview_id, :language_id] + CeDiS.archive_facet_category_ids
+  FACET_FIELDS = [:interview_id, :language_id] + Project.archive_facet_category_ids
 
   NON_FACET_FIELDS = [
       :fulltext,
@@ -169,7 +169,7 @@ class Search < UserContent
   # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    facet_name = (if CeDiS.is_category?(name)
+    facet_name = (if Project.is_category?(name)
                    name.to_s.singularize << '_ids'
                  else
                    name
@@ -180,7 +180,7 @@ class Search < UserContent
           if facet.blank?
             []
           elsif facet.rows.blank?
-            if CeDiS.is_category?(name)
+            if Project.is_category?(name)
               # Yield all categories with a count of zero.
               RegistryEntry.find_all_by_category(name).sort_by(&:to_s).map{|c| [c, 0]}
             else
@@ -345,9 +345,9 @@ class Search < UserContent
 
     def in_interview(id, fulltext)
       search_results = if id.is_a?(Integer)
-                         Interview.all(:conditions => ['id = ?', id])
+                         Interview.where(id: id)
                        else
-                         Interview.all(:conditions => ['archive_id = ?', id])
+                         Interview.where(archive_id: id)
                        end
       Search.new do |search|
         search.results = search_results
@@ -485,7 +485,7 @@ class Search < UserContent
         end
 
         # Configured category facets.
-        CeDiS.archive_facet_category_ids.map(&:to_s).each do |category_name|
+        Project.archive_facet_category_ids.map(&:to_s).each do |category_name|
           with(("#{category_name.singularize}_ids").to_sym).any_of query[category_name] unless query[category_name].blank?
         end
 
@@ -506,7 +506,7 @@ class Search < UserContent
       # # Add query attributes common to all interview queries.
       # search.build do
       #
-      #   id_fields = [:interview_id, :language_id] + CeDiS.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
+      #   id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
       #
       #   facet #*id_fields
       #

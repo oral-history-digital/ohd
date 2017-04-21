@@ -8,7 +8,7 @@
       </span>
       <span>Stand vom <%= formatted_date import.time -%></span>
       <span class="link" style="clear: left;">
-        <%= link_to '&raquo; zum Redaktionssystem', "http://redaktion.#{CeDiS.config.project_domain}:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
+        <%= link_to '&raquo; zum Redaktionssystem', "http://redaktion.#{Project.project_domain}:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
       </span>
     </td>
     <td>

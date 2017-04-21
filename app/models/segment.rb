@@ -58,8 +58,8 @@ class Segment < ActiveRecord::Base
     if self.tape.nil?
       raise "Interview ID missing." if self.interview_id.nil?
 
-      tape_media_id = (self.media_id || '')[Regexp.new("#{CeDiS.config.project_initials}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
-      tape = Tape.first(:conditions => {:media_id => tape_media_id, :interview_id => self.interview_id})
+      tape_media_id = (self.media_id || '')[Regexp.new("#{Project.project_initials}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
+      tape = Tape.where({media_id: tape_media_id, interview_id: self.interview_id}).first
       raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{self.interview_id}" if tape.nil?
 
       self.tape_id = tape.id
@@ -170,8 +170,8 @@ class Segment < ActiveRecord::Base
 
   # returns the segment that leads the chapter
   def section_lead_segment
-    Segment.first :conditions => ["interview_id = ? AND section = ?", interview_id, section],
-                  :order => "media_id ASC"
+    Segment.where(["interview_id = ? AND section = ?", interview_id, section]).
+                  order("media_id ASC")
   end
 
   def has_heading?
@@ -210,16 +210,13 @@ class Segment < ActiveRecord::Base
     # To avoid this, I'm using an arbitrary media_id range of media_id..media_id+12
     # which in practice should be safe for reassigning to the correct segment, while
     # minimizing subsequent reassignments.
-    UserAnnotation.find_each(
-        :conditions =>
-            ["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)],
-        :include => :annotation
-    ) do |user_annotation|
-      user_annotation.update_attribute :reference_id, self.id
-      unless user_annotation.annotation.nil?
-        user_annotation.annotation.update_attribute :segment_id, self.id
+    UserAnnotation.where(["media_id >= ? AND media_id < ?", media_id, Segment.media_id_diff(media_id, 12)]).
+      includes(:annotation).find_each do |user_annotation|
+        user_annotation.update_attribute :reference_id, self.id
+        unless user_annotation.annotation.nil?
+          user_annotation.annotation.update_attribute :segment_id, self.id
+        end
       end
-    end
   end
 
 end

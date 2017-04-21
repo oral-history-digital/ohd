@@ -8,11 +8,11 @@ class UserAnnotation < UserContent
 
   has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
 
-  scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
-  scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
+  scope :for_interview, -> (interview) { where('reference_type = ?', 'Segment').where('interview_references LIKE ?', "%#{interview.archive_id}%") }
+  scope :for_user, -> (user) { where('user_id = ?', user.id) }
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
-  scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
+  scope :for_media_id, -> (m_id) { where('reference_type = ?', 'Segment').where('media_id LIKE ?', "%#{m_id}") }
 
   PUBLICATION_STATES = %w(proposed postponed rejected shared)
   STATES = PUBLICATION_STATES + %w(private)
@@ -54,7 +54,7 @@ class UserAnnotation < UserContent
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
   def validate
-    unless media_id =~ Regexp.new("#{CeDiS.config.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
+    unless media_id =~ Regexp.new("#{Project.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
       errors.add :media_id, 'Invalid Media ID given.'
     end
     if description_changed?
@@ -73,7 +73,7 @@ class UserAnnotation < UserContent
   end
 
   def archive_id
-    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
+    media_id[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
   def timecode_string

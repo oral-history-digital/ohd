@@ -118,7 +118,7 @@ SQL
   #   end
   #
   def find_for_authentication(conditions)
-    UserAccount.find(:first, :conditions => conditions)
+    UserAccount.where(conditions).first
   end
 
 end

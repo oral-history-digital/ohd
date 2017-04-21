@@ -20,11 +20,11 @@ class UsageReport < ActiveRecord::Base
   validates_presence_of :action
   validates_inclusion_of :action, :in => TRACKED_ACTIONS
 
-  scope :logged_in_month, lambda{|date| {:conditions => {:logged_at => date.beginning_of_month..date.end_of_month}}}
-  scope :logins, {:conditions => {:action => LOGIN}}
-  scope :interviews, {:conditions => {:action => [INTERVIEW, MATERIALS]}}
-  scope :searches, {:conditions => {:action => SEARCHES}}
-  scope :maps, {:conditions => {:action => MAP}}
+  scope :logged_in_month, -> (date) { where({logged_at: date.beginning_of_month..date.end_of_month}) }
+  scope :logins, -> { where({action: LOGIN}) }
+  scope :interviews, -> { where({action: [INTERVIEW, MATERIALS]}) }
+  scope :searches, -> { where({action: SEARCHES}) }
+  scope :maps, -> { where({action: MAP}) }
 
   def validate
     case action
@@ -34,7 +34,7 @@ class UsageReport < ActiveRecord::Base
         validate_archive_id
       when MATERIALS
         validate_archive_id
-        unless facets.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
+        unless facets.match(Regexp.new("^#{Project.project_initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
           errors.add_to_base('Incorrect or missing filename parameter for text materials request')
         end
       when SEARCHES
@@ -129,7 +129,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.create_logins_report(date)
-    login_reports = UsageReport.logged_in_month(date).logins.scoped({:include => :user_account})
+    login_reports = UsageReport.logged_in_month(date).logins.includes(:user_account)
     timeframes = [:total,0..999,0..1,1..2,2..3,4..6,6..12,12..999]
     timeframe_titles = ['Logins insgesamt',
                         'Logins verifizierter Nutzer',
@@ -203,7 +203,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.create_interview_access_report(date)
-    reports = UsageReport.logged_in_month(date).interviews.scoped({:include => :user_account})
+    reports = UsageReport.logged_in_month(date).interviews.includes(:user_account)
     interview_access = {:total => {}, :users => []}
     countries = {}
     resources = {}
@@ -279,7 +279,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.create_searches_report(date)
-    reports = UsageReport.logged_in_month(date).searches.scoped({:include => :user_account})
+    reports = UsageReport.logged_in_month(date).searches.includes(:user_account)
     searches = {:total => {:total => 0, :users => []}}
     queries = {}
     facets = {}
@@ -353,7 +353,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def self.create_map_report(date)
-    reports = UsageReport.logged_in_month(date).maps.scoped({:include => :user_account})
+    reports = UsageReport.logged_in_month(date).maps.includes(:user_account)
     requests = {:total => {:total => 0, :anonymous => 0, :users => []}}
     countries = {}
     reports.each do |r|
@@ -451,7 +451,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def validate_archive_id
-    unless resource_id.match(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
+    unless resource_id.match(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE))
       errors.add(:resource_id, :invalid)
     end
   end

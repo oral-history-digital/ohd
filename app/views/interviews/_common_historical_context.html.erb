@@ -5,7 +5,7 @@
     </li>
 <% else -%>
     <li>
-        <span class="label"><%= CeDiS.category_name(:birth_locations, I18n.locale) %></span>
+        <span class="label"><%= Project.category_name(:birth_locations, I18n.locale) %></span>
         <span class="value"><%= common_historical_context.birth_location_names(I18n.locale) %>,&nbsp;<%= format_date common_historical_context.date_of_birth%></span>
     </li>
 <% end -%>

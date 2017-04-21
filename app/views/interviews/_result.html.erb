@@ -31,7 +31,7 @@
       <li class="language"><%= result.language.to_s %><%= result.translated? ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %></li>
       <li class="media_type"><%= result.video %> <span class="duration"><%= format_value result.duration %></span>
       </li>
-      <% additional_params << CeDiS.archive_facet_category_ids.first if additional_params.empty? %>
+      <% additional_params << Project.archive_facet_category_ids.first if additional_params.empty? %>
       <% additional_params.compact.each do |attribute| %>
         <% if result.respond_to?(attribute.to_s) %>
             <li class="<%= attribute %>">

@@ -1,4 +1,4 @@
-<h1>Online-Archiv "<%= CeDiS.config.project_name['de'] %>" im Institut für Geschichte und Biographie</h1>
+<h1>Online-Archiv "<%= Project.project_name['de'] %>" im Institut für Geschichte und Biographie</h1>
 
 <div class="contentImagesLeft">
 <% @interview = Interview.first -%>
@@ -38,7 +38,7 @@
 <% if current_user_account.nil? %>
   <p style="font-weight: bold;">
     Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
-    Sie zur Benutzung des Archivs "<%= CeDiS.config.project_name['de'] %>" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
+    Sie zur Benutzung des Archivs "<%= Project.project_name['de'] %>" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
     die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
     <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
   </p>

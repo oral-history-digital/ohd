@@ -1,10 +1,10 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.<%= CeDiS.config.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
-          <%= image_tag(image_path("#{Rails.configuration.x.project}/project_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
+        <a href="http://www.<%= Project.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
+          <%= image_tag(image_path("#{Rails.configuration.x.project}/project_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => Project.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s]  %></h2>
+        <h2 class="info"><%= Project.project_name[I18n.locale.to_s]  %></h2>
         <hr class="divider" />
         <p class="skip">
           <em><%= t '.skip' %></em> <a href="#inhalt"><%= t '.content' %></a>
@@ -18,7 +18,7 @@
           <ul>
             <li><%= link_to t(:start_page), home_path, accesskey: '0' %></li>
             <%= render :partial => '/locale_chooser' %>
-            <% if CeDiS.config.uses_map %>
+            <% if Project.uses_map %>
                 <li><%= link_to t(:interactive_map), public_map_path, title: t('.map_link_title') %></li>
             <% end %>
             <li><%= link_to t(:collections_map), collections_path, title: t('.collections_link_title') %> </li>

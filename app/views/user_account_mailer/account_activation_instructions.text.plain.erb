@@ -9,7 +9,7 @@ To enable your access to the new archive platform, we ask you to activate your a
 
 Best regards,
 
-The archive team "<%= CeDiS.config.project_name['en'] %>"
+The archive team "<%= Project.project_name['en'] %>"
 <% when :ru -%>
 Уважаемый/ая <%= @user_name %>,
 
@@ -20,7 +20,7 @@ The archive team "<%= CeDiS.config.project_name['en'] %>"
 
 С уважением,
 
-Команда архива "<%= CeDiS.config.project_name['ru'] %>"
+Команда архива "<%= Project.project_name['ru'] %>"
 <% else -%>
 Sehr geehrte/r <%= @user_name %>,
 
@@ -31,5 +31,5 @@ Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang
 
 Mit freundlichen Grüßen,
 
-Das Archiv-Team "<%= CeDiS.config.project_name['de'] %>"
+Das Archiv-Team "<%= Project.project_name['de'] %>"
 <% end -%>

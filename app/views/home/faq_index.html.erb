@@ -1,21 +1,21 @@
-<h1><%= t("#{project}.title") %></h1>
+<h1><%= t("#{Project.name}.title") %></h1>
 
 <ul>
   <li>
-    <%= link_to t(".#{project}.questions_about_archive"), faq_archive_contents_path %>
+    <%= link_to t(".#{Project.name}.questions_about_archive"), faq_archive_contents_path %>
   </li>
   <li>
-    <%= link_to t(".#{project}.questions_about_searching"), faq_searching_path %>
+    <%= link_to t(".#{Project.name}.questions_about_searching"), faq_searching_path %>
   </li>
   <li>
-    <%= link_to t(".#{project}.technical_questions"), faq_technical_path %>
+    <%= link_to t(".#{Project.name}.technical_questions"), faq_technical_path %>
   </li>
   <li>
-    <%= link_to t(".#{project}.guidelines_pub_ann"), external_url(:annotation_guidelines) %>
+    <%= link_to t(".#{Project.name}.guidelines_pub_ann"), external_url(:annotation_guidelines) %>
   </li>
 </ul>
 
-<p><%= t(".#{project}.closing_text") %><br />
-   <%= t(".#{project}.further_questions") %><br />
-   <a href="mailto:<%= t(".#{project}.mailto") %>" target="_blank" title="<%= t(".#{project}.mailto_title") %>"><%= t(".#{project}.mailto") %></a>.
+<p><%= t(".#{Project.name}.closing_text") %><br />
+   <%= t(".#{Project.name}.further_questions") %><br />
+   <a href="mailto:<%= t(".#{Project.name}.mailto") %>" target="_blank" title="<%= t(".#{Project.name}.mailto_title") %>"><%= t(".#{Project.name}.mailto") %></a>.
 </p>

@@ -4,7 +4,7 @@ class Contribution < ActiveRecord::Base
   # a contribution to the Archive in a specific area (contribution_type)
 
   belongs_to :interview
-  belongs_to :contributor, :include => :translations
+  belongs_to :contributor, -> { includes(:translations) }
 
   validates_associated :interview, :contributor
   validates_presence_of :contribution_type
@@ -46,14 +46,11 @@ class Contribution < ActiveRecord::Base
   def update_contributor
     # Try to find an existing contributor by standard name.
     if self.contributor.nil?
-      self.contributor = Contributor.first(
-        :joins => :translations,
-        :conditions => [
+      self.contributor = Contributor.joins(:translations).
+        where([
             'contributor_translations.first_name = ? AND contributor_translations.last_name = ? AND contributor_translations.locale = ?',
             @name[:de][:first_name], @name[:de][:last_name], 'de'
-        ],
-        :readonly => false
-      )
+        ]).first
     end
     # If no existing contributor was found then create a new one.
     self.contributor ||= self.build_contributor

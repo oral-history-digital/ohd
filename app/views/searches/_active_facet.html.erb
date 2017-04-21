@@ -1,7 +1,7 @@
 <% facet_dom_id = "selected_#{active_facet}" %>
 <% query = query.to_a unless query.is_a?(Array) %>
-<% is_category = CeDiS.is_category?(active_facet) %>
-<% human_readable_facet_name = (is_category ? CeDiS.category_name(active_facet, I18n.locale) : t(active_facet.singularize, :scope => :facets)) %>
+<% is_category = Project.is_category?(active_facet) %>
+<% human_readable_facet_name = (is_category ? Project.category_name(active_facet, I18n.locale) : t(active_facet.singularize, :scope => :facets)) %>
 <div id="<%= facet_dom_id %>" class="active-facet">
   <span class="facet-name"><%= human_readable_facet_name %>:</span>
 

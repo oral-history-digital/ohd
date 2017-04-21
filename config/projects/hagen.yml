@@ -1,0 +1,100 @@
+default: &default
+
+  available_locales:
+    - de
+
+  default_locale: de
+
+  project_name:
+    de: 'Deutsches Gedächtnis'
+
+  project_id: 'hagen'
+
+  project_shortname: 'LUSIR'
+
+  project_initials: 'DG'
+
+  project_domain: 'da02.cedis.fu-berlin.de'
+
+  external_links:
+    nutzungsbedingungen:
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.html'
+    nutzungsantrag:
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/registrierung.html'
+    datenschutzbestimmungen:
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.html'
+    annotation_guidelines:
+      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    team:
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.html'
+    kontakt:
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.html'
+    impressum:
+      de: 'http://www.fernuni-hagen.de/impressum.shtml'
+
+  cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
+
+  storage_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup'
+  photo_storage_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/bilder'
+  archive_management_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/redaktionssystem'
+  repository_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
+
+  streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
+
+  meta_keywords:
+    de: ''
+
+  contact_email: 'deutsches-gedaechtnis@fernuni-hagen.de'
+
+  smtp_server: 'mail.fu-berlin.de'
+
+  person_properties:
+    - id: 'person_reference'
+      source: 'registry_entry'
+      descriptor: 'Person'
+    - id: 'pseudonym'
+      source: 'registry_entry'
+      descriptor: 'Pseudonym'
+      use_as_facet: true
+    - id: 'gender'
+      source: 'registry_entry'
+      descriptor: 'Geschlecht'
+      use_as_facet: true
+    - id: 'interview_dates'
+      source: 'registry_reference_type'
+      use_as_facet: true
+    - id: 'birth_dates'
+      source: 'registry_reference_type'
+      use_as_facet: true
+    - id: 'birth_locations'
+      source: 'registry_reference_type'
+      use_as_facet: true
+    - id: 'home_locations'
+      source: 'registry_reference_type'
+      use_as_facet: true
+    - id: 'profession'
+      source: 'registry_entry'
+      descriptor: 'Beruf'
+      use_as_facet: true
+    - id: 'professional_position'
+      source: 'registry_entry'
+      descriptor: 'Stellung im Beruf'
+      use_as_facet: true
+    - id: 'industry'
+      source: 'registry_entry'
+      descriptor: 'Wirtschaftsbereich'
+      use_as_facet: true
+
+  uses_map: false # Must be "false" for all projects except ZWAR until the map has been generalized.
+
+  has_newsletter: false
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
+

@@ -15,6 +15,10 @@ module Archive
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.i18n.default_locale = :de
-    config.x.project = :zwar
+    config.autoload_paths << Rails.root.join('lib')
+
+    PROJECT = :zwar
+    config.x.project = PROJECT
+    config.project = config_for("projects/#{PROJECT}")
   end
 end

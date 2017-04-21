@@ -3,7 +3,7 @@ module ApplicationHelper
 
   def external_url(page_token)
     begin
-      url_for CeDiS.config.external_links[page_token.to_s][I18n.locale.to_s]
+      url_for Project.external_links[page_token.to_s][I18n.locale.to_s]
     rescue
       ''
     end

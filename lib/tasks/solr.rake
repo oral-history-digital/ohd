@@ -91,7 +91,7 @@ namespace :solr do
 
       ids = args[:ids].blank? ? '*' : args[:ids]
       type = args[:type] || '*'
-      ids = ids[Regexp.new("#{CeDiS.config.project_initials.downcase}\\d{3}")].nil? ? [ids] : ids.split(/\W+/)
+      ids = ids[Regexp.new("#{Project.project_initials.downcase}\\d{3}")].nil? ? [ids] : ids.split(/\W+/)
 
       puts "\nDeleting the index for #{ids.first == '*' ? 'all' : ids.size} interviews..."
 
@@ -123,7 +123,7 @@ namespace :solr do
     task :interviews, [ :ids ] => :environment do |task, args|
 
       ids = args[:ids] || nil
-      ids = ids.scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)) unless ids.nil?
+      ids = ids.scan(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)) unless ids.nil?
 
       # Interviews
       conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
@@ -187,7 +187,7 @@ namespace :solr do
     desc 'Builds the registry reference index'
     task :registry_references, [:interviews ] => :environment do |task,args|
 
-      archive_id = (args[:interviews] || '').scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE))
+      archive_id = (args[:interviews] || '').scan(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE))
       interviews = Interview.all(
           :conditions => if archive_id.empty?
                            nil

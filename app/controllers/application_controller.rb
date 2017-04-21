@@ -42,14 +42,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_variant
-    request.variant = Rails.configuration.x.project
+    request.variant = Project.name.to_sym
   end
   
-  def project
-    Rails.configuration.x.project
-  end
-  helper_method :project
-
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
