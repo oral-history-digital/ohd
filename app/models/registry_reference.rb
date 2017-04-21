@@ -2,8 +2,8 @@ class RegistryReference < BaseRegistryReference
 
   belongs_to :interview
 
-  scope :for_interview, lambda { |interview_id|
-    { :conditions => {:interview_id => interview_id, :ref_object_type => 'Segment'} }
+  scope :for_interview, -> (interview_id) { 
+    where({interview_id: interview_id, ref_object_type: 'Segment'}) 
   }
 
   before_validation :reconnect_reference

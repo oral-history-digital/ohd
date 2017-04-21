@@ -16,29 +16,21 @@ class Annotation < ActiveRecord::Base
   # that reassociates the user_annotation and annotation content.
   belongs_to :segment
 
-  scope :for_segment,
-              lambda{|segment|
-                {
-                    :conditions => [
-                        "media_id > ?",
-                        Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id
-                    ],
-                    :order => "media_id ASC",
-                    :limit => 1,
-                    :include => :translations
-                }
-              }
-  scope :for_interview,
-              lambda{|interview|
-                {
-                    :conditions => [
-                        "media_id LIKE ?",
-                        interview.archive_id.upcase.concat('%')
-                    ],
-                    :order => "user_content_id ASC",
-                    :include => :translations
-                }
-              }
+  scope :for_segment, -> (segment) {
+                        where(["media_id > ?",
+                                Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id
+                        ]).
+                        order("media_id ASC").
+                        includes(:translations).
+                        first
+                      }
+  scope :for_interview, -> (interview) {
+                        where(["media_id LIKE ?",
+                            interview.archive_id.upcase.concat('%')
+                        ]).
+                        order("user_content_id ASC").
+                        includes(:translations)
+                      }
 
   translates :text
 

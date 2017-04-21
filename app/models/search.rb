@@ -345,9 +345,9 @@ class Search < UserContent
 
     def in_interview(id, fulltext)
       search_results = if id.is_a?(Integer)
-                         Interview.all(:conditions => ['id = ?', id])
+                         Interview.where(id: id)
                        else
-                         Interview.all(:conditions => ['archive_id = ?', id])
+                         Interview.where(archive_id: id)
                        end
       Search.new do |search|
         search.results = search_results

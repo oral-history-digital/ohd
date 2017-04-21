@@ -11,7 +11,7 @@ class Photo < ActiveRecord::Base
 
   translates :caption
 
-  scope :for_file, lambda{|filename| { :conditions => ['photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%' ]}}
+  scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') 
 
   validates_attachment_presence :photo
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
