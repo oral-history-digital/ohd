@@ -513,7 +513,7 @@ class RegistryEntry < ActiveRecord::Base
     def find_all_by_name(name, locale = I18n.default_locale, options = {})
       parsed_name = parse_name(name)
 
-      includes = options[include] || {}
+      include_options = options[:include] || {}
       joins = []
       conditions = []
       parsed_name.each do |name_type, descriptors|
@@ -537,9 +537,9 @@ class RegistryEntry < ActiveRecord::Base
         send(:sanitize_sql_array, condition)
       end.join(' AND ')
 
-      select('DISTINCT registry_entries.*).'
+      select('DISTINCT registry_entries.*').
       joins(joins).
-      includes(registry_names: [:registry_name_type, :translations], includes).
+      includes(registry_names: [:registry_name_type, :translations]).#, include_options).
       where(conditions)
     end
 
@@ -718,7 +718,7 @@ class RegistryEntry < ActiveRecord::Base
       # Order supported types and return them as objects.
       @allowed_name_types = RegistryNameType.where(code: allowed_name_types.map(&:to_s)).
                                             order('order_priority')
-      )
+
     end
     @allowed_name_types
   end
