@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
 require 'user_account'
   require 'archive-authorization'
 
-  attr_protected :admin
-
   belongs_to :user_account
   belongs_to :user_registration
 
