@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831142122) do
+ActiveRecord::Schema.define(version: 20170421135917) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "annotation_id",               null: false
-    t.string   "locale",                      null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "annotation_id"
+    t.string   "locale"
     t.text     "text",          limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["annotation_id"], name: "index_annotation_translations_on_annotation_id", using: :btree
-    t.index ["locale"], name: "index_annotation_translations_on_locale", using: :btree
   end
 
   create_table "annotations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -37,27 +36,20 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   end
 
   create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "collection_id",               null: false
-    t.string   "locale",                      null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "name"
-    t.string   "institution"
-    t.string   "countries"
+    t.integer  "collection_id"
+    t.string   "locale"
     t.text     "interviewers",  limit: 65535
-    t.string   "responsibles"
+    t.string   "countries"
     t.text     "notes",         limit: 65535
+    t.string   "institution"
+    t.string   "responsibles"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
-    t.index ["locale"], name: "index_collection_translations_on_locale", using: :btree
   end
 
   create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.string   "countries"
-    t.string   "institution"
-    t.string   "responsibles"
-    t.text     "notes",        limit: 65535
-    t.text     "interviewers", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "homepage"
@@ -72,14 +64,13 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   end
 
   create_table "contributor_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "contributor_id", null: false
-    t.string   "locale",         null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "contributor_id"
+    t.string   "locale"
     t.string   "first_name"
     t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["contributor_id"], name: "index_contributor_translations_on_contributor_id", using: :btree
-    t.index ["locale"], name: "index_contributor_translations_on_locale", using: :btree
   end
 
   create_table "contributors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -106,42 +97,37 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "locale"
-    t.string   "first_name"
-    t.string   "other_first_names"
-    t.string   "last_name"
-    t.string   "details_of_origin"
-    t.string   "return_date"
+    t.string   "birth_name"
     t.text     "forced_labor_details",   limit: 65535
+    t.string   "first_name"
     t.string   "birth_location"
     t.text     "forced_labor_locations", limit: 65535
+    t.string   "other_first_names"
+    t.string   "last_name"
     t.text     "return_locations",       limit: 65535
     t.string   "deportation_location"
-    t.string   "birth_name"
+    t.string   "details_of_origin"
+    t.string   "return_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "researchers",            limit: 65535
     t.string   "interviewers"
     t.string   "proofreaders"
     t.string   "segmentators"
     t.string   "transcriptors"
     t.string   "translators"
+    t.text     "researchers",            limit: 65535
     t.index ["interview_id"], name: "index_interview_translations_on_interview_id", using: :btree
   end
 
   create_table "interviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "archive_id"
     t.integer  "collection_id"
-    t.string   "full_title"
     t.boolean  "gender"
     t.string   "date_of_birth"
-    t.string   "country_of_origin"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
-    t.string   "details_of_origin"
     t.string   "deportation_date"
-    t.string   "deportation_location"
-    t.text     "forced_labor_details",     limit: 65535
     t.string   "punishment"
     t.string   "liberation_date"
     t.datetime "created_at"
@@ -149,15 +135,8 @@ ActiveRecord::Schema.define(version: 20140831142122) do
     t.boolean  "segmented",                              default: false
     t.boolean  "researched",                             default: false
     t.boolean  "proofread",                              default: false
-    t.string   "first_name"
-    t.string   "other_first_names"
-    t.string   "last_name"
     t.text     "alias_names",              limit: 65535
     t.string   "interview_date"
-    t.text     "forced_labor_locations",   limit: 65535
-    t.string   "birth_location"
-    t.text     "return_locations",         limit: 65535
-    t.string   "return_date"
     t.string   "still_image_file_name"
     t.string   "still_image_content_type"
     t.integer  "still_image_file_size"
@@ -171,17 +150,27 @@ ActiveRecord::Schema.define(version: 20140831142122) do
     t.integer  "language_id"
   end
 
+  create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "language_id", null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "abbreviated"
+    t.string   "name"
+    t.index ["language_id"], name: "index_language_translations_on_language_id", using: :btree
+    t.index ["locale"], name: "index_language_translations_on_locale", using: :btree
+  end
+
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
   end
 
   create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "photo_id",                 null: false
-    t.string   "locale",                   null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "photo_id"
+    t.string   "locale"
     t.text     "caption",    limit: 65535
-    t.index ["locale"], name: "index_photo_translations_on_locale", using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["photo_id"], name: "index_photo_translations_on_photo_id", using: :btree
   end
 
@@ -244,6 +233,16 @@ ActiveRecord::Schema.define(version: 20140831142122) do
     t.index ["registry_entry_id", "registry_name_type_id", "name_position"], name: "registry_names_unique_types_and_positions", unique: true, using: :btree
   end
 
+  create_table "registry_reference_type_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "registry_reference_type_id", null: false
+    t.string   "locale",                     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "name"
+    t.index ["locale"], name: "index_registry_reference_type_translations_on_locale", using: :btree
+    t.index ["registry_reference_type_id"], name: "index_959822146554d9dfd5d5530d45b5cafb8c7d4067", using: :btree
+  end
+
   create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "registry_entry_id"
     t.string  "code"
@@ -266,13 +265,12 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   end
 
   create_table "segment_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "segment_id",  null: false
-    t.string   "locale",      null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "segment_id"
+    t.string   "locale"
     t.string   "mainheading"
     t.string   "subheading"
-    t.index ["locale"], name: "index_segment_translations_on_locale", using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id", using: :btree
   end
 
@@ -280,17 +278,16 @@ ActiveRecord::Schema.define(version: 20140831142122) do
     t.integer  "tape_id"
     t.string   "media_id"
     t.string   "timecode"
-    t.string   "transcript",           limit: 2000
-    t.string   "translation",          limit: 2000
+    t.string   "transcript",      limit: 2000
+    t.string   "translation",     limit: 2000
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "duration",                          precision: 5, scale: 2
+    t.decimal  "duration",                     precision: 5, scale: 2
     t.integer  "sequence_number"
     t.integer  "tape_number"
     t.string   "speaker"
-    t.boolean  "speaker_change",                                            default: false
-    t.boolean  "chapter_change",                                            default: false
-    t.integer  "following_segment_id"
+    t.boolean  "speaker_change",                                       default: false
+    t.boolean  "chapter_change",                                       default: false
     t.string   "section"
     t.integer  "interview_id"
     t.index ["interview_id", "section"], name: "index_segments_on_interview_id_and_section", using: :btree
@@ -314,10 +311,10 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   create_table "tapes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "media_id"
-    t.integer  "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "video"
+    t.integer  "duration"
   end
 
   create_table "text_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -349,31 +346,26 @@ ActiveRecord::Schema.define(version: 20140831142122) do
   end
 
   create_table "user_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "login",                  default: "", null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                              default: "", null: false
+    t.string   "encrypted_password",     limit: 128, default: "", null: false
+    t.string   "password_salt",                      default: "", null: false
     t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "remember_token"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",                      default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "password_salt"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0
-    t.string   "unlock_token"
-    t.datetime "locked_at"
-    t.string   "authentication_token"
+    t.string   "login"
     t.datetime "deactivated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["login", "deactivated_at"], name: "index_user_accounts_on_login_and_deactivated_at", using: :btree
+    t.datetime "reset_password_sent_at"
+    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, using: :btree
     t.index ["login"], name: "index_user_accounts_on_login", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, using: :btree
   end
 
   create_table "user_contents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -399,6 +391,28 @@ ActiveRecord::Schema.define(version: 20140831142122) do
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
     t.index ["user_id"], name: "index_user_contents_on_user_id", using: :btree
+  end
+
+  create_table "user_registrations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.boolean  "tos_agreement"
+    t.text     "application_info",   limit: 65535
+    t.string   "workflow_state"
+    t.datetime "created_at"
+    t.datetime "activated_at"
+    t.string   "admin_comments"
+    t.integer  "user_account_id"
+    t.string   "login"
+    t.datetime "processed_at"
+    t.string   "default_locale"
+    t.boolean  "receive_newsletter"
+    t.boolean  "newsletter_signup",                default: false
+    t.boolean  "priv_agreement",                   default: false
+    t.index ["email"], name: "index_user_registrations_on_email", using: :btree
+    t.index ["workflow_state", "email"], name: "index_user_registrations_on_workflow_state_and_email", using: :btree
+    t.index ["workflow_state"], name: "index_user_registrations_on_workflow_state", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
