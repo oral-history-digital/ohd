@@ -11,7 +11,7 @@ class UserRegistrationsController < ApplicationController
       flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
       render :action => 'submitted'
     elsif !@user_registration.errors.on('email').nil? && @user_registration.email =~ Devise::EMAIL_REGEX
-      @user_registration = UserRegistration.first(:conditions => ["email = ?", @user_registration.email])
+      @user_registration = UserRegistration.where(["email = ?", @user_registration.email]).first
       if @user_registration.checked?
         # re-send the activation instructions
         UserAccountMailer.deliver_account_activation_instructions(@user_registration, @user_registration.user_account)
