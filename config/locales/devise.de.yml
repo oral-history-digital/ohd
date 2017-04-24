@@ -40,6 +40,7 @@ de:
       updated_not_active: "Dein Passwort wurde geändert."
     registrations:
       destroyed: "Dein Account wurde gelöscht."
+      not_yet_registered: "Noch nicht registriert."
       sign_up: "Registrieren"
       signed_up: "Du hast dich erfolgreich registriert."
       signed_up_but_inactive: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account inaktiv ist."

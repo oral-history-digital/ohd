@@ -53,7 +53,7 @@
             :privacy_policy => external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen),
             :project_name => Project.project_name[I18n.locale.to_s]).html_safe %>
   </p>
-  <p id="registration_link" style="margin-top:6px;"><%= t('devise.registrations.not_yet_registered') %>&nbsp;<%= link_to t('devise.registrations.link_to'), new_user_registration_path %>
+  <p id="registration_link" style="margin-top:6px;"><%= t('devise.registrations.not_yet_registered') %>&nbsp;<%= link_to t('devise.registrations.sign_up'), new_user_registration_path %>
   </p>
 </div>
 
