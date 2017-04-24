@@ -2,7 +2,11 @@
 
 de:
   devise:
+    authentication_keys:
+      login: "Login"
+      password: "Passwort"
     confirmations:
+      no_confirm_instructions: "Keine Bestätigungsanleitung bekommen?"
       confirmed: "Vielen Dank für Deine Registrierung. Bitte melde dich jetzt an."
       confirmed_and_signed_in: "Vielen Dank für Deine Registrierung. Du bist jetzt angemeldet."
       send_instructions: "Du erhältst in wenigen Minuten eine E-Mail, mit der Du Deine Registrierung bestätigen kannst."
@@ -28,6 +32,7 @@ de:
       failure: "Du konntest nicht Deinem %{kind}-Account angemeldet werden, weil '%{reason}'."
       success: "Du hast Dich erfolgreich mit Deinem %{kind}-Account angemeldet."
     passwords:
+      forgotten: "Passwort vergessen?"
       no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
       send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen kannst."
       send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen können."
@@ -35,6 +40,7 @@ de:
       updated_not_active: "Dein Passwort wurde geändert."
     registrations:
       destroyed: "Dein Account wurde gelöscht."
+      sign_up: "Registrieren"
       signed_up: "Du hast dich erfolgreich registriert."
       signed_up_but_inactive: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account inaktiv ist."
       signed_up_but_locked: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account gesperrt ist."
@@ -42,9 +48,11 @@ de:
       update_needs_confirmation: "Deine Daten wurden aktualisiert, aber Du musst Deine neue E-Mail-Adresse bestätigen. Du erhälsts in wenigen Minuten eine E-Mail, mit der Du die Änderung Deiner E-Mail-Adresse abschließen kannst."
       updated: "Deine Daten wurden aktualisiert."
     sessions:
+      sign_in: "Anmelden"
       signed_in: "Erfolgreich angemeldet."
       signed_out: "Erfolgreich abgemeldet."
     unlocks:
+      no_unlock_instructions: "Keine Entsperrungsanleitung bekommen?"
       send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren können."
       send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst."
       unlocked: "Dein Account wurde entsperrt. Du bist jetzt angemeldet."
