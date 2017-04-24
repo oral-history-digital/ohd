@@ -54,6 +54,8 @@ ru:
       priv_agreement: "Datenschutzbestimmungen"
     sessions:
       sign_in: "Sign in"
+      login: "Sign in"
+      logout: "Logout"
       signed_in: "Вход в систему выполнен."
       signed_out: "Выход из системы выполнен."
       already_signed_out: "Выход из системы выполнен."

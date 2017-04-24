@@ -42,7 +42,7 @@
               <p id="logoutUserLogin">
                 <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
-                    <%= link_to t(:link, :scope => 'devise.sessions'), new_user_account_session_path, :name => 'buttonLogin' %>
+                    <%= link_to t(:login, :scope => 'devise.sessions'), new_user_account_session_path, :name => 'buttonLogin' %>
                 <% else %>
                     <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout', method: :delete %>
                 <% end %>

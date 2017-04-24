@@ -52,6 +52,8 @@ de:
       priv_agreement: "Datenschutzbestimmungen"
     sessions:
       sign_in: "Anmelden"
+      login: "Anmelden"
+      logout: "Abmelden"
       signed_in: "Erfolgreich angemeldet."
       signed_out: "Erfolgreich abgemeldet."
     unlocks:

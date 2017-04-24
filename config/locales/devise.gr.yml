@@ -54,6 +54,8 @@ gr:
       priv_agreement: "Datenschutzbestimmungen"
     sessions:
       sign_in: "Sign in"
+      login: "Sign in"
+      logout: "Logout"
       signed_in: 'Σύνδεση με επιτυχία.'
       signed_out: 'Αποσύνδεση με επιτυχία.'
       already_signed_out: "Αποσύνδεση με επιτυχία."
