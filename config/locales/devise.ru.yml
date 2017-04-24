@@ -49,6 +49,9 @@ ru:
       signed_up_but_unconfirmed: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       update_needs_confirmation: "Ваш аккаунт успешно обновлен, нонеобходимо подтвердить Ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите на ссылку \"Подтвердить\", чтобы завершить обновления email."
       updated: "Ваша учётная запись успешно изменена."
+    registration_fields:
+      tos_agreement: "Nutzungsbedingungen"
+      priv_agreement: "Datenschutzbestimmungen"
     sessions:
       sign_in: "Sign in"
       signed_in: "Вход в систему выполнен."

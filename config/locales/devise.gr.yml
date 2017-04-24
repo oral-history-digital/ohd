@@ -49,6 +49,9 @@ gr:
       signed_up_but_unconfirmed: "Ο λογαριασμός σας δημιουργήθηκε με επιτυχία. Όμως, δε μπορείτε να συνδεθείτε επειδή ο λογαριασμός σας είναι μη επιβεβαιωμένος. Σας είχε αποσταλεί email με οδηγίες."
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
       updated: 'Ανανεώσατε το λογαριασμό σας με επιτυχία.'
+    registration_fields:
+      tos_agreement: "Nutzungsbedingungen"
+      priv_agreement: "Datenschutzbestimmungen"
     sessions:
       sign_in: "Sign in"
       signed_in: 'Σύνδεση με επιτυχία.'
