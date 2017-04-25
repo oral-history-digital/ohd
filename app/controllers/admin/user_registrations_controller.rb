@@ -123,7 +123,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_registrations = UserRegistration.all(:conditions => conditions, :order => "created_at DESC")
+    @user_registrations = UserRegistration.where(conditions).order("created_at DESC")
   end
 
   def render_newsletter
