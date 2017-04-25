@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
 
   $('.update-selection').on('click', filterSubmit());
 
@@ -47,4 +47,4 @@ $(document).ready(function(){
       return changed;
   };
 
-}
+})
