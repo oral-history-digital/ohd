@@ -46,7 +46,7 @@ en:
     registrations:
       link: 'Registration'
       not_yet_registered: 'Not registered yet?'
-      link_to: 'Register here &raquo;'
+      link_to: 'Register here »'
       submit: 'Send registration'
       activate: 'Activate access for'
       activate_submit: 'continue'

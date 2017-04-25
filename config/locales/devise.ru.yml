@@ -51,7 +51,7 @@ ru:
     registrations:
       link: 'Регистрация'
       not_yet_registered: 'Ещё не зарегистрированы?'
-      link_to: 'К регистрации &raquo;'
+      link_to: 'К регистрации »'
       submit: 'Отправить регистрацию'
       activate: 'Активация доступа для'
       activate_submit: 'отправить'

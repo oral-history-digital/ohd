@@ -51,7 +51,7 @@ de:
     registrations:
       link: 'Registrierung'
       not_yet_registered: 'Noch nicht registriert?'
-      link_to: 'Zur Registrierung &raquo;'
+      link_to: 'Zur Registrierung »'
       submit: 'Registrierung senden'
       activate: 'Zugangsaktivierung für'
       activate_submit: 'absenden'
