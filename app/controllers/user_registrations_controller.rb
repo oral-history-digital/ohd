@@ -6,7 +6,7 @@ class UserRegistrationsController < ApplicationController
   end
 
   def create
-    @user_registration = UserRegistration.new(params['user_registration'])
+    @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
       flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
       render :action => 'submitted'
@@ -71,6 +71,10 @@ class UserRegistrationsController < ApplicationController
 
   def account_for_token(confirmation_token)
     @user_account = UserAccount.find_by_confirmation_token(params[:confirmation_token], :include => :user_registration)
+  end
+
+  def user_registration_params
+    params.require(:user_registration).permit(:appellation, :first_name, :last_name, :email, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :state, :country, :receive_newsletter, :tos_agreement, :priv_agreement, :default_locale)
   end
 
 end
