@@ -1,19 +1,19 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to t('devise.sessions.sign_in'), new_user_account_session_path, :class => 'new_session link' %><br />
+  <%= link_to t('devise.sessions.link'), new_user_account_session_path, :class => 'new_session link' %><br />
 <% end -%>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to t('devise.registrations.sign_up'), new_user_account_registration_path, :class => 'new_registration link' %><br />
+  <%= link_to t('devise.registrations.link'), new_user_account_registration_path, :class => 'new_registration link' %><br />
 <% end -%>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-  <%= link_to t('devise.passwords.forgotten'), edit_user_account_password_path, :class => 'new_password link' %><br />
+  <%= link_to t('devise.passwords.forgot'), edit_user_account_password_path, :class => 'new_password link' %><br />
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%#= link_to t('devise.confirmations.no_confirm_instructions'), new_confirmation_path(resource_name), :class => 'new_confirmation link' %><br />
+  <%#= link_to t('devise.confirmations.link'), new_confirmation_path(resource_name), :class => 'new_confirmation link' %><br />
 <% end -%>
 
 <%- if devise_mapping.lockable? && controller_name != 'unlocks' %>
-  <%= link_to t('devise.unlocks.no_unlock_instructions'), new_unlock_path(resource_name), :class => 'unlock link' %><br />
+  <%= link_to t('devise.unlocks.link'), new_unlock_path(resource_name), :class => 'unlock link' %><br />
 <% end %>

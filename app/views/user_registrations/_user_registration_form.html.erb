@@ -1,4 +1,4 @@
-<% form_for :user_registration, user_registration_form, :url => user_registrations_path, :html => { :class => 'user_registration' } do |f| -%>
+<%= form_for @user_registration, html: { class: 'user_registration' } do |f| %>
 
   <% unless user_registration_form.errors.empty? %>
     <p class="flashAlert"><%= t(:fill_out_missing_fields_message, :scope => 'devise.registration_fields') %></p>
@@ -40,7 +40,7 @@
         <td class="formInput">
           <%= f.check_box(:tos_agreement) +
                   t(:tos_agreement_explanation, :scope => 'devise.registration_fields',
-                      :terms_of_use => external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen)) %>
+                      :terms_of_use => external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen)).html_safe %>
         </td>
       </tr>
       <tr>
@@ -48,7 +48,7 @@
         <td class="formInput">
           <%= f.check_box(:priv_agreement) +
                   t(:priv_agreement_explanation, :scope => 'devise.registration_fields',
-                      :privacy_policy => external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen)) %>
+                      :privacy_policy => external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen)).html_safe %>
         </td>
       </tr>
       <tr>
