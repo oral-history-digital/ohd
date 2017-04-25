@@ -19,57 +19,7 @@
       <%= text_field_tag 'media_id', params['media_id'], :class => 'filter' %>
     </li>
     <li id="submit_filters" style="display: none;">
-      <%= button_to_function 'Auswahl aktualisieren', 'filterSubmit();' %>
+      <div class="update-selection button">Auswahl aktualisieren</div>
     </li>
   </ul>
 </div>
-
-<% javascript_tag do -%>
-
-    var filterElements = $$('#userFilters .filter');
-    filterElements.each(function(filter){
-        new Form.Element.Observer(filter, 1, onFilterChange);
-    });
-    var currentFilters = getFilterSettings();
-
-    function filterSubmit() {
-        currentFilters = getFilterSettings();
-        var queryURL = window.location.pathname + '?' + currentFilters.toQueryString();
-        new Ajax.Updater('innerContent', queryURL, {
-            method: 'get',
-            evalScripts: true,
-            onLoading: function() { new Effect.Appear('shades', { from: 0, to: 0.4 }); $('submit_filters').hide(); },
-            onComplete: function() { new Effect.Fade('shades', { from: 0.4, to: 0 }); }
-        });
-    };
-
-    function onFilterChange() {
-        if(filterChanged()) {
-            $('submit_filters').show();
-        }
-    };
-
-    function getFilterSettings() {
-        var settings = new Hash();
-        filterElements.each(function(filter){
-            var filterName = filter.id;
-            var filterValue = Form.Element.getValue(filterName);
-            if(filterValue != '') {
-                settings.set(filterName, filterValue);
-            }
-        });
-        return settings;
-    };
-
-    function filterChanged() {
-        var settings = getFilterSettings();
-        var changed = false;
-        filterElements.each(function(filter){
-            if(settings.get(filter.id) != currentFilters.get(filter.id)) {
-                changed = true;
-            }
-        });
-        return changed;
-    };
-
-<% end -%>
