@@ -1,5 +1,5 @@
 <h1><%= link_to 'Benutzerverwaltung', admin_user_management_url %></h1>
-<h2><%= "#{@object.first_name} #{@object.last_name} &mdash; #{link_to @object.email, "mailto:#{@object.email}"}" %></h2>
+<h2><%= "#{@object.first_name} #{@object.last_name} &mdash; #{link_to @object.email, "mailto:#{@object.email}"}".html_safe %></h2>
 
 <% unless @object.user.nil? -%>
   <div id="edit_user_button">

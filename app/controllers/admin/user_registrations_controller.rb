@@ -31,7 +31,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def edit
-    object
+    @object = UserRegistration.find(params[:id])
   end
 
   def update
@@ -83,14 +83,12 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @object = UserRegistration.find(params[:id])
     @object.newsletter_signup = true
     @object.save
-    render_newsletter
   end
 
   def unsubscribe
-    object
+    @object = UserRegistration.find(params[:id])
     @object.newsletter_signup = false
     @object.save
-    render_newsletter
   end
 
   private
