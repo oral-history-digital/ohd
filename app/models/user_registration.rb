@@ -194,7 +194,7 @@ EVAL
     self.processed_at = Time.now
     save
     unless @skip_mail_delivery
-      UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+      UserAccountMailer.account_activation_instructions(self.user_account).deliver
     end
   end
 
@@ -294,7 +294,7 @@ EVAL
   end
 
   def create_account
-    self.user_account = UserAccount.find_or_initialize_by_email(self.email)
+    self.user_account = UserAccount.find_or_initialize_by(email: self.email)
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.save

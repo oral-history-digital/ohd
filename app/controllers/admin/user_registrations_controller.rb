@@ -35,11 +35,12 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def update
-    @workflow_state = object.workflow_state
+    @object = UserRegistration.find(params[:id])
+    @workflow_state = @object.workflow_state
     # action dependent on submit value
-    @object.admin_comments = object_params['admin_comments']
+    @object.admin_comments = user_registration_params['admin_comments']
     workflow_changes = true
-    @object.update_attributes(object_params)
+    @object.update_attributes(user_registration_params)
     case params['workflow_event']
       when 'register'
         @object.register!
@@ -168,6 +169,10 @@ class Admin::UserRegistrationsController < Admin::BaseController
               end
       t(value, :scope => scope, :locale => :de)
     end
+  end
+
+  def user_registration_params
+    params.require(:user_registration).permit(:admin_comments)
   end
 
 end
