@@ -1,30 +1,20 @@
 class Admin::UsersController < Admin::BaseController
 
-  actions :show, :update
-
-  show.response do |wants|
-    wants.html do
-    end
-    wants.js do
-      html = render_to_string :template => '/admin/users/show.html', :layout => false
-      render :update do |page|
-        page.replace_html 'modal_window', :text => html, :layout => false
-        page.visual_effect :appear, 'modal_window'
-        page.visual_effect :appear, 'shades'
-      end
+  def show
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html 
+      format.js 
     end
   end
 
-  update.response do |wants|
-    wants.html do
-      redirect_to edit_admin_user_registration_path(object.user_registration_id)
-    end
-    wants.js do
-      render :update do |page|
-        page.visual_effect :fade, 'modal_window'
-        page.visual_effect :fade, 'shades'
-        page << "window.location.reload(true);"
+  def update
+    User.find(params[:id]).update_attributes(user_params)
+    respond_to do |format|
+      format.html do
+        redirect_to edit_admin_user_registration_path(object.user_registration_id)
       end
+      format.js
     end
   end
 
@@ -69,6 +59,12 @@ class Admin::UsersController < Admin::BaseController
         end
       end
     end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :appellation, :street, :zipcity, :country, :job_description, :email, :organization, :homepage)
   end
 
 

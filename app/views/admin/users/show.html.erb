@@ -1,25 +1,25 @@
 <%= modal_window_close_button_on_javascript_request -%>
 <h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">Bearbeitung der Nutzerdaten für <%= @user.first_name -%>&nbsp;<%= @user.last_name -%> (<%= @user.email -%>)</h2>
-<% remote_form_for [:admin, @user], :html => {  } do |f| %>
+<%= form_for [:admin, @user], remote: true do |f| %>
     <table class='userTable' cellspacing='0' cellpadding='0' border='0'>
     <tbody>
     <tr xmlns="http://www.w3.org/1999/html">
       <th>
         <strong><%= t(:first_name, :scope => "devise.registration_fields") %></strong>
-        <b><%= form_edit_field_for @user, :first_name %></b>
+        <b><%= form_edit_field_for(@user, :first_name).html_safe %></b>
       </th>
       <th style="width:66%;max-width:200px;">
         <strong><%= "#{t(:last_name, :scope => "devise.registration_fields")}" %></strong>
-        <b><%= form_edit_field_for @user, :last_name %></b>
+        <b><%= form_edit_field_for(@user, :last_name).html_safe %></b>
       </th>
     <tr>
       <td>
         <strong><%= t(:appellation, :scope => "devise.registration_fields") %></strong>
-        <%= form_edit_field_for @user, :appellation, :select => select(:user, :appellation, options_for_select(UserRegistration.registration_fields[:appellation][:values].map{|v| [v,v] })) %>
+        <%= form_edit_field_for(@user, :appellation, :select => select(:user, :appellation, options_for_select(UserRegistration.registration_fields[:appellation][:values].map{|v| [v,v] }))).html_safe %>
       </td>
       <td>
         <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
-        <%= form_edit_field_for @user, :street %>
+        <%= form_edit_field_for(@user, :street).html_safe %>
       </td>
     </tr>
     <tr>
@@ -30,7 +30,7 @@
       </td>
       <td>
         <strong><%= [t(:zipcode, :scope => 'devise.registration_fields'), t(:and), t(:city, :scope => 'devise.registration_fields')].join(' ') -%></strong>
-        <%= form_edit_field_for @user, :zipcity %>
+        <%= form_edit_field_for(@user, :zipcity).html_safe %>
     </tr>
     <tr>
       <td>
@@ -39,7 +39,7 @@
       </td>
       <td>
         <strong><%= t(:country, :scope => 'devise.registration_fields') %></strong>
-        <%= form_edit_field_for @user, :country, :select => country_select(:user, :country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]), :value => t(@user.country, :scope => "countries") %>
+        <%= form_edit_field_for(@user, :country, :select => country_select(:user, :country, [:de, :at, :ch, :pl, :ru, :cz, :us, :gb, :fr, :nl, :il, :ua, :by]), :value => t(@user.country, :scope => "countries")).html_safe %>
       </td>
     </tr>
     <tr>
@@ -50,25 +50,25 @@
         <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
         <% field_def = UserRegistration.registration_fields[:job_description] -%>
         <% values = field_def[:translate] ? field_def[:values].map{|v| t(v, :scope => "devise.registration_values.job_description")}.uniq : field_def[:values] -%>
-        <%= form_edit_field_for @user, :job_description, :select => select(:user,
+        <%= form_edit_field_for(@user, :job_description, :select => select(:user,
                                                                            :job_description,
                                                                            options_for_select([[t(:select, :scope => 'devise.registration_fields'), nil]] + values.sort,
                                                                                               @user.job_description || nil),
-                                                                           :include_blank => false ) %>
+                                                                           :include_blank => false )).html_safe %>
       </td>
       <td>
         <strong><%= t(:email, :scope => 'devise.registration_fields') %></strong>
-        <%= form_edit_field_for @user, :email %></td>
+        <%= form_edit_field_for(@user, :email).html_safe %></td>
       </td>
     </tr>
     <tr>
       <td>
         <strong><%= t(:organization, :scope => "devise.registration_fields") %></strong>
-        <%= form_edit_field_for @user, :organization, { :text_area => true } %>
+        <%= form_edit_field_for(@user, :organization, { :text_area => true }).html_safe %>
       </td>
       <td>
         <strong><%= t(:homepage, :scope => "devise.registration_fields") %></strong>
-        <%= form_edit_field_for @user, :homepage %>
+        <%= form_edit_field_for(@user, :homepage).html_safe %>
       </td>
     </tr>
     <tr>
@@ -87,9 +87,10 @@
     </tbody>
     </table>
 
-    <div id="user_registration_data_actions" style="display: none;">
+    <%#<div id="user_registration_data_actions" style="display: none;">%>
+    <div id="user_registration_data_actions">
       <hr/>
       <%= f.submit 'Änderungen speichern' %>
-      <%= button_to_function 'Abbrechen', "$$('.inline-editor').each(function(el){ el.down('select, input, textarea').disabled = true; el.hide(); }); $$('.inline-editable').each(function(el){ el.show();}); $('user_registration_data_actions').hide(); new Effect.Fade('shades', { from: 0.6, duration: 0.4 }); $('modal_window').hide(); Event.stop(event); false;", :class => "subdued" %>
+      <%= link_to 'Abbrechen', '#', class: 'subdued' %>
     </div>
 <% end %>
