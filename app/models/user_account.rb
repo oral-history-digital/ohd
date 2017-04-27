@@ -25,7 +25,7 @@ class UserAccount < ActiveRecord::Base
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
-  validates_length_of :password, :within => 5..20, :allow_blank => true
+  validates_length_of :password, :within => 5..50, :allow_blank => true
 
   # NOTE: validates_confirmation_of won't work on virtual attributes!
   # This is why we add a custom validation method later.
