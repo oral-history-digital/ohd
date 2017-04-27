@@ -12,7 +12,8 @@ class UserAccountMailer < ActionMailer::Base
     @mail_locale = ((registration.nil? || registration.default_locale.nil?) ? I18n.default_locale : registration.default_locale).to_sym
     @mail_locale = I18n.default_locale unless I18n.available_locales.include? @mail_locale
 
-    @url = confirm_account_url(:confirmation_token => account.confirmation_token, :protocol => 'https', :locale => @mail_locale)
+    # for correct route generation we have to pass an :id param. We can not name it :confirmation_token
+    @url = activate_user_registration_url(id: account.confirmation_token, protocol: 'https', locale: @mail_locale)
     @url = @url + '/'unless @url.last == '/'
 
     @user_name = registration.nil? ? account.display_name : registration.full_name

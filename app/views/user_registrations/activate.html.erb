@@ -2,7 +2,8 @@
 
 <p style="margin: 12px 0 0.2em 0;"><%= t('activate_text', :scope => 'devise.registrations') %></p>
 
-<% form_for @user_account, :url => post_confirm_account_url(:confirmation_token => @user_account.confirmation_token), :html => { :method => :post } do |f| %>
+<%# for correct route generation we have to pass an :id param. We can not name it :confirmation_token %>
+<% form_for @user_account, url: confirm_user_registration_url(id: @user_account.confirmation_token), html: { method: :post } do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :reset_password_token %>
 

@@ -23,7 +23,7 @@
           </p>
           <span class="new_registrations">
             <% new_user_count = UserRegistration.unchecked.count -%>
-            <%= link_to "#{(new_user_count < 1) ? 'Keine' : new_user_count} #{t(:new_registrations, :scope => "devise.workflow_states")} &raquo;", admin_user_management_url(:workflow_state => 'unchecked') %></span>
+            <%= link_to "#{(new_user_count < 1) ? 'Keine' : new_user_count} #{t(:new_registrations, :scope => "devise.workflow_states")} &raquo;".html_safe, admin_user_registrations_url(workflow_state: 'unchecked') %></span>
         </div>
 
         <hr class="divider" />

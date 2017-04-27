@@ -22,9 +22,10 @@ class UserRegistrationsController < ApplicationController
     end
   end
 
-  # GET /zugang_aktivieren/:confirmation_token
+  # GET 
   def activate
-    account_for_token(params[:confirmation_token])
+    # here the confirmation_token is passed as :id
+    account_for_token(params[:id])
 
     if !@user_account.nil? && @user_account.errors.empty?
       @user_account.send(:generate_reset_password_token)
@@ -35,11 +36,12 @@ class UserRegistrationsController < ApplicationController
     end
   end
 
-  # POST /zugang_aktivieren/:confirmation_token
-  def confirm_activation
+  # POST 
+  def confirm
     # don't clear the confirmation_token until we have successfully
     # submitted the password
-    account_for_token(params[:confirmation_token])
+    # here the confirmation_token is passed as :id
+    account_for_token(params[:id])
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
