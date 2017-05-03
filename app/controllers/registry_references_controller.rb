@@ -10,7 +10,7 @@ class RegistryReferencesController < BaseController
 
   skip_before_action :check_user_authentication!
   skip_before_action :current_search_for_side_panel
-  before_filter :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
+  before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
 
   index do
     before do

@@ -1,7 +1,7 @@
 class Admin::BaseController < BaseController
   #include ExceptionNotification::Notifiable
 
-  before_filter :authenticate_admin_account
+  before_action :authenticate_admin_account
   skip_before_action  :check_user_authentication!
 
   layout 'admin'

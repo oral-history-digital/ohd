@@ -7,12 +7,12 @@ class UserContentsController < BaseController
 
   actions :create, :update, :show, :index, :destroy
 
-  before_filter :determine_user!
+  before_action :determine_user!
   skip_before_action :determine_user
 
   skip_before_action :current_search_for_side_panel
 
-  before_filter :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
+  before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
   rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
   create do
