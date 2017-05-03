@@ -27,13 +27,8 @@ class UserRegistrationsController < ApplicationController
     # here the confirmation_token is passed as :id
     account_for_token(params[:id])
 
-    unless !@user_account.nil? && @user_account.errors.empty?
-      #@user_account.password = SecureRandom.hex #some random unguessable string
-      #raw_token, hashed_token = Devise.token_generator.generate(UserAccount, :reset_password_token)
-      #@user_account.reset_password_token = hashed_token
-      #@user_account.reset_password_sent_at = Time.now.utc
-      #@user_account.save
-    #else
+    if !@user_account.nil? && @user_account.errors.empty?
+    else
       flash[:alert] = @user_account.nil? ? t('invalid_token', :scope => 'devise.confirmations') : @user_account.errors.full_messages
       redirect_to new_user_account_session_url
     end
