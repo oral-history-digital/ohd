@@ -103,7 +103,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
-    @filters['workflow_state']
     # user name
     %w(last_name first_name).each do |name_part|
       @filters[name_part] = params[name_part]
@@ -122,6 +121,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
+    conditions = conditions.first if conditions.length == 1
     @user_registrations = UserRegistration.where(conditions).order("created_at DESC")
   end
 
