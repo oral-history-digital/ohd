@@ -1,6 +1,6 @@
 class CollectionsController < BaseController
 
-  skip_before_filter :check_user_authentication!, :only => :index
+  skip_before_action :check_user_authentication!, :only => :index
 
   actions :show, :index
 

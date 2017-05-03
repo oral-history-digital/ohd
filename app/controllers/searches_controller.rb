@@ -6,7 +6,7 @@ class SearchesController < BaseController
 
   # Handle search initialization.
   before_filter :rename_person_name_param, :only => :person_name
-  skip_before_filter :current_search_for_side_panel
+  skip_before_action :current_search_for_side_panel
   before_filter :current_query_params
 
   before_filter :determine_user, :only => [ :query, :index ]
