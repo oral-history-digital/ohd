@@ -3,11 +3,20 @@
 <p style="margin: 12px 0 0.2em 0;"><%= t('activate_text', :scope => 'devise.registrations') %></p>
 
 <%# for correct route generation we have to pass an :id param. We can not name it :confirmation_token %>
-<% form_for @user_account, url: confirm_user_registration_url(id: @user_account.confirmation_token), html: { method: :post } do |f| %>
-  <%= f.error_messages %>
+<%= form_for @user_account, url: confirm_user_registration_url(id: @user_account.confirmation_token), html: { method: :post } do |f| %>
+  <ul>
+    <% @user_account.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
   <%= f.hidden_field :reset_password_token %>
 
-  <span><%= f.label t(:login, :scope => 'devise.authentication_keys') + ": <b>#{@user_account.login}</b>" %></span>
+  <span>
+    <label>
+      <%= t(:login, :scope => 'devise.authentication_keys') + ": " %>
+      <b><%= @user_account.login %></b> 
+    </label>
+  </span>
   <span>&nbsp;</span>
 
   <span><%= f.label t(:password, :scope => 'devise.passwords') %></span>

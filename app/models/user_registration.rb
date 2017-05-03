@@ -239,7 +239,7 @@ EVAL
     user_account.generate_confirmation_token if user_account.confirmation_token.blank?
     user_account.confirmation_sent_at = Time.now
     user_account.save
-    UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+    UserAccountMailer.account_activation_instructions(self.user_account).deliver
   end
 
   def full_name
