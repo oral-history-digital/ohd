@@ -221,7 +221,7 @@ EVAL
     else
       self.user_account.reactivate!
       if self.user_account.valid? and !@skip_mail_delivery
-        UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+        UserAccountMailer.account_activation_instructions(self.user_account).deliver
       end
     end
   end
