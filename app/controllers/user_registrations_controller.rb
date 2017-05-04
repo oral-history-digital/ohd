@@ -14,7 +14,7 @@ class UserRegistrationsController < ApplicationController
       @user_registration = UserRegistration.where(["email = ?", @user_registration.email]).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.deliver_account_activation_instructions(@user_registration, @user_registration.user_account)
+        UserAccountMailer.account_activation_instructions(@user_registration, @user_registration.user_account).deliver
       end
       render :action => 'registered'
     else
