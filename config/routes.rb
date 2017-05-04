@@ -3,11 +3,6 @@ Rails.application.routes.draw do
   root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
-    #devise_scope :user do
-      #get "/sign_in" => "devise/sessions#new" # custom path to login/sign_in
-      #get "/sign_up" => "devise/registrations#new", as: "new_user_registration" # custom path to sign_up/registration
-    #end
-
     devise_for :user_accounts, skip: [:registrations]
     resources :user_registrations do
       member do
