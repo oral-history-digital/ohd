@@ -71,7 +71,10 @@ class UserRegistrationsController < ApplicationController
   private
 
   def account_for_token(confirmation_token)
-    @user_account = UserAccount.where(confirmation_token: confirmation_token).includes(:user_registration).first
+    # do not accidently return first user with confirmation_token == nil !!!
+    unless confirmation_token.blank?
+      @user_account = UserAccount.where(confirmation_token: confirmation_token).includes(:user_registration).first
+    end
   end
 
   def user_registration_params
