@@ -7,13 +7,18 @@ class InterviewsController < BaseController
   before_action :featured_registry_entry, :only => :show
   skip_before_action :current_search_for_side_panel, :except => :show
 
-  actions :show
+  #actions :show
 
-  show do
-    wants.html do
-      not_found if @object.nil?
-      render :show
-    end
+  def show
+
+
+
+    @interview = Interview.find_by_archive_id(params[:id])
+
+    #wants.html do
+    #  not_found if @object.nil?
+    #  render :show
+    #end
   end
 
   def text_materials

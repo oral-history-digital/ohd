@@ -8,7 +8,7 @@ class RegistryReferencesController < BaseController
 
   layout :check_for_iframe_render
 
-  skip_before_action :check_user_authentication!
+  skip_before_action :authenticate_user_account!
   skip_before_action :current_search_for_side_panel
   before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
 

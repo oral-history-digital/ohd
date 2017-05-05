@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.integer  "collection_id"
     t.boolean  "gender"
     t.string   "date_of_birth"
+    t.string   "country_of_origin"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
@@ -148,17 +149,6 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.string   "citation_timecode",        limit: 18
     t.datetime "indexed_at"
     t.integer  "language_id"
-  end
-
-  create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "language_id", null: false
-    t.string   "locale",      null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "abbreviated"
-    t.string   "name"
-    t.index ["language_id"], name: "index_language_translations_on_language_id", using: :btree
-    t.index ["locale"], name: "index_language_translations_on_locale", using: :btree
   end
 
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -231,16 +221,6 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["registry_entry_id", "registry_name_type_id", "name_position"], name: "registry_names_unique_types_and_positions", unique: true, using: :btree
-  end
-
-  create_table "registry_reference_type_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "registry_reference_type_id", null: false
-    t.string   "locale",                     null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "name"
-    t.index ["locale"], name: "index_registry_reference_type_translations_on_locale", using: :btree
-    t.index ["registry_reference_type_id"], name: "index_959822146554d9dfd5d5530d45b5cafb8c7d4067", using: :btree
   end
 
   create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
