@@ -42,7 +42,7 @@ class Admin::UsersController < Admin::BaseController
 
   def flag
     @object = User.find(params[:id])
-    @object.admin = !params['admin'].blank?
+    @object.admin = params['admin']
     @object.save
     respond_to do |format|
       format.html do
@@ -52,11 +52,7 @@ class Admin::UsersController < Admin::BaseController
           redirect_to request.referer
         end
       end
-      format.js do
-        render :update do |page|
-          page.replace "admin_#{@object.id}", :partial => 'admin_flag', :object => @object
-        end
-      end
+      format.js
     end
   end
 
