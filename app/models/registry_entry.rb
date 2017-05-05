@@ -223,7 +223,7 @@ class RegistryEntry < ActiveRecord::Base
 
       # A regular expression to find the pattern in descriptions.
       require 'oniguruma'
-      pattern_regexp = Oniguruma::ORegexp.new(pattern.gsub('*', '.*'), RegistryEntry::ONIGURUMA_OPTIONS)
+      pattern_regexp = Regexp.new(pattern.gsub('*', '.*'), RegistryEntry::ONIGURUMA_OPTIONS)
 
       # An inner function that creates a hash describing several aspects of the path.
       # The path must be represented by a unique descriptor that fully qualifies and
@@ -299,10 +299,10 @@ class RegistryEntry < ActiveRecord::Base
       # Order paths by best match, i.e. put results that match in the
       # beginning of the entry above results that match in beginning
       # of a word which again are above matches the middle of a word.
-      matches_full_word_at_start = Oniguruma::ORegexp.new("^#{pattern.gsub('*', '.*')}\\b", RegistryEntry::ONIGURUMA_OPTIONS)
-      matches_full_word = Oniguruma::ORegexp.new("\\b#{pattern.gsub('*', '.*')}\\b", RegistryEntry::ONIGURUMA_OPTIONS)
-      matches_start_of_entry = Oniguruma::ORegexp.new("^#{pattern.gsub('*', '.*')}", RegistryEntry::ONIGURUMA_OPTIONS)
-      matches_start_of_word = Oniguruma::ORegexp.new("\\b#{pattern.gsub('*', '.*')}", RegistryEntry::ONIGURUMA_OPTIONS)
+      matches_full_word_at_start = Regexp.new("^#{pattern.gsub('*', '.*')}\\b", RegistryEntry::ONIGURUMA_OPTIONS)
+      matches_full_word = Regexp.new("\\b#{pattern.gsub('*', '.*')}\\b", RegistryEntry::ONIGURUMA_OPTIONS)
+      matches_start_of_entry = Regexp.new("^#{pattern.gsub('*', '.*')}", RegistryEntry::ONIGURUMA_OPTIONS)
+      matches_start_of_word = Regexp.new("\\b#{pattern.gsub('*', '.*')}", RegistryEntry::ONIGURUMA_OPTIONS)
       evaluate_relevance = lambda do |entry_name|
         if entry_name =~ matches_full_word_at_start
           0
@@ -550,8 +550,8 @@ class RegistryEntry < ActiveRecord::Base
     end
 
     PERSON_NAME_PATTERN = I18n.available_locales.inject({}) do |result, locale|
-      born = Oniguruma::ORegexp.escape(I18n.t('registry_entry.born', :locale => locale))
-      result[locale] = Oniguruma::ORegexp.new(
+      born = Regexp.escape(I18n.t('registry_entry.born', :locale => locale))
+      result[locale] = Regexp.new(
           '^\s*(?<last_names>[^,()\[\]]+?)\s*,\s*' +
               '(?<first_names>[^,()\[\]]+?)?\s*' +
               '(?:\(\s*%{born}\s+(?<birth_names>[^,()\[\]]+?)\s*\))?\s*' % {:born => born} +
@@ -560,7 +560,7 @@ class RegistryEntry < ActiveRecord::Base
       )
       result
     end
-    SPELLING_PATTERN = Oniguruma::ORegexp.new(
+    SPELLING_PATTERN = Regexp.new(
         '^\s*(?<spelling>.+?)\s*(?:\[\s*(?<differentiator>[^\[\]]*?)\s*\])?\s*$',
         RegistryEntry::ONIGURUMA_OPTIONS
     )

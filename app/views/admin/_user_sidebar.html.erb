@@ -27,7 +27,7 @@
         <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
         <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
       </li>
-      <li>
+      <li id="submit_filters">
         <%= submit_tag "Auswahl aktualisieren" %>
       </li>
     </ul>

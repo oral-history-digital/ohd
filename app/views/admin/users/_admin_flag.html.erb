@@ -5,6 +5,6 @@
         <%=  link_to '&raquo; Admin-Rechte geben'.html_safe, '#', link: flag_admin_user_path(admin_flag, admin: true), flag_id: admin_flag.id, class: 'admin-flag' %>
     <% end -%>
   <span id="admin-<%= admin_flag.id -%>-spinner" style="display: none;">
-    <%= image_tag "#{Project.name}/loading.gif" %>
+    <%= image_tag "lightbox/loading.gif" %>
   </span>
 </span>
