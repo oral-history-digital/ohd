@@ -1,6 +1,6 @@
 class SearchesController < BaseController
 
-  actions :new, :index
+  #actions :new, :index
 
   prepend_before_filter :redirect_unauthenticated_users
 
@@ -41,7 +41,7 @@ class SearchesController < BaseController
 
   # Calculates a hash for the query parameters and redirects to this hash-url.
   # Note: this doesn't call the solr search engine!
-  new_action do
+  def new_action
     before do
       # The session query search is NOT used here at all!
       session[:query] = nil
@@ -77,9 +77,9 @@ class SearchesController < BaseController
     end
   end
 
-  new_action.flash nil
+  #new_action.flash nil
 
-  index do
+  def index
     before do
       @search = Search.from_params(@query_params || params)
       @search.search!

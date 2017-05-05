@@ -1,6 +1,6 @@
 class HomeController < BaseController
 
-  skip_before_action :check_user_authentication!
+  skip_before_action :authenticate_user_account!
 
   def map_tutorial
     render layout: false

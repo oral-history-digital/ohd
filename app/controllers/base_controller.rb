@@ -1,6 +1,6 @@
 class BaseController < ApplicationController #ResourceController::Base
 
-  before_action :check_user_authentication!
+  before_action :authenticate_user_account!
   #before_filter :determine_user
 
   private

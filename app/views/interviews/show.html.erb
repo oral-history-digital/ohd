@@ -1,4 +1,4 @@
-<% cache [ I18n.locale.to_s, @interview.to_param, 'show'].join('/') do -%>
+<%# cache [ I18n.locale.to_s, @interview.to_param, 'show'].join('/') do -%>
 <div class="intervieweeTitle">
   <h1><%= @interview.full_title(I18n.locale) %></h1>
   <p>
@@ -48,13 +48,13 @@
 
   <%= render :partial => "interview", :object => @interview %>
 
-  <%= render :partial => "historical_context", :object => @interview %>
+  <%#= render :partial => "historical_context", :object => @interview %>
 
 </div>
 
-<%= render :partial => "mediaplayer" %>
+<%#= render :partial => "mediaplayer" %>
 
 <div class="compact clear">&nbsp;</div>
 
-<%= render :partial => "gallery" %>
-<% end %><%# cache %>
+<%#= render :partial => "gallery" %>
+<%# end %><%# cache %>
