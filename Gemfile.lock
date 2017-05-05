@@ -7,6 +7,13 @@ GIT
       activerecord (>= 4.2, < 5.1)
       request_store (~> 1.0)
 
+GIT
+  remote: https://github.com/grgr/acts-as-dag
+  revision: d6d6c33a51a42f04165909dd52e60c68eddae68b
+  specs:
+    acts-as-dag (4.0.0)
+      activemodel
+
 GEM
   remote: https://dev.cedis.fu-berlin.de/geminabox/
   remote: https://rubygems.org/
@@ -53,9 +60,6 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    acts-as-dag (3.0.0)
-      activemodel
-      activerecord
     acts_as_taggable_on_steroids (1.2)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
@@ -367,7 +371,7 @@ PLATFORMS
 
 DEPENDENCIES
   activemodel-serializers-xml
-  acts-as-dag
+  acts-as-dag!
   acts_as_taggable_on_steroids
   archive-authorization
   archive-player
