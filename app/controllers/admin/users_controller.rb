@@ -19,8 +19,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def admin
-    puts('admin')
-    conditionals = ['admin IS TRUE']
+    conditionals = []
     condition_args = []
     %w(first_name last_name login).each do |param|
       filter = params[param]
@@ -29,14 +28,14 @@ class Admin::UsersController < Admin::BaseController
         condition_args << (filter + '%')
       end
     end
-    conditions = ["workflow_state = 'registered' AND (" + conditionals.join(' OR ') + ")"] + condition_args
-    @users = User.joins(:user_account, :user_registration).where(conditions).order("admin ASC, users.last_name ASC")
+    conditions = [conditionals.join(' OR ')] + condition_args
+    @users = User.joins(:user_account, :user_registration).
+                  where("user_registrations.workflow_state": 'registered').
+                  where(admin: true).
+                  where(conditions).
+                  order("admin ASC, users.last_name ASC")
     respond_to do |format|
-      format.html do
-      end
-      format.js do
-        render :partial => 'user', :collection => @users, :layout => false
-      end
+      format.html 
     end
   end
 

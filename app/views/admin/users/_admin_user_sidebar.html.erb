@@ -1,21 +1,23 @@
 <div id="userFilters" class="fragmentTitle">
   <h2>Benutzer suchen:</h2>
-  <ul>
-    <li>
-      <label for="first_name"><%= t(:first_name, :scope => 'devise.registration_fields') %></label>
-      <%= text_field_tag 'first_name', params['first_name'], :class => 'filter' %>
-    </li>
-    <li>
-      <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
-      <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
-    </li>
-    <li>
-      <label for="login"><%= t(:login, :scope => 'devise.registration_fields') %></label>
-      <%= text_field_tag 'login', params['login'], :class => 'filter' %>
-    </li>
-    <li id="submit_filters" style="display: none;">
-      <div class="update-selection button">Nutzer suchen</div>
-    </li>
-  </ul>
+  <%= form_tag admin_admin_users_path, method: :get do %>
+    <ul>
+      <li>
+        <label for="first_name"><%= t(:first_name, :scope => 'devise.registration_fields') %></label>
+        <%= text_field_tag 'first_name', params['first_name'], :class => 'filter' %>
+      </li>
+      <li>
+        <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
+        <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
+      </li>
+      <li>
+        <label for="login"><%= t(:login, :scope => 'devise.registration_fields') %></label>
+        <%= text_field_tag 'login', params['login'], :class => 'filter' %>
+      </li>
+      <li id="submit_filters">
+        <%= submit_tag "Nutzer suchen" %>
+      </li>
+    </ul>
+  <% end %>
 </div>
 
