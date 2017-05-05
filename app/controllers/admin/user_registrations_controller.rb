@@ -1,14 +1,10 @@
 class Admin::UserRegistrationsController < Admin::BaseController
 
+  before_action :collection, only: [:index]
+
   def index
-    collection
     respond_to do |format|
-      format.html do
-        render
-      end
-      format.js do
-        render :layout => false
-      end
+      format.html 
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
@@ -91,6 +87,11 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @object.newsletter_signup = false
     @object.save
   end
+
+  def filter_params
+    [:workflow_state, :workflow_events, :job_description, :state, :research_intentions, :job_description, :country, :first_name, :last_name, :format]
+  end
+  helper_method :filter_params
 
   private
 

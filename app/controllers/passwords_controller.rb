@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  prepend_before_filter :require_no_authentication
+  prepend_before_action :require_no_authentication
   include Devise::Controllers::InternalHelpers
 
   #filter_parameter_logging :password, :password_confirmation

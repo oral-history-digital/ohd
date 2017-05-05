@@ -4,8 +4,8 @@ class InterviewsController < BaseController
 
   helper :interview
 
-  before_filter :featured_registry_entry, :only => :show
-  skip_before_filter :current_search_for_side_panel, :except => :show
+  before_action :featured_registry_entry, :only => :show
+  skip_before_action :current_search_for_side_panel, :except => :show
 
   #actions :show
 

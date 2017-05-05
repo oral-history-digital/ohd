@@ -29,9 +29,8 @@ class Admin::UsersController < Admin::BaseController
         condition_args << (filter + '%')
       end
     end
-    joins = "RIGHT JOIN user_accounts ON users.user_account_id = user_accounts.id RIGHT JOIN user_registrations ON users.user_registration_id = user_registrations.id"
     conditions = ["workflow_state = 'registered' AND (" + conditionals.join(' OR ') + ")"] + condition_args
-    @users = User.all(:joins => joins, :conditions => conditions, :order => "admin ASC, users.last_name ASC")
+    @users = User.joins(:user_account, :user_registration).where(conditions).order("admin ASC, users.last_name ASC")
     respond_to do |format|
       format.html do
       end
@@ -43,7 +42,7 @@ class Admin::UsersController < Admin::BaseController
 
   def flag
     @object = User.find(params[:id])
-    @object.admin = !params['admin'].blank?
+    @object.admin = params['admin']
     @object.save
     respond_to do |format|
       format.html do
@@ -53,11 +52,7 @@ class Admin::UsersController < Admin::BaseController
           redirect_to request.referer
         end
       end
-      format.js do
-        render :update do |page|
-          page.replace "admin_#{@object.id}", :partial => 'admin_flag', :object => @object
-        end
-      end
+      format.js
     end
   end
 
