@@ -222,7 +222,6 @@ class RegistryEntry < ActiveRecord::Base
       end
 
       # A regular expression to find the pattern in descriptions.
-      require 'oniguruma'
       pattern_regexp = Regexp.new(pattern.gsub('*', '.*'), RegistryEntry::ONIGURUMA_OPTIONS)
 
       # An inner function that creates a hash describing several aspects of the path.
@@ -567,7 +566,6 @@ class RegistryEntry < ActiveRecord::Base
 
     def parse_name(name, options = {})
       options = {:locale => I18n.default_locale}.merge(options)
-      require 'oniguruma'
 
       # Test for the person name pattern.
       parse_alias = (options[:locale] == :alias)
