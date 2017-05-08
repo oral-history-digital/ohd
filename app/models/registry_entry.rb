@@ -567,7 +567,6 @@ class RegistryEntry < ActiveRecord::Base
 
     def parse_name(name, options = {})
       options = {:locale => I18n.default_locale}.merge(options)
-      require 'oniguruma'
 
       # Test for the person name pattern.
       parse_alias = (options[:locale] == :alias)
