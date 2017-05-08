@@ -1,16 +1,11 @@
 class Admin::UserAnnotationsController < Admin::BaseController
 
-  actions :index, :show, :update
+  before_action :collection, only: [:index]
+  before_action :get_object, only: [:show, :update, :accept, :reject]
 
   def index
-    collection
     respond_to do |format|
-      format.html do
-        render
-      end
-      format.js do
-        render :layout => false
-      end
+      format.html 
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
@@ -32,12 +27,15 @@ class Admin::UserAnnotationsController < Admin::BaseController
     end
   end
 
+  def show
+  end
+
   # admin#update may only change description (independent of workflow_state!)
   def update
-    object.update_attribute :description, object_params['description']
+    @object.update_attribute :description, user_annotation_params['description']
     # also update the published annotation object
     unless @object.annotation.nil?
-      @object.annotation.update_attribute :text, object_params['description']
+      @object.annotation.update_attribute :text, user_annotation_params['description']
     end
     respond_to do |format|
       format.html do
@@ -100,6 +98,11 @@ class Admin::UserAnnotationsController < Admin::BaseController
     render_workflow_change
   end
 
+  def annotation_filter_params
+    [:workflow_state, :media_id, :first_name, :last_name, :format]
+  end
+  helper_method :annotation_filter_params
+
   private
 
   def collection
@@ -130,7 +133,12 @@ class Admin::UserAnnotationsController < Admin::BaseController
     conditionals << "workflow_state != ?"
     condition_args << "private"
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_annotations = UserAnnotation.all(:conditions => conditions, :include => :user, :order => "submitted_at DESC")
+    conditions = conditions.first if conditions.length == 1
+    @user_annotations = UserAnnotation.joins(:user).where(conditions).order("submitted_at DESC")
+  end
+
+  def get_object
+    @object = UserAnnotation.find(params[:id])
   end
 
   def render_workflow_change
@@ -181,6 +189,10 @@ class Admin::UserAnnotationsController < Admin::BaseController
     else
       t(field, :scope => 'activerecord.attributes.user_annotation', :locale => :de)
     end
+  end
+
+  def user_annotation_params
+    params.require(:user_annotation).permit(:description)
   end
 
 end

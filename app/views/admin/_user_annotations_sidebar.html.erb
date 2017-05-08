@@ -1,25 +1,27 @@
 <div id="userFilters" class="fragmentTitle">
   <h2>Anmerkungen filtern nach:</h2>
-  <ul>
-    <li>
-      <label for="workflow_state">Veröffentlichungsstatus</label>
-      <% seloptions = options_for_select((UserAnnotation::PUBLICATION_STATES + ['all']).map{|o| [t(o, :scope => 'user_annotations.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
-      <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
-    </li>
-    <li>
-      <label for="first_name"><%= t(:first_name, :scope => 'devise.registration_fields') %></label>
-      <%= text_field_tag 'first_name', params['first_name'], :class => 'filter' %>
-    </li>
-    <li>
-      <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
-      <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
-    </li>
-    <li>
-      <label for="media_id"><%= t(:media_id, :scope => 'activerecord.attributes.user_annotation') %></label>
-      <%= text_field_tag 'media_id', params['media_id'], :class => 'filter' %>
-    </li>
-    <li id="submit_filters" style="display: none;">
-      <div class="update-selection button">Auswahl aktualisieren</div>
-    </li>
-  </ul>
+  <%= form_tag admin_user_annotations_path, method: :get do %>
+    <ul>
+      <li>
+        <label for="workflow_state">Veröffentlichungsstatus</label>
+        <% seloptions = options_for_select((UserAnnotation::PUBLICATION_STATES + ['all']).map{|o| [t(o, :scope => 'user_annotations.workflow_states').capitalize, o]}, :selected => params['workflow_state']) -%>
+        <%= select_tag 'workflow_state', seloptions, :class => 'filter' %>
+      </li>
+      <li>
+        <label for="first_name"><%= t(:first_name, :scope => 'devise.registration_fields') %></label>
+        <%= text_field_tag 'first_name', params['first_name'], :class => 'filter' %>
+      </li>
+      <li>
+        <label for="last_name"><%= t(:last_name, :scope => 'devise.registration_fields') %></label>
+        <%= text_field_tag 'last_name', params['last_name'], :class => 'filter' %>
+      </li>
+      <li>
+        <label for="media_id"><%= t(:media_id, :scope => 'activerecord.attributes.user_annotation') %></label>
+        <%= text_field_tag 'media_id', params['media_id'], :class => 'filter' %>
+      </li>
+      <li id="submit_filters">
+        <%= submit_tag "Auswahl aktualisieren" %>
+      </li>
+    </ul>
+  <% end %>
 </div>
