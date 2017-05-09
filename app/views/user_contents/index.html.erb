@@ -1,10 +1,10 @@
 <div id="toggle_links">
-    <%= link_to_function t(:maximize_all, :scope => 'user_interface.labels'), 'expandAllContents()', :id => "expand_all", :style => (@user_contents.size < 4 ? 'display: none;' : '') %>
-    <%= link_to_function t(:minimize_all, :scope => 'user_interface.labels'), 'minimizeAllContents()', :id => "minimize_all", :style => (@user_contents.size < 4 ? '' : 'display: none;') %>
+    <%= link_to t(:maximize_all, :scope => 'user_interface.labels'), '#', id: "expand_all", style: (@user_contents.size < 4 ? 'display: none;' : '') %>
+    <%= link_to t(:minimize_all, :scope => 'user_interface.labels'), '#', id: "minimize_all", style: (@user_contents.size < 4 ? '' : 'display: none;') %>
   <div>
-    <%= link_to_function t(:activate, :scope => "user_interface.sort"), "sortDialogInstructions(); currentSorting.activateSorting()", :id => "activate_sorting" %>
-    <%= link_to_function t(:update, :scope => "user_interface.sort"), "currentSorting.finalizeSorting()", :id => "finalize_sorting", :style => 'display: none;' %>
-    <%= link_to_function t(:cancel, :scope => "user_interface.sort"), "currentSorting.cancelSorting()", :id => "cancel_sorting", :style => "display: none;" %>
+    <%= link_to t(:activate, :scope => "user_interface.sort"), '#', id: "activate_sorting" %>
+    <%= link_to t(:update, :scope => "user_interface.sort"), '#', id: "finalize_sorting", style: 'display: none;' %>
+    <%= link_to t(:cancel, :scope => "user_interface.sort"), '#', id: "cancel_sorting", style: "display: none;" %>
   </div>
 </div>
 <div id="sorting_instructions" style="display: none;">
