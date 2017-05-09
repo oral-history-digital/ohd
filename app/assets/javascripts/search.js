@@ -92,8 +92,8 @@
   }
 
   function submitViaAjax() {
-    beforeSubmit();
-    Form.request('search_facets');
+      beforeSubmit();
+      jQuery( "#search_facets" ).submit();
   }
 
   function beforeSubmit() {
