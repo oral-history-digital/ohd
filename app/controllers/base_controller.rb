@@ -23,21 +23,21 @@ class BaseController < ApplicationController #ResourceController::Base
   end
 
   def determine_user!
-    @current_user = current_user
-    raise ActiveRecord::RecordNotFound if @current_user.nil?
+    @current_user_account = current_user_account
+    raise ActiveRecord::RecordNotFound if @current_user_account.nil?
   end
 
   def determine_user
-    @current_user = current_user
+    @current_user_account = current_user_account
   end
 
   # authentication and extended IP-tracking wrapped together
   def check_user_authentication!
     authenticate_user!
-    unless current_user.nil?
-      current_ip = current_user.proxy_owner.current_sign_in_ip || request.remote_ip
+    unless current_user_account.nil?
+      current_ip = current_user_account.proxy_owner.current_sign_in_ip || request.remote_ip
       if session[:current_ip] != current_ip
-        tracked_ip = UserAccountIp.find_or_initialize_by_ip_and_user_account_id(current_ip, current_user.proxy_owner.id)
+        tracked_ip = UserAccountIp.find_or_initialize_by_ip_and_user_account_id(current_ip, current_user_account.proxy_owner.id)
         begin
           tracked_ip.save if tracked_ip.new_record?
         rescue

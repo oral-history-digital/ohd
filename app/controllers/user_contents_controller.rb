@@ -5,8 +5,10 @@ class UserContentsController < BaseController
 
   #belongs_to :user
 
-  before_action :determine_user!
-  skip_before_action :determine_user
+  #before_action :determine_user!
+  #skip_before_action :determine_user
+
+  before_action :collection, only: [:index]
 
   skip_before_action :current_search_for_side_panel
 
@@ -22,9 +24,6 @@ class UserContentsController < BaseController
         render :partial => 'show', :object => @object
       end
     end
-  end
-
-  def update
   end
 
   def destroy 
@@ -94,7 +93,7 @@ class UserContentsController < BaseController
     segment = Segment.for_media_id(@media_id).scoped({:include => :interview}).first
     unless segment.nil?
       @object = UserAnnotation.new
-      @object.user = current_user
+      @object.user = current_user_account
       @object.reference = segment
       @object.attributes = @object.user_content_attributes
       @object.media_id = @media_id
@@ -180,15 +179,17 @@ class UserContentsController < BaseController
     item_update_response
   end
 
-  update do
-    wants.html do
-      redirect_to :action => 'show'
-    end
-    wants.js do
-      context = (params['context'] || 'user_content').underscore
-      html = render_to_string :partial => context, :object => @object
-      render :update do |page|
-        page.replace "#{context}_#{object.id}", html
+  def update
+    respond_to do |format|
+      format.html do
+        redirect_to :action => 'show'
+      end
+      format.html do
+        context = (params['context'] || 'user_content').underscore
+        html = render_to_string :partial => context, :object => @object
+        render :update do |page|
+          page.replace "#{context}_#{object.id}", html
+        end
       end
     end
   end
@@ -266,14 +267,14 @@ class UserContentsController < BaseController
 
   private
 
-  # make sure the current_user is the owner of the resource
+  # make sure the current_user_account is the owner of the resource
   def authorize_owner!
-    unless object.user == current_user
+    unless object.user == current_user_account
       raise ActiveRecord::ReadOnlyRecord
     end
   end
 
-  # find the object with the current_user id and the id_hash parameter
+  # find the object with the current_user_account id and the id_hash parameter
   def object
     @object ||= begin
       @id_hash = params[:id]
@@ -285,7 +286,7 @@ class UserContentsController < BaseController
             klass.new
           else
             id_attr = @id_hash.to_i > 0 ? 'id' : 'id_hash'
-            klass.where(["user_id = ? AND #{id_attr} = ?", current_user.id, @id_hash ]).first
+            klass.where(["user_id = ? AND #{id_attr} = ?", current_user_account.id, @id_hash ]).first
           end
         end
       end
@@ -300,7 +301,7 @@ class UserContentsController < BaseController
       @type = params[:type] || type
       if params[:id].blank?
         # find by media_id
-        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
+        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user_account).first
       else
         # retrieve by user_content.id
         @type.camelize.constantize.where(['id = ?', params[:id]]).first
@@ -308,7 +309,7 @@ class UserContentsController < BaseController
     end
     @object ||= begin
       annotation = UserAnnotation.new
-      annotation.user = current_user
+      annotation.user = current_user_account
       annotation.media_id = @media_id
       annotation.reference = Segment.for_media_id(@media_id).first
       annotation
@@ -347,7 +348,7 @@ class UserContentsController < BaseController
 
   def build_object
     @object = model_name.camelize.constantize.new object_params
-    @object.user = current_user
+    @object.user = current_user_account
     @object
   end
 
@@ -373,7 +374,7 @@ class UserContentsController < BaseController
 
   def tag_filters
     filters = params['tag_filters'] || {}
-    if((filters.keys.size > 0) && (filters.keys.size < (current_user.tags.length+1)))
+    if((filters.keys.size > 0) && (filters.keys.size < (current_user_account.tags.length+1)))
       return filters.keys
     else
       return []
@@ -385,7 +386,7 @@ class UserContentsController < BaseController
     sql_conditions = []
     sql_conditions << [conditions.shift, 'user_id = ?'].delete_if{|el| el.blank? }.join(' AND ')
     sql_conditions += conditions
-    sql_conditions << current_user.id
+    sql_conditions << current_user_account.id
     includes = []
     tags = tag_filters
     unless tags.empty?
@@ -393,7 +394,7 @@ class UserContentsController < BaseController
       includes << :tags
       sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
-    end_of_association_chain.where(sql_conditions).includes(includes).order("position ASC, user_contents.created_at DESC")
+    @user_contents = UserContent.where(sql_conditions).includes(includes).order("position ASC, user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)
@@ -408,14 +409,14 @@ class UserContentsController < BaseController
 
   # positional sorting by id list
   def sort_by_list(ids)
-    current_contents = UserContent.where(["user_id = ? AND id IN (#{ids.join(',')})", current_user.id]).order("position ASC, created_at DESC")
+    current_contents = UserContent.where(["user_id = ? AND id IN (#{ids.join(',')})", current_user_account.id]).order("position ASC, created_at DESC")
     pos = current_contents.map(&:position)
     current_pos = (0.75 * pos.min).round
     pos_per_step = ((1.25 * pos.max - current_pos) / pos.length).floor + 1
     ids.each do |id|
       item = current_contents.select{|c| c.id == id.to_i }.first
       unless item.nil?
-        UserContent.update_all ['position = ?', current_pos], "id = #{id} AND user_id = #{current_user.id}"
+        UserContent.update_all ['position = ?', current_pos], "id = #{id} AND user_id = #{current_user_account.id}"
         item.position = current_pos
       end
       current_pos += pos_per_step
