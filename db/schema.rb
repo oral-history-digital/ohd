@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.string   "locale"
     t.text     "interviewers",  limit: 65535
     t.string   "countries"
-    t.text     "notes",         limit: 65535
     t.string   "institution"
+    t.text     "notes",         limit: 65535
     t.string   "responsibles"
     t.string   "name"
     t.datetime "created_at"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "contributor_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "contributor_id"
     t.string   "locale"
-    t.string   "first_name"
     t.string   "last_name"
+    t.string   "first_name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["contributor_id"], name: "index_contributor_translations_on_contributor_id", using: :btree
@@ -97,25 +97,20 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "locale"
-    t.string   "birth_name"
-    t.text     "forced_labor_details",   limit: 65535
     t.string   "first_name"
-    t.string   "birth_location"
-    t.text     "forced_labor_locations", limit: 65535
-    t.string   "other_first_names"
     t.string   "last_name"
-    t.text     "return_locations",       limit: 65535
-    t.string   "deportation_location"
-    t.string   "details_of_origin"
+    t.string   "other_first_names"
     t.string   "return_date"
+    t.string   "birth_name"
+    t.text     "forced_labor_details", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "transcriptors"
+    t.string   "translators"
+    t.text     "researchers",          limit: 65535
     t.string   "interviewers"
     t.string   "proofreaders"
     t.string   "segmentators"
-    t.string   "transcriptors"
-    t.string   "translators"
-    t.text     "researchers",            limit: 65535
     t.index ["interview_id"], name: "index_interview_translations_on_interview_id", using: :btree
   end
 
@@ -124,7 +119,6 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.integer  "collection_id"
     t.boolean  "gender"
     t.string   "date_of_birth"
-    t.string   "country_of_origin"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
@@ -149,6 +143,16 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.string   "citation_timecode",        limit: 18
     t.datetime "indexed_at"
     t.integer  "language_id"
+  end
+
+  create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "language_id"
+    t.string   "locale"
+    t.string   "abbreviated"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["language_id"], name: "index_language_translations_on_language_id", using: :btree
   end
 
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -223,6 +227,15 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.index ["registry_entry_id", "registry_name_type_id", "name_position"], name: "registry_names_unique_types_and_positions", unique: true, using: :btree
   end
 
+  create_table "registry_reference_type_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "registry_reference_type_id"
+    t.string   "locale"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["registry_reference_type_id"], name: "index_959822146554d9dfd5d5530d45b5cafb8c7d4067", using: :btree
+  end
+
   create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "registry_entry_id"
     t.string  "code"
@@ -230,8 +243,8 @@ ActiveRecord::Schema.define(version: 20170421135917) do
 
   create_table "registry_references", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "registry_entry_id",                       null: false
-    t.string   "ref_object_type",                         null: false
     t.integer  "ref_object_id",                           null: false
+    t.string   "ref_object_type",                         null: false
     t.integer  "registry_reference_type_id"
     t.integer  "ref_position",                            null: false
     t.string   "original_descriptor",        limit: 1000
