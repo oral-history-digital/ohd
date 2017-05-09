@@ -3,9 +3,7 @@ class UserContentsController < BaseController
 
   layout 'workspace', :except => [ :show, :create ]
 
-  belongs_to :user
-
-  actions :create, :update, :show, :index, :destroy
+  #belongs_to :user
 
   before_action :determine_user!
   skip_before_action :determine_user
@@ -15,67 +13,63 @@ class UserContentsController < BaseController
   before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
   rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
-  create do
-    wants.html do
-      render :action => 'show'
-    end
-    wants.js do
-      render :partial => 'show', :object => @object
-    end
-    failure do
-      wants.html do
+  def create
+    respond_to do |format|
+      format.html do
         render :action => 'show'
       end
-      wants.js do
+      format.js do
         render :partial => 'show', :object => @object
       end
     end
   end
 
-  destroy do
-    wants.html do
-      render :action => 'index'
-    end
-    wants.js do
-      render :update do |page|
-        page.visual_effect(:switch_off, "user_content_#{@object.id}", { 'afterFinish' => "function(){Element.remove($('user_content_#{@object.id}'));}" })
+  def update
+  end
+
+  def destroy 
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.js do
+        render :update do |page|
+          page.visual_effect(:switch_off, "user_content_#{@object.id}", { 'afterFinish' => "function(){Element.remove($('user_content_#{@object.id}'));}" })
+        end
       end
     end
   end
 
-  create.flash nil
-
-  update.flash nil
-
-  destroy.flash nil
-
-  index do
-    wants.html do
-    end
-    wants.js do
-      html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
-      render :update do |page|
-        page.replace_html 'innerContent', html
-        page.visual_effect :fade, 'overlay', :duration => 0.4, :queue => 'end'
+  def index 
+    respond_to do |format|
+      format.html 
+      format.js do
+        html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
+        render :update do |page|
+          page.replace_html 'innerContent', html
+          page.visual_effect :fade, 'overlay', :duration => 0.4, :queue => 'end'
+        end
       end
     end
   end
 
   # The show action is used to request info on any existing
   # context-based user_content, or the ability to create a new one (on a 404).
-  show do
-    wants.html do
-      if @object.nil? || @object.new_record?
-        render :nothing => true, :status => 404
-      else
-        render
+  def show 
+    respond_to do |format|
+      format.html do
+        if @object.nil? || @object.new_record?
+          render :nothing => true, :status => 404
+        else
+          render
+        end
       end
-    end
-    wants.js do
-      if @object.nil? || @object.new_record?
-        render :nothing => true, :status => 404
-      else
-        render :partial => 'show', :object => @object
+      format.js do
+        if @object.nil? || @object.new_record?
+          render :nothing => true, :status => 404
+        else
+          render :partial => 'show', :object => @object
+        end
       end
     end
   end
@@ -291,7 +285,7 @@ class UserContentsController < BaseController
             klass.new
           else
             id_attr = @id_hash.to_i > 0 ? 'id' : 'id_hash'
-            klass.find(:first, :conditions => ["user_id = ? AND #{id_attr} = ?", current_user.id, @id_hash ])
+            klass.where(["user_id = ? AND #{id_attr} = ?", current_user.id, @id_hash ]).first
           end
         end
       end
@@ -309,7 +303,7 @@ class UserContentsController < BaseController
         @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
       else
         # retrieve by user_content.id
-        @type.camelize.constantize.find(:first, :conditions => ['id = ?', params[:id]])
+        @type.camelize.constantize.where(['id = ?', params[:id]]).first
       end
     end
     @object ||= begin
@@ -399,7 +393,7 @@ class UserContentsController < BaseController
       includes << :tags
       sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
-    end_of_association_chain.all(:conditions => sql_conditions, :include => includes, :order => "position ASC, user_contents.created_at DESC")
+    end_of_association_chain.where(sql_conditions).includes(includes).order("position ASC, user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)
@@ -409,12 +403,12 @@ class UserContentsController < BaseController
       cond << id
     end
     cond.first << ')'
-    Tag.all(:conditions => cond).map(&:name) unless Tag.nil?
+    Tag.where(cond).map(&:name) unless Tag.nil?
   end
 
   # positional sorting by id list
   def sort_by_list(ids)
-    current_contents = UserContent.all(:conditions => ["user_id = ? AND id IN (#{ids.join(',')})", current_user.id], :order => "position ASC, created_at DESC")
+    current_contents = UserContent.where(["user_id = ? AND id IN (#{ids.join(',')})", current_user.id]).order("position ASC, created_at DESC")
     pos = current_contents.map(&:position)
     current_pos = (0.75 * pos.min).round
     pos_per_step = ((1.25 * pos.max - current_pos) / pos.length).floor + 1
