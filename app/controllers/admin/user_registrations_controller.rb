@@ -88,10 +88,10 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @object.save
   end
 
-  def filter_params
+  def registration_filter_params
     [:workflow_state, :workflow_events, :job_description, :state, :research_intentions, :job_description, :country, :first_name, :last_name, :format]
   end
-  helper_method :filter_params
+  helper_method :registration_filter_params
 
   private
 

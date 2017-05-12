@@ -222,7 +222,6 @@ class RegistryEntry < ActiveRecord::Base
       end
 
       # A regular expression to find the pattern in descriptions.
-      require 'oniguruma'
       pattern_regexp = Regexp.new(pattern.gsub('*', '.*'), RegistryEntry::ONIGURUMA_OPTIONS)
 
       # An inner function that creates a hash describing several aspects of the path.

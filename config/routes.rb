@@ -41,6 +41,24 @@ Rails.application.routes.draw do
       end
     end
 
+    #get 'arbeitsmappe' => 'user_contents#index'
+    #get 'workbook' => 'user_contents#index', :locale => :en
+    resources :user_contents do
+      collection do
+        get :segment_annotation
+        post :create_annotation
+        post :sort
+      end
+      member do
+        put :publish
+        get :topics
+        post :retract
+        put :update_topics
+        put :update_annotation
+        get :publish_notice
+      end
+    end
+
     namespace :admin do
       resources :users do
         collection do
@@ -106,25 +124,6 @@ Rails.application.routes.draw do
       get :person_name
     end
 
-
-  end
-
-  get 'arbeitsmappe' => 'user_contents#index'
-  get 'workbook' => 'user_contents#index', :locale => :en
-  resources :user_contents do
-    collection do
-      get :segment_annotation
-      post :create_annotation
-      post :sort
-    end
-    member do
-      put :publish
-      get :topics
-      post :retract
-      put :update_topics
-      put :update_annotation
-      get :publish_notice
-    end
 
   end
 

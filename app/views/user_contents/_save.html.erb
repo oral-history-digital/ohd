@@ -1,6 +1,6 @@
 <% user_content_type = save.class.to_s.underscore -%>
 <div id="save_<%= user_content_type -%>">
-<% unless current_user.nil? -%>
+<% unless current_user_account.nil? -%>
     <span class="save_user_content" style="display:none;">
         <% form_remote_tag :url => user_contents_path, :class => "save", :update => "save_#{user_content_type}"  do -%>
             <% user_content_attributes = save.user_content_attributes -%>

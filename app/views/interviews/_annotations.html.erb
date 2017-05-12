@@ -22,7 +22,7 @@
 <% end -%>
 
 <ul id="user_annotations_list" style="display: none !important;">
-    <% UserAnnotation.for_interview(@interview).for_user(current_user).each do |user_annotation| -%>
+    <% UserAnnotation.for_interview(@interview).for_user(current_user_account).each do |user_annotation| -%>
         <li id="user_annotation_<%= user_annotation.media_id -%>">
             <%= user_annotation.id -%>
         </li>

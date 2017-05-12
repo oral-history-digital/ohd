@@ -11,7 +11,7 @@
   <%= @last_name.blank? ? '' : "&nbsp;, #{t(:last_name, :scope => 'devise.registration_fields')}: '#{@last_name}*'".html_safe -%>
   <%= @country.blank? ? '' : "&nbsp; aus #{t(@country, :scope => 'countries')}".html_safe -%>
 </h1>
-<h4><%= link_to "&raquo;&nbsp;Tabellendownload (als .CSV)".html_safe, admin_user_registrations_path(params.permit(filter_params).merge(format: :csv)) %><h4>
+<h4><%= link_to "&raquo;&nbsp;Tabellendownload (als .CSV)".html_safe, admin_user_registrations_path(params.permit(registration_filter_params).merge(format: :csv)) %><h4>
 
 <table class='userTable userIndex' cellspacing='0' cellpadding='0' border='0'>
   <tbody>
