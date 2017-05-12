@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
 
-
-require 'user_account'
+  require 'user_account'
   require 'archive-authorization'
 
   belongs_to :user_account
