@@ -248,17 +248,17 @@ class Search < UserContent
 
       end
     end
-    # @search.execute!
-    # @hits = @search.total
-    # @results = @search.results
-    #
-    # # facets are populated from the search lazily
-    # @facets = nil
-    # @query = current_query_params.select{|k,v| !v.nil? }
-    # @query_facets = nil
-    # @query_hash = nil
-    # @segments = {}
-    # @search
+    @search.execute!
+    @hits = @search.total
+    @results = @search.results
+
+    # facets are populated from the search lazily
+    @facets = nil
+    @query = current_query_params.select{|k,v| !v.nil? }
+    @query_facets = nil
+    @query_hash = nil
+    @segments = {}
+    @search
   end
 
   def matching_segments_for(archive_id)
@@ -498,9 +498,9 @@ class Search < UserContent
     # Build a basic query with attributes common
     # to all interview queries.
     def build_unfiltered_interview_query(page, &attributes)
-      # search = Sunspot.new_search(Interview)
-      #
-      # # Build the query.
+      search = Sunspot.new_search(Interview)
+
+      # Build the query.
       # search.build(&attributes) if block_given?
       #
       # # Add query attributes common to all interview queries.
@@ -510,14 +510,14 @@ class Search < UserContent
       #
       #   facet #*id_fields
       #
-      #   # paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      #   # order_by :"person_name_#{I18n.locale}", :asc
-      #   #
-      #   # adjust_solr_params do |params|
-      #   #   # Use the edismax parser for wildcard support and
-      #   #   # more feature-rich query syntax.
-      #   #   params[:defType] = 'edismax'
-      #   # end
+      #   paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
+      #   order_by :"person_name_#{I18n.locale}", :asc
+      #
+      #   adjust_solr_params do |params|
+      #     # Use the edismax parser for wildcard support and
+      #     # more feature-rich query syntax.
+      #     params[:defType] = 'edismax'
+      #   end
       #
       # end
     end

@@ -70,7 +70,7 @@
 
             <%= render :partial => 'searches/facets', :object => @search %>
 
-            <% javascript_tag do %>
+            <%= javascript_tag do %>
 
               categoryElems = $$('fieldset.facet-field');
 

@@ -25,7 +25,7 @@
     </noscript>
 </div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
     galleryElem = $('image_carousel');
     new Carousel('gallery_content', $$('#image_row .slide'), $$('a.carousel-control'), { wheel: false, visibleSlides: <%= (@interview.photos.size < 5) ? @interview.photos.size : 5 %> } );
     var LightboxOptions = {

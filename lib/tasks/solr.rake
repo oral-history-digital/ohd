@@ -127,11 +127,16 @@ namespace :solr do
 
       # Interviews
       conditions = ids.nil? ? [] : "interviews.archive_id IN ('#{ids.join("','")}')"
-      total = Interview.count :conditions => conditions
+      #total = Interview.count# :conditions => conditions
+
+      interviews =  Interview.where(conditions)
+      total = interviews.count
+
 
       puts "\nIndexing #{total} interviews..."
 
-      Interview.find_each(:conditions => conditions) do |interview|
+      #Interview.find_each(:conditions => conditions) do |interview|
+      interviews.each do |interview|
         begin
           interview.index
         rescue => e
@@ -164,10 +169,15 @@ namespace :solr do
         conds << " AND interviews.archive_id IN ('#{ids.split(',').join("','")}')"
       end
 
-      total = Segment.count :joins => joins, :conditions => conds
+      #Segment.find_each(:joins => joins, :conditions => conds) do |segment|
+      segments = Segment.where(conds).joins(joins)
+      total = segments.count
       puts "\nIndexing #{total} segments..."
 
-      Segment.find_each(:joins => joins, :conditions => conds) do |segment|
+
+      segments.each do |segment|
+
+
         begin
           segment.index
         rescue => e
@@ -188,24 +198,29 @@ namespace :solr do
     task :registry_references, [:interviews ] => :environment do |task,args|
 
       archive_id = (args[:interviews] || '').scan(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE))
-      interviews = Interview.all(
-          :conditions => if archive_id.empty?
-                           nil
-                         else
-                           {:archive_id => archive_id}
-                         end
-      )
+
+      interview_condition =   archive_id.empty? ? nil :  {:archive_id => archive_id}
+      interviews = Interview.where(interview_condition ).all
+
+      #interviews = Interview.all#(
+         # :conditions => if archive_id.empty?
+        #                   nil
+        #                 else
+        #                   {:archive_id => archive_id}
+         #                end
+     # )
 
       conditions = interviews.empty? ? nil : {:interview_id => interviews.map(&:id)}
 
-      puts "\nIndexing #{RegistryReference.count(:conditions => conditions)} registry_references:"
+      puts "\nIndexing #{RegistryReference.where(conditions).count} registry_references:"
       unless archive_id.empty?
         archive_id.each do |id|
           puts id
         end
       end
 
-      RegistryReference.find_each(:conditions => conditions, :batch_size => 1000) do |registry_reference|
+      #RegistryReference.find_each(:conditions => conditions, :batch_size => 1000) do |registry_reference|
+      RegistryReference.where(conditions).find_in_batches(batch_size: 1000) do |registry_reference|
         begin
           registry_reference.index
         end
@@ -259,7 +274,7 @@ namespace :solr do
     desc 'randomly reindex a number of interviews'
     task :randomly,[:number] => ['solr:connect', :environment] do |task,args|
       number = args[:number] || ENV['number'] || Interview.count
-      ids = Interview.all(:select => :id, :order => 'RAND()')[0..(number.to_i-1)].map(&:id)
+      ids = Interview.all[0..(number.to_i-1)].map(&:id)
       puts "Randomly indexing #{ids.size} interviews..."
       index = ids.size
       id = ids.shift

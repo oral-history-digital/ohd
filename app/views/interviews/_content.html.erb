@@ -45,7 +45,7 @@
 
     <% end %>
 
-    <% javascript_tag do %>
+    <%= javascript_tag do %>
         $('interview_fulltext').value = '<%= current_search_text %>';
     <% end %>
 
@@ -89,7 +89,7 @@
             <% end %>
      --></ul>
         <% if @interview.translated? %>
-            <% javascript_tag do %>
+            <%= javascript_tag do %>
                 $('language-switcher').on('click', 'li', function(event, clickedTab) {
                   switchSegmentLanguage(clickedTab);
                   event.stopPropagation();
