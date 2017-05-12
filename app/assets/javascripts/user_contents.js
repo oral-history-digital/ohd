@@ -24,16 +24,17 @@ jQuery(function($){
     $(elem).toggle();
   });
   
-  $(".open_modal").click(function(){
-    var close = $(this).attr('close');
-    $(close).addClass('closed');
-
-    var url = $(this).attr('url');
-    var classNames = 'topics ' + $(this).attr('class_names');
-
-    openModal(url, {class_names: classNames});
+  $(".container-toggle").click(function(){
+    var elem = $(this).attr('toggle');
+    toggleContainer(elem, true, false);
   });
-
+  
+  $("ul.facet-field li.facet").click(function(){
+    //alert('bla');
+    var checkFilterId = $(this).attr('check_filter_id') || null;
+    checkFilter(checkFilterId, this); 
+  });
+  
 });
 
 

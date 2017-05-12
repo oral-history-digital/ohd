@@ -139,42 +139,6 @@ module ApplicationHelper
     end
   end
 
-
-  # modal window dialog
-  def javascript_open_modal_window(ajax_url, options={})
-    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }
-    dynamic_params = (options[:dynamic_parameters] || {}).to_a.map{|p| "#{p.first}: #{p.last}"}
-    params = (params + dynamic_params).join(', ')
-    method = options[:method] || :get
-    callback = options[:callback] || ''
-    before_callback = (options[:on_create] || '').concat(';')
-    nodeclass = options[:class] || ''
-    <<JS
-var windowEl = $('modal_window');
-if(!windowEl) {
-  var htmlBody = $$('body')[0];
-  windowEl = new Element('div',{id: 'modal_window', style: 'display: none;', class: '#{nodeclass}'});
-  htmlBody.insert({top: windowEl});
-  if(!$('shades')) {
-    var shades = new Element('div', { id: 'shades', style: 'display: none;'});
-    shades.insert({top: new Element('div', {id: 'ajax-spinner'})});
-    htmlBody.insert({top: shades});
-  }
-}
-windowEl.innerHTML = '';
-new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
-$('ajax-spinner').show;
-new Ajax.Updater('modal_window', '#{ajax_url}',
-  { parameters: {#{params}},
-    method: '#{method}',
-    evalScripts: true,
-    onCreate:  function(){#{before_callback}},
-    onFailure: function(){$('ajax-spinner').hide(); new Effect.Fade('shades', { from: 0.6 })},
-    onSuccess: function(){$('ajax-spinner').hide(); new Effect.Appear('modal_window', { duration: 0.3 }); $('modal_window').addClassName('edit');#{callback}}
-    });
-JS
-  end
-
   def javascript_instant_modal_window(dom_id, cookie=nil)
     cookie_condition = cookie.nil? ? 'var openDialog = true; var cookieDialog = ""' : <<JS_COND
 var cookiestr = readCookie('#{cookie}');

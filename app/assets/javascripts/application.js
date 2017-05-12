@@ -31,6 +31,16 @@ UTF8 = {
 	}
 };
 
+$(".open_modal").click(function(){
+  var close = $(this).attr('close');
+  $(close).addClass('closed');
+
+  var url = $(this).attr('url');
+  var classNames = 'topics ' + $(this).attr('class_names');
+
+  openModal(url, {class_names: classNames});
+});
+
 /*
  * Registers a callback which copies the csrf token into the
  * X-CSRF-Token header with each ajax request.  Necessary to
