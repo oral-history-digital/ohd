@@ -42,13 +42,6 @@ class UserContentsController < BaseController
   def index 
     respond_to do |format|
       format.html 
-      format.js do
-        html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
-        render :update do |page|
-          page.replace_html 'innerContent', html
-          page.visual_effect :fade, 'overlay', :duration => 0.4, :queue => 'end'
-        end
-      end
     end
   end
 

@@ -9,12 +9,7 @@
      all_tags = tag_filters.empty?
      tag_filters = current_user_account.tags.map(&:name) if all_tags -%>
 
-  <% form_remote_tag :url => user_contents_path,
-                     :method => :get,
-                     :html => { :action => user_contents_path,
-                                :method => :get,
-                                :name => "contentFilters",
-                                :id => "content_filters" } do |filter_selection| %>
+   <%= form_tag user_contents_path, method: :get, name: "contentFilters", id: "content_filters" do |filter_selection| %>
 
     <noscript>
       <div class="warning">
