@@ -52,6 +52,11 @@ class UserAccount < ActiveRecord::Base
     self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
+  def tags
+    #user.tags
+    []
+  end
+
   def admin?
     !self.user.blank? && self.user.admin?
   end
