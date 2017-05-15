@@ -20,5 +20,8 @@ module Archive
     PROJECT = :hagen # can be :zwar or :hagen
     config.x.project = PROJECT
     config.project = config_for("projects/#{PROJECT}")
+
+    config.i18n.available_locales = config.project["available_locales"]
+
   end
 end
