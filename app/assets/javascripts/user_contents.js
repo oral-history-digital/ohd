@@ -35,6 +35,22 @@ jQuery(function($){
     checkFilter(checkFilterId, this); 
   });
   
+  $('#user_content_edit').click(function(){
+    setItemStatus($(this).parent().find('.actions'), true); 
+    //Event.stop(event);
+  });
+
+  $('#user_content_close').click(function(){
+    setItemStatus($(this).parent(), false); 
+    //Event.stop(event);
+  });
+
+  $('#user_content_inline_edit').click(function(){
+    $(this).closest('.item .inline-editable').each(function(index){
+      showInlineEditForm($(this).attr('id', $(this).attr('id')).replace(/_display$/,''), ($(this).nodeType == 'textarea'));
+    }); 
+    setItemStatus($(this).closest('.actions'), false)
+  });
 });
 
 
