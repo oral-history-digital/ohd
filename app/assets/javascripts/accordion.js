@@ -1,6 +1,7 @@
 
   // blind effect for accordion-container
   function toggleContainer(parentId, blindToggle, toggleAll) {
+    var containerElems = jQuery('#baseContainerRight .container-toggle');
     var cat_index = -1;
     var id = parentId.sub('-toggle','');
     for(var i=0; i< containerElems.length; i++) {
