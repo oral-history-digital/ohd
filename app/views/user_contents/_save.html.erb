@@ -2,7 +2,8 @@
 <div id="save_<%= user_content_type -%>">
 <% unless current_user_account.nil? -%>
     <span class="save_user_content" style="display:none;">
-        <% form_remote_tag :url => user_contents_path, :class => "save", :update => "save_#{user_content_type}"  do -%>
+        <%# form_tag user_contents_path, class: "save", remote: true :update => "save_#{user_content_type}"  do -%>
+        <%= form_tag user_contents_path, class: "save", remote: true do -%>
             <% user_content_attributes = save.user_content_attributes -%>
             <% user_content_attributes.keys.each do |attr| -%>
               <% value = user_content_attributes[attr] -%>
