@@ -119,19 +119,19 @@ var contentItems = new Array();
 
 function setItemStatus(el, open) {
     if(open) {
-        el.addClassName('open');
-        el.removeClassName('closed');
+        el.addClass('open');
+        el.removeClass('closed');
     } else {
-        el.removeClassName('open');
-        el.addClassName('closed');
+        el.removeClass('open');
+        el.addClass('closed');
     }
 }
 
 function toggleUserContent(event) {
     if(togglingContent > 0) { return; };
-    var el = Element.up(Event.element(event), '.item');
-    var details = el.down('.details');
-    if(el.hasClassName('closed')) {
+    var el = Element.closest('.item');
+    var details = el.find('.details');
+    if(el.hasClass('closed')) {
         // open
         expandContent(details,true);
     } else {
@@ -144,7 +144,7 @@ function expandAllContents() {
     if(togglingContent > 0) { return; };
     var closedContents = new Array();
     contentItems.each(function(el){
-        if(el.parentNode.hasClassName('closed')) {
+        if(el.parent().hasClass('closed')) {
             closedContents[closedContents.length] = el;
         }
     });
