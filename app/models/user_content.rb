@@ -125,7 +125,7 @@ class UserContent < ActiveRecord::Base
   private
 
   def store_properties
-    write_attribute :properties, @properties.stringify_keys.to_yaml
+    write_attribute :properties, properties.stringify_keys.to_yaml
   end
 
   def compile_id_hash

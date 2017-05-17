@@ -76,26 +76,27 @@ module UserContentsHelper
     context = options.delete(:context) || model_name
     update_path = (context == 'user_content') ? user_content_path(user_content) : eval("#{[path_prefix, model_name].compact.join('_')}_path(user_content)")
     form_options = options.merge({
-            :id => form_id,
-            :url => update_path,
-            :method => :put,
+            id: form_id,
+            method: :put,
             :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
             :complete => 'togglingContent = 0;',
-            :html => options.merge({:class => 'inline'})
+            remote: true,
+            class: 'inline edit',
+            user_content_id: user_content.id
     })
-    js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
     html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable', :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
+    #html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable'}))
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
-      form_remote_tag(form_options) do
+      form_tag(update_path, form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
         form_html += if text_area
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)') \
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor')
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)')
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor')
         end
         form_html += hidden_field_tag :context, context
-        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update', :onclick => 'togglingContent = 1;')
-        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"
+        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update')
+        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' class='reset'/>"
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
         form_html + buttons_html + spinner_html
       end
