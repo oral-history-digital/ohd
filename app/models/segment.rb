@@ -16,16 +16,17 @@ class Segment < ActiveRecord::Base
   has_many  :annotations
 
   scope :with_heading,
-              -> { joins(:translations)
-                   .where("segment_translations.locale = ?", I18n.default_locale.to_s)
-                   .where(%W(
-                     (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
-                      OR
-                     (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
-                   ))
-                   .includes(:tape, :translations)
-                   .order(:media_id)
-                 }
+              -> { joins(:translations).where(
+                  "segment_translations.locale = ?
+                  AND (
+                    (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
+                    OR
+                    (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
+                  )",
+                  I18n.default_locale.to_s)
+                       .includes(:tape, :translations)
+                       .order(:media_id)}
+
 
   scope :for_interview, ->(interview){ where('segments.interview_id = ?', i.id) }
 
@@ -33,7 +34,6 @@ class Segment < ActiveRecord::Base
     where("segments.media_id < ?", Segment.media_id_successor(mid))
     .order(media_id: :desc)
      .limit(1)
-
   }
 
 

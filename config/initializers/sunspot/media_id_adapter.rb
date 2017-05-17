@@ -1,4 +1,4 @@
-module CeDiS
+#module CeDiS
 
   require 'sunspot/adapters'
   require 'sunspot/rails'
@@ -27,4 +27,4 @@ module CeDiS
     end
 
   end
-end
+#end
