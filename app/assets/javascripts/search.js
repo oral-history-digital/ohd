@@ -67,6 +67,7 @@
 
   // check for form submission
   function checkFormSubmission(openCategory) {
+    var categoryChange = 0;
     if(categoryChange) {
       if(openCategory) {
         $('open_category').value = openCategory;

@@ -1,5 +1,6 @@
 class UserContent < ActiveRecord::Base
 
+  # TODO: this gem is to old: should be replaced by sth. else
   #acts_as_taggable
 
 
@@ -33,6 +34,11 @@ class UserContent < ActiveRecord::Base
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
   validates_uniqueness_of :id_hash, :scope => :user_id
   validates_length_of :description, :maximum => ANNOTATION_LIMIT
+
+  # dummy to bridge to old acts_as_taggable-gem
+  def tag_list
+    []
+  end
 
   def after_initialize
     get_properties

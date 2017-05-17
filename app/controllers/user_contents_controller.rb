@@ -3,6 +3,9 @@ class UserContentsController < BaseController
 
   layout 'workspace', :except => [ :show, :create ]
 
+  before_action :object, except: [:index]
+  before_action :collection, only: [:index]
+
   #belongs_to :user
 
   #before_action :determine_user!
@@ -20,8 +23,8 @@ class UserContentsController < BaseController
       format.html do
         render :action => 'show'
       end
-      format.js do
-        render :partial => 'show', :object => @object
+      format.js do 
+        render :partial => 'show', object: @object
       end
     end
   end
@@ -31,24 +34,14 @@ class UserContentsController < BaseController
       format.html do
         render :action => 'index'
       end
-      format.js do
-        render :update do |page|
-          page.visual_effect(:switch_off, "user_content_#{@object.id}", { 'afterFinish' => "function(){Element.remove($('user_content_#{@object.id}'));}" })
-        end
-      end
+      format.js
     end
   end
 
   def index 
     respond_to do |format|
       format.html 
-      format.js do
-        html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
-        render :update do |page|
-          page.replace_html 'innerContent', html
-          page.visual_effect :fade, 'overlay', :duration => 0.4, :queue => 'end'
-        end
-      end
+      format.js 
     end
   end
 
@@ -58,14 +51,12 @@ class UserContentsController < BaseController
     respond_to do |format|
       format.html do
         if @object.nil? || @object.new_record?
-          render :nothing => true, :status => 404
-        else
-          render
+          render body: nil, :status => 404
         end
       end
       format.js do
         if @object.nil? || @object.new_record?
-          render :nothing => true, :status => 404
+          render json: { status: 404 }
         else
           render :partial => 'show', :object => @object
         end

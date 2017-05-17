@@ -16,7 +16,7 @@
 </div>
 
 <div id="back_to_search" class="action">
-  <%= link_to image_tag(image_path('suchpfeil_zurueck.gif'), :title => t(:back_to_search, :scope => 'user_interface.labels')), current_search_path %>
+  <%= link_to image_tag(image_path("#{Project.name}/suchpfeil_zurueck.gif"), :title => t(:back_to_search, :scope => 'user_interface.labels')), current_search_path %>
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>

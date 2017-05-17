@@ -25,24 +25,24 @@ end -%>
       </span>
       <% end -%>
       <span class="toggle">
-        <%= link_to_function '&nbsp;', '' -%>
+        <%#= link_to '&nbsp;', '' -%>
       </span>
       <span class="date">
         <%= user_content.created_at.strftime('%d.%m.%Y - %H:%M') -%>
       </span>
     </div>
     <div class="details">
-        <%= link_to_function t(:edit, :scope => "user_interface.actions"), "setItemStatus(this.parentNode.down('.actions'), true); Event.stop(event);", :class => 'edit' %>
+        <%= link_to t(:edit, :scope => "user_interface.actions"), "#", id: 'user_content_edit', class: 'edit' %>
         <div id="user_content_<%= user_content.id -%>_actions" class="actions closed">
-          <%= link_to_function image_tag('/images/icon_cross.png'), "setItemStatus(this.parentNode, false); Event.stop(event);", :class => 'close-button' -%>
+          <%= link_to image_tag('/images/icon_cross.png'), "#", id: 'user_content_close', :class => 'close-button' -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
-            <li><%= link_to_function t(:edit, :scope => 'user_interface.user_content'), "this.up('.item').getElementsBySelector('.inline-editable').each(function(el){showInlineEditForm(el.id.sub(/_display$/,''), (el.nodeType == 'textarea'));}); setItemStatus(this.up('.actions'), false)" %></li>
-            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content, :context => 'user_contents'), { :method => :get })}" %></li>
+            <li><%= link_to t(:edit, :scope => 'user_interface.user_content'), "#", id: 'user_content_inline_edit' %></li>
+            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', close: 'user_content_#{user_content.id}_actions', url: topics_user_content_path(user_content, context: 'user_contents'), class: 'open_modal' %></li>
             <% if user_content.class.to_s == 'UserAnnotation' -%>
                 <% if user_content.private? -%>
-                    <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(publish_notice_user_content_path(user_content, :context => 'user_contents', :type => 'UserAnnotation'), { :method => :get })}" %></li>
+                    <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', close: 'user_content_#{user_content.id}_actions', url: publish_notice_user_content_path(user_content, context: 'user_contents', type: 'UserAnnotation'), class: 'open_modal' %></li>
                 <% else -%>
                     <li><%#= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.class.to_s.constantize.human_name_in_sentence + ' "' + (user_content.title || '') + '"') %></li>
                 <% end -%>
@@ -51,7 +51,9 @@ end -%>
           </ul>
         </div>
         <ul class="properties">
-          <% unless (user_content.class.to_s != 'Search' && user_content.reference.nil?) || (user_content.class.to_s == 'Search' && user_content.properties['query'].nil?) -%>
+          <% if false %>
+            <%# TODO: Make this work again?! %> 
+          <%# unless (user_content.class.to_s != 'Search' && user_content.reference.nil?) || (user_content.class.to_s == 'Search' && user_content.properties['query'].nil?) -%>
               <% case user_content
                   when Search
                     %>

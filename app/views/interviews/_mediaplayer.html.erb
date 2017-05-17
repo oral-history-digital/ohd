@@ -42,22 +42,22 @@
     </div>
     <div id="annotate_segment">
       <span id="annotate_new_segment" class="new" style="display: none;">
-        <%= link_to_function t('user_interface.actions.annotate_segment'),
-                             javascript_open_modal_window(segment_annotation_user_contents_path,
-                             {:parameters => {'type' => 'UserAnnotation'},
-                             :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
-                             :on_create => "pauseOnAnnotation()"
-                             }),
-                             :class => 'annotate-action' -%>
+        <%= link_to t('user_interface.actions.annotate_segment'), '#',
+                    url: segment_annotation_user_contents_path,
+                    class: 'annotate-action open_modal' -%>
+                             <%#{:parameters => {'type' => 'UserAnnotation'},%>
+                             <%#:dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},%>
+                             <%#:on_create => "pauseOnAnnotation()"%>
+                             <%#}),%>
       </span>
       <span id="annotate_existing_segment" class="existing" style="display: none;">
-        <%= link_to_function t('user_interface.actions.show_existing_annotation'),
-                             javascript_open_modal_window(segment_annotation_user_contents_path,
-                             {:parameters => {:type => 'UserAnnotation'},
-                             :dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},
-                             :on_create => "pauseOnAnnotation()"
-                             }),
-                             :class => 'annotate-action'-%>
+        <%= link_to t('user_interface.actions.show_existing_annotation'),
+                    url: segment_annotation_user_contents_path,
+                    class: 'annotate-action'-%>
+                             <%#{:parameters => {:type => 'UserAnnotation'},%>
+                             <%#:dynamic_parameters => {:media_id => 'archiveplayer(\'interview-player\').segmentMediaID'},%>
+                             <%#:on_create => "pauseOnAnnotation()"%>
+                             <%#}),%>
       </span>
     </div>
   </div>
