@@ -96,7 +96,7 @@ module UserContentsHelper
         end
         form_html += hidden_field_tag :context, context
         buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update')
-        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' class='reset'/>"
+        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' class='reset'/>".html_safe
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
         form_html + buttons_html + spinner_html
       end
