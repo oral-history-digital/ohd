@@ -171,16 +171,13 @@ class UserContentsController < BaseController
   end
 
   def update
+    @object.update_attributes(user_content_params)
     respond_to do |format|
       format.html do
         redirect_to :action => 'show'
       end
-      format.html do
-        context = (params['context'] || 'user_content').underscore
-        html = render_to_string :partial => context, :object => @object
-        render :update do |page|
-          page.replace "#{context}_#{object.id}", html
-        end
+      format.js do
+        @context = (params['context'] || 'user_content').underscore
       end
     end
   end
@@ -258,9 +255,13 @@ class UserContentsController < BaseController
 
   private
 
+  def user_content_params
+    params.require(:user_content).permit(:description)
+  end
+
   # make sure the current_user_account is the owner of the resource
   def authorize_owner!
-    unless object.user == current_user_account
+    unless object.user == current_user_account.user
       raise ActiveRecord::ReadOnlyRecord
     end
   end
@@ -277,7 +278,7 @@ class UserContentsController < BaseController
             klass.new
           else
             id_attr = @id_hash.to_i > 0 ? 'id' : 'id_hash'
-            klass.where(["user_id = ? AND #{id_attr} = ?", current_user_account.id, @id_hash ]).first
+            klass.where(["user_id = ? AND #{id_attr} = ?", current_user_account.user.id, @id_hash ]).first
           end
         end
       end
@@ -377,7 +378,7 @@ class UserContentsController < BaseController
     sql_conditions = []
     sql_conditions << [conditions.shift, 'user_id = ?'].delete_if{|el| el.blank? }.join(' AND ')
     sql_conditions += conditions
-    sql_conditions << current_user_account.id
+    sql_conditions << current_user_account.user.id
     includes = []
     tags = tag_filters
     unless tags.empty?

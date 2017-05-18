@@ -95,7 +95,7 @@ class UserAnnotation < UserContent
   end
 
   def default_title(locale)
-    title_tokens = [UserAnnotation.human_name(:locale => locale) + I18n.t('user_interface.annotations.connective', :locale => locale)]
+    title_tokens = [I18n.t('activerecord.models.user_annotation.one', locale: locale) + I18n.t('user_interface.annotations.connective', locale: locale)]
     title_tokens << reference.interview.short_title(locale)
     title_tokens << "(#{reference.interview.archive_id})"
     title_tokens << reference.tape_number
@@ -147,7 +147,7 @@ class UserAnnotation < UserContent
     else
       item = reference.tape.number
       position = reference.start_time.round
-      interview_path(reference.interview, :item => item, :position => position)
+      Rails.application.routes.url_helpers.interview_path(reference.interview, :item => item, :position => position)
     end
   end
 
