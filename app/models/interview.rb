@@ -139,7 +139,7 @@ class Interview < ActiveRecord::Base
     end
 
     Project.archive_facet_category_ids.each do |category_id|
-   #   integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+      integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
     # Index archive id, facet categories and language (with all translations) for full text category search.

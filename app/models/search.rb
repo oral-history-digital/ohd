@@ -501,25 +501,26 @@ class Search < UserContent
       search = Sunspot.new_search(Interview)
 
       # Build the query.
-      # search.build(&attributes) if block_given?
-      #
-      # # Add query attributes common to all interview queries.
-      # search.build do
-      #
-      #   id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
-      #
-      #   facet #*id_fields
-      #
-      #   paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
-      #   order_by :"person_name_#{I18n.locale}", :asc
-      #
-      #   adjust_solr_params do |params|
-      #     # Use the edismax parser for wildcard support and
-      #     # more feature-rich query syntax.
-      #     params[:defType] = 'edismax'
-      #   end
-      #
-      # end
+      search.build(&attributes) if block_given?
+
+      # Add query attributes common to all interview queries.
+      search.build do
+
+
+        id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
+        i = *id_fields
+        facet *id_fields
+
+        paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
+        order_by :"person_name_#{I18n.locale}", :asc
+
+        adjust_solr_params do |params|
+          # Use the edismax parser for wildcard support and
+          # more feature-rich query syntax.
+          params[:defType] = 'edismax'
+        end
+
+      end
     end
 
   end
