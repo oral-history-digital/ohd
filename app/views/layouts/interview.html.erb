@@ -34,7 +34,7 @@
         <hr class="divider" />
 
         <div id="baseContainerRight">
-            <%#= render :partial => 'content', :object => @interview %>
+            <%= render :partial => 'content', :object => @interview %>
             <%= javascript_tag do %>
 
                 var containerElems = $$('#baseContainerRight .container-toggle');
@@ -53,7 +53,7 @@
         </div>
 
         <div id="annotations_overlay">
-            <%#=  render :partial => 'annotations' %>
+            <%=  render :partial => 'annotations' %>
         </div>
 
         <div id="mainWrapperClear" class="compact">&nbsp;</div>
