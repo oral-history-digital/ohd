@@ -40,6 +40,11 @@ class UserContent < ActiveRecord::Base
     []
   end
 
+  # dummy to bridge to old acts_as_taggable-gem
+  def tags
+    []
+  end
+
   def after_initialize
     get_properties
   end
