@@ -157,7 +157,8 @@ class Search < UserContent
 
   # Returns an array of facets that are actively filtered on in the current query.
   def query_facets
-    @query_facets ||= query.select{|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym) }
+    @query_facets = query.select{|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym) }
+    @query_facets
   end
 
   # Returns an array of facets that are not specified in the current query.
@@ -478,7 +479,6 @@ class Search < UserContent
         unless fulltext_query.blank?
           keywords fulltext_query
         end
-
         # Language.
         unless query['language_id'].blank?
           with :language_id, query['language_id']
@@ -508,7 +508,6 @@ class Search < UserContent
 
 
         id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
-        i = *id_fields
         facet *id_fields
 
         paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE

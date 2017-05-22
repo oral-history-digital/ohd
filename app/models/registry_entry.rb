@@ -644,7 +644,7 @@ class RegistryEntry < ActiveRecord::Base
     # that object will be returned.
     def find_all_by_category(category_id, referenced_object = nil)
       begin
-        category_object = CeDiS.category_object(category_id)
+        category_object = Project.category_object(category_id)
       rescue
         return []
       end
