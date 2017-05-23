@@ -39,10 +39,10 @@ end -%>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>
             <li><%= link_to t(:edit, :scope => 'user_interface.user_content'), "#", id: 'user_content_inline_edit' %></li>
-            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', close: 'user_content_#{user_content.id}_actions', url: topics_user_content_path(user_content, context: 'user_contents'), class: 'open_modal' %></li>
+            <li><%= link_to "#{t(:topics, :scope => 'user_interface.user_content')}...", '#', close: "user_content_#{user_content.id}_actions", url: topics_user_content_path(user_content, context: 'user_contents'), class: 'open_modal' %></li>
             <% if user_content.class.to_s == 'UserAnnotation' -%>
                 <% if user_content.private? -%>
-                    <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', close: 'user_content_#{user_content.id}_actions', url: publish_notice_user_content_path(user_content, context: 'user_contents', type: 'UserAnnotation'), class: 'open_modal' %></li>
+                    <li><%= link_to t(:publish, :scope => 'user_interface.user_content'), '#', close: "user_content_#{user_content.id}_actions", url: publish_notice_user_content_path(user_content, context: 'user_contents', type: 'UserAnnotation'), class: 'open_modal' %></li>
                 <% else -%>
                     <li><%#= link_to_remote t(:retract, :scope => 'user_interface.user_content'), :url => retract_user_content_path(user_content, :type => 'UserAnnotation'), :method => :post, :before => visual_effect(:appear, "shades", :duration => 0.4, :to => 0.6), :confirm => t(:confirm_retract_content, :scope => "user_interface.messages", :content => user_content.class.to_s.constantize.human_name_in_sentence + ' "' + (user_content.title || '') + '"') %></li>
                 <% end -%>
