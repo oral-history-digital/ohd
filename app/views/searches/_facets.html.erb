@@ -7,14 +7,11 @@
 <div class="baseListBox">
 
   <%= form_for facets,
-               :url => new_search_path,
-               :method => :get,
-               :remote => true,
-               :html => {:action => new_search_path,
-                         :method => :get,
-                         # no changes on complete are needed, since we redirect!
-                         :name => "searchFacets",
-                         :id => "search_facets"} do |search_facets| %>
+               url: new_search_path,
+               method: 'get',
+               #:remote => true,
+               html: { id: 'search_facets', name: 'searchFacets'}  do |search_facets| %>
+
 
       <div class="fragmentTitle">
         <% current_search_text = (search_facets.object.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : search_facets.object.fulltext -%>
@@ -41,12 +38,12 @@
   <% end %>
 
   <% unless facets.open_category.blank? %>
-      <% javascript_tag do %>
+      <%= javascript_tag do %>
           toggleCategory('<%= facets.open_category %>_query', true);
       <% end %>
   <% end %>
 
-  <% javascript_tag do %>
+  <%= javascript_tag do %>
       Event.observe(document, 'keypress', function(event){ if(event.keyCode == Event.KEY_RETURN) { /* catch these
       keycodes to submit the forms! */ }} );
   <% end %>

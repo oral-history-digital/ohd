@@ -22,7 +22,7 @@
         </p>
       </li>
 
-      <% javascript_tag do %>
+      <%= javascript_tag do %>
 
         var interviewTabs = $$('#tabsOverview ul li');
 
@@ -48,7 +48,7 @@
 
   <%= render :partial => "interview", :object => @interview %>
 
-  <%#= render :partial => "historical_context", :object => @interview %>
+  <%= render :partial => "historical_context", :object => @interview %>
 
 </div>
 

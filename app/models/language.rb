@@ -8,6 +8,7 @@ class Language < ActiveRecord::Base
 
   has_many :interviews
 
+
   class << self
     def find_by_name(name)
       Language.joins(:translations).includes(:translations).

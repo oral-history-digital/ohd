@@ -18,6 +18,7 @@
     <% else %>
 
       <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || item_list %>);" class="more <%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
+
         <img title="" src="<%= image_path  "#{Rails.configuration.x.project}/pfeil_rot_rechts.gif" %>" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="<%= t('.arrow_right') %>" />
         <img title="" src="<%= image_path  "#{Rails.configuration.x.project}/pfeil_rot_unten.gif" %>" id="<%= facet_name %>_query_open" class="arrow-open" alt="<%= t('.arrow_down') %>" />
         <%= human_readable_facet_name %>
@@ -60,7 +61,7 @@
               <%= search_facets.text_field :person_name, { :size => 25, :name => 'person_name', :class => 'searchInput' } %>
               <div id="empty-message"></div>
 
-              <% javascript_tag do %>
+              <%= javascript_tag do %>
                 jQuery('#search_person_name').autocomplete({
                   source: '<%= person_name_searches_path @search.query_params.reject{|k,v| k == 'page'} -%>',
                   minLength: 2,

@@ -19,6 +19,10 @@ module Project
       Rails.configuration.project.keys
     end
 
+    def person_properties
+      Rails.configuration.project['person_properties']
+    end
+
     def archive_facet_category_ids
       person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
     end 

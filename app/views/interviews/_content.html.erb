@@ -19,7 +19,7 @@
     <% show_registry_entries = (featured_content == :registry_entry) && defined?(@registry_entry) && !@registry_entry.nil? -%>
     <% current_search_text = (show_registry_entries || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
-    <% remote_form_for content,
+    <%# remote_form_for content,
                        :url => interview_searches_path,
                        :method => :get,
                        :update => 'search-results',
@@ -43,9 +43,9 @@
             <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>
         </div>
 
-    <% end %>
+    <%# end %>
 
-    <% javascript_tag do %>
+    <%= javascript_tag do %>
         $('interview_fulltext').value = '<%= current_search_text %>';
     <% end %>
 
@@ -82,14 +82,14 @@
          --><li class="original<%= I18n.locale != :de ? ' active' : '' %>">
                 <%= @interview.transcript_locales.join('/') %>
             </li><!--
-            <% if @interview.translated? %>
+            <% if @interview.translated?(I18n.locale) %>
              --><li class="translated<%= I18n.locale == :de ? ' active' : '' %>">
                     deu
                 </li><!--
             <% end %>
      --></ul>
-        <% if @interview.translated? %>
-            <% javascript_tag do %>
+        <% if @interview.translated?(I18n.locale) %>
+            <%= javascript_tag do %>
                 $('language-switcher').on('click', 'li', function(event, clickedTab) {
                   switchSegmentLanguage(clickedTab);
                   event.stopPropagation();

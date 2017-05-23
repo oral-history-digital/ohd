@@ -11,6 +11,10 @@ class SearchesController < BaseController
 
   before_action :determine_user, :only => [ :query, :index ]
 
+
+  before_action :search_before_new, :only => [ :new ]
+  before_action :search_before_index, :only => [ :index ]
+
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def query
@@ -41,66 +45,70 @@ class SearchesController < BaseController
 
   # Calculates a hash for the query parameters and redirects to this hash-url.
   # Note: this doesn't call the solr search engine!
-  def new_action
-    before do
-      # The session query search is NOT used here at all!
-      session[:query] = nil
-      @query_hash = Search.from_params(params).query_hash
-      url_params = {}
-      search_params = {}
-      search_params.merge!({:page => params[:page]}) unless params[:page].blank? || params[:page].to_i == 1
-      search_params.merge!({:suche => @query_hash }) unless @query_hash.blank?
-      unless params[:referring_controller].blank? || params[:referring_action].blank?
-        url_params = {
-            :controller => params[:referring_controller],
-            :action => params[:referring_action]
-        }
+
+  def search_before_new
+    session[:query] = nil
+    @query_hash = Search.from_params(params).query_hash
+    url_params = {}
+    search_params = {}
+    search_params.merge!({:page => params[:page]}) unless params[:page].blank? || params[:page].to_i == 1
+    search_params.merge!({:suche => @query_hash }) unless @query_hash.blank?
+    unless params[:referring_controller].blank? || params[:referring_action].blank?
+      url_params = {
+          :controller => params[:referring_controller],
+          :action => params[:referring_action]
+      }
+    end
+    @redirect = if url_params.empty?
+                  if @query_hash.blank?
+                    search_url(search_params)
+                  else
+                    search_by_hash_url(search_params)
+                  end
+                else
+                  url_for(url_params.merge(search_params))
+                end
+  end
+
+
+  def new
+    respond_to do |format|
+      format.html do
+        redirect_to(@redirect)
       end
-      @redirect = if url_params.empty?
-          if @query_hash.blank?
-            search_url(search_params)
-          else
-            search_by_hash_url(search_params)
-          end
-        else
-          url_for(url_params.merge(search_params))
+      format.js do
+        render :update do |page|
+          page << "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
         end
-    end
-    wants.html do
-      redirect_to(@redirect)
-    end
-    wants.js do
-      # either change the location or reload:
-      render :update do |page|
-        page << "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
       end
     end
   end
 
   #new_action.flash nil
 
+  def search_before_index
+    @search = Search.from_params(@query_params || params)
+    @search.search!
+    @search.segment_search!
+    @search.open_category = params['open_category']
+    @interviews = @search.results
+    session[:query] = @search.query_params
+  end
+
   def index
-    before do
-      @search = Search.from_params(@query_params || params)
-      @search.search!
-      @search.segment_search!
-      @search.open_category = params['open_category']
-      @interviews = @search.results
-
-      session[:query] = @search.query_params
-
-    end
-    wants.html do
-      render :template => '/interviews/index.html'
-    end
-    wants.js do
-      results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
-      service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
-      search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
-      render :update do |page|
-        page.replace_html 'innerContent', results_html
-        page.replace_html 'baseServices', service_html
-        page.replace_html 'baseContainerRight', search_facets_html
+    respond_to do |format|
+      format.html do
+        render :template => '/interviews/index.html'
+      end
+      format.js do
+        results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
+        service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
+        search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
+        render :update do |page|
+          page.replace_html 'innerContent', results_html
+          page.replace_html 'baseServices', service_html
+          page.replace_html 'baseContainerRight', search_facets_html
+        end
       end
     end
   end

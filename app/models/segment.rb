@@ -16,24 +16,26 @@ class Segment < ActiveRecord::Base
   has_many  :annotations
 
   scope :with_heading,
-              -> { joins(:translations)
-                   .where("segment_translations.locale = ?", I18n.default_locale.to_s)
-                   .where(%W(
-                     (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
-                      OR
-                     (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
-                   ))
-                   .includes(:tape, :translations)
-                   .order(:media_id)
-                 }
+              -> { joins(:translations).where(
+                  "segment_translations.locale = ?
+                  AND (
+                    (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
+                    OR
+                    (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
+                  )",
+                  I18n.default_locale.to_s)
+                       .includes(:tape, :translations)
+                       .order(:media_id)}
+
 
   scope :for_interview, ->(interview){ where('segments.interview_id = ?', i.id) }
 
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
-    .order("media_id DESC")
-    .limit(1)
+    .order(media_id: :desc)
+     .limit(1)
   }
+
 
   translates :mainheading, :subheading
 
@@ -66,33 +68,33 @@ class Segment < ActiveRecord::Base
     end
   end
 
-  #searchable :auto_index => false do
-    #string :archive_id, :stored => true
-    #string :media_id, :stored => true
-    #string :timecode
-    #text :joined_transcript_and_translation
-    #text :mainheading, :boost => 10 do
-      #mainheading = ''
-      #translations.each do |translation|
-        #mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
-      #end
-      #mainheading.strip
-    #end
-    #text :subheading, :boost => 10 do
-      #subheading = ''
-      #translations.each do |translation|
-        #subheading << ' ' + translation.subheading unless translation.subheading.blank?
-      #end
-      #subheading.strip
-    #end
-    #text :registry_entries, :boost => 5 do
-      #registry_references.map do |reference|
-        #(I18n.available_locales + [:alias]).map do |locale|
-          #reference.registry_entry.to_s(locale)
-        #end.uniq.reject(&:blank?).join(' ')
-      #end.join(' ')
-    #end
-  #end
+  searchable :auto_index => false do
+    string :archive_id, :stored => true
+    string :media_id, :stored => true
+    string :timecode
+    text :joined_transcript_and_translation
+    text :mainheading, :boost => 10 do
+      mainheading = ''
+      translations.each do |translation|
+        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
+      end
+      mainheading.strip
+    end
+    text :subheading, :boost => 10 do
+      subheading = ''
+      translations.each do |translation|
+        subheading << ' ' + translation.subheading unless translation.subheading.blank?
+      end
+      subheading.strip
+    end
+    text :registry_entries, :boost => 5 do
+      registry_references.map do |reference|
+        (I18n.available_locales + [:alias]).map do |locale|
+          reference.registry_entry.to_s(locale)
+        end.uniq.reject(&:blank?).join(' ')
+      end.join(' ')
+    end
+  end
 
   def archive_id
     @archive_id || interview.archive_id
@@ -170,8 +172,7 @@ class Segment < ActiveRecord::Base
 
   # returns the segment that leads the chapter
   def section_lead_segment
-    Segment.where(["interview_id = ? AND section = ?", interview_id, section]).
-                  order("media_id ASC")
+    Segment.where(["interview_id = ? AND section = ?", interview_id, section]).order(:media_id)
   end
 
   def has_heading?

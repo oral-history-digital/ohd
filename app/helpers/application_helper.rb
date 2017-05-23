@@ -97,7 +97,7 @@ module ApplicationHelper
     else
       str = transcript.index(match_text) == 0 ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(\w*' + query_string + '\w*)', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
-      "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
+      "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}".html_safe
     end
   end
 
