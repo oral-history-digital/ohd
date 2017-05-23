@@ -45,12 +45,45 @@ jQuery(function($){
     //Event.stop(event);
   });
 
-  $('#user_content_inline_edit').click(function(){
+  $('#user_content_inline_edit').on('click', function(){
     $(this).closest('.item .inline-editable').each(function(index){
       showInlineEditForm($(this).attr('id', $(this).attr('id')).replace(/_display$/,''), ($(this).nodeType == 'textarea'));
+      //var id = $(this).attr('id', $(this).attr('id')).replace(/_display$/,'');
+      //showInlineEditForm(id, ($(this).nodeType == 'textarea'));
     }); 
     setItemStatus($(this).closest('.actions'), false)
   });
+
+  $('.inline.edit').on('ajax:before', function(){
+    var id = $(this).attr('id').replace('_form', '');
+    $('#' + id + '_interface_status').val($('#user_content_' + id).hasClass('closed') ? 'closed' : ''); 
+    addExtraneousFormElements($(this), '.edit, .item', '.editor');
+  });
+
+  //$('.inline.edit').on('ajax:complete', function(){
+    //togglingContent = 0;
+  //});
+
+  $('.inline-editable').on('click', function(){
+    var id = $(this).attr('id').replace(/_display$/,'');
+    showInlineEditForm(id, true);
+  });
+
+  $('form input.edit').on('click', function(){
+    Event.stop(event);
+  });
+
+  $('form.inline.edit input[type=submit]').on('click', function(){
+    togglingContent = 1;
+  });
+
+  $('form.inline.edit input[type=reset]').on('click', function(){
+    $(this).closest('div').hide();
+    var display_id = $(this).closest('div').attr('id').replace(/_form$/, '_display');
+    $('#' + display_id).show(); 
+    //Event.stop(event);
+  });
+
 });
 
 

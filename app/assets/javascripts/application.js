@@ -215,19 +215,14 @@ function showInlineEditForm(id, textArea) {
 }
 
 function addExtraneousFormElements(form, scope, selector) {
-  var existing = form.getInputs();
-  form.up(scope).getElementsBySelector(selector).each(function(input){
-      if(existing.indexOf(input) < 0) {
-        form.insert(new Element('input', {name: input.getAttribute('name'), value: input.value, type: 'hidden'}));
-      }
+  var existing = form.find('input');
+  form.closest(scope).find(selector).each(function(index, element){
+    var name = jQuery(this).attr('name');
+    var value = jQuery(this).val(); 
+    if(existing.index(jQuery(this)) < 0) {
+      jQuery('<input>').attr({ type: 'hidden', name: name}).val(value).appendTo('form');
+    }
   });
-}
-
-function toggleFormAction(id) {
-  togglingContent = 1;
-  $(id + '_update').toggle();
-  $(id + '_reset').toggle();
-  $(id + '_spinner').toggle();
 }
 
 function closeModalWindow() {

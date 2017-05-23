@@ -177,7 +177,10 @@ class UserContentsController < BaseController
         redirect_to :action => 'show'
       end
       format.js do
+        #render json: {status: :ok}
         @context = (params['context'] || 'user_content').underscore
+        @att = 'description'
+        @base_id = "#{@context}_#{@object.id}_#{@att}"
       end
     end
   end

@@ -1,2 +1,4 @@
-jQuery("#<%= @context %>_<%= @object.id %>").html('<%= escape_javascript(render partial: @context, object: @object) %>');
+jQuery("#<%= @base_id %>_display").text( jQuery("#<%= @base_id %>").val());
+jQuery("#<%= @base_id %>_display").show();
+jQuery("#<%= @base_id %>_form").hide();
 
