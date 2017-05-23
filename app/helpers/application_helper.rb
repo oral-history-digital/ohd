@@ -159,7 +159,7 @@ JS
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
     if request.xhr?
-      link_to('X', '#', :id => ('modal_window_close'), :onclick => "closeModalWindow(); return false;")
+      link_to('X', '#', id: 'modal_window_close')
     end
   end
 

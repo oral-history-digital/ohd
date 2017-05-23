@@ -1,7 +1,5 @@
 j = jQuery.noConflict();
 
-//jQuery(function($){
-
 var openModalWindow = function(url, opts) {
   j.ajax({
     url: url,
@@ -27,6 +25,13 @@ function closeModalWindow() {
   win.innerHTML = '';
 }
 
-//});
+jQuery(function($){
+
+  $("#modal_window_close").on('click', function(){
+    closeModalWindow(); 
+    return false;
+  });
+
+});
 
 
