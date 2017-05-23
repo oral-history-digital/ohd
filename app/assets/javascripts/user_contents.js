@@ -64,6 +64,15 @@ jQuery(function($){
     //togglingContent = 0;
   //});
 
+  $('#topics_form, #publish_form').on('ajax:before', function(){
+    $('#modal_window').hide(); 
+    $('#ajax-spinner').show();
+  });
+
+  $('#topics_form, #publish_form').on('ajax:complete', function(){
+    $('#shades').hide();
+  });
+
   $('.inline-editable').on('click', function(){
     var id = $(this).attr('id').replace(/_display$/,'');
     showInlineEditForm(id, true);

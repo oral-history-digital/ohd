@@ -33,6 +33,7 @@ UTF8 = {
 
 jQuery.noConflict();
 jQuery(function($){
+
   $(".open_modal").click(function(){
     var close = $(this).attr('close');
     $(close).addClass('closed');
@@ -42,6 +43,12 @@ jQuery(function($){
 
     openModalWindow(url, {class_names: classNames});
   });
+  
+  $("#modal_window .cancel").click(function(){
+    closeModalWindow(); 
+    return false;
+  });
+
 });
 
 

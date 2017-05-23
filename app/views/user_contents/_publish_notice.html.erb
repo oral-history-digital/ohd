@@ -2,11 +2,7 @@
   <%= modal_window_close_button_on_javascript_request -%>
   <h2><%= t(:publish_something, :scope => 'user_interface.user_content', :something => @object.title) -%></h2>
   <div>
-      <% remote_form_for @object,
-                         :url => publish_user_content_path(@object),
-                         :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
-                         :complete => "new Effect.Fade('shades');",
-                         :html => { :id => "publish_form" } do |f| %>
+      <% form_for @object, url: publish_user_content_path(@object), remote: true, id: "publish_form" do |f| %>
         <%= hidden_field_tag 'context', @context -%>
         <%= hidden_field_tag 'type', params[:type] || 'UserAnnotation' -%>
         <div>
@@ -22,8 +18,8 @@
           </p>
         </div>
         <span style="clear: both; float: left;">
-            <%= f.submit t(:publish, :scope => 'user_interface.user_content').downcase, :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
-            <%= button_to_function t(:reset, :scope => 'user_interface.actions'), 'closeModalWindow(); return false;', :class => 'cancel' %>
+            <%= f.submit t(:publish, :scope => 'user_interface.user_content').downcase %>
+            <div class="cancel"><%= t(:reset, :scope => 'user_interface.actions') %></div>
         </span>
       <% end %>
   </div>
