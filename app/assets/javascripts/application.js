@@ -40,7 +40,7 @@ jQuery(function($){
     var url = $(this).attr('url');
     var classNames = 'topics ' + $(this).attr('class_names');
 
-    openModal(url, {class_names: classNames});
+    openModalWindow(url, {class_names: classNames});
   });
 });
 
@@ -225,9 +225,3 @@ function addExtraneousFormElements(form, scope, selector) {
   });
 }
 
-function closeModalWindow() {
-  new Effect.Fade('shades', { from: 0.6, to: 0, duration: 0.4 });
-  var win = $('modal_window');
-  win.hide();
-  win.innerHTML = '';
-}
