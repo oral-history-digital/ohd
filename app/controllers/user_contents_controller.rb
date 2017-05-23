@@ -139,9 +139,7 @@ class UserContentsController < BaseController
       format.html do
         render :partial => 'publish_notice'
       end
-      format.js do
-        render :layout => false, :partial => 'publish_notice'
-      end
+      format.js 
     end
   end
 
@@ -193,9 +191,7 @@ class UserContentsController < BaseController
       format.html do
         render :partial => 'topics'
       end
-      format.js do
-        render :layout => false, :partial => 'topics'
-      end
+      format.js 
     end
   end
 
