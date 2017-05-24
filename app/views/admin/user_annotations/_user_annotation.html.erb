@@ -2,14 +2,14 @@
         <span class="data author" style="font-size: 90%; position: relative;">
           <%# contents are in reverse display order to enable sorting by name %>
           <span style="padding-left: 18px; margin-top: 1.8em;">
-            <%= link_to "&raquo;&nbsp;#{user_annotation.author}", edit_admin_user_registration_path(user_annotation.user.user_registration), :style => "color: #990000;", :target => '_blank' %>
+            <%= link_to "&raquo;&nbsp;#{user_annotation.author}".html_safe, edit_admin_user_registration_path(user_annotation.user.user_registration), :style => "color: #990000;", :target => '_blank' %>
           </span>
           <span style="position: absolute; top: 0; left: 0;">
             <%= link_to "Anmerkung vom #{formatted_time(user_annotation.created_at).sub(/\s+\d+:\d+\s+Uhr/,'')}", "#", annotation_id: user_annotation.id, :class => 'more', :title => "Details" %>
           </span>
         </span>
         <span class="segment">
-          <%= link_to_segment user_annotation.reference, '', false, false, {:link_text => content_tag(:span, "<span style='font-weight: bold; width: 100%;'>#{user_annotation.reference.interview.archive_id}</span>#{user_annotation.reference.interview.short_title(I18n.locale)}<br/>#{user_annotation.timecode_string(I18n.locale)}" ), :target => '_blank'} %>
+          <%= link_to_segment user_annotation.reference, '', false, false, {:link_text => content_tag(:span, "<span style='font-weight: bold; width: 100%;'>#{user_annotation.reference.interview.archive_id}</span>#{user_annotation.reference.interview.short_title(I18n.locale)}<br/>#{user_annotation.timecode_string(I18n.locale)}".html_safe ), :target => '_blank'} %>
         </span>
         <span class="data status">
           <%= t(user_annotation.workflow_state, :scope => 'user_annotations.workflow_states') -%>
@@ -18,7 +18,7 @@
           <span style="display: none;">
             <%= user_annotation.submitted_at -%>
           </span>
-          <%= formatted_time user_annotation.submitted_at, '<span style="font-weight: normal !important; width: 132px;">? (Feb 2013 o. früher)</span>' -%>
+          <%= formatted_time user_annotation.submitted_at, '<span style="font-weight: normal !important; width: 132px;">? (Feb 2013 o. früher)</span>'.html_safe -%>
         </span>
 
   <div id="annotation_info_<%= user_annotation.id -%>" class="details">
