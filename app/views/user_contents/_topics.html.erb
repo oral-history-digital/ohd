@@ -1,6 +1,6 @@
 <div id="topics_<%= @object.id -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= t(:topics_for, :scope => 'user_interface.user_content') -%> <%#= in_place_edit_for @object, :title, { :context => 'topics' } -%></h2>
+  <h2><%= t(:topics_for, :scope => 'user_interface.user_content') -%> <%= in_place_edit_for @object, :title, { :context => 'topics' } -%></h2>
   <div>
       <% form_for @object, url: update_topics_user_content_path(@object), remote: true, id: "topics_form" do |f| %>
         <label><%= t(:user_tags, :scope => 'user_interface.user_content') -%></label>
