@@ -49,6 +49,12 @@ jQuery(function($){
     return false;
   });
 
+  $("a.button.remote").click(function(){
+    $.ajax($(this).attr('url'));
+    //:before => "new Effect.Appear('shades', { to: 0.6 });",
+    //:complete => "new Effect.Fade('shades', { from: 0.6 })"},
+  });
+
 });
 
 
