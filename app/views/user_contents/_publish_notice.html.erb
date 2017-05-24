@@ -2,7 +2,7 @@
   <%= modal_window_close_button_on_javascript_request -%>
   <h2><%= t(:publish_something, :scope => 'user_interface.user_content', :something => @object.title) -%></h2>
   <div>
-      <% form_for @object, url: publish_user_content_path(@object), remote: true, id: "publish_form" do |f| %>
+      <%= form_for @object, url: publish_user_content_path(@object), remote: true, id: "publish_form" do |f| %>
         <%= hidden_field_tag 'context', @context -%>
         <%= hidden_field_tag 'type', params[:type] || 'UserAnnotation' -%>
         <div>
@@ -19,7 +19,7 @@
         </div>
         <span style="clear: both; float: left;">
             <%= f.submit t(:publish, :scope => 'user_interface.user_content').downcase %>
-            <div class="cancel"><%= t(:reset, :scope => 'user_interface.actions') %></div>
+            <a href="#" class="cancel"><%= t(:reset, :scope => 'user_interface.actions') %></a>
         </span>
       <% end %>
   </div>
