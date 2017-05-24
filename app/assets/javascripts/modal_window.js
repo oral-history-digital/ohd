@@ -26,7 +26,7 @@ function closeModalWindow() {
 
 jQuery(function($){
 
-  $("#modal_window").on('click', "#modal_window_close", function(){
+  $("#modal_window").on('click', "#modal_window_close, .cancel", function(){
     closeModalWindow(); 
     return false;
   });
