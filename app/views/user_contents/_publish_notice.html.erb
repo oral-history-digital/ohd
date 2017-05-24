@@ -1,6 +1,6 @@
 <div id="publish_<%= @object.id -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= t(:publish_something, :scope => 'user_interface.user_content', :something => @object.title) -%></h2>
+  <h2><%= t(:publish_something, :scope => 'user_interface.user_content', :something => @object.title).html_safe -%></h2>
   <div>
       <%= form_for @object, url: publish_user_content_path(@object), remote: true, id: "publish_form" do |f| %>
         <%= hidden_field_tag 'context', @context -%>
@@ -11,7 +11,7 @@
                   :content => '"' + (@object.title || '') + '"',
                   :annotation_guidelines => link_to(t(:annotation_guidelines, :scope => 'user_interface.user_content'),
                                                     external_url(:annotation_guidelines),
-                                                    :target => '_blank')) -%>
+                                                    :target => '_blank')).html_safe -%>
           </p>
           <p>
             <%= t(:publish_alteration_notice, :scope => 'user_interface.messages') %>
