@@ -8,7 +8,7 @@
       </span>
       <span>Stand vom <%= formatted_date import.time -%></span>
       <span class="link" style="clear: left;">
-        <%= link_to '&raquo; zum Redaktionssystem'.html_safe, "http://redaktion.#{Project.project_domain}:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
+        <%= link_to '&raquo; zum Redaktionssystem'.html_safe, "http://redaktion.#{Project.project_domain}:81/erschliessung/interviews/#{@interview['archive_id']}", :target => '_blank' %>
       </span>
     </td>
     <td>
@@ -26,15 +26,8 @@
           Stand vom <%= formatted_date import.time -%>
         </td>
         <td id="import_<%= import.id -%>">
-          <%#= link_to_remote "&raquo;&nbsp;Details anzeigen".html_safe,
-                           :update => "import_#{import.id}",
-                           :url => admin_import_path(import),
-                           :method => :get,
-                           :html => {
-                                   :onclick => "$('import_#{import.id}_spinner').show();"
-                           }
-        -%>
-          <%= image_tag '/images/spinner.gif',
+          <%= link_to "&raquo;&nbsp;Details anzeigen".html_safe, '#', url: admin_import_path(import), class: 'remote get', spinner: "#import_#{import.id}_spinner" -%>
+          <%= image_tag "spinner.gif",
                         :id => "import_#{import.id}_spinner",
                         :style => "display: none;",
                         :width => 12,

@@ -1,23 +1,24 @@
 class Admin::ImportsController < Admin::BaseController
 
-  show.response do |wants|
-    wants.html do
-      render :partial => 'import', :object => object
-    end
-    wants.js do
-      render :partial => 'import', :layout => false, :object => object
+  before_action :collection, only: [:index]
+  before_action :object, except: [:index]
+
+  def show
+    respond_to do |format|
+      format.html do
+        render :partial => 'import', :object => @object
+      end
+      format.js
     end
   end
 
   def for_interview
-    @interview = Interview.find_by_archive_id(params['archive_id'], :include => [ :imports, :translations ])
+    @interview = Interview.includes(:imports, :translations).find_by_archive_id(params['archive_id'])
     respond_to do |format|
       format.html do
         render :partial => 'for_interview', :object => @interview
       end
-      format.js do
-        render :partial => 'for_interview', :layout => false, :object => @interview
-      end
+      format.js
     end
   end
 
@@ -28,6 +29,10 @@ class Admin::ImportsController < Admin::BaseController
     @interviews.map do |interview|
       interview['short_title'] = [interview['first_name'], interview['last_name']].join(' ')
     end
+  end
+
+  def object
+    @object = Import.where(id: params[:id]).first
   end
 
 end

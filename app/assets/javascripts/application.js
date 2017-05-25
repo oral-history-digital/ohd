@@ -50,9 +50,33 @@ jQuery(function($){
   });
 
   $("a.button.remote").click(function(){
-    $.ajax($(this).attr('url'));
-    //:before => "new Effect.Appear('shades', { to: 0.6 });",
-    //:complete => "new Effect.Fade('shades', { from: 0.6 })"},
+    _this = $(this);
+    $.ajax({
+      url: _this.attr('url'),
+      method: 'POST',
+      dataType: 'script',
+      beforeSend: function(data){
+        $( '#shades' ).show();
+      },
+      complete: function(){
+        $( '#shades' ).hide();
+      }
+    });
+  });
+
+  $('body').on('click', "a.get.remote", function(){
+    _this = $(this);
+    $.ajax({
+      url: _this.attr('url'),
+      method: 'GET',
+      dataType: 'script',
+      beforeSend: function(data){
+        $( _this.attr('spinner') ).show();
+      },
+      complete: function(){
+        $( _this.attr('spinner') ).hide();
+      }
+    });
   });
 
   $('.more').on('click', function(){
