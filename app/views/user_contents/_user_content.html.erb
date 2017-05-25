@@ -34,7 +34,7 @@ end -%>
     <div class="details">
         <%= link_to t(:edit, :scope => "user_interface.actions"), "#", id: 'user_content_edit', class: 'edit' %>
         <div id="user_content_<%= user_content.id -%>_actions" class="actions closed">
-          <%= link_to image_tag('/images/icon_cross.png'), "#", id: 'user_content_close', :class => 'close-button' -%>
+          <%= link_to image_tag("#{Project.name}/icon_cross.png"), "#", id: 'user_content_close', :class => 'close-button' -%>
           <ul>
             <li><%= link_to t(:view, :scope => 'user_interface.user_content'), user_content.link_url, :target => '_blank' %></li>
             <li><hr/></li>

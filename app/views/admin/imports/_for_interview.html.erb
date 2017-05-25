@@ -27,7 +27,7 @@
         </td>
         <td id="import_<%= import.id -%>">
           <%= link_to "&raquo;&nbsp;Details anzeigen".html_safe, '#', url: admin_import_path(import), class: 'remote get', spinner: "#import_#{import.id}_spinner" -%>
-          <%= image_tag "spinner.gif",
+          <%= image_tag "#{Project.name}/spinner.gif",
                         :id => "import_#{import.id}_spinner",
                         :style => "display: none;",
                         :width => 12,
