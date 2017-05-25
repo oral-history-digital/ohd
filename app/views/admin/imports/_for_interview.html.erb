@@ -8,7 +8,7 @@
       </span>
       <span>Stand vom <%= formatted_date import.time -%></span>
       <span class="link" style="clear: left;">
-        <%= link_to '&raquo; zum Redaktionssystem', "http://redaktion.#{Project.project_domain}:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
+        <%= link_to '&raquo; zum Redaktionssystem'.html_safe, "http://redaktion.#{Project.project_domain}:81/erschliessung/interviews/#{@interview.archive_id}", :target => '_blank' %>
       </span>
     </td>
     <td>
@@ -26,7 +26,7 @@
           Stand vom <%= formatted_date import.time -%>
         </td>
         <td id="import_<%= import.id -%>">
-          <%#= link_to_remote "&raquo;&nbsp;Details anzeigen",
+          <%#= link_to_remote "&raquo;&nbsp;Details anzeigen".html_safe,
                            :update => "import_#{import.id}",
                            :url => admin_import_path(import),
                            :method => :get,
