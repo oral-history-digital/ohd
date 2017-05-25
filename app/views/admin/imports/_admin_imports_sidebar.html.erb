@@ -8,7 +8,7 @@
 
   <ul>
     <li id="imports_yesterday" class="closed">
-      <h3 class="more" onclick="$('imports_yesterday').toggleClassName('closed');"><%= yesterdays.size -%> seit gestern</h3>
+      <h3 class="more" close="#imports_yesterday"><%= yesterdays.size -%> seit gestern</h3>
       <ul class="details">
         <% yesterdays.each do |import| -%>
             <li>
@@ -18,7 +18,7 @@
       </ul>
     </li>
     <li id="imports_last_week" class="closed">
-      <h3 class="more" onclick="$('imports_last_week').toggleClassName('closed');"><%= rest_of_week.size -%> in der vergangenen Woche</h3>
+      <h3 class="more" close="#imports_last_week"><%= rest_of_week.size -%> in der vergangenen Woche</h3>
       <ul class="details">
         <% rest_of_week.each do |import| -%>
             <li>

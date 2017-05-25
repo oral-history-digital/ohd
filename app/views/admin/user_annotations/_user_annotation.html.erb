@@ -5,7 +5,7 @@
             <%= link_to "&raquo;&nbsp;#{user_annotation.author}".html_safe, edit_admin_user_registration_path(user_annotation.user.user_registration), :style => "color: #990000;", :target => '_blank' %>
           </span>
           <span style="position: absolute; top: 0; left: 0;">
-            <%= link_to "Anmerkung vom #{formatted_time(user_annotation.created_at).sub(/\s+\d+:\d+\s+Uhr/,'')}", "#", annotation_id: user_annotation.id, :class => 'more', :title => "Details" %>
+            <%= link_to "Anmerkung vom #{formatted_time(user_annotation.created_at).sub(/\s+\d+:\d+\s+Uhr/,'')}", "#", close: "#user_annotation_#{user_annotation.id}", :class => 'more', :title => "Details" %>
           </span>
         </span>
         <span class="segment">

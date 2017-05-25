@@ -55,6 +55,10 @@ jQuery(function($){
     //:complete => "new Effect.Fade('shades', { from: 0.6 })"},
   });
 
+  $('.more').on('click', function(){
+    $( $(this).attr('close') ).toggleClass('closed');
+  });
+
 });
 
 
