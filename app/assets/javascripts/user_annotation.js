@@ -31,12 +31,13 @@ jQuery(function($){
     $('#' + actionsId()).hide();
   });
 
-  $('form.inline input').on('change', function(){
-    $('#' + actionsId()).show();
+  $('body').on('focus', 'form.inline input, form.inline textarea', function(){
+    var _this = $(this);
+    $('#' + actionsId(_this)).show();
   });
 
-  function actionsId() {
-    return $(this).closest('form').attr('id').replace('_form', '_actions');
+  function actionsId(elem) {
+    return elem.closest('form').attr('id').replace('_form', '_actions');
   };
 });
 

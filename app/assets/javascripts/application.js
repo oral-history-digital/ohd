@@ -79,7 +79,7 @@ jQuery(function($){
     });
   });
 
-  $('.more').on('click', function(){
+  $('body').on('click', 'a.more', function(){
     $( $(this).attr('close') ).toggleClass('closed');
   });
 
