@@ -39,24 +39,29 @@ namespace :import do
     desc "incremental import of data"
     task :incremental, [:file, :reindex] => :environment do |task,args|
       file = args[:file] || ENV['file']
+
+      puts file
+
       reindex = !(args[:reindex] || ENV['reindex']).blank?
       require 'nokogiri'
-
+      #
       raise "No xml file supplied (file=#{file || '...'}). Please provide a valid xml filename." unless File.exists?(file.to_s)
-
+      #
       @parser = Nokogiri::XML::SAX::Parser.new(ArchiveXMLImport.new(file))
-      @parser.parse(File.read(file))
 
+      read_file = File.read(file)
+
+      @parser.parse(read_file)
+      #
       archive_id = (file.split('/').last[Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       if reindex
         if Interview.find_by_archive_id(archive_id).nil? or not @parser.document.passes_import_sanity_checks
           puts "Interview '#{archive_id}' wasn't imported - skipping indexing!"
         else
           # NOTE: run the reindexing separately to allow for cleanup.
-          Rake::Task['solr:reindex:by_archive_id'].execute({ :ids => archive_id })
+          Rake::Task['solr:reindex:by_archive_id'].execute({:ids => archive_id})
         end
       end
-
     end
 
 
@@ -127,11 +132,11 @@ namespace :import do
           next if xmlfile.blank?
           archive_id = xmlfile.to_s[Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)]
           puts "\n\nStarting import processes for archive id: #{archive_id}"
-          # XML import
+          # # XML import
           Open4::popen4("rake import:interviews:incremental[#{xmlfile},true] --trace") do |pid, stdin, stdout, stderr|
-            stdout.each_line {|line| puts line }
-            errors = []
-            stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
+             stdout.each_line {|line| puts line }
+             errors = []
+              stderr.each_line {|line| errors << line unless line.empty? || line =~ /^\*\* (Invoke|Execute)/}
             unless errors.empty?
               errmsg = "\nImport der Interviewdaten (#{xmlfile.to_s[Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)]} - FEHLER:\n#{errors.join("\n")}"
               logfile << errmsg

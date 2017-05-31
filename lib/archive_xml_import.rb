@@ -167,7 +167,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
-            @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr)
+            @date_of_export = DateTime.parse(export_date_attr)
             if @date_of_export <= @interview.import_time
               report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is just as recent or more than '#{@date_of_export.strftime('%d.%m.%Y')}'."
             else

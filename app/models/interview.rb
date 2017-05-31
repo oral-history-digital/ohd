@@ -10,80 +10,80 @@ class Interview < ActiveRecord::Base
 
   belongs_to :language
 
-  has_many  :photos,
-            -> { includes(:interview, :translations) },
-            :dependent => :destroy
+  has_many :photos,
+           -> {includes(:interview, :translations)},
+           :dependent => :destroy
 
   has_many :text_materials,
            :dependent => :destroy
 
-  has_many  :tapes,
-            -> { includes(:interview) },
-            :dependent => :destroy
+  has_many :tapes,
+           -> {includes(:interview)},
+           :dependent => :destroy
 
-  has_many  :segments,
-            :dependent => :destroy
+  has_many :segments,
+           :dependent => :destroy
 
   has_many :annotations,
-            -> { includes(:translations) },
+           -> {includes(:translations)},
            :dependent => :delete_all
 
-  has_many  :contributions,
-            :dependent => :delete_all
+  has_many :contributions,
+           :dependent => :delete_all
 
-  has_many  :contributors,
-            :through => :contributions
+  has_many :contributors,
+           :through => :contributions
 
-  has_many  :interview_contributors,
-            -> { where("contributions.contribution_type = 'interview'") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :interview_contributors,
+           -> {where("contributions.contribution_type = 'interview'")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :transcript_contributors,
-            -> { where("contributions.contribution_type = 'transcript'") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :transcript_contributors,
+           -> {where("contributions.contribution_type = 'transcript'")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :translation_contributors,
-            -> { where("contributions.contribution_type = 'translation'") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :translation_contributors,
+           -> {where("contributions.contribution_type = 'translation'")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :proofreading_contributors,
-            -> { where("contributions.contribution_type IN ('proofreading','proof_reading')") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :proofreading_contributors,
+           -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :segmentation_contributors,
-            -> { where("contributions.contribution_type = 'segmentation'") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :segmentation_contributors,
+           -> {where("contributions.contribution_type = 'segmentation'")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :documentation_contributors,
-            -> { where("contributions.contribution_type = 'research'") },
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions
+  has_many :documentation_contributors,
+           -> {where("contributions.contribution_type = 'research'")},
+           :class_name => 'Contributor',
+           :source => :contributor,
+           :through => :contributions
 
-  has_many  :imports,
-            :as => :importable,
-            :dependent => :delete_all
+  has_many :imports,
+           :as => :importable,
+           :dependent => :delete_all
 
-   has_attached_file :still_image,
-                     :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
-                     :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
-                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
-                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
+  has_attached_file :still_image,
+                    :styles => {:thumb => '88x66', :small => '140x105', :original => '400x300>'},
+                    :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
+                    :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
+                    :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
-  has_many  :registry_references,
-            -> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },
-            :as => :ref_object,
-            :dependent => :destroy
+  has_many :registry_references,
+           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
+           :as => :ref_object,
+           :dependent => :destroy
 
   has_many :registry_entries,
            :through => :registry_references
@@ -94,6 +94,7 @@ class Interview < ActiveRecord::Base
              :proofreaders, :segmentators, :researchers
 
   validate :has_standard_name
+
   def has_standard_name
     if self.last_name(I18n.default_locale).blank?
       errors.add(:last_name, ' must be set for default locale (=standard name).')
@@ -146,12 +147,12 @@ class Interview < ActiveRecord::Base
     text :categories, :boost => 20 do
       cats = [self.archive_id]
       cats += (Project.archive_facet_category_ids + [:language]).
-                  # Retrieve all category objects of this interview.
-                  map{|c| self.send(c)}.flatten.
-                  # Retrieve their translations.
-                  map do |cat|
-                    I18n.available_locales.map{|l| cat.to_s(l)}.join(' ')
-                  end
+          # Retrieve all category objects of this interview.
+          map {|c| self.send(c)}.flatten.
+          # Retrieve their translations.
+          map do |cat|
+        I18n.available_locales.map {|l| cat.to_s(l)}.join(' ')
+      end
       cats.join(' ')
     end
 
@@ -164,18 +165,18 @@ class Interview < ActiveRecord::Base
     end
     text :person_name, :boost => 20 do
       (
-        translations.map do |t|
-          build_full_title_from_name_parts(t.locale)
-        end.join(' ') + (" #{alias_names}" || '')
+      translations.map do |t|
+        build_full_title_from_name_parts(t.locale)
+      end.join(' ') + (" #{alias_names}" || '')
       ).
-      strip.
-      squeeze(' ')
+          strip.
+          squeeze(' ')
     end
 
   end
 
-  scope :researched, -> { where(researched: true) }
-  scope :with_still_image, -> { where.not(still_image_file_name: nil) }
+  scope :researched, -> {where(researched: true)}
+  scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def self.random_featured
     researched.with_still_image.includes(:translations).order("RAND()").first
@@ -227,7 +228,7 @@ class Interview < ActiveRecord::Base
     # Check whether we've got the requested locale. If not fall back to the
     # default locale.
     used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless translations.select{|t| t.locale.to_sym == l}.blank?
+      break l unless translations.select {|t| t.locale.to_sym == l}.blank?
     end
     return nil unless used_locale.is_a?(Symbol)
 
@@ -293,10 +294,10 @@ class Interview < ActiveRecord::Base
 
   def citation_hash
     {
-      :original => read_attribute(:original_citation),
-      :translated => read_attribute(:translated_citation),
-      :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
-      :position => Timecode.new(read_attribute(:citation_timecode)).time.round
+        :original => read_attribute(:original_citation),
+        :translated => read_attribute(:translated_citation),
+        :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
+        :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
   end
 
@@ -325,9 +326,15 @@ class Interview < ActiveRecord::Base
   end
 
   def import_time
+
+    e = id
+    i = Import.for_interview(id).first
+
     @import_time ||= begin
       import = Import.for_interview(id).first
-      import.nil? ? Time.gm(2009,1,1) : import.time
+      import.nil? ? Time.gm(2009, 1, 1) : import.time
+    rescue
+          DateTime.now
     end
   end
 
@@ -349,7 +356,7 @@ class Interview < ActiveRecord::Base
     set_contributor_field_from('interviewers', 'interview_contributors')
     set_contributor_field_from('transcriptors', 'transcript_contributors')
     set_contributor_field_from('translators', 'translation_contributors')
-    set_contributor_field_from('proofreaders','proofreading_contributors')
+    set_contributor_field_from('proofreaders', 'proofreading_contributors')
     set_contributor_field_from('segmentators', 'segmentation_contributors')
     set_contributor_field_from('researchers', 'documentation_contributors')
     save
@@ -379,7 +386,7 @@ class Interview < ActiveRecord::Base
     field_contributors.each do |contributor|
       contributor.translations.each do |t|
         contributors_per_locale[t.locale] ||= []
-        contributors_per_locale[t.locale] << [ t.last_name, t.first_name ].compact.join(t.locale == :ru ? ' ' : ', ')
+        contributors_per_locale[t.locale] << [t.last_name, t.first_name].compact.join(t.locale == :ru ? ' ' : ', ')
       end
     end
 

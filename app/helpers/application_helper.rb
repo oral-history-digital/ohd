@@ -111,18 +111,18 @@ module ApplicationHelper
   end
 
   def last_import
-    # $last_import_date ||= begin
-    #   last_import = Import.last.first
-    #   last_import ||= Interview.first(:order => "created_at DESC")
-    #   case last_import
-    #     when Import
-    #       last_import.time
-    #     when Interview
-    #       last_import.created_at
-    #     else
+    $last_import_date ||= begin
+      last_import = Import.last.first
+      last_import ||= Interview.first(:order => "created_at DESC")
+      case last_import
+        when Import
+          last_import.time
+        when Interview
+          last_import.created_at
+        else
           Time.gm(2010,9,22)
-    #   end
-    # end
+      end
+    end
   end
 
   # returns an area_id string per
