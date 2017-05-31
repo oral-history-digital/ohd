@@ -83,6 +83,11 @@ jQuery(function($){
     $( $(this).attr('close') ).toggleClass('closed');
   });
 
+  $('body').on('click', 'a.toggle', function(){
+    $( '#' + $(this).attr('hide') ).hide();
+    $( '#' + $(this).attr('show') ).show();
+  });
+
 });
 
 

@@ -9,9 +9,9 @@ module InterviewHelper
       teaser = truncate(content, :length => limit)
       teaser_id = id + '_teaser'
       full_id = id + '_full'
-      more_link = link_to_function(t(:more, :scope => 'user_interface.labels') + '&nbsp;&raquo;', "$('#{teaser_id}').hide(); new Effect.BlindDown('#{full_id}');")
+      more_link = link_to("#{t(:more, :scope => 'user_interface.labels')} &nbsp;&raquo;".html_safe, '#', hide: teaser_id, show: full_id, class: 'toggle')
       html = content_tag(:span, teaser + more_link, :id => teaser_id)
-      less_link = link_to_function('&laquo;&nbsp;' + t(:less, :scope => 'user_interface.labels'), "$('#{full_id}').hide(); $('#{teaser_id}').show();")
+      less_link = link_to("&laquo;&nbsp; #{t(:less, :scope => 'user_interface.labels')}".html_safe, '#', hide: full_id, show: teaser_id, class: 'toggle')
       html << content_tag(:span, content + less_link, :id => full_id, :style => 'display: none;')
     end
   end
