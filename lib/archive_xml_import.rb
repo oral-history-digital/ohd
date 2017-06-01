@@ -455,9 +455,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                              if belongs_to_interview
                                key_attribute_hash['interview_id'] = @interview.id
                              end
-                             dynamic_finder_name = 'find_or_initialize_by_' + key_attribute_hash.keys.sort.join('_and_')
-                             dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
-                             @current_context.send(dynamic_finder_name, *dynamic_finder_params)
+
+                             @current_context.where(key_attribute_hash).first_or_initialize
                            end
 
         # NB: Workaround to bypass DAG-logic / validation in the registry hierarchy.
@@ -520,9 +519,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
       if instance.respond_to?("#{attr}=")
         locales.each do |locale, value|
           if instance.class.translates?
-            instance.class.with_locale(locale) do
-              instance.send("#{attr}=", value)
-            end
+            instance.class.with_locales(locale) { instance.send("#{attr}=", value) }
           elsif instance.method("#{attr}=").arity.abs == 2
             # Assume that the attribute setter is of the format attr=(value, locale)
             instance.send("#{attr}=", value, locale)
@@ -543,9 +540,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     end
     attributes_by_locale.each do |locale, attrs|
       if instance.class.translates?
-        instance.class.with_locale(locale) do
-          instance.attributes = attrs
-        end
+        instance.class.with_locales(locale) { instance.send("#{attr}=", value) }
       else
         raise "Unexpected locale '#{locale}' for non-translated object: #{attrs.inspect}." if locale != I18n.default_locale
         instance.attributes = attrs

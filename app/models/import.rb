@@ -7,7 +7,6 @@ class Import < ActiveRecord::Base
 
   before_create :set_time, :set_current_migration
 
-  #scope :last, -> { :order(time: :desc) }.limit(1)
 
   scope :for_interview, -> ( id ){  where( ["importable_type = ? AND importable_id = ?", 'Interview', id] )
                                         .limit(1)
@@ -17,8 +16,6 @@ class Import < ActiveRecord::Base
 
   def self.current_migration
     @@current_migration ||= begin
-      #lst_migration_import = Import.find :first, :order => "migration DESC"
-
       last_migration_import = Import.order(migration: :desc).first
       last_migration_import.nil? ? '00000000000000' : last_migration_import.migration
     end

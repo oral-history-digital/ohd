@@ -104,9 +104,9 @@ class Interview < ActiveRecord::Base
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
-  # validates_attachment_content_type :still_image,
-  #                                   :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-  #                                   :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  validates_attachment_content_type :still_image,
+                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
+                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   searchable :auto_index => false do
     integer :interview_id, :using => :id, :stored => true, :references => Interview
