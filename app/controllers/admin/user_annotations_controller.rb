@@ -145,11 +145,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
         redirect_to admin_user_annotations_path(params)
       end
       format.js do
-        flash.now[:alert] = @flash
-        annotation_html = render_to_string(:partial => 'user_annotation', :object => @object, :locals => {:container_open => true})
-        render :update do |page|
-          page.replace("user_annotation_#{@object.id}", annotation_html)
-        end
+        render :update
       end
     end
   end

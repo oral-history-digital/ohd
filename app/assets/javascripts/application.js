@@ -33,6 +33,7 @@ UTF8 = {
 
 jQuery.noConflict();
 jQuery(function($){
+
   $(".open_modal").click(function(){
     var close = $(this).attr('close');
     $(close).addClass('closed');
@@ -40,8 +41,53 @@ jQuery(function($){
     var url = $(this).attr('url');
     var classNames = 'topics ' + $(this).attr('class_names');
 
-    openModal(url, {class_names: classNames});
+    openModalWindow(url, {class_names: classNames});
   });
+  
+  $("#modal_window .cancel").click(function(){
+    closeModalWindow(); 
+    return false;
+  });
+
+  $("a.button.remote").click(function(){
+    _this = $(this);
+    $.ajax({
+      url: _this.attr('url'),
+      method: 'POST',
+      dataType: 'script',
+      beforeSend: function(data){
+        $( '#shades' ).show();
+      },
+      complete: function(){
+        $( '#shades' ).hide();
+      }
+    });
+  });
+
+  $('body').on('click', "a.get.remote", function(){
+    _this = $(this);
+    $.ajax({
+      url: _this.attr('url'),
+      method: 'GET',
+      dataType: 'script',
+      beforeSend: function(data){
+        $( _this.attr('spinner') ).show();
+      },
+      complete: function(){
+        $( _this.attr('spinner') ).hide();
+      }
+    });
+  });
+
+  $('body').on('click', 'a.more', function(){
+    $( $(this).attr('close') ).toggleClass('closed');
+  });
+
+  $('body').on('click', 'a.toggle', function(){
+    $( '#' + $(this).attr('hide') ).hide();
+    $( '#' + $(this).attr('show') ).show();
+  });
+
 });
 
 
@@ -215,24 +261,13 @@ function showInlineEditForm(id, textArea) {
 }
 
 function addExtraneousFormElements(form, scope, selector) {
-  var existing = form.getInputs();
-  form.up(scope).getElementsBySelector(selector).each(function(input){
-      if(existing.indexOf(input) < 0) {
-        form.insert(new Element('input', {name: input.getAttribute('name'), value: input.value, type: 'hidden'}));
-      }
+  var existing = form.find('input');
+  form.closest(scope).find(selector).each(function(index, element){
+    var name = jQuery(this).attr('name');
+    var value = jQuery(this).val(); 
+    if(existing.index(jQuery(this)) < 0) {
+      jQuery('<input>').attr({ type: 'hidden', name: name}).val(value).appendTo('form');
+    }
   });
 }
 
-function toggleFormAction(id) {
-  togglingContent = 1;
-  $(id + '_update').toggle();
-  $(id + '_reset').toggle();
-  $(id + '_spinner').toggle();
-}
-
-function closeModalWindow() {
-  new Effect.Fade('shades', { from: 0.6, to: 0, duration: 0.4 });
-  var win = $('modal_window');
-  win.hide();
-  win.innerHTML = '';
-}
