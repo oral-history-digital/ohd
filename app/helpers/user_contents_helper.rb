@@ -78,14 +78,11 @@ module UserContentsHelper
     form_options = options.merge({
             id: form_id,
             method: :put,
-            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
-            :complete => 'togglingContent = 0;',
             remote: true,
             class: 'inline edit',
             user_content_id: user_content.id
     })
-    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable', :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
-    #html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable'}))
+    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable'}))
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
       form_tag(update_path, form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'

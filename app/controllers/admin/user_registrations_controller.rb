@@ -126,23 +126,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @user_registrations = UserRegistration.where(conditions).order("created_at DESC")
   end
 
-  def render_newsletter
-    respond_to do |format|
-      format.html do
-        if request.referer.blank?
-          render :nothing => true
-        else
-          redirect_to request.referer
-        end
-      end
-      format.js do
-        render :update do |page|
-          page.replace 'newsletter_subscription_status', :partial => 'newsletter', :object => @object
-        end
-      end
-    end
-  end
-
   def translate_field_or_value(field, value=nil)
     if value.nil?
       t(field, :scope => 'devise.registration_fields', :locale => :de)

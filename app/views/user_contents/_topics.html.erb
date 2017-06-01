@@ -1,17 +1,13 @@
 <div id="topics_<%= @object.id -%>">
   <%= modal_window_close_button_on_javascript_request -%>
-  <h2><%= t(:topics_for, :scope => 'user_interface.user_content') -%> <%= in_place_edit_for @object, :title, { :context => 'topics' } -%></h2>
+  <h2><%= t(:topics_for, :scope => 'user_interface.user_content').html_safe -%> <%= in_place_edit_for @object, :title, { :context => 'topics' } -%></h2>
   <div>
-      <% remote_form_for @object,
-                         :url => update_topics_user_content_path(@object),
-                         :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
-                         :complete => "new Effect.Fade('shades');",
-                         :html => { :id => "topics_form" } do |f| %>
+      <%= form_for @object, url: update_topics_user_content_path(@object), remote: true, id: "topics_form" do |f| %>
         <label><%= t(:user_tags, :scope => 'user_interface.user_content') -%></label>
         <%= topics_select('tags', { :id => "topics-#{@object.id}", :class => 'chzn-select' }, @object.tags.map(&:name)) -%>
         <div class="hint" style="width: 165px; margin-top: 10px; display: inline; clear: none;"><%= t(:tags_explanation, :scope => 'user_interface.user_content') -%></div>
         <%= hidden_field_tag 'context', @context -%>
-        <%= f.submit t(:update, :scope => 'user_interface.actions'), :onclick => "new Effect.Fade('modal_window'); $('ajax-spinner').show(); $('topics_form').request(); return false;" %>
+        <%= f.submit t(:update, :scope => 'user_interface.actions') %>
       <% end %>
   </div>
 </div>

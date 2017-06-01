@@ -111,18 +111,18 @@ module ApplicationHelper
   end
 
   def last_import
-    $last_import_date ||= begin
-      last_import = Import.last.first
-      last_import ||= Interview.first(:order => "created_at DESC")
-      case last_import
-        when Import
-          last_import.time
-        when Interview
-          last_import.created_at
-        else
+    # $last_import_date ||= begin
+    #   last_import = Import.last.first
+    #   last_import ||= Interview.first(:order => "created_at DESC")
+    #   case last_import
+    #     when Import
+    #       last_import.time
+    #     when Interview
+    #       last_import.created_at
+    #     else
           Time.gm(2010,9,22)
-      end
-    end
+    #   end
+    # end
   end
 
   # returns an area_id string per
@@ -159,7 +159,7 @@ JS
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
     if request.xhr?
-      link_to('X', '#', :id => ('modal_window_close'), :onclick => "closeModalWindow(); return false;")
+      link_to('X', '#', id: 'modal_window_close')
     end
   end
 
@@ -201,12 +201,10 @@ JS
   # provides buttons for workflow state changes
   def workflow_action_for(model, action, instance, cancel=false)
     model_name = model.to_s.underscore.pluralize
-    button_to_remote t(action.to_s, :scope => "#{model_name}.workflow_actions"),
-                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),
-                       :before => "new Effect.Appear('shades', { to: 0.6 });",
-                       :complete => "new Effect.Fade('shades', { from: 0.6 })"},
-                     { :class => cancel ? 'cancel' : 'submit',
-                       :title => t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")}
+    link_to t(action.to_s, :scope => "#{model_name}.workflow_actions"), '#', 
+            class: "button remote #{cancel ? 'cancel' : 'submit'}",
+            url: eval("#{action}_admin_#{model_name.singularize}_path(id: #{instance.id})"),
+            title: t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")
   end
 
 end

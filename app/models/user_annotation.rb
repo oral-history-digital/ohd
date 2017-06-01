@@ -76,8 +76,8 @@ class UserAnnotation < UserContent
     media_id[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
-  def timecode_string
-    @timecode_string ||= "#{Tape.human_name} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
+  def timecode_string(locale)
+    @timecode_string ||= "#{I18n.t(Tape, locale: locale)} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
   end
 
   def translated=(trans)

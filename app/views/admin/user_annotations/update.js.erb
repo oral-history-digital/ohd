@@ -1,0 +1,2 @@
+jQuery("#user_annotation_<%= @object.id %>").replaceWith('<%= escape_javascript(render partial: 'user_annotation', object: @object, container_open: true) %>')
+jQuery('#shades').hide();

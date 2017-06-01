@@ -40,7 +40,7 @@ class Admin::UserStatisticsController < Admin::BaseController
     categories = { 'Beruf' => 'job_description', 'Recherche-Anliegen' => 'research_intentions', 'Land' => 'country' }
     categories.each do |category, field_name|
       list = [ category.to_s ]
-      category_results = User.count(:group => field_name).sort_by { |group| -group.last }
+      category_results = User.group(field_name).count.sort_by { |group| -group.last }
       category_results.each do |category_result|
         label = category_result.first
         label = "k. A. (#{category})" if label.empty?
@@ -91,7 +91,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       @rows[:header][:cols][month_label] = month_label
 
       categories.each do |category, field_name|
-        results = User.count(:group => field_name, :conditions => conditions)
+        results = User.where(conditions).group(field_name).count
         results.each do |label, value|
           label = "k. A. (#{category})" if label.empty?
 

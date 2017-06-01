@@ -50,7 +50,7 @@ Rails.application.routes.draw do
         post :sort
       end
       member do
-        put :publish
+        patch :publish
         get :topics
         post :retract
         put :update_topics

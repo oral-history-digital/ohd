@@ -24,19 +24,17 @@
       <% @interviews.each do |interview| -%>
       <li id="<%= interview['archive_id'] -%>" class="import closed">
         <span class="archive_id">
-          <%= image_tag '/images/spinner.gif', :id => "#{interview['archive_id']}_spinner", :class => "spinner", :style => "display: none;" -%>
-          <%#= link_to_remote interview['archive_id'],
-                             :update => "interview_#{interview['archive_id']}",
-                             :url => for_interview_admin_imports_path(:archive_id => interview['archive_id']),
-                             :method => :get,
-                             :complete => "$('#{interview['archive_id']}_spinner').remove();",
-                             :html => { :class => "more",
-                                        :onclick => "$('#{interview['archive_id']}').toggleClassName('closed'); $('#{interview['archive_id']}_spinner').show();"
-          }%>
+          <%= image_tag "#{Project.name}/spinner.gif", id: "#{interview['archive_id']}_spinner", class: "spinner", style: "display: none;" -%>
+          <%= link_to interview['archive_id'], '#', 
+                      class: 'remote get more', 
+                      url: for_interview_admin_imports_path(archive_id: interview['archive_id']),
+                      spinner: "##{interview['archive_id']}_spinner",
+                      close: "##{interview['archive_id']}"
+          %>
         </span>
         <span class="interview">
           <a name="imports_for_<%= interview['archive_id'] -%>"><%= interview['short_title'] -%></a>
-          <%= link_to '&raquo;', interview_path(:id => interview['archive_id']), :target => '_blank', :alt => "zum Interview im Archiv" -%>
+          <%= link_to '&raquo;'.html_safe, interview_path(:id => interview['archive_id']), :target => '_blank', :alt => "zum Interview im Archiv" -%>
         </span>
         <span class="data last_import">
           <span style="display: none;">

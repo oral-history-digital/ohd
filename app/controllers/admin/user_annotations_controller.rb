@@ -39,14 +39,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
     end
     respond_to do |format|
       format.html
-      format.js do
-        html = render_to_string :partial => 'user_annotation', :object => @object, :locals => {:container_open => true}, :layout => false
-        render :update do |page|
-          page.replace "user_annotation_#{@object.id}", html
-          page.visual_effect :fade, 'shades'
-          page << "$('ajax_spinner').hide()"
-        end
-      end
+      format.js 
     end
   end
 

@@ -1,4 +1,4 @@
-<% content = FasterCSV.generate(:col_sep => "\t") do |csv| -%>
+<% content = CSV.generate(:col_sep => "\t") do |csv| -%>
 <% @list.each do |col| -%>
 <% row = @rows[col] -%>
 <% if row === nil -%>

@@ -133,15 +133,12 @@ class UserContentsController < BaseController
   end
 
   def publish_notice
-    object
     @context = params['context'] # need context for rendering correct response
     respond_to do |format|
       format.html do
         render :partial => 'publish_notice'
       end
-      format.js do
-        render :layout => false, :partial => 'publish_notice'
-      end
+      format.js 
     end
   end
 
@@ -152,15 +149,7 @@ class UserContentsController < BaseController
         redirect_to user_contents_path
       end
       format.js do
-        item_update = (params['context'] =~ /user_contents/) \
-          ? render_to_string(:partial => 'user_content', :object => @object) \
-          : render_to_string(:partial => 'show', :object => (@user_content = @object))
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page << "$('modal_window').hide();"
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        @partial = params['context'] =~ /user_contents/ ? 'user_content' : 'show'
       end
     end
   end
@@ -177,7 +166,10 @@ class UserContentsController < BaseController
         redirect_to :action => 'show'
       end
       format.js do
+        #render json: {status: :ok}
         @context = (params['context'] || 'user_content').underscore
+        @att = 'description'
+        @base_id = "#{@context}_#{@object.id}_#{@att}"
       end
     end
   end
@@ -190,9 +182,7 @@ class UserContentsController < BaseController
       format.html do
         render :partial => 'topics'
       end
-      format.js do
-        render :layout => false, :partial => 'topics'
-      end
+      format.js 
     end
   end
 
