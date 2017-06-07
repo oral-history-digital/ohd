@@ -1,0 +1,4 @@
+jQuery('#innerContent').html('<%= escape_javascript(render template: '/interviews/index.html', layout: false) %>')
+jQuery('#baseServices').html('<%= escape_javascript(render partial: '/searches/search.html', object: @search, layout: false) %>')
+jQuery('#baseContainerRight').html('<%= escape_javascript(render partial: '/searches/facets.html', object: @search, layout: false) %>')
+
