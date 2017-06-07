@@ -1,3 +1,13 @@
+jQuery.noConflict();
+jQuery(function($){
+
+  $('body').on('click', 'a.remove', function(){
+    $( $(this).attr('remove') ).remove();
+    submitViaAjax();
+  });
+
+});
+
 /* Facet toggling and submission */
 
   // Parse the hashed search string and submit a search
