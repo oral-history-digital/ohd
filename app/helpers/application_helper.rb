@@ -59,9 +59,9 @@ module ApplicationHelper
     link_text = options.delete(:link_text)
     link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text, 10, transcript_language), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
     if @object.is_a?(Interview) || ajax
-      link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
+      link_to link_text.html_safe, '#', class: 'seek_position', data: {item: item-1, position: position }
     else
-      link_to link_text, interview_path(interview, :item => item, :position => position), options
+      link_to link_text.html_safe, interview_path(interview, :item => item, :position => position), options
     end
   end
 

@@ -19,31 +19,31 @@
     <% show_registry_entries = (featured_content == :registry_entry) && defined?(@registry_entry) && !@registry_entry.nil? -%>
     <% current_search_text = (show_registry_entries || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
-    <%# remote_form_for content,
+    <%= form_for content,
                        :url => interview_searches_path,
-                       :method => :get,
-                       :update => 'search-results',
-                       :before => "$('interview_search_overlay').show()",
-                       :complete => "$$('#search-results-toggle .hits')
-                                       .invoke('update', '(' + $$('.segment-list.active li').length + ')');
-                                     $$('#language-switcher li.active').each(function(item) {
-                                       switchSegmentLanguage(item);
-                                     });
-                                     $('interview_search_overlay').hide();
-                                     $('search-results-toggle').show();
-                                     openContainer('search-results-toggle',true);",
-                       :html => {:action => '',
-                                 :name => "search-in-interview",
+                 :remote => true,
+                       :method => 'get',
+                       #:update => 'search-results',
+                       #:before => "$('interview_search_overlay').show()",
+                       #:complete => "$$('#search-results-toggle .hits')
+                                     #   .invoke('update', '(' + $$('.segment-list.active li').length + ')');
+                                     # $$('#language-switcher li.active').each(function(item) {
+                                     #   switchSegmentLanguage(item);
+                                     # });
+                                     # $('interview_search_overlay').hide();
+                                     # $('search-results-toggle').show();
+                                     # openContainer('search-results-toggle',true);",
+                       :html => { :name => "search-in-interview",
                                  :id => "search_in_interview"} do |search| %>
 
         <div id="interviewSearch">
-            <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
+            <h2><label for="fulltext"><%= t('.search_in_interview', :content => content).html_safe %></label></h2>
             <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
             <%= hidden_field_tag 'id', @interview.archive_id %>
-            <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>
+            <%= submit_tag 'suchen', :type => :image, :src => image_path("#{Project.name}/pfeil_rot_rechts_quad.gif"), :id => 'seach_in_interview_submit' %>
         </div>
 
-    <%# end %>
+    <% end %>
 
     <%= javascript_tag do %>
         $('interview_fulltext').value = '<%= current_search_text %>';

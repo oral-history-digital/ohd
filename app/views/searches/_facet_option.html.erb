@@ -62,6 +62,7 @@
               <div id="empty-message"></div>
 
               <%= javascript_tag do %>
+                    jQuery.noConflict();
                 jQuery('#search_person_name').autocomplete({
                   source: '<%= person_name_searches_path @search.query_params.reject{|k,v| k == 'page'} -%>',
                   minLength: 2,
