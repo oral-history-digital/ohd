@@ -1,7 +1,5 @@
 class SearchesController < BaseController
 
-  #actions :new, :index
-
   prepend_before_action :redirect_unauthenticated_users
 
   # Handle search initialization.
@@ -31,14 +29,7 @@ class SearchesController < BaseController
         render :template => '/interviews/index.html'
       end
       format.js do
-        results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
-        service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
-        search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
-        render :update do |page|
-          page.replace_html 'innerContent', results_html
-          page.replace_html 'baseServices', service_html
-          page.replace_html 'baseContainerRight', search_facets_html
-        end
+        render :index
       end
     end
   end
@@ -96,18 +87,9 @@ class SearchesController < BaseController
   def index
     respond_to do |format|
       format.html do
-        render :template => '/interviews/index.html'
+        render template: '/interviews/index.html'
       end
-      format.js do
-        results_html = render_to_string({ :template => '/interviews/index.html', :layout => false })
-        service_html = render_to_string({ :partial => '/searches/search.html', :object => @search })
-        search_facets_html = render_to_string({ :partial => '/searches/facets.html', :object => @search })
-        render :update do |page|
-          page.replace_html 'innerContent', results_html
-          page.replace_html 'baseServices', service_html
-          page.replace_html 'baseContainerRight', search_facets_html
-        end
-      end
+      format.js
     end
   end
 
