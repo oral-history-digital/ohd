@@ -19,22 +19,13 @@
     <% show_registry_entries = (featured_content == :registry_entry) && defined?(@registry_entry) && !@registry_entry.nil? -%>
     <% current_search_text = (show_registry_entries || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
-    <%# remote_form_for content,
-                       :url => interview_searches_path,
-                       :method => :get,
-                       :update => 'search-results',
-                       :before => "$('interview_search_overlay').show()",
-                       :complete => "$$('#search-results-toggle .hits')
-                                       .invoke('update', '(' + $$('.segment-list.active li').length + ')');
-                                     $$('#language-switcher li.active').each(function(item) {
-                                       switchSegmentLanguage(item);
-                                     });
-                                     $('interview_search_overlay').hide();
-                                     $('search-results-toggle').show();
-                                     openContainer('search-results-toggle',true);",
-                       :html => {:action => '',
-                                 :name => "search-in-interview",
-                                 :id => "search_in_interview"} do |search| %>
+    <% form_for content,
+                       url: interview_searches_path,
+                       method: :get,
+                       remote: true,
+                       action: '',
+                       name: "search-in-interview",
+                       id: "search_in_interview" do |search| %>
 
         <div id="interviewSearch">
             <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
@@ -88,27 +79,6 @@
                 </li><!--
             <% end %>
      --></ul>
-        <% if @interview.translated?(I18n.locale) %>
-            <%= javascript_tag do %>
-                $('language-switcher').on('click', 'li', function(event, clickedTab) {
-                  switchSegmentLanguage(clickedTab);
-                  event.stopPropagation();
-                });
-
-                function switchSegmentLanguage(clickedTab) {
-                  // Inactivate the current tab and search result list.
-                  $$('#language-switcher li.active, #search-results .segment-list.active')
-                    .invoke('removeClassName', 'active');
-
-                  // Activate the clicked tab and its corresponding search result list.
-                  clickedTab.addClassName('active');
-                  var resultsClass = 'translated';
-                  if(clickedTab.hasClassName('original')) resultsClass = 'original'
-                  $$('#search-results .segment-list.' + resultsClass)
-                    .invoke('addClassName', 'active');
-                }
-            <% end %>
-        <% end %>
         <h2>
             <%= t('user_interface.labels.search_results') %>
             <% if show_segments %>

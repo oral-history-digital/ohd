@@ -104,7 +104,6 @@ class SearchesController < BaseController
       end
       format.js do
         @interview = @search.results.first
-        render :partial => '/interviews/segments.html'
       end
     end
   end

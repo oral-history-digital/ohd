@@ -6,7 +6,37 @@ jQuery(function($){
     submitViaAjax();
   });
 
+  $('#search_in_interview').on('ajax:before', function(){
+    $('#interview_search_overlay').show();
+  });
+
+  $('#search_in_interview').on('ajax:complete', function(){
+    $('#search-results-toggle .hits').text( '(' + $('.segment-list.active li').length + ')' );
+    $('#language-switcher li.active').each(function(index) {
+      switchSegmentLanguage($(this));
+    });
+    $('#interview_search_overlay').hide();
+    $('#search-results-toggle').show();
+    openContainer('search-results-toggle',true);
+  });
+
+  $('#language-switcher').on('click', 'li', function(){
+    switchSegmentLanguage($(this));
+  });
+
 });
+
+function switchSegmentLanguage(clickedTab) {
+  // Inactivate the current tab and search result list.
+  $('#language-switcher li.active, #search-results .segment-list.active').removeClass('active');
+
+  // Activate the clicked tab and its corresponding search result list.
+  clickedTab.addClass('active');
+  var resultsClass = 'translated';
+  if(clickedTab.hasClass('original')) i
+    resultsClass = 'original';
+  $('#search-results .segment-list.' + resultsClass).addClass('active');
+}
 
 /* Facet toggling and submission */
 
