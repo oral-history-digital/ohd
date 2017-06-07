@@ -20,13 +20,6 @@ class UserContent < ActiveRecord::Base
   #after_validation_on_create :check_persistence, :set_link_url
   after_validation :check_persistence, :set_link_url, :on => :create
 
-  # attr_accessible :user_id,
-  #                 :title,
-  #                 :interview_references,
-  #                 :properties,
-  #                 :description,
-  #                 :link_url,
-  #                 :persistent
 
   validates_presence_of :user_id
 
