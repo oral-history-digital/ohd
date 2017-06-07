@@ -29,11 +29,6 @@ module ApplicationHelper
 
   end
 
-  def save_search_link(search)
-    #link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
-                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
-  end
-
   # Formats attributes for display
   def format_value(value)
     # when matching with Array class doesn't work
