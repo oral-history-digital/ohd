@@ -52,7 +52,7 @@
 
               <ul>
                 <% facet_entries.each do |name| %>
-                  <li><%#= link_to_remote name.first.full_title(I18n.locale), :url => url_for(:controller => :searches, :action => :new, :interview_id => [name.first.id] ), :method => :get %></li>
+                  <li><%= link_to name.first.full_title(I18n.locale), new_search_url(interview_id: [name.first.id]), method: :get, remote: true %></li>
                 <% end %>
               </ul>
 

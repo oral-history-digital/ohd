@@ -77,9 +77,7 @@ class SearchesController < BaseController
         redirect_to(@redirect)
       end
       format.js do
-        render :update do |page|
-          page << "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
-        end
+        render js: "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
       end
     end
   end
