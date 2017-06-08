@@ -20,7 +20,7 @@
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
     var queryHash = '<%= (@search || Search.new).query_hash || '' %>';
     <% if action_name == 'new' && controller_name == 'searches' %>
     document.observe("dom:loaded", submitHashedQueryParams());
