@@ -1,7 +1,7 @@
 jQuery.noConflict();
 jQuery(function($){
 
-  $('body').on('click', 'a.remove', function(){
+  $('body').on('click', 'a.facet-remove', function(){
     $( $(this).attr('remove') ).remove();
     submitViaAjax();
   });
