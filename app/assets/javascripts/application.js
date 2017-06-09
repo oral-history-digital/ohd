@@ -89,6 +89,10 @@ jQuery(function($){
     $( '#' + $(this).attr('show') ).show();
   });
 
+  $('body').on('click', 'a.remove', function(){
+    $( $(this).attr('remove') ).remove();
+  });
+
 });
 
 

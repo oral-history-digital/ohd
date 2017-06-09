@@ -4,7 +4,11 @@ This is the web application for CeDiS-Archiv 2.0.
 == Application Setup
 1. generate the database.yml and setup the databases (<tt>rake db:create</tt> or <tt>rake db:create:all</tt>)
 2. run the migrations: <tt>rake db:migrate</tt>
-3. create symlinks for config/project.xml and views/home
+3. set environment variable EAZ_PROJECT_NAME to 'hagen' or 'zwar'. 
+   e.g. add the following line to your ~/.bashrc or ~/.profile or similar:
+     export EAZ_PROJECT_NAME="zwar"
+   and source it afterwards, e.g.:
+    ~> source ~/.bashrc
 4. mount //eaz-diga.cedis.fu-berlin.de/data to /mnt/eaz-diga.cedis.fu-berlin.de/data as described in project.yml
 5. rake import:interviews:full
 

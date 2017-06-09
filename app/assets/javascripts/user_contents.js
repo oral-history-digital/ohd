@@ -64,6 +64,15 @@ jQuery(function($){
     //togglingContent = 0;
   //});
 
+  $('body').on('ajax:before', '#annotations_form', function(){
+    new Effect.Fade('modal_window'); 
+    $('ajax-spinner').show();
+  });
+
+  $('body').on('ajax:complete', '#annotations_form', function(){
+    new Effect.Fade('shades');
+  });
+
   $('#topics_form, #publish_form').on('ajax:before', function(){
     $('#modal_window').hide(); 
     $('#ajax-spinner').show();
