@@ -69,7 +69,7 @@ jQuery(function($){
     $('ajax-spinner').show();
   });
 
-  $(body).on('ajax:complete', '#annotations_form', function(){
+  $('body').on('ajax:complete', '#annotations_form', function(){
     new Effect.Fade('shades');
   });
 
