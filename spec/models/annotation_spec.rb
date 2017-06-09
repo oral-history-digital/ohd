@@ -54,13 +54,13 @@ describe Annotation, 'upon creation' do
   it "has the correct segment assigned when supplied the segment's exact media_id" do
     annotation.media_id = 'ZA907_01_01_0003'
     annotation.save
-    annotation.segment.should == segment2
+    expect(annotation.segment).to eq(segment2)
   end
 
   it "has the correct segment assigned when supplied a subsequent media_id" do
     annotation.media_id = 'ZA907_01_01_0004'
     annotation.save
-    annotation.segment.should == segment2
+    expect(annotation.segment).to eq(segment2)
   end
 
   let(:translated_object) { annotation }

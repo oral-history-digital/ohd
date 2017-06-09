@@ -16,31 +16,31 @@ describe UserAccountMailer do
 
   it 'translates the activation email depending on the registration locale' do
     mail = UserAccountMailer.deliver_account_activation_instructions(german_account)
-    mail.subject.should match /Ihr Zugang/
-    mail.body.should match /Sehr geehrte\/r Florian Grandel.*Sehr geehrte/m # multipart message!
-    mail.body.should_not match /Dear/
+    expect(mail.subject).to match /Ihr Zugang/
+    expect(mail.body).to match /Sehr geehrte\/r Florian Grandel.*Sehr geehrte/m # multipart message!
+    expect(mail.body).not_to match /Dear/
     mail = UserAccountMailer.deliver_account_activation_instructions(english_account)
-    mail.subject.should match /Your account/
-    mail.body.should match /Dear.*Dear/m
+    expect(mail.subject).to match /Your account/
+    expect(mail.body).to match /Dear.*Dear/m
   end
 
   it 'translates the activation email independently of the current locale' do
     I18n.with_locale(:de) do
       mail = UserAccountMailer.deliver_account_activation_instructions(german_account)
-      mail.subject.should match /Ihr Zugang/
+      expect(mail.subject).to match /Ihr Zugang/
     end
     I18n.with_locale(:en) do
       mail = UserAccountMailer.deliver_account_activation_instructions(german_account)
-      mail.subject.should match /Ihr Zugang/
+      expect(mail.subject).to match /Ihr Zugang/
     end
   end
 
   it 'generates a multipart/alternative mail' do
     mail = UserAccountMailer.deliver_account_activation_instructions(german_account)
-    mail.content_type.should eql 'multipart/alternative'
-    mail.parts.size.should eql 2
-    mail.parts.first.content_type.should eql 'text/plain'
-    mail.parts.second.content_type.should eql 'text/html'
+    expect(mail.content_type).to eql 'multipart/alternative'
+    expect(mail.parts.size).to eql 2
+    expect(mail.parts.first.content_type).to eql 'text/plain'
+    expect(mail.parts.second.content_type).to eql 'text/html'
   end
 
 end
