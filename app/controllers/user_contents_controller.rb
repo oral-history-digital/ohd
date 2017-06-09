@@ -102,15 +102,7 @@ class UserContentsController < BaseController
           format.html do
             render :partial => 'segment_annotation', :object => @object
           end
-          format.js do
-            html = render_to_string(:partial => 'segment_annotation', :object => @object)
-            render :update do |page|
-              page.replace_html :modal_window, html
-              page << "setTimeout('$(\"modal_window\").show(); new Effect.Appear(\"modal_window\");', 500);"
-              page.show :modal_window
-              page.visual_effect :appear, :modal_window
-            end
-          end
+          format.js
         end
       end
     end
@@ -210,15 +202,7 @@ class UserContentsController < BaseController
         end
       end
       format.js do
-        item_update = (params['context'] =~ /user_contents/) \
-          ? render_to_string(:partial => 'user_content', :object => @object) \
-          : render_to_string(:partial => 'show', :object => (@user_content = @object))
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page << "$('modal_window').hide();"
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        @partial = (params['context'] =~ /user_contents/) ? 'user_content' : 'show'
       end
     end
   end
@@ -230,9 +214,7 @@ class UserContentsController < BaseController
         redirect_to user_contents_path
       end
       format.js do
-        render :update do |page|
-          page.visual_effect(:fade, 'overlay')
-        end
+        render js: "jQuery('#overlay').hide();"
       end
     end
   end
@@ -411,20 +393,19 @@ class UserContentsController < BaseController
         redirect_to request.referer
       end
       format.js do
-        render :update do |page|
-          page << "closeModalWindow(); resumeAfterAnnotation();"
+        render js: <<JS
+          closeModalWindow(); 
+          resumeAfterAnnotation();"
           # inject a user_annotation list element if none exists
-          page << <<JS
-var annId = 'user_annotation_#{@object.media_id}';
-if(!$(annId)) {
-  $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
-  // toggle the link to user_content#segment_annotation
-  $(annotationsController.newAnnotationElemID).hide();
-  $(annotationsController.existingAnnotationElemID).show();
-  archiveplayer('interview-player').userAnnotationID = #{@object.id};
-}
+          var annId = 'user_annotation_#{@object.media_id}';
+          if(!$(annId)) {
+            $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
+            // toggle the link to user_content#segment_annotation
+            $(annotationsController.newAnnotationElemID).hide();
+            $(annotationsController.existingAnnotationElemID).show();
+            archiveplayer('interview-player').userAnnotationID = #{@object.id};
+          }
 JS
-        end
       end
     end
   end
@@ -435,12 +416,7 @@ JS
         redirect_to request.referer
       end
       format.js do
-        item_update = render_to_string(:partial => 'user_content', :object => @object)
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        render :item_update_response
       end
     end
   end
