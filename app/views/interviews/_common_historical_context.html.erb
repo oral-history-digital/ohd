@@ -1,7 +1,7 @@
 <% if common_historical_context.birth_locations.empty? -%>
     <li>
         <span class="label"><%= Interview.human_attribute_name(:birth_date) %></span>
-        <span class="value"><%= format_date common_historical_context.date_of_birth %></span>
+        <span class="value"><%= format_date common_historical_context.date_of_birth.html_safe %></span>
     </li>
 <% else -%>
     <li>
