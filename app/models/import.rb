@@ -12,7 +12,7 @@ class Import < ActiveRecord::Base
                                         .limit(1)
                                         .order(time: :desc) }
 
-  scope :recent_for, -> (type) { where ( ["importable_type = ? AND created_at > ?", type, (Time.now - 1.week).to_s(:db)]).includes(:interview, :translations).order(created_at: :desc) }
+  scope :recent_for, -> (type) { includes(:interview, :translations).where(["importable_type = ? AND created_at > ?", type, (Time.now - 1.week).to_s(:db)]).order(created_at: :desc) }
 
   def self.current_migration
     @@current_migration ||= begin
