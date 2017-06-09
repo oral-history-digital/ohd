@@ -28,13 +28,13 @@
                        id: "search_in_interview" do |search| %>
 
         <div id="interviewSearch">
-            <h2><label for="fulltext"><%= t('.search_in_interview', :content => content) %></label></h2>
+            <h2><label for="fulltext"><%= t('.search_in_interview', :content => content).html_safe %></label></h2>
             <%= text_field_tag 'fulltext', current_search_text, :id => "interview_fulltext", :onfocus => "clearFulltextField('interview_fulltext');" %>
             <%= hidden_field_tag 'id', @interview.archive_id %>
-            <%= submit_tag 'suchen', :type => :image, :src => image_path('pfeil_rot_rechts_quad.gif'), :id => 'seach_in_interview_submit' %>
+            <%= submit_tag 'suchen', :type => :image, :src => image_path("#{Project.name}/pfeil_rot_rechts_quad.gif"), :id => 'seach_in_interview_submit' %>
         </div>
 
-    <%# end %>
+    <% end %>
 
     <%= javascript_tag do %>
         $('interview_fulltext').value = '<%= current_search_text %>';

@@ -4,7 +4,7 @@
     <% fulltext ||= (defined?(@registry_entry) && !@registry_entry.blank?) ? @registry_entry.to_s : nil -%>
     <% fulltext ||= @search.fulltext -%>
     <% available_transcript_languages = [:original] %>
-    <% available_transcript_languages << :translated if @interview.translated? %>
+    <% available_transcript_languages << :translated if @interview.translated?(I18n.locale) %>
     <% available_transcript_languages.each do |transcript_language| %>
         <%
            # Implement the language fallback rule for headings:

@@ -1,0 +1,2 @@
+jQuery.noConflict();
+jQuery("#search-results").html('<%= escape_javascript( (render( :partial => 'interviews/segments.html')).html_safe ) %>');

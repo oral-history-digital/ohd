@@ -4,13 +4,13 @@
 
   <span class="hits">
     <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t('.all_interviews'), current_search_path %>
+      <%= link_to t('.all_interviews').htm_safe, current_search_path %>
     <% elsif search.hits > 1 %>
-      <%= link_to t('.many_selected', :search_hits => search.hits), current_search_path %>
+      <%= link_to t('.many_selected', :search_hits => search.hits).html_safe, current_search_path %>
     <% elsif search.hits == 1 %>
-      <%= link_to t('.one_selected'), current_search_path %>
+      <%= link_to t('.one_selected').html_safe, current_search_path %>
     <% else %>
-      <%= t('.no_interviews_found') %>
+      <%= t('.no_interviews_found').html_safe %>
     <% end %>
   </span>
 </div>

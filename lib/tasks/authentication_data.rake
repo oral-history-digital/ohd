@@ -54,7 +54,8 @@ namespace :authentication_data do
         else
           # create this user registration
 
-          registration = UserRegistration.find_or_initialize_by_email(account.email)
+          #registration = UserRegistration.find_or_initialize_by_email(account.email)
+          registration = UserRegistration.where(email: account.email).first_or_initialize
 
           if registration.new_record?
             new_registrations += 1
