@@ -46,7 +46,6 @@ group :development do
   gem 'debase'
   gem 'capistrano'
   gem 'thin'
-  gem 'pry'
 end
 
 group :development, :test do
@@ -57,11 +56,13 @@ group :development, :test do
   gem 'spork'
   gem 'rest-client'
   gem 'json'
+  gem 'pry'
 end
 
 group :test do
   # Fixtures replacement:
   gem 'factory_girl'
+  gem 'factory_girl_rails'
   # Integration tests:
   gem 'capybara'
   gem 'cucumber'
