@@ -3,42 +3,46 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Annotation, 'upon creation' do
 
   #include TranslationTestHelper
+  before :each do
+    Interview.destroy_all
+  end
 
   let(:interview) do
-    Interview.with_locale(:de) do
-      create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln'
-    end
+    #Interview.with_locales(:de) do
+      FactoryGirl.create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln'
+    #end
   end
 
-  let(:tape) do
-    create :tape, :interview => interview
-  end
+  let(:tape) { FactoryGirl.create :tape, :interview => interview }
 
   let(:segment1) do
-    tape.segments.create \
-        :media_id => 'ZA907_01_01_0001',
-        :timecode => '00:00:04.12',
-        :transcript => 'Räusper!',
-        :translation => '',
-        :interview_id => interview.id
+    FactoryGirl.create :segment,
+        media_id: 'ZA907_01_01_0001',
+        timecode: '00:00:04.12',
+        transcript: 'Räusper!',
+        translation: '',
+        interview: interview,
+        tape: tape
   end
 
   let(:segment2) do
-    tape.segments.create \
-        :media_id => 'ZA907_01_01_0003',
-        :timecode => '00:00:12.05',
-        :transcript => 'Am Anfang, also das war...',
-        :translation => '',
-        :interview_id => interview.id
+    FactoryGirl.create :segment,
+        media_id: 'ZA907_01_01_0003',
+        timecode: '00:00:12.05',
+        transcript: 'Am Anfang, also das war...',
+        translation: '',
+        interview: interview,
+        tape: tape
   end
 
   let(:segment3) do
-    tape.segments.create \
-        :media_id => 'ZA907_01_01_0007',
-        :timecode => '00:00:21.03',
-        :transcript => 'Wie gesagt, (...)',
-        :translation => '',
-        :interview_id => interview.id
+    FactoryGirl.create :segment,
+        media_id: 'ZA907_01_01_0007',
+        timecode: '00:00:21.03',
+        transcript: 'Wie gesagt, (...)',
+        translation: '',
+        interview: interview,
+        tape: tape
   end
 
   let(:annotation) do
