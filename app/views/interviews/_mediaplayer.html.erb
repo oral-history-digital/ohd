@@ -11,9 +11,9 @@
       <%= content_tag(:div,
                       formatted_language(@interview),
                       :id => "original",
-                      :class => "captions_orig#{(!@interview.translated? || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
+                      :class => "captions_orig#{(!@interview.translated?(I18n.locale) || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
                       :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
-      <% if @interview.translated? && @interview.segmented? %>
+      <% if @interview.translated?(I18n.locale) && @interview.segmented? %>
         <%= content_tag(:div, t(:german),
                         :id => "translated",
                         :class => "captions_trans#{I18n.locale == :de ? ' active' : ''}",
@@ -36,8 +36,8 @@
     <% if !@interview.segmented? %>
       <span class="notice"><%= t(:no_transcript, :scope => 'user_interface.player' ) %></span>
     <% else %>
-      <%= @player.segments_container_for 'transcript', :span, { :style => (@interview.translated? ? "display: none;" : ''), :slides => true, :dir => interview_direction(@interview) }, citation_for(@interview.citation_hash, false) %>
-      <%= @player.segments_container_for 'translation', :span, { :style => (@interview.translated? ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
+      <%= @player.segments_container_for 'transcript', :span, { :style => (@interview.translated?(I18n.locale) ? "display: none;" : ''), :slides => true, :dir => interview_direction(@interview) }, citation_for(@interview.citation_hash, false) %>
+      <%= @player.segments_container_for 'translation', :span, { :style => (@interview.translated?(I18n.locale) ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
     <% end %>
     </div>
     <div id="annotate_segment">
@@ -66,7 +66,7 @@
     var headings = null;
 
     <%# Fallback rules. %>
-    <% if @interview.translated? && @interview.segmented? && I18n.locale == :de %>
+    <% if @interview.translated?(I18n.locale) && @interview.segmented? && I18n.locale == :de %>
       $('<%= @player.segments_container_id_for 'transcript' %>').hide();
       $('<%= @player.segments_container_id_for 'translation' %>').show();
     <% else %>

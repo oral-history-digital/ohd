@@ -21,7 +21,7 @@
       <span class="label"><%= Interview.human_attribute_name('language') %></span>
       <% unless interview.language.blank? %>
       <span class="value"><%= interview.language -%><% unless interview.language.code == 'deu' -%>,
-        <%= interview.translated? ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
+        <%= interview.translated?(I18n.locale) ? t(:translated, :scope => 'status') : t(:not_translated, :scope => 'status') %>
         <% end -%>
       </span>
       <% end %>

@@ -9,7 +9,7 @@
     <%= link_to image_tag(result.still_image.url(:small)), interview_path(result), :title => result.short_title(I18n.locale) %>
     <% if result.segmented? %>
       <div class="baseContainerTeaserSubtitled" onmouseover="$('teaser_<%= result.archive_id %>_tooltip').show();" onmouseout="$('teaser_<%= result.archive_id %>_tooltip').hide();">
-        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.language.code %><%= result.translated?( result.language.code) ? "&nbsp;-&nbsp;deu" : '' %>
+        <%= t(:subtitles, :scope => 'media')%>:&nbsp;<%= result.language.code %><%= result.translated?( result.language.code) ? "&nbsp;-&nbsp;deu".html_safe : '' %>
         <% if result.has_headings? %>
         <%= image_tag(image_path('inhaltsverzeichnis.png'), :style => 'float: right; padding: 1px 1px 0 6px;') %>
         <% end %>
@@ -18,7 +18,7 @@
   </div>
   <% if result.segmented? %>
   <div id="teaser_<%= result.archive_id %>_tooltip" class="floatingToolTip" style="display: none;">
-    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.language) %><%= result.translated?( result.language.code ) ? ('&nbsp;-&nbsp;' + language_adj_case(t('german')) ) : ''%>.
+    <%= t(:subtitles, :scope => 'media') %>: <%= language_adj_case(result.language) %><%= result.translated?( result.language.code ) ? ('&nbsp;-&nbsp;' + language_adj_case(t('german'))).html_safe : ''%>.
     <% if result.has_headings? %>
     <br/>
     <%= t(:has_headings, :scope => 'media') %>.

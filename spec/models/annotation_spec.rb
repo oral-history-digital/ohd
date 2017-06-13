@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Annotation, 'upon creation' do
 
-  include TranslationTestHelper
+  #include TranslationTestHelper
 
   let(:interview) do
     Interview.with_locale(:de) do
@@ -65,9 +65,9 @@ describe Annotation, 'upon creation' do
 
   let(:translated_object) { annotation }
 
-  describe '@text' do
-    let(:translated_attribute) { :text }
-    it_should_behave_like 'a translated attribute'
-  end
+  #describe '@text' do
+    #let(:translated_attribute) { :text }
+    #it_should_behave_like 'a translated attribute'
+  #end
 
 end
