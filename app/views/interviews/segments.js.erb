@@ -1,4 +1,0 @@
-jQuery.noConflict();
-jQuery("#search-results").html('<%= escape_javascript( (render( :partial => 'interviews/segments.html')).html_safe ) %>');
-jQuery("#search-results-toggle").find('.hits').html('(<%= @segments.size %>)');
-
