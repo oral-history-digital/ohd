@@ -138,7 +138,7 @@ class SearchesController < BaseController
       if ACTIONS_FOR_DEFAULT_REDIRECT.include?(action_name)
         session[:"user_account.return_to"] = new_search_url
       else
-        session[:"user_account.return_to"] = request.request_uri
+        session[:"user_account.return_to"] = request.url
       end
       if request.xhr?
         if request.accepts.include? Mime.const_get(:JSON)
