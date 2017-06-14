@@ -4,8 +4,6 @@ class Interview < ActiveRecord::Base
   include Project::CategoryExtension
   include Paperclip
 
-  NUMBER_OF_INTERVIEWS = Interview.count
-
   belongs_to :collection
 
   belongs_to :language

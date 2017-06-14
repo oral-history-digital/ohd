@@ -3,7 +3,7 @@
 <div id="baseHeaderSearch">
 
   <span class="hits">
-    <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
+    <% if search.hits == Interview.count %>
       <%= link_to t('.all_interviews').htm_safe, current_search_path %>
     <% elsif search.hits > 1 %>
       <%= link_to t('.many_selected', :search_hits => search.hits).html_safe, current_search_path %>
