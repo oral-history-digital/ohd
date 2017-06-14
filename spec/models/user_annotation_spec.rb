@@ -86,25 +86,25 @@ end
 
 describe UserAnnotation, "when postponed by moderation" do
 
+  let!(:segment){FactoryGirl.create(:segment)}
+  let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
+
   before(:each) do
-    @user = init_user
-    @segment = init_segment
-    @user_annotation = init_annotation(@segment, @user, 'Oh wirklich?')
-    @user_annotation.submit!
-    @user_annotation.postpone!
+    user_annotation.submit!
+    user_annotation.postpone!
   end
 
   it "should not have an annotation associated with it" do
-    expect(@user_annotation.annotation).to be_nil
+    expect(user_annotation.annotation).to be_nil
   end
 
   it "should be eligible for later acceptance, creating an associated annotation" do
-    @user_annotation.accept!
-    expect(@user_annotation.annotation).not_to be_nil
-    expect(@user_annotation.annotation.text).to eq(@user_annotation.description)
-    expect(@user_annotation.annotation.author).to eq(@user_annotation.author)
-    expect(@user_annotation.annotation.media_id).to eq(@user_annotation.media_id)
-    expect(@user_annotation.annotation.interview_id).to be_nil
+    user_annotation.accept!
+    expect(user_annotation.annotation).not_to be_nil
+    expect(user_annotation.annotation.text).to eq(user_annotation.description)
+    expect(user_annotation.annotation.author).to eq(user_annotation.author)
+    expect(user_annotation.annotation.media_id).to eq(user_annotation.media_id)
+    expect(user_annotation.annotation.interview_id).to be_nil
   end
 
 end
@@ -118,23 +118,28 @@ def init_user
 end
 
 def init_segment
-  @interview ||= Interview.create do |interview|
+  @interview = Interview.create do |interview|
     interview.archive_id = 'za907'
     interview.first_name = 'Abraham'
     interview.last_name = 'Lincoln'
   end
-  @tape ||= Tape.create do |tape|
+  @tape = Tape.create do |tape|
     tape.media_id = 'ZA907_01_01'#
     tape.interview = @interview
   end
-  @segment ||= @tape.segments.build do |segment|
+  #@segment ||= @tape.segments.build do |segment|
+  @segment = Segment.create do |segment|
     segment.media_id = 'ZA907_01_01_0001'
     segment.timecode = '00:00:04.12'
     segment.transcript = 'Räusper!'
-    segment.translation = ''
+    #Globalize.with_locale(:de) do
+      #segment.mainheading = 'bla bla'
+    #end
+    #segment.translation = ''
     segment.interview_id = @interview.id
+    segment.tape_id = @tape.id
   end
-  @segment.save
+  #@segment.save
   @segment
 end
 
