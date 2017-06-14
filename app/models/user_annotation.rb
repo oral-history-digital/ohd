@@ -140,16 +140,17 @@ class UserAnnotation < UserContent
   end
 
   # path to show the resource
-  def get_content_path
-    if reference.nil?
-      # just a failsafe - this could fail workbook view rendering
-      super.get_content_path
-    else
-      item = reference.tape.number
-      position = reference.start_time.round
-      Rails.application.routes.url_helpers.interview_path(reference.interview, :item => item, :position => position)
-    end
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #if reference.nil?
+      ## just a failsafe - this could fail workbook view rendering
+      #super.get_content_path
+    #else
+      #item = reference.tape.number
+      #position = reference.start_time.round
+      #Rails.application.routes.url_helpers.interview_path(reference.interview, :item => item, :position => position)
+    #end
+  #end
 
   private
 
