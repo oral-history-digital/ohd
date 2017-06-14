@@ -157,9 +157,14 @@ class Segment < ActiveRecord::Base
     filter_annotation read_attribute(:transcript)
   end
 
-  def translation
-    filter_annotation read_attribute(:translation)
-  end
+  # The following method leads to errors in the globalize-gem:
+  #
+  # NoMethodError: undefined method `locale' for "":String
+  #   from /home/grgr/.rvm/gems/ruby-2.4.0@zwar/bundler/gems/globalize-6f9d3f38d132/lib/globalize/active_record/instance_methods.rb:146:in `save'
+  #
+  #def translation
+    #filter_annotation read_attribute(:translation)
+  #end
 
   def joined_transcript_and_translation
     ((transcript || '') + ' ' + (translation || '')).strip
@@ -198,7 +203,8 @@ class Segment < ActiveRecord::Base
 
   # remove workflow comments
   def filter_annotation(text)
-    text.gsub(/\{[\s{]+[^{}]+[\s}]+\}\s?/,'')
+    #text.gsub(/\{[\s{]+[^{}]+[\s}]+\}\s?/,'')
+    (text || '').gsub(/\{[\s{]+[^{}]+[\s}]+\}\s?/,'')
   end
 
   # This is used to reassociate all segment-based user_content,
