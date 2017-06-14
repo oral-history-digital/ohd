@@ -1,14 +1,14 @@
 FactoryGirl.define do
 
   factory :interview do
-    archive_id 'za465'
+    sequence :archive_id {|n| "za46#{n}" }
     last_name 'Baschlai'
     first_name 'Sinaida'
     other_first_names 'Iwanowna'
   end
 
   factory :tape do
-    media_id 'ZA907_01_01'
+    sequence :media_id {|n| "ZA907_01_01_0#{n}" }
     interview
   end
 
