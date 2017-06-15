@@ -2,12 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe UserAnnotation, 'when first created by user' do
 
-  #before(:each) do
-    #@user = init_user
-    #@segment = init_segment
-    #@user_annotation = init_annotation(@segment, @user, 'Oh wirklich?')
-  #end
-
   let!(:segment){FactoryGirl.create(:segment)}
   let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
 
@@ -41,9 +35,6 @@ describe UserAnnotation, 'when a submittal for publishing is accepted' do
   let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
 
   before(:each) do
-    #user = init_user
-    #@segment = init_segment
-    #user_annotation = init_annotation(@segment, user, 'Oh wirklich?')
     user_annotation.submit!
     user_annotation.accept!
   end
@@ -66,7 +57,7 @@ describe UserAnnotation, 'when a submittal for publishing is accepted' do
 
   it "should have an annotation object on which is it not valid to set an interview_id" do
     annotation = user_annotation.annotation
-    annotation.interview_id = @segment.interview_id
+    annotation.interview_id = segment.interview_id
     expect(annotation).not_to be_valid
   end
 
