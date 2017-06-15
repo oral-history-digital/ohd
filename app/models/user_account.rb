@@ -68,10 +68,8 @@ class UserAccount < ActiveRecord::Base
   # Confirm a user by setting it's confirmed_at to actual time. If the user
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
-  def confirm!(passwd, passwd_confirmation)
-    password = passwd
-    password_confirmation = passwd_confirmation
-    #reset_password!(password, password_confirmation)
+  def confirm!(password, password_confirmation)
+    reset_password(password, password_confirmation)
     unless_confirmed do
       self.confirmation_token = nil
       self.confirmed_at = Time.now
@@ -147,7 +145,9 @@ class UserAccount < ActiveRecord::Base
       errors.add(:email, :already_confirmed)
       false
     else
-      if !valid?
+      # valid? is not sufficient here!
+      #if !valid?
+      if !errors.empty?
         false
       else
         yield

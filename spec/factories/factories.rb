@@ -20,8 +20,8 @@ FactoryGirl.define do
   end
 
   factory :user_account do
-    login 'aneumann2'
-    email 'a.neumann2@mad.de'
+    sequence :login {|n| "aneumann#{n}" }
+    sequence :email {|n| "a.neumann#{n}@mad.de" }
   end
 
   factory :user_account_ip do
@@ -29,12 +29,8 @@ FactoryGirl.define do
     ip '212.10.86.234'
   end
 
-  sequence :email do |n|
-    "user#{n}@mad.de"
-  end
-
   factory :user_registration do
-    email
+    sequence :email {|n| "user#{n}@mad.de" }
 
     appellation 'Herr'
     first_name 'Florian'
