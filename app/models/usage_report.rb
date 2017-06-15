@@ -81,7 +81,7 @@ class UsageReport < ActiveRecord::Base
   end
 
   def facets
-    @facets ||= (YAML.load(read_attribute(:facets).to_s || '') || {})
+    @facets ||= (JSON.parse(read_attribute(:facets).gsub('=>', ':')) || {})
   end
 
   # resolve country from user data or geolocation
