@@ -99,10 +99,10 @@ describe UsageReport do
     # much testing for functionality or correctness of content here.
     let(:usage_reports) do
       [
-        create(:usage_report, :parameters => {:user_account => {'login' => user_account.login}}),
-        create(:usage_report, :action => UsageReport::INTERVIEW, :parameters => {:id => interview.archive_id}),
-        create(:usage_report, :action => UsageReport::MATERIALS, :parameters => {:id => interview.archive_id, :filename => 'za234_ue', :extension => 'pdf'}),
-        create(:usage_report, :action => UsageReport::MAP)
+        FactoryGirl.create(:usage_report, :parameters => {:user_account => {'login' => user_account.login}}),
+        FactoryGirl.create(:usage_report, :action => UsageReport::INTERVIEW, :parameters => {:id => interview.archive_id}),
+        FactoryGirl.create(:usage_report, :action => UsageReport::MATERIALS, :parameters => {:id => interview.archive_id, :filename => 'za234_ue', :extension => 'pdf'}),
+        FactoryGirl.create(:usage_report, :action => UsageReport::MAP)
       ]
     end
 
@@ -111,27 +111,19 @@ describe UsageReport do
     end
 
     it 'should create a Login Report for the current month successfully' do
-      capture_stdout do
-        expect{UsageReport.create_logins_report(date)}.not_to raise_exception
-      end
+      expect{UsageReport.create_logins_report(date)}.not_to raise_exception
     end
 
     it 'should create an Interview Access Report for the current month successfully' do
-      capture_stdout do
-        expect{UsageReport.create_interview_access_report(date)}.not_to raise_exception
-      end
+      expect{UsageReport.create_interview_access_report(date)}.not_to raise_exception
     end
 
     it 'should create a Searches Report for the current month successfully' do
-      capture_stdout do
-        expect{UsageReport.create_searches_report(date)}.not_to raise_exception
-      end
+      expect{UsageReport.create_searches_report(date)}.not_to raise_exception
     end
 
     it 'should create a Map Report for the current month successfully' do
-      capture_stdout do
-        expect{UsageReport.create_map_report(date)}.not_to raise_exception
-      end
+      expect{UsageReport.create_map_report(date)}.not_to raise_exception
     end
   end
 
