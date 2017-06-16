@@ -374,7 +374,11 @@ class Search < UserContent
           @@default_search = nil
           @@default_search_cache_time = Time.now
         end
-        @@default_search ||= begin Search.new{|base| base.search! }; rescue; Search.new; end;
+        @@default_search ||= begin
+          Search.new{|base| base.search! }
+        rescue
+          Search.new
+        end
       else
         search_params = query_params['suche'].blank? ? {} : Search.decode_parameters(query_params.delete('suche'))
         search_params.merge!(query_params)
@@ -382,13 +386,11 @@ class Search < UserContent
         # Translate a person name search into an interview search.
         person_name = search_params.delete('person_name')
         unless person_name.blank?
-          i = build_unfiltered_interview_query(1) do
-                         with(:"person_name_#{I18n.locale}").any_of person_name
-          end
-          ii = i.execute
-          interviews = ii.results
-
-
+          interviews = build_unfiltered_interview_query(1) do
+                         with("person_name_#{I18n.locale}".to_sym).any_of [person_name]
+                       end.
+                       execute!.
+                       results
           search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
         end
 

@@ -19,7 +19,7 @@
     <% show_registry_entries = (featured_content == :registry_entry) && defined?(@registry_entry) && !@registry_entry.nil? -%>
     <% current_search_text = (show_registry_entries || @search.fulltext.blank?) ? t('search_term', :scope => 'user_interface.search') : @search.fulltext -%>
 
-    <% form_for content,
+    <%= form_for content,
                        url: interview_searches_path,
                        method: :get,
                        remote: true,

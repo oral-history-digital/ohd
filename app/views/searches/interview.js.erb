@@ -1,1 +1,2 @@
 jQuery('#search-results').html('<%= escape_javascript(render(partial: '/interviews/segments.html', layout: false)) %>');
+jQuery("#search-results-toggle").find('.hits').html('(<%= @segments.size %>)');

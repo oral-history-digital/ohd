@@ -1,5 +1,5 @@
 <div id="searchReset">
-  <% if facets.hits < Interview::NUMBER_OF_INTERVIEWS %>
+  <% if facets.hits < Interview.count %>
       <%= reset_search_link({:before => "beforeSubmit();"}) %>
   <% end %>
 </div>

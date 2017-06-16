@@ -228,7 +228,13 @@ class UserContentsController < BaseController
   private
 
   def user_content_params
-    params.require(:user_content).permit(:description)
+    params.require(:user_content).permit(:description,
+                                         :user_id,
+                                         :title,
+                                         :interview_references,
+                                         :properties,
+                                         :link_url,
+                                         :persistent)
   end
 
   # make sure the current_user_account is the owner of the resource
