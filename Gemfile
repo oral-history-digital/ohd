@@ -63,6 +63,7 @@ group :test do
   # Fixtures replacement:
   gem 'factory_girl'
   gem 'factory_girl_rails'
+  gem 'rspec-activemodel-mocks'
   # Integration tests:
   gem 'capybara'
   gem 'cucumber'

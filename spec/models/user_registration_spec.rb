@@ -106,7 +106,6 @@ describe UserRegistration, 'on registration' do
     # mock the account confirmation here and test it in the account spec
     registration.user_account = mock_model(UserAccount)
     expect(registration.user_account).to receive(:encrypted_password).and_return('dhfjdshjfhsjd')
-    expect(registration.user_account).to receive(:password_salt).and_return('jdhjfhsdfjg')
     registration.activate!
     expect(registration).to be_registered
   end
@@ -115,7 +114,6 @@ describe UserRegistration, 'on registration' do
     activation_time = Time.now
     registration.user_account = mock_model(UserAccount)
     expect(registration.user_account).to receive(:encrypted_password).and_return('dhfjdshjfhsjd')
-    expect(registration.user_account).to receive(:password_salt).and_return('jdhjfhsdfjg')
     registration.activate!
     expect(registration.activated_at).to be_a(Time)
     expect(registration.activated_at).to be > (activation_time - 1.minute)
