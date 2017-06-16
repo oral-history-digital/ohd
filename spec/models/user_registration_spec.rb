@@ -303,7 +303,6 @@ describe UserRegistration, 'on reactivation after removing' do
     registration = FactoryGirl.create :user_registration
     registration.register!
     registration.user_account.confirm!('password', 'password')
-    registration.activate!
     registration.remove!
     registration.reactivate!
     registration
