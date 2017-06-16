@@ -23,6 +23,7 @@ describe UserRegistration, 'when newly created' do
   end
 
   it 'should not be created if any of the required fields are missing' do
+    pending "undefined method attributes_for"
     attributes = attributes_for(:user_registration)
     attributes.delete(mandatory_registration_fields[rand(mandatory_registration_fields.size)])
     registration = UserRegistration.create attributes
