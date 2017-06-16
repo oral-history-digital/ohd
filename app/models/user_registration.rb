@@ -169,7 +169,7 @@ EVAL
     end
     state :checked do
       event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? || self.user_account.password_salt.blank?
+        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? 
       end
       event :expire,    :transitions_to => :postponed
     end
