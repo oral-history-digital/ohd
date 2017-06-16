@@ -156,7 +156,6 @@ describe UserRegistration, 'on activation after account activation' do
     registration = FactoryGirl.create :user_registration
     registration.register!
     registration.user_account.confirm!('password', 'password')
-    registration.activate!
     registration
   end
 
@@ -188,7 +187,6 @@ describe UserRegistration, 'on removal' do
     registration = FactoryGirl.create :user_registration
     registration.register!
     registration.user_account.confirm!('password', 'password')
-    registration.activate!
     registration.remove!
     registration
   end
