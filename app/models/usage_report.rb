@@ -72,7 +72,6 @@ class UsageReport < ActiveRecord::Base
           end
           self.facets = query_params
         end
-      else
     end
   end
 
@@ -81,8 +80,8 @@ class UsageReport < ActiveRecord::Base
   end
 
   def facets
-    @facets ||= read_attribute(:facets) ? 
-      (read_attribute(:facets) =~ /=>/ ? JSON.parse(read_attribute(:facets).gsub('=>', ':')) : read_attribute(:facets)) : {}
+    @facets ||= read_attribute(:facets) && (read_attribute(:facets) =~ /=>/)  ? 
+       JSON.parse(read_attribute(:facets).gsub('=>', ':')) : {}
   end
 
   # resolve country from user data or geolocation
