@@ -4,30 +4,25 @@ class RegistryReferencesController < BaseController
 
   PER_PAGE = 3000
 
-  actions :index
-
   layout :check_for_iframe_render
 
   skip_before_action :authenticate_user_account!
   skip_before_action :current_search_for_side_panel
   before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
+  before_action :perform_search, only: :index
 
-  index do
-    before do
-      perform_search
-    end
-    wants.html do
-      # this is only rendered when calling 'ortssuche.html' explicitly!
-      render :action => :index
-    end
-    wants.json do
-      # this is the response when calling 'ortssuche.json'
-      render :json => { 'results' => @results.compact.map(&:json_attrs) }.to_json
-    end
-    wants.js do
-      # this is the default response or when calling 'ortssuche.js'
-      json = { 'results' => @results.compact.map(&:json_attrs) }.to_json
-      render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+  def index
+    respond_to do |format|
+      format.html
+      format.json do
+        # this is the response when calling 'ortssuche.json'
+        render :json => { 'results' => @results.compact.map(&:json_attrs) }.to_json
+      end
+      format.js do
+        # this is the default response or when calling 'ortssuche.js'
+        json = { 'results' => @results.compact.map(&:json_attrs) }.to_json
+        render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+      end
     end
   end
 
