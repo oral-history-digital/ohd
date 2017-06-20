@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       end
 
       get 'map', to: 'registry_references#map', :as => :public_map
-      #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
+      get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
 
       resources :collections, only: [:show, :index]
       resources :interviews, only: [:show, :index] do

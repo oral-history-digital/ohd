@@ -1,6 +1,5 @@
-<% localized_frame_url = (I18n.locale == I18n.default_locale ? map_frame_path : localized_map_frame_path(:locale => I18n.locale)) %>
-<iframe id="external_content_frame" src="<%= localized_frame_url -%>" name="Kartenansicht" width="695px" height="686px" style="overflow-x: hidden; overflow-y: hidden;">
-  <p><%= t('map.noframes', :here => link_to(t(:here), I18n.locale == I18n.default_locale ? map_frame_path : localized_map_frame_path(:locale => I18n.locale))) -%></p>
+<iframe id="external_content_frame" src="<%= map_frame_path -%>" name="Kartenansicht" width="695px" height="686px" style="overflow-x: hidden; overflow-y: hidden;">
+  <p><%= t('map.noframes', :here => link_to(t(:here), map_frame_path)) -%></p>
 </iframe>
 
 <% javascript_tag do -%>
