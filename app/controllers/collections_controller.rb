@@ -1,13 +1,19 @@
 class CollectionsController < BaseController
 
-  skip_before_action authenticate_user_account!, :only => :index
+  #skip_before_action authenticate_user_account!, :only => :index
+  before_filter :collection, only: :index
+  before_filter :object, only: :show
 
-  actions :show, :index
+  def show
+  end
+
+  def index
+  end
 
   private
 
   def object
-    @object = Collection.find_by_project_id(param, :include => :translations) unless param.nil?
+    @object = Collection.includes(:translations).find_by(project_id: param) unless param.nil?
     raise ActiveRecord::RecordNotFound if @object.nil?
     @object
   end
@@ -17,7 +23,7 @@ class CollectionsController < BaseController
   end
 
   def collection
-    Collection.all(:include => :translations).sort_by(&:to_s)
+    @collections = Collection.includes(:translations).all.sort_by(&:to_s)
   end
 
 end
