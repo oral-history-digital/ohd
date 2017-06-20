@@ -13,9 +13,9 @@ class CollectionsController < BaseController
   private
 
   def object
-    @object = Collection.includes(:translations).find_by(project_id: param) unless param.nil?
-    raise ActiveRecord::RecordNotFound if @object.nil?
-    @object
+    @collection = Collection.includes(:translations).find_by(project_id: param) unless param.nil?
+    raise ActiveRecord::RecordNotFound if @collection.nil?
+    @collection
   end
 
   def param

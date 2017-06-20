@@ -20,4 +20,8 @@ class Collection < ActiveRecord::Base
     project_id
   end
 
+  def self.human_name
+    I18n.t(:collection)
+  end
+
 end
