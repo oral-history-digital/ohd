@@ -7,3 +7,5 @@ public/javascripts/translations.js
 solr/data
 sunspot-solr.pid
 tmp/
+/public/packs
+/node_modules

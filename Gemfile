@@ -25,6 +25,8 @@ gem 'fastercsv'
 gem 'open4'
 
 gem 'sass-rails'
+gem 'webpacker'
+gem 'react-rails'
 
 # Gems specific to public archive app:
 gem 'archive-authorization'

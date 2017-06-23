@@ -24,5 +24,6 @@ module Archive
 
     config.i18n.available_locales = config.project["available_locales"]
 
+    config.react.camelize_props = true # default false
   end
 end
