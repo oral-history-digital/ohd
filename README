@@ -22,6 +22,13 @@ This is the web application for CeDiS-Archiv 2.0.
      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
      sudo apt-get update && sudo apt-get install yarn
 
+== Start app using foreman
+
+Normally you would have to start solr (rake solr:start), rails server (rails s) and a webpack dev server (./bin/webpack-dev-server) to compile js-resources.
+To prevent you having to manage all this stuff in three different terminals, jsut type:
+
+foreman start -p 3000
+
 
 == Solr Setup and Indexing
 Try to start the Solr server in the Jetty container by running:
