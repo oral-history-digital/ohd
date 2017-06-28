@@ -8,8 +8,12 @@ class RegistryReferencesController < BaseController
 
   skip_before_action :authenticate_user_account!
   skip_before_action :current_search_for_side_panel
-  before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
+  #before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
   before_action :perform_search, only: :index
+
+  def locations
+    render layout: 'webpacker'
+  end
 
   def index
     respond_to do |format|

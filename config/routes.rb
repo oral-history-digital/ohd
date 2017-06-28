@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       get 'map', to: 'registry_references#map', :as => :public_map
       get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
+      get 'locations', to: 'registry_references#locations', :as => :locations
 
       resources :collections, only: [:show, :index]
       resources :interviews, only: [:show, :index] do
