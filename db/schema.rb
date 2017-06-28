@@ -38,12 +38,12 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "collection_id"
     t.string   "locale"
-    t.text     "interviewers",  limit: 65535
     t.string   "countries"
     t.string   "institution"
-    t.text     "notes",         limit: 65535
     t.string   "responsibles"
+    t.text     "interviewers",  limit: 65535
     t.string   "name"
+    t.text     "notes",         limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
@@ -97,20 +97,20 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "locale"
-    t.string   "first_name"
+    t.string   "birth_name"
     t.string   "last_name"
+    t.string   "first_name"
+    t.text     "forced_labor_details", limit: 65535
     t.string   "other_first_names"
     t.string   "return_date"
-    t.string   "birth_name"
-    t.text     "forced_labor_details", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "proofreaders"
+    t.string   "segmentators"
     t.string   "transcriptors"
     t.string   "translators"
     t.text     "researchers",          limit: 65535
     t.string   "interviewers"
-    t.string   "proofreaders"
-    t.string   "segmentators"
     t.index ["interview_id"], name: "index_interview_translations_on_interview_id", using: :btree
   end
 
@@ -260,8 +260,8 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "segment_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "segment_id"
     t.string   "locale"
-    t.string   "mainheading"
     t.string   "subheading"
+    t.string   "mainheading"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id", using: :btree
@@ -283,9 +283,8 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.boolean  "chapter_change",                                       default: false
     t.string   "section"
     t.integer  "interview_id"
-    t.index ["interview_id", "section"], name: "index_segments_on_interview_id_and_section", using: :btree
+    t.index ["interview_id"], name: "index_segments_on_interview_id", using: :btree
     t.index ["media_id"], name: "index_segments_on_media_id", using: :btree
-    t.index ["tape_id"], name: "index_segments_on_tape_id", using: :btree
   end
 
   create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -377,9 +376,9 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.integer  "reference_id"
     t.string   "reference_type"
     t.integer  "position",                         default: 1
+    t.string   "workflow_state",                   default: "private"
     t.datetime "submitted_at"
     t.datetime "published_at"
-    t.string   "workflow_state",                   default: "private"
     t.string   "media_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
