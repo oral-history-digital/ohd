@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import '../styles/locations'
 
-class Locations extends React.Component {
+export default class Locations extends React.Component {
 
   map(position, zoom){
     return(
@@ -28,4 +28,3 @@ class Locations extends React.Component {
   }
 
 }
-module.exports = Locations
