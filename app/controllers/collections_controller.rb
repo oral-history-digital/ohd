@@ -10,6 +10,10 @@ class CollectionsController < BaseController
   def index
   end
 
+  def countries
+    render layout: 'webpacker'
+  end
+
   private
 
   def object

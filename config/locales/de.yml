@@ -108,6 +108,7 @@ de:
     map: 'karte'
     mapframe: 'kartenframe'
     collections: 'teilsammlungen'
+    countries: 'länder'
     text_meterials: 'text_materialien'
     interviews: 'interviews'
     stills: 'stills'

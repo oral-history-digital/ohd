@@ -21,7 +21,12 @@ Rails.application.routes.draw do
       get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
       get 'locations', to: 'registry_references#locations', :as => :locations
 
-      resources :collections, only: [:show, :index]
+      resources :collections, only: [:show, :index] do
+        collection do
+          get :countries
+        end
+      end
+
       resources :interviews, only: [:show, :index] do
         #member do 
           #get :text_materials
