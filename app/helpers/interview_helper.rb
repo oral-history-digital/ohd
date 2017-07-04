@@ -154,7 +154,7 @@ module InterviewHelper
   # Return a human-readable list of available translations for the given database object.
   def available_languages(translated_object)
     language_codes = translated_object.translations.map{|t| I18n.three_letter_locale(t.locale)}
-    Language.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
+    Language.where(code: language_codes).map{|c| c.name(I18n.locale)}.to_sentence
   end
 
   def language_adj_case(language)
