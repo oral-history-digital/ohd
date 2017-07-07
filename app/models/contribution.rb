@@ -56,7 +56,7 @@ class Contribution < ActiveRecord::Base
     self.contributor ||= self.build_contributor
     # Update translated names.
     @name.each do |locale, name_translation|
-      Contributor.with_locale(locale) do
+      Contributor.with_locales(locale) do
         self.contributor.first_name = name_translation[:first_name]
         self.contributor.last_name = name_translation[:last_name]
       end

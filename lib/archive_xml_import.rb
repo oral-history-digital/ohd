@@ -206,12 +206,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             # NB: this does not respect :dependent => :delete/:destroy configuration so we have
             # to manually delete dependent translations to avoid orphans.
             if klass.translates?
-              ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
+              ids = klass.where(interview_id: @interview.id ).map(&:id).map(&:to_i)
               num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
-              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations)"
+              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations for interview #{@interview.id})"
             end
             num_deleted_records = klass.delete_all(:interview_id => @interview.id)
-            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
+            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize} for interview #{@interview.id})"
             STDOUT.flush
           end
         end
@@ -471,8 +471,8 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         assign_attributes_to_instance(current_instance)
 
         begin
-          current_instance.save!
-
+          saved =  current_instance.save!
+          puts "#{current_instance.class}  saved: #{saved}"
           # Link the interview to the current instance if the
           # interview belongs to the current instance (e.g. a collection).
           if @interview.respond_to?("#{name}_id=")
@@ -483,6 +483,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
 
           # Produce a meaningful validation message.
           errors = [ e.record.inspect, e.record.errors.full_messages.to_s ]
+          associations = current_instance.class.reflect_on_all_associations.select { |assoc| assoc.macro == :belongs_to && assoc.name != :interview }
+          associations.each do |assoc|
+            associated_instance = current_instance.send(assoc.name.to_s)
+            unless associated_instance.nil? || associated_instance.errors.empty?
+              errors << associated_instance.errors.full_messages.to_s
+              errors << associated_instance.inspect
+            end
+          end
+
           message = "ERROR on #{e.record.class.name}:\n#{errors.join("\n")}"
 
           if @current_mapping['skip_invalid']
@@ -518,8 +527,15 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     attributes.reject{|k,v| db_columns.include?(k.to_s)}.each do |attr, locales|
       if instance.respond_to?("#{attr}=")
         locales.each do |locale, value|
+unless value.blank?
+          puts locale
+          puts attr
+          puts value
+
           if instance.class.translates?
-            instance.class.with_locales(locale) { instance.send("#{attr}=", value) }
+            instance.class.with_locales(locale) do
+              instance.send("#{attr}=", value)
+            end
           elsif instance.method("#{attr}=").arity.abs == 2
             # Assume that the attribute setter is of the format attr=(value, locale)
             instance.send("#{attr}=", value, locale)
@@ -528,9 +544,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             instance.send("#{attr}=", value)
           end
         end
+        end
       end
       @attributes[@current_context.name].delete(attr)
-    end
+      end
+
     attributes_by_locale = {}
     attributes.each do |attr, locales|
       locales.each do |locale, value|
@@ -540,7 +558,9 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     end
     attributes_by_locale.each do |locale, attrs|
       if instance.class.translates?
-        instance.class.with_locales(locale) { instance.send("#{attr}=", value) }
+        instance.class.with_locales(locale) do
+          instance.attributes = attrs
+        end
       else
         raise "Unexpected locale '#{locale}' for non-translated object: #{attrs.inspect}." if locale != I18n.default_locale
         instance.attributes = attrs

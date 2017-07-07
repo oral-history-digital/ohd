@@ -1,8 +1,8 @@
 class CollectionsController < BaseController
 
-  skip_before_action authenticate_user_account!, :only => :index
+  skip_before_action :authenticate_user_account!, :only => :index
 
-  actions :show, :index
+  #actions :show, :index
 
   private
 

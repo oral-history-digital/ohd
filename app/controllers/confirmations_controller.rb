@@ -1,5 +1,5 @@
 class ConfirmationsController < ApplicationController
-  include Devise::Controllers::InternalHelpers
+  #include Devise::Controllers::InternalHelpers
 
   # GET /resource/confirmation?confirmation_token=abcdef
   def show

@@ -28,7 +28,7 @@ class Segment < ActiveRecord::Base
                        .order(:media_id)}
 
 
-  scope :for_interview, ->(interview){ where('segments.interview_id = ?', i.id) }
+  scope :for_interview, ->(interview){ where('segments.interview_id = ?', interview.id) }
 
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
@@ -172,7 +172,7 @@ class Segment < ActiveRecord::Base
 
   # returns the segment that leads the chapter
   def section_lead_segment
-    Segment.where(["interview_id = ? AND section = ?", interview_id, section]).order(:media_id)
+    Segment.where(["interview_id = ? AND section = ?", interview_id, section]).order(:media_id).first
   end
 
   def has_heading?

@@ -4,7 +4,7 @@ class RegistryReferencesController < BaseController
 
   PER_PAGE = 3000
 
-  actions :index
+  #actions :index
 
   layout :check_for_iframe_render
 
@@ -12,7 +12,7 @@ class RegistryReferencesController < BaseController
   skip_before_action :current_search_for_side_panel
   before_action :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
 
-  index do
+  def index
     before do
       perform_search
     end
