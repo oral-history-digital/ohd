@@ -338,9 +338,10 @@ class Search < UserContent
   end
 
   # path to show the resource
-  def get_content_path
-    search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
+  #end
 
   class << self
 

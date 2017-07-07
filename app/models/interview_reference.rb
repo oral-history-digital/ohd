@@ -33,9 +33,10 @@ class InterviewReference < UserContent
   end
 
   # path to show the resource
-  def get_content_path
-    interview_path(:id => reference.archive_id)
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #interview_path(:id => reference.archive_id)
+  #end
 
   # sets the archive_id as id_hash instead of default
   def self.default_id_hash(instance)

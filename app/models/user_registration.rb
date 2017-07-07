@@ -169,7 +169,7 @@ EVAL
     end
     state :checked do
       event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? || self.user_account.password_salt.blank?
+        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? 
       end
       event :expire,    :transitions_to => :postponed
     end
@@ -295,7 +295,7 @@ EVAL
 
   def create_account
     #self.user_account = UserAccount.find_or_initialize_by(email: self.email)
-    self.user_account = UserAccountIp.where(email: self.email).first_or_initialize
+    self.user_account = UserAccount.where(email: self.email).first_or_initialize
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.save

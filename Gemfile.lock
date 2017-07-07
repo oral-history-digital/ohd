@@ -150,6 +150,9 @@ GEM
       activesupport (>= 4.0, < 6)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
@@ -300,6 +303,10 @@ GEM
       rspec-core (~> 3.6.0)
       rspec-expectations (~> 3.6.0)
       rspec-mocks (~> 3.6.0)
+    rspec-activemodel-mocks (1.0.3)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      rspec-mocks (>= 2.99, < 4.0)
     rspec-core (3.6.0)
       rspec-support (~> 3.6.0)
     rspec-expectations (3.6.0)
@@ -400,6 +407,7 @@ DEPENDENCIES
   email_spec
   exception_notification
   factory_girl
+  factory_girl_rails
   fastercsv
   globalize!
   guard-cucumber
@@ -425,6 +433,7 @@ DEPENDENCIES
   route_translator
   rsolr
   rspec
+  rspec-activemodel-mocks
   rspec-rails
   ruby-debug-ide
   sass-rails

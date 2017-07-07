@@ -1,14 +1,14 @@
 FactoryGirl.define do
 
   factory :interview do
-    archive_id 'za465'
+    sequence :archive_id {|n| "za46#{n}" }
     last_name 'Baschlai'
     first_name 'Sinaida'
     other_first_names 'Iwanowna'
   end
 
   factory :tape do
-    media_id 'ZA907_01_01'
+    sequence :media_id {|n| "ZA907_01_01_0#{n}" }
     interview
   end
 
@@ -20,8 +20,8 @@ FactoryGirl.define do
   end
 
   factory :user_account do
-    login 'aneumann2'
-    email 'a.neumann2@mad.de'
+    sequence :login {|n| "aneumann#{n}" }
+    sequence :email {|n| "a.neumann#{n}@mad.de" }
   end
 
   factory :user_account_ip do
@@ -29,12 +29,8 @@ FactoryGirl.define do
     ip '212.10.86.234'
   end
 
-  sequence :email do |n|
-    "user#{n}@mad.de"
-  end
-
   factory :user_registration do
-    email
+    sequence :email {|n| "user#{n}@mad.de" }
 
     appellation 'Herr'
     first_name 'Florian'

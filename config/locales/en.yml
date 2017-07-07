@@ -436,13 +436,6 @@ en:
 
   external_links:
     notice: 'External link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team: 'http://www.zwangsarbeit-archiv.de/en/team'
-    kontakt: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
-    impressum: 'http://www.zwangsarbeit-archiv.de/en/impressum'
 
   facets:
     interview_id: 'Name of the Interviewee'

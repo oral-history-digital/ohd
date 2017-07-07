@@ -112,9 +112,10 @@ class UserContent < ActiveRecord::Base
   end
 
   # path to show the resource
-  def get_content_path
-    user_content_path(self)
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #user_content_path(self)
+  #end
 
   def reverse_position_order_str
     "#{100000 - position} #{created_at}"
@@ -133,7 +134,8 @@ class UserContent < ActiveRecord::Base
   end
 
   def set_link_url
-    update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
+    # TODO: is this necessary?
+    #update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
   end
 
   def check_persistence
