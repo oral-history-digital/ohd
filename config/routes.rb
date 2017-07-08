@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :people
   root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421135917) do
+ActiveRecord::Schema.define(version: 20170707140248) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -63,25 +63,25 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.index ["interview_id"], name: "index_contributions_on_interview_id", using: :btree
   end
 
-  create_table "contributor_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "contributor_id"
-    t.string   "locale"
-    t.string   "last_name"
-    t.string   "first_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["contributor_id"], name: "index_contributor_translations_on_contributor_id", using: :btree
+  create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_histories_on_person_id", using: :btree
   end
 
-  create_table "contributors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.boolean "interview",     default: false
-    t.boolean "camera",        default: false
-    t.boolean "transcription", default: false
-    t.boolean "translation",   default: false
-    t.boolean "proofreading",  default: false
-    t.boolean "segmentation",  default: false
-    t.boolean "documentation", default: false
-    t.boolean "other",         default: false
+  create_table "history_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "history_id",                         null: false
+    t.string   "locale",                             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.text     "forced_labor_details", limit: 65535
+    t.string   "return_date"
+    t.string   "deportation_date"
+    t.string   "punishment"
+    t.string   "liberation_date"
+    t.index ["history_id"], name: "index_history_translations_on_history_id", using: :btree
+    t.index ["locale"], name: "index_history_translations_on_locale", using: :btree
   end
 
   create_table "imports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -97,19 +97,13 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "locale"
-    t.string   "birth_name"
-    t.string   "last_name"
-    t.string   "first_name"
-    t.text     "forced_labor_details", limit: 65535
-    t.string   "other_first_names"
-    t.string   "return_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "proofreaders"
     t.string   "segmentators"
     t.string   "transcriptors"
     t.string   "translators"
-    t.text     "researchers",          limit: 65535
+    t.text     "researchers",   limit: 65535
     t.string   "interviewers"
     t.index ["interview_id"], name: "index_interview_translations_on_interview_id", using: :btree
   end
@@ -117,20 +111,14 @@ ActiveRecord::Schema.define(version: 20170421135917) do
   create_table "interviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "archive_id"
     t.integer  "collection_id"
-    t.boolean  "gender"
-    t.string   "date_of_birth"
     t.boolean  "video"
     t.integer  "duration"
     t.boolean  "translated"
-    t.string   "deportation_date"
-    t.string   "punishment"
-    t.string   "liberation_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "segmented",                              default: false
     t.boolean  "researched",                             default: false
     t.boolean  "proofread",                              default: false
-    t.text     "alias_names",              limit: 65535
     t.string   "interview_date"
     t.string   "still_image_file_name"
     t.string   "still_image_content_type"
@@ -157,6 +145,27 @@ ActiveRecord::Schema.define(version: 20170421135917) do
 
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
+  end
+
+  create_table "people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "date_of_birth"
+    t.string   "gender"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "person_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "person_id",         null: false
+    t.string   "locale",            null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "birth_name"
+    t.string   "other_first_names"
+    t.string   "alias_names"
+    t.index ["locale"], name: "index_person_translations_on_locale", using: :btree
+    t.index ["person_id"], name: "index_person_translations_on_person_id", using: :btree
   end
 
   create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -436,4 +445,5 @@ ActiveRecord::Schema.define(version: 20170421135917) do
     t.index ["user_account_id"], name: "index_users_on_user_account_id", using: :btree
   end
 
+  add_foreign_key "histories", "people"
 end

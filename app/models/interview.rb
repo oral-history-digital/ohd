@@ -32,6 +32,10 @@ class Interview < ActiveRecord::Base
   has_many :contributors,
            :through => :contributions
 
+  has_many :interviewee,
+           -> {where("contributions.contribution_type = 'interviewee'")},
+           :through => :contributions
+
   has_many :interview_contributors,
            -> {where("contributions.contribution_type = 'interview'")},
            :class_name => 'Contributor',
@@ -91,13 +95,13 @@ class Interview < ActiveRecord::Base
              :interviewers, :transcriptors, :translators,
              :proofreaders, :segmentators, :researchers
 
-  validate :has_standard_name
+  #validate :has_standard_name
 
-  def has_standard_name
-    if self.last_name(I18n.default_locale).blank?
-      errors.add(:last_name, ' must be set for default locale (=standard name).')
-    end
-  end
+  #def has_standard_name
+    #if self.last_name(I18n.default_locale).blank?
+      #errors.add(:last_name, ' must be set for default locale (=standard name).')
+    #end
+  #end
 
   validates_associated :collection
   validates_presence_of :archive_id
