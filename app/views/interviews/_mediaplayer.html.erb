@@ -1,6 +1,28 @@
 <div id="mediaContainer" class="containerVideo<%= !@interview.segmented? ? ' no-transcript' : '' %>">
 
-  <%= @player = interview_player(@interview) %>
+  <% tc =  @interview.tapes.count %>
+
+  <%#= @player = interview_player(@interview) %>
+
+
+
+
+
+
+
+  <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+         poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+    <source src=" http://medien.cedis.fu-berlin.de/osa/p_start.mp4" type='video/mp4'>
+    <!--source src="MY_VIDEO.webm" type='video/webm'-->
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
+
+
+
+
 
   <div class="playerControl">
 
@@ -11,10 +33,11 @@
       <%= content_tag(:div,
                       formatted_language(@interview),
                       :id => "original",
-                      :class => "captions_orig#{(!@interview.translated?(I18n.locale) || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}",
-                      :onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');") %>
+                      :class => "captions_orig#{(!@interview.translated?(I18n.locale) || !@interview.segmented? || I18n.locale != :de) ? ' active' : ''}"#,
+                      #:onClick => "$('#{@player.segments_container_id_for 'transcript'}').show();$('#{@player.segments_container_id_for 'translation'}').hide();$('original').addClassName('active');$('translated').removeClassName('active');"
+          ) %>
       <% if @interview.translated?(I18n.locale) && @interview.segmented? %>
-        <%= content_tag(:div, t(:german),
+        <%#= content_tag(:div, t(:german),
                         :id => "translated",
                         :class => "captions_trans#{I18n.locale == :de ? ' active' : ''}",
                         :onClick => "$('#{@player.segments_container_id_for 'translation'}').show();$('#{@player.segments_container_id_for 'transcript'}').hide();$('original').removeClassName('active');$('translated').addClassName('active');") %>
@@ -22,12 +45,12 @@
     <% end %>
     </div>
 
-    <div id="volumeMuteButton"><%= @player.mute_control %></div>
-    <div id="volumeSelect"><%= @player.volume_control %></div>
-    <div class="interviewinfo"><%= "#{@interview.duration.minimal}" %></div>
+    <div id="volumeMuteButton"><%#= @player.mute_control %></div>
+    <div id="volumeSelect"><%#= @player.volume_control %></div>
+    <div class="interviewinfo"><%#= "#{@interview.duration.minimal}" %></div>
     <div class="itemselection">
       <%= t(:tape, :scope => 'media') %>:
-      <%= @player.items_selector(@interview.tapes.size) %>
+      <%#= @player.items_selector(@interview.tapes.size) %>
     </div>
   </div>
 
@@ -36,8 +59,8 @@
     <% if !@interview.segmented? %>
       <span class="notice"><%= t(:no_transcript, :scope => 'user_interface.player' ) %></span>
     <% else %>
-      <%= @player.segments_container_for 'transcript', :span, { :style => (@interview.translated?(I18n.locale) ? "display: none;" : ''), :slides => true, :dir => interview_direction(@interview) }, citation_for(@interview.citation_hash, false) %>
-      <%= @player.segments_container_for 'translation', :span, { :style => (@interview.translated?(I18n.locale) ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
+      <%#= @player.segments_container_for 'transcript', :span, { :style => (@interview.translated?(I18n.locale) ? "display: none;" : ''), :slides => true, :dir => interview_direction(@interview) }, citation_for(@interview.citation_hash, false) %>
+      <%#= @player.segments_container_for 'translation', :span, { :style => (@interview.translated?(I18n.locale) ? '' : "display: none;"), :slides => true }, citation_for(@interview.citation_hash, true) %>
     <% end %>
     </div>
     <div id="annotate_segment">
@@ -67,11 +90,11 @@
 
     <%# Fallback rules. %>
     <% if @interview.translated?(I18n.locale) && @interview.segmented? && I18n.locale == :de %>
-      $('<%= @player.segments_container_id_for 'transcript' %>').hide();
-      $('<%= @player.segments_container_id_for 'translation' %>').show();
+      $('<%#= @player.segments_container_id_for 'transcript' %>').hide();
+      $('<%#= @player.segments_container_id_for 'translation' %>').show();
     <% else %>
-      $('<%= @player.segments_container_id_for 'transcript' %>').show();
-      $('<%= @player.segments_container_id_for 'translation' %>').hide();
+      $('<%#= @player.segments_container_id_for 'transcript' %>').show();
+      $('<%#= @player.segments_container_id_for 'translation' %>').hide();
     <% end %>
 
     function pauseOnAnnotation() {

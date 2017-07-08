@@ -3,10 +3,18 @@ class Tape < ActiveRecord::Base
   belongs_to :interview
 
   has_many  :segments,
-            -> { order('media_id ASC, timecode ASC').includes(:tape) }
+            -> { order('media_id ASC, timecode ASC')}#.includes(:tape) }
 
   validates_presence_of :media_id, :interview_id
   validates_uniqueness_of :media_id
+
+  before_validation :inform, on: :create
+
+  def inform
+    s = self
+    puts "TAPE CREATED"
+
+  end
 
   def number
     @number ||= media_id[/\d+$/].to_i

@@ -42,6 +42,7 @@ gem 'celluloid'
 
 group :development do
   # Automatic tests
+  gem 'rails-erd'
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'guard-cucumber'
