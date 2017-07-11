@@ -30,46 +30,56 @@ class Interview < ActiveRecord::Base
            :dependent => :delete_all
 
   has_many :contributors,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :interviewee,
+  has_many :interviewees,
            -> {where("contributions.contribution_type = 'interviewee'")},
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :interview_contributors,
+  #has_many :interview_contributors,
+  has_many :interviewers,
            -> {where("contributions.contribution_type = 'interview'")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :transcript_contributors,
+  #has_many :transcript_contributors,
+  has_many :transcriptors,
            -> {where("contributions.contribution_type = 'transcript'")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :translation_contributors,
+  #has_many :translation_contributors,
+  has_many :translators,
            -> {where("contributions.contribution_type = 'translation'")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :proofreading_contributors,
+  #has_many :proofreading_contributors,
+  has_many :proofreaders,
            -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :segmentation_contributors,
+  #has_many :segmentation_contributors,
+  has_many :segmentators,
            -> {where("contributions.contribution_type = 'segmentation'")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
-  has_many :documentation_contributors,
+  #has_many :documentation_contributors,
+  has_many :researchers,
            -> {where("contributions.contribution_type = 'research'")},
-           :class_name => 'Contributor',
-           :source => :contributor,
+           :class_name => 'Person',
+           :source => :person,
            :through => :contributions
 
   has_many :imports,
@@ -90,10 +100,10 @@ class Interview < ActiveRecord::Base
   has_many :registry_entries,
            :through => :registry_references
 
-  translates :first_name, :other_first_names, :last_name, :birth_name,
-             :return_date, :forced_labor_details,
-             :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+  #translates :first_name, :other_first_names, :last_name, :birth_name,
+             #:return_date, :forced_labor_details,
+             #:interviewers, :transcriptors, :translators,
+             #:proofreaders, :segmentators, :researchers
 
   #validate :has_standard_name
 
