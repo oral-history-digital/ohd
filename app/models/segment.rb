@@ -5,7 +5,8 @@ class Segment < ActiveRecord::Base
   belongs_to :interview, -> { includes(:translations) }
   belongs_to :speaking_person, 
     -> { includes(:translations) },
-    class_name: 'Person'
+    class_name: 'Person',
+    source: :person
 
   belongs_to :tape
 
