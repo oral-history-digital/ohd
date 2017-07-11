@@ -1,4 +1,4 @@
-source 'https://dev.cedis.fu-berlin.de/geminabox/'
+#source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
 ruby '2.4.0'
@@ -23,6 +23,7 @@ gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
 gem 'open4'
+gem 'cyrillizer'
 
 gem 'sass-rails'
 gem 'webpacker'
