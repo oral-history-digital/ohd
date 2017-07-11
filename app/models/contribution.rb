@@ -4,17 +4,17 @@ class Contribution < ActiveRecord::Base
   # a contribution to the Archive in a specific area (contribution_type)
 
   belongs_to :interview
+  belongs_to :person, 
+    -> { includes(:translations) }
   belongs_to :contributor, 
-    -> { includes(:translations) },
-    # the following line should  be added  after the migration move_contributors_to_people
-    class_name: 'Person'
+    -> { includes(:translations) }
 
 
 
   validates_associated :interview, :contributor
   validates_presence_of :contribution_type
   validates :contribution_type, inclusion: %w(interview interviewee proof_reading research segmentation transcript translation)
-  validates_uniqueness_of :contributor_id, :scope => [ :interview_id, :contribution_type ]
+  validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
 
   #before_create :update_contributor
 
