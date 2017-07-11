@@ -6,7 +6,7 @@ class ExtractPeopleAndHistoryFromInterviews < ActiveRecord::Migration[5.0]
       last_locale = locales.pop
 
       I18n.locale = last_locale
-      person = Person.create( 
+      person = Person.find_or_create_by( 
         first_name: i.first_name,
         last_name: i.last_name,
         birth_name: i.birth_name,
@@ -16,7 +16,7 @@ class ExtractPeopleAndHistoryFromInterviews < ActiveRecord::Migration[5.0]
         gender: (i.gender ? 'male' : 'female')
       )
 
-      history = History.create(
+      history = History.find_or_create_by(
         forced_labor_details: i.forced_labor_details,
         return_date: i.return_date,
         deportation_date: i.deportation_date,
@@ -46,7 +46,7 @@ class ExtractPeopleAndHistoryFromInterviews < ActiveRecord::Migration[5.0]
         )
       end
 
-      Contribution.create contributor_id: person.id, contribution_type: 'interviewee', interview_id: i.id
+      Contribution.create person_id: person.id, contribution_type: 'interviewee', interview_id: i.id
     end
 
     # than remove the columns from interview and interview_translations
