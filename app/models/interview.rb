@@ -40,43 +40,43 @@ class Interview < ActiveRecord::Base
            :source => :person,
            :through => :contributions
 
-  has_many :interview_contributors,
-  #has_many :interviewers,
+  #has_many :interview_contributors,
+  has_many :interviewers,
            -> {where("contributions.contribution_type = 'interview'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :transcript_contributors,
-  #has_many :transcriptors,
+  #has_many :transcript_contributors,
+  has_many :transcriptors,
            -> {where("contributions.contribution_type = 'transcript'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :translation_contributors,
-  #has_many :translators,
+  #has_many :translation_contributors,
+  has_many :translators,
            -> {where("contributions.contribution_type = 'translation'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :proofreading_contributors,
-  #has_many :proofreaders,
+  #has_many :proofreading_contributors,
+  has_many :proofreaders,
            -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :segmentation_contributors,
-  #has_many :segmentators,
+  #has_many :segmentation_contributors,
+  has_many :segmentators,
            -> {where("contributions.contribution_type = 'segmentation'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :documentation_contributors,
-  #has_many :researchers,
+  #has_many :documentation_contributors,
+  has_many :researchers,
            -> {where("contributions.contribution_type = 'research'")},
            :class_name => 'Person',
            :source => :person,
@@ -100,10 +100,10 @@ class Interview < ActiveRecord::Base
   has_many :registry_entries,
            :through => :registry_references
 
-  translates :first_name, :other_first_names, :last_name, :birth_name,
-             :return_date, :forced_labor_details,
-             :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+  #translates :first_name, :other_first_names, :last_name, :birth_name,
+             #:return_date, :forced_labor_details,
+             #:interviewers, :transcriptors, :translators,
+             #:proofreaders, :segmentators, :researchers
 
   #validate :has_standard_name
 
@@ -240,13 +240,13 @@ class Interview < ActiveRecord::Base
     # Check whether we've got the requested locale. If not fall back to the
     # default locale.
     used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless translations.select {|t| t.locale.to_sym == l}.blank?
+      break l unless interviewees.first.translations.select {|t| t.locale.to_sym == l}.blank?
     end
     return nil unless used_locale.is_a?(Symbol)
 
     # Build last name with a locale-specific pattern.
-    last_name = last_name(used_locale) || ''
-    birth_name = birth_name(used_locale)
+    last_name = interviewees.first.last_name(used_locale) || ''
+    birth_name = interviewees.first.birth_name(used_locale)
     lastname_with_birthname = if birth_name.blank?
                                 last_name
                               else
@@ -255,9 +255,9 @@ class Interview < ActiveRecord::Base
 
     # Build first name.
     first_names = []
-    first_name = first_name(used_locale)
+    first_name = interviewees.first.first_name(used_locale)
     first_names << first_name unless first_name.blank?
-    other_first_names = other_first_names(used_locale)
+    other_first_names = interviewees.first.other_first_names(used_locale)
     first_names << other_first_names unless other_first_names.blank?
 
     # Combine first and last name with a locale-specific pattern.
@@ -273,19 +273,14 @@ class Interview < ActiveRecord::Base
   end
 
   def short_title(locale)
-    [first_name(locale), last_name(locale)].join(' ')
+    [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
   end
 
   def anonymous_title(locale)
     name_parts = []
-    name_parts << first_name(locale) unless first_name(locale).blank?
-    name_parts << "#{(last_name(locale).blank? ? '' : last_name(locale)).strip.chars.first}."
+    name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
+    name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
     name_parts.join(' ')
-  end
-
-  def year_of_birth
-    date = read_attribute(:date_of_birth)
-    date.blank? ? '?' : date[/(19|20)\d{2}/]
   end
 
   def video

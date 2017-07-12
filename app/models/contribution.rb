@@ -6,12 +6,10 @@ class Contribution < ActiveRecord::Base
   belongs_to :interview
   belongs_to :person, 
     -> { includes(:translations) }
-  belongs_to :contributor, 
-    -> { includes(:translations) }
+  #belongs_to :contributor, 
+    #-> { includes(:translations) }
 
-
-
-  validates_associated :interview, :contributor
+  validates_associated :interview, :person
   validates_presence_of :contribution_type
   validates :contribution_type, inclusion: %w(interview interviewee proof_reading research segmentation transcript translation)
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
