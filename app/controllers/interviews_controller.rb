@@ -10,11 +10,8 @@ class InterviewsController < BaseController
   #actions :show
 
   def show
-
-
-
     @interview = Interview.find_by_archive_id(params[:id])
-
+    render layout: 'webpacker'
     #wants.html do
     #  not_found if @object.nil?
     #  render :show

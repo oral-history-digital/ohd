@@ -2,13 +2,14 @@
 <div class="intervieweeTitle">
   <h1><%= @interview.full_title(I18n.locale) %></h1>
   <p>
-    <%= @interview.gender ? t(:male, :scope => 'personal_data') : t(:female, :scope => 'personal_data') %>,
+    <%= t(@interview.interviewees.first.gender) %>,
     <%= t(:born, :scope => 'personal_data') %>
-    <%= @interview.year_of_birth %>
+    <%= @interview.interviewees.first.year_of_birth %>
   </p>
   <%= render :partial => 'user_contents/save', :object => InterviewReference.for_interview(@interview) %>
 </div>
 
+<% if false %>
 <div id="fragmentOverview">
   <div id="tabsOverview">
 
@@ -58,3 +59,6 @@
 
 <%= render :partial => "gallery" %>
 <%# end %><%# cache %>
+<% else %>
+ <%= react_component('Interview', {source: "http://www.w3schools.com/html/mov_bbb.mp4"}) %>
+<% end %>
