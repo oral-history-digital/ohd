@@ -1,21 +1,15 @@
 class InterviewsController < BaseController
 
-  layout 'interview', :only => :show
+  #layout 'interview', :only => :show
 
   helper :interview
 
   before_action :featured_registry_entry, :only => :show
   skip_before_action :current_search_for_side_panel, :except => :show
 
-  #actions :show
-
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     render layout: 'webpacker'
-    #wants.html do
-    #  not_found if @object.nil?
-    #  render :show
-    #end
   end
 
   def text_materials
