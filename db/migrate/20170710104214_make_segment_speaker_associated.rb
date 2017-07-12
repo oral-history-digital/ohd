@@ -2,7 +2,7 @@ require 'cyrillizer'
 
 class MakeSegmentSpeakerAssociated < ActiveRecord::Migration[5.0]
   def change
-    add_column :segments, :speaker_id, :integer
+    #add_column :segments, :speaker_id, :integer
 
     Segment.find_each do |segment|
       #p "*** working: Segment #{segment.id} of Interview #{segment.interview.id}"
