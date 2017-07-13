@@ -46,7 +46,7 @@ export default class Navigation extends React.Component {
 
   playPause(){
     let css = 'video-';
-    css += this.state.videoStatus === 'paused' ? 'play' : 'pause'; 
+    css += this.props.videoStatus === 'paused' ? 'play' : 'pause'; 
     return <div className={css}
              ref={(playPauseButton) => {this.playPauseButton = playPauseButton}} 
              onClick={() => this.props.handleVideoPlayPause()} 
