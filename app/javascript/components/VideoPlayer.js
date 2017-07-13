@@ -5,7 +5,7 @@ export default class VideoPlayer extends React.Component {
   componentDidUpdate() {
     if (this.video) {
       this.setVideoTime()
-      this.setVideoVolumne()
+      this.setVideoVolume()
       this.setVideoStatus()
     }
   }
@@ -16,8 +16,8 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  setVideoVolumne() {
-    this.video.volume = this.props.videoVolume;
+  setVideoVolume() {
+    this.video.volume = this.props.volume;
   }
 
   setVideoStatus() {
@@ -30,7 +30,6 @@ export default class VideoPlayer extends React.Component {
       <video ref={(video) => { this.video = video; }}  
         onTimeUpdate={(event) => {this.props.handleVideoTimeUpdate(event)}}
         onEnded={(event) => {this.props.handleVideoEnded(event)}}
-        onVolumeChange={this.props.handleVideoVolumeChange}
       >
         <source src={this.props.src}/>
       </video>
@@ -41,5 +40,4 @@ export default class VideoPlayer extends React.Component {
 VideoPlayer.propTypes = {
   handleVideoTimeUpdate: React.PropTypes.func,
   handleVideoEnded: React.PropTypes.func,
-  handleVideoVolumeChange: React.PropTypes.func,
 };
