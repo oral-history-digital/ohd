@@ -2,14 +2,21 @@ import React from 'react';
 
 export default class VideoPlayer extends React.Component {
 
+  componentDidUpdate() {
+    this.setVideoState()
+  }
+
+  setVideoState() {
+    if (this.video) {
+      this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+    }
+  }
+
   render () {
     return (
       <video ref={(video) => { this.video = video; }}  
-        onTimeUpdate={(event) => {this.handleVideoTimeUpdate(event)}}
-        onEnded={(event) => {this.handleVideoEnded(event)}}
-        onVolumeChange={this.handleVideoVolumeChange}
       >
-        <source src={this.url()}/>
+        <source src={this.props.src}/>
       </video>
     );
   }

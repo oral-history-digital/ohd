@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/pages'
 
 import Navigation from '../components/Navigation';
+import VideoPlayer from '../components/VideoPlayer';
 
 //let API = Constants.API;
 
@@ -38,40 +39,12 @@ export default class Pages extends React.Component {
     //this.loadPages(nextProps);
   }
 
-  componentDidUpdate() {
-    this.setVideoState()
-  }
-
-  componentWillUnmount() {
-    //PageStore.removeChangeListener(this._onChange);
-  }
-
-
-  videoPlayer() {
-    return (
-      <video ref={(video) => { this.video = video; }} 
-        onTimeUpdate={(event) => {this.handleVideoTimeUpdate(event)}}
-        onEnded={(event) => {this.handleVideoEnded(event)}}
-        onVolumeChange={this.handleVideoVolumeChange}
-      >
-        <source src={this.props.src}/>
-      </video>
-    )
-  }
-
-  setVideoState() {
-    if (this.video) {
-      if (this.video.duration > 0) {
-        this.video.currentTime = this.state.videoTime * this.video.duration;
-      }
-      this.video.volume = this.state.videoVolume;
-      this.state.videoStatus === 'play' ? this.video.play() : this.video.pause();
-    }
-  }
-
   handleVideoTimeUpdate(event) {
-    let value = (event.target.currentTime / this.video.duration);
-    //PageActionCreators.setVideoControlsTime(value);
+    let value = (event.target.currentTime / event.target.duration);
+    //this.setState({ 
+      //videoTime: value,
+      ////videoStatus: 'play',
+    //})
   }
 
   handleVideoEnded(event) {
@@ -94,10 +67,16 @@ export default class Pages extends React.Component {
     //NavigationActionCreators.setVideoTime(this.state.videoTime + 0.001);
   }
 
+        //{this.videoPlayer()}
   render() {
     return (
       <div className='app'>
-        {this.videoPlayer()}
+        <VideoPlayer 
+          src={this.props.src} 
+          videoStatus={this.state.videoStatus}
+          videoTime={this.state.videoTime}
+          videoVolume={this.state.videoVolume}
+        />
         <Navigation 
           videoStatus={this.state.videoStatus}
           videoTime={this.state.videoTime}
