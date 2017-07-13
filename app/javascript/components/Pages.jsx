@@ -81,6 +81,19 @@ export default class Pages extends React.Component {
     //PageActionCreators.setVideoStatus('paused');
   }
 
+  handleVideoPlayPause() {
+    this.setState(function(prevState, props) {
+      let videoStatus;
+      if (prevState.videoStatus === 'paused') {
+        videoStatus = 'play'
+      } else {
+        videoStatus = 'paused'
+      }
+      return { videoStatus: videoStatus }
+    });
+    //NavigationActionCreators.setVideoTime(this.state.videoTime + 0.001);
+  }
+
   render() {
     return (
       <div className='app'>
@@ -90,6 +103,7 @@ export default class Pages extends React.Component {
           videoTime={this.state.videoTime}
           videoVolume={this.state.videoVolume}
           lang={this.state.lang}
+          handleVideoPlayPause={this.handleVideoPlayPause.bind(this)}
         />
       </div>
     );
