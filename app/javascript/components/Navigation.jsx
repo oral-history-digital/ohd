@@ -38,15 +38,15 @@ export default class Navigation extends React.Component {
   }
 
   timeWidth() {
-    let value = this.props.videoTime * 1152;
+    let value = this.props.time * 1152;
     return value + 'px';
   }
 
-  videoTime(){
+  time(){
     return (<div className='video-time'>
               <div className='time-past' style={{width: this.timeWidth()}}/>
-              <input type='range' min='0' max='1' value={this.props.videoTime} 
-                ref={(videoTime) => {this._videoTime = videoTime}}
+              <input type='range' min='0' max='1' value={this.props.time} 
+                ref={(time) => {this._time = time}}
                 onChange={(event) => this.handleVideoTime(event)} 
               />
             </div>);
@@ -55,7 +55,7 @@ export default class Navigation extends React.Component {
   handleVideoVolume(event) {
     //NavigationActionCreators.setVideoVolume(event.target.value);
     //NavigationActionCreators.setVideoControlsVolume(event.target.value);
-    //NavigationActionCreators.setVideoTime(this.state.videoTime + 0.001);
+    //NavigationActionCreators.setVideoTime(this.state.time + 0.001);
   }
 
   handleVideoTime(event) {
@@ -75,7 +75,7 @@ export default class Navigation extends React.Component {
         {this.lang()}
         {this.playPause()}
         {this.videoVolume()}
-        {this.videoTime()}
+        {this.time()}
       </div>
     );
   }

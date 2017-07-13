@@ -24,6 +24,7 @@ export default class Pages extends React.Component {
     this.state = {
       videoStatus: 'paused',
       videoTime: 0,
+      navigationTime: 0,
       videoVolume: 1,
       lang: 'de',
     }
@@ -40,11 +41,10 @@ export default class Pages extends React.Component {
   }
 
   handleVideoTimeUpdate(event) {
-    let value = (event.target.currentTime / event.target.duration);
-    //this.setState({ 
-      //videoTime: value,
-      ////videoStatus: 'play',
-    //})
+    let navigationTime = (event.target.currentTime / event.target.duration);
+    this.setState({ 
+      navigationTime: navigationTime,
+    })
   }
 
   handleVideoEnded(event) {
@@ -76,10 +76,11 @@ export default class Pages extends React.Component {
           videoStatus={this.state.videoStatus}
           videoTime={this.state.videoTime}
           videoVolume={this.state.videoVolume}
+          handleVideoTimeUpdate={this.handleVideoTimeUpdate.bind(this)}
         />
         <Navigation 
           videoStatus={this.state.videoStatus}
-          videoTime={this.state.videoTime}
+          time={this.state.navigationTime}
           videoVolume={this.state.videoVolume}
           lang={this.state.lang}
           handleVideoPlayPause={this.handleVideoPlayPause.bind(this)}
