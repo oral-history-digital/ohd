@@ -4,7 +4,7 @@ import '../styles/pages'
 import Navigation from '../components/Navigation';
 import VideoPlayer from '../components/VideoPlayer';
 
-export default class Pages extends React.Component {
+export default class Interview extends React.Component {
   
   constructor(props, context) {
     super(props, context);
