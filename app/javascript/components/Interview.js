@@ -18,7 +18,7 @@ export default class Interview extends React.Component {
     }
   }
 
-  handleVideoTimeUpdate(event) {
+  handleVideoTimeChange(event) {
     let navigationTime = (event.target.currentTime / event.target.duration);
     this.setState({ 
       navigationTime: navigationTime,
@@ -72,7 +72,7 @@ export default class Interview extends React.Component {
           videoStatus={this.state.videoStatus}
           videoTime={this.state.videoTime}
           volume={this.state.volume}
-          handleVideoTimeUpdate={this.handleVideoTimeUpdate.bind(this)}
+          handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
           handleVideoEnded={this.handleVideoEnded.bind(this)}
         />
         <Navigation 

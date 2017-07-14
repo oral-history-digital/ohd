@@ -12,7 +12,6 @@ export default class Navigation extends React.Component {
     let css = 'video-';
     css += this.props.videoStatus === 'paused' ? 'play' : 'pause'; 
     return <div className={css}
-             ref={(playPauseButton) => {this.playPauseButton = playPauseButton}} 
              onClick={() => this.props.handleNavigationPlayPause()} 
            />;  
   }
@@ -25,8 +24,7 @@ export default class Navigation extends React.Component {
   volume(){
     return (<div className='video-volume'>
               <div className='turned-on' style={{width: this.volumeWidth()}}/>
-              <input type='range' min='0' max='1' step='0.1' value={this.props.volume}  
-                ref={(volume) => {this._volume = volume}}
+              <input type='range' min='0' max='1' step='0.0001' value={this.props.volume}  
                 onChange={(event) => this.props.handleNavigationVolumeChange(event)} 
               />
             </div>);
@@ -40,8 +38,7 @@ export default class Navigation extends React.Component {
   time(){
     return (<div className='video-time'>
               <div className='time-past' style={{width: this.timeWidth()}}/>
-              <input type='range' min='0' max='1' value={this.props.time} 
-                ref={(time) => {this._time = time}}
+              <input type='range' min='0' max='1' step='0.0001' value={this.props.time} 
                 onChange={(event) => this.props.handleNavigationTimeChange(event)} 
               />
             </div>);
