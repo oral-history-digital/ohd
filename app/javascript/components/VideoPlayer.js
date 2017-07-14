@@ -3,8 +3,8 @@ import React from 'react';
 export default class VideoPlayer extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
-    let rerender = this.props.videoStatus !== nextProps.videoStatus || 
-      this.props.videoTime !== nextProps.videoTime || 
+    let rerender = this.props.playPause !== nextProps.playPause || 
+      this.props.time !== nextProps.time || 
       this.props.volume !== nextProps.volume 
     return rerender;
   }
@@ -18,9 +18,9 @@ export default class VideoPlayer extends React.Component {
   }
 
   setVideoTime(prevProps) {
-    if (prevProps.videoTime !== this.props.videoTime) {
+    if (prevProps.time !== this.props.time) {
       //debugger;
-      this.video.currentTime = this.props.videoTime * this.video.duration;
+      this.video.currentTime = this.props.time * this.video.duration;
     }
   }
 
@@ -31,8 +31,8 @@ export default class VideoPlayer extends React.Component {
   }
 
   setVideoStatus(prevProps) {
-    if (prevProps.videoStatus !== this.props.videoStatus) {
-      this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+    if (prevProps.playPause !== this.props.playPause) {
+      this.props.playPause === 'play' ? this.video.play() : this.video.pause();
     }
   }
 

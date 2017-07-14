@@ -5,7 +5,7 @@ export default class Navigation extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     let rerender = this.props.lang !== nextProps.lang || 
-      this.props.videoStatus !== nextProps.videoStatus || 
+      this.props.playPause !== nextProps.playPause || 
       this.props.time !== nextProps.time || 
       this.props.volume !== nextProps.volume 
     return rerender;
@@ -22,7 +22,7 @@ export default class Navigation extends React.Component {
 
   playPause(){
     let css = 'video-';
-    css += this.props.videoStatus === 'paused' ? 'play' : 'pause'; 
+    css += this.props.playPause === 'paused' ? 'play' : 'pause'; 
     return <div className={css}
              onClick={() => this.props.handleNavigationPlayPause()} 
            />;  

@@ -11,7 +11,7 @@ export default class Interview extends React.Component {
     super(props, context);
 
     this.state = {
-      videoStatus: 'paused',
+      playPause: 'paused',
       videoTime: 0,
       navigationTime: 0,
       transcriptTime: 0,
@@ -30,7 +30,7 @@ export default class Interview extends React.Component {
 
   handleVideoEnded(event) {
     this.setState({ 
-      videoStatus: 'paused',
+      playPause: 'paused',
       videoTime: 0,
       navigationTime: 0,
     })
@@ -38,13 +38,13 @@ export default class Interview extends React.Component {
 
   handleNavigationPlayPause() {
     this.setState(function(prevState, props) {
-      let videoStatus;
-      if (prevState.videoStatus === 'paused') {
-        videoStatus = 'play'
+      let playPause;
+      if (prevState.playPause === 'paused') {
+        playPause = 'play'
       } else {
-        videoStatus = 'paused'
+        playPause = 'paused'
       }
-      return { videoStatus: videoStatus }
+      return { playPause: playPause }
     });
   }
 
@@ -74,14 +74,14 @@ export default class Interview extends React.Component {
       <div className='app'>
         <VideoPlayer 
           src={this.props.src} 
-          videoStatus={this.state.videoStatus}
-          videoTime={this.state.videoTime}
+          playPause={this.state.playPause}
+          time={this.state.videoTime}
           volume={this.state.volume}
           handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
           handleVideoEnded={this.handleVideoEnded.bind(this)}
         />
         <Navigation 
-          videoStatus={this.state.videoStatus}
+          playPause={this.state.playPause}
           time={this.state.navigationTime}
           volume={this.state.volume}
           duration={this.props.duration}
