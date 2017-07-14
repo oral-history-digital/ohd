@@ -18,9 +18,9 @@ export default class VideoPlayer extends React.Component {
   }
 
   setVideoVolume(prevProps) {
-    //if (prevProps.volume !== this.props.volume) {
+    if (prevProps.volume !== this.props.volume) {
       this.video.volume = this.props.volume;
-    //}
+    }
   }
 
   setVideoStatus(prevProps) {

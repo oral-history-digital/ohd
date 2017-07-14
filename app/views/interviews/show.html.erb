@@ -60,5 +60,5 @@
 <%= render :partial => "gallery" %>
 <%# end %><%# cache %>
 <% else %>
- <%= react_component('Interview', {src: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"}) %>
+ <%= react_component('Interview', {src: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", interview_id: @interview.id, duration: @interview.duration}) %>
 <% end %>

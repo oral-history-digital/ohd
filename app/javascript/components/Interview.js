@@ -3,6 +3,7 @@ import '../styles/pages'
 
 import Navigation from '../components/Navigation';
 import VideoPlayer from '../components/VideoPlayer';
+import Transcript from '../components/Transcript';
 
 export default class Interview extends React.Component {
   
@@ -13,6 +14,7 @@ export default class Interview extends React.Component {
       videoStatus: 'paused',
       videoTime: 0,
       navigationTime: 0,
+      transcriptTime: 0,
       volume: 1,
       lang: 'de',
     }
@@ -22,6 +24,7 @@ export default class Interview extends React.Component {
     let navigationTime = (event.target.currentTime / event.target.duration);
     this.setState({ 
       navigationTime: navigationTime,
+      transcriptTime: navigationTime,
     })
   }
 
@@ -52,8 +55,10 @@ export default class Interview extends React.Component {
   }
 
   handleNavigationTimeChange(event) {
+    let transcriptTime = this.props.duration * event.target.value;
     this.setState({ 
       videoTime: event.target.value,
+      transcriptTime: transcriptTime,
     })
   }
 
@@ -84,6 +89,10 @@ export default class Interview extends React.Component {
           handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
           handleNavigationTimeChange={this.handleNavigationTimeChange.bind(this)}
           handleNavigationLangChange={this.handleNavigationLangChange.bind(this)}
+        />
+        <Transcript
+          time={this.state.transcriptTime}
+          interviewId={this.state.interviewId}
         />
       </div>
     );
