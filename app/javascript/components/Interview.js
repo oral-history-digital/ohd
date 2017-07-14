@@ -84,6 +84,7 @@ export default class Interview extends React.Component {
           videoStatus={this.state.videoStatus}
           time={this.state.navigationTime}
           volume={this.state.volume}
+          duration={this.props.duration}
           lang={this.state.lang}
           handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
           handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}

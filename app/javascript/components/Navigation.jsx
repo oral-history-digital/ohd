@@ -50,7 +50,7 @@ export default class Navigation extends React.Component {
   time(){
     return (<div className='video-time'>
               <div className='time-past' style={{width: this.timeWidth()}}/>
-              <input type='range' min='0' max='1' step='0.0001' value={this.props.time} 
+              <input type='range' min='0' max='1' step={1/this.props.duration} value={this.props.time} 
                 onChange={(event) => this.props.handleNavigationTimeChange(event)} 
               />
             </div>);
