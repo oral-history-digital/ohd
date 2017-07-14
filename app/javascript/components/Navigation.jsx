@@ -3,14 +3,9 @@ import '../styles/navigation'
 
 export default class Navigation extends React.Component {
 
-  changeLang() {
-    let lang = this.props.lang === 'de' ? 'en' : 'de'; 
-    //NavigationActionCreators.setLang(lang);
-  }
-
   lang() {
     let lang = this.props.lang === 'de' ? 'en' : 'de'; 
-    return <div className={'lang-' + lang} onClick={() => this.props.changeLang()} />;
+    return <div className={'lang-' + lang} onClick={() => this.props.handleNavigationLangChange()} />;
   }
 
   playPause(){
@@ -68,4 +63,5 @@ Navigation.propTypes = {
   handleNavigationPlayPause: React.PropTypes.func,
   handleNavigationVolumeChange: React.PropTypes.func,
   handleNavigationTimeChange: React.PropTypes.func,
+  handleNavigationLangChange: React.PropTypes.func,
 };

@@ -57,6 +57,13 @@ export default class Pages extends React.Component {
     })
   }
 
+  handleNavigationLangChange() {
+    let lang = this.state.lang === 'de' ? 'en' : 'de'; 
+    this.setState({ 
+      lang: lang,
+    })
+  }
+
   render() {
     return (
       <div className='app'>
@@ -76,6 +83,7 @@ export default class Pages extends React.Component {
           handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
           handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
           handleNavigationTimeChange={this.handleNavigationTimeChange.bind(this)}
+          handleNavigationLangChange={this.handleNavigationLangChange.bind(this)}
         />
       </div>
     );
