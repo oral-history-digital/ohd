@@ -3,6 +3,18 @@ import '../styles/navigation'
 
 export default class Navigation extends React.Component {
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let rerender = this.props.lang !== nextProps.lang || 
+      this.props.videoStatus !== nextProps.videoStatus || 
+      this.props.time !== nextProps.time || 
+      this.props.volume !== nextProps.volume 
+    return rerender;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps !== this.props;
+  }
+
   lang() {
     let lang = this.props.lang === 'de' ? 'en' : 'de'; 
     return <div className={'lang-' + lang} onClick={() => this.props.handleNavigationLangChange()} />;
@@ -57,8 +69,8 @@ export default class Navigation extends React.Component {
 }
 
 Navigation.propTypes = {
+  handleNavigationLangChange: React.PropTypes.func,
   handleNavigationPlayPause: React.PropTypes.func,
   handleNavigationVolumeChange: React.PropTypes.func,
   handleNavigationTimeChange: React.PropTypes.func,
-  handleNavigationLangChange: React.PropTypes.func,
 };

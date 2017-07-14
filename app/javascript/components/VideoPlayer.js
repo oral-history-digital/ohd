@@ -2,6 +2,13 @@ import React from 'react';
 
 export default class VideoPlayer extends React.Component {
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let rerender = this.props.videoStatus !== nextProps.videoStatus || 
+      this.props.videoTime !== nextProps.videoTime || 
+      this.props.volume !== nextProps.volume 
+    return rerender;
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.video) {
       this.setVideoTime(prevProps)
