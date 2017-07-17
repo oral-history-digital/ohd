@@ -8,9 +8,8 @@ export default class Transcript extends React.Component {
     super(props, context);
 
     this.state = {
-      //transcriptTime: 0,
-      //lang: 'de',
       segments: [],
+      shownSegments: [],
     }
   }
 
@@ -25,37 +24,42 @@ export default class Transcript extends React.Component {
     this.loadSegments();
   }
 
-  // sth. has to be done  here for paginated content
-  //componentDidUpdate(prevProps, prevState) {
-    //if (prevState.segments.length === 0 && this.state.segments.length > 0) {
-      //this.loadSegments();
-    //}
-  //}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.time !== this.props.time) {
+      this.setShownSegments();
+    }
+  }
+
+  setShownSegments() {
+    let shownSegments = this.state.segments.filter( segment => {
+      return (segment.tape === 1 && segment.time >= this.props.time) && (segment.time <= this.props.time + 60);
+    })
+    this.setState({ shownSegments: shownSegments })
+  }
 
   loadSegments() {
     let url = '/' + this.props.lang + '/interviews/' + this.props.interviewId + '/segments';
-    debugger;
     request.get(url)
       .set('Accept', 'application/json')
       .end( (error, res) => {
         if (res) {
           if (res.error) {
-            debugger;
             console.log("loading segments failed: " + error);
           } else {
-            debugger;
             let json = JSON.parse(res.text);
-            this.setState({ segments: json });
+            this.setState({ 
+              segments: json,
+              shownSegments: json.slice(0,10) 
+            });
           }
         }
       });
   }
 
   render () {
-    debugger;
     return ( 
       <div>
-        {this.state.segments.map( (segment, index) => {
+        {this.state.shownSegments.map( (segment, index) => {
           segment.lang = this.state.lang;
           return <Segment data={segment} key={"segment-" + segment.id} />
         })}

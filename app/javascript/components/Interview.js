@@ -24,7 +24,7 @@ export default class Interview extends React.Component {
     let navigationTime = (event.target.currentTime / event.target.duration);
     this.setState({ 
       navigationTime: navigationTime,
-      transcriptTime: navigationTime,
+      transcriptTime: event.target.currentTime,
     })
   }
 
