@@ -3,7 +3,7 @@ class SegmentsController < ApplicationController
   def index
     segments = Segment.for_interview_id(params[:interview_id])#.paginate page: 1
     respond_to do |format|
-      format.json{ render json: segments.to_json }
+      format.json{ render json: segments }
     end
   end
 
