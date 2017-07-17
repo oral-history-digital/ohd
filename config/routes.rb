@@ -37,6 +37,7 @@ Rails.application.routes.draw do
           #get :stills
         #end
         #resources :registry_entries, only: [:show]
+        resources :segments, only: [:index]
         resources :tapes do
           collection do
             get :playlist

@@ -93,7 +93,8 @@ export default class Interview extends React.Component {
         />
         <Transcript
           time={this.state.transcriptTime}
-          interviewId={this.state.interviewId}
+          interviewId={this.props.interviewId}
+          lang={this.state.lang}
         />
       </div>
     );
