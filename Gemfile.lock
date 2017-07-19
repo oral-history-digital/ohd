@@ -69,9 +69,6 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     airbrussh (1.2.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    archive-authorization (0.0.1)
-    archive-player (0.2.7)
-      activesupport (>= 2.3.5)
     arel (7.1.4)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -421,8 +418,6 @@ DEPENDENCIES
   activemodel-serializers-xml
   acts-as-dag!
   acts_as_taggable_on_steroids
-  archive-authorization
-  archive-player
   capistrano
   capybara
   celluloid
