@@ -21,11 +21,14 @@ export default class Interview extends React.Component {
   }
 
   handleVideoTimeChange(event) {
-    let navigationTime = (event.target.currentTime / event.target.duration);
-    this.setState({ 
-      navigationTime: navigationTime,
-      transcriptTime: event.target.currentTime,
-    })
+    let navigationTime = (event.target.currentTime / this.props.duration);
+    if (this.state.transcriptTime !== event.target.currentTime && this.state.navigationTime !== navigationTime) {
+      this.setState({ 
+        navigationTime: navigationTime,
+        transcriptTime: event.target.currentTime,
+        //videoTime: event.target.currentTime,
+      })
+    }
   }
 
   handleVideoEnded(event) {
@@ -33,6 +36,7 @@ export default class Interview extends React.Component {
       playPause: 'paused',
       videoTime: 0,
       navigationTime: 0,
+      transcriptTime: 0,
     })
   }
 
@@ -58,6 +62,7 @@ export default class Interview extends React.Component {
     let transcriptTime = this.props.duration * event.target.value;
     this.setState({ 
       videoTime: event.target.value,
+      navigationTime: event.target.value,
       transcriptTime: transcriptTime,
     })
   }
