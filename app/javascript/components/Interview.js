@@ -16,7 +16,7 @@ export default class Interview extends React.Component {
       navigationTime: 0,
       transcriptTime: 0,
       volume: 1,
-      lang: 'de',
+      lang: this.props.origLang,
     }
   }
 
@@ -68,7 +68,7 @@ export default class Interview extends React.Component {
   }
 
   handleNavigationLangChange() {
-    let lang = this.state.lang === 'de' ? 'en' : 'de'; 
+    let lang = this.state.lang === 'de' ? this.props.origLang : 'de'; 
     this.setState({ 
       lang: lang,
     })

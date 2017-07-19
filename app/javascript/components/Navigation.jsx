@@ -12,6 +12,7 @@ export default class Navigation extends React.Component {
   }
 
   lang() {
+    //let lang = this.props.lang === 'de' ? this.props.origLang : 'de'; 
     let lang = this.props.lang === 'de' ? 'en' : 'de'; 
     return <div className={'lang-' + lang} onClick={() => this.props.handleNavigationLangChange()} />;
   }

@@ -5,7 +5,7 @@ export default class Segment extends React.Component {
     return (
       <div>
         <span>{this.props.data.time}</span>
-        <span>{this.props.data.transcript}</span>
+        <span>{this.props.data.transcripts[this.props.data.lang]}</span>
       </div>
     )
   }

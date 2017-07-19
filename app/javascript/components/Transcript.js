@@ -38,7 +38,8 @@ export default class Transcript extends React.Component {
   }
 
   loadSegments() {
-    let url = '/' + this.props.lang + '/interviews/' + this.props.interviewId + '/segments';
+    //let url = '/' + this.props.lang + '/interviews/' + this.props.interviewId + '/segments';
+    let url = '/de/interviews/' + this.props.interviewId + '/segments';
     request.get(url)
       .set('Accept', 'application/json')
       .end( (error, res) => {
@@ -60,7 +61,7 @@ export default class Transcript extends React.Component {
     return ( 
       <div>
         {this.state.shownSegments.map( (segment, index) => {
-          segment.lang = this.state.lang;
+          segment.lang = this.props.lang;
           return <Segment data={segment} key={"segment-" + segment.id} />
         })}
       </div>

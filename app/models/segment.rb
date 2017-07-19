@@ -2,7 +2,7 @@ require 'globalize'
 
 class Segment < ActiveRecord::Base
 
-  belongs_to :interview, -> { includes(:translations) }
+  belongs_to :interview
   belongs_to :speaking_person, 
     -> { includes(:translations) },
     class_name: 'Person',

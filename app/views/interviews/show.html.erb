@@ -60,6 +60,6 @@
 <%= render :partial => "gallery" %>
 <%# end %><%# cache %>
 <% else %>
- <%= react_component('Interview', {src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", interview_id: @interview.id, duration: 3560.28}) %>
+ <%= react_component('Interview', {src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", interview_id: @interview.id, duration: 3560.28, orig_lang: @interview.language.code}) %>
  <%#= react_component('Interview', {src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", interview_id: @interview.id, duration: @interview.duration.time}) %>
 <% end %>
