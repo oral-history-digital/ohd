@@ -9,7 +9,7 @@ class InterviewsController < BaseController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
-    render layout: 'webpacker'
+    render layout: 'responsive'
   end
 
   def text_materials
