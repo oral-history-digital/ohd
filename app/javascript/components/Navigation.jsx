@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/navigation'
+import '../css/navigation'
 
 export default class Navigation extends React.Component {
 
