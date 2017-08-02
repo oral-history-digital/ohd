@@ -1,6 +1,5 @@
 import React from 'react';
 import '../css/pages'
-import '../css/r-archive.css'
 
 import Navigation from '../components/Navigation';
 import VideoPlayer from '../components/VideoPlayer';
