@@ -6,7 +6,7 @@
     <%= t(:born, :scope => 'personal_data') %>
     <%= @interview.interviewees.first.year_of_birth %>
   </p>
-  <%= render :partial => 'user_contents/save', :object => InterviewReference.for_interview(@interview) %>
+  <%#= render :partial => 'user_contents/save', :object => InterviewReference.for_interview(@interview) %>
 </div>
 
 <% if false %>
