@@ -29,6 +29,7 @@ gem 'sass-rails'
 gem 'webpacker'
 gem 'react-rails'
 gem 'foreman'
+gem 'slim-rails'
 
 # Gems specific to public archive app:
 gem 'sunspot_rails'
