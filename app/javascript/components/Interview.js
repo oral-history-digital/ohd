@@ -105,7 +105,7 @@ export default class Interview extends React.Component {
           handleVideoEnded={this.handleVideoEnded.bind(this)}
         />
         <InterviewTabs
-          time={this.state.transcriptTime}
+          transcriptTime={this.state.transcriptTime}
           interviewId={this.props.interviewId}
           lang={this.state.lang}
         />
