@@ -39,12 +39,17 @@ export default class VideoPlayer extends React.Component {
 
   render () {
     return (
-      <video ref={(video) => { this.video = video; }}  
-        onTimeUpdate={(event) => {this.props.handleVideoTimeChange(event)}}
-        onEnded={(event) => {this.props.handleVideoEnded(event)}}
-      >
-        <source src={this.props.src}/>
-      </video>
+      <div className='wrapper-video'>
+        <h1 className='video-title'>{this.props.title}</h1>
+        <div className='video-element'>
+          <video ref={(video) => { this.video = video; }}  
+            onTimeUpdate={(event) => {this.props.handleVideoTimeChange(event)}}
+            onEnded={(event) => {this.props.handleVideoEnded(event)}}
+          >
+            <source src={this.props.src}/>
+          </video>
+        </div>
+      </div>
     );
   }
 }

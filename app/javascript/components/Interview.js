@@ -1,9 +1,9 @@
 import React from 'react';
-import '../css/pages'
 
-import Navigation from '../components/Navigation';
+//import Navigation from '../components/Navigation';
 import VideoPlayer from '../components/VideoPlayer';
-import Transcript from '../components/Transcript';
+//import Transcript from '../components/Transcript';
+import InterviewTabs from '../components/InterviewTabs';
 
 export default class Interview extends React.Component {
   
@@ -74,29 +74,37 @@ export default class Interview extends React.Component {
     })
   }
 
+        //<Navigation 
+          //playPause={this.state.playPause}
+          //time={this.state.navigationTime}
+          //volume={this.state.volume}
+          //duration={this.props.duration}
+          //lang={this.state.lang}
+          //handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
+          //handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
+          //handleNavigationTimeChange={this.handleNavigationTimeChange.bind(this)}
+          //handleNavigationLangChange={this.handleNavigationLangChange.bind(this)}
+        ///>
+
+        //<Transcript
+          //time={this.state.transcriptTime}
+          //interviewId={this.props.interviewId}
+          //lang={this.state.lang}
+        ///>
+
   render() {
     return (
       <div className='app'>
         <VideoPlayer 
           src={this.props.src} 
+          title={this.props.title}
           playPause={this.state.playPause}
           time={this.state.videoTime}
           volume={this.state.volume}
           handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
           handleVideoEnded={this.handleVideoEnded.bind(this)}
         />
-        <Navigation 
-          playPause={this.state.playPause}
-          time={this.state.navigationTime}
-          volume={this.state.volume}
-          duration={this.props.duration}
-          lang={this.state.lang}
-          handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
-          handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
-          handleNavigationTimeChange={this.handleNavigationTimeChange.bind(this)}
-          handleNavigationLangChange={this.handleNavigationLangChange.bind(this)}
-        />
-        <Transcript
+        <InterviewTabs
           time={this.state.transcriptTime}
           interviewId={this.props.interviewId}
           lang={this.state.lang}
