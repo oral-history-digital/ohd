@@ -109,7 +109,7 @@ header.site-header {
 
     .video-element {
       margin: 0;
-      img {
+      video, img {
         height: 100px;
         width: auto;
       }
@@ -156,7 +156,7 @@ header.site-header {
   @include screen-l {
     margin: 0 15%;
   }
-  img {
+  video, img {
     width: 100%;
   }
 }
