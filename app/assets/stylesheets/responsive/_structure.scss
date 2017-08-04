@@ -166,6 +166,12 @@ header.site-header {
   @include screen-m {
     float: left;
   }
+  display: none;
+}
+
+.column-content.active,
+.column-sidebar.active {
+  display: inline-block;
 }
 
 .column-content {

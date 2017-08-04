@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Transcript from '../components/Transcript';
 
@@ -8,34 +9,50 @@ export default class InterviewTabs extends React.Component {
     super(props, context);
 
     this.state = {
-      activeTab: 'transcript'
+      tabIndex: 1
     }
   }
 
   render() {
     return (
-      <div>
+      <Tabs 
+        selectedTabClassName='active' 
+        selectedTabPanelClassName='active' 
+        selectedIndex={this.state.tabIndex} 
+        onSelect={tabIndex => this.setState({ tabIndex })}
+        >
         <div className='content-tabs'>
-          <ul>
-            <li> Inhaltsverzeichnis</li>
-            <li className='active'> Transkript</li>
-            <li> Übersetzung</li>
-            <li> Suche</li>
-            <li> Karte</li>
-          </ul>
+          <TabList>
+            <Tab> Inhaltsverzeichnis</Tab>
+            <Tab> Transkript</Tab>
+            <Tab> Übersetzung</Tab>
+            <Tab> Suche</Tab>
+            <Tab> Karte</Tab>
+          </TabList>
         </div>
+
         <div className='wrapper-content'>
-          <div className='column-content'>
+          <TabPanel className='column-content'>
+            <h2>Any content 1</h2>
+          </TabPanel>
+          <TabPanel forceRender={true} className='column-content'>
             <Transcript
               time={this.props.transcriptTime}
               interviewId={this.props.interviewId}
               lang={this.props.lang}
             />
-          </div>
+          </TabPanel>
+          <TabPanel className='column-content'>
+            übersetzung
+          </TabPanel>
+          <TabPanel className='column-content'>
+            karte
+          </TabPanel>
+          <TabPanel className='column-content'>
+            suche
+          </TabPanel>
         </div>
-      </div>
+      </Tabs>
     );
   }
 }
-
-
