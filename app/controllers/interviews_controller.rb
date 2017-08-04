@@ -1,6 +1,6 @@
 class InterviewsController < BaseController
 
-  layout: 'responsive'
+  layout 'responsive'
 
   before_action :featured_registry_entry, :only => :show
   skip_before_action :current_search_for_side_panel, :except => :show
