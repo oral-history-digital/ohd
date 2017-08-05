@@ -42,8 +42,12 @@ export default class InterviewTabs extends React.Component {
               lang={this.props.interview.lang}
             />
           </TabPanel>
-          <TabPanel className='column-content'>
-            übersetzung
+          <TabPanel forceRender={true} className='column-content'>
+            <Transcript
+              time={this.props.transcriptTime}
+              interviewId={this.props.interview.id}
+              lang='de'
+            />
           </TabPanel>
           <TabPanel className='column-content'>
             karte
