@@ -32,7 +32,7 @@ class Segment < ActiveRecord::Base
                        .order(:media_id)}
 
 
-  scope :for_interview_id, ->(interview_id){ where('segments.interview_id = ?', interview_id) }
+  scope :for_interview_id, ->(interview_id){ includes(:interview).where('segments.interview_id = ?', interview_id) }
 
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
