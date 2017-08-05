@@ -240,18 +240,19 @@ class Interview < ActiveRecord::Base
   end
 
   def build_full_title_from_name_parts(locale)
+    first_interviewee = interviewees.first
     locale = locale.to_sym
 
     # Check whether we've got the requested locale. If not fall back to the
     # default locale.
     used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless interviewees.first.translations.select {|t| t.locale.to_sym == l}.blank?
+      break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
     end
     return nil unless used_locale.is_a?(Symbol)
 
     # Build last name with a locale-specific pattern.
-    last_name = interviewees.first.last_name(used_locale) || ''
-    birth_name = interviewees.first.birth_name(used_locale)
+    last_name = first_interviewee.last_name(used_locale) || ''
+    birth_name = first_interviewee.birth_name(used_locale)
     lastname_with_birthname = if birth_name.blank?
                                 last_name
                               else
@@ -260,9 +261,9 @@ class Interview < ActiveRecord::Base
 
     # Build first name.
     first_names = []
-    first_name = interviewees.first.first_name(used_locale)
+    first_name = first_interviewee.first_name(used_locale)
     first_names << first_name unless first_name.blank?
-    other_first_names = interviewees.first.other_first_names(used_locale)
+    other_first_names = first_interviewee.other_first_names(used_locale)
     first_names << other_first_names unless other_first_names.blank?
 
     # Combine first and last name with a locale-specific pattern.
