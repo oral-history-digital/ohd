@@ -16,12 +16,13 @@ export default class Interview extends React.Component {
       navigationTime: 0,
       transcriptTime: 0,
       volume: 1,
-      lang: this.props.origLang,
+      interview: JSON.parse(this.props.interview),
+      //lang: this.props.interview.lang,
     }
   }
 
   handleVideoTimeChange(event) {
-    let navigationTime = (event.target.currentTime / this.props.duration);
+    let navigationTime = (event.target.currentTime / this.props.interview.duration);
     if (this.state.transcriptTime !== event.target.currentTime && this.state.navigationTime !== navigationTime) {
       this.setState({ 
         navigationTime: navigationTime,
@@ -59,7 +60,7 @@ export default class Interview extends React.Component {
   }
 
   handleNavigationTimeChange(event) {
-    let transcriptTime = this.props.duration * event.target.value;
+    let transcriptTime = this.props.interview.duration * event.target.value;
     this.setState({ 
       videoTime: event.target.value,
       navigationTime: event.target.value,
@@ -68,7 +69,7 @@ export default class Interview extends React.Component {
   }
 
   handleNavigationLangChange() {
-    let lang = this.state.lang === 'de' ? this.props.origLang : 'de'; 
+    let lang = this.state.lang === 'de' ? this.props.interview.lang : 'de'; 
     this.setState({ 
       lang: lang,
     })
@@ -78,7 +79,7 @@ export default class Interview extends React.Component {
           //playPause={this.state.playPause}
           //time={this.state.navigationTime}
           //volume={this.state.volume}
-          //duration={this.props.duration}
+          //duration={this.props.interview.duration}
           //lang={this.state.lang}
           //handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
           //handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
@@ -88,7 +89,7 @@ export default class Interview extends React.Component {
 
         //<Transcript
           //time={this.state.transcriptTime}
-          //interviewId={this.props.interviewId}
+          //interviewId={this.props.interview.id}
           //lang={this.state.lang}
         ///>
 
@@ -97,7 +98,7 @@ export default class Interview extends React.Component {
       <div className='app'>
         <VideoPlayer 
           src={this.props.src} 
-          title={this.props.title}
+          title={this.state.interview.title}
           playPause={this.state.playPause}
           time={this.state.videoTime}
           volume={this.state.volume}
@@ -106,7 +107,7 @@ export default class Interview extends React.Component {
         />
         <InterviewTabs
           transcriptTime={this.state.transcriptTime}
-          interviewId={this.props.interviewId}
+          interview={this.state.interview}
           lang={this.state.lang}
         />
       </div>

@@ -1,8 +1,5 @@
 = react_component('Interview', { \
     src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", \
-    title: "#{@interview.full_title(I18n.locale)}", \
-    interview_id: @interview.id, \
-    duration: 3560.28, \
-    orig_lang: @interview.language.code \
+    interview: @interview.as_ams_json, \
   }) 
 

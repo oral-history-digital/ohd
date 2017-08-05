@@ -38,8 +38,8 @@ export default class InterviewTabs extends React.Component {
           <TabPanel forceRender={true} className='column-content'>
             <Transcript
               time={this.props.transcriptTime}
-              interviewId={this.props.interviewId}
-              lang={this.props.lang}
+              interviewId={this.props.interview.id}
+              lang={this.props.interview.lang}
             />
           </TabPanel>
           <TabPanel className='column-content'>
