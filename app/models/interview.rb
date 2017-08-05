@@ -203,6 +203,11 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
+  def as_ams_json
+    serialization = ActiveModelSerializers::SerializableResource.new(self, {})
+    serialization.to_json
+  end
+
   def transcript_locales
     language.code.split('/')
   end
