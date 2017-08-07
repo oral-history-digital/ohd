@@ -2,6 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Transcript from '../components/Transcript';
+import TableOfContents from '../components/TableOfContents';
 
 export default class InterviewTabs extends React.Component {
   
@@ -32,8 +33,12 @@ export default class InterviewTabs extends React.Component {
         </div>
 
         <div className='wrapper-content'>
-          <TabPanel className='column-content'>
-            <h2>Any content 1</h2>
+          <TabPanel forceRender={true} className='column-content'>
+            <TableOfContents
+              interviewId={this.props.interview.id}
+              lang={this.props.interview.lang}
+              handleChapterChange={this.props.handleChapterChange}
+            />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <Transcript

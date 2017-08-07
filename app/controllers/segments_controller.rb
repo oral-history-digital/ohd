@@ -1,7 +1,8 @@
 class SegmentsController < ApplicationController
 
   def index
-    segments = Segment.for_interview_id(params[:interview_id])#.paginate page: 1
+    segments = Segment.includes(:translations).for_interview_id(params[:interview_id])#.paginate page: 1
+    segments = segments.with_heading if params[:only_headings] 
     respond_to do |format|
       format.json{ render json: segments }
     end

@@ -1,8 +1,6 @@
 import React from 'react';
 
-//import Navigation from '../components/Navigation';
 import VideoPlayer from '../components/VideoPlayer';
-//import Transcript from '../components/Transcript';
 import InterviewTabs from '../components/InterviewTabs';
 
 export default class Interview extends React.Component {
@@ -75,6 +73,13 @@ export default class Interview extends React.Component {
     })
   }
 
+  handleChapterChange(time) {
+    this.setState({ 
+      videoTime: time,
+      transcriptTime: time,
+    })
+  }
+
         //<Navigation 
           //playPause={this.state.playPause}
           //time={this.state.navigationTime}
@@ -109,6 +114,7 @@ export default class Interview extends React.Component {
           transcriptTime={this.state.transcriptTime}
           interview={this.state.interview}
           lang={this.state.lang}
+          handleChapterChange={this.handleChapterChange.bind(this)}
         />
       </div>
     );

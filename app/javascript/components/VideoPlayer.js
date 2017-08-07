@@ -19,8 +19,7 @@ export default class VideoPlayer extends React.Component {
 
   setVideoTime(prevProps) {
     if (prevProps.time !== this.props.time) {
-      //debugger;
-      this.video.currentTime = this.props.time * this.video.duration;
+      this.video.currentTime = this.props.time;
     }
   }
 
