@@ -13,10 +13,10 @@ export default class TableOfContents extends React.Component {
   }
 
   componentDidMount() {
-    this.loadHeadings();
+    this.loadSegments();
   }
 
-  loadHeadings() {
+  loadSegments() {
     let url = '/de/interviews/' + this.props.interviewId + '/segments?only_headings=true';
     request.get(url)
       .set('Accept', 'application/json')
