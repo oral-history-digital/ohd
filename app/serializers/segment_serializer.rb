@@ -1,5 +1,5 @@
 class SegmentSerializer < ActiveModel::Serializer
-  attributes :id, :time, :tape_nbr, :transcripts#, :translation
+  attributes :id, :time, :tape_nbr, :transcripts, :mainheading, :subheading
 
   def time
     # timecode as seconds 
