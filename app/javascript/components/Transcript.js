@@ -13,13 +13,6 @@ export default class Transcript extends React.Component {
     }
   }
 
-  //shouldComponentUpdate(nextProps, nextState) {
-    //let rerender = 
-      ////this.props.lang !== nextProps.lang || 
-      //this.props.time !== nextProps.time 
-    //return rerender;
-  //}
-
   componentDidMount() {
     this.loadSegments();
   }
@@ -38,7 +31,6 @@ export default class Transcript extends React.Component {
   }
 
   loadSegments() {
-    //let url = '/' + this.props.lang + '/interviews/' + this.props.interviewId + '/segments';
     let url = '/de/interviews/' + this.props.interviewId + '/segments';
     request.get(url)
       .set('Accept', 'application/json')

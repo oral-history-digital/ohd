@@ -17,7 +17,6 @@ export default class TableOfContents extends React.Component {
   }
 
   loadHeadings() {
-    //let url = '/' + this.props.lang + '/interviews/' + this.props.interviewId + '/segments';
     let url = '/de/interviews/' + this.props.interviewId + '/segments?only_headings=true';
     request.get(url)
       .set('Accept', 'application/json')

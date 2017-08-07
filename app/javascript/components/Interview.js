@@ -11,19 +11,15 @@ export default class Interview extends React.Component {
     this.state = {
       playPause: 'paused',
       videoTime: 0,
-      navigationTime: 0,
       transcriptTime: 0,
       volume: 1,
       interview: JSON.parse(this.props.interview),
-      //lang: this.props.interview.lang,
     }
   }
 
   handleVideoTimeChange(event) {
-    let navigationTime = (event.target.currentTime / this.props.interview.duration);
-    if (this.state.transcriptTime !== event.target.currentTime && this.state.navigationTime !== navigationTime) {
+    if (this.state.transcriptTime !== event.target.currentTime) {
       this.setState({ 
-        navigationTime: navigationTime,
         transcriptTime: event.target.currentTime,
         //videoTime: event.target.currentTime,
       })
@@ -34,42 +30,7 @@ export default class Interview extends React.Component {
     this.setState({ 
       playPause: 'paused',
       videoTime: 0,
-      navigationTime: 0,
       transcriptTime: 0,
-    })
-  }
-
-  handleNavigationPlayPause() {
-    this.setState(function(prevState, props) {
-      let playPause;
-      if (prevState.playPause === 'paused') {
-        playPause = 'play'
-      } else {
-        playPause = 'paused'
-      }
-      return { playPause: playPause }
-    });
-  }
-
-  handleNavigationVolumeChange(event) {
-    this.setState({ 
-      volume: event.target.value,
-    })
-  }
-
-  handleNavigationTimeChange(event) {
-    let transcriptTime = this.props.interview.duration * event.target.value;
-    this.setState({ 
-      videoTime: event.target.value,
-      navigationTime: event.target.value,
-      transcriptTime: transcriptTime,
-    })
-  }
-
-  handleNavigationLangChange() {
-    let lang = this.state.lang === 'de' ? this.props.interview.lang : 'de'; 
-    this.setState({ 
-      lang: lang,
     })
   }
 
@@ -79,24 +40,6 @@ export default class Interview extends React.Component {
       transcriptTime: time,
     })
   }
-
-        //<Navigation 
-          //playPause={this.state.playPause}
-          //time={this.state.navigationTime}
-          //volume={this.state.volume}
-          //duration={this.props.interview.duration}
-          //lang={this.state.lang}
-          //handleNavigationPlayPause={this.handleNavigationPlayPause.bind(this)}
-          //handleNavigationVolumeChange={this.handleNavigationVolumeChange.bind(this)}
-          //handleNavigationTimeChange={this.handleNavigationTimeChange.bind(this)}
-          //handleNavigationLangChange={this.handleNavigationLangChange.bind(this)}
-        ///>
-
-        //<Transcript
-          //time={this.state.transcriptTime}
-          //interviewId={this.props.interview.id}
-          //lang={this.state.lang}
-        ///>
 
   render() {
     return (
