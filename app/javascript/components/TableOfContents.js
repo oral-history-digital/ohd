@@ -1,6 +1,5 @@
 import React from 'react';
 import request from 'superagent';
-import Heading from '../components/Heading';
 
 export default class TableOfContents extends React.Component {
 
@@ -8,7 +7,7 @@ export default class TableOfContents extends React.Component {
     super(props, context);
 
     this.state = {
-      segments: [],
+      headings: [],
     }
   }
 
@@ -27,19 +26,53 @@ export default class TableOfContents extends React.Component {
           } else {
             let json = JSON.parse(res.text);
             this.setState({ 
-              segments: json,
+              headings: this.prepareHeadings(json)
             });
           }
         }
       });
   }
 
+  prepareHeadings(segments) {
+    let mainIndex = 0;
+    let mainheading = '';
+    let subIndex = 0;
+    let subheading = '';
+    let headings = [];
+
+    segments.map( (segment, index) => {
+      
+      if (segment.mainheading !== '') {
+        mainIndex += 1;
+        subIndex = 0;
+        mainheading = mainIndex + '. ' + segment.mainheading;
+        headings.push({main: true, heading: mainheading, time: segment.time});
+      }
+      if (segment.subheading !== '') {
+        subIndex += 1;
+        subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
+        headings.push({main: false, heading: subheading, time: segment.time});
+      }
+    })
+
+    return headings;
+  }
+
+  content(heading) {
+    return (
+      <p className={heading.main ? 'mainheading' : 'subheading'}>
+        <a onClick={() => this.props.handleChapterChange(heading.time)}>
+          {heading.heading}
+        </a> 
+      </p>
+    );
+  }
+
   render () {
     return ( 
       <div>
-        {this.state.segments.map( (segment, index) => {
-          segment.lang = this.props.lang;
-          return <Heading data={segment} key={"segment-" + segment.id} handleChapterChange={this.props.handleChapterChange}/>
+        {this.state.headings.map( (heading, index) => {
+          return this.content(heading);
         })}
       </div>
     );
