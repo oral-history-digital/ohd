@@ -1,8 +1,10 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Transcript from '../components/Transcript';
 import TableOfContents from '../components/TableOfContents';
+import Transcript from '../components/Transcript';
+import SearchForm from '../components/SearchForm';
+import Locations from '../components/Locations';
 
 export default class InterviewTabs extends React.Component {
   
@@ -55,10 +57,10 @@ export default class InterviewTabs extends React.Component {
             />
           </TabPanel>
           <TabPanel className='column-content'>
-            karte
+            <SearchForm interviewId={this.props.interview.id}/>
           </TabPanel>
           <TabPanel className='column-content'>
-            suche
+            <Locations position={[37.9838, 23.7275]} zoom={13} />
           </TabPanel>
         </div>
       </Tabs>
