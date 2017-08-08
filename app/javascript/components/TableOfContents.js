@@ -58,9 +58,9 @@ export default class TableOfContents extends React.Component {
     return headings;
   }
 
-  content(heading) {
+  content(heading, index) {
     return (
-      <p className={heading.main ? 'mainheading' : 'subheading'}>
+      <p className={heading.main ? 'mainheading' : 'subheading'} key={'heading-' + index} >
         <a onClick={() => this.props.handleChapterChange(heading.time)}>
           {heading.heading}
         </a> 
@@ -72,7 +72,7 @@ export default class TableOfContents extends React.Component {
     return ( 
       <div>
         {this.state.headings.map( (heading, index) => {
-          return this.content(heading);
+          return this.content(heading, index);
         })}
       </div>
     );
