@@ -13,6 +13,7 @@ export default class Interview extends React.Component {
       videoTime: 0,
       transcriptTime: 0,
       volume: 1,
+      lang: 'de',
       interview: JSON.parse(this.props.interview),
     }
   }
@@ -34,7 +35,7 @@ export default class Interview extends React.Component {
     })
   }
 
-  handleChapterChange(time) {
+  handleSegmentClick(time) {
     this.setState({ 
       videoTime: time,
       transcriptTime: time,
@@ -57,7 +58,7 @@ export default class Interview extends React.Component {
           transcriptTime={this.state.transcriptTime}
           interview={this.state.interview}
           lang={this.state.lang}
-          handleChapterChange={this.handleChapterChange.bind(this)}
+          handleSegmentClick={this.handleSegmentClick.bind(this)}
         />
       </div>
     );

@@ -3,7 +3,7 @@ import React from 'react';
 export default class Segment extends React.Component {
   render () {
     return (
-      <p>
+      <p onClick={() => this.props.handleClick(this.props.data.time)}>
         <span>{this.props.data.time}</span>
         <span>{this.props.data.transcripts[this.props.data.lang]}</span>
       </p>

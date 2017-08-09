@@ -61,7 +61,7 @@ export default class TableOfContents extends React.Component {
   content(heading, index) {
     return (
       <p className={heading.main ? 'mainheading' : 'subheading'} key={'heading-' + index} >
-        <a onClick={() => this.props.handleChapterChange(heading.time)}>
+        <a onClick={() => this.props.handleSegmentClick(heading.time)}>
           {heading.heading}
         </a> 
       </p>

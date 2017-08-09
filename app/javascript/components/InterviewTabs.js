@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import TableOfContents from '../components/TableOfContents';
 import Transcript from '../components/Transcript';
-import SearchForm from '../components/SearchForm';
+import InterviewSearch from '../components/InterviewSearch';
 import Locations from '../components/Locations';
 
 export default class InterviewTabs extends React.Component {
@@ -39,7 +39,7 @@ export default class InterviewTabs extends React.Component {
             <TableOfContents
               interviewId={this.props.interview.id}
               lang={this.props.interview.lang}
-              handleChapterChange={this.props.handleChapterChange}
+              handleSegmentClick={this.props.handleSegmentClick}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
@@ -47,6 +47,7 @@ export default class InterviewTabs extends React.Component {
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang={this.props.interview.lang}
+              handleSegmentClick={this.props.handleSegmentClick}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
@@ -54,10 +55,15 @@ export default class InterviewTabs extends React.Component {
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang='de'
+              handleSegmentClick={this.props.handleSegmentClick}
             />
           </TabPanel>
           <TabPanel className='column-content'>
-            <SearchForm interviewId={this.props.interview.id}/>
+            <InterviewSearch 
+              interviewId={this.props.interview.id}
+              lang={this.props.lang}
+              handleSegmentClick={this.props.handleSegmentClick}
+          />
           </TabPanel>
           <TabPanel className='column-content'>
             <Locations position={[37.9838, 23.7275]} zoom={13} />

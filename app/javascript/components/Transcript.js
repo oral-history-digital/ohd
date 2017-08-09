@@ -54,7 +54,13 @@ export default class Transcript extends React.Component {
       <div>
         {this.state.shownSegments.map( (segment, index) => {
           segment.lang = this.props.lang;
-          return <Segment data={segment} key={"segment-" + segment.id} />
+          return (
+            <Segment 
+              data={segment} 
+              key={"segment-" + segment.id} 
+              handleClick={this.props.handleSegmentClick}
+            />
+          )
         })}
       </div>
     );
