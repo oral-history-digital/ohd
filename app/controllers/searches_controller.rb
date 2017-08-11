@@ -1,5 +1,7 @@
 class SearchesController < BaseController
 
+  layout 'responsive'
+
   prepend_before_action :redirect_unauthenticated_users
 
   # Handle search initialization.
@@ -30,6 +32,12 @@ class SearchesController < BaseController
       end
       format.js do
         render :index
+      end
+      format.json do
+        # TODO: just to test. rm following line afterwards.
+        @interviews = Interview.first(6)
+        #render json: {segments: @segments.map{|segment| ::SegmentSerializer.new(segment)}} 
+        render json: {} 
       end
     end
   end
@@ -104,6 +112,11 @@ class SearchesController < BaseController
       end
       format.js do
         @interview = @search.results.first
+      end
+      format.json do
+        # TODO: just to test. rm following line afterwards.
+        @segments = Segment.first(10)
+        render json: {segments: @segments.map{|segment| ::SegmentSerializer.new(segment)}} 
       end
     end
   end

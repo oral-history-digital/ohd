@@ -33,15 +33,15 @@ export default class FlyoutTabs extends React.Component {
           <Tab className='flyout-tab'> Hilfe </Tab>
         </TabList>
 
-        <TabPanel forceRender={true} className='column-content'>
+        <TabPanel className='column-content'>
           start
         </TabPanel>
-        <TabPanel forceRender={true} className='column-content'>
+        <TabPanel className='column-content'>
           login logout name
         </TabPanel>
-        <TabPanel forceRender={true} className='column-content'>
+        <TabPanel className='column-content'>
           <InterviewSearch
-            url='/de/suchen/neu'
+            url='/suchen'
             lang={this.props.lang}
           />
         </TabPanel>

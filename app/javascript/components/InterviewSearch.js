@@ -9,13 +9,13 @@ export default class InterviewSearch extends React.Component {
     super(props, context);
 
     this.state = {
-      results: [],
+      segments: [],
     }
   }
 
-  handleResults(segments) {
+  handleResults(results) {
     this.setState({ 
-      results: segments
+      segments: results.segments
     })
   }
 
@@ -23,10 +23,11 @@ export default class InterviewSearch extends React.Component {
     return ( 
       <div>
         <SearchForm 
+          url={this.props.url}
           interviewId={this.props.interviewId}
           handleResults={this.handleResults.bind(this)}
         />
-        {this.state.results.map( (segment, index) => {
+        {this.state.segments.map( (segment, index) => {
           segment.lang = this.props.lang;
           return (
             <Segment 

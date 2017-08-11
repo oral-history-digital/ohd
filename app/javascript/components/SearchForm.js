@@ -22,7 +22,7 @@ export default class SearchForm extends React.Component {
   }
 
   search() {
-    let url = '/searches/interview';
+    let url = this.props.url;
     request
       .get(url)
       .query({
