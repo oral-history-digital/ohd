@@ -38,38 +38,15 @@ html
         | Footer
 
     .wrapper-flyout
-      .flyout
-        h3.flyout-caption Flyout
-        .flyout-tab
-          | Startseite
-        .flyout-tab
-          | Account
-        .flyout-tab
-          | Suche
-        .flyout-tab.active
-          | Interview
-        .flyout-tab
-          | Sprache
-        .flyout-tab
-          | Arbeitsmappe
-        .flyout-tab
-          | Zuletzt angesehen
-        .flyout-tab
-          | Hilfe
+      = react_component 'FlyoutTabs', tab_index: tab_index_for_params
 
-        br
-        br
-        hr
-        br
-        .flyout-sub-tab
-          | Biografie
-        .flyout-sub-tab
-          | Bilder
-        .flyout-sub-tab
-          | Daten zur Zwangsarbeit
+      /.flyout-sub-tab
+        /| Biografie
+      /.flyout-sub-tab
+        /| Bilder
+      /.flyout-sub-tab
+        /| Daten zur Zwangsarbeit
 
-        / p = lorem.words 100
-        / p = lorem.words 100
 
     .flyout-toggle
       .icon-close

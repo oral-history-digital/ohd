@@ -1,6 +1,17 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def tab_index_for_params
+    case params[:controller]
+    when 'interview'
+      3
+    when 'searches'
+      2
+    else
+      0
+    end
+  end
+
   def external_url(page_token)
     begin
       url_for Project.external_links[page_token.to_s][I18n.locale.to_s]
