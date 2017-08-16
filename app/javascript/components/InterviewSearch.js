@@ -19,6 +19,21 @@ export default class InterviewSearch extends React.Component {
     })
   }
 
+  renderSegments() {
+    if(this.state.segments) {
+      this.state.segments.map( (segment, index) => {
+        segment.lang = this.props.lang;
+        return (
+          <Segment 
+            data={segment} 
+            key={"segment-" + segment.id} 
+            handleClick={this.props.handleSegmentClick}
+          />
+        )
+      })
+    }
+  }
+
   render () {
     return ( 
       <div>
@@ -27,16 +42,7 @@ export default class InterviewSearch extends React.Component {
           interviewId={this.props.interviewId}
           handleResults={this.handleResults.bind(this)}
         />
-        {this.state.segments.map( (segment, index) => {
-          segment.lang = this.props.lang;
-          return (
-            <Segment 
-              data={segment} 
-              key={"segment-" + segment.id} 
-              handleClick={this.props.handleSegmentClick}
-            />
-          )
-        })}
+        {this.renderSegments()}
       </div>
     );
   }
