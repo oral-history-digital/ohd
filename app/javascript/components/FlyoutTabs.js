@@ -15,6 +15,11 @@ export default class FlyoutTabs extends React.Component {
 
   handleTabClick(tabIndex) {
     switch(tabIndex) {
+      case 0:
+        if(window.location !== '/') {
+          window.location = '/';
+        }
+        break;
       case 2:
         if(window.location !== '/suchen') {
           window.location = '/suchen';
