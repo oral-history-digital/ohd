@@ -13,6 +13,18 @@ export default class FlyoutTabs extends React.Component {
     }
   }
 
+  handleTabClick(tabIndex) {
+    switch(tabIndex) {
+      case 2:
+        if(window.location !== '/suchen') {
+          window.location = '/suchen';
+        }
+        break;
+      default:
+        this.setState({ tabIndex })
+    }
+  }
+
   render() {
     return (
       <Tabs 
@@ -20,7 +32,7 @@ export default class FlyoutTabs extends React.Component {
         selectedTabClassName='active' 
         selectedTabPanelClassName='active' 
         selectedIndex={this.state.tabIndex} 
-        onSelect={tabIndex => this.setState({ tabIndex })}
+        onSelect={tabIndex => this.handleTabClick(tabIndex)}
         >
         <TabList>
           <Tab className='flyout-tab'> Startseite </Tab>
