@@ -1,5 +1,7 @@
-= react_component('Interview', { \
-    src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", \
-    interview: @interview.as_ams_json, \
-  }) 
-
+- if current_user
+  = react_component('Interview', { \
+      src: "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4", \
+      interview: @interview.as_ams_json, \
+    }) 
+- else 
+  = render partial: 'preview'
