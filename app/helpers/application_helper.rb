@@ -3,7 +3,7 @@ module ApplicationHelper
 
   def tab_index_for_params
     case params[:controller]
-    when 'interview'
+    when 'interviews'
       3
     when 'searches'
       2
