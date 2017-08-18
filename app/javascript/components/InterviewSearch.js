@@ -16,11 +16,7 @@ export default class InterviewSearch extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.state.interviews) {
-      if(this.state.interviews.length > 0) {
-        $('.wrapper-content').replaceWith(this.state.interviews);
-      }
-    }
+    this.renderInterviews();
   }
 
   handleResults(results) {
@@ -71,19 +67,9 @@ export default class InterviewSearch extends React.Component {
 
   renderInterviews() {
     if(this.state.interviews) {
-      //if(this.state.interviews.length > 0) {
-        $('.wrapper-content').html('kjjkjhkj');
-      //}
-      //return this.state.interviews.map( (interview, index) => {
-        //interview.lang = this.props.lang;
-        //return (
-          //<Segment 
-            //data={interview} 
-            //key={"interview-" + interview.id} 
-            //handleClick={this.handleInterviewClick}
-          ///>
-        //)
-      //})
+      if(this.state.interviews.length > 0) {
+        $('.wrapper-content').replaceWith(this.state.interviews);
+      }
     }
   }
 
@@ -102,15 +88,3 @@ export default class InterviewSearch extends React.Component {
   }
 }
 
-        //{
-      //this.state.segments.map( (segment, index) => {
-        //segment.lang = this.props.lang;
-        //return (
-          //<Segment 
-            //data={segment} 
-            //key={"segment-" + segment.id} 
-            //handleClick={this.props.handleSegmentClick}
-          ///>
-        //)
-      //})
-        //}
