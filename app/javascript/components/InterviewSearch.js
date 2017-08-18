@@ -51,15 +51,13 @@ export default class InterviewSearch extends React.Component {
   }
 
   renderFacets() {
-    if(this.state.facets) {
-      return this.state.facets.map( (facet, index) => {
+    if(this.state.facets && this.state.facets.query_facets) {
+      return this.state.facets.unqueried_facets.map( (facet, index) => {
         facet.lang = this.props.lang;
         return (
-          <Segment 
-            data={facet} 
-            key={"facet-" + facet.id} 
-            handleClick={this.handleFacetClick}
-          />
+          <div className='facet'>
+            ...
+          </div>
         )
       })
     }
