@@ -4,9 +4,9 @@
   <div class="contentImage200">
     <a href="<%= interview_path(:id => @interview.archive_id) -%>">
         <img src="<%= image_path "#{Rails.configuration.x.project}/teaser/Baschlai.jpg" %>" alt="<%= @interview.short_title(I18n.locale) -%>" title="" width="200" height="150" />
-        <h6><%= @interview.short_title(I18n.locale) -%>
+        <h6><%#= @interview.short_title(I18n.locale) -%>
           <br/>
-          <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s %><%= @interview.translated?(I18n.locale) ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+          <%#= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%#= @interview.language.to_s %><%#= @interview.translated?(I18n.locale) ? '<br/>' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
         </h6>
     </a>
   </div>
