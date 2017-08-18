@@ -15,9 +15,19 @@ export default class InterviewSearch extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    if(this.state.interviews) {
+      if(this.state.interviews.length > 0) {
+        $('.wrapper-content').replaceWith(this.state.interviews);
+      }
+    }
+  }
+
   handleResults(results) {
     this.setState({ 
-      segments: results.segments
+      segments: results.segments,
+      facets: results.facets,
+      interviews: results.interviews
     })
   }
 
@@ -25,9 +35,9 @@ export default class InterviewSearch extends React.Component {
     console.log('Please implement handleFacetClick in InterviewSearch-component');
   }
 
-  handleInterviewClick() {
-    console.log('Please implement handleInterviewClick in InterviewSearch-component');
-  }
+  //handleInterviewClick() {
+    //console.log('Please implement handleInterviewClick in InterviewSearch-component');
+  //}
 
   renderSegments() {
     if(this.state.segments) {
@@ -61,16 +71,19 @@ export default class InterviewSearch extends React.Component {
 
   renderInterviews() {
     if(this.state.interviews) {
-      return this.state.interviews.map( (interview, index) => {
-        interview.lang = this.props.lang;
-        return (
-          <Segment 
-            data={interview} 
-            key={"interview-" + interview.id} 
-            handleClick={this.handleInterviewClick}
-          />
-        )
-      })
+      //if(this.state.interviews.length > 0) {
+        $('.wrapper-content').html('kjjkjhkj');
+      //}
+      //return this.state.interviews.map( (interview, index) => {
+        //interview.lang = this.props.lang;
+        //return (
+          //<Segment 
+            //data={interview} 
+            //key={"interview-" + interview.id} 
+            //handleClick={this.handleInterviewClick}
+          ///>
+        //)
+      //})
     }
   }
 
