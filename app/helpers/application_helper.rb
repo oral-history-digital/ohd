@@ -7,8 +7,10 @@ module ApplicationHelper
       3
     when 'searches'
       2
-    else
+    when 'home'
       0
+    else
+      1
     end
   end
 
