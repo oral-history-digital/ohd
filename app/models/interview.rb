@@ -174,15 +174,9 @@ class Interview < ActiveRecord::Base
       string :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
-    end
-    text :person_name, :boost => 20 do
-      (
-      translations.map do |t|
+      text :person_name, :boost => 20 do
         build_full_title_from_name_parts(t.locale)
-      end.join(' ') + (" #{alias_names}" || '')
-      ).
-          strip.
-          squeeze(' ')
+      end
     end
 
   end
