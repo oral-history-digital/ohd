@@ -1,6 +1,7 @@
 class CreateLocationReferences < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
 
     create_table :location_references do |t|
       t.references :interview
@@ -18,11 +19,14 @@ class CreateLocationReferences < ActiveRecord::Migration
     add_index :location_references, :interview_id
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
 
     drop_table :location_references
 
+  end
   end
 
 end

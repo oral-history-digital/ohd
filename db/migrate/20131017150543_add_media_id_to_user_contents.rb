@@ -1,5 +1,6 @@
 class AddMediaIdToUserContents < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :eog
     change_table :user_contents do |t|
       t.string  :media_id
     end
@@ -18,8 +19,10 @@ class AddMediaIdToUserContents < ActiveRecord::Migration
       end
     end
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     say_with_time 're-adding media_id property to user_annotations' do
       # Set media_id property based on media_id attribute for all
       # UserAnnotations.
@@ -31,5 +34,6 @@ class AddMediaIdToUserContents < ActiveRecord::Migration
       end
     end
     remove_column :user_contents, :media_id
+  end
   end
 end

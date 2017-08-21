@@ -4,13 +4,17 @@ class ChangeHeadingLimits < ActiveRecord::Migration
   # which increases overall character length for utf-8 & Umlauts
 
   def self.up
+  unless Project.name.to_sym == :eog
     change_column :segments, :mainheading, :string, :limit => 250
     change_column :segments, :subheading, :string, :limit => 250
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     change_column :segments, :mainheading, :string, :limit => 100
     change_column :segments, :subheading, :string, :limit => 100
+  end
   end
 
 end

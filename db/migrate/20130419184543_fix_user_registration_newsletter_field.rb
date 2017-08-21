@@ -1,6 +1,7 @@
 class FixUserRegistrationNewsletterField < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
     # cleanup of created_at datetime values
     say_with_time 'cleanup of incorrect datetime values in user_registrations.created_at' do
       Rake::Task['cleanup:user_creation_dates'].execute
@@ -26,9 +27,12 @@ class FixUserRegistrationNewsletterField < ActiveRecord::Migration
     #end
     puts "\nUpdated #{index} user_registrations to apply newsletter settings."
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     remove_column :user_registrations, :newsletter_signup
+  end
   end
 
 end

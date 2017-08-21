@@ -1,5 +1,6 @@
 class ExtractPeopleAndHistoryFromInterviews < ActiveRecord::Migration[5.0]
   def change
+  unless Project.name.to_sym == :eog
     # first create Person with the necessary data from interviews and contributions
     Interview.find_each do |i|
       locales = i.translations.map(&:locale)
@@ -64,5 +65,6 @@ class ExtractPeopleAndHistoryFromInterviews < ActiveRecord::Migration[5.0]
     remove_column :interviews, :liberation_date
     remove_column :interviews, :alias_names
 
+  end
   end
 end

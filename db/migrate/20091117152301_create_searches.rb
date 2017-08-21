@@ -1,6 +1,7 @@
 class CreateSearches < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
 
     create_table :searches do |t|
       t.string :fulltext
@@ -17,11 +18,14 @@ class CreateSearches < ActiveRecord::Migration
     add_index :searches, [ :fulltext, :names ]
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
 
     drop_table :searches
 
+  end
   end
 
 end

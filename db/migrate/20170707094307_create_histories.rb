@@ -1,5 +1,6 @@
 class CreateHistories < ActiveRecord::Migration[5.0]
   def change
+  unless Project.name.to_sym == :eog
     create_table :histories do |t|
       t.references :person, foreign_key: true
 
@@ -21,5 +22,6 @@ class CreateHistories < ActiveRecord::Migration[5.0]
         History.drop_translation_table! 
       end
     end
+  end
   end
 end

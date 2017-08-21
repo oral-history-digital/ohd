@@ -1,5 +1,6 @@
 class MoveContributorsToPeople < ActiveRecord::Migration[5.0]
   def change
+  unless Project.name.to_sym == :eog
     add_column :contributions, :person_id, :integer
 
     Contributor.find_each do |c|
@@ -29,5 +30,6 @@ class MoveContributorsToPeople < ActiveRecord::Migration[5.0]
     drop_table :contributor_translations
 
     remove_column :contributions, :contributor_id
+  end
   end
 end

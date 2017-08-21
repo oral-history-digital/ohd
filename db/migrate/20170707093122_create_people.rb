@@ -1,5 +1,6 @@
 class CreatePeople < ActiveRecord::Migration[5.0]
   def change
+  unless Project.name.to_sym == :eog
     create_table :people do |t|
       t.string :date_of_birth
       t.string :gender
@@ -22,5 +23,6 @@ class CreatePeople < ActiveRecord::Migration[5.0]
         Person.drop_translation_table! 
       end
     end
+  end
   end
 end

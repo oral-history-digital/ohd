@@ -1,5 +1,6 @@
 class TranslatePhotos < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :eog
     # Create globalize2 table.
     Photo.create_translation_table! :caption => :text
 
@@ -11,8 +12,10 @@ class TranslatePhotos < ActiveRecord::Migration
     # Drop obsolete column.
     remove_columns :photos, :caption
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     # Re-create migrated columns.
     add_column :photos, :caption, :text
 
@@ -21,5 +24,6 @@ class TranslatePhotos < ActiveRecord::Migration
 
     # Drop globalize2 table.
     Photo.drop_translation_table!
+  end
   end
 end

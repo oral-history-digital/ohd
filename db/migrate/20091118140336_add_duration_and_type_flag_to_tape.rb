@@ -1,6 +1,7 @@
 class AddDurationAndTypeFlagToTape < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
     add_column :tapes, :video, :boolean
     change_column :tapes, :duration, :integer
 
@@ -21,8 +22,10 @@ class AddDurationAndTypeFlagToTape < ActiveRecord::Migration
     puts
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     remove_column :tapes, :video
     remove_column :tapes, :duration
     remove_column :segments, :duration
@@ -34,6 +37,7 @@ class AddDurationAndTypeFlagToTape < ActiveRecord::Migration
     remove_column :interviews, :researched
     remove_column :interviews, :proofread
 
+  end
   end
 
 end

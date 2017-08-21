@@ -1,6 +1,7 @@
 class CreateContributorsAndInterviewContribution < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
 
     create_table :contributors do |t|
       t.string :first_name
@@ -24,12 +25,15 @@ class CreateContributorsAndInterviewContribution < ActiveRecord::Migration
     add_index :contributions, :interview_id
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
 
     drop_table :contributors
     drop_table :contributions
 
+  end
   end
 
 end

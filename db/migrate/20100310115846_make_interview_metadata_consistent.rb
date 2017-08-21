@@ -1,6 +1,7 @@
 class MakeInterviewMetadataConsistent < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :eog
 
     change_table :interviews do |t|
       t.string :first_name
@@ -43,8 +44,10 @@ class MakeInterviewMetadataConsistent < ActiveRecord::Migration
     end
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
 
     change_table :interviews do |t|
 
@@ -88,6 +91,7 @@ class MakeInterviewMetadataConsistent < ActiveRecord::Migration
       t.remove :forced_labor_locations
     end
 
+  end
   end
 
 end

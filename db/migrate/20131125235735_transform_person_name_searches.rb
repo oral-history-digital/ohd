@@ -1,6 +1,7 @@
 # This migration requires a fully up-to-date solr index!
 class TransformPersonNameSearches < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :eog
     Search.where("properties like '%person_name:%'").each do |uc|
       properties = uc.properties
       person_name = properties['query'].delete('person_name')
@@ -21,8 +22,10 @@ class TransformPersonNameSearches < ActiveRecord::Migration
       uc.save!
     end
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :eog
     Search.where("properties like '%interview_id:%'").each do |uc|
       properties = uc.properties
       interview_id = properties['query'].delete('interview_id').first.to_i
@@ -32,5 +35,6 @@ class TransformPersonNameSearches < ActiveRecord::Migration
       uc.properties = properties
       uc.save!
     end
+  end
   end
 end
