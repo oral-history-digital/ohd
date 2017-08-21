@@ -1,17 +1,17 @@
 class AddPositionToUserContents < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     change_table :user_contents do |t|
       t.integer :position, :default => 100
     end
-  end
+  #end
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     remove_column :user_contents, :position
-  end
+  #end
   end
 
 end

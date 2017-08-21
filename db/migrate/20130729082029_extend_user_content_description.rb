@@ -2,9 +2,9 @@ class ExtendUserContentDescription < ActiveRecord::Migration
 
   # change user_contents.description to utilize a larger character limit
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     change_column :user_contents, :description, :string, :limit => 300
-  end
+  #end
   end
 
   def self.down

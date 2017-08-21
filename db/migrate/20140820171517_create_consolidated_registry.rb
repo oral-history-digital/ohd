@@ -81,7 +81,6 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     create_table :languages do |t|
       t.string :code
     end
-    #Language.create_translation_table! :abbreviated => :string, :name => :string
 
     add_column :interviews, :language_id, :integer
 
@@ -89,6 +88,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     drop_table :category_translations
     drop_table :categories
   end
+    Language.create_translation_table! :abbreviated => :string, :name => :string
   end
 
   def self.down

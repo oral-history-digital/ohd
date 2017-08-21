@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
 
     create_table :users do |t|
       t.string :first_name, :null => true
@@ -27,15 +27,15 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, [ :first_name, :last_name ]
     add_index :users, :status
 
-  end
+  #end
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
 
     remove_table :users
 
-  end
+  #end
   end
 
 end

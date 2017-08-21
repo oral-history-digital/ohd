@@ -1,12 +1,12 @@
 class RemoveAuthenticatables < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     begin
       drop_table :authenticatables
     rescue
     end
-  end
+  #end
   end
 
   def self.down

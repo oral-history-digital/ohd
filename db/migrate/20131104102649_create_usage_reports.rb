@@ -1,6 +1,6 @@
 class CreateUsageReports < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     create_table :usage_reports do |t|
       t.string  :ip
       t.string  :action, :null => false
@@ -11,12 +11,12 @@ class CreateUsageReports < ActiveRecord::Migration
       t.datetime  :logged_at, :null => false
       t.datetime  :created_at
     end
-  end
+  #end
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     drop_table :usage_reports
-  end
+  #end
   end
 end

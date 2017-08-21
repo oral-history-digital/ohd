@@ -1,10 +1,10 @@
 class AddMediaIdToUserContents < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
     change_table :user_contents do |t|
       t.string  :media_id
     end
     add_index :user_contents, :media_id
+  unless Project.name.to_sym == :eog
     add_index :annotations, :media_id
     say_with_time 'setting media_id for user_annotations' do
       # Do two things:
@@ -33,7 +33,7 @@ class AddMediaIdToUserContents < ActiveRecord::Migration
         end
       end
     end
-    remove_column :user_contents, :media_id
   end
+    remove_column :user_contents, :media_id
   end
 end

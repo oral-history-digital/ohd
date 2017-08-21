@@ -1,7 +1,7 @@
 class CreateUserAccountsInMainDatabase < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     create_table :user_accounts do |t|
       t.string :login,              :null => false, :default => ""
       ## Database authenticatable
@@ -53,13 +53,13 @@ class CreateUserAccountsInMainDatabase < ActiveRecord::Migration
     #db_conf = YAML::load_file(File.join(Rails.root, 'config/database.yml'))[auth_settings]
 
     #puts "\nPlease import a DB dump of user_account data from the '#{db_conf['database']}' database NOW.\n"
-  end
+  #end
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     drop_table :user_accounts
-  end
+  #end
   end
 
 end
