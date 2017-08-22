@@ -171,7 +171,7 @@ class Segment < ActiveRecord::Base
   #end
 
   def joined_transcript_and_translation
-    ((transcript || '') + ' ' + (translation || '')).strip
+    ((transcript.to_s || '') + ' ' + (translation.to_s || '')).strip
   end
 
   # not a true association, this is primarily used during Solr indexing

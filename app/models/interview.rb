@@ -127,8 +127,8 @@ class Interview < ActiveRecord::Base
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
       segments.each do |segment|
-        indexing_interview_text << ' ' + segment.transcript
-        indexing_interview_text << ' ' + segment.translation
+        indexing_interview_text << ' ' + segment.transcript.to_s
+        indexing_interview_text << ' ' + segment.translation.to_s
       end
       indexing_interview_text.squeeze(' ')
     end
@@ -175,7 +175,7 @@ class Interview < ActiveRecord::Base
         full_title(locale)
       end
       text :person_name, :boost => 20 do
-        build_full_title_from_name_parts(t.locale)
+        build_full_title_from_name_parts(locale)
       end
     end
 
