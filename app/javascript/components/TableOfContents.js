@@ -1,5 +1,6 @@
 import React from 'react';
 import request from 'superagent';
+import Heading from '../components/Heading';
 
 export default class TableOfContents extends React.Component {
 
@@ -46,33 +47,27 @@ export default class TableOfContents extends React.Component {
         mainIndex += 1;
         subIndex = 0;
         mainheading = mainIndex + '. ' + segment.mainheading;
-        headings.push({main: true, heading: mainheading, time: segment.time});
+        headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
       }
       if (segment.subheading !== '') {
         subIndex += 1;
         subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
-        headings.push({main: false, heading: subheading, time: segment.time});
+        headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
       }
     })
 
     return headings;
   }
 
-  content(heading, index) {
-    return (
-      <p className={heading.main ? 'mainheading' : 'subheading'} key={'heading-' + index} >
-        <a onClick={() => this.props.handleSegmentClick(heading.time)}>
-          {heading.heading}
-        </a> 
-      </p>
-    );
-  }
-
   render () {
     return ( 
       <div>
         {this.state.headings.map( (heading, index) => {
-          return this.content(heading, index);
+          return <Heading 
+                   key={'mainheading-' + index}
+                   data={heading}
+                   handleSegmentClick={this.props.handleSegmentClick}
+                 />
         })}
       </div>
     );
