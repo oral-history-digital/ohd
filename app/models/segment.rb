@@ -93,7 +93,8 @@ class Segment < ActiveRecord::Base
     end
     text :registry_entries, :boost => 5 do
       registry_references.map do |reference|
-        (I18n.available_locales + [:alias]).map do |locale|
+        # (I18n.available_locales + [:alias).map do |locale| # why alia?
+        (I18n.available_locales).map do |locale|
           reference.registry_entry.to_s(locale)
         end.uniq.reject(&:blank?).join(' ')
       end.join(' ')
@@ -158,7 +159,7 @@ class Segment < ActiveRecord::Base
   end
 
   def transcript
-    filter_annotation read_attribute(:transcript)
+    filter_annotation( read_attribute(:transcript) ).to_s
   end
 
   # The following method leads to errors in the globalize-gem:
@@ -166,9 +167,9 @@ class Segment < ActiveRecord::Base
   # NoMethodError: undefined method `locale' for "":String
   #   from /home/grgr/.rvm/gems/ruby-2.4.0@zwar/bundler/gems/globalize-6f9d3f38d132/lib/globalize/active_record/instance_methods.rb:146:in `save'
   #
-  #def translation
-    #filter_annotation read_attribute(:translation)
-  #end
+  def translation
+    filter_annotation( read_attribute(:translation) ).to_s
+  end
 
   def joined_transcript_and_translation
     ((transcript || '') + ' ' + (translation || '')).strip
