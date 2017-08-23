@@ -127,8 +127,8 @@ class Interview < ActiveRecord::Base
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
       segments.each do |segment|
-        indexing_interview_text << ' ' + segment.transcript.to_s
-        indexing_interview_text << ' ' + segment.translation.to_s
+        indexing_interview_text << ' ' + segment.transcript
+        indexing_interview_text << ' ' + segment.translation
       end
       indexing_interview_text.squeeze(' ')
     end
