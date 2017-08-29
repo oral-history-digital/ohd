@@ -44,8 +44,12 @@ export default class Interview extends React.Component {
   }
 
   handleTranscriptScroll() {
-    if (!this.state.transcriptScrollEnabled) {
+    //let fixVideo = $("body").hasClass("fix-video");
+    let fixVideo = ($(document).scrollTop() > 80);
+    if (fixVideo && !this.state.transcriptScrollEnabled) {
       this.setState({ transcriptScrollEnabled: true });
+    } else if (!fixVideo && this.state.transcriptScrollEnabled) {
+      this.setState({ transcriptScrollEnabled: false });
     }
   }
 
