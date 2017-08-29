@@ -14,6 +14,11 @@ export default class Transcript extends React.Component {
 
   componentDidMount() {
     this.loadSegments();
+    window.addEventListener('scroll', this.props.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.props.handleScroll);
   }
 
   showSegmentsFor(time) {
@@ -41,8 +46,8 @@ export default class Transcript extends React.Component {
       });
   }
 
-  render () {
 
+  render () {
     let shownSegments = this.props.transcriptScrollEnabled ? this.state.segments : this.showSegmentsFor(this.props.time);
 
     return ( 

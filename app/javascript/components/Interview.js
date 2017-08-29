@@ -43,6 +43,12 @@ export default class Interview extends React.Component {
     })
   }
 
+  handleTranscriptScroll() {
+    if (!this.state.transcriptScrollEnabled) {
+      this.setState({ transcriptScrollEnabled: true });
+    }
+  }
+
   render() {
     return (
       <div className='app'>
@@ -61,6 +67,7 @@ export default class Interview extends React.Component {
           interview={this.state.interview}
           lang={this.state.lang}
           handleSegmentClick={this.handleSegmentClick.bind(this)}
+          handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
         />
       </div>
     );
