@@ -12,6 +12,7 @@ export default class Interview extends React.Component {
       playPause: 'paused',
       videoTime: 0,
       transcriptTime: 0,
+      transcriptScrollEnabled: false,
       volume: 1,
       lang: 'de',
       interview: JSON.parse(this.props.interview),
@@ -19,7 +20,7 @@ export default class Interview extends React.Component {
   }
 
   handleVideoTimeChange(event) {
-    if (this.state.transcriptTime !== event.target.currentTime) {
+    if (this.state.transcriptTime !== event.target.currentTime && !this.state.transcriptScrollEnabled) {
       this.setState({ 
         transcriptTime: event.target.currentTime,
         //videoTime: event.target.currentTime,
@@ -55,6 +56,7 @@ export default class Interview extends React.Component {
           handleVideoEnded={this.handleVideoEnded.bind(this)}
         />
         <InterviewTabs
+          transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
           transcriptTime={this.state.transcriptTime}
           interview={this.state.interview}
           lang={this.state.lang}

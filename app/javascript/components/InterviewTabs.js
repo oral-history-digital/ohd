@@ -44,6 +44,7 @@ export default class InterviewTabs extends React.Component {
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <Transcript
+              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang={this.props.interview.lang}
@@ -52,6 +53,7 @@ export default class InterviewTabs extends React.Component {
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <Transcript
+              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang='de'
