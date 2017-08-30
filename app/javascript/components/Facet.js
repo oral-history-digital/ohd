@@ -47,7 +47,8 @@ export default class Facet extends React.Component {
         return subfacets.map((subfacet, index) => {
             return (
                 <div key={"subfacet-" + index}>
-                    {subfacet.descriptor}
+                    {subfacet.entry.descriptor}
+                    <span>({subfacet.count})</span>
                 </div>
             )
         })
