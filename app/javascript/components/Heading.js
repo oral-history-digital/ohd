@@ -1,23 +1,57 @@
 import React from 'react';
+import '../css/headings';
 
 export default class Heading extends React.Component {
 
-  text() {
-    if (this.props.segment.mainheading === undefined) {
-      return this.props.segment.subheading;
-    } else {
-      return this.props.segment.mainheading;
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      expanded: false,
+    }
+
+    this.toggle = this.toggle.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  toggle() {
+    if (this.props.data.main) {
+      this.setState(prevState => ({
+        expanded: !prevState.expanded
+      }));
+    }
+  }
+
+  handleClick(time) {
+    this.props.handleSegmentClick(time);
+    this.toggle();
+  }
+
+  subHeadings() {
+    if(this.props.data.main) {
+      return <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
+               {this.props.data.subheadings.map( (heading, index) => {
+                 return <div key={'heading-' + index} >
+                          <div onClick={() => this.props.handleSegmentClick(heading.time)} className='subheading'>
+                            {heading.heading}
+                          </div> 
+                        </div>;
+               })}
+             </div>;
     }
   }
 
   render () {
     return (
-      <p className={this.props.main ? 'mainheading' : 'subheading'}>
-        <span>{this.props.index}</span>
-        <a onClick={() => this.props.handleChapterChange(this.props.segment.time)}>
-          {this.text()}
-        </a> 
-      </p>
+      <div className='heading'>
+        <div 
+          className='mainheading'
+          onClick={() => this.handleClick(this.props.data.time)} 
+        >
+          {this.props.data.heading}
+        </div>
+        {this.subHeadings()}
+      </div>
     )
   }
 }

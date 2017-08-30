@@ -25,7 +25,7 @@ export default class Transcript extends React.Component {
 
   setShownSegments() {
     let shownSegments = this.state.segments.filter( segment => {
-      return (segment.tape_nbr === 1 && segment.time >= this.props.time) && (segment.time <= this.props.time + 60);
+      return (segment.tape_nbr <= 1 && segment.time >= this.props.time) && (segment.time <= this.props.time + 60);
     })
     this.setState({ shownSegments: shownSegments })
   }
