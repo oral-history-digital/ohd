@@ -40,6 +40,7 @@ export default class Interview extends React.Component {
     this.setState({ 
       videoTime: time,
       transcriptTime: time,
+      transcriptScrollEnabled: false 
     })
   }
 
