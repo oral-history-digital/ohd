@@ -48,9 +48,11 @@ export default class Interview extends React.Component {
     let fixVideo = ($(document).scrollTop() > 80);
     if (fixVideo && !this.state.transcriptScrollEnabled) {
       this.setState({ transcriptScrollEnabled: true });
-    } else if (!fixVideo && this.state.transcriptScrollEnabled) {
-      this.setState({ transcriptScrollEnabled: false });
-    }
+    } 
+  }
+
+  reconnectVideoProgress() {
+    this.setState({ transcriptScrollEnabled: false });
   }
 
   render() {
@@ -64,6 +66,7 @@ export default class Interview extends React.Component {
           volume={this.state.volume}
           handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
           handleVideoEnded={this.handleVideoEnded.bind(this)}
+          reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
         />
         <InterviewTabs
           transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
