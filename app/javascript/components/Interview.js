@@ -20,7 +20,7 @@ export default class Interview extends React.Component {
   }
 
   handleVideoTimeChange(event) {
-    if (this.state.transcriptTime !== event.target.currentTime && !this.state.transcriptScrollEnabled) {
+    if (this.state.transcriptTime !== event.target.currentTime) {
       this.setState({ 
         transcriptTime: event.target.currentTime,
         //videoTime: event.target.currentTime,

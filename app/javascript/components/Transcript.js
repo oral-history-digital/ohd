@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import Segment from '../components/Segment';
+import '../css/segments';
 
 export default class Transcript extends React.Component {
 
@@ -54,8 +55,11 @@ export default class Transcript extends React.Component {
       <div>
         {shownSegments.map( (segment, index) => {
           segment.lang = this.props.lang;
+          let active = segment.time >= this.props.time - 5 && segment.time <= this.props.time + 20; 
+          let klass = 'segment ' + (active ? 'active' : 'inactive');
           return (
             <Segment 
+              className={klass} 
               data={segment} 
               key={"segment-" + segment.id} 
               handleClick={this.props.handleSegmentClick}
