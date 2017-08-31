@@ -14,11 +14,11 @@ export default class Transcript extends React.Component {
 
   componentDidMount() {
     this.loadSegments();
-    window.addEventListener('scroll', this.props.handleScroll);
+    window.addEventListener('scroll', this.props.handleScroll.bind(this));
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.props.handleScroll);
+    window.removeEventListener('scroll', this.props.handleScroll.bind(this));
   }
 
   showSegmentsFor(time) {
