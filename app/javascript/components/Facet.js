@@ -12,6 +12,10 @@ export default class Facet extends React.Component {
         };
     }
 
+    isChecked(name, value) {
+        return  this.props.state && this.props.state[name] != undefined && this.props.state[name].indexOf(value) > -1
+    }
+
     handleClick() {
         if (this.state.open) {
             this.setState({
@@ -35,7 +39,7 @@ export default class Facet extends React.Component {
                 </div>
                 <div className="subfacets">
                     <div className="subfacet">
-                        {this.renderSubfacets(this.props.data[1])}
+                        {this.renderSubfacets(this.props.data)}
                     </div>
                 </div>
             </div>
@@ -43,11 +47,19 @@ export default class Facet extends React.Component {
     }
 
 
-    renderSubfacets(subfacets) {
+    renderSubfacets(facets) {
+        let subfacets = facets[1];
+        let categoryId = facets[0].id;
         return subfacets.map((subfacet, index) => {
             return (
                 <div key={"subfacet-" + index}>
-                    {subfacet.entry.descriptor}
+                    <input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
+                           name={categoryId + "[]"} checked={this.isChecked(categoryId + "[]", subfacet.entry.id)} type="checkbox" value={subfacet.entry.id}
+                           onChange={this.props.handleChange}>
+
+                    </input>
+                    <span> {subfacet.entry.descriptor}</span>
+
                     <span>({subfacet.count})</span>
                 </div>
             )

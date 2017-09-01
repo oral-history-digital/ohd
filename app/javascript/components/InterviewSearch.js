@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Segment from '../components/Segment';
-import Facet from '../components/Facet';
 import SearchForm from '../components/SearchForm';
 
 
@@ -53,19 +52,7 @@ export default class InterviewSearch extends React.Component {
         }
     }
 
-    renderFacets() {
-        if (this.state.facets && this.state.facets.query_facets) {
-            return this.state.facets.unqueried_facets.map((facet, index) => {
-                facet.lang = this.props.lang;
-                return (
-                    <Facet
-                        data={facet}
-                        key={"facet-" + index}
-                    />
-                )
-            })
-        }
-    }
+
 
     renderInterviews() {
         if (this.state.interviews) {
@@ -83,12 +70,9 @@ export default class InterviewSearch extends React.Component {
                     url={this.props.url}
                     interviewId={this.props.interviewId}
                     handleResults={this.handleResults.bind(this)}
+                    facets={this.state.facets}
                 />
-
-                {console.log(this.state.facets)}
-
                 {this.renderSegments()}
-                {this.renderFacets()}
             </div>
         );
     }
