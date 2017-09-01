@@ -176,7 +176,7 @@ header.site-header {
 
 .column-content {
   @include screen-m {
-    width: 65%;
+    /*width: 65%;*/
     margin-right: 5%;
   }
   min-height: 360px;
