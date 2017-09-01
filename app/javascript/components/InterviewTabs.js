@@ -44,18 +44,22 @@ export default class InterviewTabs extends React.Component {
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <Transcript
+              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang={this.props.interview.lang}
               handleSegmentClick={this.props.handleSegmentClick}
+              handleScroll={this.props.handleTranscriptScroll}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <Transcript
+              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
               interviewId={this.props.interview.id}
               lang='de'
               handleSegmentClick={this.props.handleSegmentClick}
+              handleScroll={this.props.handleTranscriptScroll}
             />
           </TabPanel>
           <TabPanel className='column-content'>

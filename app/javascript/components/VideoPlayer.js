@@ -36,9 +36,10 @@ export default class VideoPlayer extends React.Component {
   }
 
 
+      //<div className='wrapper-video'>
   render () {
     return (
-      <div className='wrapper-video'>
+      <div className='wrapper-video' onClick={ () => this.props.reconnectVideoProgress() }>
         <h1 className='video-title'>{this.props.title}</h1>
         <div className='video-element'>
           <video ref={(video) => { this.video = video; }}  

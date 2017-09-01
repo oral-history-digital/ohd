@@ -12,6 +12,7 @@ export default class Interview extends React.Component {
       playPause: 'paused',
       videoTime: 0,
       transcriptTime: 0,
+      transcriptScrollEnabled: false,
       volume: 1,
       lang: 'de',
       interview: JSON.parse(this.props.interview),
@@ -39,7 +40,20 @@ export default class Interview extends React.Component {
     this.setState({ 
       videoTime: time,
       transcriptTime: time,
+      transcriptScrollEnabled: false 
     })
+  }
+
+  handleTranscriptScroll() {
+    //let fixVideo = $("body").hasClass("fix-video");
+    let fixVideo = ($(document).scrollTop() > 80);
+    if (fixVideo && !this.state.transcriptScrollEnabled) {
+      this.setState({ transcriptScrollEnabled: true });
+    } 
+  }
+
+  reconnectVideoProgress() {
+    this.setState({ transcriptScrollEnabled: false });
   }
 
   render() {
@@ -53,12 +67,15 @@ export default class Interview extends React.Component {
           volume={this.state.volume}
           handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
           handleVideoEnded={this.handleVideoEnded.bind(this)}
+          reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
         />
         <InterviewTabs
+          transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
           transcriptTime={this.state.transcriptTime}
           interview={this.state.interview}
           lang={this.state.lang}
           handleSegmentClick={this.handleSegmentClick.bind(this)}
+          handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
         />
       </div>
     );

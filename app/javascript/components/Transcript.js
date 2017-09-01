@@ -9,25 +9,23 @@ export default class Transcript extends React.Component {
 
     this.state = {
       segments: [],
-      shownSegments: [],
     }
   }
 
   componentDidMount() {
     this.loadSegments();
+    window.addEventListener('scroll', this.props.handleScroll.bind(this));
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.time !== this.props.time) {
-      this.setShownSegments();
-    }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.props.handleScroll.bind(this));
   }
 
-  setShownSegments() {
+  showSegmentsFor(time) {
     let shownSegments = this.state.segments.filter( segment => {
-      return (segment.tape_nbr <= 1 && segment.time >= this.props.time) && (segment.time <= this.props.time + 60);
+      return (segment.tape_nbr <= 1 && segment.time >= time) && (segment.time <= time + 60);
     })
-    this.setState({ shownSegments: shownSegments })
+    return shownSegments;
   }
 
   loadSegments() {
@@ -42,21 +40,24 @@ export default class Transcript extends React.Component {
             let json = JSON.parse(res.text);
             this.setState({ 
               segments: json,
-              shownSegments: json.slice(0,10) 
             });
           }
         }
       });
   }
 
+
   render () {
+    let shownSegments = this.props.transcriptScrollEnabled ? this.state.segments : this.showSegmentsFor(this.props.time);
+
     return ( 
       <div>
-        {this.state.shownSegments.map( (segment, index) => {
+        {shownSegments.map( (segment, index) => {
           segment.lang = this.props.lang;
           return (
             <Segment 
               data={segment} 
+              time={this.props.time}
               key={"segment-" + segment.id} 
               handleClick={this.props.handleSegmentClick}
             />
