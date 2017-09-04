@@ -1,5 +1,5 @@
 class SegmentSerializer < ActiveModel::Serializer
-  attributes :id, :time, :tape_nbr, :transcripts, :mainheading, :subheading
+  attributes :id, :time, :tape_nbr, :transcripts, :mainheading, :subheading, :annotation_texts
 
   def time
     # timecode as seconds 
@@ -15,6 +15,10 @@ class SegmentSerializer < ActiveModel::Serializer
       de: object.read_attribute(:translation),
       "#{object.interview.language.code}": object.transcript
     }
+  end
+
+  def annotation_texts
+    object.annotations.map(&:text)
   end
 
 end

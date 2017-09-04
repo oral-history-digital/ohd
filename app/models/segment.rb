@@ -176,9 +176,9 @@ class Segment < ActiveRecord::Base
   end
 
   # not a true association, this is primarily used during Solr indexing
-  def annotations
-    Annotation.for_segment(self)
-  end
+  #def annotations
+    #Annotation.for_segment(self)
+  #end
 
   # returns the segment that leads the chapter
   def section_lead_segment
