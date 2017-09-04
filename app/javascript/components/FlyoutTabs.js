@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import InterviewSearch from '../components/InterviewSearch';
 
 export default class FlyoutTabs extends React.Component {
-  
+
   constructor(props, context) {
     super(props, context);
 
@@ -32,11 +32,11 @@ export default class FlyoutTabs extends React.Component {
 
   render() {
     return (
-      <Tabs 
+      <Tabs
         className='flyout'
-        selectedTabClassName='active' 
-        selectedTabPanelClassName='active' 
-        selectedIndex={this.state.tabIndex} 
+        selectedTabClassName='active'
+        selectedTabPanelClassName='active'
+        selectedIndex={this.state.tabIndex}
         onSelect={tabIndex => this.handleTabClick(tabIndex)}
         >
         <TabList>

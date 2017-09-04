@@ -1,5 +1,5 @@
 import React from 'react';
-
+import request from 'superagent';
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
 
@@ -12,9 +12,25 @@ export default class InterviewSearch extends React.Component {
 
         this.state = {
             segments: [],
-            facets: [],
-            interviews: [],
-        }
+            facets: [],//props.facets,
+            interviews: ""//props.interviews,
+        };
+
+        request
+            .get('/suchen')
+            .set('Accept', 'application/json')
+            .query()
+            .end((error, res) => {
+                if (res) {
+                    if (res.error) {
+                        console.log("loading segments failed: " + error);
+                    } else {
+                        let json = JSON.parse(res.text);
+                        this.handleResults(json);
+                    }
+                }
+            });
+
     }
 
     componentDidUpdate() {
