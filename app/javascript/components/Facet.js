@@ -1,4 +1,6 @@
 import React from 'react';
+import Subfacet from '../components/Subfacet';
+
 import '../css/facets';
 
 export default class Facet extends React.Component {
@@ -6,27 +8,30 @@ export default class Facet extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.onChange = this.onChange.bind(this);
+
+        let categoryId = this.props.data[0].id;
+
         this.state = {
             open: false,
             class: "facet"
         };
+        this.state[categoryId + "[]"] = [];
+
     }
 
     isChecked(name, value) {
-        return  this.props.state && this.props.state[name] != undefined && this.props.state[name].indexOf(value) > -1
+        let checked = this.props.state && this.props.state[name] != undefined && this.props.state[name].indexOf(value) > -1;
+        return checked;
     }
 
     handleClick() {
         if (this.state.open) {
-            this.setState({
-                open: false,
-                class: "facet"
-            });
+            this.setState({['open']: false});
+            this.setState({['class']: "facet"});
         } else {
-            this.setState({
-                open: true,
-                class: "facet open"
-            });
+            this.setState({['open']: true});
+            this.setState({['class']: "facet open"});
         }
     }
 
@@ -39,32 +44,51 @@ export default class Facet extends React.Component {
                 </div>
                 <div className="subfacets">
                     <div className="subfacet">
-                        {this.renderSubfacets(this.props.data)}
+                        {this.renderSubfacets()}
                     </div>
                 </div>
             </div>
         )
     }
 
+    onChange(event, name, newState, value) {
 
-    renderSubfacets(facets) {
-        let subfacets = facets[1];
-        let categoryId = facets[0].id;
+        var newArray = this.state[name].slice();
+        if (newState) {
+            newArray.push(value);
+        } else {
+            var index = newArray.indexOf(value);
+            newArray.splice(index, 1);
+        }
+        this.setState({[name]: newArray}, function(){
+            this.props.handleChange(null, name, newArray);
+        });
+
+    }
+
+
+    renderSubfacets() {
+        let subfacets = this.props.data[1];
+        let categoryId = this.props.data[0].id;
+
         return subfacets.map((subfacet, index) => {
+
+            let checkedState = this.state[categoryId+"[]"].indexOf(subfacet.entry.id) > -1;
             return (
-                <div key={"subfacet-" + index}>
-                    <input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
-                           name={categoryId + "[]"} checked={this.isChecked(categoryId + "[]", subfacet.entry.id)} type="checkbox" value={subfacet.entry.id}
-                           onChange={this.props.handleChange}>
+                <Subfacet
+                    checkedState={checkedState}
+                    categoryId={categoryId}
+                    data={subfacet}
+                    key={"subfacet-" + index}
+                    onChange={this.onChange}
 
-                    </input>
-                    <span> {subfacet.entry.descriptor}</span>
-
-                    <span>({subfacet.count})</span>
-                </div>
+                />
             )
         })
     }
 }
+
+
+
 
 

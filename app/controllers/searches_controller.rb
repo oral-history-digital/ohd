@@ -18,6 +18,7 @@ class SearchesController < BaseController
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def query
+    start = Time.now
     @search = Search.from_params(@query_params || params)
     @search.search!
     @search.segment_search!
@@ -35,9 +36,11 @@ class SearchesController < BaseController
       end
       format.json do
         unqueried_facets = @search.unqueried_facets.map(){|i| [ { id: i[0], name: cat_name( i[0])},  i[1].map{|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]} }] }
+        finish = Time.now
+        diff = finish - start
         render json: {
           interviews: render_to_string(template: '/interviews/index.html', layout: false),
-          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets }
+          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session: session[:query], diff: diff }
         }
       end
     end

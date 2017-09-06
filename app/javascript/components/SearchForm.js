@@ -10,30 +10,23 @@ export default class SearchForm extends React.Component {
             id: props.interviewId,
             fulltext: ""
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        if (target.type === 'checkbox' ){
-            var newArray = this.state[name] == undefined ? [] : this.state[name].slice();
-            if (target.checked) {
-                newArray.push(value);
-            } else {
-                var index = newArray.indexOf(value);
-                newArray.splice(index, 1);
+    handleChange(event, arrayName, array) {
+        const facetClicked = event === null;
+        const value = facetClicked ? array : event.target.value;
+        const name = facetClicked ? arrayName : event.target.name;
+
+        this.setState({[name]: value}, function () {
+            if (facetClicked) {
+                this.performSearch();
             }
-            this.setState({[name]: newArray}, this.performSearch);
-        } else {
-            this.setState({[name]: value});
-        }
+        });
     }
 
-    performSearch(){
+    performSearch() {
         this.search();
     }
 
@@ -44,7 +37,6 @@ export default class SearchForm extends React.Component {
 
     search() {
         let url = this.props.url;
-
         request
             .get(url)
             .set('Accept', 'application/json')
@@ -68,7 +60,7 @@ export default class SearchForm extends React.Component {
                     <label>
                         <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
                     </label>
-                    { this.renderFacets() }
+                    {this.renderFacets()}
 
                     <input type="submit" value="Submit"/>
                 </form>
