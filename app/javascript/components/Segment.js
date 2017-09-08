@@ -2,13 +2,17 @@ import React from 'react';
 import '../css/segments';
 
 export default class Segment extends React.Component {
-  render () {
+
+  css() {
     let active = this.props.data.end_time >= this.props.time && this.props.data.start_time < this.props.time; 
-    let klass = 'segment ' + (active ? 'active' : 'inactive');
+    return 'segment ' + (active ? 'active' : 'inactive');
+  }
+
+  render () {
     return (
       <div 
         onClick={() => this.props.handleClick(this.props.data.time)} 
-        className={klass}
+        className={this.css()}
       >
         <div className='text'>{this.props.data.transcripts[this.props.data.lang]}</div>
         <div className='annotations'>
