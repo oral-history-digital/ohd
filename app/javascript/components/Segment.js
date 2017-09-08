@@ -3,7 +3,7 @@ import '../css/segments';
 
 export default class Segment extends React.Component {
   render () {
-    let active = this.props.data.time >= this.props.time - 5 && this.props.data.time <= this.props.time + 20; 
+    let active = this.props.data.end_time >= this.props.time && this.props.data.start_time < this.props.time; 
     let klass = 'segment ' + (active ? 'active' : 'inactive');
     return (
       <div 
@@ -13,7 +13,7 @@ export default class Segment extends React.Component {
         <div className='text'>{this.props.data.transcripts[this.props.data.lang]}</div>
         <div className='annotations'>
           {this.props.data.annotation_texts.map( (annotation, index) => {
-            return <p>{annotation}</p>
+            return <p key={"annotation-" + index} >{annotation}</p>
           })}
         </div>
       </div>
