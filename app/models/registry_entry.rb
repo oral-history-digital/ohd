@@ -43,7 +43,7 @@ class RegistryEntry < ActiveRecord::Base
   def must_have_parents
     return if id == ROOT_NODE_ID || @do_not_validate_parents
     if parents.empty?
-      errors.add('Ein Registereintrag braucht mindestens eine Klassifizierung.')
+      errors[:base] << 'Ein Registereintrag braucht mindestens eine Klassifizierung.'
     end
   end
 
