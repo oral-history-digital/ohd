@@ -31,7 +31,7 @@ class InterviewsController < BaseController
   end
 
   def stills
-    archive_id = (params[:filename] || '')[/^\w{2}\d{3}/i].downcase
+    archive_id = (params[:filename] || '')[/^\w{2}\d{3}/i].to_s.downcase
     @object = Interview.find_by_archive_id(archive_id)
     not_found if @object.nil?
     style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/,'').to_sym

@@ -280,7 +280,7 @@ class Search < UserContent
 
         keywords fulltext
 
-        paginate :page => 1, :per_page => 120
+        #paginate :page => 1, :per_page => 120
 
         order_by :timecode, :asc
 
@@ -515,7 +515,7 @@ class Search < UserContent
         id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
         facet *id_fields
 
-        paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
+        #paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE
         order_by :"person_name_#{I18n.locale}", :asc
 
         adjust_solr_params do |params|

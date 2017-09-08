@@ -27,11 +27,11 @@ module ApplicationHelper
   end
 
   def current_search_path
-    if !@search.is_a?(Search) || @search.query_hash.blank?
+    #if !@search.is_a?(Search) || @search.query_hash.blank?
       new_search_url
-    else
-      url_for({:controller => :searches, :action => :query, :suche => @search.query_hash })
-    end
+    #else
+      #url_for({:controller => :searches, :action => :query, :suche => @search.query_hash })
+    #end
   end
 
   def reset_search_link(options={})

@@ -18,6 +18,7 @@ class SearchesController < BaseController
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def query
+    start = Time.now
     @search = Search.from_params(@query_params || params)
     @search.search!
     @search.segment_search!
@@ -34,14 +35,21 @@ class SearchesController < BaseController
         render :index
       end
       format.json do
-        #render json: {segments: @segments.map{|segment| ::SegmentSerializer.new(segment)}} 
+        unqueried_facets = @search.unqueried_facets.map(){|i| [ { id: i[0], name: cat_name( i[0])},  i[1].map{|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]} }] }
+        finish = Time.now
+        diff = finish - start
         render json: {
           interviews: render_to_string(template: '/interviews/index.html', layout: false),
-          facets: { unqueried_facets: @search.unqueried_facets, query_facets: @search.query_facets }
+          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session: session[:query], diff: diff }
         }
       end
     end
   end
+
+  def cat_name facet_id
+    Project.is_category?(facet_id) ? (Project.category_name(facet_id.to_s, I18n.locale)) : ( I18n.t(facet_id, :scope => :facets))
+  end
+
 
   # Calculates a hash for the query parameters and redirects to this hash-url.
   # Note: this doesn't call the solr search engine!
