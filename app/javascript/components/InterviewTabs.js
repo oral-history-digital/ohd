@@ -4,7 +4,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TableOfContents from '../components/TableOfContents';
 import Transcript from '../components/Transcript';
 import InterviewSearch from '../components/InterviewSearch';
-import Locations from '../components/Locations';
 
 export default class InterviewTabs extends React.Component {
   
@@ -30,7 +29,6 @@ export default class InterviewTabs extends React.Component {
             <Tab> Transkript</Tab>
             <Tab> Übersetzung</Tab>
             <Tab> Suche</Tab>
-            <Tab> Karte</Tab>
           </TabList>
         </div>
 
@@ -63,15 +61,14 @@ export default class InterviewTabs extends React.Component {
             />
           </TabPanel>
           <TabPanel className='column-content'>
+            {/*
             <InterviewSearch 
               url='/searches/interview'
               interviewId={this.props.interview.id}
               lang={this.props.lang}
               handleSegmentClick={this.props.handleSegmentClick}
-          />
-          </TabPanel>
-          <TabPanel className='column-content'>
-            <Locations position={[37.9838, 23.7275]} zoom={13} />
+            />
+            */}
           </TabPanel>
         </div>
       </Tabs>

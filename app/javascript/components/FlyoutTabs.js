@@ -2,6 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import InterviewSearch from '../components/InterviewSearch';
+import Locations from '../components/Locations';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -57,12 +58,15 @@ export default class FlyoutTabs extends React.Component {
           login logout name
         </TabPanel>
         <TabPanel className='column-content'>
+          {/*
           <InterviewSearch
             url='/suchen'
             lang={this.props.lang}
           />
+          */}
         </TabPanel>
         <TabPanel className='column-content'>
+          <Locations position={[37.9838, 23.7275]} zoom={13} />
           biographie transcript daten zur za
         </TabPanel>
         <TabPanel className='column-content'>
