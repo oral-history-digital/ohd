@@ -151,7 +151,7 @@ class Segment < ActiveRecord::Base
   end
 
   def end_time
-    (start_time + duration).to_s
+    (start_time + duration).to_f
   end
 
   def alias_names
