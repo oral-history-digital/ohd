@@ -1,4 +1,5 @@
 import React from 'react';
+import request from 'superagent';
 
 import VideoPlayer from '../components/VideoPlayer';
 import InterviewTabs from '../components/InterviewTabs';
@@ -16,7 +17,58 @@ export default class Interview extends React.Component {
       volume: 1,
       lang: 'de',
       interview: JSON.parse(this.props.interview),
+      segments: [],
+      headings: [],
     }
+  }
+
+  componentDidMount() {
+    this.loadSegments();
+  }
+
+  loadSegments() {
+    debugger;
+    let url = '/de/interviews/' + this.state.interview.id + '/segments';
+    request.get(url)
+      .set('Accept', 'application/json')
+      .end( (error, res) => {
+        if (res) {
+          if (res.error) {
+            console.log("loading segments failed: " + error);
+          } else {
+            let json = JSON.parse(res.text);
+            this.setState({ 
+              segments: json.segments,
+              headings: this.prepareHeadings(json.headings)
+            });
+          }
+        }
+      });
+  }
+
+  prepareHeadings(segments) {
+    let mainIndex = 0;
+    let mainheading = '';
+    let subIndex = 0;
+    let subheading = '';
+    let headings = [];
+
+    segments.map( (segment, index) => {
+      
+      if (segment.mainheading !== '') {
+        mainIndex += 1;
+        subIndex = 0;
+        mainheading = mainIndex + '. ' + segment.mainheading;
+        headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
+      }
+      if (segment.subheading !== '') {
+        subIndex += 1;
+        subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
+        headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
+      }
+    })
+
+    return headings;
   }
 
   handleVideoTimeChange(event) {
@@ -73,6 +125,8 @@ export default class Interview extends React.Component {
           transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
           transcriptTime={this.state.transcriptTime}
           interview={this.state.interview}
+          segments={this.state.segments}
+          headings={this.state.headings}
           lang={this.state.lang}
           handleSegmentClick={this.handleSegmentClick.bind(this)}
           handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}

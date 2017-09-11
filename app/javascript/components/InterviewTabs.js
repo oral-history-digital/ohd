@@ -35,7 +35,7 @@ export default class InterviewTabs extends React.Component {
         <div className='wrapper-content'>
           <TabPanel forceRender={true} className='column-content'>
             <TableOfContents
-              interviewId={this.props.interview.id}
+              headings={this.props.headings}
               lang={this.props.interview.lang}
               handleSegmentClick={this.props.handleSegmentClick}
             />
@@ -44,7 +44,7 @@ export default class InterviewTabs extends React.Component {
             <Transcript
               transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
-              interviewId={this.props.interview.id}
+              segments={this.props.segments}
               lang={this.props.interview.lang}
               handleSegmentClick={this.props.handleSegmentClick}
               handleScroll={this.props.handleTranscriptScroll}
@@ -54,7 +54,7 @@ export default class InterviewTabs extends React.Component {
             <Transcript
               transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
               time={this.props.transcriptTime}
-              interviewId={this.props.interview.id}
+              segments={this.props.segments}
               lang='de'
               handleSegmentClick={this.props.handleSegmentClick}
               handleScroll={this.props.handleTranscriptScroll}
