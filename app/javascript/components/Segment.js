@@ -4,7 +4,7 @@ import '../css/segments';
 export default class Segment extends React.Component {
 
   css() {
-    let active = this.props.data.end_time >= this.props.time && this.props.data.start_time < this.props.time; 
+    let active = this.props.data.end_time >= this.props.time && this.props.data.start_time <= this.props.time; 
     return 'segment ' + (active ? 'active' : 'inactive');
   }
 
