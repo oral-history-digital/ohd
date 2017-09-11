@@ -1,5 +1,14 @@
 class SegmentSerializer < ActiveModel::Serializer
-  attributes :id, :time, :tape_nbr, :transcripts, :mainheading, :subheading, :annotation_texts, :start_time, :end_time
+  attributes :id, 
+    :time, 
+    :tape_nbr, 
+    :transcripts, 
+    :mainheading, 
+    :subheading, 
+    :annotation_texts, 
+    :start_time, 
+    :end_time, 
+    :references
 
   def time
     # timecode as seconds 
@@ -21,4 +30,7 @@ class SegmentSerializer < ActiveModel::Serializer
     object.annotations.map(&:text)
   end
 
+  def references
+    object.registry_references.map{|r| r.registry_entry.descriptor(:all)}
+  end
 end
