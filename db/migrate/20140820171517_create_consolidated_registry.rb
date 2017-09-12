@@ -1,6 +1,5 @@
 class CreateConsolidatedRegistry < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
     # Start registry migration...
     create_table :registry_entries do |t|
       t.string :entry_code
@@ -78,21 +77,21 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :languages do |t|
-      t.string :code
+    unless Project.name.to_sym == :eog
+      create_table :languages do |t|
+        t.string :code
+      end
+
+      add_column :interviews, :language_id, :integer
+      drop_table :categorizations
+      drop_table :category_translations
+      drop_table :categories
     end
-
-    add_column :interviews, :language_id, :integer
-
-    drop_table :categorizations
-    drop_table :category_translations
-    drop_table :categories
-  end
     Language.create_translation_table! :abbreviated => :string, :name => :string
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :eog
     create_table :categories do |t|
       t.string :category_type
       t.string :code
@@ -123,5 +122,5 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     drop_table :registry_hierarchies
     drop_table :registry_entries
   end
-  end
+  #end
 end

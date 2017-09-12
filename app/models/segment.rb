@@ -6,7 +6,7 @@ class Segment < ActiveRecord::Base
   belongs_to :speaking_person, 
     -> { includes(:translations) },
     class_name: 'Person',
-    foreign_key: 'person_id'
+    foreign_key: 'speaker_id'
 
   belongs_to :tape
 
