@@ -9,17 +9,25 @@ class SearchesController < BaseController
   skip_before_action :current_search_for_side_panel
   before_action :current_query_params
 
-  before_action :determine_user, :only => [ :query, :index ]
+  before_action :determine_user, :only => [:query, :index]
 
 
-  before_action :search_before_new, :only => [ :new ]
-  before_action :search_before_index, :only => [ :index ]
+  before_action :search_before_new, :only => [:new]
+  before_action :search_before_index, :only => [:index]
 
   ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def query
-    start = Time.now
-    @search = Search.from_params(@query_params || params)
+    search
+  end
+
+
+  def search( reset=false )
+    if reset
+      @search = Search.from_params(nil)
+    else
+      @search = Search.from_params(@query_params || params)
+    end
     @search.search!
     @search.segment_search!
     @search.open_category = params['open_category']
@@ -35,19 +43,21 @@ class SearchesController < BaseController
         render :index
       end
       format.json do
-        unqueried_facets = @search.unqueried_facets.map(){|i| [ { id: i[0], name: cat_name( i[0])},  i[1].map{|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]} }] }
-        finish = Time.now
-        diff = finish - start
+        unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]}}]}
         render json: {
-          interviews: render_to_string(template: '/interviews/index.html', layout: false),
-          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session_query: session[:query], diff: diff }
+            interviews: render_to_string(template: '/interviews/index.html', layout: false),
+            facets: {unqueried_facets: unqueried_facets, query_facets: @search.query_facets},
+            session_query: session[:query],
+            fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
         }
       end
     end
   end
 
+
+
   def cat_name facet_id
-    Project.is_category?(facet_id) ? (Project.category_name(facet_id.to_s, I18n.locale)) : ( I18n.t(facet_id, :scope => :facets))
+    Project.is_category?(facet_id) ? (Project.category_name(facet_id.to_s, I18n.locale)) : (I18n.t(facet_id, :scope => :facets))
   end
 
 
@@ -55,12 +65,13 @@ class SearchesController < BaseController
   # Note: this doesn't call the solr search engine!
 
   def search_before_new
+
     session[:query] = nil
     @query_hash = Search.from_params(params).query_hash
     url_params = {}
     search_params = {}
     search_params.merge!({:page => params[:page]}) unless params[:page].blank? || params[:page].to_i == 1
-    search_params.merge!({:suche => @query_hash }) unless @query_hash.blank?
+    search_params.merge!({:suche => @query_hash}) unless @query_hash.blank?
     unless params[:referring_controller].blank? || params[:referring_action].blank?
       url_params = {
           :controller => params[:referring_controller],
@@ -86,6 +97,9 @@ class SearchesController < BaseController
       end
       format.js do
         render js: "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
+      end
+      format.json do
+        search true
       end
     end
   end
@@ -125,7 +139,7 @@ class SearchesController < BaseController
       format.json do
         # TODO: just to test. rm following line afterwards.
         @segments = Segment.first(10)
-        render json: {segments: @segments.map{|segment| ::SegmentSerializer.new(segment)}} 
+        render json: {segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
       end
     end
   end
@@ -139,7 +153,7 @@ class SearchesController < BaseController
     end
     respond_to do |format|
       format.json do
-        render :json => @search.results.map{|pn| pn.full_title(I18n.locale)}.reject(&:blank?)
+        render :json => @search.results.map {|pn| pn.full_title(I18n.locale)}.reject(&:blank?)
       end
     end
   end

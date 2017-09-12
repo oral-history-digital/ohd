@@ -1,6 +1,4 @@
 import React from 'react';
-import Subfacet from '../components/Subfacet';
-
 import '../css/facets';
 
 export default class Facet extends React.Component {
@@ -9,23 +7,11 @@ export default class Facet extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.isChecked = this.isChecked.bind(this);
-
-        let categoryId = this.props.data[0].id;
-
         this.state = {
             open: false,
             class: "facet"
         };
-
-        let initArray = (this.props.session_query !== undefined && (this.props.session_query[categoryId] !== undefined)) ? this.props.session_query[categoryId] : [];
-        this.state[categoryId + "[]"] = initArray;
-
-        console.log(categoryId);
-        console.log(initArray);
-
     }
-
 
     handleClick() {
         if (this.state.open) {
@@ -53,23 +39,8 @@ export default class Facet extends React.Component {
         )
     }
 
-    onChange(event, name, newState, value) {
-        var newArray = this.state[name].slice();
-        if (newState) {
-            newArray.push(value);
-        } else {
-            var index = newArray.indexOf(value);
-            newArray.splice(index, 1);
-        }
-        this.setState({[name]: newArray}, function(){
-            this.props.handleChange(null, name, newArray);
-        });
-
-    }
-
-    isChecked(name, value){
-        let checked = this.state[name].indexOf(value) > -1;
-        return checked;
+    onChange(event) {
+        this.props.handleSubmit();
     }
 
 
@@ -78,20 +49,25 @@ export default class Facet extends React.Component {
         let categoryId = this.props.data[0].id;
 
         return subfacets.map((subfacet, index) => {
+            let checkedState = false;
+            let checkedFacets = this.props.sessionQuery[categoryId];
+            if (checkedFacets !== undefined) {
+                console.log(checkedFacets);
+                checkedState = checkedFacets.indexOf(subfacet.entry.id.toString()) > -1;
+            }
+
             return (
-                <Subfacet
-                    categoryId={categoryId}
-                    data={subfacet}
-                    key={"subfacet-" + index}
-                    onChange={this.onChange}
-                    isChecked={this.isChecked}
-                />
+                <div key={"subfacet-" + index}>
+                    <label><input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
+                           name={categoryId + "[]"} defaultChecked={checkedState} type="checkbox" value={subfacet.entry.id}
+                           onChange={this.onChange}>
+                    </input>
+                    
+                        <span> {subfacet.entry.descriptor}</span>
+                        <span>({subfacet.count})</span>
+                    </label>
+                </div>
             )
         })
     }
 }
-
-
-
-
-
