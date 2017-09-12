@@ -27,7 +27,6 @@ export default class Interview extends React.Component {
   }
 
   loadSegments() {
-    debugger;
     let url = '/de/interviews/' + this.state.interview.id + '/segments';
     request.get(url)
       .set('Accept', 'application/json')
@@ -110,7 +109,7 @@ export default class Interview extends React.Component {
 
   render() {
     return (
-      <div className='app'>
+      <div className='interview'>
         <VideoPlayer 
           src={this.props.src} 
           title={this.state.interview.title}
