@@ -9,10 +9,11 @@ export default class InterviewSearch extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
+        console.log('Interviewsearch: props - ');
+;
         this.state = {
             segments: [],
-            facets: [],//props.facets,
+            facets: {},//props.facets,
             interviews: ""//props.interviews,
         };
 
@@ -26,6 +27,7 @@ export default class InterviewSearch extends React.Component {
                         console.log("loading segments failed: " + error);
                     } else {
                         let json = JSON.parse(res.text);
+                        console.log(json);
                         this.handleResults(json);
                     }
                 }

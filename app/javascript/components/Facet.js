@@ -9,6 +9,7 @@ export default class Facet extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.isChecked = this.isChecked.bind(this);
 
         let categoryId = this.props.data[0].id;
 
@@ -16,14 +17,15 @@ export default class Facet extends React.Component {
             open: false,
             class: "facet"
         };
-        this.state[categoryId + "[]"] = [];
+
+        let initArray = (this.props.session_query !== undefined && (this.props.session_query[categoryId] !== undefined)) ? this.props.session_query[categoryId] : [];
+        this.state[categoryId + "[]"] = initArray;
+
+        console.log(categoryId);
+        console.log(initArray);
 
     }
 
-    isChecked(name, value) {
-        let checked = this.props.state && this.props.state[name] != undefined && this.props.state[name].indexOf(value) > -1;
-        return checked;
-    }
 
     handleClick() {
         if (this.state.open) {
@@ -52,7 +54,6 @@ export default class Facet extends React.Component {
     }
 
     onChange(event, name, newState, value) {
-
         var newArray = this.state[name].slice();
         if (newState) {
             newArray.push(value);
@@ -66,22 +67,24 @@ export default class Facet extends React.Component {
 
     }
 
+    isChecked(name, value){
+        let checked = this.state[name].indexOf(value) > -1;
+        return checked;
+    }
+
 
     renderSubfacets() {
         let subfacets = this.props.data[1];
         let categoryId = this.props.data[0].id;
 
         return subfacets.map((subfacet, index) => {
-
-            let checkedState = this.state[categoryId+"[]"].indexOf(subfacet.entry.id) > -1;
             return (
                 <Subfacet
-                    checkedState={checkedState}
                     categoryId={categoryId}
                     data={subfacet}
                     key={"subfacet-" + index}
                     onChange={this.onChange}
-
+                    isChecked={this.isChecked}
                 />
             )
         })

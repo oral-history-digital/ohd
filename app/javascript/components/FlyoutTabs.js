@@ -21,8 +21,10 @@ export default class FlyoutTabs extends React.Component {
         }
         break;
       case 2:
-        if(window.location !== '/suchen') {
+        if(window.location.toString().indexOf('/suchen') === -1) {
           window.location = '/suchen';
+        } else {
+            this.setState({ tabIndex })
         }
         break;
       default:

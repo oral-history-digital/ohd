@@ -40,7 +40,7 @@ class SearchesController < BaseController
         diff = finish - start
         render json: {
           interviews: render_to_string(template: '/interviews/index.html', layout: false),
-          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session: session[:query], diff: diff }
+          facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session_query: session[:query], diff: diff }
         }
       end
     end
