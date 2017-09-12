@@ -112,7 +112,7 @@ export default class Interview extends React.Component {
       <div className='interview'>
         <VideoPlayer 
           src={this.props.src} 
-          title={this.state.interview.title}
+          title={this.state.interview.title[this.state.lang]}
           playPause={this.state.playPause}
           time={this.state.videoTime}
           volume={this.state.volume}

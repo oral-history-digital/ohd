@@ -1,5 +1,6 @@
 import React from 'react';
 import Interview from '../components/Interview';
+import Interviews from '../components/Interviews';
 import FlyoutTabs from '../components/FlyoutTabs';
 
 export default class App extends React.Component {
@@ -9,11 +10,9 @@ export default class App extends React.Component {
       return <Interview
                 src="http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
                 interview={this.props.interview}
-             />
+             />;
     } else {
-      return <div>
-               Suche
-             </div>;
+      return <Interviews />
     }
   }
 

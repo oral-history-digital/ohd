@@ -24,6 +24,7 @@ class SearchesController < BaseController
     @search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
+    @interviews = Interview.first(10)
 
     session[:query] = @search.query_params
 
@@ -39,7 +40,7 @@ class SearchesController < BaseController
         finish = Time.now
         diff = finish - start
         render json: {
-          interviews: render_to_string(template: '/interviews/index.html', layout: false),
+          interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
           facets: { unqueried_facets: unqueried_facets, query_facets: @search.query_facets, session: session[:query], diff: diff }
         }
       end
