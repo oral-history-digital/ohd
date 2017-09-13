@@ -58,12 +58,10 @@ export default class FlyoutTabs extends React.Component {
           login logout name
         </TabPanel>
         <TabPanel className='column-content'>
-          {/*
           <InterviewSearch
             url='/suchen'
             lang={this.props.lang}
           />
-          */}
         </TabPanel>
         <TabPanel className='column-content'>
           <Locations position={[37.9838, 23.7275]} zoom={13} />
