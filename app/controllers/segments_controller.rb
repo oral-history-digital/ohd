@@ -1,9 +1,10 @@
 class SegmentsController < ApplicationController
 
   def index
+    interview = Interview.find_by(archive_id: params[:interview_id])
     segments = Segment.
       includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-      for_interview_id(params[:interview_id])
+      for_interview_id(interview.id)
     headings = segments.with_heading
     respond_to do |format|
       format.json do 

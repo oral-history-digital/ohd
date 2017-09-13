@@ -19,7 +19,7 @@ export default class Interviews extends React.Component {
   }
 
   loadInterviews() {
-    let url = '/suchen';
+    let url = '/de/suchen';
     request.get(url)
       .set('Accept', 'application/json')
       .end( (error, res) => {
@@ -37,7 +37,6 @@ export default class Interviews extends React.Component {
   }
 
   render() {
-    debugger;
     return (
       <div className='interviews wrapper-content'>
         <h1 className='search-results-title'>Suchergebnisse</h1>

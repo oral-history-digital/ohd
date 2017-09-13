@@ -1,4 +1,6 @@
 import React from 'react';
+import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
+
 import Interview from '../components/Interview';
 import Interviews from '../components/Interviews';
 import FlyoutTabs from '../components/FlyoutTabs';
@@ -29,7 +31,15 @@ export default class App extends React.Component {
               | Logo
             </div>
           </header>
-          {this.content()}
+
+          <BrowserRouter history={hashHistory}>
+            <div>
+              <Route path="/:lang/interviews/:archiveId" component={Interview} />
+              <Route path="/:lang/searches" component={Interviews} />
+              <Route path="/:lang/suchen" component={Interviews} />
+            </div>
+          </BrowserRouter>
+
           <footer>
             | Footer
           </footer>

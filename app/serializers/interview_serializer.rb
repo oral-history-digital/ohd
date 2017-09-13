@@ -25,7 +25,8 @@ class InterviewSerializer < ActiveModel::Serializer
     :lang,
     :title,
     :short_title,
-    :still_url
+    :still_url,
+    :src
 
   def lang
     object.language.code
@@ -47,6 +48,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def still_url
     object.still_image.url(:original)
+  end
+
+  def src
+    "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
   end
 
 end

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, hashHistory } from 'react-router-dom';
 
 export default class InterviewPreview extends React.Component {
   
