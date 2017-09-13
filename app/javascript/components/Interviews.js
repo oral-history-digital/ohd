@@ -9,7 +9,6 @@ export default class Interviews extends React.Component {
     super(props, context);
 
     this.state = {
-      lang: 'de',
       interviews: [],
     }
   }
@@ -41,7 +40,11 @@ export default class Interviews extends React.Component {
       <div className='interviews wrapper-content'>
         <h1 className='search-results-title'>Suchergebnisse</h1>
         {this.state.interviews.map( (interview, index) => {
-          return <InterviewPreview interview={interview} key={"interview-" + interview.id} />;
+          return <InterviewPreview 
+                   interview={interview} 
+                   key={"interview-" + interview.id} 
+                   lang={this.props.match.params.lang}
+                 />;
         })}
       </div>
     )
