@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import InterviewSearch from '../components/InterviewSearch';
 import Locations from '../components/Locations';
+import ArchiveSearch from '../components/ArchiveSearch';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -22,8 +22,10 @@ export default class FlyoutTabs extends React.Component {
         //}
         //break;
       //case 2:
-        //if(window.location !== '/suchen') {
+        //if(window.location.toString().indexOf('/suchen') === -1) {
           //window.location = '/suchen';
+        //} else {
+            //this.setState({ tabIndex })
         //}
         //break;
       default:
@@ -58,7 +60,7 @@ export default class FlyoutTabs extends React.Component {
           login logout name
         </TabPanel>
         <TabPanel className='column-content'>
-          <InterviewSearch
+          <ArchiveSearch
             url='/suchen'
             lang={this.props.lang}
           />

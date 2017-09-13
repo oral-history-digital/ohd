@@ -1,33 +1,19 @@
 import React from 'react';
 import request from 'superagent';
-import Facet from '../components/Facet';
-
 
 export default class SearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: props.interviewId,
-            fulltext: ""
+            value: '',
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event, arrayName, array) {
-        const facetClicked = event === null;
-        const value = facetClicked ? array : event.target.value;
-        const name = facetClicked ? arrayName : event.target.name;
-
-        this.setState({[name]: value}, function () {
-            if (facetClicked) {
-                this.performSearch();
-            }
-        });
-    }
-
-    performSearch() {
-        this.search();
+    handleChange(event) {
+        this.setState({value: event.target.value});
     }
 
     handleSubmit(event) {
@@ -39,9 +25,12 @@ export default class SearchForm extends React.Component {
         let url = this.props.url;
         request
             .get(url)
+            .query({
+                id: this.props.interviewId,
+                fulltext: this.state.value
+            })
             .set('Accept', 'application/json')
-            .query(this.state)
-            .end((error, res) => {
+            .end( (error, res) => {
                 if (res) {
                     if (res.error) {
                         console.log("loading segments failed: " + error);
@@ -58,29 +47,11 @@ export default class SearchForm extends React.Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
+                        <input type="text" value={this.state.value} onChange={this.handleChange} />
                     </label>
-                    {this.renderFacets()}
-
-                    <input type="submit" value="Submit"/>
+                    <input type="submit" value="Submit" />
                 </form>
             </div>
         );
-    }
-
-
-    renderFacets() {
-        if (this.props.facets && this.props.facets.query_facets) {
-            return this.props.facets.unqueried_facets.map((facet, index) => {
-                //facet.lang = this.props.lang;
-                return (
-                    <Facet
-                        data={facet}
-                        key={"facet-" + index}
-                        handleChange={this.handleChange}
-                    />
-                )
-            })
-        }
     }
 }

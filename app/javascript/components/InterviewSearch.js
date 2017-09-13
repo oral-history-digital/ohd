@@ -1,9 +1,7 @@
 import React from 'react';
-import request from 'superagent';
+
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
-
-
 
 export default class InterviewSearch extends React.Component {
 
@@ -12,25 +10,9 @@ export default class InterviewSearch extends React.Component {
 
         this.state = {
             segments: [],
-            facets: [],//props.facets,
-            interviews: ""//props.interviews,
-        };
-
-        request
-            .get('/suchen')
-            .set('Accept', 'application/json')
-            .query()
-            .end((error, res) => {
-                if (res) {
-                    if (res.error) {
-                        console.log("loading segments failed: " + error);
-                    } else {
-                        let json = JSON.parse(res.text);
-                        this.handleResults(json);
-                    }
-                }
-            });
-
+            facets: [],
+            interviews: [],
+        }
     }
 
     componentDidUpdate() {
@@ -40,22 +22,18 @@ export default class InterviewSearch extends React.Component {
     handleResults(results) {
         this.setState({
             segments: results.segments,
-            facets: results.facets,
             interviews: results.interviews
         })
     }
 
-    handleFacetClick() {
-        console.log('Please implement handleFacetClick in InterviewSearch-component');
-    }
 
     //handleInterviewClick() {
     //console.log('Please implement handleInterviewClick in InterviewSearch-component');
     //}
 
     renderSegments() {
-        if (this.state.segments) {
-            return this.state.segments.map((segment, index) => {
+        if(this.state.segments) {
+            return this.state.segments.map( (segment, index) => {
                 segment.lang = this.props.lang;
                 return (
                     <Segment
@@ -69,24 +47,21 @@ export default class InterviewSearch extends React.Component {
     }
 
 
-
     renderInterviews() {
-        if (this.state.interviews) {
-            if (this.state.interviews.length > 0) {
+        if(this.state.interviews) {
+            if(this.state.interviews.length > 0) {
                 $('.wrapper-content').replaceWith(this.state.interviews);
             }
         }
     }
 
-
-    render() {
+    render () {
         return (
             <div>
                 <SearchForm
                     url={this.props.url}
                     interviewId={this.props.interviewId}
                     handleResults={this.handleResults.bind(this)}
-                    facets={this.state.facets}
                 />
                 {this.renderSegments()}
             </div>
