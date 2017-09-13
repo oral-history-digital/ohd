@@ -7,9 +7,18 @@ export default class Facet extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.onChange = this.onChange.bind(this);
+
+        let categoryId = this.props.data[0].id;
+        let openState = false;
+        let checkedFacets = this.props.sessionQuery[categoryId];
+
+        if (checkedFacets !== undefined) {
+            openState = checkedFacets. length > 0;
+        }
+
         this.state = {
-            open: false,
-            class: "facet"
+            open: openState,
+            class: openState ? "facet open": "facet"
         };
     }
 
@@ -59,7 +68,7 @@ export default class Facet extends React.Component {
             return (
                 <div key={"subfacet-" + index}>
                     <label><input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
-                           name={categoryId + "[]"} defaultChecked={checkedState} type="checkbox" value={subfacet.entry.id}
+                           name={categoryId + "[]"} checked={checkedState} type="checkbox" value={subfacet.entry.id}
                            onChange={this.onChange}>
                     </input>
                     
