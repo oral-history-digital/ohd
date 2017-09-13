@@ -8,6 +8,12 @@ class InterviewsController < BaseController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do 
+        render json: @interview
+      end
+      format.html
+    end
   end
 
   def index

@@ -12,7 +12,20 @@ class RegistryReferencesController < BaseController
   before_action :perform_search, only: :index
 
   def locations
-    render layout: 'webpacker'
+    respond_to do |format|
+      format.html do
+        render layout: 'webpacker'
+      end
+      format.json do
+       interview = Interview.find(params[:interview_id])
+       segment_ref_locations = interview.segment_registry_entries.with_location
+       interview_ref_locations = interview.segment_registry_entries.with_location
+       render json: {
+         segment_ref_locations: segment_ref_locations.map{|e| ::RegistryEntrySerializer.new(e)},
+         interview_ref_locations: interview_ref_locations.map{|e| ::RegistryEntrySerializer.new(e)}
+       }
+      end
+    end
   end
 
   def index

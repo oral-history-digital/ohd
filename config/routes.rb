@@ -47,6 +47,20 @@ Rails.application.routes.draw do
           end
         end
       end
+
+      get 'suche/:suche/:page' => 'searches#query', :as => :search_by_hash_page
+      get 'suche/:suche' => 'searches#query', :as => :search_by_hash
+      get 'suchen/neu' => 'searches#new', :as => :new_search
+      get 'suchen/:page' => 'searches#query', :as => :search_by_page
+      get 'suchen' => 'searches#query', :as => :search
+      resources :searches do
+        collection do
+          post :query
+          get :interview
+          get :person_name
+        end
+      end
+
     end
 
     #get 'arbeitsmappe' => 'user_contents#index'
@@ -120,20 +134,6 @@ Rails.application.routes.draw do
   #get 'kartenframe' => 'registry_references#map_frame', :as => :map_frame, :locale => :de
   #get ':locale/mapframe' => 'registry_references#map_frame', :as => :localized_map_frame
 
-  get 'suche/:suche/:page' => 'searches#query', :as => :search_by_hash_page
-  get 'suche/:suche' => 'searches#query', :as => :search_by_hash
-  get 'suchen/neu' => 'searches#new', :as => :new_search
-  get 'suchen/:page' => 'searches#query', :as => :search_by_page
-  get 'suchen' => 'searches#query', :as => :search
-  resources :searches do
-    collection do
-      post :query
-      get :interview
-      get :person_name
-    end
-
-
-  end
 
   #get 'login' => 'sessions#new', :as => :anmelden
   #get 'sign_in' => 'sessions#new', :as => :en_login, :locale => :en

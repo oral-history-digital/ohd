@@ -27,26 +27,10 @@ html
   body.flyout-is-hidden
     .layout-indicator style="display: block;"
 
-    .wrapper-page
-      header.site-header
-        .logo
-          | Logo
-
-      == yield
-
-      footer
-        | Footer
-
-    .wrapper-flyout
-      = react_component 'FlyoutTabs', tab_index: tab_index_for_params
-
-      /.flyout-sub-tab
-        /| Biografie
-      /.flyout-sub-tab
-        /| Bilder
-      /.flyout-sub-tab
-        /| Daten zur Zwangsarbeit
-
+    = react_component('App', { \
+        interview: @interview && @interview.as_ams_json, \
+        flyout_tab_index: (@interview.nil? ? 2 : 3), \
+      }) 
 
     .flyout-toggle
       .icon-close

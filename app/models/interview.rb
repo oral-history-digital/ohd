@@ -19,9 +19,6 @@ class Interview < ActiveRecord::Base
            -> {includes(:interview)},
            :dependent => :destroy
 
-  has_many :segments,
-           :dependent => :destroy
-
   has_many :annotations,
            #-> {includes(:translations)},
            :dependent => :delete_all
@@ -100,6 +97,17 @@ class Interview < ActiveRecord::Base
   has_many :registry_entries,
            :through => :registry_references
 
+  has_many :segments,
+           :dependent => :destroy
+
+  has_many :segment_registry_references,
+           through: :segments,
+           source: :registry_references
+           
+  has_many :segment_registry_entries,
+           through: :segment_registry_references,
+           source: :registry_entry
+           
   #translates :first_name, :other_first_names, :last_name, :birth_name,
              #:return_date, :forced_labor_details,
              #:interviewers, :transcriptors, :translators,

@@ -32,6 +32,7 @@ class SearchesController < BaseController
     @search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
+    @interviews = Interview.first(10)
 
     session[:query] = @search.query_params
 
@@ -45,7 +46,7 @@ class SearchesController < BaseController
       format.json do
         unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]}}]}
         render json: {
-            interviews: render_to_string(template: '/interviews/index.html', layout: false),
+            interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
             facets: {unqueried_facets: unqueried_facets, query_facets: @search.query_facets},
             session_query: session[:query],
             fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']

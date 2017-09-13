@@ -4,6 +4,7 @@ default: &default
     - de
     - en
     - ru
+    - alias
 
   default_locale: de
 

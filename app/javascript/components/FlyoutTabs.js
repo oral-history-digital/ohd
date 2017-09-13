@@ -1,5 +1,7 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
+import Locations from '../components/Locations';
 import ArchiveSearch from '../components/ArchiveSearch';
 
 export default class FlyoutTabs extends React.Component {
@@ -14,18 +16,18 @@ export default class FlyoutTabs extends React.Component {
 
   handleTabClick(tabIndex) {
     switch(tabIndex) {
-      case 0:
-        if(window.location !== '/') {
-          window.location = '/';
-        }
-        break;
-      case 2:
-        if(window.location.toString().indexOf('/suchen') === -1) {
-          window.location = '/suchen';
-        } else {
-            this.setState({ tabIndex })
-        }
-        break;
+      //case 0:
+        //if(window.location !== '/') {
+          //window.location = '/';
+        //}
+        //break;
+      //case 2:
+        //if(window.location.toString().indexOf('/suchen') === -1) {
+          //window.location = '/suchen';
+        //} else {
+            //this.setState({ tabIndex })
+        //}
+        //break;
       default:
         this.setState({ tabIndex })
     }
@@ -39,7 +41,7 @@ export default class FlyoutTabs extends React.Component {
         selectedTabPanelClassName='active'
         selectedIndex={this.state.tabIndex}
         onSelect={tabIndex => this.handleTabClick(tabIndex)}
-        >
+      >
         <TabList>
           <Tab className='flyout-tab'> Startseite </Tab>
           <Tab className='flyout-tab'> Account </Tab>
@@ -64,6 +66,7 @@ export default class FlyoutTabs extends React.Component {
           />
         </TabPanel>
         <TabPanel className='column-content'>
+          <Locations position={[37.9838, 23.7275]} zoom={13} />
           biographie transcript daten zur za
         </TabPanel>
         <TabPanel className='column-content'>

@@ -95,6 +95,8 @@ class RegistryEntry < ActiveRecord::Base
         )
   }
 
+  scope :with_location, -> { where("latitude <> '' AND longitude <> ''")}
+
   class << self
     # This is not a translated class but it can accept localized descriptors.
     def with_locale(locale)

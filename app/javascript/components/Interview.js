@@ -1,4 +1,5 @@
 import React from 'react';
+import request from 'superagent';
 
 import VideoPlayer from '../components/VideoPlayer';
 import InterviewTabs from '../components/InterviewTabs';
@@ -15,8 +16,77 @@ export default class Interview extends React.Component {
       transcriptScrollEnabled: false,
       volume: 1,
       lang: 'de',
-      interview: JSON.parse(this.props.interview),
+      interview: null, 
+      segments: [],
+      headings: [],
     }
+  }
+
+  componentDidMount() {
+    this.loadSegments();
+    this.loadInterview();
+  }
+
+  loadSegments() {
+    let url = '/de/interviews/' + this.props.match.params.archiveId + '/segments';
+    request.get(url)
+      .set('Accept', 'application/json')
+      .end( (error, res) => {
+        if (res) {
+          if (res.error) {
+            console.log("loading segments failed: " + error);
+          } else {
+            let json = JSON.parse(res.text);
+            this.setState({ 
+              segments: json.segments,
+              headings: this.prepareHeadings(json.headings)
+            });
+          }
+        }
+      });
+  }
+
+  loadInterview() {
+    let url = '/de/interviews/' + this.props.match.params.archiveId;
+    request.get(url)
+      .set('Accept', 'application/json')
+      .end( (error, res) => {
+        if (res) {
+          if (res.error) {
+            console.log("loading segments failed: " + error);
+          } else {
+            let json = JSON.parse(res.text);
+            this.setState({ 
+              interview: json 
+            });
+          }
+        }
+      });
+  }
+
+  prepareHeadings(segments) {
+    let mainIndex = 0;
+    let mainheading = '';
+    let subIndex = 0;
+    let subheading = '';
+    let headings = [];
+
+    segments.map( (segment, index) => {
+      
+      if (segment.mainheading !== '') {
+        mainIndex += 1;
+        subIndex = 0;
+        mainheading = mainIndex + '. ' + segment.mainheading;
+        headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
+      }
+      if (segment.subheading !== '') {
+        subIndex += 1;
+        subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
+        headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
+      }
+    })
+
+    return headings;
   }
 
   handleVideoTimeChange(event) {
@@ -56,29 +126,39 @@ export default class Interview extends React.Component {
     this.setState({ transcriptScrollEnabled: false });
   }
 
+  content() {
+    if (this.state.interview) {
+      return (
+        <div className='interview'>
+          <VideoPlayer 
+            src={this.state.interview.src} 
+            title={this.state.interview.title[this.state.lang]}
+            playPause={this.state.playPause}
+            time={this.state.videoTime}
+            volume={this.state.volume}
+            handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
+            handleVideoEnded={this.handleVideoEnded.bind(this)}
+            reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
+          />
+          <InterviewTabs
+            transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
+            transcriptTime={this.state.transcriptTime}
+            interview={this.state.interview}
+            segments={this.state.segments}
+            headings={this.state.headings}
+            lang={this.state.lang}
+            handleSegmentClick={this.handleSegmentClick.bind(this)}
+            handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
-    return (
-      <div className='app'>
-        <VideoPlayer 
-          src={this.props.src} 
-          title={this.state.interview.title}
-          playPause={this.state.playPause}
-          time={this.state.videoTime}
-          volume={this.state.volume}
-          handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
-          handleVideoEnded={this.handleVideoEnded.bind(this)}
-          reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
-        />
-        <InterviewTabs
-          transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
-          transcriptTime={this.state.transcriptTime}
-          interview={this.state.interview}
-          lang={this.state.lang}
-          handleSegmentClick={this.handleSegmentClick.bind(this)}
-          handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
-        />
-      </div>
-    );
+    return this.content();
   }
 }
 

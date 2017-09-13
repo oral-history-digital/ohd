@@ -1,5 +1,7 @@
 class RegistryEntrySerializer < ActiveModel::Serializer
   attributes :id,
+             :latitude,
+             :longitude,
              :descriptor
 
   def descriptor
