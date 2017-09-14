@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 
+import WrapperPage from '../components/WrapperPage';
 import VideoPlayer from '../components/VideoPlayer';
 import InterviewTabs from '../components/InterviewTabs';
 
@@ -129,7 +130,11 @@ export default class Interview extends React.Component {
   content() {
     if (this.state.interview) {
       return (
-        <div className='interview'>
+        <WrapperPage 
+          tabIndex={this.props.tabIndex}
+          appState={this.props.appState}
+          archiveSearch={this.props.archiveSearch}
+        >
           <VideoPlayer 
             src={this.state.interview.src} 
             title={this.state.interview.title[this.state.lang]}
@@ -150,7 +155,7 @@ export default class Interview extends React.Component {
             handleSegmentClick={this.handleSegmentClick.bind(this)}
             handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
           />
-        </div>
+        </WrapperPage>
       );
     } else {
       return null;

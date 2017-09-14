@@ -1,54 +1,101 @@
 import React from 'react';
+import request from 'superagent';
 import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
 
 import Interview from '../components/Interview';
 import Interviews from '../components/Interviews';
-import FlyoutTabs from '../components/FlyoutTabs';
 
 export default class App extends React.Component {
 
-  content() {
-    if(this.props.interview) {
-      return <Interview
-                src="http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
-                interview={this.props.interview}
-             />;
-    } else {
-      return <Interviews />
-    }
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      segments: [],
+      facets: {},
+      interviews: [],
+      searchQuery:{},
+      fulltext:""
+    };
+  }
+
+  componentDidMount() {
+    this.archiveSearch('/de/suchen', {});
+  }
+
+  handleArchiveSearchResults(results) {
+    this.setState({
+      segments: results.segments,
+      facets: results.facets,
+      interviews: results.interviews,
+      sessionQuery: results.session_query,
+      fulltext: results.fulltext
+    })
+  }
+
+  archiveSearch(url, queryParams) {
+    console.log(queryParams);
+    request
+      .get(url)
+      .set('Accept', 'application/json')
+      .query(queryParams)
+      .end((error, res) => {
+        if (res) {
+          if (res.error) {
+            console.log("loading segments failed: " + error);
+          } else {
+            let json = JSON.parse(res.text);
+            console.log(json);
+            this.handleArchiveSearchResults(json);
+          }
+        }
+      });
   }
 
   tabIndex() {
     return this.props.flyoutTabIndex;
   }
 
+  setInterviews(interviews) {
+    this.setState({
+      interviews: interviews
+    })
+  }
+
+  getInterviews() {
+    return this.state.interviews;
+  }
+
   render () {
     return ( 
-      <div className='app'>
-        <div className='wrapper-page'>
-          <header className='site-header'>
-            <div className='logo'>
-              | Logo
-            </div>
-          </header>
-
-          <BrowserRouter history={hashHistory}>
-            <div>
-              <Route path="/:lang/interviews/:archiveId" component={Interview} />
-              <Route path="/:lang/searches" component={Interviews} />
-              <Route path="/:lang/suchen" component={Interviews} />
-            </div>
-          </BrowserRouter>
-
-          <footer>
-            | Footer
-          </footer>
+      <BrowserRouter history={hashHistory}>
+        <div>
+        <Route path="/:lang/interviews/:archiveId" component={props => (
+                                                  <Interview 
+                                                    appState={this.state}
+                                                    archiveSearch={this.archiveSearch.bind(this)} 
+                                                    tabIndex={this.tabIndex()}
+                                                    {...props}
+                                                  />
+                                               ) }/>
+        <Route path="/:lang/suchen" component={ props => (
+                                                  <Interviews 
+                                                    appState={this.state}
+                                                    archiveSearch={this.archiveSearch.bind(this)} 
+                                                    tabIndex={this.tabIndex()}
+                                                    {...props}
+                                                  />
+                                               ) }/>
+        <Route path="/:lang/searches" component={ props => (
+                                                  <Interviews 
+                                                    appState={this.state}
+                                                    archiveSearch={this.archiveSearch.bind(this)} 
+                                                    tabIndex={this.tabIndex()}
+                                                    {...props}
+                                                  />
+                                               ) }/>
         </div>
-
-        <div className='wrapper-flyout'>
-          <FlyoutTabs tabIndex={this.tabIndex()} />
-        </div>
-      </div>
+      </BrowserRouter>
     );
   }
 }

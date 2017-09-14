@@ -11,26 +11,28 @@ export default class ArchiveSearch extends React.Component {
         this.state = {
             segments: [],
             facets: {},//props.facets,
-            interviews: "",//props.interviews,
+            //interviews: "",//props.interviews,
             searchQuery:{},
             fulltext:""
         };
 
-        this.search('/suchen', {});
+        //this.search('/de/suchen', {});
+      debugger;
     }
 
-    componentDidUpdate() {
-        this.renderInterviews();
-    }
+    //componentDidUpdate() {
+        //this.renderInterviews();
+    //}
 
     handleResults(results) {
         this.setState({
             segments: results.segments,
             facets: results.facets,
-            interviews: results.interviews,
+            //interviews: results.interviews,
             sessionQuery: results.session_query,
             fulltext: results.fulltext
         })
+        this.props.setInterviews(results.interviews);
     }
 
     search(url, queryParams) {
@@ -53,22 +55,21 @@ export default class ArchiveSearch extends React.Component {
     }
 
 
-    renderInterviews() {
-        if (this.state.interviews) {
-            if (this.state.interviews.length > 0) {
-                $('.wrapper-content').replaceWith(this.state.interviews);
-            }
-        }
-    }
+    //renderInterviews() {
+        //if (this.state.interviews) {
+            //if (this.state.interviews.length > 0) {
+                //$('.wrapper-content').replaceWith(this.state.interviews);
+            //}
+        //}
+    //}
 
     renderForm(){
         console.log(this.state.facets.query_facets);
-        if (this.state.facets && this.state.facets.query_facets) {
+        //if (this.state.facets && this.state.facets.query_facets) {
             return (
                 <div>
                     <ArchiveSearchForm
                         url={this.props.url}
-                        handleResults={this.handleResults.bind(this)}
                         facets={this.state.facets}
                         sessionQuery={this.state.sessionQuery}
                         fulltext={this.state.fulltext}
@@ -76,7 +77,7 @@ export default class ArchiveSearch extends React.Component {
                     />
                 </div>
             );
-        }
+        //}
     }
 
 

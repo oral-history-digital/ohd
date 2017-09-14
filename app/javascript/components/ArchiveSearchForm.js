@@ -1,13 +1,15 @@
 import React from 'react';
+//import { Redirect, BrowserRouter, Route, hashHistory, Navigation } from 'react-router-dom'
+import { Navigation } from 'react-router-dom'
 import request from 'superagent';
 import Facet from '../components/Facet';
 
 
-export default class InterviewSearchForm extends React.Component {
+export default class ArchiveSearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fulltext: props.fulltext
+            fulltext: props.appState.fulltext,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,14 +26,15 @@ export default class InterviewSearchForm extends React.Component {
     handleReset(event){
         $('input[type=checkbox]').attr('checked',false);
         this.setState({['fulltext']: ''}, function (){
-            this.props.search(this.props.url + "/neu", {});
+            this.props.archiveSearch(this.props.url + "/neu", {});
         });
     }
 
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.search(this.props.url, $('#interviewSearchForm').serialize());
+        this.props.archiveSearch(this.props.url, $('#interviewSearchForm').serialize());
+        this.context.router.history.push('/de/suchen');
     }
 
 
@@ -52,17 +55,22 @@ export default class InterviewSearchForm extends React.Component {
 
 
     renderFacets() {
-        return this.props.facets.unqueried_facets.map((facet, index) => {
-            //facet.lang = this.props.lang;
-            return (
-                <Facet
-                    data={facet}
-                    sessionQuery={this.props.sessionQuery}
-                    key={"facet-" + index}
-                    handleSubmit={this.handleSubmit}
-                />
-            )
-        })
-
+        if (this.props.appState.facets.unqueried_facets) {
+            return this.props.appState.facets.unqueried_facets.map((facet, index) => {
+                //facet.lang = this.props.lang;
+                return (
+                    <Facet
+                        data={facet}
+                        sessionQuery={this.props.appState.sessionQuery}
+                        key={"facet-" + index}
+                        handleSubmit={this.handleSubmit}
+                    />
+                )
+            })
+        }
     }
+
+  static contextTypes = {
+      router: React.PropTypes.object
+  }
 }

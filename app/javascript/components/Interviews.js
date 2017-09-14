@@ -1,52 +1,29 @@
 import React from 'react';
 import request from 'superagent';
 
+import WrapperPage from '../components/WrapperPage';
 import InterviewPreview from '../components/InterviewPreview';
 
 export default class Interviews extends React.Component {
-  
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      interviews: [],
-    }
-  }
-
-  componentDidMount() {
-    this.loadInterviews();
-  }
-
-  loadInterviews() {
-    let url = '/de/suchen';
-    request.get(url)
-      .set('Accept', 'application/json')
-      .end( (error, res) => {
-        if (res) {
-          if (res.error) {
-            console.log("loading interviews failed: " + error);
-          } else {
-            let json = JSON.parse(res.text);
-            this.setState({ 
-              interviews: json.interviews,
-            });
-          }
-        }
-      });
-  }
 
   render() {
     return (
-      <div className='interviews wrapper-content'>
-        <h1 className='search-results-title'>Suchergebnisse</h1>
-        {this.state.interviews.map( (interview, index) => {
-          return <InterviewPreview 
-                   interview={interview} 
-                   key={"interview-" + interview.id} 
-                   lang={this.props.match.params.lang}
-                 />;
-        })}
-      </div>
+      <WrapperPage 
+        tabIndex={this.props.tabIndex}
+        appState={this.props.appState}
+        archiveSearch={this.props.archiveSearch}
+      >
+        <div className='interviews wrapper-content'>
+          <h1 className='search-results-title'>Suchergebnisse</h1>
+          {this.props.appState.interviews.map( (interview, index) => {
+            return <InterviewPreview 
+                     interview={interview} 
+                     key={"interview-" + interview.id} 
+                     lang={this.props.match.params.lang}
+                   />;
+          })}
+        </div>
+      </WrapperPage>
     )
   }
 }
