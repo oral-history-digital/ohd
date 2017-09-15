@@ -43,7 +43,7 @@ class SearchesController < BaseController
         render :index
       end
       format.json do
-        unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::RegistryEntrySerializer.new(j[0]), count: j[1]}}]}
+        unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
         render json: {
             interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
             facets: {unqueried_facets: unqueried_facets, query_facets: @search.query_facets},
