@@ -32,7 +32,6 @@ class SearchesController < BaseController
     @search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
-    @interviews = Interview.first(10)
 
     session[:query] = @search.query_params
 
@@ -139,7 +138,7 @@ class SearchesController < BaseController
       end
       format.json do
         # TODO: just to test. rm following line afterwards.
-        @segments = Segment.first(10)
+
         render json: {segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
       end
     end
