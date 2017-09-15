@@ -1,5 +1,4 @@
 import React from 'react';
-//import { Redirect, BrowserRouter, Route, hashHistory, Navigation } from 'react-router-dom'
 import { Navigation } from 'react-router-dom'
 import request from 'superagent';
 import Facet from '../components/Facet';
@@ -61,7 +60,7 @@ export default class ArchiveSearchForm extends React.Component {
                 return (
                     <Facet
                         data={facet}
-                        sessionQuery={this.props.appState.sessionQuery}
+                        session_query={this.props.appState.session_query}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
                     />

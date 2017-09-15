@@ -10,7 +10,7 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do 
-        render json: @interview
+        render json: {interview: ::InterviewSerializer.new(@interview)}
       end
       format.html
     end

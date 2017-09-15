@@ -1,5 +1,5 @@
 import React from 'react';
-import request from 'superagent';
+import Loader from '../lib/loader'
 
 import WrapperPage from '../components/WrapperPage';
 import VideoPlayer from '../components/VideoPlayer';
@@ -12,7 +12,7 @@ export default class Interview extends React.Component {
 
     this.state = {
       playPause: 'paused',
-      videoTime: 0,
+      videoTime: this.props.videoTime || 0,
       transcriptTime: 0,
       transcriptScrollEnabled: false,
       volume: 1,
@@ -24,45 +24,8 @@ export default class Interview extends React.Component {
   }
 
   componentDidMount() {
-    this.loadSegments();
-    this.loadInterview();
-  }
-
-  loadSegments() {
-    let url = '/de/interviews/' + this.props.match.params.archiveId + '/segments';
-    request.get(url)
-      .set('Accept', 'application/json')
-      .end( (error, res) => {
-        if (res) {
-          if (res.error) {
-            console.log("loading segments failed: " + error);
-          } else {
-            let json = JSON.parse(res.text);
-            this.setState({ 
-              segments: json.segments,
-              headings: this.prepareHeadings(json.headings)
-            });
-          }
-        }
-      });
-  }
-
-  loadInterview() {
-    let url = '/de/interviews/' + this.props.match.params.archiveId;
-    request.get(url)
-      .set('Accept', 'application/json')
-      .end( (error, res) => {
-        if (res) {
-          if (res.error) {
-            console.log("loading segments failed: " + error);
-          } else {
-            let json = JSON.parse(res.text);
-            this.setState({ 
-              interview: json 
-            });
-          }
-        }
-      });
+    Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.setState.bind(this));
+    Loader.getJson('/de/interviews/' + this.props.match.params.archiveId, null, this.setState.bind(this));
   }
 
   prepareHeadings(segments) {
@@ -150,7 +113,7 @@ export default class Interview extends React.Component {
             transcriptTime={this.state.transcriptTime}
             interview={this.state.interview}
             segments={this.state.segments}
-            headings={this.state.headings}
+            headings={this.prepareHeadings(this.state.headings)}
             lang={this.state.lang}
             handleSegmentClick={this.handleSegmentClick.bind(this)}
             handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}

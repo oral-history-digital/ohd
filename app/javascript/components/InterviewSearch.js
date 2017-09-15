@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Loader from '../lib/loader'
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
 
@@ -11,25 +12,12 @@ export default class InterviewSearch extends React.Component {
         this.state = {
             segments: [],
             facets: [],
-            interviews: [],
         }
     }
 
-    componentDidUpdate() {
-        this.renderInterviews();
+    searchSegments() {
+        Loader.getJson(this.props.url, null, this.setState.bind(this));
     }
-
-    handleResults(results) {
-        this.setState({
-            segments: results.segments,
-            interviews: results.interviews
-        })
-    }
-
-
-    //handleInterviewClick() {
-    //console.log('Please implement handleInterviewClick in InterviewSearch-component');
-    //}
 
     renderSegments() {
         if(this.state.segments) {
@@ -46,22 +34,12 @@ export default class InterviewSearch extends React.Component {
         }
     }
 
-
-    renderInterviews() {
-        if(this.state.interviews) {
-            if(this.state.interviews.length > 0) {
-                $('.wrapper-content').replaceWith(this.state.interviews);
-            }
-        }
-    }
-
     render () {
         return (
             <div>
                 <SearchForm
-                    url={this.props.url}
                     interviewId={this.props.interviewId}
-                    handleResults={this.handleResults.bind(this)}
+                    searchSegments={this.searchSegments.bind(this)}
                 />
                 {this.renderSegments()}
             </div>

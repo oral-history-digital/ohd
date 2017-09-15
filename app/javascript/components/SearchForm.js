@@ -1,5 +1,4 @@
 import React from 'react';
-import request from 'superagent';
 
 export default class SearchForm extends React.Component {
     constructor(props) {
@@ -18,28 +17,7 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.search();
-    }
-
-    search() {
-        let url = this.props.url;
-        request
-            .get(url)
-            .query({
-                id: this.props.interviewId,
-                fulltext: this.state.value
-            })
-            .set('Accept', 'application/json')
-            .end( (error, res) => {
-                if (res) {
-                    if (res.error) {
-                        console.log("loading segments failed: " + error);
-                    } else {
-                        let json = JSON.parse(res.text);
-                        this.props.handleResults(json);
-                    }
-                }
-            });
+        this.props.searchSegments();
     }
 
     render() {
