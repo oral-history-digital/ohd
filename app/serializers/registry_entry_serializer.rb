@@ -8,4 +8,12 @@ class RegistryEntrySerializer < ActiveModel::Serializer
     object.to_s
   end
 
+  def latitude
+    object.latitude.to_f
+  end
+
+  def longitude
+    object.longitude.to_f
+  end
+
 end

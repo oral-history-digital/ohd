@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Navigation } from 'react-router-dom'
-import request from 'superagent';
+import Loader from '../lib/loader'
 import '../css/locations'
 
 export default class Locations extends React.Component {
@@ -11,34 +11,13 @@ export default class Locations extends React.Component {
     super(props, context);
 
     this.state = {
-      locations: [],
+      segment_ref_locations: [],
       zoom: 13
     }
   }
 
   componentDidMount() {
-    this.loadLocations();
-  }
-
-  loadLocations() {
-    debugger;
-    let url = '/de/locations?archive_id=' + this.context.router.route.match.params.archiveId;
-    request.get(url)
-      .set('Accept', 'application/json')
-      .end( (error, res) => {
-        if (res) {
-          if (res.error) {
-            console.log("loading locations failed: " + error);
-          } else {
-            let json = JSON.parse(res.text);
-            this.setState({ 
-              locations: json.segment_ref_locations,
-              segment_ref_locations: json.segment_ref_locations,
-              interview_ref_locations: json.interview_ref_locations
-            });
-          }
-        }
-      });
+    Loader.getJson('/de/locations?archive_id=' + this.context.router.route.match.params.archiveId, this.setState.bind(this));
   }
 
   position() {
@@ -61,7 +40,7 @@ export default class Locations extends React.Component {
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {this.state.locations.map( (loc, index) => {
+        {this.state.segment_ref_locations.map( (loc, index) => {
           return (
             <Marker position={[loc.latitude, loc.longitude]} key={"marker-" + index} >
               <Popup>
