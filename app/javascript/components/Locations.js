@@ -17,12 +17,12 @@ export default class Locations extends React.Component {
   }
 
   componentDidMount() {
-    Loader.getJson('/de/locations?archive_id=' + this.context.router.route.match.params.archiveId, this.setState.bind(this));
+    Loader.getJson('/de/locations?archive_id=' + this.context.router.route.match.params.archiveId, null, this.setState.bind(this));
   }
 
   position() {
-    if(this.state.locations.length > 0) {
-      let first = this.state.locations[0];
+    if(this.state.segment_ref_locations.length > 0) {
+      let first = this.state.segment_ref_locations[0];
       return [first.latitude, first.longitude];
     } else {
       return [37.9838, 23.7275];

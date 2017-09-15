@@ -2,10 +2,11 @@ import request from 'superagent';
 
 //if (typeof Loader == "undefined") {
   var Loader = {
-    getJson: function(url, callback) {
+    getJson: function(url, queryParams, callback) {
     //function getJson(url, callback) {
       request.get(url)
         .set('Accept', 'application/json')
+        .query(queryParams)
         .end( (error, res) => {
           if (res) {
             if (res.error) {

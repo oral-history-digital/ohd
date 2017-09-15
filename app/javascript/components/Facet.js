@@ -10,7 +10,7 @@ export default class Facet extends React.Component {
 
         let categoryId = this.props.data[0].id;
         let openState = false;
-        let checkedFacets = this.props.sessionQuery[categoryId];
+        let checkedFacets = this.props.session_query[categoryId];
 
         if (checkedFacets !== undefined) {
             openState = checkedFacets. length > 0;
@@ -59,7 +59,7 @@ export default class Facet extends React.Component {
 
         return subfacets.map((subfacet, index) => {
             let checkedState = false;
-            let checkedFacets = this.props.sessionQuery[categoryId];
+            let checkedFacets = this.props.session_query[categoryId];
             if (checkedFacets !== undefined) {
                 console.log(checkedFacets);
                 checkedState = checkedFacets.indexOf(subfacet.entry.id.toString()) > -1;
