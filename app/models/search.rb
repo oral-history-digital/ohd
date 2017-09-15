@@ -346,10 +346,10 @@ class Search < UserContent
   class << self
 
     def in_interview(id, fulltext)
-      search_results = if id.is_a?(Integer)
-                         Interview.where(id: id)
-                       else
+      search_results = if id.to_s.match(/\A\d+\z/).nil?
                          Interview.where(archive_id: id)
+                       else
+                         Interview.where(id: id.to_i)
                        end
       Search.new do |search|
         search.results = search_results
