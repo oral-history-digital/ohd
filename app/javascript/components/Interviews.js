@@ -9,7 +9,7 @@ export default class Interviews extends React.Component {
   render() {
     return (
       <WrapperPage 
-        tabIndex={this.props.tabIndex}
+        tabIndex={2}
         appState={this.props.appState}
         archiveSearch={this.props.archiveSearch}
       >

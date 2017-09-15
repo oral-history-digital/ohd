@@ -22,7 +22,7 @@ export default class WrapperPage extends React.Component {
         </div>
 
         <FlyoutTabs 
-          tabIndex={this.props.tabIndex} 
+          tabIndex={this.props.tabIndex}
           appState={this.props.appState}
           archiveSearch={this.props.archiveSearch}
         />

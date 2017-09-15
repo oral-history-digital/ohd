@@ -52,20 +52,6 @@ export default class App extends React.Component {
       });
   }
 
-  tabIndex() {
-    return this.props.flyoutTabIndex;
-  }
-
-  setInterviews(interviews) {
-    this.setState({
-      interviews: interviews
-    })
-  }
-
-  getInterviews() {
-    return this.state.interviews;
-  }
-
   render () {
     return ( 
       <BrowserRouter history={hashHistory}>
@@ -74,7 +60,6 @@ export default class App extends React.Component {
                                                   <Interview 
                                                     appState={this.state}
                                                     archiveSearch={this.archiveSearch.bind(this)} 
-                                                    tabIndex={this.tabIndex()}
                                                     {...props}
                                                   />
                                                ) }/>
@@ -82,7 +67,6 @@ export default class App extends React.Component {
                                                   <Interviews 
                                                     appState={this.state}
                                                     archiveSearch={this.archiveSearch.bind(this)} 
-                                                    tabIndex={this.tabIndex()}
                                                     {...props}
                                                   />
                                                ) }/>
@@ -90,7 +74,6 @@ export default class App extends React.Component {
                                                   <Interviews 
                                                     appState={this.state}
                                                     archiveSearch={this.archiveSearch.bind(this)} 
-                                                    tabIndex={this.tabIndex()}
                                                     {...props}
                                                   />
                                                ) }/>

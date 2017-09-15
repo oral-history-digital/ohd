@@ -131,7 +131,7 @@ export default class Interview extends React.Component {
     if (this.state.interview) {
       return (
         <WrapperPage 
-          tabIndex={this.props.tabIndex}
+          tabIndex={3}
           appState={this.props.appState}
           archiveSearch={this.props.archiveSearch}
         >
