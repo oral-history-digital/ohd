@@ -62,7 +62,7 @@ export default class InterviewTabs extends React.Component {
           </TabPanel>
           <TabPanel className='column-content'>
             <InterviewSearch 
-              url='/searches/interview'
+              url='/de/searches/interview'
               interviewId={this.props.interview.id}
               lang={this.props.lang}
               handleSegmentClick={this.props.handleSegmentClick}
