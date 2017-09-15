@@ -39,7 +39,7 @@ export default class FlyoutTabs extends React.Component {
           />
         </TabPanel>
         <TabPanel className='column-content'>
-          <Locations position={[37.9838, 23.7275]} zoom={13} />
+          <Locations  />
           biographie transcript daten zur za
         </TabPanel>
         <TabPanel className='column-content'>

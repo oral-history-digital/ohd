@@ -17,7 +17,7 @@ class RegistryReferencesController < BaseController
         render layout: 'webpacker'
       end
       format.json do
-       interview = Interview.find(params[:interview_id])
+       interview = Interview.find_by(archive_id: params[:archive_id])
        segment_ref_locations = interview.segment_registry_entries.with_location
        interview_ref_locations = interview.segment_registry_entries.with_location
        render json: {
