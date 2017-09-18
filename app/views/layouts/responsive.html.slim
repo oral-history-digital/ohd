@@ -27,11 +27,7 @@ html
   body.flyout-is-hidden
     .layout-indicator style="display: block;"
 
-    = react_component('App', { \
-        interview: @interview && @interview.as_ams_json, \
-        flyout_tab_index: (@interview.nil? ? 2 : 3), \
-      }) 
-
+    = react_component('App')
     .flyout-toggle
       .icon-close
         i class="fa fa-close"

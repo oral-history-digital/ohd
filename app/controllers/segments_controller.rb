@@ -8,6 +8,7 @@ class SegmentsController < ApplicationController
         for_interview_id(interview.id)
       headings = segments.with_heading
       {
+        interview: ::InterviewSerializer.new(interview),
         segments: segments.map{|s| ::SegmentSerializer.new(s)},
         headings: headings.map{|s| ::SegmentSerializer.new(s)},
       }
