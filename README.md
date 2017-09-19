@@ -20,11 +20,9 @@ This is the web application for CeDiS-Archiv 2.0.
 4. Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
 
 5. Import interviews
-
    ```bash
    bundle exec rake import:interviews:full
    ```
-    
 6. To use node.js (at the moment version 8.x) for webpacker run:
  
     ```bash
