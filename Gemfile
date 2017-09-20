@@ -49,7 +49,7 @@ group :development do
   gem 'guard-cucumber'
   gem 'ruby-debug-ide'
   gem 'debase'
-  gem 'capistrano'
+  gem "capistrano", "~> 3.9"
   gem 'thin'
 end
 
