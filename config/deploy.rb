@@ -8,14 +8,6 @@ set :repo_url, "git@gitlab.cedis.fu-berlin.de:Archive-Upgrade/zwar-archive.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 set :branch, :development
 
-# Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/data/applications/production/occupation-memories.org"
-
-# rbenv settings
-set :rbenv_type, :system
-set :rbenv_ruby, '2.4.0'
-set :rbenv_custom_path, '/opt/rbenv'
-
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 

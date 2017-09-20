@@ -8,6 +8,19 @@ server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_pro
 server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
 
 
+set :stage, :production
+set :user, 'deploy'
+#set :bundle_path, "/data/bundle/02"
+
+# Default deploy_to directory is /var/www/my_app_name
+set :deploy_to, "/data/applications/production/occupation-memories.org"
+
+# rbenv settings
+set :rbenv_type, :system
+set :rbenv_ruby, '2.4.0'
+set :rbenv_custom_path, '/opt/rbenv'
+
+
 
 # role-based syntax
 # ==================
