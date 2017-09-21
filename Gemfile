@@ -27,7 +27,8 @@ gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'sass-rails'
 #gem 'webpacker'
-gem 'react-rails'
+#gem 'react-rails'
+gem 'react_on_rails', '~> 9.0.1'
 #gem 'foreman'
 gem 'slim-rails'
 
