@@ -3,9 +3,9 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-#server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app db web}#, my_property: :my_value
-server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_property: :other_value
-server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
+server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app db web}#, my_property: :my_value
+#server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_property: :other_value
+#server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
 
 
 set :stage, :production
