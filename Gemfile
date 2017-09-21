@@ -86,6 +86,7 @@ end
 
 group :production do
   gem 'execjs'
-  gem 'therubyracer', :platforms => :ruby
   gem 'uglifier'
 end
+
+gem 'mini_racer', platforms: :ruby
