@@ -415,6 +415,8 @@ GEM
       hitimes
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
+    uglifier (3.2.0)
+      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -497,6 +499,7 @@ DEPENDENCIES
   sunspot_solr (= 2.1.0)
   therubyracer
   thin
+  uglifier
   unicode
   webpacker
   will_paginate

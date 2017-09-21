@@ -86,4 +86,5 @@ end
 group :production do
   gem 'execjs'
   gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier'
 end
