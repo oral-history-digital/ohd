@@ -15,8 +15,8 @@ export default class InterviewSearch extends React.Component {
         }
     }
 
-    searchSegments() {
-        Loader.getJson(this.props.url, null, this.setState.bind(this));
+    searchSegments(query) {
+        Loader.getJson(this.props.url, query, this.setState.bind(this));
     }
 
     renderSegments() {
