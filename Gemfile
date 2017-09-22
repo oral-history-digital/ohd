@@ -26,9 +26,9 @@ gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'sass-rails'
-gem 'webpacker'
+#gem 'webpacker'
 gem 'react-rails'
-gem 'foreman'
+#gem 'foreman'
 gem 'slim-rails'
 
 # Gems specific to public archive app:
@@ -49,8 +49,13 @@ group :development do
   gem 'guard-cucumber'
   gem 'ruby-debug-ide'
   gem 'debase'
-  gem 'capistrano'
+  gem "capistrano", "~> 3.9"
+  gem 'capistrano-rbenv'
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
   gem 'thin'
+  gem 'webpacker'
+  gem 'foreman'
 end
 
 group :development, :test do
@@ -76,4 +81,10 @@ group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'email_spec'
+end
+
+group :production do
+  gem 'execjs'
+  gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier'
 end

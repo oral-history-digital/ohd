@@ -16,16 +16,13 @@ export default class Interview extends React.Component {
       transcriptTime: 0,
       transcriptScrollEnabled: false,
       volume: 1,
-      lang: 'de',
-      interview: null, 
-      segments: [],
-      headings: [],
     }
   }
 
   componentDidMount() {
-    Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.setState.bind(this));
-    Loader.getJson('/de/interviews/' + this.props.match.params.archiveId, null, this.setState.bind(this));
+    if (this.props.appState.interview === null || this.props.appState.interview.archive_id !== this.props.match.params.archiveId) {
+      Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
+    }
   }
 
   prepareHeadings(segments) {
@@ -91,7 +88,7 @@ export default class Interview extends React.Component {
   }
 
   content() {
-    if (this.state.interview) {
+    if (this.props.appState.interview) {
       return (
         <WrapperPage 
           tabIndex={3}
@@ -99,8 +96,8 @@ export default class Interview extends React.Component {
           archiveSearch={this.props.archiveSearch}
         >
           <VideoPlayer 
-            src={this.state.interview.src} 
-            title={this.state.interview.title[this.state.lang]}
+            src={this.props.appState.interview.src} 
+            title={this.props.appState.interview.title[this.state.lang]}
             playPause={this.state.playPause}
             time={this.state.videoTime}
             volume={this.state.volume}
@@ -111,10 +108,10 @@ export default class Interview extends React.Component {
           <InterviewTabs
             transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
             transcriptTime={this.state.transcriptTime}
-            interview={this.state.interview}
-            segments={this.state.segments}
-            headings={this.prepareHeadings(this.state.headings)}
-            lang={this.state.lang}
+            interview={this.props.appState.interview}
+            segments={this.props.appState.segments}
+            headings={this.prepareHeadings(this.props.appState.headings)}
+            lang={this.props.appState.lang}
             handleSegmentClick={this.handleSegmentClick.bind(this)}
             handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
           />

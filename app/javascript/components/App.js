@@ -13,7 +13,10 @@ export default class App extends React.Component {
     this.state = {
         all_interviews:0,
         segments_for_interviews:{},
+      lang: 'de',
+      interview: null,
       segments: [],
+      headings: [],
       facets: {},
       interviews: [],
       searchQuery:{},
@@ -36,7 +39,8 @@ export default class App extends React.Component {
         <Route path="/:lang/interviews/:archiveId" component={props => (
                                                   <Interview 
                                                     appState={this.state}
-                                                    archiveSearch={this.archiveSearch.bind(this)} 
+                                                    setAppState={this.setState.bind(this)}
+                                                    archiveSearch={this.archiveSearch.bind(this)}
                                                     {...props}
                                                   />
                                                ) }/>
