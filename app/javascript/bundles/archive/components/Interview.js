@@ -11,6 +11,8 @@ export default class Interview extends React.Component {
     super(props, context);
 
     this.state = {
+      interview: null,
+      lang: 'de',
       playPause: 'paused',
       videoTime: this.props.videoTime || 0,
       transcriptTime: 0,
@@ -20,10 +22,14 @@ export default class Interview extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.appState.interview === null || this.props.appState.interview.archive_id !== this.props.match.params.archiveId) {
-      Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
-    }
+    //if (this.state.interview === null || this.state.interview.archive_id !== this.props.match.params.archiveId) {
+      //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
+    //}
   }
+
+  loadInterview = (interview) => {
+    this.setState({ interview });
+  };
 
   prepareHeadings(segments) {
     let mainIndex = 0;
@@ -88,7 +94,7 @@ export default class Interview extends React.Component {
   }
 
   content() {
-    if (this.props.appState.interview) {
+    if (this.state.interview) {
       return (
         <WrapperPage 
           tabIndex={3}
@@ -96,8 +102,8 @@ export default class Interview extends React.Component {
           archiveSearch={this.props.archiveSearch}
         >
           <VideoPlayer 
-            src={this.props.appState.interview.src} 
-            title={this.props.appState.interview.title[this.state.lang]}
+            src={this.state.interview.src} 
+            title={this.state.interview.title[this.state.lang]}
             playPause={this.state.playPause}
             time={this.state.videoTime}
             volume={this.state.volume}
@@ -108,10 +114,10 @@ export default class Interview extends React.Component {
           <InterviewTabs
             transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
             transcriptTime={this.state.transcriptTime}
-            interview={this.props.appState.interview}
-            segments={this.props.appState.segments}
-            headings={this.prepareHeadings(this.props.appState.headings)}
-            lang={this.props.appState.lang}
+            interview={this.state.interview}
+            segments={this.state.segments}
+            headings={this.prepareHeadings(this.state.headings)}
+            lang={this.state.lang}
             handleSegmentClick={this.handleSegmentClick.bind(this)}
             handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
           />
