@@ -287,11 +287,36 @@ footer {
   margin-bottom: 10px;
   margin-right: 10px;
   color: #fff;
-  &.active {
+  &.open {
     background: $gray-darkest;
     color: #fff;
+    .subfacets {
+      height: auto;
+    }
   }
 }
+
+.subfacets {
+  background: $gray-dark;
+  height: 0;
+  overflow: hidden;
+  transition: all .2s ease-in;
+}
+
+.facet-name {
+  overflow: hidden;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0.5em;
+}
+
+.subfacet {
+  padding: 1em;
+  color:  #fff;
+  line-height: 1.3;
+}
+
 
 .flyout-caption {
   margin-top: 0;

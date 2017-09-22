@@ -1,14 +1,15 @@
 class SegmentSerializer < ActiveModel::Serializer
-  attributes :id, 
-    :time, 
-    :tape_nbr, 
-    :transcripts, 
-    :mainheading, 
-    :subheading, 
-    :annotation_texts, 
-    :start_time, 
-    :end_time, 
-    :references
+  attributes :id,
+             :interview_id,
+             :time,
+             :tape_nbr,
+             :transcripts,
+             :mainheading,
+             :subheading,
+             :annotation_texts,
+             :start_time,
+             :end_time,
+             :references
 
   def time
     # timecode as seconds 
@@ -21,8 +22,8 @@ class SegmentSerializer < ActiveModel::Serializer
 
   def transcripts
     {
-      de: object.read_attribute(:translation),
-      "#{object.interview.language.code}": object.transcript
+        de: object.read_attribute(:translation),
+        "#{object.interview.language.code}": object.transcript
     }
   end
 
@@ -31,6 +32,6 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def references
-    object.registry_references.map{|r| r.registry_entry.descriptor(:all)}
+    object.registry_references.map {|r| r.registry_entry.descriptor(:all)}
   end
 end

@@ -262,6 +262,10 @@ class Search < UserContent
     @search
   end
 
+  def segments
+    @segments || []
+  end
+
   def matching_segments_for(archive_id)
     archive_id.upcase! if archive_id.is_a?(String)
     @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
@@ -270,6 +274,7 @@ class Search < UserContent
   # Performs a sub-search for matching segments on the facetted search
   # result set.
   def segment_search!
+    @rr = "uu"
     @segments = {}
     fulltext = self.query_params['fulltext']
     interview_ids = @results.map{|i| i.archive_id }

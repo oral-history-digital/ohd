@@ -11,6 +11,8 @@ export default class App extends React.Component {
     super(props, context);
 
     this.state = {
+        all_interviews:0,
+        segments_for_interviews:{},
       segments: [],
       facets: {},
       interviews: [],

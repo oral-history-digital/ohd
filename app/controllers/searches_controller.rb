@@ -43,10 +43,14 @@ class SearchesController < BaseController
         render :index
       end
       format.json do
-        unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
+        serialized_segments = Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
+        serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
+
         render json: {
+            all_interviews: Interview.count,
             interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
-            facets: {unqueried_facets: unqueried_facets, query_facets: @search.query_facets},
+            segments_for_interviews:  serialized_segments ,
+            facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
             session_query: session[:query],
             fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
         }

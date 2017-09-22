@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/facets';
 
 export default class Facet extends React.Component {
 
@@ -18,24 +17,23 @@ export default class Facet extends React.Component {
 
         this.state = {
             open: openState,
-            class: openState ? "facet open": "facet"
+            class: openState ? "flyout-sub-tab open": "flyout-sub-tab"
         };
     }
 
     handleClick() {
         if (this.state.open) {
             this.setState({['open']: false});
-            this.setState({['class']: "facet"});
+            this.setState({['class']: "flyout-sub-tab"});
         } else {
             this.setState({['open']: true});
-            this.setState({['class']: "facet open"});
+            this.setState({['class']: "flyout-sub-tab open"});
         }
     }
 
     render() {
         return (
             <div className={this.state.class}>
-                <button>toggle</button>
                 <div className="facet-name" onClick={this.handleClick}>
                     {this.props.data[0].name}
                 </div>
@@ -61,7 +59,6 @@ export default class Facet extends React.Component {
             let checkedState = false;
             let checkedFacets = this.props.session_query[categoryId];
             if (checkedFacets !== undefined) {
-                console.log(checkedFacets);
                 checkedState = checkedFacets.indexOf(subfacet.entry.id.toString()) > -1;
             }
 
