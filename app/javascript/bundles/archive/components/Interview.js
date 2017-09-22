@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from '../lib/loader'
+import Loader from '../../../lib/loader'
 
 import WrapperPage from '../components/WrapperPage';
 import VideoPlayer from '../components/VideoPlayer';

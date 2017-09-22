@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/segments';
+import '../../../css/segments';
 
 export default class Segment extends React.Component {
 

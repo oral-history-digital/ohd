@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/facets';
+import '../../../css/facets';
 
 export default class Facet extends React.Component {
 

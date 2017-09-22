@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/headings';
+import '../../../css/headings';
 
 export default class Heading extends React.Component {
 

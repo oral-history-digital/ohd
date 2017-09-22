@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from '../lib/loader'
+import Loader from '../../../lib/loader'
 import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
 
 import Interview from '../components/Interview';

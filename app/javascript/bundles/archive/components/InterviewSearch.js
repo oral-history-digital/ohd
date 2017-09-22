@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Loader from '../lib/loader'
+import Loader from '../../../lib/loader'
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
 
