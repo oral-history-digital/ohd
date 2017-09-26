@@ -1,15 +1,15 @@
 {
-  "DE_orange.png": "/packs/DE_orange.png",
-  "EN_orange.png": "/packs/EN_orange.png",
-  "FILM_Fortschrittsbalken.png": "/packs/FILM_Fortschrittsbalken.png",
-  "LAUTSTAERKE_aus.png": "/packs/LAUTSTAERKE_aus.png",
-  "LAUTSTAERKE_innen_an.png": "/packs/LAUTSTAERKE_innen_an.png",
-  "Menue_Leiste_ohne_Fuellung.png": "/packs/Menue_Leiste_ohne_Fuellung.png",
-  "PAUSE_orange.png": "/packs/PAUSE_orange.png",
-  "PLAY_orange.png": "/packs/PLAY_orange.png",
-  "application.css": "/packs/application.css",
-  "application.js": "/packs/application.js",
-  "hello_react.js": "/packs/hello_react.js",
-  "server_rendering.css": "/packs/server_rendering.css",
-  "server_rendering.js": "/packs/server_rendering.js"
+  "DE_orange.png": "http://0.0.0.0:8080/packs/DE_orange.png",
+  "EN_orange.png": "http://0.0.0.0:8080/packs/EN_orange.png",
+  "FILM_Fortschrittsbalken.png": "http://0.0.0.0:8080/packs/FILM_Fortschrittsbalken.png",
+  "LAUTSTAERKE_aus.png": "http://0.0.0.0:8080/packs/LAUTSTAERKE_aus.png",
+  "LAUTSTAERKE_innen_an.png": "http://0.0.0.0:8080/packs/LAUTSTAERKE_innen_an.png",
+  "Menue_Leiste_ohne_Fuellung.png": "http://0.0.0.0:8080/packs/Menue_Leiste_ohne_Fuellung.png",
+  "PAUSE_orange.png": "http://0.0.0.0:8080/packs/PAUSE_orange.png",
+  "PLAY_orange.png": "http://0.0.0.0:8080/packs/PLAY_orange.png",
+  "application.css": "http://0.0.0.0:8080/packs/application.css",
+  "application.js": "http://0.0.0.0:8080/packs/application.js",
+  "hello_react.js": "http://0.0.0.0:8080/packs/hello_react.js",
+  "server_rendering.css": "http://0.0.0.0:8080/packs/server_rendering.css",
+  "server_rendering.js": "http://0.0.0.0:8080/packs/server_rendering.js"
 }

@@ -95,8 +95,9 @@ export default class Interview extends React.Component {
           appState={this.props.appState}
           archiveSearch={this.props.archiveSearch}
         >
-          <VideoPlayer 
-            src={this.props.appState.interview.src} 
+          <VideoPlayer
+            src={this.props.appState.interview.src}
+            archiveId={this.props.appState.interview.archive_id}
             title={this.props.appState.interview.title[this.state.lang]}
             playPause={this.state.playPause}
             time={this.state.videoTime}

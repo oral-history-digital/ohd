@@ -210,6 +210,12 @@ class Interview < ActiveRecord::Base
     serialization.to_json
   end
 
+  def to_vtt(type)
+    vtt = "WEBVTT\n"
+    segments.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    vtt
+  end
+
   def transcript_locales
     language.code.split('/')
   end
