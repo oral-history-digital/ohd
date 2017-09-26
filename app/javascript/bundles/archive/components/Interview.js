@@ -4,6 +4,7 @@ import Loader from '../../../lib/loader'
 import WrapperPage from '../components/WrapperPage';
 import VideoPlayer from '../components/VideoPlayer';
 import InterviewTabs from '../components/InterviewTabs';
+import { fetchInterview, fetchInterviewIfNeeded } from '../actions/interviewActionCreators';
 
 export default class Interview extends React.Component {
   
@@ -22,14 +23,22 @@ export default class Interview extends React.Component {
   }
 
   componentDidMount() {
-    //if (this.state.interview === null || this.state.interview.archive_id !== this.props.match.params.archiveId) {
+    if (this.state.interview === null || this.state.interview.archive_id !== this.props.match.params.archiveId) {
+      //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.loadInterview.bind(this));
       //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
-    //}
+      //fetchInterviewIfNeeded(this.props.match.params.archiveId)
+      const { dispatch, fetchInterview } = this.props
+      debugger;
+      fetchInterview(this.props.match.params.archiveId);
+
+      //this.props.dispatch(fetchInterview(this.props.match.params.archiveId));
+    }
   }
 
-  loadInterview = (interview) => {
-    this.setState({ interview });
-  };
+  //requestInterview = (interview) => {
+    //debugger;
+    //this.setState({ interview });
+  //};
 
   prepareHeadings(segments) {
     let mainIndex = 0;
