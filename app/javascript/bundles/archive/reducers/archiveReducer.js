@@ -4,35 +4,32 @@ import { REQUEST_INTERVIEW } from '../constants/archiveConstants';
 import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
 
 const initialState = {
-  interview: null,
-  interviews: [],
+  interviews: {},
   archiveId: null,
   isFetching: false,
   didInvalidate: false
 }
 
-const interview = (state = initialState, action) => {
-  debugger;
+const archive = (state = initialState, action) => {
   switch (action.type) {
-    //case REQUEST_INTERVIEW:
-      //return action.interview;
     case REQUEST_INTERVIEW:
       return Object.assign({}, state, {
                 isFetching: true,
                 didInvalidate: false
               })
     case RECEIVE_INTERVIEW:
+      debugger;
       return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
-                interviews: [
-                  ...state.interviews,
-                  {
-                    archiveId: action.archiveId,
-                    interview: action.interview
+                archiveId: action.archiveId,
+                interviews: Object.assign({}, state.interviews, {
+                  [action.archiveId]: {
+                      interview: action.interview,
+                      segments: action.segments,
+                      headings: action.headings
                   }
-                ],
-                archiveId: action.archive_id,
+                }),
                 lastUpdated: action.receivedAt
               })
     default:
@@ -40,6 +37,6 @@ const interview = (state = initialState, action) => {
   }
 };
 
-const interviewReducer = combineReducers({ interview });
+const archiveReducer = combineReducers({ archive });
 
-export default interviewReducer;
+export default archiveReducer;

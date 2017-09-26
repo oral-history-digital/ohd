@@ -12,7 +12,6 @@ export default class Interview extends React.Component {
     super(props, context);
 
     this.state = {
-      interview: null,
       lang: 'de',
       playPause: 'paused',
       videoTime: this.props.videoTime || 0,
@@ -23,22 +22,24 @@ export default class Interview extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.interview === null || this.state.interview.archive_id !== this.props.match.params.archiveId) {
+    if (!this.interviewLoaded()) {
       //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.loadInterview.bind(this));
       //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
       //fetchInterviewIfNeeded(this.props.match.params.archiveId)
-      const { dispatch, fetchInterview } = this.props
-      debugger;
-      fetchInterview(this.props.match.params.archiveId);
+      //const { dispatch, fetchInterview } = this.props
+      this.props.fetchInterview(this.props.match.params.archiveId);
 
       //this.props.dispatch(fetchInterview(this.props.match.params.archiveId));
     }
   }
 
-  //requestInterview = (interview) => {
-    //debugger;
-    //this.setState({ interview });
-  //};
+  componentDidUpdate() {
+    debugger;
+  }
+
+  interviewLoaded() {
+    return this.props.data && this.props.data.interview && this.props.archiveId === this.props.match.params.archiveId
+  }
 
   prepareHeadings(segments) {
     let mainIndex = 0;
@@ -103,7 +104,7 @@ export default class Interview extends React.Component {
   }
 
   content() {
-    if (this.state.interview) {
+    if (this.interviewLoaded()) {
       return (
         <WrapperPage 
           tabIndex={3}
@@ -111,8 +112,8 @@ export default class Interview extends React.Component {
           archiveSearch={this.props.archiveSearch}
         >
           <VideoPlayer 
-            src={this.state.interview.src} 
-            title={this.state.interview.title[this.state.lang]}
+            src={this.props.data.interview.src} 
+            title={this.props.data.interview.title[this.state.lang]}
             playPause={this.state.playPause}
             time={this.state.videoTime}
             volume={this.state.volume}
@@ -123,9 +124,9 @@ export default class Interview extends React.Component {
           <InterviewTabs
             transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
             transcriptTime={this.state.transcriptTime}
-            interview={this.state.interview}
-            segments={this.state.segments}
-            headings={this.prepareHeadings(this.state.headings)}
+            interview={this.props.data.interview}
+            segments={this.props.data.segments}
+            headings={this.prepareHeadings(this.props.data.headings)}
             lang={this.state.lang}
             handleSegmentClick={this.handleSegmentClick.bind(this)}
             handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}

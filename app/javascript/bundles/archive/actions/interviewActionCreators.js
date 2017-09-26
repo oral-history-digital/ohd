@@ -23,6 +23,8 @@ function receiveInterview(archiveId, json){
     type: RECEIVE_INTERVIEW,
     archiveId: archiveId,
     interview: json.interview,
+    segments: json.segments,
+    headings: json.headings,
     receivedAt: Date.now()
   }
 }
