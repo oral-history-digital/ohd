@@ -11,7 +11,6 @@ const requestArchiveSearch = (searchQuery) => ({
 });
 
 function receiveArchiveSearchResults(json){
-  debugger;
   return {
     type: RECEIVE_ARCHIVE_SEARCH,
     foundInterviews: json.interviews,
@@ -23,7 +22,6 @@ function receiveArchiveSearchResults(json){
 }
 
 export function searchInArchive(url, searchQuery) {
-  debugger;
   return dispatch => {
     dispatch(requestArchiveSearch(searchQuery))
     return fetch(`${url}?${searchQuery}`, {

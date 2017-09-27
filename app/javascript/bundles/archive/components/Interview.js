@@ -105,8 +105,6 @@ export default class Interview extends React.Component {
       return (
         <WrapperPage 
           tabIndex={3}
-          appState={this.props.appState}
-          archiveSearch={this.props.archiveSearch}
         >
           <VideoPlayer 
             src={this.props.data.interview.src} 

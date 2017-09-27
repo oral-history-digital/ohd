@@ -43,7 +43,6 @@ const archive = (state = initialState, action) => {
                 isSearching: true,
               })
     case RECEIVE_ARCHIVE_SEARCH:
-      debugger;
       return Object.assign({}, state, {
                 isSearching: false,
                 foundInterviews: action.foundInterviews,

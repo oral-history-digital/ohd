@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
-//import { bindActionCreators } from 'redux'
 
 import Search from '../components/Search';
 //import * as actionCreators from '../actions/searchActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-  debugger;
   return { 
     foundInterviews: state.archive.foundInterviews,
   }

@@ -32,7 +32,6 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-      debugger;
         this.props.searchInArchive(this.props.url, $('#interviewSearchForm').serialize());
         this.context.router.history.push(this.props.url);
     }
@@ -61,7 +60,7 @@ export default class ArchiveSearchForm extends React.Component {
                 return (
                     <Facet
                         data={facet}
-                        sessionQuery={this.props.sessionQuery}
+                        sessionQuery={this.props.searchQuery}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
                     />
