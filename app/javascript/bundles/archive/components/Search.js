@@ -5,6 +5,7 @@ import InterviewPreview from '../components/InterviewPreview';
 
 export default class Search extends React.Component {
 
+
   render() {
     return (
       <WrapperPage 
@@ -13,10 +14,12 @@ export default class Search extends React.Component {
         <div className='interviews wrapper-content'>
           <h1 className='search-results-title'>Suchergebnisse</h1>
           {this.props.foundInterviews.map( (interview, index) => {
+            let segmentsForInterview = this.props.segments_for_interviews[interview.archive_id] !== undefined ?  this.props.segmentsForInterviews[interview.archive_id] : [];
             return <InterviewPreview 
                      interview={interview} 
                      key={"interview-" + interview.id} 
                      lang={this.props.match.params.lang}
+                     segmentsForInterview={segmentsForInterview}
                    />;
           })}
         </div>

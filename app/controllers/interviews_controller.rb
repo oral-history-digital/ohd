@@ -12,6 +12,9 @@ class InterviewsController < BaseController
       format.json do 
         render json: {interview: ::InterviewSerializer.new(@interview)}
       end
+      format.vtt do
+        render text: @interview.to_vtt( params[:type] )
+      end
       format.html
     end
   end

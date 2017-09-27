@@ -109,6 +109,7 @@ export default class Interview extends React.Component {
           <VideoPlayer 
             src={this.props.data.interview.src} 
             title={this.props.data.interview.title[this.state.lang]}
+            archiveId={this.props.data.interview.archive_id}
             playPause={this.state.playPause}
             time={this.state.videoTime}
             volume={this.state.volume}

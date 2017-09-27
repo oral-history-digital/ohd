@@ -175,6 +175,11 @@ class Segment < ActiveRecord::Base
     ((transcript || '') + ' ' + (translation || '')).strip
   end
 
+  def as_vtt_subtitles(type)
+    "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{send(type)}"
+  end
+
+
   # not a true association, this is primarily used during Solr indexing
   #def annotations
     #Annotation.for_segment(self)

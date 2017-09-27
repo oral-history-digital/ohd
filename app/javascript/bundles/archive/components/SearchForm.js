@@ -17,7 +17,7 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.searchSegments();
+        this.props.searchSegments({fulltext: this.state.value, id: this.props.interviewId});
     }
 
     render() {
