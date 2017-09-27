@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Locations from '../components/Locations';
-import ArchiveSearchForm from '../components/ArchiveSearchForm';
+import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -32,10 +32,8 @@ export default class FlyoutTabs extends React.Component {
           login logout name
         </TabPanel>
         <TabPanel className='column-content'>
-          <ArchiveSearchForm
+          <ArchiveSearchFormContainer
             url='/de/suchen'
-            appState={this.props.appState}
-            archiveSearch={this.props.archiveSearch}
           />
         </TabPanel>
         <TabPanel className='column-content'>

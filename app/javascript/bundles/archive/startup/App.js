@@ -6,23 +6,20 @@ import Loader from '../../../lib/loader'
 
 import archiveStore from '../stores/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
-//import InterviewsContainer from '../containers/InterviewsContainer';
-
-//import Interview from '../components/Interview';
-//import Interviews from '../components/Interviews';
+import SearchContainer from '../containers/SearchContainer';
 
 const App = (props) => (
   <Provider store={archiveStore(props)}>
     <BrowserRouter history={hashHistory}>
       <div>
       <Route path="/:lang/interviews/:archiveId" component={InterviewContainer} />
+      <Route path="/:lang/suchen" component={SearchContainer} />
+      <Route path="/:lang/searches" component={SearchContainer} />
       </div>
     </BrowserRouter>
   </Provider>
 );
 
-      //<Route path="/:lang/suchen" component={Interviews} />
-      //<Route path="/:lang/searches" component={Interviews} />
 export default App;
 
 //export default class App extends React.Component {

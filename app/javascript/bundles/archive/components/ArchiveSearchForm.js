@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigation } from 'react-router-dom'
-import request from 'superagent';
+//import request from 'superagent';
 import Facet from '../components/Facet';
 
 
@@ -8,7 +8,7 @@ export default class ArchiveSearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fulltext: props.appState.fulltext,
+            fulltext: props.fulltext,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,15 +25,16 @@ export default class ArchiveSearchForm extends React.Component {
     handleReset(event){
         $('input[type=checkbox]').attr('checked',false);
         this.setState({['fulltext']: ''}, function (){
-            this.props.archiveSearch(this.props.url + "/neu", {});
+            this.props.searchInArchive(this.props.url + "/neu", {});
         });
     }
 
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.archiveSearch(this.props.url, $('#interviewSearchForm').serialize());
-        this.context.router.history.push('/de/suchen');
+      debugger;
+        this.props.searchInArchive(this.props.url, $('#interviewSearchForm').serialize());
+        this.context.router.history.push(this.props.url);
     }
 
 
@@ -54,13 +55,13 @@ export default class ArchiveSearchForm extends React.Component {
 
 
     renderFacets() {
-        if (this.props.appState.facets.unqueried_facets) {
-            return this.props.appState.facets.unqueried_facets.map((facet, index) => {
+        if (this.props.facets && this.props.facets.unqueried_facets) {
+            return this.props.facets.unqueried_facets.map((facet, index) => {
                 //facet.lang = this.props.lang;
                 return (
                     <Facet
                         data={facet}
-                        session_query={this.props.appState.session_query}
+                        sessionQuery={this.props.sessionQuery}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
                     />

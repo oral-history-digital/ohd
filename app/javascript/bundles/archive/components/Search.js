@@ -1,12 +1,12 @@
 import React from 'react';
-import request from 'superagent';
 
 import WrapperPage from '../components/WrapperPage';
 import InterviewPreview from '../components/InterviewPreview';
 
-export default class Interviews extends React.Component {
+export default class Search extends React.Component {
 
   render() {
+    debugger;
     return (
       <WrapperPage 
         tabIndex={2}
@@ -15,7 +15,7 @@ export default class Interviews extends React.Component {
       >
         <div className='interviews wrapper-content'>
           <h1 className='search-results-title'>Suchergebnisse</h1>
-          {this.props.appState.interviews.map( (interview, index) => {
+          {this.props.foundInterviews.map( (interview, index) => {
             return <InterviewPreview 
                      interview={interview} 
                      key={"interview-" + interview.id} 

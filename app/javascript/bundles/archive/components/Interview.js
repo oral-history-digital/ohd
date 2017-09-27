@@ -1,10 +1,8 @@
 import React from 'react';
-import Loader from '../../../lib/loader'
 
 import WrapperPage from '../components/WrapperPage';
 import VideoPlayer from '../components/VideoPlayer';
 import InterviewTabs from '../components/InterviewTabs';
-import { fetchInterview, fetchInterviewIfNeeded } from '../actions/interviewActionCreators';
 
 export default class Interview extends React.Component {
   
@@ -34,7 +32,6 @@ export default class Interview extends React.Component {
   }
 
   componentDidUpdate() {
-    debugger;
   }
 
   interviewLoaded() {

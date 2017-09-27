@@ -18,7 +18,6 @@ const requestInterview = (archiveId) => ({
 //});
 
 function receiveInterview(archiveId, json){
-  debugger;
   return {
     type: RECEIVE_INTERVIEW,
     archiveId: archiveId,
@@ -30,7 +29,6 @@ function receiveInterview(archiveId, json){
 }
 
 export function fetchInterview(archiveId) {
-  debugger;
   return dispatch => {
     dispatch(requestInterview(archiveId))
     return fetch(`/de/interviews/${archiveId}/segments`, {
