@@ -21,13 +21,7 @@ export default class Interview extends React.Component {
 
   componentDidMount() {
     if (!this.interviewLoaded()) {
-      //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.loadInterview.bind(this));
-      //Loader.getJson('/de/interviews/' + this.props.match.params.archiveId + '/segments', null, this.props.setAppState);
-      //fetchInterviewIfNeeded(this.props.match.params.archiveId)
-      //const { dispatch, fetchInterview } = this.props
       this.props.fetchInterview(this.props.match.params.archiveId);
-
-      //this.props.dispatch(fetchInterview(this.props.match.params.archiveId));
     }
   }
 
