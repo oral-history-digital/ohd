@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigation } from 'react-router-dom'
-//import request from 'superagent';
 import Facet from '../components/Facet';
 
 
@@ -13,6 +12,16 @@ export default class ArchiveSearchForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+    }
+
+    componentDidMount() {
+        if (!this.facetsLoaded()) {
+            this.props.searchInArchive(this.props.url + "/neu", {});
+        }
+    }
+
+    facetsLoaded() {
+        return this.props.facets && this.props.facets.unqueried_facets;
     }
 
     handleChange(event) {
@@ -54,7 +63,8 @@ export default class ArchiveSearchForm extends React.Component {
 
 
     renderFacets() {
-        if (this.props.facets && this.props.facets.unqueried_facets) {
+        //if (this.props.facets && this.props.facets.unqueried_facets) {
+        if (this.facetsLoaded()) {
             return this.props.facets.unqueried_facets.map((facet, index) => {
                 //facet.lang = this.props.lang;
                 return (

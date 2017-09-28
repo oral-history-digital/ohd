@@ -48,6 +48,7 @@ const archive = (state = initialState, action) => {
                 foundInterviews: action.foundInterviews,
                 facets: action.facets,
                 searchQuery: action.searchQuery,
+                segmentsForInterviews: action.segmentsForInterviews,
                 fulltext: action.fulltext,
               })
     default:

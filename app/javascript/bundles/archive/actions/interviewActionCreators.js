@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-import fetch from 'isomorphic-fetch'
+import Loader from '../../../lib/loader'
 
 import { REQUEST_INTERVIEW} from '../constants/archiveConstants';
 import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
@@ -17,10 +17,10 @@ const requestInterview = (archiveId) => ({
   //receivedAt: Date.now()
 //});
 
-function receiveInterview(archiveId, json){
+function receiveInterview(json){
   return {
     type: RECEIVE_INTERVIEW,
-    archiveId: archiveId,
+    archiveId: json.interview.archive_id,
     interview: json.interview,
     segments: json.segments,
     headings: json.headings,
@@ -31,36 +31,27 @@ function receiveInterview(archiveId, json){
 export function fetchInterview(archiveId) {
   return dispatch => {
     dispatch(requestInterview(archiveId))
-    return fetch(`/de/interviews/${archiveId}/segments`, {
-        //method: 'post',
-        headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-        //body: JSON.stringify({a: 7, str: 'Some string: &=&'})
-      })
-      .then(response => response.json())
-      .then(json => dispatch(receiveInterview(archiveId, json)))
+    Loader.getJson(`/de/interviews/${archiveId}/segments`, null, dispatch, receiveInterview);
   }
 }
 
-function shouldFetchInterview(state, archiveId) {
-  const interview = state.interviewByArchiveId[archiveId]
-  if (!interview) {
-    return true
-  } else if (interview.isFetching) {
-    return false
-  } else {
-    return interview.didInvalidate
-  }
-}
+//function shouldFetchInterview(state, archiveId) {
+  //const interview = state.interviewByArchiveId[archiveId]
+  //if (!interview) {
+    //return true
+  //} else if (interview.isFetching) {
+    //return false
+  //} else {
+    //return interview.didInvalidate
+  //}
+//}
 
-export function fetchInterviewIfNeeded(archiveId) {
-  debugger;
-  return (dispatch, getState) => {
-  debugger;
-    //if (shouldFetchInterview(getState(), archiveId)) {
-      return dispatch(fetchInterview(archiveId))
-    //}
-  }
-}
+//export function fetchInterviewIfNeeded(archiveId) {
+  //debugger;
+  //return (dispatch, getState) => {
+  //debugger;
+    ////if (shouldFetchInterview(getState(), archiveId)) {
+      //return dispatch(fetchInterview(archiveId))
+    ////}
+  //}
+//}

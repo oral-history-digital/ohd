@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-import fetch from 'isomorphic-fetch'
+import Loader from '../../../lib/loader'
 
 import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
@@ -14,6 +14,7 @@ function receiveArchiveSearchResults(json){
   return {
     type: RECEIVE_ARCHIVE_SEARCH,
     foundInterviews: json.interviews,
+    segmentsForInterviews: json.segments_for_interviews,
     facets: json.facets,
     searchQuery: json.session_query,
     fulltext: json.fulltext,
@@ -24,14 +25,7 @@ function receiveArchiveSearchResults(json){
 export function searchInArchive(url, searchQuery) {
   return dispatch => {
     dispatch(requestArchiveSearch(searchQuery))
-    return fetch(`${url}?${searchQuery}`, {
-        headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-      })
-      .then(response => response.json())
-      .then(json => dispatch(receiveArchiveSearchResults(json)))
+    Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
   }
 }
 
