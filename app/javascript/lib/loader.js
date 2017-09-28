@@ -2,8 +2,7 @@ import request from 'superagent';
 
 //if (typeof Loader == "undefined") {
   var Loader = {
-    getJson: function(url, queryParams, callback) {
-    //function getJson(url, callback) {
+    getJson: function(url, queryParams, dispatch, callback) {
       request.get(url)
         .set('Accept', 'application/json')
         .query(queryParams)
@@ -13,7 +12,7 @@ import request from 'superagent';
               console.log("loading json from " + url + " failed: " + error);
             } else {
               if (typeof callback === "function") {
-                callback(JSON.parse(res.text));
+                dispatch(callback(JSON.parse(res.text)));
               }
             }
           }
