@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Loader from '../../../lib/loader'
+
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
 
@@ -16,7 +16,8 @@ export default class InterviewSearch extends React.Component {
     }
 
     searchSegments(query) {
-        Loader.getJson(this.props.url, query, this.setState.bind(this));
+        this.props.searchInInterview(this.props.url, query);
+        //Loader.getJson(this.props.url, query, this.setState.bind(this));
     }
 
     renderSegments() {

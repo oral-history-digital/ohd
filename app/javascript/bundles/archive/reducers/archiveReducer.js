@@ -3,6 +3,9 @@ import { combineReducers } from 'redux';
 import { REQUEST_INTERVIEW } from '../constants/archiveConstants';
 import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
 
+import { REQUEST_INTERVIEW_SEARCH} from '../constants/archiveConstants';
+import { RECEIVE_INTERVIEW_SEARCH} from '../constants/archiveConstants';
+
 import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 
@@ -38,6 +41,20 @@ const archive = (state = initialState, action) => {
                 }),
                 lastUpdated: action.receivedAt
               })
+      case REQUEST_INTERVIEW_SEARCH:
+          return Object.assign({}, state, {
+              isFetching: true,
+              didInvalidate: false
+          })
+      case RECEIVE_INTERVIEW_SEARCH:
+          return Object.assign({}, state, {
+              isSearching: false,
+              didInvalidate: false,
+              segments: action.segments
+          })
+
+
+
     case REQUEST_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
                 isSearching: true,
