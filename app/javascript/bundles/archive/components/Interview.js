@@ -1,7 +1,7 @@
 import React from 'react';
 
 import WrapperPage from '../components/WrapperPage';
-import VideoPlayer from '../components/VideoPlayer';
+import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabs from '../components/InterviewTabs';
 
 export default class Interview extends React.Component {
@@ -11,11 +11,7 @@ export default class Interview extends React.Component {
 
     this.state = {
       lang: 'de',
-      playPause: 'paused',
-      videoTime: this.props.videoTime || 0,
-      transcriptTime: 0,
       transcriptScrollEnabled: false,
-      volume: 1,
     }
   }
 
@@ -23,9 +19,6 @@ export default class Interview extends React.Component {
     if (!this.interviewLoaded()) {
       this.props.fetchInterview(this.props.match.params.archiveId);
     }
-  }
-
-  componentDidUpdate() {
   }
 
   interviewLoaded() {
@@ -57,22 +50,22 @@ export default class Interview extends React.Component {
     return headings;
   }
 
-  handleVideoTimeChange(event) {
-    if (this.state.transcriptTime !== event.target.currentTime) {
-      this.setState({ 
-        transcriptTime: event.target.currentTime,
-        //videoTime: event.target.currentTime,
-      })
-    }
-  }
+  //handleVideoTimeChange(event) {
+    //if (this.state.transcriptTime !== event.target.currentTime) {
+      //this.setState({ 
+        //transcriptTime: event.target.currentTime,
+        ////videoTime: event.target.currentTime,
+      //})
+    //}
+  //}
 
-  handleVideoEnded(event) {
-    this.setState({ 
-      playPause: 'paused',
-      videoTime: 0,
-      transcriptTime: 0,
-    })
-  }
+  //handleVideoEnded(event) {
+    //this.setState({ 
+      //playPause: 'paused',
+      //videoTime: 0,
+      //transcriptTime: 0,
+    //})
+  //}
 
   handleSegmentClick(time) {
     this.setState({ 
@@ -100,26 +93,9 @@ export default class Interview extends React.Component {
         <WrapperPage 
           tabIndex={3}
         >
-          <VideoPlayer 
-            src={this.props.data.interview.src} 
-            title={this.props.data.interview.title[this.state.lang]}
-            archiveId={this.props.data.interview.archive_id}
-            playPause={this.state.playPause}
-            time={this.state.videoTime}
-            volume={this.state.volume}
-            handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
-            handleVideoEnded={this.handleVideoEnded.bind(this)}
-            reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
-          />
-          <InterviewTabs
-            transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
-            transcriptTime={this.state.transcriptTime}
-            interview={this.props.data.interview}
-            segments={this.props.data.segments}
-            headings={this.prepareHeadings(this.props.data.headings)}
+          <VideoPlayerContainer
             lang={this.state.lang}
-            handleSegmentClick={this.handleSegmentClick.bind(this)}
-            handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
+            reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
           />
         </WrapperPage>
       );
@@ -128,6 +104,25 @@ export default class Interview extends React.Component {
     }
   }
 
+          //<VideoPlayer 
+            //src={this.props.data.interview.src} 
+            //title={this.props.data.interview.title[this.state.lang]}
+            //archiveId={this.props.data.interview.archive_id}
+            //time={this.state.videoTime}
+            //handleVideoTimeChange={this.handleVideoTimeChange.bind(this)}
+            //handleVideoEnded={this.handleVideoEnded.bind(this)}
+            //reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
+          ///>
+          //<InterviewTabs
+            //transcriptScrollEnabled={this.state.transcriptScrollEnabled} 
+            //transcriptTime={this.state.transcriptTime}
+            //interview={this.props.data.interview}
+            //segments={this.props.data.segments}
+            //headings={this.prepareHeadings(this.props.data.headings)}
+            //lang={this.state.lang}
+            //handleSegmentClick={this.handleSegmentClick.bind(this)}
+            //handleTranscriptScroll={this.handleTranscriptScroll.bind(this)}
+          ///>
   render() {
     return this.content();
   }

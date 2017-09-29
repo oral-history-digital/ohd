@@ -12,6 +12,10 @@ import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { REQUEST_LOCATIONS} from '../constants/archiveConstants';
 import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 
+import { VIDEO_TIME_CHANGE } from '../constants/archiveConstants';
+import { VIDEO_ENDED } from '../constants/archiveConstants';
+import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
+
 //function interviewData(interviews, action){
   //return {
     //Object.assign({}, interviews, {
@@ -25,13 +29,16 @@ import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 //}
 
 const initialState = {
-  interviews: {},
-    segments:[],
   archiveId: null,
+  interviews: {},
+  segments:[],
   facets: {},
-  foundInterviews: [],
   searchQuery:{},
   fulltext:"",
+  foundInterviews: [],
+  videoTime: 0,
+  videoStatus: 'pause',
+  transcriptTime: 0,
   isSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
@@ -95,6 +102,20 @@ const archive = (state = initialState, action) => {
                   }),
                 }),
               })
+    case VIDEO_TIME_CHANGE:
+      return Object.assign({}, state, {
+              transcriptTime: action.transcriptTime,
+            })
+    case TRANSCRIPT_TIME_CHANGE:
+      return Object.assign({}, state, {
+              videoTime: action.videoTime,
+            })
+    case VIDEO_ENDED:
+      return Object.assign({}, state, {
+              videoStatus: 'paused',
+              videoTime: 0,
+              transcriptTime: 0,
+            })
     default:
       return state;
   }

@@ -15,3 +15,7 @@ export const ARCHIVE_SEARCH_URL = '/de/suchen';
 export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
 export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
 export const LOCATIONS_URL = '/de/locations';
+
+export const VIDEO_TIME_CHANGE = 'VIDEO_TIME_CHANGE';
+export const TRANSCRIPT_TIME_CHANGE = 'TRANSCRIPT_TIME_CHANGE';
+export const VIDEO_ENDED = 'VIDEO_ENDED';
