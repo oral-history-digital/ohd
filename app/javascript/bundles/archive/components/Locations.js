@@ -25,7 +25,7 @@ export default class Locations extends React.Component {
   }
 
   position() {
-    if(this.props.segmentRefLocations.length > 0) {
+    if(this.locationsLoaded()) {
       let first = this.props.segmentRefLocations[0];
       return [first.latitude, first.longitude];
     } else {
@@ -38,23 +38,27 @@ export default class Locations extends React.Component {
   }
 
   render() {
-    return(
-      <Map center={this.position()} zoom={this.state.zoom}>
-        <TileLayer
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {this.props.segmentRefLocations.map( (loc, index) => {
-          return (
-            <Marker position={[loc.latitude, loc.longitude]} key={"marker-" + index} >
-              <Popup>
-                <h3>{loc.descriptor}</h3>
-              </Popup>
-            </Marker>
-          ) 
-        })}
-      </Map>
-    );
+    if(this.locationsLoaded()) {
+      return(
+        <Map center={this.position()} zoom={this.state.zoom}>
+          <TileLayer
+            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {this.props.segmentRefLocations.map( (loc, index) => {
+            return (
+              <Marker position={[loc.latitude, loc.longitude]} key={"marker-" + index} >
+                <Popup>
+                  <h3>{loc.descriptor}</h3>
+                </Popup>
+              </Marker>
+            ) 
+          })}
+        </Map>
+      );
+    } else {
+      return null;
+    }
   }
                 //<Link 
                   //className='interview-marker-link' 

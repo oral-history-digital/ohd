@@ -13,6 +13,7 @@ const requestLocations = (archiveId) => ({
 function receiveLocations(json){
   return {
     type: RECEIVE_LOCATIONS,
+    archiveId: json.archive_id,
     segmentRefLocations: json.segment_ref_locations,
     receivedAt: Date.now()
   }

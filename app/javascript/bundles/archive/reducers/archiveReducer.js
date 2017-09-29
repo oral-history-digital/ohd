@@ -9,9 +9,21 @@ import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { REQUEST_LOCATIONS} from '../constants/archiveConstants';
 import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 
+//function interviewData(interviews, action){
+  //return {
+    //Object.assign({}, interviews, {
+      //[action.archiveId]: {
+        //interview: action.interview,
+        //segments: action.segments,
+        //headings: action.headings
+      //}
+    //})
+  //}
+//}
+
 const initialState = {
   interviews: {},
-  segmentRefLocations: [],
+  //segmentRefLocations: [],
   archiveId: null,
   facets: {},
   foundInterviews: [],
@@ -34,14 +46,14 @@ const archive = (state = initialState, action) => {
                 isFetchingInterview: false,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
-                  [action.archiveId]: {
+                  [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                       interview: action.interview,
                       segments: action.segments,
                       headings: action.headings
-                  }
+                  }),
                 }),
                 lastUpdated: action.receivedAt
-              })
+      })
     case REQUEST_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
                 isSearching: true,
@@ -62,7 +74,11 @@ const archive = (state = initialState, action) => {
     case RECEIVE_LOCATIONS:
       return Object.assign({}, state, {
                 isFetchingInterviewLocations: false,
-                segmentRefLocations: action.segmentRefLocations
+                interviews: Object.assign({}, state.interviews, {
+                  [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
+                      segmentRefLocations: action.segmentRefLocations
+                  }),
+                }),
               })
     default:
       return state;

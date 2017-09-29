@@ -4,13 +4,26 @@ import { connect } from 'react-redux';
 import Locations from '../components/Locations';
 import * as actionCreators from '../actions/locationsActionCreators';
 
+const getInterviewLocations = (interviews, archiveId) => {
+  let interview = interviews[archiveId];
+  return interview && interview.segmentRefLocations;
+}
+
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
   return { 
     archiveId: state.archive.archiveId,
-    segmentRefLocations: state.archive.segmentRefLocations,
+    segmentRefLocations: getInterviewLocations(state.archive.interviews, state.archive.archiveId) 
   }
 }
+
+// Which part of the Redux global state does our component want to receive as props?
+//const mapStateToProps = (state) => {
+  //return { 
+    //archiveId: state.archive.archiveId,
+    //segmentRefLocations: state.archive.segmentRefLocations,
+  //}
+//}
 
 //const mapDispatchToProps = (dispatch) => (
   //{ interviewActions: bindActionCreators(actionCreators, dispatch) }
