@@ -76,7 +76,8 @@ const archive = (state = initialState, action) => {
                 isFetchingInterviewLocations: false,
                 interviews: Object.assign({}, state.interviews, {
                   [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                      segmentRefLocations: action.segmentRefLocations
+                      segmentRefLocations: action.segmentRefLocations,
+                      segmentRefLocationsLoaded: true
                   }),
                 }),
               })

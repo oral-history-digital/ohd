@@ -21,7 +21,7 @@ export default class Locations extends React.Component {
   }
 
   locationsLoaded() {
-    return this.props.segmentRefLocations && this.props.segmentRefLocations.length > 0 && this.props.archiveId === this.context.router.route.match.params.archiveId
+    return this.props.segmentRefLocationsLoaded && this.props.archiveId === this.context.router.route.match.params.archiveId
   }
 
   position() {
