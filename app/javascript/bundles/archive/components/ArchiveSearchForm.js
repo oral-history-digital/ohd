@@ -41,7 +41,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.searchInArchive(this.props.url, $('#interviewSearchForm').serialize());
+        this.props.searchInArchive(this.props.url, $('#archiveSearchForm').serialize());
         this.context.router.history.push(this.props.url);
     }
 
@@ -49,7 +49,7 @@ export default class ArchiveSearchForm extends React.Component {
     render() {
         return (
             <div>
-                <form id="interviewSearchForm" onSubmit={this.handleSubmit}>
+                <form id="archiveSearchForm" onSubmit={this.handleSubmit}>
                     <label>
                         <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
                     </label>
