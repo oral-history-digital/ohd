@@ -26,7 +26,7 @@ import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 
 const initialState = {
   interviews: {},
-  //segmentRefLocations: [],
+    segments:[],
   archiveId: null,
   facets: {},
   foundInterviews: [],
@@ -68,9 +68,6 @@ const archive = (state = initialState, action) => {
               didInvalidate: false,
               segments: action.segments
           })
-
-
-
     case REQUEST_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
                 isSearching: true,
