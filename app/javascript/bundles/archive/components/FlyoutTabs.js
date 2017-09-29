@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Locations from '../components/Locations';
+import LocationsContainer from '../containers/LocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 
 export default class FlyoutTabs extends React.Component {
@@ -37,7 +37,7 @@ export default class FlyoutTabs extends React.Component {
           />
         </TabPanel>
         <TabPanel className='column-content'>
-          <Locations  />
+          <LocationsContainer  />
           biographie transcript daten zur za
         </TabPanel>
         <TabPanel className='column-content'>
