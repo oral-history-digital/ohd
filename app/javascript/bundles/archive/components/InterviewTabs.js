@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import TableOfContents from '../components/TableOfContents';
 import Transcript from '../components/Transcript';
-import InterviewSearch from '../components/InterviewSearch';
+import InterviewSearchContainer from '../containers/InterviewSearchContainer';
 
 export default class InterviewTabs extends React.Component {
   
@@ -61,7 +61,7 @@ export default class InterviewTabs extends React.Component {
             />
           </TabPanel>
           <TabPanel className='column-content'>
-            <InterviewSearch 
+            <InterviewSearchContainer
               interviewId={this.props.interview.id}
               lang={this.props.lang}
               handleSegmentClick={this.props.handleSegmentClick}

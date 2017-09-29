@@ -4,6 +4,8 @@ import Loader from '../../../lib/loader'
 
 import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
+import { REQUEST_INTERVIEW_SEARCH} from '../constants/archiveConstants';
+import { RECEIVE_INTERVIEW_SEARCH} from '../constants/archiveConstants';
 
 const requestArchiveSearch = (searchQuery) => ({
   type: REQUEST_ARCHIVE_SEARCH,
@@ -29,3 +31,23 @@ export function searchInArchive(url, searchQuery) {
   }
 }
 
+
+const requestInterviewSearch = (searchQuery) => ({
+    type: REQUEST_INTERVIEW_SEARCH,
+    searchQuery: searchQuery,
+});
+
+function receiveInterviewSearchResults(json){
+    return {
+        type: RECEIVE_INTERVIEW_SEARCH,
+        segments: json.segments,
+        receivedAt: Date.now()
+    }
+}
+
+export function searchInInterview(url, searchQuery) {
+    return dispatch => {
+        dispatch(requestInterviewSearch(searchQuery))
+        Loader.getJson(url, searchQuery, dispatch, receiveInterviewSearchResults);
+    }
+}
