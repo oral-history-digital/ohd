@@ -17,26 +17,21 @@ const initialState = {
   foundInterviews: [],
   searchQuery:{},
   fulltext:"",
-  isFetching: false,
   isSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
-  didInvalidate: false
 }
 
 const archive = (state = initialState, action) => {
   switch (action.type) {
     case REQUEST_INTERVIEW:
       return Object.assign({}, state, {
-                //isFetching: true,
                 isFetchingInterview: true,
                 didInvalidate: false
               })
     case RECEIVE_INTERVIEW:
       return Object.assign({}, state, {
-                //isFetching: false,
                 isFetchingInterview: false,
-                //didInvalidate: false,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
                   [action.archiveId]: {
