@@ -1,8 +1,1 @@
-.wrapper-content
-  h1.search-results-title Suchergebnisse
-
-  - @interviews.each do |interview|
-    = link_to interview_path(interview) do 
-      .search-result
-        img src="#{interview.still_image.url(:original)}"
-        h3= interview.short_title(I18n.locale)
+= react_component('App')

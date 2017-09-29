@@ -26,7 +26,7 @@ class InterviewsController < BaseController
       format.vtt do
         render text: interview.to_vtt( params[:type] )
       end
-      format.html
+      format.html 
     end
   end
 
