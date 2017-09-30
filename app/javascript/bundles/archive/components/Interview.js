@@ -11,7 +11,7 @@ export default class Interview extends React.Component {
 
     this.state = {
       lang: 'de',
-      transcriptScrollEnabled: false,
+      //transcriptScrollEnabled: false,
     }
   }
 
@@ -23,31 +23,6 @@ export default class Interview extends React.Component {
 
   interviewLoaded() {
     return this.props.data && this.props.data.interview && this.props.archiveId === this.props.match.params.archiveId
-  }
-
-  prepareHeadings(segments) {
-    let mainIndex = 0;
-    let mainheading = '';
-    let subIndex = 0;
-    let subheading = '';
-    let headings = [];
-
-    segments.map( (segment, index) => {
-      
-      if (segment.mainheading !== '') {
-        mainIndex += 1;
-        subIndex = 0;
-        mainheading = mainIndex + '. ' + segment.mainheading;
-        headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
-      }
-      if (segment.subheading !== '') {
-        subIndex += 1;
-        subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
-        headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
-      }
-    })
-
-    return headings;
   }
 
   //handleVideoTimeChange(event) {
@@ -67,25 +42,25 @@ export default class Interview extends React.Component {
     //})
   //}
 
-  handleSegmentClick(time) {
-    this.setState({ 
-      videoTime: time,
-      transcriptTime: time,
-      transcriptScrollEnabled: false 
-    })
-  }
+  //handleSegmentClick(time) {
+    //this.setState({ 
+      //videoTime: time,
+      //transcriptTime: time,
+      //transcriptScrollEnabled: false 
+    //})
+  //}
 
-  handleTranscriptScroll() {
-    //let fixVideo = $("body").hasClass("fix-video");
-    let fixVideo = ($(document).scrollTop() > 80);
-    if (fixVideo && !this.state.transcriptScrollEnabled) {
-      this.setState({ transcriptScrollEnabled: true });
-    } 
-  }
+  //handleTranscriptScroll() {
+    ////let fixVideo = $("body").hasClass("fix-video");
+    //let fixVideo = ($(document).scrollTop() > 80);
+    //if (fixVideo && !this.state.transcriptScrollEnabled) {
+      //this.setState({ transcriptScrollEnabled: true });
+    //} 
+  //}
 
-  reconnectVideoProgress() {
-    this.setState({ transcriptScrollEnabled: false });
-  }
+  //reconnectVideoProgress() {
+    //this.setState({ transcriptScrollEnabled: false });
+  //}
 
   content() {
     if (this.interviewLoaded()) {
@@ -95,7 +70,9 @@ export default class Interview extends React.Component {
         >
           <VideoPlayerContainer
             lang={this.state.lang}
-            reconnectVideoProgress={this.reconnectVideoProgress.bind(this)}
+          />
+          <InterviewTabs
+            lang={this.state.lang}
           />
         </WrapperPage>
       );

@@ -4,14 +4,14 @@ import '../../../css/segments';
 export default class Segment extends React.Component {
 
   css() {
-    let active = this.props.data.end_time >= this.props.time && this.props.data.start_time <= this.props.time; 
+    let active = this.props.data.end_time >= this.props.transcriptTime && this.props.data.start_time <= this.props.transcriptTime; 
     return 'segment ' + (active ? 'active' : 'inactive');
   }
 
   render () {
     return (
       <div 
-        onClick={() => this.props.handleClick(this.props.data.time)} 
+        onClick={() => this.props.handleSegmentClick(this.props.data.time)} 
         className={this.css()}
       >
         <div className='text'>{this.props.data.transcripts[this.props.data.lang]}</div>

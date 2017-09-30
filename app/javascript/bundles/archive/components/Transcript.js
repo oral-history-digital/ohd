@@ -1,37 +1,46 @@
 import React from 'react';
-import Segment from '../components/Segment';
+import SegmentContainer from '../containers/SegmentContainer';
 
 export default class Transcript extends React.Component {
 
   componentDidMount() {
-    window.addEventListener('scroll', this.props.handleScroll.bind(this));
+    window.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.props.handleScroll.bind(this));
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+  handleScroll() {
+    //let fixVideo = $("body").hasClass("fix-video");
+    let fixVideo = ($(document).scrollTop() > 80);
+    if (fixVideo && !this.props.transcriptScrollEnabled) {
+      this.props.handleTranscriptScroll(true)
+    } 
   }
 
   showSegmentsFor(time) {
-    let shownSegments = this.props.segments.filter( segment => {
+    let shownSegments = this.segments().filter( segment => {
       return (segment.tape_nbr <= 1 && segment.time >= time) && (segment.time <= time + 60);
     })
     return shownSegments;
   }
 
+  segments() {
+    return this.props.interview && this.props.interview.segments || [];
+  }
 
   render () {
-    let shownSegments = this.props.transcriptScrollEnabled ? this.props.segments : this.showSegmentsFor(this.props.time);
+    let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.showSegmentsFor(this.props.transcriptTime);
 
     return ( 
       <div>
         {shownSegments.map( (segment, index) => {
           segment.lang = this.props.lang;
           return (
-            <Segment 
+            <SegmentContainer
               data={segment} 
-              time={this.props.time}
               key={"segment-" + segment.id} 
-              handleClick={this.props.handleSegmentClick}
             />
           )
         })}

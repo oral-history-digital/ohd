@@ -35,6 +35,10 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
+  reconnectVideoProgress() {
+    this.props.handleTranscriptScroll(false)
+  }
+
 
   render () {
     return (
@@ -47,8 +51,8 @@ export default class VideoPlayer extends React.Component {
             controls={true}
           >
             <source src={this.props.interview.src}/>
-            <track kind="subtitles" label="Transcript" src={this.props.interview.archiveId +'.vtt?type=transcript'} srcLang="de" default></track>
-            <track kind="subtitles" label="Translation" src={this.props.interview.archiveId +'.vtt?type=translation'} srcLang="en"></track>
+            <track kind="subtitles" label="Transcript" src={this.props.archiveId +'.vtt?type=transcript'} srcLang="de" default></track>
+            <track kind="subtitles" label="Translation" src={this.props.archiveId +'.vtt?type=translation'} srcLang="en"></track>
           </video>
         </div>
       </div>

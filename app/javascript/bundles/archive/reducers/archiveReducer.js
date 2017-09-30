@@ -14,7 +14,9 @@ import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 
 import { VIDEO_TIME_CHANGE } from '../constants/archiveConstants';
 import { VIDEO_ENDED } from '../constants/archiveConstants';
+
 import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
+import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
 
 //function interviewData(interviews, action){
   //return {
@@ -106,16 +108,22 @@ const archive = (state = initialState, action) => {
       return Object.assign({}, state, {
               transcriptTime: action.transcriptTime,
             })
-    case TRANSCRIPT_TIME_CHANGE:
-      return Object.assign({}, state, {
-              videoTime: action.videoTime,
-            })
     case VIDEO_ENDED:
       return Object.assign({}, state, {
               videoStatus: 'paused',
               videoTime: 0,
               transcriptTime: 0,
             })
+    case TRANSCRIPT_TIME_CHANGE:
+      return Object.assign({}, state, {
+              videoTime: action.videoTime,
+              transcriptScrollEnabled: false 
+            })
+    case TRANSCRIPT_SCROLL:
+      return Object.assign({}, state, {
+              transcriptScrollEnabled: action.transcriptScrollEnabled 
+            })
+
     default:
       return state;
   }

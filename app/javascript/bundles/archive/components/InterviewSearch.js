@@ -1,14 +1,14 @@
 import React from 'react';
 
-
 import Segment from '../components/Segment';
 import SearchForm from '../components/SearchForm';
+import INTERVIEW_SEARCH_URL from '../constants/archiveConstants';
 
 export default class InterviewSearch extends React.Component {
 
 
     searchSegments(query) {
-        this.props.searchInInterview(this.props.url, query);
+        this.props.searchInInterview(INTERVIEW_SEARCH_URL, query);
     }
 
     renderSegments() {
