@@ -1,25 +1,18 @@
 import React from 'react';
 
-import Segment from '../components/Segment';
-import SearchForm from '../components/SearchForm';
-import INTERVIEW_SEARCH_URL from '../constants/archiveConstants';
+import SegmentContainer from '../containers/SegmentContainer';
+import SearchFormContainer from '../containers/SearchFormContainer';
 
 export default class InterviewSearch extends React.Component {
-
-
-    searchSegments(query) {
-        this.props.searchInInterview(INTERVIEW_SEARCH_URL, query);
-    }
 
     renderSegments() {
         if(this.props.segments) {
             return this.props.segments.map( (segment, index) => {
                 segment.lang = this.props.lang;
                 return (
-                    <Segment
+                    <SegmentContainer
                         data={segment}
                         key={"segment-" + segment.id}
-                        handleClick={this.props.handleSegmentClick}
                     />
                 )
             })
@@ -29,10 +22,7 @@ export default class InterviewSearch extends React.Component {
     render () {
         return (
             <div>
-                <SearchForm
-                    interviewId={this.props.interviewId}
-                    searchSegments={this.searchSegments.bind(this)}
-                />
+                <SearchFormContainer />
                 {this.renderSegments()}
             </div>
         );

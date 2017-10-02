@@ -18,4 +18,3 @@ const mapDispatchToProps = (dispatch) => ({
 // Note that we don't export Interview, but the redux "connected" version of it.
 // See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
 export default connect(mapStateToProps, mapDispatchToProps)(Segment);
-//export default connect(mapStateToProps, handleSegmentClick)(Segment);

@@ -6,6 +6,8 @@ import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { REQUEST_INTERVIEW_SEARCH} from '../constants/archiveConstants';
 import { RECEIVE_INTERVIEW_SEARCH} from '../constants/archiveConstants';
+import { INTERVIEW_SEARCH_URL } from '../constants/archiveConstants';
+import { ARCHIVE_SEARCH_URL } from '../constants/archiveConstants';
 
 const requestArchiveSearch = (searchQuery) => ({
   type: REQUEST_ARCHIVE_SEARCH,
@@ -27,7 +29,7 @@ function receiveArchiveSearchResults(json){
 export function searchInArchive(url, searchQuery) {
   return dispatch => {
     dispatch(requestArchiveSearch(searchQuery))
-    Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
+    Loader.getJson(ARCHIVE_SEARCH_URL, searchQuery, dispatch, receiveArchiveSearchResults);
   }
 }
 
@@ -45,9 +47,9 @@ function receiveInterviewSearchResults(json){
     }
 }
 
-export function searchInInterview(url, searchQuery) {
+export function searchInInterview(searchQuery) {
     return dispatch => {
         dispatch(requestInterviewSearch(searchQuery))
-        Loader.getJson(url, searchQuery, dispatch, receiveInterviewSearchResults);
+        Loader.getJson(INTERVIEW_SEARCH_URL, searchQuery, dispatch, receiveInterviewSearchResults);
     }
 }
