@@ -6,7 +6,7 @@ import { VIDEO_ENDED } from '../constants/archiveConstants';
 export function handleVideoTimeChange(event) {
   return {
     type: VIDEO_TIME_CHANGE,
-    transcriptTime: event.target.currentTime,
+    transcriptTime: Math.round(event.target.currentTime*100)/100 
   }
 }
 
