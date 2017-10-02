@@ -30,6 +30,7 @@ export default class InterviewSearch extends React.Component {
         return (
             <div>
                 <SearchForm
+                    value={this.props.fulltext}
                     interviewId={this.props.interviewId}
                     searchSegments={this.searchSegments.bind(this)}
                 />

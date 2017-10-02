@@ -4,7 +4,7 @@ export default class SearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            value: this.props.value,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -17,15 +17,17 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.searchSegments({fulltext: this.state.value, id: this.props.interviewId});
+        //this.props.searchSegments({fulltext: this.props.value, id: this.props.interviewId});
+        this.props.searchSegments($('#interviewSearchForm').serialize());
     }
 
     render() {
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <form id="interviewSearchForm" onSubmit={this.handleSubmit}>
+                    <input name="id" type="hidden" value={this.props.interviewId} />
                     <label>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        <input type="text" name="fulltext" value={this.state.value} onChange={this.handleChange}/>
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
