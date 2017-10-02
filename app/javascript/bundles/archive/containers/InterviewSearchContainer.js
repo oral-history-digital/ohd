@@ -6,7 +6,8 @@ import InterviewSearch from '../components/InterviewSearch';
 const mapStateToProps = (state) => {
     return {
         segments: state.archive.segments,
-        archiveId: state.archive.archiveId
+        archiveId: state.archive.archiveId,
+        locale: state.archive.locale
     }
 }
 

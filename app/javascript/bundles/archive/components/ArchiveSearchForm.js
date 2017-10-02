@@ -63,10 +63,9 @@ export default class ArchiveSearchForm extends React.Component {
 
 
     renderFacets() {
-        //if (this.props.facets && this.props.facets.unqueried_facets) {
         if (this.facetsLoaded()) {
             return this.props.facets.unqueried_facets.map((facet, index) => {
-                //facet.lang = this.props.lang;
+                //facet.locale = this.props.locale;
                 return (
                     <Facet
                         data={facet}

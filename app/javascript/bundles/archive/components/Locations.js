@@ -62,9 +62,9 @@ export default class Locations extends React.Component {
   }
                 //<Link 
                   //className='interview-marker-link' 
-                  //to={'/' + this.props..match.params.lang + '/interviews/' + this.props.match.params.archive_id} 
+                  //to={'/' + this.props..match.params.locale + '/interviews/' + this.props.match.params.archive_id} 
                 //>
-                  //<h3>{this.props.interview.short_title[this.props.lang]}</h3>
+                  //<h3>{this.props.interview.short_title[this.props.locale]}</h3>
                 //</Link>
 
 }

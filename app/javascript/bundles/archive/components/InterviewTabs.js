@@ -34,24 +34,20 @@ export default class InterviewTabs extends React.Component {
 
         <div className='wrapper-content'>
           <TabPanel forceRender={true} className='column-content'>
-            <TableOfContentsContainer
-              lang={this.props.lang}
+            <TableOfContentsContainer />
+          </TabPanel>
+          <TabPanel forceRender={true} className='column-content'>
+            <TranscriptContainer
+              locale={this.props.data.interview.lang}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
             <TranscriptContainer
-              lang={this.props.lang}
-            />
-          </TabPanel>
-          <TabPanel forceRender={true} className='column-content'>
-            <TranscriptContainer
-              lang='de'
+              locale={this.props.locale}
             />
           </TabPanel>
           <TabPanel className='column-content'>
-            <InterviewSearchContainer
-              lang={this.props.lang}
-            />
+            <InterviewSearchContainer />
           </TabPanel>
         </div>
       </Tabs>

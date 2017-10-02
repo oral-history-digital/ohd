@@ -10,9 +10,9 @@ const App = (props) => (
   <Provider store={archiveStore(props)}>
     <BrowserRouter history={hashHistory}>
       <div>
-      <Route path="/:lang/interviews/:archiveId" component={InterviewContainer} />
-      <Route path="/:lang/suchen" component={SearchContainer} />
-      <Route path="/:lang/searches" component={SearchContainer} />
+      <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
+      <Route path="/:locale/suchen" component={SearchContainer} />
+      <Route path="/:locale/searches" component={SearchContainer} />
       </div>
     </BrowserRouter>
   </Provider>
