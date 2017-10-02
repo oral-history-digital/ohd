@@ -2,9 +2,11 @@
 
 import Loader from '../../../lib/loader'
 
-import { REQUEST_LOCATIONS} from '../constants/archiveConstants';
-import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
-import { LOCATIONS_URL} from '../constants/archiveConstants';
+import { 
+  REQUEST_LOCATIONS,
+  RECEIVE_LOCATIONS,
+  LOCATIONS_URL,
+} from '../constants/archiveConstants';
 
 const requestLocations = (archiveId) => ({
   type: REQUEST_LOCATIONS,
