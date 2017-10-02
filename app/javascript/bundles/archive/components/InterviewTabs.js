@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import TableOfContents from '../components/TableOfContents';
-import Transcript from '../components/Transcript';
+import TableOfContentsContainer from '../containers/TableOfContentsContainer';
+import TranscriptContainer from '../containers/TranscriptContainer';
 import InterviewSearchContainer from '../containers/InterviewSearchContainer';
 
 export default class InterviewTabs extends React.Component {
@@ -34,38 +34,23 @@ export default class InterviewTabs extends React.Component {
 
         <div className='wrapper-content'>
           <TabPanel forceRender={true} className='column-content'>
-            <TableOfContents
-              headings={this.props.headings}
-              lang={this.props.interview.lang}
-              handleSegmentClick={this.props.handleSegmentClick}
+            <TableOfContentsContainer
+              lang={this.props.lang}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
-            <Transcript
-              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
-              time={this.props.transcriptTime}
-              segments={this.props.segments}
-              lang={this.props.interview.lang}
-              handleSegmentClick={this.props.handleSegmentClick}
-              handleScroll={this.props.handleTranscriptScroll}
+            <TranscriptContainer
+              lang={this.props.lang}
             />
           </TabPanel>
           <TabPanel forceRender={true} className='column-content'>
-            <Transcript
-              transcriptScrollEnabled={this.props.transcriptScrollEnabled} 
-              time={this.props.transcriptTime}
-              segments={this.props.segments}
+            <TranscriptContainer
               lang='de'
-              handleSegmentClick={this.props.handleSegmentClick}
-              handleScroll={this.props.handleTranscriptScroll}
             />
           </TabPanel>
           <TabPanel className='column-content'>
             <InterviewSearchContainer
-              url='/de/searches/interview'
-              interviewId={this.props.interview.id}
               lang={this.props.lang}
-              handleSegmentClick={this.props.handleSegmentClick}
             />
           </TabPanel>
         </div>

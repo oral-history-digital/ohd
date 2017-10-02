@@ -4,6 +4,9 @@ import Loader from '../../../lib/loader'
 
 import { REQUEST_INTERVIEW} from '../constants/archiveConstants';
 import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
+import { INTERVIEW_URL} from '../constants/archiveConstants';
+import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
+import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
   type: REQUEST_INTERVIEW,
@@ -31,7 +34,21 @@ function receiveInterview(json){
 export function fetchInterview(archiveId) {
   return dispatch => {
     dispatch(requestInterview(archiveId))
-    Loader.getJson(`/de/interviews/${archiveId}/segments`, null, dispatch, receiveInterview);
+    Loader.getJson(`${INTERVIEW_URL}/${archiveId}`, null, dispatch, receiveInterview);
+  }
+}
+
+export function handleSegmentClick(time) {
+  return {
+    type: TRANSCRIPT_TIME_CHANGE,
+    videoTime: time,
+  }
+}
+
+export function handleTranscriptScroll(bool) {
+  return {
+    type: TRANSCRIPT_SCROLL,
+    transcriptScrollEnabled: bool,
   }
 }
 

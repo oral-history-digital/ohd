@@ -12,6 +12,12 @@ import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
 import { REQUEST_LOCATIONS} from '../constants/archiveConstants';
 import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 
+import { VIDEO_TIME_CHANGE } from '../constants/archiveConstants';
+import { VIDEO_ENDED } from '../constants/archiveConstants';
+
+import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
+import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
+
 //function interviewData(interviews, action){
   //return {
     //Object.assign({}, interviews, {
@@ -25,13 +31,16 @@ import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
 //}
 
 const initialState = {
-  interviews: {},
-    segments:[],
   archiveId: null,
+  interviews: {},
+  segments:[],
   facets: {},
-  foundInterviews: [],
   searchQuery:{},
   fulltext:"",
+  foundInterviews: [],
+  videoTime: 0,
+  videoStatus: 'pause',
+  transcriptTime: 0,
   isSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
@@ -90,10 +99,31 @@ const archive = (state = initialState, action) => {
                 isFetchingInterviewLocations: false,
                 interviews: Object.assign({}, state.interviews, {
                   [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                      segmentRefLocations: action.segmentRefLocations
+                      segmentRefLocations: action.segmentRefLocations,
+                      segmentRefLocationsLoaded: true
                   }),
                 }),
               })
+    case VIDEO_TIME_CHANGE:
+      return Object.assign({}, state, {
+              transcriptTime: action.transcriptTime,
+            })
+    case VIDEO_ENDED:
+      return Object.assign({}, state, {
+              videoStatus: 'paused',
+              videoTime: 0,
+              transcriptTime: 0,
+            })
+    case TRANSCRIPT_TIME_CHANGE:
+      return Object.assign({}, state, {
+              videoTime: action.videoTime,
+              transcriptScrollEnabled: false 
+            })
+    case TRANSCRIPT_SCROLL:
+      return Object.assign({}, state, {
+              transcriptScrollEnabled: action.transcriptScrollEnabled 
+            })
+
     default:
       return state;
   }

@@ -39,9 +39,6 @@ class SearchesController < BaseController
       format.html do
         render :template => '/interviews/index.html'
       end
-      format.js do
-        render :index
-      end
       format.json do
         serialized_segments = Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
         serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}

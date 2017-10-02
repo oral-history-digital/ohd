@@ -1,16 +1,42 @@
 import React from 'react';
-import Heading from '../components/Heading';
+import HeadingContainer from '../containers/HeadingContainer';
 
 export default class TableOfContents extends React.Component {
+
+  prepareHeadings() {
+    let mainIndex = 0;
+    let mainheading = '';
+    let subIndex = 0;
+    let subheading = '';
+    let headings = [];
+
+    if(this.props.interview && this.props.interview.headings) {
+      this.props.interview.headings.map( (segment, index) => {
+        
+        if (segment.mainheading !== '') {
+          mainIndex += 1;
+          subIndex = 0;
+          mainheading = mainIndex + '. ' + segment.mainheading;
+          headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
+        }
+        if (segment.subheading !== '') {
+          subIndex += 1;
+          subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
+          headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
+        }
+      })
+    }
+
+    return headings;
+  }
 
   render () {
     return ( 
       <div>
-        {this.props.headings.map( (heading, index) => {
-          return <Heading 
+        {this.prepareHeadings().map( (heading, index) => {
+          return <HeadingContainer 
                    key={'mainheading-' + index}
                    data={heading}
-                   handleSegmentClick={this.props.handleSegmentClick}
                  />
         })}
       </div>
