@@ -18,7 +18,7 @@ export default class Search extends React.Component {
             return <InterviewPreview 
                      interview={interview} 
                      key={"interview-" + interview.id} 
-                     lang={this.props.match.params.lang}
+                     locale={this.props.match.params.locale}
                      segmentsForInterview={segmentsForInterview}
                    />;
           })}

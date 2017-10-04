@@ -1,22 +1,24 @@
 import { combineReducers } from 'redux';
 
-import { REQUEST_INTERVIEW } from '../constants/archiveConstants';
-import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
+import { 
+  REQUEST_INTERVIEW,
+  RECEIVE_INTERVIEW,
 
-import { REQUEST_INTERVIEW_SEARCH} from '../constants/archiveConstants';
-import { RECEIVE_INTERVIEW_SEARCH} from '../constants/archiveConstants';
+  REQUEST_INTERVIEW_SEARCH,
+  RECEIVE_INTERVIEW_SEARCH,
 
-import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
-import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
+  REQUEST_ARCHIVE_SEARCH,
+  RECEIVE_ARCHIVE_SEARCH,
 
-import { REQUEST_LOCATIONS} from '../constants/archiveConstants';
-import { RECEIVE_LOCATIONS} from '../constants/archiveConstants';
+  REQUEST_LOCATIONS,
+  RECEIVE_LOCATIONS,
 
-import { VIDEO_TIME_CHANGE } from '../constants/archiveConstants';
-import { VIDEO_ENDED } from '../constants/archiveConstants';
+  VIDEO_TIME_CHANGE,
+  VIDEO_ENDED,
 
-import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
-import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
+  TRANSCRIPT_TIME_CHANGE,
+  TRANSCRIPT_SCROLL,
+} from '../constants/archiveConstants';
 
 //function interviewData(interviews, action){
   //return {
@@ -31,6 +33,7 @@ import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
 //}
 
 const initialState = {
+  locale: 'de',
   archiveId: null,
   interviews: {},
   segments:[],

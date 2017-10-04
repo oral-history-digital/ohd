@@ -36,7 +36,7 @@ export default class Transcript extends React.Component {
     return ( 
       <div>
         {shownSegments.map( (segment, index) => {
-          segment.lang = this.props.lang;
+          segment.locale = this.props.locale;
           return (
             <SegmentContainer
               data={segment} 

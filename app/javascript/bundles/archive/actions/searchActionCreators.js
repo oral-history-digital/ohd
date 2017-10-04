@@ -2,12 +2,14 @@
 
 import Loader from '../../../lib/loader'
 
-import { REQUEST_ARCHIVE_SEARCH} from '../constants/archiveConstants';
-import { RECEIVE_ARCHIVE_SEARCH} from '../constants/archiveConstants';
-import { REQUEST_INTERVIEW_SEARCH} from '../constants/archiveConstants';
-import { RECEIVE_INTERVIEW_SEARCH} from '../constants/archiveConstants';
-import { INTERVIEW_SEARCH_URL } from '../constants/archiveConstants';
-import { ARCHIVE_SEARCH_URL } from '../constants/archiveConstants';
+import { 
+  REQUEST_ARCHIVE_SEARCH,
+  RECEIVE_ARCHIVE_SEARCH,
+  REQUEST_INTERVIEW_SEARCH,
+  RECEIVE_INTERVIEW_SEARCH,
+  INTERVIEW_SEARCH_URL,
+  ARCHIVE_SEARCH_URL
+} from '../constants/archiveConstants';
 
 const requestArchiveSearch = (searchQuery) => ({
   type: REQUEST_ARCHIVE_SEARCH,

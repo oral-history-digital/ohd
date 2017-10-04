@@ -2,11 +2,13 @@
 
 import Loader from '../../../lib/loader'
 
-import { REQUEST_INTERVIEW} from '../constants/archiveConstants';
-import { RECEIVE_INTERVIEW} from '../constants/archiveConstants';
-import { INTERVIEW_URL} from '../constants/archiveConstants';
-import { TRANSCRIPT_TIME_CHANGE } from '../constants/archiveConstants';
-import { TRANSCRIPT_SCROLL } from '../constants/archiveConstants';
+import { 
+  REQUEST_INTERVIEW,
+  RECEIVE_INTERVIEW,
+  INTERVIEW_URL,
+  TRANSCRIPT_TIME_CHANGE,
+  TRANSCRIPT_SCROLL,
+} from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
   type: REQUEST_INTERVIEW,
@@ -51,24 +53,3 @@ export function handleTranscriptScroll(bool) {
     transcriptScrollEnabled: bool,
   }
 }
-
-//function shouldFetchInterview(state, archiveId) {
-  //const interview = state.interviewByArchiveId[archiveId]
-  //if (!interview) {
-    //return true
-  //} else if (interview.isFetching) {
-    //return false
-  //} else {
-    //return interview.didInvalidate
-  //}
-//}
-
-//export function fetchInterviewIfNeeded(archiveId) {
-  //debugger;
-  //return (dispatch, getState) => {
-  //debugger;
-    ////if (shouldFetchInterview(getState(), archiveId)) {
-      //return dispatch(fetchInterview(archiveId))
-    ////}
-  //}
-//}

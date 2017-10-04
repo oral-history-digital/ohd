@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import Interview from '../components/Interview';
-import * as actionCreators from '../actions/interviewActionCreators';
+import InterviewTabs from '../components/InterviewTabs';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -10,10 +9,11 @@ const mapStateToProps = (state) => {
   return { 
     archiveId: state.archive.archiveId,
     data: ArchiveUtils.getInterview(state),
+    locale: state.archive.locale
   }
 }
 
 // Don't forget to actually use connect!
 // Note that we don't export Interview, but the redux "connected" version of it.
 // See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, actionCreators)(Interview);
+export default connect(mapStateToProps)(InterviewTabs);
