@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import Locations from '../components/Locations';
-//import { fetchLocations } from '../actions/locationsActionCreators';
 import { handleSegmentClick, fetchInterview } from '../actions/interviewActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
@@ -12,7 +11,6 @@ const mapStateToProps = (state) => {
   return { 
     archiveId: state.archive.archiveId,
     segments: interview && interview.segments,
-    locations: interview && interview.locations,
     locale: state.archive.locale,
     isFetchingInterview: state.archive.isFetchingInterview
   }
@@ -21,7 +19,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   handleSegmentClick: time => dispatch(handleSegmentClick(time)),
   fetchInterview: archiveId => dispatch(fetchInterview(archiveId))
-  //fetchLocations: archiveId => dispatch(fetchLocations(archiveId))
 })
 
 // Don't forget to actually use connect!
