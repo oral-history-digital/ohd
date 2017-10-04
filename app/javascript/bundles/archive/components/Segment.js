@@ -22,7 +22,7 @@ export default class Segment extends React.Component {
         </div>
         <div className='references'>
           {this.props.data.references.map( (reference, index) => {
-            return <p className='reference' key={"reference-" + index} >{reference[this.props.data.locale]}</p>
+            return <p className='reference' key={"reference-" + index} >{reference.desc[this.props.data.locale]}</p>
           })}
         </div>
       </div>

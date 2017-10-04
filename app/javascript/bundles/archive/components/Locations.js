@@ -14,6 +14,10 @@ export default class Locations extends React.Component {
     }
   }
 
+  static contextTypes = {
+    router: React.PropTypes.object
+  }
+
   componentDidMount() {
     if (!this.locationsLoaded()) {
       this.props.fetchLocations(this.context.router.route.match.params.archiveId);
@@ -21,50 +25,50 @@ export default class Locations extends React.Component {
   }
 
   locationsLoaded() {
-    return this.props.segmentRefLocationsLoaded && this.props.archiveId === this.context.router.route.match.params.archiveId
+    return !this.props.isFetchingInterview && this.props.segments && this.props.archiveId === this.context.router.route.match.params.archiveId
   }
 
   position() {
     if(this.locationsLoaded()) {
-      let first = this.props.segmentRefLocations[0];
-      return [first.latitude, first.longitude];
-    } else {
-      return [37.9838, 23.7275];
+      let ref = this.props.segments[0].references[0];
+      return [ref.latitude, ref.longitude];
     }
   }
 
-  static contextTypes = {
-    router: React.PropTypes.object
+  markers() {
+    let markers = [];
+
+    for (let i = 0; i < this.props.segments.length; i++) {
+      for (let j = 0; j < this.props.segments[i].references.length; j++) {
+
+        let ref = this.props.segments[i].references[j];
+
+        if (ref.latitude) {
+          markers.push(
+            <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
+              <Popup>
+                <h3 onClick={() => this.props.handleSegmentClick(this.props.segments[i].start_time)}>
+                  {ref.desc[this.props.locale]}
+                </h3>
+              </Popup>
+            </Marker>
+          )
+        }
+      }
+    }
+    return markers;
   }
 
   render() {
-    if(this.locationsLoaded()) {
       return(
         <Map center={this.position()} zoom={this.state.zoom}>
           <TileLayer
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          {this.props.segmentRefLocations.map( (loc, index) => {
-            return (
-              <Marker position={[loc.latitude, loc.longitude]} key={"marker-" + index} >
-                <Popup>
-                  <h3>{loc.descriptor}</h3>
-                </Popup>
-              </Marker>
-            ) 
-          })}
+          {this.markers()}
         </Map>
       );
-    } else {
-      return null;
-    }
   }
-                //<Link 
-                  //className='interview-marker-link' 
-                  //to={'/' + this.props..match.params.locale + '/interviews/' + this.props.match.params.archive_id} 
-                //>
-                  //<h3>{this.props.interview.short_title[this.props.locale]}</h3>
-                //</Link>
 
 }
