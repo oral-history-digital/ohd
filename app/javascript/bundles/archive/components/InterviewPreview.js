@@ -4,15 +4,13 @@ import {Link, hashHistory} from 'react-router-dom';
 export default class InterviewPreview extends React.Component {
 
     renderInterviewSegments() {
-        if (this.props.segmentsForInterview.length > 0) {
+        if (this.props.foundSegmentsForInterview.length > 0) {
             return (
-
                 <Link
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
-                    <p>{this.props.segmentsForInterview.length}</p>
+                    <p>{this.props.foundSegmentsForInterview.length}</p>
                 </Link>
-
             )
         }
     }

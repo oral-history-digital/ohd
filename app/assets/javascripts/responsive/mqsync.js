@@ -93,6 +93,11 @@ var mqSync = function(){
 }; // End mqSync
 
 // Run when DOM is ready
-mqSync();
+
+$(document).ready( function () {
+    mqSync();
 // Run on resize
+});
+
+
 event.add(window, "resize", mqSync);

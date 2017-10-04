@@ -40,11 +40,11 @@ var RA = RA || {};
     RA.flyoutToggle = function () {
         var closeButton = $(".icon-close");
         var openButton = $(".icon-open");
-        var flyout = $(".wrapper-flyout");
 
         closeButton.hide();
 
         closeButton.click( function () {
+            var flyout = $(".wrapper-flyout");
             flyout.hide();
             openButton.show();
             $(this).hide();
@@ -53,6 +53,7 @@ var RA = RA || {};
         });
 
         openButton.click( function () {
+            var flyout = $(".wrapper-flyout");
             flyout.show();
             closeButton.show();
             $(this).hide();

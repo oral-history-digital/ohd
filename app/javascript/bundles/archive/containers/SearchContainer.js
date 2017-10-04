@@ -7,7 +7,7 @@ import Search from '../components/Search';
 const mapStateToProps = (state) => {
   return { 
     foundInterviews: state.archive.foundInterviews,
-    segmentsForInterviews: state.archive.segmentsForInterviews
+    foundSegmentsForInterviews: state.archive.foundSegmentsForInterviews
   }
 }
 

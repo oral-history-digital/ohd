@@ -14,12 +14,12 @@ export default class Search extends React.Component {
         <div className='interviews wrapper-content'>
           <h1 className='search-results-title'>Suchergebnisse</h1>
           {this.props.foundInterviews.map( (interview, index) => {
-            let segmentsForInterview = this.props.segmentsForInterviews[interview.archive_id] !== undefined ?  this.props.segmentsForInterviews[interview.archive_id] : [];
+            let foundSegmentsForInterview = this.props.foundSegmentsForInterviews[interview.archive_id] !== undefined ?  this.props.foundSegmentsForInterviews[interview.archive_id] : [];
             return <InterviewPreview 
                      interview={interview} 
                      key={"interview-" + interview.id} 
                      locale={this.props.match.params.locale}
-                     segmentsForInterview={segmentsForInterview}
+                     foundSegmentsForInterview={foundSegmentsForInterview}
                    />;
           })}
         </div>

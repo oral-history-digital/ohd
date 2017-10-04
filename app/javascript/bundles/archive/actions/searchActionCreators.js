@@ -20,7 +20,7 @@ function receiveArchiveSearchResults(json){
   return {
     type: RECEIVE_ARCHIVE_SEARCH,
     foundInterviews: json.interviews,
-    segmentsForInterviews: json.segments_for_interviews,
+    foundSegmentsForInterviews: json.found_segments_for_interviews,
     facets: json.facets,
     searchQuery: json.session_query,
     fulltext: json.fulltext,
