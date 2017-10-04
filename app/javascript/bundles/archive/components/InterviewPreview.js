@@ -6,9 +6,11 @@ export default class InterviewPreview extends React.Component {
     renderInterviewSegments() {
         if (this.props.segmentsForInterview.length > 0) {
             return (
-
-                <button onClick={this.jumpToInterviewSearch}>{this.props.segmentsForInterview.length}</button>
-
+                <Link
+                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                >
+                    <p>{this.props.segmentsForInterview.length}</p>
+                </Link>
             )
         }
     }
