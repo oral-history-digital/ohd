@@ -120,6 +120,7 @@ const archive = (state = initialState, action) => {
               transcriptTime: 0,
             })
     case TRANSCRIPT_TIME_CHANGE:
+      $("body").removeClass("fix-video");
       return Object.assign({}, state, {
               videoTime: action.videoTime,
               transcriptScrollEnabled: false 

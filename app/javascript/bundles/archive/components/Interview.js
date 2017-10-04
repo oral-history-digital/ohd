@@ -16,18 +16,6 @@ export default class Interview extends React.Component {
     return this.props.data && this.props.data.interview && this.props.archiveId === this.props.match.params.archiveId
   }
 
-  //handleTranscriptScroll() {
-    ////let fixVideo = $("body").hasClass("fix-video");
-    //let fixVideo = ($(document).scrollTop() > 80);
-    //if (fixVideo && !this.state.transcriptScrollEnabled) {
-      //this.setState({ transcriptScrollEnabled: true });
-    //} 
-  //}
-
-  //reconnectVideoProgress() {
-    //this.setState({ transcriptScrollEnabled: false });
-  //}
-
   content() {
     if (this.interviewLoaded()) {
       return (

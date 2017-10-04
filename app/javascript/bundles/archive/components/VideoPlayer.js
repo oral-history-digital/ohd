@@ -22,8 +22,8 @@ export default class VideoPlayer extends React.Component {
   }
 
   reconnectVideoProgress() {
-    this.props.handleTranscriptScroll(false)
     $("body").removeClass("fix-video");
+    this.props.handleTranscriptScroll(false)
   }
 
 
