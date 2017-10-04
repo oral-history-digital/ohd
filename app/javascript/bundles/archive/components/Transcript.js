@@ -12,10 +12,10 @@ export default class Transcript extends React.Component {
   }
 
   handleScroll() {
-    //let fixVideo = $("body").hasClass("fix-video");
     let fixVideo = ($(document).scrollTop() > 80);
     if (fixVideo && !this.props.transcriptScrollEnabled) {
       this.props.handleTranscriptScroll(true)
+      $("body").addClass("fix-video");
     } 
   }
 

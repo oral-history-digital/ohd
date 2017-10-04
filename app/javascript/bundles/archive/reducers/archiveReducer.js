@@ -10,8 +10,8 @@ import {
   REQUEST_ARCHIVE_SEARCH,
   RECEIVE_ARCHIVE_SEARCH,
 
-  REQUEST_LOCATIONS,
-  RECEIVE_LOCATIONS,
+  //REQUEST_LOCATIONS,
+  //RECEIVE_LOCATIONS,
 
   VIDEO_TIME_CHANGE,
   VIDEO_ENDED,
@@ -44,6 +44,7 @@ const initialState = {
   videoTime: 0,
   videoStatus: 'pause',
   transcriptTime: 0,
+  transcriptScrollEnabled: false,
   isSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
@@ -94,20 +95,20 @@ const archive = (state = initialState, action) => {
                 segmentsForInterviews: action.segmentsForInterviews,
                 fulltext: action.fulltext,
               })
-    case REQUEST_LOCATIONS:
-      return Object.assign({}, state, {
-                isFetchingInterviewLocations: true,
-              })
-    case RECEIVE_LOCATIONS:
-      return Object.assign({}, state, {
-                isFetchingInterviewLocations: false,
-                interviews: Object.assign({}, state.interviews, {
-                  [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                      segmentRefLocations: action.segmentRefLocations,
-                      segmentRefLocationsLoaded: true
-                  }),
-                }),
-              })
+    //case REQUEST_LOCATIONS:
+      //return Object.assign({}, state, {
+                //isFetchingInterviewLocations: true,
+              //})
+    //case RECEIVE_LOCATIONS:
+      //return Object.assign({}, state, {
+                //isFetchingInterviewLocations: false,
+                //interviews: Object.assign({}, state.interviews, {
+                  //[action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
+                      //segmentRefLocations: action.segmentRefLocations,
+                      //segmentRefLocationsLoaded: true
+                  //}),
+                //}),
+              //})
     case VIDEO_TIME_CHANGE:
       return Object.assign({}, state, {
               transcriptTime: action.transcriptTime,

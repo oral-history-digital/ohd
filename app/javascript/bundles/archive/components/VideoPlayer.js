@@ -5,7 +5,6 @@ export default class VideoPlayer extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.video) {
       this.setVideoTime(prevProps)
-      //this.setVideoVolume(prevProps)
       this.setVideoStatus(prevProps)
     }
   }
@@ -24,12 +23,13 @@ export default class VideoPlayer extends React.Component {
 
   reconnectVideoProgress() {
     this.props.handleTranscriptScroll(false)
+    $("body").removeClass("fix-video");
   }
 
 
   render () {
     return (
-      <div className='wrapper-video' onClick={ () => this.props.reconnectVideoProgress() }>
+      <div className='wrapper-video' onClick={ () => this.reconnectVideoProgress() }>
         <h1 className='video-title'>{this.props.interview.title[this.props.locale]}</h1>
         <div className='video-element'>
           <video ref={(video) => { this.video = video; }}  

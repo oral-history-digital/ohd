@@ -64,7 +64,7 @@ var RA = RA || {};
     // Runs on page load
 
     $(document).ready( function () {
-        RA.videoPosition();
+        //RA.videoPosition();
         RA.flyoutToggle();
     });
 
