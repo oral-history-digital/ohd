@@ -46,7 +46,7 @@ class SearchesController < BaseController
         render json: {
             all_interviews: Interview.count,
             interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
-            segments_for_interviews:  serialized_segments ,
+            found_segments_for_interviews:  serialized_segments ,
             facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
             session_query: session[:query],
             fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']

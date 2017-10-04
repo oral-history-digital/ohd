@@ -91,7 +91,7 @@ const archive = (state = initialState, action) => {
                 foundInterviews: action.foundInterviews,
                 facets: action.facets,
                 searchQuery: action.searchQuery,
-                segmentsForInterviews: action.segmentsForInterviews,
+                foundSegmentsForInterviews: action.foundSegmentsForInterviews,
                 fulltext: action.fulltext,
               })
     case REQUEST_LOCATIONS:
