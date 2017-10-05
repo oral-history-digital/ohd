@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Search from '../components/Search';
+import Search from '../components/ArchiveSearch';
 //import * as actionCreators from '../actions/searchActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?

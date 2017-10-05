@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SegmentContainer from '../containers/SegmentContainer';
-import SearchFormContainer from '../containers/SearchFormContainer';
+import SearchFormContainer from '../containers/InterviewSearchFormContainer';
 
 export default class InterviewSearch extends React.Component {
 
