@@ -5,7 +5,7 @@ import InterviewSearch from '../components/InterviewSearch';
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
     return {
-        segments: state.archive.segments,
+        foundSegments: state.archive.foundSegments,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale
     }

@@ -139,8 +139,14 @@ class SearchesController < BaseController
       end
       format.json do
         # TODO: just to test. rm following line afterwards.
+        #
+        # found_segments_for_interviews = {}
+        # found_segments_for_interviews[params[:id]] =  @segments.map {|segment| ::SegmentSerializer.new(segment)}
+        #
+        # render json: {found_segments_for_interviews: found_segments_for_interviews}
+        #
 
-        render json: {segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
+        render json: {found_segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
       end
     end
   end
