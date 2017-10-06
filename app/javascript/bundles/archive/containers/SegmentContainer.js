@@ -3,10 +3,15 @@ import { connect } from 'react-redux';
 import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 
+import ArchiveUtils from '../../../lib/utils';
+
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
+  let data = ArchiveUtils.getInterview(state);
   return { 
     transcriptTime: state.archive.transcriptTime,
+    locale: state.archive.locale,
+    interview: data && data.interview
   }
 }
 

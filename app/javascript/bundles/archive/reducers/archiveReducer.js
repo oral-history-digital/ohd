@@ -18,6 +18,8 @@ import {
 
   TRANSCRIPT_TIME_CHANGE,
   TRANSCRIPT_SCROLL,
+
+  SET_LOCALE
 } from '../constants/archiveConstants';
 
 //function interviewData(interviews, action){
@@ -33,7 +35,8 @@ import {
 //}
 
 const initialState = {
-  locale: 'de',
+  locale: 'en',
+  locales: ['de', 'en', 'ru'],
   archiveId: null,
   interviews: {},
   segments:[],
@@ -128,6 +131,10 @@ const archive = (state = initialState, action) => {
     case TRANSCRIPT_SCROLL:
       return Object.assign({}, state, {
               transcriptScrollEnabled: action.transcriptScrollEnabled 
+            })
+    case SET_LOCALE:
+      return Object.assign({}, state, {
+              locale: action.locale 
             })
 
     default:

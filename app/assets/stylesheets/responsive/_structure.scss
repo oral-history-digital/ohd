@@ -46,6 +46,12 @@ header.site-header {
   padding: 30px 10%;
 }
 
+.locales {
+  a {
+    margin: 5px;
+  }
+}
+
 .wrapper-content {
   padding: 50px 10%;
   @include clearfix;

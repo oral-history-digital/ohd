@@ -1,6 +1,6 @@
 import React from 'react';
 
-import WrapperPage from '../components/WrapperPage';
+import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreview from '../components/InterviewPreview';
 
 export default class Search extends React.Component {
@@ -8,7 +8,7 @@ export default class Search extends React.Component {
 
   render() {
     return (
-      <WrapperPage 
+      <WrapperPageContainer 
         tabIndex={2}
       >
         <div className='interviews wrapper-content'>
@@ -23,7 +23,7 @@ export default class Search extends React.Component {
                    />;
           })}
         </div>
-      </WrapperPage>
+      </WrapperPageContainer>
     )
   }
 }

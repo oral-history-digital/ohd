@@ -27,7 +27,7 @@ export default class Transcript extends React.Component {
   }
 
   segments() {
-    return this.props.interview && this.props.interview.segments || [];
+    return this.props.data && this.props.data.segments || [];
   }
 
   render () {
@@ -36,10 +36,10 @@ export default class Transcript extends React.Component {
     return ( 
       <div>
         {shownSegments.map( (segment, index) => {
-          segment.locale = this.props.locale;
           return (
             <SegmentContainer
               data={segment} 
+              originalLocale={this.props.originalLocale}
               key={"segment-" + segment.id} 
             />
           )
