@@ -20,7 +20,7 @@ export default class Locations extends React.Component {
 
   componentDidMount() {
     if (!this.locationsLoaded()) {
-      this.props.fetchLocations(this.context.router.route.match.params.archiveId);
+      this.props.fetchInterview(this.context.router.route.match.params.archiveId);
     }
   }
 
@@ -34,7 +34,7 @@ export default class Locations extends React.Component {
           if (ref !== undefined) {
               return [ref.latitude, ref.longitude];
           } else {
-              return [0,0];
+              return [null,null];
           }
       }
   }
