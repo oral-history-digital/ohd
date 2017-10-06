@@ -3,7 +3,7 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreview from '../components/InterviewPreview';
 
-export default class Search extends React.Component {
+export default class ArchiveSearch extends React.Component {
 
 
   render() {

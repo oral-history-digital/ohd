@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default class SearchForm extends React.Component {
+export default class InterviewSearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            value: this.props.interviewFulltext,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -17,7 +17,7 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.searchInInterview({fulltext: this.state.value, id: this.props.interview.id});
+        this.props.searchInInterview({fulltext: this.state.value, id: this.props.interview.archive_id});
     }
 
     render() {

@@ -44,13 +44,17 @@ const initialState = {
   searchQuery:{},
   fulltext:"",
   foundInterviews: [],
+    foundSegmentsForInterviews: [],
+    foundSegments:[],
   videoTime: 0,
   videoStatus: 'pause',
   transcriptTime: 0,
   transcriptScrollEnabled: false,
-  isSearching: false,
+  isArchiveSearching: false,
+    isInterviewSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
+    interviewFulltext:""
 }
 
 const archive = (state = initialState, action) => {
@@ -61,8 +65,16 @@ const archive = (state = initialState, action) => {
                 didInvalidate: false
               })
     case RECEIVE_INTERVIEW:
-      return Object.assign({}, state, {
+        // when loading the interview set foundSegments to to generalFoundSegments
+        let segementsFound = state.foundSegmentsForInterviews[action.archiveId] !== undefined && state.foundSegmentsForInterviews[action.archiveId].length > 0;
+        let foundSegments = segementsFound ? state.foundSegmentsForInterviews[action.archiveId] : [];
+        let interviewFulltext = segementsFound ? state.fulltext : '';
+
+
+        return Object.assign({}, state, {
                 isFetchingInterview: false,
+                foundSegments: foundSegments,
+            interviewFulltext: interviewFulltext,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
                   [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
@@ -76,22 +88,23 @@ const archive = (state = initialState, action) => {
               })
       case REQUEST_INTERVIEW_SEARCH:
           return Object.assign({}, state, {
+              isInterviewSearching: true,
               isFetching: true,
               didInvalidate: false
           })
       case RECEIVE_INTERVIEW_SEARCH:
           return Object.assign({}, state, {
-              isSearching: false,
+              isInterviewSearching: false,
               didInvalidate: false,
-              segments: action.segments
+              foundSegments: action.foundSegments
           })
     case REQUEST_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
-                isSearching: true,
+                isArchiveSearching: true,
               })
     case RECEIVE_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
-                isSearching: false,
+                isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
                 facets: action.facets,
                 searchQuery: action.searchQuery,

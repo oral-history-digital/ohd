@@ -44,7 +44,7 @@ const requestInterviewSearch = (searchQuery) => ({
 function receiveInterviewSearchResults(json){
     return {
         type: RECEIVE_INTERVIEW_SEARCH,
-        segments: json.segments,
+        foundSegments: json.found_segments,
         receivedAt: Date.now()
     }
 }

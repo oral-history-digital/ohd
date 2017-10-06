@@ -1,13 +1,13 @@
 import React from 'react';
 
 import SegmentContainer from '../containers/SegmentContainer';
-import SearchFormContainer from '../containers/SearchFormContainer';
+import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
 
 export default class InterviewSearch extends React.Component {
 
     renderSegments() {
-        if(this.props.segments) {
-            return this.props.segments.map( (segment, index) => {
+        if(this.props.foundSegments) {
+            return this.props.foundSegments.map( (segment, index) => {
                 segment.locale = this.props.locale;
                 return (
                     <SegmentContainer
@@ -22,7 +22,7 @@ export default class InterviewSearch extends React.Component {
     render () {
         return (
             <div>
-                <SearchFormContainer />
+                <InterviewSearchFormContainer />
                 {this.renderSegments()}
             </div>
         );

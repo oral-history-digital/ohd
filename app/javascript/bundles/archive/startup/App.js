@@ -4,7 +4,7 @@ import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
 
 import archiveStore from '../stores/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
-import SearchContainer from '../containers/SearchContainer';
+import SearchContainer from '../containers/ArchiveSearchContainer';
 
 const App = (props) => (
   <Provider store={archiveStore(props)}>
