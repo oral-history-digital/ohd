@@ -302,10 +302,10 @@ class Search < UserContent
 
           segment = segment_result.instance
 
-           if @segments[interview.archive_id.upcase].is_a?(Array)
-             @segments[interview.archive_id.upcase] << segment
+           if @segments[interview.archive_id.downcase].is_a?(Array)
+             @segments[interview.archive_id.downcase] << ::SegmentSerializer.new(segment)
            else
-             @segments[interview.archive_id.upcase] = [ segment ]
+             @segments[interview.archive_id.downcase] = [ ::SegmentSerializer.new(segment) ]
            end
 
         end

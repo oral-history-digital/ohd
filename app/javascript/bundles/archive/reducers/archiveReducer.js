@@ -22,18 +22,6 @@ import {
   SET_LOCALE
 } from '../constants/archiveConstants';
 
-//function interviewData(interviews, action){
-  //return {
-    //Object.assign({}, interviews, {
-      //[action.archiveId]: {
-        //interview: action.interview,
-        //segments: action.segments,
-        //headings: action.headings
-      //}
-    //})
-  //}
-//}
-
 const initialState = {
   locale: 'en',
   locales: ['de', 'en', 'ru'],
@@ -44,17 +32,14 @@ const initialState = {
   searchQuery:{},
   fulltext:"",
   foundInterviews: [],
-    foundSegmentsForInterviews: [],
-    foundSegments:[],
   videoTime: 0,
   videoStatus: 'pause',
   transcriptTime: 0,
   transcriptScrollEnabled: false,
   isArchiveSearching: false,
-    isInterviewSearching: false,
+  isInterviewSearching: false,
   isFetchingInterview: false,
   isFetchingInterviewLocations: false,
-    interviewFulltext:""
 }
 
 const archive = (state = initialState, action) => {
@@ -65,22 +50,13 @@ const archive = (state = initialState, action) => {
                 didInvalidate: false
               })
     case RECEIVE_INTERVIEW:
-        // when loading the interview set foundSegments to to generalFoundSegments
-        let segementsFound = state.foundSegmentsForInterviews[action.archiveId] !== undefined && state.foundSegmentsForInterviews[action.archiveId].length > 0;
-        let foundSegments = segementsFound ? state.foundSegmentsForInterviews[action.archiveId] : [];
-        let interviewFulltext = segementsFound ? state.fulltext : '';
-
-
         return Object.assign({}, state, {
                 isFetchingInterview: false,
-                foundSegments: foundSegments,
-            interviewFulltext: interviewFulltext,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
                   [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                       interview: action.interview,
                       segments: action.segments,
-                      locations: action.locations,
                       headings: action.headings
                   }),
                 }),
@@ -96,7 +72,12 @@ const archive = (state = initialState, action) => {
           return Object.assign({}, state, {
               isInterviewSearching: false,
               didInvalidate: false,
-              foundSegments: action.foundSegments
+              interviews: Object.assign({}, state.interviews, {
+                [state.archiveId]: Object.assign({}, state.interviews[state.archiveId], {
+                  foundSegments: action.foundSegments,
+                  fulltext: action.fulltext
+                })
+              })
           })
     case REQUEST_ARCHIVE_SEARCH:
       return Object.assign({}, state, {
@@ -106,25 +87,19 @@ const archive = (state = initialState, action) => {
       return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
+                interviews: Object.assign({}, state.interviews, 
+                  Object.keys(action.foundSegmentsForInterviews).reduce(function(interviews, archiveId) {
+                        interviews[archiveId] = Object.assign({}, state.interviews[archiveId], {
+                          foundSegments: action.foundSegmentsForInterviews[archiveId],
+                          fulltext: action.fulltext
+                        });
+                        return interviews;
+                  }, {})
+                ),
                 facets: action.facets,
                 searchQuery: action.searchQuery,
-                foundSegmentsForInterviews: action.foundSegmentsForInterviews,
                 fulltext: action.fulltext,
               })
-    //case REQUEST_LOCATIONS:
-      //return Object.assign({}, state, {
-                //isFetchingInterviewLocations: true,
-              //})
-    //case RECEIVE_LOCATIONS:
-      //return Object.assign({}, state, {
-                //isFetchingInterviewLocations: false,
-                //interviews: Object.assign({}, state.interviews, {
-                  //[action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                      //segmentRefLocations: action.segmentRefLocations,
-                      //segmentRefLocationsLoaded: true
-                  //}),
-                //}),
-              //})
     case VIDEO_TIME_CHANGE:
       return Object.assign({}, state, {
               transcriptTime: action.transcriptTime,
