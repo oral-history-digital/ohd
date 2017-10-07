@@ -267,7 +267,7 @@ class Search < UserContent
   end
 
   def matching_segments_for(archive_id)
-    archive_id.upcase! if archive_id.is_a?(String)
+    archive_id.downcase! if archive_id.is_a?(String)
     @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
   end
 

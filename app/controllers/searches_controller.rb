@@ -129,6 +129,7 @@ class SearchesController < BaseController
     @search.segment_search!
     archive_id = @search.results.first.nil? ? '' : @search.results.first.archive_id
     @segments = @search.matching_segments_for(archive_id)
+
     respond_to do |format|
       format.html do
         render :template => '/interviews/show'
@@ -137,15 +138,7 @@ class SearchesController < BaseController
         @interview = @search.results.first
       end
       format.json do
-        # TODO: just to test. rm following line afterwards.
-        #
-        # found_segments_for_interviews = {}
-        # found_segments_for_interviews[params[:id]] =  @segments.map {|segment| ::SegmentSerializer.new(segment)}
-        #
-        # render json: {found_segments_for_interviews: found_segments_for_interviews}
-        #
-
-        render json: {found_segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
+        render json: {found_segments: @segments}
       end
     end
   end
