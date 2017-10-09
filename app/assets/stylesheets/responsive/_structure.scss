@@ -86,8 +86,8 @@ header.site-header {
 }
 
 .flyout-is-hidden {
-  .fix-video {
-    .flyout-toggle {
+  .flyout-toggle {
+    &.white {
       color: #fff;
     }
   }

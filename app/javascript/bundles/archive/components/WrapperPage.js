@@ -27,8 +27,10 @@ export default class WrapperPage extends React.Component {
     let css = "wrapper-page";
     if (this.props.transcriptScrollEnabled) {
       css += " fix-video";
+      $('.flyout-toggle').addClass('white');
     } else {
       window.scrollTo(0,0);
+      $('.flyout-toggle').removeClass('white');
     }
     return css;
   }
