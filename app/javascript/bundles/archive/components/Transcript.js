@@ -15,7 +15,6 @@ export default class Transcript extends React.Component {
     let fixVideo = ($(document).scrollTop() > 80);
     if (fixVideo && !this.props.transcriptScrollEnabled) {
       this.props.handleTranscriptScroll(true)
-      $("body").addClass("fix-video");
     } 
   }
 

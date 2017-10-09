@@ -58,7 +58,7 @@ header.site-header {
 }
 
 .flyout-is-visible {
-  &.fix-video {
+  .fix-video {
     .wrapper-video {
       @include screen-xl {
         right: 30%;
@@ -86,7 +86,7 @@ header.site-header {
 }
 
 .flyout-is-hidden {
-  &.fix-video {
+  .fix-video {
     .flyout-toggle {
       color: #fff;
     }

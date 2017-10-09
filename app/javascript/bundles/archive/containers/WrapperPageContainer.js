@@ -8,6 +8,7 @@ import ArchiveUtils from '../../../lib/utils';
 const mapStateToProps = (state) => {
   return { 
     archiveId: state.archive.archiveId,
+    transcriptScrollEnabled: state.archive.transcriptScrollEnabled,
     locales: state.archive.locales,
     locale: state.archive.locale
   }

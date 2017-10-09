@@ -23,10 +23,18 @@ export default class WrapperPage extends React.Component {
     router: React.PropTypes.object
   }
 
+  css() {
+    let css = "wrapper-page";
+    if (this.props.transcriptScrollEnabled) {
+      css += " fix-video";
+    }
+    return css;
+  }
+
   render () {
     return (
       <div>
-        <div className='wrapper-page'>
+        <div className={this.css()}>
           <header className='site-header'>
             <div className='logo'>
               | Logo
