@@ -43,12 +43,12 @@ class SearchesController < BaseController
         serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
 
         render json: {
-            all_interviews: Interview.count,
-            interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
-            found_segments_for_interviews:  @search.segments ,
-            facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
-            session_query: session[:query],
-            fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
+          all_interviews: Interview.count,
+          interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
+          found_segments_for_interviews:  @search.segments ,
+          facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
+          session_query: session[:query],
+          fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
         }
       end
     end
@@ -74,8 +74,8 @@ class SearchesController < BaseController
     search_params.merge!({:suche => @query_hash}) unless @query_hash.blank?
     unless params[:referring_controller].blank? || params[:referring_action].blank?
       url_params = {
-          :controller => params[:referring_controller],
-          :action => params[:referring_action]
+        :controller => params[:referring_controller],
+        :action => params[:referring_action]
       }
     end
     @redirect = if url_params.empty?
