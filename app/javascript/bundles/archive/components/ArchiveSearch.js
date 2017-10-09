@@ -1,10 +1,11 @@
 import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreview from '../components/InterviewPreview';
+import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 
 export default class ArchiveSearch extends React.Component {
-
 
   content() {
     if (this.props.isArchiveSearching) {
@@ -31,8 +32,23 @@ export default class ArchiveSearch extends React.Component {
         tabIndex={2}
       >
         <div className='interviews wrapper-content'>
-          <h1 className='search-results-title'>Suchergebnisse</h1>
-          {this.content()}
+          <Tabs
+            className='results'
+            selectedTabClassName='active'
+            selectedTabPanelClassName='active'
+            defaultIndex={1}
+          >
+            <TabList>
+              <Tab className='results-tab'> Interview-Suchergebnisse </Tab>
+              <Tab className='results-tab'> Orte-Suchergebnisse </Tab>
+            </TabList>
+            <TabPanel className='column-content'>
+              {this.content()}
+            </TabPanel>
+            <TabPanel className='column-content'>
+              <ArchiveLocationsContainer  />
+            </TabPanel>
+          </Tabs>
         </div>
       </WrapperPageContainer>
     )
