@@ -26,7 +26,8 @@ class InterviewSerializer < ActiveModel::Serializer
     :title,
     :short_title,
     :still_url,
-    :src
+    :src,
+    :references
 
   def lang
     object.language.code
