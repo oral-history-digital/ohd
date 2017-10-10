@@ -138,7 +138,10 @@ class SearchesController < BaseController
         @interview = @search.results.first
       end
       format.json do
-        render json: {found_segments: @segments}
+        render json: {
+          found_segments: @segments,
+          fulltext: params[:fulltext]
+        }
       end
     end
   end

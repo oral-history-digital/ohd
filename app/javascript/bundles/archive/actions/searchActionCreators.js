@@ -45,6 +45,7 @@ function receiveInterviewSearchResults(json){
     return {
         type: RECEIVE_INTERVIEW_SEARCH,
         foundSegments: json.found_segments,
+        fulltext: json.fulltext,
         receivedAt: Date.now()
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
-import InterviewPreview from '../components/InterviewPreview';
+import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 
 export default class ArchiveSearch extends React.Component {
@@ -13,13 +13,12 @@ export default class ArchiveSearch extends React.Component {
     } else {
       return (
         this.props.foundInterviews.map( (interview, index) => {
-          let interviewData = this.props.interviews[interview.archive_id];
-          let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
-          return <InterviewPreview 
+          //let interviewData = this.props.interviews[interview.archive_id];
+          //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
+                   //foundSegmentsForInterview={foundSegmentsForInterview}
+          return <InterviewPreviewContainer 
                    interview={interview} 
                    key={"interview-" + interview.id} 
-                   locale={this.props.match.params.locale}
-                   foundSegmentsForInterview={foundSegmentsForInterview}
                  />;
         })
       )
