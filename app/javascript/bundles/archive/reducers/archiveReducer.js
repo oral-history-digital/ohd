@@ -10,9 +10,6 @@ import {
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
 
-    //REQUEST_LOCATIONS,
-    //RECEIVE_LOCATIONS,
-
     VIDEO_TIME_CHANGE,
     VIDEO_ENDED,
 
@@ -73,7 +70,7 @@ const archive = (state = initialState, action) => {
                 isInterviewSearching: false,
                 didInvalidate: false,
                 interviews: Object.assign({}, state.interviews, {
-                    [state.archiveId]: Object.assign({}, state.interviews[state.archiveId], {
+                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         foundSegments: action.foundSegments,
                         fulltext: action.fulltext
                     })

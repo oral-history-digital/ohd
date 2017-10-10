@@ -140,7 +140,8 @@ class SearchesController < BaseController
       format.json do
         render json: {
           found_segments: @segments,
-          fulltext: params[:fulltext]
+          fulltext: params[:fulltext],
+          archiveId: archive_id
         }
       end
     end
