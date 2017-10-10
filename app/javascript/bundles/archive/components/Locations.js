@@ -30,11 +30,11 @@ export default class Locations extends React.Component {
                         markers.push(
                             <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
                                 <Popup>
-                                <h3 onClick={() => this.props.handleSegmentClick(this.props.segments[i].start_time)}>
-                                {ref.desc[this.props.locale]}
-                                </h3>
+                                    <h3 onClick={() => this.props.handleSegmentClick(this.props.segments[i].start_time)}>
+                                    {ref.desc[this.props.locale]}
+                                    </h3>
                                 </Popup>
-                                </Marker>
+                            </Marker>
                         )
                     }
                 }
@@ -47,11 +47,11 @@ export default class Locations extends React.Component {
         return(
             <Map center={this.position()} zoom={13}>
                 <TileLayer
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
                 {this.markers()}
-                </Map>
+            </Map>
         );
     }
 
