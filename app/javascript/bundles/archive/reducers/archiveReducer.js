@@ -87,15 +87,15 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
-                interviews: Object.assign({}, state.interviews, 
-                    Object.keys(action.foundSegmentsForInterviews).reduce(function(interviews, archiveId) {
-                        interviews[archiveId] = Object.assign({}, state.interviews[archiveId], {
-                            foundSegments: action.foundSegmentsForInterviews[archiveId],
-                            fulltext: action.fulltext
-                        });
-                        return interviews;
-                    }, {})
-                ),
+                //interviews: Object.assign({}, state.interviews, 
+                    //Object.keys(action.foundSegmentsForInterviews).reduce(function(interviews, archiveId) {
+                        //interviews[archiveId] = Object.assign({}, state.interviews[archiveId], {
+                            //foundSegments: action.foundSegmentsForInterviews[archiveId],
+                            //fulltext: action.fulltext
+                        //});
+                        //return interviews;
+                    //}, {})
+                //),
                 facets: action.facets,
                 searchQuery: action.searchQuery,
                 fulltext: action.fulltext,

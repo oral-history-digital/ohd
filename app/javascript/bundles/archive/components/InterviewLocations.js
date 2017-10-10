@@ -1,9 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Navigation } from 'react-router-dom'
-import Locations from './Locations'
-import '../../../css/locations'
+import LocationsContainer from '../containers/LocationsContainer'
 
 export default class InterviewLocations extends React.Component {
 
@@ -21,11 +19,16 @@ export default class InterviewLocations extends React.Component {
         return !this.props.isFetchingInterview && this.props.segments && this.props.archiveId === this.context.router.route.match.params.archiveId
     }
 
+    handleClick(time, archiveId) {
+        this.props.handleSegmentClick(time);
+    }
+
     render() {
         return(
-            <Locations 
-              segments={this.props.segments} 
-              loaded={this.locationsLoaded()}
+            <LocationsContainer 
+                data={this.props.segments} 
+                loaded={this.locationsLoaded()}
+                handleClick={this.handleClick.bind(this)}
             />
         );
     }

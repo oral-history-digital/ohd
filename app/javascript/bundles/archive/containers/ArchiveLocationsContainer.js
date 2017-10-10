@@ -7,7 +7,7 @@ import { handleSegmentClick, fetchInterview } from '../actions/interviewActionCr
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
-        interviews: state.archive.interviews,
+        //interviews: state.archive.interviews,
         foundInterviews: state.archive.foundInterviews,
         locale: state.archive.locale,
         isArchiveSearching: state.archive.isArchiveSearching

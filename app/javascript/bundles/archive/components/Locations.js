@@ -1,18 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Navigation } from 'react-router-dom'
+import { DEFAULT_LOCATION } from '../constants/archiveConstants';
 import '../../../css/locations'
 
 export default class Locations extends React.Component {
 
     position() {
         if (this.props.loaded) {
-            let ref = this.props.segments[0].references[0];
-            if (ref !== undefined) {
+            let ref = this.props.data[0].references[0];
+            if (ref !== undefined && ref.latitude) {
                 return [ref.latitude, ref.longitude];
             } else {
-                return [null,null];
+                return DEFAULT_LOCATION;
             }
         }
     }
@@ -21,16 +21,16 @@ export default class Locations extends React.Component {
         let markers = [];
 
         if (this.props.loaded) {
-            for (let i = 0; i < this.props.segments.length; i++) {
-                for (let j = 0; j < this.props.segments[i].references.length; j++) {
+            for (let i = 0; i < this.props.data.length; i++) {
+                for (let j = 0; j < this.props.data[i].references.length; j++) {
 
-                    let ref = this.props.segments[i].references[j];
+                    let ref = this.props.data[i].references[j];
 
                     if (ref.latitude) {
                         markers.push(
                             <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
                                 <Popup>
-                                    <h3 onClick={() => this.props.handleSegmentClick(this.props.segments[i].start_time)}>
+                                    <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
                                     {ref.desc[this.props.locale]}
                                     </h3>
                                 </Popup>
