@@ -6,6 +6,7 @@ import InterviewPreview from '../components/InterviewPreview';
 export default class ArchiveSearch extends React.Component {
 
 
+
   render() {
     return (
       <WrapperPage 
@@ -22,6 +23,9 @@ export default class ArchiveSearch extends React.Component {
                      foundSegmentsForInterview={foundSegmentsForInterview}
                    />;
           })}
+          <div className='pagination'>
+              {this.props.resultPagesCount}
+          </div>
         </div>
       </WrapperPage>
     )

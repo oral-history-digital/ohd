@@ -21,12 +21,7 @@ class Segment < ActiveRecord::Base
 
   scope :with_heading,
               -> { joins(:translations).where(
-                  "segment_translations.locale = ?
-                  AND (
-                    (segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')
-                    OR
-                    (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')
-                  )",
+                  "segment_translations.locale = ? AND ((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))",
                   I18n.default_locale.to_s)
                        .includes(:tape, :translations)
                        .order(:media_id)}

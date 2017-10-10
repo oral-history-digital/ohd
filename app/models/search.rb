@@ -27,7 +27,7 @@ class Search < UserContent
   require 'yaml'
   require 'base64'
 
-  RESULTS_PER_PAGE = Interview.count
+  RESULTS_PER_PAGE = 12
 
   FACET_FIELDS = [:interview_id, :language_id] + Project.archive_facet_category_ids
 
@@ -43,28 +43,28 @@ class Search < UserContent
       :open_category
   ]
 
-  QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map{|a| a.to_s }
+  QUERY_PARAMS = (FACET_FIELDS + NON_FACET_FIELDS - NON_QUERY_ACCESSIBLES).map {|a| a.to_s}
 
   def self::param_codes(params)
     num_letters = 0
-    result = { '' => params }
+    result = {'' => params}
     unique = false
 
     until unique do
       unique = true
 
       result.select do |code, params|
-               code == '' or params.size > 1
-             end.
-             each do |last_code, params|
-               result.delete(last_code)
-               params.each do |param|
-                 code = param.split('_').map{|param_part| param_part[0..num_letters].downcase}.join('')
-                 result[code] ||= []
-                 result[code] << param
-                 unique = false if result[code].size > 1
-               end
-             end
+        code == '' or params.size > 1
+      end.
+          each do |last_code, params|
+        result.delete(last_code)
+        params.each do |param|
+          code = param.split('_').map {|param_part| param_part[0..num_letters].downcase}.join('')
+          result[code] ||= []
+          result[code] << param
+          unique = false if result[code].size > 1
+        end
+      end
 
       num_letters += 1
     end
@@ -157,24 +157,25 @@ class Search < UserContent
 
   # Returns an array of facets that are actively filtered on in the current query.
   def query_facets
-    @query_facets = query.select{|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym) }
+    @query_facets = query.select {|f| f.is_a?(Array) && FACET_FIELDS.include?(f.first.to_sym)}
     @query_facets
   end
 
   # Returns an array of facets that are not specified in the current query.
   def unqueried_facets
-    (FACET_FIELDS - query_facets.map{|f| f.first.to_sym }).map{|f| [ f, facet(f) ] }
+    (FACET_FIELDS - query_facets.map {|f| f.first.to_sym}).map {|f| [f, facet(f)]}
   end
 
   # The facet method returns an array of facet rows in the
   # format: <tt>[ facet_object_instance, count ]</tt>.
   def facet(name)
     @facets ||= {}
-    facet_name = (if Project.is_category?(name)
-                   name.to_s.singularize << '_ids'
-                 else
-                   name
-                 end).to_sym
+    facet_name = (
+    if Project.is_category?(name)
+      name.to_s.singularize << '_ids'
+    else
+      name
+    end).to_sym
     @facets[facet_name] ||=
         if @search
           facet = @search.facet(facet_name)
@@ -183,30 +184,30 @@ class Search < UserContent
           elsif facet.rows.blank?
             if Project.is_category?(name)
               # Yield all categories with a count of zero.
-              RegistryEntry.find_all_by_category(name).sort_by(&:to_s).map{|c| [c, 0]}
+              RegistryEntry.find_all_by_category(name).sort_by(&:to_s).map {|c| [c, 0]}
             else
               []
             end
           else
             # Return an array of all instances with number of corresponding hits.
             facet.rows.
-                map { |f| [f.instance, f.count] }.
+                map {|f| [f.instance, f.count]}.
                 reject do |f|
-                  if f.first.is_a?(Interview)
-                    f.first.full_title(I18n.locale).blank?
-                  elsif f.first.is_a?(RegistryEntry) or f.first.is_a?(Language)
-                    f.first.to_s(I18n.locale).blank?
-                  else
-                    true
-                  end
-                end.
+              if f.first.is_a?(Interview)
+                f.first.full_title(I18n.locale).blank?
+              elsif f.first.is_a?(RegistryEntry) or f.first.is_a?(Language)
+                f.first.to_s(I18n.locale).blank?
+              else
+                true
+              end
+            end.
                 sort do |a, b|
-                  if a.first.is_a?(Interview)
-                    Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
-                  else
-                    Unicode::strcmp(a.first.to_s(I18n.locale), b.first.to_s(I18n.locale))
-                  end
-                end
+              if a.first.is_a?(Interview)
+                Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
+              else
+                Unicode::strcmp(a.first.to_s(I18n.locale), b.first.to_s(I18n.locale))
+              end
+            end
           end
         else
           []
@@ -255,7 +256,7 @@ class Search < UserContent
 
     # facets are populated from the search lazily
     @facets = nil
-    @query = current_query_params.select{|k,v| !v.nil? }
+    @query = current_query_params.select {|k, v| !v.nil?}
     @query_facets = nil
     @query_hash = nil
     @segments = {}
@@ -266,6 +267,10 @@ class Search < UserContent
     @segments || []
   end
 
+  def result_pages_count
+    (hits/RESULTS_PER_PAGE).to_i + 1
+  end
+
   def matching_segments_for(archive_id)
     archive_id.upcase! if archive_id.is_a?(String)
     @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
@@ -274,40 +279,46 @@ class Search < UserContent
   # Performs a sub-search for matching segments on the facetted search
   # result set.
   def segment_search!
-    @rr = "uu"
+    subsearches = []
     @segments = {}
     fulltext = self.query_params['fulltext']
-    interview_ids = @results.map{|i| i.archive_id }
+    interview_ids = @results.map {|i| i.archive_id}
     unless fulltext.blank? || interview_ids.empty?
-      subsearch = Sunspot.search Segment do
+      interview_ids.each do |interview_id|
+        subsearch = Sunspot.search Segment do
 
-        with(:archive_id).any_of interview_ids
+          with(:archive_id).any_of [interview_id]
 
-        keywords fulltext
+          keywords fulltext
 
-        paginate :page => 1, :per_page => 120
+          paginate :page => 1, :per_page => 120
 
-        order_by :timecode, :asc
+          order_by :timecode, :asc
 
-        adjust_solr_params do |params|
-          params[:defType] = 'edismax'
+          adjust_solr_params do |params|
+            params[:defType] = 'edismax'
+          end
         end
+        subsearches << subsearch.dup
 
       end
 
       # Iterate over results, not subsearch!
       @results.each do |interview|
 
-        subsearch.hits.select{|h| not h.instance.blank? and h.instance.archive_id == interview.archive_id }.each do |segment_result|
+        subsearches.each do |subsearch|
 
-          segment = segment_result.instance
+          subsearch.hits.select {|h| not h.instance.blank? and h.instance.archive_id == interview.archive_id}.each do |segment_result|
 
-           if @segments[interview.archive_id.upcase].is_a?(Array)
-             @segments[interview.archive_id.upcase] << segment
-           else
-             @segments[interview.archive_id.upcase] = [ segment ]
-           end
+            segment = segment_result.instance
 
+            if @segments[interview.archive_id.upcase].is_a?(Array)
+              @segments[interview.archive_id.upcase] << segment
+            else
+              @segments[interview.archive_id.upcase] = [segment]
+            end
+
+          end
         end
 
 
@@ -329,7 +340,7 @@ class Search < UserContent
   def user_content_attributes
     attr = {}
     attr[:interview_references] = @results.nil? ? (read_property(:interview_references) || []) : @results[0..4].map(&:archive_id).join(',')
-    attr[:properties] = { :query => @query, :hits => @hits, :query_hash => query_hash }
+    attr[:properties] = {:query => @query, :hits => @hits, :query_hash => query_hash}
     attr
   end
 
@@ -337,7 +348,7 @@ class Search < UserContent
   def properties=(props)
     if props['query'].is_a?(Array)
       query_array = props['query'].dup
-      props['query'] = query_array.inject({}){|h,v| h[v.first] = v.last; h }
+      props['query'] = query_array.inject({}) {|h, v| h[v.first] = v.last; h}
     end
     super(props)
   end
@@ -345,7 +356,7 @@ class Search < UserContent
   # path to show the resource
   # TODO: cleanup: delete this method!
   #def get_content_path
-    #search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
+  #search_by_hash_path(:suche => query_hash.blank? ? read_property('query_hash') : query_hash)
   #end
 
   class << self
@@ -380,7 +391,7 @@ class Search < UserContent
           @@default_search_cache_time = Time.now
         end
         @@default_search ||= begin
-          Search.new{|base| base.search! }
+          Search.new {|base| base.search!}
         rescue
           Search.new
         end
@@ -392,10 +403,10 @@ class Search < UserContent
         person_name = search_params.delete('person_name')
         unless person_name.blank?
           interviews = build_unfiltered_interview_query(1) do
-                         with("person_name_#{I18n.locale}".to_sym).any_of [person_name]
-                       end.
-                       execute!.
-                       results
+            with("person_name_#{I18n.locale}".to_sym).any_of [person_name]
+          end.
+              execute!.
+              results
           search_params['interview_id'] = interviews.map(&:id).map(&:to_s) unless interviews.blank?
         end
 
@@ -429,7 +440,7 @@ class Search < UserContent
         p_key = PARAM_CODES[p_code]
         # make sure arrays of ids are instantiated as such:
         numeric_values = p_value.scan(/\"\d+\"/)
-        params[p_key] = numeric_values.empty? ? p_value : numeric_values.map{|v| v[/\d+/].to_i.to_s } unless p_key.nil?
+        params[p_key] = numeric_values.empty? ? p_value : numeric_values.map {|v| v[/\d+/].to_i.to_s} unless p_key.nil?
       end
       params
     end
@@ -517,7 +528,7 @@ class Search < UserContent
       search.build do
 
 
-        id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map{|c| "#{c.to_s.singularize}_ids"}
+        id_fields = [:interview_id, :language_id] + Project.archive_facet_category_ids.map {|c| "#{c.to_s.singularize}_ids"}
         facet *id_fields
 
         paginate :page => Search.valid_page_number(page), :per_page => RESULTS_PER_PAGE

@@ -30,13 +30,14 @@ export default class Locations extends React.Component {
 
   position() {
       if (this.locationsLoaded()) {
-          let ref = this.props.segments[0].references[0];
-          if (ref !== undefined) {
-              return [ref.latitude, ref.longitude];
-          } else {
-              return [0,0];
+          if ( this.props.segments.length > 0 ) {
+              let ref = this.props.segments[0].references[0];
+              if (ref !== undefined) {
+                  return [ref.latitude, ref.longitude];
+              }
           }
       }
+      return [null,null];
   }
 
   markers() {

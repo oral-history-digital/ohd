@@ -44,7 +44,9 @@ class SearchesController < BaseController
         serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
 
         render json: {
-            all_interviews: Interview.count,
+            all_interviews_count: Interview.count,
+            result_pages_count: @search.result_pages_count,
+            results_count: @search.hits,
             interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
             found_segments_for_interviews:  serialized_segments ,
             facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
