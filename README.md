@@ -4,7 +4,7 @@ This is the web application for CeDiS-Archiv 2.0.
 
 ## Application Setup
 
-1. generate the database.yml and setup the databases (`bundle exec rake db:create` or `bundle exec rake db:create:all`)
+1. generate the **database.yml** and setup the databases (`bundle exec rake db:create` or `bundle exec rake db:create:all`)
 2. run the migrations: `bundle exec rake db:migrate`
 3. set environment variable `EAZ_PROJECT_NAME` to `'hagen'` or `'zwar'`. 
    e.g. add the following line to your **~/.bashrc** or **~/.profile** or similar:
