@@ -6,53 +6,49 @@ import '../../../css/locations'
 
 export default class Locations extends React.Component {
 
-    position() {
-        if (this.props.loaded) {
-            let ref = this.props.data[0].references[0];
-            if (ref !== undefined && ref.latitude) {
-                return [ref.latitude, ref.longitude];
-            } else {
-                return DEFAULT_LOCATION;
-            }
-        }
-    }
-
-    markers() {
+    markersAndLocations() {
         let markers = [];
+        let locations = [];
 
-        if (this.props.loaded) {
-            for (let i = 0; i < this.props.data.length; i++) {
-                for (let j = 0; j < this.props.data[i].references.length; j++) {
+        for (let i = 0; i < this.props.data.length; i++) {
+            for (let j = 0; j < this.props.data[i].references.length; j++) {
 
-                    let ref = this.props.data[i].references[j];
+                let ref = this.props.data[i].references[j];
 
-                    if (ref.latitude) {
-                        markers.push(
-                            <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
-                                <Popup>
-                                    <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
-                                    {ref.desc[this.props.locale]}
-                                    </h3>
-                                </Popup>
-                            </Marker>
-                        )
-                    }
+                if (ref.latitude) {
+                    locations.push([ref.latitude, ref.longitude]);
+                    markers.push(
+                        <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
+                            <Popup>
+                                <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
+                                {ref.desc[this.props.locale]}
+                                </h3>
+                            </Popup>
+                        </Marker>
+                    )
                 }
             }
         }
-        return markers;
+        return {markers: markers, locations: locations};
     }
 
     render() {
-        return(
-            <Map center={this.position()} zoom={13}>
-                <TileLayer
-                    url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-                {this.markers()}
-            </Map>
-        );
+        if (this.props.loaded) {
+            return(
+                <Map 
+                    bounds={this.markersAndLocations().locations}
+                    boundsOptions={{padding: [30, 30]}}    
+                >
+                    <TileLayer
+                        url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {this.markersAndLocations().markers}
+                </Map>
+            );
+        } else {
+            return null;
+        }
     }
 
 }
