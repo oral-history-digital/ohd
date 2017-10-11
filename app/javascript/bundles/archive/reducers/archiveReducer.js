@@ -37,13 +37,9 @@ const initialState = {
     isInterviewSearching: false,
     isFetchingInterview: false,
     isFetchingInterviewLocations: false,
-
-    foundSegmentsForInterviews: [],
-    foundSegments:[],
     allInterviewsCount: 0,
     resultPagesCount: 1,
     resultsCount: 0,
-    interviewFulltext:""
 }
 
 const archive = (state = initialState, action) => {
@@ -91,9 +87,9 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
-          allInterviewsCount: action.allInterviewsCount,
-          resultPagesCount: action.resultPagesCount,
-          resultsCount: action.resultsCount,
+                allInterviewsCount: action.allInterviewsCount,
+                resultPagesCount: action.resultPagesCount,
+                resultsCount: action.resultsCount,
                 //interviews: Object.assign({}, state.interviews,
                     //Object.keys(action.foundSegmentsForInterviews).reduce(function(interviews, archiveId) {
                         //interviews[archiveId] = Object.assign({}, state.interviews[archiveId], {
