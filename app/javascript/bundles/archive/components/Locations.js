@@ -29,7 +29,6 @@ export default class Locations extends React.Component {
                 }
             }
         }
-        debugger;
         return {markers: markers, locations: locations};
     }
 
