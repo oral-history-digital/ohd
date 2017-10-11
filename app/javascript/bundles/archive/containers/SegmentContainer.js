@@ -7,12 +7,12 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-  let data = ArchiveUtils.getInterview(state);
-  return { 
-    transcriptTime: state.archive.transcriptTime,
-    locale: state.archive.locale,
-    interview: data && data.interview
-  }
+    let data = ArchiveUtils.getInterview(state);
+    return { 
+        transcriptTime: state.archive.transcriptTime,
+        locale: state.archive.locale,
+        interview: data && data.interview
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({
