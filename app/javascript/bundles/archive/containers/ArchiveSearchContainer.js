@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
       allInterviewsCount: state.archive.allInterviewsCount,
       resultPagesCount: state.archive.resultPagesCount,
       resultsCount: state.archive.resultsCount,
-      searchQuery: state.archive.searchQuery
+      searchQuery: state.archive.searchQuery,
     interviews: state.archive.interviews,
     isArchiveSearching: state.archive.isArchiveSearching
   }

@@ -29,11 +29,12 @@ export default class Locations extends React.Component {
                 }
             }
         }
+        debugger;
         return {markers: markers, locations: locations};
     }
 
     render() {
-        if (this.props.loaded) {
+        if (this.props.loaded && this.markersAndLocations().locations.length > 0) {
             return(
                 <Map
                     bounds={this.markersAndLocations().locations}

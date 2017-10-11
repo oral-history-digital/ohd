@@ -163,6 +163,7 @@ class Interview < ActiveRecord::Base
       integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
+
     # Index archive id, facet categories and language (with all translations) for full text category search.
     text :categories, :boost => 20 do
       cats = [self.archive_id]
