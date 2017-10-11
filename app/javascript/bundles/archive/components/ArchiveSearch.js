@@ -47,6 +47,9 @@ export default class ArchiveSearch extends React.Component {
             <WrapperPage
                 tabIndex={2}
             >
+                <div className='pagination'>
+                    {this.renderPaginationTabs()}
+                </div>
                 <div className='interviews wrapper-content'>
                     <h1 className='search-results-title'>Suchergebnisse</h1>
                     {this.props.foundInterviews.map((interview, index) => {
@@ -58,9 +61,9 @@ export default class ArchiveSearch extends React.Component {
                             foundSegmentsForInterview={foundSegmentsForInterview}
                         />;
                     })}
-                    <div className='pagination'>
-                        {this.renderPaginationTabs()}
-                    </div>
+                </div>
+                <div className='pagination'>
+                    {this.renderPaginationTabs()}
                 </div>
             </WrapperPage>
         )
