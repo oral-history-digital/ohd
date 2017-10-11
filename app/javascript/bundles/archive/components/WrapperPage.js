@@ -33,15 +33,22 @@ export default class WrapperPage extends React.Component {
       window.scrollTo(0,0);
       $('.flyout-toggle').removeClass('white');
     }
-    if (this.props.disabled) 
-          css.push('disabled');
     return css.join(' ');
   }
+
+    disabled() {
+        if(this.props.disabled)
+            return <div 
+                        className='disabled' 
+                        onClick={() => this.props.closeArchivePopup()} 
+                    />
+    }
 
   render () {
     return (
       <div>
-        <div className={this.css()}>
+        {this.disabled()}
+        <div className={this.css()} >
           <header className='site-header'>
             <div className='logo'>
               | Logo
@@ -62,11 +69,12 @@ export default class WrapperPage extends React.Component {
 
           {this.props.children}
 
-          <ArchivePopupContainer />
           <footer>
             | Footer
           </footer>
         </div>
+
+        <ArchivePopupContainer />
 
         <FlyoutTabs 
           tabIndex={this.props.tabIndex}

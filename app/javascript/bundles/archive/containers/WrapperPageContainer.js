@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import WrapperPage from '../components/WrapperPage';
 import { setLocale } from '../actions/wrapperPageActionCreators';
+import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -16,7 +17,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setLocale: locale => dispatch(setLocale(locale)),
+    setLocale: locale => dispatch(setLocale(locale)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrapperPage);
