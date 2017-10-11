@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
     archiveId: state.archive.archiveId,
     transcriptScrollEnabled: state.archive.transcriptScrollEnabled,
     locales: state.archive.locales,
-    locale: state.archive.locale
+    locale: state.archive.locale,
+    disabled: state.archive.popup.show
   }
 }
 

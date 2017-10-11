@@ -24,3 +24,6 @@ export const TRANSCRIPT_SCROLL = 'TRANSCRIPT_SCROLL';
 
 export const SET_LOCALE = 'SET_LOCALE';
 export const DEFAULT_LOCATION = [37.9838, 23.7275];
+
+export const OPEN_POPUP = 'OPEN_POPUP';
+export const CLOSE_POPUP ='CLOSE_POPUP';

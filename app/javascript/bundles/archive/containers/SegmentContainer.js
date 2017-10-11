@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
+import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -16,7 +17,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    openArchivePopup: (title, content, className, closeOnOverlayClick, buttons ) => 
+        dispatch(openArchivePopup(title, content, className, closeOnOverlayClick, buttons ))
 })
 
 // Don't forget to actually use connect!

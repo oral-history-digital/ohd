@@ -16,7 +16,10 @@ import {
     TRANSCRIPT_TIME_CHANGE,
     TRANSCRIPT_SCROLL,
 
-    SET_LOCALE
+    SET_LOCALE,
+
+    OPEN_POPUP,
+    CLOSE_POPUP
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -40,6 +43,17 @@ const initialState = {
     allInterviewsCount: 0,
     resultPagesCount: 1,
     resultsCount: 0,
+    popup: {
+        show: false,
+        title: 'bla',
+        content: 'bla bla',
+        className: 'popup',
+        closeOnOverlayClick: true,
+        buttons: {
+            left: ['cancel'],
+            right: ['ok']
+        }
+    }
 }
 
 const archive = (state = initialState, action) => {
@@ -125,6 +139,14 @@ const archive = (state = initialState, action) => {
         case SET_LOCALE:
             return Object.assign({}, state, {
                 locale: action.locale
+            })
+        case OPEN_POPUP:
+            return Object.assign({}, state, {
+                popup: Object.assign({}, action, {show: true})
+            })
+        case CLOSE_POPUP:
+            return Object.assign({}, state, {
+                popup: {show: false}
             })
 
         default:
