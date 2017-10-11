@@ -1,14 +1,29 @@
 import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import WrapperPage from '../components/WrapperPage';
-import InterviewPreview from '../components/InterviewPreview';
+import WrapperPageContainer from '../containers/WrapperPageContainer';
+import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
+import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 
 export default class ArchiveSearch extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
+  content() {
+    if (this.props.isArchiveSearching) {
+      return <img src="/images/eog/large_spinner.gif" className="archive-search-spinner"/>;
+    } else {
+      return (
+        this.props.foundInterviews.map( (interview, index) => {
+          //let interviewData = this.props.interviews[interview.archive_id];
+          //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
+                   //foundSegmentsForInterview={foundSegmentsForInterview}
+          return <InterviewPreviewContainer
+                   interview={interview}
+                   key={"interview-" + interview.id}
+                 />;
+        })
+      )
     }
+  }
 
 
     handleClick(event){
@@ -42,31 +57,32 @@ export default class ArchiveSearch extends React.Component {
     }
 
 
-    render() {
-        return (
-            <WrapperPage
-                tabIndex={2}
-            >
-                <div className='pagination'>
-                    {this.renderPaginationTabs()}
-                </div>
-                <div className='interviews wrapper-content'>
-                    <h1 className='search-results-title'>Suchergebnisse</h1>
-                    {this.props.foundInterviews.map((interview, index) => {
-                        let foundSegmentsForInterview = this.props.foundSegmentsForInterviews[interview.archive_id] !== undefined ? this.props.foundSegmentsForInterviews[interview.archive_id] : [];
-                        return <InterviewPreview
-                            interview={interview}
-                            key={"interview-" + interview.id}
-                            locale={this.props.match.params.locale}
-                            foundSegmentsForInterview={foundSegmentsForInterview}
-                        />;
-                    })}
-                </div>
-                <div className='pagination'>
-                    {this.renderPaginationTabs()}
-                </div>
-            </WrapperPage>
-        )
-    }
+  render() {
+    return (
+      <WrapperPageContainer
+        tabIndex={2}
+      >
+        <div className='interviews wrapper-content'>
+          <Tabs
+            className='results'
+            selectedTabClassName='active'
+            selectedTabPanelClassName='active'
+            defaultIndex={1}
+          >
+            <TabList>
+              <Tab className='results-tab'> Interview-Suchergebnisse </Tab>
+              <Tab className='results-tab'> Orte-Suchergebnisse </Tab>
+            </TabList>
+            <TabPanel forceRender={true} className='column-content'>
+              {this.content()}
+            </TabPanel>
+            <TabPanel forceRender={true} className='column-content'>
+              <ArchiveLocationsContainer  />
+            </TabPanel>
+          </Tabs>
+        </div>
+      </WrapperPageContainer>
+    )
+  }
 }
 

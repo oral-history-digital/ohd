@@ -77,8 +77,8 @@ class SearchesController < BaseController
     search_params.merge!({:suche => @query_hash}) unless @query_hash.blank?
     unless params[:referring_controller].blank? || params[:referring_action].blank?
       url_params = {
-          :controller => params[:referring_controller],
-          :action => params[:referring_action]
+        :controller => params[:referring_controller],
+        :action => params[:referring_action]
       }
     end
     @redirect = if url_params.empty?
@@ -132,6 +132,7 @@ class SearchesController < BaseController
     @search.segment_search!
     archive_id = @search.results.first.nil? ? '' : @search.results.first.archive_id
     @segments = @search.matching_segments_for(archive_id)
+
     respond_to do |format|
       format.html do
         render :template => '/interviews/show'
@@ -140,15 +141,11 @@ class SearchesController < BaseController
         @interview = @search.results.first
       end
       format.json do
-        # TODO: just to test. rm following line afterwards.
-        #
-        # found_segments_for_interviews = {}
-        # found_segments_for_interviews[params[:id]] =  @segments.map {|segment| ::SegmentSerializer.new(segment)}
-        #
-        # render json: {found_segments_for_interviews: found_segments_for_interviews}
-        #
-
-        render json: {found_segments: @segments.map {|segment| ::SegmentSerializer.new(segment)}}
+        render json: {
+          found_segments: @segments,
+          fulltext: params[:fulltext],
+          archiveId: archive_id
+        }
       end
     end
   end

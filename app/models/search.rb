@@ -193,14 +193,14 @@ class Search < UserContent
             facet.rows.
                 map {|f| [f.instance, f.count]}.
                 reject do |f|
-              if f.first.is_a?(Interview)
-                f.first.full_title(I18n.locale).blank?
-              elsif f.first.is_a?(RegistryEntry) or f.first.is_a?(Language)
-                f.first.to_s(I18n.locale).blank?
-              else
-                true
-              end
-            end.
+                  if f.first.is_a?(Interview)
+                    f.first.full_title(I18n.locale).blank?
+                  elsif f.first.is_a?(RegistryEntry) or f.first.is_a?(Language)
+                    f.first.to_s(I18n.locale).blank?
+                  else
+                    true
+                  end
+                end.
                 sort do |a, b|
               if a.first.is_a?(Interview)
                 Unicode::strcmp(a.first.full_title(I18n.locale), b.first.full_title(I18n.locale))
@@ -272,7 +272,7 @@ class Search < UserContent
   end
 
   def matching_segments_for(archive_id)
-    archive_id.upcase! if archive_id.is_a?(String)
+    archive_id.downcase! if archive_id.is_a?(String)
     @segments.is_a?(Hash) ? (@segments[archive_id] || []) : []
   end
 
@@ -312,11 +312,11 @@ class Search < UserContent
 
             segment = segment_result.instance
 
-            if @segments[interview.archive_id.upcase].is_a?(Array)
-              @segments[interview.archive_id.upcase] << segment
-            else
-              @segments[interview.archive_id.upcase] = [segment]
-            end
+             if @segments[interview.archive_id.downcase].is_a?(Array)
+               @segments[interview.archive_id.downcase] << ::SegmentSerializer.new(segment)
+             else
+               @segments[interview.archive_id.downcase] = [ ::SegmentSerializer.new(segment) ]
+             end
 
           end
         end

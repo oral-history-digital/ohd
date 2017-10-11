@@ -46,13 +46,19 @@ header.site-header {
   padding: 30px 10%;
 }
 
+.locales {
+  a {
+    margin: 5px;
+  }
+}
+
 .wrapper-content {
   padding: 50px 10%;
   @include clearfix;
 }
 
 .flyout-is-visible {
-  &.fix-video {
+  .fix-video {
     .wrapper-video {
       @include screen-xl {
         right: 30%;
@@ -80,8 +86,8 @@ header.site-header {
 }
 
 .flyout-is-hidden {
-  &.fix-video {
-    .flyout-toggle {
+  .flyout-toggle {
+    &.white {
       color: #fff;
     }
   }
@@ -180,6 +186,7 @@ header.site-header {
     margin-right: 5%;
   }
   min-height: 360px;
+  width: 100%;
 }
 
 .column-sidebar {

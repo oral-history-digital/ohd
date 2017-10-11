@@ -1,8 +1,9 @@
 import React from 'react';
 
-import WrapperPage from '../components/WrapperPage';
+import WrapperPageContainer from '../containers/WrapperPageContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
-import InterviewTabsContainer from '../containers/InterviewTabsContainer';
+//import InterviewTabsContainer from '../containers/InterviewTabsContainer';
+import InterviewTabs from '../components/InterviewTabs';
 
 export default class Interview extends React.Component {
   
@@ -19,12 +20,12 @@ export default class Interview extends React.Component {
   content() {
     if (this.interviewLoaded()) {
       return (
-        <WrapperPage 
+        <WrapperPageContainer 
           tabIndex={3}
         >
           <VideoPlayerContainer />
-          <InterviewTabsContainer />
-        </WrapperPage>
+          <InterviewTabs/>
+        </WrapperPageContainer>
       );
     } else {
       return null;

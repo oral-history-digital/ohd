@@ -1,79 +1,54 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Navigation } from 'react-router-dom'
+import { DEFAULT_LOCATION } from '../constants/archiveConstants';
 import '../../../css/locations'
 
 export default class Locations extends React.Component {
 
-  constructor(props, context) {
-    super(props, context);
+    markersAndLocations() {
+        let markers = [];
+        let locations = [];
 
-    this.state = {
-      zoom: 13
-    }
-  }
+        for (let i = 0; i < this.props.data.length; i++) {
+            for (let j = 0; j < this.props.data[i].references.length; j++) {
 
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
+                let ref = this.props.data[i].references[j];
 
-  componentDidMount() {
-    if (!this.locationsLoaded()) {
-      this.props.fetchLocations(this.context.router.route.match.params.archiveId);
-    }
-  }
-
-  locationsLoaded() {
-    return !this.props.isFetchingInterview && this.props.segments && this.props.archiveId === this.context.router.route.match.params.archiveId
-  }
-
-  position() {
-      if (this.locationsLoaded()) {
-          if ( this.props.segments.length > 0 ) {
-              let ref = this.props.segments[0].references[0];
-              if (ref !== undefined) {
-                  return [ref.latitude, ref.longitude];
-              }
-          }
-      }
-      return [null,null];
-  }
-
-  markers() {
-    let markers = [];
-
-    for (let i = 0; i < this.props.segments.length; i++) {
-      for (let j = 0; j < this.props.segments[i].references.length; j++) {
-
-        let ref = this.props.segments[i].references[j];
-
-        if (ref.latitude) {
-          markers.push(
-            <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
-              <Popup>
-                <h3 onClick={() => this.props.handleSegmentClick(this.props.segments[i].start_time)}>
-                  {ref.desc[this.props.locale]}
-                </h3>
-              </Popup>
-            </Marker>
-          )
+                if (ref.latitude) {
+                    locations.push([ref.latitude, ref.longitude]);
+                    markers.push(
+                        <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
+                            <Popup>
+                                <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
+                                {ref.desc[this.props.locale]}
+                                </h3>
+                            </Popup>
+                        </Marker>
+                    )
+                }
+            }
         }
-      }
+        return {markers: markers, locations: locations};
     }
-    return markers;
-  }
 
-  render() {
-      return(
-        <Map center={this.position()} zoom={this.state.zoom}>
-          <TileLayer
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-          {this.markers()}
-        </Map>
-      );
-  }
+    render() {
+        if (this.props.loaded) {
+            return(
+                <Map
+                    bounds={this.markersAndLocations().locations}
+                    boundsOptions={{padding: [30, 30]}}
+                >
+                    <TileLayer
+                        url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {this.markersAndLocations().markers}
+                </Map>
+            );
+        } else {
+            return null;
+        }
+    }
 
 }
