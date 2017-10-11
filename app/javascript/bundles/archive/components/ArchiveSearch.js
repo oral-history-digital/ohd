@@ -7,6 +7,12 @@ import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 
 export default class ArchiveSearch extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+
   content() {
     if (this.props.isArchiveSearching) {
       return <img src="/images/eog/large_spinner.gif" className="archive-search-spinner"/>;
@@ -74,7 +80,9 @@ export default class ArchiveSearch extends React.Component {
               <Tab className='results-tab'> Orte-Suchergebnisse </Tab>
             </TabList>
             <TabPanel forceRender={true} className='column-content'>
+                {this.renderPaginationTabs()}
               {this.content()}
+                {this.renderPaginationTabs() }
             </TabPanel>
             <TabPanel forceRender={true} className='column-content'>
               <ArchiveLocationsContainer  />

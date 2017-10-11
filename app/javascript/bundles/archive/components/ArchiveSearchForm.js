@@ -41,7 +41,13 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.searchInArchive(this.props.url, $('#archiveSearchForm').serialize());
+
+        let query = ($('#archiveSearchForm').serialize());
+        if (query == "fulltext=") {
+            this.props.searchInArchive(this.props.url + "/neu", {});
+        } else{
+            this.props.searchInArchive(this.props.url,query);
+        }
         this.context.router.history.push(this.props.url);
     }
 
