@@ -53,8 +53,8 @@ export default class ArchiveSearchForm extends React.Component {
                     <label>
                         <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
                     </label>
-                    <input type="submit" value="Submit"/>
                     {this.renderFacets()}
+                    <input type="submit" value="Submit"/>
                 </form>
                 <button onClick={this.handleReset}>Reset</button>
             </div>

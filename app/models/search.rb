@@ -291,7 +291,7 @@ class Search < UserContent
 
           keywords fulltext
 
-          paginate :page => 1, :per_page => 120
+          paginate :page => 1, :per_page => 1
 
           order_by :timecode, :asc
 
