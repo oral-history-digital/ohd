@@ -19,7 +19,10 @@ import {
     SET_LOCALE,
 
     OPEN_POPUP,
-    CLOSE_POPUP
+    CLOSE_POPUP,
+
+    POST_USER_CONTENT,
+    RECEIVE_USER_CONTENT,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -147,6 +150,17 @@ const archive = (state = initialState, action) => {
         case CLOSE_POPUP:
             return Object.assign({}, state, {
                 popup: {show: false}
+            })
+        case POST_USER_CONTENT:
+            return Object.assign({}, state, {
+                isPostingUserContent: true,
+            })
+        case RECEIVE_USER_CONTENT:
+            return Object.assign({}, state, {
+                isPostingUserContent: false,
+                userContents: Object.assign({}, state.userContents, {
+                    [action.userContent.id]: action.userContent
+                })
             })
 
         default:

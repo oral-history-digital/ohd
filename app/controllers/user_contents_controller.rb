@@ -26,6 +26,10 @@ class UserContentsController < BaseController
       format.js do 
         render :partial => 'show', object: @object
       end
+      format.json do
+        #render json: @object
+        render json: {enough: 'for now'}
+      end
     end
   end
 

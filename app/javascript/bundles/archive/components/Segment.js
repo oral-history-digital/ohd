@@ -1,5 +1,5 @@
 import React from 'react';
-import UserContentForm from '../components/UserContentForm';
+import UserContentFormContainer from '../containers/UserContentFormContainer';
 import '../../../css/segments';
 
 export default class Segment extends React.Component {
@@ -15,7 +15,7 @@ export default class Segment extends React.Component {
   }
 
     userContentForm() {
-        return  <UserContentForm 
+        return  <UserContentFormContainer 
                     properties={{}}
                     reference_id={this.props.data.id}
                     reference_type='Segment'

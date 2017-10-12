@@ -17,6 +17,23 @@ import request from 'superagent';
             }
           }
         });
+    },
+
+    post: function(url, params, dispatch, callback) {
+      request.post(url)
+        .send(params)
+        .set('Accept', 'application/json')
+        .end( (error, res) => {
+          if (res) {
+            if (res.error) {
+              console.log("loading json from " + url + " failed: " + error);
+            } else {
+              if (typeof callback === "function") {
+                dispatch(callback(JSON.parse(res.text)));
+              }
+            }
+          }
+        });
     }
   };
 //};

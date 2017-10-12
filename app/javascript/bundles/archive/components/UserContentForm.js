@@ -25,7 +25,7 @@ export default class UserContentForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.postUserContent(this.state);
+        this.props.submitUserContent(this.state);
     }
 
     render() {
