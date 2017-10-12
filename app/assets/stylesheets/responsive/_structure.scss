@@ -372,3 +372,15 @@ footer {
     width: 100%;
   }
 }
+
+.pagination{
+  clear:both;
+  .pagination-button{
+    padding: 10px;
+    float:left;
+  }
+  .active{
+    color: grey;
+  }
+
+}
