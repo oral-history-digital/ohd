@@ -1,4 +1,5 @@
 import React from 'react';
+import UserContentForm from '../components/UserContentForm';
 import '../../../css/segments';
 
 export default class Segment extends React.Component {
@@ -13,6 +14,14 @@ export default class Segment extends React.Component {
     return this.props.data.transcripts[locale]
   }
 
+    userContentForm() {
+        return  <UserContentForm 
+                    properties={{}}
+                    reference_id={this.props.data.id}
+                    reference_type='Segment'
+                />
+    }
+
   render () {
     return (
       <div 
@@ -20,7 +29,15 @@ export default class Segment extends React.Component {
         className={this.css()}
       >
         <div className='text'>{this.transcript()}</div>
-        <div className='annotate' onClick={() => this.props.openArchivePopup({title: 'Add Annotation', content: 'some form'})}>Annotate</div>
+        <div 
+            className='annotate' 
+            onClick={() => this.props.openArchivePopup({
+                title: 'Add Annotation', 
+                content: this.userContentForm()
+            })}
+        >
+            Annotate
+        </div>
         <div className='annotations'>
           {this.props.data.annotation_texts.map( (annotation, index) => {
             return <p className='annotation' key={"annotation-" + index} >{annotation}</p>
