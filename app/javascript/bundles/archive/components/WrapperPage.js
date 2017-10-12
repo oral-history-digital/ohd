@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import FlyoutTabs from '../components/FlyoutTabs';
+import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 
 export default class WrapperPage extends React.Component {
 
@@ -24,21 +25,30 @@ export default class WrapperPage extends React.Component {
   }
 
   css() {
-    let css = "wrapper-page";
+    let css = ["wrapper-page"];
     if (this.props.transcriptScrollEnabled) {
-      css += " fix-video";
+      css.push("fix-video");
       $('.flyout-toggle').addClass('white');
     } else {
       window.scrollTo(0,0);
       $('.flyout-toggle').removeClass('white');
     }
-    return css;
+    return css.join(' ');
   }
+
+    disabled() {
+        if(this.props.disabled)
+            return <div 
+                        className='disabled' 
+                        onClick={() => this.props.closeArchivePopup()} 
+                    />
+    }
 
   render () {
     return (
       <div>
-        <div className={this.css()}>
+        {this.disabled()}
+        <div className={this.css()} >
           <header className='site-header'>
             <div className='logo'>
               | Logo
@@ -63,6 +73,8 @@ export default class WrapperPage extends React.Component {
             | Footer
           </footer>
         </div>
+
+        <ArchivePopupContainer />
 
         <FlyoutTabs 
           tabIndex={this.props.tabIndex}

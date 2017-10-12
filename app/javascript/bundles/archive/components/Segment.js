@@ -20,6 +20,7 @@ export default class Segment extends React.Component {
         className={this.css()}
       >
         <div className='text'>{this.transcript()}</div>
+        <div className='annotate' onClick={() => this.props.openArchivePopup({title: 'Add Annotation', content: 'some form'})}>Annotate</div>
         <div className='annotations'>
           {this.props.data.annotation_texts.map( (annotation, index) => {
             return <p className='annotation' key={"annotation-" + index} >{annotation}</p>

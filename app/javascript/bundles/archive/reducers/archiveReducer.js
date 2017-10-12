@@ -16,7 +16,10 @@ import {
     TRANSCRIPT_TIME_CHANGE,
     TRANSCRIPT_SCROLL,
 
-    SET_LOCALE
+    SET_LOCALE,
+
+    OPEN_POPUP,
+    CLOSE_POPUP
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -37,13 +40,20 @@ const initialState = {
     isInterviewSearching: false,
     isFetchingInterview: false,
     isFetchingInterviewLocations: false,
-
-    foundSegmentsForInterviews: [],
-    foundSegments:[],
     allInterviewsCount: 0,
     resultPagesCount: 1,
     resultsCount: 0,
-    interviewFulltext:""
+    popup: {
+        show: false,
+        title: 'bla',
+        content: 'bla bla',
+        className: 'popup',
+        closeOnOverlayClick: true,
+        buttons: {
+            left: ['cancel'],
+            right: ['ok']
+        }
+    }
 }
 
 const archive = (state = initialState, action) => {
@@ -91,9 +101,9 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
-          allInterviewsCount: action.allInterviewsCount,
-          resultPagesCount: action.resultPagesCount,
-          resultsCount: action.resultsCount,
+                allInterviewsCount: action.allInterviewsCount,
+                resultPagesCount: action.resultPagesCount,
+                resultsCount: action.resultsCount,
                 //interviews: Object.assign({}, state.interviews,
                     //Object.keys(action.foundSegmentsForInterviews).reduce(function(interviews, archiveId) {
                         //interviews[archiveId] = Object.assign({}, state.interviews[archiveId], {
@@ -129,6 +139,14 @@ const archive = (state = initialState, action) => {
         case SET_LOCALE:
             return Object.assign({}, state, {
                 locale: action.locale
+            })
+        case OPEN_POPUP:
+            return Object.assign({}, state, {
+                popup: Object.assign({}, action, {show: true})
+            })
+        case CLOSE_POPUP:
+            return Object.assign({}, state, {
+                popup: {show: false}
             })
 
         default:
