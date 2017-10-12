@@ -19,6 +19,7 @@ export default class Segment extends React.Component {
                     properties={{}}
                     reference_id={this.props.data.id}
                     reference_type='Segment'
+                    type='UserAnnotation'
                 />
     }
 

@@ -9,6 +9,7 @@ export default class UserContentForm extends React.Component {
             properties: this.props.properties,
             reference_id: this.props.reference_id,
             reference_type: this.props.reference_type,
+            type: this.props.type
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,6 +27,7 @@ export default class UserContentForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.submitUserContent(this.state);
+        this.props.closeArchivePopup();
     }
 
     render() {
