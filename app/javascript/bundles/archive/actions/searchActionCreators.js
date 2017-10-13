@@ -8,7 +8,8 @@ import {
   REQUEST_INTERVIEW_SEARCH,
   RECEIVE_INTERVIEW_SEARCH,
   INTERVIEW_SEARCH_URL,
-  ARCHIVE_SEARCH_URL
+  ARCHIVE_SEARCH_URL,
+    ARCHIVE_RESET_SEARCH_URL
 } from '../constants/archiveConstants';
 
 const requestArchiveSearch = (searchQuery) => ({
@@ -31,11 +32,18 @@ function receiveArchiveSearchResults(json){
   }
 }
 
-export function searchInArchive(url, searchQuery) {
+export function searchInArchive(searchQuery) {
   return dispatch => {
     dispatch(requestArchiveSearch(searchQuery))
     Loader.getJson(ARCHIVE_SEARCH_URL, searchQuery, dispatch, receiveArchiveSearchResults);
   }
+}
+
+export function resetSearchInArchive(searchQuery) {
+    return dispatch => {
+        dispatch(requestArchiveSearch(searchQuery))
+        Loader.getJson(ARCHIVE_RESET_SEARCH_URL, searchQuery, dispatch, receiveArchiveSearchResults);
+    }
 }
 
 

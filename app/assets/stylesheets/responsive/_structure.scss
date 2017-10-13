@@ -97,6 +97,7 @@ header.site-header {
 
 .flyout-is-visible {
   .wrapper-flyout {
+    z-index: 400;
     @include screen-xl {
       display: block !important;
     }
