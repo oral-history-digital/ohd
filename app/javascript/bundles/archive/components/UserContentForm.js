@@ -50,4 +50,3 @@ export default class UserContentForm extends React.Component {
         );
     }
 }
-                        //<input type="text" name='description' value={this.state.description} onChange={this.handleChange} />
