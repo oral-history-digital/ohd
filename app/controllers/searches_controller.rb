@@ -29,7 +29,7 @@ class SearchesController < BaseController
       @search = Search.from_params(@query_params || params)
     end
     @search.search!
-    @search.segment_search!
+    #@search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
 
@@ -40,7 +40,7 @@ class SearchesController < BaseController
         render :template => '/interviews/index.html'
       end
       format.json do
-        serialized_segments = @search.segments#Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
+        #serialized_segments = @search.segments#Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
         serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
 
         render json: {
@@ -48,7 +48,7 @@ class SearchesController < BaseController
             result_pages_count: @search.result_pages_count,
             results_count: @search.hits,
             interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
-            found_segments_for_interviews:  serialized_segments ,
+            #found_segments_for_interviews:  serialized_segments ,
             facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
             session_query: session[:query],
             fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']

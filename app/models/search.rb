@@ -291,7 +291,7 @@ class Search < UserContent
 
           keywords fulltext
 
-          paginate :page => 1, :per_page => 1
+          paginate :page => 1, :per_page =>  Interview.where(archive_id: interview_id).first.segments.count
 
           order_by :timecode, :asc
 
@@ -305,7 +305,6 @@ class Search < UserContent
 
       # Iterate over results, not subsearch!
       @results.each do |interview|
-
         subsearches.each do |subsearch|
 
           subsearch.hits.select {|h| not h.instance.blank? and h.instance.archive_id == interview.archive_id}.each do |segment_result|
