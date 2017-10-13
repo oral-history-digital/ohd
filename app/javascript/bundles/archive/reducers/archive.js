@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 import { 
     REQUEST_INTERVIEW,
     RECEIVE_INTERVIEW,
@@ -17,12 +15,6 @@ import {
     TRANSCRIPT_SCROLL,
 
     SET_LOCALE,
-
-    OPEN_POPUP,
-    CLOSE_POPUP,
-
-    POST_USER_CONTENT,
-    RECEIVE_USER_CONTENT,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -48,20 +40,6 @@ const initialState = {
     isInterviewSearching: false,
     isFetchingInterview: false,
     isFetchingInterviewLocations: false,
-
-    userContents: {},
-
-    popup: {
-        show: false,
-        title: 'bla',
-        content: 'bla bla',
-        className: 'popup',
-        closeOnOverlayClick: true,
-        buttons: {
-            left: ['cancel'],
-            right: ['ok']
-        }
-    }
 }
 
 const archive = (state = initialState, action) => {
@@ -148,31 +126,10 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 locale: action.locale
             })
-        case OPEN_POPUP:
-            return Object.assign({}, state, {
-                popup: Object.assign({}, action, {show: true})
-            })
-        case CLOSE_POPUP:
-            return Object.assign({}, state, {
-                popup: {show: false}
-            })
-        case POST_USER_CONTENT:
-            return Object.assign({}, state, {
-                isPostingUserContent: true,
-            })
-        case RECEIVE_USER_CONTENT:
-            return Object.assign({}, state, {
-                isPostingUserContent: false,
-                userContents: Object.assign({}, state.userContents, {
-                    [action.userContent.id]: action.userContent
-                })
-            })
 
         default:
             return state;
     }
 };
 
-const archiveReducer = combineReducers({ archive });
-
-export default archiveReducer;
+export default archive;
