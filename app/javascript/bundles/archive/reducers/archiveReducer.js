@@ -30,22 +30,27 @@ const initialState = {
     locales: ['de', 'en', 'ru'],
     archiveId: null,
     interviews: {},
-    segments:[],
+
     facets: {},
     searchQuery:{},
     fulltext:"",
     foundInterviews: [],
+    allInterviewsCount: 0,
+    resultPagesCount: 1,
+    resultsCount: 0,
+
     videoTime: 0,
     videoStatus: 'pause',
     transcriptTime: 0,
     transcriptScrollEnabled: false,
+
     isArchiveSearching: false,
     isInterviewSearching: false,
     isFetchingInterview: false,
     isFetchingInterviewLocations: false,
-    allInterviewsCount: 0,
-    resultPagesCount: 1,
-    resultsCount: 0,
+
+    userContents: {},
+
     popup: {
         show: false,
         title: 'bla',
