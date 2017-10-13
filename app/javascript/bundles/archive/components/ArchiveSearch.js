@@ -46,7 +46,7 @@ export default class ArchiveSearch extends React.Component {
         let page = ($(event.target).data().page);
         let query = this.props.searchQuery;
         query['page'] = page;
-        this.props.searchInArchive(this.props.url, query);
+        this.props.searchInArchive(query);
     }
 
     renderPagination() {

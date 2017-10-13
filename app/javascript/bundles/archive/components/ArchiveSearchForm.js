@@ -2,6 +2,8 @@ import React from 'react';
 import { Navigation } from 'react-router-dom'
 import Facet from '../components/Facet';
 
+import {ARCHIVE_SEARCH_URL} from '../constants/archiveConstants';
+
 
 export default class ArchiveSearchForm extends React.Component {
     constructor(props) {
@@ -16,7 +18,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            this.props.searchInArchive(this.props.url + "/neu", {});
+            this.props.resetSearchInArchive({});
         }
     }
 
@@ -34,7 +36,7 @@ export default class ArchiveSearchForm extends React.Component {
     handleReset(event){
         $('input[type=checkbox]').attr('checked',false);
         this.setState({['fulltext']: ''}, function (){
-            this.props.searchInArchive(this.props.url + "/neu", {});
+            this.props.resetSearchInArchive( {});
         });
     }
 
@@ -44,11 +46,11 @@ export default class ArchiveSearchForm extends React.Component {
 
         let query = ($('#archiveSearchForm').serialize());
         if (query == "fulltext=") {
-            this.props.searchInArchive(this.props.url + "/neu", {});
+            this.props.resetSearchInArchive({});
         } else{
-            this.props.searchInArchive(this.props.url,query);
+            this.props.searchInArchive(query);
         }
-        this.context.router.history.push(this.props.url);
+        this.context.router.history.push(ARCHIVE_SEARCH_URL);
     }
 
 

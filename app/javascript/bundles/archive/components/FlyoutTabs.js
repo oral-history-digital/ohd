@@ -33,7 +33,6 @@ export default class FlyoutTabs extends React.Component {
         </TabPanel>
         <TabPanel className='column-content'>
           <ArchiveSearchFormContainer
-            url='/de/suchen'
           />
         </TabPanel>
         <TabPanel className='column-content'>
