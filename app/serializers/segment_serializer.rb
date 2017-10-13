@@ -9,7 +9,8 @@ class SegmentSerializer < ActiveModel::Serializer
              :annotation_texts,
              :start_time,
              :end_time,
-             :references
+             :references,
+             :media_id
 
   def time
     # timecode as seconds 

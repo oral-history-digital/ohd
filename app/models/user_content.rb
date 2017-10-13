@@ -13,19 +13,17 @@ class UserContent < ActiveRecord::Base
   belongs_to :user
   belongs_to :reference, :polymorphic => true
 
-  #before_validation_on_create :compile_id_hash
-  before_validation :compile_id_hash, :on => :create
+  #before_validation :compile_id_hash, :on => :create
 
   before_validation :store_properties
-  #after_validation_on_create :check_persistence, :set_link_url
-  after_validation :check_persistence, :set_link_url, :on => :create
+  #after_validation :check_persistence, :set_link_url, :on => :create
 
 
   validates_presence_of :user_id
 
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   validates_associated :reference, :if => Proc.new{|content| content.type != Search }
-  validates_uniqueness_of :id_hash, :scope => :user_id
+  #validates_uniqueness_of :id_hash, :scope => :user_id
   validates_length_of :description, :maximum => ANNOTATION_LIMIT
 
   # dummy to bridge to old acts_as_taggable-gem
@@ -105,11 +103,11 @@ class UserContent < ActiveRecord::Base
     Base64.encode64(refs).sub(/\\n$/,'')
   end
 
-  def id_hash
-    @id_hash ||= read_attribute :id_hash
-    @id_hash = compile_id_hash if @id_hash.blank?
-    @id_hash
-  end
+  #def id_hash
+    #@id_hash ||= read_attribute :id_hash
+    #@id_hash = compile_id_hash if @id_hash.blank?
+    #@id_hash
+  #end
 
   # path to show the resource
   # TODO: cleanup: delete this method!
@@ -127,23 +125,23 @@ class UserContent < ActiveRecord::Base
     write_attribute :properties, properties.stringify_keys.to_yaml
   end
 
-  def compile_id_hash
-    @id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self)
-    write_attribute :id_hash, @id_hash
-    @id_hash
-  end
+  #def compile_id_hash
+    #@id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self)
+    #write_attribute :id_hash, @id_hash
+    #@id_hash
+  #end
 
-  def set_link_url
-    # TODO: is this necessary?
-    #update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
-  end
+  #def set_link_url
+    ## TODO: is this necessary?
+    ##update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
+  #end
 
-  def check_persistence
-    if read_attribute(:persistence).nil?
-      false
-    else
-      true
-    end
-  end
+  #def check_persistence
+    #if read_attribute(:persistence).nil?
+      #false
+    #else
+      #true
+    #end
+  #end
 
 end

@@ -1,34 +1,37 @@
 class UserContentsController < BaseController
   include ERB::Util
 
-  layout 'workspace', :except => [ :show, :create ]
+  #layout 'workspace', :except => [ :show, :create ]
 
-  before_action :object, except: [:index]
-  before_action :collection, only: [:index]
+  #before_action :object, except: [:index]
+  #before_action :collection, only: [:index]
 
   #belongs_to :user
 
   #before_action :determine_user!
   #skip_before_action :determine_user
 
-  before_action :collection, only: [:index]
+  #before_action :collection, only: [:index]
 
-  skip_before_action :current_search_for_side_panel
+  #skip_before_action :current_search_for_side_panel
 
-  before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
-  rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
+  #before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
+  #rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
   def create
+    @user_content = UserContent.new(user_content_params)
+    @user_content.user_id = current_user_account.id
+    @user_content.save
+
     respond_to do |format|
-      format.html do
-        render :action => 'show'
-      end
-      format.js do 
-        render :partial => 'show', object: @object
-      end
+      #format.html do
+        #render :action => 'show'
+      #end
+      #format.js do 
+        #render :partial => 'show', object: @object
+      #end
       format.json do
-        #render json: @object
-        render json: {enough: 'for now'}
+        render json: @user_content
       end
     end
   end
@@ -233,10 +236,14 @@ class UserContentsController < BaseController
 
   def user_content_params
     params.require(:user_content).permit(:description,
-                                         :user_id,
+                                         #:user_id,
                                          :title,
+                                         :media_id,
                                          :interview_references,
                                          :properties,
+                                         :reference_id, 
+                                         :reference_type, 
+                                         :type,
                                          :link_url,
                                          :persistent)
   end
