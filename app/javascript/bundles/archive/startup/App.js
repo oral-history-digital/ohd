@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
 
-import archiveStore from '../stores/archiveStore';
+import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
 import SearchContainer from '../containers/ArchiveSearchContainer';
 
