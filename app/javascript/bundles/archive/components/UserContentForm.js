@@ -17,6 +17,18 @@ export default class UserContentForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            title: '',
+            description: '',
+            properties: nextProps.properties,
+            reference_id: nextProps.reference_id,
+            reference_type: nextProps.reference_type,
+            media_id: nextProps.mediaId,
+            type: nextProps.type
+        })
+    }
+
     handleChange(event) {
         const value =  event.target.value;
         const name =  event.target.name;
