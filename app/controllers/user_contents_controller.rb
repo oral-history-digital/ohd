@@ -49,6 +49,9 @@ class UserContentsController < BaseController
     respond_to do |format|
       format.html 
       format.js 
+      format.json do
+        render json: []
+      end
     end
   end
 

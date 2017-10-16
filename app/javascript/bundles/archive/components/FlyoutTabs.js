@@ -3,6 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
+import UserContentsContainer from '../containers/UserContentsContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -43,7 +44,7 @@ export default class FlyoutTabs extends React.Component {
           sprache
         </TabPanel>
         <TabPanel className='column-content'>
-          arbeitsmappe
+            <UserContentsContainer />
         </TabPanel>
         <TabPanel className='column-content'>
           zuletzt angesehen
