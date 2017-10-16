@@ -33,11 +33,11 @@ export default class Locations extends React.Component {
     }
 
     render() {
-        if (this.props.loaded && this.markersAndLocations().locations.length > 0) {
+        let locations = this.markersAndLocations().locations;
+        if (this.props.loaded && locations.length > 0) {
             return(
                 <Map
-                    bounds={this.markersAndLocations().locations}
-                    boundsOptions={{padding: [30, 30]}}
+                    bounds={locations}
                 >
                     <TileLayer
                         url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
