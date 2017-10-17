@@ -20,11 +20,11 @@ export default class UserContents extends React.Component {
         let interviewReferences = [];
         
         for(let i = 0; i < this.props.contents.length; i++) {
-            if(this.props.contents[i].type = 'Search') {
+            if(this.props.contents[i].type === 'Search') {
                 searches.push(<UserContentContainer data={this.props.contents[i]} key={`search-${i}`} />);
-            } else if(this.props.contents[i].type = 'UserAnnotation') {
+            } else if(this.props.contents[i].type === 'UserAnnotation') {
                 userAnnotations.push(<UserContentContainer data={this.props.contents[i]} key={`userAnnotation-${i}`} />);
-            } else if(this.props.contents[i].type = 'InterviewReference') {
+            } else if(this.props.contents[i].type === 'InterviewReference') {
                 interviewReference.push(<UserContentContainer data={this.props.contents[i]} key={`interviewReference-${i}`} />);
             }
         }
