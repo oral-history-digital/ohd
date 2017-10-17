@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserContent from '../components/UserContent';
+import UserContentContainer from '../containers/UserContentContainer';
 
 export default class UserContents extends React.Component {
   
@@ -15,17 +15,17 @@ export default class UserContents extends React.Component {
     }
 
     sortedContent() {
-        let searches: [];
-        let userAnnotations: [];
-        let interviewReferences: [];
+        let searches = [];
+        let userAnnotations = [];
+        let interviewReferences = [];
         
         for(let i = 0; i < this.props.contents.length; i++) {
-            if(contents[i].type = 'Search') {
-                searches.push(<UserContent data={content[i]} />);
-            } else if(contents[i].type = 'UserAnnotation') {
-                userAnnotations.push(<UserContent data={content[i]} />);
-            } else if(contents[i].type = 'InterviewReference') {
-                interviewReference.push(<UserContent data={content[i]} />);
+            if(this.props.contents[i].type = 'Search') {
+                searches.push(<UserContentContainer data={this.props.contents[i]} key={`search-${i}`} />);
+            } else if(this.props.contents[i].type = 'UserAnnotation') {
+                userAnnotations.push(<UserContentContainer data={this.props.contents[i]} key={`userAnnotation-${i}`} />);
+            } else if(this.props.contents[i].type = 'InterviewReference') {
+                interviewReference.push(<UserContentContainer data={this.props.contents[i]} key={`interviewReference-${i}`} />);
             }
         }
         return {

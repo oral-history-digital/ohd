@@ -20,7 +20,7 @@ class UserContentsController < BaseController
 
   def create
     @user_content = UserContent.new(user_content_params)
-    @user_content.user_id = current_user_account.id
+    @user_content.user_id = current_user_account.user.id
     @user_content.save
 
     respond_to do |format|
@@ -46,11 +46,12 @@ class UserContentsController < BaseController
   end
 
   def index 
+    user_contents = current_user_account ? UserContent.where(user_id: current_user_account.user.id) : []
     respond_to do |format|
       format.html 
       format.js 
       format.json do
-        render json: []
+        render json: user_contents
       end
     end
   end

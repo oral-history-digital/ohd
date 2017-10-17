@@ -32,21 +32,21 @@ export function submitUserContent(params) {
 }
 
 const requestUserContents = () => ({
-  type: REQUEST_USER_CONTENTS,
+    type: REQUEST_USER_CONTENTS,
 });
 
 function receiveUserContents(json){
-  return {
-    type: RECEIVE_USER_CONTENTS,
-    userContents: json.user_contents,
-    receivedAt: Date.now()
-  }
+    return {
+        type: RECEIVE_USER_CONTENTS,
+        userContents: json,
+        receivedAt: Date.now()
+    }
 }
 
 export function fetchUserContents() {
-  return dispatch => {
-    dispatch(requestUserContents())
-    Loader.getJson(USER_CONTENT_URL, null, dispatch, receiveUserContents);
-  }
+    return dispatch => {
+        dispatch(requestUserContents())
+        Loader.getJson(USER_CONTENT_URL, null, dispatch, receiveUserContents);
+    }
 }
 

@@ -12,15 +12,15 @@ export default class UserContent extends React.Component {
                     reference_id={this.props.data.id}
                     reference_type='Segment'
                     mediaId={this.props.data.media_id}
-                    type='UserAnnotation'
+                    type={this.props.data.type}
                 />
     }
 
     render () {
         return (
             <div>
-                <div className='title'>{this.data.title}</div>
-                <div className='description'>{this.data.description}</div>
+                <div className='title'>{this.props.data.title}</div>
+                <div className='description'>{this.props.data.description}</div>
                 <div 
                     className='edit' 
                     onClick={() => this.props.openArchivePopup({

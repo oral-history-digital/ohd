@@ -19,8 +19,8 @@ export default class UserContentForm extends React.Component {
 
     componentWillReceiveProps(nextProps){
         this.setState({
-            title: '',
-            description: '',
+            title: nextProps.title,
+            description: nextProps.description,
             properties: nextProps.properties,
             reference_id: nextProps.reference_id,
             reference_type: nextProps.reference_type,
