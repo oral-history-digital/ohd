@@ -29,6 +29,11 @@ export const DEFAULT_LOCATION = [37.9838, 23.7275];
 export const OPEN_POPUP = 'OPEN_POPUP';
 export const CLOSE_POPUP ='CLOSE_POPUP';
 
+export const SHOW_FLYOUT_TABS ='SHOW_FLYOUT_TABS';
+export const HIDE_FLYOUT_TABS ='HIDE_FLYOUT_TABS';
+export const TOGGLE_FLYOUT_TABS ='TOGGLE_FLYOUT_TABS';
+
+
 export const POST_USER_CONTENT = 'POST_USER_CONTENT';
 export const RECEIVE_USER_CONTENT = 'RECEIVE_USER_CONTENT';
 export const USER_CONTENT_URL = '/de/user_contents';
