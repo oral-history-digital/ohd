@@ -102,6 +102,7 @@ export default class WrapperPage extends React.Component {
             }
             if (activeMQ == 'XL') {
                 this.setState({['currentMQ']: activeMQ});
+                this.props.showFlyoutTabs();
                 // Add code you want to sync with this breakpoint
                 // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
                 // console.log(this.currentMQ);
@@ -139,8 +140,17 @@ export default class WrapperPage extends React.Component {
     }
 
     flyoutCss() {
-        let css = '';
-        css += this.props.visible ? 'flyout-is-visible' : 'flyout-is-hidden';
+        let css = this.props.visible ? 'flyout-is-visible' : 'flyout-is-hidden';
+        return css;
+    }
+
+    flyoutToggleCss(){
+        let css = this.props.visible ? 'icon-close' : 'icon-open';
+        return css;
+    }
+
+    flyoutButtonCss(){
+        let css = this.props.visible ? 'fa fa-close' : 'fa fa-bars';
         return css;
     }
 
@@ -178,13 +188,9 @@ export default class WrapperPage extends React.Component {
                     </div>
 
                     <div className='flyout-toggle'>
-                        <div className='icon-close'
-                             onClick={() => this.props.hideFlyoutTabs()}>
-                            <i className="fa fa-close"/>
-                        </div>
-                        <div className='icon-open'
-                             onClick={() => this.props.showFlyoutTabs()}>
-                            <i className="fa fa-bars"/>
+                        <div className={this.flyoutToggleCss()}
+                             onClick={() => this.props.toggleFlyoutTabs(this.props.visible)}>
+                            <i className={this.flyoutButtonCss()}/>
                         </div>
                     </div>
 
