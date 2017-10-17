@@ -1,9 +1,16 @@
 import { 
     POST_USER_CONTENT,
     RECEIVE_USER_CONTENT,
+    REQUEST_USER_CONTENTS,
+    RECEIVE_USER_CONTENTS,
 } from '../constants/archiveConstants';
 
-const userContent = (state = {}, action) => {
+const initialState = {
+    contents: [],
+    fetched: false
+}
+
+const userContent = (state = initialState, action) => {
     switch (action.type) {
         case POST_USER_CONTENT:
             return Object.assign({}, state, {
@@ -11,8 +18,18 @@ const userContent = (state = {}, action) => {
             })
         case RECEIVE_USER_CONTENT:
             return Object.assign({}, state, {
-                isPostingUserContent: false,
-                [action.userContent.id]: action.userContent
+                isFetchingUserContents: false,
+                contents: Object.assign([], state.contents, action.userContent)
+            })
+        case REQUEST_USER_CONTENTS:
+            return Object.assign({}, state, {
+                isFetchingUserContents: true,
+            })
+        case RECEIVE_USER_CONTENTS:
+            return Object.assign({}, state, {
+                isFetchingUserContents: false,
+                fetched: true,
+                contents: Object.assign([], state.contents, action.userContents)
             })
 
         default:
