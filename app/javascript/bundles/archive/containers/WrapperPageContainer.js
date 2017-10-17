@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     showFlyoutTabs: () => dispatch(showFlyoutTabs()),
-    toggleFlyoutTabs: () => dispatch(toggleFlyoutTabs())
+    toggleFlyoutTabs: (actualState) => { actualState ? dispatch(hideFlyoutTabs()) :  dispatch(showFlyoutTabs())}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrapperPage);
