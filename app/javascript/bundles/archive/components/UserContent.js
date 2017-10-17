@@ -11,7 +11,7 @@ export default class UserContent extends React.Component {
                     properties={{}}
                     reference_id={this.props.data.id}
                     reference_type='Segment'
-                    mediaId={this.props.data.media_id}
+                    media_id={this.props.data.media_id}
                     type={this.props.data.type}
                 />
     }

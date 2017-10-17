@@ -5,6 +5,7 @@ import Loader from '../../../lib/loader'
 import { 
     POST_USER_CONTENT,
     RECEIVE_USER_CONTENT,
+    ADD_USER_CONTENT,
     USER_CONTENT_URL,
 
     REQUEST_USER_CONTENTS,
@@ -14,6 +15,11 @@ import {
 
 const postUserContent = (params) => ({
     type: POST_USER_CONTENT,
+    params: params,
+});
+
+const addUserContent = (params) => ({
+    type: ADD_USER_CONTENT,
     params: params,
 });
 
@@ -27,7 +33,9 @@ function receiveNewUserContent(json){
 export function submitUserContent(params) {
     return dispatch => {
         dispatch(postUserContent(params))
-        Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
+        dispatch(addUserContent(params))
+        Loader.post(USER_CONTENT_URL, params, dispatch, null);
+        //Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
     }
 }
 

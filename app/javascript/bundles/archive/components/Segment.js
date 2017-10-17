@@ -21,7 +21,7 @@ export default class Segment extends React.Component {
                     properties={{}}
                     reference_id={this.props.data.id}
                     reference_type='Segment'
-                    mediaId={this.props.data.media_id}
+                    media_id={this.props.data.media_id}
                     type='UserAnnotation'
                 />
     }

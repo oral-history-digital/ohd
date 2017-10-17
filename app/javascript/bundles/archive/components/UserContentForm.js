@@ -9,7 +9,7 @@ export default class UserContentForm extends React.Component {
             properties: this.props.properties,
             reference_id: this.props.reference_id,
             reference_type: this.props.reference_type,
-            media_id: this.props.mediaId,
+            media_id: this.props.media_id,
             type: this.props.type
         };
 
