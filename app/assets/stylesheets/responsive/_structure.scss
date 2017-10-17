@@ -97,7 +97,7 @@ header.site-header {
 
 .flyout-is-visible {
   .wrapper-flyout {
-    z-index: 1000;
+    z-index: 400;
     @include screen-xl {
       display: block !important;
     }
@@ -295,7 +295,7 @@ footer {
   width: 30px;
   height: 30px;
   font-size: 26px;
-  z-index: 1100;
+  z-index: 500;
   cursor: pointer;
 }
 
