@@ -4,8 +4,8 @@ export default class UserContentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
+            title: this.props.title,
+            description: this.props.description,
             properties: this.props.properties,
             reference_id: this.props.reference_id,
             reference_type: this.props.reference_type,
