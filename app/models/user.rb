@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   require 'user_account'
-  require 'archive-authorization'
+  #require 'archive-authorization'
 
   belongs_to :user_account
   belongs_to :user_registration
@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   has_many :searches
 
-  acts_as_authorized_user
+  #acts_as_authorized_user
 
   has_many  :user_groups,
             :through => :users_user_groups
