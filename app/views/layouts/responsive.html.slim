@@ -24,14 +24,9 @@ html
     /<link rel="shortcut icon" href="/favicon.ico" />
     title == Project.project_name[I18n.locale.to_s]
 
-  body.flyout-is-hidden
+  body
     .layout-indicator style="display: block;"
 
     = yield
 
-    .flyout-toggle
-      .icon-close
-        i class="fa fa-close"
-      .icon-open
-        i class="fa fa-bars"
 

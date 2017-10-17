@@ -97,11 +97,39 @@ header.site-header {
 
 .flyout-is-visible {
   .wrapper-flyout {
+    width: 100%;
+    padding: 30px;
+    @include screen-m {
+      width: 50%;
+    }
+    @include screen-l {
+      width: 40%;
+    }
+    @include screen-xl {
+      width: 30%;
+    }
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(#fff, 0.75);
     z-index: 1000;
     @include screen-xl {
       display: block !important;
     }
+    @include screen-xl {
+      border-left: 1px solid $gray-light;
+      border: 0 none;
+    }
+    overflow: scroll;
+    p {
+      font-size: $font-size-medium;
+      color: $gray-medium;
+      background: $gray-lightest;
+      padding: 20px;
+    }
   }
+
   .flyout-toggle {
     @include screen-xl {
       display: none;
@@ -110,6 +138,9 @@ header.site-header {
 }
 
 .flyout-is-hidden {
+  .wrapper-flyout{
+    display: none;
+  }
   .flyout-toggle {
     &.white {
       color: #fff;
@@ -257,36 +288,7 @@ footer {
   color: #fff;
 }
 
-.wrapper-flyout {
-  display: none;
-  width: 100%;
-  padding: 30px;
-  @include screen-m {
-    width: 50%;
-  }
-  @include screen-l {
-    width: 40%;
-  }
-  @include screen-xl {
-    width: 30%;
-  }
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(#fff, 0.75);
-  @include screen-xl {
-    border-left: 1px solid $gray-light;
-    border: 0 none;
-  }
-  overflow: scroll;
-  p {
-    font-size: $font-size-medium;
-    color: $gray-medium;
-    background: $gray-lightest;
-    padding: 20px;
-  }
-}
+
 
 .flyout-toggle {
   position: fixed;
