@@ -4,8 +4,22 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
+import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 export default class FlyoutTabs extends React.Component {
+
+    userContentForm() {
+        return  <UserContentFormContainer 
+                    id={this.props.interview.id}
+                    title=''
+                    description=''
+                    properties={{}}
+                    reference_id={this.props.interview.id}
+                    reference_type='Interview'
+                    media_id={this.props.interview.media_id}
+                    type='InterviewReference'
+                />
+    }
 
   render() {
     return (
@@ -37,6 +51,15 @@ export default class FlyoutTabs extends React.Component {
           />
         </TabPanel>
         <TabPanel className='column-content'>
+                <div 
+                    className='edit' 
+                    onClick={() => this.props.openArchivePopup({
+                        title: 'Save reference to this interview', 
+                        content: this.userContentForm()
+                    })}
+                >
+                    {'Save reference to this interview'}
+                </div>
           <InterviewLocationsContainer  />
           biographie transcript daten zur za
         </TabPanel>

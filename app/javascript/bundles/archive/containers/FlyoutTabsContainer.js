@@ -1,17 +1,21 @@
 import { connect } from 'react-redux';
 
 import FlyoutTabs from '../components/FlyoutTabs';
+import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 
-// Which part of the Redux global state does our component want to receive as props?
+import ArchiveUtils from '../../../lib/utils';
+
 const mapStateToProps = (state) => {
-
     return {
-        visible: state.flyoutTabs.visible
+        visible: state.flyoutTabs.visible,
+        interview: ArchiveUtils.getInterview(state),
+        locale: state.archive.locale
     }
 }
 
-// Don't forget to actually use connect!
-// Note that we don't export Interview, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps)(FlyoutTabs);
+const mapDispatchToProps = (dispatch) => ({
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlyoutTabs);

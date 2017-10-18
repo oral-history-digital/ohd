@@ -25,7 +25,7 @@ export default class UserContents extends React.Component {
             } else if(this.props.contents[i].type === 'UserAnnotation') {
                 userAnnotations.push(<UserContentContainer data={this.props.contents[i]} key={`userAnnotation-${i}`} />);
             } else if(this.props.contents[i].type === 'InterviewReference') {
-                interviewReference.push(<UserContentContainer data={this.props.contents[i]} key={`interviewReference-${i}`} />);
+                interviewReferences.push(<UserContentContainer data={this.props.contents[i]} key={`interviewReference-${i}`} />);
             }
         }
         return {
