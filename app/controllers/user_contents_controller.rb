@@ -247,17 +247,20 @@ class UserContentsController < BaseController
   private
 
   def user_content_params
-    params.require(:user_content).permit(:description,
-                                         #:user_id,
-                                         :title,
-                                         :media_id,
-                                         :interview_references,
-                                         :properties,
-                                         :reference_id, 
-                                         :reference_type, 
-                                         :type,
-                                         :link_url,
-                                         :persistent)
+    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
+    params.require(:user_content).
+      permit(:description,
+             :title,
+             :media_id,
+             :interview_references,
+             :reference_id, 
+             :reference_type, 
+             :type,
+             :link_url,
+             :persistent).
+      tap do |whitelisted|
+        whitelisted[:properties] = properties.permit!
+      end
   end
 
   # make sure the current_user_account is the owner of the resource

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigation } from 'react-router-dom'
 import Facet from '../components/Facet';
+import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 import {ARCHIVE_SEARCH_URL} from '../constants/archiveConstants';
 
@@ -53,6 +54,14 @@ export default class ArchiveSearchForm extends React.Component {
         this.context.router.history.push(ARCHIVE_SEARCH_URL);
     }
 
+    saveSearchForm() {
+        return  <UserContentFormContainer 
+                    title=''
+                    description=''
+                    properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
+                    type='Search'
+                />
+    }
 
     render() {
         return (
@@ -65,6 +74,14 @@ export default class ArchiveSearchForm extends React.Component {
                     <input type="submit" value="Submit"/>
                 </form>
                 <button onClick={this.handleReset}>Reset</button>
+                <button 
+                    onClick={() => this.props.openArchivePopup({
+                        title: 'Save search', 
+                        content: this.saveSearchForm()
+                    })}
+                >
+                    {'Save search'}
+                </button>
             </div>
         );
     }
