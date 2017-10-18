@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import UserContent from '../components/UserContent';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { handleSegmentClick } from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -10,6 +11,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+    handleSegmentClick: time => dispatch(handleSegmentClick(time)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 

@@ -10,13 +10,12 @@ export default class FlyoutTabs extends React.Component {
 
     userContentForm() {
         return  <UserContentFormContainer 
-                    id={this.props.interview.id}
                     title=''
                     description=''
-                    properties={{}}
+                    properties={{title: this.props.interview.title}}
                     reference_id={this.props.interview.id}
                     reference_type='Interview'
-                    media_id={this.props.interview.media_id}
+                    media_id={this.props.interview.archive_id}
                     type='InterviewReference'
                 />
     }

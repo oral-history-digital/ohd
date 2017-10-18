@@ -18,7 +18,10 @@ export default class Segment extends React.Component {
         return  <UserContentFormContainer 
                     title=''
                     description=''
-                    properties={{}}
+                    properties={{
+                        time: this.props.data.start_time, 
+                        interview_archive_id: this.props.interview.archive_id
+                    }}
                     reference_id={this.props.data.id}
                     reference_type='Segment'
                     media_id={this.props.data.media_id}

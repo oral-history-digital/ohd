@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link, hashHistory} from 'react-router-dom';
+
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
 import '../../../css/segments';
@@ -11,8 +13,8 @@ export default class UserContent extends React.Component {
                     title={this.props.data.title}
                     description={this.props.data.description}
                     properties={{}}
-                    reference_id={this.props.data.id}
-                    reference_type='Segment'
+                    reference_id={this.props.data.reference_id}
+                    reference_type={this.props.data.reference_type}
                     media_id={this.props.data.media_id}
                     type={this.props.data.type}
                 />
@@ -24,12 +26,8 @@ export default class UserContent extends React.Component {
                 />
     }
 
-    render () {
-        return (
-            <div>
-                <div className='title'>{this.props.data.title}</div>
-                <div className='description'>{this.props.data.description}</div>
-                <div 
+    edit() {
+        return <div 
                     className='edit' 
                     onClick={() => this.props.openArchivePopup({
                         title: 'Edit', 
@@ -38,7 +36,10 @@ export default class UserContent extends React.Component {
                 >
                     edit
                 </div>
-                <div 
+    }
+
+    delete() {
+        return <div 
                     className='delete' 
                     onClick={() => this.props.openArchivePopup({
                         title: 'Delete', 
@@ -47,6 +48,37 @@ export default class UserContent extends React.Component {
                 >
                     {'delete'}
                 </div>
+    }
+    
+    goTo() {
+        if(this.props.data.type === 'InterviewReference') {
+            return <Link
+                      to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}
+                  >
+                      {`go to interview: ${this.props.data.properties.title[this.props.locale]}`}
+                  </Link>
+        } else if(this.props.data.type === 'UserAnnotation') {
+              return <Link
+                      onClick={() => this.props.handleSegmentClick(this.props.data.properties.time)} 
+                      to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
+                  >
+                      {'go to segment'}
+                  </Link>
+        } else if(this.props.data.type === 'Search') {
+
+        } else {
+            return null
+        }
+    }
+
+    render () {
+        return (
+            <div>
+                <div className='title'>{this.props.data.title}</div>
+                <div className='description'>{this.props.data.description}</div>
+                {this.edit()}
+                {this.delete()}
+                {this.goTo()}
             </div>
         )
     }
