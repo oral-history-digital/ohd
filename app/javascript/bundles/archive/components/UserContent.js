@@ -65,7 +65,12 @@ export default class UserContent extends React.Component {
                       {'go to segment'}
                   </Link>
         } else if(this.props.data.type === 'Search') {
-
+              return <Link
+                        onClick={() => this.props.searchInArchive(this.props.data.properties)}
+                        to={'/' + this.props.locale + '/suchen'}
+                  >
+                      {'search'}
+                  </Link>
         } else {
             return null
         }

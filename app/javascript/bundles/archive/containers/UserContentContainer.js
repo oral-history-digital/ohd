@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import UserContent from '../components/UserContent';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
+import { searchInArchive } from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    searchInArchive: (query) => dispatch(searchInArchive(query)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 
