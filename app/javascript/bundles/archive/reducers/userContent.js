@@ -3,6 +3,7 @@ import {
     PUT_USER_CONTENT,
     ADD_USER_CONTENT,
     UPDATE_USER_CONTENT,
+    REMOVE_USER_CONTENT,
     RECEIVE_USER_CONTENT,
     REQUEST_USER_CONTENTS,
     RECEIVE_USER_CONTENTS,
@@ -52,6 +53,10 @@ const userContent = (state = initialState, action) => {
                     }
                     return userContent
                 })
+            })
+        case REMOVE_USER_CONTENT:
+            return Object.assign({}, state, {
+                contents: state.contents.filter(item => action.id !== item.id)
             })
         case RECEIVE_USER_CONTENT:
             return Object.assign({}, state, {

@@ -19,6 +19,22 @@ import request from 'superagent';
         });
     },
 
+    delete: function(url, dispatch, callback) {
+      request.delete(url)
+        .set('Accept', 'application/json')
+        .end( (error, res) => {
+          if (res) {
+            if (res.error) {
+              console.log("deleting from " + url + " failed: " + error);
+            } else {
+              if (typeof callback === "function") {
+                dispatch(callback(JSON.parse(res.text)));
+              }
+            }
+          }
+        });
+    },
+
     put: function(url, params, dispatch, callback) {
       request.put(url)
         .send(params)

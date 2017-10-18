@@ -37,11 +37,15 @@ class UserContentsController < BaseController
   end
 
   def destroy 
+    @user_content = UserContent.find(params[:id])
+    @user_content.destroy
+
     respond_to do |format|
       format.html do
         render :action => 'index'
       end
       format.js
+      format.json { render json: :ok }
     end
   end
 

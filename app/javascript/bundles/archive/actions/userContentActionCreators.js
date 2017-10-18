@@ -8,6 +8,7 @@ import {
     RECEIVE_USER_CONTENT,
     UPDATE_USER_CONTENT,
     ADD_USER_CONTENT,
+    REMOVE_USER_CONTENT,
     USER_CONTENT_URL,
 
     REQUEST_USER_CONTENTS,
@@ -35,6 +36,11 @@ const updateUserContent = (params) => ({
     params: params,
 });
 
+const removeUserContent = (id) => ({
+    type: REMOVE_USER_CONTENT,
+    id: id,
+});
+
 function receiveNewUserContent(json){
     return {
         type: RECEIVE_USER_CONTENT,
@@ -55,6 +61,13 @@ export function submitUserContent(params) {
             Loader.post(USER_CONTENT_URL, params, dispatch, null);
             //Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
         }
+    }
+}
+
+export function deleteUserContent(id) {
+    return dispatch => {
+        dispatch(removeUserContent(id))
+        Loader.delete(`${USER_CONTENT_URL}/${id}`, dispatch, null);
     }
 }
 

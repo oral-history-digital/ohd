@@ -1,5 +1,6 @@
 import React from 'react';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
 import '../../../css/segments';
 
 export default class UserContent extends React.Component {
@@ -17,6 +18,12 @@ export default class UserContent extends React.Component {
                 />
     }
 
+    userContentDelete() {
+        return  <UserContentDeleteContainer 
+                    id={this.props.data.id}
+                />
+    }
+
     render () {
         return (
             <div>
@@ -30,6 +37,15 @@ export default class UserContent extends React.Component {
                     })}
                 >
                     edit
+                </div>
+                <div 
+                    className='delete' 
+                    onClick={() => this.props.openArchivePopup({
+                        title: 'Delete', 
+                        content: this.userContentDelete()
+                    })}
+                >
+                    {'delete'}
                 </div>
             </div>
         )
