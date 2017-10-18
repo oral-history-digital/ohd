@@ -163,16 +163,20 @@ class UserContentsController < BaseController
   end
 
   def update
-    @object.update_attributes(user_content_params)
+    @user_content = UserContent.find(params[:id])
+    @user_content.update_attributes(user_content_params)
+    #@object.update_attributes(user_content_params)
     respond_to do |format|
-      format.html do
-        redirect_to :action => 'show'
-      end
-      format.js do
-        #render json: {status: :ok}
-        @context = (params['context'] || 'user_content').underscore
-        @att = 'description'
-        @base_id = "#{@context}_#{@object.id}_#{@att}"
+      #format.html do
+        #redirect_to :action => 'show'
+      #end
+      #format.js do
+        #@context = (params['context'] || 'user_content').underscore
+        #@att = 'description'
+        #@base_id = "#{@context}_#{@object.id}_#{@att}"
+      #end
+      format.json do
+        render json: {status: :ok}
       end
     end
   end

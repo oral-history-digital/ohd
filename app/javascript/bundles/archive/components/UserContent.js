@@ -6,6 +6,7 @@ export default class UserContent extends React.Component {
 
     userContentForm() {
         return  <UserContentFormContainer 
+                    id={this.props.data.id}
                     title={this.props.data.title}
                     description={this.props.data.description}
                     properties={{}}

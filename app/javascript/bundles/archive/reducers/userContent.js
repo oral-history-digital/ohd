@@ -1,7 +1,9 @@
 import { 
     POST_USER_CONTENT,
-    RECEIVE_USER_CONTENT,
+    PUT_USER_CONTENT,
     ADD_USER_CONTENT,
+    UPDATE_USER_CONTENT,
+    RECEIVE_USER_CONTENT,
     REQUEST_USER_CONTENTS,
     RECEIVE_USER_CONTENTS,
 } from '../constants/archiveConstants';
@@ -16,6 +18,10 @@ const userContent = (state = initialState, action) => {
         case POST_USER_CONTENT:
             return Object.assign({}, state, {
                 isPostingUserContent: true,
+            })
+        case PUT_USER_CONTENT:
+            return Object.assign({}, state, {
+                isPuttingUserContent: true,
             })
         case ADD_USER_CONTENT:
             return Object.assign({}, state, {
@@ -33,6 +39,19 @@ const userContent = (state = initialState, action) => {
                         media_id: action.params.media_id,
                     }
                 ]
+            })
+        case UPDATE_USER_CONTENT:
+            return Object.assign({}, state, {
+                contents: state.contents.map((userContent, index) => {
+                    if (userContent.id === action.params.id) {
+                        return Object.assign({}, userContent, {
+                            title: action.params.title,
+                            description: action.params.description,
+                            properties: action.params.properties,
+                        })
+                    }
+                    return userContent
+                })
             })
         case RECEIVE_USER_CONTENT:
             return Object.assign({}, state, {

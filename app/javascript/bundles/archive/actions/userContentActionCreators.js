@@ -3,8 +3,10 @@
 import Loader from '../../../lib/loader'
 
 import { 
-    POST_USER_CONTENT,
+    //POST_USER_CONTENT,
+    //PUT_USER_CONTENT,
     RECEIVE_USER_CONTENT,
+    UPDATE_USER_CONTENT,
     ADD_USER_CONTENT,
     USER_CONTENT_URL,
 
@@ -13,13 +15,23 @@ import {
     //USERCONTENTS_URL,
 } from '../constants/archiveConstants';
 
-const postUserContent = (params) => ({
-    type: POST_USER_CONTENT,
-    params: params,
-});
+//const postUserContent = (params) => ({
+    //type: POST_USER_CONTENT,
+    //params: params,
+//});
+
+//const putUserContent = (params) => ({
+    //type: PUT_USER_CONTENT,
+    //params: params,
+//});
 
 const addUserContent = (params) => ({
     type: ADD_USER_CONTENT,
+    params: params,
+});
+
+const updateUserContent = (params) => ({
+    type: UPDATE_USER_CONTENT,
     params: params,
 });
 
@@ -31,11 +43,18 @@ function receiveNewUserContent(json){
 }
 
 export function submitUserContent(params) {
-    return dispatch => {
-        dispatch(postUserContent(params))
-        dispatch(addUserContent(params))
-        Loader.post(USER_CONTENT_URL, params, dispatch, null);
-        //Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
+    if(params.id) {
+        return dispatch => {
+            dispatch(updateUserContent(params))
+            Loader.put(`${USER_CONTENT_URL}/${params.id}`, params, dispatch, null);
+        }
+    } else {
+        return dispatch => {
+            //dispatch(postUserContent(params))
+            dispatch(addUserContent(params))
+            Loader.post(USER_CONTENT_URL, params, dispatch, null);
+            //Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
+        }
     }
 }
 
