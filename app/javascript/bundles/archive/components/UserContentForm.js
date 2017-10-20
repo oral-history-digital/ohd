@@ -36,18 +36,41 @@ export default class UserContentForm extends React.Component {
         const name =  event.target.name;
 
         this.setState({[name]: value});
+        if(this.valid()) {
+            this.clearErrors();
+        }
     }
 
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.submitUserContent(this.state);
-        this.props.closeArchivePopup();
+        if(this.valid()) {
+            this.props.submitUserContent(this.state);
+            this.props.closeArchivePopup();
+        } else {
+            this.setErrors(); 
+        }
+    }
+
+    valid() {
+        return this.state.title &&
+            this.state.title.length > 2 && 
+            this.state.description &&
+            this.state.description.length > 2
+    }
+
+    setErrors() {
+        this.setState({ errors: "Please give at least two chars in title and description." })
+    }
+
+    clearErrors() {
+        this.setState({ errors: undefined })
     }
 
     render() {
         return (
             <div>
+                <div className='errors'>{this.state.errors}</div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         title
