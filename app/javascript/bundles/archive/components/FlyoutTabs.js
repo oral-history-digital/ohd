@@ -7,13 +7,44 @@ import UserContentsContainer from '../containers/UserContentsContainer';
 
 export default class FlyoutTabs extends React.Component {
 
+
+    static contextTypes = {
+        router: React.PropTypes.object
+    }
+
+
+
+    constructor(props, context) {
+        super(props, context);
+
+        console.log(this.props.tabIndex);
+        this.state = {
+            tabIndex: this.props.tabIndex
+        }
+    }
+
+    handleTabClick(tabIndex) {
+        switch(tabIndex) {
+            case 0: //Home
+                this.context.router.history.push(`/${this.props.locale}`);
+            break;
+
+            default:
+                this.setState({ tabIndex })
+        }
+    }
+
+
+
+
   render() {
     return (
       <Tabs
         className='wrapper-flyout'
         selectedTabClassName='active'
         selectedTabPanelClassName='active'
-        defaultIndex={this.props.tabIndex}
+        selectedIndex={this.state.tabIndex}
+        onSelect={tabIndex => this.handleTabClick(tabIndex)}
       >
         <TabList>
           <Tab className='flyout-tab'> Startseite </Tab>
