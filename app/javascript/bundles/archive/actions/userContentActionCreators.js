@@ -57,9 +57,10 @@ export function submitUserContent(params) {
     } else {
         return dispatch => {
             //dispatch(postUserContent(params))
-            dispatch(addUserContent(params))
-            Loader.post(USER_CONTENT_URL, params, dispatch, null);
-            //Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
+            //
+            //dispatch(addUserContent(params))
+            //Loader.post(USER_CONTENT_URL, params, dispatch, null);
+            Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
         }
     }
 }

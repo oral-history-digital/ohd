@@ -62,17 +62,7 @@ const userContent = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isFetchingUserContents: false,
                 contents: [
-                    ...state.contents,
-                    {
-                        id: action.userContent.id,
-                        title: action.userContent.title,
-                        description: action.userContent.description,
-                        reference_id: action.userContent.reference_id,
-                        reference_type: action.userContent.reference_type,
-                        type: action.userContent.type,
-                        properties: action.userContent.properties,
-                        media_id: action.userContent.media_id,
-                    }
+                    ...state.contents, action.userContent
                 ]
             })
         case REQUEST_USER_CONTENTS:
