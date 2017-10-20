@@ -109,7 +109,10 @@ export default class ArchiveSearch extends React.Component {
                             {this.content()}
                         </TabPanel>
                         <TabPanel forceRender={true} className='column-content'>
-                            <ArchiveLocationsContainer/>
+                            <div>
+                                {this.renderPagination()}
+                                <ArchiveLocationsContainer/>
+                            </div>
                         </TabPanel>
                     </Tabs>
                 </div>

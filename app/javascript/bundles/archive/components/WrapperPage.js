@@ -114,8 +114,6 @@ export default class WrapperPage extends React.Component {
 
 
     onResize(dimensions) {
-        console.log(dimensions.width);
-        console.log(dimensions.height);
         this.mqSync();
     }
 
