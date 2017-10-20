@@ -181,7 +181,11 @@ export default class WrapperPage extends React.Component {
                         {this.props.children}
 
                         <footer>
-                            | Footer
+                            <Link
+                                to={'/' + this.props.locale + '/impressum'}
+                            >
+                                {'Impressum'}
+                            </Link>
                         </footer>
                     </div>
 
