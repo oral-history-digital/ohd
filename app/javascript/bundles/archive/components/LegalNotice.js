@@ -7,7 +7,8 @@ export default class Help extends React.Component {
 
     content() {
         return (
-                <WrapperPageContainer>
+                <WrapperPageContainer
+                    tabindex={0}>
                     <div>
                         <div className='title'>{'Legal Notice'}</div>
                     </div>
