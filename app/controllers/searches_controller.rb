@@ -112,7 +112,7 @@ class SearchesController < BaseController
   def search_before_index
     @search = Search.from_params(@query_params || params)
     @search.search!
-    @search.segment_search!
+    #@search.segment_search!
     @search.open_category = params['open_category']
     @interviews = @search.results
     session[:query] = @search.query_params
