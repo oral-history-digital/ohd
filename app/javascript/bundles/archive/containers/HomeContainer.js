@@ -7,6 +7,7 @@ import Home from '../components/Home';
 const mapStateToProps = (state) => {
 
     return {
+        homeContent: state.archive.homeContent[state.archive.locale],
     }
 }
 

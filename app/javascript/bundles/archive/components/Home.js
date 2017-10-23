@@ -9,9 +9,10 @@ export default class Home extends React.Component {
         return (
                 <WrapperPageContainer
                     tabIndex={0}>
-                    <div>
-                        <div className='title'>{'Home'}</div>
-                    </div>
+                    <div className='home-content'
+                        dangerouslySetInnerHTML = {{__html: this.props.homeContent}}
+                    />
+
                 </WrapperPageContainer>
         )
     }

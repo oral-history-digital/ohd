@@ -17,7 +17,9 @@ export const ARCHIVE_RESET_SEARCH_URL = '/de/suchen/neu';
 // export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
 // export const LOCATIONS_URL = '/de/locations';
 
-
+export const REQUEST_STATIC_CONTENT = 'REQUEST_STATIC_CONTENT';
+export const RECEIVE_STATIC_CONTENT = 'RECEIVE_STATIC_CONTENT';
+export const HOME_CONTENT_URL = '/de/';
 
 export const VIDEO_TIME_CHANGE = 'VIDEO_TIME_CHANGE';
 export const VIDEO_ENDED = 'VIDEO_ENDED';

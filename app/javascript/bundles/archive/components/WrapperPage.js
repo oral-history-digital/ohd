@@ -20,6 +20,7 @@ export default class WrapperPage extends React.Component {
 
     componentDidMount() {
         this.setLocale();
+        this.props.fetchStaticContent();
     }
 
     componentDidUpdate() {
@@ -181,11 +182,21 @@ export default class WrapperPage extends React.Component {
                         {this.props.children}
 
                         <footer>
+                            {this.props.locale && this.props.externalLinks && this.props.externalLinks['impressum'] &&
+
                             <Link
-                                to={'/' + this.props.locale + '/impressum'}
-                            >
-                                {'Impressum'}
-                            </Link>
+                                to={this.props.externalLinks['impressum'][this.props.locale]}
+                                >
+                            {'Impressum'}
+                                </Link>
+                            }
+
+
+
+
+
+
+
                         </footer>
                     </div>
 

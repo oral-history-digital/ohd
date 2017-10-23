@@ -37,7 +37,7 @@ class SearchesController < BaseController
 
     respond_to do |format|
       format.html do
-        render :template => '/interviews/index.html'
+        render :template => '/react/app.html'
       end
       format.json do
         #serialized_segments = @search.segments#Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
