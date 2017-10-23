@@ -72,7 +72,7 @@ export default class WrapperPage extends React.Component {
         activeMQ = activeMQ.replace(/'/g, "");
 
         // Conditions for each breakpoint
-        if (activeMQ !=  this.setState.currentMQ){
+        if (activeMQ != this.setState.currentMQ) {
             if (activeMQ == 'XS') {
                 this.setState({['currentMQ']: activeMQ});
                 // Add code you want to sync with this breakpoint
@@ -113,7 +113,6 @@ export default class WrapperPage extends React.Component {
     };
 
 
-
     onResize(dimensions) {
         this.mqSync();
     }
@@ -143,21 +142,40 @@ export default class WrapperPage extends React.Component {
         return css;
     }
 
-    flyoutToggleCss(){
+    flyoutToggleCss() {
         let css = this.props.visible ? 'icon-close' : 'icon-open';
         return css;
     }
 
-    flyoutButtonCss(){
+    flyoutButtonCss() {
         let css = this.props.visible ? 'fa fa-close' : 'fa fa-bars';
         return css;
+    }
+
+    renderExternalLinks() {
+        if (this.props.locale && this.props.externalLinks) {
+            let links = this.props.externalLinks;
+            let locale = this.props.locale;
+            return Object.keys(this.props.externalLinks).map(function (key, index) {
+                let link = links[key][locale];
+                return (
+                    <a
+                        key={'external-link-' + key}
+                        href={link}
+                        target="_blank"
+                    >
+                        {key}
+                    </a>
+                )
+            })
+        }
     }
 
 
     render() {
         return (
             <ResizeAware onResize={this.onResize}>
-                <div className="layout-indicator" style={{display:'block'}}>{this.state.currentMQ}</div>
+                <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div>
                 <div className={this.flyoutCss()}>
                     {this.disabled()}
                     <div className={this.css()}>
@@ -182,21 +200,11 @@ export default class WrapperPage extends React.Component {
                         {this.props.children}
 
                         <footer>
-                            {this.props.locale && this.props.externalLinks && this.props.externalLinks['impressum'] &&
+                            <div className='footer-links'>
 
-                            <Link
-                                to={this.props.externalLinks['impressum'][this.props.locale]}
-                                >
-                            {'Impressum'}
-                                </Link>
-                            }
+                                {this.renderExternalLinks()}
 
-
-
-
-
-
-
+                            </div>
                         </footer>
                     </div>
 
