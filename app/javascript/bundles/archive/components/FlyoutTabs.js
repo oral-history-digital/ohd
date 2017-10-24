@@ -60,53 +60,53 @@ export default class FlyoutTabs extends React.Component {
                 onSelect={tabIndex => this.handleTabClick(tabIndex)}
             >
 
-        <TabList>
-          <Tab className='flyout-tab'> Startseite </Tab>
-          <Tab className='flyout-tab'> Account </Tab>
-          <Tab className='flyout-tab'> Suche </Tab>
-          <Tab className='flyout-tab'> Interview </Tab>
-          <Tab className='flyout-tab'> Sprache </Tab>
-          <Tab className='flyout-tab'> Arbeitsmappe </Tab>
-          <Tab className='flyout-tab'> Zuletzt angesehen </Tab>
-          <Tab className='flyout-tab'> Hilfe </Tab>
-        </TabList>
+                <TabList>
+                    <Tab className='flyout-tab'> Startseite </Tab>
+                    <Tab className='flyout-tab'> Account </Tab>
+                    <Tab className='flyout-tab'> Suche </Tab>
+                    <Tab className='flyout-tab'> Interview </Tab>
+                    <Tab className='flyout-tab'> Sprache </Tab>
+                    <Tab className='flyout-tab'> Arbeitsmappe </Tab>
+                    <Tab className='flyout-tab'> Zuletzt angesehen </Tab>
+                    <Tab className='flyout-tab'> Hilfe </Tab>
+                </TabList>
 
-        <TabPanel className='column-content'>
-          start
-        </TabPanel>
-        <TabPanel className='column-content'>
-          login logout name
-        </TabPanel>
-        <TabPanel className='column-content'>
-          <ArchiveSearchFormContainer
-          />
-        </TabPanel>
-        <TabPanel className='column-content'>
-                <div 
-                    className='edit' 
-                    onClick={() => this.props.openArchivePopup({
-                        title: 'Save reference to this interview', 
-                        content: this.userContentForm()
-                    })}
-                >
-                    {'Save reference to this interview'}
-                </div>
-          <InterviewLocationsContainer  />
-          biographie transcript daten zur za
-        </TabPanel>
-        <TabPanel className='column-content'>
-          sprache
-        </TabPanel>
-        <TabPanel className='column-content'>
-            <UserContentsContainer />
-        </TabPanel>
-        <TabPanel className='column-content'>
-          zuletzt angesehen
-        </TabPanel>
-        <TabPanel className='column-content'>
-          hilfe
-        </TabPanel>
-      </Tabs>
-    );
-  }
+                <TabPanel className='column-content'>
+                    start
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    login logout name
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    <ArchiveSearchFormContainer
+                    />
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    <div 
+                        className='edit' 
+                        onClick={() => this.props.openArchivePopup({
+                            title: 'Save reference to this interview', 
+                            content: this.userContentForm()
+                        })}
+                    >
+                        {'Save reference to this interview'}
+                    </div>
+                    <InterviewLocationsContainer  />
+                    biographie transcript daten zur za
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    sprache
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    <UserContentsContainer />
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    zuletzt angesehen
+                </TabPanel>
+                <TabPanel className='column-content'>
+                    hilfe
+                </TabPanel>
+            </Tabs>
+        );
+    }
 }
