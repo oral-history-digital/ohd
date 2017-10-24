@@ -43,7 +43,7 @@ const account = (state = {}, action) => {
                 account: action.account
             })
         case LOGOUT:
-            return Object.assign({}, state, {})
+            return {} 
         case REGISTER:
             return Object.assign({}, state, {
                 isRegistering: true
