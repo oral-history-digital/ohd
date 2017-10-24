@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
-    devise_for :user_accounts, skip: [:registrations]
+    devise_for :user_accounts, :controllers => {sessions: 'sessions'}, skip: [:registrations]
     resources :user_registrations do
       member do
         post :confirm
@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     end
 
     localized do
+      get 'account' => 'accounts#show'
+
       %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
         get site, to: "home##{site}", as: site
         get '/',  to: "home#archive", as: :home

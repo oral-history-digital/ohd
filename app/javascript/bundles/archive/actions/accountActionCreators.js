@@ -1,0 +1,107 @@
+/* eslint-disable import/prefer-default-export */
+
+import Loader from '../../../lib/loader'
+
+import { 
+    REQUEST_ACCOUNT,
+    RECEIVE_ACCOUNT,
+    ACCOUNT_URL,
+
+    LOGIN,
+    LOGGED_IN,
+    SUBMIT_LOGIN,
+    LOGIN_URL,
+
+    LOGOUT,
+    SUBMIT_LOGOUT,
+    LOGOUT_URL,
+
+    REGISTER,
+    REGISTERED,
+    SUBMIT_REGISTER,
+    REGISTER_URL,
+
+    CHANGE_PASSWORD,
+    CHANGED_PASSWORD,
+    SUBMIT_CHANGE_PASSWORD,
+    CHANGE_PASSWORD_URL,
+} from '../constants/archiveConstants';
+
+const requestAccount = () => ({
+  type: REQUEST_ACCOUNT,
+});
+
+const receiveAccount = (json) => ({
+  type: RECEIVE_ACCOUNT,
+  firstName: json.first_name,
+  lastName: json.last_name,
+  email: json.email,
+  login: json.login,
+});
+
+export function fetchAccount() {
+  return dispatch => {
+    dispatch(requestAccount())
+    Loader.getJson(ACCOUNT_URL, null, dispatch, receiveAccount);
+  }
+}
+
+const login = () => ({
+        type: LOGIN,
+})
+
+const loggedIn = (json) => ({
+        type: LOGGED_IN,
+        account: json
+})
+
+export function submitLogin(params) {
+    return dispatch => {
+        dispatch(login())
+        Loader.post(LOGIN_URL, params, dispatch, loggedIn());
+    }
+}
+
+const logout = () => ({
+        type: LOGOUT,
+})
+
+export function submitLogout() {
+    return dispatch => {
+        dispatch(logout())
+        Loader.delete(LOGOUT_URL, dispatch, null);
+    }
+}
+
+const register = () => ({
+        type: REGISTER,
+})
+
+const registered = (json) => ({
+        type: REGISTERED,
+        registrationStatus: json
+})
+
+export function submitRegister(params) {
+    return dispatch => {
+        dispatch(register())
+        Loader.post(REGISTER_URL, params, dispatch, registered(json));
+    }
+}
+
+const changePassword = () => ({
+        type: CHANGE_PASSWORD,
+})
+
+const changedPassword = (json) => ({
+        type: CHANGED_PASSWORD,
+        changePasswordStatus: json
+})
+
+export function submitChangePassword(params) {
+    return dispatch => {
+        dispatch(changePassword())
+        Loader.put(CHANGE_PASSWORD_URL, params, dispatch, changedPassword(json));
+    }
+}
+

@@ -4,9 +4,39 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
-import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 export default class FlyoutTabs extends React.Component {
+
+
+    static contextTypes = {
+        router: React.PropTypes.object
+    }
+
+    constructor(props, context) {
+        super(props, context);
+
+        console.log(this.props.tabIndex);
+        this.state = {
+            tabIndex: this.props.tabIndex
+        }
+    }
+
+    handleTabClick(tabIndex) {
+        switch(tabIndex) {
+            case 0: //Home
+                this.context.router.history.push(`/${this.props.locale}`);
+                break;
+            case 1: //Account
+                this.context.router.history.push(`/${this.props.locale}/account`);
+                break;
+            case 7: //Home
+                this.context.router.history.push(`/${this.props.locale}/hilfe`);
+                break;
+
+            default:
+                this.setState({ tabIndex })
+        }
+    }
 
     userContentForm() {
         return  <UserContentFormContainer 
@@ -20,14 +50,16 @@ export default class FlyoutTabs extends React.Component {
                 />
     }
 
-  render() {
-    return (
-      <Tabs
-        className='wrapper-flyout'
-        selectedTabClassName='active'
-        selectedTabPanelClassName='active'
-        defaultIndex={this.props.tabIndex}
-      >
+    render() {
+        return (
+            <Tabs
+                className='wrapper-flyout'
+                selectedTabClassName='active'
+                selectedTabPanelClassName='active'
+                selectedIndex={this.state.tabIndex}
+                onSelect={tabIndex => this.handleTabClick(tabIndex)}
+            >
+
         <TabList>
           <Tab className='flyout-tab'> Startseite </Tab>
           <Tab className='flyout-tab'> Account </Tab>

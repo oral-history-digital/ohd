@@ -45,3 +45,25 @@ export const USER_CONTENT_URL = '/de/user_contents';
 export const REQUEST_USER_CONTENTS = 'REQUEST_USER_CONTENTS';
 export const RECEIVE_USER_CONTENTS = 'RECEIVE_USER_CONTENTS';
 
+export const LOGIN = 'LOGIN';
+export const LOGGED_IN = 'LOGGED_IN';
+export const SUBMIT_LOGIN = 'SUBMIT_LOGIN';
+export const LOGIN_URL = '/de/user_accounts/sign_in';
+
+export const LOGOUT = 'LOGOUT';
+export const SUBMIT_LOGOUT = 'SUBMIT_LOGOUT';
+export const LOGOUT_URL = '/de/user_accounts/sign_out';
+
+export const REGISTER = 'REGISTER';
+export const REGISTERED = 'REGISTERED';
+export const SUBMIT_REGISTER = 'SUBMIT_REGISTER';
+export const REGISTER_URL = '/de/user_registrations';
+
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export const CHANGED_PASSWORD = 'CHANGED_PASSWORD';
+export const SUBMIT_CHANGE_PASSWORD = 'SUBMIT_CHANGE_PASSWORD';
+export const CHANGE_PASSWORD_URL = '/de/user_accounts/password';
+
+export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
+export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
+export const ACCOUNT_URL = '/de/account';
