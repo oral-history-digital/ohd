@@ -49,6 +49,7 @@ const userContent = (state = initialState, action) => {
                             title: action.params.title,
                             description: action.params.description,
                             properties: action.params.properties,
+                            workflow_state: action.params.publish === 'on' ? 'proposed' : action.params.workflow_state,
                         })
                     }
                     return userContent

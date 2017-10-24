@@ -22,6 +22,7 @@ class UserContentsController < BaseController
     @user_content = UserContent.new(user_content_params)
     @user_content.user_id = current_user_account.user.id
     @user_content.save
+    @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 
     respond_to do |format|
       #format.html do
@@ -169,6 +170,8 @@ class UserContentsController < BaseController
   def update
     @user_content = UserContent.find(params[:id])
     @user_content.update_attributes(user_content_params)
+    @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
+
     #@object.update_attributes(user_content_params)
     respond_to do |format|
       #format.html do

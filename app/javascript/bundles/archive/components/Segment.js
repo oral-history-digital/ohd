@@ -48,6 +48,7 @@ export default class Segment extends React.Component {
                     reference_type='Segment'
                     media_id={this.props.data.media_id}
                     type='UserAnnotation'
+                    workflow_state='private'
                 />
     }
 

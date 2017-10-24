@@ -9,6 +9,5 @@ class UserContentSerializer < ActiveModel::Serializer
     :reference_id, 
     :reference_type, 
     :type,
-    :link_url,
-    :persistent
+    :workflow_state 
 end

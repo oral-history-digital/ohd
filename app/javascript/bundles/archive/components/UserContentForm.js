@@ -11,7 +11,9 @@ export default class UserContentForm extends React.Component {
             reference_id: this.props.reference_id,
             reference_type: this.props.reference_type,
             media_id: this.props.media_id,
-            type: this.props.type
+            type: this.props.type,
+            workflow_state: this.props.workflow_state,
+            publish: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -27,7 +29,9 @@ export default class UserContentForm extends React.Component {
             reference_id: nextProps.reference_id,
             reference_type: nextProps.reference_type,
             media_id: nextProps.mediaId,
-            type: nextProps.type
+            type: nextProps.type,
+            workflow_state: nextProps.workflow_state,
+            publish: false
         })
     }
 
@@ -67,6 +71,15 @@ export default class UserContentForm extends React.Component {
         this.setState({ errors: undefined })
     }
 
+    publish() {
+        if(this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
+            return  <label>
+                        publish
+                        <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange} />
+                    </label>
+        }
+    }
+
     render() {
         return (
             <div>
@@ -80,6 +93,7 @@ export default class UserContentForm extends React.Component {
                         description
                         <textarea name='description' value={this.state.description} onChange={this.handleChange} />
                     </label>
+                    {this.publish()}
                     
                     <input type="submit" value="Submit" />
                 </form>

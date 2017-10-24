@@ -17,6 +17,7 @@ export default class UserContent extends React.Component {
                     reference_type={this.props.data.reference_type}
                     media_id={this.props.data.media_id}
                     type={this.props.data.type}
+                    workflow_state={this.props.data.workflow_state}
                 />
     }
 
@@ -24,6 +25,12 @@ export default class UserContent extends React.Component {
         return  <UserContentDeleteContainer 
                     id={this.props.data.id}
                 />
+    }
+
+    workflowState() {
+        if(this.props.data.type === 'UserAnnotation') {
+            return this.props.data.workflow_state 
+        }
     }
 
     edit() {
@@ -81,6 +88,7 @@ export default class UserContent extends React.Component {
             <div>
                 <div className='title'>{this.props.data.title}</div>
                 <div className='description'>{this.props.data.description}</div>
+                {this.workflowState()}
                 {this.edit()}
                 {this.delete()}
                 {this.goTo()}
