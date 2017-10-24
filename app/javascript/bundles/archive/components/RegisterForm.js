@@ -8,7 +8,7 @@ export default class RegisterForm extends React.Component {
             lastName: '',
             email: '',
             password: '',
-            confirmPasswor: ''
+            password_confirmation: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -40,9 +40,9 @@ export default class RegisterForm extends React.Component {
             this.state.email.length > 6 && 
             this.state.password &&
             this.state.password.length > 6 &&
-            this.state.confirmPassword &&
-            this.state.confirmPassword.length > 6 &&
-            this.state.confirmPassword ===  this.state.password 
+            this.state.password_confirmation &&
+            this.state.password_confirmation.length > 6 &&
+            this.state.password_confirmation ===  this.state.password 
     }
 
     setErrors() {
@@ -59,16 +59,16 @@ export default class RegisterForm extends React.Component {
                 <div className='errors'>{this.state.errors}</div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        title
+                        email
                         <input type="text" name='email' value={this.state.email} onChange={this.handleChange} />
                     </label>
                     <label>
-                        description
+                        password
                         <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
                     </label>
                     <label>
                         {'confirm password'}
-                        <input type='password' name='confirm_password' value={this.state.confirmPassword} onChange={this.handleChange} />
+                        <input type='password' name='password_confirmation' value={this.state.password_confirmation} onChange={this.handleChange} />
                     </label>
                     
                     <input type="submit" value="Register" />
