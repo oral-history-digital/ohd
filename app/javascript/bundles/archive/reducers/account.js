@@ -40,7 +40,10 @@ const account = (state = {}, action) => {
             return Object.assign({}, state, {
                 isLoggingIn: false,
                 isLoggedIn: true,
-                account: action.account
+                firstName: action.firstName,
+                lastName: action.lastName,
+                email: action.email,
+                login: action.login,
             })
         case LOGOUT:
             return {} 

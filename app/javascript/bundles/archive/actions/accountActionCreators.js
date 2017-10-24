@@ -28,37 +28,40 @@ import {
 } from '../constants/archiveConstants';
 
 const requestAccount = () => ({
-  type: REQUEST_ACCOUNT,
+    type: REQUEST_ACCOUNT,
 });
 
 const receiveAccount = (json) => ({
-  type: RECEIVE_ACCOUNT,
-  firstName: json.first_name,
-  lastName: json.last_name,
-  email: json.email,
-  login: json.login,
+    type: RECEIVE_ACCOUNT,
+    firstName: json.first_name,
+    lastName: json.last_name,
+    email: json.email,
+    login: json.login,
 });
 
 export function fetchAccount() {
-  return dispatch => {
-    dispatch(requestAccount())
-    Loader.getJson(ACCOUNT_URL, null, dispatch, receiveAccount);
-  }
+    return dispatch => {
+        dispatch(requestAccount())
+        Loader.getJson(ACCOUNT_URL, null, dispatch, receiveAccount);
+    }
 }
 
 const login = () => ({
-        type: LOGIN,
+    type: LOGIN,
 })
 
 const loggedIn = (json) => ({
-        type: LOGGED_IN,
-        account: json
+    type: LOGGED_IN,
+    firstName: json.first_name,
+    lastName: json.last_name,
+    email: json.email,
+    login: json.login,
 })
 
 export function submitLogin(params) {
     return dispatch => {
         dispatch(login())
-        Loader.post(LOGIN_URL, params, dispatch, loggedIn());
+        Loader.post(LOGIN_URL, params, dispatch, loggedIn);
     }
 }
 
