@@ -7,7 +7,6 @@ export default class LoginForm extends React.Component {
             login: '',
             password: '',
             rememberMe: 0,
-            authenticity_token: $('meta[name=csrf-token]').attr('content')
         };
 
         this.handleChange = this.handleChange.bind(this);
