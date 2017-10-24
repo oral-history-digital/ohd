@@ -28,7 +28,7 @@ export default class LoginForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
-            this.props.submitLogin(this.state);
+            this.props.submitLogin({user_account: this.state});
         } else {
             this.setErrors(); 
         }
