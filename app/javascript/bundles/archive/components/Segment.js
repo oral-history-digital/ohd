@@ -4,9 +4,31 @@ import '../../../css/segments';
 
 export default class Segment extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: false
+        };
+    }
+
+    //shouldComponentUpdate(nextProps, nextState) {
+        //let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime; 
+        //let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
+        //return changingToActive || changingToInactive
+    //}
+
+    componentWillReceiveProps(nextProps){
+        let active = this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime; 
+        if (active !== this.state.active) {
+            this.setState({
+                active: active
+            })
+        }
+    }
+
   css() {
-    let active = this.props.data.end_time >= this.props.transcriptTime && this.props.data.start_time <= this.props.transcriptTime; 
-    return 'segment ' + (active ? 'active' : 'inactive');
+    //let active = this.props.data.end_time >= this.props.transcriptTime && this.props.data.start_time <= this.props.transcriptTime; 
+    return 'segment ' + (this.state.active ? 'active' : 'inactive');
   }
 
   transcript() {
