@@ -7,7 +7,7 @@ import * as actionCreators from '../actions/searchActionCreators';
 const mapStateToProps = (state) => {
   return { 
     foundInterviews: state.archive.foundInterviews,
-    foundSegmentsForInterviews: state.archive.foundSegmentsForInterviews,
+    //foundSegmentsForInterviews: state.archive.foundSegmentsForInterviews,
       allInterviewsCount: state.archive.allInterviewsCount,
       resultPagesCount: state.archive.resultPagesCount,
       resultsCount: state.archive.resultsCount,

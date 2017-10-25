@@ -7,16 +7,16 @@ class InterviewsController < BaseController
   skip_before_action :current_search_for_side_panel, :except => :show
 
   def show
-    interview = Interview.find_by_archive_id(params[:id])
+    @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do 
-        json = Rails.cache.fetch "interview-#{params[:interview_id]}-#{interview.updated_at}" do
+        json = Rails.cache.fetch "interview-#{params[:interview_id]}-#{@interview.updated_at}" do
           segments = Segment.
             includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-            for_interview_id(interview.id)
+            for_interview_id(@interview.id)
           headings = segments.with_heading
           {
-            interview: ::InterviewSerializer.new(interview),
+            interview: ::InterviewSerializer.new(@interview),
             segments: segments.map{|s| ::SegmentSerializer.new(s)},
             headings: headings.map{|s| ::SegmentSerializer.new(s)},
           }
@@ -24,7 +24,12 @@ class InterviewsController < BaseController
         render json: json
       end
       format.vtt do
-        render text: interview.to_vtt( params[:type] )
+        render text: @interview.to_vtt( params[:type] )
+      end
+      format.pdf do
+        pdf = render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
+        send_data pdf, filename: "#{@interview.archive_id}_transcript.pdf", :type => "application/pdf",
+                  :disposition => "attachment"
       end
       format.html 
     end

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import WrapperPage from '../components/WrapperPage';
 import { setLocale } from '../actions/wrapperPageActionCreators';
+import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { showFlyoutTabs } from '../actions/flyoutTabsActionCreators';
@@ -10,7 +11,8 @@ import { toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
+        externalLinks:  state.archive.externalLinks,
         archiveId: state.archive.archiveId,
         transcriptScrollEnabled: state.archive.transcriptScrollEnabled,
         locales: state.archive.locales,
@@ -22,6 +24,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setLocale: locale => dispatch(setLocale(locale)),
+    fetchStaticContent:() => dispatch(fetchStaticContent()),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     showFlyoutTabs: () => dispatch(showFlyoutTabs()),

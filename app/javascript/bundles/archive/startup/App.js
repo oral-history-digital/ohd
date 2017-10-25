@@ -6,15 +6,17 @@ import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
 import SearchContainer from '../containers/ArchiveSearchContainer';
 import AccountContainer from '../containers/AccountContainer';
+import HomeContainer from '../containers/HomeContainer';
 
 const App = (props) => (
   <Provider store={archiveStore(props)}>
     <BrowserRouter history={hashHistory}>
       <div>
-      <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
-      <Route path="/:locale/suchen" component={SearchContainer} />
-      <Route path="/:locale/searches" component={SearchContainer} />
-      <Route path="/:locale/account" component={AccountContainer} />
+          <Route exact path="/:locale" component={HomeContainer} />
+          <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
+          <Route path="/:locale/suchen" component={SearchContainer} />
+          <Route path="/:locale/searches" component={SearchContainer} />
+          <Route path="/:locale/account" component={AccountContainer} />
       </div>
     </BrowserRouter>
   </Provider>

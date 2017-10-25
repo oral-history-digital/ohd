@@ -1,0 +1,24 @@
+import React from 'react';
+import WrapperPageContainer from '../containers/WrapperPageContainer';
+
+
+export default class Home extends React.Component {
+
+
+    content() {
+        return (
+                <WrapperPageContainer
+                    tabIndex={0}>
+                    <div className='home-content'
+                        dangerouslySetInnerHTML = {{__html: this.props.homeContent}}
+                    />
+
+                </WrapperPageContainer>
+        )
+    }
+
+    render() {
+        return this.content();
+    }
+
+}

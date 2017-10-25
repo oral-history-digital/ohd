@@ -13,7 +13,6 @@ export const hideFlyoutTabs = () => ({
     type: HIDE_FLYOUT_TABS,
 });
 
-// future work
 export const toggleFlyoutTabs = () => ({
     type: TOGGLE_FLYOUT_TABS,
 });

@@ -13,9 +13,13 @@ export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
 export const ARCHIVE_SEARCH_URL = '/de/suchen';
 export const ARCHIVE_RESET_SEARCH_URL = '/de/suchen/neu';
 
-export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
-export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
-export const LOCATIONS_URL = '/de/locations';
+// export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
+// export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
+// export const LOCATIONS_URL = '/de/locations';
+
+export const REQUEST_STATIC_CONTENT = 'REQUEST_STATIC_CONTENT';
+export const RECEIVE_STATIC_CONTENT = 'RECEIVE_STATIC_CONTENT';
+export const HOME_CONTENT_URL = '/de/';
 
 export const VIDEO_TIME_CHANGE = 'VIDEO_TIME_CHANGE';
 export const VIDEO_ENDED = 'VIDEO_ENDED';

@@ -1,4 +1,4 @@
-import { 
+import {
     REQUEST_INTERVIEW,
     RECEIVE_INTERVIEW,
 
@@ -15,6 +15,8 @@ import {
     TRANSCRIPT_SCROLL,
 
     SET_LOCALE,
+    REQUEST_STATIC_CONTENT,
+    RECEIVE_STATIC_CONTENT,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -40,6 +42,9 @@ const initialState = {
     isInterviewSearching: false,
     isFetchingInterview: false,
     isFetchingInterviewLocations: false,
+
+    homeContent: "",
+    externalLinks: {}
 }
 
 const archive = (state = initialState, action) => {
@@ -125,6 +130,16 @@ const archive = (state = initialState, action) => {
         case SET_LOCALE:
             return Object.assign({}, state, {
                 locale: action.locale
+            })
+        case REQUEST_STATIC_CONTENT:
+            return Object.assign({}, state, {
+                isFetchingExternalLinks: true
+            })
+        case RECEIVE_STATIC_CONTENT:
+            return Object.assign({}, state, {
+                isFetchingExternalLinks: false,
+                externalLinks: action.externalLinks,
+                homeContent: action.homeContent
             })
 
         default:
