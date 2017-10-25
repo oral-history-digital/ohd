@@ -11,11 +11,11 @@ export default class Segment extends React.Component {
         };
     }
 
-    //shouldComponentUpdate(nextProps, nextState) {
-        //let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime; 
-        //let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
-        //return changingToActive || changingToInactive
-    //}
+    shouldComponentUpdate(nextProps, nextState) {
+        let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime; 
+        let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
+        return changingToActive || changingToInactive
+    }
 
     componentWillReceiveProps(nextProps){
         let active = this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime; 
