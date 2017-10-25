@@ -41,6 +41,8 @@ gem 'route_translator'
 gem 'devise'
 gem 'rack-maintenance'
 gem 'celluloid'
+gem 'sunspot_solr', '2.1.0' # A simple Solr installation with good defaults for development and testing.
+
 
 group :development do
   # Automatic tests
@@ -60,7 +62,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'sunspot_solr', '2.1.0' # A simple Solr installation with good defaults for development and testing.
   gem 'rspec'
   gem 'rspec-rails'
   # Faster tests:
