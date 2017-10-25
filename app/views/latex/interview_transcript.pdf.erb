@@ -1,0 +1,16 @@
+\title{<%= @interview.full_title(I18n.locale) %>}
+\begin{document}
+\maketitle
+
+<% @interview.segments.select{|i| i.tape.number == 1}.each do |segment|  %>
+    <% unless segment.mainheading.blank? %>
+    \section{ <%= segment.mainheading %>}
+    <% end %>
+    <% unless segment.subheading.blank? %>
+    \subsection{ <%= segment.subheading %>}
+    <% end %>
+    <%= segment.send(:translation) + "\n" %>
+<% end %>
+
+
+

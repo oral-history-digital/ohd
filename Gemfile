@@ -24,7 +24,7 @@ gem 'fastercsv'
 gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.0'
-
+gem  'rails-latex'
 gem 'sass-rails'
 #gem 'webpacker'
 #gem 'react-rails'
