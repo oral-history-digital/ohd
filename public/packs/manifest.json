@@ -1,5 +1,8 @@
 {
-  "application.css": "http://0.0.0.0:8080/packs/application.css",
-  "application.js": "http://0.0.0.0:8080/packs/application.js",
-  "hello-world-bundle.js": "http://0.0.0.0:8080/packs/hello-world-bundle.js"
+  "application.css": "/packs/application-cccade473d56ce097028.css",
+  "application.css.map": "/packs/application-cccade473d56ce097028.css.map",
+  "application.js": "/packs/application-903df7185a2061d0f4cd.js",
+  "application.js.map": "/packs/application-903df7185a2061d0f4cd.js.map",
+  "hello-world-bundle.js": "/packs/hello-world-bundle-da2cd512754c31027ff8.js",
+  "hello-world-bundle.js.map": "/packs/hello-world-bundle-da2cd512754c31027ff8.js.map"
 }

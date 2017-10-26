@@ -1,8 +1,8 @@
-.leaflet-container {
+.heading .collapsed {
+  display: none;
+}.leaflet-container {
   height: 350px;
   width: 100%;
-}.heading .collapsed {
-  display: none;
 }.segment {
   clear: both;
 }
