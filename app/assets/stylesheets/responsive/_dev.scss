@@ -1,0 +1,54 @@
+
+
+.column-content,
+.column-sidebar {
+  @include screen-m {
+    float: left;
+  }
+  display: none;
+}
+
+.column-content.active,
+.column-sidebar.active {
+  display: inline-block;
+}
+
+.column-content {
+  @include screen-m {
+    /*width: 65%;*/
+    margin-right: 5%;
+  }
+  min-height: 360px;
+  width: 100%;
+}
+
+.column-sidebar {
+  @include screen-xs-s {
+    border-top: 1px solid $gray-lighter;
+    margin-top: 30px;
+    padding-top: 30px;
+  }
+  @include screen-m {
+    width: 30%;
+    padding: 2px 40px;
+    border-left: 1px solid $gray-lighter;
+  }
+  // background: $gray-lightest;
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
+  color: $gray-dark;
+}
+
+
+
+.pagination{
+  clear:both;
+  .pagination-button{
+    padding: 10px;
+    float:left;
+  }
+  .active{
+    color: grey;
+  }
+
+}

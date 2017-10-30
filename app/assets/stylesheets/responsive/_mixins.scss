@@ -5,19 +5,19 @@
 // Media queries
 
 @mixin screen-xs-m {
-  @media only screen and (max-width: $screen-m-max) { 
+  @media only screen and (max-width: $screen-m-max) {
     @content;
   }
 }
 
 @mixin screen-xs-s {
-  @media only screen and (max-width: $screen-s-max) { 
+  @media only screen and (max-width: $screen-s-max) {
     @content;
   }
 }
 
 @mixin screen-xs {
-  @media only screen and (max-width: $screen-xs) { 
+  @media only screen and (max-width: $screen-xs) {
     @content;
   }
 }
@@ -47,10 +47,67 @@
 }
 
 @mixin screen-xl {
-  @media only screen and (min-width: $screen-xl) { 
+  @media only screen and (min-width: $screen-xl) {
     @content;
   }
 }
+
+// Fonts
+
+@mixin body-font {
+  font-family: font-family;
+  font-weight: normal;
+}
+
+@mixin body-font-bold {
+  font-family: font-family;
+  font-weight: bold;
+}
+
+// Clearfix
+// ------------------------------------------
+
+// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+//
+// For modern browsers
+// 1. The space content is one way to avoid an Opera bug when the
+//    contenteditable attribute is included anywhere else in the document.
+//    Otherwise it causes space to appear at the top and bottom of elements
+//    that are clearfixed.
+// 2. The use of `table` rather than `block` is only necessary if using
+//    `:before` to contain the top-margins of child elements.
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// Copied from compass
+
+@mixin pie-clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  *zoom: 1;
+}
+
+
+// Box-sizing
+// --------------------------------------------------
+
+@mixin box-sizing-border-box {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 
 // Fonts
 

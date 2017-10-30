@@ -24,11 +24,11 @@ export default class InterviewTabs extends React.Component {
         onSelect={tabIndex => this.setState({ tabIndex })}
         >
         <div className='content-tabs'>
-          <TabList>
-            <Tab> Inhaltsverzeichnis</Tab>
-            <Tab> Transkript</Tab>
-            <Tab> Übersetzung</Tab>
-            <Tab> Suche</Tab>
+          <TabList className={'content-tabs-nav'}>
+            <Tab className={'content-tabs-nav-link'}><i className="fa fa-ellipsis-v"></i><span>Inhaltsverzeichnis</span></Tab>
+            <Tab className={'content-tabs-nav-link'}><i className="fa fa-file-text-o"></i><span>Transkript</span></Tab>
+            <Tab className={'content-tabs-nav-link'}><i className="fa fa-clone"></i><span>Übersetzung</span></Tab>
+            <Tab className={'content-tabs-nav-link'}><i className="fa fa-search"></i><span>Suche</span></Tab>
           </TabList>
         </div>
 

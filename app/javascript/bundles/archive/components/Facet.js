@@ -17,28 +17,31 @@ export default class Facet extends React.Component {
 
         this.state = {
             open: openState,
-            class: openState ? "flyout-sub-tab open": "flyout-sub-tab"
+            class: openState ? "accordion active": "accordion",
+            panelClass: openState ? "panel open": "panel"
         };
     }
 
     handleClick() {
         if (this.state.open) {
             this.setState({['open']: false});
-            this.setState({['class']: "flyout-sub-tab"});
+            this.setState({['class']: "accordion"});
+            this.setState({['panelClass']: "panel"});
         } else {
             this.setState({['open']: true});
-            this.setState({['class']: "flyout-sub-tab open"});
+            this.setState({['class']: "accordion active"});
+            this.setState({['panelClass']: "panel open"});
         }
     }
 
     render() {
         return (
-            <div className={this.state.class}>
-                <div className="facet-name" onClick={this.handleClick}>
+            <div className="subfacet-container">
+                <button className={this.state.class} onClick={this.handleClick}>
                     {this.props.data[0].name}
-                </div>
-                <div className="subfacets">
-                    <div className="subfacet">
+                </button>
+                <div className={this.state.panelClass}>
+                    <div className="flyout-radio-container">
                         {this.renderSubfacets()}
                     </div>
                 </div>
