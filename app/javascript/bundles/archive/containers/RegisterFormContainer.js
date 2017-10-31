@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RegisterForm from '../components/RegisterForm';
-import { submitRegister } from '../actions/userContentActionCreators';
+import { submitRegister } from '../actions/accountActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitRregister: (params) => dispatch(submitRregister(params)),
+    submitRegister: (params) => dispatch(submitRegister(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
