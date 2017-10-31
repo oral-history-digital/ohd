@@ -54,7 +54,7 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  #gem 'thin'
+  gem 'thin'
   #gem 'webpacker'
   gem 'foreman'
 end
