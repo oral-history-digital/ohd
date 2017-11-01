@@ -1,6 +1,8 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  layout 'responsive'
+
   def new
     @user_registration = UserRegistration.new
   end
