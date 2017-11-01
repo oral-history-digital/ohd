@@ -51,7 +51,7 @@ body:after { content:"XS"; display:none; }
 }
 
 // Screen XL
-@media screen and (min-width: $screen-xl) {
+@media screen and (min-width: $screen-xl) {  
   head { font-family:"XL"; }
   body:after { content:"XL"; }
 }

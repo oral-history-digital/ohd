@@ -92,9 +92,9 @@ header.site-header {
       border-left: 1px solid $gray-light;
       border: 0 none;
     }
-    @include screen-xl {
-      display: block !important;
-    }
+      @include screen-xl {
+        display: block !important;
+      }
     overflow: scroll;
     p {
       font-size: $font-size-medium;
@@ -130,17 +130,17 @@ header.site-header {
     right: 0;
     height: 160px;
 
-    // -webkit-transition: height 1s;
-    // -moz-transition: height 1s;
-    // -ms-transition: height 1s;
-    // -o-transition: height 1s;
-    // transition: height 1s;
+    // -webkit-transition: height 1s; 
+    // -moz-transition: height 1s; 
+    // -ms-transition: height 1s; 
+    // -o-transition: height 1s; 
+    // transition: height 1s;  
 
-    //  -webkit-transition: height .1s linear;
-    // -moz-transition: height .1s linear;
-    // -ms-transition: height .1s linear;
-    // -o-transition: height .1s linear;
-    // transition: height .1s linear;
+    //  -webkit-transition: height .1s linear;   
+    // -moz-transition: height .1s linear;   
+    // -ms-transition: height .1s linear;   
+    // -o-transition: height .1s linear;   
+    // transition: height .1s linear;   
 
     .video-element {
       margin: 0;
@@ -367,7 +367,7 @@ footer {
 //   float: left;
 //   padding: 40px 30px 0 0;
 //   font-size: $font-size-medium;
-
+  
 //   @include screen-m {
 //     height: 320px;
 //   }
