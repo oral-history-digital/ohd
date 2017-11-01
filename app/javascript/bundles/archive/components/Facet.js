@@ -12,33 +12,36 @@ export default class Facet extends React.Component {
         let checkedFacets = this.props.sessionQuery[categoryId];
 
         if (checkedFacets !== undefined) {
-            openState = checkedFacets. length > 0;
+            openState = checkedFacets.length > 0;
         }
 
         this.state = {
             open: openState,
-            class: openState ? "flyout-sub-tab open": "flyout-sub-tab"
+            class: openState ? "accordion active" : "accordion",
+            panelClass: openState ? "panel open" : "panel"
         };
     }
 
     handleClick() {
         if (this.state.open) {
             this.setState({['open']: false});
-            this.setState({['class']: "flyout-sub-tab"});
+            this.setState({['class']: "accordion"});
+            this.setState({['panelClass']: "panel"});
         } else {
             this.setState({['open']: true});
-            this.setState({['class']: "flyout-sub-tab open"});
+            this.setState({['class']: "accordion active"});
+            this.setState({['panelClass']: "panel open"});
         }
     }
 
     render() {
         return (
-            <div className={this.state.class}>
-                <div className="facet-name" onClick={this.handleClick}>
+            <div className="subfacet-container">
+                <button className={this.state.class} onClick={this.handleClick}>
                     {this.props.data[0].name}
-                </div>
-                <div className="subfacets">
-                    <div className="subfacet">
+                </button>
+                <div className={this.state.panelClass}>
+                    <div className="flyout-radio-container">
                         {this.renderSubfacets()}
                     </div>
                 </div>
@@ -64,12 +67,12 @@ export default class Facet extends React.Component {
 
             return (
                 <div key={"subfacet-" + index}>
-                    <label><input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
-                           name={categoryId + "[]"} checked={checkedState} type="checkbox" value={subfacet.entry.id}
+                    <input className={'with-font ' + categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
+                           name={categoryId + "[]"} checked={checkedState} type="radio" value={subfacet.entry.id}
                            onChange={this.onChange}>
                     </input>
-                    
-                        <span> {subfacet.entry.descriptor}</span>
+                    <label htmlFor={categoryId + "_" + subfacet.entry.id}>
+                        {subfacet.entry.descriptor}
                         <span>({subfacet.count})</span>
                     </label>
                 </div>

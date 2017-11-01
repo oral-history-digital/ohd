@@ -1,0 +1,34 @@
+.logo-link {
+  display: block;
+  margin: 0;
+  color: $primary-color;
+  overflow: hidden;
+  &:hover {
+    text-decoration: none !important;
+    color: $primary-color;
+  }
+  @include screen-m {
+    max-width: 280px;
+  }
+}
+
+.logo-img{
+  display: none;
+  max-width: 100%;
+  @include screen-m {
+    display: block;
+  }
+}
+
+.logo-text {
+  display: block;
+  margin: 33px 0 4px 0;
+  font-size: 36px;
+  color: $primary-color;
+  @include screen-m {
+    display: none;
+  }
+}
+.icon-open {
+  color: $primary-color;
+}
