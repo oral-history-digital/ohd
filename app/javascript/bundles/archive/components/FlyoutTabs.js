@@ -60,7 +60,7 @@ export default class FlyoutTabs extends React.Component {
                 onSelect={tabIndex => this.handleTabClick(tabIndex)}
             >
 
-                <TabList>
+                <TabList className='flyout'>
                     <Tab className='flyout-tab'> Startseite </Tab>
                     <Tab className='flyout-tab'> Account </Tab>
                     <Tab className='flyout-tab'> Suche </Tab>
@@ -71,17 +71,17 @@ export default class FlyoutTabs extends React.Component {
                     <Tab className='flyout-tab'> Hilfe </Tab>
                 </TabList>
 
-                <TabPanel className='column-content'>
+                <TabPanel >
                     start
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     login logout name
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     <ArchiveSearchFormContainer
                     />
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     <div 
                         className='edit' 
                         onClick={() => this.props.openArchivePopup({
@@ -94,16 +94,16 @@ export default class FlyoutTabs extends React.Component {
                     <InterviewLocationsContainer  />
                     biographie transcript daten zur za
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel>
                     sprache
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     <UserContentsContainer />
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     zuletzt angesehen
                 </TabPanel>
-                <TabPanel className='column-content'>
+                <TabPanel >
                     hilfe
                 </TabPanel>
             </Tabs>

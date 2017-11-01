@@ -5,8 +5,8 @@
 // Colors
 // --------------------------------------------------
 
-$primary-color:     #9c0 !default;
-$secondary-color:   #06c !default;
+$primary-color:     #006fb7 !default;
+$secondary-color:   #d6c537 !default;
 $highlight-color:   #06c !default;
 
 $gray-darkest:  #222 !default;
@@ -19,6 +19,8 @@ $gray-lightest: #eee !default;
 $gray-pale:     #f1f1f1 !default;
 $gray-paler:    #f4f4f4 !default;
 
+$gray-warm:     #8b8b7a !default;
+
 
 // Basics
 // --------------------------------------------------
@@ -26,8 +28,8 @@ $gray-paler:    #f4f4f4 !default;
 $body-bg-color:    #fff !default;
 $body-text-color:  $gray-darkest !default;
 
-$link-color:       $secondary-color !default;
-$link-hover-color: $secondary-color !default;
+$link-color:       #039 !default;
+$link-hover-color: #039 !default;
 
 $text-margin-medium: 9px;
 $text-margin-large: 11px;
@@ -54,13 +56,13 @@ $line-height-larger: 1.688rem !default;
 // Headings
 $font-family-heading: "FiraSans", Arial, Helvetica, sans-serif !default;
 
-$font-size-heading-h1: 1.563rem !default;
+$font-size-heading-h1: 1.6rem !default; //1.563rem
 $font-size-heading-h2: 1.313rem !default;
 $font-size-heading-h3: 1.188rem !default;
 $font-size-heading-h4: 0.875rem !default;
 $font-size-heading-h5: 0.875rem !default;
 $font-size-heading-h6: 0.75rem !default;
-$font-size-heading-h1-large: 1.688rem !default;
+$font-size-heading-h1-large: 2rem !default;
 $font-size-heading-h2-large: 1.438rem !default;
 $font-size-heading-h3-large: 1.313rem !default;
 $font-size-heading-h4-large: 1em !default;
@@ -80,7 +82,7 @@ $line-height-heading-h4-large: 1.438rem !default;
 $line-height-heading-h5-large: 1.438rem !default;
 $line-height-heading-h6-large: 1.25rem !default;
 
-$font-family-heading-weight: bold !default;
+$font-family-heading-weight: normal !default;
 
 // Icons
 $font-path: "../fonts/" !default;

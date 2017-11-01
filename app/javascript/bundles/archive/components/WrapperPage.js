@@ -180,9 +180,10 @@ export default class WrapperPage extends React.Component {
                     {this.disabled()}
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <div className='logo'>
-                                | Logo
-                            </div>
+                            <a className="logo-link" href="#" title="Zur Startseite MOG Archiv">
+                                <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
+                                </img>
+                            </a>
                             <div className='locales'>
                                 {this.props.locales.map((locale, index) => {
                                     return (

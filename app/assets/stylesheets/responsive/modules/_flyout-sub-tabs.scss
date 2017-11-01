@@ -1,0 +1,179 @@
+.flyout-sub-tabs-container {
+  display: block;
+  margin: 30px 0;
+  padding: 0 15px;
+}
+
+.flyout-sub-tabs {
+  display: block;
+  position: relative;
+  padding: 10px;
+  height: 40px;
+  background-color: #fff;
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .select {
+    border:none;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    background-color: #fff;
+
+    &_expand {
+      width: 0;
+      height: 40px;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      &::after {
+        font-family: FontAwesome;
+        content: "\f078";
+        color: $gray-dark;
+        font-size: 16px;
+        pointer-events: none;
+        z-index: 2;
+        transition: all 250ms cubic-bezier(.4,.25,.3,1);
+        opacity: .6;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+      }
+
+      &:hover::after {
+        opacity: 1}
+
+      &:checked::after {
+        content: "\f077";
+        //transform: translate(-50%, -50%) rotate(90deg) scaleX(-1) scaleY(1);
+      }
+    }
+
+    &_expandLabel {
+      display: block;
+      width: 100%;
+      height: 40px;
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    &_close {display: none}
+
+    &_closeLabel {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+
+    &_items {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid $gray-warm;
+      border-radius: 0;
+      padding-top: 40px;
+    }
+
+    &_input {display: none}
+
+    &_label {
+      transition: all 250ms cubic-bezier(.4,.25,.3,1);
+      display: block;
+      height: 0;
+      font-size: 1rem;
+      line-height: 40px;
+      overflow: hidden;
+      color: #3e3e3e;
+      background-color: #fff;
+      cursor: pointer;
+      padding-left: 20px;
+
+      &-placeholder {
+        height: 40px;
+        vertical-align: middle;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: .6;
+        background-color: #fff;
+      }
+    }
+
+    &_expand:checked {
+      + .select_closeLabel {
+        display: block;
+
+        + .select_options {
+          .select_label {
+            height: 40px;
+            &:hover {background-color: #f7f7f7}
+          }
+
+          + .select_expandLabel {display: none}
+        }
+      }
+    }
+
+    &_input:checked + .select_label {
+      height: 40px;
+      margin-top: -40px;
+    }
+  }
+}
+
+/* form elements */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  background: transparent;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button,
+select {
+  text-transform: none;
+  cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+textarea {
+  resize: none;
+}

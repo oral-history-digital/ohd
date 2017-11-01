@@ -1,0 +1,264 @@
+// Tabs Navigation
+
+.content-tabs {
+  margin: 0;
+}
+
+.content-tabs-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.content-tabs-nav-link {
+  flex: 1;
+  margin-right: 0;
+  padding: 14px;
+  color: #fff;
+  background-color: $primary-color;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.content-tabs-nav-link:last-child {
+  margin-right: 0;
+}
+
+.content-tabs-nav-link:hover {
+  color: $gray-dark;
+  text-decoration: none;
+  background-color: $gray-lighter;
+}
+
+.content-tabs-nav-link.active {
+  color: $gray-dark;
+  background-color: $gray-lighter;
+}
+
+.fix-video .content-tabs-nav-link i {
+  display: block;
+  @include screen-m {
+    display: none;
+  }
+}
+
+.content-tabs-nav-link i {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 21px;
+  @include screen-m {
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+}
+
+.content-tabs-nav-link span {
+  margin: 0;
+  padding: 0;
+  display: none;
+  line-height: $line-height-medium;
+  @include screen-m {
+    display: block;
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+  }
+  @include screen-l {
+    display: block;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+  }
+}
+
+
+// Tabs Content
+
+.wrapper-content {
+  //display: none;
+  background-color: #fff;
+}
+
+.wrapper-content.active {
+  display: block;
+}
+
+/**
+ * Tabs no-js fallback
+ */
+
+.content-tabs.no-js {
+
+  .content-tabs-nav {
+    //display: none;
+  }
+
+  .wrapper-content {
+    display: block;
+    margin-bottom: 30px;
+  }
+
+  .wrapper-content:last-child {
+    margin-bottom: 0;
+  }
+
+}
+
+// Transcript Tab Content
+
+.content-trans-row {
+  @include clearfix;
+  margin-bottom: 40px;
+  .fa {
+    font-size: 20px;
+  }
+  a:link, a:visited {
+    color: $primary-color;
+  }
+  //@include screen-l {
+  //  margin-bottom: 30px;
+  //}
+}
+
+.content-trans-speaker-ico,
+.content-trans-text {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.content-trans-speaker-ico {
+  width: 4%;
+  margin-right: 4%;
+  @include screen-l {
+    width: 2%;
+    margin-right: 2%;
+  }
+}
+
+.content-trans-text {
+  width: 92%;
+  margin-right: 0;
+  @include screen-l {
+    width: 77%;
+    margin-right: 2%;
+  }
+}
+
+.content-trans-text-ico {
+  display: block;
+  text-align: right;
+  width: 50%;
+  float: right;
+  @include pie-clearfix;
+  padding: 0;
+  border-bottom: 1px solid $primary-color;
+  @include screen-l {
+    width: 17%;
+    margin-left: 0;
+    float: none;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  &.active {
+    border: none;
+  }
+}
+.content-trans-text-ico-link {
+  display: inline-block;
+  margin-right: 2px;
+  padding: 6px 10px 0 10px;
+  &:last-child {
+    margin-right: 0;
+  }
+  &.active {
+    background-color: #ddd;
+    .fa {
+      color: #666;
+    }
+  }
+  &:link,
+  &:visited {
+    transition: color 0.3s;
+    transition: background-color 0.3s;
+  }
+  &:hover {
+    background-color: #ddd;
+    .fa {
+      color: #666;
+    }
+  }
+}
+
+.content-trans-text-element {
+  width: 92%;
+  margin-left: 8%;
+  border: 2px solid #ddd;
+  padding: 20px;
+  float: none;
+  clear: both;
+  p.content-trans-text-element-title {
+    margin-top: 0;
+    font-size: $font-size-larger;
+    color: $gray-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+  }
+  p.content-trans-text-element-group {
+    font-size: $font-size-larger;
+    color: $gray-dark;
+    margin-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid $gray-light;
+  }
+  p.content-trans-text-element-label {
+    font-size: $font-size-medium;
+    color: $gray-medium;
+    margin-bottom: 0;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+  }
+  p.content-trans-text-element-data {
+    font-size: $font-size-medium;
+    color: $gray-dark;
+  }
+  @include screen-l {
+    width: 80%;
+    margin-left: 0;
+    float: right;
+  }
+}
+
+
+// Old classes tidying up later
+
+.column-content,
+.column-sidebar {
+  @include screen-m {
+    float: left;
+  }
+}
+
+.column-content {
+  @include screen-m {
+    width: 70%;
+    margin-right: 1%;
+  }
+}
+
+.column-sidebar {
+  @include screen-xs-s {
+    border-top: 1px solid $gray-lighter;
+    margin-top: 30px;
+    padding-top: 30px;
+  }
+  @include screen-m {
+    width: 24%;
+    padding: 2px 40px;
+    //border-left: 1px solid $gray-lighter;
+  }
+  // background: $gray-lightest;
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
+  color: $gray-dark;
+}

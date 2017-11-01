@@ -1,3 +1,5 @@
 \documentclass{article}
+\usepackage[ngerman]{babel}
+\usepackage[utf8x]{inputenc}
 <%= yield %>
 \end{document}
