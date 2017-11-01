@@ -20,7 +20,7 @@ import {
 } from '../constants/archiveConstants';
 
 const initialState = {
-    locale: 'en',
+    locale: 'de',
     locales: ['de', 'en', 'ru'],
     archiveId: null,
     interviews: {},

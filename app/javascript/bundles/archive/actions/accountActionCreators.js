@@ -88,7 +88,7 @@ const registered = (json) => ({
 export function submitRegister(params) {
     return dispatch => {
         dispatch(register())
-        Loader.post(REGISTER_URL, params, dispatch, registered(json));
+        Loader.post(REGISTER_URL, params, dispatch, registered);
     }
 }
 
