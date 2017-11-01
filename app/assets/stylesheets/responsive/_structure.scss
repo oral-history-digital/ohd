@@ -191,18 +191,15 @@ header.site-header {
 
 .video-bookmark{
   color: #fff;
-  //display: inline-block;
   font-size: $font-size-medium;
   line-height: $line-height-medium;
+  cursor: pointer;
+  transition: 0.4s;
   .fa {
     margin-right: 10px;
   }
   margin-bottom: 10px;
-  a:link, a:visited {
-    color: #fff;
-  }
-  a[href]:hover, a:active {
-    text-decoration: none;
+  &:hover {
     color: $gray-light;
   }
 }
