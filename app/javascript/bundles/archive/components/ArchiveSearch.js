@@ -4,6 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
+import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 export default class ArchiveSearch extends React.Component {
 
@@ -20,7 +21,9 @@ export default class ArchiveSearch extends React.Component {
             return (
                 <div>
                     {this.renderPagination()}
-                    {this.foundInterviews()}
+                    <div className={'search-results-container'}>
+                        {this.foundInterviews()}
+                    </div>
                     {this.renderPagination()}
                 </div>
             )
@@ -88,6 +91,15 @@ export default class ArchiveSearch extends React.Component {
 
     }
 
+    saveSearchForm() {
+        return  <UserContentFormContainer
+            title=''
+            description=''
+            properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
+            type='Search'
+        />
+    }
+
 
     render() {
         return (
@@ -95,20 +107,33 @@ export default class ArchiveSearch extends React.Component {
                 tabIndex={2}
             >
                 <div className='interviews wrapper-content'>
+                    <h1 className="search-results-title">Suchergebnisse</h1>
+                    <div className="search-result-legend">
+                        <div className="search-result-legend-text">50 Suchergebnisse</div>
+                        <div className="search-result-legend-ico">
+                            <div className="search-result-ico-link" onClick={() => this.props.openArchivePopup({
+                                title: 'Save search',
+                                content: this.saveSearchForm()
+                            })}>
+                                <i className="fa fa-search"></i>Suche speichern</div>
+                        </div>
+
+                    </div>
+
                     <Tabs
                         className='results'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={1}
+                        defaultIndex={0}
                     >
                         <TabList>
                             <Tab className='results-tab'> Interview-Suchergebnisse </Tab>
                             <Tab className='results-tab'> Orte-Suchergebnisse </Tab>
                         </TabList>
-                        <TabPanel forceRender={true} >
+                        <TabPanel >
                             {this.content()}
                         </TabPanel>
-                        <TabPanel forceRender={true} >
+                        <TabPanel >
                             <div>
                                 {this.renderPagination()}
                                 <ArchiveLocationsContainer/>

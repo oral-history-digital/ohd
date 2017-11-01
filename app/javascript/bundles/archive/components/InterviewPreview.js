@@ -19,12 +19,15 @@ export default class InterviewPreview extends React.Component {
     render() {
         return (
             <div className='interview-preview search-result'>
-                <Link
+                <Link className={'search-result-link'}
                     onClick={() => {this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id})}}
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
-                    <img src={this.props.interview.still_url}/>
-                    <h3>{this.props.interview.short_title[this.props.locale]}</h3>
+                    <img className='search-result-img' src={this.props.interview.still_url}/>
+                    <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
+                    <p className={'search-result-data'}>Interview ID: <span>{this.props.interview.archive_id}</span><br/>
+                        Interviewdauer: <span>{this.props.interview.archive_id}</span>
+                    </p>
                 </Link>
             </div>
         );

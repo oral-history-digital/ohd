@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 //import * as actionCreators from '../actions/searchActionCreators';
 import * as actionCreators from '../actions/searchActionCreators';
@@ -17,6 +17,10 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+})
 
-export default connect(mapStateToProps, actionCreators)(ArchiveSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);
+
 
