@@ -12,13 +12,13 @@ export default class Facet extends React.Component {
         let checkedFacets = this.props.sessionQuery[categoryId];
 
         if (checkedFacets !== undefined) {
-            openState = checkedFacets. length > 0;
+            openState = checkedFacets.length > 0;
         }
 
         this.state = {
             open: openState,
-            class: openState ? "accordion active": "accordion",
-            panelClass: openState ? "panel open": "panel"
+            class: openState ? "accordion active" : "accordion",
+            panelClass: openState ? "panel open" : "panel"
         };
     }
 
@@ -67,12 +67,12 @@ export default class Facet extends React.Component {
 
             return (
                 <div key={"subfacet-" + index}>
-                    <label><input className={categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
-                           name={categoryId + "[]"} checked={checkedState} type="checkbox" value={subfacet.entry.id}
+                    <input className={'with-font ' + categoryId + ' checkbox'} id={categoryId + "_" + subfacet.entry.id}
+                           name={categoryId + "[]"} checked={checkedState} type="radio" value={subfacet.entry.id}
                            onChange={this.onChange}>
                     </input>
-                    
-                        <span> {subfacet.entry.descriptor}</span>
+                    <label htmlFor={categoryId + "_" + subfacet.entry.id}>
+                        {subfacet.entry.descriptor}
                         <span>({subfacet.count})</span>
                     </label>
                 </div>

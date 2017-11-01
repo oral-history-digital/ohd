@@ -1,27 +1,5 @@
 
 
-.column-content,
-.column-sidebar {
-  @include screen-m {
-    float: left;
-  }
-  display: none;
-}
-
-.column-content.active,
-.column-sidebar.active {
-  display: inline-block;
-}
-
-.column-content {
-  @include screen-m {
-    /*width: 65%;*/
-    margin-right: 5%;
-  }
-  min-height: 360px;
-  width: 100%;
-}
-
 .column-sidebar {
   @include screen-xs-s {
     border-top: 1px solid $gray-lighter;

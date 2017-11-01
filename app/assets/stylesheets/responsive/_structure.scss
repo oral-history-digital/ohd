@@ -71,6 +71,7 @@ header.site-header {
 
 .flyout-is-visible {
   .wrapper-flyout {
+    z-index: 1000; //because of leaflet
     width: 100%;
     //padding: 30px;
     @include screen-m {
@@ -102,7 +103,6 @@ header.site-header {
       padding: 20px;
     }
   }
-
 
   .flyout-toggle {
     @include screen-xl {
@@ -261,7 +261,7 @@ footer {
     border-color: #666;
   }
   .lang {
-    border: 2px solid lighten($gray-warm, 10%);
+    border-left: 2px solid lighten($gray-warm, 10%);
     padding: 6px;
   }
 }
@@ -274,23 +274,82 @@ footer {
   height: 30px;
   padding: 10px;
   font-size: 26px;
-  z-index: 100;
+  z-index: 1000; //because of leaflet
   cursor: pointer;
 }
 
-.flyout-tab {
-  background: $gray-warm;
-  padding: 10px 15px;
-  display: block;
-  margin-top: 2px;
-  color: #fff;
-  font-size: $font-size-larger;
-  &.active {
-    background: $secondary-color;
-    color: $gray-darkest;
+.flyout {
+  padding: 0;
+  .flyout-tab {
+    background: $gray-warm;
+    padding: 10px 30px 10px 15px;
+    display: block;
+    margin-top: 2px;
+    color: #fff;
+    font-size: $font-size-larger;
+    &.active {
+      background: $secondary-color;
+      color: $gray-darkest;
+    }
+    .search-input,
+    ::placeholder {
+      color: #fff;
+    }
+    &.active {
+      .search-input,
+      ::placeholder {
+        color: $gray-darkest;
+      }
+    }
+    .search-button {
+      font-family: FontAwesome;
+      content: "\f067";
+      color: #fff;
+      float: right;
+      transition: color 0.3s;
+      &:hover {
+        color: $gray-light;
+      }
+    }
+    &.active {
+      .search-button {
+        color: $gray-dark;
+        &:hover {
+          color: $gray-darkest;
+        }
+      }
+    }
   }
 }
 
+.flyout-wrapper-content {
+  padding: 15px 15px 15px 30px;
+  p {
+    font-size: $font-size-large;
+    color: $gray-darkest;
+    padding: 0;
+    margin: 0 0 15px 0;
+  }
+  .flyout-content-label {
+    color: $gray-dark;
+    margin-right: 10px;
+  }
+  a:link, a:visited {
+    color: $primary-color;
+  }
+  a:hover {
+    color: $gray-dark;
+    text-decoration: none;
+    .fa {
+      color: $gray-dark;
+      text-decoration: none;
+    }
+  }
+  .fa {
+    margin-right: 10px;
+    color: $primary-color;
+  }
+}
 
 .flyout-caption {
   margin-top: 0;
@@ -330,7 +389,7 @@ h1.search-results-title {
   @include pie-clearfix;
 }
 .search-result-legend-ico {
-  float: right;
+  float: none;
   .fa {
     color: $primary-color;
   }
@@ -342,9 +401,18 @@ h1.search-results-title {
     text-decoration: none;
     color: $gray-medium;
   }
+  @include screen-m {
+    float: right;
+  }
 }
+
 .search-result-legend-text {
-  float: left;
+  float: none;
+  margin-bottom: 15px;
+  @include screen-m {
+    float: left;
+    margin-bottom: 0;
+  }
 }
 
 .search-results-container {

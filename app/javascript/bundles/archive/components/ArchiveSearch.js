@@ -105,10 +105,10 @@ export default class ArchiveSearch extends React.Component {
                             <Tab className='results-tab'> Interview-Suchergebnisse </Tab>
                             <Tab className='results-tab'> Orte-Suchergebnisse </Tab>
                         </TabList>
-                        <TabPanel forceRender={true} className='column-content'>
+                        <TabPanel forceRender={true} >
                             {this.content()}
                         </TabPanel>
-                        <TabPanel forceRender={true} className='column-content'>
+                        <TabPanel forceRender={true} >
                             <div>
                                 {this.renderPagination()}
                                 <ArchiveLocationsContainer/>
