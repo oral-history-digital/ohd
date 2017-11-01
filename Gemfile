@@ -26,10 +26,8 @@ gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.0'
 gem  'rails-latex'
 gem 'sass-rails'
-#gem 'webpacker'
-#gem 'react-rails'
+gem 'webpacker'
 gem 'react_on_rails', '~> 9.0.1'
-#gem 'foreman'
 gem 'slim-rails'
 
 # Gems specific to public archive app:
@@ -56,11 +54,13 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'thin'
-  gem 'webpacker'
+  #gem 'thin'
+  #gem 'webpacker'
   gem 'foreman'
 end
 
+#gem 'puma'
+#
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'

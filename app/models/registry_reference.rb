@@ -1,6 +1,7 @@
 class RegistryReference < BaseRegistryReference
 
   belongs_to :interview
+  belongs_to :ref_object, polymorphic: true
 
   scope :for_interview, -> (interview_id) { 
     where({interview_id: interview_id, ref_object_type: 'Segment'}) 
