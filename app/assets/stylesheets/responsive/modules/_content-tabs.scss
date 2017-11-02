@@ -19,6 +19,7 @@
   background-color: $primary-color;
   text-align: center;
   transition: background-color 0.3s;
+  cursor: pointer;
 }
 
 .content-tabs-nav-link:last-child {
@@ -104,20 +105,15 @@
 
 }
 
-// Transcript Tab Content
+// Tab Content: Transcript
 
 .content-trans-row {
   @include clearfix;
   margin-bottom: 40px;
   .fa {
     font-size: 20px;
-  }
-  a:link, a:visited {
     color: $primary-color;
   }
-  //@include screen-l {
-  //  margin-bottom: 30px;
-  //}
 }
 
 .content-trans-speaker-ico,
@@ -167,6 +163,10 @@
   display: inline-block;
   margin-right: 2px;
   padding: 6px 10px 0 10px;
+  color: $primary-color;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+  cursor: pointer;
   &:last-child {
     margin-right: 0;
   }
@@ -175,11 +175,6 @@
     .fa {
       color: #666;
     }
-  }
-  &:link,
-  &:visited {
-    transition: color 0.3s;
-    transition: background-color 0.3s;
   }
   &:hover {
     background-color: #ddd;
@@ -192,6 +187,7 @@
 .content-trans-text-element {
   width: 92%;
   margin-left: 8%;
+  margin-bottom: 10px;
   border: 2px solid #ddd;
   padding: 20px;
   float: none;
@@ -226,6 +222,77 @@
     width: 80%;
     margin-left: 0;
     float: right;
+  }
+}
+
+// Tab Content: Index // Inhaltsverzeichnis
+
+.content-index {
+  .heading {
+    margin-bottom: 20px;
+    .heading-ico {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 6%;
+      padding: 0 4px;
+      width: 4%;
+      cursor: pointer;
+      @include screen-m {
+        width: 2%;
+        margin-right: 2%;
+      }
+      &::before {
+        font-family: FontAwesome;
+        content: "\f067";
+        color: $primary-color;
+        font-size: $font-size-medium;
+        transition: 0.4s;
+      }
+      &.active::before{
+        content: "\f068";
+      }
+      &:hover::before{
+        color: $gray-dark;
+      }
+    }
+    .mainheading {
+      display: inline-block;
+      width: 90%;
+      cursor: pointer;
+      margin-bottom: 10px;
+      font-weight: bold;
+      @include screen-m {
+        width: 96%;
+      }
+      transition: 0.4s;
+      &:hover {
+        background-color: lighten($secondary-color, 30%);
+      }
+    }
+    .subheading {
+      display: inline-block;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: 0.4s;
+      &:hover {
+        background-color: lighten($secondary-color, 30%);
+      }
+    }
+  }
+  .expanded {
+    margin-left: 10%;
+    @include screen-m {
+      margin-left: 4%;
+    }
+  }
+  .collapsed {
+    display: none;
+  }
+}
+
+.content-index-main-heading {
+  li {
+    margin-bottom: 10px;
   }
 }
 

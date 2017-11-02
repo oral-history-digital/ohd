@@ -8,7 +8,6 @@
 @import "normalize";
 
 // Partials
-@import "dev";
 @import "fonts";
 @import "structure";
 @import "content";
@@ -16,11 +15,11 @@
 @import "nav";
 @import "grid";
 
-
 // Modules
 @import "modules/header";
 @import "modules/content-tabs";
 @import "modules/flyout-sub-tabs";
+@import "modules/flyout-nav-tabs";
 @import "modules/accordion";
 
 // Icons

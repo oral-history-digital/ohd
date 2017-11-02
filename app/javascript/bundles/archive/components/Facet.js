@@ -22,7 +22,8 @@ export default class Facet extends React.Component {
         };
     }
 
-    handleClick() {
+    handleClick(event) {
+        if (event !== undefined) event.preventDefault();
         if (this.state.open) {
             this.setState({['open']: false});
             this.setState({['class']: "accordion"});
@@ -50,6 +51,7 @@ export default class Facet extends React.Component {
     }
 
     onChange(event) {
+        console.log('handleSubmit');
         this.props.handleSubmit();
     }
 
