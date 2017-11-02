@@ -110,14 +110,15 @@ export default class ArchiveSearch extends React.Component {
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">Suchergebnisse</h1>
                     <div className="search-result-legend">
-                        <div className="search-results-legend-text">{this.props.resultsCount} Suchergebnisse</div>
-                        <div className="search-result-legend-ico">
-                            <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                                title: 'Save search',
-                                content: this.saveSearchForm()
-                            })}>
-                                <i className="fa fa-search"></i>Suche speichern</div>
+
+                        <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
+                            title: 'Save search',
+                            content: this.saveSearchForm()
+                        })}>
+                            <i className="fa fa-search"></i>Suche speichern
                         </div>
+
+                        <div className="search-results-legend-text">{this.props.resultsCount} Suchergebnisse</div>
                     </div>
 
 
