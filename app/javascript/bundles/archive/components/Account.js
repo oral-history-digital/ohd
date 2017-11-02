@@ -14,9 +14,14 @@ export default class Account extends React.Component {
     }
 
     info() {
-        //if(this.props.account && this.props.account.isLoggedIn) {
         if(this.props.account.email) {
-            return `logged in as ${this.props.account.firstName} ${this.props.account.lastName}`
+            return <div className='info'>
+                       {`logged in as ${this.props.account.firstName} ${this.props.account.lastName}`}
+                   </div>
+        } else if(this.props.account.error) {
+            return <div className='error'>
+                       {this.props.account.error}
+                   </div>
         } else {
             return null
         }
@@ -61,9 +66,9 @@ export default class Account extends React.Component {
             >
                 {this.info()}
                 {this.loginOrOut()}
-                {this.changePassword()}
-                {this.register()}
             </WrapperPageContainer>
         );
+                //{this.changePassword()}
+                //{this.register()}
     }
 }

@@ -53,6 +53,7 @@ export const LOGIN = 'LOGIN';
 export const LOGGED_IN = 'LOGGED_IN';
 export const SUBMIT_LOGIN = 'SUBMIT_LOGIN';
 export const LOGIN_URL = '/de/user_accounts/sign_in';
+export const AUTH_ERROR = 'AUTH_ERROR';
 
 export const LOGOUT = 'LOGOUT';
 export const SUBMIT_LOGOUT = 'SUBMIT_LOGOUT';

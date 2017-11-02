@@ -9,6 +9,7 @@ import {
 
     LOGIN,
     LOGGED_IN,
+    AUTH_ERROR,
     SUBMIT_LOGIN,
     LOGIN_URL,
 
@@ -61,9 +62,14 @@ const loggedIn = (json) => ({
 export function submitLogin(params) {
     return dispatch => {
         dispatch(login())
-        Loader.post(LOGIN_URL, params, dispatch, loggedIn);
+        Loader.post(LOGIN_URL, params, dispatch, loggedIn, authError);
     }
 }
+
+const authError = (json) => ({
+        type: AUTH_ERROR,
+        error: json.error
+})
 
 const logout = () => ({
         type: LOGOUT,

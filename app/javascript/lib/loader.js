@@ -53,17 +53,19 @@ import request from 'superagent';
         });
     },
 
-    post: function(url, params, dispatch, callback) {
+    post: function(url, params, dispatch, successCallback, errorCallback) {
       request.post(url)
         .send(params)
         .set('Accept', 'application/json')
         .end( (error, res) => {
           if (res) {
             if (res.error) {
-              console.log("loading json from " + url + " failed: " + error);
+                console.log("loading json from " + url + " failed: " + error);
+                debugger;
+                dispatch(errorCallback(JSON.parse(res.text)));
             } else {
-              if (typeof callback === "function") {
-                dispatch(callback(JSON.parse(res.text)));
+              if (typeof successCallback === "function") {
+                dispatch(successCallback(JSON.parse(res.text)));
               }
             }
           }

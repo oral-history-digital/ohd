@@ -4,6 +4,7 @@ import {
 
     LOGIN,
     LOGGED_IN,
+    AUTH_ERROR,
     SUBMIT_LOGIN,
 
     LOGOUT,
@@ -45,6 +46,8 @@ const account = (state = {}, action) => {
                 email: action.email,
                 login: action.login,
             })
+        case AUTH_ERROR:
+            return {error: action.error} 
         case LOGOUT:
             return {} 
         case REGISTER:
