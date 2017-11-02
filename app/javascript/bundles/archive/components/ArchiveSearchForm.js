@@ -19,6 +19,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
+            console.log("ArchiveSearchForDidMount");
             this.props.resetSearchInArchive({});
         }
     }
@@ -44,7 +45,6 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-
         let query = ($('#archiveSearchForm').serialize());
         if (query == "fulltext=") {
             this.props.resetSearchInArchive({});
@@ -70,10 +70,12 @@ export default class ArchiveSearchForm extends React.Component {
                     <label>
                         <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
                     </label>
+
                     {this.renderFacets()}
                     <input type="submit" value="Submit"/>
                 </form>
-                <button onClick={this.handleReset}>Reset</button>
+
+                <button className={'reset'} onClick={this.handleReset}>Reset</button>
                 <button 
                     onClick={() => this.props.openArchivePopup({
                         title: 'Save search', 

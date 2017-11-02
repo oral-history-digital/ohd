@@ -30,7 +30,7 @@ export default class FlyoutTabs extends React.Component {
                 this.context.router.history.push(`/${this.props.locale}/account`);
                 break;
             default:
-                this.setState({ tabIndex })
+                this.setState({ tabIndex: tabIndex })
         }
     }
 
@@ -57,19 +57,13 @@ export default class FlyoutTabs extends React.Component {
             >
 
                 <TabList className='flyout'>
-                    <div className={'flyout-top-nav-container'}>
-                        <div className={'flyout-top-nav'}>
-                            <Tab className=''> Startseite </Tab>
-                            <Tab className=''> Login </Tab>
-                        </div>
-                    </div>
-
-
+                    <Tab className='flyout-top-nav'> Startseite </Tab>
+                    <Tab className='flyout-top-nav'> Login </Tab>
                     <Tab className='flyout-tab'> Suche </Tab>
                     <Tab className='flyout-tab'> Interview </Tab>
                     <Tab className='flyout-tab'> Arbeitsmappe </Tab>
-
                 </TabList>
+
 
                 <TabPanel >
                     start

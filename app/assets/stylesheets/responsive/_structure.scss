@@ -262,6 +262,39 @@ footer {
 
 
 
+.flyout-top-nav-container {
+  background: lighten($gray-warm, 30%);
+  height: 100px;
+  margin: 0;
+  padding: 46px 10px 0 15px;
+}
+
+.flyout-top-nav {
+  margin: 0;
+  padding: 0;
+  font-size: $font-size-large;
+  li {
+    background-image: none;
+    display: inline;
+    padding: 0 15px 0 0;
+  }
+  a:link,
+  a:visited {
+    color: #666;
+    transition: color 0.3s;
+    transition: border-color 0.3s;
+  }
+  a[href]:hover, a:active {
+    text-decoration: none;
+    color: #222;
+    border-color: #666;
+  }
+  .lang {
+    border-left: 2px solid lighten($gray-warm, 10%);
+    padding: 6px;
+  }
+}
+
 .flyout-toggle {
   position: fixed;
   top: 20px;
@@ -272,6 +305,50 @@ footer {
   font-size: 26px;
   z-index: 1100; //because of leaflet
   cursor: pointer;
+}
+
+.flyout {
+  padding: 0;
+  .flyout-tab {
+    background: $gray-warm;
+    padding: 10px 30px 10px 15px;
+    display: block;
+    margin-top: 2px;
+    color: #fff;
+    font-size: $font-size-larger;
+    &.active {
+      background: $secondary-color;
+      color: $gray-darkest;
+    }
+    .search-input,
+    ::placeholder {
+      color: #fff;
+    }
+    &.active {
+      .search-input,
+      ::placeholder {
+        color: $gray-darkest;
+      }
+    }
+    .search-button {
+      font-family: FontAwesome;
+      content: "\f067";
+      color: #fff;
+      float: right;
+      transition: color 0.3s;
+      &:hover {
+        color: $gray-light;
+      }
+    }
+    &.active {
+      .search-button {
+        color: $gray-dark;
+        &:hover {
+          color: $gray-darkest;
+        }
+      }
+    }
+  }
 }
 
 .flyout-wrapper-content {
