@@ -92,9 +92,9 @@ header.site-header {
       border-left: 1px solid $gray-light;
       border: 0 none;
     }
-    @include screen-xl {
-      display: block !important;
-    }
+      @include screen-xl {
+        display: block !important;
+      }
     overflow: scroll;
     p {
       font-size: $font-size-medium;
@@ -128,19 +128,21 @@ header.site-header {
     top: 0;
     left: 0;
     right: 0;
-    height: 160px;
+    height: 220px;
+    @include screen-s {
+      height: 160px;
+    }
+    // -webkit-transition: height 1s; 
+    // -moz-transition: height 1s; 
+    // -ms-transition: height 1s; 
+    // -o-transition: height 1s; 
+    // transition: height 1s;  
 
-    // -webkit-transition: height 1s;
-    // -moz-transition: height 1s;
-    // -ms-transition: height 1s;
-    // -o-transition: height 1s;
-    // transition: height 1s;
-
-    //  -webkit-transition: height .1s linear;
-    // -moz-transition: height .1s linear;
-    // -ms-transition: height .1s linear;
-    // -o-transition: height .1s linear;
-    // transition: height .1s linear;
+    //  -webkit-transition: height .1s linear;   
+    // -moz-transition: height .1s linear;   
+    // -ms-transition: height .1s linear;   
+    // -o-transition: height .1s linear;   
+    // transition: height .1s linear;   
 
     .video-element {
       margin: 0;
@@ -152,7 +154,10 @@ header.site-header {
     }
     .video-title-container {
       display: inline-block;
-      margin-left: 20px;
+      margin-left: 0;
+      @include screen-s {
+        margin-left: 20px;
+      }
       h1 {
         font-size: $font-size-larger;
         line-height: $line-height-larger;
@@ -166,9 +171,12 @@ header.site-header {
   }
   .content-tabs {
     position: fixed;
-    top: 160px;
+    top: 220px;
     left: 0;
     right: 0;
+    @include screen-s {
+      top: 160px;
+    }
   }
   .wrapper-content {
     margin-top: 250px;
@@ -289,7 +297,7 @@ footer {
 
 .flyout-toggle {
   position: fixed;
-  top: 30px;
+  top: 20px;
   right: 30px;
   width: 30px;
   height: 30px;
@@ -388,7 +396,7 @@ footer {
 //   float: left;
 //   padding: 40px 30px 0 0;
 //   font-size: $font-size-medium;
-
+  
 //   @include screen-m {
 //     height: 320px;
 //   }
@@ -401,38 +409,117 @@ footer {
 
 h1.search-results-title {
   margin-top: 0;
+  //float: left;
+  //margin-right: 30px;
+}
+.search-results-ico-link {
+  font-size: $font-size-medium;
+  color: $primary-color;
+  transition: color 0.3s;
+  cursor: pointer;
+  .fa {
+    margin-right: 10px;
+  }
+  &:hover {
+    color: $gray-dark;
+    .fa {
+      color: $gray-dark;
+    }
+  }
 }
 
-.search-result-legend {
-  margin: 40px 0;
+.search-results-legend {
+  margin: 20px 0;
   padding: 0 0 20px 0;
   border-bottom: 1px solid $gray-dark;
   @include pie-clearfix;
 }
-.search-result-legend-ico {
+.search-results-legend-text {
   float: none;
-  .fa {
-    color: $primary-color;
-  }
-  a:link, a:visited {
-    color: $primary-color;
-    transition: color 0.3s;
-  }
-  a[href]:hover, a:hover, a:active {
-    text-decoration: none;
-    color: $gray-medium;
-  }
+  margin-bottom: 10px;
+  padding: 10px 0;
+  color: $gray-darker;
   @include screen-m {
     float: right;
+    margin-bottom: 0;
   }
 }
-
-.search-result-legend-text {
+.search-results-tabs {
   float: none;
-  margin-bottom: 15px;
   @include screen-m {
     float: left;
     margin-bottom: 0;
+  }
+}
+.search-results-tab {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: #fff;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  .fa {
+    margin-right: 0;
+    @include screen-m {
+      margin-right: 10px;
+    }
+  }
+  &.active {
+    background-color: #ddd;
+    .fa, span {
+      color: $gray-dark;
+    }
+  }
+  &:hover {
+    background-color: #ddd;
+    color: $gray-dark;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+  span {
+    display: none;
+    @include screen-m {
+      display: inline-block;
+    }
+  }
+}
+
+ul.search-results-pagination {
+  list-style: none;
+  margin: 0 0 30px 0;
+  padding: 0;
+  li {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 4px 10px;
+    background-color: #fff;
+    color: $gray-dark;
+    border: 1px solid $gray-medium;
+    transition: color 0.3s;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    .fa {
+      margin-right: 0;
+      @include screen-m {
+        margin-right: 10px;
+      }
+    }
+    &.active {
+      background-color: #ddd;
+      .fa, span {
+        color: $gray-dark;
+      }
+    }
+    &:hover {
+      background-color: #ddd;
+      color: $gray-dark;
+      .fa {
+        color: $gray-dark;
+      }
+    }
   }
 }
 
@@ -461,23 +548,6 @@ a.search-result-link {
       opacity: 0.7;
     }
     .search-result-name {
-      color: #666;
-    }
-  }
-}
-
-a.search-result-ico-link {
-  .fa {
-    color: $primary-color;
-    margin-right: 10px;
-    transition: color 0.3s;
-  }
-  &:link, &:visited {
-    color: $primary-color;
-    transition: color 0.3s;
-  }
-  &:hover {
-    .fa {
       color: #666;
     }
   }
