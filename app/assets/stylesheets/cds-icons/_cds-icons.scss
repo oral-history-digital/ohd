@@ -1,0 +1,322 @@
+@font-face {
+    font-family: 'cds-ico';
+    src: url('#{$font-path}cds-ico.eot');
+}
+@font-face {
+    font-family: 'cds-ico';
+    src: url('#{$font-path}cds-ico.ttf') format('ttf'),
+         url('#{$font-path}cds-ico.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Font Antialiasing in Windows Workaround */
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: 'cds-ico';
+        src: url('#{$font-path}cds-ico.svg') format('svg');
+    }
+}
+
+.icon-cds {
+	font-family: 'cds-ico';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+    color: #000;
+    font-size: inherit;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cds-overview:before {
+    content: "\e600";
+}
+.icon-cds-arrow-first:before {
+    content: "\e601";
+}
+.icon-cds-arrow-next:before {
+    content: "\e602";
+}
+.icon-cds-arrow-prev:before {
+    content: "\e603";
+}
+.icon-cds-arrow-last:before {
+    content: "\e604";
+}
+.icon-cds-download-slim:before {
+    content: "\e605";
+}
+.icon-cds-download:before {
+    content: "\e606";
+}
+.icon-cds-upload:before {
+    content: "\e607";
+}
+.icon-cds-quicklinks:before {
+    content: "\e608";
+}
+.icon-cds-print:before {
+    content: "\e609";
+}
+.icon-cds-search:before {
+    content: "\e60a";
+}
+.icon-cds-zoom-out:before {
+    content: "\e60b";
+}
+.icon-cds-zoom-in:before {
+    content: "\e60c";
+}
+.icon-cds-rss:before {
+    content: "\e60d";
+}
+.icon-cds-network:before {
+    content: "\e60e";
+}
+.icon-cds-sitemap:before {
+    content: "\e60f";
+}
+.icon-cds-arrow-up:before {
+    content: "\e610";
+}
+.icon-cds-arrow-down:before {
+    content: "\e611";
+}
+.icon-cds-arrow-up-right:before {
+    content: "\e612";
+}
+.icon-cds-arrow-up-left:before {
+    content: "\e613";
+}
+.icon-cds-arrow-down-right:before {
+    content: "\e614";
+}
+.icon-cds-arrow-down-left:before {
+    content: "\e615";
+}
+.icon-cds-angle-right:before {
+    content: "\e616";
+}
+.icon-cds-angle-left:before {
+    content: "\e617";
+}
+.icon-cds-angle-double-right:before {
+    content: "\e618";
+}
+.icon-cds-angle-double-left:before {
+    content: "\e619";
+}
+.icon-cds-caret-up:before {
+    content: "\e61a";
+}
+.icon-cds-caret-down:before {
+    content: "\e61b";
+}
+.icon-cds-ok:before {
+    content: "\e61c";
+}
+.icon-cds-wrong:before {
+    content: "\e61d";
+}
+.icon-cds-plus:before {
+    content: "\e61e";
+}
+.icon-cds-minus:before {
+    content: "\e61f";
+}
+.icon-cds-ok-outline:before {
+    content: "\e620";
+}
+.icon-cds-wrong-outline:before {
+    content: "\e621";
+}
+.icon-cds-plus-outlines:before {
+    content: "\e622";
+}
+.icon-cds-minus-outline:before {
+    content: "\e623";
+}
+.icon-cds-volume-up:before {
+    content: "\e624";
+}
+.icon-cds-volume-off:before {
+    content: "\e625";
+}
+.icon-cds-volume-down:before {
+    content: "\e626";
+}
+.icon-cds-undo:before {
+    content: "\e627";
+}
+.icon-cds-trash:before {
+    content: "\e628";
+}
+.icon-cds-pencil:before {
+    content: "\e629";
+}
+.icon-cds-expand:before {
+    content: "\e62a";
+}
+.icon-cds-stop:before {
+    content: "\e62b";
+}
+.icon-cds-pause-outline:before {
+    content: "\e62c";
+}
+.icon-cds-record-outline:before {
+    content: "\e62d";
+}
+.icon-cds-play-outline:before {
+    content: "\e62e";
+}
+.icon-cds-step-forward:before {
+    content: "\e62f";
+}
+.icon-cds-step-backward:before {
+    content: "\e630";
+}
+.icon-cds-backward:before {
+    content: "\e631";
+}
+.icon-cds-forward:before {
+    content: "\e632";
+}
+.icon-cds-star-outline:before {
+    content: "\e633";
+}
+.icon-cds-bookmark:before {
+    content: "\e634";
+}
+.icon-cds-paperclip:before {
+    content: "\e635";
+}
+.icon-cds-picture:before {
+    content: "\e636";
+}
+.icon-cds-audio:before {
+    content: "\e637";
+}
+.icon-cds-video:before {
+    content: "\e638";
+}
+.icon-cds-presentation:before {
+    content: "\e639";
+}
+.icon-cds-user:before {
+    content: "\e63a";
+}
+.icon-cds-user-add:before {
+    content: "\e63b";
+}
+.icon-cds-users:before {
+    content: "\e63c";
+}
+.icon-cds-invalid:before {
+    content: "\e63d";
+}
+.icon-cds-invalid-wc:before {
+    content: "\e63e";
+}
+.icon-cds-invalid-parking:before {
+    content: "\e63f";
+}
+.icon-cds-map-marker:before {
+    content: "\e640";
+}
+.icon-cds-map-and-markers:before {
+    content: "\e641";
+}
+.icon-cds-map:before {
+    content: "\e642";
+}
+.icon-cds-unlock:before {
+    content: "\e643";
+}
+.icon-cds-lock:before {
+    content: "\e644";
+}
+.icon-cds-mail:before {
+    content: "\e645";
+}
+.icon-cds-document:before {
+    content: "\e646";
+}
+.icon-cds-document-list:before {
+    content: "\e647";
+}
+.icon-cds-link:before {
+    content: "\e648";
+}
+.icon-cds-news:before {
+    content: "\e649";
+}
+.icon-cds-help-slim:before {
+    content: "\e64a";
+}
+.icon-cds-get-help:before {
+    content: "\e64b";
+}
+.icon-cds-external-link:before {
+    content: "\e64c";
+}
+.icon-cds-event:before {
+    content: "\e64d";
+}
+.icon-cds-calender:before {
+    content: "\e64e";
+}
+.icon-cds-directory:before {
+    content: "\e64f";
+}
+.icon-cds-cutlery:before {
+    content: "\e650";
+}
+.icon-cds-courses:before {
+    content: "\e651";
+}
+.icon-cds-tests:before {
+    content: "\e652";
+}
+.icon-cds-charts-pie:before {
+    content: "\e653";
+}
+.icon-cds-tools:before {
+    content: "\e654";
+}
+.icon-cds-campus:before {
+    content: "\e655";
+}
+.icon-cds-sports:before {
+    content: "\e656";
+}
+.icon-cds-bus:before {
+    content: "\e657";
+}
+.icon-cds-bulb:before {
+    content: "\e658";
+}
+.icon-cds-books:before {
+    content: "\e659";
+}
+.icon-cds-angle-left-slim:before {
+    content: "\e65a";
+}
+.icon-cds-angle-right-slim:before {
+    content: "\e65b";
+}
+.icon-cds-upload-slim:before {
+    content: "\e65c";
+}
+.icon-cds-search-fat:before {
+    content: "\e65d";
+}
+.icon-cds-invalid-elevator:before {
+    content: "\e900";
+}
