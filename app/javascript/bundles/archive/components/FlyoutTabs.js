@@ -26,13 +26,9 @@ export default class FlyoutTabs extends React.Component {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
                 break;
-            case 1: //Account
+            case 1: //Login
                 this.context.router.history.push(`/${this.props.locale}/account`);
                 break;
-            case 7: //Home
-                this.context.router.history.push(`/${this.props.locale}/hilfe`);
-                break;
-
             default:
                 this.setState({ tabIndex })
         }
@@ -61,14 +57,18 @@ export default class FlyoutTabs extends React.Component {
             >
 
                 <TabList className='flyout'>
-                    <Tab className='flyout-tab'> Startseite </Tab>
-                    <Tab className='flyout-tab'> Account </Tab>
+                    <div className={'flyout-top-nav-container'}>
+                        <div className={'flyout-top-nav'}>
+                            <Tab className=''> Startseite </Tab>
+                            <Tab className=''> Login </Tab>
+                        </div>
+                    </div>
+
+
                     <Tab className='flyout-tab'> Suche </Tab>
                     <Tab className='flyout-tab'> Interview </Tab>
-                    <Tab className='flyout-tab'> Sprache </Tab>
                     <Tab className='flyout-tab'> Arbeitsmappe </Tab>
-                    <Tab className='flyout-tab'> Zuletzt angesehen </Tab>
-                    <Tab className='flyout-tab'> Hilfe </Tab>
+
                 </TabList>
 
                 <TabPanel >
@@ -94,18 +94,10 @@ export default class FlyoutTabs extends React.Component {
                     <InterviewLocationsContainer  />
                     biographie transcript daten zur za
                 </TabPanel>
-                <TabPanel>
-                    sprache
-                </TabPanel>
                 <TabPanel >
                     <UserContentsContainer />
                 </TabPanel>
-                <TabPanel >
-                    zuletzt angesehen
-                </TabPanel>
-                <TabPanel >
-                    hilfe
-                </TabPanel>
+
             </Tabs>
         );
     }
