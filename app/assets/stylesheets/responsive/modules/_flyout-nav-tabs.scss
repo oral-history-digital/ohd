@@ -55,44 +55,26 @@
   }
 }
 
-//.flyout-tab {
-//  background: $gray-warm;
-//  padding: 10px 30px 10px 15px;
-//  display: block;
-//  margin-top: 2px;
-//  color: #fff;
-//  font-size: $font-size-larger;
-//  &.active {
-//    background: $secondary-color;
-//    color: $gray-darkest;
-//  }
-//  .search-input,
-//  ::placeholder {
-//    color: #fff;
-//  }
-//  &.active {
-//    .search-input,
-//    ::placeholder {
-//      color: $gray-darkest;
-//    }
-//  }
-//  .search-button {
-//    font-family: FontAwesome;
-//    content: "\f067";
-//    color: #fff;
-//    float: right;
-//    transition: color 0.3s;
-//    &:hover {
-//      color: $gray-light;
-//    }
-//  }
-//  &.active {
-//    .search-button {
-//      color: $gray-dark;
-//      &:hover {
-//        color: $gray-darkest;
-//      }
-//    }
-//  }
-//}
+.flyout-search {
+  padding: 10px 15px 10px 15px;
+  display: block;
+  margin: 50px 15px 30px 15px;
+  border-bottom: 1px solid $gray-dark;
+  color: $primary-color;
+  font-size: $font-size-larger;
+  .search-input,
+  ::placeholder {
+    color: $primary-color;
+  }
+  .search-button {
+    font-family: FontAwesome;
+    content: "\f067";
+    color: $primary-color;
+    float: right;
+    transition: color 0.3s;
+    &:hover {
+      color: $gray-light;
+    }
+  }
+}
 
