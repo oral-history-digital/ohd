@@ -56,7 +56,7 @@ namespace :users do
       reg.country = 'Deutschland'
       reg.save
       reg.register!
-      User.update_all "admin = true", "id = #{reg.user.id}"
+      User.where(id: reg.user.id).update_all admin: true
       puts "created user: #{reg.user.reload}"
     end
 
