@@ -129,8 +129,14 @@ export default class ArchiveSearch extends React.Component {
                         defaultIndex={0}
                     >
                         <TabList className={'search-results-tabs'}>
-                            <Tab className='search-results-tab'> Interview-Suchergebnisse </Tab>
-                            <Tab className='search-results-tab'> Orte-Suchergebnisse </Tab>
+                            <Tab className='search-results-tab'>
+                                <i className="fa fa-th"></i>
+                                <span>Interview-Suchergebnisse</span>
+                            </Tab>
+                            <Tab className='search-results-tab'>
+                                <i className="fa fa-map-o"></i>
+                                <span>Orte-Suchergebnisse</span>
+                            </Tab>
                         </TabList>
                         <TabPanel >
                             {this.content()}
