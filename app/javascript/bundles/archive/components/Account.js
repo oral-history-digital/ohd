@@ -5,6 +5,11 @@ import RegisterFormContainer from '../containers/RegisterFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import WrapperPageContainer from '../containers/WrapperPageContainer'
 
+import { 
+    REGISTER_NEW_URL,
+    FORGOT_PASSWORD_URL,
+} from '../constants/archiveConstants';
+
 export default class Account extends React.Component {
 
     componentDidMount() {
@@ -37,7 +42,10 @@ export default class Account extends React.Component {
                        Logout
                    </div>
         } else {
-            return <LoginFormContainer />
+            return <div>
+                        <LoginFormContainer />
+                        <a href={FORGOT_PASSWORD_URL}>Passwort vergessen?</a>
+                   </div>
         }
     }
 
@@ -55,7 +63,8 @@ export default class Account extends React.Component {
         if(this.props.account.email) {
             return null
         } else {
-            return <RegisterFormContainer />
+            //return <RegisterFormContainer />
+            return <a href={REGISTER_NEW_URL}>Registrieren</a>
         }
     }
 
@@ -66,9 +75,9 @@ export default class Account extends React.Component {
             >
                 {this.info()}
                 {this.loginOrOut()}
+                {this.register()}
             </WrapperPageContainer>
         );
                 //{this.changePassword()}
-                //{this.register()}
     }
 }

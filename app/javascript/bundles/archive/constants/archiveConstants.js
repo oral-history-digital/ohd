@@ -63,11 +63,13 @@ export const REGISTER = 'REGISTER';
 export const REGISTERED = 'REGISTERED';
 export const SUBMIT_REGISTER = 'SUBMIT_REGISTER';
 export const REGISTER_URL = '/de/user_registrations';
+export const REGISTER_NEW_URL = '/de/user_registrations/new';
 
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGED_PASSWORD = 'CHANGED_PASSWORD';
 export const SUBMIT_CHANGE_PASSWORD = 'SUBMIT_CHANGE_PASSWORD';
 export const CHANGE_PASSWORD_URL = '/de/user_accounts/password';
+export const FORGOT_PASSWORD_URL = '/de/user_accounts/password/new';
 
 export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
 export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
