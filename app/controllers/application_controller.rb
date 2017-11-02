@@ -7,6 +7,8 @@ require 'exception_notification'
 class ApplicationController < ActionController::Base
   #include ExceptionNotification::Notifiable
 
+  layout 'responsive'
+
   helper :all # include all helpers, all the time
 
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
