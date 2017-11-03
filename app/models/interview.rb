@@ -33,7 +33,8 @@ class Interview < ActiveRecord::Base
            :through => :contributions
 
   has_many :interviewees,
-           -> {where("contributions.contribution_type = 'interviewee'")},
+           -> {where("contributions.contribution_type = 'Informants'")},
+           #-> {where("contributions.contribution_type = 'interviewee'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
