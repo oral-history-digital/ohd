@@ -21,6 +21,33 @@ html
   body
     .layout-indicator style="display: block;"
 
-    = yield
+    .wrapper-page
+      header.site-header
+        a.logo-link href="/" title="Zur Startseite MOG Archiv"
+          img.logo-img src="/assets/eog/mog-archiv-logo.svg"
 
+        .locales
+          - [:el, :de].each do |locale|
+            == link_to locale.to_s, url_for(controller: params[:controller], action: params[:action], locale: locale)
+
+        == link_to t(:start_page), root_path
+
+
+      .content
+        = yield
+
+
+    footer
+      .footer-links
+        == link_to "nutzungsbedingungen", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html", target: "_blank"
+        == link_to "nutzungsantrag", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html", target: "_blank"
+        == link_to "datenschutzbestimmungen", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html", target: "_blank"
+        /<a href="http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html" target="_blank">
+        /annotation_guidelines</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/team" target="_blank">
+        /team</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/kontakt" target="_blank">
+        /kontakt</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/impressum" target="_blank">
+        /impressum</a>
 
