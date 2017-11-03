@@ -34,33 +34,34 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def title
-    {
-      de: 'Keiner Niemand',
-      "#{object.language.code}": 'Noone'
-    }
     #{
-      #de: object.full_title(:de),
-      #"#{object.language.code}": object.full_title(object.language.code)
+      #de: 'Keiner Niemand',
+      #"#{object.language.code}": 'Noone'
     #}
+    {
+      de: object.full_title(:de),
+      "#{object.language.code}": object.full_title(object.language.code)
+    }
   end
 
   def short_title
-    {
-      de: 'Keiner Niemand',
-      "#{object.language.code}": 'None'
-    }
     #{
-      #de: object.short_title(:de),
-      #"#{object.language.code}": object.short_title(object.language.code)
+      #de: 'Keiner Niemand',
+      #"#{object.language.code}": 'None'
     #}
+    {
+      de: object.short_title(:de),
+      "#{object.language.code}": object.short_title(object.language.code)
+    }
   end
 
   def still_url
-    object.still_image.url(:original)
+    #object.still_image.url(:original)
+    "http://medien.cedis.fu-berlin.de/eog/interviews/eog/#{object.archive_id}/#{object.archive_id.sub('eog', '')}_2.jpg"
   end
 
   def src
-    "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
+    "http://medien.cedis.fu-berlin.de/eog/interviews/eog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
   end
 
   def references
