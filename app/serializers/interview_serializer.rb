@@ -35,16 +35,24 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def title
     {
-      de: object.full_title(:de),
-      "#{object.language.code}": object.full_title(object.language.code)
+      de: 'Keiner Niemand',
+      "#{object.language.code}": 'Noone'
     }
+    #{
+      #de: object.full_title(:de),
+      #"#{object.language.code}": object.full_title(object.language.code)
+    #}
   end
 
   def short_title
     {
-      de: object.short_title(:de),
-      "#{object.language.code}": object.short_title(object.language.code)
+      de: 'Keiner Niemand',
+      "#{object.language.code}": 'None'
     }
+    #{
+      #de: object.short_title(:de),
+      #"#{object.language.code}": object.short_title(object.language.code)
+    #}
   end
 
   def still_url
