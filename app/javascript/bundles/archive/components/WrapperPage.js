@@ -159,13 +159,12 @@ export default class WrapperPage extends React.Component {
             return Object.keys(this.props.externalLinks).map(function (key, index) {
                 let link = links[key][locale];
                 return (
-                    <a
-                        key={'external-link-' + key}
-                        href={link}
-                        target="_blank"
-                    >
-                        {key}
-                    </a>
+                    <li key={'external-link-' + key}>
+                        <a href={link}
+                            target="_blank">
+                            {key}
+                        </a>
+                    </li>
                 )
             })
         }
@@ -201,11 +200,10 @@ export default class WrapperPage extends React.Component {
                         {this.props.children}
 
                         <footer>
-                            <div className='footer-links'>
-
+                            <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
-
-                            </div>
+                            </ul>
+                            <p>Projekt Erinnerungen an die Okkupation in Griechenland</p>
                         </footer>
                     </div>
 
