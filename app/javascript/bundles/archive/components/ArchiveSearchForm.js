@@ -19,7 +19,6 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            console.log("ArchiveSearchForDidMount");
             this.props.resetSearchInArchive({});
         }
     }

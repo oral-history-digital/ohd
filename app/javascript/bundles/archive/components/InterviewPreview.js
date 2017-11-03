@@ -26,7 +26,7 @@ export default class InterviewPreview extends React.Component {
                     <img className='search-result-img' src={this.props.interview.still_url}/>
                     <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
                     <p className={'search-result-data'}>Interview ID: <span>{this.props.interview.archive_id}</span><br/>
-                        Interviewdauer: <span>{this.props.interview.archive_id}</span>
+                        Interviewdauer: <span>{this.props.interview.duration}</span>
                     </p>
                 </Link>
             </div>
