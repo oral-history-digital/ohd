@@ -19,17 +19,17 @@ default: &default
 
   external_links:
     nutzungsbedingungen:
-      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.html'
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.shtml'
     nutzungsantrag:
-      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/registrierung.html'
+      de: 'https://deutsches-gedaechtnis.fernuni-hagen.de/archiv/registrieren?locale=de'
     datenschutzbestimmungen:
-      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.html'
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.shtml'
     annotation_guidelines:
-      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/archivnutzung.shtml'
     team:
-      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.html'
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.shtml'
     kontakt:
-      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.html'
+      de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.shtml'
     impressum:
       de: 'http://www.fernuni-hagen.de/impressum.shtml'
 

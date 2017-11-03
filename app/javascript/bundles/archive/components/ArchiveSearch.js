@@ -16,7 +16,7 @@ export default class ArchiveSearch extends React.Component {
 
     content() {
         if (this.props.isArchiveSearching) {
-            return <img src="/images/eog/large_spinner.gif" className="archive-search-spinner"/>;
+            return <img src="/assets/eog/large_spinner.gif" className="archive-search-spinner"/>;
         } else {
             return (
                 <div>
@@ -109,13 +109,13 @@ export default class ArchiveSearch extends React.Component {
             >
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">Suchergebnisse</h1>
-                    <div className="search-result-legend">
+                    <div className="search-results-legend">
 
                         <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
                             title: 'Save search',
                             content: this.saveSearchForm()
                         })}>
-                            <i className="fa fa-search"></i>Suche speichern
+                            <i className="fa fa-star"></i>Suche speichern
                         </div>
 
                         <div className="search-results-legend-text">{this.props.resultsCount} Suchergebnisse</div>
@@ -124,7 +124,7 @@ export default class ArchiveSearch extends React.Component {
 
 
                     <Tabs
-                        className='search-results-legend'
+                        className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
                         defaultIndex={0}

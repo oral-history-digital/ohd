@@ -64,6 +64,11 @@ class InterviewSerializer < ActiveModel::Serializer
     "http://medien.cedis.fu-berlin.de/eog/interviews/eog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
   end
 
+  def poster_src
+    "http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
+  end
+
+
   def references
     object.registry_references.map do |ref|
       {
@@ -73,5 +78,12 @@ class InterviewSerializer < ActiveModel::Serializer
       }
     end
   end
+
+  def duration
+    object.duration.timecode
+  end
+
+
+
 
 end

@@ -14,8 +14,6 @@ export default class FlyoutTabs extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
-        console.log(this.props.tabIndex);
         this.state = {
             tabIndex: this.props.tabIndex
         }
