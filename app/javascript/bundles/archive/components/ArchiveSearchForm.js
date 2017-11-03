@@ -65,13 +65,11 @@ export default class ArchiveSearchForm extends React.Component {
     render() {
         return (
             <div>
-                <form id="archiveSearchForm" onSubmit={this.handleSubmit}>
-                    <label>
-                        <input type="text" name="fulltext" value={this.state.fulltext} onChange={this.handleChange}/>
-                    </label>
+                <form id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
 
+                    <input className={'search-input'} type="text" name="fulltext" value={this.state.fulltext} placeholder="Eingabe ..." onChange={this.handleChange}/>
+                    <input className="search-button" id="search-button" title="Suche im Archiv ..." type="submit" value=""/>
                     {this.renderFacets()}
-                    <input type="submit" value="Submit"/>
                 </form>
 
                 <button className={'reset'} onClick={this.handleReset}>Reset</button>
