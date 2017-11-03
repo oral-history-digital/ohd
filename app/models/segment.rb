@@ -142,7 +142,8 @@ class Segment < ActiveRecord::Base
   end
 
   def start_time
-    @time ||= Timecode.new(raw_timecode).time
+    #@time ||= Timecode.new(raw_timecode).time
+    @time ||= Time.parse(raw_timecode).seconds_since_midnight
   end
 
   def end_time

@@ -228,9 +228,9 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def duration
-    @duration ||= Timecode.new read_attribute(:duration)
-  end
+  #def duration
+    #@duration ||= Timecode.new read_attribute(:duration)
+  #end
 
   # Sets the duration either as an integer in seconds,
   # or applies a timecode by parsing. Even sub-timecodes
@@ -258,7 +258,7 @@ class Interview < ActiveRecord::Base
     # Check whether we've got the requested locale. If not fall back to the
     # default locale.
     used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
+      break l unless first_interviewee.translations.select {|t| t.locale[0..1].to_sym == l}.blank?
     end
     return nil unless used_locale.is_a?(Symbol)
 
