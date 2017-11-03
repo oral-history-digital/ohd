@@ -79,9 +79,9 @@ class InterviewSerializer < ActiveModel::Serializer
     end
   end
 
-  def duration
-    object.duration.timecode
-  end
+  #def duration
+    #object.duration.timecode
+  #end
 
 
 
