@@ -20,7 +20,6 @@ export default class WrapperPage extends React.Component {
 
     componentDidMount() {
         this.setLocale();
-        this.props.fetchStaticContent();
     }
 
     componentDidUpdate() {
