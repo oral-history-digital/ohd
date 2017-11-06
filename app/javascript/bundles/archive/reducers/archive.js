@@ -62,6 +62,7 @@ const archive = (state = initialState, action) => {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         interview: action.interview,
                         segments: action.segments,
+                        locations: action.locations,
                         headings: action.headings
                     }),
                 }),

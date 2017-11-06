@@ -7,6 +7,12 @@ class RegistryReference < BaseRegistryReference
     where({interview_id: interview_id, ref_object_type: 'Segment'}) 
   }
 
+  scope :with_locations, -> { 
+    joins(:registry_entry).
+    includes(registry_entry: {registry_names: :translations} ).
+    where.not('registry_entries.longitude': nil).where.not('registry_entries.latitude': nil)
+  }
+
   before_validation :reconnect_reference
 
   # Set an alternative ID that will allow us to re-connect the

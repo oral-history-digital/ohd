@@ -11,22 +11,30 @@ export default class InterviewLocations extends React.Component {
 
     componentDidMount() {
         if (!this.locationsLoaded()) {
-            this.props.fetchInterview(this.context.router.route.match.params.archiveId);
+            this.props.fetchLocations(this.context.router.route.match.params.archiveId);
         }
     }
 
     locationsLoaded() {
-        return !this.props.isFetchingInterview && this.props.segments && this.props.archiveId === this.context.router.route.match.params.archiveId
+        return this.props.locations[this.props.archiveId] && this.props.archiveId === this.context.router.route.match.params.archiveId
     }
 
-    handleClick(time, archiveId) {
+    handleClick(segmentId, archiveId) {
+        let time = getTimeForSegment(segmentId);
         this.props.handleSegmentClick(time);
+    }
+
+    getTimeForSegment(segmentId) {
+        let segment = this.props.segments.filter(function (segment) {
+              return segment.id === segmentId;
+        });
+        return segment.start_time;
     }
 
     render() {
         return(
             <LocationsContainer 
-                data={this.props.segments} 
+                data={this.props.locations[this.props.archiveId]} 
                 loaded={this.locationsLoaded()}
                 handleClick={this.handleClick.bind(this)}
             />
