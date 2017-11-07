@@ -46,7 +46,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     handleClick(event) {
-        console.log('handleClickinArchiveSearch')
+        console.log($(event.target).data().page);
         let page = ($(event.target).data().page);
         let query = this.props.searchQuery;
         query['page'] = page;
