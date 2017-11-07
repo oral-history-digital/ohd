@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     let interview = ArchiveUtils.getInterview(state);
     return { 
         archiveId: state.archive.archiveId,
+        segments: interview && interview.segments,
         locations: state.locations,
         locale: state.archive.locale,
         isFetchingLocations: state.archive.isFetchingLocations
