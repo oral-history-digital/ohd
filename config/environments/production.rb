@@ -84,4 +84,19 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.default_url_options = { host: 'da02.cedis.fu-berlin.de', protocol: 'http', port: 94 }
+
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: 'mail.fu-berlin.de',
+    domain: 'cedis.fu-berlin.de',
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_options = {
+    return_path: 'da-bounce@cedis.fu-berlin.de'
+  }
+
 end

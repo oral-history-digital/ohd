@@ -6,11 +6,11 @@ class UserAccountSerializer < ActiveModel::Serializer
     :last_name
 
   def first_name
-    object.user.first_name
+    object.user && object.user.first_name
   end
 
   def last_name
-    object.user.last_name
+    object.user && object.user.last_name
   end
 
 end

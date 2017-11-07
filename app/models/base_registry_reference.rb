@@ -8,7 +8,8 @@ class BaseRegistryReference < ActiveRecord::Base
 
 
   belongs_to :registry_entry,
-             -> { includes(:registry_names, {main_registers: :registry_names}) }
+             -> { includes(:registry_names) }
+             #-> { includes(:registry_names, {main_registers: :registry_names}) }
 
   belongs_to :registry_reference_type
 

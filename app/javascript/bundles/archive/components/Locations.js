@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { DEFAULT_LOCATION } from '../constants/archiveConstants';
 import '../../../css/locations'
+//import '../../../../../node_modules/leaflet/dist/leaflet'
 
 export default class Locations extends React.Component {
 
@@ -10,22 +11,24 @@ export default class Locations extends React.Component {
         let markers = [];
         let locations = [];
 
-        for (let i = 0; i < this.props.data.length; i++) {
-            for (let j = 0; j < this.props.data[i].references.length; j++) {
+        if (this.props.data) {
+            for (let i = 0; i < this.props.data.length; i++) {
+                for (let j = 0; j < this.props.data[i].references.length; j++) {
 
-                let ref = this.props.data[i].references[j];
+                    let ref = this.props.data[i].references[j];
 
-                if (ref.latitude) {
-                    locations.push([ref.latitude, ref.longitude]);
-                    markers.push(
-                        <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
-                            <Popup>
-                                <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
-                                {ref.desc[this.props.locale]}
-                                </h3>
-                            </Popup>
-                        </Marker>
-                    )
+                    if (ref.latitude) {
+                        locations.push([ref.latitude, ref.longitude]);
+                        markers.push(
+                            <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}-${j}`} >
+                                <Popup>
+                                    <h3 onClick={() => this.props.handleClick(this.props.data[i].start_time, this.props.data[i].archive_id)}>
+                                    {ref.desc[this.props.locale]}
+                                    </h3>
+                                </Popup>
+                            </Marker>
+                        )
+                    }
                 }
             }
         }

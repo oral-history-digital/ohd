@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import WrapperPage from '../components/WrapperPage';
 import { setLocale } from '../actions/wrapperPageActionCreators';
-import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { showFlyoutTabs } from '../actions/flyoutTabsActionCreators';
@@ -24,7 +23,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setLocale: locale => dispatch(setLocale(locale)),
-    fetchStaticContent:() => dispatch(fetchStaticContent()),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     showFlyoutTabs: () => dispatch(showFlyoutTabs()),
