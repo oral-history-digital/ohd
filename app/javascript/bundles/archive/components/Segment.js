@@ -94,11 +94,10 @@ export default class Segment extends React.Component {
 
 
     render() {
+        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0,2) : this.props.locale;
         let annotionCss = this.props.data.annotation_texts.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
         let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0,2) : this.props.locale;
-
-
+        let icoCss = this.state.contentOpen ? 'content-trans-text-ico active': 'content-trans-text-ico';
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
 
         return (
@@ -113,7 +112,7 @@ export default class Segment extends React.Component {
                     <div className='content-trans-text'
                          onClick={() => this.props.handleSegmentClick(this.props.data.time)}><p
                         className={this.css()}>{this.transcript()}</p></div>
-                    <div className="content-trans-text-ico">
+                    <div className={icoCss}>
                         <div className="content-trans-text-ico-link" title="Anmerkung schreiben"
                              onClick={() => this.props.openArchivePopup({
                                  title: 'Add Annotation',
