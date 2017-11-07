@@ -21,7 +21,7 @@ import {
 
 const initialState = {
     locale: 'de',
-    locales: ['de', 'en', 'ru'],
+    locales: ['de', 'el'],
     archiveId: null,
     interviews: {},
 
