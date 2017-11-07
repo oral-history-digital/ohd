@@ -61,7 +61,6 @@ import request from 'superagent';
           if (res) {
             if (res.error) {
                 console.log("loading json from " + url + " failed: " + error);
-                debugger;
                 dispatch(errorCallback(JSON.parse(res.text)));
             } else {
               if (typeof successCallback === "function") {
