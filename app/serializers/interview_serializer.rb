@@ -34,10 +34,6 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def title
-    #{
-      #de: 'Keiner Niemand',
-      #"#{object.language.code}": 'Noone'
-    #}
     {
       de: object.full_title(:de),
       "#{object.language.code}": object.full_title(object.language.code)
@@ -45,10 +41,6 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def short_title
-    #{
-      #de: 'Keiner Niemand',
-      #"#{object.language.code}": 'None'
-    #}
     {
       de: object.short_title(:de),
       "#{object.language.code}": object.short_title(object.language.code)
@@ -73,7 +65,7 @@ class InterviewSerializer < ActiveModel::Serializer
     #[]
     object.registry_references.map do |ref|
       {
-        desc: ref.registry_entry.descriptor(:all),
+        desc: ref.registry_entry.localized_hash,
         latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
         longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
       }

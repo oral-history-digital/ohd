@@ -7,7 +7,8 @@ class RegistryReferenceSerializer < ActiveModel::Serializer
              :ref_object_type
 
   def desc
-    object.registry_entry.descriptor(:all)
+    object.registry_entry.localized_hash
+    #object.registry_entry.descriptor(:all)
   end
 
   def latitude

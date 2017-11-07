@@ -740,7 +740,8 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def available_translations
-    registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
+    registry_names.map { |n| n.translations.map{|t| t.locale[0..1]} }.flatten.uniq
+    #registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
   end
 
   def descriptor=(descriptor)
@@ -831,6 +832,13 @@ class RegistryEntry < ActiveRecord::Base
       end
     else
       to_s(locale)
+    end
+  end
+
+  def localized_hash
+    registry_names.first.translations.inject({}) do |mem, name|
+      mem[name.locale[0..1]] = name.descriptor
+      mem
     end
   end
 
