@@ -32,6 +32,20 @@ class SegmentSerializer < ActiveModel::Serializer
     # }
   end
 
+  def mainheading
+    object.translations.inject({}) do |mem, t|
+      mem[t.locale[0..1]] = t.mainheading
+      mem
+    end
+  end
+
+  def subheading
+    object.translations.inject({}) do |mem, t|
+      mem[t.locale[0..1]] = t.subheading
+      mem
+    end
+  end
+
   def annotation_texts
     object.annotations.map(&:text)
   end
