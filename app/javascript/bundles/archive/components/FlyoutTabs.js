@@ -23,10 +23,10 @@ export default class FlyoutTabs extends React.Component {
         switch(tabIndex) {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
-                break;
+
             case 1: //Login
                 this.context.router.history.push(`/${this.props.locale}/account`);
-                break;
+
             default:
                 this.setState({ tabIndex: tabIndex })
         }
@@ -55,11 +55,11 @@ export default class FlyoutTabs extends React.Component {
             >
 
                 <TabList className='flyout'>
-                    <Tab className='flyout-top-nav'> Startseite </Tab>
-                    <Tab className='flyout-top-nav'> Login </Tab>
-                    <Tab className='flyout-tab'> Suche </Tab>
-                    <Tab className='flyout-tab'> Interview </Tab>
-                    <Tab className='flyout-tab'> Arbeitsmappe </Tab>
+                    <Tab className='flyout-top-nav'>Startseite </Tab>
+                    <Tab className='flyout-top-nav top-nav-last"'>Login </Tab>
+                    <Tab className='flyout-tab'>Suche im Archiv</Tab>
+                    <Tab className='flyout-tab'>Interview </Tab>
+                    <Tab className='flyout-tab'>Arbeitsmappe </Tab>
                 </TabList>
 
 
@@ -70,10 +70,12 @@ export default class FlyoutTabs extends React.Component {
                     login logout name
                 </TabPanel>
                 <TabPanel >
+                    <div className='flyout-tab-title'>Suche im Archiv</div>
                     <ArchiveSearchFormContainer
                     />
                 </TabPanel>
                 <TabPanel >
+                    <div className='flyout-tab-title'>Interview</div>
                     <div 
                         className='edit' 
                         onClick={() => this.props.openArchivePopup({
@@ -87,6 +89,7 @@ export default class FlyoutTabs extends React.Component {
                     biographie transcript daten zur za
                 </TabPanel>
                 <TabPanel >
+                    <div className='flyout-tab-title'>Arbeitsmappe</div>
                     <UserContentsContainer />
                 </TabPanel>
 

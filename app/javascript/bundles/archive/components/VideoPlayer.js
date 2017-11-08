@@ -2,51 +2,63 @@ import React from 'react';
 
 export default class VideoPlayer extends React.Component {
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.video) {
-      this.setVideoTime(prevProps)
-      this.setVideoStatus(prevProps)
+    componentDidUpdate(prevProps, prevState) {
+        if (this.video) {
+            this.setVideoTime(prevProps)
+            this.setVideoStatus(prevProps)
+        }
     }
-  }
 
-  setVideoTime(prevProps) {
-    if (prevProps.time !== this.props.videoTime) {
-      this.video.currentTime = this.props.videoTime;
+    setVideoTime(prevProps) {
+        if (prevProps.time !== this.props.videoTime) {
+            this.video.currentTime = this.props.videoTime;
+        }
     }
-  }
 
-  setVideoStatus(prevProps) {
-    if (prevProps.videoStatus !== this.props.videoStatus) {
-      this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+    setVideoStatus(prevProps) {
+        if (prevProps.videoStatus !== this.props.videoStatus) {
+            this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+        }
     }
-  }
 
-  reconnectVideoProgress() {
-    this.props.handleTranscriptScroll(false)
-  }
+    reconnectVideoProgress() {
+        this.props.handleTranscriptScroll(false)
+    }
 
 
-  render () {
-    return (
-      <div className='wrapper-video' onClick={ () => this.reconnectVideoProgress() }>
-        <h1 className='video-title'>{this.props.interview.title[this.props.locale]}</h1>
-        <div className='video-element'>
-          <video ref={(video) => { this.video = video; }}  
-            onTimeUpdate={(event) => {this.props.handleVideoTimeChange(event)}}
-            onEnded={(event) => {this.props.handleVideoEnded()}}
-            controls={true}
-          >
-            <source src={this.props.interview.src}/>
-            <track kind="subtitles" label="Transcript" src={this.props.archiveId +'.vtt?type=transcript'} srcLang="de" default></track>
-            <track kind="subtitles" label="Translation" src={this.props.archiveId +'.vtt?type=translation'} srcLang="en"></track>
-          </video>
-        </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
+                <div className={"video-title-container"}>
+                    <h1 className='video-title'>{this.props.interview.title[this.props.locale]}</h1>
+                    <div className="video-bookmark"><i className="fa fa-star"></i>Interview merken</div>
+                    <div className='video-element'>
+                        <video ref={(video) => {
+                            this.video = video;
+                        }}
+                               onTimeUpdate={(event) => {
+                                   this.props.handleVideoTimeChange(event)
+                               }}
+                               onEnded={(event) => {
+                                   this.props.handleVideoEnded()
+                               }}
+                               controls={true}
+                               poster={this.props.interview.still_url}
+                        >
+                            <source src={this.props.interview.src}/>
+                            <track kind="subtitles" label="Transcript"
+                                   src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
+                            <track kind="subtitles" label="Translation"
+                                   src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
+                        </video>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 VideoPlayer.propTypes = {
-  handleVideoTimeUpdate: React.PropTypes.func,
-  handleVideoEnded: React.PropTypes.func,
+    handleVideoTimeUpdate: React.PropTypes.func,
+    handleVideoEnded: React.PropTypes.func,
 };

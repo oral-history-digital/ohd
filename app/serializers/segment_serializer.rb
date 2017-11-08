@@ -23,9 +23,13 @@ class SegmentSerializer < ActiveModel::Serializer
 
   def transcripts
     {
-      de: ActionView::Base.full_sanitizer.sanitize(object.read_attribute(:translation)),
-      "#{object.interview.language.code}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
+        de: object.read_attribute(:translation),
+        "#{object.interview.language.code}": object.transcript
     }
+    # {
+    #   de: ActionView::Base.full_sanitizer.sanitize(object.read_attribute(:translation)),
+    #   "#{object.interview.language.code}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
+    # }
   end
 
   def annotation_texts

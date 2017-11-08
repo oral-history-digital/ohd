@@ -13,6 +13,7 @@ class InterviewsController < BaseController
         json = Rails.cache.fetch "interview-#{params[:interview_id]}-#{@interview.updated_at}" do
           segments = Segment.
             includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
+            #includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
             for_interview_id(@interview.id)
           headings = segments.with_heading
           {

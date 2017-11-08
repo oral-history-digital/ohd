@@ -12,27 +12,36 @@
 //}
 
 .flyout-top-nav {
-  display: inline;
+  float: left;
+  //display: inline;
   margin: 0;
-  padding: 0 15px 0 0;
+  padding: 6px 15px 0 0;
   font-size: $font-size-large;
   color: $gray-warm;
   transition: color 0.3s;
   cursor: pointer;
+  @include clearfix;
   &.lang {
     border-left: 2px solid lighten($gray-warm, 10%);
-    padding: 6px;
+    padding-left: 6px;
   }
   &:hover {
+    color: $gray-darkest;
+  }
+  &.active {
     color: $gray-darkest;
   }
   &:first-child {
     margin-left: 15px;
   }
+  &.top-nav-last {
+    margin-bottom: 30px;
+  }
 
 }
 
 .flyout-tab {
+  clear: left;
   display: block;
   margin-top: 2px;
   padding: 10px 30px 10px 15px;
@@ -42,17 +51,22 @@
   cursor: pointer;
   transition: 0.3s;
   &.active {
-    background: $secondary-color;
-    color: $gray-darkest;
-    cursor: auto;
+    display:none;
   }
   &:hover {
     background: $secondary-color;
     color: $gray-darkest;
   }
-  &:nth-child(5) {
-    margin-top: 36px;
-  }
+}
+
+.flyout-tab-title {
+  display: block;
+  margin-top: 2px;
+  padding: 10px 30px 10px 15px;
+  background: $secondary-color;
+  color: $gray-darkest;
+  font-size: $font-size-larger;
+  cursor: auto;
 }
 
 .flyout-search {

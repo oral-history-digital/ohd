@@ -3,6 +3,7 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 //import * as actionCreators from '../actions/searchActionCreators';
 import * as actionCreators from '../actions/searchActionCreators';
+import { resetSearchInArchive, searchInArchive } from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
   return { 
@@ -19,6 +20,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    resetSearchInArchive: (query) => dispatch(resetSearchInArchive(query)),
+    searchInArchive: (query) => dispatch(searchInArchive(query)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);
