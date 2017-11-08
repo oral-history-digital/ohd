@@ -110,6 +110,7 @@ class Interview < ActiveRecord::Base
            through: :segment_registry_references,
            source: :registry_entry
            
+  translates :observations
   #translates :first_name, :other_first_names, :last_name, :birth_name,
              #:return_date, :forced_labor_details,
              #:interviewers, :transcriptors, :translators,
