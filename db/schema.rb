@@ -10,312 +10,362 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906135311) do
+ActiveRecord::Schema.define(version: 20171108164112) do
 
-  create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "annotation_id"
-    t.string   "locale"
-    t.text     "text",          limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["annotation_id"], name: "index_annotation_translations_on_annotation_id", using: :btree
+  create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "annotation_section_id",               null: false
+    t.integer  "annotation_id",                       null: false
+    t.string   "locale",                limit: 128,   null: false
+    t.text     "text",                  limit: 65535, null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["annotation_section_id"], name: "annotation_id", using: :btree
+    t.index ["annotation_section_id"], name: "annotation_section_id", using: :btree
   end
 
-  create_table "annotations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "interview_id"
-    t.string   "author"
-    t.string   "media_id",        null: false
-    t.string   "timecode",        null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "annotations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "interview_section_id",             null: false
+    t.integer  "interview_id",                     null: false
+    t.integer  "section_id",                       null: false
+    t.string   "author",               limit: 512, null: false
+    t.string   "media_id",             limit: 512, null: false
+    t.string   "timecode",             limit: 512, null: false
+    t.integer  "segment_id",                       null: false
     t.integer  "user_content_id"
-    t.integer  "segment_id"
-    t.index ["interview_id"], name: "index_annotations_on_interview_id", using: :btree
-    t.index ["media_id"], name: "index_annotations_on_media_id", using: :btree
-    t.index ["segment_id"], name: "index_annotations_on_segment_id", using: :btree
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["section_id"], name: "section_id", using: :btree
   end
 
-  create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "collection_id"
-    t.string   "locale"
+  create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "collection_id",               null: false
+    t.string   "locale",                      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "name"
+    t.string   "institution"
+    t.string   "countries"
+    t.text     "interviewers",  limit: 65535
+    t.string   "responsibles"
+    t.text     "notes",         limit: 65535
+    t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
+    t.index ["locale"], name: "index_collection_translations_on_locale", using: :btree
+  end
+
+  create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "name"
     t.string   "countries"
     t.string   "institution"
     t.string   "responsibles"
-    t.text     "interviewers",  limit: 65535
-    t.string   "name"
-    t.text     "notes",         limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
-  end
-
-  create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text     "notes",        limit: 65535
+    t.text     "interviewers", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "homepage"
     t.string   "project_id"
   end
 
-  create_table "contributions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "contributions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.bigint  "interview_section_id",               null: false
+    t.integer "interview_id",         default: 0
+    t.string  "contribution_type",                  null: false
+    t.string  "person_dedalo_id",                   null: false
+    t.string  "person_id",            default: "0"
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["person_dedalo_id"], name: "person_dedalo_id", length: { person_dedalo_id: 128 }, using: :btree
+  end
+
+  create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "section_id",                   null: false
+    t.string   "person_dedalo_id", limit: 125, null: false
+    t.string   "person_id",        limit: 125
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
+    t.index ["person_dedalo_id"], name: "person_id", using: :btree
+  end
+
+  create_table "history_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "history_id",                            null: false
+    t.string   "person_dedalo_id",     limit: 128,      null: false
+    t.string   "person_id",            limit: 128
+    t.string   "locale",               limit: 128,      null: false
+    t.text     "forced_labor_details", limit: 16777215, null: false
+    t.string   "return_date",          limit: 256,      null: false
+    t.string   "deportation_date",     limit: 256,      null: false
+    t.text     "punishment",           limit: 255,      null: false
+    t.string   "liberation_date",      limit: 256,      null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
+    t.index ["person_dedalo_id"], name: "person_id", using: :btree
+  end
+
+  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "locale"
+    t.string  "observations"
     t.integer "interview_id"
-    t.string  "contribution_type"
-    t.integer "person_id"
-    t.index ["interview_id"], name: "index_contributions_on_interview_id", using: :btree
   end
 
-  create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "person_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_histories_on_person_id", using: :btree
+  create_table "interviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", comment: "Self-generated table in Dédalo4 for diffusion" do |t|
+    t.bigint   "section_id",                             comment: "Campo creado automáticamente para guardar section_id (sin correspondencia en estructura)", unsigned: true
+    t.string   "lang",                     limit: 8,     comment: "Campo creado automáticamente para guardar el idioma (sin correspondencia en estructura)"
+    t.string   "archive_id",                             comment: "Código - oh14"
+    t.integer  "collection_id",                          comment: "Proyecto - oh22",                                                                          unsigned: true
+    t.integer  "video",                    limit: 1,     comment: "Audiovisual - oh25"
+    t.integer  "duration",                               comment: "Audiovisual - oh25",                                                                       unsigned: true
+    t.integer  "translated",               limit: 1,     comment: "Estado - oh28"
+    t.datetime "created_at",                             comment: "ID - oh62"
+    t.datetime "updated_at",                             comment: "ID - oh62"
+    t.integer  "segmented",                limit: 1,     comment: "ID - oh62"
+    t.integer  "researched",               limit: 1,     comment: "ID - oh62"
+    t.integer  "proofread",                limit: 1,     comment: "ID - oh62"
+    t.string   "interview_date",                         comment: "Audiovisual - oh25"
+    t.string   "still_image_file_name",                  comment: "Imagen identificativa - oh17"
+    t.string   "still_image_content_type",               comment: "Imagen identificativa - oh17"
+    t.integer  "still_image_file_size",                  comment: "Imagen identificativa - oh17",                                                             unsigned: true
+    t.datetime "still_image_updated_at",                 comment: "Imagen identificativa - oh17"
+    t.integer  "inferior_quality",         limit: 1,     comment: "ID - oh62"
+    t.text     "original_citation",        limit: 65535, comment: "ID - oh62"
+    t.text     "translated_citation",      limit: 65535, comment: "ID - oh62"
+    t.string   "citation_media_id",                      comment: "ID - oh62"
+    t.string   "citation_timecode",        limit: 18,    comment: "ID - oh62"
+    t.datetime "indexed_at",                             comment: "Audiovisual - oh25"
+    t.integer  "language_id",                            comment: "Idioma - oh20",                                                                            unsigned: true
+    t.integer  "photos",                                 comment: "image - oh26",                                                                             unsigned: true
+    t.index ["archive_id"], name: "archive_id", using: :btree
+    t.index ["citation_media_id"], name: "citation_media_id", using: :btree
+    t.index ["citation_timecode"], name: "citation_timecode", using: :btree
+    t.index ["collection_id"], name: "collection_id", using: :btree
+    t.index ["created_at"], name: "created_at", using: :btree
+    t.index ["duration"], name: "duration", using: :btree
+    t.index ["indexed_at"], name: "indexed_at", using: :btree
+    t.index ["inferior_quality"], name: "inferior_quality", using: :btree
+    t.index ["interview_date"], name: "interview_date", using: :btree
+    t.index ["lang"], name: "lang", using: :btree
+    t.index ["language_id"], name: "language_id", using: :btree
+    t.index ["original_citation"], name: "original_citation", type: :fulltext
+    t.index ["proofread"], name: "proofread", using: :btree
+    t.index ["researched"], name: "researched", using: :btree
+    t.index ["section_id", "lang"], name: "section_id_lang_constrain", unique: true, using: :btree
+    t.index ["section_id"], name: "section_id", using: :btree
+    t.index ["segmented"], name: "segmented", using: :btree
+    t.index ["still_image_content_type"], name: "still_image_content_type", using: :btree
+    t.index ["still_image_file_name"], name: "still_image_file_name", using: :btree
+    t.index ["still_image_file_size"], name: "still_image_file_size", using: :btree
+    t.index ["still_image_updated_at"], name: "still_image_updated_at", using: :btree
+    t.index ["translated"], name: "translated", using: :btree
+    t.index ["translated_citation"], name: "translated_citation", type: :fulltext
+    t.index ["updated_at"], name: "updated_at", using: :btree
+    t.index ["video"], name: "video", using: :btree
   end
 
-  create_table "history_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "history_id",                         null: false
-    t.string   "locale",                             null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.text     "forced_labor_details", limit: 65535
-    t.string   "return_date"
-    t.string   "deportation_date"
-    t.string   "punishment"
-    t.string   "liberation_date"
-    t.index ["history_id"], name: "index_history_translations_on_history_id", using: :btree
-    t.index ["locale"], name: "index_history_translations_on_locale", using: :btree
-  end
-
-  create_table "imports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "importable_id"
-    t.string   "importable_type"
-    t.datetime "time"
-    t.string   "migration"
-    t.string   "content",         limit: 400
-    t.datetime "created_at"
-    t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", using: :btree
-  end
-
-  create_table "interviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "archive_id"
-    t.integer  "collection_id"
-    t.boolean  "video"
-    t.integer  "duration"
-    t.boolean  "translated"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "segmented",                              default: false
-    t.boolean  "researched",                             default: false
-    t.boolean  "proofread",                              default: false
-    t.string   "interview_date"
-    t.string   "still_image_file_name"
-    t.string   "still_image_content_type"
-    t.integer  "still_image_file_size"
-    t.datetime "still_image_updated_at"
-    t.boolean  "inferior_quality",                       default: false
-    t.text     "original_citation",        limit: 65535
-    t.text     "translated_citation",      limit: 65535
-    t.string   "citation_media_id"
-    t.string   "citation_timecode",        limit: 18
-    t.datetime "indexed_at"
-    t.integer  "language_id"
-  end
-
-  create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "language_id"
-    t.string   "locale"
+  create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "language_id", null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "abbreviated"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.index ["language_id"], name: "index_language_translations_on_language_id", using: :btree
+    t.index ["locale"], name: "index_language_translations_on_locale", using: :btree
   end
 
-  create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "code"
+  create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string "code", null: false
+    t.string "name", null: false
   end
 
-  create_table "people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "date_of_birth"
-    t.string   "gender"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  create_table "person_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "person_id",         null: false
-    t.string   "locale",            null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "birth_name"
-    t.string   "other_first_names"
-    t.string   "alias_names"
-    t.index ["locale"], name: "index_person_translations_on_locale", using: :btree
-    t.index ["person_id"], name: "index_person_translations_on_person_id", using: :btree
-  end
-
-  create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "photo_id"
-    t.string   "locale"
-    t.text     "caption",    limit: 65535
+  create_table "people", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", comment: "Table builded manually" do |t|
+    t.string   "person_dedalo_id", limit: 160
+    t.string   "date_of_birth",    limit: 160
+    t.string   "gender",           limit: 160
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["photo_id"], name: "index_photo_translations_on_photo_id", using: :btree
+    t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
   end
 
-  create_table "photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "person_translations", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", comment: "Table builded manually" do |t|
+    t.string   "person_dedalo_id",  limit: 160, null: false
+    t.bigint   "person_id",                     null: false
+    t.string   "locale",            limit: 160
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "first_name",        limit: 600
+    t.string   "last_name",         limit: 600
+    t.string   "birth_name",        limit: 600
+    t.string   "other_first_names", limit: 600
+    t.string   "alias_names",       limit: 600
+    t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
+  end
+
+  create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "photo_dedalo_id",               null: false
+    t.integer  "photo_id",                      null: false
+    t.string   "locale",          limit: 128,   null: false
+    t.text     "caption",         limit: 65535, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["photo_dedalo_id"], name: "photo_dedalo_id", using: :btree
+  end
+
+  create_table "photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "photo_dedalo_id",                   null: false
+    t.integer  "interview_section_id",              null: false
     t.integer  "interview_id"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.integer  "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.string   "photo_file_name",      limit: 256,  null: false
+    t.string   "photo_content_type",   limit: 1024, null: false
+    t.integer  "photo_file_size",                   null: false
+    t.datetime "photo_updated_at",                  null: false
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["photo_dedalo_id"], name: "photo_dedalo_id", using: :btree
   end
 
-  create_table "registry_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "entry_code"
-    t.string   "entry_desc"
+  create_table "registry_entries", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "entry_dedalo_code", limit: 256,                    null: false
+    t.string   "entry_code",        limit: 128
+    t.string   "entry_desc",        limit: 128
     t.string   "latitude"
     t.string   "longitude"
-    t.string   "workflow_state", null: false
-    t.boolean  "list_priority"
+    t.string   "workflow_state",    limit: 128, default: "public", null: false
+    t.integer  "list_priority",     limit: 1,   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["entry_code"], name: "entry_code", using: :btree
+    t.index ["entry_dedalo_code"], name: "entry_dedalo_code", length: { entry_dedalo_code: 255 }, using: :btree
   end
 
-  create_table "registry_hierarchies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "ancestor_id",   null: false
-    t.integer  "descendant_id", null: false
-    t.boolean  "direct",        null: false
-    t.integer  "count",         null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["ancestor_id", "descendant_id"], name: "index_registry_hierarchies_on_ancestor_id_and_descendant_id", unique: true, using: :btree
-    t.index ["ancestor_id"], name: "index_registry_hierarchies_on_ancestor_id", using: :btree
-    t.index ["descendant_id"], name: "index_registry_hierarchies_on_descendant_id", using: :btree
+  create_table "registry_hierarchies", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "ancestor_dedalo_id",   limit: 128,             null: false
+    t.string   "descendant_dedalo_id", limit: 128,             null: false
+    t.string   "ancestor_id",          limit: 128
+    t.string   "descendant_id",        limit: 128
+    t.integer  "direct",               limit: 1,   default: 0
+    t.integer  "count",                            default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.index ["ancestor_dedalo_id"], name: "ancestor_dedalo_id", using: :btree
+    t.index ["ancestor_id"], name: "ancestor_id", using: :btree
   end
 
-  create_table "registry_name_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
-    t.integer  "registry_name_id",               null: false
-    t.string   "locale",                         null: false
-    t.text     "descriptor",       limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: { descriptor: 255 }, using: :btree
-    t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true, using: :btree
-    t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id", using: :btree
+  create_table "registry_name_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "registry_name_dedalo_id", limit: 128,      null: false
+    t.string   "registry_name_id",        limit: 128
+    t.string   "locale",                  limit: 128,      null: false
+    t.text     "descriptor",              limit: 16777215, null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.index ["registry_name_dedalo_id"], name: "registry_name_dedalo_id", using: :btree
+    t.index ["registry_name_id"], name: "registry_name_id", using: :btree
   end
 
-  create_table "registry_name_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string  "code"
-    t.string  "name"
-    t.integer "order_priority"
-    t.boolean "allows_multiple"
-    t.boolean "mandatory"
+  create_table "registry_name_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string  "code",            limit: 128, null: false
+    t.string  "name",            limit: 256, null: false
+    t.integer "order_priority",              null: false
+    t.integer "allows_multiple", limit: 1,   null: false
+    t.integer "mandatory",       limit: 1,   null: false
   end
 
-  create_table "registry_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "registry_entry_id",     null: false
-    t.integer  "registry_name_type_id", null: false
-    t.integer  "name_position",         null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["registry_entry_id", "registry_name_type_id", "name_position"], name: "registry_names_unique_types_and_positions", unique: true, using: :btree
+  create_table "registry_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "registry_entry_dedalo_id",     limit: 128, null: false
+    t.string   "registry_name_type_dedalo_id", limit: 128, null: false
+    t.string   "registry_entry_id",            limit: 128
+    t.string   "registry_name_type_id",        limit: 128
+    t.integer  "name_position",                            null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.index ["registry_entry_dedalo_id"], name: "registry_entry_dedalo_id", using: :btree
+    t.index ["registry_entry_id"], name: "registry_entry_id", using: :btree
   end
 
-  create_table "registry_reference_type_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "registry_reference_type_translations", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "registry_reference_type_id"
-    t.string   "locale"
-    t.string   "name"
+    t.string   "locale",                     limit: 20
+    t.string   "name",                       limit: 20
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["registry_reference_type_id"], name: "index_959822146554d9dfd5d5530d45b5cafb8c7d4067", using: :btree
   end
 
-  create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "registry_entry_id"
-    t.string  "code"
+    t.string  "code",              limit: 20
   end
 
-  create_table "registry_references", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "registry_entry_id",                       null: false
-    t.integer  "ref_object_id",                           null: false
-    t.string   "ref_object_type",                         null: false
+  create_table "registry_references", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "dedalo_rsc167_section_id",                                    null: false
+    t.integer  "registry_entry_id",                                           null: false
+    t.string   "registry_entry_dedalo_id",   limit: 512,                      null: false
+    t.string   "ref_object_type",                         default: "Segment", null: false
+    t.integer  "ref_object_id",                                               null: false
     t.integer  "registry_reference_type_id"
-    t.integer  "ref_position",                            null: false
+    t.integer  "ref_position",                                                null: false
     t.string   "original_descriptor",        limit: 1000
     t.string   "ref_details",                limit: 1000
     t.string   "ref_comments",               limit: 1000
     t.string   "ref_info",                   limit: 1000
-    t.string   "workflow_state",                          null: false
-    t.integer  "interview_id",                            null: false
+    t.string   "workflow_state",                          default: "checked", null: false
+    t.integer  "interview_section_id",                                        null: false
+    t.integer  "interview_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["dedalo_rsc167_section_id"], name: "dedalo_rsc167_section_id", using: :btree
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["registry_entry_dedalo_id"], name: "registry_entry_dedalo_id", length: { registry_entry_dedalo_id: 255 }, using: :btree
   end
 
-  create_table "segment_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "segment_translations", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "section_id"
     t.integer  "segment_id"
-    t.string   "locale"
-    t.string   "subheading"
-    t.string   "mainheading"
+    t.string   "locale",      limit: 128
+    t.string   "mainheading", limit: 1000
+    t.string   "subheading",  limit: 1000
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["segment_id"], name: "index_segment_translations_on_segment_id", using: :btree
+    t.index ["section_id"], name: "section_id", using: :btree
   end
 
-  create_table "segments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "segments", id: :bigint, unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "section_id"
     t.integer  "tape_id"
-    t.string   "media_id"
-    t.string   "timecode"
-    t.string   "transcript",      limit: 2000
-    t.string   "translation",     limit: 2000
+    t.string   "media_id",             limit: 160
+    t.string   "timecode",             limit: 160
+    t.string   "transcript",           limit: 2000
+    t.string   "translation",          limit: 2000
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "duration",                     precision: 5, scale: 2
+    t.decimal  "duration",                           precision: 5, scale: 2
     t.integer  "sequence_number"
     t.integer  "tape_number"
-    t.string   "speaker"
-    t.boolean  "speaker_change",                                       default: false
-    t.boolean  "chapter_change",                                       default: false
-    t.string   "section"
-    t.integer  "interview_id"
+    t.string   "speaker",              limit: 256
     t.integer  "speaker_id"
-    t.index ["interview_id"], name: "index_segments_on_interview_id", using: :btree
-    t.index ["media_id"], name: "index_segments_on_media_id", using: :btree
-  end
-
-  create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.datetime "created_at"
-    t.index ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
-    t.index ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type", using: :btree
-  end
-
-  create_table "tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name"
-  end
-
-  create_table "tapes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.boolean  "speaker_change"
+    t.boolean  "chapter_change"
+    t.integer  "notes"
+    t.string   "section",              limit: 160
+    t.integer  "interview_section_id"
+    t.string   "term_id",              limit: 11264
     t.integer  "interview_id"
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["section_id"], name: "section_id", using: :btree
+    t.index ["term_id"], name: "term_id", length: { term_id: 255 }, using: :btree
+  end
+
+  create_table "tapes", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", comment: "Table builded manually" do |t|
+    t.integer  "section_id"
+    t.integer  "interview_section_id"
     t.string   "media_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "video"
     t.integer  "duration"
+    t.integer  "interview_id"
+    t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["section_id"], name: "section_id", using: :btree
   end
 
-  create_table "text_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "interview_id"
-    t.string  "document_type"
-    t.string  "document_file_name"
-    t.string  "document_content_type"
-    t.integer "document_file_size"
-    t.string  "locale",                limit: 5, default: "de", null: false
-    t.index ["interview_id", "document_type", "locale"], name: "index_text_materials_unique_document", unique: true, using: :btree
-  end
-
-  create_table "usage_reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "usage_reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "ip"
     t.string   "action",                      null: false
     t.string   "resource_id",     limit: 20
@@ -326,37 +376,42 @@ ActiveRecord::Schema.define(version: 20170906135311) do
     t.datetime "created_at"
   end
 
-  create_table "user_account_ips", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_account_ips", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_account_id"
     t.string   "ip"
     t.datetime "created_at"
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", using: :btree
   end
 
-  create_table "user_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "email",                              default: "", null: false
-    t.string   "encrypted_password",     limit: 128, default: "", null: false
-    t.string   "password_salt",                      default: "", null: false
+  create_table "user_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string   "login",                  default: "", null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "remember_token"
+    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "login"
+    t.string   "password_salt"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        default: 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.string   "authentication_token"
     t.datetime "deactivated_at"
-    t.datetime "reset_password_sent_at"
-    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["login", "deactivated_at"], name: "index_user_accounts_on_login_and_deactivated_at", using: :btree
     t.index ["login"], name: "index_user_accounts_on_login", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, using: :btree
   end
 
-  create_table "user_contents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_contents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id"
     t.string   "id_hash"
     t.string   "title"
@@ -373,37 +428,32 @@ ActiveRecord::Schema.define(version: 20170906135311) do
     t.string   "reference_type"
     t.integer  "position",                         default: 1
     t.string   "workflow_state",                   default: "private"
-    t.datetime "submitted_at"
-    t.datetime "published_at"
     t.string   "media_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
     t.index ["user_id"], name: "index_user_contents_on_user_id", using: :btree
   end
 
-  create_table "user_registrations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_registrations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
     t.boolean  "tos_agreement"
     t.text     "application_info",   limit: 65535
     t.string   "workflow_state"
-    t.datetime "created_at"
-    t.datetime "activated_at"
     t.string   "admin_comments"
     t.integer  "user_account_id"
     t.string   "login"
     t.datetime "processed_at"
     t.string   "default_locale"
     t.boolean  "receive_newsletter"
-    t.boolean  "newsletter_signup",                default: false
-    t.boolean  "priv_agreement",                   default: false
-    t.index ["email"], name: "index_user_registrations_on_email", using: :btree
-    t.index ["workflow_state", "email"], name: "index_user_registrations_on_workflow_state_and_email", using: :btree
-    t.index ["workflow_state"], name: "index_user_registrations_on_workflow_state", using: :btree
+    t.boolean  "newsletter_signup"
+    t.boolean  "priv_agreement"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "appellation"
@@ -432,5 +482,4 @@ ActiveRecord::Schema.define(version: 20170906135311) do
     t.index ["user_account_id"], name: "index_users_on_user_account_id", using: :btree
   end
 
-  add_foreign_key "histories", "people"
 end
