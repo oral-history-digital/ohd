@@ -56,7 +56,7 @@ export default class FlyoutTabs extends React.Component {
 
                 <TabList className='flyout'>
                     <Tab className='flyout-top-nav'>Startseite </Tab>
-                    <Tab className='flyout-top-nav top-nav-last"'>Login </Tab>
+                    <Tab className='flyout-top-nav top-nav-last'>Login </Tab>
                     <Tab className='flyout-tab'>Suche im Archiv</Tab>
                     <Tab className='flyout-tab'>Interview </Tab>
                     <Tab className='flyout-tab'>Arbeitsmappe </Tab>
