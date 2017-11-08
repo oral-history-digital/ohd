@@ -6,7 +6,7 @@ default: &default
     - el
     - alias
 
-  default_locale: de
+  default_locale: all
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'

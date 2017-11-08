@@ -2,7 +2,8 @@ class SearchesController < BaseController
 
   layout 'responsive'
 
-  prepend_before_action :redirect_unauthenticated_users
+  #prepend_before_action :redirect_unauthenticated_users
+  skip_before_action :authenticate_user_account!
 
   # Handle search initialization.
   before_action :rename_person_name_param, :only => :person_name

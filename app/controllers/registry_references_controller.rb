@@ -18,12 +18,11 @@ class RegistryReferencesController < BaseController
       end
       format.json do
        interview = Interview.find_by(archive_id: params[:archive_id])
-       segment_ref_locations = interview.segment_registry_entries.with_location
-       interview_ref_locations = interview.segment_registry_entries.with_location
+
+       segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
        render json: {
          archive_id: params[:archive_id],
-         segment_ref_locations: segment_ref_locations.map{|e| ::RegistryEntrySerializer.new(e)},
-         interview_ref_locations: interview_ref_locations.map{|e| ::RegistryEntrySerializer.new(e)}
+         segment_ref_locations: segment_ref_locations.map{|e| ::RegistryReferenceSerializer.new(e)},
        }
       end
     end

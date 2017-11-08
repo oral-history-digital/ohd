@@ -13,7 +13,7 @@ export default class ArchiveLocations extends React.Component {
         return !this.props.isArchiveSearching && this.props.foundInterviews.length > 0;
     }
 
-    handleClick(time, archiveId) {
+    handleClick(segmentId, archiveId) {
         this.props.searchInInterview({fulltext: this.props.fulltext, id: archiveId})
         this.context.router.history.push(`/${this.props.locale}/interviews/${archiveId}`);
     }
