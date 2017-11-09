@@ -42,13 +42,18 @@ class SearchesController < BaseController
       end
       format.json do
         #serialized_segments = @search.segments#Hash[@search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
-        serialized_unqueried_facets = @search.unqueried_facets.map() {|i| [{id: i[0], name: cat_name(i[0])}, i[1].map {|j| {entry: ::FacetSerializer.new(j[0]), count: j[1]}}]}
+        serialized_unqueried_facets = @search.unqueried_facets.map() do |i| 
+          [
+            {id: i[0], name: cat_name(i[0])}, 
+            i[1].map {|j| {entry: Rails.cache.fetch("facet-#{j[0]}"){::FacetSerializer.new(j[0]).as_json}, count: j[1]}}
+          ]
+        end
 
         render json: {
             all_interviews_count: Interview.count,
             result_pages_count: @search.result_pages_count,
             results_count: @search.hits,
-            interviews: @interviews.map{|i| ::InterviewSerializer.new(i) },
+            interviews: @interviews.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
             #found_segments_for_interviews:  serialized_segments ,
             facets: {unqueried_facets: serialized_unqueried_facets, query_facets: @search.query_facets},
             session_query: session[:query],
