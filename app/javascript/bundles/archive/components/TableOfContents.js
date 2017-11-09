@@ -16,12 +16,12 @@ export default class TableOfContents extends React.Component {
         if (segment.mainheading !== '') {
           mainIndex += 1;
           subIndex = 0;
-          mainheading = mainIndex + '. ' + segment.mainheading;
+          mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
           headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
         }
         if (segment.subheading !== '') {
           subIndex += 1;
-          subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading;
+          subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading[this.props.locale];
           headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
         }
       })
