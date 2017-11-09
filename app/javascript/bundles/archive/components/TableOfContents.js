@@ -32,7 +32,7 @@ export default class TableOfContents extends React.Component {
 
   render () {
     return ( 
-      <div>
+      <div className={'content-index'}>
         {this.prepareHeadings().map( (heading, index) => {
           return <HeadingContainer 
                    key={'mainheading-' + index}

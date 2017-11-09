@@ -96,12 +96,6 @@ header.site-header {
         display: block !important;
       }
     overflow: scroll;
-    p {
-      font-size: $font-size-medium;
-      color: $gray-medium;
-      //background: $gray-lightest;
-      padding: 20px;
-    }
   }
 
   .flyout-toggle {
@@ -273,35 +267,6 @@ footer {
   z-index: 1100; //because of leaflet
   cursor: pointer;
   color: $primary-color;
-}
-
-.flyout-wrapper-content {
-  padding: 15px 15px 15px 30px;
-  p {
-    font-size: $font-size-large;
-    color: $gray-darkest;
-    padding: 0;
-    margin: 0 0 15px 0;
-  }
-  .flyout-content-label {
-    color: $gray-dark;
-    margin-right: 10px;
-  }
-  a:link, a:visited {
-    color: $primary-color;
-  }
-  a:hover {
-    color: $gray-dark;
-    text-decoration: none;
-    .fa {
-      color: $gray-dark;
-      text-decoration: none;
-    }
-  }
-  .fa {
-    margin-right: 10px;
-    color: $primary-color;
-  }
 }
 
 .flyout-caption {
