@@ -32,24 +32,23 @@
     color: $gray-darkest;
   }
   &:first-child {
-    margin-left: 15px;
+    margin-left: 20px;
   }
   &.top-nav-last {
     margin-bottom: 30px;
   }
-
 }
 
 .flyout-tab {
   clear: left;
   display: block;
   margin-top: 2px;
-  padding: 10px 30px 10px 15px;
+  padding: 20px;
   background: $gray-warm;
   color: #fff;
-  font-size: $font-size-larger;
+  font-size: 1.25rem;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.4s;
   &.active {
     display:none;
   }
@@ -61,31 +60,38 @@
 
 .flyout-tab-title {
   display: block;
-  margin-top: 2px;
-  padding: 10px 30px 10px 15px;
+  margin: 2px 0 40px 0;
+  padding: 20px;
   background: $secondary-color;
   color: $gray-darkest;
-  font-size: $font-size-larger;
+  font-size: 1.25rem;
   cursor: auto;
 }
 
 .flyout-search {
-  padding: 10px 15px 10px 15px;
-  display: block;
-  margin: 50px 15px 30px 15px;
-  border-bottom: 1px solid $gray-dark;
-  color: $primary-color;
-  font-size: $font-size-larger;
-  .search-input,
+  padding: 0 20px;
+  margin: 0;
+}
+
+.flyout-search{
+  .search-input {
+    width: 80%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid $gray-dark;
+  }
   ::placeholder {
     color: $primary-color;
   }
   .search-button {
+    width: 20%;
     font-family: FontAwesome;
     content: "\f067";
     color: $primary-color;
     float: right;
     transition: color 0.3s;
+    padding: 10px;
+    border-bottom: 1px solid $gray-dark;
     &:hover {
       color: $gray-light;
     }

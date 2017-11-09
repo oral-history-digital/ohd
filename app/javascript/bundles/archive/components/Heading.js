@@ -42,8 +42,10 @@ export default class Heading extends React.Component {
   }
 
   render () {
+    let icoClass = this.state.expanded ? 'heading-ico active': 'heading-ico' ;
     return (
       <div className='heading'>
+        <div className={icoClass}></div>
         <div 
           className='mainheading'
           onClick={() => this.handleClick(this.props.data.time)} 
