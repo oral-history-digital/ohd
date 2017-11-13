@@ -13,7 +13,8 @@ export default class TableOfContents extends React.Component {
     if(this.props.interview && this.props.interview.headings) {
       this.props.interview.headings.map( (segment, index) => {
         
-        if (segment.mainheading !== '') {
+        //if (segment.mainheading !== '') {
+        if (segment.subheading === '') {
           mainIndex += 1;
           subIndex = 0;
           mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
