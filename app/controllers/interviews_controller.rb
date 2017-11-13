@@ -28,7 +28,10 @@ class InterviewsController < BaseController
         render json: json
       end
       format.vtt do
-        render text: @interview.to_vtt( params[:type] )
+        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
+          @interview.to_vtt( params[:type] )
+        end
+        render text: vtt
       end
       format.pdf do
         pdf = render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
