@@ -57,13 +57,14 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def references
-    []
-    #object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
-      #{
+    #[]
+    object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
+      {
+        desc: ref.registry_entry.localized_hash,
         #desc: ref.registry_entry.descriptor(:all),
-        #latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
-        #longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
-      #}
-    #end
+        latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
+        longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
+      }
+    end
   end
 end
