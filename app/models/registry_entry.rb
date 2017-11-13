@@ -197,7 +197,8 @@ class RegistryEntry < ActiveRecord::Base
         frontier_ids = frontier.map { |path| path.last }.uniq
         new_frontier = []
         now_visited = []
-        RegistryHierarchy.all(:conditions => {:ancestor_id => frontier_ids, :descendant_id => not_yet_visited, :direct => true}).each do |rh|
+        RegistryHierarchy.where(:ancestor_id => frontier_ids).where(:descendant_id => not_yet_visited).where(:direct => true).each do |rh|
+        #RegistryHierarchy.all(:conditions => {:ancestor_id => frontier_ids, :descendant_id => not_yet_visited, :direct => true}).each do |rh|
           frontier.select { |path| path.last == rh.ancestor_id }.each do |path|
             now_visited << rh.descendant_id
             new_path = (path.dup << rh.descendant_id)
