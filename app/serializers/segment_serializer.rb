@@ -18,17 +18,18 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def tape_nbr
-    object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
+    #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
+    object.tape.tape_number
   end
 
   def transcripts
     {
         de: object.read_attribute(:translation),
-        "#{object.interview.language.code}": object.transcript
+        "#{object.interview.language.code[0..1]}": object.transcript
     }
     # {
     #   de: ActionView::Base.full_sanitizer.sanitize(object.read_attribute(:translation)),
-    #   "#{object.interview.language.code}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
+    #   "#{object.interview.language.code[0..1]}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
     # }
   end
 
