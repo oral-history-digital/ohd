@@ -7,6 +7,13 @@ import '../../../css/locations'
 
 export default class Locations extends React.Component {
 
+    componentDidUpdate() {
+        if (this.props.visible) {
+            this.map.leafletElement.invalidateSize();
+            this.map.leafletElement.fitBounds(this.markersAndLocations().locations);
+        }
+    }
+
     markersAndLocations() {
         let markers = [];
         let locations = [];
@@ -41,6 +48,7 @@ export default class Locations extends React.Component {
             return(
                 <Map
                     bounds={locations}
+                    ref={(map) => { this.map = map; }}
                 >
                     <TileLayer
                         url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
