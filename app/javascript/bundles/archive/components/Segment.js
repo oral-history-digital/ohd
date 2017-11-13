@@ -110,8 +110,11 @@ export default class Segment extends React.Component {
                         </div>
                     </div>
                     <div className='content-trans-text'
-                         onClick={() => this.props.handleSegmentClick(this.props.data.time)}><p
-                        className={this.css()}>{this.transcript()}</p></div>
+                         onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
+                        <div className={this.css()}
+                             dangerouslySetInnerHTML = {{__html:this.transcript()}}
+                        />
+                    </div>
                     <div className={icoCss}>
                         <div className="content-trans-text-ico-link" title="Anmerkung schreiben"
                              onClick={() => this.props.openArchivePopup({
