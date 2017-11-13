@@ -19,7 +19,7 @@ export default class TableOfContents extends React.Component {
           mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
           headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
         }
-        if (segment.subheading[this.props.locale] !== '') {
+        if (segment.subheading[this.props.locale] !== undefined && segment.subheading[this.props.locale] !== '') {
           subIndex += 1;
           subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading[this.props.locale];
           headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
@@ -30,15 +30,22 @@ export default class TableOfContents extends React.Component {
     return headings;
   }
 
+    emptyHeadingsNote(headings) {
+        if(headings.length <= 0)
+            return "Keine Überschriften für diese Sprache"
+    }
+
   render () {
+      let headings = this.prepareHeadings();
     return ( 
       <div className={'content-index'}>
-        {this.prepareHeadings().map( (heading, index) => {
-          return <HeadingContainer 
-                   key={'mainheading-' + index}
-                   data={heading}
-                 />
-        })}
+            {this.emptyHeadingsNote(headings)}
+            {headings.map( (heading, index) => {
+              return <HeadingContainer 
+                       key={'mainheading-' + index}
+                       data={heading}
+                     />
+            })}
       </div>
     );
   }
