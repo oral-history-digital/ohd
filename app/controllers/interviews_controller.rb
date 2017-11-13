@@ -10,7 +10,7 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do 
-        json = Rails.cache.fetch "interview-with-segments-#{params[:id]}-#{@interview.updated_at}" do
+        json = Rails.cache.fetch "interview-with-segments-#{@interview.id}-#{@interview.updated_at}" do
           segments = Segment.
             #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
             includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
