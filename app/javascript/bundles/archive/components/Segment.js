@@ -65,9 +65,7 @@ export default class Segment extends React.Component {
         let newState = type != this.state.contentType ? true : !state;
 
         this.setState({
-            contentOpen: newState
-        });
-        this.setState({
+            contentOpen: newState,
             contentType: type
         });
     }
@@ -75,7 +73,7 @@ export default class Segment extends React.Component {
 
     references(locale){
         if (this.state.contentType == 'references'){
-            return this.props.data.references.map((reference, index) => {
+            return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
                 return <p className='content-trans-text-element-data'
                           key={"reference-" + index}>{reference.desc[locale]}</p>
             })
@@ -96,7 +94,7 @@ export default class Segment extends React.Component {
     render() {
         let locale = this.props.originalLocale ? this.props.interview.lang.substring(0,2) : this.props.locale;
         let annotionCss = this.props.data.annotation_texts.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+        let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
         let icoCss = this.state.contentOpen ? 'content-trans-text-ico active': 'content-trans-text-ico';
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
 

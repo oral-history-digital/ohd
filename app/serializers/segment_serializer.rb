@@ -9,6 +9,7 @@ class SegmentSerializer < ActiveModel::Serializer
              :annotation_texts,
              :start_time,
              :end_time,
+             :references_count,
              :references,
              :media_id
 
@@ -51,14 +52,18 @@ class SegmentSerializer < ActiveModel::Serializer
     object.annotations.map(&:text)
   end
 
+  def references_count
+    object.registry_references.count
+  end
+
   def references
-    #[]
-    object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
-      {
-        desc: ref.registry_entry.descriptor(:all),
-        latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
-        longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
-      }
-    end
+    []
+    #object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
+      #{
+        #desc: ref.registry_entry.descriptor(:all),
+        #latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
+        #longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
+      #}
+    #end
   end
 end

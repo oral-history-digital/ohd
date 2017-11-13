@@ -103,6 +103,7 @@ class Interview < ActiveRecord::Base
            :dependent => :destroy
 
   has_many :segment_registry_references,
+           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
            through: :segments,
            source: :registry_references
            
