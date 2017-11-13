@@ -32,26 +32,26 @@ export default class VideoPlayer extends React.Component {
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interview.title[this.props.locale]}</h1>
                     <div className="video-bookmark"><i className="fa fa-star"></i>Interview merken</div>
-                    <div className='video-element'>
-                        <video ref={(video) => {
-                            this.video = video;
-                        }}
-                               onTimeUpdate={(event) => {
-                                   this.props.handleVideoTimeChange(event)
-                               }}
-                               onEnded={(event) => {
-                                   this.props.handleVideoEnded()
-                               }}
-                               controls={true}
-                               poster={this.props.interview.still_url}
-                        >
-                            <source src={this.props.interview.src}/>
-                            <track kind="subtitles" label="Transcript"
-                                   src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
-                            <track kind="subtitles" label="Translation"
-                                   src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
-                        </video>
-                    </div>
+                </div>
+                <div className='video-element'>
+                    <video ref={(video) => {
+                        this.video = video;
+                    }}
+                           onTimeUpdate={(event) => {
+                               this.props.handleVideoTimeChange(event)
+                           }}
+                           onEnded={(event) => {
+                               this.props.handleVideoEnded()
+                           }}
+                           controls={true}
+                           poster={this.props.interview.still_url}
+                    >
+                        <source src={this.props.interview.src}/>
+                        <track kind="subtitles" label="Transcript"
+                               src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
+                        <track kind="subtitles" label="Translation"
+                               src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
+                    </video>
                 </div>
             </div>
         );
