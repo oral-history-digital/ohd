@@ -17,13 +17,16 @@ class RegistryReferencesController < BaseController
         render layout: 'webpacker'
       end
       format.json do
-       interview = Interview.find_by(archive_id: params[:archive_id])
+        interview = Interview.find_by(archive_id: params[:archive_id])
 
-       segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
-       render json: {
-         archive_id: params[:archive_id],
-         segment_ref_locations: segment_ref_locations.map{|e| ::RegistryReferenceSerializer.new(e)},
-       }
+        json = Rails.cache.fetch "interview-locations-#{interview.id}-#{interview.updated_at}" do
+          segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
+          {
+            archive_id: params[:archive_id],
+            segment_ref_locations: segment_ref_locations.map{|e| ::RegistryReferenceSerializer.new(e)},
+          }.to_json
+        end
+        render text: json
       end
     end
   end

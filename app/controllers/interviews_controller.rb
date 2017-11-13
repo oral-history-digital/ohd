@@ -22,10 +22,9 @@ class InterviewsController < BaseController
             segments: segments.map{|s| ::SegmentSerializer.new(s).as_json},
             headings: headings.map{|s| ::SegmentSerializer.new(s).as_json},
             references: references.map{|s| ::RegistryReferenceSerializer.new(s).as_json},
-          }#.to_json
+          }.to_json
         end
-        #render json
-        render json: json
+        render text: json
       end
       format.vtt do
         vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
