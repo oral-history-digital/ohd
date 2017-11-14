@@ -10,23 +10,27 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do 
-        json = Rails.cache.fetch "interview-with-segments-#{params[:id]}-#{@interview.updated_at}" do
+        json = Rails.cache.fetch "interview-with-segments-#{@interview.id}-#{@interview.updated_at}" do
           segments = Segment.
             #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
             includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
             for_interview_id(@interview.id)
+          references = @interview.segment_registry_references
           headings = segments.with_heading
           {
             interview: ::InterviewSerializer.new(@interview).as_json,
             segments: segments.map{|s| ::SegmentSerializer.new(s).as_json},
             headings: headings.map{|s| ::SegmentSerializer.new(s).as_json},
-          }#.to_json
+            references: references.map{|s| ::RegistryReferenceSerializer.new(s).as_json},
+          }.to_json
         end
-        #render json
-        render json: json
+        render text: json
       end
       format.vtt do
-        render text: @interview.to_vtt( params[:type] )
+        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
+          @interview.to_vtt( params[:type] )
+        end
+        render text: vtt
       end
       format.pdf do
         pdf = render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
