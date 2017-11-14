@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108164112) do
+ActiveRecord::Schema.define(version: 20171113160053) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "annotation_section_id",               null: false
@@ -78,10 +78,10 @@ ActiveRecord::Schema.define(version: 20171108164112) do
 
   create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "section_id",                   null: false
-    t.string   "person_dedalo_id", limit: 125, null: false
+    t.string   "person_dedalo_id", limit: 125
     t.string   "person_id",        limit: 125
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
     t.index ["person_dedalo_id"], name: "person_id", using: :btree
   end
@@ -90,22 +90,23 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.integer  "history_id",                            null: false
     t.string   "person_dedalo_id",     limit: 128,      null: false
     t.string   "person_id",            limit: 128
-    t.string   "locale",               limit: 128,      null: false
-    t.text     "forced_labor_details", limit: 16777215, null: false
-    t.string   "return_date",          limit: 256,      null: false
-    t.string   "deportation_date",     limit: 256,      null: false
-    t.text     "punishment",           limit: 255,      null: false
-    t.string   "liberation_date",      limit: 256,      null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.string   "locale",               limit: 128
+    t.text     "forced_labor_details", limit: 16777215
+    t.string   "return_date",          limit: 256
+    t.string   "deportation_date",     limit: 256
+    t.text     "punishment",           limit: 255
+    t.string   "liberation_date",      limit: 256
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
     t.index ["person_dedalo_id"], name: "person_id", using: :btree
   end
 
-  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string  "locale"
     t.string  "observations"
     t.integer "interview_id"
+    t.integer "interview_section_id"
   end
 
   create_table "interviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", comment: "Self-generated table in Dédalo4 for diffusion" do |t|
@@ -201,12 +202,12 @@ ActiveRecord::Schema.define(version: 20171108164112) do
   end
 
   create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "photo_dedalo_id",               null: false
-    t.integer  "photo_id",                      null: false
-    t.string   "locale",          limit: 128,   null: false
-    t.text     "caption",         limit: 65535, null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.integer  "photo_dedalo_id"
+    t.integer  "photo_id"
+    t.string   "locale",          limit: 128
+    t.text     "caption",         limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["photo_dedalo_id"], name: "photo_dedalo_id", using: :btree
   end
 
@@ -214,10 +215,10 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.integer  "photo_dedalo_id",                   null: false
     t.integer  "interview_section_id",              null: false
     t.integer  "interview_id"
-    t.string   "photo_file_name",      limit: 256,  null: false
-    t.string   "photo_content_type",   limit: 1024, null: false
-    t.integer  "photo_file_size",                   null: false
-    t.datetime "photo_updated_at",                  null: false
+    t.string   "photo_file_name",      limit: 256
+    t.string   "photo_content_type",   limit: 1024
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
     t.index ["interview_section_id"], name: "interview_section_id", using: :btree
     t.index ["photo_dedalo_id"], name: "photo_dedalo_id", using: :btree
   end
@@ -243,8 +244,8 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.string   "descendant_id",        limit: 128
     t.integer  "direct",               limit: 1,   default: 0
     t.integer  "count",                            default: 0
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["ancestor_dedalo_id"], name: "ancestor_dedalo_id", using: :btree
     t.index ["ancestor_id"], name: "ancestor_id", using: :btree
   end
@@ -252,20 +253,20 @@ ActiveRecord::Schema.define(version: 20171108164112) do
   create_table "registry_name_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "registry_name_dedalo_id", limit: 128,      null: false
     t.string   "registry_name_id",        limit: 128
-    t.string   "locale",                  limit: 128,      null: false
-    t.text     "descriptor",              limit: 16777215, null: false
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.string   "locale",                  limit: 128
+    t.text     "descriptor",              limit: 16777215
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["registry_name_dedalo_id"], name: "registry_name_dedalo_id", using: :btree
     t.index ["registry_name_id"], name: "registry_name_id", using: :btree
   end
 
   create_table "registry_name_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.string  "code",            limit: 128, null: false
-    t.string  "name",            limit: 256, null: false
-    t.integer "order_priority",              null: false
-    t.integer "allows_multiple", limit: 1,   null: false
-    t.integer "mandatory",       limit: 1,   null: false
+    t.string  "code",            limit: 128
+    t.string  "name",            limit: 256
+    t.integer "order_priority"
+    t.integer "allows_multiple", limit: 1
+    t.integer "mandatory",       limit: 1
   end
 
   create_table "registry_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -273,7 +274,7 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.string   "registry_name_type_dedalo_id", limit: 128, null: false
     t.string   "registry_entry_id",            limit: 128
     t.string   "registry_name_type_id",        limit: 128
-    t.integer  "name_position",                            null: false
+    t.integer  "name_position"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.index ["registry_entry_dedalo_id"], name: "registry_entry_dedalo_id", using: :btree
@@ -297,22 +298,26 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.integer  "dedalo_rsc167_section_id",                                    null: false
     t.integer  "registry_entry_id",                                           null: false
     t.string   "registry_entry_dedalo_id",   limit: 512,                      null: false
-    t.string   "ref_object_type",                         default: "Segment", null: false
-    t.integer  "ref_object_id",                                               null: false
+    t.string   "ref_object_type",                         default: "Segment"
+    t.integer  "ref_object_id"
     t.integer  "registry_reference_type_id"
-    t.integer  "ref_position",                                                null: false
+    t.integer  "ref_position"
     t.string   "original_descriptor",        limit: 1000
     t.string   "ref_details",                limit: 1000
     t.string   "ref_comments",               limit: 1000
     t.string   "ref_info",                   limit: 1000
-    t.string   "workflow_state",                          default: "checked", null: false
-    t.integer  "interview_section_id",                                        null: false
+    t.string   "workflow_state",                          default: "checked"
+    t.integer  "interview_section_id"
     t.integer  "interview_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["dedalo_rsc167_section_id"], name: "dedalo_rsc167_section_id", using: :btree
     t.index ["interview_section_id"], name: "interview_section_id", using: :btree
+    t.index ["ref_object_id"], name: "index_registry_references_on_ref_object_id", using: :btree
+    t.index ["ref_object_type", "ref_object_id"], name: "index_registry_references_on_ref_object_type_and_ref_object_id", using: :btree
+    t.index ["ref_object_type"], name: "index_registry_references_on_ref_object_type", using: :btree
     t.index ["registry_entry_dedalo_id"], name: "registry_entry_dedalo_id", length: { registry_entry_dedalo_id: 255 }, using: :btree
+    t.index ["registry_entry_id"], name: "index_registry_references_on_registry_entry_id", using: :btree
   end
 
   create_table "segment_translations", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -361,6 +366,7 @@ ActiveRecord::Schema.define(version: 20171108164112) do
     t.boolean  "video"
     t.integer  "duration"
     t.integer  "interview_id"
+    t.integer  "tape_number"
     t.index ["interview_section_id"], name: "interview_section_id", using: :btree
     t.index ["section_id"], name: "section_id", using: :btree
   end
