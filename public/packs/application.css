@@ -1,8 +1,6 @@
 .leaflet-container {
   height: 350px;
   width: 100%;
-}.heading .collapsed {
-  display: none;
 }.segment {
   clear: both;
 }
@@ -28,4 +26,6 @@
   color: #696969;
   font-size: 80%;
   float: right;
+}.heading .collapsed {
+  display: none;
 }
