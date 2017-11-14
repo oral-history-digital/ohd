@@ -53,7 +53,7 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def references_count
-    object.registry_references.count
+    0 #object.registry_references.count
   end
 
   def references
