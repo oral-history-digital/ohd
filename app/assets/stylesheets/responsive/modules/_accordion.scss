@@ -1,47 +1,49 @@
 /* Style the buttons that are used to open and close the accordion panel */
-button.accordion {
-  background-color: lighten($secondary-color, 20%);
-  color: $gray-darkest;
-  cursor: pointer;
-  padding: 10px 30px 10px 15px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: $font-size-large;
-  transition: 0.4s;
-  margin-bottom: 2px;
-  //border-bottom: 1px solid $gray-warm;
-}
+.flyout-search,
+.flyout-video {
+  button.accordion {
+    background-color: lighten($secondary-color, 20%);
+    color: $gray-darkest;
+    cursor: pointer;
+    padding: 10px 30px 10px 15px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: $font-size-large;
+    transition: 0.4s;
+    margin-bottom: 2px;
+    //border-bottom: 1px solid $gray-warm;
+  }
 
-button.accordion.active,
-button.accordion:hover {
-  background-color: $secondary-color;
-}
+  button.accordion.active,
+  button.accordion:hover {
+    background-color: $secondary-color;
+  }
 
-button.accordion:after {
-  font-family: FontAwesome;
-  content: "\f067";
-  color: $gray-dark;
-  float: right;
-}
+  button.accordion:after {
+    font-family: FontAwesome;
+    content: "\f067";
+    color: $gray-dark;
+    float: right;
+  }
 
-button.accordion.active:after {
-  font-family: FontAwesome;
-  content: "\f068";
-}
+  button.accordion.active:after {
+    font-family: FontAwesome;
+    content: "\f068";
+  }
 
 
-.panel {
-  padding: 0 20px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  &.open{
-    max-height: 100%;
+  .panel {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    &.open{
+      max-height: 100%;
+    }
   }
 }
-
 
 /* Checkboxes */
 
@@ -126,4 +128,56 @@ button.reset:after {
   float: right;
 }
 
+/* Image Gallery */
 
+.img-gallery {
+  //padding: 10px;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  //background-color: $gray-dark;
+  //align-items: stretch;
+  .thumbnail {
+    position: relative;
+    flex-grow: 0;
+    height: 100px;
+    margin: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    :hover {
+      opacity: 0.5;
+    }
+    img {
+      width: auto;
+      height: 100%;
+      //min-width: 100%;
+      //max-width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+.thumbnail:after{
+  font-family: FontAwesome;
+  content: '\f065';
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  color: #fff;
+  opacity: 0;
+  transition: all 300ms ease-in;
+}
+
+.thumbnail:hover:after{opacity: 1}

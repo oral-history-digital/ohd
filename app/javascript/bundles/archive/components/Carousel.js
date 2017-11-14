@@ -1,9 +1,25 @@
-var React = require('react');
-var Slider = require('react-slick');
+import React from 'react';
+import Slider from 'react-slick';
 
-class Carousel extends React.Component {
-    render: function () {
-        var settings = {
+
+export default class Countries extends React.Component {
+
+
+    renderPhotos(){
+        return this.props.photos.map((photo, index) => {
+            return (
+                <div key={"slider-image-" + index}
+                     className={'slider-image'}
+                >
+                    <img src={photo.src}>
+                    </img>
+                </div>
+            )
+        })
+    }
+
+    render() {
+        let settings = {
             dots: true,
             infinite: true,
             speed: 500,
@@ -12,12 +28,7 @@ class Carousel extends React.Component {
         };
         return (
             <Slider {...settings}>
-                <div><h3>1</h3></div>
-                <div><h3>2</h3></div>
-                <div><h3>3</h3></div>
-                <div><h3>4</h3></div>
-                <div><h3>5</h3></div>
-                <div><h3>6</h3></div>
+                {this.renderPhotos()}
             </Slider>
         );
     }
