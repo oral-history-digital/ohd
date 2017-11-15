@@ -3,7 +3,8 @@ class FacetSerializer < ActiveModel::Serializer
              :descriptor
 
   def descriptor
-    object.to_s
+    #object.respond_to? :localized_hash ? object.localized_hash : object.to_s
+    object.localized_hash
   end
 
 end

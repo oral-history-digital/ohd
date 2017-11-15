@@ -45,7 +45,8 @@ module Project
       category_config = category_config(category_id)
       category_object = case category_config['source']
                         when 'registry_entry'
-                          RegistryEntry.find_by_name(category_config['descriptor'])
+                          RegistryEntry.find_by_entry_code(category_config['descriptor'])
+                          #RegistryEntry.find_by_name(category_config['descriptor'])
                         when 'registry_reference_type'
                           RegistryReferenceType.find_by_code(category_id.to_s.singularize)
                         else
@@ -57,7 +58,9 @@ module Project
 
     def category_name(category_id, locale = I18n.locale)
       category_object = begin category_object(category_id) rescue nil end
-      category_object.blank? ? '[Category Configuration Error]' : category_object.to_s(locale)
+      category_object.blank? ? '[Category Configuration Error]' : category_object.localized_hash
+      # TODO: update to be conform with other projects
+      #category_object.blank? ? '[Category Configuration Error]' : category_object.to_s(locale)
     end
 
 

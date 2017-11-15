@@ -39,7 +39,7 @@ export default class Facet extends React.Component {
         return (
             <div className="subfacet-container">
                 <button className={this.state.class} onClick={this.handleClick}>
-                    {this.props.data[0].name}
+                    {this.props.data[0].name[this.props.locale]}
                 </button>
                 <div className={this.state.panelClass}>
                     <div className="flyout-radio-container">
@@ -74,7 +74,7 @@ export default class Facet extends React.Component {
                            onChange={this.onChange}>
                     </input>
                     <label htmlFor={categoryId + "_" + subfacet.entry.id}>
-                        {subfacet.entry.descriptor}
+                        {subfacet.entry.descriptor[this.props.locale]}
                         <span>({subfacet.count})</span>
                     </label>
                 </div>

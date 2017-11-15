@@ -29,7 +29,9 @@ class Search < UserContent
 
   RESULTS_PER_PAGE = 12
 
-  FACET_FIELDS = [:interview_id, :language_id] + Project.archive_facet_category_ids
+  FACET_FIELDS = [:interview_id] + Project.archive_facet_category_ids
+  # TODO: update project configs
+  #FACET_FIELDS = [:interview_id, :language_id] + Project.archive_facet_category_ids
 
   NON_FACET_FIELDS = [
       :fulltext,

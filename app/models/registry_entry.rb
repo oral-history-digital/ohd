@@ -30,12 +30,12 @@ class RegistryEntry < ActiveRecord::Base
            :dependent => :destroy
 
   # Registry entries are modeled as a directed acyclic graph.
-  #has_dag_links :link_class_name => 'RegistryHierarchy'
+  has_dag_links :link_class_name => 'RegistryHierarchy'
 
-  #has_many :main_registers,
-           #-> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
-           #:through => :links_as_descendant,
-           #:source => :ancestor
+  has_many :main_registers,
+           -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
+           :through => :links_as_descendant,
+           :source => :ancestor
 
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.

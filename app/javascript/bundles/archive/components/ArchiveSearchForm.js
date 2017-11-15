@@ -93,6 +93,7 @@ export default class ArchiveSearchForm extends React.Component {
                 return (
                     <Facet
                         data={facet}
+                        locale={this.props.locale}
                         sessionQuery={this.props.searchQuery}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
