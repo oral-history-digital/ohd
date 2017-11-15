@@ -143,14 +143,14 @@
   color: $gray-dark;
 }
 .flyout-sub-tabs-content {
-  margin: 30px 0;
+  margin: 10px 0 30px 0;
   //padding-left: 20px;
   p {
     font-size: $font-size-large;
     line-height: $line-height-large;
     color: $gray-darkest;
-    padding: 0 0 0 20px;
-    margin: 0 0 15px 0;
+    //padding: 0 0 0 20px;
+    margin: 0 0 10px 0;
   }
   .flyout-content-label {
     display: inline-block;
@@ -166,7 +166,7 @@
     margin-right: 10px;
   }
   .flyout-sub-tabs-content-download {
-    margin-top: 30px;
+    margin-top: 10px;
     color: $primary-color;
     cursor: pointer;
   }

@@ -56,6 +56,47 @@
     background: $secondary-color;
     color: $gray-darkest;
   }
+  animation-name: fade-in;
+  animation-duration: 1s;
+}
+
+@keyframes fade-in {
+  0%  {
+    background-color: transparent;
+    color: transparent;
+  }
+  25% {
+    background-color: transparent;
+    color: transparent;
+    opacity: 0.25;
+  }
+  50% {
+    background-color: $gray-warm;
+    color: #fff;
+    opacity: 0.50;
+  }
+  100% {
+    background-color: $gray-warm;
+    color: #fff;
+    opacity: 1;
+  }
+}
+
+@keyframes move-down {
+  0%  {
+    background-color: transparent;
+    color: transparent;
+    margin-top: -130px;
+  }
+  50% {
+    background-color: $secondary-color;
+    color: $gray-darkest;
+  }
+  100% {
+    background-color: $secondary-color;
+    color: $gray-darkest;
+    margin-top: 2px;
+  }
 }
 
 .flyout-tab-title {
@@ -66,6 +107,8 @@
   color: $gray-darkest;
   font-size: 1.25rem;
   cursor: auto;
+  animation-name: move-down;
+  animation-duration: 1s;
 }
 
 .flyout-search {
@@ -76,8 +119,9 @@
 .flyout-search{
   .search-input {
     width: 80%;
-    margin-bottom: 20px;
-    padding: 10px;
+    margin-bottom: 30px;
+    padding: 10px 0;
+    border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
   }
   ::placeholder {
@@ -91,7 +135,9 @@
     float: right;
     transition: color 0.3s;
     padding: 10px;
+    border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
+    text-align: right;
     &:hover {
       color: $gray-light;
     }

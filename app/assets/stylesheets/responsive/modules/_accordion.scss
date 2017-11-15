@@ -2,45 +2,43 @@
 .flyout-search,
 .flyout-video {
   button.accordion {
-    background-color: lighten($secondary-color, 20%);
-    color: $gray-darkest;
+    background-color: transparent;
+    color: $primary-color;
     cursor: pointer;
-    padding: 10px 30px 10px 15px;
+    padding: 10px 15px 10px 2px;
     width: 100%;
-    border: none;
+    border-top: 1px solid $gray-dark;
     text-align: left;
     outline: none;
-    font-size: $font-size-large;
+    font-size: $font-size-larger;
     transition: 0.4s;
     margin-bottom: 2px;
     //border-bottom: 1px solid $gray-warm;
+   //&.active,
+   &:hover {
+      //background-color: $secondary-color;
+      color: $gray-dark;
+    }
+    &::after {
+      font-family: FontAwesome;
+      content: "\f067";
+      float: right;
+      font-size: $font-size-large;
+    }
+    &.active::after {
+      content: "\f068";
+    }
   }
-
-  button.accordion.active,
-  button.accordion:hover {
-    background-color: $secondary-color;
-  }
-
-  button.accordion:after {
-    font-family: FontAwesome;
-    content: "\f067";
-    color: $gray-dark;
-    float: right;
-  }
-
-  button.accordion.active:after {
-    font-family: FontAwesome;
-    content: "\f068";
-  }
-
-
   .panel {
-    padding: 0 20px;
+    padding: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     &.open{
       max-height: 100%;
+    }
+    &:last-of-type {
+      border-bottom: 1px solid $gray-dark;
     }
   }
 }
@@ -131,12 +129,12 @@ button.reset:after {
 /* Image Gallery */
 
 .img-gallery {
-  //padding: 10px;
+  padding: 5px 10px;
   margin: 20px 0;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  //background-color: $gray-dark;
+  background-color: $gray-dark;
   //align-items: stretch;
   .thumbnail {
     position: relative;
@@ -145,9 +143,9 @@ button.reset:after {
     margin: 2px;
     cursor: pointer;
     overflow: hidden;
-    :hover {
-      opacity: 0.5;
-    }
+    //:hover {
+    //  opacity: 0.5;
+    //}
     img {
       width: auto;
       height: 100%;
