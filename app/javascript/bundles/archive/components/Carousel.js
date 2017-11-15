@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 
 
-export default class Countries extends React.Component {
+export default class Carousel extends React.Component {
 
 
     renderPhotos(){

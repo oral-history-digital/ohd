@@ -9,8 +9,10 @@ export default class Locations extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.visible && this.props.visible) {
-            this.map.leafletElement.invalidateSize();
-            this.map.leafletElement.fitBounds(this.markersAndLocations().locations);
+            if (this.map) {
+                this.map.leafletElement.invalidateSize();
+                this.map.leafletElement.fitBounds(this.markersAndLocations().locations);
+            }
         }
     }
 
