@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
     return { 
         transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
-        interview: data && data.interview
+        interview: data && data.interview,
+        references: data && data.references
     }
 }
 

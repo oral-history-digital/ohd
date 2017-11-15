@@ -197,7 +197,8 @@ class RegistryEntry < ActiveRecord::Base
         frontier_ids = frontier.map { |path| path.last }.uniq
         new_frontier = []
         now_visited = []
-        RegistryHierarchy.all(:conditions => {:ancestor_id => frontier_ids, :descendant_id => not_yet_visited, :direct => true}).each do |rh|
+        RegistryHierarchy.where(:ancestor_id => frontier_ids).where(:descendant_id => not_yet_visited).where(:direct => true).each do |rh|
+        #RegistryHierarchy.all(:conditions => {:ancestor_id => frontier_ids, :descendant_id => not_yet_visited, :direct => true}).each do |rh|
           frontier.select { |path| path.last == rh.ancestor_id }.each do |path|
             now_visited << rh.descendant_id
             new_path = (path.dup << rh.descendant_id)
@@ -740,7 +741,8 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def available_translations
-    registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
+    registry_names.map { |n| n.translations.map{|t| t.locale[0..1]} }.flatten.uniq
+    #registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
   end
 
   def descriptor=(descriptor)
@@ -831,6 +833,13 @@ class RegistryEntry < ActiveRecord::Base
       end
     else
       to_s(locale)
+    end
+  end
+
+  def localized_hash
+    registry_names.first.translations.inject({}) do |mem, name|
+      mem[name.locale[0..1]] = name.descriptor
+      mem
     end
   end
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 export default class VideoPlayer extends React.Component {
 
@@ -25,33 +26,50 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
+    userContentForm() {
+        return <UserContentFormContainer
+            title=''
+            description=''
+            properties={{title: this.props.interview.title}}
+            reference_id={this.props.interview.id}
+            reference_type='Interview'
+            media_id={this.props.interview.archive_id}
+            type='InterviewReference'
+        />
+    }
+
 
     render() {
         return (
             <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interview.title[this.props.locale]}</h1>
-                    <div className="video-bookmark"><i className="fa fa-star"></i>Interview merken</div>
-                    <div className='video-element'>
-                        <video ref={(video) => {
-                            this.video = video;
-                        }}
-                               onTimeUpdate={(event) => {
-                                   this.props.handleVideoTimeChange(event)
-                               }}
-                               onEnded={(event) => {
-                                   this.props.handleVideoEnded()
-                               }}
-                               controls={true}
-                               poster={this.props.interview.still_url}
-                        >
-                            <source src={this.props.interview.src}/>
-                            <track kind="subtitles" label="Transcript"
-                                   src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
-                            <track kind="subtitles" label="Translation"
-                                   src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
-                        </video>
+                    <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
+                        title: 'Save reference to this interview',
+                        content: this.userContentForm()
+                    })}><i className="fa fa-star"></i>
+                        Interview merken
                     </div>
+                </div>
+                <div className='video-element'>
+                    <video ref={(video) => {
+                        this.video = video;
+                    }}
+                           onTimeUpdate={(event) => {
+                               this.props.handleVideoTimeChange(event)
+                           }}
+                           onEnded={(event) => {
+                               this.props.handleVideoEnded()
+                           }}
+                           controls={true}
+                           poster={this.props.interview.still_url}
+                    >
+                        <source src={this.props.interview.src}/>
+                        <track kind="subtitles" label="Transcript"
+                               src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
+                        <track kind="subtitles" label="Translation"
+                               src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
+                    </video>
                 </div>
             </div>
         );

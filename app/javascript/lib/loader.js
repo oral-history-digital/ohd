@@ -60,9 +60,11 @@ import request from 'superagent';
         .end( (error, res) => {
           if (res) {
             if (res.error) {
-                console.log("loading json from " + url + " failed: " + error);
-                debugger;
+              if (typeof errorCallback === "function") {
                 dispatch(errorCallback(JSON.parse(res.text)));
+              } else {
+                console.log("loading json from " + url + " failed: " + error);
+              }
             } else {
               if (typeof successCallback === "function") {
                 dispatch(successCallback(JSON.parse(res.text)));

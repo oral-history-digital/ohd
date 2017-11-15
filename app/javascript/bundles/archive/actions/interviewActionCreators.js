@@ -29,6 +29,7 @@ function receiveInterview(json){
     interview: json.interview,
     segments: json.segments,
     headings: json.headings,
+    references: json.references,
     receivedAt: Date.now()
   }
 }

@@ -123,6 +123,9 @@
 }
 
 .content-trans-speaker-ico {
+  .fa {
+    color: $gray-warm;
+  }
   width: 4%;
   margin-right: 4%;
   @include screen-l {
@@ -138,6 +141,19 @@
     width: 77%;
     margin-right: 2%;
   }
+  p {
+    padding: 4px;
+    color: $gray-dark;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  p.active {
+    background-color: lighten($secondary-color, 30%);
+    color: $gray-darkest;
+  }
+  p:hover {
+    color: $primary-color;
+  }
 }
 
 .content-trans-text-ico {
@@ -147,7 +163,7 @@
   float: right;
   @include pie-clearfix;
   padding: 0;
-  border-bottom: 1px solid $primary-color;
+  border-bottom: 2px solid $gray-lighter;
   @include screen-l {
     width: 17%;
     margin-left: 0;
@@ -171,15 +187,15 @@
     margin-right: 0;
   }
   &.active {
-    background-color: #ddd;
+    background-color: $gray-lighter;
     .fa {
-      color: #666;
+      color: $gray-dark;
     }
   }
   &:hover {
-    background-color: #ddd;
+    background-color: $gray-lighter;
     .fa {
-      color: #666;
+      color: $gray-dark;
     }
   }
 }
@@ -188,7 +204,7 @@
   width: 92%;
   margin-left: 8%;
   margin-bottom: 10px;
-  border: 2px solid #ddd;
+  border: 2px solid $gray-lighter;
   padding: 20px;
   float: none;
   clear: both;
@@ -266,7 +282,7 @@
       }
       transition: 0.4s;
       &:hover {
-        background-color: lighten($secondary-color, 30%);
+        color: $primary-color;
       }
     }
     .subheading {
@@ -275,7 +291,7 @@
       margin-bottom: 10px;
       transition: 0.4s;
       &:hover {
-        background-color: lighten($secondary-color, 30%);
+        color: $primary-color;
       }
     }
   }
@@ -296,6 +312,65 @@
   }
 }
 
+// Tab Content: Search / Suche im Interview
+
+.content-search-legend {
+  margin-bottom: 30px;
+  font-size: $font-size-medium;
+}
+
+.content-search-text {
+  width: 92%;
+  margin-right: 0;
+  @include screen-l {
+    width: 77%;
+    margin-right: 2%;
+  }
+  p {
+    color: $gray-dark;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  p span.highlight {
+    padding: 0 4px;
+    background-color: lighten($secondary-color, 30%);
+    color: $gray-darkest;
+  }
+  p:hover {
+    color: $primary-color;
+  }
+}
+
+.content-search-row {
+  @include clearfix;
+  margin-bottom: 20px;
+}
+
+.content-search {
+  font-size: $font-size-larger;
+  .search-input {
+    width: 80%;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-bottom: 2px solid $gray-light;
+  }
+  ::placeholder {
+    color: $primary-color;
+  }
+  .search-button {
+    width: 20%;
+    font-family: FontAwesome;
+    content: "\f067";
+    color: $primary-color;
+    float: right;
+    transition: color 0.3s;
+    padding: 10px;
+    border-bottom: 2px solid $gray-light;
+    &:hover {
+      color: $gray-light;
+    }
+  }
+}
 
 // Old classes tidying up later
 

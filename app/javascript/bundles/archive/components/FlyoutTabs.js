@@ -1,9 +1,12 @@
 import React from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
+import InterviewDataContainer from '../containers/InterviewDataContainer';
+import GalleryContainer from '../containers/GalleryContainer';
+
 
 export default class FlyoutTabs extends React.Component {
 
@@ -20,7 +23,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     handleTabClick(tabIndex) {
-        switch(tabIndex) {
+        switch (tabIndex) {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
 
@@ -28,21 +31,20 @@ export default class FlyoutTabs extends React.Component {
                 this.context.router.history.push(`/${this.props.locale}/account`);
 
             default:
-                this.setState({ tabIndex: tabIndex })
+                this.setState({tabIndex: tabIndex})
         }
     }
 
-    userContentForm() {
-        return  <UserContentFormContainer 
-                    title=''
-                    description=''
-                    properties={{title: this.props.interview.title}}
-                    reference_id={this.props.interview.id}
-                    reference_type='Interview'
-                    media_id={this.props.interview.archive_id}
-                    type='InterviewReference'
-                />
+
+    saveSearchForm() {
+        return <UserContentFormContainer
+            title=''
+            description=''
+            properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
+            type='Search'
+        />
     }
+
 
     render() {
         return (
@@ -56,41 +58,48 @@ export default class FlyoutTabs extends React.Component {
 
                 <TabList className='flyout'>
                     <Tab className='flyout-top-nav'>Startseite </Tab>
-                    <Tab className='flyout-top-nav top-nav-last"'>Login </Tab>
+                    <Tab className='flyout-top-nav top-nav-last'>Login </Tab>
                     <Tab className='flyout-tab'>Suche im Archiv</Tab>
                     <Tab className='flyout-tab'>Interview </Tab>
                     <Tab className='flyout-tab'>Arbeitsmappe </Tab>
                 </TabList>
 
 
-                <TabPanel >
+                <TabPanel>
                     start
                 </TabPanel>
-                <TabPanel >
+                <TabPanel>
                     login logout name
                 </TabPanel>
-                <TabPanel >
+                <TabPanel>
                     <div className='flyout-tab-title'>Suche im Archiv</div>
                     <ArchiveSearchFormContainer
                     />
                 </TabPanel>
-                <TabPanel >
+                <TabPanel>
                     <div className='flyout-tab-title'>Interview</div>
-                    <div 
-                        className='edit' 
-                        onClick={() => this.props.openArchivePopup({
-                            title: 'Save reference to this interview', 
-                            content: this.userContentForm()
-                        })}
-                    >
-                        {'Save reference to this interview'}
+                    <div className='flyout-sub-tabs-container flyout-video'>
+                        <InterviewDataContainer
+                            title={'Zur Person'}
+                            content={<div/>}/>
+                        <InterviewDataContainer
+                            title={'Zum Interview'}
+                            content={<div/>}/>
+                        <InterviewDataContainer
+                            title={'Bilder'}
+                            content={<GalleryContainer/>}/>
+                        <InterviewDataContainer
+                            title={'Karte'}
+                            content={<InterviewLocationsContainer/>}/>
+                        <InterviewDataContainer
+                            title={'Zitierweise'}
+                            content={<div/>}/>
                     </div>
-                    <InterviewLocationsContainer  />
-                    biographie transcript daten zur za
+
                 </TabPanel>
-                <TabPanel >
+                <TabPanel>
                     <div className='flyout-tab-title'>Arbeitsmappe</div>
-                    <UserContentsContainer />
+                    <UserContentsContainer/>
                 </TabPanel>
 
             </Tabs>

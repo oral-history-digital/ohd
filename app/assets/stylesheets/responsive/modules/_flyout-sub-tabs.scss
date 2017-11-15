@@ -1,11 +1,12 @@
 .flyout-sub-tabs-container {
   display: block;
   margin: 30px 0;
-  padding: 0 15px;
+  padding: 0 20px;
 }
 
 .flyout-sub-tabs {
   display: block;
+  z-index: 100;
   position: relative;
   padding: 10px;
   height: 40px;
@@ -137,6 +138,68 @@
     }
   }
 }
+.flyout-sub-tabs-label {
+  font-size: $font-size-large;
+  color: $gray-dark;
+}
+.flyout-sub-tabs-content {
+  margin: 10px 0 30px 0;
+  //padding-left: 20px;
+  p {
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    color: $gray-darkest;
+    //padding: 0 0 0 20px;
+    margin: 0 0 10px 0;
+  }
+  .flyout-content-label {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    color: $gray-dark;
+  }
+  .flyout-content-data {
+    display: inline-block;
+  }
+  .fa {
+    color: $primary-color;
+    margin-right: 10px;
+  }
+  .flyout-sub-tabs-content-download {
+    margin-top: 10px;
+    color: $primary-color;
+    cursor: pointer;
+  }
+}
+
+//.flyout-wrapper-content {
+//  padding: 15px 15px 15px 30px;
+//  p {
+//    font-size: $font-size-large;
+//    color: $gray-darkest;
+//    padding: 0;
+//    margin: 0 0 15px 0;
+//  }
+//  .flyout-content-label {
+//    color: $gray-dark;
+//    margin-right: 10px;
+//  }
+//  a:link, a:visited {
+//    color: $primary-color;
+//  }
+//  a:hover {
+//    color: $gray-dark;
+//    text-decoration: none;
+//    .fa {
+//      color: $gray-dark;
+//      text-decoration: none;
+//    }
+//  }
+//  .fa {
+//    margin-right: 10px;
+//    color: $primary-color;
+//  }
+//}
 
 /* form elements */
 button,

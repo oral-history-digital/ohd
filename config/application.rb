@@ -17,7 +17,7 @@ module Archive
     config.i18n.default_locale = :de
     config.autoload_paths << Rails.root.join('lib')
 
-    PROJECT = :zwar # can be :zwar or :hagen
+    PROJECT = :eog # can be :zwar or :hagen
     #PROJECT = ENV["ARCHIVE_PROJECT_NAME"].to_sym
     config.x.project = PROJECT
     config.project = config_for("projects/#{PROJECT}")

@@ -1,4 +1,7 @@
-.segment {
+.leaflet-container {
+  height: 350px;
+  width: 100%;
+}.segment {
   clear: both;
 }
 
@@ -25,7 +28,4 @@
   float: right;
 }.heading .collapsed {
   display: none;
-}.leaflet-container {
-  height: 350px;
-  width: 100%;
 }

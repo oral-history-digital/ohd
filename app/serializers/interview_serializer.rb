@@ -29,6 +29,8 @@ class InterviewSerializer < ActiveModel::Serializer
     :src,
     :references
 
+  has_many :photos, serializer: PhotoSerializer
+
   def lang
     object.language.code
   end
@@ -49,20 +51,21 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def still_url
     #object.still_image.url(:original)
-    "http://medien.cedis.fu-berlin.de/eog/interviews/eog/eog002/002_2.jpg"
+    "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog','')}_2.jpg"
   end
 
   def src
-    "http://medien.cedis.fu-berlin.de/eog/interviews/eog/eog002/eog002_01_01_720p.mp4"
+    "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
     #"http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
   end
+
 
 
 
   def references
     object.registry_references.map do |ref|
       {
-        desc: ref.registry_entry.descriptor(:all),
+        desc: ref.registry_entry.localized_hash,
         latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
         longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
       }

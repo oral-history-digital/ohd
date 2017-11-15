@@ -6,7 +6,7 @@ default: &default
     - el
     - alias
 
-  default_locale: de
+  default_locale: all
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
@@ -98,8 +98,10 @@ default: &default
     - id: 'person_reference'
       source: 'registry_entry'
       descriptor: 'Person'
-    - id: 'birth_locations'
-      source: 'registry_reference_type'
+    - id: 'gender'
+      source: 'registry_entry'
+      descriptor: 'Geschlecht'
+      use_as_facet: true
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       descriptor: 'Gruppe'

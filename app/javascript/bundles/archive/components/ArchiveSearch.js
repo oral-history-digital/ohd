@@ -8,6 +8,13 @@ import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 export default class ArchiveSearch extends React.Component {
 
+
+    componentDidMount() {
+        this.props.fetchStaticContent();
+    }
+
+
+
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);

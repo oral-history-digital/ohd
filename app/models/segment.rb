@@ -21,10 +21,11 @@ class Segment < ActiveRecord::Base
 
   scope :with_heading,
               -> { joins(:translations).where(
-                  "segment_translations.locale = ? AND ((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))",
-                  I18n.default_locale.to_s)
-                       .includes(:tape, :translations)
-                       .order(:media_id)}
+                  #"segment_translations.locale = ? AND ((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))",
+                  #I18n.default_locale.to_s)
+                  "((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
+                  includes(:tape, :translations).
+                  order(:media_id)}
 
 
   scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
