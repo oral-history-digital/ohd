@@ -1,17 +1,4 @@
 
-
-
-.disabled{
-  position:fixed;
-  top:0;
-  left:0;
-  background:#000;
-  opacity:0.4;
-  z-index:998;
-  height:100%;
-  width:100%;
-}
-
 .slick-slide {
   //height: 500px !important;
   overflow: hidden;
@@ -27,16 +14,3 @@
     height: auto;
   }
 }
-
-
-//.popup{
-//  &.hidden {
-//    display: none;
-//  }
-//  background-color: white;
-//  padding: 3%;
-//  position: fixed;
-//  top: 40%;
-//  left: 30%;
-//  z-index:999;
-//}
