@@ -3,6 +3,17 @@ import {render} from 'react-dom';
 
 export default class ArchivePopup extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.stopClicks = this.stopClicks.bind(this);
+    }
+
+    stopClicks(event){
+        console.log("clicks");
+        event.stopPropagation();
+        return false;
+    }
+
     css() {
         let css = 'lightbox';
         css += this.props.popup.show ? '' : ' hidden';
@@ -18,8 +29,8 @@ export default class ArchivePopup extends React.Component {
 
     render() {
         return (
-            <div className={this.css()}>
-                <div className={'popup'}>
+            <div className={this.css()} onClick={() => this.props.closeArchivePopup()} >
+                <div className={'popup'} onClick={this.stopClicks}>
                     <div className={'popup-content-container'}>
                         <h3 className={'popup-content-title'}>{this.props.popup.title}</h3>
                         <div className='content'> {this.props.popup.content} </div>

@@ -128,14 +128,6 @@ export default class WrapperPage extends React.Component {
         return css.join(' ');
     }
 
-    disabled() {
-        if (this.props.disabled)
-            return <div
-                className='disabled'
-                onClick={() => this.props.closeArchivePopup()}
-            />
-    }
-
     flyoutCss() {
         let css = this.props.visible ? 'flyout-is-visible' : 'flyout-is-hidden';
         return css;
@@ -175,7 +167,6 @@ export default class WrapperPage extends React.Component {
             <ResizeAware onResize={this.onResize}>
                 <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div>
                 <div className={this.flyoutCss()}>
-                    {this.disabled()}
                     <div className={this.css()}>
                         <header className='site-header'>
                             <a className="logo-link" href="#" title="Zur Startseite MOG Archiv">
