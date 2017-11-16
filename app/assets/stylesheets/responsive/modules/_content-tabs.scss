@@ -315,17 +315,17 @@
 // Tab Content: Search / Suche im Interview
 
 .content-search-legend {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: $font-size-medium;
 }
 
 .content-search-text {
-  width: 92%;
+  width: 100%;
   margin-right: 0;
-  @include screen-l {
-    width: 77%;
-    margin-right: 2%;
-  }
+  //@include screen-l {
+  //  width: 77%;
+  //  margin-right: 2%;
+  //}
   p {
     color: $gray-dark;
     cursor: pointer;
@@ -343,7 +343,13 @@
 
 .content-search-row {
   @include clearfix;
-  margin-bottom: 20px;
+  //margin-bottom: 15px;
+  .cont-search-title {
+  }
+  .content-search-timecode {
+    font-size: $font-size-medium;
+    margin-bottom: 0;
+  }
 }
 
 .content-search {
@@ -353,6 +359,7 @@
     margin-bottom: 30px;
     padding: 10px;
     border-bottom: 2px solid $gray-light;
+    border-top: 2px solid $gray-light;
   }
   ::placeholder {
     color: $primary-color;
@@ -366,6 +373,7 @@
     transition: color 0.3s;
     padding: 10px;
     border-bottom: 2px solid $gray-light;
+    border-top: 2px solid $gray-light;
     &:hover {
       color: $gray-light;
     }
