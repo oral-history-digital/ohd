@@ -12,6 +12,23 @@
   width:100%;
 }
 
+.slick-slide {
+  //height: 500px !important;
+  overflow: hidden;
+}
+
+.slider-image {
+  background-color: #333;
+  width: 100%;
+  //height: auto;
+  display: block;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
 //.popup{
 //  &.hidden {
 //    display: none;

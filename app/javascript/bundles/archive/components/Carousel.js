@@ -9,10 +9,12 @@ export default class Carousel extends React.Component {
         return this.props.photos.map((photo, index) => {
             return (
                 <div key={"slider-image-" + index}
-                     className={'slider-image'}
-                >
-                    <img src={photo.src}>
-                    </img>
+                     className={'slider-image-container'} >
+                             <div className='slider-image'>
+                        <img src={photo.src}>
+
+                        </img>
+                    </div>
                 </div>
             )
         })
@@ -24,7 +26,9 @@ export default class Carousel extends React.Component {
             infinite: true,
             speed: 500,
             slidesToShow: 1,
-            slidesToScroll: 1
+            slidesToScroll: 1,
+            adaptiveHeight: true
+            //autoplay: true
         };
         return (
             <Slider {...settings}>
