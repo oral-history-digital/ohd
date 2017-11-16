@@ -120,9 +120,11 @@
   .search-input {
     width: 80%;
     margin-bottom: 30px;
-    padding: 10px 0;
+    padding: 10px;
     border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
+    //border-left: 1px solid $gray-dark;
+    background-color: lighten($gray-warm, 50%);
   }
   ::placeholder {
     color: $primary-color;
@@ -137,6 +139,8 @@
     padding: 10px;
     border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
+    //border-right: 1px solid $gray-dark;
+    background-color: lighten($gray-warm, 50%);
     text-align: right;
     &:hover {
       color: $gray-light;
