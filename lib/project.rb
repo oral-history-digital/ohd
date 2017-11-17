@@ -23,6 +23,23 @@ module Project
       Rails.configuration.project['person_properties']
     end
 
+    def search_facets
+      person_properties.select{|c| c['use_as_facet'] }
+    end
+
+    def registry_search_facets
+      person_properties.select{|c| c['use_as_facet'] && c['source'] == 'registry_entry' }
+    end
+
+    def person_search_facets
+      person_properties.select{|c| c['use_as_facet'] && c['source'] == 'person' }
+    end
+
+    def search_facets_names
+      person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
+    end
+
+
     def archive_facet_category_ids
       person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
     end 

@@ -6,17 +6,59 @@ class SearchesController < BaseController
   skip_before_action :authenticate_user_account!
 
   # Handle search initialization.
-  before_action :rename_person_name_param, :only => :person_name
-  skip_before_action :current_search_for_side_panel
-  before_action :current_query_params
+  #before_action :rename_person_name_param, :only => :person_name
+  #skip_before_action :current_search_for_side_panel
+  #before_action :current_query_params
 
-  before_action :determine_user, :only => [:query, :index]
+  #before_action :determine_user, :only => [:query, :index]
 
 
-  before_action :search_before_new, :only => [:new]
-  before_action :search_before_index, :only => [:index]
+  #before_action :search_before_new, :only => [:new]
+  #before_action :search_before_index, :only => [:index]
 
-  ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
+  #ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
+
+  def archive
+    search = Interview.search do 
+      fulltext params[:fulltext] 
+      Project.search_facets_names.each do |facet|
+        with(facet.to_sym, params[facet]) if params[facet]
+      end
+      facet *Project.search_facets_names
+      paginate page: params[:page] || 1, per_page: 12
+    end
+
+    binding.pry
+    # TODO: terminate the following
+    session[:query] = params.select{|p| (Project.search_facets_names + [:fulltext]).include?(p) }
+
+    respond_to do |format|
+      format.html do
+        render :template => '/react/app.html'
+      end
+      format.json do
+        #serialized_segments = search.segments#Hash[search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
+        serialized_unqueried_facets = search.unqueried_facets.map() do |i| 
+          [
+            {id: i[0], name: cat_name(i[0])}, 
+            i[1].map {|j| {entry: Rails.cache.fetch("facet-#{j[0]}"){::FacetSerializer.new(j[0]).as_json}, count: j[1]}}
+          ]
+        end
+
+        render json: {
+            all_interviews_count: Interview.count,
+            result_pages_count: search.results.total_pages,
+            results_count: search.total,
+            interviews: search.results.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
+            #found_segments_for_interviews:  serialized_segments ,
+            facets: {unqueried_facets: serialized_unqueried_facets, query_facets: search.query_facets},
+            session_query: session[:query],
+            fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
+        }
+      end
+    end
+  end
+
 
   def query
     search
@@ -98,7 +140,6 @@ class SearchesController < BaseController
                 end
   end
 
-
   def new
     respond_to do |format|
       format.html do
@@ -108,7 +149,8 @@ class SearchesController < BaseController
         render js: "if(window.location == '#{@redirect}'){ window.location.reload(true);} else { window.location = '#{@redirect}' }"
       end
       format.json do
-        search true
+        #search true
+        archive
       end
     end
   end

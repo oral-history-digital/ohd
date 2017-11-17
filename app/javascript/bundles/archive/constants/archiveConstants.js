@@ -10,8 +10,8 @@ export const INTERVIEW_SEARCH_URL = '/de/searches/interview';
 
 export const REQUEST_ARCHIVE_SEARCH = 'REQUEST_ARCHIVE_SEARCH ';
 export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
-export const ARCHIVE_SEARCH_URL = '/de/suchen';
-export const ARCHIVE_RESET_SEARCH_URL = '/de/suchen/neu';
+export const ARCHIVE_SEARCH_URL = '/de/searches/archive';
+export const ARCHIVE_RESET_SEARCH_URL = '/de/searches/new';
 
  export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
  export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';

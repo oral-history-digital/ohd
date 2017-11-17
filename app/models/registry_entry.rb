@@ -37,6 +37,10 @@ class RegistryEntry < ActiveRecord::Base
            :through => :links_as_descendant,
            :source => :ancestor
 
+  def self.descendant_ids(entry_code)
+    find_by_entry_code(entry_code).descendants.map(&:id)
+  end
+
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
   attr_writer :do_not_validate_parents
@@ -841,6 +845,13 @@ class RegistryEntry < ActiveRecord::Base
       mem[name.locale[0..1]] = name.descriptor
       mem
     end
+  end
+
+  def search_string
+    registry_names.first.translations.inject([]) do |mem, name|
+      mem << name.descriptor
+      mem
+    end.uniq.reject(&:blank?).join(' ')
   end
 
   def change_name_pattern!(requested_pattern)

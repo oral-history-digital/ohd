@@ -40,31 +40,15 @@ class RegistryReference < BaseRegistryReference
   searchable :auto_index => false do
     # Index the reference by registry entry descriptor and alias names.
     text :registry_entry, :boost => 12 do
-      I18n.available_locales.map do |locale|
-        registry_entry.to_s_with_fallback(locale)
-      end.uniq.reject(&:blank?).join(' ')
-    end
-    text :alias_names, :boost => 3 do
-      alias_names = registry_entry.to_s(:alias)
-      alias_names = '' if alias_names =~ Regexp.new(Regexp.escape(RegistryEntry::INVALID_ENTRY_TEXT)) # No aliases.
-      alias_names
+      registry_entry.search_string
     end
 
     # Also index the reference by all parent entries (classification)
     # of the registry entry and its respective alias names.
     text :classification, :boost => 6 do
       registry_entry.ancestors.map do |ancestor|
-        I18n.available_locales.map do |locale|
-          ancestor.to_s_with_fallback(locale)
-        end.uniq.reject(&:blank?).join(' ')
+        ancestor.search_string
       end.join(' ')
-    end
-    text :classification_alias_names do
-      registry_entry.ancestors.map do |ancestor|
-        alias_names = ancestor.to_s(:alias)
-        alias_names = nil if alias_names =~ Regexp.new(Regexp.escape(RegistryEntry::INVALID_ENTRY_TEXT))
-        alias_names
-      end.compact.join(' ')
     end
   end
 

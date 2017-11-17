@@ -103,9 +103,11 @@ class Interview < ActiveRecord::Base
            :dependent => :destroy
 
   has_many :segment_registry_references,
-           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
-           through: :segments,
-           source: :registry_references
+           -> {
+              includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}).
+              where("registry_references.ref_object_type='Segment'")
+           },
+           class_name: 'RegistryReference'
            
   has_many :segment_registry_entries,
            through: :segment_registry_references,
@@ -136,6 +138,7 @@ class Interview < ActiveRecord::Base
     integer :interview_id, :using => :id, :stored => true, :references => Interview
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true
+
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
       segments.each do |segment|
@@ -156,30 +159,45 @@ class Interview < ActiveRecord::Base
     end
 
     text :registry_entries, :boost => 10 do
-      registry_references.map do |reference|
-        (I18n.available_locales + [:alias]).map do |locale|
-          reference.registry_entry.to_s(locale)
-        end.uniq.reject(&:blank?).join(' ')
+      # TODO: use registry_references in zwar
+      #registry_references.map do |reference|
+      segment_registry_references.map do |reference|
+        reference.registry_entry && reference.registry_entry.search_string
       end.join(' ')
     end
 
-    Project.archive_facet_category_ids.each do |category_id|
-      integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+    # Also index the reference by all parent entries (classification)
+    # of the registry entry and its respective alias names.
+    text :classification, :boost => 6 do
+      # TODO: use registry_references in zwar
+      #registry_references.map do |reference|
+      segment_registry_references.map do |reference|
+        reference.registry_entry && reference.registry_entry.ancestors.map do |ancestor|
+          ancestor.search_string
+        end.join(' ')
+      end.join(' ')
+    end
+    
+    Project.registry_search_facets.each do |facet|
+      integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
+    Project.person_search_facets.each do |facet|
+      string facet['id'].to_sym, :stored => true
+    end
 
     # Index archive id, facet categories and language (with all translations) for full text category search.
-    text :categories, :boost => 20 do
-      cats = [self.archive_id]
-      cats += (Project.archive_facet_category_ids + [:language]).
-          # Retrieve all category objects of this interview.
-          map {|c| self.send(c)}.flatten.
-          # Retrieve their translations.
-          map do |cat|
-        I18n.available_locales.map {|l| cat.to_s(l)}.join(' ')
-      end
-      cats.join(' ')
-    end
+    #text :categories, :boost => 20 do
+      #cats = [self.archive_id]
+      #cats += (Project.archive_facet_category_ids + [:language]).
+          ## Retrieve all category objects of this interview.
+          #map {|c| self.send(c)}.flatten.
+          ## Retrieve their translations.
+          #map do |cat|
+        #I18n.available_locales.map {|l| cat.to_s(l)}.join(' ')
+      #end
+      #cats.join(' ')
+    #end
 
     # Create localized attributes so that we can order
     # interviews in all languages.
@@ -210,10 +228,22 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
-  def as_ams_json
-    serialization = ActiveModelSerializers::SerializableResource.new(self, {})
-    serialization.to_json
+  Project.registry_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
+      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['entry_code'])).map(&:registry_entry_id)
+    end
   end
+
+  Project.person_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: what if there are more intervviewees?
+      interviewees.first.send facet['id'].to_sym
+    end
+  end
+  #def facet_category_ids(entry_code)
+    #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
+  #end
 
   def to_vtt(type)
     vtt = "WEBVTT\n"

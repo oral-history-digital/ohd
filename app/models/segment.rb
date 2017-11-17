@@ -89,12 +89,19 @@ class Segment < ActiveRecord::Base
     end
     text :registry_entries, :boost => 5 do
       registry_references.map do |reference|
-        # (I18n.available_locales + [:alias).map do |locale| # why alia?
-        (I18n.available_locales).map do |locale|
-          reference.registry_entry.to_s(locale)
-        end.uniq.reject(&:blank?).join(' ')
+        reference.registry_entry.search_string
       end.join(' ')
     end
+    # Also index the reference by all parent entries (classification)
+    # of the registry entry and its respective alias names.
+    text :classification, :boost => 6 do
+      registry_references.map do |reference|
+        reference.registry_entry.ancestors.map do |ancestor|
+          ancestor.search_string
+        end.join(' ')
+      end.join(' ')
+    end
+    
   end
 
   def archive_id

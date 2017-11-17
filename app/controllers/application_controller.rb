@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
   #filter_parameter_logging :password # Scrub sensitive parameters from your log
 
   include SearchFilters
-  before_action :current_search_for_side_panel
 
   before_action :set_variant
 

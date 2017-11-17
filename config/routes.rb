@@ -50,16 +50,17 @@ Rails.application.routes.draw do
         end
       end
 
-      get 'suche/:suche/:page' => 'searches#query', :as => :search_by_hash_page
-      get 'suche/:suche' => 'searches#query', :as => :search_by_hash
-      get 'suchen/neu' => 'searches#new', :as => :new_search
-      get 'suchen/:page' => 'searches#query', :as => :search_by_page
-      get 'suchen' => 'searches#query', :as => :search
-      resources :searches do
+      #get 'suche/:suche/:page' => 'searches#query', :as => :search_by_hash_page
+      #get 'suche/:suche' => 'searches#query', :as => :search_by_hash
+      #get 'suchen/neu' => 'searches#new', :as => :new_search
+      #get 'suchen/:page' => 'searches#query', :as => :search_by_page
+      #get 'suchen' => 'searches#query', :as => :search
+      resources :searches, only: [:new, :archive, :interview] do
         collection do
-          post :query
+          #post :query
+          get :archive
           get :interview
-          get :person_name
+          #get :person_name
         end
       end
 

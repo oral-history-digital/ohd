@@ -17,7 +17,7 @@ default: &default
 
   project_shortname: 'EOG'
 
-  project_initials: 'EOG' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+  project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
   project_domain: 'zwangsarbeit-archiv.de'
 
@@ -99,12 +99,11 @@ default: &default
       source: 'registry_entry'
       descriptor: 'Person'
     - id: 'gender'
-      source: 'registry_entry'
-      descriptor: 'Geschlecht'
+      source: 'person'
       use_as_facet: true
-    - id: 'chronological'
+    - id: 'periods'
       source: 'registry_entry'
-      descriptor: 'periode'
+      entry_code: 'period'
       use_as_facet: true
 
   # NB: The map has not yet been generalized to work for all historical
