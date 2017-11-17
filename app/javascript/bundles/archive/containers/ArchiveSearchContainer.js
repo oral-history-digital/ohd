@@ -8,14 +8,14 @@ import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 
 const mapStateToProps = (state) => {
   return { 
-    foundInterviews: state.archive.foundInterviews,
-    //foundSegmentsForInterviews: state.archive.foundSegmentsForInterviews,
-      allInterviewsCount: state.archive.allInterviewsCount,
-      resultPagesCount: state.archive.resultPagesCount,
-      resultsCount: state.archive.resultsCount,
-      searchQuery: state.archive.searchQuery,
-    interviews: state.archive.interviews,
-    isArchiveSearching: state.archive.isArchiveSearching
+    foundInterviews: state.search.foundInterviews,
+    //foundSegmentsForInterviews: state.search.foundSegmentsForInterviews,
+      allInterviewsCount: state.search.allInterviewsCount,
+      resultPagesCount: state.search.resultPagesCount,
+      resultsCount: state.search.resultsCount,
+      searchQuery: state.search.searchQuery,
+    interviews: state.search.interviews,
+    isArchiveSearching: state.search.isArchiveSearching
   }
 }
 
