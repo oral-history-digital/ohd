@@ -13,8 +13,6 @@ class UserContentsController < BaseController
 
   #before_action :collection, only: [:index]
 
-  #skip_before_action :current_search_for_side_panel
-
   #before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
   #rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
