@@ -55,12 +55,11 @@ Rails.application.routes.draw do
       #get 'suchen/neu' => 'searches#new', :as => :new_search
       #get 'suchen/:page' => 'searches#query', :as => :search_by_page
       #get 'suchen' => 'searches#query', :as => :search
-      resources :searches, only: [:new, :archive, :interview] do
+      resources :searches, only: [:facets, :archive, :interview] do
         collection do
-          #post :query
+          get :facets
           get :archive
           get :interview
-          #get :person_name
         end
       end
 

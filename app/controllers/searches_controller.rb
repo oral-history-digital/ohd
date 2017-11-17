@@ -18,6 +18,26 @@ class SearchesController < BaseController
 
   #ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
+  def facets
+     json = Rails.cache.fetch "search-facets-#{RegistryEntry.maximum(:updated_at)}" do
+      Project.search_facets.inject({}) do |mem, facet|
+        case facet.source 
+        when 'registry_entry'
+          mem[facet.id] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet.entry_code))
+        #when 'person'
+          #mem[facet.id] = Person::POSSIBLE_VALUES[facet.id]
+        end
+        mem
+      end.to_json
+    end
+
+    respond_to do |format|
+      format.json do
+        render text: json
+      end
+    end
+  end
+
   def archive
     search = Interview.search do 
       fulltext params[:fulltext] 
@@ -30,7 +50,7 @@ class SearchesController < BaseController
 
     binding.pry
     # TODO: terminate the following
-    session[:query] = params.select{|p| (Project.search_facets_names + [:fulltext]).include?(p) }
+    #session[:query] = params.select{|p| (Project.search_facets_names + [:fulltext]).include?(p) }
 
     respond_to do |format|
       format.html do
