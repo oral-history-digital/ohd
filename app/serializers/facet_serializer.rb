@@ -19,5 +19,6 @@ class FacetSerializer < ActiveModel::Serializer
         mem
       end
     when 'person'
+    end
   end
 end
