@@ -9,7 +9,7 @@
     <% unless segment.subheading.blank? %>
     \subsection{ <%= segment.subheading %>}
     <% end %>
-    <%= segment.send(:translation) + "\n" %>
+    <%= sanitize(segment.send(:translation)).gsub(/<br>/, '').gsub("\"",'') + "\n" %>
 <% end %>
 
 
