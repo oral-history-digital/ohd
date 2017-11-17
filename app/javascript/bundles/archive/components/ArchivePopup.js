@@ -31,10 +31,10 @@ export default class ArchivePopup extends React.Component {
         return (
             <div className={this.css()} onClick={() => this.props.closeArchivePopup()} >
                 <div className={'popup'} onClick={this.stopClicks}>
-                    <div className={'popup-content-container'}>
+
                         <h3 className={'popup-content-title'}>{this.props.popup.title}</h3>
                         <div className='content'> {this.props.popup.content} </div>
-                    </div>
+
                     {this.buttons()}
                 </div>
             </div>
