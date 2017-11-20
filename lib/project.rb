@@ -36,9 +36,30 @@ module Project
     end
 
     def search_facets_names
-      person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
+      person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id']}
     end
 
+    def search_facets_hash
+      @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
+        case facet['source']
+        when 'registry_entry'
+          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet['id']))
+        #when 'person'
+          #mem[facet.id] = Person::POSSIBLE_VALUES[facet.id]
+        end
+        mem.as_json
+      end
+    end
+
+    def updated_search_facets(search)
+      facets = search_facets_hash.deep_dup
+      search_facets_names.each do |facet|
+        search.facet(facet).rows.each do |row|
+          facets[facet][:subfacets][row.value][:count] = row.count if facets[facet]
+        end
+      end
+      facets
+    end
 
     def archive_facet_category_ids
       person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}

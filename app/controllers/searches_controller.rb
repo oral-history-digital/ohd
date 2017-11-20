@@ -19,16 +19,8 @@ class SearchesController < BaseController
   #ACTIONS_FOR_DEFAULT_REDIRECT = ['person_name', 'interview']
 
   def facets
-     json = Rails.cache.fetch "search-facets-#{RegistryEntry.maximum(:updated_at)}" do
-      Project.search_facets.inject({}) do |mem, facet|
-        case facet.source 
-        when 'registry_entry'
-          mem[facet.id] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet.entry_code))
-        #when 'person'
-          #mem[facet.id] = Person::POSSIBLE_VALUES[facet.id]
-        end
-        mem
-      end.to_json
+    json = Rails.cache.fetch "search-facets-#{RegistryEntry.maximum(:updated_at)}" do
+      {facets: Project.search_facets_hash}.to_json
     end
 
     respond_to do |format|
@@ -48,7 +40,6 @@ class SearchesController < BaseController
       paginate page: params[:page] || 1, per_page: 12
     end
 
-    binding.pry
     # TODO: terminate the following
     #session[:query] = params.select{|p| (Project.search_facets_names + [:fulltext]).include?(p) }
 
@@ -58,12 +49,14 @@ class SearchesController < BaseController
       end
       format.json do
         #serialized_segments = search.segments#Hash[search.segments.map{|k, v| [k.downcase, v.collect{|i| ::SegmentSerializer.new( i ) } ]}]
-        serialized_unqueried_facets = search.unqueried_facets.map() do |i| 
-          [
-            {id: i[0], name: cat_name(i[0])}, 
-            i[1].map {|j| {entry: Rails.cache.fetch("facet-#{j[0]}"){::FacetSerializer.new(j[0]).as_json}, count: j[1]}}
-          ]
-        end
+        #serialized_unqueried_facets = search.unqueried_facets.map() do |i| 
+          #[
+            #{id: i[0], name: cat_name(i[0])}, 
+            #i[1].map {|j| {entry: Rails.cache.fetch("facet-#{j[0]}"){::FacetSerializer.new(j[0]).as_json}, count: j[1]}}
+          #]
+        #end
+
+        facets = Project.updated_search_facets(search)
 
         render json: {
             all_interviews_count: Interview.count,
@@ -71,9 +64,10 @@ class SearchesController < BaseController
             results_count: search.total,
             interviews: search.results.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
             #found_segments_for_interviews:  serialized_segments ,
-            facets: {unqueried_facets: serialized_unqueried_facets, query_facets: search.query_facets},
-            session_query: session[:query],
-            fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
+            facets: facets,
+            #facets: {unqueried_facets: serialized_unqueried_facets, query_facets: search.query_facets},
+            #session_query: session[:query],
+            #fulltext: (session[:query].blank? || session[:query]['fulltext'].blank?) ? "" : session[:query]['fulltext']
         }
       end
     end

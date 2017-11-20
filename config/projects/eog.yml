@@ -103,7 +103,6 @@ default: &default
       use_as_facet: true
     - id: 'periods'
       source: 'registry_entry'
-      entry_code: 'period'
       use_as_facet: true
 
   # NB: The map has not yet been generalized to work for all historical

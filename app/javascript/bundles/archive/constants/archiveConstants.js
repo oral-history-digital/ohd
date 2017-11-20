@@ -8,6 +8,11 @@ export const REQUEST_INTERVIEW_SEARCH = 'REQUEST_INTERVIEW_SEARCH';
 export const RECEIVE_INTERVIEW_SEARCH = 'RECEIVE_INTERVIEW_SEARCH';
 export const INTERVIEW_SEARCH_URL = '/de/searches/interview';
 
+export const SET_QUERY_PARAMS = 'SET_QUERY_PARAMS ';
+export const RESET_QUERY = 'RESET_QUERY';
+export const RECEIVE_FACETS = 'RECEIVE_FACETS';
+export const REQUEST_FACETS= 'REQUEST_FACETS';
+export const FACETS_URL = '/de/searches/facets';
 export const REQUEST_ARCHIVE_SEARCH = 'REQUEST_ARCHIVE_SEARCH ';
 export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
 export const ARCHIVE_SEARCH_URL = '/de/searches/archive';

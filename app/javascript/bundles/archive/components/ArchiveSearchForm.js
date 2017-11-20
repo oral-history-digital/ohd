@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigation } from 'react-router-dom'
-import Facet from '../components/Facet';
+import FacetContainer from '../containers/FacetContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 import {ARCHIVE_SEARCH_URL} from '../constants/archiveConstants';
@@ -19,34 +19,39 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            this.props.resetSearchInArchive({});
+            //this.props.loadFacets();
+            this.props.searchInArchive({});
         }
     }
 
     facetsLoaded() {
-        return this.props.facets && this.props.facets.unqueried_facets;
+        return this.props.facets;
+        //return this.props.facets && this.props.facets.unqueried_facets;
     }
 
     handleChange(event) {
         const value =  event.target.value;
         const name =  event.target.name;
 
-        this.setState({[name]: value});
+        this.props.setQueryParams(name, value);
+        //this.setState({[name]: value});
     }
 
     handleReset(event){
+        //this.props.resetQuery();
         $('input[type=checkbox]').attr('checked',false);
         this.setState({['fulltext']: ''}, function (){
-            this.props.resetSearchInArchive( {});
+            this.props.searchInArchive({});
         });
     }
 
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
+        //this.props.searchInArchive(this.props.query);
         let query = ($('#archiveSearchForm').serialize());
         if (query == "fulltext=") {
-            this.props.resetSearchInArchive({});
+            this.props.searchInArchive({});
         } else{
             this.props.searchInArchive(query);
         }
@@ -57,9 +62,20 @@ export default class ArchiveSearchForm extends React.Component {
         return  <UserContentFormContainer 
                     title=''
                     description=''
-                    properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
+                    properties={Object.assign({}, this.props.query, {fulltext: this.props.query.fulltext})}
                     type='Search'
                 />
+    }
+
+    saveSearchButton() {
+         return <button 
+                    onClick={() => this.props.openArchivePopup({
+                        title: 'Save search', 
+                        content: this.saveSearchForm()
+                    })}
+                >
+                    {'Save search'}
+                </button>
     }
 
     render() {
@@ -73,14 +89,7 @@ export default class ArchiveSearchForm extends React.Component {
                 </form>
 
                 <button className={'reset'} onClick={this.handleReset}>Reset</button>
-                <button 
-                    onClick={() => this.props.openArchivePopup({
-                        title: 'Save search', 
-                        content: this.saveSearchForm()
-                    })}
-                >
-                    {'Save search'}
-                </button>
+                {this.saveSearchButton()}
             </div>
         );
     }
@@ -88,13 +97,11 @@ export default class ArchiveSearchForm extends React.Component {
 
     renderFacets() {
         if (this.facetsLoaded()) {
-            return this.props.facets.unqueried_facets.map((facet, index) => {
-                //facet.locale = this.props.locale;
+            return Object.keys(this.props.facets).map((facet, index) => {
                 return (
-                    <Facet
-                        data={facet}
-                        locale={this.props.locale}
-                        sessionQuery={this.props.searchQuery}
+                    <FacetContainer
+                        data={this.props.facets[facet]}
+                        facet={facet}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
                     />

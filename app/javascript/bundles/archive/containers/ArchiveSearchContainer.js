@@ -2,14 +2,12 @@ import { connect } from 'react-redux';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 //import * as actionCreators from '../actions/searchActionCreators';
-import * as actionCreators from '../actions/searchActionCreators';
-import { resetSearchInArchive, searchInArchive } from '../actions/searchActionCreators';
+import { resetQuery, searchInArchive } from '../actions/searchActionCreators';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 
 const mapStateToProps = (state) => {
   return { 
     foundInterviews: state.search.foundInterviews,
-    //foundSegmentsForInterviews: state.search.foundSegmentsForInterviews,
       allInterviewsCount: state.search.allInterviewsCount,
       resultPagesCount: state.search.resultPagesCount,
       resultsCount: state.search.resultsCount,
@@ -21,7 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    resetSearchInArchive: (query) => dispatch(resetSearchInArchive(query)),
+    //resetSearchInArchive: (query) => dispatch(resetSearchInArchive(query)),
     searchInArchive: (query) => dispatch(searchInArchive(query)),
     fetchStaticContent:() => dispatch(fetchStaticContent()),
 })
