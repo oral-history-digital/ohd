@@ -33,7 +33,6 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     handleReset(event){
-        //$('input[type=checkbox]').attr('checked',false);
         this.form.reset();
         this.props.resetQuery({});
         this.props.searchInArchive({});
@@ -42,9 +41,8 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        let query = serialize(this.form, {hash: true});
-        this.props.setQueryParams(query);
-        this.props.searchInArchive(query);
+        this.props.setQueryParams(serialize(this.form, {hash: true}));
+        this.props.searchInArchive(serialize(this.form, {hash: false}));
         this.context.router.history.push(ARCHIVE_SEARCH_URL);
     }
 
