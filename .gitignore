@@ -8,3 +8,4 @@ solr/data
 sunspot-solr.pid
 tmp/
 /node_modules
+solr/pids/
