@@ -68,7 +68,7 @@ export default class Facet extends React.Component {
             return (
                 <div key={"subfacet-" + index}>
                     <input className={'with-font ' + this.props.facet + ' checkbox'} id={this.props.facet + "_" + subfacetId}
-                           name={this.props.facet + "[]"} checked={checkedState} type="radio" value={subfacetId}
+                           name={this.props.facet + "[]"} checked={checkedState} type="checkbox" value={subfacetId}
                            onChange={this.onChange}>
                     </input>
                     <label htmlFor={this.props.facet + "_" + subfacetId}>
