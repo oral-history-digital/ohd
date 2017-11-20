@@ -1,25 +1,56 @@
 
-
-
-.disabled{
-  position:fixed;
-  top:0;
-  left:0;
-  background:#000;
-  opacity:0.4;
-  z-index:998;
-  height:100%;
-  width:100%;
+.slick-slide {
+  height: 100% !important;
+  overflow: hidden;
+  background-color: #333;
+  text-align: center !important;
+  img {
+    vertical-align: middle;
+    margin: 0 auto;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+.slick-list {
+  height: 90% !important;
+}
+.slick-slider {
+  height: 100% !important;
+}
+.slick-track {
+  height: 100% !important;
+}
+.slick-dots {
+  bottom: auto !important;
 }
 
-.popup{
-  &.hidden {
-    display: none;
-  }
-  background-color: white;
-  padding: 3%;
-  position: fixed;
-  top: 40%;
-  left: 30%;
-  z-index:999;
+
+
+.slick-prev {
+  left: 25px !important;
+  z-index: 3100;
+}
+[dir='rtl'] .slick-prev {
+  right: auto !important;
+  left: 25px;
+}
+.slick-prev:before {
+  content: '←';
+}
+[dir='rtl'] .slick-prev:before {
+  content: '→';
+}
+
+.slick-next {
+  right: 25px !important;
+}
+[dir='rtl'] .slick-next {
+  right: auto;
+  left: 25px !important;
+}
+.slick-next:before {
+  content: '→';
+}
+[dir='rtl'] .slick-next:before {
+  content: '←';
 }

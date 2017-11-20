@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import VideoPlayer from '../components/VideoPlayer';
 import { handleVideoTimeChange, handleVideoEnded } from '../actions/videoPlayerActionCreators';
 import { handleTranscriptScroll } from '../actions/interviewActionCreators';
+import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -21,7 +22,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   handleVideoTimeChange: time => dispatch(handleVideoTimeChange(time)),
   handleVideoEnded: () => dispatch(handleVideoEnded),
-  handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool))
+  handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
+    openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 
 // Don't forget to actually use connect!

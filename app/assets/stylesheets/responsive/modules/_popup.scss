@@ -1,0 +1,34 @@
+.lightbox {
+  &.hidden {
+    display: none;
+  }
+  /** Position and style */
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  //text-align: center;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.7);
+  z-index:2000;
+}
+
+.popup {
+  background-color: white;
+  width: 80%;
+  height: 80%;
+  margin: 20px auto;
+  padding: 20px 30px;
+  position: relative;
+  input {
+    border: 1px solid $gray-dark;
+  }
+  .content {
+    height:95%;
+  }
+}
+
+//.popup-content-container {
+//  text-align: left;
+//}

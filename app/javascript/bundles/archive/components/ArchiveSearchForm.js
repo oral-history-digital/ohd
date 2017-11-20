@@ -50,7 +50,6 @@ export default class ArchiveSearchForm extends React.Component {
         return (
             <div>
                 <form ref={(form) => {this.form = form;}}  id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
-
                     <input className={'search-input'} type="text" name="fulltext" value={this.props.query.fulltext} placeholder="Eingabe ..." onChange={this.handleChange}/>
                     <input className="search-button" id="search-button" title="Suche im Archiv ..." type="submit" value=""/>
                     {this.renderFacets()}
