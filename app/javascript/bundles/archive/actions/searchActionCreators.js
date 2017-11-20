@@ -17,14 +17,18 @@ import {
     //ARCHIVE_RESET_SEARCH_URL
 } from '../constants/archiveConstants';
 
-const setQueryParams = (name, value) => ({
-  type: SET_QUERY_PARAMS ,
-    name: value
-});
+export function setQueryParams(params){
+    return {
+        type: SET_QUERY_PARAMS ,
+        params: params
+    }
+}
 
-const resetQuery = () => ({
-  type: RESET_QUERY,
-});
+export function resetQuery(){
+    return {
+        type: RESET_QUERY,
+    }
+}
 
 const requestFacets = () => ({
     type: REQUEST_FACETS,

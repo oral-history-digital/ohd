@@ -55,7 +55,7 @@ export default class ArchiveSearch extends React.Component {
     handleClick(event) {
         console.log($(event.target).data().page);
         let page = ($(event.target).data().page);
-        let query = this.props.searchQuery;
+        let query = this.props.query;
         query['page'] = page;
         this.props.searchInArchive(query);
     }
@@ -77,7 +77,7 @@ export default class ArchiveSearch extends React.Component {
         for (let i = 1; i <= this.props.resultPagesCount; i++) {
             resultPages.push(i);
         }
-        let query = this.props.searchQuery;
+        let query = this.props.query;
         let actualPage = query['page'] != undefined ? query['page'] : 1;
 
 
@@ -103,11 +103,19 @@ export default class ArchiveSearch extends React.Component {
         return  <UserContentFormContainer
             title=''
             description=''
-            properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
+            properties={this.props.query}
             type='Search'
         />
     }
-
+    
+    saveSearchLink() {
+        return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
+                    title: 'Save search',
+                    content: this.saveSearchForm()
+                })}>
+                    <i className="fa fa-star"></i>Suche speichern
+                </div>
+    }
 
     render() {
         return (
@@ -117,18 +125,9 @@ export default class ArchiveSearch extends React.Component {
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">Suchergebnisse</h1>
                     <div className="search-results-legend">
-
-                        <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                            title: 'Save search',
-                            content: this.saveSearchForm()
-                        })}>
-                            <i className="fa fa-star"></i>Suche speichern
-                        </div>
-
+                        {this.saveSearchLink()}
                         <div className="search-results-legend-text">{this.props.resultsCount} Suchergebnisse</div>
                     </div>
-
-
 
                     <Tabs
                         className='tabs'

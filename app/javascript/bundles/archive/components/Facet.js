@@ -7,12 +7,9 @@ export default class Facet extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.onChange = this.onChange.bind(this);
 
-        let categoryId = this.props.facet;
         let openState = false;
-        let checkedFacets = this.props.query[categoryId];
-
-        if (checkedFacets !== undefined) {
-            openState = checkedFacets.length > 0;
+        if (this.checkedFacets()) {
+            openState = this.checkedFacets().length > 0;
         }
 
         this.state = {
@@ -20,6 +17,10 @@ export default class Facet extends React.Component {
             class: openState ? "accordion active" : "accordion",
             panelClass: openState ? "panel open" : "panel"
         };
+    }
+
+    checkedFacets() {
+        return this.props.query[this.props.facet];
     }
 
     handleClick(event) {
@@ -57,24 +58,20 @@ export default class Facet extends React.Component {
 
 
     renderSubfacets() {
-        let categoryId = this.props.facet;
-        //let categoryId = this.props.data[0].id;
-        let checkedFacets = this.props.query[categoryId];
-
         return Object.keys(this.props.data.subfacets).map((subfacetId, index) => {
             let subfacet = this.props.data.subfacets[subfacetId]
             let checkedState = false;
-            if (checkedFacets !== undefined) {
-                checkedState = checkedFacets.indexOf(subfacetId.toString()) > -1;
+            if (this.checkedFacets()) {
+                checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
             }
 
             return (
                 <div key={"subfacet-" + index}>
-                    <input className={'with-font ' + categoryId + ' checkbox'} id={categoryId + "_" + subfacetId}
-                           name={categoryId + "[]"} checked={checkedState} type="radio" value={subfacetId}
+                    <input className={'with-font ' + this.props.facet + ' checkbox'} id={this.props.facet + "_" + subfacetId}
+                           name={this.props.facet + "[]"} checked={checkedState} type="radio" value={subfacetId}
                            onChange={this.onChange}>
                     </input>
-                    <label htmlFor={categoryId + "_" + subfacetId}>
+                    <label htmlFor={this.props.facet + "_" + subfacetId}>
                         {subfacet.descriptor[this.props.locale]}
                         <span>({subfacet.count})</span>
                     </label>

@@ -14,7 +14,6 @@ import {
 const initialState = {
     facets: null,
     query:{},
-    //fulltext:"",
     foundInterviews: [],
     interviews: {},
     allInterviewsCount: 0,
@@ -34,7 +33,6 @@ const search = (state = initialState, action) => {
                 didInvalidate: false
             })
         case RECEIVE_INTERVIEW_SEARCH:
-            debugger;
             return Object.assign({}, state, {
                 isInterviewSearching: false,
                 didInvalidate: false,
@@ -47,9 +45,7 @@ const search = (state = initialState, action) => {
             })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
-                query: Object.assign({}, state.query, {
-                    [action.name]: action.value
-                })
+                query: Object.assign({}, state.query, action.params)
             })
         case RESET_QUERY:
             return Object.assign({}, state, {
@@ -75,19 +71,7 @@ const search = (state = initialState, action) => {
                 allInterviewsCount: action.allInterviewsCount,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,
-
-                //facets: Object.assign({}, state.facets,
-                    //Object.keys(action.facets).reduce(function(facets, archiveId) {
-                        //facets[archiveId] = Object.assign({}, state.facets[archiveId], {
-                            //foundSegments: action.foundSegmentsForInterviews[archiveId],
-                            //fulltext: action.fulltext
-                        //});
-                        //return facets;
-                    //}, {})
-                //),
                 facets: action.facets,
-                //searchQuery: action.searchQuery,
-                //fulltext: action.fulltext,
             })
 
         default:
