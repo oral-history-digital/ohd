@@ -1,9 +1,5 @@
 class Person < ApplicationRecord
 
-  POSSIBLE_VALUES = {
-    gender: %w(Man Woman)
-  }
-
   has_many :contributions
   has_many :histories, dependent: :destroy
 

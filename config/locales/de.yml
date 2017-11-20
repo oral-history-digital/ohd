@@ -429,6 +429,7 @@ de:
               too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
 
   personal_data:
+    gender: 'Geschlecht'
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'

@@ -101,6 +101,9 @@ default: &default
     - id: 'gender'
       source: 'person'
       use_as_facet: true
+      values: 
+        male: 'Man'
+        female: 'Woman'
     - id: 'periods'
       source: 'registry_entry'
       use_as_facet: true

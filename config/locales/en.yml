@@ -378,6 +378,7 @@ en:
               too_long: 'Notes may not exceed a length of 300 characters.'
 
   personal_data:
+    gender: 'gender'
     male: 'male'
     female: 'female'
     born: 'born in'

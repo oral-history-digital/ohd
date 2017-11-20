@@ -43,11 +43,27 @@ module Project
       @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
         case facet['source']
         when 'registry_entry'
-          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet['id']))
-        #when 'person'
-          #mem[facet.id] = Person::POSSIBLE_VALUES[facet.id]
+          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet['id'])).as_json
+        when 'person'
+          mem[facet['id'].to_sym] = {
+            descriptor: localized_hash_for("personal_data", facet['id']),
+            subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
+              subfacets[value] = {
+                descriptor: localized_hash_for("personal_data", key),
+                count: 0
+              }
+              subfacets
+            end
+          }
         end
-        mem.as_json
+        mem.with_indifferent_access
+      end
+    end
+
+    def localized_hash_for(specifier, key)
+      I18n.available_locales.inject({}) do |desc, locale|
+        desc[locale] = I18n.t("#{specifier}.#{key}", locale: locale)
+        desc
       end
     end
 
