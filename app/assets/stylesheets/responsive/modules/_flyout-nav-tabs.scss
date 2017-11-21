@@ -123,8 +123,8 @@
     padding: 10px;
     border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
-    //border-left: 1px solid $gray-dark;
-    background-color: lighten($gray-warm, 50%);
+    border-left: 1px solid $gray-dark;
+    background-color: $gray-paler;
   }
   ::placeholder {
     color: $primary-color;
@@ -139,8 +139,8 @@
     padding: 10px;
     border-top: 1px solid $gray-dark;
     border-bottom: 1px solid $gray-dark;
-    //border-right: 1px solid $gray-dark;
-    background-color: lighten($gray-warm, 50%);
+    border-right: 1px solid $gray-dark;
+    background-color: $gray-paler;
     text-align: right;
     &:hover {
       color: $gray-light;
