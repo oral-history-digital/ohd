@@ -6,7 +6,7 @@ import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer
 import UserContentsContainer from '../containers/UserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import GalleryContainer from '../containers/GalleryContainer';
-import CarouselContainer from '../containers/CarouselContainer';
+import PersonDataContainer from '../containers/PersonDataContainer';
 
 
 export default class FlyoutTabs extends React.Component {
@@ -83,7 +83,7 @@ export default class FlyoutTabs extends React.Component {
 
                         <InterviewDataContainer
                             title={'Zur Person'}
-                            content={<div/>}/>
+                            content={<PersonDataContainer/>}/>
                         <InterviewDataContainer
                             title={'Zum Interview'}
                             content={<div/>}/>
