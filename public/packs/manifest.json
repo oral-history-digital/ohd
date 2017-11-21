@@ -1,5 +1,5 @@
 {
-  "application.css": "/packs/application.css",
-  "application.js": "/packs/application-21-11-2017.js",
-  "hello-world-bundle.js": "/packs/hello-world-bundle.js"
+  "application.css": "http://0.0.0.0:8080/packs/application.css",
+  "application.js": "http://0.0.0.0:8080/packs/application.js",
+  "hello-world-bundle.js": "http://0.0.0.0:8080/packs/hello-world-bundle.js"
 }

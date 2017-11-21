@@ -81,8 +81,6 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>Interview</div>
                     <div className='flyout-sub-tabs-container flyout-video'>
 
-                        <CarouselContainer/>
-
                         <InterviewDataContainer
                             title={'Zur Person'}
                             content={<div/>}/>
