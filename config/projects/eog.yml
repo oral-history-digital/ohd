@@ -21,7 +21,7 @@ default: &default
 
   project_shortname: 'EOG'
 
-  project_initials: 'EOG' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+  project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
   project_domain: 'zwangsarbeit-archiv.de'
 
@@ -103,30 +103,14 @@ default: &default
       source: 'registry_entry'
       descriptor: 'Person'
     - id: 'gender'
+      source: 'person'
+      use_as_facet: true
+      values: 
+        male: 'Man'
+        female: 'Woman'
+    - id: 'periods'
       source: 'registry_entry'
-      descriptor: 'Geschlecht'
       use_as_facet: true
-    - id: 'forced_labor_groups'
-      source: 'registry_entry'
-      descriptor: 'Gruppe'
-      use_as_facet: true
-    - id: 'forced_labor_fields'
-      source: 'registry_entry'
-      descriptor: 'Einsatzbereich'
-      use_as_facet: true
-    - id: 'forced_labor_habitations'
-      source: 'registry_entry'
-      descriptor: 'Unterbringung / Inhaftierung'
-      use_as_facet: true
-    - id: 'home_locations'
-      source: 'registry_reference_type'
-      use_as_facet: true
-    - id: 'forced_labor_locations'
-      source: 'registry_reference_type'
-    - id: 'deportation_locations'
-      source: 'registry_reference_type'
-    - id: 'return_locations'
-      source: 'registry_reference_type'
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a

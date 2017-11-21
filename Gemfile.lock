@@ -488,7 +488,6 @@ DEPENDENCIES
   react_on_rails (~> 9.0.1)
   rest-client
   route_translator
-  rsolr
   rspec
   rspec-activemodel-mocks
   rspec-rails

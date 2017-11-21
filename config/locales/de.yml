@@ -99,7 +99,7 @@ de:
   german: 'Deutsch'
 
   routes: # Pretty URLs for static pages.
-    archive: 'archiv'
+    #archive: 'archiv'
     faq_index: 'hilfe'
     faq_archive_contents: 'hilfe_zu_inhalten'
     faq_searching: 'hilfe_zur_suche'
@@ -429,6 +429,7 @@ de:
               too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
 
   personal_data:
+    gender: 'Geschlecht'
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'

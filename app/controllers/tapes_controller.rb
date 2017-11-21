@@ -2,8 +2,6 @@ class TapesController < BaseController
 
   before_action :parent_object
 
-  skip_before_action :current_search_for_side_panel
-
   def playlist
     @interview = parent_object
     @tapes = @interview.tapes

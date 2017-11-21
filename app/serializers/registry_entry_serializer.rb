@@ -5,7 +5,7 @@ class RegistryEntrySerializer < ActiveModel::Serializer
              :descriptor
 
   def descriptor
-    object.to_s
+    object.localized_hash
   end
 
   def latitude

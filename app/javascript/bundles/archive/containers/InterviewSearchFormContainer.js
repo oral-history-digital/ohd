@@ -7,10 +7,10 @@ import ArchiveUtils from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-  let data = ArchiveUtils.getInterview(state);
+  let data = state.search.interviews[state.archive.archiveId];
   return {
-    interview: data.interview,
-    interviewFulltext: data.fulltext
+    archiveId: state.archive.archiveId,
+    interviewFulltext: data && data.fulltext
   }
 }
 

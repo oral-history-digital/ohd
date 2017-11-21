@@ -11,8 +11,8 @@ export default class Carousel extends React.Component {
                 <div key={"slider-image-" + index}
                      className={'slider-image-container'} >
                         <img src={photo.src}>
-
                         </img>
+                    <div className="slider-text">Slider Text</div>
 
                 </div>
             )

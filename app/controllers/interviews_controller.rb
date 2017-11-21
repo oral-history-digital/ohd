@@ -3,8 +3,6 @@ class InterviewsController < BaseController
   layout 'responsive'
 
   skip_before_action :authenticate_user_account!, only: :show
-  before_action :featured_registry_entry, :only => :show
-  skip_before_action :current_search_for_side_panel, :except => :show
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])

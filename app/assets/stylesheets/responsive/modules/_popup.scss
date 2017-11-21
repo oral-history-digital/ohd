@@ -12,6 +12,16 @@
   left: 0;
   background: rgba(0,0,0,0.7);
   z-index:2000;
+  .close:after {
+    position: absolute;
+    top:  1%;
+    right: 2%;
+    font-family: FontAwesome;
+    content: "\f00d";
+    font-size: 1.5rem;
+    color: $gray-dark;
+    width: 1.4em;
+  }
 }
 
 .popup {

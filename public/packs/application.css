@@ -1,31 +1,4 @@
 .leaflet-container {
   height: 350px;
   width: 100%;
-}.segment {
-  clear: both;
-}
-
-.segment.active {
-  color: #a52a2a;
-}
-
-.segment .text {
-  width: 65%;
-  float: left;
-}
-
-.segment .annotations {
-  width: 30%;
-  color: #2f4f4f;
-  font-size: 90%;
-  float: right;
-}
-
-.segment .references {
-  width: 30%;
-  color: #696969;
-  font-size: 80%;
-  float: right;
-}.heading .collapsed {
-  display: none;
 }

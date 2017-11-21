@@ -1,22 +1,27 @@
 import { connect } from 'react-redux';
-//import { bindActionCreators } from 'redux'
 
 import ArchiveSearchForm from '../components/ArchiveSearchForm';
-import { resetSearchInArchive, searchInArchive } from '../actions/searchActionCreators';
+import { 
+    resetQuery, 
+    setQueryParams, 
+    //loadFacets, 
+    searchInArchive 
+} from '../actions/searchActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-// Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
   return { 
-    facets: state.archive.facets,
-    searchQuery: state.archive.searchQuery,
-    fulltext: state.archive.fulltext,
+      facets: state.search.facets,
+      query: state.search.query,
+      locale: state.archive.locale
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    resetSearchInArchive: (query) => dispatch(resetSearchInArchive(query)),
+    setQueryParams: (name, value) => dispatch(setQueryParams(name, value)),
+    resetQuery: () => dispatch(resetQuery()),
+    //loadFacets: () => dispatch(loadFacets()),
     searchInArchive: (query) => dispatch(searchInArchive(query)),
 })
 
