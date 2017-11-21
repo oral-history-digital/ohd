@@ -377,6 +377,24 @@
       color: $gray-light;
     }
   }
+  button,
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  button,
+  select {
+    text-transform: none;
+    cursor: pointer;
+  }
 }
 
 // Old classes tidying up later
