@@ -30,6 +30,7 @@ class InterviewSerializer < ActiveModel::Serializer
     :references
 
   has_many :photos, serializer: PhotoSerializer
+  has_many :interviewees,serializer: IntervieweeSerializer
 
   def lang
     object.language.code
@@ -37,14 +38,14 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def title
     {
-      de: object.full_title(:de),
+      de: object.full_title(:deu),
       "#{object.language.code}": object.full_title(object.language.code)
     }
   end
 
   def short_title
     {
-      de: object.short_title(:de),
+      de: object.short_title(:deu),
       "#{object.language.code}": object.short_title(object.language.code)
     }
   end
@@ -58,8 +59,6 @@ class InterviewSerializer < ActiveModel::Serializer
     "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
     #"http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
   end
-
-
 
 
   def references

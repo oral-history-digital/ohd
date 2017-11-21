@@ -1,6 +1,6 @@
 import React from 'react';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import '../../../css/segments';
+
 
 export default class Segment extends React.Component {
 

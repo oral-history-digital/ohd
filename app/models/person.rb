@@ -1,7 +1,7 @@
 class Person < ApplicationRecord
 
   has_many :contributions
-  has_many :histories, dependent: :destroy
+  has_many :historyies, dependent: :destroy
 
   validates :gender, inclusion: %w(male female), allow_nil: true
 
