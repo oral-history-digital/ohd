@@ -49,7 +49,7 @@
 # german_translation has moved from the beginning (' in deutscher Übersetzung')
 # to the end ('German ').
 
-ru:
+gr:
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:
