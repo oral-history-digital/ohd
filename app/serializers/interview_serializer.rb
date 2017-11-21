@@ -61,8 +61,6 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
 
-
-
   def references
     object.registry_references.map do |ref|
       {

@@ -1,8 +1,12 @@
 default: &default
 
+  react_locales:
+    - deu
+    - ell
+
+
   available_locales:
     - de
-    - en
     - el
     - alias
 
