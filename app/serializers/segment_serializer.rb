@@ -1,4 +1,6 @@
 class SegmentSerializer < ActiveModel::Serializer
+  include IsoHelpers
+
   attributes :id,
              :interview_id,
              :time,
@@ -24,26 +26,23 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def transcripts
-    {
-        de: object.read_attribute(:translation),
-        "#{object.interview.language.code[0..1]}": object.transcript
-    }
-    # {
-    #   de: ActionView::Base.full_sanitizer.sanitize(object.read_attribute(:translation)),
-    #   "#{object.interview.language.code[0..1]}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
-    # }
+    # TODO: fit this to zwar (migrate transcript and translation to a :text-attribute in segment_translations)
+     {
+       de: ActionView::Base.full_sanitizer.sanitize(object.read_attribute(:translation)),
+       "#{object.interview.language.code[0..1]}": ActionView::Base.full_sanitizer.sanitize(object.transcript)
+     }
   end
 
   def mainheading
-    object.translations.inject({}) do |mem, t|
-      mem[t.locale[0..1]] = t.mainheading
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.mainheading(projectified(locale))
       mem
     end
   end
 
   def subheading
-    object.translations.inject({}) do |mem, t|
-      mem[t.locale[0..1]] = t.subheading
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.subheading(projectified(locale))
       mem
     end
   end
