@@ -78,6 +78,7 @@ module I18n
     ISO639_TWO_AND_THREE_LETTER_MAP = {
         :de => 'deu',
         :en => 'eng',
+        :gr => 'ell',
         :ru => 'rus'
     }
 
