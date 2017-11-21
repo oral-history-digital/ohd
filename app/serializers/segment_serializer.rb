@@ -11,7 +11,8 @@ class SegmentSerializer < ActiveModel::Serializer
              :end_time,
              :references_count,
              :references,
-             :media_id
+             :media_id,
+             :timecode
 
   def time
     # timecode as seconds 
