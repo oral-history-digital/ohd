@@ -1,5 +1,5 @@
 {
   "application.css": "/packs/application.css",
-  "application.js": "/packs/application.js",
+  "application.js": "/packs/application-21-11-2017.js",
   "hello-world-bundle.js": "/packs/hello-world-bundle.js"
 }
