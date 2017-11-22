@@ -63,6 +63,9 @@ export default class FlyoutTabs extends React.Component {
 
 
     render() {
+
+        let interviewCSS = this.props.interview ? 'flyout-tab' : 'hidden'
+
         return (
             <Tabs
                 className='wrapper-flyout'
@@ -78,7 +81,7 @@ export default class FlyoutTabs extends React.Component {
                     <Tab className='flyout-top-nav'>de</Tab>
                     <Tab className='flyout-top-nav top-nav-last'>el</Tab>
                     <Tab className='flyout-tab'>Suche im Archiv</Tab>
-                    <Tab className='flyout-tab'>Interview </Tab>
+                    <Tab className={interviewCSS}>Interview </Tab>
                     <Tab className='flyout-tab'>Arbeitsmappe </Tab>
                 </TabList>
 
