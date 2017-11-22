@@ -1,0 +1,14 @@
+\title{<%= @interview.full_title(I18n.locale) %>}
+\begin{document}
+\maketitle
+
+<% @interview.interviewees.first.histories.each do |history|  %>
+
+    <%= history.translations.where(locale: 'ell').first.deportation_date + "GGGG" %>
+    <%= history.translations.where(locale: 'ell').first.return_date %>
+    <%= history.translations.where(locale: 'ell').first.forced_labor_details %>
+
+<% end %>
+
+
+

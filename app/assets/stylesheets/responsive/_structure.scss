@@ -92,9 +92,9 @@ header.site-header {
       border-left: 1px solid $gray-light;
       border: 0 none;
     }
-      @include screen-xl {
-        display: block !important;
-      }
+    @include screen-xl {
+      display: block !important;
+    }
     overflow: scroll;
   }
 
@@ -123,52 +123,54 @@ header.site-header {
     left: 0;
     right: 0;
     height: 220px;
-    @include screen-s {
+    @include screen-m {
       height: 160px;
     }
-    // -webkit-transition: height 1s; 
-    // -moz-transition: height 1s; 
-    // -ms-transition: height 1s; 
-    // -o-transition: height 1s; 
-    // transition: height 1s;  
+    // -webkit-transition: height 1s;
+    // -moz-transition: height 1s;
+    // -ms-transition: height 1s;
+    // -o-transition: height 1s;
+    // transition: height 1s;
 
-    //  -webkit-transition: height .1s linear;   
-    // -moz-transition: height .1s linear;   
-    // -ms-transition: height .1s linear;   
-    // -o-transition: height .1s linear;   
-    // transition: height .1s linear;   
+    //  -webkit-transition: height .1s linear;
+    // -moz-transition: height .1s linear;
+    // -ms-transition: height .1s linear;
+    // -o-transition: height .1s linear;
+    // transition: height .1s linear;
 
     .video-element {
       margin: 0;
+      float: none;
+      @include screen-m {
+        float: left;
+      }
       video, img {
         height: 100px;
         width: auto;
       }
-      float: left;
     }
     .video-title-container {
       display: inline-block;
       margin-left: 0;
-      @include screen-s {
+      @include screen-m {
+        display: inline-block;
         margin-left: 20px;
       }
-      h1 {
-        font-size: $font-size-larger;
-        line-height: $line-height-larger;
-      }
-      .video-bookmark {
-        display: block;
-        font-size: $font-size-small;
-        line-height: $line-height-small;
-      }
+    }
+    h1.video-title {
+      color: #fff;
+      margin-top: 0;
+      font-size: $font-size-large;
+      line-height: $line-height-large;
     }
   }
+
   .content-tabs {
     position: fixed;
     top: 220px;
     left: 0;
     right: 0;
-    @include screen-s {
+    @include screen-m {
       top: 160px;
     }
   }
@@ -186,17 +188,34 @@ header.site-header {
   // transition: max-height 1s;
 }
 
-.video-title {
+h1.video-title {
   color: #fff;
   margin-top: 0;
+  font-size: $font-size-heading-h1;
+  line-height: $line-height-heading-h1;
+  @include screen-s {
+    font-size: $font-size-heading-h1-large;
+    line-height: $line-height-heading-h1-large;
+  }
 }
 
-.video-bookmark{
+.video-bookmark,
+.video-text-note {
   color: #fff;
   font-size: $font-size-medium;
   line-height: $line-height-medium;
   cursor: pointer;
   transition: 0.4s;
+  float: left;
+  margin-right: 20px;
+  span {
+    display: none;
+    @include screen-m {
+      display: inline-block;
+      font-size: $font-size-small;
+      line-height: $line-height-small;
+    }
+  }
   .fa {
     margin-right: 10px;
   }
@@ -285,7 +304,7 @@ footer {
 //   float: left;
 //   padding: 40px 30px 0 0;
 //   font-size: $font-size-medium;
-  
+
 //   @include screen-m {
 //     height: 320px;
 //   }
@@ -481,43 +500,4 @@ a.search-result-link {
   color: $gray-darkest;
 }
 
-/* form elements */
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  background: transparent;
-  outline: none;
-  border: none;
-  border-radius: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-button,
-select {
-  text-transform: none;
-  cursor: pointer;
-}
-
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-}
-
-textarea {
-  resize: none;
-}
 

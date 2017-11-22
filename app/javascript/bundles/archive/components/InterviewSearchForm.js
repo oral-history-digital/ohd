@@ -23,11 +23,11 @@ export default class InterviewSearchForm extends React.Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className={'content-search'}>
                     <label>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        <input type="text" className="search-input" value={this.state.value} onChange={this.handleChange} placeholder="Bitte Suchbegriff eingeben ..." />
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="" className={'search-button'} />
                 </form>
             </div>
         );

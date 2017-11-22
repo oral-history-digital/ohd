@@ -141,18 +141,22 @@
     width: 77%;
     margin-right: 2%;
   }
-  p {
+  .segment {
     padding: 4px;
     color: $gray-dark;
     cursor: pointer;
     transition: 0.4s;
-  }
-  p.active {
-    background-color: lighten($secondary-color, 30%);
-    color: $gray-darkest;
-  }
-  p:hover {
-    color: $primary-color;
+    margin: 0 0 $text-margin-large 0;
+    @include screen-m-l {
+      margin: 0 0 $text-margin-medium 0;
+    }
+    &.active {
+      background-color: lighten($secondary-color, 30%);
+      color: $gray-darkest;
+    }
+    &:hover {
+      color: $primary-color;
+    }
   }
 }
 
@@ -180,8 +184,7 @@
   margin-right: 2px;
   padding: 6px 10px 0 10px;
   color: $primary-color;
-  transition: color 0.3s;
-  transition: background-color 0.3s;
+  transition: 0.3s;
   cursor: pointer;
   &:last-child {
     margin-right: 0;
@@ -322,10 +325,6 @@
 .content-search-text {
   width: 100%;
   margin-right: 0;
-  //@include screen-l {
-  //  width: 77%;
-  //  margin-right: 2%;
-  //}
   p {
     color: $gray-dark;
     cursor: pointer;
@@ -377,6 +376,24 @@
     &:hover {
       color: $gray-light;
     }
+  }
+  button,
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  button,
+  select {
+    text-transform: none;
+    cursor: pointer;
   }
 }
 
