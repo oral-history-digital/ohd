@@ -14,7 +14,12 @@ class SegmentSerializer < ActiveModel::Serializer
              :references_count,
              :references,
              :media_id,
-             :timecode
+             :timecode,
+             :speaker_changed
+
+  def speaker_changed
+    object.transcript.strip()[0] == ":"
+  end
 
   def time
     # timecode as seconds 
