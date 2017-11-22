@@ -1,9 +1,15 @@
 class PhotoSerializer < ActiveModel::Serializer
+  include IsoHelpers
+
   attributes :id, :captions, :src
 
 
   def captions
-    object.caption_translations
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.caption(projectified(locale))
+      mem
+    end
+    #object.caption_translations
   end
 
   def src

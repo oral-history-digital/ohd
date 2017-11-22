@@ -120,7 +120,7 @@ export default class ArchiveSearch extends React.Component {
     render() {
         return (
             <WrapperPageContainer
-                tabIndex={2}
+                tabIndex={4}
             >
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">Suchergebnisse</h1>

@@ -21,7 +21,7 @@ export default class Interview extends React.Component {
     if (this.interviewLoaded()) {
       return (
         <WrapperPageContainer 
-          tabIndex={3}
+          tabIndex={5}
         >
           <VideoPlayerContainer />
           <InterviewTabs/>

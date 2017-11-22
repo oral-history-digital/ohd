@@ -8,18 +8,22 @@ default: &default
   available_locales:
     - de
     - el
-    - alias
+    #- alias
 
   default_locale: all
 
+  # use 2- or 3-letter country-code
+  # have a look at https://github.com/alphabetum/iso-639 for possible methods
+  alpha: 'alpha3_terminologic'
+
   project_name: # Will be used in titles, emails, etc.
-    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
-    en: 'Forced Labor 1939-1945. Memory and History.'
-    gr: 'Принудительный труд 1939-1945. Воспоминания и история.'
+    de: 'Erinnerungen an die Okkupation Griechenlands.'
+    en: 'Memories of the Occupation of Greece'
+    gr: 'Memories of the Occupation of Greece'
 
-  project_id: 'eog'
+  project_id: 'mog'
 
-  project_shortname: 'EOG'
+  project_shortname: 'MOG'
 
   project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 

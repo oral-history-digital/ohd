@@ -27,15 +27,30 @@ export default class FlyoutTabs extends React.Component {
         switch (tabIndex) {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
+                break;
 
             case 1: //Login
                 this.context.router.history.push(`/${this.props.locale}/account`);
+                break;
+
+            case 2: //de
+                this.switchLocale('de');
+                break;
+
+            case 3: //el
+                this.switchLocale('el');
+                break;
 
             default:
                 this.setState({tabIndex: tabIndex})
         }
     }
 
+    switchLocale(locale) {
+        let newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2}\//, `/${locale}/`);
+        this.context.router.history.push(newPath);
+        this.props.setLocale(locale);
+    }
 
     saveSearchForm() {
         return <UserContentFormContainer
@@ -58,8 +73,10 @@ export default class FlyoutTabs extends React.Component {
             >
 
                 <TabList className='flyout'>
-                    <Tab className='flyout-top-nav'>Startseite </Tab>
-                    <Tab className='flyout-top-nav top-nav-last'>Login </Tab>
+                    <Tab className='flyout-top-nav'>Startseite</Tab>
+                    <Tab className='flyout-top-nav'>Account</Tab>
+                    <Tab className='flyout-top-nav'>de</Tab>
+                    <Tab className='flyout-top-nav top-nav-last'>el</Tab>
                     <Tab className='flyout-tab'>Suche im Archiv</Tab>
                     <Tab className='flyout-tab'>Interview </Tab>
                     <Tab className='flyout-tab'>Arbeitsmappe </Tab>
@@ -67,10 +84,12 @@ export default class FlyoutTabs extends React.Component {
 
 
                 <TabPanel>
-                    start
                 </TabPanel>
                 <TabPanel>
-                    login logout name
+                </TabPanel>
+                <TabPanel>
+                </TabPanel>
+                <TabPanel>
                 </TabPanel>
                 <TabPanel>
                     <div className='flyout-tab-title'>Suche im Archiv</div>
