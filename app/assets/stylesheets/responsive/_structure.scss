@@ -278,16 +278,27 @@ footer {
 .flyout-toggle {
   position: fixed;
   top: 20px;
-  right: 30px;
-  width: 30px;
-  height: 30px;
-  padding: 10px;
+  right: 22px;
+  width: 36px;
+  height: 36px;
+  padding: 4px 7px;
   font-size: 26px;
   z-index: 1100; //because of leaflet
   cursor: pointer;
-  color: $primary-color;
+  color: $gray-dark; //$primary-color;
+  background: rgba(#fff, 0.50);
+  //border: 1px solid $primary-color;
+  &.white {
+    .fa-bars {
+      color: #fff;
+    }
+  }
 }
-
+.fix-video {
+  .fa-bars {
+    color: #fff;
+  }
+}
 .flyout-caption {
   margin-top: 0;
   margin-bottom: 25px;
