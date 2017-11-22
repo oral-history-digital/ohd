@@ -843,14 +843,14 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = descriptor(projectified(locale))
-      mem
-    end
-    #registry_names.first.translations.inject({}) do |mem, name|
-      #mem[name.locale[0..1]] = name.descriptor
+    #I18n.available_locales.inject({}) do |mem, locale|
+      #mem[locale] = descriptor(projectified(locale))
       #mem
     #end
+    registry_names.first.translations.inject({}) do |mem, name|
+      mem[name.locale[0..1]] = name.descriptor
+      mem
+    end
   end
 
   def search_string
