@@ -75,8 +75,7 @@ export default class Segment extends React.Component {
         if (this.state.contentType == 'references') {
             //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
             return this.props.data.references.map((reference, index) => {
-                return <p className='content-trans-text-element-data'
-                          key={"reference-" + index}>{reference.desc[locale]}</p>
+                return <span key={"reference-" + index}>{reference.desc[locale]}</span>
             })
         }
     }
@@ -145,7 +144,7 @@ export default class Segment extends React.Component {
                         <div>
                             {this.annotations(locale)}
                         </div>
-                        <div>
+                        <div className='content-trans-text-element-data'>
                             {this.references(locale)}
                         </div>
                     </div>
