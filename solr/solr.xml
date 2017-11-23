@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <solr persistent="false">
   <cores adminPath="/admin/cores" host="${host:}" hostPort="${jetty.port:}">
-    <core name="default" instanceDir="." dataDir="data/eog"/>
+    <core name="default" instanceDir="." dataDir="data/mog"/>
   </cores>
 </solr>
