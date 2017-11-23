@@ -50,6 +50,7 @@ export default class VideoPlayer extends React.Component {
                     })}><i className="fa fa-star"></i>
                         Interview merken
                     </div>
+                    <div className="video-text-note"><i className="fa fa-pencil"></i><span>Anmerkung verfassen</span></div>
                 </div>
                 <div className='video-element'>
                     <video ref={(video) => {

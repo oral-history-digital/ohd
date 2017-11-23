@@ -158,6 +158,7 @@ export default class WrapperPage extends React.Component {
                             <a className="logo-link" href="#" title="Zur Startseite MOG Archiv">
                                 <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
                                 </img>
+                                <span className="logo-text">MOG</span>
                             </a>
                         </header>
 
