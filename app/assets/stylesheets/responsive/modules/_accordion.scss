@@ -14,8 +14,8 @@
     transition: 0.4s;
     margin-bottom: 2px;
     //border-bottom: 1px solid $gray-warm;
-   //&.active,
-   &:hover {
+    //&.active,
+    &:hover {
       //background-color: $secondary-color;
       color: $gray-dark;
     }
@@ -54,6 +54,9 @@
       .flyout-content-data {
         display: inline-block;
       }
+      a {
+        color: $primary-color;
+      }
       .fa {
         color: $primary-color;
         margin-right: 10px;
@@ -66,88 +69,3 @@
     }
   }
 }
-
-/* Checkboxes */
-
-//label { font-size: 24px; }
-.flyout-radio-container {
-  width: 100%;
-  padding: 20px 0;
-  font-size: $font-size-medium;
-  color: $primary-color;
-}
-
-input[type=radio].with-font,
-input[type=checkbox].with-font {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-input[type=radio].with-font ~ label:before,
-input[type=checkbox].with-font ~ label:before {
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f1db";
-  letter-spacing: 10px;
-  font-size: $font-size-medium;
-  color: $primary-color;
-  width: 1.4em;
-}
-
-input[type=radio].with-font:checked ~ label:before,
-input[type=checkbox].with-font:checked ~ label:before  {
-  content: "\f00c";
-  font-size: $font-size-medium;
-  color: $gray-darker;
-  letter-spacing: 5px;
-}
-input[type=checkbox].with-font ~ label:before {
-  /*content: "\f00c";*/
-}
-input[type=checkbox].with-font:checked ~ label:before {
-  content: "\f00c";
-  color: $gray-darker;
-}
-input[type=radio].with-font:focus ~ label:before,
-input[type=checkbox].with-font:focus ~ label:before,
-input[type=radio].with-font:focus ~ label,
-input[type=checkbox].with-font:focus ~ label {
-  color: $gray-darker;
-}
-
-/* Button Reset */
-
-button.reset {
-  background-color: lighten($gray-warm, 20%);
-  color: #fff;
-  cursor: pointer;
-  padding: 10px 15px;
-  width: 90%;
-  margin: 20px;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: $font-size-large;
-  transition: 0.4s;
-  margin-bottom: 2px;
-}
-
-button.reset.active,
-button.reset:hover {
-  background-color: $secondary-color, 10%;
-}
-
-button.reset:after {
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f0e2";
-  float: right;
-}
-
-
