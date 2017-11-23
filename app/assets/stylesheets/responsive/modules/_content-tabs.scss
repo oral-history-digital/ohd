@@ -237,9 +237,17 @@
     font-weight: bold;
     letter-spacing: 0.1em;
   }
-  p.content-trans-text-element-data {
+  .content-trans-text-element-data {
     font-size: $font-size-medium;
     color: $gray-dark;
+    span {
+      //margin-right: 5px;
+      padding: 0 10px;
+      border-right: 1px solid $gray-dark;
+    }
+    & span:first-child {
+      padding-left: 0;
+    }
   }
   @include screen-l {
     width: 80%;
