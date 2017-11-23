@@ -5,7 +5,7 @@ import * as actionCreators from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
   return {
-      fulltext: state.search.fulltext,
+      fulltext: state.search.query.fulltext,
       locale: state.archive.locale
   }
 }
