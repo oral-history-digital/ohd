@@ -92,10 +92,11 @@ export default class Segment extends React.Component {
 
     speakerIcon() {
         if (this.props.data.speaker_changed) {
+            let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o"
             return (
                 <div className="content-trans-speaker-link" title="Interviewer"
                      onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
-                    <i className="fa fa-user-o"></i>
+                    <i className={speakerCss}></i>
                 </div>
             )
         }
