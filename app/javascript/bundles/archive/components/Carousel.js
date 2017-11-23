@@ -12,7 +12,7 @@ export default class Carousel extends React.Component {
                      className={'slider-image-container'} >
                         <img src={photo.src}>
                         </img>
-                    <div className="slider-text">Slider Text</div>
+                    <div className="slider-text">{photo.captions[this.props.locale]}</div>
 
                 </div>
             )
