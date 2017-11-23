@@ -109,10 +109,14 @@
 
 .content-trans-row {
   @include clearfix;
-  margin-bottom: 40px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   .fa {
     font-size: 20px;
     color: $primary-color;
+  }
+  &.speaker-change {
+    margin-top: 15px;
   }
 }
 
@@ -146,9 +150,9 @@
     color: $gray-dark;
     cursor: pointer;
     transition: 0.4s;
-    margin: 0 0 $text-margin-large 0;
+    margin: 0;
     @include screen-m-l {
-      margin: 0 0 $text-margin-medium 0;
+      margin: 0;
     }
     &.active {
       background-color: lighten($secondary-color, 30%);

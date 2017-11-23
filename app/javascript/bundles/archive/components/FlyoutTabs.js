@@ -64,7 +64,7 @@ export default class FlyoutTabs extends React.Component {
 
     render() {
 
-        let interviewCSS = this.props.interview ? 'flyout-tab' : 'hidden'
+        let interviewCSS = this.props.interview ? 'flyout-tab' : 'hidden';
 
         return (
             <Tabs
