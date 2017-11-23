@@ -239,14 +239,13 @@
   }
   .content-trans-text-element-data {
     font-size: $font-size-medium;
+    line-height: $line-height-medium;
     color: $gray-dark;
     span {
-      //margin-right: 5px;
+      display: inline-block;
+      margin-bottom: 10px;
       padding: 0 10px;
       border-right: 1px solid $gray-dark;
-    }
-    & span:first-child {
-      padding-left: 0;
     }
   }
   @include screen-l {
