@@ -38,17 +38,17 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def title
-    {
-        de: object.full_title(:deu),
-        "#{object.language.code}": object.full_title(object.language.code)
-    }
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.full_title(locale)
+      mem
+    end
   end
 
   def short_title
-    {
-        de: object.short_title(:deu),
-        "#{object.language.code}": object.short_title(object.language.code)
-    }
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.short_title(locale)
+      mem
+    end
   end
 
   def still_url
@@ -60,7 +60,6 @@ class InterviewSerializer < ActiveModel::Serializer
     "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
     #"http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
   end
-
 
   def references
     object.registry_references.map do |ref|
@@ -79,6 +78,5 @@ class InterviewSerializer < ActiveModel::Serializer
   # def duration
   #   object.duration.timecode
   # end
-
 
 end

@@ -65,7 +65,7 @@ const archive = (state = initialState, action) => {
         case TRANSCRIPT_TIME_CHANGE:
             return Object.assign({}, state, {
                 videoTime: action.videoTime,
-                transcriptScrollEnabled: false
+                //transcriptScrollEnabled: false
             })
         case TRANSCRIPT_SCROLL:
             return Object.assign({}, state, {

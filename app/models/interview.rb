@@ -4,6 +4,7 @@ class Interview < ActiveRecord::Base
   include Project::CategoryExtension
   include Paperclip
   include ReferenceTree
+  include IsoHelpers
 
   belongs_to :collection
 
@@ -285,14 +286,14 @@ class Interview < ActiveRecord::Base
 
   def build_full_title_from_name_parts(locale)
     first_interviewee = interviewees.first
-    locale = locale.to_sym
 
     # Check whether we've got the requested locale. If not fall back to the
     # default locale.
-    used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless first_interviewee.translations.select {|t| t.locale[0..1].to_sym == l}.blank?
-    end
-    return nil unless used_locale.is_a?(Symbol)
+    #used_locale = Globalize.fallbacks(locale).each do |l|
+      #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
+    #end
+    #return nil unless used_locale.is_a?(Symbol)
+    used_locale = projectified(locale)
 
     # Build last name with a locale-specific pattern.
     last_name = first_interviewee.last_name(used_locale) || ''
@@ -314,7 +315,7 @@ class Interview < ActiveRecord::Base
     if first_names.empty?
       lastname_with_birthname
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
     end
   end
 
@@ -323,6 +324,7 @@ class Interview < ActiveRecord::Base
   end
 
   def short_title(locale)
+    locale = projectified(locale) 
     [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
   end
 

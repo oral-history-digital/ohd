@@ -29,6 +29,8 @@ gem 'sass-rails'
 gem 'webpacker'
 gem 'react_on_rails', '~> 9.0.1'
 gem 'slim-rails'
+gem 'iso-639'
+gem 'font-awesome-rails'
 
 # Gems specific to public archive app:
 gem 'sunspot_rails'

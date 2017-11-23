@@ -18,20 +18,6 @@ export default class WrapperPage extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.setLocale();
-    }
-
-    componentDidUpdate() {
-        this.setLocale();
-    }
-
-    setLocale() {
-        if (this.context.router.route.match.params.locale !== this.props.locale) {
-            this.props.setLocale(this.context.router.route.match.params.locale);
-        }
-    }
-
     static contextTypes = {
         router: React.PropTypes.object
     }
@@ -173,18 +159,6 @@ export default class WrapperPage extends React.Component {
                                 <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
                                 </img>
                             </a>
-                            <div className='locales'>
-                                {this.props.locales.map((locale, index) => {
-                                    return (
-                                        <Link
-                                            key={'locale-link-' + locale}
-                                            to={'/' + locale + '/interviews/' + this.props.archiveId}
-                                        >
-                                            {locale}
-                                        </Link>
-                                    )
-                                })}
-                            </div>
                         </header>
 
                         {this.props.children}
@@ -209,8 +183,6 @@ export default class WrapperPage extends React.Component {
 
                     <FlyoutTabsContainer
                         tabIndex={this.props.tabIndex}
-                        appState={this.props.appState}
-                        archiveSearch={this.props.archiveSearch}
                     />
                 </div>
             </ResizeAware>
