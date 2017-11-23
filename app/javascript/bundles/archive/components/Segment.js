@@ -14,7 +14,7 @@ export default class Segment extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType) ) {
+        if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType)) {
             return true;
         }
 
@@ -39,7 +39,7 @@ export default class Segment extends React.Component {
 
     transcript() {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale
-        return this.props.data.transcripts[locale.substring(0,2)]
+        return this.props.data.transcripts[locale.substring(0, 2)]
     }
 
     userContentForm() {
@@ -71,8 +71,8 @@ export default class Segment extends React.Component {
     }
 
 
-    references(locale){
-        if (this.state.contentType == 'references'){
+    references(locale) {
+        if (this.state.contentType == 'references') {
             //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
             return this.props.data.references.map((reference, index) => {
                 return <p className='content-trans-text-element-data'
@@ -81,54 +81,65 @@ export default class Segment extends React.Component {
         }
     }
 
-    annotations(locale){
-        if (this.state.contentType == 'annotations'){
-            return  this.props.data.annotation_texts.map((annotation, index) => {
+    annotations(locale) {
+        if (this.state.contentType == 'annotations') {
+            return this.props.data.annotation_texts.map((annotation, index) => {
                 return <p className='content-trans-text-element-data'
                           key={"annotation-" + index}>{annotation}</p>
             })
         }
     }
 
+    speakerIcon() {
+        if (this.props.data.speaker_changed) {
+            return (
+                <div className="content-trans-speaker-link" title="Interviewer"
+                     onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
+                    <i className="fa fa-user-o"></i>
+                </div>
+            )
+        }
+    }
+
+    renderLinks() {
+        if (this.props.data.annotation_texts.length > 0 || this.props.data.references.length > 0) {
+
+            let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
+            let annotionCss = this.props.data.annotation_texts.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            return (
+                <div className={icoCss}>
+                    <div className={annotionCss} title="Anmerkungen lesen"
+                         onClick={() => this.toggleAdditionalContent('annotations')}><i
+                        className="fa fa-sticky-note-o"></i>
+                    </div>
+                    <div className={referenceCss} title="Schlagworte"
+                         onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
+                    </div>
+                </div>
+            )
+        }
+    }
 
 
     render() {
-        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0,2) : this.props.locale;
-        let annotionCss = this.props.data.annotation_texts.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        //let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let icoCss = this.state.contentOpen ? 'content-trans-text-ico active': 'content-trans-text-ico';
+        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0, 2) : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
+        let contentTransRowCss = this.props.data.speaker_changed ? 'content-trans-row speaker-change' : 'content-trans-row';
 
         return (
-            <div className={'content-trans-row'}>
+            <div className={contentTransRowCss}>
                 <div>
-                    <div className="content-trans-speaker-ico"
-                         onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
-                        <div className="content-trans-speaker-link" title="Interviewer">
-                            <i className="fa fa-user-o"></i>
-                        </div>
+                    <div className="content-trans-speaker-ico">
+                        {this.speakerIcon()}
                     </div>
                     <div className='content-trans-text'
                          onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
                         <div className={this.css()}
-                             dangerouslySetInnerHTML = {{__html:this.transcript()}}
+                             dangerouslySetInnerHTML={{__html: this.transcript()}}
                         />
                     </div>
-                    <div className={icoCss}>
-                        <div className="content-trans-text-ico-link" title="Anmerkung schreiben"
-                             onClick={() => this.props.openArchivePopup({
-                                 title: 'Add Annotation',
-                                 content: this.userContentForm()
-                             })}>
-                            <i className="fa fa-pencil-square-o"></i>
-                        </div>
-                        <div className={annotionCss} title="Anmerkungen lesen"
-                             onClick={() => this.toggleAdditionalContent('annotations')}><i className="fa fa-sticky-note-o"></i>
-                        </div>
-                        <div className={referenceCss} title="Schlagworte"
-                             onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i></div>
-                    </div>
+                    {this.renderLinks()}
                     <div className={contentOpenClass}>
                         <div>
                             {this.annotations(locale)}
