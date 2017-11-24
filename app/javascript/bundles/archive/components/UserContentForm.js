@@ -84,18 +84,18 @@ export default class UserContentForm extends React.Component {
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
-                <form onSubmit={this.handleSubmit}>
+                <form className='default' onSubmit={this.handleSubmit}>
                     <div className={"form-group"}>
                         <label>
                             title
-                            <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                         </label>
+                        <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                     </div>
                     <div className={"form-group"}>
                         <label>
                             description
-                            <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                         </label>
+                        <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     <div className={"form-group"}>
                         {this.publish()}
