@@ -4,7 +4,7 @@ export default class InterviewSearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: this.props.interviewFulltext,
+            value: this.props.interviewFulltext ? this.props.interviewFulltext : "" ,
         };
 
         this.handleChange = this.handleChange.bind(this);

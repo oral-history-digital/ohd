@@ -248,8 +248,8 @@ class Interview < ActiveRecord::Base
 
   def to_vtt(type)
     vtt = "WEBVTT\n"
-    #segments.select{|i| i.tape.number == 1}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
-    segments.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    segments.select{|i| i.tape.number == 1}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    #segments.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
     vtt
   end
 

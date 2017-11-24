@@ -105,7 +105,7 @@ export default class WrapperPage extends React.Component {
     css() {
         let css = ["wrapper-page"];
         if (this.props.transcriptScrollEnabled) {
-            css.push("fix-video");
+            //css.push("fix-video");
             $('.flyout-toggle').addClass('white');
         } else {
             window.scrollTo(0, 0);
@@ -115,8 +115,14 @@ export default class WrapperPage extends React.Component {
     }
 
     flyoutCss() {
-        let css = this.props.visible ? 'flyout-is-visible' : 'flyout-is-hidden';
-        return css;
+        let css = this.props.visible ? ['flyout-is-visible'] : ['flyout-is-hidden'];
+
+        if (this.props.transcriptScrollEnabled) {
+            css.push("fix-video");
+        } else {
+            window.scrollTo(0, 0);
+        }
+        return css.join(' ');
     }
 
     flyoutToggleCss() {
@@ -158,6 +164,7 @@ export default class WrapperPage extends React.Component {
                             <a className="logo-link" href="#" title="Zur Startseite MOG Archiv">
                                 <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
                                 </img>
+                                <span className="logo-text">MOG</span>
                             </a>
                         </header>
 
