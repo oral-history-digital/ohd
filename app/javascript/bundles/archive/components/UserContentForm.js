@@ -20,7 +20,7 @@ export default class UserContentForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setState({
             id: nextProps.id,
             title: nextProps.title,
@@ -36,11 +36,11 @@ export default class UserContentForm extends React.Component {
     }
 
     handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
+        const value = event.target.value;
+        const name = event.target.name;
 
         this.setState({[name]: value});
-        if(this.valid()) {
+        if (this.valid()) {
             this.clearErrors();
         }
     }
@@ -48,35 +48,35 @@ export default class UserContentForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if(this.valid()) {
+        if (this.valid()) {
             this.props.submitUserContent(this.state);
             this.props.closeArchivePopup();
         } else {
-            this.setErrors(); 
+            this.setErrors();
         }
     }
 
     valid() {
         return this.state.title &&
-            this.state.title.length > 2 && 
+            this.state.title.length > 2 &&
             this.state.description &&
             this.state.description.length > 2
     }
 
     setErrors() {
-        this.setState({ errors: "Please give at least two chars in title and description." })
+        this.setState({errors: "Please give at least two chars in title and description."})
     }
 
     clearErrors() {
-        this.setState({ errors: undefined })
+        this.setState({errors: undefined})
     }
 
     publish() {
-        if(this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return  <label>
-                        publish
-                        <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange} />
-                    </label>
+        if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
+            return <label>
+                publish
+                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
+            </label>
         }
     }
 
@@ -85,17 +85,22 @@ export default class UserContentForm extends React.Component {
             <div>
                 <div className='errors'>{this.state.errors}</div>
                 <form onSubmit={this.handleSubmit}>
-                    <label>
-                        title
-                        <input type="text" name='title' value={this.state.title} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                        description
-                        <textarea name='description' value={this.state.description} onChange={this.handleChange} />
-                    </label>
-                    {this.publish()}
-                    
-                    <input type="submit" value="Submit" />
+                    <div className={"form-group"}>
+                        <label>
+                            title
+                            <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
+                        </label>
+                    </div>
+                    <div className={"form-group"}>
+                        <label>
+                            description
+                            <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
+                        </label>
+                    </div>
+                    <div className={"form-group"}>
+                        {this.publish()}
+                    </div>
+                    <input type="submit" value="Submit"/>
                 </form>
             </div>
         );
