@@ -62,8 +62,9 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def references
-    object.registry_references.map do |ref|
+    object.segment_registry_references.with_locations.map do |ref|
       {
+          archive_id: object.archive_id,
           desc: ref.registry_entry.localized_hash,
           latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
           longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f

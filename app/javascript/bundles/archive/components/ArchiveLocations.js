@@ -18,10 +18,20 @@ export default class ArchiveLocations extends React.Component {
         this.context.router.history.push(`/${this.props.locale}/interviews/${archiveId}`);
     }
 
+    locations() {
+        let locations = [];
+
+        for (let i = 0; i < this.props.foundInterviews.length; i++) {
+            locations = locations.concat(this.props.foundInterviews[i].references);
+        }
+
+        return locations;
+    }
+
     render() {
         return(
             <LocationsContainer 
-                data={this.props.foundInterviews}
+                data={this.locations()}
                 loaded={this.locationsLoaded()}
                 handleClick={this.handleClick.bind(this)}
             />

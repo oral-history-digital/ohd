@@ -6,12 +6,12 @@ import * as actionCreators from '../actions/searchActionCreators';
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
     return { 
-        archiveId: state.archive.archiveId,
-        //interviews: state.archive.interviews,
-        foundInterviews: state.archive.foundInterviews,
         locale: state.archive.locale,
-        fulltext:  state.archive.fulltext,
-        isArchiveSearching: state.archive.isArchiveSearching
+        archiveId: state.archive.archiveId,
+        //interviews: state.search.interviews,
+        foundInterviews: state.search.foundInterviews,
+        fulltext:  state.search.query.fulltext,
+        isArchiveSearching: state.search.isArchiveSearching
     }
 }
 
