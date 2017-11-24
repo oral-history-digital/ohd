@@ -58,7 +58,7 @@ export default class Locations extends React.Component {
                         url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <MarkerClusterGroup>
+                    <MarkerClusterGroup maxClusterRadius={40}>
                         {this.markersAndLocations().markers}
                     </MarkerClusterGroup>
                 </Map>
