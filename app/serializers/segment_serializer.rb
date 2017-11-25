@@ -70,11 +70,10 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def references_count
-    0 #object.registry_references.count
+    object.registry_references.count
   end
 
   def references
-    #[]
     object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
       {
         desc: ref.registry_entry.localized_hash,
