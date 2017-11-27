@@ -45,7 +45,7 @@ export default class VideoPlayer extends React.Component {
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interview.short_title[this.props.locale]}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-                        title: 'Save reference to this interview',
+                        title: this.props.interview.short_title[this.props.locale] + " der Arbeitsmappe hinzufügen",
                         content: this.userContentForm()
                     })}><i className="fa fa-star"></i>
                         Interview merken
@@ -67,7 +67,7 @@ export default class VideoPlayer extends React.Component {
                     >
                         <source src={this.props.interview.src}/>
                         <track kind="subtitles" label="Transcript"
-                               src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" default></track>
+                               src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" ></track>
                         <track kind="subtitles" label="Translation"
                                src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
                     </video>
