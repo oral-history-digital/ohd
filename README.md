@@ -73,3 +73,43 @@ When the Solr server is running, you can index the data:
 ```bash
 bundle exec rake solr:reindex:all
 ```
+
+## Switch project in development
+
+Example: Switch from `mog` to `zwar`:
+
+1. In **application.rb**, change
+    
+    ```ruby
+    PROJECT = :mog
+    ```
+    
+    to
+    
+    ```ruby
+    PROJECT = :zwar
+    ```
+
+2. In **solr.xml**, change
+
+    ```xml
+    <core name="default" instanceDir="." dataDir="data/mog"/>
+    ```
+    
+    to
+    
+    ```xml
+    <core name="default" instanceDir="." dataDir="data/zwar"/>
+    ```
+    
+3. In **database.yml** switch to zwar database:
+    
+    ```yml
+    ...
+    development:
+        adapter: mysql2
+        encoding: utf8
+        reconnect: false
+        database: zwar_archive_development
+        ...
+    ```
