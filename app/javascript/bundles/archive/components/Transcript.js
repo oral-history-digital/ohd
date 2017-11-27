@@ -35,6 +35,7 @@ export default class Transcript extends React.Component {
     return ( 
       <div>
         {shownSegments.map( (segment, index) => {
+            segment.speaker_is_interviewee = this.props.data.interview.interviewee_id === segment.speaker_id;
           return (
             <SegmentContainer
               data={segment} 

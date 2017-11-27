@@ -28,7 +28,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :still_url,
              :src,
              :references,
-             :formatted_duration
+             :formatted_duration,
+             :interviewee_id
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: IntervieweeSerializer
@@ -66,6 +67,7 @@ class InterviewSerializer < ActiveModel::Serializer
       {
           archive_id: object.archive_id,
           desc: ref.registry_entry.localized_hash,
+          # exclude dedalo default location (Valencia)
           latitude: ref.registry_entry.latitude == 39.462571 ? nil : ref.registry_entry.latitude.to_f,
           longitude: ref.registry_entry.longitude == -0.376295 ? nil : ref.registry_entry.longitude.to_f
       }
@@ -74,6 +76,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def formatted_duration
     Time.at(object.duration).utc.strftime("%H:%M:%S")
+  end
+
+  def interviewee_id
+    object.interviewees.first.id
   end
 
   # def duration
