@@ -53,7 +53,7 @@ class HomeController < BaseController
 
   def translations
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") || instance_variable_set("@#{locale}", YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml")))
+      mem[locale] = instance_variable_get("@#{locale}") || instance_variable_set("@#{locale}", YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s])
       mem
     end
   end
