@@ -6,6 +6,7 @@ import { submitLogout, fetchAccount } from '../actions/accountActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        translations: state.archive.translations,
         account: state.account
     }
 }

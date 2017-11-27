@@ -1,4 +1,5 @@
 import React from 'react';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -54,19 +55,19 @@ export default class LoginForm extends React.Component {
                 <div className='errors'>{this.state.errors}</div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        login
+                        {ArchiveUtils.translate(this.props, 'login')}
                         <input type="text" name='login' value={this.state.login} onChange={this.handleChange} />
                     </label>
                     <label>
-                        password
+                        {ArchiveUtils.translate(this.props, 'password')}
                         <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
                     </label>
                     <label>
-                        remember
+                        {ArchiveUtils.translate(this.props, 'remember')}
                         <input type='checkbox' name='remember_me' value={this.state.rememberMe} onChange={this.handleChange} />
                     </label>
                     
-                    <input type="submit" value="Login" />
+                    <input type="submit" value={ArchiveUtils.translate(this.props, 'login')}/>
                 </form>
             </div>
         );
