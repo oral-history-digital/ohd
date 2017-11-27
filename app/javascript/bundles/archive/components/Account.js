@@ -66,7 +66,7 @@ export default class Account extends React.Component {
             return null
         } else {
             //return <RegisterFormContainer />
-            return <a href={REGISTER_NEW_URL}>{ArchiveUtils.translate(this.props, 'registration_title')}</a>
+            return <a href={REGISTER_NEW_URL}>{ArchiveUtils.translate(this.props, 'registration')}</a>
         }
     }
 
