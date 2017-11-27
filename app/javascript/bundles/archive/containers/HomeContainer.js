@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import Home from '../components/Home';
-import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 
 
 // Which part of the Redux global state does our component want to receive as props?
@@ -13,7 +12,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchStaticContent:() => dispatch(fetchStaticContent()),
 })
 
 // Don't forget to actually use connect!

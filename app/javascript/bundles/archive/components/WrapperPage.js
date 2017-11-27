@@ -22,6 +22,12 @@ export default class WrapperPage extends React.Component {
         router: React.PropTypes.object
     }
 
+    componentDidMount() {
+        if(!this.props.translations) {
+            this.props.fetchStaticContent();
+        }
+    }
+
     // Checks CSS value in active media query and syncs Javascript functionality
     mqSync() {
         // Fix for Opera issue when using font-family to store value

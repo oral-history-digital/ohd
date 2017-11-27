@@ -5,6 +5,7 @@ import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { showFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -20,6 +21,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+    fetchStaticContent:() => dispatch(fetchStaticContent()),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     showFlyoutTabs: () => dispatch(showFlyoutTabs()),
