@@ -11,7 +11,7 @@ export default class Gallery extends React.Component {
                 <div key={"photo-" + index}
                      className={'thumbnail'}
                      onClick={() => this.props.openArchivePopup({
-                         title: 'Bilder',
+                         title: null,
                          content: <CarouselContainer/>
                      })}
 

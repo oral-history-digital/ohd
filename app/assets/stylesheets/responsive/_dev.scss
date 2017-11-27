@@ -1,36 +1,40 @@
 
 .slick-slide {
-  display: flex !important;
-  flex-direction: column!important;
-  //flex-wrap: wrap!important;
-  justify-content: center;
-  height: 100% !important;
+  position: relative !important;
   overflow: hidden;
   background-color: #333;
   text-align: center !important;
   padding: 4px 0;
   img {
-    //vertical-align: middle;
-    //flex-grow: 1;
+    vertical-align: middle;
+    position: relative;
     margin: 0 auto;
     max-width: 100% !important;
-    max-height: 90% !important;
+    max-height: 80% !important;
   }
   .slider-text {
     //flex-grow: 1;
     display: block;
+    overflow: scroll;
+    //height: auto;
     position: relative;
-    max-height: 10% !important;
+    max-height: 100% !important;
     text-align: left;
     padding: 10px;
     font-size: $font-size-small;
     line-height: $line-height-small;
     color: #fff;
+    @include screen-m {
+      padding: 20px;
+      font-size: $font-size-medium;
+      line-height: $line-height-medium;
+    }
   }
 }
 
 .slick-list {
   height: 90% !important;
+  @include clearfix;
 }
 .slick-slider {
   height: 100% !important;
@@ -71,19 +75,30 @@
   content: '←';
 }
 
+.slick-dots {
+  position: relative !important;
+  padding-bottom: 5px !important;
+}
+
+.slick-dots li {
+  //display: block !important;
+}
 
 .slick-dots li button:before {
-  font-size: 15px !important;
-  line-height: 30px !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
+  font-size: 12px !important;
+  line-height: 20px !important;
+  width: 15px;
+  height: 15px;
   content: '•';
   text-align: center;
   opacity: .25;
   color: #000;
+  @include screen-l {
+    font-size: 15px !important;
+    line-height: 30px !important;
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .slick-next:before,

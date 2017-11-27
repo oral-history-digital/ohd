@@ -287,12 +287,6 @@ footer {
   cursor: pointer;
   color: $gray-dark; //$primary-color;
   background: rgba(#fff, 0.50);
-  //border: 1px solid $primary-color;
-  &.white {
-    .fa-bars {
-      color: #fff;
-    }
-  }
 }
 .fix-video {
   .fa-bars {

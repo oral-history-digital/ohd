@@ -5,6 +5,7 @@ class InterviewsController < BaseController
   skip_before_action :authenticate_user_account!, only: :show
 
   def show
+    #LatexToPdf.config.merge! :command => 'xetex', :arguments => ['-etex'], :parse_runs => 2
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do 
