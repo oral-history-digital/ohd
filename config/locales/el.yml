@@ -26,7 +26,6 @@ el:
   user_content: 'Προσωπικός φάκελος χρήστη'
   archive_search: 'Αναζήτηση στο Αρχείο'
   interviewee_name: 'Όνομα'
-  gender: 'Φύλο'
   typology: 'Είδος εμπειρίας'
   periods: 'Χρονικές περίοδοι'
   keywords: 'Λέξεις-κλειδιά'
@@ -141,3 +140,8 @@ el:
   privacy_protection: 'Προστασία δεδομένων'
   legal_info: 'Impressum'
   team: 'Ομάδα'
+  personal_data:
+    gender: 'Φύλο'
+    male: 'männlich'
+    female: 'weiblich'
+    born: 'geb.'

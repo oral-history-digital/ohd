@@ -26,7 +26,6 @@ de:
   user_content: 'Arbeitsmappe'
   archive_search: 'Suche im Archiv'
   interviewee_name: 'Name '
-  gender: 'Geschlecht'
   typology: 'Erfahrungshintergrund'
   periods: 'Zeitperioden'
   keywords: 'Schlagworte'
@@ -141,3 +140,9 @@ de:
   privacy_protection: 'Datenschutz'
   legal_info: 'Impressum'
   team: 'Team'
+  personal_data:
+    gender: 'Geschlecht'
+    male: 'männlich'
+    female: 'weiblich'
+    born: 'geb.'
+
