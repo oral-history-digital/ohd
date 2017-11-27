@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113160053) do
+ActiveRecord::Schema.define(version: 20171124144005) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "annotation_section_id",               null: false
@@ -72,8 +72,10 @@ ActiveRecord::Schema.define(version: 20171113160053) do
     t.string  "contribution_type",                  null: false
     t.string  "person_dedalo_id",                   null: false
     t.string  "person_id",            default: "0"
+    t.index ["contribution_type", "interview_id"], name: "index_contributions_on_contribution_type_and_interview_id", using: :btree
     t.index ["interview_section_id"], name: "interview_section_id", using: :btree
     t.index ["person_dedalo_id"], name: "person_dedalo_id", length: { person_dedalo_id: 128 }, using: :btree
+    t.index ["person_id"], name: "index_contributions_on_person_id", using: :btree
   end
 
   create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -199,6 +201,7 @@ ActiveRecord::Schema.define(version: 20171113160053) do
     t.string   "other_first_names", limit: 600
     t.string   "alias_names",       limit: 600
     t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
+    t.index ["person_id"], name: "index_person_translations_on_person_id", using: :btree
   end
 
   create_table "photo_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -347,7 +350,7 @@ ActiveRecord::Schema.define(version: 20171113160053) do
     t.integer  "speaker_id"
     t.boolean  "speaker_change"
     t.boolean  "chapter_change"
-    t.integer  "notes"
+    t.integer  "note_section_id"
     t.string   "section",              limit: 160
     t.integer  "interview_section_id"
     t.string   "term_id",              limit: 11264
