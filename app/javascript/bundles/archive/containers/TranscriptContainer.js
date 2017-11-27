@@ -6,16 +6,16 @@ import { handleTranscriptScroll } from '../actions/interviewActionCreators';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-  return { 
-    archiveId: state.archive.archiveId,
-    data: ArchiveUtils.getInterview(state),
-    transcriptTime: state.archive.transcriptTime,
-    transcriptScrollEnabled: state.archive.transcriptScrollEnabled
-  }
+    return { 
+        archiveId: state.archive.archiveId,
+        data: ArchiveUtils.getInterview(state),
+        transcriptTime: state.archive.transcriptTime,
+        transcriptScrollEnabled: state.archive.transcriptScrollEnabled
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
+    handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);
