@@ -1,7 +1,7 @@
 class AddSegmentDuration < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     remove_column :segments, :duration
 
@@ -15,7 +15,7 @@ class AddSegmentDuration < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     remove_column :segments, :duration
 

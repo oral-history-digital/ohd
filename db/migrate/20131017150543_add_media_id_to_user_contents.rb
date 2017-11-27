@@ -4,7 +4,7 @@ class AddMediaIdToUserContents < ActiveRecord::Migration
       t.string  :media_id
     end
     add_index :user_contents, :media_id
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     add_index :annotations, :media_id
     say_with_time 'setting media_id for user_annotations' do
       # Do two things:
@@ -22,7 +22,7 @@ class AddMediaIdToUserContents < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     say_with_time 're-adding media_id property to user_annotations' do
       # Set media_id property based on media_id attribute for all
       # UserAnnotations.

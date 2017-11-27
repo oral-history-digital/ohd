@@ -1,6 +1,6 @@
 class CreateTapes < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :tapes do |t|
       t.references :interview
       t.string :media_id, :null => :false
@@ -11,7 +11,7 @@ class CreateTapes < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :tapes
   end
   end

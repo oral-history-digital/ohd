@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { DEFAULT_LOCATION } from '../constants/archiveConstants';
 import '../../../css/locations'
 //import '../../../../../node_modules/leaflet/dist/leaflet'
@@ -50,13 +51,16 @@ export default class Locations extends React.Component {
             return(
                 <Map
                     bounds={locations}
+                    maxZoom={16}
                     ref={(map) => { this.map = map; }}
                 >
                     <TileLayer
                         url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    {this.markersAndLocations().markers}
+                    <MarkerClusterGroup maxClusterRadius={40}>
+                        {this.markersAndLocations().markers}
+                    </MarkerClusterGroup>
                 </Map>
             );
         } else {

@@ -1,7 +1,7 @@
 class CreateUserAccountIps < ActiveRecord::Migration
 
   def self.up
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     create_table :user_account_ips do |t|
       t.references :user_account
       t.string  :ip
@@ -12,7 +12,7 @@ class CreateUserAccountIps < ActiveRecord::Migration
   end
 
   def self.down
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     remove_table :user_account_ips
   #end
   end

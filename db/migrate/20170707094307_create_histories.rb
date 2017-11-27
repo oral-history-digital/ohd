@@ -1,6 +1,6 @@
 class CreateHistories < ActiveRecord::Migration[5.0]
   def change
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :histories do |t|
       t.references :person, foreign_key: true
 

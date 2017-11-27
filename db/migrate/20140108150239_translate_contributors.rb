@@ -14,7 +14,7 @@ class TranslateContributors < ActiveRecord::Migration
   }
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     Contributor.create_translation_table! CONTRIBUTOR_COLUMNS
 
@@ -43,7 +43,7 @@ class TranslateContributors < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Re-create migrated columns.
     CONTRIBUTOR_COLUMNS.each do |column, type|
       add_column :contributors, column, type

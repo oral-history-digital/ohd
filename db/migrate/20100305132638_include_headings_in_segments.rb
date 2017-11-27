@@ -1,7 +1,7 @@
 class IncludeHeadingsInSegments < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     change_table :segments do |t|
       t.string :mainheading, :limit => 100
@@ -14,7 +14,7 @@ class IncludeHeadingsInSegments < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     create_table :headings do |t|
       t.references :tape

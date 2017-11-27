@@ -1,6 +1,6 @@
 class CorrectStaticTranslations < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     suppress_messages do
       execute "UPDATE collection_translations SET notes = 'Die Interviews dieser Teilsammlung sind nicht online.' WHERE name LIKE '%Lwiw%' AND locale = 'de'"
       execute "UPDATE collection_translations SET notes = 'The interviews of this subset are not online.' WHERE name LIKE '%Lwiw%' AND locale = 'en'"
@@ -34,7 +34,7 @@ class CorrectStaticTranslations < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Do nothing. This migration is idempotent and does not need to be reverted before re-executing it.
   end
   end

@@ -77,7 +77,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.timestamps
     end
 
-    unless Project.name.to_sym == :eog
+    unless Project.name.to_sym == :mog
       create_table :languages do |t|
         t.string :code
       end
@@ -91,7 +91,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
   end
 
   def self.down
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     create_table :categories do |t|
       t.string :category_type
       t.string :code

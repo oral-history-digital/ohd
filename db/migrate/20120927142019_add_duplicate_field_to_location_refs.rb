@@ -1,7 +1,7 @@
 class AddDuplicateFieldToLocationRefs < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :location_references do |t|
       t.boolean :duplicate, :default => false
     end
@@ -9,7 +9,7 @@ class AddDuplicateFieldToLocationRefs < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :location_references do |t|
       t.remove :duplicate
     end
