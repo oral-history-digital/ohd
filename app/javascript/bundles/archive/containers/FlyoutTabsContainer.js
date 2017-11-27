@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
     return {
         visible: state.flyoutTabs.visible,
         interview: data && data.interview,
-        locale: state.archive.locale
+        locale: state.archive.locale,
+        translations: state.archive.translations,
     }
 }
 

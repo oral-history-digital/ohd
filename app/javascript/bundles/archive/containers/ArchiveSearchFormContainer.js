@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
   return { 
       facets: state.search.facets,
       query: state.search.query,
+      translations: state.archive.translations,
       locale: state.archive.locale
   }
 }

@@ -5,6 +5,7 @@ import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 
 import ResizeAware from 'react-resize-aware';
+import ArchiveUtils from '../../../lib/utils';
 
 
 export default class WrapperPage extends React.Component {
@@ -170,7 +171,7 @@ export default class WrapperPage extends React.Component {
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <a className="logo-link" href="#" title="Zur Startseite MOG Archiv">
+                            <a className="logo-link" href="#" title={ArchiveUtils.translate(this.props, 'home')}>
                                 <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
                                 </img>
                                 <span className="logo-text">MOG</span>
@@ -183,7 +184,7 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>Projekt Erinnerungen an die Okkupation in Griechenland</p>
+                            <p>{ArchiveUtils.translate(this.props, 'project_title')}</p>
                         </footer>
                     </div>
 

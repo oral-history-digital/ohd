@@ -5,6 +5,7 @@ import FacetContainer from '../containers/FacetContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 
 import {ARCHIVE_SEARCH_URL} from '../constants/archiveConstants';
+import ArchiveUtils from '../../../lib/utils';
 
 
 export default class ArchiveSearchForm extends React.Component {
@@ -51,11 +52,11 @@ export default class ArchiveSearchForm extends React.Component {
             <div>
                 <form ref={(form) => {this.form = form;}}  id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
                     <input className={'search-input'} type="text" name="fulltext" value={this.props.query.fulltext} placeholder="Eingabe ..." onChange={this.handleChange}/>
-                    <input className="search-button" id="search-button" title="Suche im Archiv ..." type="submit" value=""/>
+                    <input className="search-button" id="search-button" title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
                     {this.renderFacets()}
                 </form>
 
-                <button className={'reset'} onClick={this.handleReset}>Reset</button>
+                <button className={'reset'} onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}</button>
             </div>
         );
     }
