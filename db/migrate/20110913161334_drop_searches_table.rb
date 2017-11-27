@@ -1,12 +1,12 @@
 class DropSearchesTable < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :searches
   end
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table "searches", :force => true do |t|
       t.string   "fulltext"
       t.string   "names"

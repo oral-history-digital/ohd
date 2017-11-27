@@ -1,6 +1,6 @@
 class MoveContributorsToPeople < ActiveRecord::Migration[5.0]
   def change
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     add_column :contributions, :person_id, :integer
 
     Contributor.find_each do |c|

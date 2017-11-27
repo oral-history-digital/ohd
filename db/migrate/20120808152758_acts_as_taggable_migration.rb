@@ -1,6 +1,6 @@
 class ActsAsTaggableMigration < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :tags do |t|
       t.column :name, :string
     end
@@ -22,7 +22,7 @@ class ActsAsTaggableMigration < ActiveRecord::Migration
   end
   
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :taggings
     drop_table :tags
   end

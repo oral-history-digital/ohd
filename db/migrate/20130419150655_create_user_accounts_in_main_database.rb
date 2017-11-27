@@ -1,7 +1,7 @@
 class CreateUserAccountsInMainDatabase < ActiveRecord::Migration
 
   def self.up
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     create_table :user_accounts do |t|
       t.string :login,              :null => false, :default => ""
       ## Database authenticatable
@@ -57,7 +57,7 @@ class CreateUserAccountsInMainDatabase < ActiveRecord::Migration
   end
 
   def self.down
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     drop_table :user_accounts
   #end
   end

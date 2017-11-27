@@ -2,7 +2,7 @@ class TranslateUserContentTitle < ActiveRecord::Migration
   DATE_REGEXP = /(\d+)\.(\d+)\.(\d+) (\d+)-(\d+)/
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Delete all user content titles that correspond to their default
     # title in any of the supported languages. These titles will be
     # generated (and translated) dynamically from now on.
@@ -62,7 +62,7 @@ class TranslateUserContentTitle < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Return to static monolingual user content titles (but keep updated formatting).
     UserContent.find_each(:conditions => 'title IS NULL') do |user_content|
       user_content.update_attribute(:title, user_content.default_title(I18n.default_locale))

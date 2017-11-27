@@ -1,6 +1,6 @@
 class CreateHeadings < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :headings do |t|
       t.references :tape
       t.string :media_id, :null => :false
@@ -13,7 +13,7 @@ class CreateHeadings < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :headings
   end
   end

@@ -1,7 +1,7 @@
 class AddInterviewIdToSegments < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     change_table :segments do |t|
       t.integer :interview_id
@@ -16,7 +16,7 @@ class AddInterviewIdToSegments < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     remove_column :segments, :interview_id
   end
   end
