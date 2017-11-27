@@ -14,7 +14,7 @@ end
 
 class RefactorTapes < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     remove_column(:headings, :timecode)
     add_column(:headings, :segment_id, :int)
 
@@ -30,7 +30,7 @@ class RefactorTapes < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     remove_column(:headings, :segment_id)
     add_column(:headings, :timecode, :string)
   end

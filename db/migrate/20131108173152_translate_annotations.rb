@@ -1,6 +1,6 @@
 class TranslateAnnotations < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     Annotation.create_translation_table! :text => :text
 
     # Migrate existing data to the translation table.
@@ -12,7 +12,7 @@ class TranslateAnnotations < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Re-create the original column.
     add_column :annotations, :text, :string
 

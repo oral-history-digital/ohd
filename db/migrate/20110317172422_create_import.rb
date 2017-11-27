@@ -1,7 +1,7 @@
 class CreateImport < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     create_table :imports do |t|
       t.integer :importable_id
@@ -14,7 +14,7 @@ class CreateImport < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     drop_table :imports
 

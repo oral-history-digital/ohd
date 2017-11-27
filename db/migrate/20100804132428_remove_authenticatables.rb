@@ -1,7 +1,7 @@
 class RemoveAuthenticatables < ActiveRecord::Migration
 
   def self.up
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     begin
       drop_table :authenticatables
     rescue
@@ -10,7 +10,7 @@ class RemoveAuthenticatables < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Don't actually re-create the table, it was never used
     #create_table :authenticatables do |t|
     #  t.string :authentication_realm, :null => false

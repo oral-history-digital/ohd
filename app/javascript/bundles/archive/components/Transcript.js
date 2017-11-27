@@ -3,48 +3,49 @@ import SegmentContainer from '../containers/SegmentContainer';
 
 export default class Transcript extends React.Component {
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll.bind(this));
-  }
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll.bind(this));
+    }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll.bind(this));
-  }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll.bind(this));
+    }
 
-  handleScroll() {
-    let fixVideo = ($(document).scrollTop() > 80);
-    if (fixVideo && !this.props.transcriptScrollEnabled) {
-      this.props.handleTranscriptScroll(true)
-    } 
-  }
+    handleScroll() {
+        let fixVideo = ($(document).scrollTop() > 80);
+        if (fixVideo && !this.props.transcriptScrollEnabled) {
+            this.props.handleTranscriptScroll(true)
+        } 
+    }
 
-  showSegmentsFor(time) {
-    let shownSegments = this.segments().filter( segment => {
-      return (segment.tape_nbr <= 1 && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
-    })
-    return shownSegments;
-  }
+    showSegmentsFor(time) {
+        let shownSegments = this.segments().filter( segment => {
+            return (segment.tape_nbr <= 1 && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
+        })
+        return shownSegments;
+    }
 
-  segments() {
-    return this.props.data && this.props.data.segments || [];
-  }
+    segments() {
+        return this.props.data && this.props.data.segments || [];
+    }
 
-  render () {
-    let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.showSegmentsFor(this.props.transcriptTime);
+    render () {
+        let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.showSegmentsFor(this.props.transcriptTime);
 
-    return ( 
-      <div>
-        {shownSegments.map( (segment, index) => {
-          return (
-            <SegmentContainer
-              data={segment} 
-              originalLocale={this.props.originalLocale}
-              key={"segment-" + segment.id} 
-            />
-          )
-        })}
-      </div>
-    );
-  }
+        return ( 
+            <div>
+                {shownSegments.map( (segment, index) => {
+                    segment.speaker_is_interviewee = this.props.data.interview.interviewee_id === segment.speaker_id;
+                    return (
+                        <SegmentContainer
+                            data={segment} 
+                            originalLocale={this.props.originalLocale}
+                            key={"segment-" + segment.id} 
+                        />
+                    )
+                })}
+                </div>
+        );
+    }
 }
 

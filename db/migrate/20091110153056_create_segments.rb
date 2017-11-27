@@ -1,6 +1,6 @@
 class CreateSegments < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :segments do |t|
       t.references :tape
       t.string :media_id, :null => :false
@@ -14,7 +14,7 @@ class CreateSegments < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :segments
   end
   end

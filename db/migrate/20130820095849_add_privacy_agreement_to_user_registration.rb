@@ -1,6 +1,6 @@
 class AddPrivacyAgreementToUserRegistration < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     add_column :user_registrations, :priv_agreement, :boolean, :default => false
   else
     create_table :user_registrations do |t|
@@ -24,7 +24,7 @@ class AddPrivacyAgreementToUserRegistration < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     remove_column :user_registrations, :priv_agreement
   else
     drop_table :user_registrations

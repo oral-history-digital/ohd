@@ -1,7 +1,7 @@
 class AddSectionToSegments < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :segments do |t|
       t.string :section
     end
@@ -9,7 +9,7 @@ class AddSectionToSegments < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :segments do |t|
       t.remove :section
     end

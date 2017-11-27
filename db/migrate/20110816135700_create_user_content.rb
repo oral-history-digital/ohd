@@ -1,7 +1,7 @@
 class CreateUserContent < ActiveRecord::Migration
 
   def self.up
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     create_table :user_contents do |t|
       t.integer :user_id
       t.string :id_hash
@@ -22,7 +22,7 @@ class CreateUserContent < ActiveRecord::Migration
   end
 
   def self.down
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
     drop_table :user_contents
   #end
   end

@@ -1,7 +1,7 @@
 class CreateContributorsAndInterviewContribution < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     create_table :contributors do |t|
       t.string :first_name
@@ -28,7 +28,7 @@ class CreateContributorsAndInterviewContribution < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     drop_table :contributors
     drop_table :contributions

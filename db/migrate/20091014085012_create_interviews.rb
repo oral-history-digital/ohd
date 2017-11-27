@@ -1,6 +1,6 @@
 class CreateInterviews < ActiveRecord::Migration
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     create_table :interviews do |t|
       t.string :archive_id
       t.references :collection
@@ -61,7 +61,7 @@ class CreateInterviews < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     drop_table :interviews
     drop_table :forced_labor_groups
     drop_table :interview_forced_labor_groups

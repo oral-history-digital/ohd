@@ -10,7 +10,9 @@ class RegistryReference < BaseRegistryReference
   scope :with_locations, -> { 
     joins(:registry_entry).
     includes(registry_entry: {registry_names: :translations} ).
-    where.not('registry_entries.longitude': nil).where.not('registry_entries.latitude': nil)
+    where.not('registry_entries.longitude': nil).where.not('registry_entries.latitude': nil).
+    # exclude dedalo default location (Valencia)
+    where.not('registry_entries.longitude': -0.376295).where.not('registry_entries.latitude': 39.462571)
   }
 
   before_validation :reconnect_reference

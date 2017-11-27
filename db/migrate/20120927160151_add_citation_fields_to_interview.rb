@@ -1,7 +1,7 @@
 class AddCitationFieldsToInterview < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :interviews do |t|
       t.string :original_citation
       t.string :translated_citation
@@ -12,7 +12,7 @@ class AddCitationFieldsToInterview < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     change_table :interviews do |t|
       t.remove :original_citation
       t.remove :translated_citation

@@ -1,7 +1,7 @@
 class AddAdminCommentsToUserRegistration < ActiveRecord::Migration
 
   def self.up
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
 
 =begin
     # This was merged into the archive-authentication migration
@@ -25,7 +25,7 @@ class AddAdminCommentsToUserRegistration < ActiveRecord::Migration
   end
 
   def self.down
-  #unless Project.name.to_sym == :eog
+  #unless Project.name.to_sym == :mog
 =begin
     remove_column :user_registrations, :admin_comments
     remove_column :user_registrations, :user_account_id

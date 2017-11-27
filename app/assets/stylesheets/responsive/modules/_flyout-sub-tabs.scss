@@ -18,73 +18,71 @@
   padding: 20px 0;
   font-size: $font-size-medium;
   color: $primary-color;
-}
-
-input[type=radio].with-font,
-input[type=checkbox].with-font {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-input[type=radio].with-font ~ label:before,
-input[type=checkbox].with-font ~ label:before {
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f1db";
-  letter-spacing: 10px;
-  font-size: $font-size-medium;
-  color: $primary-color;
-  width: 1.4em;
-}
-
-input[type=radio].with-font:checked ~ label:before,
-input[type=checkbox].with-font:checked ~ label:before  {
-  content: "\f00c";
-  font-size: $font-size-medium;
-  color: $gray-darker;
-  letter-spacing: 5px;
-}
-
-input[type=radio].with-font:focus ~ label:before,
-input[type=checkbox].with-font:focus ~ label:before,
-input[type=radio].with-font:focus ~ label,
-input[type=checkbox].with-font:focus ~ label {
-  color: $gray-darker;
+  input[type=radio].with-font,
+  input[type=checkbox].with-font {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  input[type=radio].with-font ~ label:before,
+  input[type=checkbox].with-font ~ label:before {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f1db";
+    letter-spacing: 10px;
+    font-size: $font-size-medium;
+    color: $primary-color;
+    width: 1.4em;
+  }
+  input[type=radio].with-font:checked ~ label:before,
+  input[type=checkbox].with-font:checked ~ label:before  {
+    content: "\f00c";
+    font-size: $font-size-medium;
+    color: $gray-darker;
+    letter-spacing: 5px;
+  }
+  input[type=radio].with-font:focus ~ label:before,
+  input[type=checkbox].with-font:focus ~ label:before,
+  input[type=radio].with-font:focus ~ label,
+  input[type=checkbox].with-font:focus ~ label {
+    color: $gray-darker;
+  }
 }
 
 /* Button Reset */
 
-button.reset {
-  background-color: lighten($gray-warm, 20%);
-  color: #fff;
-  cursor: pointer;
-  padding: 10px 15px;
-  width: 90%;
-  margin: 20px;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: $font-size-large;
-  transition: 0.4s;
-  margin-bottom: 2px;
-}
+.wrapper-flyout {
+  button.reset {
+    background-color: lighten($gray-warm, 20%);
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 90%;
+    margin: 20px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: $font-size-large;
+    transition: 0.4s;
+    margin-bottom: 2px;
+  }
 
-button.reset.active,
-button.reset:hover {
-  background-color: $secondary-color, 10%;
-}
+  button.reset.active,
+  button.reset:hover {
+    background-color: $secondary-color, 10%;
+  }
 
-button.reset:after {
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f0e2";
-  float: right;
+  button.reset:after {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f0e2";
+    float: right;
+  }
 }
 
 /* Image Gallery */
@@ -142,41 +140,30 @@ button.reset:after {
 .thumbnail:hover:after{opacity: 1}
 
 /* form elements */
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  background: transparent;
-  outline: none;
-  border: none;
-  border-radius: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
+.wrapper-flyout {
+  button,
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  button,
+  select {
+    text-transform: none;
+    cursor: pointer;
+  }
+
+  button[disabled],
+  html input[disabled] {
+    cursor: default;
+  }
 }
 
-button,
-select {
-  text-transform: none;
-  cursor: pointer;
-}
-
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-}
-
-textarea {
-  resize: none;
-}

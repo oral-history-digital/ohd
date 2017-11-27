@@ -16,15 +16,16 @@ class SegmentSerializer < ActiveModel::Serializer
              :media_id,
              :timecode,
              :speaker_changed,
-             :speaker_is_interviewee
+             :speaker_id
+             #:speaker_is_interviewee
 
   def speaker_changed
     ActionView::Base.full_sanitizer.sanitize( object.transcript).gsub(/<br>/, "").strip()[0] == ":"
   end
 
-  def speaker_is_interviewee
-    object.speaker_id == object.interview.interviewees.first.id
-  end
+  #def speaker_is_interviewee
+    #object.speaker_id == object.interview.interviewees.first.id
+  #end
 
   def time
     # timecode as seconds 

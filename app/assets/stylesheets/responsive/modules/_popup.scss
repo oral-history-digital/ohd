@@ -15,7 +15,7 @@
   .close:after {
     position: absolute;
     top:  1%;
-    right: 2%;
+    right: 0;
     font-family: FontAwesome;
     content: "\f00d";
     font-size: 1.5rem;
@@ -25,17 +25,24 @@
 }
 
 .popup {
-  background-color: white;
-  width: 80%;
-  height: 80%;
-  margin: 20px auto;
-  padding: 20px 30px;
+  background-color: #fff;
+  width: 95%;
+  height: 95%;
+  margin: 2% auto;
+  padding: 35px 15px 5px 15px;
   position: relative;
+  @include screen-m {
+    width: 80%;
+    height: 90%;
+    margin: 5% auto;
+    padding: 35px 30px 5px 30px;
+  }
   input {
     border: 1px solid $gray-dark;
   }
   .content {
-    height:95%;
+    height:100%;
+    position: relative;
   }
 }
 

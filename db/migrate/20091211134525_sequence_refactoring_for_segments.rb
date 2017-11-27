@@ -1,7 +1,7 @@
 class SequenceRefactoringForSegments < ActiveRecord::Migration
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     change_table :segments do |t|
       t.integer :sequence_number
@@ -17,7 +17,7 @@ class SequenceRefactoringForSegments < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
 
     change_table :segments do |t|
       t.remove :sequence_number

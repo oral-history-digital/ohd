@@ -142,7 +142,7 @@ class TranslateCategories < ActiveRecord::Migration
   }
 
   def self.up
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     Category.create_translation_table! :name => :string
 
@@ -194,7 +194,7 @@ class TranslateCategories < ActiveRecord::Migration
   end
 
   def self.down
-  unless Project.name.to_sym == :eog
+  unless Project.name.to_sym == :mog
     # Re-create the original columns.
     add_column :categories, :name, :string
 
