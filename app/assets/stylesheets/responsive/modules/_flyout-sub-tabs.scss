@@ -15,10 +15,10 @@
 //label { font-size: 24px; }
 .flyout-radio-container {
   width: 100%;
-  padding: 20px 0;
+  padding: 0;
   font-size: $font-size-medium;
   color: $primary-color;
-  input[type=radio].with-font,
+  //input[type=radio].with-font,
   input[type=checkbox].with-font {
     border: 0;
     clip: rect(0 0 0 0);
@@ -29,7 +29,9 @@
     position: absolute;
     width: 1px;
   }
-  input[type=radio].with-font ~ label:before,
+  input[type=checkbox].with-font ~ label {
+    color: $primary-color;
+  }
   input[type=checkbox].with-font ~ label:before {
     font-family: FontAwesome;
     display: inline-block;
@@ -39,18 +41,14 @@
     color: $primary-color;
     width: 1.4em;
   }
-  input[type=radio].with-font:checked ~ label:before,
-  input[type=checkbox].with-font:checked ~ label:before  {
+  input[type=checkbox].with-font:checked ~ label {
+    color: $gray-darker;
+  }
+  input[type=checkbox].with-font:checked ~ label:before {
     content: "\f00c";
     font-size: $font-size-medium;
     color: $gray-darker;
     letter-spacing: 5px;
-  }
-  input[type=radio].with-font:focus ~ label:before,
-  input[type=checkbox].with-font:focus ~ label:before,
-  input[type=radio].with-font:focus ~ label,
-  input[type=checkbox].with-font:focus ~ label {
-    color: $gray-darker;
   }
 }
 
