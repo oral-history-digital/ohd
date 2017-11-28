@@ -21,12 +21,13 @@
 @import "modules/content-tabs";
 @import "modules/flyout-sub-tabs";
 @import "modules/flyout-nav-tabs";
+@import "modules/flyout-login";
 @import "modules/accordion";
 @import "modules/popup";
 @import "modules/form-default";
 
 // Icons
-//@import "font-awesome/font-awesome"; now imported by gem
+@import "font-awesome/font-awesome";
 @import "cds-icons/cds-icons";
 
 // Print
