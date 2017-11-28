@@ -24,7 +24,7 @@ class RegistryReferencesController < BaseController
             segment_ref_locations: segment_ref_locations.map{|e| ::RegistryReferenceSerializer.new(e)},
           }.to_json
         end
-        render text: json
+        render plain: json
       end
     end
   end

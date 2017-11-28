@@ -6,6 +6,12 @@ default: &default
 
   default_locale: de
 
+  # use 2- or 3-letter country-code
+  # have a look at https://github.com/alphabetum/iso-639 for possible methods
+  alpha: 'alpha3_terminologic'
+
+  interviewee_contribution_type: 'interviewee'
+  
   project_name:
     de: 'Deutsches Gedächtnis'
 

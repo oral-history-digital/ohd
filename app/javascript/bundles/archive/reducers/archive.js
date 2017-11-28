@@ -83,7 +83,8 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isFetchingExternalLinks: false,
                 externalLinks: action.externalLinks,
-                homeContent: action.homeContent
+                homeContent: action.homeContent,
+                translations: action.translations
             })
 
         default:
