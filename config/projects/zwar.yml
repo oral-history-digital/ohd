@@ -8,6 +8,10 @@ default: &default
 
   default_locale: de
 
+  # use 2- or 3-letter country-code
+  # have a look at https://github.com/alphabetum/iso-639 for possible methods
+  alpha: 'alpha3_terminologic'
+
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
     en: 'Forced Labor 1939-1945. Memory and History.'
