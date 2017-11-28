@@ -9,7 +9,6 @@ export default class ArchivePopup extends React.Component {
     }
 
     stopClicks(event){
-        console.log("clicks");
         event.stopPropagation();
         return false;
     }
@@ -31,13 +30,13 @@ export default class ArchivePopup extends React.Component {
         if (this.props.popup.title) {
             return (<h3 className={'popup-content-title'}>{this.props.popup.title}</h3>)
         }
-
     }
 
     render() {
+        let popCss = this.props.popup.big ? 'popup big' : 'popup'
         return (
             <div className={this.css()} onClick={() => this.props.closeArchivePopup()} >
-                <div className={'popup'} onClick={this.stopClicks}>
+                <div className={popCss} onClick={this.stopClicks}>
                     {this.header()}
                     <div className='content'> {this.props.popup.content} </div>
                     {this.buttons()}

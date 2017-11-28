@@ -4,9 +4,9 @@
 
 <% @interview.interviewees.first.histories.each do |history|  %>
 
-    <%= history.translations.where(locale: 'ell').first.deportation_date + "GGGG" %>
-    <%= history.translations.where(locale: 'ell').first.return_date %>
-    <%= history.translations.where(locale: 'ell').first.forced_labor_details %>
+    <%= history.send(@language[:type].pluralize.to_sym).where(locale: @language[:locale]).first.deportation_date %>
+    <%= history.send(@language[:type].pluralize.to_sym).where(locale: @language[:locale]).first.return_date %>
+    <%= history.send(@language[:type].pluralize.to_sym).where(locale: @language[:locale]).first.forced_labor_details %>
 
 <% end %>
 
