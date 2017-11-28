@@ -5,6 +5,8 @@ import RegisterFormContainer from '../containers/RegisterFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import WrapperPageContainer from '../containers/WrapperPageContainer'
 
+import ArchiveUtils from '../../../lib/utils';
+
 import { 
     REGISTER_NEW_URL,
     FORGOT_PASSWORD_URL,
@@ -44,7 +46,7 @@ export default class Account extends React.Component {
         } else {
             return <div>
                         <LoginFormContainer />
-                        <a href={FORGOT_PASSWORD_URL}>Passwort vergessen?</a>
+                        <a href={FORGOT_PASSWORD_URL}>{ArchiveUtils.translate(this.props, 'forget_password_question')}</a>
                    </div>
         }
     }
@@ -64,7 +66,7 @@ export default class Account extends React.Component {
             return null
         } else {
             //return <RegisterFormContainer />
-            return <a href={REGISTER_NEW_URL}>Registrieren</a>
+            return <a href={REGISTER_NEW_URL}>{ArchiveUtils.translate(this.props, 'registration')}</a>
         }
     }
 

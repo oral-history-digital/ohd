@@ -4,11 +4,6 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 
 export default class Home extends React.Component {
 
-    componentDidMount() {
-        this.props.fetchStaticContent();
-    }
-
-
     content() {
         return (
                 <WrapperPageContainer

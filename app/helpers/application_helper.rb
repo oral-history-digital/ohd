@@ -215,7 +215,7 @@ JS
             title: t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")
   end
 
-  def lesc(text)
+  def latex_escape(text)
     LatexToPdf.escape_latex(text)
   end
 
