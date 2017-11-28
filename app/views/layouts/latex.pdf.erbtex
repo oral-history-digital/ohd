@@ -1,5 +1,12 @@
-\documentclass[12pt,a4paper]{report}
+\documentclass{report}
+<% @latex_config = { :recipe => [
+	{:command => 'xelatex'},
+]}
+%>
 
-\usepackage{libertine} % also loads fontspec
+
+\usepackage{fontspec}
+\setmainfont{FreeSans.ttf}
+
 <%= yield %>
 \end{document}
