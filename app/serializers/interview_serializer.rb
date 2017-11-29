@@ -84,7 +84,7 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def created
-    created_at.strftime("%d.%m.%Y")
+    object.created_at.strftime("%d.%m.%Y")
   end
 
   # def duration
