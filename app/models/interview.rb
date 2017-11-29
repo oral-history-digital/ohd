@@ -62,6 +62,19 @@ class Interview < ActiveRecord::Base
            :source => :person,
            :through => :contributions
 
+  has_many :cinematographers,
+           -> {where("contributions.contribution_type = 'Camera recorder'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+  has_many :quality_managers,
+           -> {where("contributions.contribution_type = 'Quality management interviewing'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+
   #has_many :proofreading_contributors,
   has_many :proofreaders,
            -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
