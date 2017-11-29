@@ -27,18 +27,22 @@
 .popup {
   background-color: #fff;
   width: 95%;
-  height: 95%;
+  height: 96%;
   margin: 2% auto;
   padding: 35px 15px 5px 15px;
   position: relative;
   @include screen-m {
-    width: 80%;
-    height: 90%;
-    margin: 5% auto;
+    width: 60%;
+    height: 60%;
+    margin: 20% auto;
     padding: 35px 30px 5px 30px;
   }
-  input {
-    border: 1px solid $gray-dark;
+  &.big{
+    @include screen-m {
+      width: 80%;
+      height: 90%;
+      margin: 5% auto;
+    }
   }
   .content {
     height:100%;
