@@ -363,14 +363,14 @@ h1.search-results-title {
   &.active {
     background-color: #ddd;
     .fa, span {
-      color: $gray-dark;
+      color: $gray-darker;
     }
   }
   &:hover {
     background-color: #ddd;
-    color: $gray-dark;
+    color: $gray-darker;
     .fa {
-      color: $gray-dark;
+      color: $gray-darker;
     }
   }
   span {
