@@ -34,8 +34,9 @@ class Interview < ActiveRecord::Base
            :through => :contributions
 
   has_many :interviewees,
-           -> {where("contributions.contribution_type = 'Informants'")},
-           #-> {where("contributions.contribution_type = 'interviewee'")},
+          #  -> {where("contributions.contribution_type = 'Informants'")}, ## MOG
+          #  -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
+           -> {where("contributions.contribution_type = '#{Project.interviewee_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -60,6 +61,19 @@ class Interview < ActiveRecord::Base
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
+
+  has_many :cinematographers,
+           -> {where("contributions.contribution_type = 'Camera recorder'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+  has_many :quality_managers,
+           -> {where("contributions.contribution_type = 'Quality management interviewing'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
 
   #has_many :proofreading_contributors,
   has_many :proofreaders,

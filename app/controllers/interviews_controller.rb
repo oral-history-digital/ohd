@@ -8,35 +8,45 @@ class InterviewsController < BaseController
     #LatexToPdf.config.merge! :command => 'xetex', :arguments => ['-etex'], :parse_runs => 2
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
-      format.json do 
+      format.json do
         json = Rails.cache.fetch "interview-with-segments-#{@interview.id}-#{@interview.updated_at}" do
           segments = Segment.
-            #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
-            includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-            for_interview_id(@interview.id)
+              #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
+              includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
+          for_interview_id(@interview.id)
           references = @interview.segment_registry_references
           headings = segments.with_heading
           {
-            interview: ::InterviewSerializer.new(@interview).as_json,
-            segments: segments.map{|s| ::SegmentSerializer.new(s).as_json},
-            headings: headings.map{|s| ::SegmentSerializer.new(s).as_json},
-            references: references.map{|s| ::RegistryReferenceSerializer.new(s).as_json},
+              interview: ::InterviewSerializer.new(@interview).as_json,
+              segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
+              headings: headings.map {|s| ::SegmentSerializer.new(s).as_json},
+              references: references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
           }.to_json
         end
         render text: json
       end
       format.vtt do
         vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
-          @interview.to_vtt( params[:type] )
+          @interview.to_vtt(params[:type])
         end
         render text: vtt
       end
       format.pdf do
-        pdf = render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "#{@interview.archive_id}_transcript.pdf", :type => "application/pdf",
-                  :disposition => "attachment"
+        locale = params[:type] == "translation" ? "deu" : "ell"
+        @language = {locale:locale, type: params[:type]}
+        if params[:kind] == "history"
+          pdf = render_to_string(:template => '/latex/history.pdf.erb', :layout => 'latex.pdf.erbtex')
+          send_data pdf, filename: "#{@interview.archive_id}_history.pdf", :type => "application/pdf",
+                    :disposition => "attachment"
+        elsif params[:kind] == "interview"
+
+          pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
+          send_data pdf, filename: "#{@interview.archive_id}_transcript.pdf", :type => "application/pdf",
+                    :disposition => "attachment"
+        end
+
       end
-      format.html 
+      format.html
     end
   end
 
@@ -48,7 +58,7 @@ class InterviewsController < BaseController
   end
 
   def photos
-    style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/,'').to_sym
+    style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/, '').to_sym
     not_found if object.blank?
     photo = object.photos.for_file(params[:filename].capitalize).first
     not_found if photo.nil? or not File.exist?(photo.photo.path(style))
@@ -60,7 +70,7 @@ class InterviewsController < BaseController
     archive_id = (params[:filename] || '')[/^\w{2}\d{3}/i].to_s.downcase
     @object = Interview.find_by_archive_id(archive_id)
     not_found if @object.nil?
-    style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/,'').to_sym
+    style = (params[:filename] || '')[/_[^_]+$/].sub(/^_/, '').to_sym
     image = @object.still_image
     not_found if image.nil? or not File.exist?(image.path(style))
     response.headers['Cache-Control'] = 'private'
@@ -73,7 +83,7 @@ class InterviewsController < BaseController
   # as their parameter - this overrides the
   # resource controller finder for them
   def object
-    @object ||= @search.results.select{|i| i.archive_id == param }.first unless @search.nil? or @search.results.nil?
+    @object ||= @search.results.select {|i| i.archive_id == param}.first unless @search.nil? or @search.results.nil?
     @object ||= end_of_association_chain.find_by_archive_id(param) unless param.nil?
     @object
   end

@@ -28,8 +28,8 @@ $gray-warm:     #8b8b7a !default;
 $body-bg-color:    #fff !default;
 $body-text-color:  $gray-darkest !default;
 
-$link-color:       #039 !default;
-$link-hover-color: #039 !default;
+$link-color:       $primary-color !default;
+$link-hover-color: $primary-color !default;
 
 $text-margin-medium: 9px;
 $text-margin-large: 11px;
@@ -85,7 +85,7 @@ $line-height-heading-h6-large: 1.25rem !default;
 $font-family-heading-weight: normal !default;
 
 // Icons
-$font-path: "../assets/" !default;
+$font-path: "../fonts/" !default;
 
 
 // Miscellaneous

@@ -6,6 +6,7 @@ import {
 const initialState = {
     show: false,
     title: 'bla',
+    big: false,
     content: 'bla bla',
     className: 'popup',
     closeOnOverlayClick: true,

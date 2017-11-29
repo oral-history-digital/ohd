@@ -17,7 +17,7 @@ class Tape < ActiveRecord::Base
   end
 
   def number
-    @number ||= tape_number.nil? ? media_id[/\d+$/].to_i : tape_number
+    @number ||= (defined? tape_number) ? tape_number : media_id[/\d+$/].to_i
   end
 
   def media_id=(id)

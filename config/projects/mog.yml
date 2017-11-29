@@ -16,6 +16,9 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha3_terminologic'
 
+  # 'Informants' is specific for Dédalo, zwar-default is 'interviewee'
+  interviewee_contribution_type: 'Informants'
+
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation Griechenlands.'
     en: 'Memories of the Occupation of Greece'

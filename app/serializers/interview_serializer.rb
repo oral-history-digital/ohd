@@ -5,7 +5,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :video,
              :duration,
              #:translated,
-             #:created_at,
+             :created,
              #:updated_at,
              #:segmented,
              #:researched,
@@ -32,7 +32,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :interviewee_id
 
   has_many :photos, serializer: PhotoSerializer
-  has_many :interviewees, serializer: IntervieweeSerializer
+  has_many :interviewees, serializer: PersonSerializer
+  has_many :cinematographers, serializer: PersonSerializer
 
   def lang
     object.language.code
@@ -80,6 +81,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def interviewee_id
     object.interviewees.first.id
+  end
+
+  def created
+    object.created_at.strftime("%d.%m.%Y")
   end
 
   # def duration

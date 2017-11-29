@@ -3,13 +3,13 @@
 \maketitle
 
 <% @interview.segments.select{|i| i.tape.number == 1}.each do |segment|  %>
-    <% unless segment.mainheading('deu').blank? %>
-    \section{ <%= latex_escape( segment.mainheading('deu') ) %>}
+    <% unless segment.mainheading(@language[:locale]).blank? %>
+    \section{ <%= latex_escape( segment.mainheading(@language[:locale]) ) %>}
     <% end %>
-    <% unless segment.subheading('deu').blank? %>
-    \subsection{ <%= latex_escape(segment.subheading('deu')) %>}
+    <% unless segment.subheading(@language[:locale]).blank? %>
+    \subsection{ <%= latex_escape(segment.subheading(@language[:locale])) %>}
     <% end %>
-    <%= latex_escape(sanitize(segment.send(:translation)).gsub(/<br>/, '').gsub("\"",'') + "\n") %>
+    <%= latex_escape(sanitize(segment.send(@language[:type].to_sym)).gsub(/<br>/, '').gsub("\"",'') + "\n") %>
 <% end %>
 
 
