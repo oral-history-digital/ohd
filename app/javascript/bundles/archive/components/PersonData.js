@@ -10,7 +10,7 @@ export default class PersonData extends React.Component {
                 <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'interviewee_name')}:</span><span className="flyout-content-data">{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</span></p>
                 <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'date_of_birth')}:</span><span className="flyout-content-data">{this.props.interviewee.date_of_birth}</span></p>
                 <p><span className="flyout-content-label">{typology}:</span><span className="flyout-content-data">"Noch nicht in DB"</span></p>
-                <p><a href={this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=history'}> <i className="fa fa-download flyout-content-ico"></i><span>Kurzbiografie (pdf)</span> </a></p>
+                <p><a href={this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=history'}> <i className="fa fa-download flyout-content-ico"></i><span>{ArchiveUtils.translate(this.props, 'history')}</span> </a></p>
             </div>
         );
     }
