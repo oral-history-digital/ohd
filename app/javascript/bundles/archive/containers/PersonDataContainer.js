@@ -9,7 +9,6 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        name: ArchiveUtils.getInterview(state).interview.short_title[state.locale],
         interviewee: ArchiveUtils.getInterview(state).interview.interviewees[0]
     }
 }

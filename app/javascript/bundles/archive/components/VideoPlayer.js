@@ -43,7 +43,7 @@ export default class VideoPlayer extends React.Component {
         return (
             <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                 <div className={"video-title-container"}>
-                    <h1 className='video-title'>{this.props.interview.short_title[this.props.locale]}</h1>
+                    <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
                         title: this.props.interview.short_title[this.props.locale] + " der Arbeitsmappe hinzufügen",
                         content: this.userContentForm()

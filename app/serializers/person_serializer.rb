@@ -3,7 +3,8 @@ class PersonSerializer < ActiveModel::Serializer
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
-        hsh[i.locale] = {firstname: i.first_name,
+        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+        hsh[alpha2_locale] = {firstname: i.first_name,
                          lastname: i.last_name,
                          birthname: i.birth_name}}
   end
@@ -12,7 +13,8 @@ class PersonSerializer < ActiveModel::Serializer
   def histories
     object.histories.map{ |history|
       history.translations.each_with_object({}) {|i, hsh |
-        hsh[i.locale] = {event_begin: i.deportation_date,
+        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+        hsh[alpha2_locale] = {event_begin: i.deportation_date,
                          event_end: i.return_date,
                          event_description: i.forced_labor_details}}}
   end
