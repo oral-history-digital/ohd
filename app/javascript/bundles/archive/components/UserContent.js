@@ -8,90 +8,105 @@ import '../../../css/segments';
 export default class UserContent extends React.Component {
 
     userContentForm() {
-        return  <UserContentFormContainer 
-                    id={this.props.data.id}
-                    title={this.props.data.title}
-                    description={this.props.data.description}
-                    properties={{}}
-                    reference_id={this.props.data.reference_id}
-                    reference_type={this.props.data.reference_type}
-                    media_id={this.props.data.media_id}
-                    type={this.props.data.type}
-                    workflow_state={this.props.data.workflow_state}
-                />
+        return <UserContentFormContainer
+            id={this.props.data.id}
+            title={this.props.data.title}
+            description={this.props.data.description}
+            properties={{}}
+            reference_id={this.props.data.reference_id}
+            reference_type={this.props.data.reference_type}
+            media_id={this.props.data.media_id}
+            type={this.props.data.type}
+            workflow_state={this.props.data.workflow_state}
+        />
     }
 
     userContentDelete() {
-        return  <UserContentDeleteContainer 
-                    id={this.props.data.id}
-                />
+        return <UserContentDeleteContainer
+            id={this.props.data.id}
+        />
     }
 
     workflowState() {
-        if(this.props.data.type === 'UserAnnotation') {
-            return this.props.data.workflow_state 
+        if (this.props.data.type === 'UserAnnotation') {
+            return this.props.data.workflow_state
         }
     }
 
     edit() {
-        return <div 
-                    className='edit' 
-                    onClick={() => this.props.openArchivePopup({
-                        title: 'Edit', 
-                        content: this.userContentForm()
-                    })}
-                >
-                    edit
-                </div>
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title="Bearbeiten"
+            onClick={() => this.props.openArchivePopup({
+                title: 'Edit',
+                content: this.userContentForm()
+            })}
+        >
+            <i className="fa fa-pencil"></i>
+        </div>
     }
 
     delete() {
-        return <div 
-                    className='delete' 
-                    onClick={() => this.props.openArchivePopup({
-                        title: 'Delete', 
-                        content: this.userContentDelete()
-                    })}
-                >
-                    {'delete'}
-                </div>
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title="Löschen"
+            onClick={() => this.props.openArchivePopup({
+                title: 'Delete',
+                content: this.userContentDelete()
+            })}
+        >
+            <i className="fa fa-trash-o"></i>
+        </div>
     }
-    
+
     goTo() {
-        if(this.props.data.type === 'InterviewReference') {
-            return <Link
-                      to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}
-                  >
-                      {`go to interview: ${this.props.data.properties.title[this.props.locale]}`}
-                  </Link>
-        } else if(this.props.data.type === 'UserAnnotation') {
-              return <Link
-                      onClick={() => this.props.handleSegmentClick(this.props.data.properties.time)} 
-                      to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
-                  >
-                      {'go to segment'}
-                  </Link>
-        } else if(this.props.data.type === 'Search') {
-              return <Link
-                        onClick={() => this.props.searchInArchive(this.props.data.properties)}
-                        to={'/' + this.props.locale + '/suchen'}
-                  >
-                      {'search'}
-                  </Link>
+        if (this.props.data.type === 'InterviewReference') {
+            return <p className={'flyout-sub-tabs-content-link'}>
+                <i className={'fa fa-angle-right flyout-content-ico'}> </i>
+                <Link
+                    to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}>
+                    {`go to interview: ${this.props.data.properties.title[this.props.locale]}`}
+                </Link>
+            </p>
+        } else if (this.props.data.type === 'UserAnnotation') {
+            return <p className={'flyout-sub-tabs-content-link'}>
+                <i className={'fa fa-angle-right flyout-content-ico'}> </i>
+                <Link
+                    onClick={() => this.props.handleSegmentClick(this.props.data.properties.time)}
+                    to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
+                >
+                    {'go to segment'}
+                </Link>
+            </p>
+        } else if (this.props.data.type === 'Search') {
+            return <p className={'flyout-sub-tabs-content-link'}>
+                <i className={'fa fa-angle-right flyout-content-ico'}> </i>
+                <Link
+                    onClick={() => this.props.searchInArchive(this.props.data.properties)}
+                    to={'/' + this.props.locale + '/suchen'}
+                >
+                    {'search'}
+                </Link>
+            </p>
         } else {
             return null
         }
     }
 
-    render () {
+    render() {
         return (
             <div>
-                <div className='title'>{this.props.data.title}</div>
-                <div className='description'>{this.props.data.description}</div>
+                <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
+                <p>
+                    <span className='flyout-content-label'>Beschreibung</span>
+                    <span className='flyout-content-data'>{this.props.data.description}</span>
+                </p>
                 {this.workflowState()}
-                {this.edit()}
-                {this.delete()}
                 {this.goTo()}
+                <div className={'flyout-sub-tabs-content-ico'}>
+                    {this.edit()}
+                    {this.delete()}
+                </div>
             </div>
         )
     }

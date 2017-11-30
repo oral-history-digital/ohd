@@ -103,7 +103,6 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel>
                     <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'interview')}</div>
                     <div className='flyout-sub-tabs-container flyout-video'>
-
                         <InterviewDataContainer
                             title={ArchiveUtils.translate(this.props, 'person_info')}
                             content={<PersonDataContainer/>}/>
@@ -124,9 +123,18 @@ export default class FlyoutTabs extends React.Component {
                 </TabPanel>
                 <TabPanel>
                     <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'user_content')}</div>
-                    <UserContentsContainer/>
+                    <div className='flyout-sub-tabs-container flyout-folder'>
+                        <UserContentsContainer
+                            type={'Search'}
+                            title='Gemerkte Suchergebnisse'/>
+                        <UserContentsContainer
+                            type={'InterviewReference'}
+                            title='Gemerkte Interviewa'/>
+                        <UserContentsContainer
+                            type={'userAnnotation'}
+                            title='Gemerkte Annotations'/>
+                    </div>
                 </TabPanel>
-
             </Tabs>
         );
     }

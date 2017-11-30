@@ -3,6 +3,14 @@ import React from 'react';
 import UserContentContainer from '../containers/UserContentContainer';
 
 export default class UserContents extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+        this.state = {
+            open: false
+        };
+    }
   
     componentDidMount() {
         if (!this.userContentsLoaded()) {
@@ -15,45 +23,31 @@ export default class UserContents extends React.Component {
     }
 
     sortedContent() {
-        let searches = [];
-        let userAnnotations = [];
-        let interviewReferences = [];
-        
+        let searchesForType = [];
         for(let i = 0; i < this.props.contents.length; i++) {
-            if(this.props.contents[i].type === 'Search') {
-                searches.push(<UserContentContainer data={this.props.contents[i]} key={`search-${i}`} />);
-            } else if(this.props.contents[i].type === 'UserAnnotation') {
-                userAnnotations.push(<UserContentContainer data={this.props.contents[i]} key={`userAnnotation-${i}`} />);
-            } else if(this.props.contents[i].type === 'InterviewReference') {
-                interviewReferences.push(<UserContentContainer data={this.props.contents[i]} key={`interviewReference-${i}`} />);
+            if(this.props.contents[i].type === this.props.type) {
+                searchesForType.push(<UserContentContainer
+                    data={this.props.contents[i]}
+                    key={`${this.props.type}-${i}`}/>);
             }
         }
-        return {
-            searches: searches, 
-            userAnnotations: userAnnotations,
-            interviewReferences: interviewReferences
-        }
+        return searchesForType;
+    }
+
+    handleClick(){
+        this.setState({['open']: !this.state.open});
     }
 
     render() {
-        let searches = this.sortedContent().searches;
-        let userAnnotations = this.sortedContent().userAnnotations;
-        let interviewReferences = this.sortedContent().interviewReferences;
-
+        let headerCss =   this.state.open ? "accordion active" : 'accordion';
+        let panelCss =   this.state.open ? "panel open" : 'panel';
+        let searches = this.sortedContent()
         return (
             <div className='userContents'>
-                <div className='searches'>
-                    <h3>Searches</h3>
-                    {searches}
-                </div>
-                <div className='userAnnotations'>
-                    <h3>User Annotations</h3>
-                    {userAnnotations}
-                </div>
-                <div className='interviewReferences'>
-                    <h3>Interview References</h3>
-                    {interviewReferences}
-                </div>
+                <button className={headerCss} onClick={this.handleClick}>
+                    {this.props.title}
+                </button>
+                <div className={panelCss}>{searches} </div>
             </div>
         );
     }
