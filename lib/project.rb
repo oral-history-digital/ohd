@@ -2,9 +2,13 @@ module Project
 
   class << self
 
+    def project_config
+      @project_config ||= Rails.configuration.project
+    end
+
     def method_missing(n)
-      if Rails.configuration.project.has_key? n.to_s 
-        Rails.configuration.project[n.to_s] 
+      if project_config.has_key? n.to_s 
+        project_config[n.to_s] 
       else 
         #raise "#{self} does NOT have a key named #{n}"
         nil
@@ -16,11 +20,11 @@ module Project
     end
 
     def keys
-      Rails.configuration.project.keys
+      project_config.keys
     end
 
     def person_properties
-      Rails.configuration.project['person_properties']
+      project_config['person_properties']
     end
 
     def search_facets
