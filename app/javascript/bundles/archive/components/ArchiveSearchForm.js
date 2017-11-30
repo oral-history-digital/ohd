@@ -42,7 +42,11 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.setQueryParams(serialize(this.form, {hash: true}));
+        let params = serialize(this.form, {hash: true});
+        // Set params.interview_id to empty array. Otherwise Object.assign in reducer would not reset it.
+        // Thus the last checkbox would never uncheck.
+        params.interview_id = params.interview_id ? params.interview_id : [];
+        this.props.setQueryParams(params);
         this.props.searchInArchive(serialize(this.form, {hash: false}));
         this.context.router.history.push(ARCHIVE_SEARCH_URL);
     }
