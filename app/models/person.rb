@@ -19,7 +19,7 @@ class Person < ApplicationRecord
 
   def all_translations(att)
     translations.inject([]) do |mem, t|
-      mem += t.send(att).split(',')
+      mem += t.send(att).nil? ? [] : t.send(att).split(',')
       mem
     end.uniq
   end
