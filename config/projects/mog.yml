@@ -115,7 +115,7 @@ default: &default
       values: 
         male: 'Man'
         female: 'Woman'
-    - id: 'translated_typology'
+    - id: 'typology'
       source: 'person'
       use_as_facet: true
       values: 

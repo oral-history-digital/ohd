@@ -145,7 +145,7 @@ el:
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'
-    translated_typology: 'Typologie'
+    typology: 'Typologie'
     aaa: 'AAA'
     bbb: 'BBB'
     ccc: 'CCC'
