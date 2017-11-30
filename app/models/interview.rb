@@ -198,7 +198,7 @@ class Interview < ActiveRecord::Base
     end
 
     Project.person_search_facets.each do |facet|
-      string facet['id'].to_sym, :stored => true
+      string facet['id'].to_sym, :multiple => true, :stored => true
     end
 
     # Index archive id, facet categories and language (with all translations) for full text category search.

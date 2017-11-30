@@ -5,6 +5,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class ArchiveSearch extends React.Component {
 
@@ -106,7 +107,7 @@ export default class ArchiveSearch extends React.Component {
                     title: 'Save search',
                     content: this.saveSearchForm()
                 })}>
-                    <i className="fa fa-star"></i>Suche speichern
+                    <i className="fa fa-star"></i>{ArchiveUtils.translate(this.props, 'archive_save')}
                 </div>
     }
 
@@ -116,10 +117,10 @@ export default class ArchiveSearch extends React.Component {
                 tabIndex={4}
             >
                 <div className='interviews wrapper-content'>
-                    <h1 className="search-results-title">Suchergebnisse</h1>
+                    <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
                         {this.saveSearchLink()}
-                        <div className="search-results-legend-text">{this.props.resultsCount} Suchergebnisse</div>
+                        <div className="search-results-legend-text">{this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}</div>
                     </div>
 
                     <Tabs
@@ -131,11 +132,11 @@ export default class ArchiveSearch extends React.Component {
                         <TabList className={'search-results-tabs'}>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-th"></i>
-                                <span>Interview-Suchergebnisse</span>
+                                <span>{ArchiveUtils.translate(this.props, 'interview')}-{ArchiveUtils.translate(this.props, 'archive_results')}</span>
                             </Tab>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-map-o"></i>
-                                <span>Orte-Suchergebnisse</span>
+                                <span>{ArchiveUtils.translate(this.props, 'place')}-{ArchiveUtils.translate(this.props, 'archive_results')}</span>
                             </Tab>
                         </TabList>
                         <TabPanel >

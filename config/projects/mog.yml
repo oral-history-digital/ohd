@@ -117,6 +117,14 @@ default: &default
       values: 
         male: 'Man'
         female: 'Woman'
+    - id: 'translated_typology'
+      source: 'person'
+      use_as_facet: true
+      values: 
+        aaa: 'AAA'
+        bbb: 'BBB'
+        ccc: 'CCC'
+        ddd: 'DD DD'
     - id: 'periods'
       source: 'registry_entry'
       use_as_facet: true

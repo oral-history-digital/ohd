@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171124144005) do
+ActiveRecord::Schema.define(version: 20171129100716) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "annotation_section_id",               null: false
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20171124144005) do
     t.string   "birth_name",        limit: 600
     t.string   "other_first_names", limit: 600
     t.string   "alias_names",       limit: 600
+    t.string   "typology"
     t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
     t.index ["person_id"], name: "index_person_translations_on_person_id", using: :btree
   end
