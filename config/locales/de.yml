@@ -140,7 +140,7 @@ de:
   privacy_protection: 'Datenschutz'
   legal_info: 'Impressum'
   team: 'Team'
-  personal_data:
+  search_facets:
     gender: 'Geschlecht'
     male: 'männlich'
     female: 'weiblich'
@@ -150,4 +150,5 @@ de:
     bbb: 'BBB'
     ccc: 'CCC'
     ddd: 'DD DD'
+    interview_id: 'Interviews'
 

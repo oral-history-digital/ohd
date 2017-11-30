@@ -40,17 +40,11 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def title
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.full_title(locale)
-      mem
-    end
+    object.localized_hash(true)
   end
 
   def short_title
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.short_title(locale)
-      mem
-    end
+    object.localized_hash
   end
 
   def still_url

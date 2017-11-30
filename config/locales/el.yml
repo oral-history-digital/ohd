@@ -140,7 +140,7 @@ el:
   privacy_protection: 'Προστασία δεδομένων'
   legal_info: 'Impressum'
   team: 'Ομάδα'
-  personal_data:
+  search_facets:
     gender: 'Φύλο'
     male: 'männlich'
     female: 'weiblich'
@@ -150,3 +150,4 @@ el:
     bbb: 'BBB'
     ccc: 'CCC'
     ddd: 'DD DD'
+    interview_id: 

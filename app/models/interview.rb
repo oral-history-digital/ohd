@@ -243,6 +243,13 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
+  def localized_hash(use_full_title=false)
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = use_full_title ? full_title(locale) : short_title(locale)
+      mem
+    end
+  end
+
   Project.registry_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
