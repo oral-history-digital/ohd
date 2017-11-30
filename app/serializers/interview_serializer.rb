@@ -38,7 +38,7 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :interviewers, serializer: PersonSerializer
 
   def lang
-    object.language.code
+    ISO_639.find(object.language.code).alpha2
   end
 
   def languages
