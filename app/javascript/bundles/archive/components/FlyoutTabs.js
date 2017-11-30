@@ -78,7 +78,7 @@ export default class FlyoutTabs extends React.Component {
 
                 <TabList className='flyout'>
                     <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'home')}</Tab>
-                    <Tab className='flyout-top-nav'>Account</Tab>
+                    <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
                     <Tab className='flyout-top-nav lang'>de</Tab>
                     <Tab className='flyout-top-nav top-nav-last lang'>el</Tab>
                     <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
@@ -111,7 +111,7 @@ export default class FlyoutTabs extends React.Component {
                             title={ArchiveUtils.translate(this.props, 'interview_info')}
                             content={<InterviewInfoContainer/>}/>
                         <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'pictures')}
+                            title={ArchiveUtils.translate(this.props, 'photos')}
                             content={<GalleryContainer/>}/>
                         <InterviewDataContainer
                             title={ArchiveUtils.translate(this.props, 'map')}
