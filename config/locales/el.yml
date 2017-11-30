@@ -77,7 +77,6 @@ el:
   date: 'Ημερομηνία'
   place: 'Τόπος'
   interview_type: 'Βίντεο'
-  duration: 'Διάρκεια'
   language: 'Γλώσσα'
   interview: 'Συνεντευκτής/κτρια'
   camera: 'Κάμερα'

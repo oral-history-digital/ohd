@@ -5,11 +5,15 @@ import ArchiveUtils from '../../../lib/utils';
 
 
 const mapStateToProps = (state) => {
+    let data = ArchiveUtils.getInterview(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: ArchiveUtils.getInterview(state).interview
+        interview: data && data.interview,
+        cinematographer: data && data.interview.cinematographers[0],
+        interviewer: data && data.interview.interviewers[0]
+
     }
 }
 
