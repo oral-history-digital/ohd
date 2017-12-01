@@ -46,6 +46,8 @@ module Project
         case facet['source']
         when 'registry_entry'
           mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet['id'])).as_json
+        when 'registry_reference_type'
+          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet['id'])).as_json
         when 'person'
           mem[facet['id'].to_sym] = {
             descriptor: localized_hash_for("search_facets", facet['id']),

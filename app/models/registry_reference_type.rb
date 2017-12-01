@@ -29,4 +29,11 @@ class RegistryReferenceType < ActiveRecord::Base
     }
   end
 
+  def localized_hash
+    translations.inject({}) do |mem, t|
+      mem[t.locale[0..1]] = t.name
+      mem
+    end
+  end
+  
 end
