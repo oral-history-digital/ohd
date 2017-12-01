@@ -21,6 +21,7 @@ class InterviewSerializer < ActiveModel::Serializer
              #:citation_media_id,
              #:citation_timecode,
              #:indexed_at,
+             :languages,
              :language_id,
              :lang,
              :title,
@@ -34,9 +35,14 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
   has_many :cinematographers, serializer: PersonSerializer
+  has_many :interviewers, serializer: PersonSerializer
 
   def lang
-    object.language.code
+    ISO_639.find(object.language.code).alpha2
+  end
+
+  def languages
+    object.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem } - ['en']
   end
 
   def title

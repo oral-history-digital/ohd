@@ -2,8 +2,7 @@ import React from 'react';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
-//import InterviewTabsContainer from '../containers/InterviewTabsContainer';
-import InterviewTabs from '../components/InterviewTabs';
+import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 
 export default class Interview extends React.Component {
   
@@ -24,7 +23,7 @@ export default class Interview extends React.Component {
           tabIndex={5}
         >
           <VideoPlayerContainer />
-          <InterviewTabs/>
+          <InterviewTabsContainer/>
         </WrapperPageContainer>
       );
     } else {

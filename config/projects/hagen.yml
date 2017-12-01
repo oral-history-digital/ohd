@@ -10,7 +10,8 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha3_terminologic'
 
-  interviewee_contribution_type: 'interviewee'
+   interviewee_contribution_type: 'interviewee'
+   interviewer_contribution_type: 'interview'
   
   project_name:
     de: 'Deutsches Gedächtnis'

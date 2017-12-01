@@ -32,16 +32,21 @@ class InterviewsController < BaseController
         render text: vtt
       end
       format.pdf do
-        locale = params[:type] == "translation" ? "deu" : "ell"
-        @language = {locale:locale, type: params[:type]}
+        locale = params[:locale]
+        letter3_locale = ISO_639.find(locale).send(Project.alpha)
+        transcript_type = "translation"
+        if @interview.language.code == letter3_locale
+          transcript_type = "transcript"
+        end
+        @language = {locale:letter3_locale, type: transcript_type}
         if params[:kind] == "history"
           pdf = render_to_string(:template => '/latex/history.pdf.erb', :layout => 'latex.pdf.erbtex')
-          send_data pdf, filename: "#{@interview.archive_id}_history.pdf", :type => "application/pdf",
+          send_data pdf, filename: "#{@interview.archive_id}_history.pdf_#{locale}", :type => "application/pdf",
                     :disposition => "attachment"
         elsif params[:kind] == "interview"
 
           pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-          send_data pdf, filename: "#{@interview.archive_id}_transcript.pdf", :type => "application/pdf",
+          send_data pdf, filename: "#{@interview.archive_id}_#{transcript_type}_#{locale}.pdf", :type => "application/pdf",
                     :disposition => "attachment"
         end
 

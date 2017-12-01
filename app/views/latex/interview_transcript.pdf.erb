@@ -9,7 +9,7 @@
     <% unless segment.subheading(@language[:locale]).blank? %>
     \subsection{ <%= latex_escape(segment.subheading(@language[:locale])) %>}
     <% end %>
-    <%= latex_escape(sanitize(segment.send(@language[:type].to_sym)).gsub(/<br>/, '').gsub("\"",'') + "\n") %>
+    <%= latex_escape(sanitize(segment.send(@language[:type].to_sym)).gsub(/<br>/, '') + "\n") %>
 <% end %>
 
 

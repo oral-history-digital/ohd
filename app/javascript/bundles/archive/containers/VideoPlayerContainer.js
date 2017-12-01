@@ -1,28 +1,29 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import VideoPlayer from '../components/VideoPlayer';
-import { handleVideoTimeChange, handleVideoEnded } from '../actions/videoPlayerActionCreators';
-import { handleTranscriptScroll } from '../actions/interviewActionCreators';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import {handleVideoTimeChange, handleVideoEnded} from '../actions/videoPlayerActionCreators';
+import {handleTranscriptScroll} from '../actions/interviewActionCreators';
+import {openArchivePopup} from '../actions/archivePopupActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-  let data = ArchiveUtils.getInterview(state);
-  return { 
-    archiveId: state.archive.archiveId,
-    interview: data && data.interview,
-    videoTime: state.archive.videoTime,
-    videoStatus: state.archive.videoStatus,
-    locale: state.archive.locale
-  }
+    let data = ArchiveUtils.getInterview(state);
+    return {
+        archiveId: state.archive.archiveId,
+        interview: data && data.interview,
+        interviewee: data && data.interview.interviewees[0],
+        videoTime: state.archive.videoTime,
+        videoStatus: state.archive.videoStatus,
+        locale: state.archive.locale
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  handleVideoTimeChange: time => dispatch(handleVideoTimeChange(time)),
-  handleVideoEnded: () => dispatch(handleVideoEnded),
-  handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
+    handleVideoTimeChange: time => dispatch(handleVideoTimeChange(time)),
+    handleVideoEnded: () => dispatch(handleVideoEnded),
+    handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 
