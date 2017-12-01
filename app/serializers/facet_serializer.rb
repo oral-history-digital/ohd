@@ -18,6 +18,14 @@ class FacetSerializer < ActiveModel::Serializer
         }
         mem
       end
+    when 'RegistryReferenceType'
+      object.registry_references.inject({}) do |mem, ref|
+        mem[ref.registry_entry_id] = {
+          descriptor: ref.registry_entry.localized_hash,
+          count: 0
+        }
+        mem
+      end
     when 'Person'
     end
   end

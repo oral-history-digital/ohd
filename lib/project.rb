@@ -31,12 +31,10 @@ module Project
       person_properties.select{|c| c['use_as_facet'] }
     end
 
-    def registry_search_facets
-      person_properties.select{|c| c['use_as_facet'] && c['source'] == 'registry_entry' }
-    end
-
-    def person_search_facets
-      person_properties.select{|c| c['use_as_facet'] && c['source'] == 'person' }
+    %w(registry_entry registry_reference_type person).each do |m|
+      define_method "#{m}_search_facets" do
+       person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
+      end
     end
 
     def search_facets_names
