@@ -124,7 +124,7 @@ default: &default
       source: 'registry_entry'
       descriptor: 'Unterbringung / Inhaftierung'
       use_as_facet: true
-    - id: 'home_locations'
+    - id: 'home_location'
       source: 'registry_reference_type'
       use_as_facet: true
     - id: 'forced_labor_locations'

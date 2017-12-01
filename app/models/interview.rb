@@ -193,7 +193,7 @@ class Interview < ActiveRecord::Base
       end.join(' ')
     end
     
-    Project.registry_search_facets.each do |facet|
+    (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
       integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
@@ -250,10 +250,17 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  Project.registry_search_facets.each do |facet|
+  Project.registry_entry_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
-      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+    end
+  end
+
+  Project.registry_reference_type_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
+      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
     end
   end
 
