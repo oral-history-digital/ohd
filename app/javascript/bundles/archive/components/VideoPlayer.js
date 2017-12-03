@@ -26,9 +26,9 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
-    userContentForm() {
+    userContentForm(title) {
         return <UserContentFormContainer
-            title=''
+            title={title}
             description=''
             properties={{title: this.props.interview.title}}
             reference_id={this.props.interview.id}
@@ -46,7 +46,7 @@ export default class VideoPlayer extends React.Component {
                     <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
                         title: this.props.interview.short_title[this.props.locale] + " der Arbeitsmappe hinzufügen",
-                        content: this.userContentForm()
+                        content: this.userContentForm(`${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]}`)
                     })}><i className="fa fa-star"></i>
                         Interview merken
                     </div>
