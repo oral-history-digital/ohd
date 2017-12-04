@@ -25,7 +25,7 @@ class Segment < ActiveRecord::Base
                   #I18n.default_locale.to_s)
                   "((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
                   includes(:tape, :translations).
-                  order(:media_id)}
+                  order(:id)}
 
 
   scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
