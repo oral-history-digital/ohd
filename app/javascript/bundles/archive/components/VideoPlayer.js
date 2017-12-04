@@ -1,5 +1,6 @@
 import React from 'react';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class VideoPlayer extends React.Component {
 
@@ -26,15 +27,16 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
-    userContentForm() {
+    userContentForm(title) {
         return <UserContentFormContainer
-            title=''
+            title={title}
             description=''
             properties={{title: this.props.interview.title}}
             reference_id={this.props.interview.id}
             reference_type='Interview'
             media_id={this.props.interview.archive_id}
             type='InterviewReference'
+            submitLabel={ArchiveUtils.translate(this.props, 'notice')}
         />
     }
 
@@ -45,8 +47,8 @@ export default class VideoPlayer extends React.Component {
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-                        title: this.props.interview.short_title[this.props.locale] + " der Arbeitsmappe hinzufügen",
-                        content: this.userContentForm()
+                        title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
+                        content: this.userContentForm(`${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]}`)
                     })}><i className="fa fa-star"></i>
                         Interview merken
                     </div>
