@@ -4,7 +4,7 @@ import ArchiveUtils from '../../../lib/utils';
 export default class PersonData extends React.Component {
 
     render() {
-        let typology = ArchiveUtils.translate(this.props, 'personal_data') ? ArchiveUtils.translate(this.props, 'personal_data')['translated_typology'] : "";
+        let typology = ArchiveUtils.translate(this.props, 'search_facets') ? ArchiveUtils.translate(this.props, 'search_facets')['typology'] : "";
         let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
         return(
             <div>
