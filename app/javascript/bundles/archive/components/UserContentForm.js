@@ -81,6 +81,7 @@ export default class UserContentForm extends React.Component {
     }
 
     render() {
+        let submitLabel = this.props.submitLabel ? this.props.submitLabel : "Submit";
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
@@ -100,7 +101,7 @@ export default class UserContentForm extends React.Component {
                     <div className={"form-group"}>
                         {this.publish()}
                     </div>
-                    <input type="submit" value="Submit"/>
+                    <input type="submit" value={submitLabel}/>
                 </form>
             </div>
         );

@@ -36,6 +36,7 @@ export default class VideoPlayer extends React.Component {
             reference_type='Interview'
             media_id={this.props.interview.archive_id}
             type='InterviewReference'
+            submitLabel={ArchiveUtils.translate(this.props, 'notice')}
         />
     }
 
