@@ -32,6 +32,12 @@
   padding: 35px 15px 5px 15px;
   position: relative;
   @include screen-m {
+    width: 70%;
+    height: 80%;
+    margin: 10% auto;
+    padding: 35px 30px 5px 30px;
+  }
+  @include screen-xl {
     width: 60%;
     height: 60%;
     margin: 20% auto;
@@ -42,30 +48,74 @@
       width: 80%;
       height: 90%;
       margin: 5% auto;
+      .content {
+        height: 100%;
+      }
     }
   }
   .content {
-    height:100%;
     position: relative;
+  }
+  h3 {
+    margin-top: 0;
+  }
+}
+.popup-segment-nav-container {
+  width: 100%;
+  overflow: hidden;
+  margin: 0 0 15px 0;
+  @include clearfix;
+}
+.popup-segment-nav-label {
+  width: 100%;
+  float: none;
+  padding: 5px 0;
+  @include screen-l {
+    width: 25%;
+    float: left;
+    padding-right: 10px;
+    margin-right: 3%;
+    margin-bottom: 0;
+  }
+}
+.popup-segment-nav-data{
+  width: 100%;
+  padding: 0;
+  margin-top: 5px;
+  color: $gray-dark;
+  @include screen-l {
+    width: 72%;
   }
 }
 .popup-segment-nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin-top: 5px;
   color: $gray-dark;
-  .fa {
-    color: $primary-color;
-    cursor: pointer;
-    &:hover {
-      color: $gray-dark;
-    }
-  }
-  .popup-segment-nav-befor {
-    margin-right: 20px;
-  }
-  .popup-segment-nav-after {
-    margin-left: 20px;
+  float: none;
+  @include screen-l {
+    width: 72%;
+    float: right;
   }
 }
-
-//.popup-content-container {
-//  text-align: left;
-//}
+.popup-segment {
+  padding: 4px;
+  background-color: lighten($secondary-color, 30%);
+  color: $gray-darkest;
+}
+.fa {
+  color: $primary-color;
+  cursor: pointer;
+  &:hover {
+    color: $gray-dark;
+  }
+}
+.popup-segment-nav-befor {
+  margin-right: 20px;
+  display: inline-block;
+}
+.popup-segment-nav-after {
+  margin-left: 20px;
+}
