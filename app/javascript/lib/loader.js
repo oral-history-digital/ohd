@@ -12,7 +12,6 @@ import request from 'superagent';
               console.log("loading json from " + url + " failed: " + error);
             } else {
               if (typeof callback === "function") {
-                console.log(JSON.parse(res.text));
                 dispatch(callback(JSON.parse(res.text)));
               }
             }

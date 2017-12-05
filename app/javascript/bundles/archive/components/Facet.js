@@ -52,7 +52,6 @@ export default class Facet extends React.Component {
     }
 
     onChange(event) {
-        console.log('handleSubmit');
         this.props.handleSubmit();
     }
 
