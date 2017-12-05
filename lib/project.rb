@@ -53,7 +53,7 @@ module Project
             descriptor: localized_hash_for("search_facets", facet['id']),
             subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
               subfacets[value] = {
-                descriptor: localized_hash_for("personal_data", key),
+                descriptor: localized_hash_for("search_facets", key),
                 count: 0
               }
               subfacets

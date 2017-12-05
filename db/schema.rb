@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 20171201105841) do
     t.integer  "speaker_id"
     t.boolean  "speaker_change"
     t.boolean  "chapter_change"
+    t.integer  "note_section_id"
     t.integer  "notes"
     t.string   "section",              limit: 160
     t.integer  "interview_section_id"

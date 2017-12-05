@@ -46,7 +46,6 @@ class SearchesController < BaseController
       #end
       format.json do
         render json: {
-          found_segments: search.results,
           found_segments: search.results.map{|i| Rails.cache.fetch("segment-#{i.id}-#{i.updated_at}"){::SegmentSerializer.new(i).as_json} },
           fulltext: params[:fulltext],
           archiveId: params[:id]

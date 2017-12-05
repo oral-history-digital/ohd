@@ -6,6 +6,7 @@ export default class TableOfContents extends React.Component {
     prepareHeadings() {
         let mainIndex = 0;
         let mainheading = '';
+        //let lastMainheading = null;
         let subIndex = 0;
         let subheading = '';
         let headings = [];
@@ -13,10 +14,11 @@ export default class TableOfContents extends React.Component {
         if(this.props.interview && this.props.interview.headings) {
             this.props.interview.headings.map( (segment, index) => {
 
-                //if (!segment.subheading[this.props.locale] || segment.subheading[this.props.locale] === '') {
-                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '') {
+                //if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && lastMainheading !== segment.mainheading[this.props.locale]) {
+                if (!segment.subheading[this.props.locale] || segment.subheading[this.props.locale] === '') {
                     mainIndex += 1;
                     subIndex = 0;
+                    //lastMainheading = segment.mainheading[this.props.locale];
                     mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
                     headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
                 }
