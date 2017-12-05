@@ -65,15 +65,12 @@ export default class ArchiveSearch extends React.Component {
 
 
     renderPaginationTabs() {
-
         let resultPages = []
         for (let i = 1; i <= this.props.resultPagesCount; i++) {
             resultPages.push(i);
         }
         let query = this.props.query;
         let actualPage = query['page'] != undefined ? query['page'] : 1;
-
-
         return resultPages.map((page, index) => {
             let pageClass = 'pagination-button'
             if (actualPage == page) {
@@ -95,7 +92,7 @@ export default class ArchiveSearch extends React.Component {
 
     saveSearchForm() {
         return <UserContentFormContainer
-            title=''
+            title={ArchiveUtils.queryToText(this.props.query, this.props)}
             description=''
             properties={this.props.query}
             type='Search'

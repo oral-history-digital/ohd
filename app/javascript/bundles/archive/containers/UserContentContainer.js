@@ -8,6 +8,8 @@ import { searchInArchive } from '../actions/searchActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        locale: state.archive.locale,
+        translations: state.archive.translations,
     }
 }
 
