@@ -107,7 +107,7 @@ export default class ArchiveSearch extends React.Component {
                     title: 'Save search',
                     content: this.saveSearchForm()
                 })}>
-                    <i className="fa fa-star"></i>{ArchiveUtils.translate(this.props, 'archive_save')}
+            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'archive_save')}</span>
                 </div>
     }
 

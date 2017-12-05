@@ -49,6 +49,22 @@
     position: relative;
   }
 }
+.popup-segment-nav {
+  color: $gray-dark;
+  .fa {
+    color: $primary-color;
+    cursor: pointer;
+    &:hover {
+      color: $gray-dark;
+    }
+  }
+  .popup-segment-nav-befor {
+    margin-right: 20px;
+  }
+  .popup-segment-nav-after {
+    margin-left: 20px;
+  }
+}
 
 //.popup-content-container {
 //  text-align: left;

@@ -50,7 +50,7 @@ export default class VideoPlayer extends React.Component {
                         title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
                         content: this.userContentForm(`${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]}`)
                     })}><i className="fa fa-star"></i>
-                        Interview merken
+                        <span>Interview merken</span>
                     </div>
                     <div className="video-text-note"><i className="fa fa-pencil"></i><span>Anmerkung verfassen</span></div>
                 </div>
