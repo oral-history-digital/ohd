@@ -59,23 +59,26 @@ export default class Facet extends React.Component {
     renderSubfacets() {
         return Object.keys(this.props.data.subfacets).map((subfacetId, index) => {
             let subfacet = this.props.data.subfacets[subfacetId]
-            let checkedState = false;
-            if (this.checkedFacets()) {
-                checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
-            }
+            if (subfacet.count) {
+                let checkedState = false;
+                if (this.checkedFacets()) {
+                    checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
+                }
 
-            return (
-                <div key={"subfacet-" + index}>
-                    <input className={'with-font ' + this.props.facet + ' checkbox'} id={this.props.facet + "_" + subfacetId}
-                           name={this.props.facet + "[]"} checked={checkedState} type="checkbox" value={subfacetId}
-                           onChange={this.onChange}>
-                    </input>
-                    <label htmlFor={this.props.facet + "_" + subfacetId}>
-                        {subfacet.descriptor[this.props.locale]}
-                        <span>({subfacet.count})</span>
-                    </label>
-                </div>
-            )
+                return (
+                    <div key={"subfacet-" + index}>
+                        <input className={'with-font ' + this.props.facet + ' checkbox'}
+                               id={this.props.facet + "_" + subfacetId}
+                               name={this.props.facet + "[]"} checked={checkedState} type="checkbox" value={subfacetId}
+                               onChange={this.onChange}>
+                        </input>
+                        <label htmlFor={this.props.facet + "_" + subfacetId}>
+                            {subfacet.descriptor[this.props.locale]}
+                            <span>({subfacet.count})</span>
+                        </label>
+                    </div>
+                )
+            }
         })
     }
 }
