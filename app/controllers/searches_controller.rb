@@ -25,7 +25,7 @@ class SearchesController < BaseController
 
     respond_to do |format|
       format.json do
-        render text: json
+        render plain: json
       end
     end
   end
@@ -45,11 +45,13 @@ class SearchesController < BaseController
         #@interview = @search.results.first
       #end
       format.json do
-        render json: {
+        json = {
           found_segments: search.results.map{|i| Rails.cache.fetch("segment-#{i.id}-#{i.updated_at}"){::SegmentSerializer.new(i).as_json} },
           fulltext: params[:fulltext],
           archiveId: params[:id]
-        }
+        }.to_json
+
+        render plain: json
       end
     end
   end
