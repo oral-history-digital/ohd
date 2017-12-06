@@ -23,13 +23,13 @@ class InterviewsController < BaseController
               references: references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
           }.to_json
         end
-        render text: json
+        render plain: json
       end
       format.vtt do
         vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
           @interview.to_vtt(params[:type])
         end
-        render text: vtt
+        render plain: vtt
       end
       format.pdf do
         locale = params[:locale]
