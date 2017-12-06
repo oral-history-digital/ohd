@@ -4,7 +4,6 @@ import ArchiveUtils from '../../../lib/utils';
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         locale: state.archive.locale,
         photos: ArchiveUtils.getInterview(state).interview.photos

@@ -116,10 +116,8 @@ export default class WrapperPage extends React.Component {
         let css = ["wrapper-page"];
         if (this.props.transcriptScrollEnabled) {
             //css.push("fix-video");
-            $('.flyout-toggle').addClass('white');
         } else {
             window.scrollTo(0, 0);
-            $('.flyout-toggle').removeClass('white');
         }
         return css.join(' ');
     }
@@ -127,7 +125,7 @@ export default class WrapperPage extends React.Component {
     flyoutCss() {
         let css = this.props.visible ? ['flyout-is-visible'] : ['flyout-is-hidden'];
 
-        if (this.props.transcriptScrollEnabled) {
+        if (this.props.transcriptScrollEnabled && this.props.tabIndex == 5) {
             css.push("fix-video");
         } else {
             window.scrollTo(0, 0);

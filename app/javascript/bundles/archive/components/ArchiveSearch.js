@@ -6,6 +6,8 @@ import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import ArchiveUtils from '../../../lib/utils';
+import moment from 'moment';
+
 
 export default class ArchiveSearch extends React.Component {
 
@@ -47,7 +49,6 @@ export default class ArchiveSearch extends React.Component {
     }
 
     handleClick(event) {
-        console.log($(event.target).data().page);
         let page = ($(event.target).data().page);
         let query = this.props.query;
         query['page'] = page;
@@ -66,15 +67,12 @@ export default class ArchiveSearch extends React.Component {
 
 
     renderPaginationTabs() {
-
         let resultPages = []
         for (let i = 1; i <= this.props.resultPagesCount; i++) {
             resultPages.push(i);
         }
         let query = this.props.query;
         let actualPage = query['page'] != undefined ? query['page'] : 1;
-
-
         return resultPages.map((page, index) => {
             let pageClass = 'pagination-button'
             if (actualPage == page) {
@@ -90,24 +88,31 @@ export default class ArchiveSearch extends React.Component {
                 </li>
             )
         })
-
     }
 
+
+
     saveSearchForm() {
-        return  <UserContentFormContainer
-            title=''
+        moment.locale(this.props.locale);
+        let now = moment().format('lll');
+        let queryText = ArchiveUtils.queryToText(this.props.query, this.props);
+        let title = queryText === "" ? now : title + " - " + now;
+
+        return <UserContentFormContainer
+            title={title}
             description=''
             properties={this.props.query}
             type='Search'
+            submitLabel={ArchiveUtils.translate(this.props, 'archive_save')}
         />
     }
-    
+
     saveSearchLink() {
         return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
                     title: 'Save search',
                     content: this.saveSearchForm()
                 })}>
-                    <i className="fa fa-star"></i>{ArchiveUtils.translate(this.props, 'archive_save')}
+            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'archive_save')}</span>
                 </div>
     }
 
@@ -120,7 +125,8 @@ export default class ArchiveSearch extends React.Component {
                     <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
                         {this.saveSearchLink()}
-                        <div className="search-results-legend-text">{this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}</div>
+                        <div
+                            className="search-results-legend-text">{this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}</div>
                     </div>
 
                     <Tabs
@@ -139,10 +145,10 @@ export default class ArchiveSearch extends React.Component {
                                 <span>{ArchiveUtils.translate(this.props, 'place')}-{ArchiveUtils.translate(this.props, 'archive_results')}</span>
                             </Tab>
                         </TabList>
-                        <TabPanel >
+                        <TabPanel>
                             {this.content()}
                         </TabPanel>
-                        <TabPanel >
+                        <TabPanel>
                             <div>
                                 {this.renderPagination()}
                                 <ArchiveLocationsContainer/>
