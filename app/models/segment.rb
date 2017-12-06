@@ -73,34 +73,34 @@ class Segment < ActiveRecord::Base
     string :media_id, :stored => true
     string :timecode
     text :joined_transcript_and_translation
-    text :mainheading, :boost => 10 do
-      mainheading = ''
-      translations.each do |translation|
-        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
-      end
-      mainheading.strip
-    end
-    text :subheading, :boost => 10 do
-      subheading = ''
-      translations.each do |translation|
-        subheading << ' ' + translation.subheading unless translation.subheading.blank?
-      end
-      subheading.strip
-    end
-    text :registry_entries, :boost => 5 do
-      registry_references.map do |reference|
-        reference.registry_entry.search_string
-      end.join(' ')
-    end
-    # Also index the reference by all parent entries (classification)
-    # of the registry entry and its respective alias names.
-    text :classification, :boost => 6 do
-      registry_references.map do |reference|
-        reference.registry_entry.ancestors.map do |ancestor|
-          ancestor.search_string
-        end.join(' ')
-      end.join(' ')
-    end
+    #text :mainheading, :boost => 10 do
+      #mainheading = ''
+      #translations.each do |translation|
+        #mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
+      #end
+      #mainheading.strip
+    #end
+    #text :subheading, :boost => 10 do
+      #subheading = ''
+      #translations.each do |translation|
+        #subheading << ' ' + translation.subheading unless translation.subheading.blank?
+      #end
+      #subheading.strip
+    #end
+    #text :registry_entries, :boost => 5 do
+      #registry_references.map do |reference|
+        #reference.registry_entry.search_string
+      #end.join(' ')
+    #end
+    ## Also index the reference by all parent entries (classification)
+    ## of the registry entry and its respective alias names.
+    #text :classification, :boost => 6 do
+      #registry_references.map do |reference|
+        #reference.registry_entry.ancestors.map do |ancestor|
+          #ancestor.search_string
+        #end.join(' ')
+      #end.join(' ')
+    #end
     
   end
 
