@@ -99,18 +99,18 @@
     width: 72%;
     float: right;
   }
+  .fa {
+    color: $primary-color;
+    cursor: pointer;
+    &:hover {
+      color: $gray-dark;
+    }
+  }
 }
 .popup-segment {
   padding: 4px;
   background-color: lighten($secondary-color, 30%);
   color: $gray-darkest;
-}
-.fa {
-  color: $primary-color;
-  cursor: pointer;
-  &:hover {
-    color: $gray-dark;
-  }
 }
 .popup-segment-nav-befor {
   margin-right: 20px;
