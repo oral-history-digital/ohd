@@ -23,7 +23,9 @@ export default class InterviewPreview extends React.Component {
                     onClick={() => {this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id})}}
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
-                    <img className='search-result-img' src={this.props.interview.still_url}/>
+                    <div className="search-result-img">
+                        <img src={this.props.interview.still_url}/>
+                    </div>
                     <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
                     <p className={'search-result-data'}>Interview ID: <span>{this.props.interview.archive_id}</span><br/>
                         Interviewdauer: <span>{this.props.interview.formatted_duration}</span>
