@@ -3,7 +3,7 @@ import {Link, hashHistory} from 'react-router-dom';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
-import '../../../css/segments';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class UserContent extends React.Component {
 
@@ -93,15 +93,28 @@ export default class UserContent extends React.Component {
         }
     }
 
+    paramsInfo(){
+        if  (this.props.data.type === 'Search') {
+            return  <p>
+                <span className='flyout-content-label'>Suchkriterien:</span>
+                <span className='flyout-content-data'>{ArchiveUtils.queryToText(this.props.data.properties, this.props)}</span>
+            </p>
+        } else {
+            return null
+        }
+    }
+
+
     render() {
         return (
             <div>
                 <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
                 <p>
-                    <span className='flyout-content-label'>Beschreibung</span>
+                    <span className='flyout-content-label'>Beschreibung:</span>
                     <span className='flyout-content-data'>{this.props.data.description}</span>
                 </p>
                 {this.workflowState()}
+                {this.paramsInfo()}
                 {this.goTo()}
                 <div className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
