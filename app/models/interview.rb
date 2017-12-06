@@ -14,8 +14,9 @@ class Interview < ActiveRecord::Base
            #-> {includes(:interview, :translations)},
            :dependent => :destroy
 
-  has_many :text_materials,
-           :dependent => :destroy
+  # TODO: is this still necessary for zwar
+  #has_many :text_materials,
+           #:dependent => :destroy
 
   has_many :tapes,
            -> {includes(:interview)},
@@ -96,9 +97,10 @@ class Interview < ActiveRecord::Base
            :source => :person,
            :through => :contributions
 
-  has_many :imports,
-           :as => :importable,
-           :dependent => :delete_all
+  # TODO: rm this after integration of zwar-BE
+  #has_many :imports,
+           #:as => :importable,
+           #:dependent => :delete_all
 
   has_attached_file :still_image,
                     :styles => {:thumb => '88x66', :small => '140x105', :original => '400x300>'},
@@ -145,9 +147,10 @@ class Interview < ActiveRecord::Base
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
-  validates_attachment_content_type :still_image,
-                                     :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                     :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  # TODO: reuse this for zwar?
+  #validates_attachment_content_type :still_image,
+                                     #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
+                                     #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   searchable :auto_index => false do
     integer :interview_id, :using => :id, :stored => true, :references => Interview
