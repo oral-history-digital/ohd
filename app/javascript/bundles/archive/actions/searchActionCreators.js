@@ -14,7 +14,6 @@ import {
     INTERVIEW_SEARCH_URL,
     ARCHIVE_SEARCH_URL,
     FACETS_URL,
-    //ARCHIVE_RESET_SEARCH_URL
 } from '../constants/archiveConstants';
 
 export function setQueryParams(params){
