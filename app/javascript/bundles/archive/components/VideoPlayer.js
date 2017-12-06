@@ -1,6 +1,7 @@
 import React from 'react';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import ArchiveUtils from '../../../lib/utils';
+import moment from 'moment';
 
 export default class VideoPlayer extends React.Component {
 
@@ -27,7 +28,11 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
-    userContentForm(title) {
+    userContentForm() {
+        moment.locale(this.props.locale);
+        let now = moment().format('lll');
+        let title = `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
+
         return <UserContentFormContainer
             title={title}
             description=''
@@ -48,7 +53,7 @@ export default class VideoPlayer extends React.Component {
                     <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
                         title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
-                        content: this.userContentForm(`${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]}`)
+                        content: this.userContentForm()
                     })}><i className="fa fa-star"></i>
                         <span>Interview merken</span>
                     </div>
