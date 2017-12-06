@@ -75,6 +75,7 @@ export default class Account extends React.Component {
             <WrapperPageContainer 
               tabIndex={1}
             >
+                <h1>Login</h1>
                 {this.info()}
                 {this.loginOrOut()}
                 {this.register()}
