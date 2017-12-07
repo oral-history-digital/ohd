@@ -30,7 +30,6 @@ body {
   @include screen-xl {
     float: left;
     width: 70%;
-    border-right: 1px solid $gray-light;
   }
 }
 
@@ -90,7 +89,6 @@ header.site-header {
     background: rgba(#e8e8e4, 0.95);
     @include screen-xl {
       border-left: 1px solid $gray-light;
-      border: 0 none;
     }
     @include screen-xl {
       display: block !important;
@@ -242,15 +240,15 @@ h1.video-title {
 }
 
 footer {
-  background: $gray-dark;
+  background: #fff; //$gray-dark;
+  border-top: 1px solid $gray-dark;
   padding: 30px 10%;
-  color: #fff;
   p {
     margin-top: 10px;
     //border-top: 1px solid #ddd;
     padding-top: 5px;
     font-size: $font-size-medium;
-    color: $gray-light;
+    color: $gray-dark;
   }
 }
 
@@ -265,7 +263,7 @@ footer {
   }
   a:link,
   a:visited {
-    color: #fff;
+    color: $primary-color; //#fff;
     transition: color 0.3s;
   }
   a[href]:hover, a:active {

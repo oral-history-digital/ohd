@@ -155,7 +155,7 @@
       margin: 0;
     }
     &.active {
-      background-color: lighten($secondary-color, 30%);
+      background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
       color: $gray-darkest;
     }
     &:hover {
@@ -343,7 +343,7 @@
   }
   p span.highlight {
     padding: 0 4px;
-    background-color: lighten($secondary-color, 30%);
+    background-color: rgba(255,250,129,0.6); //lighten($secondary-color, 30%);
     color: $gray-darkest;
   }
   p:hover {
