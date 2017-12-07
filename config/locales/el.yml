@@ -144,3 +144,17 @@ el:
     ccc: 'CCC'
     ddd: 'DD DD'
     interview_id: 
+  #routes: # Pretty URLs for static pages.
+    #searches: 'suche'
+    #facets: 'facetten'
+    #user_contents: 'arbeitsmappe'
+    #locations: 'orte'
+    #archive: 'archiv'
+    #faq_index: 'hilfe'
+    #faq_archive_contents: 'hilfe_zu_inhalten'
+    #faq_searching: 'hilfe_zur_suche'
+    #faq_technical: 'hilfe_zu_technischen_fragen'
+    #map_tutorial: 'karteneinfuehrung'
+    #collections: 'teilsammlungen'
+    #countries: 'länder'
+    #interviews: 'interviews'
