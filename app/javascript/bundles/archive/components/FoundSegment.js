@@ -13,27 +13,11 @@ export default class Segment extends React.Component {
         };
     }
 
-
     transcript() {
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
-        return this.props.data.transcripts[locale.substring(0,2)]
+        return this.props.data.transcripts[this.props.locale.substring(0,2)]
     }
 
-
-
-
     render() {
-        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0,2) : this.props.locale;
-        let annotionCss = this.props.data.annotation_texts.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        //let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
-        let icoCss = this.state.contentOpen ? 'content-trans-text-ico active': 'content-trans-text-ico';
-        let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
-
-
-
-
-
         return (
 
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.time)}>

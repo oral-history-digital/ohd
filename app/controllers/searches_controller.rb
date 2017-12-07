@@ -18,7 +18,10 @@ class SearchesController < BaseController
 
   def interview
     search = Segment.search do 
-      fulltext params[:fulltext] 
+      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do
+        highlight :transcript
+        highlight :translation
+      end
       with(:archive_id, params[:id])
       #facet :chapter
     end
@@ -27,12 +30,17 @@ class SearchesController < BaseController
       format.html do
         render :template => '/interviews/show'
       end
-      #format.js do
-        #@interview = @search.results.first
-      #end
       format.json do
+        interview = Interview.find_by_archive_id(params[:id])
         json = {
-          found_segments: search.results.map{|i| Rails.cache.fetch("segment-#{i.id}-#{i.updated_at}"){::SegmentSerializer.new(i).as_json} },
+          found_segments: search.hits.map do |hit| 
+            Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
+              segment = ::SegmentHitSerializer.new(hit.instance).as_json 
+              segment[:transcripts] = highlighted_transkripts(hit, interview)
+              segment
+            end
+          end,
+          #found_segments: search.results.map{|i| Rails.cache.fetch("segment-#{i.id}-#{i.updated_at}"){::SegmentSerializer.new(i).as_json} },
           fulltext: params[:fulltext],
           archiveId: params[:id]
         }.to_json
@@ -69,4 +77,19 @@ class SearchesController < BaseController
     end
   end
 
+  private
+
+  def highlighted_transkripts(hit, interview) 
+    {
+      de: :translation, 
+      "#{interview.language.code[0..1]}": :transcript
+    }.inject({}) do |mem, (locale, meth)|
+      mem[locale.to_s] = hit.highlights(meth).inject([]) do |m, highlight|
+        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
+        m << highlighted.sub(/:/,"").strip()
+        m
+      end.join(' ')
+      mem
+    end
+  end
 end

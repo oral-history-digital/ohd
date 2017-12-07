@@ -72,7 +72,8 @@ class Segment < ActiveRecord::Base
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :timecode
-    text :joined_transcript_and_translation
+    text :transcript, stored: true # needs to be stored to enable highlighting
+    text :translation, stored: true # needs to be stored to enable highlighting
     #text :mainheading, :boost => 10 do
       #mainheading = ''
       #translations.each do |translation|
