@@ -109,7 +109,7 @@
 }
 .popup-segment {
   padding: 4px;
-  background-color: lighten($secondary-color, 30%);
+  background-color: rgba(255,250,129,0.7); //lighten($secondary-color, 30%);
   color: $gray-darkest;
 }
 .popup-segment-nav-befor {

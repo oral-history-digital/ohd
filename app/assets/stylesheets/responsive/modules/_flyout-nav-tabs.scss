@@ -53,7 +53,7 @@
     display:none;
   }
   &:hover {
-    background: $secondary-color;
+    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
     color: $gray-darkest;
   }
   animation-name: fade-in;
