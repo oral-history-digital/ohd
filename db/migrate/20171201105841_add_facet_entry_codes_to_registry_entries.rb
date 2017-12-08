@@ -1,6 +1,6 @@
 class AddFacetEntryCodesToRegistryEntries < ActiveRecord::Migration[5.0]
   def change
-    if Project.name == :zwar
+    if Project.name.to_sym == :zwar
       I18n.locale = :de
       RegistryName.joins(:translations).where(descriptor: "Gruppe").first.registry_entry.update_attribute :entry_code, "forced_labor_groups"
       RegistryName.joins(:translations).where(descriptor: "Einsatzbereich").first.registry_entry.update_attribute :entry_code, "forced_labor_fields"
