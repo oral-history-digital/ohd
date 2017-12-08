@@ -40,7 +40,6 @@ class SearchesController < BaseController
               segment
             end
           end,
-          #found_segments: search.results.map{|i| Rails.cache.fetch("segment-#{i.id}-#{i.updated_at}"){::SegmentSerializer.new(i).as_json} },
           fulltext: params[:fulltext],
           archiveId: params[:id]
         }.to_json
