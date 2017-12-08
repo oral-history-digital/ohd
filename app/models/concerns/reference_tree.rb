@@ -87,7 +87,7 @@ module ReferenceTree
       end
     end
     p "*** parent_nodes length = #{parent_nodes.length}"
-    binding.pry
+    #if nodes == parent_nodes
     if parent_nodes.length == nodes_without_parents_count
       parent_nodes
     else

@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TableOfContentsContainer from '../containers/TableOfContentsContainer';
 import TranscriptContainer from '../containers/TranscriptContainer';
 import InterviewSearchContainer from '../containers/InterviewSearchContainer';
+import RefTreeContainer from '../containers/RefTreeContainer';
 import ArchiveUtils from '../../../lib/utils';
 
 export default class InterviewTabs extends React.Component {
@@ -30,6 +31,7 @@ export default class InterviewTabs extends React.Component {
             <Tab className={'content-tabs-nav-link'}><i className="fa fa-clone"></i><span>{ArchiveUtils.translate(this.props, 'translation')}</span></Tab>
             <Tab className={'content-tabs-nav-link'}><i className="fa fa-list"></i><span>{ArchiveUtils.translate(this.props, 'table_of_contents')}</span></Tab>
             <Tab className={'content-tabs-nav-link'}><i className="fa fa-search"></i><span>{ArchiveUtils.translate(this.props, 'interview_search')}</span></Tab>
+            <Tab className={'content-tabs-nav-link'}><i className="fa fa-search"></i><span>{ArchiveUtils.translate(this.props, 'keywords')}</span></Tab>
           </TabList>
         </div>
 
@@ -49,6 +51,9 @@ export default class InterviewTabs extends React.Component {
           </TabPanel>
           <TabPanel >
             <InterviewSearchContainer />
+          </TabPanel>
+          <TabPanel >
+            <RefTreeContainer />
           </TabPanel>
         </div>
       </Tabs>
