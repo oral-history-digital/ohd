@@ -502,17 +502,16 @@ a.search-result-link {
 
 /* Home Video */
 
-.wrapper-video.home-video {
-  padding: 64px 0 0 0;
-  background-color: $primary-color;
-  .video-element {
-    margin: 0;
-    background-color: $secondary-color;
-  }
+.video-element.home-video {
+  margin: 0;
+  background-color: $secondary-color;
 }
 .wrapper-content.home-content {
-  padding:30px 10%;
-  background-color: #ddd;
+  padding:0;
+  .home-text {
+    padding: 30px 10%;
+    background-color: #ddd;
+  }
 }
 .home-content-logos {
   padding:5px 5%;
