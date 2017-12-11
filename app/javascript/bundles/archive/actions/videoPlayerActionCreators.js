@@ -18,4 +18,10 @@ export function handleVideoEnded() {
   }
 }
 
+export function setNextVideo() {
+  return {
+    type: SET_NEXT_VIDEO,
+  }
+}
+
 

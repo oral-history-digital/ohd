@@ -72,7 +72,7 @@ export default class UserContent extends React.Component {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    onClick={() => this.props.handleSegmentClick(this.props.data.properties.time)}
+                    onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.properties.time)}
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
                     {'go to segment'}

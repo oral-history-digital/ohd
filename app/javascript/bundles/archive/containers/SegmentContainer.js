@@ -11,13 +11,14 @@ const mapStateToProps = (state) => {
     return { 
         transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
+        tape: state.archive.tape,
         interview: data && data.interview,
         references: data && data.references
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 

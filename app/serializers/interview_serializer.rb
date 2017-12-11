@@ -2,6 +2,7 @@ class InterviewSerializer < ActiveModel::Serializer
   attributes :id,
              :archive_id,
              :collection_id,
+             :tape_count,
              :video,
              :duration,
              #:translated,
@@ -56,6 +57,14 @@ class InterviewSerializer < ActiveModel::Serializer
   def still_url
     #object.still_image.url(:original)
     "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+  end
+
+  def src_base
+    Project.video_src_base
+  end
+  
+  def tape_count
+    object.tapes.count
   end
 
   def src

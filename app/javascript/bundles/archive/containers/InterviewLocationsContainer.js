@@ -14,12 +14,13 @@ const mapStateToProps = (state) => {
         segments: interview && interview.segments,
         locations: state.locations,
         locale: state.archive.locale,
+        tape: state.archive.tape,
         isFetchingLocations: state.archive.isFetchingLocations
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     fetchLocations: archiveId => dispatch(fetchLocations(archiveId))
 })
 

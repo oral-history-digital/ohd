@@ -8,13 +8,13 @@ import { searchInArchive } from '../actions/searchActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
-        locale: state.archive.locale,
+        tape: state.archive.tape,
         translations: state.archive.translations,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: time => dispatch(handleSegmentClick(time)),
+    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     searchInArchive: (query) => dispatch(searchInArchive(query)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })

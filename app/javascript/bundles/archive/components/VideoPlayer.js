@@ -28,6 +28,19 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
+    handleVideoEnded() {
+        if (this.props.tape < this.props.interview.tape_count) {
+            this.props.setNextVideo();
+        } else {
+            this.props.handleVideoEnded();
+        }
+    }
+
+    src() {
+        // this will run only if tape_count < 10!!
+        return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+    }
+
     userContentForm() {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
@@ -67,12 +80,12 @@ export default class VideoPlayer extends React.Component {
                                this.props.handleVideoTimeChange(event)
                            }}
                            onEnded={(event) => {
-                               this.props.handleVideoEnded()
+                               this.handleVideoEnded()
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
                     >
-                        <source src={this.props.interview.src}/>
+                        <source src={this.src()}/>
                         <track kind="subtitles" label="Transcript"
                                src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" ></track>
                         <track kind="subtitles" label="Translation"

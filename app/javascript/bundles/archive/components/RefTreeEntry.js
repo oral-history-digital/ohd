@@ -22,7 +22,7 @@ export default class RefTreeEntry extends React.Component {
 
     handleClick(time) {
         if (this.props.entry.type === 'leafe') {
-            this.props.handleSegmentClick(time);
+            this.props.handleSegmentClick(this.props.tape, time);
         } else {
             this.toggle();
         }
