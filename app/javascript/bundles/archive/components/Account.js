@@ -72,14 +72,12 @@ export default class Account extends React.Component {
 
     render() {
         return (
-            <WrapperPageContainer 
-              tabIndex={1}
-            >
+            <div className={'flyout-login-container'}>
                 <h1>Login</h1>
                 {this.info()}
                 {this.loginOrOut()}
                 {this.register()}
-            </WrapperPageContainer>
+            </div>
         );
                 //{this.changePassword()}
     }

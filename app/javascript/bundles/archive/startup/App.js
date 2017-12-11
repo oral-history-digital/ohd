@@ -16,7 +16,6 @@ const App = (props) => (
           <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/suchen" component={SearchContainer} />
           <Route path="/:locale/searches" component={SearchContainer} />
-          <Route path="/:locale/account" component={AccountContainer} />
       </div>
     </BrowserRouter>
   </Provider>
