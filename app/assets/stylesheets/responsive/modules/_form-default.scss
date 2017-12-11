@@ -46,8 +46,12 @@ form.default {
     color: #fff;
     padding: 10px;
     border: none;
+    cursor: pointer;
     @include screen-l {
       margin-left: 28%;
+    }
+    &:hover {
+      background-color: lighten($gray-warm, 10%);
     }
   }
   .checkbox {
