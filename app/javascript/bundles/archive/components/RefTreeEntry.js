@@ -28,25 +28,11 @@ export default class RefTreeEntry extends React.Component {
         }
     }
 
-    //subHeadings() {
-    //if(this.props.data.main) {
-    //return <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
-    //{this.props.data.subheadings.map( (heading, index) => {
-    //return <div key={'heading-' + index} >
-    //<div onClick={() => this.props.handleSegmentClick(heading.time)} className='subheading'>
-    //{heading.heading}
-    //</div> 
-    //</div>;
-    //})}
-    //</div>;
-    //}
-    //}
-
     desc() {
         if (this.props.entry.desc) {
             return this.props.entry.desc[this.props.locale];
         } else {
-            return this.props.index;
+            return this.props.index + 1;
         }
     }
 
