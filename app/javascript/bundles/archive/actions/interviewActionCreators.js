@@ -30,6 +30,7 @@ function receiveInterview(json){
     segments: json.segments,
     headings: json.headings,
     references: json.references,
+    refTree: json.ref_tree,
     receivedAt: Date.now()
   }
 }

@@ -47,7 +47,8 @@ const archive = (state = initialState, action) => {
                         interview: action.interview,
                         segments: action.segments,
                         headings: action.headings,
-                        references: action.references
+                        references: action.references,
+                        refTree: action.refTree
                     }),
                 }),
                 lastUpdated: action.receivedAt

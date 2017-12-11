@@ -5,9 +5,10 @@ import RefTree from '../components/RefTree';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let interview = ArchiveUtils.getInterview(state);
     return { 
         archiveId: state.archive.archiveId,
-        data: ArchiveUtils.getInterview(state),
+        refTree: interview && interview.refTree || []
     }
 }
 
