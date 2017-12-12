@@ -516,3 +516,14 @@ a.search-result-link {
 .home-content-logos {
   padding:5px 5%;
 }
+
+.flyout-sub-tabs-container{
+  .leaflet-container {
+    height: 350px;
+  }
+}
+
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}

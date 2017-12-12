@@ -1,10 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import { DEFAULT_LOCATION } from '../constants/archiveConstants';
-import '../../../css/locations'
-//import '../../../../../node_modules/leaflet/dist/leaflet'
+
 
 export default class Locations extends React.Component {
 

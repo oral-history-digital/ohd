@@ -7,8 +7,9 @@ export default class VideoPlayer extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.video) {
-            this.setVideoTime(prevProps)
-            this.setVideoStatus(prevProps)
+            //TODO: This removes the poster image
+            //this.setVideoTime(prevProps)
+            //this.setVideoStatus(prevProps)
         }
     }
 
