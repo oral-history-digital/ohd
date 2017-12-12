@@ -6,7 +6,7 @@ export const INTERVIEW_URL = '/de/interviews';
 
 export const REQUEST_INTERVIEW_SEARCH = 'REQUEST_INTERVIEW_SEARCH';
 export const RECEIVE_INTERVIEW_SEARCH = 'RECEIVE_INTERVIEW_SEARCH';
-export const INTERVIEW_SEARCH_URL = '/de/searches/interview';
+export const INTERVIEW_SEARCH_URL = '/de/searches/interview.json';
 
 export const SET_QUERY_PARAMS = 'SET_QUERY_PARAMS ';
 export const RESET_QUERY = 'RESET_QUERY';
@@ -15,15 +15,15 @@ export const REQUEST_FACETS= 'REQUEST_FACETS';
 export const FACETS_URL = '/de/searches/facets';
 export const REQUEST_ARCHIVE_SEARCH = 'REQUEST_ARCHIVE_SEARCH ';
 export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
-export const ARCHIVE_SEARCH_URL = '/de/searches/archive';
+export const ARCHIVE_SEARCH_URL = '/de/searches/archive.json';
 
  export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
  export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
- export const LOCATIONS_URL = '/de/locations';
+ export const LOCATIONS_URL = '/de/locations.json';
 
 export const REQUEST_STATIC_CONTENT = 'REQUEST_STATIC_CONTENT';
 export const RECEIVE_STATIC_CONTENT = 'RECEIVE_STATIC_CONTENT';
-export const HOME_CONTENT_URL = '/de/';
+export const HOME_CONTENT_URL = '/de.json';
 
 export const VIDEO_TIME_CHANGE = 'VIDEO_TIME_CHANGE';
 export const VIDEO_ENDED = 'VIDEO_ENDED';
@@ -49,7 +49,7 @@ export const UPDATE_USER_CONTENT = 'UPDATE_USER_CONTENT'
 export const RECEIVE_USER_CONTENT = 'RECEIVE_USER_CONTENT';
 export const ADD_USER_CONTENT = 'ADD_USER_CONTENT';
 export const REMOVE_USER_CONTENT = 'REMOVE_USER_CONTENT';
-export const USER_CONTENT_URL = '/de/user_contents';
+export const USER_CONTENT_URL = '/de/user_contents.json';
 
 export const REQUEST_USER_CONTENTS = 'REQUEST_USER_CONTENTS';
 export const RECEIVE_USER_CONTENTS = 'RECEIVE_USER_CONTENTS';
@@ -78,4 +78,4 @@ export const FORGOT_PASSWORD_URL = '/de/user_accounts/password/new';
 
 export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
 export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
-export const ACCOUNT_URL = '/de/account';
+export const ACCOUNT_URL = '/de/account.json';

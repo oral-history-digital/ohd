@@ -38,7 +38,7 @@ function receiveInterview(json){
 export function fetchInterview(archiveId) {
   return dispatch => {
     dispatch(requestInterview(archiveId))
-    Loader.getJson(`${INTERVIEW_URL}/${archiveId}`, null, dispatch, receiveInterview);
+    Loader.getJson(`${INTERVIEW_URL}/${archiveId}.json`, null, dispatch, receiveInterview);
   }
 }
 
