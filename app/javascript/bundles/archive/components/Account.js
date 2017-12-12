@@ -1,9 +1,9 @@
 import React from 'react';
 
 import LoginFormContainer from '../containers/LoginFormContainer'
-import RegisterFormContainer from '../containers/RegisterFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
-import WrapperPageContainer from '../containers/WrapperPageContainer'
+import {Link, hashHistory} from 'react-router-dom';
+
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -49,8 +49,13 @@ export default class Account extends React.Component {
                 <div className={'register-link'}><a
                     href={FORGOT_PASSWORD_URL}>{ArchiveUtils.translate(this.props, 'forget_password_question')}</a>
                 </div>
-                <div className={'register-link'}><a
-                    href={REGISTER_NEW_URL}>{ArchiveUtils.translate(this.props, 'registration')}</a></div>
+                <div className={'register-link'}>
+                    <Link
+                        to={'/' + this.props.locale + '/user_registrations/new'}>
+                        {ArchiveUtils.translate(this.props, 'registration')}
+                    </Link>
+
+                </div>
             </div>
         }
     }

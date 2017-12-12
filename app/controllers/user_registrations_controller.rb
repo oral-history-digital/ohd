@@ -1,8 +1,30 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  layout 'responsive'
+
   def new
     @user_registration = UserRegistration.new
+    respond_to do |format|
+      format.html do
+        render :template => '/react/app.html'
+      end
+      format.json do
+        json = Rails.cache.fetch('register-content') do
+          locales = Project.available_locales.reject {|i| i == 'alias'}
+          register_content = {}
+          locales.each do |i|
+            I18n.locale = i
+            template = "/user_registrations/new.html"
+            register_content[i] = render_to_string(template: template, locals: {locale: i}, layout: false)
+          end
+          {
+              register_content: register_content,
+          }.to_json
+        end
+        render plain: json
+      end
+    end
   end
 
   def create
@@ -54,7 +76,7 @@ class UserRegistrationsController < ApplicationController
         flash[:alert] = t('welcome', :scope => 'devise.registrations')
         sign_in_and_redirect(:user_account, @user_account)
       else
-        error_type = case @user_account.errors.map { |e| e.first }.compact.first
+        error_type = case @user_account.errors.map {|e| e.first}.compact.first
                        when :password, 'password'
                          'password_missing'
                        when :password_confirmation, 'password_confirmation'

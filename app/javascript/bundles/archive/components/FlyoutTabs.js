@@ -29,7 +29,7 @@ export default class FlyoutTabs extends React.Component {
         switch (tabIndex) {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
-                this.setState({tabIndex: tabIndex})
+                this.setState({tabIndex: tabIndex});
                 break;
 
             case 2: //de
