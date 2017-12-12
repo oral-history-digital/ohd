@@ -28,6 +28,10 @@ export default class VideoPlayer extends React.Component {
         this.props.handleTranscriptScroll(false)
     }
 
+    handleVideoClick(){
+        this.video.paused ? this.video.play() : this.video.pause();
+    }
+
     userContentForm() {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
@@ -71,6 +75,7 @@ export default class VideoPlayer extends React.Component {
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
+                           onClick={() => this.handleVideoClick()}
                     >
                         <source src={this.props.interview.src}/>
                         <track kind="subtitles" label="Transcript"
