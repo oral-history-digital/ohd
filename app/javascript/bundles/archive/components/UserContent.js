@@ -63,12 +63,14 @@ export default class UserContent extends React.Component {
     }
 
     goTo() {
+        let callKey = "call" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}>
-                    {`go to interview: ${this.props.data.properties.title[this.props.locale]}`}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'UserAnnotation') {
@@ -78,7 +80,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.properties.time)}
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
-                    {'go to segment'}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
@@ -88,7 +90,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.searchInArchive(this.props.data.properties)}
                     to={'/' + this.props.locale + '/suchen'}
                 >
-                    {'search'}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else {
