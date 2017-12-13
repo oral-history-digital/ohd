@@ -146,6 +146,7 @@ de:
   delete: 'Löschen'
   delete_user_content: 'Aus Arbeitsmappe entfernen'
   choose: 'Bitte auswählen'
+  enter_search_field: 'Bitte Suchbegriff eingeben ...'
   enter_field: 'Eingabe ...'
   saved_searches: 'Gespeicherte Suchergebnisse'
   saved_interviews: 'Gespeicherte Interviews'

@@ -145,6 +145,7 @@ el:
   delete: 'Löschen'
   delete_user_content: 'Aus Arbeitsmappe entfernen'
   choose: ' Παρακαλώ επιλέξτε'
+  enter_search_field: 'Bitte Suchbegriff eingeben ...'
   enter_field: 'Στοιχεία ...'
   saved_searches: 'Αποθηκευμένα αποτελέσματα'
   saved_interviews: 'Αποθηκευμένες συνεντεύξεις'
