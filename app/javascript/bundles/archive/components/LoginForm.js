@@ -67,12 +67,12 @@ export default class LoginForm extends React.Component {
                         </label>
                         <input type='password' name='password' value={this.state.password} onChange={this.handleChange}/>
                     </div>
-                    <div className='form-group'>
-                        <label>
-                            {ArchiveUtils.translate(this.props, 'remember')}
-                        </label>
-                        <input type='checkbox' name='remember_me' value={this.state.rememberMe} onChange={this.handleChange}/>
-                    </div>
+                    {/*<div className='form-group'>*/}
+                        {/*<label>*/}
+                            {/*{ArchiveUtils.translate(this.props, 'remember')}*/}
+                        {/*</label>*/}
+                        {/*<input type='checkbox' name='remember_me' value={this.state.rememberMe} onChange={this.handleChange}/>*/}
+                    {/*</div>*/}
                     <input type="submit" value={submitLabel}/>
                 </form>
             </div>

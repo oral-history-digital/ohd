@@ -1,0 +1,152 @@
+form#new_user_registration.user_registration.default accept-charset="UTF-8" action="/de/user_registrations" method="post"
+  input name="utf8" type="hidden" value="✓"
+  input name="authenticity_token" type="hidden" value=""
+
+  .form-group
+    .form-label
+      label for="user_registration_appellation" = I18n.backend.translate(locale, 'registration_title') + "*"
+    .form-input
+      select#user_registration_appellation name="user_registration[appellation]"
+        option value=""  Bitte auswählen
+        option value="#{I18n.backend.translate(locale, 'ms')}"  = I18n.backend.translate(locale, 'ms')
+        option value="#{I18n.backend.translate(locale, 'ms_dr')}"  = I18n.backend.translate(locale, 'ms_dr')
+        option value="#{I18n.backend.translate(locale, 'ms_prof')}"  = I18n.backend.translate(locale, 'ms_prof')
+        option value="#{I18n.backend.translate(locale, 'mr')}"  = I18n.backend.translate(locale, 'mr')
+        option value="#{I18n.backend.translate(locale, 'mr_dr')}"  = I18n.backend.translate(locale, 'mr_dr')
+        option value="#{I18n.backend.translate(locale, 'mr')}"  = I18n.backend.translate(locale, 'mr_prof')
+  .form-group
+    .form-label
+      label for="user_registration_first_name" = I18n.backend.translate(locale, 'first_name') + "*"
+    .form-input
+      input#user_registration_first_name name="user_registration[first_name]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_last_name" = I18n.backend.translate(locale, 'last_name') + "*"
+    .form-input
+      input#user_registration_last_name name="user_registration[last_name]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_email" = I18n.backend.translate(locale, 'email') + "*"
+    .form-input
+      input#user_registration_email name="user_registration[email]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_job_description" = I18n.backend.translate(locale, 'profession')
+    .form-input
+      select#user_registration_job_description name="user_registration[job_description]"
+        option value=""  Bitte auswählen
+        option value="#{I18n.backend.translate(locale, 'researcher')}"  = I18n.backend.translate(locale, 'researcher')
+        option value="#{I18n.backend.translate(locale, 'filmmaker')}"  = I18n.backend.translate(locale, 'filmmaker')
+        option value="#{I18n.backend.translate(locale, 'journalist')}"  = I18n.backend.translate(locale, 'journalist')
+        option value="#{I18n.backend.translate(locale, 'teacher')}"  = I18n.backend.translate(locale, 'teacher')
+        option value="#{I18n.backend.translate(locale, 'memorial_staff')}"  = I18n.backend.translate(locale, 'memorial_staff')
+        option value="#{I18n.backend.translate(locale, 'pupil')}"  = I18n.backend.translate(locale, 'pupil')
+        option value="#{I18n.backend.translate(locale, 'student')}"  = I18n.backend.translate(locale, 'student')
+        option value="#{I18n.backend.translate(locale, 'other')}"  = I18n.backend.translate(locale, 'other')
+  .form-group
+    .form-label
+      label for="user_registration_research_intentions"  = I18n.backend.translate(locale, 'reason') + "*"
+    .form-input
+      select#user_registration_research_intentions name="user_registration[research_intentions]"
+        option value=""  Bitte auswählen
+        option value="#{I18n.backend.translate(locale, 'exhibition')}"  = I18n.backend.translate(locale, 'exhibition')
+        option value="#{I18n.backend.translate(locale, 'education')}"  = I18n.backend.translate(locale, 'education')
+        option value="#{I18n.backend.translate(locale, 'film')}"  = I18n.backend.translate(locale, 'film')
+        option value="#{I18n.backend.translate(locale, 'genealogy')}"  = I18n.backend.translate(locale, 'genealogy')
+        option value="#{I18n.backend.translate(locale, 'art')}"  = I18n.backend.translate(locale, 'art')
+        option value="#{I18n.backend.translate(locale, 'personal_interest')}"  = I18n.backend.translate(locale, 'personal_interest')
+        option value="#{I18n.backend.translate(locale, 'press_publishing')}"  = I18n.backend.translate(locale, 'press_publishing')
+        option value="#{I18n.backend.translate(locale, 'school_project')}"  = I18n.backend.translate(locale, 'school_project')
+        option value="#{I18n.backend.translate(locale, 'university_teaching')}"  = I18n.backend.translate(locale, 'university_teaching')
+        option value="#{I18n.backend.translate(locale, 'scientific_paper')}"  = I18n.backend.translate(locale, 'scientific_paper')
+        option value="#{I18n.backend.translate(locale, 'other')}"  = I18n.backend.translate(locale, 'other')
+  .form-group
+    .form-label
+      label for="user_registration_comments" = I18n.backend.translate(locale, 'interest_explanation') + "*"
+    .form-input
+      textarea#user_registration_comments name="user_registration[comments]"
+  .form-group
+    .form-label
+      label for="user_registration_organization" = I18n.backend.translate(locale, 'institution_home')
+    .form-input
+      input#user_registration_organization name="user_registration[organization]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_homepage"  = I18n.backend.translate(locale, 'institution_home_page')
+    .form-input
+      input#user_registration_homepage name="user_registration[homepage]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_street" = I18n.backend.translate(locale, 'street') + "*"
+    .form-input
+      input#user_registration_street name="user_registration[street]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_zipcode"  = I18n.backend.translate(locale, 'zip') + "*"
+    .form-input
+      input#user_registration_zipcode name="user_registration[zipcode]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_city" = I18n.backend.translate(locale, 'place') + "*"
+    .form-input
+      input#user_registration_city name="user_registration[city]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_country"  = I18n.backend.translate(locale, 'country') + "*"
+    .form-input
+      select#user_registration_country name="user_registration[country]"
+        option value=""  Bitte auswählen
+        option value="DE"  Deutschland
+        option value="AT"  Österreich
+        option value="CH"  Schweiz
+        option value="PL"  Polen
+        option value="RU"  Russische Föderation
+        option value="CZ"  Tschechische Republik
+        option value="US"  USA
+        option value="GB"  Vereinigtes Königreich
+        option value="FR"  Frankreich
+        option value="NL"  Niederlande
+        option value="IL"  Israel
+        option value="UA"  Ukraine
+        option value="BY"  Belarus
+        option disabled="disabled" value=""  -------------
+        option value="AF"  Afghanistan
+        option value="EG"  Ägypten
+        option value="AX"  Alandinseln
+        option value="AL"  Albanien
+        option value="DZ"  Algerien
+        option value="UM"  Amerikanisch-Ozeanien
+        option value="AS"  Amerikanisch-Samoa
+        option value="VI"  Amerikanische Jungferninseln
+        option value="AD"  Andorra
+        option value="AO"  Angola
+
+  .form-group
+    .form-label
+      label for="user_registration_receive_newsletter"  Newsletter
+    .form-input
+      input name="user_registration[receive_newsletter]" type="hidden" value="0"
+      input#user_registration_receive_newsletter name="user_registration[receive_newsletter]" type="checkbox" value="1"
+      p.help-block Ich möchte den Newsletter des Projektes "Erinnerungen an die Okkupation Griechenlands." abonnieren.
+  .form-group
+    .form-label
+      label for="user_registration_tos_agreement"  = I18n.backend.translate(locale, 'conditions') + "*"
+    .form-input
+      input name="user_registration[tos_agreement]" type="hidden" value="0"
+      input#user_registration_tos_agreement name="user_registration[tos_agreement]" type="checkbox" value="1"
+      p.help-block
+        a href="" target="_blank" title=("Externer Link") = I18n.backend.translate(locale, 'conditions_accept')
+  .form-group
+    .form-label
+      label for="user_registration_priv_agreement" = I18n.backend.translate(locale, 'notes_on_privacy') + "*"
+    .form-input
+      input name="user_registration[priv_agreement]" type="hidden" value="0"
+      input#user_registration_priv_agreement name="user_registration[priv_agreement]" type="checkbox" value="1"
+      p.help-block
+        a href="" target="_blank" title=("Externer Link") = I18n.backend.translate(locale, 'notes_on_privacy_accept')
+  .form-group
+    input data-disable-with=("Registrierung senden") name="commit" type="submit" value=("#{I18n.backend.translate(locale, 'send_registration')}")
+    input#user_registration_default_locale name="user_registration[default_locale]" type="hidden" value="de"
+
+
+
