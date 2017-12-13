@@ -7,14 +7,13 @@ export default class VideoPlayer extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.video) {
-            //TODO: This removes the poster image
-            //this.setVideoTime(prevProps)
-            //this.setVideoStatus(prevProps)
+            this.setVideoTime(prevProps)
+            this.setVideoStatus(prevProps)
         }
     }
 
     setVideoTime(prevProps) {
-        if (prevProps.time !== this.props.videoTime) {
+        if (prevProps.videoTime !== this.props.videoTime) {
             this.video.currentTime = this.props.videoTime;
         }
     }
