@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../../css/headings';
 
 export default class RefTreeEntry extends React.Component {
 
