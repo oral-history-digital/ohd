@@ -36,11 +36,12 @@ export default class UserContent extends React.Component {
     }
 
     edit() {
+        let titleKey = "edit" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title="Bearbeiten"
+            title={ArchiveUtils.translate(this.props, 'edit')}
             onClick={() => this.props.openArchivePopup({
-                title: 'Edit',
+                title: ArchiveUtils.translate(this.props, titleKey ),
                 content: this.userContentForm()
             })}
         >
@@ -51,7 +52,7 @@ export default class UserContent extends React.Component {
     delete() {
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title="Löschen"
+            title={ArchiveUtils.translate(this.props, 'delete')}
             onClick={() => this.props.openArchivePopup({
                 title: ArchiveUtils.translate(this.props, 'delete_user_content'),
                 content: this.userContentDelete()
@@ -98,7 +99,7 @@ export default class UserContent extends React.Component {
     paramsInfo(){
         if  (this.props.data.type === 'Search') {
             return  <p>
-                <span className='flyout-content-label'>Suchkriterien:</span>
+                <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'query')}:</span>
                 <span className='flyout-content-data'>{ArchiveUtils.queryToText(this.props.data.properties, this.props)}</span>
             </p>
         } else {
