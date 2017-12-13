@@ -1,6 +1,4 @@
 import React from 'react';
-import UserContentFormContainer from '../containers/UserContentFormContainer';
-
 
 export default class Segment extends React.Component {
 
@@ -42,23 +40,6 @@ export default class Segment extends React.Component {
         return this.props.data.transcripts[locale.substring(0, 2)]
     }
 
-    userContentForm() {
-        return <UserContentFormContainer
-            title=''
-            description=''
-            properties={{
-                time: this.props.data.start_time,
-                interview_archive_id: this.props.interview.archive_id
-            }}
-            reference_id={this.props.data.id}
-            reference_type='Segment'
-            media_id={this.props.data.media_id}
-            type='UserAnnotation'
-            workflow_state='private'
-        />
-    }
-
-
     toggleAdditionalContent(type) {
         let state = this.state.contentOpen;
 
@@ -69,7 +50,6 @@ export default class Segment extends React.Component {
             contentType: type
         });
     }
-
 
     references(locale) {
         if (this.state.contentType == 'references') {
@@ -108,7 +88,7 @@ export default class Segment extends React.Component {
             let title = this.speakerName();
             return (
                 <div className="content-trans-speaker-link" title={title}
-                     onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
+                     onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>
                     <i className={speakerCss}></i>
                 </div>
             )
@@ -135,7 +115,6 @@ export default class Segment extends React.Component {
         }
     }
 
-
     render() {
         let locale = this.props.originalLocale ? this.props.interview.lang.substring(0, 2) : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
@@ -148,7 +127,7 @@ export default class Segment extends React.Component {
                         {this.speakerIcon()}
                     </div>
                     <div className='content-trans-text'
-                         onClick={() => this.props.handleSegmentClick(this.props.data.time)}>
+                         onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>
                         <div className={this.css()}
                              dangerouslySetInnerHTML={{__html: this.transcript()}}
                         />

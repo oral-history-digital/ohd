@@ -30,6 +30,7 @@ function receiveInterview(json){
     segments: json.segments,
     headings: json.headings,
     references: json.references,
+    refTree: json.ref_tree,
     receivedAt: Date.now()
   }
 }
@@ -37,14 +38,15 @@ function receiveInterview(json){
 export function fetchInterview(archiveId) {
   return dispatch => {
     dispatch(requestInterview(archiveId))
-    Loader.getJson(`${INTERVIEW_URL}/${archiveId}`, null, dispatch, receiveInterview);
+    Loader.getJson(`${INTERVIEW_URL}/${archiveId}.json`, null, dispatch, receiveInterview);
   }
 }
 
-export function handleSegmentClick(time) {
+export function handleSegmentClick(tape, time) {
   return {
-    type: TRANSCRIPT_TIME_CHANGE,
-    videoTime: time,
+      type: TRANSCRIPT_TIME_CHANGE,
+      videoTime: time,
+      tape: tape
   }
 }
 

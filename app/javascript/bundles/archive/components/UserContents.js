@@ -23,15 +23,15 @@ export default class UserContents extends React.Component {
     }
 
     sortedContent() {
-        let searchesForType = [];
+        let userContentByType = [];
         for(let i = 0; i < this.props.contents.length; i++) {
             if(this.props.contents[i].type === this.props.type) {
-                searchesForType.push(<UserContentContainer
+                userContentByType.push(<UserContentContainer
                     data={this.props.contents[i]}
                     key={`${this.props.type}-${i}`}/>);
             }
         }
-        return searchesForType;
+        return userContentByType;
     }
 
     handleClick(){

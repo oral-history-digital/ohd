@@ -13,7 +13,9 @@ const mapStateToProps = (state) => {
     return {
         archiveId: state.archive.archiveId,
         interview: data && data.interview,
+        segments: data && data.segments,
         interviewee: data && data.interview.interviewees[0],
+        tape: state.archive.tape,
         videoTime: state.archive.videoTime,
         videoStatus: state.archive.videoStatus,
         locale: state.archive.locale,
