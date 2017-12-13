@@ -126,13 +126,13 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-sub-tabs-container flyout-folder'>
                         <UserContentsContainer
                             type={'Search'}
-                            title='Gemerkte Suchergebnisse'/>
+                            title={ArchiveUtils.translate(this.props, 'saved_searches')}/>
                         <UserContentsContainer
                             type={'InterviewReference'}
-                            title='Gemerkte Interviewa'/>
+                            title={ArchiveUtils.translate(this.props, 'saved_interviews')}/>
                         <UserContentsContainer
                             type={'userAnnotation'}
-                            title='Gemerkte Annotations'/>
+                            title={ArchiveUtils.translate(this.props, 'saved_annotations')}/>
                     </div>
                 </TabPanel>
             </Tabs>

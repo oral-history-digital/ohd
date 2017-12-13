@@ -7,7 +7,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       label for="user_registration_appellation" = I18n.backend.translate(locale, 'registration_title') + "*"
     .form-input
       select#user_registration_appellation name="user_registration[appellation]"
-        option value=""  Bitte auswählen
+        option value="" = I18n.backend.translate(locale, 'choose')
         option value="#{I18n.backend.translate(locale, 'ms')}"  = I18n.backend.translate(locale, 'ms')
         option value="#{I18n.backend.translate(locale, 'ms_dr')}"  = I18n.backend.translate(locale, 'ms_dr')
         option value="#{I18n.backend.translate(locale, 'ms_prof')}"  = I18n.backend.translate(locale, 'ms_prof')
@@ -34,7 +34,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       label for="user_registration_job_description" = I18n.backend.translate(locale, 'profession')
     .form-input
       select#user_registration_job_description name="user_registration[job_description]"
-        option value=""  Bitte auswählen
+        option value="" = I18n.backend.translate(locale, 'choose')
         option value="#{I18n.backend.translate(locale, 'researcher')}"  = I18n.backend.translate(locale, 'researcher')
         option value="#{I18n.backend.translate(locale, 'filmmaker')}"  = I18n.backend.translate(locale, 'filmmaker')
         option value="#{I18n.backend.translate(locale, 'journalist')}"  = I18n.backend.translate(locale, 'journalist')
@@ -48,7 +48,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       label for="user_registration_research_intentions"  = I18n.backend.translate(locale, 'reason') + "*"
     .form-input
       select#user_registration_research_intentions name="user_registration[research_intentions]"
-        option value=""  Bitte auswählen
+        option value="" = I18n.backend.translate(locale, 'choose')
         option value="#{I18n.backend.translate(locale, 'exhibition')}"  = I18n.backend.translate(locale, 'exhibition')
         option value="#{I18n.backend.translate(locale, 'education')}"  = I18n.backend.translate(locale, 'education')
         option value="#{I18n.backend.translate(locale, 'film')}"  = I18n.backend.translate(locale, 'film')
@@ -95,7 +95,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       label for="user_registration_country"  = I18n.backend.translate(locale, 'country') + "*"
     .form-input
       select#user_registration_country name="user_registration[country]"
-        option value=""  Bitte auswählen
+        option value="" = I18n.backend.translate(locale, 'choose')
         option value="DE"  Deutschland
         option value="AT"  Österreich
         option value="CH"  Schweiz

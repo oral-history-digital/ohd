@@ -132,6 +132,11 @@ de:
   privacy_protection: 'Datenschutz'
   legal_info: 'Impressum'
   team: 'Team'
+  choose: 'Bitte auswählen'
+  enter_field: 'Eingabe ...'
+  saved_searches: 'Gespeicherte Suchergebnisse'
+  saved_interviews: 'Gespeicherte Interviews'
+  saved_annotations: 'Gespeicherte Anmerkungen'
   search_facets:
     gender: 'Geschlecht'
     male: 'männlich'

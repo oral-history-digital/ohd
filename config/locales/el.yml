@@ -130,6 +130,11 @@ el:
   privacy_protection: 'Προστασία δεδομένων'
   legal_info: 'Impressum'
   team: 'Ομάδα'
+  choose: 'Bitte auswählen'
+  enter_field: 'Eingabe ...'
+  saved_searches: 'Gespeicherte Suchergebnisse'
+  saved_interviews: 'Gespeicherte Interviews'
+  saved_annotations: 'Gespeicherte Anmerkungen'
   search_facets:
     gender: 'Φύλο'
     male: 'männlich'
