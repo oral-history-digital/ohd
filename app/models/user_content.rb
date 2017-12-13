@@ -22,7 +22,7 @@ class UserContent < ActiveRecord::Base
   validates_presence_of :user_id
 
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
-  validates_associated :reference, :if => Proc.new{|content| content.type != Search }
+  #validates_associated :reference, :if => Proc.new{|content| content.type != Search }
   #validates_uniqueness_of :id_hash, :scope => :user_id
   validates_length_of :description, :maximum => ANNOTATION_LIMIT
 

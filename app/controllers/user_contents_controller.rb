@@ -22,6 +22,7 @@ class UserContentsController < BaseController
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 
+    binding.pry
     respond_to do |format|
       #format.html do
         #render :action => 'show'

@@ -48,8 +48,8 @@ class UserAnnotation < UserContent
 
   #attr_accessible :description, :title, :position
 
-  validates_format_of :reference_type, :with => /\ASegment\z/
-  validates_uniqueness_of :reference_id, :scope => :user_id
+  #validates_format_of :reference_type, :with => /\ASegment\z/
+  #validates_uniqueness_of :reference_id, :scope => :user_id
 
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed

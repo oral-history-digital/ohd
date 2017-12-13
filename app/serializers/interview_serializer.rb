@@ -29,6 +29,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :short_title,
              :still_url,
              :src,
+             :src_base,
              :references,
              :formatted_duration,
              :interviewee_id

@@ -73,10 +73,12 @@ export default class UserContentForm extends React.Component {
 
     publish() {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return <label>
-                publish
-                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
-            </label>
+            return  <div className={"form-group"}>
+                        <label>
+                            publish
+                            <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
+                        </label>
+                    </div>
         }
     }
 
@@ -98,9 +100,7 @@ export default class UserContentForm extends React.Component {
                         </label>
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
-                    <div className={"form-group"}>
-                        {this.publish()}
-                    </div>
+                    {this.publish()}
                     <input type="submit" value={submitLabel}/>
                 </form>
             </div>
