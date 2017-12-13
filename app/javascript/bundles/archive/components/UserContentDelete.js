@@ -15,10 +15,12 @@ export default class UserContentDelete extends React.Component {
     render() {
         return (
             <div>
-                <p>{ArchiveUtils.translate(this.props, 'title')}:</p>
-                <p>{this.props.title}</p>
-                <p>{ArchiveUtils.translate(this.props, 'description')}:</p>
-                <p>{this.props.description}</p>
+                <p>{ArchiveUtils.translate(this.props, 'title')}:
+                    <span>{this.props.title}</span>
+                </p>
+                <p>{ArchiveUtils.translate(this.props, 'description')}:
+                    <span>{this.props.description}</span>
+                </p>
                 <div className='any-button' onClick={() => this.destroy()}>
                     {ArchiveUtils.translate(this.props, 'delete')}
                 </div>
