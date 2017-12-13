@@ -1,0 +1,5 @@
+h1 = I18n.backend.translate(locale, 'devise.registrations.link')
+
+= render :partial => "text.#{locale}.html+#{Project.name.to_s}", :locals => {:locale => locale}
+
+= render :partial => "user_registration_form.#{locale}", :locals => {:locale => locale}

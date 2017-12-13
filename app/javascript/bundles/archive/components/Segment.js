@@ -69,10 +69,23 @@ export default class Segment extends React.Component {
         }
     }
 
+    speakerName(){
+        let name = "";
+        if (this.props.data.speaker_id){
+            let id = this.props.data.speaker_id;
+            let locale = this.props.locale;
+            let speaker = this.props.interview.person_names[id];
+            if (speaker) {
+                name = `${speaker[locale].firstname} ${speaker[locale].lastname}`
+            }
+        }
+        return name;
+    }
+
     speakerIcon() {
         if (this.props.data.speaker_changed) {
-            let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o"
-            let title = this.props.data.speaker_is_interviewee ? 'Interviewee' : 'Interviewer'
+            let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
+            let title = this.speakerName();
             return (
                 <div className="content-trans-speaker-link" title={title}
                      onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>

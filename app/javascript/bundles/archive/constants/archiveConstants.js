@@ -69,6 +69,8 @@ export const REGISTERED = 'REGISTERED';
 export const SUBMIT_REGISTER = 'SUBMIT_REGISTER';
 export const REGISTER_URL = '/de/user_registrations';
 export const REGISTER_NEW_URL = '/de/user_registrations/new';
+export const RECEIVE_REGISTER_CONTENT = 'RECEIVE_REGISTER_CONTENT';
+export const REQUEST_REGISTER_CONTENT = 'REQUEST_REGISTER_CONTENT';
 
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGED_PASSWORD = 'CHANGED_PASSWORD';

@@ -32,7 +32,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :src_base,
              :references,
              :formatted_duration,
-             :interviewee_id
+             :interviewee_id,
+             :person_names
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -53,6 +54,17 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def short_title
     object.localized_hash
+  end
+
+  def person_names
+    object.contributors.inject({}) do |obj, c|
+      obj.merge(c.id => c.translations.each_with_object({}) {|i, hsh |
+        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+        hsh[alpha2_locale] = {firstname: i.first_name,
+                              lastname: i.last_name,
+                              birthname: i.birth_name}})
+
+      end
   end
 
   def still_url

@@ -54,7 +54,7 @@ export default class LoginForm extends React.Component {
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
-                <form className={'default'} onSubmit={this.handleSubmit}>
+                <form className={'default flyout-login'} onSubmit={this.handleSubmit}>
                     <div className='form-group'>
                         <label>
                             {ArchiveUtils.translate(this.props, 'login')}

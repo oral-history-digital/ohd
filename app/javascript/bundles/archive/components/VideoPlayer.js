@@ -7,8 +7,9 @@ export default class VideoPlayer extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.video) {
-            this.setVideoTime(prevProps)
-            this.setVideoStatus(prevProps)
+            //TODO: This removes the poster image
+            //this.setVideoTime(prevProps)
+            //this.setVideoStatus(prevProps)
         }
     }
 
@@ -34,6 +35,10 @@ export default class VideoPlayer extends React.Component {
         } else {
             this.props.handleVideoEnded();
         }
+    }
+
+    handleVideoClick(){
+        this.video.paused ? this.video.play() : this.video.pause();
     }
 
     src() {
@@ -120,6 +125,7 @@ export default class VideoPlayer extends React.Component {
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
+                           onClick={() => this.handleVideoClick()}
                     >
                         <source src={this.src()}/>
                         <track kind="subtitles" label="Transcript"

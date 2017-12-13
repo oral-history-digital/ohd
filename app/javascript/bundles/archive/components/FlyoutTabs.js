@@ -9,6 +9,7 @@ import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import ArchiveUtils from '../../../lib/utils';
+import AccountContainer from '../containers/AccountContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -28,10 +29,7 @@ export default class FlyoutTabs extends React.Component {
         switch (tabIndex) {
             case 0: //Home
                 this.context.router.history.push(`/${this.props.locale}`);
-                break;
-
-            case 1: //Login
-                this.context.router.history.push(`/${this.props.locale}/account`);
+                this.setState({tabIndex: tabIndex});
                 break;
 
             case 2: //de
@@ -88,8 +86,10 @@ export default class FlyoutTabs extends React.Component {
 
 
                 <TabPanel>
+                    <AccountContainer></AccountContainer>
                 </TabPanel>
                 <TabPanel>
+                    <AccountContainer></AccountContainer>
                 </TabPanel>
                 <TabPanel>
                 </TabPanel>

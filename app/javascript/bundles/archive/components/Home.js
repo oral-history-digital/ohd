@@ -8,7 +8,7 @@ export default class Home extends React.Component {
         return (
                 <WrapperPageContainer
                     tabIndex={0}>
-                    <div className='wrapper-content'
+                    <div className='wrapper-content home-content'
                         dangerouslySetInnerHTML = {{__html: this.props.homeContent}}
                     />
 
