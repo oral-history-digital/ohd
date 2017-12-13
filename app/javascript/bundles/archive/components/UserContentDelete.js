@@ -1,4 +1,5 @@
 import React from 'react';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class UserContentDelete extends React.Component {
 
@@ -14,12 +15,12 @@ export default class UserContentDelete extends React.Component {
     render() {
         return (
             <div>
-                Realy?
-                <div onClick={() => this.cancel()}>
-                    Cancel
-                </div>
-                <div onClick={() => this.destroy()}>
-                    {'Delete'}
+                <p>{ArchiveUtils.translate(this.props, 'title')}:</p>
+                <p>{this.props.title}</p>
+                <p>{ArchiveUtils.translate(this.props, 'description')}:</p>
+                <p>{this.props.description}</p>
+                <div className='any-button' onClick={() => this.destroy()}>
+                    {ArchiveUtils.translate(this.props, 'delete')}
                 </div>
             </div>
         );

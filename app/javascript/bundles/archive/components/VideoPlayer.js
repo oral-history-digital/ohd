@@ -57,7 +57,7 @@ export default class VideoPlayer extends React.Component {
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
                     <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-                        title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
+                        title: ArchiveUtils.translate( this.props, 'annotation_for_interview') + " " + this.props.interview.short_title[this.props.locale],
                         content: this.userContentForm()
                     })}><i className="fa fa-star"></i>
                         <span>Interview merken</span>

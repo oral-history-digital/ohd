@@ -24,6 +24,8 @@ export default class UserContent extends React.Component {
     userContentDelete() {
         return <UserContentDeleteContainer
             id={this.props.data.id}
+            title={this.props.data.title}
+            description={this.props.data.description}
         />
     }
 
@@ -51,7 +53,7 @@ export default class UserContent extends React.Component {
             className='flyout-sub-tabs-content-ico-link'
             title="Löschen"
             onClick={() => this.props.openArchivePopup({
-                title: 'Delete',
+                title: ArchiveUtils.translate(this.props, 'delete_user_content'),
                 content: this.userContentDelete()
             })}
         >
@@ -110,7 +112,7 @@ export default class UserContent extends React.Component {
             <div>
                 <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
                 <p>
-                    <span className='flyout-content-label'>Beschreibung:</span>
+                    <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'description')}:</span>
                     <span className='flyout-content-data'>{this.props.data.description}</span>
                 </p>
                 {this.workflowState()}

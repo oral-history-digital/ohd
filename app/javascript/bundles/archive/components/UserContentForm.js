@@ -1,4 +1,5 @@
 import React from 'react';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class UserContentForm extends React.Component {
     constructor(props) {
@@ -88,13 +89,13 @@ export default class UserContentForm extends React.Component {
                 <form className='default' onSubmit={this.handleSubmit}>
                     <div className={"form-group"}>
                         <label>
-                            title
+                            {ArchiveUtils.translate(this.props, 'title')}
                         </label>
                         <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                     </div>
                     <div className={"form-group"}>
                         <label>
-                            description
+                            {ArchiveUtils.translate(this.props, 'description')}
                         </label>
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
