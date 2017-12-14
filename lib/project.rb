@@ -86,7 +86,7 @@ module Project
       facets = search_facets_hash.deep_dup
       search_facets_names.each do |facet|
         search.facet(facet).rows.each do |row|
-          facets[facet][:subfacets][row.value][:count] = row.count if facets[facet]
+          facets[facet][:subfacets][row.value][:count] = row.count if facets[facet][:subfacets][row.value]
         end
       end
       facets
