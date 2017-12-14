@@ -150,13 +150,14 @@ export default class WrapperPage extends React.Component {
         if (this.props.locale && this.props.externalLinks) {
             let links = this.props.externalLinks;
             let locale = this.props.locale;
+            let props = this.props;
             return Object.keys(this.props.externalLinks).map(function (key, index) {
                 let link = links[key][locale];
                 return (
                     <li key={'external-link-' + key}>
                         <a href={link}
                             target="_blank">
-                            {key}
+                            {ArchiveUtils.translate(props, key)}
                         </a>
                     </li>
                 )
