@@ -36,7 +36,9 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    handleVideoClick(){
+    handleVideoClick(event){
+        event.preventDefault();
+        event.stopPropagation();
         this.video.paused ? this.video.play() : this.video.pause();
     }
 
@@ -124,7 +126,7 @@ export default class VideoPlayer extends React.Component {
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
-                           onClick={() => this.handleVideoClick()}
+                           onClick={(event) => this.handleVideoClick(event)}
                     >
                         <source src={this.src()}/>
                         <track kind="subtitles" label="Transcript"
