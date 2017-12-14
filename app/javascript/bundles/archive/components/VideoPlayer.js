@@ -55,13 +55,15 @@ export default class VideoPlayer extends React.Component {
                 </div>
     }
 
-    rememberInterviewForm() {
+    defaultTitle() {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
-        let title = `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
+        return `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
+    }
 
+    rememberInterviewForm() {
         return <UserContentFormContainer
-                    title={title}
+                    title={this.defaultTitle()}
                     description=''
                     properties={{title: this.props.interview.title}}
                     reference_id={this.props.interview.id}
@@ -74,23 +76,25 @@ export default class VideoPlayer extends React.Component {
 
     annotateOnSegmentLink() {
         return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-                    title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
-                    content: this.annotateOnSegmentForm(this.actualSegment())
+                    title: ArchiveUtils.translate( this.props, 'write_annotation'),
+                    content: this.annotateOnSegmentForm(this.actualSegmentIndex())
                 })}>
                     <i className="fa fa-pencil"></i>
-                    <span>Anmerkung verfassen</span>
+                    <span>{ArchiveUtils.translate( this.props, 'write_annotation')}</span>
                 </div>
     }
 
-    actualSegment() {
-        return this.props.segments.find( segment => {
+    actualSegmentIndex() {
+        return this.props.segments.findIndex( segment => {
             return segment.start_time <= this.video.currentTime && segment.end_time >= this.video.currentTime;
         })
     }
 
-    annotateOnSegmentForm(segment) {
+    annotateOnSegmentForm(segmentIndex) {
+        let segment = this.props.segments[segmentIndex];
+
         return <UserContentFormContainer
-                    title=''
+                    title={this.defaultTitle()}
                     description=''
                     properties={{
                         time: segment.start_time,
@@ -99,6 +103,7 @@ export default class VideoPlayer extends React.Component {
                     reference_id={segment.id}
                     reference_type='Segment'
                     media_id={segment.media_id}
+                    segmentIndex={segmentIndex}
                     type='UserAnnotation'
                     workflow_state='private'
                 />
