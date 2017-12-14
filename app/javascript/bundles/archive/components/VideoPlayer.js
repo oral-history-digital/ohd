@@ -51,7 +51,7 @@ export default class VideoPlayer extends React.Component {
                     content: this.rememberInterviewForm()
                 })}>
                     <i className="fa fa-star"></i>
-                    <span>Interview merken</span>
+                    <span>{ArchiveUtils.translate(this.props, 'save_interview_reference')}</span>
                 </div>
     }
 
@@ -78,7 +78,7 @@ export default class VideoPlayer extends React.Component {
                     content: this.annotateOnSegmentForm(this.actualSegment())
                 })}>
                     <i className="fa fa-pencil"></i>
-                    <span>Anmerkung verfassen</span>
+                    <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
                 </div>
     }
 

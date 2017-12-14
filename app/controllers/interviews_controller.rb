@@ -21,7 +21,7 @@ class InterviewsController < BaseController
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: headings.map {|s| ::SegmentSerializer.new(s).as_json},
               references: references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: @interview.ref_tree.select{|r| r[:id] == 637018} # 637018 == id of "Thematic"
+              ref_tree: [] #@interview.ref_tree.select{|r| r[:id] == 637018} # 637018 == id of "Thematic"
               #ref_tree: @interview.ref_tree.select{|r| r[:id] == 138968} # 138968 == id of "Thematic Descriptors"
           }.to_json
         end
