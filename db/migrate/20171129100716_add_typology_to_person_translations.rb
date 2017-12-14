@@ -1,5 +1,7 @@
 class AddTypologyToPersonTranslations < ActiveRecord::Migration[5.0]
   def change
-    add_column :person_translations, :typology, :string
+    if Project.name.to_sym == :mog
+      add_column :person_translations, :typology, :string
+    end
   end
 end
