@@ -78,7 +78,7 @@ export default class VideoPlayer extends React.Component {
 
     annotateOnSegmentLink() {
         return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-                    title: ArchiveUtils.translate( this.props, 'write_annotation'),
+                    title: ArchiveUtils.translate( this.props, 'annotation_for'),
                     content: this.annotateOnSegmentForm(this.actualSegmentIndex())
                 })}>
                     <i className="fa fa-pencil"></i>
