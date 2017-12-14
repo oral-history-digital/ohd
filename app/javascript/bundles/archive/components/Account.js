@@ -73,7 +73,7 @@ export default class Account extends React.Component {
     render() {
         return (
             <div className={'flyout-login-container'}>
-                <h1>{ArchiveUtils.translate(this.props, 'login_page')}</h1>
+                <h2>{ArchiveUtils.translate(this.props, 'login_page')}</h2>
                 {this.info()}
                 {this.loginOrOut()}
             </div>
