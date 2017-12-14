@@ -141,7 +141,6 @@ de:
   edit_interview_reference: 'Gespeichertes Interview Bearbeiten'
   edit_user_annotation: 'Gespeicherte Anmerkung bearbeiten'
   edit_search: 'Gespeicherte Suche bearbeiten'
-  edit_interview_reference: 'Gespeichertes Interview bearbeiten'
   query: 'Suchkriterien'
   delete: 'Löschen'
   delete_user_content: 'Aus Arbeitsmappe entfernen'
@@ -152,7 +151,10 @@ de:
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
   search_facets:
+    fulltext: 'Suchbegriff'
     gender: 'Geschlecht'
+    Man: 'männlich'
+    Woman: 'weiblich'
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'
