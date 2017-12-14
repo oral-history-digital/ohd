@@ -1,10 +1,12 @@
 import React from 'react';
+import ArchiveUtils from '../../../lib/utils';
+
 
 export default class InterviewSearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: this.props.interviewFulltext ? this.props.interviewFulltext : "" ,
+            value: this.props.interviewFulltext ? this.props.interviewFulltext : "",
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -25,9 +27,13 @@ export default class InterviewSearchForm extends React.Component {
             <div>
                 <form onSubmit={this.handleSubmit} className={'content-search'}>
                     <label>
-                        <input type="text" className="search-input" value={this.state.value} onChange={this.handleChange} placeholder="Bitte Suchbegriff eingeben ..." />
+                        <input type="text"
+                               className="search-input"
+                               value={this.state.value}
+                               onChange={this.handleChange}
+                               placeholder={ArchiveUtils.translate(this.props, 'enter_search_field')}/>
                     </label>
-                    <input type="submit" value="" className={'search-button'} />
+                    <input type="submit" value="" className={'search-button'}/>
                 </form>
             </div>
         );

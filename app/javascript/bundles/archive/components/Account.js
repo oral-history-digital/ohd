@@ -46,9 +46,9 @@ export default class Account extends React.Component {
         } else {
             return <div>
                 <LoginFormContainer/>
-                <div className={'register-link'}><a
-                    href={FORGOT_PASSWORD_URL}>{ArchiveUtils.translate(this.props, 'forget_password_question')}</a>
-                </div>
+                {/*<div className={'register-link'}><a*/}
+                    {/*href={FORGOT_PASSWORD_URL}>{ArchiveUtils.translate(this.props, 'forget_password_question')}</a>*/}
+                {/*</div>*/}
                 <div className={'register-link'}>
                     <Link
                         to={'/' + this.props.locale + '/user_registrations/new'}>
@@ -73,7 +73,7 @@ export default class Account extends React.Component {
     render() {
         return (
             <div className={'flyout-login-container'}>
-                <h1>Login</h1>
+                <h1>{ArchiveUtils.translate(this.props, 'login_page')}</h1>
                 {this.info()}
                 {this.loginOrOut()}
             </div>

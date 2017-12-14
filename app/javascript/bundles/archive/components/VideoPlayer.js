@@ -36,7 +36,9 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    handleVideoClick(){
+    handleVideoClick(event){
+        event.preventDefault();
+        event.stopPropagation();
         this.video.paused ? this.video.play() : this.video.pause();
     }
 
@@ -47,11 +49,11 @@ export default class VideoPlayer extends React.Component {
 
     rememberInterviewLink() {
         return <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-                    title: ArchiveUtils.translate( this.props, 'annotation_for') + " " + this.props.interview.short_title[this.props.locale],
+                    title: ArchiveUtils.translate( this.props, 'annotation_for_interview') + " " + this.props.interview.short_title[this.props.locale],
                     content: this.rememberInterviewForm()
                 })}>
                     <i className="fa fa-star"></i>
-                    <span>Interview merken</span>
+                    <span>{ArchiveUtils.translate(this.props, 'save_interview_reference')}</span>
                 </div>
     }
 
@@ -80,7 +82,7 @@ export default class VideoPlayer extends React.Component {
                     content: this.annotateOnSegmentForm(this.actualSegmentIndex())
                 })}>
                     <i className="fa fa-pencil"></i>
-                    <span>{ArchiveUtils.translate( this.props, 'write_annotation')}</span>
+                    <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
                 </div>
     }
 
@@ -114,8 +116,8 @@ export default class VideoPlayer extends React.Component {
             <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                 <div className={"video-title-container"}>
                     <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
-                    {this.rememberInterviewLink()} 
-                    {this.annotateOnSegmentLink()} 
+                    {this.rememberInterviewLink()}
+                    {this.annotateOnSegmentLink()}
                 </div>
                 <div className='video-element'>
                     <video ref={(video) => {
@@ -129,7 +131,7 @@ export default class VideoPlayer extends React.Component {
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
-                           onClick={() => this.handleVideoClick()}
+                           onClick={(event) => this.handleVideoClick(event)}
                     >
                         <source src={this.src()}/>
                         <track kind="subtitles" label="Transcript"

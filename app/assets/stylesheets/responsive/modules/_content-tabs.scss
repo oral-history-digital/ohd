@@ -314,17 +314,35 @@
     @include screen-m {
       margin-left: 4%;
     }
+    .mainheading {
+      font-weight: normal;
+    }
   }
   .collapsed {
     display: none;
   }
 }
-
-.content-index-main-heading {
-  li {
-    margin-bottom: 10px;
+.content-tags {
+  .content-tags-segment {
+    margin-top: 5px;
+  }
+  .content-tags-segment-timecode {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium ;
+    margin-bottom: 0;
+  }
+  .content-tags-segment-text {
+    margin-bottom: 0;
+    color: $gray-dark;
   }
 }
+
+
+//.content-index-main-heading {
+//  li {
+//    margin-bottom: 10px;
+//  }
+//}
 
 // Tab Content: Search / Suche im Interview
 

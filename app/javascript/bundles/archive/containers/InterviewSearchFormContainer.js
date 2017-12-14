@@ -1,17 +1,18 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import InterviewSearchForm from '../components/InterviewSearchForm';
 import * as actionCreators from '../actions/searchActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-  let data = state.search.interviews[state.archive.archiveId];
-  return {
-    archiveId: state.archive.archiveId,
-    interviewFulltext: data && data.fulltext
-  }
+    let data = state.search.interviews[state.archive.archiveId];
+    return {
+        archiveId: state.archive.archiveId,
+        interviewFulltext: data && data.fulltext,
+        translations: state.archive.translations,
+        locale: state.archive.locale
+    }
 }
 
 // Don't forget to actually use connect!

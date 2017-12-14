@@ -13,15 +13,18 @@ var ArchiveUtils = {
 
     queryToText(query, props) {
         let queryText = "";
-        for (let [key, value] of Object.entries(query)) {
+        for (let [k, value] of Object.entries(query)) {
             {
                 if (value.length) {
+                    let key = ArchiveUtils.translate(props, 'search_facets')[k];
                     let nextElement = queryText == "" ? "" : " - "
                     queryText = queryText + nextElement + key + ": ";
                     if (Array.isArray(value)) {
+                        //TODO: find solution for ids
                         value.forEach(function (element, index) {
+                            let val = ArchiveUtils.translate(props, 'search_facets')[element];
                             let endElement = index == value.length - 1 ? "" : ", "
-                            queryText = queryText + " " + element + endElement;
+                            queryText = queryText + " " + val + endElement;
                         })
                     } else {
                         queryText = queryText + " " + value

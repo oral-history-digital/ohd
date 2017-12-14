@@ -103,7 +103,7 @@ export default class ArchiveSearch extends React.Component {
             description=''
             properties={this.props.query}
             type='Search'
-            submitLabel={ArchiveUtils.translate(this.props, 'archive_save')}
+            submitLabel={ArchiveUtils.translate(this.props, 'save_search')}
         />
     }
 
@@ -112,7 +112,7 @@ export default class ArchiveSearch extends React.Component {
                     title: 'Save search',
                     content: this.saveSearchForm()
                 })}>
-            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'archive_save')}</span>
+            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
                 </div>
     }
 

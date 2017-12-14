@@ -24,6 +24,23 @@
   }
 }
 
+.any-button {
+  margin-left: 0;
+  width: 30%;
+  background-color: #8b8b7a;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  @include screen-m {
+    margin-left: 28%;
+  }
+  &:hover {
+    background-color: lighten($gray-warm, 10%);
+  }
+}
+
 .popup {
   background-color: #fff;
   width: 95%;

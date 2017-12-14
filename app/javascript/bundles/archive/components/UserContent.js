@@ -24,6 +24,8 @@ export default class UserContent extends React.Component {
     userContentDelete() {
         return <UserContentDeleteContainer
             id={this.props.data.id}
+            title={this.props.data.title}
+            description={this.props.data.description}
         />
     }
 
@@ -34,11 +36,12 @@ export default class UserContent extends React.Component {
     }
 
     edit() {
+        let titleKey = "edit" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title="Bearbeiten"
+            title={ArchiveUtils.translate(this.props, 'edit')}
             onClick={() => this.props.openArchivePopup({
-                title: 'Edit',
+                title: ArchiveUtils.translate(this.props, titleKey ),
                 content: this.userContentForm()
             })}
         >
@@ -49,9 +52,9 @@ export default class UserContent extends React.Component {
     delete() {
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title="Löschen"
+            title={ArchiveUtils.translate(this.props, 'delete')}
             onClick={() => this.props.openArchivePopup({
-                title: 'Delete',
+                title: ArchiveUtils.translate(this.props, 'delete_user_content'),
                 content: this.userContentDelete()
             })}
         >
@@ -60,12 +63,14 @@ export default class UserContent extends React.Component {
     }
 
     goTo() {
+        let callKey = "call" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}>
-                    {`go to interview: ${this.props.data.properties.title[this.props.locale]}`}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'UserAnnotation') {
@@ -75,7 +80,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.properties.time)}
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
-                    {'go to segment'}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
@@ -85,7 +90,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.searchInArchive(this.props.data.properties)}
                     to={'/' + this.props.locale + '/suchen'}
                 >
-                    {'search'}
+                    {ArchiveUtils.translate(this.props, callKey)}
                 </Link>
             </p>
         } else {
@@ -96,7 +101,7 @@ export default class UserContent extends React.Component {
     paramsInfo(){
         if  (this.props.data.type === 'Search') {
             return  <p>
-                <span className='flyout-content-label'>Suchkriterien:</span>
+                <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'query')}:</span>
                 <span className='flyout-content-data'>{ArchiveUtils.queryToText(this.props.data.properties, this.props)}</span>
             </p>
         } else {
@@ -110,7 +115,7 @@ export default class UserContent extends React.Component {
             <div>
                 <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
                 <p>
-                    <span className='flyout-content-label'>Beschreibung:</span>
+                    <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'description')}:</span>
                     <span className='flyout-content-data'>{this.props.data.description}</span>
                 </p>
                 {this.workflowState()}
