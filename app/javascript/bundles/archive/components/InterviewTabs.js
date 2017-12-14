@@ -43,7 +43,7 @@ export default class InterviewTabs extends React.Component {
                         <Tab className={'content-tabs-nav-link'}><i
                             className="fa fa-search"></i><span>{ArchiveUtils.translate(this.props, 'interview_search')}</span></Tab>
                         <Tab className={'content-tabs-nav-link'}><i
-                            className="fa fa-search"></i><span>{ArchiveUtils.translate(this.props, 'keywords')}</span></Tab>
+                            className="fa fa-tags"></i><span>{ArchiveUtils.translate(this.props, 'keywords')}</span></Tab>
                     </TabList>
                 </div>
 

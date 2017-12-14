@@ -9,7 +9,12 @@ module ReferenceTree
   def leafe(segment)
     {
       type: 'leafe',
-      start_time: segment.start_time
+      time: segment.start_time,
+      timecode: segment.timecode,
+      transcripts:{
+          de:segment.translation,
+          "#{segment.interview.language.code[0..1]}": segment.transcript
+      }
     }
   end
 
