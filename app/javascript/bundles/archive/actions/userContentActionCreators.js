@@ -52,7 +52,7 @@ export function submitUserContent(params) {
     if(params.id) {
         return dispatch => {
             dispatch(updateUserContent(params))
-            Loader.put(`${USER_CONTENT_URL}/${params.id}`, params, dispatch, null);
+            Loader.put(`${USER_CONTENT_URL}/${params.id}.json`, params, dispatch, null);
         }
     } else {
         return dispatch => {
@@ -60,7 +60,7 @@ export function submitUserContent(params) {
             //
             //dispatch(addUserContent(params))
             //Loader.post(USER_CONTENT_URL, params, dispatch, null);
-            Loader.post(USER_CONTENT_URL, params, dispatch, receiveNewUserContent);
+            Loader.post(`${USER_CONTENT_URL}.json`, params, dispatch, receiveNewUserContent);
         }
     }
 }
@@ -68,7 +68,7 @@ export function submitUserContent(params) {
 export function deleteUserContent(id) {
     return dispatch => {
         dispatch(removeUserContent(id))
-        Loader.delete(`${USER_CONTENT_URL}/${id}`, dispatch, null);
+        Loader.delete(`${USER_CONTENT_URL}/${id}.json`, dispatch, null);
     }
 }
 
@@ -87,7 +87,7 @@ function receiveUserContents(json){
 export function fetchUserContents() {
     return dispatch => {
         dispatch(requestUserContents())
-        Loader.getJson(USER_CONTENT_URL, null, dispatch, receiveUserContents);
+        Loader.getJson(`${USER_CONTENT_URL}.json`, null, dispatch, receiveUserContents);
     }
 }
 

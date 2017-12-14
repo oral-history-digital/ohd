@@ -49,7 +49,7 @@ export const UPDATE_USER_CONTENT = 'UPDATE_USER_CONTENT'
 export const RECEIVE_USER_CONTENT = 'RECEIVE_USER_CONTENT';
 export const ADD_USER_CONTENT = 'ADD_USER_CONTENT';
 export const REMOVE_USER_CONTENT = 'REMOVE_USER_CONTENT';
-export const USER_CONTENT_URL = '/de/user_contents.json';
+export const USER_CONTENT_URL = '/de/user_contents';
 
 export const REQUEST_USER_CONTENTS = 'REQUEST_USER_CONTENTS';
 export const RECEIVE_USER_CONTENTS = 'RECEIVE_USER_CONTENTS';
