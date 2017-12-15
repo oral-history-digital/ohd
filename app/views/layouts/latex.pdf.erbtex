@@ -6,7 +6,7 @@
 
 
 \usepackage{fontspec}
-\setmainfont{FreeSans.ttf}
+\setmainfont{FiraSans-Regular.ttf}
 
 <%= yield %>
 \end{document}
