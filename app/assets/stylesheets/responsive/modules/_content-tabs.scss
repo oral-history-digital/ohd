@@ -259,7 +259,7 @@
 
 .content-index {
   .heading {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     .heading-ico {
       display: inline-block;
       vertical-align: top;
@@ -316,6 +316,9 @@
     }
     .mainheading {
       font-weight: normal;
+    }
+    .heading {
+      margin-bottom: 0;
     }
   }
   .collapsed {
