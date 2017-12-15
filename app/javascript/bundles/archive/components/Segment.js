@@ -104,7 +104,7 @@ export default class Segment extends React.Component {
             let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>
-                    <div className={annotionCss} title={ArchiveUtils.translate(this.props, 'annotations'}
+                    <div className={annotionCss} title={ArchiveUtils.translate(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
                     </div>
