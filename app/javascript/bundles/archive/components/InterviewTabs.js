@@ -16,9 +16,15 @@ export default class InterviewTabs extends React.Component {
         }
     }
 
+    componentDidMount(){
+        if (this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
+            this.setState({['tabIndex']: 3});
+        }
+    }
+
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.interviewFulltext !== this.props.interviewFulltext && this.props.interviewFulltext !== "") {
+        if (!prevProps.interviewFulltext && this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
             this.setState({['tabIndex']: 3});
         }
     }
