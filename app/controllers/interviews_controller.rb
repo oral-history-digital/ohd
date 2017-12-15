@@ -43,7 +43,7 @@ class InterviewsController < BaseController
         @language = {locale:letter3_locale, type: transcript_type}
         if params[:kind] == "history"
           pdf = render_to_string(:template => '/latex/history.pdf.erb', :layout => 'latex.pdf.erbtex')
-          send_data pdf, filename: "#{@interview.archive_id}_history.pdf_#{locale}", :type => "application/pdf",
+          send_data pdf, filename: "#{@interview.archive_id}_biography_#{locale}.pdf", :type => "application/pdf",
                     :disposition => "attachment"
         elsif params[:kind] == "interview"
 

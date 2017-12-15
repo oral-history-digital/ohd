@@ -9,14 +9,16 @@ export default class TableOfContents extends React.Component {
         let subIndex = 0;
         let subheading = '';
         let headings = [];
+        let lastMainheading = '';
 
         if(this.props.interview && this.props.interview.headings) {
             this.props.interview.headings.map( (segment, index) => {
 
                 //if (!segment.subheading[this.props.locale] || segment.subheading[this.props.locale] === '') {
-                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' ) {
+                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && segment.mainheading[this.props.locale] !== lastMainheading ) {
                     mainIndex += 1;
                     subIndex = 0;
+                    lastMainheading = segment.mainheading[this.props.locale];
                     mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
                     headings.push({main: true, heading: mainheading, time: segment.time, tape_nbr: segment.tape_nbr, subheadings: []});
                 }

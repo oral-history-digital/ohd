@@ -36,40 +36,40 @@ default: &default
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
-    nutzungsbedingungen:
+    conditions:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
+      el: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
+      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag:
-      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    #nutzungsantrag:
+     # de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+      #en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen:
+    privacy_protection:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      el: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines:
-      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    #annotation_guidelines:
+      #de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      #en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     team:
       de: 'http://www.zwangsarbeit-archiv.de/team'
-      en: 'http://www.zwangsarbeit-archiv.de/en/team'
-      ru: 'http://www.zwangsarbeit-archiv.de/team'
+      el: 'http://www.zwangsarbeit-archiv.de/en/team'
+      #ru: 'http://www.zwangsarbeit-archiv.de/team'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
-    kontakt:
+    contact:
       de: 'http://www.zwangsarbeit-archiv.de/kontakt'
-      en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
-      ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
+      el: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
+      #ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
-    impressum:
+    legal_info:
       de: 'http://www.zwangsarbeit-archiv.de/impressum'
-      en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
-      ru: 'http://www.zwangsarbeit-archiv.de/impressum'
+      el: 'http://www.zwangsarbeit-archiv.de/en/impressum'
+      #ru: 'http://www.zwangsarbeit-archiv.de/impressum'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   # Please mount the CIFS storage server locally like this (read-only for normal users!):

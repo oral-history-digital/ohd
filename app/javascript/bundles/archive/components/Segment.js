@@ -1,4 +1,5 @@
 import React from 'react';
+import ArchiveUtils from "../../../lib/utils";
 
 export default class Segment extends React.Component {
 
@@ -103,11 +104,11 @@ export default class Segment extends React.Component {
             let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>
-                    <div className={annotionCss} title="Anmerkungen lesen"
+                    <div className={annotionCss} title={ArchiveUtils.translate(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
                     </div>
-                    <div className={referenceCss} title="Schlagworte"
+                    <div className={referenceCss} title={ArchiveUtils.translate(this.props, 'keywords')}
                          onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
                     </div>
                 </div>

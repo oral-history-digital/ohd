@@ -47,7 +47,8 @@ export default class Heading extends React.Component {
     let icoClass = this.state.expanded ? 'heading-ico active': 'heading-ico' ;
     return (
       <div className='heading'>
-        <div className={icoClass}></div>
+        <div className={icoClass}
+             onClick={() => this.toggle()}/>
         <div 
           className='mainheading'
           onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)} 

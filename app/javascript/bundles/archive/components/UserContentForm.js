@@ -80,42 +80,48 @@ export default class UserContentForm extends React.Component {
     }
 
     segmentTime() {
-        return moment.utc(this.segment().start_time).format("HH:mm:ss")
+        return moment().utc(this.segment().start_time).format("HH:mm:ss")
     }
 
     segmentSelect() {
         if (this.state.type === 'UserAnnotation') {
             return <div>
-                        <div className='popup-segment-nav-container'>
-                            <div className='popup-segment-nav-label'>
-                                {ArchiveUtils.translate( this.props, 'segment') }
-                            </div>
-                            <div className='popup-segment-nav-data'>
-                                {this.segmentTime()}
-                            </div>
-                        </div>
-                        <div className='popup-segment-nav-container'>
-                            <div className='popup-segment-nav'>
-                                {this.previousSegment()}
-                                <div className='popup-segment'>
-                                    {this.segment().transcripts[this.props.locale]}
-                                </div>
-                                {this.nextSegment()}
-                            </div>
-                        </div>
+                <div className='popup-segment-nav-container'>
+                    <div className='popup-segment-nav-label'>
+                        {ArchiveUtils.translate(this.props, 'segment')}
                     </div>
+                    <div className='popup-segment-nav'>
+                        {this.previousSegment()}
+                        <div className='popup-segment-nav-data'>
+                            {this.segmentTime()}
+                        </div>
+                        {this.nextSegment()}
+                    </div>
+                </div>
+                <div className='popup-segment-nav-container'>
+                    <div className='popup-segment'>
+                        {this.segment().transcripts[this.props.locale]}
+                    </div>
+                </div>
+            </div>
         }
     }
 
     previousSegment() {
         if (this.state.segmentIndex > 0) {
-            return <i className='fa fa-arrow-left popup-segment-nav-before' onClick={() => this.setSegment(this.state.segmentIndex - 1)} />
+            return <i className='fa fa-arrow-left popup-segment-nav-before'
+                      onClick={() => this.setSegment(this.state.segmentIndex - 1)}/>
+        } else {
+            return <i className='fa fa-arrow-left popup-segment-nav-before inactive'/>
         }
     }
 
     nextSegment() {
         if (this.state.segmentIndex < this.props.segments.length) {
-            return <i className='fa fa-arrow-right popup-segment-nav-after' onClick={() => this.setSegment(this.state.segmentIndex + 1)} />
+            return <i className='fa fa-arrow-right popup-segment-nav-after'
+                      onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
+        } else {
+            return <i className='fa fa-arrow-right popup-segment-nav-after inactive'/>
         }
     }
 
@@ -134,21 +140,21 @@ export default class UserContentForm extends React.Component {
 
     publish() {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return  <div className={"form-group"}>
-                        {this.label('publish')}
-                        <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
-                    </div>
+            return <div className={"form-group"}>
+                {this.label('publish')}
+                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
+            </div>
         }
     }
 
     label(term) {
-        return  <label>
-                    {ArchiveUtils.translate(this.props, term) }
-                </label>
+        return <label>
+            {ArchiveUtils.translate(this.props, term)}
+        </label>
     }
 
     render() {
-        let submitLabel = this.props.submitLabel ? this.props.submitLabel : ArchiveUtils.translate( this.props, 'save') ;
+        let submitLabel = this.props.submitLabel ? this.props.submitLabel : ArchiveUtils.translate(this.props, 'save');
 
         return (
             <div>

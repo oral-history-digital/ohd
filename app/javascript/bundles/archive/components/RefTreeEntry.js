@@ -35,16 +35,21 @@ export default class RefTreeEntry extends React.Component {
         }
     }
 
-    render () {
-        let icoClass = this.state.expanded ? 'heading-ico active': 'heading-ico' ;
+    render() {
+        let icoClass = this.state.expanded ? 'heading-ico active' : 'heading-ico';
         return (
             <div className='heading'>
-                <div className={icoClass}></div>
-                <div 
+                <div
+                    className={icoClass}
+                    onClick={() => this.toggle()}
+                />
+                <div
                     className='mainheading'
                     onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.start_time)} 
                 >
                     {this.desc()}
+                </div>
+                <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
                     {this.props.renderChildren(this.props.entry.children)}
                 </div>
             </div>
