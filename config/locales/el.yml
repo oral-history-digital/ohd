@@ -29,6 +29,7 @@ el:
   typology: 'Είδος εμπειρίας'
   periods: 'Χρονικές περίοδοι'
   keywords: 'Λέξεις-κλειδιά'
+  annotations: 'σημειώσεις'
   reset: 'επαναφορά'
   transcript: 'Απομαγνητοφωνημένο κείμενο'
   translation: 'Μετάφραση'
