@@ -19,9 +19,9 @@ export default class RefTreeEntry extends React.Component {
         }));
     }
 
-    handleClick(time) {
+    handleClick(tape, time) {
         if (this.props.entry.type === 'leafe') {
-            this.props.handleSegmentClick(this.props.tape, time);
+            this.props.handleSegmentClick(tape, time);
         } else {
             this.toggle();
         }
@@ -42,7 +42,7 @@ export default class RefTreeEntry extends React.Component {
                 <div className={icoClass}></div>
                 <div 
                     className='mainheading'
-                    onClick={() => this.handleClick(this.props.entry.start_time)} 
+                    onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.start_time)} 
                 >
                     {this.desc()}
                     {this.props.renderChildren(this.props.entry.children)}

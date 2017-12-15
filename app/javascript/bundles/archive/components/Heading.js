@@ -21,9 +21,12 @@ export default class Heading extends React.Component {
     }
   }
 
-  handleClick(time) {
-    this.props.handleSegmentClick(time);
-    this.toggle();
+  handleClick(tape, time) {
+      //if(this.props.data.subheadings.length > 0) {
+          this.toggle();
+      //} else {
+          this.props.handleSegmentClick(tape, time);
+      //}
   }
 
   subHeadings() {
@@ -31,7 +34,7 @@ export default class Heading extends React.Component {
       return <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
                {this.props.data.subheadings.map( (heading, index) => {
                  return <div key={'heading-' + index} >
-                          <div onClick={() => this.props.handleSegmentClick(heading.time)} className='subheading'>
+                          <div onClick={() => this.props.handleSegmentClick(heading.tape_nbr, heading.time)} className='subheading'>
                             {heading.heading}
                           </div> 
                         </div>;
@@ -47,7 +50,7 @@ export default class Heading extends React.Component {
         <div className={icoClass}></div>
         <div 
           className='mainheading'
-          onClick={() => this.handleClick(this.props.data.time)} 
+          onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)} 
         >
           {this.props.data.heading}
         </div>

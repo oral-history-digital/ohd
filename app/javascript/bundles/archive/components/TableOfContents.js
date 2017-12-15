@@ -18,12 +18,12 @@ export default class TableOfContents extends React.Component {
                     mainIndex += 1;
                     subIndex = 0;
                     mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
-                    headings.push({main: true, heading: mainheading, time: segment.time, subheadings: []});
+                    headings.push({main: true, heading: mainheading, time: segment.time, tape_nbr: segment.tape_nbr, subheadings: []});
                 }
                 if (segment.subheading[this.props.locale] && segment.subheading[this.props.locale] !== '') {
                     subIndex += 1;
                     subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading[this.props.locale];
-                    headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time});
+                    headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time, tape_nbr: segment.tape_nbr});
                 }
             })
         }

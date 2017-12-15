@@ -43,11 +43,11 @@ export function fetchInterview(archiveId) {
 }
 
 export function handleSegmentClick(tape, time) {
-  return {
-      type: TRANSCRIPT_TIME_CHANGE,
-      videoTime: time,
-      tape: tape
-  }
+    return {
+        type: TRANSCRIPT_TIME_CHANGE,
+        videoTime: time,
+        tape: tape
+    }
 }
 
 export function handleTranscriptScroll(bool) {
