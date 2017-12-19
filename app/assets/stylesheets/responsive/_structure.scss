@@ -49,8 +49,11 @@ header.site-header {
 }
 
 .wrapper-content {
-  padding: 50px 10%;
+  padding: 50px 5%;
   @include clearfix;
+  @include screen-m {
+    padding: 50px 10%;
+  }
 }
 
 .flyout-is-visible {
