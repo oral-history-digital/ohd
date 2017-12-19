@@ -29,7 +29,7 @@ export default class RefTreeEntry extends React.Component {
 
     desc() {
         if (this.props.entry.desc) {
-            return this.props.entry.desc[this.props.locale];
+            return `${this.props.entry.desc[this.props.locale]} (${this.props.entry.leafe_count})`
         } else {
             return this.props.index + 1;
         }

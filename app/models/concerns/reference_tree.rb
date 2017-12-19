@@ -23,7 +23,8 @@ module ReferenceTree
       id: node_id,
       type: 'node',
       desc: RegistryEntry.find(node_id).localized_hash,
-      children: []
+      children: [],
+      leafe_count: 0
     }
   end
 
@@ -61,6 +62,7 @@ module ReferenceTree
     segment_registry_references.each do |ref| 
       node = find_or_create_node(parent_nodes, ref.registry_entry_id)
       node[:children] << leafe(ref.ref_object)
+      node[:leafe_count] += 1;
     end
     parent_nodes
   end
@@ -73,26 +75,35 @@ module ReferenceTree
       node = nodes.shift
       parent = RegistryEntry.find(node[:id]).parents.first
 
+      # a parent registry_entry exists!
       if parent 
+        # is one of the current nodes parent of this (shifted) node?
         parent_node = deep_find_node(parent_nodes, parent.id) || deep_find_node(nodes, parent.id)
+        # the parent-node does not exist in the current nodes-tree:
         unless parent_node
           parent_node = create_node(parent.id) 
           parent_nodes << parent_node
         end
         parent_node[:children] << node
+        parent_node[:leafe_count] += node[:leafe_count];
+        #if parent_node[:id] == 637022
+        #end
+      # there is no parent registry_entry:
       else
         p "*** node #{node[:id]} has no parents!"
         nodes_without_parents_count += 1
+        # is this node a member of the new parent_nodes-tree?
         parent_node = parent_nodes.select{|p| p[:id] == node[:id]}.first
         if parent_node
-          parent_nodes[:children] = parent_node[:children] + node[:children]
+          parent_node[:children] += node[:children]
+          parent_node[:leafe_count] += node[:leafe_count];
         else
           parent_nodes << node 
         end
       end
     end
+
     p "*** parent_nodes length = #{parent_nodes.length}"
-    #if nodes == parent_nodes
     if parent_nodes.length == nodes_without_parents_count
       parent_nodes
     else
