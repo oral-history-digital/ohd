@@ -126,10 +126,13 @@ default: &default
       source: 'person'
       use_as_facet: true
       values: 
-        aaa: 'AAA'
-        bbb: 'BBB'
-        ccc: 'CCC'
-        ddd: 'DD DD'
+        resistance: 'Resistance'
+        occupation: 'Occupation'
+        flight: 'Flight'
+        concentration_camp: 'Concentration camp'
+        persecution_of_jews: 'Persecution of Jews'
+        retaliation: 'Retaliation'
+        collaboration: 'Collaboration'
     - id: 'periods'
       source: 'registry_entry'
       use_as_facet: true
