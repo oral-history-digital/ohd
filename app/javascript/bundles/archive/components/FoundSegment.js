@@ -20,7 +20,7 @@ export default class Segment extends React.Component {
     render() {
         return (
 
-            <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>
+            <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                 <p className="content-search-timecode">{this.props.data.timecode}</p>
                 <div className="content-search-text">
                     <p  dangerouslySetInnerHTML = {{__html:this.transcript()}}></p>

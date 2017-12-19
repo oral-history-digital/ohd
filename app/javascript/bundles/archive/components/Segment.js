@@ -89,7 +89,7 @@ export default class Segment extends React.Component {
             let title = this.speakerName();
             return (
                 <div className="content-trans-speaker-link" title={title}
-                     onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>
+                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                     <i className={speakerCss}></i>
                 </div>
             )
@@ -128,7 +128,7 @@ export default class Segment extends React.Component {
                         {this.speakerIcon()}
                     </div>
                     <div className='content-trans-text'
-                         onClick={() => this.props.handleSegmentClick(this.props.tape, this.props.data.time)}>
+                         onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                         <div className={this.css()}
                              dangerouslySetInnerHTML={{__html: this.transcript()}}
                         />
