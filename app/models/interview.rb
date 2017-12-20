@@ -122,7 +122,8 @@ class Interview < ActiveRecord::Base
   has_many :segment_registry_references,
            -> {
               includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}).
-              where("registry_references.ref_object_type='Segment'")
+              where("registry_references.ref_object_type='Segment'").
+              where("registry_references.registry_entry_id != '0'")
            },
            class_name: 'RegistryReference'
            
