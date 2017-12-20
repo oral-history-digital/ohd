@@ -1,16 +1,49 @@
-\title{<%= @interview.full_title(I18n.locale) %>}
+<% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @language[:locale]).first.first_name}" %>
+<% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @language[:locale]).first.last_name}" %>
+<% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
+
+\title{<%= interviewee_name %>}
+\date{}
+
 \begin{document}
 \maketitle
+\thispagestyle{fancy}
 
-<% @interview.segments.select{|i| i.tape.number == 1}.each do |segment|  %>
+\fancyhead{}
+\fancyfoot{}
+<% translation = @language[:type] == 'translation' ? "(#{I18n.backend.translate(locale, 'translation')}) " : "" %>
+\lhead{<%= "#{I18n.backend.translate(locale, 'transcript')} #{translation}#{interviewee_name} (#{@interview.archive_id})" %>}
+\rfoot{\thepage}
+
+
+<% paragraphs = [] %>
+<% @interview.segments.select {|i| i.tape.number == 1}.each_with_index do |segment, index| %>
+  <% speaker = "" %>
+  <% if segment.speaker_changed %>
+    <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @language[:locale]).first %>
+    <% speaker = "#{person_translation.first_name} #{person_translation.last_name}".strip %>
+  <% end %>
+  <% paragraph_hash = Hash.new %>
+  <% paragraph_hash['segment'] = latex_escape(speaker + segment.send(@language[:type].to_sym)) %>
+  <% paragraph_hash['new_line'] = segment.speaker_changed %>
+  <% paragraphs << paragraph_hash %>
+  <% if !segment.mainheading(@language[:locale]).blank? || !segment.subheading(@language[:locale]).blank? || index == @interview.segments.count - 1 %>
+    <% paragraphs.each do |paragraph| %>
+      <% if paragraph['new_line'] %>
+        <%= "" %>
+      <% end %>
+      <%= paragraph['segment'] %>
+    <% end %>
     <% unless segment.mainheading(@language[:locale]).blank? %>
-    \section{ <%= latex_escape( segment.mainheading(@language[:locale]) ) %>}
+      <%= "\\section{#{ latex_escape(segment.mainheading(@language[:locale]))}}" %>
     <% end %>
     <% unless segment.subheading(@language[:locale]).blank? %>
-    \subsection{ <%= latex_escape(segment.subheading(@language[:locale])) %>}
+      <%= "\\subsection{#{ latex_escape(segment.subheading(@language[:locale]))}}" %>
     <% end %>
-    <%= latex_escape(sanitize(segment.send(@language[:type].to_sym)).gsub(/<br>/, '') + "\n") %>
+    <% paragraphs = [] if index != @interview.segments.count - 1 %>
+  <% end %>
 <% end %>
+
 
 
 
