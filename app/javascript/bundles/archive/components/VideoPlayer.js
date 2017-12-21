@@ -5,6 +5,17 @@ import moment from 'moment';
 
 export default class VideoPlayer extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.fullscreenChange = this.fullscreenChange.bind(this);
+    }
+
+    componentDidMount(){
+        this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
+        this.video.addEventListener('mozfullscreenchange', this.fullscreenChange );
+        this.video.addEventListener('fullscreenchange',this.fullscreenChange);
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (this.video) {
             this.setVideoTime(prevProps)
@@ -36,11 +47,6 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    handleVideoClick(event){
-        event.preventDefault();
-        event.stopPropagation();
-        this.video.paused ? this.video.play() : this.video.pause();
-    }
 
     src() {
         // this will run only if tape_count < 10!!
@@ -111,6 +117,27 @@ export default class VideoPlayer extends React.Component {
                 />
     }
 
+    fullscreenChange(event){
+        let isFullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+        if (isFullscreen) {
+            let tracksIsVisible = false;
+            let tracks = {};
+            for (let i = 0; i < this.video.textTracks.length; i++) {
+                if (this.video.textTracks[i].mode === "showing"){
+                    tracksIsVisible = true;
+                }
+                tracks[this.video.textTracks[i].language] = this.video.textTracks[i];
+            }
+            if (!tracksIsVisible) {
+                tracks[this.props.locale].mode = 'showing';
+            }
+        } else {
+            for (let i = 0; i < this.video.textTracks.length; i++) {
+                this.video.textTracks[i].mode = 'disabled';
+            }
+        }
+    }
+
     render() {
         return (
             <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
@@ -131,13 +158,18 @@ export default class VideoPlayer extends React.Component {
                            }}
                            controls={true}
                            poster={this.props.interview.still_url}
-                           onClick={(event) => this.handleVideoClick(event)}
                     >
                         <source src={this.src()}/>
-                        <track kind="subtitles" label="Transcript"
-                               src={this.props.archiveId + '.vtt?type=transcript'} srcLang="de" ></track>
-                        <track kind="subtitles" label="Translation"
-                               src={this.props.archiveId + '.vtt?type=translation'} srcLang="en"></track>
+                        <track kind="subtitles"
+                               label={ArchiveUtils.translate( this.props, 'transcript')}
+                               src={this.props.archiveId + '.vtt?type=transcript'}
+                               srcLang="el"
+                        ></track>
+                        <track kind="subtitles"
+                               label={ArchiveUtils.translate( this.props, 'translation')}
+                               src={this.props.archiveId + '.vtt?type=translation'}
+                               srcLang="de"
+                        ></track>
                     </video>
                 </div>
             </div>
