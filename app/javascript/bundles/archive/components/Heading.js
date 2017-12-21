@@ -22,11 +22,11 @@ export default class Heading extends React.Component {
   }
 
   handleClick(tape, time) {
-      //if(this.props.data.subheadings.length > 0) {
+      if(this.props.data.subheadings.length > 0) {
           this.toggle();
-      //} else {
+      } else {
           this.props.handleSegmentClick(tape, time);
-      //}
+      }
   }
 
   subHeadings() {

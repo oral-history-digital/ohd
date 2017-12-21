@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
 
-  serialize :typology, Array
+  #serialize :typology, Array
 
   has_many :contributions
   has_many :histories, dependent: :destroy

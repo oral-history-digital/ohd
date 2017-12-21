@@ -122,7 +122,8 @@ class Interview < ActiveRecord::Base
   has_many :segment_registry_references,
            -> {
               includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}).
-              where("registry_references.ref_object_type='Segment'")
+              where("registry_references.ref_object_type='Segment'").
+              where("registry_references.registry_entry_id != '0'")
            },
            class_name: 'RegistryReference'
            
@@ -270,7 +271,7 @@ class Interview < ActiveRecord::Base
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first.send facet['id'].to_sym
+      interviewees.first.send(facet['id'].to_sym).split(',')
     end
   end
   #def facet_category_ids(entry_code)

@@ -163,10 +163,6 @@ el:
     persecution_of_jews: 'Judenverfolgung'
     retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
     collaboration: 'Kollaboration'
-    aaa: 'AAA'
-    bbb: 'BBB'
-    ccc: 'CCC'
-    ddd: 'DD DD'
     interview_id: 
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
