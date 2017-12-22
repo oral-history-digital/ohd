@@ -8,6 +8,7 @@ export default class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
+        this.tracksVisible=false;
     }
 
     componentDidMount(){
@@ -120,20 +121,22 @@ export default class VideoPlayer extends React.Component {
     fullscreenChange(event){
         let isFullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
         if (isFullscreen) {
-            let tracksIsVisible = false;
+            this.tracksVisible=false;
             let tracks = {};
             for (let i = 0; i < this.video.textTracks.length; i++) {
                 if (this.video.textTracks[i].mode === "showing"){
-                    tracksIsVisible = true;
+                    this.tracksVisible=true;
                 }
                 tracks[this.video.textTracks[i].language] = this.video.textTracks[i];
             }
-            if (!tracksIsVisible) {
+            if (!this.tracksVisible) {
                 tracks[this.props.locale].mode = 'showing';
             }
         } else {
-            for (let i = 0; i < this.video.textTracks.length; i++) {
-                this.video.textTracks[i].mode = 'disabled';
+            if (!this.tracksVisible) {
+                for (let i = 0; i < this.video.textTracks.length; i++) {
+                    this.video.textTracks[i].mode = 'disabled';
+                }
             }
         }
     }
