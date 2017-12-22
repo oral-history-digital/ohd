@@ -278,10 +278,9 @@ class Interview < ActiveRecord::Base
     #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
   #end
 
-  def to_vtt(type)
+  def to_vtt(type='transcript', tape_number=1)
     vtt = "WEBVTT\n"
-    segments.select{|i| i.tape.number == 1}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
-    #segments.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
     vtt
   end
 

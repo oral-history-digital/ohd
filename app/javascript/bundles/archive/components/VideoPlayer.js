@@ -165,14 +165,14 @@ export default class VideoPlayer extends React.Component {
                         <source src={this.src()}/>
                         <track kind="subtitles"
                                label={ArchiveUtils.translate( this.props, 'transcript')}
-                               src={this.props.archiveId + '.vtt?type=transcript'}
+                               src={this.props.archiveId + '.vtt?type=transcript&tape_number=' + this.props.tape}
                                srcLang="el"
-                        ></track>
+                        />
                         <track kind="subtitles"
                                label={ArchiveUtils.translate( this.props, 'translation')}
-                               src={this.props.archiveId + '.vtt?type=translation'}
+                               src={this.props.archiveId + '.vtt?type=translation&tape_number=' + this.props.tape}
                                srcLang="de"
-                        ></track>
+                        />
                     </video>
                 </div>
             </div>

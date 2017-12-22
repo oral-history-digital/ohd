@@ -29,7 +29,7 @@ class InterviewsController < BaseController
       end
       format.vtt do
         vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
-          @interview.to_vtt(params[:type])
+          @interview.to_vtt(params[:type], params[:tape_number])
         end
         render plain: vtt
       end
