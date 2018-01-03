@@ -42,7 +42,7 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId)}
                 {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink())}
                 <p><a
-                    href={INTERVIEW_URL + '/' + this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=interview'}>
+                    href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=interview'}>
                     <i className="fa fa-download flyout-content-ico"></i><span>{ArchiveUtils.translate(this.props, 'transcript')}</span>
                 </a></p>
             </div>

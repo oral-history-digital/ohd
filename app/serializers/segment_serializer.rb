@@ -20,7 +20,7 @@ class SegmentSerializer < ActiveModel::Serializer
              #:speaker_is_interviewee
 
   def speaker_changed
-    ActionView::Base.full_sanitizer.sanitize( object.transcript).gsub(/<br>/, "").strip()[0] == ":"
+   object.speaker_changed
   end
 
   #def speaker_is_interviewee

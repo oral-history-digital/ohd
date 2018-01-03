@@ -1,12 +1,20 @@
-\documentclass{report}
+\documentclass[12pt]{article}
 <% @latex_config = { :recipe => [
 	{:command => 'xelatex'},
 ]}
 %>
+\usepackage[a4paper]{geometry}
+\geometry{width=16cm, left=2.5cm, top=3.5cm, bottom=3cm}
+\raggedright% flush left alignment
 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
 
 \usepackage{fontspec}
-\setmainfont{FreeSans.ttf}
+\setmainfont{FiraSans-Regular.ttf}
+
+\usepackage{setspace}
+\onehalfspacing
 
 <%= yield %>
 \end{document}
