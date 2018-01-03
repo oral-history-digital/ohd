@@ -69,7 +69,8 @@ module ReferenceTree
 
   def prepend_parents(nodes)
     parent_nodes = []
-    nodes_without_parents_count = 0
+    #nodes_without_parents_count = 0
+    parents_found = false
 
     until nodes.empty?
       node = nodes.shift
@@ -77,6 +78,7 @@ module ReferenceTree
 
       # a parent registry_entry exists!
       if parent 
+        parents_found = true
         # is one of the current nodes parent of this (shifted) node?
         parent_node, ancestors = deep_find_node(parent_nodes, parent.id) 
         parent_node, ancestors = deep_find_node(nodes, parent.id) unless parent_node
@@ -91,7 +93,7 @@ module ReferenceTree
       # there is no parent registry_entry:
       else
         p "*** node #{node[:id]} has no parents!"
-        nodes_without_parents_count += 1
+        #nodes_without_parents_count += 1
         # is this node a member of the new parent_nodes-tree?
         parent_node = parent_nodes.select{|p| p[:id] == node[:id]}.first
         if parent_node
@@ -104,7 +106,8 @@ module ReferenceTree
     end
 
     p "*** parent_nodes length = #{parent_nodes.length}"
-    if parent_nodes.length == nodes_without_parents_count
+    #if parent_nodes.length == nodes_without_parents_count
+    if !parents_found
       parent_nodes
     else
       prepend_parents(parent_nodes)
