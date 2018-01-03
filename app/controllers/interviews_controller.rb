@@ -29,7 +29,7 @@ class InterviewsController < BaseController
         render plain: json
       end
       format.vtt do
-        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
+        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:locale]}" do
           @interview.to_vtt(params[:type])
         end
         render plain: vtt
