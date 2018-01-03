@@ -357,7 +357,11 @@ class Interview < ActiveRecord::Base
 
   def short_title(locale)
     locale = projectified(locale) 
-    [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+    begin
+      [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
+    end
   end
 
   def anonymous_title(locale)
