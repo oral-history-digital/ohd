@@ -100,6 +100,12 @@ default: &default
 
   smtp_server: 'mail.fu-berlin.de'
 
+
+  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084
+  # Thematic: entry_dedalo_code: "ts1_1", id: 637018
+  ref_tree_branch_find_attribute: 'entry_dedalo_code'
+  ref_tree_branch_root_id: 637084
+
   # Interview partner properties usually depend on the historical context and must therefore be configured
   # on a per-project basis:
   # - To create a property from sub-entries of a registry entry, use the (default language) descriptor to identify the
@@ -136,6 +142,7 @@ default: &default
     - id: 'periods'
       source: 'registry_entry'
       use_as_facet: true
+      entry_dedalo_code: "hierarchy1_246"
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a
