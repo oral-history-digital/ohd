@@ -40,6 +40,11 @@ export default class FlyoutTabs extends React.Component {
                 this.switchLocale('el');
                 break;
 
+            case 5: //interview
+                this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
+                this.setState({tabIndex: tabIndex});
+                break;
+
             default:
                 this.setState({tabIndex: tabIndex})
         }

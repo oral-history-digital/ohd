@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     let data = ArchiveUtils.getInterview(state);
     return {
         visible: state.flyoutTabs.visible,
+        archiveId: state.archive.archiveId,
         interview: data && data.interview,
         locale: state.archive.locale,
         translations: state.archive.translations,
