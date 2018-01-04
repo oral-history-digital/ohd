@@ -164,7 +164,7 @@ class Segment < ActiveRecord::Base
   end
 
   def transcript
-    filter_annotation( read_attribute(:transcript) ).to_s
+    filter_annotation( read_attribute(:transcript) ).to_s.strip
   end
 
   # The following method leads to errors in the globalize-gem:
@@ -173,11 +173,11 @@ class Segment < ActiveRecord::Base
   #   from /home/grgr/.rvm/gems/ruby-2.4.0@zwar/bundler/gems/globalize-6f9d3f38d132/lib/globalize/active_record/instance_methods.rb:146:in `save'
   #
   def translation
-    filter_annotation( read_attribute(:translation) ).to_s
+    filter_annotation( read_attribute(:translation) ).to_s.strip
   end
 
   def joined_transcript_and_translation
-    ((transcript || '') + ' ' + (translation || '')).strip
+    ((transcript || '') + ' ' + (translation || ''))
   end
 
   def as_vtt_subtitles(type)
@@ -193,7 +193,7 @@ class Segment < ActiveRecord::Base
   #end
 
   def speaker_changed(segment_type=transcript)
-    segment_type.strip[0] == ":"
+    segment_type[0] == ":"
   end
 
   # returns the segment that leads the chapter
