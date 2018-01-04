@@ -18,7 +18,7 @@ export default class PersonData extends React.Component {
                 </p>
                 <p>
                     <a
-                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=history'}>
+                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + this.props.locale + '&kind=history'}>
                         <i className="fa fa-download flyout-content-ico"></i>
                         <span>{ArchiveUtils.translate(this.props, 'history')}</span>
                     </a>
