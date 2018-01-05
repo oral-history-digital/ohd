@@ -126,6 +126,7 @@ el:
   legal_info: 'Impressum'
   team: 'Ομάδα'
   contact: 'Kontakt'
+  not_logged_in_interview_text: 'text text text ...'
   save_interview_reference: 'Αποθηκεύστε τη συνέντευξη'
   save_user_annotation: 'Γράψτε σημείωση'
   save_search: 'Αποθήκευση αναζήτησης'
