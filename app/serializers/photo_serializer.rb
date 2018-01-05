@@ -1,7 +1,7 @@
 class PhotoSerializer < ActiveModel::Serializer
   include IsoHelpers
 
-  attributes :id, :captions, :src
+  attributes :id, :captions, :src, :thumb
 
 
   def captions
@@ -13,6 +13,10 @@ class PhotoSerializer < ActiveModel::Serializer
   end
 
   def src
+    "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/0/#{object.photo_file_name}"
+  end
+
+  def thumb
     "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/1.5MB/0/#{object.photo_file_name}"
   end
 

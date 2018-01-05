@@ -34,7 +34,7 @@ class InterviewsController < BaseController
         render plain: vtt
       end
       format.pdf do
-        locale = params[:locale]
+        locale = params[:lang]
         letter3_locale = ISO_639.find(locale).send(Project.alpha)
         transcript_type = "translation"
         if @interview.language.code == letter3_locale

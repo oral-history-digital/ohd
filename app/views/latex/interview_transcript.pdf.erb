@@ -24,7 +24,7 @@
     <% speaker = "#{person_translation.first_name} #{person_translation.last_name}".strip %>
   <% end %>
   <% paragraph_hash = Hash.new %>
-  <% paragraph_hash['segment'] = latex_escape(speaker + segment.send(@language[:type].to_sym)) %>
+  <% paragraph_hash['segment'] = latex_escape(speaker + segment.send(@language[:type].to_sym).gsub("&nbsp;", " ")) %>
   <% paragraph_hash['new_line'] = segment.speaker_changed %>
   <% paragraphs << paragraph_hash %>
   <% if !segment.mainheading(@language[:locale]).blank? || !segment.subheading(@language[:locale]).blank? || index == @interview.segments.count - 1 %>

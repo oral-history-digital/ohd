@@ -11,7 +11,7 @@
 \pagestyle{fancy}
 
 \usepackage{fontspec}
-\setmainfont{FiraSans-Regular.ttf}
+\setmainfont{FiraSans-Regular}
 
 \usepackage{setspace}
 \onehalfspacing

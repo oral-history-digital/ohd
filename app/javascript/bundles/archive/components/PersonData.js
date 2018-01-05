@@ -16,11 +16,16 @@ export default class PersonData extends React.Component {
                     className="flyout-content-data">{this.props.interviewee.date_of_birth}</span></p>
                 <p><span className="flyout-content-label">{typology}:</span><span className="flyout-content-data">"Noch nicht in DB"</span>
                 </p>
-                <p>
+                <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
                     <a
-                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?locale=' + this.props.locale + '&kind=history'}>
+                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=de&kind=history'}>
                         <i className="fa fa-download flyout-content-ico"></i>
-                        <span>{ArchiveUtils.translate(this.props, 'history')}</span>
+                        <span>de</span>
+                    </a>&nbsp;
+                    <a
+                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=el&kind=history'}>
+                        <i className="fa fa-download flyout-content-ico"></i>
+                        <span>el</span>
                     </a>
                 </p>
             </div>

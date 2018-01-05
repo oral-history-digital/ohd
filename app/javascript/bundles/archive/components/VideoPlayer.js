@@ -159,6 +159,7 @@ export default class VideoPlayer extends React.Component {
                            onEnded={(event) => {
                                this.handleVideoEnded()
                            }}
+                           playsInline={true}
                            controls={true}
                            poster={this.props.interview.still_url}
                     >
