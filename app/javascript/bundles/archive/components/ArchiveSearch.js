@@ -108,12 +108,16 @@ export default class ArchiveSearch extends React.Component {
     }
 
     saveSearchLink() {
-        return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                    title: 'Save search',
-                    content: this.saveSearchForm()
-                })}>
-            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
-                </div>
+        if (this.props.account.email) {
+            return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
+                            title: 'Save search',
+                            content: this.saveSearchForm()
+                        })}>
+                        <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
+                    </div>
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -125,8 +129,9 @@ export default class ArchiveSearch extends React.Component {
                     <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
                         {this.saveSearchLink()}
-                        <div
-                            className="search-results-legend-text">{this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}</div>
+                        <div className="search-results-legend-text">
+                            {this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}
+                        </div>
                     </div>
 
                     <Tabs
