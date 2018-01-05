@@ -15,20 +15,42 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    content(label, value) {
-        return <p>
-            <span className="flyout-content-label">{label}:</span>
-            <span className="flyout-content-data">{value}</span>
-        </p>
+    content(label, value, showWhenLoggedIn=true) {
+        if (this.props.account.email || showWhenLoggedIn) {
+            return (
+                <p>
+                    <span className="flyout-content-label">{label}:</span>
+                    <span className="flyout-content-data">{value}</span>
+                </p>
+            )
+        } else {
+            return null;
+        }
+    }
+
+    to() {
+        return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
+    }
+
+    download(transcript=true, showWhenLoggedIn=false) {
+        if (this.props.account.email || showWhenLoggedIn) {
+            let lang = transcript ? 'el' : this.props.locale;
+            let textKey = transcript ? 'transcript' : 'translation';
+            return (
+                        <p>
+                            <Link to={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
+                                <i className="fa fa-download flyout-content-ico"></i>
+                                <span>{ArchiveUtils.translate(this.props, textKey)}</span>
+                            </Link>
+                        </p>
+            )
+        } else {
+            return null;
+        }
     }
 
     interviewLink() {
-        return (
-            <Link
-                to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-            >{'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-            </Link>
-        )
+        return <Link to={this.to()}>{this.to()}</Link>
     }
 
     render() {
@@ -41,18 +63,8 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer))}
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId)}
                 {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink())}
-                <p>
-                    <a
-                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=el&kind=interview'}>
-                        <i className="fa fa-download flyout-content-ico"></i><span>{ArchiveUtils.translate(this.props, 'transcript')}</span>
-                    </a>
-                </p>
-                <p>
-                    <a
-                        href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=de&kind=interview'}>
-                        <i className="fa fa-download flyout-content-ico"></i><span>{ArchiveUtils.translate(this.props, 'translation')}</span>
-                    </a>
-                </p>
+                {this.download()}
+                {this.download(false)}
             </div>
         );
     }
