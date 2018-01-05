@@ -142,10 +142,15 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
+
+        let intervieweeNames = this.props.interviewee.names[this.props.locale];
+
         return (
             <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                 <div className={"video-title-container"}>
-                    <h1 className='video-title'>{this.props.interviewee.names[this.props.locale].firstname} {this.props.interviewee.names[this.props.locale].lastname} {this.props.interviewee.names[this.props.locale].birthname}</h1>
+                    <h1 className='video-title'>
+                        {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
+                    </h1>
                     {this.rememberInterviewLink()}
                     {this.annotateOnSegmentLink()}
                 </div>
