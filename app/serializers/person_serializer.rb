@@ -1,5 +1,5 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :histories, :names
+  attributes :id, :date_of_birth, :gender, :histories, :names, :typology
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -14,6 +14,12 @@ class PersonSerializer < ActiveModel::Serializer
     object.date_of_birth.sub(/../,"")
   end
 
+  def typology
+    facets = object.typology.split(',')
+    object.translations.each_with_object({}) {|i, hsh |
+      alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+      hsh[alpha2_locale] = facets.map{|typology| I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}") }}
+  end
 
   def histories
     object.histories.map{ |history|

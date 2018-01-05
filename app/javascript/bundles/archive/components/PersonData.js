@@ -14,7 +14,7 @@ export default class PersonData extends React.Component {
                 <p><span
                     className="flyout-content-label">{ArchiveUtils.translate(this.props, 'date_of_birth')}:</span><span
                     className="flyout-content-data">{this.props.interviewee.date_of_birth}</span></p>
-                <p><span className="flyout-content-label">{typology}:</span><span className="flyout-content-data">"Noch nicht in DB"</span>
+                <p><span className="flyout-content-label">{typology}:</span><span className="flyout-content-data">{this.props.interviewee.typology[this.props.locale].join(', ')}</span>
                 </p>
                 <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
                     <a
