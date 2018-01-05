@@ -1,5 +1,6 @@
 import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
+import logos from '../../../images/logos-footer.png'
 
 
 export default class Home extends React.Component {

@@ -7,6 +7,7 @@ import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import ArchiveUtils from '../../../lib/utils';
 import moment from 'moment';
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 
 export default class ArchiveSearch extends React.Component {
@@ -19,7 +20,7 @@ export default class ArchiveSearch extends React.Component {
 
     content() {
         if (this.props.isArchiveSearching) {
-            return <img src="/assets/eog/large_spinner.gif" className="archive-search-spinner"/>;
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         } else {
             return (
                 <div>
