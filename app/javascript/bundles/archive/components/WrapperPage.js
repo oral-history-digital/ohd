@@ -7,6 +7,9 @@ import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import ResizeAware from 'react-resize-aware';
 import ArchiveUtils from '../../../lib/utils';
 
+import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
+import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
+
 
 export default class WrapperPage extends React.Component {
 
@@ -167,6 +170,9 @@ export default class WrapperPage extends React.Component {
 
 
     render() {
+
+        let logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
+
         return (
             <ResizeAware onResize={this.onResize}>
                 <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div>
@@ -174,7 +180,7 @@ export default class WrapperPage extends React.Component {
                     <div className={this.css()}>
                         <header className='site-header'>
                             <a className="logo-link" href="#" title={ArchiveUtils.translate(this.props, 'home')}>
-                                <img className="logo-img" src="/assets/eog/mog-archiv-logo.svg">
+                                <img className="logo-img" src={logoSrc}>
                                 </img>
                                 <span className="logo-text">MOG</span>
                             </a>
