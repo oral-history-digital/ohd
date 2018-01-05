@@ -9,6 +9,11 @@ class PersonSerializer < ActiveModel::Serializer
                          birthname: i.birth_name}}
   end
 
+  def date_of_birth
+    return "" if object.date_of_birth.blank?
+    object.date_of_birth.sub(/../,"")
+  end
+
 
   def histories
     object.histories.map{ |history|
