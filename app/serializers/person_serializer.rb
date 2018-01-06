@@ -15,7 +15,7 @@ class PersonSerializer < ActiveModel::Serializer
   end
 
   def typology
-    facets = object.typology.split(',')
+    facets = object.typology ? object.typology.split(',') : []
     object.translations.each_with_object({}) {|i, hsh |
       alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
       hsh[alpha2_locale] = facets.map{|typology| I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}") }}
