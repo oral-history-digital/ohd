@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         locale: state.archive.locale,
         isArchiveSearching: state.search.isArchiveSearching,
-        account: state.account
     }
 }
 

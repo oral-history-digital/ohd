@@ -15,7 +15,6 @@ const mapStateToProps = (state) => {
         interview: data && data.interview,
         locale: state.archive.locale,
         translations: state.archive.translations,
-        account: state.account
     }
 }
 

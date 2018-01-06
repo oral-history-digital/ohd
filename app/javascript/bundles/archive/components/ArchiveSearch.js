@@ -5,6 +5,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveUtils from '../../../lib/utils';
 import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
@@ -109,16 +110,12 @@ export default class ArchiveSearch extends React.Component {
     }
 
     saveSearchLink() {
-        if (this.props.account.email) {
-            return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                            title: 'Save search',
-                            content: this.saveSearchForm()
-                        })}>
-                        <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
-                    </div>
-        } else {
-            return null;
-        }
+        return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
+                        title: 'Save search',
+                        content: this.saveSearchForm()
+                    })}>
+                    <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
+                </div>
     }
 
     render() {
@@ -129,7 +126,9 @@ export default class ArchiveSearch extends React.Component {
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
-                        {this.saveSearchLink()}
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.saveSearchLink()}
+                        </AuthShowContainer>
                         <div className="search-results-legend-text">
                             {this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}
                         </div>

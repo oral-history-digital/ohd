@@ -1,6 +1,7 @@
 import React from 'react';
 import ArchiveUtils from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
+import AuthShowContainer from '../containers/AuthShowContainer';
 
 import {
     INTERVIEW_URL
@@ -15,38 +16,30 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    content(label, value, showWhenLoggedIn=true) {
-        if (this.props.account.email || showWhenLoggedIn) {
-            return (
-                <p>
-                    <span className="flyout-content-label">{label}:</span>
-                    <span className="flyout-content-data">{value}</span>
-                </p>
-            )
-        } else {
-            return null;
-        }
+    content(label, value) {
+        return (
+            <p>
+                <span className="flyout-content-label">{label}:</span>
+                <span className="flyout-content-data">{value}</span>
+            </p>
+        )
     }
 
     to() {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
-    download(transcript=true, showWhenLoggedIn=false) {
-        if (this.props.account.email || showWhenLoggedIn) {
-            let lang = transcript ? 'el' : this.props.locale;
-            let textKey = transcript ? 'transcript' : 'translation';
-            return (
-                        <p>
-                            <Link to={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
-                                <i className="fa fa-download flyout-content-ico"></i>
-                                <span>{ArchiveUtils.translate(this.props, textKey)}</span>
-                            </Link>
-                        </p>
-            )
-        } else {
-            return null;
-        }
+    download(transcript=true) {
+        let lang = transcript ? this.props.interview.lang : this.props.locale;
+        let textKey = transcript ? 'transcript' : 'translation';
+        return (
+                    <p>
+                        <Link to={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
+                            <i className="fa fa-download flyout-content-ico"></i>
+                            <span>{ArchiveUtils.translate(this.props, textKey)}</span>
+                        </Link>
+                    </p>
+        )
     }
 
     interviewLink() {
@@ -63,8 +56,10 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer))}
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId)}
                 {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink())}
-                {this.download()}
-                {this.download(false)}
+                <AuthShowContainer ifLoggedIn={true}>
+                    {this.download()}
+                    {this.download(false)}
+                </AuthShowContainer>
             </div>
         );
     }
