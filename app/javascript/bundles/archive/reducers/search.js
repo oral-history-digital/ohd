@@ -60,6 +60,7 @@ const search = (state = initialState, action) => {
         case REQUEST_ARCHIVE_SEARCH:
             return Object.assign({}, state, {
                 isArchiveSearching: true,
+                query: Object.assign({}, state.query, action.searchQuery)
             })
         case RECEIVE_ARCHIVE_SEARCH:
             return Object.assign({}, state, {
