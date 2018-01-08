@@ -153,6 +153,8 @@ el:
     gender: 'Φύλο'
     Man: 'άρρεν'
     Woman: 'θήλυ'
+    man: 'άρρεν'
+    woman: 'θήλυ'
     male: 'άρρεν'
     female: 'θήλυ'
     born: 'geb.'

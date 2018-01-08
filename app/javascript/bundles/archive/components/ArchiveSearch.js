@@ -98,7 +98,7 @@ export default class ArchiveSearch extends React.Component {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
         let queryText = ArchiveUtils.queryToText(this.props.query, this.props);
-        let title = queryText === "" ? now : title + " - " + now;
+        let title = queryText === "" ? now : queryText + " - " + now;
 
         return <UserContentFormContainer
             title={title}
