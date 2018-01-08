@@ -60,9 +60,11 @@ module ReferenceTree
   def leafes_with_parent_nodes
     parent_nodes = []
     segment_registry_references.each do |ref| 
-      node = find_or_create_node(parent_nodes, ref.registry_entry_id)
-      node[:children] << leafe(ref.ref_object)
-      node[:leafe_count] += 1;
+      if ref.ref_object
+        node = find_or_create_node(parent_nodes, ref.registry_entry_id)
+        node[:children] << leafe(ref.ref_object)
+        node[:leafe_count] += 1;
+      end
     end
     parent_nodes
   end
