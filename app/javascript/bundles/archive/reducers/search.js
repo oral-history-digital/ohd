@@ -29,13 +29,10 @@ const search = (state = initialState, action) => {
         case REQUEST_INTERVIEW_SEARCH:
             return Object.assign({}, state, {
                 isInterviewSearching: true,
-                isFetching: true,
-                didInvalidate: false
             })
         case RECEIVE_INTERVIEW_SEARCH:
             return Object.assign({}, state, {
                 isInterviewSearching: false,
-                didInvalidate: false,
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         foundSegments: action.foundSegments,
