@@ -155,6 +155,8 @@ de:
     gender: 'Geschlecht'
     Man: 'männlich'
     Woman: 'weiblich'
+    man: 'männlich'
+    woman: 'weiblich'
     male: 'männlich'
     female: 'weiblich'
     born: 'geb.'
