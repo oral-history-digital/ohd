@@ -33,7 +33,7 @@ export default class RefTree extends React.Component {
     render() {
         return (
             <div className={'content-index'}>
-                {this.renderChildren(this.props.refTree[0].children)}
+                {this.renderChildren(this.props.refTree.children)}
             </div>
         );
     }

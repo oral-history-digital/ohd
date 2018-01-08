@@ -3,7 +3,6 @@ require 'globalize'
 class Interview < ActiveRecord::Base
   include Project::CategoryExtension
   include Paperclip
-  include ReferenceTree
   include IsoHelpers
 
   belongs_to :collection

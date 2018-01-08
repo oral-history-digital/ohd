@@ -13,16 +13,13 @@ class InterviewsController < BaseController
           segments = Segment.
               #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-          for_interview_id(@interview.id)
-          references = @interview.segment_registry_references
-          headings = segments.with_heading
+              for_interview_id(@interview.id)
           {
               interview: ::InterviewSerializer.new(@interview).as_json,
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
-              headings: headings.map {|s| ::SegmentSerializer.new(s).as_json},
-              references: references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              #ref_tree: @interview.ref_tree.select{|r| r[Project.ref_tree_branch_find_attribute] == Project.ref_tree_branch_root_id} # 637018 == id of "Thematic"
-              ref_tree: @interview.ref_tree.select{|r| r[:id] == Project.ref_tree_branch_root_id} # 637018 == id of "Thematic"
+              headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
+              references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
+              ref_tree: ReferenceTree.new(@interview.segment_registry_references).part(Project.ref_tree_branch_root_id)
           }.to_json
         end
         render plain: json
