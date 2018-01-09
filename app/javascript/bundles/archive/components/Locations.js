@@ -2,7 +2,6 @@ import React from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
-
 export default class Locations extends React.Component {
 
     componentDidUpdate(prevProps) {
@@ -29,9 +28,9 @@ export default class Locations extends React.Component {
                         markers.push(
                             <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}`} >
                                 <Popup>
-                                    <h3 onClick={() => this.props.handleClick(ref.ref_object_id, ref.archive_id)}>
-                                    {ref.desc[this.props.locale]}
-                                    </h3>
+                                    <div onClick={() => this.props.handleClick(ref.ref_object_id, ref.archive_id)}>
+                                        {this.props.popupContent(ref)}
+                                    </div>
                                 </Popup>
                             </Marker>
                         )
