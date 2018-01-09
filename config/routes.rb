@@ -123,8 +123,8 @@ Rails.application.routes.draw do
   end
 
 
-  get 'photos/src/*name' => 'photos#src'
-  get 'photos/thumb/*name' => 'photos#thumb'
+  get 'photos/src/:name' => 'photos#src'
+  get 'photos/thumb/:name' => 'photos#thumb'
 
   #get 'interviews/:id/text_materials/:filename.:extension' => 'interviews#text_materials', :as => :text_materials
   #get 'interviews/:id/photos/:filename.:extension' => 'interviews#photos', :as => :photos
