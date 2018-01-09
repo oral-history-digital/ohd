@@ -167,6 +167,7 @@ el:
     retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
     collaboration: 'Kollaboration'
     interview_id: 
+    archive_id: 'Κωδικός συνέντευξης'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'
