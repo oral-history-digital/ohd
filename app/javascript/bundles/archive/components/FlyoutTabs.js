@@ -10,6 +10,7 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import ArchiveUtils from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
+import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -38,6 +39,11 @@ export default class FlyoutTabs extends React.Component {
 
             case 3: //el
                 this.switchLocale('el');
+                break;
+
+            case 5: //interview
+                this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
+                this.setState({tabIndex: tabIndex});
                 break;
 
             default:
@@ -81,7 +87,9 @@ export default class FlyoutTabs extends React.Component {
                     <Tab className='flyout-top-nav top-nav-last lang'>el</Tab>
                     <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
                     <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
-                    <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
+                    </AuthShowContainer>
                 </TabList>
 
 

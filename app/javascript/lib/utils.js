@@ -22,7 +22,8 @@ var ArchiveUtils = {
                     if (Array.isArray(value)) {
                         //TODO: find solution for ids
                         value.forEach(function (element, index) {
-                            let val = ArchiveUtils.translate(props, 'search_facets')[element];
+                            let locale_element = element.toLowerCase().split().join('_')
+                            let val = ArchiveUtils.translate(props, 'search_facets')[locale_element];
                             let endElement = index == value.length - 1 ? "" : ", "
                             queryText = queryText + " " + val + endElement;
                         })

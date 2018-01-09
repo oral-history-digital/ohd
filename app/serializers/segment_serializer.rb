@@ -20,7 +20,7 @@ class SegmentSerializer < ActiveModel::Serializer
              #:speaker_is_interviewee
 
   def speaker_changed
-    ActionView::Base.full_sanitizer.sanitize( object.transcript).gsub(/<br>/, "").strip()[0] == ":"
+   object.speaker_changed
   end
 
   #def speaker_is_interviewee
@@ -39,13 +39,10 @@ class SegmentSerializer < ActiveModel::Serializer
 
   def transcripts
     # TODO: fit this to zwar (migrate transcript and translation to a :text-attribute in segment_translations)
-
-    s_transcript = ActionView::Base.full_sanitizer.sanitize( object.transcript).gsub(/<br>/, "").strip()
-    s_translation =  ActionView::Base.full_sanitizer.sanitize( object.translation).gsub(/<br>/, "").strip()
-
+    s_transcript = object.transcript
+    s_translation =   object.translation
     transcript = s_transcript[0] == ":" ? s_transcript.sub(/:/,"").strip() :  s_transcript
     translation = s_translation[0] == ":" ? s_translation.sub(/:/,"").strip() :  s_translation
-
      {
        de:translation,
        "#{object.interview.language.code[0..1]}": transcript

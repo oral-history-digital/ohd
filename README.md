@@ -17,9 +17,9 @@ This is the web application for CeDiS-Archiv 2.0.
     ```bash
     source ~/.bashrc
     ```
-4. Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
+4.(not necessary for MOG and future versions) Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
 
-5. Import interviews
+5.(not necessary for MOG and future versions) Import interviews
    ```bash
    bundle exec rake import:interviews:full
    ```
@@ -68,11 +68,33 @@ In case of problems, there's a test rake task for starting up the Solr server wi
 bundle exec rake solr:start
 ```
 
+Before indexing (mog only!!)  ensure:
+
+```ruby
+reg = RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.entry_code == "periods"
+```
+
+otherwise:
+```ruby
+RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.update_attribute :entry_code, 'periods'
+```
+
 When the Solr server is running, you can index the data:
 
 ```bash
 bundle exec rake solr:reindex:all
 ```
+
+## PDF Generation with Latex
+rails-latex.gem is used for generating pdfs.
+Make sure that textlive-base and texlive-xetex is installed.
+```bash
+sudo apt-get install texlive-base
+sudo apt-get install texlive-xetex 
+``` 
+The font FiraSans-Regular.ttf is used and should be installed as well. 
+
+
 
 ## Switch project in development
 

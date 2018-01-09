@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         interviews: state.search.interviews,
         translations: state.archive.translations,
         locale: state.archive.locale,
-        isArchiveSearching: state.search.isArchiveSearching
+        isArchiveSearching: state.search.isArchiveSearching,
     }
 }
 

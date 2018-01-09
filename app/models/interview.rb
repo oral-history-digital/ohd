@@ -122,7 +122,8 @@ class Interview < ActiveRecord::Base
   has_many :segment_registry_references,
            -> {
               includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}).
-              where("registry_references.ref_object_type='Segment'")
+              where("registry_references.ref_object_type='Segment'").
+              where("registry_references.registry_entry_id != '0'")
            },
            class_name: 'RegistryReference'
            
@@ -270,17 +271,16 @@ class Interview < ActiveRecord::Base
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first.send facet['id'].to_sym
+      interviewees.first.send(facet['id'].to_sym).split(',')
     end
   end
   #def facet_category_ids(entry_code)
     #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
   #end
 
-  def to_vtt(type)
+  def to_vtt(type='transcript', tape_number=1)
     vtt = "WEBVTT\n"
-    segments.select{|i| i.tape.number == 1}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
-    #segments.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
     vtt
   end
 
@@ -356,7 +356,11 @@ class Interview < ActiveRecord::Base
 
   def short_title(locale)
     locale = projectified(locale) 
-    [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+    begin
+      [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
+    end
   end
 
   def anonymous_title(locale)

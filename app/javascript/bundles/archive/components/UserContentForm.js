@@ -80,7 +80,7 @@ export default class UserContentForm extends React.Component {
     }
 
     segmentTime() {
-        return moment().utc(this.segment().start_time).format("HH:mm:ss")
+        return moment.utc(this.segment().start_time * 1000).format("HH:mm:ss")
     }
 
     segmentSelect() {

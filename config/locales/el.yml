@@ -126,6 +126,7 @@ el:
   legal_info: 'Impressum'
   team: 'Ομάδα'
   contact: 'Kontakt'
+  not_logged_in_interview_text: 'text text text ...'
   save_interview_reference: 'Αποθηκεύστε τη συνέντευξη'
   save_user_annotation: 'Γράψτε σημείωση'
   save_search: 'Αποθήκευση αναζήτησης'
@@ -152,6 +153,8 @@ el:
     gender: 'Φύλο'
     Man: 'άρρεν'
     Woman: 'θήλυ'
+    man: 'άρρεν'
+    woman: 'θήλυ'
     male: 'άρρεν'
     female: 'θήλυ'
     born: 'geb.'
@@ -163,10 +166,6 @@ el:
     persecution_of_jews: 'Judenverfolgung'
     retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
     collaboration: 'Kollaboration'
-    aaa: 'AAA'
-    bbb: 'BBB'
-    ccc: 'CCC'
-    ddd: 'DD DD'
     interview_id: 
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'

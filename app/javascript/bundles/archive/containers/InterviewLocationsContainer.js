@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
         segments: interview && interview.segments,
         locations: state.locations,
         locale: state.archive.locale,
-        tape: state.archive.tape,
         isFetchingLocations: state.archive.isFetchingLocations
     }
 }

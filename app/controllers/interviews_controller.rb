@@ -21,20 +21,20 @@ class InterviewsController < BaseController
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: headings.map {|s| ::SegmentSerializer.new(s).as_json},
               references: references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: @interview.ref_tree.select{|r| r[:id] == 637018} # 637018 == id of "Thematic"
-              #ref_tree: @interview.ref_tree.select{|r| r[:id] == 138968} # 138968 == id of "Thematic Descriptors"
+              #ref_tree: @interview.ref_tree.select{|r| r[Project.ref_tree_branch_find_attribute] == Project.ref_tree_branch_root_id} # 637018 == id of "Thematic"
+              ref_tree: @interview.ref_tree.select{|r| r[:id] == Project.ref_tree_branch_root_id} # 637018 == id of "Thematic"
           }.to_json
         end
         render plain: json
       end
       format.vtt do
-        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}" do
-          @interview.to_vtt(params[:type])
+        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:type]}-#{params[:tape_number]}" do
+          @interview.to_vtt(params[:type], params[:tape_number])
         end
         render plain: vtt
       end
       format.pdf do
-        locale = params[:locale]
+        locale = params[:lang]
         letter3_locale = ISO_639.find(locale).send(Project.alpha)
         transcript_type = "translation"
         if @interview.language.code == letter3_locale

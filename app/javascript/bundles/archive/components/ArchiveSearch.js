@@ -5,8 +5,10 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveUtils from '../../../lib/utils';
 import moment from 'moment';
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 
 export default class ArchiveSearch extends React.Component {
@@ -19,7 +21,7 @@ export default class ArchiveSearch extends React.Component {
 
     content() {
         if (this.props.isArchiveSearching) {
-            return <img src="/assets/eog/large_spinner.gif" className="archive-search-spinner"/>;
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         } else {
             return (
                 <div>
@@ -96,7 +98,7 @@ export default class ArchiveSearch extends React.Component {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
         let queryText = ArchiveUtils.queryToText(this.props.query, this.props);
-        let title = queryText === "" ? now : title + " - " + now;
+        let title = queryText === "" ? now : queryText + " - " + now;
 
         return <UserContentFormContainer
             title={title}
@@ -109,10 +111,10 @@ export default class ArchiveSearch extends React.Component {
 
     saveSearchLink() {
         return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                    title: 'Save search',
-                    content: this.saveSearchForm()
-                })}>
-            <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
+                        title: 'Save search',
+                        content: this.saveSearchForm()
+                    })}>
+                    <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
                 </div>
     }
 
@@ -124,9 +126,12 @@ export default class ArchiveSearch extends React.Component {
                 <div className='interviews wrapper-content'>
                     <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
-                        {this.saveSearchLink()}
-                        <div
-                            className="search-results-legend-text">{this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}</div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.saveSearchLink()}
+                        </AuthShowContainer>
+                        <div className="search-results-legend-text">
+                            {this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}
+                        </div>
                     </div>
 
                     <Tabs
