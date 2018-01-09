@@ -17,7 +17,7 @@ export default class Gallery extends React.Component {
                      })}
 
                 >
-                    <img src={photo.thumb}>
+                    <img src={'/photos/thumb/'+photo.src}>
                     </img>
                 </div>
             )
