@@ -1,7 +1,6 @@
 require 'globalize'
 
 class Interview < ActiveRecord::Base
-  include Project::CategoryExtension
   include Paperclip
   include IsoHelpers
 
@@ -153,9 +152,8 @@ class Interview < ActiveRecord::Base
                                      #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   searchable :auto_index => false do
-    integer :interview_id, :using => :id, :stored => true, :references => Interview
     integer :language_id, :stored => true, :references => Language
-    string :archive_id, :stored => true
+    string :archive_id, :stored => true, :references => Interview
 
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -165,36 +163,6 @@ class Interview < ActiveRecord::Base
       end
       indexing_interview_text.squeeze(' ')
     end
-    #text :headings, :boost => 20 do
-      #indexing_headings = ''
-      #segments.with_heading.each do |segment|
-        #segment.translations.each do |translation|
-          #indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
-          #indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
-        #end
-      #end
-      #indexing_headings.squeeze(' ')
-    #end
-
-    #text :registry_entries, :boost => 10 do
-      ## TODO: use registry_references in zwar
-      ##registry_references.map do |reference|
-      #segment_registry_references.map do |reference|
-        #reference.registry_entry && reference.registry_entry.search_string
-      #end.join(' ')
-    #end
-
-    ## Also index the reference by all parent entries (classification)
-    ## of the registry entry and its respective alias names.
-    #text :classification, :boost => 6 do
-      ## TODO: use registry_references in zwar
-      ##registry_references.map do |reference|
-      #segment_registry_references.map do |reference|
-        #reference.registry_entry && reference.registry_entry.ancestors.map do |ancestor|
-          #ancestor.search_string
-        #end.join(' ')
-      #end.join(' ')
-    #end
     
     (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
       integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
@@ -203,19 +171,6 @@ class Interview < ActiveRecord::Base
     Project.person_search_facets.each do |facet|
       string facet['id'].to_sym, :multiple => true, :stored => true
     end
-
-    # Index archive id, facet categories and language (with all translations) for full text category search.
-    #text :categories, :boost => 20 do
-      #cats = [self.archive_id]
-      #cats += (Project.archive_facet_category_ids + [:language]).
-          ## Retrieve all category objects of this interview.
-          #map {|c| self.send(c)}.flatten.
-          ## Retrieve their translations.
-          #map do |cat|
-        #I18n.available_locales.map {|l| cat.to_s(l)}.join(' ')
-      #end
-      #cats.join(' ')
-    #end
 
     # Create localized attributes so that we can order
     # interviews in all languages.
