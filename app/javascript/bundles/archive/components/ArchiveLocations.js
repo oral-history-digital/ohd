@@ -28,12 +28,23 @@ export default class ArchiveLocations extends React.Component {
         return locations;
     }
 
+    popupContent(ref) {
+        return (
+            <div>
+                <h3>
+                    {ref.desc[this.props.locale]}
+                </h3>
+            </div>
+        )
+    }
+
     render() {
         return(
             <LocationsContainer 
                 data={this.locations()}
                 loaded={this.locationsLoaded()}
                 handleClick={this.handleClick.bind(this)}
+                popupContent={this.popupContent.bind(this)}
             />
         );
     }
