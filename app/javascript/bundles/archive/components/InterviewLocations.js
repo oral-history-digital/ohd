@@ -37,19 +37,27 @@ export default class InterviewLocations extends React.Component {
     }
 
     popupContent(ref) {
-        return (
-            <div>
+        if (ref.ref_object) {
+            return (
+                <div>
+                    <h3>
+                        {ref.desc[this.props.locale]}
+                    </h3>
+                    <div className='time'>
+                        {moment.utc(ref.ref_object.start_time * 1000).format("HH:mm:ss")}
+                    </div>
+                    <div className='time'>
+                        {ref.ref_object.transcripts[this.props.locale]}
+                    </div>
+                </div>
+            )
+        } else {
+            return (
                 <h3>
                     {ref.desc[this.props.locale]}
                 </h3>
-                <div className='time'>
-                    {moment.utc(ref.ref_object.start_time * 1000).format("HH:mm:ss")}
-                </div>
-                <div className='time'>
-                    {ref.ref_object.transcripts[this.props.locale]}
-                </div>
-            </div>
-        )
+            )
+        }
     }
 
     render() {
