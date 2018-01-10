@@ -88,7 +88,7 @@ export default class UserContent extends React.Component {
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     onClick={() => this.props.searchInArchive(this.props.data.properties)}
-                    to={'/' + this.props.locale + '/suchen'}
+                    to={'/' + this.props.locale + '/searches/archive'}
                 >
                     {ArchiveUtils.translate(this.props, callKey)}
                 </Link>

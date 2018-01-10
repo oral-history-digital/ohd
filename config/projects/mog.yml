@@ -119,7 +119,7 @@ default: &default
     - id: 'person_reference'
       source: 'registry_entry'
       descriptor: 'Person'
-    - id: 'interview_id'
+    - id: 'archive_id'
       source: 'interview'
       use_as_facet: true
     - id: 'gender'

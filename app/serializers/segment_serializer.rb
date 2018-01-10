@@ -64,7 +64,7 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def annotation_texts
-    object.annotations.map(&:text)
+    object.annotations.map(&:localized_hash)
   end
 
   def references_count

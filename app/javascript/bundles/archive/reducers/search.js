@@ -29,13 +29,10 @@ const search = (state = initialState, action) => {
         case REQUEST_INTERVIEW_SEARCH:
             return Object.assign({}, state, {
                 isInterviewSearching: true,
-                isFetching: true,
-                didInvalidate: false
             })
         case RECEIVE_INTERVIEW_SEARCH:
             return Object.assign({}, state, {
                 isInterviewSearching: false,
-                didInvalidate: false,
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         foundSegments: action.foundSegments,
@@ -45,7 +42,7 @@ const search = (state = initialState, action) => {
             })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
-                query: Object.assign({}, state.query, action.params)
+                query: action.params
             })
         case RESET_QUERY:
             return Object.assign({}, state, {
@@ -63,6 +60,7 @@ const search = (state = initialState, action) => {
         case REQUEST_ARCHIVE_SEARCH:
             return Object.assign({}, state, {
                 isArchiveSearching: true,
+                query: Object.assign({}, state.query, action.searchQuery)
             })
         case RECEIVE_ARCHIVE_SEARCH:
             return Object.assign({}, state, {

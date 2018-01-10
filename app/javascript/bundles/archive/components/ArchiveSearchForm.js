@@ -48,8 +48,7 @@ export default class ArchiveSearchForm extends React.Component {
         for (let [key, value] of Object.entries(this.props.facets)) {
             params[key] = params[key] ? params[key] : []
         }
-        this.props.setQueryParams(params);
-        this.props.searchInArchive(serialize(this.form, {hash: false}));
+        this.props.searchInArchive(params);
         this.context.router.history.push(ARCHIVE_SEARCH_URL);
     }
 
