@@ -1219,6 +1219,10 @@ component-emitter@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
 
+component-ie@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/component-ie/-/component-ie-1.0.0.tgz#0f9582ccb078a687592cc29eb46b3186e6fe637f"
+
 compressible@~2.0.8:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.10.tgz#feda1c7f7617912732b29bf8cf26252a20b9eecd"
@@ -4764,6 +4768,12 @@ sugarss@^1.0.0:
   resolved "https://registry.yarnpkg.com/sugarss/-/sugarss-1.0.0.tgz#65e51b3958432fb70d5451a68bb33e32d0cf1ef7"
   dependencies:
     postcss "^6.0.0"
+
+superagent-no-cache@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/superagent-no-cache/-/superagent-no-cache-0.1.1.tgz#58ed8de9aeff053a9c98ae01dec4fde4b9f85fda"
+  dependencies:
+    component-ie "^1.0.0"
 
 superagent@^3.5.2:
   version "3.5.2"
