@@ -11,8 +11,8 @@
 
 \fancyhead{}
 \fancyfoot{}
-<% translation = @language[:type] == 'translation' ? "(#{I18n.backend.translate(locale, 'translation')}) " : "" %>
-\lhead{<%= "#{I18n.backend.translate(locale, 'transcript')} #{translation}#{interviewee_name} (#{@interview.archive_id})" %>}
+<% translation = @language[:type] == 'translation' ? "(#{I18n.backend.translate(@language[:locale][0..1], 'translation')}) " : "" %>
+\lhead{<%= "#{I18n.backend.translate(@language[:locale][0..1], 'transcript')} #{translation}#{interviewee_name} (#{@interview.archive_id})" %>}
 \rfoot{\thepage}
 
 
