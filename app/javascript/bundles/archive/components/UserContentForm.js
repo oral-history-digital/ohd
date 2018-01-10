@@ -68,7 +68,7 @@ export default class UserContentForm extends React.Component {
     }
 
     setErrors() {
-        this.setState({errors: "Please give at least two chars in title and description."})
+        this.setState({errors: ArchiveUtils.translate(this.props, 'user_content_errors')})
     }
 
     clearErrors() {

@@ -42,7 +42,7 @@ export default class LoginForm extends React.Component {
     }
 
     setErrors() {
-        this.setState({errors: "Please give your login and password."})
+        this.setState({errors: ArchiveUtils.translate(this.props, 'login_errors')})
     }
 
     clearErrors() {
