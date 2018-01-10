@@ -1,9 +1,20 @@
-require 'active_support/concern'
+class ReferenceTree
 
-module ReferenceTree
-  extend ActiveSupport::Concern
+  def initialize(registry_references)
+    @registry_references = registry_references
+    @tree = prepend_parents(leafes_with_parent_nodes)
+  end
 
-  included do
+  def full
+    prepend_parents(leafes_with_parent_nodes)
+  end
+
+  def part(node_id)
+    deep_find_node(@tree, node_id)[0]
+  end
+
+  def full
+    @tree
   end
 
   def leafe(segment)
@@ -59,7 +70,7 @@ module ReferenceTree
 
   def leafes_with_parent_nodes
     parent_nodes = []
-    segment_registry_references.each do |ref| 
+    @registry_references.each do |ref| 
       if ref.ref_object
         node = find_or_create_node(parent_nodes, ref.registry_entry_id)
         node[:children] << leafe(ref.ref_object)
@@ -114,12 +125,5 @@ module ReferenceTree
     else
       prepend_parents(parent_nodes)
     end
-  end
-
-  def ref_tree
-    prepend_parents(leafes_with_parent_nodes)
-  end
-
-  class_methods do
   end
 end

@@ -24,6 +24,7 @@ var ArchiveUtils = {
                         value.forEach(function (element, index) {
                             let locale_element = element.toLowerCase().split().join('_')
                             let val = ArchiveUtils.translate(props, 'search_facets')[locale_element];
+                            val = val || locale_element
                             let endElement = index == value.length - 1 ? "" : ", "
                             queryText = queryText + " " + val + endElement;
                         })

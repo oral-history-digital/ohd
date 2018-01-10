@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    setQueryParams: (name, value) => dispatch(setQueryParams(name, value)),
+    setQueryParams: (params) => dispatch(setQueryParams(params)),
     resetQuery: () => dispatch(resetQuery()),
     //loadFacets: () => dispatch(loadFacets()),
     searchInArchive: (query) => dispatch(searchInArchive(query)),

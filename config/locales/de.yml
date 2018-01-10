@@ -169,6 +169,7 @@ de:
     retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
     collaboration: 'Kollaboration'
     interview_id: 'Interviews'
+    archive_id: 'Interview-ID'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'

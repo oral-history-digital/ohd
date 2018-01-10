@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Annotation < ActiveRecord::Base
+  include IsoHelpers
 
   # this is only true for editorial annotations
   # user annotations are linked to the segment directly, to circumvent the
@@ -64,6 +65,13 @@ class Annotation < ActiveRecord::Base
     unless segment.nil?
       self.segment_id = segment.id
       self.timecode = segment.timecode
+    end
+  end
+
+  def localized_hash
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = text(projectified(locale))
+      mem
     end
   end
 

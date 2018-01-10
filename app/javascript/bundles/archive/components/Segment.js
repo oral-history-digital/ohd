@@ -65,7 +65,7 @@ export default class Segment extends React.Component {
         if (this.state.contentType == 'annotations') {
             return this.props.data.annotation_texts.map((annotation, index) => {
                 return <p className='content-trans-text-element-data'
-                          key={"annotation-" + index}>{annotation}</p>
+                          key={"annotation-" + index}>{annotation[locale]}</p>
             })
         }
     }

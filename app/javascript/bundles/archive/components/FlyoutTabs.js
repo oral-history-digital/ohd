@@ -10,7 +10,6 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import ArchiveUtils from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -23,6 +22,12 @@ export default class FlyoutTabs extends React.Component {
         super(props, context);
         this.state = {
             tabIndex: this.props.tabIndex
+        }
+    }
+
+    componentDidMount() {
+        if (!this.props.account.email) {
+            this.props.fetchAccount()
         }
     }
 
@@ -70,6 +75,7 @@ export default class FlyoutTabs extends React.Component {
     render() {
 
         let interviewCSS = this.props.interview ? 'flyout-tab' : 'hidden';
+        let userContentCSS = this.props.account.email ? 'flyout-tab' : 'hidden';
 
         return (
             <Tabs
@@ -87,9 +93,7 @@ export default class FlyoutTabs extends React.Component {
                     <Tab className='flyout-top-nav top-nav-last lang'>el</Tab>
                     <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
                     <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
-                    </AuthShowContainer>
+                    <Tab className={userContentCSS}>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
                 </TabList>
 
 
