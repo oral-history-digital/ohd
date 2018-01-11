@@ -7,6 +7,7 @@ el:
   publish: 'Veröffentlichen'
   login: 'Εγγραφή'
   login_errors: '(bitte übersetzen) Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
+  logged_in_as: '(bitte übersetzen) Angemeldet als'
   user_name: 'Χρήστης'
   password: 'Κωδικός'
   notice: 'Σήμανση ως αγαπημένο'
