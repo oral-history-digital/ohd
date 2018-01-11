@@ -21,7 +21,7 @@ class RegistryReferencesController < BaseController
           segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
           {
             archive_id: params[:archive_id],
-            segment_ref_locations: segment_ref_locations.map{|e| ::RegistryReferenceSerializer.new(e)},
+            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e)},
           }.to_json
         end
         render plain: json

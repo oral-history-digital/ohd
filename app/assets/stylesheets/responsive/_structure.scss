@@ -42,9 +42,10 @@ body {
 header.site-header {
   height: 80px;
   background: #fff;
-  padding: 0 10%;
+  padding: 0 5%;
   @include screen-m {
     height: 100px;
+    padding: 0 10%;
   }
 }
 

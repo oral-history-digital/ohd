@@ -1,9 +1,11 @@
 import request from 'superagent';
+import noCache from 'superagent-no-cache';
 
 //if (typeof Loader == "undefined") {
   var Loader = {
     getJson: function(url, queryParams, dispatch, callback) {
       request.get(url)
+        .use(noCache)
         .set('Accept', 'application/json')
         .query(queryParams)
         .end( (error, res) => {
