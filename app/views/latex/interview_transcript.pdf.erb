@@ -19,13 +19,13 @@
 <% paragraphs = [] %>
 <% @interview.segments.select {|i| i.tape.number == 1}.each_with_index do |segment, index| %>
   <% speaker = "" %>
-  <% if segment.speaker_changed %>
+  <% if segment.speaker_changed && segment.speaker_id > 0 %>
     <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @language[:locale]).first %>
     <% speaker = "#{person_translation.first_name} #{person_translation.last_name}".strip %>
   <% end %>
   <% paragraph_hash = Hash.new %>
   <% paragraph_hash['segment'] = latex_escape(speaker + segment.send(@language[:type].to_sym).gsub("&nbsp;", " ")) %>
-  <% paragraph_hash['new_line'] = segment.speaker_changed %>
+  <% paragraph_hash['new_line'] = segment.speaker_changed && segment.speaker_id > 0  %>
   <% paragraphs << paragraph_hash %>
   <% if !segment.mainheading(@language[:locale]).blank? || !segment.subheading(@language[:locale]).blank? || index == @interview.segments.count - 1 %>
     <% paragraphs.each do |paragraph| %>
