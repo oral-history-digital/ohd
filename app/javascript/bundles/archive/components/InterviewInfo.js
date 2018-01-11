@@ -29,16 +29,16 @@ export default class InterviewInfo extends React.Component {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
-    download(transcript=true) {
+    download(transcript = true) {
         let lang = transcript ? this.props.interview.lang : this.props.locale;
         let textKey = transcript ? 'transcript' : 'translation';
         return (
-                    <p>
-                        <Link to={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
-                            <i className="fa fa-download flyout-content-ico"></i>
-                            <span>{ArchiveUtils.translate(this.props, textKey)}</span>
-                        </Link>
-                    </p>
+            <p>
+                <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
+                    <i className="fa fa-download flyout-content-ico"></i>
+                    <span>{ArchiveUtils.translate(this.props, textKey)}</span>
+                </a>
+            </p>
         )
     }
 
