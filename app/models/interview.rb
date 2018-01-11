@@ -1,4 +1,6 @@
 require 'globalize'
+require "#{Rails.root}/lib" + '/reference_tree.rb'
+
 
 class Interview < ActiveRecord::Base
   include Paperclip
