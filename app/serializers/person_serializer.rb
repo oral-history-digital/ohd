@@ -11,7 +11,7 @@ class PersonSerializer < ActiveModel::Serializer
 
   def date_of_birth
     return "" if object.date_of_birth.blank?
-    object.date_of_birth.sub(/../,"")
+    object.date_of_birth.sub(/^\.+/,"")
   end
 
   def typology
