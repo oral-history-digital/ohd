@@ -23,7 +23,7 @@ export default class Account extends React.Component {
     info() {
         if (this.props.account.email) {
             return <div className='info'>
-                {`logged in as ${this.props.account.firstName} ${this.props.account.lastName}`}
+                {`${ArchiveUtils.translate(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
             </div>
         } else if (this.props.account.error) {
             return <div className='error'>

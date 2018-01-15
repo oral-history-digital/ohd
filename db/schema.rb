@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 20171201105841) do
     t.string   "gender",           limit: 160
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "typology"
+    t.string   "typology",         limit: 1024
     t.index ["person_dedalo_id"], name: "person_dedalo_id", using: :btree
   end
 
@@ -439,6 +439,8 @@ ActiveRecord::Schema.define(version: 20171201105841) do
     t.integer  "position",                         default: 1
     t.string   "workflow_state",                   default: "private"
     t.string   "media_id"
+    t.datetime "submitted_at"
+    t.datetime "published_at"
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
     t.index ["user_id"], name: "index_user_contents_on_user_id", using: :btree

@@ -9,7 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *
+ *= require_tree ./shared
  */
-<%# stylesheets_path = File.join("app", "assets", "stylesheets") %>
-<%# project_assets =  File.join(stylesheets_path, "#{Rails.configuration.x.project}", "**", "*.{css,scss,erb}") %>
-<%# Dir.glob(project_assets).each{|i| require_asset(i.gsub(stylesheets_path + "/", '')) }  %>
+<% stylesheets_path = File.join("app", "assets", "stylesheets") %>
+<% project_assets =  File.join(stylesheets_path, "#{Rails.configuration.x.project}", "**", "*.{css,scss,erb}") %>
+<% Dir.glob(project_assets).each{|i| require_asset(i.gsub(stylesheets_path + "/", '')) }  %>

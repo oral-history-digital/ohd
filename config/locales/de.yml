@@ -7,6 +7,7 @@ de:
   publish: 'Veröffentlichen'
   login: 'Anmelden'
   login_errors: 'Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
+  logged_in_as: 'Angemeldet als'
   user_name: 'Benutzer(in)'
   password: 'Passwort'
   notice: 'Merken'
