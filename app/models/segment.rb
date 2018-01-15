@@ -164,7 +164,7 @@ class Segment < ActiveRecord::Base
   end
 
   def transcript
-    filter_annotation( read_attribute(:transcript) ).to_s.strip
+    filter_annotation( read_attribute(:transcript) ).to_s.gsub("&nbsp;", " ").strip
   end
 
   # The following method leads to errors in the globalize-gem:
@@ -173,7 +173,7 @@ class Segment < ActiveRecord::Base
   #   from /home/grgr/.rvm/gems/ruby-2.4.0@zwar/bundler/gems/globalize-6f9d3f38d132/lib/globalize/active_record/instance_methods.rb:146:in `save'
   #
   def translation
-    filter_annotation( read_attribute(:translation) ).to_s.strip
+    filter_annotation( read_attribute(:translation) ).to_s.gsub("&nbsp;", " ").strip
   end
 
   def joined_transcript_and_translation
