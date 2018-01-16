@@ -199,7 +199,7 @@ EVAL
   end
 
   def activate
-    update_attribute :activated_at, Time.now
+    self.user_account.update_attribute :confirmed_at, Time.now
   end
 
   # Flags the account as deactivated
