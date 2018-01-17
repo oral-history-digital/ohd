@@ -11,16 +11,16 @@
 
 \fancyhead{}
 \fancyfoot{}
-\lhead{<%= "#{I18n.backend.translate(locale, 'history')} #{interviewee_name} (#{@interview.archive_id})" %>}
+\lhead{<%= "#{I18n.backend.translate(@language[:locale][0..1], 'history')} #{interviewee_name} (#{@interview.archive_id})" %>}
 \rfoot{\thepage}
 
 
-<% @interview.interviewees.first.histories.each do |history|  %>
-  <% start_date = history.translations.where(locale: @language[:locale]).first.deportation_date  %>
-  <% end_date = history.translations.where(locale: @language[:locale]).first.return_date  %>
-  <% span = end_date.blank? ? start_date : "#{start_date} - #{end_date}"  %>
-    <%= "\\section*{#{latex_escape(span)}}" %>
-    <%= latex_escape(history.translations.where(locale: @language[:locale]).first.forced_labor_details) %>
+<% @interview.interviewees.first.histories.each do |history| %>
+  <% start_date = history.translations.where(locale: @language[:locale]).first.deportation_date %>
+  <% end_date = history.translations.where(locale: @language[:locale]).first.return_date %>
+  <% span = end_date.blank? ? start_date : "#{start_date} - #{end_date}" %>
+  \section*{ <%= latex_escape(span) %> }
+  <%= latex_escape(history.translations.where(locale: @language[:locale]).first.forced_labor_details) %>
 <% end %>
 
 

@@ -41,8 +41,8 @@ class SegmentSerializer < ActiveModel::Serializer
     # TODO: fit this to zwar (migrate transcript and translation to a :text-attribute in segment_translations)
     s_transcript = object.transcript
     s_translation =   object.translation
-    transcript = s_transcript[0] == ":" ? s_transcript.sub(/:/,"").strip() :  s_transcript
-    translation = s_translation[0] == ":" ? s_translation.sub(/:/,"").strip() :  s_translation
+    transcript = s_transcript[0] == ":" ? s_transcript.sub(/^\:+\s*\:*/,"").strip() :  s_transcript
+    translation = s_translation[0] == ":" ? s_translation.sub(/^\:+\s*\:*/,"").strip() :  s_translation
      {
        de:translation,
        "#{object.interview.language.code[0..1]}": transcript
