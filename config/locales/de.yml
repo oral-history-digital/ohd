@@ -12,6 +12,8 @@ de:
   password: 'Passwort'
   notice: 'Merken'
   forget_password: 'Passwort vergessen?'
+  account_activation_errors: 'Passwort und Passwortbestätigung müssen gleich und mind. 6 Zeichen lang sein'
+  submit: 'Absenden'
   platform: 'Eine Plattform der'
   cooperation: 'in Kooperation mit'
   promoted: 'gefördert durch'

@@ -1,6 +1,7 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  respond_to :json, :html
   layout 'responsive'
 
   def new
@@ -74,7 +75,8 @@ class UserRegistrationsController < ApplicationController
       if @user_account.errors.empty?
         @user_account.reset_password_token = nil
         flash[:alert] = t('welcome', :scope => 'devise.registrations')
-        sign_in_and_redirect(:user_account, @user_account)
+        sign_in(:user_account, @user_account)
+        respond_with @user_account, location: after_sign_in_path_for(@user_account)
       else
         error_type = case @user_account.errors.map {|e| e.first}.compact.first
                        when :password, 'password'

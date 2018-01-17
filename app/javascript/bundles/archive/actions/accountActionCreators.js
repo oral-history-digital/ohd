@@ -107,10 +107,10 @@ const changedPassword = (json) => ({
         changePasswordStatus: json
 })
 
-export function submitChangePassword(params) {
+export function submitChangePassword(params, resetToken) {
     return dispatch => {
         dispatch(changePassword())
-        Loader.put(CHANGE_PASSWORD_URL, params, dispatch, changedPassword(json));
+        Loader.post(`/de/user_registrations/${resetToken}/confirm`, params, dispatch, loggedIn, authError);
     }
 }
 

@@ -6,6 +6,7 @@ import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
 import SearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
+import ActivateAccount from '../components/ActivateAccount';
 import HomeContainer from '../containers/HomeContainer';
 
 const App = (props) => (
@@ -16,6 +17,8 @@ const App = (props) => (
           <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/searches/archive" component={SearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
+          <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccount} />
+    //"/de/user_registrations"  // registrierung ist eingegangen und wird geprüft
       </div>
     </BrowserRouter>
   </Provider>
