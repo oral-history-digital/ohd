@@ -63,33 +63,32 @@ class UserRegistrationsController < ApplicationController
     # submitted the password
     # here the confirmation_token is passed as :id
     account_for_token(params[:id])
-    #@user_account = UserAccount.find(params[:id])
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    if @user_account.nil?
-      flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
-      redirect_to new_user_account_session_url
-    else
+    #if @user_account.nil?
+      #flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
+      #redirect_to new_user_account_session_url
+    #else
       @user_account.confirm!(password, password_confirmation)
       if @user_account.errors.empty?
         @user_account.reset_password_token = nil
         flash[:alert] = t('welcome', :scope => 'devise.registrations')
         sign_in(:user_account, @user_account)
         respond_with @user_account, location: after_sign_in_path_for(@user_account)
-      else
-        error_type = case @user_account.errors.map {|e| e.first}.compact.first
-                       when :password, 'password'
-                         'password_missing'
-                       when :password_confirmation, 'password_confirmation'
-                         'password_confirmation_missing'
-                       else
-                         'invalid_token'
-                     end
-        flash[:alert] = t(error_type, :scope => 'devise.confirmations')
-        render :action => :activate
+      #else
+        #error_type = case @user_account.errors.map {|e| e.first}.compact.first
+                       #when :password, 'password'
+                         #'password_missing'
+                       #when :password_confirmation, 'password_confirmation'
+                         #'password_confirmation_missing'
+                       #else
+                         #'invalid_token'
+                     #end
+        #flash[:alert] = t(error_type, :scope => 'devise.confirmations')
+        #render :action => :activate
       end
-    end
+    #end
   end
 
   private
