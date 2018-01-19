@@ -8,6 +8,7 @@ export default class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            showErrors: false, 
             values: {},
             errors: {
                 // every mandatory field has to be listed here 
@@ -47,6 +48,7 @@ export default class RegisterForm extends React.Component {
         Object.keys(this.state.errors).map((name, index) => {
             errors = this.state.errors[name] || errors;
         })
+        this.setState({showErrors: errors});
         return !errors;
     }
 
@@ -54,20 +56,40 @@ export default class RegisterForm extends React.Component {
         return (
             <div>
                 <form id='new_user_registration' className='user_registration' onSubmit={this.handleSubmit}>
+                    <SelectContainer
+                        scope='user_registration.appellations' 
+                        attribute='appellation' 
+                        values={['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof']}
+                        withEmpty={true}
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== ''}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
                     <InputContainer 
                         scope='user_registration' 
                         attribute='first_name' 
                         type='text' 
+                        showErrors={this.state.showErrors}
                         validate={function(v){return v.length > 1}} 
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                     />
-                    <SelectContainer
+                    <InputContainer 
                         scope='user_registration' 
-                        attribute='appellation' 
-                        values={['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof']}
-                        withEmpty={true}
-                        validate={function(v){return v !== ''}} 
+                        attribute='last_name' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='email' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}} 
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                     />

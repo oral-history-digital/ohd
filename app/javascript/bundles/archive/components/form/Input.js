@@ -42,6 +42,7 @@ export default class Input extends React.Component {
             <ElementContainer
                 scope={this.props.scope}
                 attribute={this.props.attribute}
+                showErrors={this.props.showErrors}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
             >

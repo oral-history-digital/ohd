@@ -14,7 +14,7 @@ export default class Register extends React.Component {
                         {t(this.props, 'devise.registrations.link')}
                     </h1>
                     <p>
-                        {t(this.props, 'registration_text')}
+                        {t(this.props, 'user_registration.registration_text')}
                     </p>
                     <RegisterFormContainer />
                 </div>

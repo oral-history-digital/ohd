@@ -19,14 +19,14 @@ export default class Element extends React.Component {
     }
 
     error() {
-        if (this.props.valid) {
-            return null;
-        } else {
+        if (!this.props.valid && this.props.showErrors) {
             return (
                 <div className='error'>
                     {t(this.props, `${this.props.scope}_errors.${this.props.attribute}`)}
                 </div>
             )
+        } else {
+            return null;
         }
     }
 
