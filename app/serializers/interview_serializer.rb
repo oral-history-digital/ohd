@@ -69,7 +69,12 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def still_url
     #object.still_image.url(:original)
-    "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+    case Project.name.to_sym
+    when :mog
+      "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+    when :zwar
+      "/assets/stills/#{object.archive_id}_still_original.JPG"
+    end
   end
 
   def src_base
