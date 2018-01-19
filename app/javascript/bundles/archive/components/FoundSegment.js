@@ -14,7 +14,11 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        return this.props.data.transcripts[this.props.locale.substring(0,2)]
+        let transcript = this.props.data.transcripts[this.props.locale];
+        if (transcript.length == 0){
+            transcript = this.props.data.transcripts[this.props.lang];
+        }
+        return transcript;
     }
 
     render() {
