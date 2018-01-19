@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from './form/Input';
+import InputContainer from '../containers/form/InputContainer';
 import SelectContainer from '../containers/form/SelectContainer';
 import { t } from '../../../lib/utils';
 
@@ -54,7 +54,7 @@ export default class RegisterForm extends React.Component {
         return (
             <div>
                 <form id='new_user_registration' className='user_registration' onSubmit={this.handleSubmit}>
-                    <Input 
+                    <InputContainer 
                         scope='user_registration' 
                         attribute='first_name' 
                         type='text' 
