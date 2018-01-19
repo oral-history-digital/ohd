@@ -11,6 +11,7 @@ import ArchiveUtils from '../../../lib/utils';
 const mapStateToProps = (state) => {
     let data = ArchiveUtils.getInterview(state);
     return {
+        project: state.archive.project,
         archiveId: state.archive.archiveId,
         interview: data && data.interview,
         segments: data && data.segments,
