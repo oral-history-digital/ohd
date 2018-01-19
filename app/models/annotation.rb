@@ -70,7 +70,7 @@ class Annotation < ActiveRecord::Base
 
   def localized_hash
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = text(projectified(locale))
+      mem[locale] = ActionView::Base.full_sanitizer.sanitize(text(projectified(locale))).gsub("&nbsp;", " ")
       mem
     end
   end
