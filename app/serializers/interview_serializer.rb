@@ -28,7 +28,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :title,
              :short_title,
              :still_url,
-             :src,
+            #  :src,
              :src_base,
              :references,
              :formatted_duration,
@@ -73,7 +73,7 @@ class InterviewSerializer < ActiveModel::Serializer
     when :mog
       "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     when :zwar
-      "/assets/stills/#{object.archive_id}_still_original.JPG"
+      "http://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_small.JPG"
     end
   end
 
