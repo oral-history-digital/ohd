@@ -6,8 +6,11 @@ import { handleSegmentClick } from '../actions/interviewActionCreators';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let data = ArchiveUtils.getInterview(state);
+    let interview = data && data.interview;
     return { 
         locale: state.archive.locale,
+        lang: interview && interview.lang,
     }
 }
 
