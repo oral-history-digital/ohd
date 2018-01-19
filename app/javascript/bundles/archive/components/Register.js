@@ -1,23 +1,16 @@
 import React from 'react';
+import RegisterFormContainer from '../containers/RegisterFormContainer';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 
 
 export default class Register extends React.Component {
 
-    content() {
+    render() {
         return (
-            <WrapperPageContainer
-                tabIndex={1}>
-                <div className='wrapper-content register'
-                     dangerouslySetInnerHTML = {{__html: this.props.registerContent}}
-                />
-
+            <WrapperPageContainer tabIndex={1}>
+                <RegisterFormContainer />
             </WrapperPageContainer>
         )
-    }
-
-    render() {
-        return this.content();
     }
 
 }
