@@ -43,13 +43,21 @@ export default class Heading extends React.Component {
     }
   }
 
+  expandable(){
+      if (this.props.data.subheadings.length == 0){
+          return <div className='heading-ico active'/>
+      } else {
+          let icoClass =  this.state.expanded ? 'heading-ico active': 'heading-ico' ;
+          return <div className={icoClass}
+               onClick={() => this.toggle()}/>
+      }
+  }
+
   render () {
-    let icoClass = this.state.expanded ? 'heading-ico active': 'heading-ico' ;
     return (
       <div className='heading'>
-        <div className={icoClass}
-             onClick={() => this.toggle()}/>
-        <div 
+          {this.expandable()}
+        <div
           className='mainheading'
           onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)} 
         >
