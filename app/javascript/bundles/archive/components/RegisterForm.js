@@ -1,6 +1,7 @@
 import React from 'react';
 import Input from './form/Input';
-import Select from './form/Select';
+import SelectContainer from '../containers/form/SelectContainer';
+import { t } from '../../../lib/utils';
 
 export default class RegisterForm extends React.Component {
 
@@ -20,7 +21,6 @@ export default class RegisterForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.textMethod = this.textMethod.bind(this);
     }
 
     handleChange(name, value) {
@@ -50,18 +50,6 @@ export default class RegisterForm extends React.Component {
         return !errors;
     }
 
-    textMethod(scope, value, error=false) {
-        let text;
-        let scopeE = error ? scope + '_errors' : scope;
-        try{
-            text = this.props.translations[this.props.locale][scopeE][value];
-        } catch(e) {
-            text = `translation for ${this.props.locale}.${scopeE}.${value} is missing!`;
-        } finally {
-            return text;
-        }
-    }
-
     render() {
         return (
             <div>
@@ -73,9 +61,8 @@ export default class RegisterForm extends React.Component {
                         validate={function(v){return v.length > 1}} 
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
-                        textMethod={this.textMethod}
                     />
-                    <Select
+                    <SelectContainer
                         scope='user_registration' 
                         attribute='appellation' 
                         values={['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof']}
@@ -83,9 +70,8 @@ export default class RegisterForm extends React.Component {
                         validate={function(v){return v !== ''}} 
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
-                        textMethod={this.textMethod}
                     />
-                    <input type="submit" value={this.textMethod('user_registration', 'register')}/>
+                    <input type="submit" value={t(this.props, 'user_registration.register')}/>
                 </form>
             </div>
         );

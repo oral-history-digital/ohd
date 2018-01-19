@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '../../../../lib/utils';
 
 export default class Element extends React.Component {
 
@@ -7,25 +8,12 @@ export default class Element extends React.Component {
     //   @attribute
     //   @valid = boolean
     //   @mandatory = boolean
-    //   @textMethod = function
-
-    //text(error=false) {
-        //let scope = error ? this.props.scope + '_errors' : this.props.scope;
-        //let text;
-        //try{
-            //text = this.props.translations[this.props.locale][scope][this.props.attribute];
-        //} catch(e) {
-            //text = `translation for ${this.props.locale}.${scope}.${this.props.attribute} is missing!`;
-        //} finally {
-            //return text;
-        //}
-    //}
 
     label() {
         let mandatory = this.props.mandatory ? ' *' : '';
         return (
             <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {this.props.textMethod(this.props.scope, this.props.attribute, false) + mandatory}
+                {t(this.props, `${this.props.scope}.${this.props.attribute}`) + mandatory}
             </label>
         );
     }
@@ -36,7 +24,7 @@ export default class Element extends React.Component {
         } else {
             return (
                 <div className='error'>
-                    {this.props.textMethod(this.props.scope, this.props.attribute, true)}
+                    {t(this.props, `${this.props.scope}_errors.${this.props.attribute}`)}
                 </div>
             )
         }

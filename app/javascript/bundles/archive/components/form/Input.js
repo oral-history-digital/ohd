@@ -1,5 +1,5 @@
 import React from 'react';
-import Element from './Element';
+import ElementContainer from '../../containers/form/ElementContainer';
 
 export default class Input extends React.Component {
 
@@ -11,7 +11,6 @@ export default class Input extends React.Component {
     //   @validate = function
     //   @handleChange = function
     //   @handleErrors = function
-    //   @textMethod   = function
     //   @help
 
     constructor(props, context) {
@@ -40,12 +39,11 @@ export default class Input extends React.Component {
 
     render() {
         return (
-            <Element
+            <ElementContainer
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
-                textMethod={this.props.textMethod}
             >
                 <input 
                     type={this.props.type} 
@@ -54,7 +52,7 @@ export default class Input extends React.Component {
                     onChange={this.handleChange}
                 />
                 {this.props.help}
-            </Element>
+            </ElementContainer>
         );
     }
 

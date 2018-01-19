@@ -1,5 +1,6 @@
 import React from 'react';
-import Element from './Element';
+import ElementContainer from '../../containers/form/ElementContainer';
+import { t } from '../../../../lib/utils';
 
 export default class Select extends React.Component {
 
@@ -11,7 +12,6 @@ export default class Select extends React.Component {
     //   @validate = function
     //   @handleChange = function
     //   @handleErrors = function
-    //   @textMethod   = function
     //   @help
 
     constructor(props, context) {
@@ -42,14 +42,14 @@ export default class Select extends React.Component {
         let opts = this.props.values.map((value, index) => {
             return (
                 <option value={value}>
-                    {this.props.textMethod(this.props.scope, value)}
+                    {t(this.props, `${this.props.scope}.${value}`)}
                 </option>
             )}
         )
         if (this.props.withEmpty) {
             opts.unshift(
                 <option value=''>
-                    {this.props.textMethod(this.props.scope, 'choose')}
+                    {t(this.props, `${this.props.scope}.choose`)}
                 </option>
             )
         }
@@ -58,12 +58,11 @@ export default class Select extends React.Component {
 
     render() {
         return (
-            <Element
+            <ElementContainer
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
-                textMethod={this.props.textMethod}
             >
                 <select 
                     name={this.props.attribute}
@@ -73,7 +72,7 @@ export default class Select extends React.Component {
                     {this.options()}
                 </select>
                 {this.props.help}
-            </Element>
+            </ElementContainer>
         );
     }
 
