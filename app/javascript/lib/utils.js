@@ -50,7 +50,7 @@ export function t(props, key) {
     } catch (e) {
         text = `translation for ${props.locale}.${key} is missing!`;
     } finally {
-        return text;
+        return text || `translation for ${props.locale}.${key} is missing!`;
     }
 }
 
