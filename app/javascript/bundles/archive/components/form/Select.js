@@ -16,45 +16,45 @@ export default class Select extends React.Component {
 
     constructor(props, context) {
         super(props);
-        this.state = {};
+        this.state = {
+            valid: this.props.validate === undefined,
+        };
 
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.props.onChange(event);
-
         const value =  event.target.value;
+        const name =  event.target.name;
+
+        this.props.handleChange(name, value);
 
         if (this.props.validate(value)) {
-            this.props.handleErrors(false);
-            this.setState({valid: false})
-        } else {
-            this.props.handleErrors(true);
+            this.props.handleErrors(name, false);
             this.setState({valid: true})
+        } else {
+            this.props.handleErrors(name, true);
+            this.setState({valid: false})
         }
     }
 
     options() {
-        return this.props.values.map((value, index) => {
+        let opts = this.props.values.map((value, index) => {
             return (
                 <option value={value}>
-                    {this.props.textMethod(scope, value)}
+                    {this.props.textMethod(this.props.scope, value)}
                 </option>
             )}
         )
+        if (this.props.withEmpty) {
+            opts.unshift(
+                <option value=''>
+                    {this.props.textMethod(this.props.scope, 'choose')}
+                </option>
+            )
+        }
+        return opts;
     }
-
-    //text(value) {
-        //let text;
-        //try{
-            //text = this.props.translations[this.props.locale][this.props.scope][value];
-        //} catch(e) {
-            //text = `translation for ${this.props.locale}.${this.props.scope}.${value} is missing!`;
-        //} finally {
-            //return text;
-        //}
-    //}
 
     render() {
         return (

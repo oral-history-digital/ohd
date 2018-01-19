@@ -24,7 +24,7 @@ export default class Element extends React.Component {
     label() {
         let mandatory = this.props.mandatory ? ' *' : '';
         return (
-            <label for={`${this.props.scope}_${this.props.attribute}`}>
+            <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
                 {this.props.textMethod(this.props.scope, this.props.attribute, false) + mandatory}
             </label>
         );

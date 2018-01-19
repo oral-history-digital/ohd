@@ -20,7 +20,6 @@ export default class Input extends React.Component {
             valid: this.props.validate === undefined,
         };
                 
-
         this.handleChange = this.handleChange.bind(this);
     }
 
