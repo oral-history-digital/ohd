@@ -11,6 +11,7 @@ export default class RegisterForm extends React.Component {
             errors: {
                 // every mandatory field has to be listed here 
                 // with errors true
+                appellation: true,
                 first_name: true,
                 //last_name: true,
             }
@@ -70,6 +71,16 @@ export default class RegisterForm extends React.Component {
                         attribute='first_name' 
                         type='text' 
                         validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                        textMethod={this.textMethod}
+                    />
+                    <Select
+                        scope='user_registration' 
+                        attribute='appellation' 
+                        values={['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof']}
+                        withEmpty={true}
+                        validate={function(v){return v !== ''}} 
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                         textMethod={this.textMethod}
