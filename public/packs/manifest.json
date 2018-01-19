@@ -1,9 +1,9 @@
 {
-  "application.css": "/packs/application.css",
-  "application.js": "/packs/application.js",
-  "hello-world-bundle.js": "/packs/hello-world-bundle.js",
-  "large_spinner.gif": "/packs/large_spinner.gif",
-  "logos-footer.png": "/packs/logos-footer.png",
-  "mog-archiv-logo_de.svg": "/packs/mog-archiv-logo_de.svg",
-  "mog-archiv-logo_el.svg": "/packs/mog-archiv-logo_el.svg"
+  "application.css": "http://0.0.0.0:8080/packs/application.css",
+  "application.js": "http://0.0.0.0:8080/packs/application.js",
+  "hello-world-bundle.js": "http://0.0.0.0:8080/packs/hello-world-bundle.js",
+  "large_spinner.gif": "http://0.0.0.0:8080/packs/large_spinner.gif",
+  "logos-footer.png": "http://0.0.0.0:8080/packs/logos-footer.png",
+  "mog-archiv-logo_de.svg": "http://0.0.0.0:8080/packs/mog-archiv-logo_de.svg",
+  "mog-archiv-logo_el.svg": "http://0.0.0.0:8080/packs/mog-archiv-logo_el.svg"
 }
