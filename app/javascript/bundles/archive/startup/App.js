@@ -18,7 +18,6 @@ const App = (props) => (
           <Route path="/:locale/searches/archive" component={SearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
           <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccount} />
-    //"/de/user_registrations"  // registrierung ist eingegangen und wird geprüft
       </div>
     </BrowserRouter>
   </Provider>
