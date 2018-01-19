@@ -14,11 +14,12 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        let transcript = this.props.data.transcripts[this.props.locale];
-        if (transcript.length == 0){
-            transcript = this.props.data.transcripts[this.props.lang];
+        let segment = "";
+        for (let lang in this.props.data.transcripts) {
+            segment = this.props.data.transcripts[lang];
+            if (segment.length > 0) break;
         }
-        return transcript;
+        return segment;
     }
 
     render() {
