@@ -26,6 +26,7 @@ class HomeController < BaseController
             home_content: home_content,
             external_links: Project.external_links,
             translations: translations,
+            project: Rails.configuration.x.project.to_s
           }.to_json
         end
 
