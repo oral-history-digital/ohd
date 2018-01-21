@@ -22,7 +22,7 @@ export default class Element extends React.Component {
         if (!this.props.valid && this.props.showErrors) {
             return (
                 <div className='error'>
-                    {t(this.props, `${this.props.scope}_errors.${this.props.attribute}`)}
+                    {t(this.props, `${this.props.scope}.errors.${this.props.attribute}`)}
                 </div>
             )
         } else {

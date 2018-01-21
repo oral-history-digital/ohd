@@ -1,7 +1,7 @@
 import React from 'react';
 import ElementContainer from '../../containers/form/ElementContainer';
 
-export default class Input extends React.Component {
+export default class Textarea extends React.Component {
 
     // props are:
     //   @scope
@@ -46,15 +46,12 @@ export default class Input extends React.Component {
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
             >
-                <input 
-                    type={this.props.type} 
+                <textarea 
                     name={this.props.attribute}
                     value={this.props.value}
                     onChange={this.handleChange}
                 />
-                <p className='help-block'>
-                    {this.props.help}
-                </p>
+                {this.props.help}
             </ElementContainer>
         );
     }

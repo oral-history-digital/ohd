@@ -42,14 +42,14 @@ export default class Select extends React.Component {
         let opts = this.props.values.map((value, index) => {
             return (
                 <option value={value}>
-                    {t(this.props, `${this.props.scope}.${value}`)}
+                    {t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)}
                 </option>
             )}
         )
         if (this.props.withEmpty) {
             opts.unshift(
                 <option value=''>
-                    {t(this.props, `${this.props.scope}.choose`)}
+                    {t(this.props, 'choose')}
                 </option>
             )
         }
@@ -72,7 +72,9 @@ export default class Select extends React.Component {
                 >
                     {this.options()}
                 </select>
-                {this.props.help}
+                <p className='help-block'>
+                    {this.props.help}
+                </p>
             </ElementContainer>
         );
     }
