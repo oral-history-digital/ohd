@@ -21,7 +21,7 @@ class UserRegistrationsController < ApplicationController
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.account_activation_instructions(@user_registration, @user_registration.user_account).deliver
+        UserAccountMailer.account_activation_instructions(@user_registration.user_account).deliver
       end
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
@@ -33,9 +33,10 @@ class UserRegistrationsController < ApplicationController
     account_for_token(params[:id])
 
     if !@user_account.nil? && @user_account.errors.empty?
+      @login = @user_account.login 
+      @display_name = @user_account.display_name
     else
-      flash[:alert] = @user_account.nil? ? t('invalid_token', :scope => 'devise.confirmations') : @user_account.errors.full_messages
-      redirect_to new_user_account_session_url
+      @registration_status = t('invalid_token', :scope => 'devise.confirmations')
     end
   end
 
