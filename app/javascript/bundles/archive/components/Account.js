@@ -8,7 +8,6 @@ import {Link, hashHistory} from 'react-router-dom';
 import ArchiveUtils from '../../../lib/utils';
 
 import {
-    REGISTER_NEW_URL,
     FORGOT_PASSWORD_URL,
 } from '../constants/archiveConstants';
 

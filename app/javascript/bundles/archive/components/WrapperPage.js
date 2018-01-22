@@ -33,9 +33,6 @@ export default class WrapperPage extends React.Component {
         if(!this.props.translations) {
             this.props.fetchStaticContent();
         }
-        if(!this.props.registerContent) {
-            this.props.fetchRegisterContent();
-        }
     }
 
     // Checks CSS value in active media query and syncs Javascript functionality
