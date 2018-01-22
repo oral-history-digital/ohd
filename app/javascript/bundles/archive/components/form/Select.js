@@ -29,12 +29,14 @@ export default class Select extends React.Component {
 
         this.props.handleChange(name, value);
 
-        if (this.props.validate(value)) {
-            this.props.handleErrors(name, false);
-            this.setState({valid: true})
-        } else {
-            this.props.handleErrors(name, true);
-            this.setState({valid: false})
+        if (this.props.validate !== undefined) {
+            if (this.props.validate(value)) {
+                this.props.handleErrors(name, false);
+                this.setState({valid: true})
+            } else {
+                this.props.handleErrors(name, true);
+                this.setState({valid: false})
+            }
         }
     }
 

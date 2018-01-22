@@ -10,38 +10,20 @@ class UserRegistrationsController < ApplicationController
       format.html do
         render :template => '/react/app.html'
       end
-      format.json do
-        json = Rails.cache.fetch('register-content') do
-          locales = Project.available_locales.reject {|i| i == 'alias'}
-          register_content = {}
-          locales.each do |i|
-            I18n.locale = i
-            template = "/user_registrations/new.html"
-            register_content[i] = "<div>bla</div>" #render_to_string(template: template, locals: {locale: i}, layout: false)
-          end
-          {
-              register_content: register_content,
-          }.to_json
-        end
-        render plain: json
-      end
     end
   end
 
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
-      render :action => 'submitted'
-    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ Devise::EMAIL_REGEX
+      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
         UserAccountMailer.account_activation_instructions(@user_registration, @user_registration.user_account).deliver
       end
-      render :action => 'registered'
-    else
-      render :action => 'new'
+      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
   end
 

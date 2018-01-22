@@ -6,6 +6,23 @@ import { t } from '../../../lib/utils';
 
 export default class Register extends React.Component {
 
+    content() {
+        if (!this.props.registrationStatus) {
+            return (
+                <div>
+                    <p>
+                    {t(this.props, 'user_registration.registration_text')}
+                    </p>
+                    <RegisterFormContainer />
+                </div>
+            )
+        } else {
+            return (
+                <p className='status' dangerouslySetInnerHTML = {{__html: this.props.registrationStatus}} />
+            )
+        }
+    }
+
     render() {
         return (
             <WrapperPageContainer tabIndex={1}>
@@ -13,10 +30,7 @@ export default class Register extends React.Component {
                     <h1>
                         {t(this.props, 'devise.registrations.link')}
                     </h1>
-                    <p>
-                        {t(this.props, 'user_registration.registration_text')}
-                    </p>
-                    <RegisterFormContainer />
+                    {this.content()}
                 </div>
             </WrapperPageContainer>
         )

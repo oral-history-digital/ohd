@@ -10,7 +10,9 @@ export default class RegisterForm extends React.Component {
         super(props);
         this.state = {
             showErrors: false, 
-            values: {},
+            values: {
+                default_locale: this.props.locale,
+            },
             errors: {
                 // every mandatory field has to be listed here 
                 // with errors true
@@ -18,11 +20,12 @@ export default class RegisterForm extends React.Component {
                 first_name: true,
                 last_name: true,
                 email: true,
-                research_intention: true,
+                research_intentions: true,
                 comments: true,
                 street: true,
                 zipcode: true,
                 city: true,
+                country: true,
                 tos_agreement: true,
                 priv_agreement: true,
             }
@@ -64,7 +67,7 @@ export default class RegisterForm extends React.Component {
     render() {
         return (
             <div>
-                <form id='new_user_registration' className='user_registration' onSubmit={this.handleSubmit}>
+                <form id='new_user_registration' className='user_registration default' onSubmit={this.handleSubmit}>
                     <SelectContainer
                         scope='user_registration' 
                         attribute='appellation' 
@@ -111,7 +114,7 @@ export default class RegisterForm extends React.Component {
                     />
                     <SelectContainer
                         scope='user_registration' 
-                        attribute='research_intention' 
+                        attribute='research_intentions' 
                         values={['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other']}
                         withEmpty={true}
                         showErrors={this.state.showErrors}
