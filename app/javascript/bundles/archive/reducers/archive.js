@@ -95,6 +95,7 @@ const archive = (state = initialState, action) => {
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.country_keys
+                project: action.project
             })
 
         default:

@@ -45,7 +45,7 @@ class SegmentSerializer < ActiveModel::Serializer
     translation = s_translation[0] == ":" ? s_translation.sub(/^\:+\s*\:*/,"").strip() :  s_translation
      {
        de:translation,
-       "#{object.interview.language.code[0..1]}": transcript
+       "#{ISO_639.find(object.interview.language.code).alpha2}": transcript
      }
   end
 

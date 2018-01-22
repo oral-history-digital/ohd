@@ -51,7 +51,14 @@ export default class VideoPlayer extends React.Component {
 
     src() {
         // this will run only if tape_count < 10!!
-        return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+        switch (this.props.project) {
+            case 'mog': {
+                return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+            }
+            case 'zwar': {
+                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+            }
+        }
     }
 
     rememberInterviewLink() {
