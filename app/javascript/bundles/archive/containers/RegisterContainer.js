@@ -7,7 +7,6 @@ import Register from '../components/Register';
 const mapStateToProps = (state) => {
 
     return {
-        registerContent: state.register.registerContent[state.archive.locale],
         translations: state.archive.translations,
         locale: state.archive.locale
     }

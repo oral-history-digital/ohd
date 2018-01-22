@@ -166,6 +166,17 @@ export default class RegisterForm extends React.Component {
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                     />
+                    <SelectContainer
+                        scope='user_registration' 
+                        attribute='country' 
+                        optionsScope='countries'
+                        values={this.props.country_keys}
+                        withEmpty={true}
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== ''}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
                     <InputContainer 
                         scope='user_registration' 
                         attribute='receive_newsletter' 

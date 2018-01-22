@@ -24,6 +24,7 @@ function receiveStaticContent(json){
         externalLinks: json.external_links,
         homeContent: json.home_content,
         translations: json.translations,
+        country_keys: json.country_keys,
         receivedAt: Date.now()
     }
 }

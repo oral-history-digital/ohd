@@ -39,13 +39,19 @@ export default class Select extends React.Component {
     }
 
     options() {
-        let opts = this.props.values.map((value, index) => {
-            return (
-                <option value={value}>
-                    {t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)}
-                </option>
-            )}
-        )
+        let opts = [];
+        if (this.props.values) {
+            opts = this.props.values.map((value, index) => {
+                let text = this.props.optionsScope ? 
+                        t(this.props, `${this.props.optionsScope}.${value}`) :
+                        t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)
+                return (
+                    <option value={value}>
+                        {text}
+                    </option>
+                )}
+            )
+        }
         if (this.props.withEmpty) {
             opts.unshift(
                 <option value=''>
