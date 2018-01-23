@@ -94,7 +94,7 @@ const archive = (state = initialState, action) => {
                 externalLinks: action.externalLinks,
                 homeContent: action.homeContent,
                 translations: action.translations,
-                country_keys: action.country_keys
+                country_keys: action.country_keys,
                 project: action.project
             })
 
