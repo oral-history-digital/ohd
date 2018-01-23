@@ -26,7 +26,7 @@ class HomeController < BaseController
             home_content: home_content,
             external_links: Project.external_links,
             translations: translations,
-            country_keys: ISO3166::Country.translations.keys
+            country_keys: ISO3166::Country.translations.keys,
             project: Rails.configuration.x.project.to_s
           }.to_json
         end
