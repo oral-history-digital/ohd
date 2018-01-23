@@ -9,7 +9,9 @@ import ArchiveUtils from '../../../lib/utils';
 
 import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
-
+import zwarLogoEn from '../../../images/project_logo_en.gif'
+import zwarLogoDe from '../../../images/project_logo_de.gif'
+import zwarLogoRu from '../../../images/project_logo_ru.gif'
 
 export default class WrapperPage extends React.Component {
 
