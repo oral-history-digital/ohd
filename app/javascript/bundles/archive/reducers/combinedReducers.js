@@ -7,7 +7,6 @@ import flyoutTabs from './flyoutTabs'
 import userContent from './userContent'
 import locations from './locations'
 import account from './account'
-import register from './register'
 
 const combinedReducer = combineReducers({ 
     archive,
@@ -17,7 +16,6 @@ const combinedReducer = combineReducers({
     userContent,
     locations,
     account,
-    register
 });
 
 export default combinedReducer;
