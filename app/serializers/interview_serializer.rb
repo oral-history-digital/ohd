@@ -41,7 +41,8 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :interviewers, serializer: PersonSerializer
 
   def lang
-    ISO_639.find(object.language.code).alpha2
+    # return only the first language code in cases like 'slk/ces'
+    ISO_639.find(object.language.code.split('/')[0]).alpha2
   end
 
   def languages
@@ -73,7 +74,7 @@ class InterviewSerializer < ActiveModel::Serializer
     when :mog
       "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     when :zwar
-      "http://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_small.JPG"
+      "http://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
     end
   end
 
