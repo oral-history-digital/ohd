@@ -4,7 +4,6 @@ class InterviewSerializer < ActiveModel::Serializer
              :collection_id,
              :tape_count,
              :video,
-             :video?,
              :duration,
              #:translated,
              :created,
