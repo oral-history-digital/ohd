@@ -5,7 +5,7 @@
 // Colors
 // --------------------------------------------------
 
-$primary-color:     #006fb7 !default;
+$primary-color:     <%= Rails.configuration.x.project === :mog ? '#006fb7' : "#8f201c" %> !default;
 $secondary-color:   #d6c537 !default;
 $highlight-color:   #06c !default;
 
