@@ -35,7 +35,7 @@ export default class InterviewInfo extends React.Component {
         return (
             <p>
                 <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
-                    <i className="fa fa-download flyout-content-ico"></i>
+                    <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
                     <span>{ArchiveUtils.translate(this.props, textKey)}</span>
                 </a>
             </p>

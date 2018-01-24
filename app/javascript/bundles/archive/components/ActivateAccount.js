@@ -5,10 +5,20 @@ import ChangePasswordFormContainer from '../containers/ChangePasswordFormContain
 
 export default class ActivateAccount extends React.Component {
 
+    content() {
+        if (this.props.registrationStatus) {
+            return <div className='errors'>{this.props.registrationStatus}</div>;
+        } else {
+            return <ChangePasswordFormContainer />;
+        }
+    }
+
     render() {
         return (
                 <WrapperPageContainer tabIndex={0}>
-                    <ChangePasswordFormContainer />
+                    <div className='wrapper-content register'>
+                        {this.content()}
+                    </div>
                 </WrapperPageContainer>
         )
     }

@@ -1,140 +1,222 @@
 import React from 'react';
+import InputContainer from '../containers/form/InputContainer';
+import TextareaContainer from '../containers/form/TextareaContainer';
+import SelectContainer from '../containers/form/SelectContainer';
+import { t } from '../../../lib/utils';
 
 export default class RegisterForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.textFields = {
-            first_name: {label: {de: "Vorname", el: "Vorname"}, mandatory: true},
-            last_name: {label: {de: "Nachname", el: "Nachname"}, mandatory: true},
-            email: {label: {de: "Email", el: "Email"}, mandatory: true},
-            job_description: {label: {de: "job_description", el: "job_description"}, mandatory: false},
-            research_intentions: {label: {de: "research_intentions", el: "research_intentions"}, mandatory: false},
-            comments: {label: {de: "comments", el: "comments"}, mandatory: false},
-            organization: {label: {de: "organization", el: "organization"}, mandatory: false},
-            homepage: {label: {de: "homepage", el: "homepage"}, mandatory: false},
-            street: {label: {de: "street", el: "street"}, mandatory: false},
-            zipcode: {label: {de: "zipcode", el: "zipcode"}, mandatory: false},
-            city: {label: {de: "city", el: "city"}, mandatory: false},
-            state: {label: {de: "state", el: "state"}, mandatory: false}
-        };
-
-        this.selects = {
-            appellation: {
-                label: {
-                    de: 'Appellation',
-                    el: 'Appellation'
-                },
-                mandatory: true,
-                values: {
-                    de: [["Herr", "Herr"], ["Frau", "Frau"]],
-                    el: [["Herr", "Herr"], ["Frau", "Frau"]],
-                }
+        this.state = {
+            showErrors: false, 
+            values: {
+                default_locale: this.props.locale,
             },
-            country: {
-                label: {
-                    de: 'Land',
-                    el: 'Land'
-                },
-                mandatory: true,
-                values: {
-                    de: [
-                            ["Deutschland", "de"],
-                            ["Griechenland", "el"]
-                    ],
-                    el: [
-                            ["Deutschland", "de"],
-                            ["Griechenland", "el"]
-                    ]
-                }
+            errors: {
+                // every mandatory field has to be listed here 
+                // with errors true
+                appellation: true,
+                first_name: true,
+                last_name: true,
+                email: true,
+                research_intentions: true,
+                comments: true,
+                street: true,
+                zipcode: true,
+                city: true,
+                country: true,
+                tos_agreement: true,
+                priv_agreement: true,
             }
         };
 
-        this.checkboxes = {
-            tos_agreement: {label: {de: "AGB", el: "AGB"}, mandatory: true},
-            priv_agreement: {label: {de: "Geheimhaltungsvereinbarung", el: "Geheimhaltungsvereinbarung"}, mandatory: true},
-            receive_newsletter: {label: {de: "Newsletter", el: "Newsletter"}, mandatory: false}
-        };
-
+        this.handleChange = this.handleChange.bind(this);
+        this.handleErrors = this.handleErrors.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    textField(field, index) {
-        return  <label key={'textField-' + index}>
-                    {this.textFields[field]['label'][this.props.locale]}
-                    <input type="text" name={field} value={this.state[field]} onChange={this.handleChange} />
-                </label>
-    }
-
-    select(field, index) {
-        return  <label key={'select-' + index}>
-                    {this.selects[field]['label'][this.props.locale]}
-                    <select name={field} onChange={this.handleChange} >
-                         {this.selects[field].values[this.props.locale].map( (option, index) => {
-                             return <option value={option[1]}>{option[0]}</option>
-                         })}
-                    </select>
-                </label>
-    }
-
-    checkbox(field, index) {
-        return  <label key={'checkbox-' + index}>
-                    {this.checkboxes[field]['label'][this.props.locale]}
-                    <input type="checkbox" name={field} checked={this.state[field]} onChange={this.handleChange} />
-                </label>
-    }
-
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
-
-        this.setState({[name]: value});
-        if(this.valid()) {
-            this.clearErrors();
-        }
+    handleChange(name, value) {
+        this.setState({ 
+            values: Object.assign({}, this.state.values, {[name]: value})
+        })
     }
 
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
-            this.props.submitRegister(this.state);
-        } else {
-            this.setErrors(); 
-        }
+            this.props.submitRegister({user_registration: this.state.values});
+        } 
+    }
+
+    handleErrors(name, bool) {
+        this.setState({ 
+            errors: Object.assign({}, this.state.errors, {[name]: bool})
+        })
     }
 
     valid() {
-        return this.state.email &&
-            this.state.email.length > 6 
-    }
-
-    setErrors() {
-        this.setState({ errors: "Please give your email." })
-    }
-
-    clearErrors() {
-        this.setState({ errors: undefined })
+        let errors = false;
+        Object.keys(this.state.errors).map((name, index) => {
+            errors = this.state.errors[name] || errors;
+        })
+        this.setState({showErrors: errors});
+        return !errors;
     }
 
     render() {
         return (
             <div>
-                <div className='errors'>{this.state.errors}</div>
-                <form onSubmit={this.handleSubmit}>
-                    {this.select('appellation', 0)}
-                    {Object.keys(this.textFields).map( (field, index) => {
-                        return this.textField(field, index)
-                    })}
-                    {this.select('country', 1)}
-                    {Object.keys(this.checkboxes).map( (field, index) => {
-                        return this.checkbox(field, index)
-                    })}
-                    
-                    <input type="submit" value="Register" />
+                <form id='new_user_registration' className='user_registration default' onSubmit={this.handleSubmit}>
+                    <SelectContainer
+                        scope='user_registration' 
+                        attribute='appellation' 
+                        values={['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof']}
+                        withEmpty={true}
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== ''}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='first_name' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='last_name' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='email' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <SelectContainer
+                        scope='user_registration' 
+                        attribute='job_description' 
+                        values={['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other']}
+                        withEmpty={true}
+                        handleChange={this.handleChange}
+                    />
+                    <SelectContainer
+                        scope='user_registration' 
+                        attribute='research_intentions' 
+                        values={['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other']}
+                        withEmpty={true}
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== ''}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <TextareaContainer 
+                        scope='user_registration' 
+                        attribute='comments' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 10}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='organization' 
+                        type='text' 
+                        handleChange={this.handleChange}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='homepage' 
+                        type='text' 
+                        handleChange={this.handleChange}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='street' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='zipcode' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='city' 
+                        type='text' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 1}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <SelectContainer
+                        scope='user_registration' 
+                        attribute='country' 
+                        optionsScope='countries'
+                        values={this.props.country_keys}
+                        withEmpty={true}
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== ''}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='receive_newsletter' 
+                        type='checkbox' 
+                        handleChange={this.handleChange}
+                        help={t(this.props, 'user_registration.notes_on_receive_newsletter')}
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='tos_agreement' 
+                        type='checkbox' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== false && v !== '0'}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                        help={
+                            <a href="" target="_blank" title="Externer Link">
+                                {t(this.props, 'user_registration.notes_on_tos_agreement')}
+                            </a>
+                        }
+                    />
+                    <InputContainer 
+                        scope='user_registration' 
+                        attribute='priv_agreement' 
+                        type='checkbox' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v !== false && v !== '0'}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                        help={
+                            <a href="" target="_blank" title="Externer Link">
+                                {t(this.props, 'user_registration.notes_on_priv_agreement')}
+                            </a>
+                        }
+                    />
+
+                    <input type="submit" value={t(this.props, 'user_registration.register')}/>
                 </form>
             </div>
         );

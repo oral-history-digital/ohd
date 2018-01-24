@@ -28,7 +28,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :title,
              :short_title,
              :still_url,
-             :src,
+            #  :src,
              :src_base,
              :references,
              :formatted_duration,
@@ -41,7 +41,8 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :interviewers, serializer: PersonSerializer
 
   def lang
-    ISO_639.find(object.language.code).alpha2
+    # return only the first language code in cases like 'slk/ces'
+    ISO_639.find(object.language.code.split('/')[0]).alpha2
   end
 
   def languages
@@ -69,7 +70,12 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def still_url
     #object.still_image.url(:original)
-    "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+    case Project.name.to_sym
+    when :mog
+      "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+    when :zwar
+      "http://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
+    end
   end
 
   def src_base
@@ -78,11 +84,6 @@ class InterviewSerializer < ActiveModel::Serializer
   
   def tape_count
     object.tapes.count
-  end
-
-  def src
-    "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id}_01_01_720p.mp4"
-    #"http://medien.cedis.fu-berlin.de/eog/dedalo_media/av/720/rsc35_rsc167_162.mp4"
   end
 
   def references

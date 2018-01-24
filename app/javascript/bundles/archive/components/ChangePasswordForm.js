@@ -1,5 +1,6 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import InputContainer from '../containers/form/InputContainer';
+import { t } from '../../../lib/utils';
 
 export default class ChangePasswordForm extends React.Component {
 
@@ -10,11 +11,17 @@ export default class ChangePasswordForm extends React.Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            password: '',
-            password_confirmation: '',
+            showErrors: false, 
+            values: {
+            },
+            errors: {
+                password: true,
+                password_confirmation: true,
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleErrors = this.handleErrors.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -24,57 +31,40 @@ export default class ChangePasswordForm extends React.Component {
         }
     }
 
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
-
-        this.setState({[name]: value});
-        if(this.valid()) {
-            this.clearErrors();
-        }
+    handleChange(name, value) {
+        this.setState({ 
+            values: Object.assign({}, this.state.values, {[name]: value})
+        })
     }
-
 
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
             let resetToken = this.context.router.route.match.params.resetPasswordToken;
-            this.props.submitChangePassword({user_account: this.state}, resetToken);
-        } else {
-            this.setErrors(); 
-        }
+            this.props.submitChangePassword({user_account: this.state.values}, resetToken);
+        } 
+    }
+
+    handleErrors(name, bool) {
+        this.setState({ 
+            errors: Object.assign({}, this.state.errors, {[name]: bool})
+        })
     }
 
     valid() {
-        let correct = 
-            this.state.password &&
-            this.state.password.length > 6 &&
-            this.state.password_confirmation &&
-            this.state.password_confirmation.length > 6 &&
-            this.state.password_confirmation ===  this.state.password 
-        
-        return correct;
-    }
-
-    setErrors() {
-        this.setState({errors: ArchiveUtils.translate(this.props, 'account_activation_errors')});
-    }
-
-    clearErrors() {
-        this.setState({ errors: undefined })
+        let errors = false;
+        Object.keys(this.state.errors).map((name, index) => {
+            errors = this.state.errors[name] || errors;
+        })
+        this.setState({showErrors: errors});
+        return !errors;
     }
 
     texts() {
         let t = {}
         try {
-            t.activate = ArchiveUtils.translate(this.props, 'devise').registrations.activate;
             t.display_name = this.props.account.display_name;
-            t.activate_text = ArchiveUtils.translate(this.props, 'devise').registrations.activate_text;
-            t.login = ArchiveUtils.translate(this.props, 'devise').authentication_keys.login + ": ";
             t.accountLogin = this.props.account.login;
-            t.password = ArchiveUtils.translate(this.props, 'devise').passwords.password;
-            t.passwordConfirmation = ArchiveUtils.translate(this.props, 'devise').passwords.password_confirmation;
-            t.submit = ArchiveUtils.translate(this.props, 'devise').registrations.activate_submit;
         } catch(e) {
         } finally {
             return t;
@@ -83,36 +73,46 @@ export default class ChangePasswordForm extends React.Component {
 
     render() {
         let submit = this.texts().submit || '';
+        let _this = this;
         return (
             <div>
                 <h1>
-                    {this.texts().activate}
+                    {t(this.props, 'devise.registrations.activate')}
                     &nbsp;
                     <em>{this.texts().display_name}</em>
                 </h1>
                 <p>
-                    {this.texts().activate_text}
+                    {t(this.props, 'devise.registrations.activate_text')}
                 </p>
-                <div className='errors'>{this.state.errors}</div>
-                <form onSubmit={this.handleSubmit}>
+
+                <form className='default' onSubmit={this.handleSubmit}>
                     <span>
                         <label>
-                            {this.texts().login}
+                            {t(this.props, 'devise.authentication_keys.login') + ": "}
                             <b>{this.texts().accountLogin}</b> 
                         </label>
                     </span>
                     <span>&nbsp;</span>
-                    <label>
-                        {this.texts().password}
-                        <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
-                    </label>
-                    <span>&nbsp;</span>
-                    <label>
-                        {this.texts().passwordConfirmation}
-                        <input type='password' name='password_confirmation' value={this.state.password_confirmation} onChange={this.handleChange} />
-                    </label>
+                    <InputContainer 
+                        scope='devise.passwords'
+                        attribute='password' 
+                        type='password' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 6}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
+                    <InputContainer 
+                        scope='devise.passwords'
+                        attribute='password_confirmation' 
+                        type='password' 
+                        showErrors={this.state.showErrors}
+                        validate={function(v){return v.length > 6 && v === _this.state.values.password}} 
+                        handleChange={this.handleChange}
+                        handleErrors={this.handleErrors}
+                    />
                     
-                    <input type="submit" value={submit}/>
+                    <input type="submit" value={t(this.props, 'devise.registrations.activate_submit')}/>
                 </form>
             </div>
         );

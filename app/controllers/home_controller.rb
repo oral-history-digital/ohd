@@ -26,6 +26,8 @@ class HomeController < BaseController
             home_content: home_content,
             external_links: Project.external_links,
             translations: translations,
+            country_keys: ISO3166::Country.translations.keys,
+            project: Rails.configuration.x.project.to_s
           }.to_json
         end
 
@@ -55,7 +57,9 @@ class HomeController < BaseController
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = instance_variable_get("@#{locale}") || instance_variable_set("@#{locale}", 
                                                                                  YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].merge(
-                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s])
+                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
+                                                                                 countries: ISO3166::Country.translations(locale)
+                                                                                 )
                                                                                 )
       mem
     end
