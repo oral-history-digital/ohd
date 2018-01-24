@@ -42,4 +42,15 @@ var ArchiveUtils = {
 
 export default ArchiveUtils;
 
+export function t(props, key) {
+    let text;
+    let cmd = `text = props.translations.${props.locale}.${key}`
+    try{
+        eval(cmd);
+    } catch (e) {
+        text = `translation for ${props.locale}.${key} is missing!`;
+    } finally {
+        return text || `translation for ${props.locale}.${key} is missing!`;
+    }
+}
 

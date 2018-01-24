@@ -10,7 +10,8 @@ default: &default
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
-  alpha: 'alpha3_terminologic'
+  alpha: 'alpha2'
+  # alpha: 'alpha3_terminologic'
 
   interviewee_contribution_type: 'interviewee'
   interviewer_contribution_type: 'interview'
@@ -82,6 +83,8 @@ default: &default
   repository_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
 
   streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv'
+
+  video_src_base: "http://medien.cedis.fu-berlin.de/zwar/test"
 
   meta_keywords:
     de: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'

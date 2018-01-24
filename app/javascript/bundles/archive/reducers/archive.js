@@ -93,7 +93,9 @@ const archive = (state = initialState, action) => {
                 isFetchingExternalLinks: false,
                 externalLinks: action.externalLinks,
                 homeContent: action.homeContent,
-                translations: action.translations
+                translations: action.translations,
+                country_keys: action.country_keys,
+                project: action.project
             })
 
         default:

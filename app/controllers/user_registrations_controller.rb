@@ -10,38 +10,20 @@ class UserRegistrationsController < ApplicationController
       format.html do
         render :template => '/react/app.html'
       end
-      format.json do
-        json = Rails.cache.fetch('register-content') do
-          locales = Project.available_locales.reject {|i| i == 'alias'}
-          register_content = {}
-          locales.each do |i|
-            I18n.locale = i
-            template = "/user_registrations/new.html"
-            register_content[i] = render_to_string(template: template, locals: {locale: i}, layout: false)
-          end
-          {
-              register_content: register_content,
-          }.to_json
-        end
-        render plain: json
-      end
     end
   end
 
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
-      render :action => 'submitted'
-    elsif !@user_registration.errors.on('email').nil? && @user_registration.email =~ Devise::EMAIL_REGEX
-      @user_registration = UserRegistration.where(["email = ?", @user_registration.email]).first
+      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.account_activation_instructions(@user_registration, @user_registration.user_account).deliver
+        UserAccountMailer.account_activation_instructions(@user_registration.user_account).deliver
       end
-      render :action => 'registered'
-    else
-      render :action => 'new'
+      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
   end
 
@@ -51,9 +33,10 @@ class UserRegistrationsController < ApplicationController
     account_for_token(params[:id])
 
     if !@user_account.nil? && @user_account.errors.empty?
+      @login = @user_account.login 
+      @display_name = @user_account.display_name
     else
-      flash[:alert] = @user_account.nil? ? t('invalid_token', :scope => 'devise.confirmations') : @user_account.errors.full_messages
-      redirect_to new_user_account_session_url
+      @registration_status = t('invalid_token', :scope => 'devise.confirmations')
     end
   end
 
@@ -66,29 +49,13 @@ class UserRegistrationsController < ApplicationController
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    #if @user_account.nil?
-      #flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
-      #redirect_to new_user_account_session_url
-    #else
-      @user_account.confirm!(password, password_confirmation)
-      if @user_account.errors.empty?
-        @user_account.reset_password_token = nil
-        flash[:alert] = t('welcome', :scope => 'devise.registrations')
-        sign_in(:user_account, @user_account)
-        respond_with @user_account, location: after_sign_in_path_for(@user_account)
-      #else
-        #error_type = case @user_account.errors.map {|e| e.first}.compact.first
-                       #when :password, 'password'
-                         #'password_missing'
-                       #when :password_confirmation, 'password_confirmation'
-                         #'password_confirmation_missing'
-                       #else
-                         #'invalid_token'
-                     #end
-        #flash[:alert] = t(error_type, :scope => 'devise.confirmations')
-        #render :action => :activate
-      end
-    #end
+    @user_account.confirm!(password, password_confirmation)
+    if @user_account.errors.empty?
+      @user_account.reset_password_token = nil
+      flash[:alert] = t('welcome', :scope => 'devise.registrations')
+      sign_in(:user_account, @user_account)
+      respond_with @user_account, location: after_sign_in_path_for(@user_account)
+    end
   end
 
   private
