@@ -2,6 +2,11 @@ class Person < ApplicationRecord
 
   #serialize :typology, Array
 
+  has_many :registry_references,
+           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
+           :as => :ref_object,
+           :dependent => :destroy
+
   has_many :contributions
   has_many :histories, dependent: :destroy
 
