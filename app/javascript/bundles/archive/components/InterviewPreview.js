@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
+import { PROJECT } from '../constants/archiveConstants'
+
 export default class InterviewPreview extends React.Component {
 
     renderInterviewSegments() {
@@ -15,6 +17,16 @@ export default class InterviewPreview extends React.Component {
         }
     }
 
+    interviewDetails() {
+        if (PROJECT === 'zwar') {
+            return (
+                <p className={'search-result-data'}>
+                    <span>{this.props.interview.video} | {this.props.interview.lang}</span>
+                </p>
+            );
+        }
+        return null;
+    }
 
     render() {
         return (
@@ -28,9 +40,11 @@ export default class InterviewPreview extends React.Component {
                     </div>
                     <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
                     <p className={'search-result-data'}>Interview-ID: <span>{this.props.interview.archive_id}</span><br/>
-                    Interviewdauer: <span>{this.props.interview.formatted_duration}</span><br />
-                        <span>{this.props.interview.video} | {this.props.interview.lang}</span>
+                    Interviewdauer: <span>{this.props.interview.formatted_duration}</span>
                     </p>
+
+                    {this.interviewDetails()}
+
                 </Link>
             </div>
         );

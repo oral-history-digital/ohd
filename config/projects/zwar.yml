@@ -112,20 +112,16 @@ default: &default
   person_properties:
     - id: 'person_reference'
       source: 'registry_entry'
-      descriptor: 'Person'
     - id: 'birth_locations'
       source: 'registry_reference_type'
     - id: 'forced_labor_groups'
       source: 'registry_entry'
-      descriptor: 'Gruppe'
       use_as_facet: true
     - id: 'forced_labor_fields'
       source: 'registry_entry'
-      descriptor: 'Einsatzbereich'
       use_as_facet: true
     - id: 'forced_labor_habitations'
       source: 'registry_entry'
-      descriptor: 'Unterbringung / Inhaftierung'
       use_as_facet: true
     - id: 'home_location'
       source: 'registry_reference_type'
@@ -136,6 +132,9 @@ default: &default
       source: 'registry_reference_type'
     - id: 'return_locations'
       source: 'registry_reference_type'
+    - id: 'collection_id'
+      source: 'collection'
+      use_as_facet: true 
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a
