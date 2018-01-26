@@ -191,6 +191,7 @@ de:
     collaboration: 'Kollaboration'
     interview_id: 'Interviews'
     archive_id: 'Interview-ID'
+    collection_id: 'Teilsammlung'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'
