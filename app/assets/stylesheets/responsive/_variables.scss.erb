@@ -9,6 +9,9 @@ $primary-color:     <%= Rails.configuration.x.project === :mog ? '#006fb7' : "#8
 $secondary-color:   #d6c537 !default;
 $highlight-color:   #06c !default;
 
+$header-background-color: <%= Rails.configuration.x.project === :mog ? '#fff' : "#ebebeb" %> !default;
+$header-logo-padding: <%= Rails.configuration.x.project === :mog ? '0' : "12px 0" %> !default;
+
 $gray-darkest:  #222 !default;
 $gray-darker:   #333 !default;
 $gray-dark:     #666 !default;

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const PROJECT = 'mog';
+export const PROJECT = 'zwar';
 
 export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';
@@ -13,7 +13,7 @@ export const INTERVIEW_SEARCH_URL = '/de/searches/interview';
 export const SET_QUERY_PARAMS = 'SET_QUERY_PARAMS ';
 export const RESET_QUERY = 'RESET_QUERY';
 export const RECEIVE_FACETS = 'RECEIVE_FACETS';
-export const REQUEST_FACETS= 'REQUEST_FACETS';
+export const REQUEST_FACETS = 'REQUEST_FACETS';
 export const FACETS_URL = '/de/searches/facets';
 export const REQUEST_ARCHIVE_SEARCH = 'REQUEST_ARCHIVE_SEARCH ';
 export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
@@ -38,11 +38,11 @@ export const SET_LOCALE = 'SET_LOCALE';
 export const DEFAULT_LOCATION = [37.9838, 23.7275];
 
 export const OPEN_POPUP = 'OPEN_POPUP';
-export const CLOSE_POPUP ='CLOSE_POPUP';
+export const CLOSE_POPUP = 'CLOSE_POPUP';
 
-export const SHOW_FLYOUT_TABS ='SHOW_FLYOUT_TABS';
-export const HIDE_FLYOUT_TABS ='HIDE_FLYOUT_TABS';
-export const TOGGLE_FLYOUT_TABS ='TOGGLE_FLYOUT_TABS';
+export const SHOW_FLYOUT_TABS = 'SHOW_FLYOUT_TABS';
+export const HIDE_FLYOUT_TABS = 'HIDE_FLYOUT_TABS';
+export const TOGGLE_FLYOUT_TABS = 'TOGGLE_FLYOUT_TABS';
 
 
 export const POST_USER_CONTENT = 'POST_USER_CONTENT';

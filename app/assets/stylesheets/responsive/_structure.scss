@@ -41,7 +41,7 @@ body {
 
 header.site-header {
   height: 80px;
-  background: #fff;
+  background: $header-background-color;
   padding: 0 5%;
   @include screen-m {
     height: 100px;
