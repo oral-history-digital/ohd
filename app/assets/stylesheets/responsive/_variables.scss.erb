@@ -5,8 +5,8 @@
 // Colors
 // --------------------------------------------------
 
-$primary-color:     <%= Rails.configuration.x.project === :mog ? '#006fb7' : '#8f201c' %> !default;
-$secondary-color:   <%= Rails.configuration.x.project === :mog ? '#d6c537' : '$primary-color' %> !default;
+$primary-color: <%= Rails.configuration.x.project === :mog ? '#006fb7' : '#8f201c' %> !default;
+$secondary-color: <%= Rails.configuration.x.project === :mog ? '#d6c537' : '$primary-color' %> !default;
 
 $header-background-color: <%= Rails.configuration.x.project === :mog ? '#fff' : '#ebebeb' %> !default;
 $header-logo-padding: <%= Rails.configuration.x.project === :mog ? '0' : "12px 0" %> !default;
@@ -24,6 +24,7 @@ $gray-paler:    #f4f4f4 !default;
 $gray-warm:     #8b8b7a !default;
 
 $flyout-tab-title-text-color: <%= Rails.configuration.x.project === :mog ? '$gray-darkest' : '#fff' %> !default;
+
 
 // Basics
 // --------------------------------------------------
