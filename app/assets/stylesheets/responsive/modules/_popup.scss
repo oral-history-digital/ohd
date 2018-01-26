@@ -19,7 +19,7 @@
     font-family: FontAwesome;
     content: "\f00d";
     font-size: 1.5rem;
-    color: $gray-dark;
+    color: $gray-medium;
     width: 1.4em;
   }
 }
@@ -48,6 +48,7 @@
   margin: 2% auto;
   padding: 35px 15px 5px 15px;
   position: relative;
+  overflow: scroll;
   @include screen-m {
     width: 70%;
     height: 80%;
@@ -57,17 +58,17 @@
   @include screen-xl {
     width: 60%;
     height: 60%;
-    margin: 20% auto;
+    //margin: 20% auto;
     padding: 35px 30px 5px 30px;
   }
   &.big{
-    @include screen-m {
-      width: 100%;
+    background-color: #666;
+    //opacity: 0.9;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    .content {
       height: 100%;
-      margin: 0 auto;
-      .content {
-        height: 100%;
-      }
     }
   }
   .content {
