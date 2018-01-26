@@ -374,12 +374,12 @@ h1.search-results-title {
       color: $gray-darker;
     }
   }
-  &:hover {
-    background-color: #ddd;
-    color: $gray-darker;
-    .fa {
-      color: $gray-darker;
-    }
+  &:not(.active):hover {
+    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
+    color: $flyout-tab-title-text-color;
+    // .fa {
+    //   color: $gray-darker;
+    // }
   }
   span {
     display: none;
@@ -395,7 +395,7 @@ ul.search-results-pagination {
   padding: 0;
   li {
     display: inline-block;
-    margin-right: 4px;
+    margin: 0 4px 4px 0;
     padding: 4px 10px;
     background-color: #fff;
     color: $gray-dark;
