@@ -14,12 +14,18 @@
 .content-tabs-nav-link {
   flex: 1;
   margin-right: 0;
-  padding: 14px;
+  padding: 14px 12px;
   color: #fff;
   background-color: $primary-color;
   text-align: center;
   transition: background-color 0.3s;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include screen-m {
+    padding: 12px;
+  }
 }
 
 .content-tabs-nav-link:last-child {
@@ -45,6 +51,7 @@
 }
 
 .content-tabs-nav-link i {
+  display: block;
   margin: 0;
   padding: 0;
   line-height: 1;
@@ -52,6 +59,7 @@
   @include screen-m {
     margin-bottom: 8px;
     font-size: 18px;
+    display: none;
   }
 }
 

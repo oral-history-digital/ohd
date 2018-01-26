@@ -53,7 +53,7 @@ header.site-header {
   padding: 50px 5%;
   @include clearfix;
   @include screen-m {
-    padding: 50px 10%;
+    padding: 20px 10%;
   }
 }
 
@@ -152,18 +152,22 @@ header.site-header {
       }
     }
     .video-title-container {
-      display: inline-block;
+      display: block;
       margin-left: 0;
+      @include clearfix;
       @include screen-m {
         display: inline-block;
         margin-left: 20px;
       }
     }
+    .video-icons-container {
+      float: none;
+      padding: 0;
+    }
     h1.video-title {
-      color: #fff;
-      margin-top: 0;
-      font-size: $font-size-large;
-      line-height: $line-height-large;
+      float: none;
+      font-size: $font-size-larger;
+      line-height: $line-height-larger;
     }
   }
 
@@ -192,33 +196,42 @@ header.site-header {
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
   @include screen-m {
-    padding: 30px 10%;
+    padding: 30px 5%;
   }
 }
 
 h1.video-title {
   color: #fff;
   margin-top: 0;
+  margin-bottom: 15px;
   font-size: $font-size-heading-h1;
   line-height: $line-height-heading-h1;
-  @include screen-s {
+  float: none;
+  @include screen-m {
     font-size: $font-size-heading-h1-large;
     line-height: $line-height-heading-h1-large;
+    float: left;
   }
 }
-
+.video-icons-container {
+  padding-top: 10px;
+  float: none;
+  @include screen-m {
+    float: right;
+  }
+}
 .video-bookmark,
 .video-text-note {
   color: #fff;
-  font-size: $font-size-medium;
-  line-height: $line-height-medium;
+  font-size: $font-size-large;
+  line-height: $line-height-large;
   cursor: pointer;
   transition: 0.4s;
   float: left;
   margin-right: 20px;
   span {
     display: none;
-    @include screen-m {
+    @include screen-l {
       display: inline-block;
       font-size: $font-size-small;
       line-height: $line-height-small;
@@ -226,20 +239,26 @@ h1.video-title {
   }
   .fa {
     margin-right: 10px;
+    font-size: $font-size-larger;
+    @include screen-l {
+      font-size: $font-size-medium;
+    }
   }
   margin-bottom: 10px;
   &:hover {
     color: $gray-light;
   }
 }
-
+.video-text-note {
+  margin-right: 0;
+}
 .video-element {
   margin: 0;
   @include screen-m {
     margin: 0 7.5%;
   }
   @include screen-l {
-    margin: 0 15%;
+    margin: 0 20%;
   }
   video, img {
     width: 100%;
@@ -249,10 +268,9 @@ h1.video-title {
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
-  padding: 30px 10%;
+  padding: 30px 5%;
   p {
     margin-top: 10px;
-    //border-top: 1px solid #ddd;
     padding-top: 5px;
     font-size: $font-size-medium;
     color: $gray-dark;
