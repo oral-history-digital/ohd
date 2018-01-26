@@ -7,6 +7,7 @@ import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import ResizeAware from 'react-resize-aware';
 import ArchiveUtils from '../../../lib/utils';
 
+import { PROJECT } from '../constants/archiveConstants';
 import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/project_logo_en.gif'
@@ -169,8 +170,15 @@ export default class WrapperPage extends React.Component {
 
 
     render() {
-
-        let logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
+        let logoSrc = '';
+        switch(PROJECT) {
+            case 'mog':
+                logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
+                break;
+            case 'zwar':
+                logoSrc = this.props.locale == "de" ? zwarLogoDe : zwarLogoEn;
+                break;
+        }
 
         return (
             <ResizeAware onResize={this.onResize}>
@@ -181,7 +189,7 @@ export default class WrapperPage extends React.Component {
                             <a className="logo-link" href="#" title={ArchiveUtils.translate(this.props, 'home')}>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
-                                <span className="logo-text">MOG</span>
+                                <span className="logo-text">{PROJECT}</span>
                             </a>
                         </header>
 
