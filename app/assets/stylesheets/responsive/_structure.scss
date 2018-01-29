@@ -45,15 +45,14 @@ header.site-header {
   padding: 0 5%;
   @include screen-m {
     height: 100px;
-    padding: 0 10%;
   }
 }
 
 .wrapper-content {
-  padding: 50px 5%;
+  padding: 40px 5%;
   @include clearfix;
   @include screen-m {
-    padding: 20px 10%;
+    padding: 40px 10%;
   }
 }
 

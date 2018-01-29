@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const PROJECT = 'zwar';
+export const PROJECT = 'mog';
 
 export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';

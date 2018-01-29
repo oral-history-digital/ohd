@@ -70,6 +70,9 @@
     .content {
       height: 100%;
     }
+    .close:after {
+      color: #fff;
+    }
   }
   .content {
     position: relative;
