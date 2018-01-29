@@ -88,7 +88,7 @@ class SearchesController < BaseController
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/,"").strip()
         m
-      end.join(' ')
+      end.join(' ').gsub("&nbsp;", " ").strip
       mem
     end
   end

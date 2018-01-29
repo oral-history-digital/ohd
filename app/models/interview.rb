@@ -156,6 +156,7 @@ class Interview < ActiveRecord::Base
   searchable :auto_index => false do
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
+    integer :collection_id, :stored => true, :references => Collection
 
     text :transcript, :boost => 5 do
       indexing_interview_text = ''

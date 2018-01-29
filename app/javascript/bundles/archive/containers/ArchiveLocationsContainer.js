@@ -7,6 +7,7 @@ import * as actionCreators from '../actions/searchActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         //interviews: state.search.interviews,
         foundInterviews: state.search.foundInterviews,

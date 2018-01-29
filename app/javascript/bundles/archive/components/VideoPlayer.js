@@ -8,13 +8,15 @@ export default class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
-        this.tracksVisible=false;
+        this.tracksVisible = false;
     }
 
-    componentDidMount(){
-        this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
-        this.video.addEventListener('mozfullscreenchange', this.fullscreenChange );
-        this.video.addEventListener('fullscreenchange',this.fullscreenChange);
+    componentDidMount() {
+        if (this.video) {
+            this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
+            this.video.addEventListener('mozfullscreenchange', this.fullscreenChange);
+            this.video.addEventListener('fullscreenchange', this.fullscreenChange);
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -61,7 +63,7 @@ export default class VideoPlayer extends React.Component {
                         return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
                     }
                     case 'Audio': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3` 
+                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3`
                     }
                 }
             }
@@ -70,12 +72,12 @@ export default class VideoPlayer extends React.Component {
 
     rememberInterviewLink() {
         return <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-                    title: ArchiveUtils.translate( this.props, 'annotation_for_interview') + " " + this.props.interview.short_title[this.props.locale],
-                    content: this.rememberInterviewForm()
-                })}>
-                    <i className="fa fa-star"></i>
-                    <span>{ArchiveUtils.translate(this.props, 'save_interview_reference')}</span>
-                </div>
+            title: ArchiveUtils.translate(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale],
+            content: this.rememberInterviewForm()
+        })}>
+            <i className="fa fa-star"></i>
+            <span>{ArchiveUtils.translate(this.props, 'save_interview_reference')}</span>
+        </div>
     }
 
     defaultTitle() {
@@ -86,29 +88,29 @@ export default class VideoPlayer extends React.Component {
 
     rememberInterviewForm() {
         return <UserContentFormContainer
-                    title={this.defaultTitle()}
-                    description=''
-                    properties={{title: this.props.interview.title}}
-                    reference_id={this.props.interview.id}
-                    reference_type='Interview'
-                    media_id={this.props.interview.archive_id}
-                    type='InterviewReference'
-                    submitLabel={ArchiveUtils.translate(this.props, 'notice')}
-                />
+            title={this.defaultTitle()}
+            description=''
+            properties={{title: this.props.interview.title}}
+            reference_id={this.props.interview.id}
+            reference_type='Interview'
+            media_id={this.props.interview.archive_id}
+            type='InterviewReference'
+            submitLabel={ArchiveUtils.translate(this.props, 'notice')}
+        />
     }
 
     annotateOnSegmentLink() {
         return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-                    title: ArchiveUtils.translate( this.props, 'annotation_for'),
-                    content: this.annotateOnSegmentForm(this.actualSegmentIndex())
-                })}>
-                    <i className="fa fa-pencil"></i>
-                    <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
-                </div>
+            title: ArchiveUtils.translate(this.props, 'save_user_annotation') ,
+            content: this.annotateOnSegmentForm(this.actualSegmentIndex())
+        })}>
+            <i className="fa fa-pencil"></i>
+            <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
+        </div>
     }
 
     actualSegmentIndex() {
-        return this.props.segments.findIndex( segment => {
+        return this.props.segments.findIndex(segment => {
             return segment.start_time <= this.video.currentTime && segment.end_time >= this.video.currentTime;
         })
     }
@@ -117,29 +119,29 @@ export default class VideoPlayer extends React.Component {
         let segment = this.props.segments[segmentIndex];
 
         return <UserContentFormContainer
-                    title={this.defaultTitle()}
-                    description=''
-                    properties={{
-                        time: segment.start_time,
-                        interview_archive_id: this.props.interview.archive_id
-                    }}
-                    reference_id={segment.id}
-                    reference_type='Segment'
-                    media_id={segment.media_id}
-                    segmentIndex={segmentIndex}
-                    type='UserAnnotation'
-                    workflow_state='private'
-                />
+            title={this.defaultTitle()}
+            description=''
+            properties={{
+                time: segment.start_time,
+                interview_archive_id: this.props.interview.archive_id
+            }}
+            reference_id={segment.id}
+            reference_type='Segment'
+            media_id={segment.media_id}
+            segmentIndex={segmentIndex}
+            type='UserAnnotation'
+            workflow_state='private'
+        />
     }
 
-    fullscreenChange(event){
+    fullscreenChange(event) {
         let isFullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
         if (isFullscreen) {
-            this.tracksVisible=false;
+            this.tracksVisible = false;
             let tracks = {};
             for (let i = 0; i < this.video.textTracks.length; i++) {
-                if (this.video.textTracks[i].mode === "showing"){
-                    this.tracksVisible=true;
+                if (this.video.textTracks[i].mode === "showing") {
+                    this.tracksVisible = true;
                 }
                 tracks[this.video.textTracks[i].language] = this.video.textTracks[i];
             }
@@ -158,45 +160,50 @@ export default class VideoPlayer extends React.Component {
     render() {
 
         let intervieweeNames = this.props.interviewee.names[this.props.locale];
-
-        return (
-            <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
-                <div className={"video-title-container"}>
-                    <h1 className='video-title'>
-                        {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
-                    </h1>
-                    {this.rememberInterviewLink()}
-                    {this.annotateOnSegmentLink()}
+        if (this.props.project) {
+            return (
+                <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
+                    <div className={"video-title-container"}>
+                        <h1 className='video-title'>
+                            {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
+                        </h1>
+                        <div className="video-icons-container">
+                            {this.rememberInterviewLink()}
+                            {this.annotateOnSegmentLink()}
+                        </div>
+                    </div>
+                    <div className='video-element'>
+                        <video ref={(video) => {
+                            this.video = video;
+                        }}
+                               onTimeUpdate={(event) => {
+                                   this.props.handleVideoTimeChange(event)
+                               }}
+                               onEnded={(event) => {
+                                   this.handleVideoEnded()
+                               }}
+                               playsInline={true}
+                               controls={true}
+                               poster={this.props.interview.still_url}
+                        >
+                            <source src={this.src()}/>
+                            <track kind="subtitles"
+                                   label={ArchiveUtils.translate(this.props, 'transcript')}
+                                   src={this.props.archiveId + '.vtt?type=transcript&tape_number=' + this.props.tape}
+                                   srcLang="el"
+                            />
+                            <track kind="subtitles"
+                                   label={ArchiveUtils.translate(this.props, 'translation')}
+                                   src={this.props.archiveId + '.vtt?type=translation&tape_number=' + this.props.tape}
+                                   srcLang="de"
+                            />
+                        </video>
+                    </div>
                 </div>
-                <div className='video-element'>
-                    <video ref={(video) => {
-                        this.video = video;
-                    }}
-                           onTimeUpdate={(event) => {
-                               this.props.handleVideoTimeChange(event)
-                           }}
-                           onEnded={(event) => {
-                               this.handleVideoEnded()
-                           }}
-                           playsInline={true}
-                           controls={true}
-                           poster={this.props.interview.still_url}
-                    >
-                        <source src={this.src()}/>
-                        <track kind="subtitles"
-                               label={ArchiveUtils.translate( this.props, 'transcript')}
-                               src={this.props.archiveId + '.vtt?type=transcript&tape_number=' + this.props.tape}
-                               srcLang={this.props.interview.lang}
-                        />
-                        <track kind="subtitles"
-                               label={ArchiveUtils.translate( this.props, 'translation')}
-                               src={this.props.archiveId + '.vtt?type=translation&tape_number=' + this.props.tape}
-                               srcLang="de"
-                        />
-                    </video>
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return null;
+        }
     }
 }
 

@@ -135,3 +135,9 @@ Example: Switch from `mog` to `zwar`:
         database: zwar_archive_development
         ...
     ```
+
+4. in **archiveConstants.js**:
+
+    ```javascript
+    export const PROJECT = 'mog';
+    ```

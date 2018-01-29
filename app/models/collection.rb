@@ -24,4 +24,11 @@ class Collection < ActiveRecord::Base
     I18n.t(:collection)
   end
 
+  def localized_hash
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = name(I18n.locale)
+      mem
+    end
+  end
+
 end

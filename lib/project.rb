@@ -70,6 +70,17 @@ module Project
               subfacets
             end
           }
+        when 'collection'
+          mem[facet['id'].to_sym] = {
+            descriptor: localized_hash_for("search_facets", facet['id']),
+            subfacets: Interview.all.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet['id'])] = {
+                descriptor: interview.collection.localized_hash,
+                count: 0
+              }
+              subfacets
+            end
+          }
         end
         mem.with_indifferent_access
       end

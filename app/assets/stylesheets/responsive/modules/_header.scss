@@ -3,6 +3,7 @@
   margin: 0;
   color: $primary-color;
   overflow: hidden;
+  padding: $header-logo-padding;
   &:hover {
     text-decoration: none !important;
     color: $primary-color;

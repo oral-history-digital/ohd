@@ -54,7 +54,7 @@
   }
   &:hover {
     background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
-    color: $gray-darkest;
+    color: $flyout-tab-title-text-color;
   }
   animation-name: fade-in;
   animation-duration: 1s;
@@ -90,11 +90,11 @@
   }
   50% {
     background-color: $secondary-color;
-    color: $gray-darkest;
+    color: $flyout-tab-title-text-color;
   }
   100% {
     background-color: $secondary-color;
-    color: $gray-darkest;
+    color: $flyout-tab-title-text-color;
     margin-top: 2px;
   }
 }
@@ -105,7 +105,7 @@
   margin: 2px 0 40px 0;
   padding: 20px;
   background: $secondary-color;
-  color: $gray-darkest;
+  color: $flyout-tab-title-text-color;
   font-size: 1.25rem;
   cursor: auto;
   animation-name: move-down;

@@ -23,8 +23,8 @@ class ReferenceTree
       time: segment.start_time,
       timecode: segment.timecode,
       transcripts:{
-          de:segment.translation,
-          "#{segment.interview.language.code[0..1]}": segment.transcript
+          de:segment.translation.sub(/^\:+\s*\:*/,"").strip(),
+          "#{segment.interview.language.code[0..1]}": segment.transcript.sub(/^\:+\s*\:*/,"").strip()
       }
     }
   end

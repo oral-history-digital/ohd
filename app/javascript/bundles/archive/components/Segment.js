@@ -120,31 +120,34 @@ export default class Segment extends React.Component {
         let locale = this.props.originalLocale ? this.props.interview.lang.substring(0, 2) : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.props.data.speaker_changed ? 'content-trans-row speaker-change' : 'content-trans-row';
-
-        return (
-            <div className={contentTransRowCss}>
-                <div>
-                    <div className="content-trans-speaker-ico">
-                        {this.speakerIcon()}
-                    </div>
-                    <div className='content-trans-text'
-                         onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
-                        <div className={this.css()}
-                             dangerouslySetInnerHTML={{__html: this.transcript()}}
-                        />
-                    </div>
-                    {this.renderLinks()}
-                    <div className={contentOpenClass}>
+        if (this.transcript()) {
+            return (
+                    <div className={contentTransRowCss}>
                         <div>
-                            {this.annotations(locale)}
-                        </div>
-                        <div className='content-trans-text-element-data'>
-                            {this.references(locale)}
+                            <div className="content-trans-speaker-ico">
+                                {this.speakerIcon()}
+                            </div>
+                            <div className='content-trans-text'
+                                 onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                                <div className={this.css()}
+                                     dangerouslySetInnerHTML={{__html: this.transcript()}}
+                                />
+                            </div>
+                            {this.renderLinks()}
+                            <div className={contentOpenClass}>
+                                <div>
+                                    {this.annotations(locale)}
+                                </div>
+                                <div className='content-trans-text-element-data'>
+                                    {this.references(locale)}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        )
+                )
+        } else {
+            return null;
+        }
     }
 }
 
