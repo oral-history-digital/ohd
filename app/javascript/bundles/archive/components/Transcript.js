@@ -33,11 +33,16 @@ export default class Transcript extends React.Component {
 
     render () {
         let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.showSegmentsFor(this.props.transcriptTime);
+        let speakerId;
 
         return ( 
             <div>
                 {shownSegments.map( (segment, index) => {
                     segment.speaker_is_interviewee = this.props.data.interview.interviewee_id === segment.speaker_id;
+                    if (speakerId !== segment.speaker_id) {
+                        segment.speakerIdChanged = true;
+                        speakerId = segment.speaker_id;
+                    }
                     return (
                         <SegmentContainer
                             data={segment} 

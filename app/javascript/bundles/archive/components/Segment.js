@@ -83,8 +83,12 @@ export default class Segment extends React.Component {
         return name;
     }
 
+    speakerChanged() {
+        return (this.props.data.speaker_changed || this.props.data.speakerIdChanged);
+    }
+
     speakerIcon() {
-        if (this.props.data.speaker_changed) {
+        if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             let title = this.speakerName();
             return (
@@ -119,7 +123,7 @@ export default class Segment extends React.Component {
     render() {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
-        let contentTransRowCss = this.props.data.speaker_changed ? 'content-trans-row speaker-change' : 'content-trans-row';
+        let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         if (this.transcript()) {
             return (
                     <div className={contentTransRowCss}>
