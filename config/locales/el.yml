@@ -142,6 +142,8 @@ el:
       job_description: 'Bitte angeben'
       research_intention: 'Bitte angeben'
       comments: 'Bitte angeben'
+  order_new_password: 'Paßwort vergessen?'
+  ordered_new_password: 'Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres Passwortes geschickt.'
   conditions: 'Προϋποθέσεις χρήσης'
   privacy_protection: 'Προστασία δεδομένων'
   legal_info: 'Impressum'

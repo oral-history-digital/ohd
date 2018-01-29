@@ -17,6 +17,10 @@ import {
     CHANGE_PASSWORD,
     CHANGED_PASSWORD,
     SUBMIT_CHANGE_PASSWORD,
+
+    ORDER_NEW_PASSWORD,
+    ORDERED_NEW_PASSWORD,
+    ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
 
 const account = (state = {}, action) => {
@@ -67,6 +71,15 @@ const account = (state = {}, action) => {
             return Object.assign({}, state, {
                 isChangingPassword: false,
                 changePasswordStatus: action.changePasswordStatus
+            })
+        case ORDER_NEW_PASSWORD:
+            return Object.assign({}, state, {
+                isOrderingNewPassword: true
+            })
+        case ORDERED_NEW_PASSWORD:
+            return Object.assign({}, state, {
+                isOrderingNewPassword: false,
+                orderNewPasswordStatus: 'ordered_new_password'
             })
 
         default:

@@ -76,7 +76,10 @@ export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGED_PASSWORD = 'CHANGED_PASSWORD';
 export const SUBMIT_CHANGE_PASSWORD = 'SUBMIT_CHANGE_PASSWORD';
 export const CHANGE_PASSWORD_URL = '/de/user_accounts/password';
-export const FORGOT_PASSWORD_URL = '/de/user_accounts/password/new';
+
+export const ORDER_NEW_PASSWORD = 'ORDER_NEW_PASSWORD';
+export const ORDERED_NEW_PASSWORD = 'ORDERED_NEW_PASSWORD';
+export const ORDER_NEW_PASSWORD_URL = '/de/user_accounts/password';
 
 export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
 export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';

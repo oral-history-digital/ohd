@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
-    devise_for :user_accounts, :controllers => {sessions: 'sessions'}, skip: [:registrations]
+    devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
     resources :user_registrations do
       member do
         post :confirm
