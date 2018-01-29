@@ -87,27 +87,46 @@ export default class ChangePasswordForm extends React.Component {
         }
     }
 
-    render() {
-        let _this = this;
-        return (
-            <div>
+    header() {
+        if (this.props.account.active) {
+            return (
                 <h1>
                     {t(this.props, 'devise.registrations.activate')}
                     &nbsp;
                     <em>{this.texts().display_name}</em>
                 </h1>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    userSalutation() {
+        if (this.props.account.active) {
+            return (
+                <span>
+                    <label>
+                        {t(this.props, 'devise.authentication_keys.login') + ": "}
+                        <b>{this.texts().accountLogin}</b> 
+                    </label>
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    render() {
+        let _this = this;
+        return (
+            <div>
+                {this.header()}
                 <p>
                     {t(this.props, 'devise.registrations.activate_text')}
                 </p>
+                {this.userSalutation()}
 
                 <form className='default' onSubmit={this.handleSubmit}>
-                    <span>
-                        <label>
-                            {t(this.props, 'devise.authentication_keys.login') + ": "}
-                            <b>{this.texts().accountLogin}</b> 
-                        </label>
-                    </span>
-                    <span>&nbsp;</span>
                     <InputContainer 
                         scope='devise.passwords'
                         attribute='password' 
