@@ -34,7 +34,7 @@
 }
 
 .slick-list {
-  height: 90% !important;
+  height: 80% !important;
   @include clearfix;
 }
 .slick-slider {
@@ -44,7 +44,7 @@
   height: 100% !important;
 }
 .slick-dots {
-  bottom: 5px !important;
+  bottom: -5px !important;
   position: relative !important;
   @include screen-s {
     bottom: 10px !important;
