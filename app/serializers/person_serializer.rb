@@ -1,5 +1,6 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :histories, :names, :typology
+  attributes :id, :date_of_birth, :gender, :histories, :names, :typology, :place_of_birth
+
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -28,6 +29,11 @@ class PersonSerializer < ActiveModel::Serializer
         hsh[alpha2_locale] = {event_begin: i.deportation_date,
                          event_end: i.return_date,
                          event_description: i.forced_labor_details}}}
+  end
+
+
+  def place_of_birth
+    RegistryEntrySerializer.new(object.place_of_birth) if object.place_of_birth
   end
 
 end
