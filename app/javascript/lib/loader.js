@@ -37,17 +37,21 @@ import noCache from 'superagent-no-cache';
         });
     },
 
-    put: function(url, params, dispatch, callback) {
+    put: function(url, params, dispatch, successCallback, errorCallback) {
       request.put(url)
         .send(params)
         .set('Accept', 'application/json')
         .end( (error, res) => {
           if (res) {
             if (res.error) {
-              console.log("loading json from " + url + " failed: " + error);
+              if (typeof errorCallback === "function") {
+                dispatch(errorCallback(JSON.parse(res.text)));
+              } else {
+                console.log("loading json from " + url + " failed: " + error);
+              }
             } else {
-              if (typeof callback === "function") {
-                dispatch(callback(JSON.parse(res.text)));
+              if (typeof successCallback === "function") {
+                dispatch(successCallback(JSON.parse(res.text)));
               }
             }
           }

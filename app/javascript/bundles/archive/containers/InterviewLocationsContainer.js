@@ -12,8 +12,10 @@ const mapStateToProps = (state) => {
     let placeOfBirth = null;
     if (interview && interview.interview && interview.interview.interviewees){
         placeOfBirth = interview.interview.interviewees[0].place_of_birth;
-        placeOfBirth['archive_id'] = state.archive.archiveId;
-        placeOfBirth['names'] = interview.interview.interviewees[0].names;
+        if (placeOfBirth) {
+            placeOfBirth['archive_id'] = state.archive.archiveId;
+            placeOfBirth['names'] = interview.interview.interviewees[0].names;
+        }
     }
 
     return {

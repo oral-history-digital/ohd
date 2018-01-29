@@ -26,6 +26,10 @@ import {
     CHANGED_PASSWORD,
     SUBMIT_CHANGE_PASSWORD,
     CHANGE_PASSWORD_URL,
+
+    ORDER_NEW_PASSWORD,
+    ORDERED_NEW_PASSWORD,
+    ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
 
 const requestAccount = () => ({
@@ -107,10 +111,30 @@ const changedPassword = (json) => ({
         changePasswordStatus: json
 })
 
-export function submitChangePassword(params, resetToken) {
+export function submitChangePassword(url, method, params) {
     return dispatch => {
-        dispatch(changePassword())
-        Loader.post(`/de/user_registrations/${resetToken}/confirm`, params, dispatch, loggedIn, authError);
+        dispatch(changePassword());
+        if(method === 'post') {
+            Loader.post(url, params, dispatch, loggedIn, authError);
+        } else {
+            Loader.put(url, params, dispatch, loggedIn, authError);
+        }
+    }
+}
+
+const orderNewPassword = () => ({
+        type: ORDER_NEW_PASSWORD,
+})
+
+const orderedNewPassword = (json) => ({
+        type: ORDERED_NEW_PASSWORD,
+        //orderNewPasswordStatus: json
+})
+
+export function submitOrderNewPassword(params) {
+    return dispatch => {
+        dispatch(orderNewPassword())
+        Loader.post(ORDER_NEW_PASSWORD_URL, params, dispatch, orderedNewPassword, authError);
     }
 }
 

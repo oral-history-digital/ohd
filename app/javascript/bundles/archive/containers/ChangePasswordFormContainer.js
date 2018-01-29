@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitChangePassword: (params, resetToken) => dispatch(submitChangePassword(params, resetToken)),
+    submitChangePassword: (url, method, params) => dispatch(submitChangePassword(url, method, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordForm);

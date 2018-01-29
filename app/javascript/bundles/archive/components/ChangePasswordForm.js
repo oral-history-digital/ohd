@@ -1,5 +1,6 @@
 import React from 'react';
 import InputContainer from '../containers/form/InputContainer';
+import queryString from 'query-string';
 import { t } from '../../../lib/utils';
 
 export default class ChangePasswordForm extends React.Component {
@@ -41,7 +42,22 @@ export default class ChangePasswordForm extends React.Component {
         event.preventDefault();
         if(this.valid()) {
             let resetToken = this.context.router.route.match.params.resetPasswordToken;
-            this.props.submitChangePassword({user_account: this.state.values}, resetToken);
+            if(!resetToken) {
+                let query = queryString.parse(this.context.router.route.location.search);
+                resetToken = query.reset_password_token;
+            }
+            let url, method;
+            let params = this.state.values;
+
+            if (this.props.account.active) {
+                url = `/de/user_registrations/${resetToken}/confirm`;
+                method = 'post';
+            } else {
+                url = '/de/user_accounts/password';
+                method = 'put';
+                params.reset_password_token = resetToken;
+            }
+            this.props.submitChangePassword(url, method, {user_account: params});
         } 
     }
 
@@ -71,28 +87,46 @@ export default class ChangePasswordForm extends React.Component {
         }
     }
 
-    render() {
-        let submit = this.texts().submit || '';
-        let _this = this;
-        return (
-            <div>
+    header() {
+        if (this.props.account.active) {
+            return (
                 <h1>
                     {t(this.props, 'devise.registrations.activate')}
                     &nbsp;
                     <em>{this.texts().display_name}</em>
                 </h1>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    userSalutation() {
+        if (this.props.account.active) {
+            return (
+                <span>
+                    <label>
+                        {t(this.props, 'devise.authentication_keys.login') + ": "}
+                        <b>{this.texts().accountLogin}</b> 
+                    </label>
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    render() {
+        let _this = this;
+        return (
+            <div>
+                {this.header()}
                 <p>
                     {t(this.props, 'devise.registrations.activate_text')}
                 </p>
+                {this.userSalutation()}
 
                 <form className='default' onSubmit={this.handleSubmit}>
-                    <span>
-                        <label>
-                            {t(this.props, 'devise.authentication_keys.login') + ": "}
-                            <b>{this.texts().accountLogin}</b> 
-                        </label>
-                    </span>
-                    <span>&nbsp;</span>
                     <InputContainer 
                         scope='devise.passwords'
                         attribute='password' 

@@ -20,7 +20,7 @@
     content: "\f00d";
     font-size: 1.5rem;
     color: $gray-medium;
-    width: 1.4em;
+    width: 1.5em;
   }
 }
 
@@ -71,7 +71,18 @@
       height: 100%;
     }
     .close:after {
+      right: 0;
+      width: 1.5em;
+      height: 1.5rem;
+      //background-color: black;
       color: #fff;
+      font-size: 1.5rem;
+      @include screen-m {
+        width: 2em;
+        height: 2rem;
+        color: #fff;
+        font-size: 1.8rem;
+      }
     }
   }
   .content {

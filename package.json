@@ -28,6 +28,7 @@
     "postcss-smart-import": "^0.7.4",
     "precss": "^1.4.0",
     "prop-types": "^15.5.10",
+    "query-string": "^5.0.1",
     "rails-erb-loader": "^5.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
