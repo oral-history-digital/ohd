@@ -1,8 +1,9 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Navigation } from 'react-router-dom'
+import {render} from 'react-dom';
+import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
 import moment from 'moment';
+import ArchiveUtils from "../../../lib/utils";
 
 export default class InterviewLocations extends React.Component {
 
@@ -25,13 +26,14 @@ export default class InterviewLocations extends React.Component {
         let segment = this.getSegment(segmentId);
         this.props.handleSegmentClick(segment.tape_nbr, segment.start_time);
     }
+
     //handleClick(tape_nbr, start_time) {
-        //this.props.handleSegmentClick(tape_nbr, start_time);
+    //this.props.handleSegmentClick(tape_nbr, start_time);
     //}
 
     getSegment(segmentId) {
         let segments = this.props.segments.filter(function (segment) {
-              return segment.id === segmentId;
+            return segment.id === segmentId;
         });
         return segments[0];
     }
@@ -51,6 +53,17 @@ export default class InterviewLocations extends React.Component {
                     </div>
                 </div>
             )
+        } else if (ref.descriptor) {
+            return (
+                <div>
+                    <h3>
+                        {`${ArchiveUtils.translate(this.props, 'place_of_birth')} ${ref.descriptor[this.props.locale]}`}:
+                    </h3>
+                    <div>
+                        {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
+                    </div>
+                </div>
+            )
         } else {
             return (
                 <h3>
@@ -61,9 +74,13 @@ export default class InterviewLocations extends React.Component {
     }
 
     render() {
-        return(
-            <LocationsContainer 
-                data={this.props.locations[this.props.archiveId]} 
+        let locations = this.props.locations[this.props.archiveId];
+        if (locations && this.props.placeOfBirth) {
+            locations.push(this.props.placeOfBirth);
+        }
+        return (
+            <LocationsContainer
+                data={locations}
                 loaded={this.locationsLoaded()}
                 handleClick={this.handleClick.bind(this)}
                 popupContent={this.popupContent.bind(this)}

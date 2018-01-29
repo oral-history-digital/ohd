@@ -4,12 +4,7 @@ import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link, hashHistory} from 'react-router-dom';
 
-
-import ArchiveUtils from '../../../lib/utils';
-
-import {
-    FORGOT_PASSWORD_URL,
-} from '../constants/archiveConstants';
+import { t } from '../../../lib/utils';
 
 export default class Account extends React.Component {
 
@@ -22,7 +17,7 @@ export default class Account extends React.Component {
     info() {
         if (this.props.account.email) {
             return <div className='info'>
-                {`${ArchiveUtils.translate(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
+                {`${t(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
             </div>
         } else if (this.props.account.error) {
             return <div className='error'>
@@ -34,7 +29,6 @@ export default class Account extends React.Component {
     }
 
     loginOrOut() {
-        //if(this.props.account && this.props.account.isLoggedIn) {
         if (this.props.account.email) {
             return <div
                 className='logout'
@@ -45,38 +39,27 @@ export default class Account extends React.Component {
         } else {
             return <div>
                 <LoginFormContainer/>
-                {/*<div className={'register-link'}><a*/}
-                    {/*href={FORGOT_PASSWORD_URL}>{ArchiveUtils.translate(this.props, 'forget_password_question')}</a>*/}
-                {/*</div>*/}
                 <div className={'register-link'}>
-                    <Link
-                        to={'/' + this.props.locale + '/user_registrations/new'}>
-                        {ArchiveUtils.translate(this.props, 'registration')}
+                    <Link to={'/' + this.props.locale + '/user_registrations/new'}>
+                        {t(this.props, 'user_registration.registration')}
                     </Link>
-
+                </div>
+                <div className={'order-new-password-link'}>
+                    <Link to={'/' + this.props.locale + '/user_accounts/password/new'}>
+                        {t(this.props, 'order_new_password')}
+                    </Link>
                 </div>
             </div>
         }
     }
 
-    changePassword() {
-        //if(this.props.account && this.props.account.isLoggedIn) {
-        if (this.props.account.email) {
-            return <ChangePasswordFormContainer/>
-        } else {
-            return null
-        }
-    }
-
-
     render() {
         return (
             <div className={'flyout-login-container'}>
-                <h2>{ArchiveUtils.translate(this.props, 'login_page')}</h2>
+                <h2>{t(this.props, 'login_page')}</h2>
                 {this.info()}
                 {this.loginOrOut()}
             </div>
         );
-        //{this.changePassword()}
     }
 }

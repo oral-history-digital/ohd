@@ -72,7 +72,7 @@ export default class VideoPlayer extends React.Component {
 
     rememberInterviewLink() {
         return <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-            title: ArchiveUtils.translate(this.props, 'annotation_for_interview') + " " + this.props.interview.short_title[this.props.locale],
+            title: ArchiveUtils.translate(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale],
             content: this.rememberInterviewForm()
         })}>
             <i className="fa fa-star"></i>
@@ -101,7 +101,7 @@ export default class VideoPlayer extends React.Component {
 
     annotateOnSegmentLink() {
         return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-            title: ArchiveUtils.translate(this.props, 'annotation_for'),
+            title: ArchiveUtils.translate(this.props, 'save_user_annotation') ,
             content: this.annotateOnSegmentForm(this.actualSegmentIndex())
         })}>
             <i className="fa fa-pencil"></i>

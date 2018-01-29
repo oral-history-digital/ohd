@@ -35,6 +35,7 @@ class UserRegistrationsController < ApplicationController
     if !@user_account.nil? && @user_account.errors.empty?
       @login = @user_account.login 
       @display_name = @user_account.display_name
+      @active = @user_account.active?
     else
       @registration_status = t('invalid_token', :scope => 'devise.confirmations')
     end
