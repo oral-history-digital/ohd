@@ -2,7 +2,7 @@
 .slick-slide {
   position: relative !important;
   overflow: hidden;
-  background-color: #333;
+  //background-color: #333;
   text-align: center !important;
   padding: 4px 0;
   img {
@@ -13,18 +13,19 @@
     max-height: 80% !important;
   }
   .slider-text {
-    //flex-grow: 1;
     display: block;
     overflow: auto;
-    //height: auto;
     position: relative;
     max-height: 100% !important;
-    text-align: left;
+    text-align: center;
     padding: 10px;
     font-size: $font-size-small;
     line-height: $line-height-small;
     color: #fff;
+    width: 100%;
     @include screen-m {
+      width: 60%;
+      margin: 0 auto;
       padding: 20px;
       font-size: $font-size-medium;
       line-height: $line-height-medium;
@@ -43,64 +44,49 @@
   height: 100% !important;
 }
 .slick-dots {
-  bottom: auto !important;
+  bottom: 10px !important;
+  position: relative !important;
+  //padding-bottom: 15px !important;
 }
 
 .slick-prev {
-  left: 25px !important;
+  left: 5px !important;
   z-index: 3100;
-}
-[dir='rtl'] .slick-prev {
-  right: auto !important;
-  left: 25px;
-}
-.slick-prev:before {
-  content: '←';
-}
-[dir='rtl'] .slick-prev:before {
-  content: '→';
+  top: 30% !important;
+  width: 30px !important;
+  height: 30px !important;
+  @include screen-s {
+    top: 50% !important;
+  }
 }
 
 .slick-next {
-  right: 25px !important;
-}
-[dir='rtl'] .slick-next {
-  right: auto;
-  left: 25px !important;
-}
-.slick-next:before {
-  content: '→';
-}
-[dir='rtl'] .slick-next:before {
-  content: '←';
-}
-
-.slick-dots {
-  position: relative !important;
-  padding-bottom: 5px !important;
-}
-
-.slick-dots li {
-  //display: block !important;
+  right: 5px !important;
+  z-index: 3100;
+  top: 30% !important;
+  width: 30px !important;
+  height: 30px !important;
+  @include screen-s {
+    top: 50% !important;
+  }
 }
 
 .slick-dots li button:before {
   font-size: 12px !important;
   line-height: 20px !important;
-  width: 15px;
-  height: 15px;
+  width: 15px !important;
+  height: 15px !important;
   content: '•';
   text-align: center;
   opacity: .25;
-  color: #000;
+  color: #fff !important;
   @include screen-l {
     font-size: 15px !important;
     line-height: 30px !important;
-    width: 20px;
-    height: 20px;
+    width: 20px !important;
+    height: 20px !important;
   }
 }
-
 .slick-next:before,
 .slick-prev:before {
   font-size: 30px !important;

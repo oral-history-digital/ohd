@@ -167,8 +167,10 @@ export default class VideoPlayer extends React.Component {
                         <h1 className='video-title'>
                             {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
                         </h1>
-                        {this.rememberInterviewLink()}
-                        {this.annotateOnSegmentLink()}
+                        <div className="video-icons-container">
+                            {this.rememberInterviewLink()}
+                            {this.annotateOnSegmentLink()}
+                        </div>
                     </div>
                     <div className='video-element'>
                         <video ref={(video) => {
