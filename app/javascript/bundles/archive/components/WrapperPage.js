@@ -13,6 +13,8 @@ import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.png'
 
+import '../css/wrapper_page'
+
 export default class WrapperPage extends React.Component {
 
 
@@ -34,6 +36,14 @@ export default class WrapperPage extends React.Component {
         }
         if(!this.props.translations) {
             this.props.fetchStaticContent();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
+            document.body.classList.add('noScroll');
+        } else {
+            document.body.classList.remove('noScroll');
         }
     }
 
