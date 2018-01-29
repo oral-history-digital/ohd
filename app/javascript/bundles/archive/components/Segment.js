@@ -117,7 +117,7 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0, 2) : this.props.locale;
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.props.data.speaker_changed ? 'content-trans-row speaker-change' : 'content-trans-row';
         if (this.transcript()) {
