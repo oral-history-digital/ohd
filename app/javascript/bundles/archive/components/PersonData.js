@@ -15,7 +15,7 @@ export default class PersonData extends React.Component {
     }
 
 
-    place_of_birth(){
+    placeOfBirth(){
         if (this.props.interviewee.place_of_birth){
             return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale] );
         }
@@ -30,7 +30,7 @@ export default class PersonData extends React.Component {
 
                 {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName)}
                 {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth)}
-                {this.place_of_birth()}
+                {this.placeOfBirth()}
                 {this.content(typology, this.props.interviewee.typology[this.props.locale].join(', ') )}
 
                 <AuthShowContainer ifLoggedIn={true}>
