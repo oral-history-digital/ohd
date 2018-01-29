@@ -4,19 +4,35 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class PersonData extends React.Component {
 
+
+    content(label, value) {
+        return (
+            <p>
+                <span className="flyout-content-label">{label}:</span>
+                <span className="flyout-content-data">{value}</span>
+            </p>
+        )
+    }
+
+
+    place_of_birth(){
+        if (this.props.interviewee.place_of_birth){
+            return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale] );
+        }
+    }
+
+
     render() {
         let typology = ArchiveUtils.translate(this.props, 'search_facets') ? ArchiveUtils.translate(this.props, 'search_facets')['typology'] : "";
         let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
         return (
             <div>
-                <p><span
-                    className="flyout-content-label">{ArchiveUtils.translate(this.props, 'interviewee_name')}:</span><span
-                    className="flyout-content-data">{fullName}</span></p>
-                <p><span
-                    className="flyout-content-label">{ArchiveUtils.translate(this.props, 'date_of_birth')}:</span><span
-                    className="flyout-content-data">{this.props.interviewee.date_of_birth}</span></p>
-                <p><span className="flyout-content-label">{typology}:</span><span className="flyout-content-data">{this.props.interviewee.typology[this.props.locale].join(', ')}</span>
-                </p>
+
+                {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName)}
+                {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth)}
+                {this.place_of_birth()}
+                {this.content(typology, this.props.interviewee.typology[this.props.locale].join(', ') )}
+
                 <AuthShowContainer ifLoggedIn={true}>
                     <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
                         <a
