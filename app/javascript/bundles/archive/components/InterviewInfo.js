@@ -30,7 +30,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     download(transcript = true) {
-        let lang = transcript ? this.props.interview.lang : this.props.locale;
+        let lang = transcript ? this.props.interview.lang : "de";
         let textKey = transcript ? 'transcript' : 'translation';
         return (
             <p>

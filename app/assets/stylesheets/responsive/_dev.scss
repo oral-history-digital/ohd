@@ -16,7 +16,7 @@
     display: block;
     overflow: auto;
     position: relative;
-    max-height: 100% !important;
+    max-height: 20% !important;
     text-align: center;
     padding: 10px;
     font-size: $font-size-small;
@@ -34,7 +34,7 @@
 }
 
 .slick-list {
-  height: 90% !important;
+  height: 80% !important;
   @include clearfix;
 }
 .slick-slider {
@@ -44,9 +44,11 @@
   height: 100% !important;
 }
 .slick-dots {
-  bottom: 10px !important;
+  bottom: -5px !important;
   position: relative !important;
-  //padding-bottom: 15px !important;
+  @include screen-s {
+    bottom: 10px !important;
+  }
 }
 
 .slick-prev {
