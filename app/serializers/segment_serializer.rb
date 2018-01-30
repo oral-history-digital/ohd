@@ -74,6 +74,7 @@ class SegmentSerializer < ActiveModel::Serializer
   def references
     object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
       {
+        id: ref.registry_entry.id,
         desc: ref.registry_entry.localized_hash,
         #desc: ref.registry_entry.descriptor(:all),
         latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
