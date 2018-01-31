@@ -22,7 +22,7 @@ export default class Transcript extends React.Component {
 
     showSegmentsFor(time) {
         let shownSegments = this.segments().filter( segment => {
-            return (segment.tape_nbr <= 1 && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
+            return (segment.tape_nbr === this.props.tape && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
         })
         return shownSegments;
     }
