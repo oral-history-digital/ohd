@@ -15,12 +15,14 @@ export default class Transcript extends React.Component {
         let fixVideo = ($(document).scrollTop() > 80);
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
-        } 
+        } else if (!fixVideo && this.props.transcriptScrollEnabled) {
+            this.props.handleTranscriptScroll(false)
+        }
     }
 
     showSegmentsFor(time) {
         let shownSegments = this.segments().filter( segment => {
-            return (segment.tape_nbr <= 1 && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
+            return (segment.tape_nbr === this.props.tape && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 60));
         })
         return shownSegments;
     }
@@ -31,11 +33,16 @@ export default class Transcript extends React.Component {
 
     render () {
         let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.showSegmentsFor(this.props.transcriptTime);
+        let speakerId;
 
         return ( 
             <div>
                 {shownSegments.map( (segment, index) => {
                     segment.speaker_is_interviewee = this.props.data.interview.interviewee_id === segment.speaker_id;
+                    if (speakerId !== segment.speaker_id) {
+                        segment.speakerIdChanged = true;
+                        speakerId = segment.speaker_id;
+                    }
                     return (
                         <SegmentContainer
                             data={segment} 

@@ -14,12 +14,13 @@ class InterviewsController < BaseController
               #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
               for_interview_id(@interview.id)
+          ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
               interview: ::InterviewSerializer.new(@interview).as_json,
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
               references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: ReferenceTree.new(@interview.segment_registry_references).part(Project.ref_tree_branch_root_id)
+              ref_tree: ref_tree.part(Project.ref_tree_nodes["thematic"]["id"])
           }.to_json
         end
         render plain: json

@@ -8,6 +8,7 @@ import ArchiveUtils from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
+        tape: state.archive.tape,
         data: ArchiveUtils.getInterview(state),
         transcriptTime: state.archive.transcriptTime,
         transcriptScrollEnabled: state.archive.transcriptScrollEnabled

@@ -37,10 +37,10 @@ export default class ArchiveLocations extends React.Component {
         return (
             <div>
                 <h3>
-                    {`${ArchiveUtils.translate(this.props, 'place_of_birth')} ${ref.descriptor[this.props.locale]}`}:
+                    {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
                 </h3>
                 <div>
-                    {`${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname}`}
+                    {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
                 </div>
             </div>
         )

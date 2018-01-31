@@ -74,7 +74,7 @@ export default class Facet extends React.Component {
                         </input>
                         <label htmlFor={this.props.facet + "_" + subfacetId}>
                             {subfacet.descriptor[this.props.locale]}
-                            <span>({subfacet.count})</span>
+                            <span className='flyout-radio-container-facet-count'>({subfacet.count})</span>
                         </label>
                     </div>
                 )

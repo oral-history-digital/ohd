@@ -56,7 +56,7 @@ export default class Segment extends React.Component {
         if (this.state.contentType == 'references') {
             //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
             return this.props.data.references.map((reference, index) => {
-                return <span key={"reference-" + index}>{reference.desc[locale]}</span>
+                return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc[locale]}</span>
             })
         }
     }
@@ -83,8 +83,12 @@ export default class Segment extends React.Component {
         return name;
     }
 
+    speakerChanged() {
+        return (this.props.data.speaker_changed || this.props.data.speakerIdChanged);
+    }
+
     speakerIcon() {
-        if (this.props.data.speaker_changed) {
+        if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             let title = this.speakerName();
             return (
@@ -117,30 +121,28 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let locale = this.props.originalLocale ? this.props.interview.lang.substring(0, 2) : this.props.locale;
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
-        let contentTransRowCss = this.props.data.speaker_changed ? 'content-trans-row speaker-change' : 'content-trans-row';
+        let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         if (this.transcript()) {
             return (
-                    <div className={contentTransRowCss}>
-                        <div>
-                            <div className="content-trans-speaker-ico">
-                                {this.speakerIcon()}
+                    <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
+                        <div className="content-trans-speaker-ico">
+                            {this.speakerIcon()}
+                        </div>
+                        <div className='content-trans-text'
+                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                            <div className={this.css()}
+                                 dangerouslySetInnerHTML={{__html: this.transcript()}}
+                            />
+                        </div>
+                        {this.renderLinks()}
+                        <div className={contentOpenClass}>
+                            <div>
+                                {this.annotations(locale)}
                             </div>
-                            <div className='content-trans-text'
-                                 onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
-                                <div className={this.css()}
-                                     dangerouslySetInnerHTML={{__html: this.transcript()}}
-                                />
-                            </div>
-                            {this.renderLinks()}
-                            <div className={contentOpenClass}>
-                                <div>
-                                    {this.annotations(locale)}
-                                </div>
-                                <div className='content-trans-text-element-data'>
-                                    {this.references(locale)}
-                                </div>
+                            <div className='content-trans-text-element-data'>
+                                {this.references(locale)}
                             </div>
                         </div>
                     </div>

@@ -193,7 +193,7 @@ class Segment < ActiveRecord::Base
   #end
 
   def speaker_changed(segment_type=transcript)
-    segment_type[0] == ":"
+    speaker_change || segment_type[0] == ":"
   end
 
   # returns the segment that leads the chapter

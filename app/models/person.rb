@@ -16,10 +16,6 @@ class Person < ApplicationRecord
   translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names
 
   def place_of_birth
-
-
-    #if registry_references.length && registry_references.where(registry_reference_type_id: 4).length
-
     if registry_references.length > 0
       if registry_references.where(registry_reference_type_id: 4).length > 0
         registry_references.where(registry_reference_type_id: 4).first.registry_entry
