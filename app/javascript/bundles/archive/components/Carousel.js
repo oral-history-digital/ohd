@@ -1,8 +1,25 @@
 import React from 'react';
 import Slider from 'react-slick';
-
+import { PROJECT } from '../constants/archiveConstants'
 
 export default class Carousel extends React.Component {
+
+    photoSrc(photo) {
+        switch(PROJECT) {
+            case 'mog': {
+                return '/photos/src/'+photo.src;
+                break;
+            }
+            case 'zwar': {
+                 let p = photo.src.split('.')
+                 return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_original.' + p[1];
+                 break;
+            }
+            default: {
+                return null;
+            }
+         }
+    }
 
 
     renderPhotos(){
@@ -10,7 +27,7 @@ export default class Carousel extends React.Component {
             return (
                 <div key={"slider-image-" + index}
                      className={'slider-image-container'} >
-                        <img src={'/photos/src/'+photo.src}>
+                        <img src={ this.photoSrc(photo) }>
                         </img>
                     <div className="slider-text">{photo.captions[this.props.locale]}</div>
 

@@ -81,4 +81,6 @@
 
 .marker-cluster-group {
   display: none;
+}body.noScroll {
+  overflow: hidden;
 }

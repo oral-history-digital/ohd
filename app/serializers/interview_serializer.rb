@@ -5,13 +5,14 @@ class InterviewSerializer < ActiveModel::Serializer
              :tape_count,
              :video,
              :duration,
-             #:translated,
+             :translated,
              :created,
              #:updated_at,
              #:segmented,
              #:researched,
              #:proofread,
              :interview_date,
+             :forced_labor_groups,
              #:still_image_file_name,
              #:still_image_content_type,
              #:still_image_file_size,
@@ -23,12 +24,13 @@ class InterviewSerializer < ActiveModel::Serializer
              #:citation_timecode,
              #:indexed_at,
              :languages,
+             :languages_string,
              :language_id,
              :lang,
              :title,
              :short_title,
              :still_url,
-            #  :src,
+             #:src,
              :src_base,
              :references,
              :formatted_duration,
@@ -40,15 +42,27 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :cinematographers, serializer: PersonSerializer
   has_many :interviewers, serializer: PersonSerializer
 
+  def forced_labor_groups
+    if object.respond_to? :forced_labor_groups
+      RegistryEntry.find(object.forced_labor_groups).map{|r| r.to_s}.join(', ')
+    else
+      ''
+    end
+  end
+
   def lang
     # return only the first language code in cases like 'slk/ces'
     ISO_639.find(object.language.code.split('/')[0]).alpha2
   end
-
+  
   def languages
     object.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem } - ['en']
   end
-
+  
+    def languages_string
+      object.language.to_s + ' ' + ((object.translated)? I18n.t('status.translated') : '')
+    end
+  
   def title
     object.localized_hash(true)
   end
