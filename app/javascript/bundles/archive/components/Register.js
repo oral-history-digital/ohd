@@ -10,6 +10,9 @@ export default class Register extends React.Component {
         if (!this.props.registrationStatus) {
             return (
                 <div>
+                    <h1>
+                        {t(this.props, 'devise.registrations.link')}
+                    </h1>
                     <p>
                     {t(this.props, 'user_registration.registration_text')}
                     </p>
@@ -27,9 +30,6 @@ export default class Register extends React.Component {
         return (
             <WrapperPageContainer tabIndex={1}>
                 <div className='wrapper-content register'>
-                    <h1>
-                        {t(this.props, 'devise.registrations.link')}
-                    </h1>
                     {this.content()}
                 </div>
             </WrapperPageContainer>
