@@ -38,39 +38,19 @@ default: &default
   external_links:
     conditions:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-      el: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    #nutzungsantrag:
-     # de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      #en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+      el: 'http://www.zwangsarbeit-archiv.de/el/sammlung/nutzungsbedingungen/index.html'
     privacy_protection:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      el: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    #annotation_guidelines:
-      #de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      #en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      el: 'http://www.zwangsarbeit-archiv.de/el/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
     team:
       de: 'http://www.zwangsarbeit-archiv.de/team'
-      el: 'http://www.zwangsarbeit-archiv.de/en/team'
-      #ru: 'http://www.zwangsarbeit-archiv.de/team'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
+      el: 'http://www.zwangsarbeit-archiv.de/el/team'
     contact:
       de: 'http://www.zwangsarbeit-archiv.de/kontakt'
-      el: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
-      #ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
+      el: 'http://www.zwangsarbeit-archiv.de/el/kontakt'
     legal_info:
       de: 'http://www.zwangsarbeit-archiv.de/impressum'
-      el: 'http://www.zwangsarbeit-archiv.de/en/impressum'
-      #ru: 'http://www.zwangsarbeit-archiv.de/impressum'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
+      el: 'http://www.zwangsarbeit-archiv.de/el/impressum'
 
   video_src_base: "http://medien.cedis.fu-berlin.de/eog/interviews/mog"
 
