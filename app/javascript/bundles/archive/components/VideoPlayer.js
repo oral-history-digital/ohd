@@ -158,8 +158,16 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    render() {
+    handleVideoClick(e) {
+        if(this.video) {
+            // handle click if not Firefox (Firefox supports this feature natively)
+            if (typeof InstallTrigger === 'undefined') {
+                this.video.paused ? this.video.play() : this.video.pause();
+            }
+        }
+    }
 
+    render() {
         let intervieweeNames = this.props.interviewee.names[this.props.locale];
         if (this.props.project) {
             return (
@@ -174,19 +182,21 @@ export default class VideoPlayer extends React.Component {
                         </div>
                     </div>
                     <div className='video-element'>
-                        <video ref={(video) => {
-                            this.video = video;
-                        }}
-                               onTimeUpdate={(event) => {
-                                   this.props.handleVideoTimeChange(event)
-                               }}
-                               onEnded={(event) => {
-                                   this.handleVideoEnded()
-                               }}
-                               playsInline={true}
-                               controls={true}
-                               controlsList="nodownload"
-                               poster={this.props.interview.still_url}
+                        <video 
+                            ref={(video) => {
+                                this.video = video;
+                            }}
+                            onTimeUpdate={(event) => {
+                               this.props.handleVideoTimeChange(event)
+                            }}
+                            onEnded={(event) => {
+                               this.handleVideoEnded()
+                            }}
+                            playsInline={true}
+                            controls={true}
+                            controlsList="nodownload"
+                            poster={this.props.interview.still_url}
+                            onClick={(e) => this.handleVideoClick(e)}
                         >
                             <source src={this.src()}/>
                             <track kind="subtitles"
