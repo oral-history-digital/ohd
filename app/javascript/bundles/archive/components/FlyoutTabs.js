@@ -131,7 +131,6 @@ export default class FlyoutTabs extends React.Component {
                             title={ArchiveUtils.translate(this.props, 'citation')}
                             content={<div/>}/>
                     </div>
-
                 </TabPanel>
                 <TabPanel>
                     <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'user_content')}</div>
