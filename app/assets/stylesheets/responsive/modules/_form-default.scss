@@ -41,7 +41,7 @@ form.default {
   }
   input[type=submit] {
     margin-left: 0;
-    width: 30%;
+    width: 100%;
     background-color: $gray-warm;
     color: #fff;
     padding: 10px;
@@ -49,6 +49,7 @@ form.default {
     cursor: pointer;
     @include screen-l {
       margin-left: 28%;
+      width: 30%;
     }
     &:hover {
       background-color: lighten($gray-warm, 10%);
