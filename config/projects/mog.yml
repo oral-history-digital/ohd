@@ -72,23 +72,6 @@ default: &default
       #ru: 'http://www.zwangsarbeit-archiv.de/impressum'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
-  # Please mount the CIFS storage server locally like this (read-only for normal users!):
-  # sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
-  # /etc/fstab:
-  #     //eaz-diga.cedis.fu-berlin.de/data /mnt/eaz-diga.cedis.fu-berlin.de/data cifs noauto,sec=ntlmv2,credentials=/etc/cifs.credentials,uid=root,gid=root,nosetuids,file_mode=0644,dir_mode=0755 0 0
-  # /etc/cifs.credentials (create the file with permissions 600 and enter your CIFS credentials)
-  #     username=...
-  #     password=...
-  # If you want to simulate the mount locally you can either place a symlink or mount --bind
-  cifs_share: '/mnt/eaz-diga.cedis.fu-berlin.de/data/'
-
-  storage_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup'
-  photo_storage_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/bilder'
-  archive_management_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/redaktionssystem'
-  repository_dir: '/mnt/eaz-diga.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
-
-  streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv'
-
   video_src_base: "http://medien.cedis.fu-berlin.de/eog/interviews/mog"
 
   meta_keywords:
@@ -149,18 +132,6 @@ default: &default
       source: 'registry_entry'
       use_as_facet: true
       entry_dedalo_code: "hierarchy1_246"
-
-  # NB: The map has not yet been generalized to work for all historical
-  # contexts. It relies on ZWAR-specific registry data structures (i.e. a
-  # three-level location hierarchy, companies, camps and specific registry
-  # reference types like "forced labor locations").
-  # If you want to use the map for a different historical context then a
-  # generic map will have to be specified by the project responsibles first.
-  # Therefore set this to "false" for all projects except ZWAR unless
-  # you also change the corresponding map code.
-  uses_map: true
-
-  has_newsletter: true
 
 development:
   <<: *default
