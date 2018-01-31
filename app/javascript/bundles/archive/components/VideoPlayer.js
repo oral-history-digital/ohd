@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import ArchiveUtils from '../../../lib/utils';
 import moment from 'moment';
@@ -184,6 +185,7 @@ export default class VideoPlayer extends React.Component {
                                }}
                                playsInline={true}
                                controls={true}
+                               controlsList="nodownload"
                                poster={this.props.interview.still_url}
                         >
                             <source src={this.src()}/>
@@ -208,6 +210,6 @@ export default class VideoPlayer extends React.Component {
 }
 
 VideoPlayer.propTypes = {
-    handleVideoTimeUpdate: React.PropTypes.func,
-    handleVideoEnded: React.PropTypes.func,
+    handleVideoTimeUpdate: PropTypes.func,
+    handleVideoEnded: PropTypes.func,
 };
