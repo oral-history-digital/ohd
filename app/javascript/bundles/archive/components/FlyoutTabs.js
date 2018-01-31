@@ -39,7 +39,7 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex > 1 && tabIndex < this.props.locales.length + 2) {
             // locales (language switchers)
             this.switchLocale(this.props.locales[tabIndex - 2]);
-        } else if (tabIndex === this.props.locales.length + 2) {
+        } else if (tabIndex === this.props.locales.length + 3) {
             // interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
             this.setState({tabIndex: tabIndex});
@@ -65,7 +65,10 @@ export default class FlyoutTabs extends React.Component {
 
     localeTabs() {
         return this.props.locales.map((locale, index) => {
-            return <Tab className='flyout-top-nav lang'>{locale}</Tab>
+            let classNames = 'flyout-top-nav lang';
+            if ((index + 1) === this.props.locales.length)
+                classNames += ' top-nav-last' 
+            return <Tab className={classNames}>{locale}</Tab>
         })
     }
 
