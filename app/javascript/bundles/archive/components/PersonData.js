@@ -35,12 +35,12 @@ export default class PersonData extends React.Component {
 
                 <AuthShowContainer ifLoggedIn={true}>
                     <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
-                        <a
+                        <a className='flyout-download-link-lang'
                             href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=de&kind=history'}>
                             <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
                             <span>de</span>
-                        </a>&nbsp;
-                        <a
+                        </a>
+                        <a className='flyout-download-link-lang'
                             href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=el&kind=history'}>
                             <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
                             <span>el</span>
