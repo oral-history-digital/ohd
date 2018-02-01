@@ -14,6 +14,7 @@ export default class ArchiveSearchForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.handleInputList = this.handleInputList.bind(this);
     }
 
     componentDidMount() {
@@ -29,7 +30,6 @@ export default class ArchiveSearchForm extends React.Component {
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-
         this.props.setQueryParams({[name]: value});
     }
 
@@ -39,14 +39,34 @@ export default class ArchiveSearchForm extends React.Component {
         this.props.searchInArchive({});
     }
 
+    handleInputList(event){
+        for( let i = 0; i < event.currentTarget.list.children.length; i++){
+            if (event.currentTarget.list.children[i].innerText === event.currentTarget.value){
+                let facet = event.currentTarget.name;
+                let facetValue = event.currentTarget.list.children[0].dataset[facet];
+                let params = serialize(this.form, {hash: true});
+                for (let [key, value] of Object.entries(this.props.facets)) {
+                    if (key == facet) {
+                        params[key] = [facetValue];
+                    }
+                }
+                this.submit(params);
+                break;
+            }
+        }
+    }
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
         let params = serialize(this.form, {hash: true});
+        this.submit(params);
+    }
+
+    submit(params){
         // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
         // Thus the last checkbox would never uncheck.
         for (let [key, value] of Object.entries(this.props.facets)) {
-            params[key] = params[key] ? params[key] : []
+            params[key] = params[key] && !(typeof params[key] == "string")? params[key] : []
         }
         this.props.searchInArchive(params);
         this.context.router.history.push(ARCHIVE_SEARCH_URL);
@@ -78,9 +98,11 @@ export default class ArchiveSearchForm extends React.Component {
                 return (
                     <FacetContainer
                         data={this.props.facets[facet]}
+                        inputField={facet === 'archive_id'}
                         facet={facet}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
+                        handleInputList={this.handleInputList}
                     />
                 )
             })

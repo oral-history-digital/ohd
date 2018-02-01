@@ -6,7 +6,8 @@ const mapStateToProps = (state) => {
     return { 
         facets: state.search.facets,
         query: state.search.query,
-        locale: state.archive.locale
+        locale: state.archive.locale,
+        translations: state.archive.translations
     }
 }
 
