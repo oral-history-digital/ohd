@@ -23,8 +23,9 @@
 
 .logo-text {
   display: block;
-  margin: 33px 0 4px 0;
+  margin: 26px 0 4px 0;
   font-size: 36px;
+  text-transform: uppercase;
   color: $primary-color;
   @include screen-m {
     display: none;

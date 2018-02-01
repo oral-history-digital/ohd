@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ArchiveUtils from '../../../lib/utils';
 import { Navigation } from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
@@ -6,7 +7,7 @@ import LocationsContainer from '../containers/LocationsContainer'
 export default class ArchiveLocations extends React.Component {
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 
     locationsLoaded() {

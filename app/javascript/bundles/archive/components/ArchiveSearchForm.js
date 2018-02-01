@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
@@ -110,6 +111,6 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 }

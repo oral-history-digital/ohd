@@ -24,6 +24,7 @@
   &.lang {
     border-left: 2px solid lighten($gray-warm, 10%);
     padding-left: 6px;
+    text-transform: uppercase;
   }
   &:hover {
     color: $gray-darkest;

@@ -48,7 +48,7 @@ export default class Select extends React.Component {
                         t(this.props, `${this.props.optionsScope}.${value}`) :
                         t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)
                 return (
-                    <option value={value}>
+                    <option value={value} key={`${this.props.scope}-${index}`}>
                         {text}
                     </option>
                 )}
@@ -56,7 +56,7 @@ export default class Select extends React.Component {
         }
         if (this.props.withEmpty) {
             opts.unshift(
-                <option value=''>
+                <option value='' key={`${this.props.scope}-choose`}>
                     {t(this.props, 'choose')}
                 </option>
             )

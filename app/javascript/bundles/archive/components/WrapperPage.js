@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link, hashHistory} from 'react-router-dom';
 
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
@@ -27,7 +28,7 @@ export default class WrapperPage extends React.Component {
     }
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 
     componentDidMount() {

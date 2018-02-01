@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {render} from 'react-dom';
 import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
@@ -8,7 +9,7 @@ import ArchiveUtils from "../../../lib/utils";
 export default class InterviewLocations extends React.Component {
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 
     componentDidMount() {

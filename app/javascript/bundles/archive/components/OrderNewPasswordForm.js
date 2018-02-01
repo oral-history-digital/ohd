@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import InputContainer from '../containers/form/InputContainer';
 import { t } from '../../../lib/utils';
 
 export default class OrderNewPasswordForm extends React.Component {
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 
     constructor(props, context) {

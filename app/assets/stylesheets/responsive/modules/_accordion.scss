@@ -59,10 +59,17 @@
   }
   a {
     color: $primary-color;
+    &:hover {
+      color: $gray-dark;
+      text-decoration: none;
+    }
   }
   .fa {
     color: $primary-color;
     margin-right: 10px;
+    &:hover {
+      color: $gray-dark;
+    }
   }
   .flyout-sub-tabs-content-download {
     margin-top: 10px;
@@ -104,6 +111,9 @@
     color: $primary-color;
     cursor: pointer;
   }
+}
+a.flyout-download-link-lang {
+  margin-right: 15px;
 }
 .flyout-sub-tabs-content-ico {
   display: block;

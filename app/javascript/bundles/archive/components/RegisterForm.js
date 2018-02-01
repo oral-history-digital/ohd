@@ -114,7 +114,7 @@ export default class RegisterForm extends React.Component {
                     />
                     <SelectContainer
                         scope='user_registration' 
-                        attribute='research_intentions' 
+                        attribute='research_intention' 
                         values={['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other']}
                         withEmpty={true}
                         showErrors={this.state.showErrors}

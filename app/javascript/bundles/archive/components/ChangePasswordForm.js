@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import InputContainer from '../containers/form/InputContainer';
 import queryString from 'query-string';
 import { t } from '../../../lib/utils';
@@ -6,7 +7,7 @@ import { t } from '../../../lib/utils';
 export default class ChangePasswordForm extends React.Component {
 
     static contextTypes = {
-        router: React.PropTypes.object
+        router: PropTypes.object
     }
 
     constructor(props, context) {
