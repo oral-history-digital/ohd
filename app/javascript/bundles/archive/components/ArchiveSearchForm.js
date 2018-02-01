@@ -44,7 +44,7 @@ export default class ArchiveSearchForm extends React.Component {
         for( let i = 0; i < event.currentTarget.list.children.length; i++){
             if (event.currentTarget.list.children[i].innerText === event.currentTarget.value){
                 let facet = event.currentTarget.name;
-                let facetValue = event.currentTarget.list.children[0].dataset[facet];
+                let facetValue = event.currentTarget.list.children[i].dataset[facet];
                 let params = serialize(this.form, {hash: true});
                 for (let [key, value] of Object.entries(this.props.facets)) {
                     if (key == facet) {
