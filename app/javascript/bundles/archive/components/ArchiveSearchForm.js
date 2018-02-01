@@ -74,12 +74,13 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     render() {
+        let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
         return (
             <div>
                 <form ref={(form) => {
                     this.form = form;
                 }} id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
-                    <input className={'search-input'} type="text" name="fulltext" value={this.props.query.fulltext}
+                    <input className={'search-input'} type="text" name="fulltext" value={fulltext}
                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')} onChange={this.handleChange}/>
                     <input className="search-button" id="search-button"
                            title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
