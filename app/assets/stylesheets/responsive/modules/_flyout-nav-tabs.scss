@@ -119,6 +119,13 @@
 }
 
 .flyout-search{
+  .input-list-search{
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px;
+    border: 1px solid $gray-dark;
+    background-color: $gray-paler;
+  }
   .search-input {
     width: 80%;
     margin-bottom: 30px;
