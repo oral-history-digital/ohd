@@ -5,11 +5,11 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 export default class PersonData extends React.Component {
 
 
-    content(label, value) {
+    content(label, value, className) {
         return (
             <p>
                 <span className="flyout-content-label">{label}:</span>
-                <span className="flyout-content-data">{value}</span>
+                <span className={"flyout-content-data " + className}>{value}</span>
             </p>
         )
     }
@@ -17,7 +17,7 @@ export default class PersonData extends React.Component {
 
     placeOfBirth(){
         if (this.props.interviewee.place_of_birth){
-            return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale] );
+            return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale], "" );
         }
     }
 
@@ -28,10 +28,10 @@ export default class PersonData extends React.Component {
         return (
             <div>
 
-                {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName)}
-                {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth)}
+                {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName, "")}
+                {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
                 {this.placeOfBirth()}
-                {this.content(typology, this.props.interviewee.typology[this.props.locale].join(', ') )}
+                {this.content(typology, this.props.interviewee.typology[this.props.locale].join(', '),"" )}
 
                 <AuthShowContainer ifLoggedIn={true}>
                     <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>

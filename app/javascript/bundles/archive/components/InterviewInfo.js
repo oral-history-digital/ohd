@@ -16,11 +16,11 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    content(label, value) {
+    content(label, value, className) {
         return (
             <p>
                 <span className="flyout-content-label">{label}:</span>
-                <span className="flyout-content-data">{value}</span>
+                <span className={"flyout-content-data "+className}>{value}</span>
             </p>
         )
     }
@@ -49,13 +49,13 @@ export default class InterviewInfo extends React.Component {
     render() {
         return (
             <div>
-                {this.content(ArchiveUtils.translate(this.props, 'date'), this.props.interview.created)}
-                {this.content(ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration)}
-                {this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')))}
-                {this.content(ArchiveUtils.translate(this.props, 'interview'), this.fullName(this.props.interviewer))}
-                {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer))}
-                {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId)}
-                {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink())}
+                {this.content(ArchiveUtils.translate(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
+                {this.content(ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
+                {this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'interview'), this.fullName(this.props.interviewer), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId, "")}
+                {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink(), "")}
                 <AuthShowContainer ifLoggedIn={true}>
                     {this.download()}
                     {this.download(false)}
