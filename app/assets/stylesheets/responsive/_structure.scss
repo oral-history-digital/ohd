@@ -528,17 +528,46 @@ a.search-result-link {
 
 .video-element.home-video {
   margin: 0;
-  background-color: $secondary-color;
+  padding: 0;
+  background-color: #383838; //darken($gray-warm, 10%);
+  video{
+    display: block;
+  }
+  @include screen-l {
+    padding: 0 5%;
+  }
 }
 .wrapper-content.home-content {
   padding:0;
   .home-text {
-    padding: 30px 10%;
+    padding: 15px 5% 30px 5%;
     background-color: #ddd;
   }
 }
 .home-content-logos {
-  padding:5px 5%;
+  padding:40px 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  a {
+    width: 30%;
+    margin: 0 5% 20px 5%;
+    padding: 0;
+    @include screen-m {
+      width: 17%;
+      margin: 0 5%;
+    }
+    img {
+      width: 100%;
+    }
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .flyout-sub-tabs-container{
@@ -557,4 +586,5 @@ a.search-result-link {
 .figure-letter-spacing {
   letter-spacing: 0.1rem;
 }
+
 
