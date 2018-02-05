@@ -1,13 +1,12 @@
 class PhotosController < ApplicationController
   require 'open-uri'
 
-
   def src
-    deliver "original/0/#{params[:name]}.jpg"
+    deliver "original/#{sub_folder(params[:name])}/#{params[:name]}.jpg"
   end
 
   def thumb
-    deliver "1.5MB/0/#{params[:name]}.jpg"
+    deliver "1.5MB/#{sub_folder(params[:name])}/#{params[:name]}.jpg"
   end
 
   private
@@ -17,6 +16,10 @@ class PhotosController < ApplicationController
     url = base_url + file_name
     data = open(url).read
     send_data data, :disposition => 'inline', :filename=>file_name
+  end
+
+  def sub_folder image_name
+    (image_name.split('_').last().to_i / 1000).to_s;
   end
 
 end
