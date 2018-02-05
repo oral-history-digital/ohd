@@ -57,7 +57,7 @@ de:
   typology: 'Erfahrungshintergrund'
   history: 'Kurzbiografie'
   interview_info: 'Zum Interview'
-  date: 'Datum: '
+  date: 'Datum'
   place: 'Ort'
   duration: 'Dauer'
   id: 'ID'
