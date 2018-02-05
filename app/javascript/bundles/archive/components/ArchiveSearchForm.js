@@ -69,7 +69,7 @@ export default class ArchiveSearchForm extends React.Component {
             params[key] = params[key] && !(typeof params[key] == "string")? params[key] : []
         }
         this.props.searchInArchive(params);
-        const url = this.props.locale + "/searches/archive";
+        const url = "/" + this.props.locale + "/searches/archive";
         this.context.router.history.push(url);
     }
 
