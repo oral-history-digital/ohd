@@ -42,7 +42,8 @@ export default class Interview extends React.Component {
                     </div>
                 </div>
                 <div className='wrapper-content'>
-                    {ArchiveUtils.translate(this.props, 'not_logged_in_interview_text')}
+                    <p>{ArchiveUtils.translate(this.props, 'not_logged_in_interview_text')}</p>
+                    <p>{ArchiveUtils.translate(this.props, 'not_logged_in_go_registration')}</p>
                 </div>
             </div>
         )
@@ -50,8 +51,9 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()) {
+            let tabIndex = this.props.account.email ? 5 : 1;
             return (
-                <WrapperPageContainer tabIndex={5} >
+                <WrapperPageContainer tabIndex={tabIndex} >
                     <AuthShowContainer ifLoggedIn={true}>
                         <VideoPlayerContainer />
                         <InterviewTabsContainer/>
