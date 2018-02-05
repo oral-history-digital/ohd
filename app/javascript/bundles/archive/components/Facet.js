@@ -79,12 +79,18 @@ export default class Facet extends React.Component {
     }
 
     renderOptions() {
-        return Object.keys(this.props.data.subfacets).map((subfacetId, index) => {
+        let subfacetsArray = Object.keys(this.props.data.subfacets).map(key => [key, this.props.data.subfacets[key]]);
+        let locale = this.props.locale;
+        subfacetsArray.sort(function (a, b) {
+            return (a[1].descriptor[locale] > b[1].descriptor[locale]) ? 1 : ((b[1].descriptor[locale] > a[1].descriptor[locale]) ? -1 : 0);
+        });
+        return subfacetsArray.map((subfacetElement, index) => {
+                let subfacetId = subfacetElement[0];
                 let subfacet = this.props.data.subfacets[subfacetId];
                 const dataProps = {[`data-${this.props.facet}`]: `${subfacetId}`};
                 return (
                     <option key={"subfacet-" + index} {...dataProps}>
-                        {subfacet.descriptor[this.props.locale]}
+                        {subfacet.descriptor[locale]}
                     </option>
                 )
             }
@@ -92,8 +98,16 @@ export default class Facet extends React.Component {
     }
 
     renderSubfacets() {
-        return Object.keys(this.props.data.subfacets).map((subfacetId, index) => {
-            let subfacet = this.props.data.subfacets[subfacetId]
+        let subfacetsArray = Object.keys(this.props.data.subfacets).map(key => [key, this.props.data.subfacets[key]]);
+        let locale = this.props.locale;
+        if (this.props.inputField) {
+            subfacetsArray.sort(function (a, b) {
+                return (a[1].descriptor[locale] > b[1].descriptor[locale]) ? 1 : ((b[1].descriptor[locale] > a[1].descriptor[locale]) ? -1 : 0);
+            });
+        }
+        return subfacetsArray.map((subfacetElement, index) => {
+            let subfacetId = subfacetElement[0];
+            let subfacet = this.props.data.subfacets[subfacetId];
             if (subfacet.count) {
                 let checkedState = false;
                 if (this.checkedFacets()) {
@@ -108,7 +122,7 @@ export default class Facet extends React.Component {
                                onChange={this.onChange}>
                         </input>
                         <label htmlFor={this.props.facet + "_" + subfacetId}>
-                            {subfacet.descriptor[this.props.locale]}
+                            {subfacet.descriptor[locale]}
                             <span className='flyout-radio-container-facet-count'>({subfacet.count})</span>
                         </label>
                     </div>
