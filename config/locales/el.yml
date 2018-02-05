@@ -190,7 +190,7 @@ el:
     retaliation: 'Αντίποινα και εκτελέσεις'
     collaboration: 'Συνεργασία'
     interview_id: 
-    archive_id: 'Κωδικός συνέντευξης'
+    archive_id: 'Όνομα'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'

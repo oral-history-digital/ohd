@@ -192,7 +192,7 @@ de:
     retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
     collaboration: 'Kollaboration'
     interview_id: 'Interviews'
-    archive_id: 'Interview-ID'
+    archive_id: 'Name'
     collection_id: 'Teilsammlung'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
