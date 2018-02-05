@@ -228,7 +228,7 @@ class Interview < ActiveRecord::Base
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first.send(facet['id'].to_sym).split(',')
+      interviewees.first.send(facet['id'].to_sym).split(', ')
     end
   end
   #def facet_category_ids(entry_code)
