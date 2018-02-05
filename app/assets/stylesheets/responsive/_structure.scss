@@ -29,7 +29,7 @@ body {
   margin: 0;
   @include screen-xl {
     float: left;
-    width: 70%;
+    width: 64%;
   }
 }
 
@@ -60,12 +60,12 @@ header.site-header {
   &.fix-video {
     .wrapper-video {
       @include screen-xl {
-        right: 30%;
+        right: 36%;
       }
     }
     .content-tabs {
       @include screen-xl {
-        right: 30%;
+        right: 36%;
       }
     }
   }
@@ -83,7 +83,7 @@ header.site-header {
       width: 40%;
     }
     @include screen-xl {
-      width: 30%;
+      width: 36%;
     }
     position: fixed;
     top: 0;
@@ -534,7 +534,7 @@ a.search-result-link {
     display: block;
   }
   @include screen-l {
-    padding: 0 5%;
+    padding: 0;
   }
 }
 .wrapper-content.home-content {
