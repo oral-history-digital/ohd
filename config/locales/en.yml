@@ -438,10 +438,11 @@ en:
   external_links:
     notice: 'External link'
 
-  facets:
+  search_facets:
     interview_id: 'Name of the Interviewee'
     language_id: 'Language'
     fulltext: 'Search Term'
+    collection_id: 'Collection'
 
   photos:
     image: 'Photo'
