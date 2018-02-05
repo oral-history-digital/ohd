@@ -26,6 +26,8 @@ function receiveStaticContent(json){
         translations: json.translations,
         country_keys: json.country_keys,
         project: json.project,
+        projectName: json.project_name,
+        projectDomain: json.project_domain,
         receivedAt: Date.now()
     }
 }

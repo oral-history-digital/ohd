@@ -24,7 +24,10 @@ default: &default
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation Griechenlands.'
     en: 'Memories of the Occupation of Greece'
-    gr: 'Memories of the Occupation of Greece'
+    el: 'Memories of the Occupation of Greece'
+
+
+  project_domain: 'www.occupation-memories.org'
 
   project_id: 'mog'
 

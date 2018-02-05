@@ -11,6 +11,7 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import ArchiveUtils from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
+import CitationInfoContainer from '../containers/CitationInfoContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -132,7 +133,7 @@ export default class FlyoutTabs extends React.Component {
                             content={<InterviewLocationsContainer/>}/>
                         <InterviewDataContainer
                             title={ArchiveUtils.translate(this.props, 'citation')}
-                            content={<div/>}/>
+                            content={<CitationInfoContainer/>}/>
                     </div>
                 </TabPanel>
                 <TabPanel>

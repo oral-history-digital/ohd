@@ -1,5 +1,7 @@
 el:
-  download: 'Download'
+  interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
+  called: 'Abruf(ÜBERSETZEN)'
+  download: 'Download(ÜBERSETZEN)'
   elde: 'ελληνική με γερμανική μετάφραση'
   project_title: 'Μνήμες από την Κατοχή στην Ελλάδα'
   project_text: 'Το ψηφιακό Αρχείο "Μνήμες από την Κατοχή στην Ελλάδα" περιλαμβάνει περίπου 80 συνεντεύξεις με μάρτυρες της γερμανικής Κατοχής στην Ελλάδα. Το Αρχείο διαφυλάσσει τις μνήμες των ανθρώπων αυτών και θέτει τις συνεντεύξεις αυτές στη διάθεση της έρευνας και της εκπαίδευσης.'
@@ -14,7 +16,7 @@ el:
   notice: 'Σήμανση ως αγαπημένο'
   forget_password: 'Ξεχάσατε τον κωδικό σας'
   account_activation_errors: '(bitte übersetzen) Passwort und Passwortbestätigung müssen gleich und mind. 6 Zeichen lang sein'
-  submit: 'Absenden'
+  submit: 'Absenden(ÜBERSETZEN)'
   platform: 'Μία πλατφόρμα του'
   cooperation: 'σε συνεργασία με'
   promoted: 'Χρηματοδότηση'

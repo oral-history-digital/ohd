@@ -30,7 +30,7 @@ const initialState = {
     isFetchingInterviewLocations: false,
 
     homeContent: "",
-    externalLinks: {}
+    externalLinks: {},
 }
 
 const archive = (state = initialState, action) => {
@@ -95,7 +95,9 @@ const archive = (state = initialState, action) => {
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.country_keys,
-                project: action.project
+                project: action.project,
+                projectName: action.projectName,
+                projectDomain: action.projectDomain
             })
 
         default:
