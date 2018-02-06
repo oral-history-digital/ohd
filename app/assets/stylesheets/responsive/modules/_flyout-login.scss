@@ -1,6 +1,9 @@
 
 .flyout-login-container {
   padding: 30px 20px;
+  @include screen-l {
+    padding: 30px 40px 30px 20px;
+  }
   .logout {
     margin-left: 0;
     width: 100%;
