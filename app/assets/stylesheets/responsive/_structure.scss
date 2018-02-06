@@ -75,7 +75,7 @@ header.site-header {
   .wrapper-flyout {
     z-index: 1000; //because of leaflet
     width: 100%;
-    //padding: 30px;
+    padding-right: 15px;
     @include screen-m {
       width: 50%;
     }
@@ -98,7 +98,10 @@ header.site-header {
     }
     overflow: auto;
   }
-
+  .scroll-flyout {
+    margin-right: -15px;
+    overflow-x: hidden;
+  }
   .flyout-toggle {
     @include screen-xl {
       display: none;
