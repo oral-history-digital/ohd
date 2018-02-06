@@ -19,6 +19,10 @@ default: &default
   # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
   interviewee_contribution_type: 'Informants'
   interviewer_contribution_type: 'Interviewer'
+  transcription_contribution_type: 'Transcribed / described'
+  translation_contribution_type: 'Translated'
+  indexation_contribution_type: 'Indexed'
+
 
 
   project_name: # Will be used in titles, emails, etc.

@@ -1,4 +1,5 @@
 el:
+  segmentation: "Erfassung(ÜBERSETZEN)"
   interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
   called: 'Abruf(ÜBERSETZEN)'
   download: 'Download(ÜBERSETZEN)'

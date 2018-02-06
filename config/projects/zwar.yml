@@ -15,6 +15,9 @@ default: &default
 
   interviewee_contribution_type: 'interviewee'
   interviewer_contribution_type: 'interview'
+  transcription_contribution_type: 'transcript'
+  translation_contribution_type: 'translation'
+  indexation_contribution_type: 'segmentation'
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'

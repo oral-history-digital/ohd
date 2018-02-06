@@ -41,6 +41,9 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :interviewees, serializer: PersonSerializer
   has_many :cinematographers, serializer: PersonSerializer
   has_many :interviewers, serializer: PersonSerializer
+  has_many :transcriptors, serializer: PersonSerializer
+  has_many :translators, serializer: PersonSerializer
+  has_many :segmentators, serializer: PersonSerializer
 
   def forced_labor_groups
     if object.respond_to? :forced_labor_groups
