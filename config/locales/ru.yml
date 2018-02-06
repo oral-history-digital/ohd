@@ -585,6 +585,9 @@ ru:
       many_selected: *interviews_search_many_selected
       no_interviews_found: *interviews_search_no_interviews_found
 
+  search_facets:
+    collection_id: 'Частичные собрания'
+
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"
 
