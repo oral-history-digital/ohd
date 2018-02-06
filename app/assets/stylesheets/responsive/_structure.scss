@@ -96,7 +96,7 @@ header.site-header {
     @include screen-xl {
       display: block !important;
     }
-    overflow: scroll;
+    overflow: auto;
   }
 
   .flyout-toggle {

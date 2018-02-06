@@ -48,7 +48,7 @@
   margin: 2% auto;
   padding: 35px 15px 5px 15px;
   position: relative;
-  overflow: scroll;
+  overflow: auto;
   @include screen-m {
     width: 70%;
     height: 80%;
