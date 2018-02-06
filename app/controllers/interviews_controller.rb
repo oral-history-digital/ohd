@@ -15,8 +15,16 @@ class InterviewsController < BaseController
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
               for_interview_id(@interview.id)
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
+          locales = Project.available_locales.reject{|i| i == 'alias'}
+          doi_content = {}
+          locales.each do |i|
+            I18n.locale = i
+            template = "/interviews/_doi.#{i}.html+#{Project.name.to_s}"
+            doi_content[i] = render_to_string(template: template, layout: false)
+          end
           {
               interview: ::InterviewSerializer.new(@interview).as_json,
+              doi_content: doi_content,
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
               references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},

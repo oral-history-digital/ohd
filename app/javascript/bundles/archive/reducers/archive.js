@@ -19,7 +19,6 @@ const initialState = {
     locales: ['de', 'el'],
     archiveId: null,
     interviews: {},
-
     tape: 1,
     videoTime: 0,
     videoStatus: 'pause',
@@ -47,6 +46,7 @@ const archive = (state = initialState, action) => {
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         interview: action.interview,
+                        doiContent: action.doiContent,
                         segments: action.segments,
                         headings: action.headings,
                         references: action.references,
