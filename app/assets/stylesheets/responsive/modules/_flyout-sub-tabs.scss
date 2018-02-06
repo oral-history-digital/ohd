@@ -2,6 +2,9 @@
   display: block;
   margin: 30px 0;
   padding: 0 20px;
+  @include screen-l {
+    padding: 0 40px 0 20px;
+  }
 }
 
 .flyout-sub-tabs-label {
