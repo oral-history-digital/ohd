@@ -153,7 +153,6 @@ header.site-header {
     .video-title-container {
       display: block;
       margin-left: 0;
-      @include clearfix;
       @include screen-m {
         display: inline-block;
         margin-left: 20px;
@@ -197,6 +196,9 @@ header.site-header {
   @include screen-m {
     padding: 30px 5%;
   }
+}
+.video-title-container {
+  @include clearfix();
 }
 
 h1.video-title {
