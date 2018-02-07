@@ -112,7 +112,7 @@ export default class VideoPlayer extends React.Component {
 
     actualSegmentIndex() {
         return this.props.segments.findIndex(segment => {
-            return segment.start_time <= this.video.currentTime && segment.end_time >= this.video.currentTime;
+            return segment.tape_nbr === this.props.tape && segment.start_time <= this.video.currentTime && segment.end_time >= this.video.currentTime;
         })
     }
 
