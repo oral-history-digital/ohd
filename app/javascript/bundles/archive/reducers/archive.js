@@ -19,7 +19,6 @@ const initialState = {
     locales: ['de', 'el'],
     archiveId: null,
     interviews: {},
-
     tape: 1,
     videoTime: 0,
     videoStatus: 'pause',
@@ -30,7 +29,7 @@ const initialState = {
     isFetchingInterviewLocations: false,
 
     homeContent: "",
-    externalLinks: {}
+    externalLinks: {},
 }
 
 const archive = (state = initialState, action) => {
@@ -47,6 +46,7 @@ const archive = (state = initialState, action) => {
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         interview: action.interview,
+                        doiContent: action.doiContent,
                         segments: action.segments,
                         headings: action.headings,
                         references: action.references,
@@ -95,7 +95,9 @@ const archive = (state = initialState, action) => {
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.country_keys,
-                project: action.project
+                project: action.project,
+                projectName: action.projectName,
+                projectDomain: action.projectDomain
             })
 
         default:

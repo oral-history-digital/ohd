@@ -51,14 +51,14 @@ class Interview < ActiveRecord::Base
 
   #has_many :transcript_contributors,
   has_many :transcriptors,
-           -> {where("contributions.contribution_type = 'transcript'")},
+           -> {where("contributions.contribution_type = '#{Project.transcription_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :translation_contributors,
   has_many :translators,
-           -> {where("contributions.contribution_type = 'translation'")},
+           -> {where("contributions.contribution_type = '#{Project.translation_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -85,7 +85,7 @@ class Interview < ActiveRecord::Base
 
   #has_many :segmentation_contributors,
   has_many :segmentators,
-           -> {where("contributions.contribution_type = 'segmentation'")},
+           -> {where("contributions.contribution_type = '#{Project.indexation_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions

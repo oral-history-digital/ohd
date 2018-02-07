@@ -12,7 +12,10 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         interview: data && data.interview,
         cinematographer: data && data.interview.cinematographers[0],
-        interviewer: data && data.interview.interviewers[0]
+        interviewer: data && data.interview.interviewers.length && data.interview.interviewers[0],
+        transcriptor: data && data.interview.transcriptors.length && data.interview.transcriptors[0],
+        translator: data && data.interview.translators.length && data.interview.translators[0],
+        segmentator: data && data.interview.segmentators.length && data.interview.segmentators[0]
 
     }
 }

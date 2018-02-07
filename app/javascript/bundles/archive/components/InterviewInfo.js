@@ -17,12 +17,14 @@ export default class InterviewInfo extends React.Component {
     }
 
     content(label, value, className) {
-        return (
-            <p>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data "+className}>{value}</span>
-            </p>
-        )
+        if (value) {
+            return (
+                <p>
+                    <span className="flyout-content-label">{label}:</span>
+                    <span className={"flyout-content-data " + className}>{value}</span>
+                </p>
+            )
+        }
     }
 
     to() {
@@ -54,6 +56,9 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'interview'), this.fullName(this.props.interviewer), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'transcript'), this.fullName(this.props.transcriptor), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'translation'), this.fullName(this.props.translator), "")}
+                {this.content(ArchiveUtils.translate(this.props, 'segmentation'), this.fullName(this.props.segmentator), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId, "")}
                 {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink(), "")}
                 <AuthShowContainer ifLoggedIn={true}>

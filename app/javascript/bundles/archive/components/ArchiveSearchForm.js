@@ -5,7 +5,6 @@ import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 
-import {ARCHIVE_SEARCH_URL} from '../constants/archiveConstants';
 import ArchiveUtils from '../../../lib/utils';
 
 
@@ -70,7 +69,8 @@ export default class ArchiveSearchForm extends React.Component {
             params[key] = params[key] && !(typeof params[key] == "string")? params[key] : []
         }
         this.props.searchInArchive(params);
-        this.context.router.history.push(ARCHIVE_SEARCH_URL);
+        const url = "/" + this.props.locale + "/searches/archive";
+        this.context.router.history.push(url);
     }
 
     render() {

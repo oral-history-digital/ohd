@@ -29,7 +29,7 @@ body {
   margin: 0;
   @include screen-xl {
     float: left;
-    width: 70%;
+    width: 64%;
   }
 }
 
@@ -41,7 +41,7 @@ body {
 
 header.site-header {
   height: 80px;
-  background: $header-background-color;
+  background: #fff;
   padding: 0 5%;
   @include screen-m {
     height: 100px;
@@ -60,12 +60,12 @@ header.site-header {
   &.fix-video {
     .wrapper-video {
       @include screen-xl {
-        right: 30%;
+        right: 36%;
       }
     }
     .content-tabs {
       @include screen-xl {
-        right: 30%;
+        right: 36%;
       }
     }
   }
@@ -75,15 +75,19 @@ header.site-header {
   .wrapper-flyout {
     z-index: 1000; //because of leaflet
     width: 100%;
-    //padding: 30px;
+    padding-right: 0;
+    overflow: hidden;
     @include screen-m {
       width: 50%;
+      padding-right: 0;
     }
     @include screen-l {
       width: 40%;
+      padding-right: 15px;
     }
     @include screen-xl {
-      width: 30%;
+      width: 36%;
+      padding-right: 15px;
     }
     position: fixed;
     top: 0;
@@ -96,9 +100,15 @@ header.site-header {
     @include screen-xl {
       display: block !important;
     }
-    overflow: scroll;
   }
-
+  .scroll-flyout {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height:100%;
+    @include screen-l {
+      margin-right: -35px;
+    }
+  }
   .flyout-toggle {
     @include screen-xl {
       display: none;
@@ -153,7 +163,6 @@ header.site-header {
     .video-title-container {
       display: block;
       margin-left: 0;
-      @include clearfix;
       @include screen-m {
         display: inline-block;
         margin-left: 20px;
@@ -197,6 +206,9 @@ header.site-header {
   @include screen-m {
     padding: 30px 5%;
   }
+}
+.video-title-container {
+  @include clearfix();
 }
 
 h1.video-title {
@@ -534,7 +546,7 @@ a.search-result-link {
     display: block;
   }
   @include screen-l {
-    padding: 0 5%;
+    padding: 0;
   }
 }
 .wrapper-content.home-content {

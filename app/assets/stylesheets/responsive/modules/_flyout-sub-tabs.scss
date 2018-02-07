@@ -2,6 +2,9 @@
   display: block;
   margin: 30px 0;
   padding: 0 20px;
+  @include screen-l {
+    padding: 0 40px 0 20px;
+  }
 }
 
 .flyout-sub-tabs-label {
@@ -69,7 +72,7 @@
     outline: none;
     font-size: $font-size-large;
     transition: 0.4s;
-    margin-bottom: 2px;
+    margin-bottom: 40px;
   }
 
   button.reset.active,

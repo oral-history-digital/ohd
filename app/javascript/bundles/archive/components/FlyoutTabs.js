@@ -11,6 +11,7 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import ArchiveUtils from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
+import CitationInfoContainer from '../containers/CitationInfoContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -68,14 +69,14 @@ export default class FlyoutTabs extends React.Component {
         return this.props.locales.map((locale, index) => {
             let classNames = 'flyout-top-nav lang';
             if ((index + 1) === this.props.locales.length)
-                classNames += ' top-nav-last' 
+                classNames += ' top-nav-last'
             return <Tab className={classNames} key={`tab-${locale}`}>{locale}</Tab>
         })
     }
 
     localeTabPanels() {
         return this.props.locales.map((locale, index) => {
-            return <TabPanel key={`tabpanel-${locale}`} />
+            return <TabPanel key={`tabpanel-${locale}`}/>
         })
     }
 
@@ -92,63 +93,64 @@ export default class FlyoutTabs extends React.Component {
                 selectedIndex={this.state.tabIndex}
                 onSelect={tabIndex => this.handleTabClick(tabIndex)}
             >
+                <div className='scroll-flyout'>
+                    <TabList className='flyout'>
+                        <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'home')}</Tab>
+                        <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
+                        {this.localeTabs()}
+                        <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
+                        <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
+                        <Tab className={userContentCSS}>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
+                    </TabList>
 
-                <TabList className='flyout'>
-                    <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'home')}</Tab>
-                    <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
-                    {this.localeTabs()}
-                    <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
-                    <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
-                    <Tab className={userContentCSS}>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
-                </TabList>
 
-
-                <TabPanel>
-                    <AccountContainer></AccountContainer>
-                </TabPanel>
-                <TabPanel>
-                    <AccountContainer></AccountContainer>
-                </TabPanel>
-                {this.localeTabPanels()}
-                <TabPanel>
-                    <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'archive_search')}</div>
-                    <ArchiveSearchFormContainer
-                    />
-                </TabPanel>
-                <TabPanel>
-                    <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'interview')}</div>
-                    <div className='flyout-sub-tabs-container flyout-video'>
-                        <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'person_info')}
-                            content={<PersonDataContainer/>}/>
-                        <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'interview_info')}
-                            content={<InterviewInfoContainer/>}/>
-                        <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'photos')}
-                            content={<GalleryContainer/>}/>
-                        <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'map')}
-                            content={<InterviewLocationsContainer/>}/>
-                        <InterviewDataContainer
-                            title={ArchiveUtils.translate(this.props, 'citation')}
-                            content={<div/>}/>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'user_content')}</div>
-                    <div className='flyout-sub-tabs-container flyout-folder'>
-                        <UserContentsContainer
-                            type='Search'
-                            title={ArchiveUtils.translate(this.props, 'saved_searches')}/>
-                        <UserContentsContainer
-                            type='InterviewReference'
-                            title={ArchiveUtils.translate(this.props, 'saved_interviews')}/>
-                        <UserContentsContainer
-                            type='UserAnnotation'
-                            title={ArchiveUtils.translate(this.props, 'saved_annotations')}/>
-                    </div>
-                </TabPanel>
+                    <TabPanel>
+                        <AccountContainer></AccountContainer>
+                    </TabPanel>
+                    <TabPanel>
+                        <AccountContainer></AccountContainer>
+                    </TabPanel>
+                    {this.localeTabPanels()}
+                    <TabPanel>
+                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'archive_search')}</div>
+                        <ArchiveSearchFormContainer
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'interview')}</div>
+                        <div className='flyout-sub-tabs-container flyout-video'>
+                            <InterviewDataContainer
+                                title={ArchiveUtils.translate(this.props, 'person_info')}
+                                content={<PersonDataContainer/>}/>
+                            <InterviewDataContainer
+                                title={ArchiveUtils.translate(this.props, 'interview_info')}
+                                content={<InterviewInfoContainer/>}/>
+                            <InterviewDataContainer
+                                title={ArchiveUtils.translate(this.props, 'photos')}
+                                content={<GalleryContainer/>}/>
+                            <InterviewDataContainer
+                                title={ArchiveUtils.translate(this.props, 'map')}
+                                content={<InterviewLocationsContainer/>}/>
+                            <InterviewDataContainer
+                                title={ArchiveUtils.translate(this.props, 'citation')}
+                                content={<CitationInfoContainer/>}/>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'user_content')}</div>
+                        <div className='flyout-sub-tabs-container flyout-folder'>
+                            <UserContentsContainer
+                                type='Search'
+                                title={ArchiveUtils.translate(this.props, 'saved_searches')}/>
+                            <UserContentsContainer
+                                type='InterviewReference'
+                                title={ArchiveUtils.translate(this.props, 'saved_interviews')}/>
+                            <UserContentsContainer
+                                type='UserAnnotation'
+                                title={ArchiveUtils.translate(this.props, 'saved_annotations')}/>
+                        </div>
+                    </TabPanel>
+                </div>
             </Tabs>
         );
     }

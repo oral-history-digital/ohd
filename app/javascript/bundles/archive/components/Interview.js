@@ -7,7 +7,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveUtils from '../../../lib/utils';
 
 export default class Interview extends React.Component {
-  
+
     componentDidMount() {
         this.loadInterview();
     }
@@ -38,22 +38,23 @@ export default class Interview extends React.Component {
                         </h1>
                     </div>
                     <div className='video-element'>
-                       <img src={this.props.data.interview.still_url}/>
+                        <img src={this.props.data.interview.still_url}/>
                     </div>
                 </div>
-                <div className='wrapper-content'>
-                    {ArchiveUtils.translate(this.props, 'not_logged_in_interview_text')}
-                </div>
+                <div className='wrapper-content'
+                     dangerouslySetInnerHTML={{__html: this.props.data.doiContent[this.props.locale]}}
+                />
             </div>
         )
     }
 
     content() {
         if (this.interviewLoaded()) {
+            let tabIndex = this.props.account.email ? 5 : 1;
             return (
-                <WrapperPageContainer tabIndex={5} >
+                <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <VideoPlayerContainer />
+                        <VideoPlayerContainer/>
                         <InterviewTabsContainer/>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>

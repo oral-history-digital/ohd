@@ -1,5 +1,8 @@
 el:
-  download: 'Download'
+  segmentation: "Erfassung(ÜBERSETZEN)"
+  interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
+  called: 'Abruf(ÜBERSETZEN)'
+  download: 'Download(ÜBERSETZEN)'
   elde: 'ελληνική με γερμανική μετάφραση'
   project_title: 'Μνήμες από την Κατοχή στην Ελλάδα'
   project_text: 'Το ψηφιακό Αρχείο "Μνήμες από την Κατοχή στην Ελλάδα" περιλαμβάνει περίπου 80 συνεντεύξεις με μάρτυρες της γερμανικής Κατοχής στην Ελλάδα. Το Αρχείο διαφυλάσσει τις μνήμες των ανθρώπων αυτών και θέτει τις συνεντεύξεις αυτές στη διάθεση της έρευνας και της εκπαίδευσης.'
@@ -14,7 +17,7 @@ el:
   notice: 'Σήμανση ως αγαπημένο'
   forget_password: 'Ξεχάσατε τον κωδικό σας'
   account_activation_errors: '(bitte übersetzen) Passwort und Passwortbestätigung müssen gleich und mind. 6 Zeichen lang sein'
-  submit: 'Absenden'
+  submit: 'Absenden(ÜBERSETZEN)'
   platform: 'Μία πλατφόρμα του'
   cooperation: 'σε συνεργασία με'
   promoted: 'Χρηματοδότηση'
@@ -68,7 +71,6 @@ el:
   map: 'Χάρτης'
   photos: 'Φωτογραφίες'
   citation: 'Τρόπος παραπομπής συνέντευξης'
-  interview_content_without_user: 'Οι συνεντεύξεις είναι μέρος του Αρχείου "Μνήμες από την Κατοχή στην Ελλάδα", που περιλαμβάνει περίπου 80 συνεντεύξεις με επιζώντες της γερμανικής Κατοχής στην Ελλάδα. Το πρόγραμμα "Μνήμες από την Κατοχή στην Ελλάδα" του Ελεύθερου Πανεπιστημίου του Βερολίνου πραγματοποιείται σε συνεργασία με το Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών.'
   user_content: 'Προσωπικός φάκελος συνεντεύξεων'
   person_info: 'Σχετικά με το άτομο'
   date_of_birth: 'Ημερομηνία γέννησης'
@@ -149,7 +151,6 @@ el:
   legal_info: 'Impressum'
   team: 'Ομάδα'
   contact: 'Kontakt'
-  not_logged_in_interview_text: 'Οι συνεντεύξεις είναι μέρος του Αρχείου "Μνήμες από την Κατοχή στην Ελλάδα", που περιλαμβάνει περίπου 80 συνεντεύξεις με επιζώντες της γερμανικής Κατοχής στην Ελλάδα. Το πρόγραμμα "Μνήμες από την Κατοχή στην Ελλάδα" του Ελεύθερου Πανεπιστημίου του Βερολίνου πραγματοποιείται σε συνεργασία με το Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών.'
   save_interview_reference: 'Αποθηκεύστε τη συνέντευξη'
   save_user_annotation: 'Γράψτε σημείωση'
   save_search: 'Αποθήκευση αναζήτησης'
@@ -190,7 +191,7 @@ el:
     retaliation: 'Αντίποινα και εκτελέσεις'
     collaboration: 'Συνεργασία'
     interview_id: 
-    archive_id: 'Κωδικός συνέντευξης'
+    archive_id: 'Όνομα'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'
