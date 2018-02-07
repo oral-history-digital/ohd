@@ -124,6 +124,7 @@ export default class VideoPlayer extends React.Component {
             description=''
             properties={{
                 time: segment.start_time,
+                tape_nbr: segment.tape_nbr,
                 interview_archive_id: this.props.interview.archive_id
             }}
             reference_id={segment.id}
