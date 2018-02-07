@@ -160,10 +160,22 @@ export default class VideoPlayer extends React.Component {
 
     handleVideoClick(e) {
         if(this.video) {
-            // handle click if not Firefox (Firefox supports this feature natively)
-            if (typeof InstallTrigger === 'undefined') {
+            if(navigator.userAgent.indexOf("Chrome") != -1 )
+            {
                 this.video.paused ? this.video.play() : this.video.pause();
             }
+            //else if(navigator.userAgent.indexOf("Safari") != -1)
+            //{
+            //}
+            //else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
+            //{
+            //}
+            //else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
+            //{
+            //}  
+            //else 
+            //{
+            //}
         }
     }
 
