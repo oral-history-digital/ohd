@@ -12,7 +12,7 @@ import { PROJECT } from '../constants/archiveConstants';
 import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
-import zwarLogoDe from '../../../images/zwar-logo-red_de.png'
+import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 
 import '../css/wrapper_page'
