@@ -62,7 +62,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def translation_lang
     # return only the first language code in cases like 'slk/ces'
-    object.translation ? ISO_639.find(object.translation.locale).alpha2 : nil
+    #
+    # @Rico: object.translation gibt ein neues Interview::Translation-Objekt mit der aktuellen I18n.locale zurück
+    #        auf die Art wirft es Fehler, habe es deswegen auskommentiert bzw. ersetzt.
+    "" #object.translation ? ISO_639.find(object.translation.locale).alpha2 : nil
   end
   
   def languages
