@@ -209,8 +209,8 @@ export default class VideoPlayer extends React.Component {
                             controlsList="nodownload"
                             poster={this.props.interview.still_url}
                             onClick={(e) => this.handleVideoClick(e)}
+                            src={this.src()}
                         >
-                            <source src={this.src()}/>
                             <track kind="subtitles"
                                    label={ArchiveUtils.translate(this.props, 'transcript')}
                                    src={this.props.archiveId + '.vtt?type=transcript&tape_number=' + this.props.tape}
