@@ -132,6 +132,7 @@ export default class UserContentForm extends React.Component {
             properties: {
                 time: segment.start_time,
                 tape_nbr: segment.tape_nbr,
+                segmentIndex: segmentIndex,
                 interview_archive_id: this.props.archiveId
             },
             reference_id: segment.id,
