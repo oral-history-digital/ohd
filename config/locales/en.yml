@@ -155,7 +155,7 @@ en:
   delete_user_content: 'Remove from workbook'
   choose: 'Please select'
   enter_search_field: 'Please enter search term ...'
-  enter_field: 'Input ...'
+  enter_field: 'Search ...'
   saved_searches: 'Saved search results'
   saved_interviews: 'Saved interviews'
   saved_annotations: 'Saved annotations'

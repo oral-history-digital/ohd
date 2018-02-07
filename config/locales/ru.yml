@@ -50,6 +50,7 @@
 # to the end ('German ').
 
 ru:
+  home: 'Главная'
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:

@@ -335,6 +335,10 @@ class Interview < ActiveRecord::Base
     read_attribute(:video)
   end
 
+  def media_type
+    read_attribute(:video) ? 'video' : 'audio'
+  end
+
   def has_headings?
     segments.with_heading.count > 0 ? true : false
   end
