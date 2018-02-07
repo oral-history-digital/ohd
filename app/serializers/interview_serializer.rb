@@ -4,6 +4,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :collection_id,
              :tape_count,
              :video,
+             :media_type,
              :duration,
              :translated,
              :created,
@@ -27,6 +28,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :languages_string,
              :language_id,
              :lang,
+             :translation_lang,
              :title,
              :short_title,
              :still_url,
@@ -56,6 +58,11 @@ class InterviewSerializer < ActiveModel::Serializer
   def lang
     # return only the first language code in cases like 'slk/ces'
     ISO_639.find(object.language.code.split('/')[0]).alpha2
+  end
+
+  def translation_lang
+    # return only the first language code in cases like 'slk/ces'
+    object.translation ? ISO_639.find(object.translation.locale).alpha2 : nil
   end
   
   def languages
