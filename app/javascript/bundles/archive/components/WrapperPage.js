@@ -13,6 +13,7 @@ import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.png'
+import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 
 import '../css/wrapper_page'
 
@@ -186,8 +187,17 @@ export default class WrapperPage extends React.Component {
                 logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
                 break;
             case 'zwar':
-                logoSrc = this.props.locale == "de" ? zwarLogoDe : zwarLogoEn;
-                break;
+                switch(this.props.locale) {
+                    case 'de':
+                        logoSrc = zwarLogoDe;
+                        break;
+                    case 'en':
+                        logoSrc = zwarLogoEn;
+                        break;
+                    case 'ru':
+                        logoSrc = zwarLogoRu;
+                        break;
+                }
         }
 
         return (
