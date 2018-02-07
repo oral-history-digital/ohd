@@ -1,8 +1,25 @@
-h1 The Online Archive “Forced Labor 1939-1945”
+.home-text
+  h1 The Online Archive "Forced Labor 1939-1945"
 
-p
-  | The online archive “Forced Labor 1939-1945” contains interviews with nearly 600 former
-    forced laborers from 26 countries. The collection is made up of various subsets, which were
-    compiled worldwide between the years 2005 and 2006 and financed by the Foundation “Remembrance,
-    Responsibility and Future”. The digital archive preserves these testimonies
-    for the future and makes them available for educational and research purposes.
+  - @interview = Interview.random_featured
+  div style=("float: left; margin: 0 15px 0 0;")
+    a href=("#{interview_path(:id => @interview.archive_id)}") 
+      img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "http://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
+      h6
+        = @interview.short_title(I18n.locale)
+        br/
+        = t(@interview.video? ? 'media.video_interview' : 'media.audio_interview')
+        | , #{@interview.language.to_s}
+
+  p
+    | The online archive “Forced Labor 1939-1945” contains interviews with nearly 600 former
+      forced laborers from 26 countries. The collection is made up of various subsets, which were
+      compiled worldwide between the years 2005 and 2006 and financed by the Foundation “Remembrance,
+      Responsibility and Future”. The digital archive preserves these testimonies
+      for the future and makes them available for educational and research purposes.
+  p
+    | In order to protect privacy rights you must be logged in and agree to the Terms of Use
+      as well as the Privacy Policy before being granted access to the archive. 
+  p
+    | As a registered user you are given access to all interviews in full length that we have
+      been given permission to publicize on the web under our Terms of Use and Privacy Policy. 
