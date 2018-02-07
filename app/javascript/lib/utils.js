@@ -50,7 +50,11 @@ export function t(props, key) {
     } catch (e) {
         text = `translation for ${props.locale}.${key} is missing!`;
     } finally {
-        return text || `translation for ${props.locale}.${key} is missing!`;
+        if (typeof(text) === 'string') {
+            return text 
+        } else {
+            return `translation for ${props.locale}.${key} is missing!`;
+        }
     }
 }
 
