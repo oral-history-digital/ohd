@@ -65,6 +65,15 @@ export default class FlyoutTabs extends React.Component {
         />
     }
 
+    loginTab() {
+        if (!this.props.account.email) {
+            return <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
+        }
+        else {
+            return <Tab />;
+        }
+    }
+
     localeTabs() {
         return this.props.locales.map((locale, index) => {
             let classNames = 'flyout-top-nav lang';
@@ -96,7 +105,7 @@ export default class FlyoutTabs extends React.Component {
                 <div className='scroll-flyout'>
                     <TabList className='flyout'>
                         <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'home')}</Tab>
-                        <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
+                        {this.loginTab()}
                         {this.localeTabs()}
                         <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
                         <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
