@@ -47,7 +47,7 @@ export default class InterviewPreview extends React.Component {
     content(label, value) {
         return (
             <div>
-                {label}:
+                {label}:&nbsp;
                 <span>{value}</span>
             </div>
         )
