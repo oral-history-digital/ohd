@@ -22,8 +22,16 @@ export default class PersonData extends React.Component {
     }
 
 
+    typologies(){
+        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length > 1){
+            return this.content(ArchiveUtils.translate(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
+        } else if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length == 1){
+            return this.content(ArchiveUtils.translate(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
+        }
+    }
+
+
     render() {
-        let typology = ArchiveUtils.translate(this.props, 'search_facets') ? ArchiveUtils.translate(this.props, 'search_facets')['typology'] : "";
         let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
         return (
             <div>
@@ -31,8 +39,7 @@ export default class PersonData extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName, "")}
                 {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
                 {this.placeOfBirth()}
-                {this.content(typology, this.props.interviewee.typology[this.props.locale].join(', '),"" )}
-
+                {this.typologies()}
                 <AuthShowContainer ifLoggedIn={true}>
                     <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
                         <a className='flyout-download-link-lang'

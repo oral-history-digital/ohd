@@ -2,6 +2,8 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
+import ArchiveUtils from "../../../lib/utils";
+
 
 export default class InterviewPreview extends React.Component {
 
@@ -30,13 +32,44 @@ export default class InterviewPreview extends React.Component {
         }
         else if (PROJECT === 'mog') {
             return (
-                <p className={'search-result-data'}>Interview-ID: <span>{this.props.interview.archive_id}</span><br/>
-                    Interviewdauer: <span>{this.props.interview.formatted_duration}</span>
-                </p>
+                <div className={'search-result-data'}>
+                    {this.typologies()}
+                    {this.content( ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration)}
+                </div>
             )
         }
         return null;
     }
+
+
+
+
+    content(label, value) {
+        return (
+            <div>
+                {label}:
+                <span>{value}</span>
+            </div>
+        )
+    }
+
+
+
+    typologies(){
+        let interviewee =  this.props.interview.interviewees[0];
+        debugger;
+        if (interviewee) {
+            if (interviewee.typology && interviewee.typology[this.props.locale].length > 1) {
+                return this.content(ArchiveUtils.translate(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
+            } else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
+                return this.content(ArchiveUtils.translate(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
+            }
+        }
+    }
+
+
+
+
 
     render() {
         return (

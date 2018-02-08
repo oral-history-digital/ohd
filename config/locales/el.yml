@@ -1,5 +1,5 @@
 el:
-  segmentation: "Erfassung(ÜBERSETZEN)"
+  segmentation: "Ιστορική επεξεργασία"
   interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
   called: 'Abruf(ÜBERSETZEN)'
   download: 'Download(ÜBERSETZEN)'
@@ -35,7 +35,8 @@ el:
   user_content_errors: '(bitte übersetzen) Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
   archive_search: 'Αναζήτηση στο Αρχείο'
   interviewee_name: 'Όνομα'
-  typology: 'Είδος εμπειρίας'
+  typology: 'Εμπειρία'
+  typologies: 'Εμπειρία'
   periods: 'Χρονικές περίοδοι'
   keywords: 'Λέξεις-κλειδιά'
   annotations: 'σημειώσεις'
@@ -76,7 +77,6 @@ el:
   date_of_birth: 'Ημερομηνία γέννησης'
   place_of_birth: 'Τόπος γέννησης'
   interview_info: 'Σχετικά με τη συνέντευξη'
-  date: 'Ημερομηνία'
   place: 'Τόπος'
   interview_type: 'Βίντεο'
   language: 'Γλώσσα'
