@@ -7,7 +7,7 @@ class PersonSerializer < ActiveModel::Serializer
         alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
         hsh[alpha2_locale] = {firstname: i.first_name,
                          lastname: i.last_name,
-                         birthname: i.birth_name}}
+                         birthname: i.birth_name} if Project.available_locales.include?( alpha2_locale )}
   end
 
   def date_of_birth
@@ -19,7 +19,9 @@ class PersonSerializer < ActiveModel::Serializer
     facets = object.typology ? object.typology.split(',') : []
     object.translations.each_with_object({}) {|i, hsh |
       alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-      hsh[alpha2_locale] = facets.map{|typology| I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}") }}
+      hsh[alpha2_locale] = facets.map{|typology|
+        I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}")
+      } if Project.available_locales.include?( alpha2_locale )}
   end
 
   def histories
@@ -28,7 +30,7 @@ class PersonSerializer < ActiveModel::Serializer
         alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
         hsh[alpha2_locale] = {event_begin: i.deportation_date,
                          event_end: i.return_date,
-                         event_description: i.forced_labor_details}}}
+                         event_description: i.forced_labor_details} if Project.available_locales.include?( alpha2_locale )}}
   end
 
 
