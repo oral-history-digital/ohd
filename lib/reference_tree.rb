@@ -22,6 +22,7 @@ class ReferenceTree
       type: 'leafe',
       time: segment.start_time,
       timecode: segment.timecode,
+      tape_nbr: segment.tape.number,
       transcripts:{
           de:segment.translation.sub(/^\:+\s*\:*/,"").strip(),
           "#{segment.interview.language.code[0..1]}": segment.transcript.sub(/^\:+\s*\:*/,"").strip()

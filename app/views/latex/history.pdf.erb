@@ -21,7 +21,7 @@
   <% span = end_date.blank? ? start_date : "#{start_date} - #{end_date}" %>
   \section*{ <%= latex_escape(span) %> }
   <% details = history.translations.where(locale: @language[:locale]).first.forced_labor_details %>
-  <%= latex_escape(ActionView::Base.full_sanitizer.sanitize(details)) %>
+  <%= latex_escape(ActionView::Base.full_sanitizer.sanitize(details).gsub("&amp;", "&")) %>
 <% end %>
 
 

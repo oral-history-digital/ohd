@@ -75,7 +75,7 @@ de:
   person_info: 'Zur Person'
   date_of_birth: 'Geburtsdatum'
   interview_info: 'Zum Interview'
-  date: 'Datum '
+  date: 'Datum'
   place: 'Ort: '
   interview_type: 'Art: Video'
   language: 'Sprache'
