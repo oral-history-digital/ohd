@@ -19,7 +19,7 @@
 <% last_speaker_id = 0 %>
 <% new_line = false %>
 <% @interview.segments.select {|i| i.tape.number == 1}.each_with_index do |segment, index| %>
-  <% if (segment.speaker_changed && segment.speaker_id > 0) || (!segment.speaker_id.nil? && segment.speaker_id > 0 && segment.speaker_id != last_speaker_id) %>
+  <% if (segment.speaker_changed && !segment.speaker_id.nil? && segment.speaker_id > 0) || (!segment.speaker_id.nil? && segment.speaker_id > 0 && segment.speaker_id != last_speaker_id) %>
     <% last_speaker_id = segment.speaker_id if segment.speaker_id > 0 %>
     <% new_line = true %>
     <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @language[:locale]).first %>
