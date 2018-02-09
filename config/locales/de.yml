@@ -1,5 +1,5 @@
 de:
-  segmentation: "Erfassung"
+  segmentation: "Erschließung"
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
   download: 'Download'
@@ -57,10 +57,10 @@ de:
   person_info: 'Zur Person'
   date_of_birth: 'Geburtsdatum'
   place_of_birth: 'Geburtsort'
-  typology: 'Erfahrungshintergrund'
+  typology: 'Erfahrung'
+  typologies: 'Erfahrungen'
   history: 'Kurzbiografie'
   interview_info: 'Zum Interview'
-  date: 'Datum'
   place: 'Ort'
   duration: 'Dauer'
   id: 'ID'
@@ -74,9 +74,8 @@ de:
   person_info: 'Zur Person'
   date_of_birth: 'Geburtsdatum'
   place_of_birth: 'Geburtsort'
-  typology: 'Erfahrungshintergrund'
   interview_info: 'Zum Interview'
-  date: 'Datum: '
+  date: 'Datum '
   place: 'Ort: '
   interview_type: 'Art: Video'
   language: 'Sprache'

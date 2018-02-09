@@ -102,11 +102,11 @@ default: &default
       use_as_facet: true
       values: 
         resistance: 'Resistance'
-        occupation: 'Occupation'
-        flight: 'Flight'
+        retaliation: 'Retaliation'
         concentration_camp: 'Concentration camp'
         persecution_of_jews: 'Persecution of Jews'
-        retaliation: 'Retaliation'
+        occupation: 'Occupation'
+        flight: 'Flight'
         collaboration: 'Collaboration'
     - id: 'periods'
       source: 'registry_entry'

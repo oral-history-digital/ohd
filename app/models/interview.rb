@@ -206,8 +206,17 @@ class Interview < ActiveRecord::Base
 
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = use_full_title ? full_title(locale) : short_title(locale)
+      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)
       mem
+    end
+  end
+
+  def reverted_short_title(locale)
+    locale = projectified(locale)
+    begin
+      [interviewees.first.last_name(locale), interviewees.first.first_name(locale)].join(', ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
     end
   end
 
