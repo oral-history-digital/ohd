@@ -7,13 +7,14 @@ export default class Facet extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.onChange = this.onChange.bind(this);
-
+        this.handleInputForInputList = this.handleInputForInputList.bind(this);
         let openState = false;
         if (this.checkedFacets()) {
             openState = this.checkedFacets().length > 0;
         }
 
         this.state = {
+            inputValue: "",
             open: openState,
             class: openState ? "accordion active" : "accordion",
             panelClass: openState ? "panel open" : "panel"
@@ -37,14 +38,21 @@ export default class Facet extends React.Component {
         }
     }
 
+    handleInputForInputList(event){
+        let word = event.currentTarget.value;
+        this.setState({['inputValue']: word});
+    }
+
     panelContent() {
         if (this.props.inputField && Object.values(this.props.data.subfacets).filter(i => i.count > 0).length > 9) {
             return (
                 <div className={this.state.panelClass}>
                     <input className='input-list-search'
+                           autocomplete="off"
                            list="inputList"
                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
                            name={this.props.facet}
+                           onInput={this.handleInputForInputList}
                            onChange={this.props.handleInputList}/>
                     <datalist id="inputList">
                         {this.renderOptions()}
@@ -84,7 +92,11 @@ export default class Facet extends React.Component {
         subfacetsArray.sort(function (a, b) {
             return (a[1].descriptor[locale] > b[1].descriptor[locale]) ? 1 : ((b[1].descriptor[locale] > a[1].descriptor[locale]) ? -1 : 0);
         });
-        return subfacetsArray.map((subfacetElement, index) => {
+        let length = this.state.inputValue.length ;
+        let initals = subfacetsArray.map(i => i[1].descriptor[locale].slice(0,length).toLowerCase());
+        let firstIndex = initals.indexOf(this.state.inputValue.toLowerCase());
+        let lastIndex = length == 0 ? 10 : initals.lastIndexOf(this.state.inputValue.toLowerCase());
+        return subfacetsArray.slice(firstIndex, lastIndex + 1).map((subfacetElement, index) => {
                 let subfacetId = subfacetElement[0];
                 let subfacet = this.props.data.subfacets[subfacetId];
                 const dataProps = {[`data-${this.props.facet}`]: `${subfacetId}`};
