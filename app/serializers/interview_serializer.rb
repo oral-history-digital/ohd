@@ -36,7 +36,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :references,
              :formatted_duration,
              :interviewee_id,
-             :person_names
+             :person_names,
+             :place_of_interview
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -114,6 +115,10 @@ class InterviewSerializer < ActiveModel::Serializer
           longitude: ref.registry_entry.longitude == -0.376295 ? nil : ref.registry_entry.longitude.to_f
       }
     end
+  end
+
+  def place_of_interview
+    RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
   end
 
   def formatted_duration
