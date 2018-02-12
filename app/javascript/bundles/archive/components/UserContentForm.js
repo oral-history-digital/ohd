@@ -40,10 +40,8 @@ export default class UserContentForm extends React.Component {
     }
 
     handleChange(event) {
-        const value = event.target.value;
         const name = event.target.name;
-
-        this.setState({[name]: value});
+        this.setState({[name]: !this.state[name]});
         if (this.valid()) {
             this.clearErrors();
         }
@@ -62,9 +60,9 @@ export default class UserContentForm extends React.Component {
 
     valid() {
         return this.state.title &&
-            this.state.title.length > 2 &&
+            this.state.title.length > 1 &&
             this.state.description &&
-            this.state.description.length > 2
+            this.state.description.length > 1
     }
 
     setErrors() {
