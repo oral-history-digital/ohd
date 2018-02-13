@@ -48,7 +48,7 @@ export default class Facet extends React.Component {
             return (
                 <div className={this.state.panelClass}>
                     <input className='input-list-search'
-                           autocomplete="off"
+                           autoComplete="off"
                            list="inputList"
                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
                            name={this.props.facet}
