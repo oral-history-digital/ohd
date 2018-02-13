@@ -1,5 +1,6 @@
 import React from 'react';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import moment from 'moment';
 
 
 export default class Segment extends React.Component {
@@ -28,9 +29,8 @@ export default class Segment extends React.Component {
 
     render() {
         return (
-
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
-                <p className="content-search-timecode">{this.props.data.timecode}</p>
+                <p className="content-search-timecode">{moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}</p>
                 <div className="content-search-text">
                     <p  dangerouslySetInnerHTML = {{__html:this.transcript()}}></p>
                 </div>

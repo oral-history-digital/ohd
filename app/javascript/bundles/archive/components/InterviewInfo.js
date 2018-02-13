@@ -48,9 +48,17 @@ export default class InterviewInfo extends React.Component {
         return <Link to={this.to()}>{this.to()}</Link>
     }
 
+
+    placeOfInterview(){
+        if (this.props.interview.place_of_interview){
+            return this.content(ArchiveUtils.translate(this.props, 'place_of_interview'), this.props.interview.place_of_interview.descriptor[this.props.locale], "" );
+        }
+    }
+
     render() {
         return (
             <div>
+                {this.placeOfInterview()}
                 {this.content(ArchiveUtils.translate(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
                 {this.content(ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
                 {this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "")}

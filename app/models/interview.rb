@@ -204,10 +204,27 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
+  def place_of_interview
+    if registry_references.length > 0
+      if registry_references.where(registry_reference_type_id: 3).length > 0
+        registry_references.where(registry_reference_type_id: 3).first.registry_entry
+      end
+    end
+  end
+
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = use_full_title ? full_title(locale) : short_title(locale)
+      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)
       mem
+    end
+  end
+
+  def reverted_short_title(locale)
+    locale = projectified(locale)
+    begin
+      [interviewees.first.last_name(locale), interviewees.first.first_name(locale)].join(', ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
     end
   end
 

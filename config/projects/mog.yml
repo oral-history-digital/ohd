@@ -4,7 +4,6 @@ default: &default
     - deu
     - ell
 
-
   available_locales:
     - de
     - el
@@ -23,13 +22,10 @@ default: &default
   translation_contribution_type: 'Translated'
   indexation_contribution_type: 'Indexed'
 
-
-
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation Griechenlands.'
     en: 'Memories of the Occupation of Greece'
     el: 'Memories of the Occupation of Greece'
-
 
   project_domain: 'www.occupation-memories.org'
 
@@ -39,25 +35,23 @@ default: &default
 
   project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
-  project_domain: 'zwangsarbeit-archiv.de'
-
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions:
-      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-      el: 'http://www.zwangsarbeit-archiv.de/el/sammlung/nutzungsbedingungen/index.html'
+      de: 'http://www.occupation-memories.org/de/archive/terms'
+      el: 'http://www.occupation-memories.org/archive/terms'
     privacy_protection:
-      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      el: 'http://www.zwangsarbeit-archiv.de/el/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      de: 'http://www.occupation-memories.org/de/archive/privacy'
+      el: 'http://www.occupation-memories.org/archive/privacy'
     team:
-      de: 'http://www.zwangsarbeit-archiv.de/team'
-      el: 'http://www.zwangsarbeit-archiv.de/el/team'
+      de: 'http://www.occupation-memories.org/de/project/team/index.html'
+      el: 'http://www.occupation-memories.org/de/project/team/index.html'
     contact:
-      de: 'http://www.zwangsarbeit-archiv.de/kontakt'
-      el: 'http://www.zwangsarbeit-archiv.de/el/kontakt'
+      de: 'http://www.occupation-memories.org/de/contact/index.html'
+      el: 'http://www.occupation-memories.org/contact/index.html'
     legal_info:
-      de: 'http://www.zwangsarbeit-archiv.de/impressum'
-      el: 'http://www.zwangsarbeit-archiv.de/el/impressum'
+      de: 'http://www.occupation-memories.org/de/imprint/index.html'
+      el: 'http://www.occupation-memories.org/de/imprint/index.html'
 
   video_src_base: "http://medien.cedis.fu-berlin.de/eog/interviews/mog"
 
@@ -70,13 +64,12 @@ default: &default
 
   smtp_server: 'mail.fu-berlin.de'
 
-
   # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084
   # Thematic: entry_dedalo_code: "ts1_1", id: 637018
   # thematic for development:637018 # RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id
   ref_tree_nodes:
     thematic: 
-      id: 639613
+      id: 639646
       entry_dedalo_code: "ts1_1"
     centers_of_deprevation_of_liberty:
       id: 

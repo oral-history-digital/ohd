@@ -28,7 +28,6 @@ class InterviewSerializer < ActiveModel::Serializer
              :languages_string,
              :language_id,
              :lang,
-             :translation_lang,
              :title,
              :short_title,
              :still_url,
@@ -37,7 +36,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :references,
              :formatted_duration,
              :interviewee_id,
-             :person_names
+             :person_names,
+             :place_of_interview
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -58,14 +58,6 @@ class InterviewSerializer < ActiveModel::Serializer
   def lang
     # return only the first language code in cases like 'slk/ces'
     ISO_639.find(object.language.code.split('/')[0]).alpha2
-  end
-
-  def translation_lang
-    # return only the first language code in cases like 'slk/ces'
-    #
-    # @Rico: object.translation gibt ein neues Interview::Translation-Objekt mit der aktuellen I18n.locale zurück
-    #        auf die Art wirft es Fehler, habe es deswegen auskommentiert bzw. ersetzt.
-    "" #object.translation ? ISO_639.find(object.translation.locale).alpha2 : nil
   end
   
   def languages
@@ -90,7 +82,7 @@ class InterviewSerializer < ActiveModel::Serializer
         alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
         hsh[alpha2_locale] = {firstname: i.first_name,
                               lastname: i.last_name,
-                              birthname: i.birth_name}})
+                              birthname: i.birth_name}  if Project.available_locales.include?( alpha2_locale ) })
 
       end
   end
@@ -123,6 +115,10 @@ class InterviewSerializer < ActiveModel::Serializer
           longitude: ref.registry_entry.longitude == -0.376295 ? nil : ref.registry_entry.longitude.to_f
       }
     end
+  end
+
+  def place_of_interview
+    RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
   end
 
   def formatted_duration
