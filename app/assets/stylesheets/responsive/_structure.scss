@@ -93,7 +93,7 @@ header.site-header {
     top: 0;
     bottom: 0;
     right: 0;
-    background: rgba(#e8e8e4, 0.95);
+    background: rgba(232,232,228, 0.95);
     @include screen-xl {
       border-left: 1px solid $gray-light;
     }
@@ -319,7 +319,7 @@ footer {
   z-index: 1100; //because of leaflet
   cursor: pointer;
   color: $gray-dark; //$primary-color;
-  background: rgba(#fff, 0.50);
+  background: rgba(255, 255, 255, 0.5);
 }
 .fix-video {
   .fa-bars {
@@ -521,14 +521,21 @@ a.search-result-link {
 }
 
 .search-result-name {
-  font-size: $font-size-larger;
+  font-size: $font-size-large;
+  line-height: $line-height-large;
   color: $primary-color;
 }
 
 .search-result-data {
-  font-size: $font-size-large;
+  font-size: $font-size-medium;
+  line-height:$line-height-medium;
   color: $gray-dark;
   margin-bottom: 0;
+  -moz-hyphens: auto;
+  -o-hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 .search-result-data-inf {

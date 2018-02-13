@@ -159,9 +159,8 @@
     cursor: pointer;
     transition: 0.4s;
     margin: 0;
-    @include screen-m-l {
-      margin: 0;
-    }
+    font-size: $font-size-large;
+    line-height: $line-height-large;
     &.active {
       background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
       color: $gray-darkest;
@@ -220,7 +219,7 @@
   margin-left: 8%;
   margin-bottom: 10px;
   border: 2px solid $gray-lighter;
-  padding: 20px;
+  padding: 20px 10px 10px 10px;
   float: none;
   clear: both;
   p.content-trans-text-element-title {
@@ -386,7 +385,7 @@
   .cont-search-title {
   }
   .content-search-timecode {
-    font-size: $font-size-medium;
+    font-size: $font-size-small;
     margin-bottom: 0;
   }
 }
