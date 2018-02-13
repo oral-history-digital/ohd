@@ -14,7 +14,6 @@ export default class PersonData extends React.Component {
         )
     }
 
-
     placeOfBirth(){
         if (this.props.interviewee.place_of_birth){
             return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale], "" );
