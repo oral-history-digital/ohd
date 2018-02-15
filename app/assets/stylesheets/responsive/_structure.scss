@@ -79,7 +79,7 @@ header.site-header {
     overflow: hidden;
     @include screen-m {
       width: 50%;
-      padding-right: 0;
+      padding-right: 15px;
     }
     @include screen-l {
       width: 40%;
@@ -105,7 +105,7 @@ header.site-header {
     overflow-x: hidden;
     overflow-y: scroll;
     height:100%;
-    @include screen-l {
+    @include screen-m {
       margin-right: -35px;
     }
   }
@@ -193,9 +193,12 @@ header.site-header {
     }
   }
   .wrapper-content {
-    margin-top: 180px;
+    margin-top: 270px;
     @include screen-m {
-      margin-top: 160px;
+      margin-top: 200px;
+    }
+    @include screen-xl {
+      margin-top: 240px;
     }
   }
 }
