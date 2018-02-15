@@ -123,7 +123,7 @@ export default class ArchiveSearch extends React.Component {
             <WrapperPageContainer
                 tabIndex={4}
             >
-                <div className='interviews wrapper-content'>
+                <div className='wrapper-content interviews'>
                     <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
                         <AuthShowContainer ifLoggedIn={true}>

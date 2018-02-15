@@ -127,6 +127,10 @@ header.site-header {
   }
 }
 
+.compensation{
+  height: 600px
+}
+
 .fix-video {
   .wrapper-video {
     position: fixed;
@@ -191,7 +195,7 @@ header.site-header {
   .wrapper-content {
     margin-top: 180px;
     @include screen-m {
-      margin-top: 100px;
+      margin-top: 160px;
     }
   }
 }
@@ -549,7 +553,17 @@ a.search-result-link {
     padding: 0;
   }
 }
+
+.wrapper-content.register {
+  margin-top: 0px !important;
+}
+
+.wrapper-content.interviews {
+  margin-top: 0px !important;
+}
+
 .wrapper-content.home-content {
+  margin-top: 0px !important;
   padding:0;
   .home-text {
     padding: 15px 5% 30px 5%;

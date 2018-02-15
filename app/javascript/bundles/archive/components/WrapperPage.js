@@ -43,7 +43,9 @@ export default class WrapperPage extends React.Component {
 
     componentDidUpdate() {
         if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
-            document.body.classList.add('noScroll');
+            if (!document.body.classList.contains('noScroll')) {
+                document.body.classList.add('noScroll');
+            }
         } else {
             document.body.classList.remove('noScroll');
         }
@@ -142,13 +144,23 @@ export default class WrapperPage extends React.Component {
     flyoutCss() {
         let css = this.props.visible ? ['flyout-is-visible'] : ['flyout-is-hidden'];
 
-        if (this.props.transcriptScrollEnabled && this.props.tabIndex == 5) {
+        if (this.props.transcriptScrollEnabled) {
             css.push("fix-video");
         } else {
             window.scrollTo(0, 0);
         }
         return css.join(' ');
     }
+
+    compensationCss() {
+        let css = '';
+
+        if (this.props.transcriptScrollEnabled) {
+            css = 'compensation';
+        }
+        return css;
+    }
+
 
     flyoutToggleCss() {
         let css = this.props.visible ? 'icon-close' : 'icon-open';
@@ -221,6 +233,7 @@ export default class WrapperPage extends React.Component {
                             </ul>
                             <p>{ArchiveUtils.translate(this.props, 'project_title')}</p>
                         </footer>
+                        <div className={this.compensationCss()}/>
                     </div>
 
                     <div className='flyout-toggle'>
