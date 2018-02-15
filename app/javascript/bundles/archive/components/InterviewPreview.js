@@ -32,7 +32,7 @@ export default class InterviewPreview extends React.Component {
         }
         else if (PROJECT === 'mog') {
             return (
-                <div className={'search-result-data'}>
+                <div className={'search-result-data'} lang={this.props.locale}>
                     {this.typologies()}
                     {this.content( ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration)}
                 </div>
