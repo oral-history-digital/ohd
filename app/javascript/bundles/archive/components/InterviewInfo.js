@@ -44,10 +44,6 @@ export default class InterviewInfo extends React.Component {
         )
     }
 
-    interviewLink() {
-        return <Link to={this.to()}>{this.to()}</Link>
-    }
-
 
     placeOfInterview(){
         if (this.props.interview.place_of_interview){
@@ -68,7 +64,6 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'translation'), this.fullName(this.props.translator), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'segmentation'), this.fullName(this.props.segmentator), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId, "")}
-                {this.content(ArchiveUtils.translate(this.props, 'doi'), this.interviewLink(), "")}
                 <AuthShowContainer ifLoggedIn={true}>
                     {this.download()}
                     {this.download(false)}

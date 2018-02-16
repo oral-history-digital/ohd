@@ -29,6 +29,8 @@ default: &default
 
   project_domain: 'www.occupation-memories.org'
 
+  archive_domain: 'archive.occupation-memories.org'
+
   project_id: 'mog'
 
   project_shortname: 'MOG'
