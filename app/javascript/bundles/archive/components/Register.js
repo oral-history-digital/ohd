@@ -6,6 +6,10 @@ import { t } from '../../../lib/utils';
 
 export default class Register extends React.Component {
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     content() {
         if (!this.props.registrationStatus) {
             return (

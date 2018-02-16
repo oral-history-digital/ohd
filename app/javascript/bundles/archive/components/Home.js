@@ -7,6 +7,11 @@ import logo4 from '../../../images/fu-logo-3x.png'
 
 export default class Home extends React.Component {
 
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     content() {
         return (
                 <WrapperPageContainer

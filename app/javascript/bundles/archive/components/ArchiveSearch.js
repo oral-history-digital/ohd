@@ -18,6 +18,10 @@ export default class ArchiveSearch extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
 
     content() {
         if (this.props.isArchiveSearching) {
