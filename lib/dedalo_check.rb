@@ -12,6 +12,7 @@ module DedaloCheck
         puts "Project.ref_tree_nodes['thematic']['id'] is #{Project.ref_tree_nodes['thematic']['id']}"
         puts "RegistryEntry.where(entry_dedalo_code: 'ts1_1').first.id is #{RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id}"
         puts "Change Project.ref_tree_nodes['thematic']['id'] in config/projects/mog.yml to #{RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id}"
+        puts "Abort!"
         is_valid = false
       end
     end

@@ -30,6 +30,8 @@ class HomeController < BaseController
             project: Rails.configuration.x.project.to_s,
             project_name: Project.project_name,
             project_domain: Project.project_domain,
+            archive_domain: Project.archive_domain,
+            project_doi: Project.project_doi,
             locales: Project.available_locales
           }.to_json
         end

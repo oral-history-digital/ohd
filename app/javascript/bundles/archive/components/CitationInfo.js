@@ -9,7 +9,7 @@ export default class CitationInfoInfo extends React.Component {
 
     name(person) {
         if (person) {
-            return `${person.names[this.props.locale].lastname}, ${person.names[this.props.locale].firstname}`;
+            return `${person.names[this.props.locale].firstname} ${person.names[this.props.locale].lastname}`;
         }
     }
 
@@ -22,29 +22,28 @@ export default class CitationInfoInfo extends React.Component {
         )
     }
 
-    to() {
-        return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
-    }
 
     project(){
         if (this.props.projectName && this.props.projectDomain){
-            return `${ArchiveUtils.translate(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", ${this.props.projectDomain}`;
+            return `${ArchiveUtils.translate(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", ${this.props.archiveDomain}`;
         }
         return "";
     }
 
 
     render() {
-        let citation = `${this.name(this.props.interview.interviewees[0])}:
+        let citation = `${this.name(this.props.interview.interviewees[0])}, 
+        ${ArchiveUtils.translate(this.props, 'interview')} 
         ${this.props.interview.archive_id},  
         ${this.props.interview.created},
         ${this.project()},
-        ${ArchiveUtils.translate(this.props, 'doi')}: ${this.to()}, 
+        ${ArchiveUtils.translate(this.props, 'doi')}: ${this.props.projectDoi + this.props.interview.archive_id}, 
         (${ArchiveUtils.translate(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
 
         return (
             <div>
                 {this.content(ArchiveUtils.translate(this.props, 'citation'), citation)}
+                {this.content(ArchiveUtils.translate(this.props, 'doi'), this.props.projectDoi + this.props.interview.archive_id)}
             </div>
         );
     }
