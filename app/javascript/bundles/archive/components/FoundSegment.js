@@ -28,7 +28,6 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                 <p className="content-search-timecode">{moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}</p>
