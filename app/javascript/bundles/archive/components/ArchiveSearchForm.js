@@ -57,9 +57,11 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     handleSubmit(event) {
-        if (event !== undefined) event.preventDefault();
-        let params = serialize(this.form, {hash: true});
-        this.submit(params);
+        if (!this.props.isArchiveSearching) {
+            if (event !== undefined) event.preventDefault();
+            let params = serialize(this.form, {hash: true});
+            this.submit(params);
+        }
     }
 
     submit(params){
