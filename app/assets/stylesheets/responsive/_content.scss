@@ -11,11 +11,11 @@ h1 {
   color: #000;
   font-size: $font-size-heading-h1-large;
   line-height: $line-height-heading-h1-large;
-  @include screen-m-l {
-    margin: $font-size-heading-h1 0 $text-margin-medium 0;
-    font-size: $font-size-heading-h1;
-    line-height: $line-height-heading-h1;
-  }
+  //@include screen-l {
+  //  margin: $font-size-heading-h1 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h1;
+  //  line-height: $line-height-heading-h1;
+  //}
 }
 
 h2 {
@@ -23,11 +23,11 @@ h2 {
   color: #000;
   font-size: $font-size-heading-h2-large;
   line-height: $line-height-heading-h2-large;
-  @include screen-m-l {
-    margin: $font-size-heading-h2 0 $text-margin-medium 0;
-    font-size: $font-size-heading-h2;
-    line-height: $line-height-heading-h2;
-  }
+  //@include screen-l {
+  //  margin: $font-size-heading-h2 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h2;
+  //  line-height: $line-height-heading-h2;
+  //}
 }
 
 h3 {
@@ -35,11 +35,11 @@ h3 {
   color: #000;
   font-size: $font-size-heading-h3-large;
   line-height: $line-height-heading-h3-large;
-  @include screen-m-l {
-    margin: $font-size-heading-h3 0 $text-margin-medium 0;
-    font-size: $font-size-heading-h3;
-    line-height: $line-height-heading-h3;
-  }
+  //@include screen-l {
+  //  margin: $font-size-heading-h3 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h3;
+  //  line-height: $line-height-heading-h3;
+  //}
 }
 
 h4 {
@@ -48,10 +48,10 @@ h4 {
   color: $primary-color;
   font-size: $font-size-heading-h4-large;
   line-height: $line-height-heading-h4-large;
-  @include screen-m-l {
-    font-size: $font-size-heading-h4;
-    line-height: $line-height-heading-h4;
-  }
+  //@include screen-l {
+  //  font-size: $font-size-heading-h4;
+  //  line-height: $line-height-heading-h4;
+  //}
 }
 
 h5 {
@@ -61,10 +61,10 @@ h5 {
   background-color: $gray-paler;
   font-size: $font-size-heading-h5-large;
   line-height: $line-height-heading-h5-large;
-  @include screen-m-l {
-    font-size: $font-size-heading-h5;
-    line-height: $line-height-heading-h5;
-  }
+  //@include screen-l {
+  //  font-size: $font-size-heading-h5;
+  //  line-height: $line-height-heading-h5;
+  //}
 }
 
 h6 {
@@ -73,10 +73,10 @@ h6 {
   color: $gray-dark;
   font-size: $font-size-heading-h6-large;
   line-height: $line-height-heading-h6-large;
-  @include screen-m-l {
-    font-size: $font-size-heading-h6;
-    line-height: $line-height-heading-h6;
-  }
+  //@include screen-l {
+  //  font-size: $font-size-heading-h6;
+  //  line-height: $line-height-heading-h6;
+  //}
 }
 
 // Links
@@ -106,10 +106,12 @@ a {
 // General text formatting
 
 p {
+  font-size: $font-size-large;
   margin: 0 0 $text-margin-large 0;
-  @include screen-m-l {
-    margin: 0 0 $text-margin-medium 0;
-  }
+  //@include screen-l {
+  //  font-size: $font-size-medium;
+  //  margin: 0 0 $text-margin-medium 0;
+  //}
 }
 
 strong, b {
