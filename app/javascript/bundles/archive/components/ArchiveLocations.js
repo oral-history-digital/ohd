@@ -37,9 +37,9 @@ export default class ArchiveLocations extends React.Component {
     placeOfBirth(ref) {
         if (ref.descriptor[this.props.locale]) {
             return (
-                <h4>
+                <div>
                     {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
-                </h4>
+                </div>
             )
         }
     }
@@ -47,10 +47,10 @@ export default class ArchiveLocations extends React.Component {
     popupContent(ref) {
         return (
             <div>
-                {this.placeOfBirth(ref)}
-                <div>
+                <h3 className='active_map_popup_text'>
                     {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
-                </div>
+                </h3>
+                {this.placeOfBirth(ref)}
             </div>
         )
     }

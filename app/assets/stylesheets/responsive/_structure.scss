@@ -56,6 +56,12 @@ header.site-header {
   }
 }
 
+.active_map_popup_text{
+  color: $primary-color;
+  cursor: pointer;
+}
+
+
 .flyout-is-visible {
   &.fix-video {
     .wrapper-video {
