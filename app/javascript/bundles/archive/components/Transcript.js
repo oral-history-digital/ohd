@@ -3,12 +3,20 @@ import SegmentContainer from '../containers/SegmentContainer';
 
 export default class Transcript extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+
     componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll.bind(this));
+        window.removeEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll);
+
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll.bind(this));
+        window.removeEventListener('scroll', this.handleScroll);
     }
 
     componentDidUpdate(prevProps) {
@@ -24,8 +32,7 @@ export default class Transcript extends React.Component {
     }
 
     handleScroll() {
-        //let fixVideo = ($(document).scrollTop() > 60);
-        let fixVideo = ($(document).scrollTop() > window.innerHeight/20);
+        let fixVideo = ($(document).scrollTop() > $(".site-header").height());
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
         } else if (!fixVideo && this.props.transcriptScrollEnabled) {
@@ -35,7 +42,7 @@ export default class Transcript extends React.Component {
 
     shownSegmentsFor(time) {
         let shownSegments = this.segments().filter( segment => {
-            return (segment.tape_nbr === this.props.tape && segment.start_time >= (time - 10)) && (segment.end_time <= (time + 80));
+            return (segment.tape_nbr === this.props.tape && segment.end_time >= time);
         })
         return shownSegments;
     }

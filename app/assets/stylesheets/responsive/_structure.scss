@@ -79,7 +79,7 @@ header.site-header {
     overflow: hidden;
     @include screen-m {
       width: 50%;
-      padding-right: 0;
+      padding-right: 15px;
     }
     @include screen-l {
       width: 40%;
@@ -105,7 +105,7 @@ header.site-header {
     overflow-x: hidden;
     overflow-y: scroll;
     height:100%;
-    @include screen-l {
+    @include screen-m {
       margin-right: -35px;
     }
   }
@@ -125,6 +125,10 @@ header.site-header {
       color: #fff;
     }
   }
+}
+
+.compensation{
+  height: 600px
 }
 
 .fix-video {
@@ -189,9 +193,12 @@ header.site-header {
     }
   }
   .wrapper-content {
-    margin-top: 180px;
+    margin-top: 270px;
     @include screen-m {
-      margin-top: 100px;
+      margin-top: 200px;
+    }
+    @include screen-xl {
+      margin-top: 240px;
     }
   }
 }
@@ -556,7 +563,17 @@ a.search-result-link {
     padding: 0;
   }
 }
+
+.wrapper-content.register {
+  margin-top: 0px !important;
+}
+
+.wrapper-content.interviews {
+  margin-top: 0px !important;
+}
+
 .wrapper-content.home-content {
+  margin-top: 0px !important;
   padding:0;
   .home-text {
     padding: 15px 5% 30px 5%;

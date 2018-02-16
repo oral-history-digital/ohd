@@ -39,13 +39,23 @@ export default class InterviewLocations extends React.Component {
         return segments[0];
     }
 
+    placeOfBirth(ref) {
+        if (ref.descriptor[this.props.locale]) {
+            return (
+                <h4>
+                    {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
+                </h4>
+            )
+        }
+    }
+
     popupContent(ref) {
         if (ref.ref_object) {
             return (
                 <div>
-                    <h3>
+                    <h4>
                         {ref.desc[this.props.locale]}
-                    </h3>
+                    </h4>
                     <div className='time'>
                         {moment.utc(ref.ref_object.start_time * 1000).format("HH:mm:ss")}
                     </div>
@@ -57,9 +67,7 @@ export default class InterviewLocations extends React.Component {
         } else if (ref.descriptor) {
             return (
                 <div>
-                    <h3>
-                        {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
-                    </h3>
+                    {this.placeOfBirth(ref)}
                     <div>
                         {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
                     </div>
@@ -67,9 +75,9 @@ export default class InterviewLocations extends React.Component {
             )
         } else {
             return (
-                <h3>
+                <h4>
                     {ref.desc[this.props.locale]}
-                </h3>
+                </h4>
             )
         }
     }
