@@ -1,4 +1,9 @@
 el:
+  private: 'ÜBERSETZEN Privat'
+  proposed: 'ÜBERSETZEN In Prüfung zur Veröffentlichung'
+  postponed: 'ÜBERSETZEN Zurückgestellt durch die Redaktion'
+  shared: 'ÜBERSETZEN Veröffentlicht'
+  rejected: 'ÜBERSETZEN Veröffentlichung abgelehnt'
   segmentation: "Ιστορική επεξεργασία"
   interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
   called: 'Abruf(ÜBERSETZEN)'

@@ -32,7 +32,7 @@ export default class UserContent extends React.Component {
 
     workflowState() {
         if (this.props.data.type === 'UserAnnotation') {
-            return this.props.data.workflow_state
+            return ArchiveUtils.translate(this.props, this.props.data.workflow_state);
         }
     }
 

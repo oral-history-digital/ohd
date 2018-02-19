@@ -1,4 +1,9 @@
 de:
+  private: 'Privat'
+  proposed: 'In Prüfung zur Veröffentlichung'
+  postponed: 'Zurückgestellt durch die Redaktion'
+  shared: 'Veröffentlicht'
+  rejected: 'Veröffentlichung abgelehnt'
   segmentation: "Erschließung"
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
