@@ -70,7 +70,7 @@ export default class FlyoutTabs extends React.Component {
             return <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
         }
         else {
-            return <Tab />;
+            return <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'logout_page')}</Tab>
         }
     }
 

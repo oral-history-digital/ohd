@@ -34,7 +34,7 @@ export default class Account extends React.Component {
                 className='logout'
                 onClick={() => this.props.submitLogout()}
             >
-                Logout
+                {t(this.props, 'logout')}
             </div>
         } else {
             return <div>
@@ -56,7 +56,6 @@ export default class Account extends React.Component {
     render() {
         return (
             <div className={'flyout-login-container'}>
-                <h2>{t(this.props, 'login_page')}</h2>
                 {this.info()}
                 {this.loginOrOut()}
             </div>
