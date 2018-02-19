@@ -21,6 +21,8 @@ export default class UserContentForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.toggleValue = this.toggleValue.bind(this);
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -40,11 +42,18 @@ export default class UserContentForm extends React.Component {
     }
 
     handleChange(event) {
+        const value = event.target.value;
         const name = event.target.name;
-        this.setState({[name]: !this.state[name]});
+
+        this.setState({[name]: value});
         if (this.valid()) {
             this.clearErrors();
         }
+    }
+
+    toggleValue(event){
+        const name = event.target.name;
+        this.setState({[name]: !this.state[name]});
     }
 
 
@@ -142,7 +151,7 @@ export default class UserContentForm extends React.Component {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className={"form-group"}>
                 {this.label('publish')}
-                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.handleChange}/>
+                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.toggleValue}/>
             </div>
         }
     }
