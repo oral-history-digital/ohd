@@ -154,7 +154,9 @@ export default class WrapperPage extends React.Component {
 
     compensationCss() {
         let css = '';
-
+        // possible solution for only adding comension class if necessary
+        // (but small problems when toggeling e.g tableofcontents items)
+        // ($('.wrapper-page').height() - 500) < window.innerHeight
         if (this.props.transcriptScrollEnabled) {
             css = 'compensation';
         }
