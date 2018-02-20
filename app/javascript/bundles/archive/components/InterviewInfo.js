@@ -51,13 +51,19 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
+    language(){
+        if (this.props.account.email){
+            return this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "");
+        }
+    }
+
     render() {
         return (
             <div>
-                {this.placeOfInterview()}
                 {this.content(ArchiveUtils.translate(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
+                {this.placeOfInterview()}
                 {this.content(ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
-                {this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "")}
+                {this.language()}
                 {this.content(ArchiveUtils.translate(this.props, 'interview'), this.fullName(this.props.interviewer), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'transcript'), this.fullName(this.props.transcriptor), "")}
