@@ -18,13 +18,14 @@ export default class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.account.email === undefined && this.props.account.email) {
+        if ((prevProps.account.isFetchingAccount === undefined || prevProps.account.isFetchingAccount === false) &&
+            (this.props.account.isFetchingAccount === undefined || this.props.account.isFetchingAccount === false) &&
+            prevProps.account.email === undefined &&
+            this.props.account.email ) {
             const url = "/" + this.props.locale + "/searches/archive";
-            //TODO: find solution for first call
-            //this.context.router.history.push(url);
+            this.context.router.history.push(url);
         }
     }
-
 
     componentDidMount() {
         window.scrollTo(0, 0);
