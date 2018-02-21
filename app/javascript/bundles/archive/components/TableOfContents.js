@@ -55,7 +55,7 @@ export default class TableOfContents extends React.Component {
                         subheadings: []
                     });
                     if (headings.length > 1) {
-                        if (index < (this.props.interview.headings.length - 1)) {
+                        if (index < this.props.interview.headings.length) {
                             headings[headings.length - 2].next_start_time = segment.start_time;
                         }
                         if (headings[headings.length - 2].subheadings.length > 0){
