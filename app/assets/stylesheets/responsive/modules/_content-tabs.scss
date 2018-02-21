@@ -266,12 +266,11 @@
 
 .content-index {
   .heading {
-    margin-bottom: 5px;
     .heading-ico {
       display: inline-block;
       vertical-align: top;
       margin-right: 6%;
-      padding: 0 4px;
+      padding: 4px;
       width: 4%;
       cursor: pointer;
       @include screen-m {
@@ -294,12 +293,15 @@
     }
     .mainheading {
       display: inline-block;
-      width: 90%;
+      max-width: 90%;
       cursor: pointer;
       margin-bottom: 10px;
-      font-weight: bold;
+      padding: 4px;
+      color: $gray-dark;
+      cursor: pointer;
+      transition: 0.4s;
       @include screen-m {
-        width: 96%;
+        max-width: 96%;
       }
       transition: 0.4s;
       &:hover {
@@ -307,18 +309,23 @@
       }
       &.active {
         background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        color: $gray-darkest;
       }
     }
     .subheading {
       display: inline-block;
       cursor: pointer;
       margin-bottom: 10px;
+      padding: 4px;
+      color: $gray-dark;
+      cursor: pointer;
       transition: 0.4s;
       &:hover {
         color: $primary-color;
       }
       &.active {
         background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        color: $gray-darkest;
       }
     }
   }

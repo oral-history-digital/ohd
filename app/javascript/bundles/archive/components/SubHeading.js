@@ -30,13 +30,14 @@ export default class Heading extends React.Component {
     render() {
         let css = 'subheading ' + (this.state.active ? 'active' : 'inactive');
         return (
+            <div>
                 <div
                     className={css}
                     onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
                 >
-                    {this.props.data.heading}
+                    <span className='chapter-number'>{this.props.data.chapter}</span>{this.props.data.heading}
                 </div>
-
+            </div>
         )
     }
 }
