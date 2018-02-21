@@ -23,7 +23,12 @@ export default class VideoPlayer extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.video) {
             this.setVideoTime(prevProps)
-            this.setVideoStatus(prevProps)
+            if (this.props.videoTime > 0 && this.props.videoStatus === 'pause'){
+                this.video.play();
+            }
+            else {
+                this.setVideoStatus(prevProps)
+            }
         }
     }
 
