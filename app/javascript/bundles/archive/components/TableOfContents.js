@@ -34,44 +34,79 @@ export default class TableOfContents extends React.Component {
         let subheading = '';
         let headings = [];
         let lastMainheading = '';
+        let lastSegment = null;
 
-        if(this.props.interview && this.props.interview.headings) {
-            this.props.interview.headings.map( (segment, index) => {
+        if (this.props.interview && this.props.interview.headings) {
+            console.log(this.props.interview.headings);
+            this.props.interview.headings.map((segment, index) => {
 
                 //if (!segment.subheading[this.props.locale] || segment.subheading[this.props.locale] === '') {
-                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && segment.mainheading[this.props.locale] !== lastMainheading ) {
+                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && segment.mainheading[this.props.locale] !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
+                    lastSegment = segment;
                     lastMainheading = segment.mainheading[this.props.locale];
-                    mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale]
-                    headings.push({main: true, heading: mainheading, time: segment.time, tape_nbr: segment.tape_nbr, subheadings: []});
+                    mainheading = mainIndex + '. ' + segment.mainheading[this.props.locale];
+                    headings.push({
+                        main: true,
+                        heading: mainheading,
+                        start_time: segment.start_time,
+                        end_time: segment.end_time,
+                        time: segment.time,
+                        tape_nbr: segment.tape_nbr,
+                        interview_duration: this.props.interview.interview.duration,
+                        subheadings: []
+                    });
+                    if (headings.length > 1) {
+                        if (index < (this.props.interview.headings.length - 1)) {
+                            headings[headings.length - 2].next_start_time = segment.start_time;
+                        }
+                        if (headings[headings.length - 2].subheadings.length > 0){
+                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time){
+                                headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time = segment.start_time;
+                            }
+                        }
+                    }
                 }
                 if (segment.subheading[this.props.locale] && segment.subheading[this.props.locale] !== '') {
                     subIndex += 1;
                     subheading = mainIndex + '.' + subIndex + '. ' + segment.subheading[this.props.locale];
-                    headings[mainIndex - 1].subheadings.push({main: false, heading: subheading, time: segment.time, tape_nbr: segment.tape_nbr});
+                    headings[mainIndex - 1].subheadings.push({
+                        main: false,
+                        heading: subheading,
+                        start_time: segment.start_time,
+                        end_time: segment.end_time,
+                        time: segment.time,
+                        tape_nbr: segment.tape_nbr,
+                        interview_duration: this.props.interview.interview.duration
+                    });
+                    if (headings[mainIndex - 1].subheadings.length > 1) {
+                        if (index < (this.props.interview.headings.length )) {
+                            headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_start_time = segment.start_time;
+                        }
+                    }
                 }
             })
         }
-
+        console.log(headings);
         return headings;
     }
 
     emptyHeadingsNote(headings) {
-        if(headings.length <= 0)
+        if (headings.length <= 0)
             return "Keine Überschriften für diese Sprache"
     }
 
-    render () {
+    render() {
         let headings = this.prepareHeadings();
-        return ( 
+        return (
             <div className={'content-index'}>
                 {this.emptyHeadingsNote(headings)}
-                {headings.map( (heading, index) => {
-                    return <HeadingContainer 
-                                key={'mainheading-' + index}
-                                data={heading}
-                            />
+                {headings.map((heading, index) => {
+                    return <HeadingContainer
+                        key={'mainheading-' + index}
+                        data={heading}
+                    />
                 })}
             </div>
         );

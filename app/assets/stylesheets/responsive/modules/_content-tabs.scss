@@ -305,6 +305,9 @@
       &:hover {
         color: $primary-color;
       }
+      &.active {
+        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+      }
     }
     .subheading {
       display: inline-block;
@@ -313,6 +316,9 @@
       transition: 0.4s;
       &:hover {
         color: $primary-color;
+      }
+      &.active {
+        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
       }
     }
   }

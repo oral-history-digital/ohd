@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Heading from '../components/Heading';
+import SubHeading from '../components/SubHeading';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state) => {
@@ -17,4 +17,4 @@ const mapDispatchToProps = (dispatch) => ({
 // Don't forget to actually use connect!
 // Note that we don't export Interview, but the redux "connected" version of it.
 // See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, mapDispatchToProps)(Heading);
+export default connect(mapStateToProps, mapDispatchToProps)(SubHeading);
