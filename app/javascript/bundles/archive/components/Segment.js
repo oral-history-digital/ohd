@@ -23,7 +23,7 @@ export default class Segment extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let active = this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
+        let active = this.props.data.end_time > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         if (active !== this.state.active) {
             this.setState({
                 active: active
