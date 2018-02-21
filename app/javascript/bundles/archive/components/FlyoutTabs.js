@@ -79,6 +79,8 @@ export default class FlyoutTabs extends React.Component {
             let classNames = 'flyout-top-nav lang';
             if ((index + 1) === this.props.locales.length)
                 classNames += ' top-nav-last'
+            if (locale === this.props.locale)
+                classNames += ' active'
             return <Tab className={classNames} key={`tab-${locale}`}>{locale}</Tab>
         })
     }
