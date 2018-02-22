@@ -16,7 +16,7 @@ export default class Heading extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         let endTime =  (this.state.expanded) ? this.props.data.end_time : this.props.data.next_start_time;
-        endTime = endTime ? endTime : this.props.data.interview
+        endTime = endTime ? endTime : this.props.data.interview_duration;
         let active = endTime > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         if (active !== this.state.active) {
             this.setState({
@@ -72,7 +72,7 @@ export default class Heading extends React.Component {
                     className={css}
                     onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
                 >
-                    <span className='chapter-number'>{this.props.data.chapter}</span>{this.props.data.heading}
+                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text'>{this.props.data.heading}</div>
                 </div>
                 {this.subHeadings()}
             </div>

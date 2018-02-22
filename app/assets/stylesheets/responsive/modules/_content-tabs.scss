@@ -328,6 +328,25 @@
         color: $gray-darkest;
       }
     }
+    .chapter-number{
+      vertical-align: top;
+      display: inline-block;
+      font-weight: bold;
+      width: 30px;
+    }
+    .chapter-text{
+      max-width: 88%;
+      display: inline-block;
+      @include screen-s {
+        max-width: 90%;
+      }
+      @include screen-m {
+        max-width: 94%;
+      }
+      @include screen-l {
+        max-width: 98%;
+      }
+    }
   }
   .expanded {
     margin-left: 10%;
