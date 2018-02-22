@@ -73,7 +73,7 @@ default: &default
   # thematic for development:637018 # RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id
   ref_tree_nodes:
     thematic: 
-      id: 639650
+      id: 639653
       entry_dedalo_code: "ts1_1"
     centers_of_deprevation_of_liberty:
       id: 
