@@ -392,12 +392,16 @@
 }
 
 .content-search-text {
-  width: 100%;
-  margin-right: 0;
+  //width: 100%;
+  padding: 2px;
+  display: inline-block;
+  margin: 0 0 11px 0;
   p {
+    display: inline-block;
     color: $gray-dark;
     cursor: pointer;
     transition: 0.4s;
+    margin: 0;
   }
   p span.highlight {
     padding: 0 4px;
@@ -407,16 +411,22 @@
   p:hover {
     color: $primary-color;
   }
+  &.active {
+    background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+    color: $gray-darkest;
+  }
 }
 
 .content-search-row {
   @include clearfix;
   //margin-bottom: 15px;
+  padding-left: 2px;
   .cont-search-title {
   }
   .content-search-timecode {
     font-size: $font-size-small;
     margin-bottom: 0;
+    padding-left: 2px;
   }
 }
 

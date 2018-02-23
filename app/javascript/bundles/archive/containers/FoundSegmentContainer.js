@@ -8,7 +8,10 @@ import ArchiveUtils from '../../../lib/utils';
 const mapStateToProps = (state) => {
     let data = ArchiveUtils.getInterview(state);
     let interview = data && data.interview;
-    return { 
+    return {
+        tape: state.archive.tape,
+        interview: data && data.interview,
+        transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
         lang: interview && interview.lang,
     }

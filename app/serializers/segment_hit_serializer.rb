@@ -4,6 +4,7 @@ class SegmentHitSerializer < ActiveModel::Serializer
              :interview_id,
              :time,
              :start_time,
+             :end_time,
              :tape_nbr,
              :transcripts,
              :timecode,
