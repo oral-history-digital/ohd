@@ -68,15 +68,10 @@ In case of problems, there's a test rake task for starting up the Solr server wi
 bundle exec rake solr:start
 ```
 
-Before indexing (mog only!!)  ensure:
+Before indexing (mog only!!) run rake task to validate the presence of periods:
 
-```ruby
-reg = RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.entry_code == "periods"
-```
-
-otherwise:
-```ruby
-RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.update_attribute :entry_code, 'periods'
+```bash
+bundle exec rake dedalo:validate_periods
 ```
 
 When the Solr server is running, you can index the data:
