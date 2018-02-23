@@ -1,5 +1,4 @@
 import React from 'react';
-import UserContentFormContainer from '../containers/UserContentFormContainer';
 import moment from 'moment';
 
 
@@ -15,11 +14,6 @@ export default class Segment extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
-        console.log(this.props.data);
-        console.log(nextProps.transcriptTime);
-
-
         let active = this.props.data.end_time > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         if (active !== this.state.active) {
             this.setState({
@@ -27,8 +21,6 @@ export default class Segment extends React.Component {
             })
         }
     }
-
-
 
     transcript() {
         let segment = this.props.data.transcripts[this.props.locale];
