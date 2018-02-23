@@ -68,12 +68,12 @@ default: &default
 
   smtp_server: 'mail.fu-berlin.de'
 
-  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084
-  # Thematic: entry_dedalo_code: "ts1_1", id: 637018
-  # thematic for development:637018 # RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id
+  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084(changes wwhen publish)
+  # Thematic: entry_dedalo_code: "ts1_1", id: 637018(changes when publish)
+  # because thematic id changes: RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id is now used in InterviewController
   ref_tree_nodes:
     thematic: 
-      id: 639654
+      #id: 639654 #not used any more
       entry_dedalo_code: "ts1_1"
     centers_of_deprevation_of_liberty:
       id: 

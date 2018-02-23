@@ -28,7 +28,7 @@ class InterviewsController < BaseController
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
               references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: ref_tree.part(Project.ref_tree_nodes.try(:[], 'thematic').try(:[], 'id'))
+              ref_tree: ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id)
           }.to_json
         end
         render plain: json
