@@ -2,7 +2,7 @@ namespace :dedalo do
   desc 'validate periods'
   task :validate_periods => :environment do
       # check periods
-      if !RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.entry_code == "periods"
+      if !(RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.entry_code == "periods")
         RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.update_attribute :entry_code, 'periods'
         p "updated entry_code for RegistryEntry.where(entry_dedalo_code: 'hierarchy1_246)' to 'periods'"
       else
