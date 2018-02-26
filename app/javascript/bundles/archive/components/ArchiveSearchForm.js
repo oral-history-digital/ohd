@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
-import UserContentFormContainer from '../containers/UserContentFormContainer';
-
+import spinnerSrc from '../../../images/large_spinner.gif'
 import ArchiveUtils from '../../../lib/utils';
 
 
@@ -77,25 +76,34 @@ export default class ArchiveSearchForm extends React.Component {
         }
     }
 
-    render() {
-        let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
-        return (
-            <div>
-                <form ref={(form) => {
-                    this.form = form;
-                }} id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
-                    <input className={'search-input'} type="text" name="fulltext" value={fulltext}
-                           placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
-                           onChange={this.handleChange}/>
-                    <input className="search-button" id="search-button"
-                           title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
-                    {this.renderFacets()}
-                </form>
+    searchform(){
+        if (!this.facetsLoaded()) {
+            return <div className="facets-spinner"> <img src={spinnerSrc} /></div>;
+        } else {
+            let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
+            return(
+                <div>
+                    <form ref={(form) => {
+                        this.form = form;
+                    }} id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
+                        <input className={'search-input'} type="text" name="fulltext" value={fulltext}
+                               placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
+                               onChange={this.handleChange}/>
+                        <input className="search-button" id="search-button"
+                               title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
+                        {this.renderFacets()}
+                    </form>
 
-                <button className={'reset'}
-                        onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}</button>
-            </div>
-        );
+                    <button className={'reset'}
+                            onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}</button>
+                </div>
+
+            )
+        }
+    }
+
+    render() {
+        return this.searchform();
     }
 
 
