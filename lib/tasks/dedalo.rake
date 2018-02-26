@@ -12,7 +12,7 @@ namespace :dedalo do
 
   desc 'list segments with empty translations'
   task :list_empty_segments => :environment do
-    p "list of all interviews:"
+    p "list of all #{Interview.all.count} interviews:"
     p Interview.all.map(&:archive_id)
     p "list of all empty segments by archive_id and timecode:"
     Interview.all.each_with_object({}){|i, o| p "#{i.archive_id} => #{i.segments.where(translation: '').map(&:timecode)}".gsub(/\"/,"")}
