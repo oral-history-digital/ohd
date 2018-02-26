@@ -306,7 +306,7 @@
       }
       transition: 0.4s;
       &:hover {
-        color: $primary-color;
+        color: $primary-color !important;
       }
       &.active {
         background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
@@ -396,6 +396,11 @@
   padding: 2px;
   display: inline-block;
   margin: 0 0 11px 0;
+  &:hover{
+    p, span {
+      color: $primary-color !important;
+    }
+  }
   p {
     display: inline-block;
     color: $gray-dark;
@@ -408,9 +413,7 @@
     background-color: rgba(255,250,129,0.6); //lighten($secondary-color, 30%);
     color: $gray-darkest;
   }
-  p:hover {
-    color: $primary-color;
-  }
+
   &.active {
     background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
     color: $gray-darkest;
