@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         interviewer: data && data.interview.interviewers.length && data.interview.interviewers[0],
         transcriptor: data && data.interview.transcriptors.length && data.interview.transcriptors[0],
         translator: data && data.interview.translators.length && data.interview.translators[0],
-        segmentator: data && data.interview.segmentators.length && data.interview.segmentators[0],
+        segmentators: data && data.interview.segmentators.length && data.interview.segmentators,
         account: state.account
 
     }
