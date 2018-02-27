@@ -270,14 +270,10 @@
     .heading-ico {
       display: inline-block;
       vertical-align: top;
-      margin-right: 6%;
       padding: 4px;
-      width: 4%;
       cursor: pointer;
-      @include screen-m {
-        width: 2%;
-        margin-right: 2%;
-      }
+      width: 2%;
+      margin-right: 2%;
       &::before {
         font-family: FontAwesome;
         content: "\f067";
@@ -294,16 +290,12 @@
     }
     .mainheading {
       display: inline-block;
-      max-width: 90%;
+      width: 96%;
       cursor: pointer;
       margin-bottom: 10px;
-      padding: 4px;
+      padding: 4px 0;
       color: $gray-dark;
-      cursor: pointer;
       transition: 0.4s;
-      @include screen-m {
-        max-width: 96%;
-      }
       transition: 0.4s;
       &:hover {
         color: $primary-color !important;
@@ -314,10 +306,10 @@
       }
     }
     .subheading {
-      display: inline-block;
+      //display: inline-block;
       cursor: pointer;
       margin-bottom: 10px;
-      padding: 4px;
+      padding: 4px 0;
       color: $gray-dark;
       cursor: pointer;
       transition: 0.4s;
@@ -332,22 +324,24 @@
     .chapter-number{
       vertical-align: top;
       display: inline-block;
+      width: 8%;
+      //margin-right: 1%;
       font-weight: bold;
-      width: 30px;
+      letter-spacing: 0.1rem;
+      @include screen-m {
+        width: 6%;
+      }
     }
     .chapter-text{
-      max-width: 88%;
+      width: 92%;
       display: inline-block;
-      @include screen-s {
-        max-width: 90%;
-      }
       @include screen-m {
-        max-width: 94%;
+        width: 94%;
       }
     }
   }
   .expanded {
-    margin-left: 10%;
+    margin-left: 12%;
     @include screen-m {
       margin-left: 4%;
     }
@@ -376,7 +370,9 @@
     color: $gray-dark;
   }
 }
-
+div.mainheading + div {
+  margin-bottom: 0;
+}
 
 //.content-index-main-heading {
 //  li {

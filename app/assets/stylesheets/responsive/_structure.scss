@@ -51,9 +51,9 @@ header.site-header {
 .wrapper-content {
   padding: 40px 5%;
   @include clearfix;
-  @include screen-m {
-    padding: 40px 10%;
-  }
+  //@include screen-m {
+  //  padding: 40px 10%;
+  //}
 }
 
 .active_map_popup_text{
