@@ -140,7 +140,8 @@
   }
 }
 .popup-segment {
-  padding: 4px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
   background-color: rgba(255,250,129,0.7); //lighten($secondary-color, 30%);
   color: $gray-darkest;
 }
@@ -149,5 +150,21 @@
   display: inline-block;
 }
 .popup-segment-nav-after {
-  margin-left: 0px;
+  margin-left: 0;
+}
+form.default label.publish-label {
+  width: 50%;
+  float: left;
+  padding-right: 10px;
+  margin-right: 0;
+  @include screen-l {
+    width: 25%;
+    margin-right: 3%;
+  }
+}
+form.default input[type=checkbox].publish-input {
+  width: 50%;
+  @include screen-l {
+    width: auto;
+  }
 }
