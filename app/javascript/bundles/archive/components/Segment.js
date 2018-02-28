@@ -37,8 +37,8 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        let locale = this.props.originalLocale ? this.props.interview.lang : 'de'
-        return this.props.data.transcripts[locale.substring(0, 2)]
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.interview.translation_lang;
+        return this.props.data.transcripts[locale]
     }
 
     toggleAdditionalContent(type) {
