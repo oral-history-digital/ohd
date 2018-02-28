@@ -106,24 +106,30 @@ export default class VideoPlayer extends React.Component {
     }
 
     annotateOnSegmentLink() {
-        return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-            title: ArchiveUtils.translate(this.props, 'save_user_annotation') ,
-            content: this.annotateOnSegmentForm(this.actualSegmentIndex())
-        })}>
-            <i className="fa fa-pencil"></i>
-            <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
-        </div>
+        if (this.segments().filter(s => s.transcripts[this.props.locale]).length) {
+            return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
+                title: ArchiveUtils.translate(this.props, 'save_user_annotation'),
+                content: this.annotateOnSegmentForm(this.actualSegmentIndex())
+            })}>
+                <i className="fa fa-pencil"></i>
+                <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
+            </div>
+        }
     }
 
     actualSegmentIndex() {
-        return this.props.segments.findIndex(segment => {
-            return segment.tape_nbr === this.props.tape && segment.start_time <= this.video.currentTime && segment.end_time >= this.video.currentTime;
+        return this.segments().findIndex(segment => {
+            return segment.tape_nbr === this.props.tape && segment.start_time <= this.video.currentTime && segment.end_time > this.video.currentTime;
         })
     }
 
-    annotateOnSegmentForm(segmentIndex) {
-        let segment = this.props.segments[segmentIndex];
+    segments() {
+        return this.props.segments;
+    }
 
+
+    annotateOnSegmentForm(segmentIndex) {
+        let segment = this.segments()[segmentIndex];
         return <UserContentFormContainer
             title={this.defaultTitle()}
             description=''

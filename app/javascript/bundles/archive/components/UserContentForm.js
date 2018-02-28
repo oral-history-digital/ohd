@@ -75,19 +75,23 @@ export default class UserContentForm extends React.Component {
     }
 
     setErrors() {
-        this.setState({errors: ArchiveUtils.translate(this.props, 'user_content_errors')})
+        this.setState({errors: ArchiveUtils.translate(this.props, 'user_content_errors')});
     }
 
     clearErrors() {
-        this.setState({errors: undefined})
+        this.setState({errors: undefined});
     }
 
     segment() {
-        return this.props.segments[this.state.segmentIndex];
+        return this.segments()[this.state.segmentIndex];
+    }
+
+    segments(){
+        return this.props.segments;
     }
 
     segmentTime() {
-        return moment.utc(this.segment().start_time * 1000).format("HH:mm:ss")
+        return moment.utc(this.segment().start_time * 1000).format("HH:mm:ss");
     }
 
     segmentSelect() {
@@ -124,7 +128,7 @@ export default class UserContentForm extends React.Component {
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.props.segments.length) {
+        if (this.state.segmentIndex < this.segments().length) {
             return <i className='fa fa-arrow-right popup-segment-nav-after'
                       onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
         } else {
@@ -133,7 +137,7 @@ export default class UserContentForm extends React.Component {
     }
 
     setSegment(segmentIndex) {
-        let segment = this.props.segments[segmentIndex]
+        let segment = this.segments()[segmentIndex];
         this.setState({
             segmentIndex: segmentIndex,
             properties: {
@@ -151,20 +155,37 @@ export default class UserContentForm extends React.Component {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className={"form-group"}>
                 {this.label('publish')}
-                <input type='checkbox' name='publish' checked={this.state.publish} onChange={this.toggleValue}/>
+                <input className={'publish-input'} type='checkbox' name='publish' checked={this.state.publish} onChange={this.toggleValue}/>
             </div>
         }
     }
 
     label(term) {
-        return <label>
+        return <label className={'publish-label'}>
             {ArchiveUtils.translate(this.props, term)}
         </label>
     }
 
+    annotationConfirmation(){
+        if (this.props.locale && this.props.externalLinks) {
+            let links = this.props.externalLinks;
+            let locale = this.props.locale;
+            let key = 'conditions';
+            let link = links[key][locale];
+            return <div className={'annotation-confirmation-text'}>
+                {ArchiveUtils.translate(this.props, 'annotation_confirmation')}
+                <a className={'conditions-link'} href={link}
+                   target="_blank">
+                    {ArchiveUtils.translate(this.props, key)}
+                </a>
+            </div>
+        }
+    }
+
+
+
     render() {
         let submitLabel = this.props.submitLabel ? this.props.submitLabel : ArchiveUtils.translate(this.props, 'save');
-
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
@@ -178,6 +199,7 @@ export default class UserContentForm extends React.Component {
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     {this.segmentSelect()}
+                    {this.annotationConfirmation()}
                     {this.publish()}
                     <input type="submit" value={submitLabel}/>
                 </form>

@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         segments: data && data.segments,
         locale: state.archive.locale,
         translations: state.archive.translations,
+        externalLinks:  state.archive.externalLinks,
     }
 }
 
