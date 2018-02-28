@@ -85,10 +85,10 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (this.props.data.interview.translated){
-            return this.transcript();
-        } else {
+        if (!this.props.data.interview.translated && !this.props.originalLocale){
             return this.emptyTranscript();
+        } else {
+            return this.transcript();
         }
     }
 }
