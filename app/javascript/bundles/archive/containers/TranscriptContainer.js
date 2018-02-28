@@ -6,7 +6,9 @@ import { handleTranscriptScroll } from '../actions/interviewActionCreators';
 import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
+        locale: state.archive.locale,
+        translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         tape: state.archive.tape,
         data: ArchiveUtils.getInterview(state),

@@ -1,4 +1,7 @@
 el:
+  without_translation: 'Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.'
+  without_index: 'ÜBERSETZEN Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
+  without_ref_tree: 'ÜBERSETZEN Dieses Interviews wurde noch nicht verschlagwortet.'
   private: 'ÜBERSETZEN Privat'
   proposed: 'ÜBERSETZEN In Prüfung zur Veröffentlichung'
   postponed: 'ÜBERSETZEN Zurückgestellt durch die Redaktion'

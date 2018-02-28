@@ -1,5 +1,6 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
+import ArchiveUtils from "../../../lib/utils";
 
 export default class TableOfContents extends React.Component {
 
@@ -57,8 +58,8 @@ export default class TableOfContents extends React.Component {
                         if (index < this.props.interview.headings.length) {
                             headings[headings.length - 2].next_start_time = segment.start_time;
                         }
-                        if (headings[headings.length - 2].subheadings.length > 0){
-                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time){
+                        if (headings[headings.length - 2].subheadings.length > 0) {
+                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time) {
                                 headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time = segment.start_time;
                             }
                         }
@@ -70,7 +71,7 @@ export default class TableOfContents extends React.Component {
                     headings[mainIndex - 1].subheadings.push({
                         main: false,
                         heading: subheading,
-                        chapter:  mainIndex + '.' + subIndex + '.' ,
+                        chapter: mainIndex + '.' + subIndex + '.',
                         start_time: segment.start_time,
                         end_time: segment.end_time,
                         time: segment.time,
@@ -78,7 +79,7 @@ export default class TableOfContents extends React.Component {
                         interview_duration: this.props.interview.interview.duration
                     });
                     if (headings[mainIndex - 1].subheadings.length > 1) {
-                        if (index < (this.props.interview.headings.length )) {
+                        if (index < (this.props.interview.headings.length)) {
                             headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_start_time = segment.start_time;
                         }
                     }
@@ -89,8 +90,11 @@ export default class TableOfContents extends React.Component {
     }
 
     emptyHeadingsNote(headings) {
-        if (headings.length <= 0)
-            return "Keine Überschriften für diese Sprache"
+        if (headings.length <= 0) {
+            if (this.props.translations !== undefined) {
+                return ArchiveUtils.translate(this.props, 'without_index');
+            }
+        }
     }
 
     render() {

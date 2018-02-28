@@ -6,7 +6,9 @@ import ArchiveUtils from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = ArchiveUtils.getInterview(state);
-    return { 
+    return {
+        locale: state.archive.locale,
+        translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         refTree: interview && interview.refTree || []
     }

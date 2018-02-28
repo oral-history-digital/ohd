@@ -7,6 +7,8 @@ import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state) => {
     return {
+        locale: state.archive.locale,
+        translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         interview: ArchiveUtils.getInterview(state),
         locale: state.archive.locale,

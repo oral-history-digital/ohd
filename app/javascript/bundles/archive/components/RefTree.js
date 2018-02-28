@@ -1,39 +1,52 @@
 import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
+import ArchiveUtils from "../../../lib/utils";
 
 export default class RefTree extends React.Component {
 
     renderChildren(children) {
         let that = this;
-        if (children) {
-            return children.map((entry, index) => {
-                if (entry.type === 'leafe') {
-                    return (
-                        <FoundSegmentContainer
-                            className='heading'
-                            key={'entry-' + index}
-                            data={entry}
-                        />
-                    )
-                } else {
-                    return <RefTreeEntryContainer
+        return children.map((entry, index) => {
+            if (entry.type === 'leafe') {
+                return (
+                    <FoundSegmentContainer
                         className='heading'
                         key={'entry-' + index}
-                        entry={entry}
-                        index={index}
-                        renderChildren={this.renderChildren.bind(that)}
+                        data={entry}
                     />
-                }
-            })
+                )
+            } else {
+                return <RefTreeEntryContainer
+                    className='heading'
+                    key={'entry-' + index}
+                    entry={entry}
+                    index={index}
+                    renderChildren={this.renderChildren.bind(that)}
+                />
+            }
+        })
+    }
 
+    refTree() {
+        if (this.props.refTree && this.props.refTree.children) {
+            return this.renderChildren(this.props.refTree.children);
+        } else {
+            return this.emptyRefTree();
         }
+    }
+
+    emptyRefTree() {
+        if(this.props.translations !== undefined) {
+            return ArchiveUtils.translate(this.props, 'without_ref_tree');
+        }
+        return null;
     }
 
     render() {
         return (
             <div className={'content-index'}>
-                {this.renderChildren(this.props.refTree.children)}
+                {this.refTree()}
             </div>
         );
     }

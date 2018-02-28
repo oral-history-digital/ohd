@@ -37,7 +37,9 @@ class InterviewSerializer < ActiveModel::Serializer
              :formatted_duration,
              :interviewee_id,
              :person_names,
-             :place_of_interview
+             :place_of_interview,
+             :translated,
+             :translation_lang
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -59,7 +61,16 @@ class InterviewSerializer < ActiveModel::Serializer
     # return only the first language code in cases like 'slk/ces'
     ISO_639.find(object.language.code.split('/')[0]).alpha2
   end
-  
+
+  def translated
+    object.segments.length > 10 && object.segments[0..10].map(&:translation).join().length > 0
+  end
+
+  def translation_lang
+    # preparation for further development
+    'de'
+  end
+
   def languages
     object.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem } - ['en']
   end
