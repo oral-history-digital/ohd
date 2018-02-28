@@ -1,4 +1,5 @@
 el:
+  tapes: 'ÜBERSETZEN Bänder'
   without_translation: 'Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.'
   without_index: 'ÜBERSETZEN Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
   without_ref_tree: 'ÜBERSETZEN Dieses Interviews wurde noch nicht verschlagwortet.'
@@ -11,7 +12,8 @@ el:
   interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
   called: 'Abruf(ÜBERSETZEN)'
   download: 'Download(ÜBERSETZEN)'
-  elde: 'ελληνική με γερμανική μετάφραση'
+  language_elde: 'ελληνική με γερμανική μετάφραση'
+  language_el: 'ελληνική'
   project_title: 'Μνήμες από την Κατοχή στην Ελλάδα'
   project_text: 'Το ψηφιακό Αρχείο "Μνήμες από την Κατοχή στην Ελλάδα" περιλαμβάνει περίπου 80 συνεντεύξεις με μάρτυρες της γερμανικής Κατοχής στην Ελλάδα. Το Αρχείο διαφυλάσσει τις μνήμες των ανθρώπων αυτών και θέτει τις συνεντεύξεις αυτές στη διάθεση της έρευνας και της εκπαίδευσης.'
   more: 'περισσότερες πληροφορίες'

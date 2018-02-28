@@ -52,8 +52,10 @@ export default class InterviewInfo extends React.Component {
     }
 
     language(){
-        if (this.props.account.email){
-            return this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, this.props.interview.languages.join('')), "");
+        if (this.props.interview.translated){
+            return this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, 'language_' + this.props.interview.languages.join('')), "");
+        } else {
+            return this.content(ArchiveUtils.translate(this.props, 'language'), ArchiveUtils.translate(this.props, 'language_' + this.props.interview.lang ), "");
         }
     }
 
@@ -65,6 +67,12 @@ export default class InterviewInfo extends React.Component {
         return names.join(', ')
     }
 
+    tapes(){
+        if (this.props.interview.tape_count > 1){
+            return this.content(ArchiveUtils.translate(this.props, 'tapes'), this.props.interview.tape_count, "")
+        }
+    }
+
 
     render() {
         return (
@@ -72,6 +80,7 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
                 {this.placeOfInterview()}
                 {this.content(ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
+                {this.tapes()}
                 {this.language()}
                 {this.content(ArchiveUtils.translate(this.props, 'interview'), this.fullName(this.props.interviewer), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'camera'), this.fullName(this.props.cinematographer), "")}

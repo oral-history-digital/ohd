@@ -1,4 +1,5 @@
 de:
+  tapes: 'Bänder'
   without_translation: 'Dieses Interview wurde noch nicht ins Deutsche übersetzt.'
   without_index: 'Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
   without_ref_tree: 'Dieses Interviews wurde noch nicht verschlagwortet.'
@@ -11,7 +12,8 @@ de:
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
   download: 'Download'
-  elde: 'Griechisch mit deutscher Übersetzung'
+  language_elde: 'Griechisch mit deutscher Übersetzung'
+  language_el: 'Griechisch'
   project_title: 'Erinnerungen an die Okkupation in Griechenland'
   project_text: 'Das Archiv „Erinnerungen an die Okkupation in Griechenland“ umfasst rund 80 Erinnerungsberichte von Zeitzeuginnen und Zeitzeugen der deutschen Besatzung Griechenlands während des Nationalsozialismus. Das Online-Archiv bewahrt diese Zeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.'
   more: 'mehr erfahren'
