@@ -24,6 +24,7 @@ class SearchesController < BaseController
       end
       with(:archive_id, params[:id])
       #facet :chapter
+      order_by(:timecode, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
 
