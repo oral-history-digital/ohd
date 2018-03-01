@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
     setQueryParams: (params) => dispatch(setQueryParams(params)),
     resetQuery: () => dispatch(resetQuery()),
     //loadFacets: () => dispatch(loadFacets()),
-    searchInArchive: (query) => dispatch(searchInArchive(query)),
+    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearchForm);

@@ -18,7 +18,8 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            this.props.searchInArchive({});
+            let url = `/${this.props.locale}/searches/archive`;
+            this.props.searchInArchive(url, {});
         }
     }
 
@@ -35,7 +36,8 @@ export default class ArchiveSearchForm extends React.Component {
     handleReset(event) {
         this.form.reset();
         this.props.resetQuery({});
-        this.props.searchInArchive({});
+        let url = `/${this.props.locale}/searches/archive`;
+        this.props.searchInArchive(url, {});
     }
 
     handleInputList(event) {
@@ -69,8 +71,8 @@ export default class ArchiveSearchForm extends React.Component {
                 params[key] = params[key] && !(typeof params[key] == "string") ? params[key] : []
             }
             if (params) {
-                this.props.searchInArchive(params);
-                const url = "/" + this.props.locale + "/searches/archive";
+                let url = `/${this.props.locale}/searches/archive`;
+                this.props.searchInArchive(url, params);
                 this.context.router.history.push(url);
             }
         }

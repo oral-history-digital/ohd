@@ -128,7 +128,7 @@ export default class UserContentForm extends React.Component {
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.segments().length) {
+        if (this.state.segmentIndex < this.segments().length - 1) {
             return <i className='fa fa-arrow-right popup-segment-nav-after'
                       onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
         } else {
@@ -176,8 +176,7 @@ export default class UserContentForm extends React.Component {
                 return <div className={'annotation-confirmation-text help-block'}>
                     {ArchiveUtils.translate(this.props, 'annotation_confirmation')}
                     <a className={'conditions-link'} href={link}
-                       target="_blank">
-                        {ArchiveUtils.translate(this.props, key)}
+                       target="_blank">&nbsp;{ArchiveUtils.translate(this.props, key)}
                     </a>
                 </div>
             }

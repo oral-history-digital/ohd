@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    searchInArchive: (query) => dispatch(searchInArchive(query)),
+    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);

@@ -137,6 +137,10 @@
     &:hover {
       color: $gray-dark;
     }
+    &.inactive {
+      color: $gray-dark;
+      cursor:default;
+    }
   }
 }
 .popup-segment {

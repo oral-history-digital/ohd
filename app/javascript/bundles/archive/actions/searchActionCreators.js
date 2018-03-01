@@ -12,7 +12,6 @@ import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
     INTERVIEW_SEARCH_URL,
-    ARCHIVE_SEARCH_URL,
     FACETS_URL,
 } from '../constants/archiveConstants';
 
@@ -66,10 +65,10 @@ function receiveArchiveSearchResults(json){
     }
 }
 
-export function searchInArchive(searchQuery) {
+export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
-        Loader.getJson(ARCHIVE_SEARCH_URL, searchQuery, dispatch, receiveArchiveSearchResults);
+        Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
     }
 }
 

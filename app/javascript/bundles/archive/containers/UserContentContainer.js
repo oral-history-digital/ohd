@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
-    searchInArchive: (query) => dispatch(searchInArchive(query)),
+    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 

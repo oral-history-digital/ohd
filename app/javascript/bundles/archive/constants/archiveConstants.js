@@ -18,11 +18,11 @@ export const REQUEST_FACETS = 'REQUEST_FACETS';
 export const FACETS_URL = '/de/searches/facets';
 export const REQUEST_ARCHIVE_SEARCH = 'REQUEST_ARCHIVE_SEARCH ';
 export const RECEIVE_ARCHIVE_SEARCH = 'RECEIVE_ARCHIVE_SEARCH ';
-export const ARCHIVE_SEARCH_URL = '/de/searches/archive';
 
- export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
- export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
- export const LOCATIONS_URL = '/de/locations';
+
+export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
+export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
+export const LOCATIONS_URL = '/de/locations';
 
 export const REQUEST_STATIC_CONTENT = 'REQUEST_STATIC_CONTENT';
 export const RECEIVE_STATIC_CONTENT = 'RECEIVE_STATIC_CONTENT';

@@ -13,7 +13,7 @@ class InterviewsController < BaseController
           segments = Segment.
               #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-              for_interview_id(@interview.id)
+              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           locales = Project.available_locales.reject{|i| i == 'alias'}
           doi_content = {}
