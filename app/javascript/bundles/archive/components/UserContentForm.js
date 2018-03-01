@@ -128,7 +128,7 @@ export default class UserContentForm extends React.Component {
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.segments().length) {
+        if (this.state.segmentIndex < this.segments().length - 1) {
             return <i className='fa fa-arrow-right popup-segment-nav-after'
                       onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
         } else {
