@@ -176,8 +176,7 @@ export default class UserContentForm extends React.Component {
                 return <div className={'annotation-confirmation-text help-block'}>
                     {ArchiveUtils.translate(this.props, 'annotation_confirmation')}
                     <a className={'conditions-link'} href={link}
-                       target="_blank">
-                        {ArchiveUtils.translate(this.props, key)}
+                       target="_blank">&nbsp;{ArchiveUtils.translate(this.props, key)}
                     </a>
                 </div>
             }
