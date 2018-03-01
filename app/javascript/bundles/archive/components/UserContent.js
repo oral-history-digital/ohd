@@ -85,10 +85,11 @@ export default class UserContent extends React.Component {
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
+            let url = `/${this.props.locale}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    onClick={() => this.props.searchInArchive(this.props.data.properties)}
+                    onClick={() => this.props.searchInArchive(url, this.props.data.properties)}
                     to={'/' + this.props.locale + '/searches/archive'}
                 >
                     {ArchiveUtils.translate(this.props, callKey)}

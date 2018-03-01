@@ -51,7 +51,8 @@ class SearchesController < BaseController
   end
 
   def archive
-    search = Interview.search do 
+    search = Interview.search do
+      order_by("person_name_#{locale}".to_sym, :asc)
       fulltext params[:fulltext] 
       Project.search_facets_names.each do |facet|
         with(facet.to_sym, params[facet]) if params[facet]
