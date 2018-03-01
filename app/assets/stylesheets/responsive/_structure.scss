@@ -238,10 +238,11 @@ h1.video-title {
   }
 }
 .video-icons-container {
-  padding-top: 10px;
   float: none;
+  padding-top: 0;
   @include screen-m {
     float: right;
+    padding-top: 5px;
   }
 }
 .video-bookmark,
