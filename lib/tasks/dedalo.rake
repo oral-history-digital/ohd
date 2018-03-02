@@ -11,12 +11,30 @@ namespace :dedalo do
   end
 
   desc 'list segments with empty translations'
-  task :list_empty_segments => :environment do
+  task :empty_segments => :environment do
     p "list of all #{Interview.all.count} interviews:"
     p Interview.all.map(&:archive_id)
     p "list of all empty segments by archive_id and timecode:"
-    Interview.all.each_with_object({}){|i, o| p "#{i.archive_id} => #{i.segments.where(translation: '').map(&:timecode)}".gsub(/\"/,"")}
+    Interview.all.each{|i| p "#{i.archive_id} => #{i.segments.where(translation: '').map(&:timecode)}".gsub(/\"/,"")}
   end
+
+  desc 'list all places of birth of all interviewees'
+  task :birth_places => :environment do
+    p "list of all places of birth of all interviewees:"
+    Interview.all.each{|i| p "#{i.archive_id} => #{!i.interviewees.nil? && !i.interviewees.first.nil? && !i.interviewees.first.place_of_birth.nil? ? i.interviewees.first.place_of_birth.localized_hash : "place of birth missing"}".gsub(/\"/,"")}
+  end
+
+  desc 'list all places of all interviews'
+  task :interview_places => :environment do
+    p "list of all places of all interviews:"
+    Interview.all.each{|i| p "#{i.archive_id} => #{!i.place_of_interview.nil? ? i.place_of_interview.localized_hash : "place of interview  missing" }".gsub(/\"/,"")}
+  end
+
+  desc 'check all'
+  task :check => ['dedalo:empty_segments', 'dedalo:birth_places', 'dedalo:interview_places'] do
+    puts 'check complete.'
+  end
+
 end
 
 
