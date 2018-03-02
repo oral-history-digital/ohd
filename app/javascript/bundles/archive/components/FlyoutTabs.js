@@ -91,6 +91,23 @@ export default class FlyoutTabs extends React.Component {
         })
     }
 
+    renderMap() {
+        if (this.props.account.email) {
+            return <InterviewDataContainer
+                title={ArchiveUtils.translate(this.props, 'map')}
+                content={<InterviewLocationsContainer/>}/>
+        }
+    }
+
+    renderPhotos() {
+        if (this.props.account.email) {
+            return <InterviewDataContainer
+                title={ArchiveUtils.translate(this.props, 'photos')}
+                content={<GalleryContainer/>}/>
+        }
+    }
+
+
     render() {
 
         let interviewCSS = this.props.interview ? 'flyout-tab' : 'hidden';
@@ -114,7 +131,6 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className={userContentCSS}>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
                     </TabList>
 
-
                     <TabPanel>
                         <AccountContainer></AccountContainer>
                     </TabPanel>
@@ -136,12 +152,8 @@ export default class FlyoutTabs extends React.Component {
                             <InterviewDataContainer
                                 title={ArchiveUtils.translate(this.props, 'interview_info')}
                                 content={<InterviewInfoContainer/>}/>
-                            <InterviewDataContainer
-                                title={ArchiveUtils.translate(this.props, 'photos')}
-                                content={<GalleryContainer/>}/>
-                            <InterviewDataContainer
-                                title={ArchiveUtils.translate(this.props, 'map')}
-                                content={<InterviewLocationsContainer/>}/>
+                            {this.renderPhotos()}
+                            {this.renderMap()}
                             <InterviewDataContainer
                                 title={ArchiveUtils.translate(this.props, 'citation')}
                                 content={<CitationInfoContainer/>}/>
