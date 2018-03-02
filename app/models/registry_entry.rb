@@ -848,7 +848,7 @@ class RegistryEntry < ActiveRecord::Base
       #mem
     #end
     registry_names.first.translations.inject({}) do |mem, name|
-      mem[name.locale[0..1]] = name.descriptor
+      mem[name.locale[0..1]] = name.descriptor  if Project.available_locales.include?( name.locale[0..1] )
       mem
     end
   end

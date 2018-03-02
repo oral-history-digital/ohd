@@ -31,7 +31,7 @@ class RegistryReferenceType < ActiveRecord::Base
 
   def localized_hash
     translations.inject({}) do |mem, t|
-      mem[t.locale[0..1]] = t.name
+      mem[t.locale[0..1]] = t.name  if Project.available_locales.include?( t.locale[0..1] )
       mem
     end
   end
