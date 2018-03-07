@@ -1,13 +1,25 @@
 namespace :dedalo do
   desc 'validate periods'
   task :validate_periods => :environment do
-      # check periods
       if !(RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.entry_code == "periods")
         RegistryEntry.where(entry_dedalo_code: "hierarchy1_246").first.update_attribute :entry_code, 'periods'
         p "updated entry_code for RegistryEntry.where(entry_dedalo_code: 'hierarchy1_246)' to 'periods'"
       else
         p "entry_code for RegistryEntry.where(entry_dedalo_code: 'hierarchy1_246)' is already set to 'periods'"
       end
+  end
+
+  desc 'clean segments'
+  task :clean_segments => :environment do
+    if Segment.where(interview_id: 0).count > 0
+      p "found #{Segment.where(interview_id: 0).count} segments which can't be assigned to any interview"
+      p "they use the following section_ids:"
+      p "#{Segment.where(interview_id: 0).map(&:section_id).uniq}"
+      p "and will be deleted now"
+      Segment.where(interview_id: 0).delete_all
+    else
+      p "all segments are assigned to interviews"
+    end
   end
 
   desc 'list segments with empty translations'
@@ -33,6 +45,11 @@ namespace :dedalo do
   desc 'check all'
   task :check => ['dedalo:empty_segments', 'dedalo:birth_places', 'dedalo:interview_places'] do
     puts 'check complete.'
+  end
+
+  desc 'prepare'
+  task :prepare => ['dedalo:validate_periods', 'dedalo:clean_segments'] do
+    puts 'preparation complete.'
   end
 
 end
