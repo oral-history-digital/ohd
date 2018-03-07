@@ -7,6 +7,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         transcriptTime: state.archive.transcriptTime,
+        tape: state.archive.tape,
     }
 }
 

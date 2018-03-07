@@ -56,11 +56,15 @@ export default class TableOfContents extends React.Component {
                     });
                     if (headings.length > 1) {
                         if (index < this.props.interview.headings.length) {
-                            headings[headings.length - 2].next_start_time = segment.start_time;
+                            if (headings[headings.length - 2].tape_nbr == segment.tape_nbr) {
+                                headings[headings.length - 2].next_start_time = segment.start_time;
+                            }
                         }
                         if (headings[headings.length - 2].subheadings.length > 0) {
                             if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time) {
-                                headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time = segment.start_time;
+                                if (headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].tape_nbr == segment.tape_nbr) {
+                                    headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time = segment.start_time;
+                                }
                             }
                         }
                     }
@@ -80,7 +84,9 @@ export default class TableOfContents extends React.Component {
                     });
                     if (headings[mainIndex - 1].subheadings.length > 1) {
                         if (index < (this.props.interview.headings.length)) {
-                            headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_start_time = segment.start_time;
+                            if (headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].tape_nbr == segment.tape_nbr) {
+                                headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_start_time = segment.start_time;
+                            }
                         }
                     }
                 }
