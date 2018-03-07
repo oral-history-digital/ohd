@@ -50,7 +50,7 @@ export default class VideoPlayer extends React.Component {
 
     handleVideoEnded() {
         if (this.props.tape < this.props.interview.tape_count) {
-            this.props.setNextVideo();
+            this.props.setNextTape();
         } else {
             this.props.handleVideoEnded();
         }
