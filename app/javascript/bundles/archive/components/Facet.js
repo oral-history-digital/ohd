@@ -73,7 +73,7 @@ export default class Facet extends React.Component {
     render() {
         return (
             <div className="subfacet-container">
-                <button className={this.state.class} onClick={this.handleClick}>
+                <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
                     {this.props.data.descriptor[this.props.locale]}
                 </button>
                 {this.panelContent()}

@@ -25,7 +25,7 @@ export default class InterviewData extends React.Component {
 
         return (
             <div>
-                <button className={headerCss} onClick={this.handleClick} >
+                <button className={headerCss} lang={this.props.locale} onClick={this.handleClick} >
                     {this.props.title}
                 </button>
                 <div className={panelCss}> {this.props.content} </div>

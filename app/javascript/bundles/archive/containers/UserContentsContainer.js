@@ -6,7 +6,8 @@ import { fetchUserContents } from '../actions/userContentActionCreators';
 const mapStateToProps = (state) => {
     return { 
         contents: state.userContent.contents,
-        fetched: state.userContent.fetched
+        fetched: state.userContent.fetched,
+        locale: state.archive.locale,
     }
 }
 

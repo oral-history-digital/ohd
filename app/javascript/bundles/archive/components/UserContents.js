@@ -44,7 +44,7 @@ export default class UserContents extends React.Component {
         let searches = this.sortedContent()
         return (
             <div className='userContents'>
-                <button className={headerCss} onClick={this.handleClick}>
+                <button className={headerCss} lang={this.props.locale} onClick={this.handleClick}>
                     {this.props.title}
                 </button>
                 <div className={panelCss}>{searches} </div>
