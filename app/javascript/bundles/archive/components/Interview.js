@@ -31,7 +31,7 @@ export default class Interview extends React.Component {
 
         return (
             <div>
-                <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
+                <div className='wrapper-video' >
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
