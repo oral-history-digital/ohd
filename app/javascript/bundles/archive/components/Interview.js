@@ -50,7 +50,7 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()) {
-            let tabIndex = this.props.account.email ? 5 : 1;
+            let tabIndex = this.props.account.email ? 5 : 5; // they changed their mind
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
