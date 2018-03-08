@@ -15,7 +15,7 @@ export default class Heading extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        let endTime =  (this.state.expanded) ? this.props.data.end_time : this.props.data.next_start_time;
+        let endTime =  (this.state.expanded) ? this.props.data.start_time : this.props.data.next_start_time;
         endTime = endTime ? endTime : this.props.data.interview_duration;
         let active = this.props.tape === this.props.data.tape_nbr  && endTime > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         if (active !== this.state.active) {
