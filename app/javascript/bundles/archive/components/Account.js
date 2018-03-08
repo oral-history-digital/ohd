@@ -46,7 +46,7 @@ export default class Account extends React.Component {
                 </div>
                 <div className={'order-new-password-link'}>
                     <Link to={'/' + this.props.locale + '/user_accounts/password/new'}>
-                        {t(this.props, 'order_new_password')}
+                        {t(this.props, 'forget_password')}
                     </Link>
                 </div>
             </div>
