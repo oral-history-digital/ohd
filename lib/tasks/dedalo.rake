@@ -42,6 +42,12 @@ namespace :dedalo do
     Interview.all.each{|i| p "#{i.archive_id} => #{!i.place_of_interview.nil? ? i.place_of_interview.localized_hash : "place of interview  missing" }".gsub(/\"/,"")}
   end
 
+  desc 'list all references of all interviews'
+  task :interview_references => :environment do
+    p "list of all references of all interviews:"
+    Interview.all.each{|i| p "\n#{i.archive_id} => #{i.segment_registry_references.map {|s| s.registry_entry && s.registry_entry.localized_hash}}".gsub(/\"/,"")}
+  end
+
   desc 'check all'
   task :check => ['dedalo:empty_segments', 'dedalo:birth_places', 'dedalo:interview_places'] do
     puts 'check complete.'
