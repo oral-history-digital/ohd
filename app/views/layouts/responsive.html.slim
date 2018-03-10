@@ -21,10 +21,6 @@ html
     == favicon_link_tag "/favicon-#{Project.project_config['project_id']}.ico"
 
 
-
-    == stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-    == stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-
     /<link rel="shortcut icon" href="/favicon.ico" />
     title == Project.project_name[I18n.locale.to_s]
 

@@ -16,5 +16,9 @@
   "snf-logo.jpg": "http://0.0.0.0:8080/packs/snf-logo.jpg",
   "zwar-logo-red_de.svg": "http://0.0.0.0:8080/packs/zwar-logo-red_de.svg",
   "zwar-logo-red_en.png": "http://0.0.0.0:8080/packs/zwar-logo-red_en.png",
-  "zwar-logo-red_ru.png": "http://0.0.0.0:8080/packs/zwar-logo-red_ru.png"
+  "zwar-logo-red_ru.png": "http://0.0.0.0:8080/packs/zwar-logo-red_ru.png",
+  "slick.eot": "http://0.0.0.0:8080/packs/slick.eot",
+  "slick.svg": "http://0.0.0.0:8080/packs/slick.svg",
+  "slick.ttf": "http://0.0.0.0:8080/packs/slick.ttf",
+  "slick.woff": "http://0.0.0.0:8080/packs/slick.woff"
 }
