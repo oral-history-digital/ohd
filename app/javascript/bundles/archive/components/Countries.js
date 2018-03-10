@@ -2,7 +2,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
 import '../css/locations'
-import countriesJson from '../data/eur.geo.high-res.json'
+import i1 from '../../../images/layers.png';
+import i2 from '../../../images/layers-2x.png';
+import i3 from '../../../images/marker-icon.png';
+import i4 from '../../../images/marker-icon-2x.png';
+import i5 from '../../../images/marker-shadow.png';
+import countriesJson from '../data/eur.geo.high-res.json';
+import '../../../css/leaflet';
 
 export default class Countries extends React.Component {
 

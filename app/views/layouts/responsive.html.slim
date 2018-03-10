@@ -13,15 +13,14 @@ html
     /<meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
 
     == javascript_pack_tag 'application' 
-    == stylesheet_pack_tag 'application' 
+
     == stylesheet_link_tag 'responsive'
+    == stylesheet_pack_tag 'application'
     == javascript_include_tag 'responsive'
 
     == favicon_link_tag "/favicon-#{Project.project_config['project_id']}.ico"
 
-    == stylesheet_link_tag "https://unpkg.com/leaflet@1.1.0/dist/leaflet.css", \
-                           integrity: "sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw==", \
-                           crossorigin: ""
+
 
     == stylesheet_link_tag "https://unpkg.com/react-leaflet-markercluster/dist/styles.min.css"
 
