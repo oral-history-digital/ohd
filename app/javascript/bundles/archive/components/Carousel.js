@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-import ajax_loader from '../../images/ajax-loader.gif';
+import ajax_loader from '../../../images/ajax-loader.gif';
 import f1 from '../../../images/slick.eot';
 import f2 from '../../../images/slick.svg';
 import f3 from '../../../images/slick.woff'

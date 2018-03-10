@@ -1,8 +1,8 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 /* Slider */
 .slick-loading .slick-list
 {
-    background: #fff url('/packs/ajax-loader.gif') center center no-repeat;
+    background: #fff url("/packs/ajax-loader.gif") center center no-repeat;
 }
 
 /* Icons */
