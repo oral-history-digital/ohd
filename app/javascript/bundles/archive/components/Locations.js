@@ -2,6 +2,8 @@ import React from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import '../../../css/leaflet';
+import '../../../css/MarkerCluster.css'
+import '../../../css/MarkerCluster.Default.css'
 import i1 from '../../../images/layers.png';
 import i2 from '../../../images/layers-2x.png';
 import i3 from '../../../images/marker-icon.png';
