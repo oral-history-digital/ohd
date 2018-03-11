@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  root :to => redirect('/de')
   resources :people
   root to: "home#archive", locale: :de
 
@@ -116,4 +117,5 @@ Rails.application.routes.draw do
 
   get 'photos/src/:name' => 'photos#src'
   get 'photos/thumb/:name' => 'photos#thumb'
+
 end
