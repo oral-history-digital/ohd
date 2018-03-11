@@ -7,7 +7,7 @@ import { t } from '../../../lib/utils';
 export default class Register extends React.Component {
 
     componentDidMount() {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 1);
     }
 
     content() {

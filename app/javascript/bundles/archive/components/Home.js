@@ -14,7 +14,7 @@ export default class Home extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 1);
     }
 
     componentDidUpdate(prevProps) {
@@ -25,10 +25,6 @@ export default class Home extends React.Component {
             const url = "/" + this.props.locale + "/searches/archive";
             this.context.router.history.push(url);
         }
-    }
-
-    componentDidMount() {
-        window.scrollTo(0, 0);
     }
 
     content() {

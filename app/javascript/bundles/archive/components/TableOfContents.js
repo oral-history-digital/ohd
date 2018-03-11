@@ -12,7 +12,7 @@ export default class TableOfContents extends React.Component {
     componentDidMount() {
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 1);
     }
 
     componentWillUnmount() {
