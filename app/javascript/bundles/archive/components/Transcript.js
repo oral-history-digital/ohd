@@ -14,7 +14,6 @@ export default class Transcript extends React.Component {
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
         window.scrollTo(0, 1);
-
     }
 
     componentWillUnmount() {
