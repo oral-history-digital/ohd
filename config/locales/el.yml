@@ -64,7 +64,7 @@ el:
   annotation_for_chapter: 'Οι σημειώσεις σας στο κεφάλαιο'
   max_300: 'Μέχρι 300 Χαρακτήρες'
   annotation_explanation: 'Μπορείτε να δείτε τις σημειώσεις σας στον προσωπικό σας φάκελο'
-  annotation_confirmation: 'Θέλω να δημοσιευτούν οι σημειώσεις μου και να είναι ορατές από όλους τους χρήστες. Συμφωνώ με τις υποδείξεις για τις σημειώσεις.'
+  annotation_confirmation: 'Επιθυμώ να δημοσιευτεί το σχόλιό μου σε όλους τους χρήστες. Συμφωνώ με τις  <a class="conditions-link" href="http://www.occupation-memories.org/archive/terms_user_comments" target="_blank">οδηγίες συγγραφής σχολίων</a>.'
   save: 'αποθηκεύστε'
   cancel: 'διακοπή'
   user_content: 'Προσωπικός φάκελος χρήστη'

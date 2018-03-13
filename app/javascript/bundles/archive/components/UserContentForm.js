@@ -51,7 +51,7 @@ export default class UserContentForm extends React.Component {
         }
     }
 
-    toggleValue(event){
+    toggleValue(event) {
         const name = event.target.name;
         this.setState({[name]: !this.state[name]});
     }
@@ -86,7 +86,7 @@ export default class UserContentForm extends React.Component {
         return this.segments()[this.state.segmentIndex];
     }
 
-    segments(){
+    segments() {
         return this.props.segments;
     }
 
@@ -155,7 +155,8 @@ export default class UserContentForm extends React.Component {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className={"form-group"}>
                 {this.label('publish')}
-                <input className={'publish-input'} type='checkbox' name='publish' checked={this.state.publish} onChange={this.toggleValue}/>
+                <input className={'publish-input'} type='checkbox' name='publish' checked={this.state.publish}
+                       onChange={this.toggleValue}/>
             </div>
         }
     }
@@ -166,23 +167,19 @@ export default class UserContentForm extends React.Component {
         </label>
     }
 
-    annotationConfirmation(){
+    annotationConfirmation() {
         if (this.state.type === 'UserAnnotation') {
             if (this.props.locale && this.props.externalLinks) {
                 let links = this.props.externalLinks;
                 let locale = this.props.locale;
                 let key = 'conditions';
                 let link = links[key][locale];
-                return <div className={'annotation-confirmation-text help-block'}>
-                    {ArchiveUtils.translate(this.props, 'annotation_confirmation')}
-                    <a className={'conditions-link'} href={link}
-                       target="_blank">&nbsp;{ArchiveUtils.translate(this.props, key)}
-                    </a>
+                return <div className={'annotation-confirmation-text help-block'}
+                            dangerouslySetInnerHTML={{__html: ArchiveUtils.translate(this.props, 'annotation_confirmation')}}>
                 </div>
             }
         }
     }
-
 
 
     render() {
