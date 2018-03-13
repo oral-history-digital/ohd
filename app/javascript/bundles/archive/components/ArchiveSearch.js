@@ -116,7 +116,7 @@ export default class ArchiveSearch extends React.Component {
 
     saveSearchLink() {
         return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                        title: 'Save search',
+                        title: ArchiveUtils.translate(this.props, 'save_search'),
                         content: this.saveSearchForm()
                     })}>
                     <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
