@@ -1,5 +1,5 @@
 el:
-  tapes: 'ÜBERSETZEN Bänder'
+  tapes: 'Ταινίες'
   without_translation: 'Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.'
   without_index: 'ÜBERSETZEN Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
   without_ref_tree: 'ÜBERSETZEN Dieses Interviews wurde noch nicht verschlagwortet.'
@@ -10,7 +10,7 @@ el:
   rejected: 'ÜBERSETZEN Veröffentlichung abgelehnt'
   segmentation: "Ιστορική επεξεργασία"
   interview_archive: 'Interview-Archiv(ÜBERSETZEN)'
-  called: 'Abruf(ÜBERSETZEN)'
+  called: 'τελευταία επίσκεψη'
   download: 'Download(ÜBERSETZEN)'
   language_elde: 'ελληνική με γερμανική μετάφραση'
   language_el: 'ελληνική'
@@ -20,7 +20,7 @@ el:
   segment: 'Απόσπασμα'
   publish: 'Δημοσίευση'
   login: 'Εγγραφή'
-  logout: 'ÜBERSETZEN Abmelden'
+  logout: 'Logout'
   login_errors: '(bitte übersetzen) Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
   logged_in_as: '(bitte übersetzen) Angemeldet als'
   user_name: 'Χρήστης'
