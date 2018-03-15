@@ -41,7 +41,7 @@ el:
   interview_duration: 'Διάρκεια συνέντευξης'
   home: 'Αρχική σελίδα'
   login_page: 'Είσοδος'
-  logout_page: 'ÜBERSETZEN Logout'
+  logout_page: 'Logout'
   interview: 'Συνέντευξη'
   user_content: 'Προσωπικός φάκελος χρήστη'
   user_content_errors: '(bitte übersetzen) Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
@@ -202,7 +202,7 @@ el:
     persecution_of_jews: 'Διώξεις Εβραίων '
     retaliation: 'Αντίποινα και εκτελέσεις'
     collaboration: 'Συνεργασία'
-    interview_id: 
+    interview_id: '(Übesetzen - Plural) Interviews'
     archive_id: 'Όνομα'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
