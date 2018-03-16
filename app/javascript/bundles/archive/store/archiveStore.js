@@ -4,6 +4,7 @@ import { createLogger } from 'redux-logger'
 import combinedReducers from '../reducers/combinedReducers';
 
 let archiveStore;
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
     const loggerMiddleware = createLogger();
     archiveStore = (railsProps) => (
