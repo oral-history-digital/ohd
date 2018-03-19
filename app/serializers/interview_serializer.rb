@@ -102,9 +102,9 @@ class InterviewSerializer < ActiveModel::Serializer
     #object.still_image.url(:original)
     case Project.name.to_sym
     when :mog
-      "http://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+      "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     when :zwar
-      "http://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
+      "https://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
     end
   end
 
