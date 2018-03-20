@@ -1,3 +1,7 @@
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{1.5em}{0pt}
+\titleformat{\section}{\normalfont\large}{\thesection}{1em}{}
+
 <% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @language[:locale]).first.first_name}" %>
 <% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @language[:locale]).first.last_name}" %>
 <% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
@@ -6,13 +10,14 @@
 \date{}
 
 \begin{document}
-\maketitle
 \thispagestyle{fancy}
 
 \fancyhead{}
 \fancyfoot{}
 \lhead{<%= "#{I18n.backend.translate(@language[:locale][0..1], 'history')} #{interviewee_name} (#{@interview.archive_id})" %>}
 \rfoot{\thepage}
+
+{\fontsize{22pt}{10pt}\LARGE{<%= interviewee_name %>}}\\
 
 
 <% @interview.interviewees.first.histories.each do |history| %>
@@ -23,6 +28,5 @@
   <% details = history.translations.where(locale: @language[:locale]).first.forced_labor_details %>
   <%= latex_escape(ActionView::Base.full_sanitizer.sanitize(details).gsub("&amp;", "&")) %>
 <% end %>
-
 
 
