@@ -13,7 +13,7 @@ export default class UserContents extends React.Component {
     }
   
     componentDidMount() {
-        if (!this.userContentsLoaded()) {
+        if (!this.userContentsLoaded() && !this.props.isFetchingUserContents) {
             this.props.fetchUserContents();
         }
     }
