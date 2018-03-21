@@ -27,7 +27,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     setVideoStatus() {
-        this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+        let isPlaying = this.video.currentTime > 0 && !this.video.paused && !this.video.ended && this.video.readyState > 2;
+        this.props.videoStatus === 'play' && !isPlaying ? this.video.play() : this.video.pause();
     }
 
     reconnectVideoProgress() {
