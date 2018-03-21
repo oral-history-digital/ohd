@@ -14,34 +14,20 @@ export default class VideoPlayer extends React.Component {
 
     componentDidMount() {
         if (this.video) {
+            this.setVideoTime()
+            this.setVideoStatus()
             this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
             this.video.addEventListener('mozfullscreenchange', this.fullscreenChange);
             this.video.addEventListener('fullscreenchange', this.fullscreenChange);
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.video) {
-            this.setVideoTime(prevProps)
-            if (this.props.videoTime > 0 && this.props.videoStatus === 'pause'){
-                this.video.play();
-            }
-            else {
-                this.setVideoStatus(prevProps)
-            }
-        }
+    setVideoTime() {
+        this.video.currentTime = this.props.videoTime;
     }
 
-    setVideoTime(prevProps) {
-        if (prevProps.videoTime !== this.props.videoTime) {
-            this.video.currentTime = this.props.videoTime;
-        }
-    }
-
-    setVideoStatus(prevProps) {
-        if (prevProps.videoStatus !== this.props.videoStatus) {
-            this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
-        }
+    setVideoStatus() {
+        this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
     }
 
     reconnectVideoProgress() {
