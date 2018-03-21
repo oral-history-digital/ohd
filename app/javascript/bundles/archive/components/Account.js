@@ -10,7 +10,6 @@ export default class Account extends React.Component {
 
     componentDidMount() {
         if (!this.props.account.email && !this.props.account.isFetchingAccount) {
-            debugger;
             this.props.fetchAccount()
         }
     }
