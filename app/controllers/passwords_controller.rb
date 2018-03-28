@@ -22,7 +22,12 @@ class PasswordsController < Devise::PasswordsController
     else
       set_minimum_password_length
       respond_with resource
+      render json: {error: t('account_activation_errors')}
     end 
   end 
+
+  #def resource_params
+    #params.require(resource_name).permit(:password, :password_confirmation, :reset_password_token)
+  #end 
 
 end

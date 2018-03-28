@@ -52,7 +52,8 @@ namespace :dedalo do
         if s.registry_entry && s.registry_entry.registry_names.first
           translations = s.registry_entry.registry_names.first.translations.each do |t|
             if t.descriptor.blank? && t.locale != :eng
-              p "    Missing #{t.locale}-translation for thesaurus entry #{t.registry_name_dedalo_id}!"
+              p "    Missing #{t.locale}-translation for thesaurus entry #{s.registry_entry.registry_names.first.descriptor(:eng)}!"
+              #p "    Missing #{t.locale}-translation for thesaurus entry #{t.registry_name_dedalo_id}!"
               errors = true
             end
           end

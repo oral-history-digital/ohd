@@ -50,11 +50,11 @@ export default class ChangePasswordForm extends React.Component {
             let url, method;
             let params = this.state.values;
 
-            if (this.props.account.active) {
-                url = `/de/user_registrations/${resetToken}/confirm`;
+            if (!this.props.account.active) {
+                url = `/${this.props.locale}/user_registrations/${resetToken}/confirm`;
                 method = 'post';
             } else {
-                url = '/de/user_accounts/password';
+                url = `/${this.props.locale}/user_accounts/password`;
                 method = 'put';
                 params.reset_password_token = resetToken;
             }
@@ -89,7 +89,7 @@ export default class ChangePasswordForm extends React.Component {
     }
 
     header() {
-        if (this.props.account.active) {
+        if (!this.props.account.active) {
             return (
                 <h1>
                     {t(this.props, 'devise.registrations.activate')}
@@ -117,6 +117,16 @@ export default class ChangePasswordForm extends React.Component {
         }
     }
 
+    error() {
+        if (this.props.account.error) {
+            return (
+                <p className='error'>
+                    {this.props.account.error}
+                </p>
+            )
+        }
+    }
+
     render() {
         let _this = this;
         return (
@@ -126,6 +136,7 @@ export default class ChangePasswordForm extends React.Component {
                     {t(this.props, 'devise.registrations.activate_text')}
                 </p>
                 {this.userSalutation()}
+                {this.error()}
 
                 <form className='default' onSubmit={this.handleSubmit}>
                     <InputContainer 

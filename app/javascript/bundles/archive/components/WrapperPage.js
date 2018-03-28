@@ -15,6 +15,7 @@ import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 
+import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
 
 export default class WrapperPage extends React.Component {
@@ -193,6 +194,16 @@ export default class WrapperPage extends React.Component {
         }
     }
 
+    messages() {
+        if (this.props.loggedInAt + 20000 < Date.now()) {
+        //if (true) {
+            return (
+                <p className='messages'>
+                    {t(this.props, 'devise.omniauth_callbacks.success')}
+                </p>
+            )
+        }
+    }
 
     render() {
         let logoSrc = '';
@@ -227,6 +238,7 @@ export default class WrapperPage extends React.Component {
                             </a>
                         </header>
 
+                        {this.messages()}
                         {this.props.children}
 
                         <footer>

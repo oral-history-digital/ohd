@@ -32,7 +32,7 @@ de:
         subject: 'Schritte für die Reaktivierung Ihres Zugangs'
     omniauth_callbacks:
       failure: "Du konntest nicht Deinem %{kind}-Account angemeldet werden, weil '%{reason}'."
-      success: "Du hast Dich erfolgreich mit Deinem %{kind}-Account angemeldet."
+      success: "Sie haben Sich erfolgreich mit Ihrem Account angemeldet."
     passwords:
       change: 'Ihr Passwort ändern'
       forgot: 'Sie haben Ihr Passwort vergessen?'

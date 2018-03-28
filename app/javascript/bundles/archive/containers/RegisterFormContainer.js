@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         country_keys: state.archive.country_keys,
+        externalLinks: state.archive.externalLinks
     }
 }
 
