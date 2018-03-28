@@ -53,12 +53,12 @@ class SearchesController < BaseController
 
   def archive
     search = Interview.search do
-      order_by("person_name_#{locale}".to_sym, :asc)
       fulltext params[:fulltext] 
       Project.search_facets_names.each do |facet|
-        with(facet.to_sym, params[facet]) if params[facet]
+        with(facet.to_sym).all_of(params[facet]) if params[facet]
       end
       facet *Project.search_facets_names
+      order_by("person_name_#{locale}".to_sym, :asc)
       paginate page: params[:page] || 1, per_page: 12
     end
 
