@@ -848,7 +848,21 @@ class RegistryEntry < ActiveRecord::Base
       #mem
     #end
     registry_names.first.translations.inject({}) do |mem, name|
-      mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')  if Project.available_locales.include?( name.locale[0..1] )
+      if Project.available_locales.include?( name.locale[0..1] )
+        mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
+      end
+      mem
+    end
+  end
+
+  def localized_with_note
+    registry_names.first.translations.inject({}) do |mem, name|
+      if Project.available_locales.include?( name.locale[0..1] )
+        mem[name.locale[0..1]] = {
+          title: name.descriptor.gsub(/,\s*/, ', '),
+          note: "bla bla" #name.note
+        }
+      end
       mem
     end
   end

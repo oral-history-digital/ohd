@@ -76,6 +76,7 @@ class SegmentSerializer < ActiveModel::Serializer
       {
         id: ref.registry_entry.id,
         desc: ref.registry_entry.localized_hash,
+        desc_with_note: ref.registry_entry.localized_with_note,
         #desc: ref.registry_entry.descriptor(:all),
         latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
         longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f

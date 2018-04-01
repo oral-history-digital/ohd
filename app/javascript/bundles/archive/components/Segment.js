@@ -16,6 +16,9 @@ export default class Segment extends React.Component {
         if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType)) {
             return true;
         }
+        if (nextState.openReference !== this.state.openReference) {
+            return true;
+        }
 
         let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
@@ -52,11 +55,32 @@ export default class Segment extends React.Component {
         });
     }
 
+    setOpenReference(reference) {
+        this.setState({openReference: reference});
+    }
+
+    openReference() {
+        if (this.state.openReference) {
+            let openReference = this.state.openReference.desc_with_note[this.props.locale];
+            return (
+                <div className='openReference'>
+                    <div onClick={() => this.setOpenReference(null)} className='close'>X</div>
+                    <div className='title'>{openReference.title}</div>
+                    <div className='note'>{openReference.note}</div>
+                </div>
+            )
+        }
+    }
+
     references(locale) {
         if (this.state.contentType == 'references') {
             //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
             return this.props.data.references.map((reference, index) => {
-                return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc[locale]}</span>
+                if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
+                    return <span id={`reference_${reference.id}`} key={"reference-" + index} onClick={() => this.setOpenReference(reference)}>{reference.desc_with_note[locale].title}</span>
+                } else {
+                    return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
+                }
             })
         }
     }
@@ -158,6 +182,7 @@ export default class Segment extends React.Component {
                             </div>
                             <div className='content-trans-text-element-data'>
                                 {this.references(locale)}
+                                {this.openReference()}
                             </div>
                         </div>
                     </div>
