@@ -12,7 +12,11 @@ class PersonSerializer < ActiveModel::Serializer
 
   def date_of_birth
     return "" if object.date_of_birth.blank?
-    object.date_of_birth.sub(/^\.+/,"").split('.').map{|i| "%.2i" %i}.join('.')
+    if Project.name.to_sym === :mog
+      object.date_of_birth.sub(/^\.+/,"").split('.').map{|i| "%.2i" %i}.join('.')
+    else
+      object.date_of_birth
+    end
   end
 
   def typology
