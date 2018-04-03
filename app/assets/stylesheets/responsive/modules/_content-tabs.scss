@@ -253,7 +253,9 @@
       display: inline-block;
       margin-bottom: 10px;
       padding: 0 10px;
-      border-right: 1px solid $gray-medium;
+      &:not(.last-item) {
+        border-right: 1px solid $gray-medium;
+      }
     }
   }
   @include screen-l {
