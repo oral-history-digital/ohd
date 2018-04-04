@@ -6,19 +6,18 @@ import { t } from '../../../lib/utils';
 
 export default class OrderNewPassword extends React.Component {
 
-    content() {
+    passwordStatus() {
         if (this.props.orderNewPasswordStatus) {
-            return <div className='messages'>{t(this.props, this.props.orderNewPasswordStatus)}</div>;
-        } else {
-            return <OrderNewPasswordFormContainer />;
-        }
+            return <div className='errors'>{t(this.props, this.props.orderNewPasswordStatus)}</div>;
+        } 
     }
 
     render() {
         return (
                 <WrapperPageContainer tabIndex={0}>
                     <div className='wrapper-content register'>
-                        {this.content()}
+                        {this.passwordStatus()}
+                        <OrderNewPasswordFormContainer />
                     </div>
                 </WrapperPageContainer>
         )
