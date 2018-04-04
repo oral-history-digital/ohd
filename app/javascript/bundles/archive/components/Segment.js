@@ -75,6 +75,7 @@ export default class Segment extends React.Component {
     references(locale) {
         if (this.state.contentType == 'references') {
             //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
+            let refLen = this.props.data.references.length;
             return this.props.data.references.map((reference, index) => {
                 if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
                     return <span id={`reference_${reference.id}`} key={"reference-" + index} onClick={() => this.setOpenReference(reference)}>{reference.desc_with_note[locale].title}</span>
