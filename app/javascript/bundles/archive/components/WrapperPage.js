@@ -195,8 +195,7 @@ export default class WrapperPage extends React.Component {
     }
 
     messages() {
-        if (this.props.loggedInAt + 20000 < Date.now()) {
-        //if (true) {
+        if (this.props.loggedInAt + 5000 > Date.now()) {
             return (
                 <p className='messages'>
                     {t(this.props, 'devise.omniauth_callbacks.success')}
