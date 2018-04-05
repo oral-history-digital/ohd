@@ -22,6 +22,13 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        if (this.video) {
+            this.setVideoTime()
+            this.setVideoStatus()
+        }
+    }
+
     setVideoTime() {
         this.video.currentTime = this.props.videoTime;
     }
