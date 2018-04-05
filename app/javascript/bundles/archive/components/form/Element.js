@@ -21,7 +21,7 @@ export default class Element extends React.Component {
     error() {
         if (!this.props.valid && this.props.showErrors) {
             return (
-                <div className='error'>
+                <div className='help-block'>
                     {t(this.props, `${this.props.scope}.errors.${this.props.attribute}`)}
                 </div>
             )
@@ -30,16 +30,24 @@ export default class Element extends React.Component {
         }
     }
 
+    css() {
+        let name = 'form-group';
+        if (!this.props.valid && this.props.showErrors) {
+            name += ' has-error';
+        }
+        return name;
+    }
+
     render() {
         return (
-            <div className='form-group'>
+            <div className={this.css()}>
                 <div className='form-label'>
                     {this.label()}
-                    {this.error()}
                 </div>
                 <div className='form-input'>
                     {this.props.children}
                 </div>
+                {this.error()}
             </div>
         );
     }
