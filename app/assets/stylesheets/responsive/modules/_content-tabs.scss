@@ -220,10 +220,10 @@
   margin-left: 8%;
   margin-bottom: 10px;
   border: 2px solid $gray-lighter;
-  padding: 20px 10px 10px 10px;
+  padding: 20px 10px 0 10px;
   float: none;
   clear: both;
-  p.content-trans-text-element-title {
+  .content-trans-text-element-title {
     margin-top: 0;
     font-size: $font-size-larger;
     color: $gray-medium;
@@ -255,6 +255,28 @@
       padding: 0 10px;
       &:not(.last-item) {
         border-right: 1px solid $gray-medium;
+      }
+    }
+    .scope-note-link {
+      color: $link-color;
+      cursor: pointer;
+    }
+    .scope-note,
+    .openReference {
+      border-top: 1px solid $gray-light;
+      padding: 10px;
+      .title {
+        font-size: $font-size-large;
+        color: $gray-medium;
+        //text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: bold;
+      }
+      .note {
+        margin: 10px 0;
+      }
+      .close {
+        text-align: right;
       }
     }
   }
