@@ -16,6 +16,8 @@ export default class OrderNewPassword extends React.Component {
         return (
                 <WrapperPageContainer tabIndex={0}>
                     <div className='wrapper-content register'>
+                        <h1 className='forgot-password-header'>{t(this.props, 'devise.passwords.forgot')}</h1>
+                        <p className='forgot-passord-text'>{t(this.props, 'devise.passwords.send_instructions')}</p>
                         {this.passwordStatus()}
                         <OrderNewPasswordFormContainer />
                     </div>
