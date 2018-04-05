@@ -60,6 +60,7 @@ class InterviewsController < BaseController
 
       end
       format.html
+      format.xml
     end
   end
 
