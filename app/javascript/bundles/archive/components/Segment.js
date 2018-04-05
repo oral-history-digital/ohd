@@ -63,7 +63,7 @@ export default class Segment extends React.Component {
         if (this.state.openReference) {
             let openReference = this.state.openReference.desc_with_note[this.props.locale];
             return (
-                <div className='openReference'>
+                <div className='scope-note'>
                     <div onClick={() => this.setOpenReference(null)} className='close'>X</div>
                     <div className='title'>{openReference.title}</div>
                     <div className='note'>{openReference.note}</div>
@@ -78,7 +78,16 @@ export default class Segment extends React.Component {
             let refLen = this.props.data.references.length;
             return this.props.data.references.map((reference, index) => {
                 if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
-                    return <span id={`reference_${reference.id}`} key={"reference-" + index} onClick={() => this.setOpenReference(reference)}>{reference.desc_with_note[locale].title}</span>
+                    return (
+                        <span 
+                            id={`reference_${reference.id}`} 
+                            className='scope-note-link'
+                            key={"reference-" + index} 
+                            onClick={() => this.setOpenReference(reference)}
+                        >
+                            {reference.desc_with_note[locale].title}
+                        </span>
+                    )
                 } else {
                     return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
                 }
