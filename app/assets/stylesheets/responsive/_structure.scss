@@ -629,5 +629,16 @@ a.search-result-link {
 .figure-letter-spacing {
   letter-spacing: 0.1rem;
 }
+.messages {
+  position: absolute;
+  top: 200px;
+  left: 3%;
+  color: $gray-dark;
+  padding: 20px;
+  background: rgba(250,250,250,0.8);
+  opacity: 0.9;
+  width: 30%;
+}
+
 
 
