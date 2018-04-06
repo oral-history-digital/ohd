@@ -72,7 +72,7 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def languages
-    object.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem } - ['en']
+    object.languages
   end
   
     def languages_string

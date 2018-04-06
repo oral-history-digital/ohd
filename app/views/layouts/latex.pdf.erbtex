@@ -1,10 +1,11 @@
-\documentclass[12pt]{article}
+\documentclass[10pt]{article}
 <% @latex_config = { :recipe => [
 	{:command => 'xelatex'},
 ]}
 %>
 \usepackage[a4paper]{geometry}
-\geometry{width=16cm, left=2.5cm, top=3.5cm, bottom=3cm}
+\setlength{\headheight}{54.0pt}
+\geometry{width=15cm, left=2.5cm, top=4cm, bottom=3cm}
 \raggedright% flush left alignment
 
 \usepackage{fancyhdr}
@@ -16,5 +17,16 @@
 \usepackage{setspace}
 \onehalfspacing
 
+\usepackage{xcolor}
+\definecolor{textGrey}{rgb}{0.3,0.3,0.3}
+\definecolor{mogBlue}{rgb}{0.2, 0.443, 0.718}
+
+\usepackage{graphicx}
+\graphicspath{ {<%= "#{Rails.root}/app/assets/images/eog/" %>} }
+
+
+\usepackage{enumitem}
+
 <%= yield %>
 \end{document}
+
