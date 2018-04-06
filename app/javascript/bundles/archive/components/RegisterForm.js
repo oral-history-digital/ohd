@@ -189,13 +189,6 @@ export default class RegisterForm extends React.Component {
                     />
                     <InputContainer 
                         scope='user_registration' 
-                        attribute='receive_newsletter' 
-                        type='checkbox' 
-                        handleChange={this.handleChange}
-                        help={t(this.props, 'user_registration.notes_on_receive_newsletter')}
-                    />
-                    <InputContainer 
-                        scope='user_registration' 
                         attribute='tos_agreement' 
                         type='checkbox' 
                         showErrors={this.state.showErrors}

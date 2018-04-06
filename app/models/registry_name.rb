@@ -5,7 +5,7 @@ class RegistryName < ActiveRecord::Base
   belongs_to :registry_entry
   belongs_to :registry_name_type
 
-  translates :descriptor
+  translates :descriptor, :notes
 
   scope :ordered_by_type,
               -> { joins(:registry_name_type).

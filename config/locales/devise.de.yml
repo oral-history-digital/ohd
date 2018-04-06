@@ -41,10 +41,9 @@ de:
       submit: 'Passwort jetzt ändern'
       resend: 'Passwort ändern'
       link: 'Passwort vergessen?'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, mit denen Sie Ihr Passwort zurücksetzen können.'
+      send_instructions: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       updated: 'Ihr Passwort wurde erfolgreich geändert.'
       no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
-      send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen kannst."
       send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen können."
       updated: "Dein Passwort wurde geändert. Du bist jetzt angemeldet."
       updated_not_active: "Dein Passwort wurde geändert."
@@ -53,9 +52,9 @@ de:
       not_yet_registered: 'Noch nicht registriert?'
       link_to: 'Zur Registrierung »'
       submit: 'Registrierung senden'
-      activate: 'Zugangsaktivierung für'
+      activate: 'Aktivierung des Nutzer(innen)-Accounts für '
       activate_submit: 'absenden'
-      activate_text: 'Bitte wählen Sie ein geeignetes Passwort für Ihren Zugang.'
+      activate_text: 'Um Ihren Nutzer(-innen)-Account zu aktivieren wählen Sie bitte ein geeignetes Passwort für Ihren Zugang.'
       successful: 'Ihre Registrierung ist bei uns eingegangen.'
       signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
       updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
