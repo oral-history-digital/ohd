@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     return {
         registrationStatus: state.account.registrationStatus,
         translations: state.archive.translations,
+        externalLinks: state.archive.externalLinks,
         locale: state.archive.locale
     }
 }
