@@ -860,7 +860,7 @@ class RegistryEntry < ActiveRecord::Base
       if Project.available_locales.include?( name.locale[0..1] )
         mem[name.locale[0..1]] = {
           title: name.descriptor.gsub(/,\s*/, ', '),
-          note: "bla bla" #name.note
+          note: name.notes
         }
       end
       mem
