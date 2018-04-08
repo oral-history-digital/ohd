@@ -54,14 +54,15 @@ export default class InterviewLocations extends React.Component {
             return (
                 <div>
                     <p>
-                        {ref.desc[this.props.locale]}
+                        <em className='place'>
+                            {ref.desc[this.props.locale]}
+                        </em>
+                        {t(this.props, 'interview_location_desc_one')}
+                        <em className='chapter'>
+                            ${ref.ref_object.last_heading[this.props.locale]}
+                        </em>
+                        {t(this.props, 'interview_location_desc_two')}
                     </p>
-                    <div className='time active_map_popup_text'>
-                        {moment.utc(ref.ref_object.start_time * 1000).format("HH:mm:ss")}
-                    </div>
-                    <div className='time active_map_popup_text'>
-                        {ref.ref_object.transcripts[this.props.locale]}
-                    </div>
                 </div>
             )
         } else if (ref.descriptor) {

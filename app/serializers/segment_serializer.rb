@@ -8,6 +8,7 @@ class SegmentSerializer < ActiveModel::Serializer
              :transcripts,
              :mainheading,
              :subheading,
+             :last_heading,
              :annotation_texts,
              :start_time,
              :end_time,
@@ -60,6 +61,23 @@ class SegmentSerializer < ActiveModel::Serializer
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = object.subheading(projectified(locale))
       mem
+    end
+  end
+
+  def last_heading
+    mainheadings = Segment.mainheadings_until(object.id, object.interview_id)
+    subheadings = Segment.subheadings_until(object.id, object.interview_id, mainheadings.last.id)
+    
+    if subheadings.count > 0
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = "#{mainheadings.count}.#{subheadings.count}. #{subheadings.last.subheading(projectified(locale))}"
+        mem
+      end
+    else
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = "#{mainheadings.count}. #{mainheadings.last.mainheading(projectified(locale))}"
+        mem
+      end
     end
   end
 
