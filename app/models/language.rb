@@ -32,6 +32,13 @@ class Language < ActiveRecord::Base
     name(locale)
   end
 
+  def localized_hash
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = name(locale)  if Project.available_locales.include?( locale.to_s )
+      mem
+    end
+  end
+
   def direction
     @direction ||= RTL_LANGUAGES.include?(name) ? 'RTL' : 'LTR'
   end

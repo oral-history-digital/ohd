@@ -180,6 +180,8 @@ en:
     interview_id: 'Interviews'
     archive_id: 'Interview ID'
     collection_id: 'Collection'
+    language_id: 'Language'
+    age: 'age'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'

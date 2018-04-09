@@ -588,6 +588,17 @@ ru:
 
   search_facets:
     collection_id: 'Частичные собрания'
+    language_id: 'Язык'
+    age: 'Возраст'
+    gender: 'Пол'
+    female: 'женщина'
+    male: ' мужчина'
+    decade_of_birth: 'Год рождения'
+    1900s: '1900-е годы'
+    1910s: '1910-е годы'
+    1920s: '1920-е годы'
+    1930s: '1930-е годы'
+    1940s: '1940-е годы'
 
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"
