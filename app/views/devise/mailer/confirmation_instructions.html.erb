@@ -11,6 +11,11 @@
     <p>Вы можете подтвердить Ваш доступ, перейдя по следующей ссылкеS:</p>
 
     <p><%= link_to 'Подтвердить доступ сейчас', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :ru) %></p>
+  <% when :el -%>
+        <p>Καλώς ήρθατε <%= @resource.email %>!</p>
+        <p>Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:</p>
+
+        <p><%= link_to 'Zugang jetzt bestätigen', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :el) %></p>
   <% else -%>
     <p>Willkommen <%= @resource.email %>!</p>
 

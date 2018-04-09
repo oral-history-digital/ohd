@@ -113,6 +113,7 @@ form.default {
       margin:10px 0 0 28%;
     }
   }
+
   /* Register */
   .form-label {
     width: 100%;
@@ -148,3 +149,12 @@ form.default {
     padding: 5px 10px;
   }
 }
+.register {
+  .errors {
+    border: 1px solid red;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    color: red;
+  }
+}
+

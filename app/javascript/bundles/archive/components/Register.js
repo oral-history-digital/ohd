@@ -12,13 +12,29 @@ export default class Register extends React.Component {
 
     content() {
         if (!this.props.registrationStatus) {
+
+            let conditionsLink; 
+            let privacyLink; 
+            if (this.props.externalLinks.conditions) {
+                conditionsLink = this.props.externalLinks.conditions[this.props.locale];
+                privacyLink = this.props.externalLinks.privacy_protection[this.props.locale];
+            }
+
             return (
                 <div>
                     <h1>
                         {t(this.props, 'devise.registrations.link')}
                     </h1>
                     <p>
-                    {t(this.props, 'user_registration.registration_text')}
+                        {t(this.props, 'user_registration.registration_text_one')}
+                        <a href={conditionsLink} target="_blank" title="Externer Link">
+                            {t(this.props, 'user_registration.tos_agreement')}
+                        </a>
+                        {t(this.props, 'user_registration.registration_text_two')}
+                        <a href={privacyLink} target="_blank" title="Externer Link">
+                            {t(this.props, 'user_registration.priv_agreement_alias')}
+                        </a>
+                        {t(this.props, 'user_registration.registration_text_three')}
                     </p>
                     <RegisterFormContainer />
                 </div>

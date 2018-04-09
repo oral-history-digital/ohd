@@ -1,6 +1,7 @@
 import React from 'react';
 import CarouselContainer from '../containers/CarouselContainer';
 import { PROJECT } from '../constants/archiveConstants'
+import { t } from '../../../lib/utils';
 
 export default class Gallery extends React.Component {
 
@@ -45,8 +46,11 @@ export default class Gallery extends React.Component {
 
     render() {
         return (
-            <div className={'img-gallery'}>
-                {this.renderPhotos()}
+            <div>
+                <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
+                <div className={'img-gallery'}>
+                    {this.renderPhotos()}
+                </div>
             </div>
         );
     }

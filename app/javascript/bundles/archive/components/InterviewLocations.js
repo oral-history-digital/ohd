@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
 import moment from 'moment';
-import ArchiveUtils from "../../../lib/utils";
+import { t } from '../../../lib/utils';
 
 export default class InterviewLocations extends React.Component {
 
@@ -43,7 +43,7 @@ export default class InterviewLocations extends React.Component {
         if (ref.descriptor[this.props.locale]) {
             return (
                 <p>
-                    {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
+                    {`${t(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
                 </p>
             )
         }
@@ -88,12 +88,15 @@ export default class InterviewLocations extends React.Component {
             locations.push(this.props.placeOfBirth);
         }
         return (
-            <LocationsContainer
-                data={locations}
-                loaded={this.locationsLoaded()}
-                handleClick={this.handleClick.bind(this)}
-                popupContent={this.popupContent.bind(this)}
-            />
+            <div>
+                <div className='explanation'>{t(this.props, 'interview_map_explanation')}</div>
+                <LocationsContainer
+                    data={locations}
+                    loaded={this.locationsLoaded()}
+                    handleClick={this.handleClick.bind(this)}
+                    popupContent={this.popupContent.bind(this)}
+                />
+            </div>
         );
     }
 

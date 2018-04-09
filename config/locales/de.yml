@@ -1,4 +1,9 @@
 de:
+  interviews: 'Interviews'
+  places: 'Geburtsorte'
+  archive_map_explanation: 'Die Karte stellt die Geburtsorte der Interviewten dar.'
+  interview_map_explanation: 'Darstellung der im Interview erwähnten Orte'
+  interview_gallery_explanation: 'Die Bildergalerie zeigt Fotos von der Interviewsituation sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten Person.'
   transcript_header: 'Übersetzung des Interviews mit'
   tapes: 'Bänder'
   without_translation: 'Dieses Interview wurde noch nicht ins Deutsche übersetzt.'
@@ -100,7 +105,9 @@ de:
   citation: 'Zitierweise'
   user_registration:
     registration: 'Registrierung'
-    registration_text: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die Nutzungsbedingungen erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die Datenschutzbestimmungen erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Arbeitstagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
+    registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
+    registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
+    registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
     appellation: 'Anrede'
     appellations:
       ms: 'Frau'
@@ -148,6 +155,7 @@ de:
     tos_agreement: 'Nutzungsbedingungen'
     notes_on_tos_agreement: 'Ich stimme den Nutzungsbedingungen zu.'
     priv_agreement: 'Hinweise zum Datenschutz'
+    priv_agreement_alias: 'Datenschutzbestimmungen'
     notes_on_priv_agreement: 'Ich stimme der  Datenschutzpraxis zu.'
     register: 'Registrierung senden'
     errors: 
@@ -158,6 +166,12 @@ de:
       job_description: 'Bitte angeben'
       research_intention: 'Bitte angeben'
       comments: 'Bitte angeben'
+      street: 'Bitte angeben'
+      zipcode: 'Bitte angeben'
+      city: 'Bitte angeben'
+      country: 'Bitte angeben'
+      tos_agreement: 'Bitte zustimmen'
+      priv_agreement: 'Bitte zustimmen'
   order_new_password: 'Passwort vergessen?'
   ordered_new_password: 'Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres Passwortes geschickt.'
   conditions: 'Nutzungsbedingungen'

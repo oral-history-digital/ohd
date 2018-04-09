@@ -6,7 +6,7 @@ import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
@@ -65,24 +65,35 @@ export default class ArchiveSearch extends React.Component {
     renderPagination() {
         if (this.props.resultPagesCount > 1) {
             return (
-                <ul className='search-results-pagination'>
-                    {this.renderPaginationTabs()}
-                </ul>
+                <div>
+                    <ul className='search-results-pagination'>
+                        {this.renderPaginationTabs()}
+                    </ul>
+                    <div className='search-results-from-to'>{this.resultsFromTo()}</div>
+                </div>
             )
         }
     }
 
+    resultsFromTo() {
+        let from = (this.actualPage() -1) * 12 + 1;
+        let to   = this.actualPage() * 12;
+        to = Math.min(to, this.props.resultsCount);
+        return `${t(this.props, 'archive_results')} ${from} - ${to}`;
+    }
+
+    actualPage() {
+        return this.props.query['page'] != undefined ? this.props.query['page'] : 1;
+    }
 
     renderPaginationTabs() {
         let resultPages = []
         for (let i = 1; i <= this.props.resultPagesCount; i++) {
             resultPages.push(i);
         }
-        let query = this.props.query;
-        let actualPage = query['page'] != undefined ? query['page'] : 1;
         return resultPages.map((page, index) => {
             let pageClass = 'pagination-button'
-            if (actualPage == page) {
+            if (this.actualPage() == page) {
                 pageClass = 'pagination-button active'
             }
             return (
@@ -110,16 +121,16 @@ export default class ArchiveSearch extends React.Component {
             description=''
             properties={this.props.query}
             type='Search'
-            submitLabel={ArchiveUtils.translate(this.props, 'save_search')}
+            submitLabel={t(this.props, 'save_search')}
         />
     }
 
     saveSearchLink() {
         return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                        title: ArchiveUtils.translate(this.props, 'save_search'),
+                        title: t(this.props, 'save_search'),
                         content: this.saveSearchForm()
                     })}>
-                    <i className="fa fa-star"></i><span>{ArchiveUtils.translate(this.props, 'save_search')}</span>
+                    <i className="fa fa-star"></i><span>{t(this.props, 'save_search')}</span>
                 </div>
     }
 
@@ -129,13 +140,13 @@ export default class ArchiveSearch extends React.Component {
                 tabIndex={4}
             >
                 <div className='wrapper-content interviews'>
-                    <h1 className="search-results-title">{ArchiveUtils.translate(this.props, 'archive_results')}</h1>
+                    <h1 className="search-results-title">{t(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.saveSearchLink()}
                         </AuthShowContainer>
                         <div className="search-results-legend-text">
-                            {this.props.resultsCount} {ArchiveUtils.translate(this.props, 'archive_results')}
+                            {this.props.resultsCount} {t(this.props, 'archive_results')}
                         </div>
                     </div>
 
@@ -148,11 +159,11 @@ export default class ArchiveSearch extends React.Component {
                         <TabList className={'search-results-tabs'}>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-th"></i>
-                                <span>{ArchiveUtils.translate(this.props, 'interview')}-{ArchiveUtils.translate(this.props, 'archive_results')}</span>
+                                <span>{t(this.props, 'interviews')}</span>
                             </Tab>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-map-o"></i>
-                                <span>{ArchiveUtils.translate(this.props, 'place')}-{ArchiveUtils.translate(this.props, 'archive_results')}</span>
+                                <span>{t(this.props, 'places')}</span>
                             </Tab>
                         </TabList>
                         <TabPanel>
@@ -160,8 +171,10 @@ export default class ArchiveSearch extends React.Component {
                         </TabPanel>
                         <TabPanel>
                             <div>
+                                <div className='explanation'>{t(this.props, 'archive_map_explanation')}</div>
                                 {this.renderPagination()}
                                 <ArchiveLocationsContainer/>
+                                {this.renderPagination()}
                             </div>
                         </TabPanel>
                     </Tabs>

@@ -22,7 +22,7 @@ export default class Facet extends React.Component {
     }
 
     checkedFacets() {
-        return this.props.query[this.props.facet];
+        return this.props.query[`${this.props.facet}[]`];
     }
 
     handleClick(event) {
