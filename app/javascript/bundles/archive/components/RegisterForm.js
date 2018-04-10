@@ -180,7 +180,7 @@ export default class RegisterForm extends React.Component {
                         scope='user_registration' 
                         attribute='country' 
                         optionsScope='countries'
-                        values={this.props.country_keys}
+                        values={this.props.country_keys && this.props.country_keys[this.props.locale]}
                         withEmpty={true}
                         showErrors={this.state.showErrors}
                         validate={function(v){return v !== ''}} 
