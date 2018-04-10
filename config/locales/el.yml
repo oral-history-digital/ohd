@@ -1,4 +1,5 @@
 el:
+  noscript: 'Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.'
   interviews: 'Συνεντεύξεις'
   places: 'Τόποι γέννησης'
   interview_location_desc_one: ' αναφέρεται στο κεφάλαιο '
