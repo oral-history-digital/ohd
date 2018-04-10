@@ -171,7 +171,7 @@ export default class ArchiveSearch extends React.Component {
                         </TabPanel>
                         <TabPanel>
                             <div>
-                                <div className='explanation'>{t(this.props, 'archive_map_explanation')}</div>
+                                <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div>
                                 {this.renderPagination()}
                                 <ArchiveLocationsContainer/>
                                 {this.renderPagination()}
