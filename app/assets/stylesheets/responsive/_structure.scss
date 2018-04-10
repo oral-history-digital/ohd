@@ -637,9 +637,11 @@ a.search-result-link {
   left: 33%;
   color: $gray-dark;
   padding: 20px;
-  border: 2px solid $secondary-color;
+  border: 1px solid $secondary-color;
   background: #fff;
-  box-shadow: 5px 5px 3px $gray-light;
+  box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  -webkit-box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  -moz-box-shadow: 0 3px 14px rgba(0,0,0,.4);
   width: 260px;
   z-index: 1000;
 }
