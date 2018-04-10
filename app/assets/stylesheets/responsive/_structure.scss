@@ -639,10 +639,11 @@ a.search-result-link {
   padding: 20px;
   border: 2px solid $secondary-color;
   background: #fff;
-  box-shadow: 10px 10px 5px $gray-light;
+  box-shadow: 5px 5px 3px $gray-light;
   width: 260px;
   z-index: 1000;
 }
+
 @-webkit-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
 @-moz-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
 @keyframes fade-out { from { opacity:1; } to { opacity:0; } }
