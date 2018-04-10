@@ -115,6 +115,9 @@ form.default {
     @include screen-l {
       margin:10px 0 0 28%;
     }
+    &.annotation-confirmation-text {
+      margin: 10px 0 5px 0;
+    }
   }
 
   /* Register */
