@@ -112,27 +112,41 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-
-  # to do: add language_id because it is removed
-
-
   person_properties:
     - id: 'person_reference'
       source: 'registry_entry'
     - id: 'birth_locations'
       source: 'registry_reference_type'
+    - id: 'language_id'
+      source: 'language'
+      use_as_facet: true
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
+    - id: 'gender'
+      source: 'person'
+      use_as_facet: true
+      values:
+        female: 'female'
+        male: 'male'
+    - id: 'decade_of_birth'
+      source: 'person'
+      use_as_facet: true
+      values:
+        "1890s": "1890s"
+        "1900s": "1900s"
+        "1910s": "1910s"
+        "1920s": "1920s"
+        "1930s": "1930s"
     - id: 'forced_labor_fields'
       source: 'registry_entry'
       use_as_facet: true
     - id: 'forced_labor_habitations'
       source: 'registry_entry'
-      use_as_facet: true
+      # use_as_facet: true
     - id: 'home_location'
       source: 'registry_reference_type'
-      use_as_facet: true
+      # use_as_facet: true
     - id: 'forced_labor_locations'
       source: 'registry_reference_type'
     - id: 'deportation_locations'
