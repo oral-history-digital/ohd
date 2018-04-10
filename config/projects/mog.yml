@@ -23,9 +23,9 @@ default: &default
   indexation_contribution_type: 'Indexed'
 
   project_name: # Will be used in titles, emails, etc.
-    de: 'Erinnerungen an die Okkupation Griechenlands.'
+    de: 'Erinnerungen an die Okkupation in Griechenland.'
     en: 'Memories of the Occupation of Greece'
-    el: 'Memories of the Occupation of Greece'
+    el: 'Μνήμες από την Κατοχή στην Ελλάδα'
 
   project_domain: 'www.occupation-memories.org'
 
