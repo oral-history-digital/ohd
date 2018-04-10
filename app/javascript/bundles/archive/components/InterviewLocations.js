@@ -59,7 +59,7 @@ export default class InterviewLocations extends React.Component {
                         </em>
                         {t(this.props, 'interview_location_desc_one')}
                         <em className='chapter'>
-                            ${ref.ref_object.last_heading[this.props.locale]}
+                            {ref.ref_object.last_heading[this.props.locale]}
                         </em>
                         {t(this.props, 'interview_location_desc_two')}
                     </p>
@@ -84,7 +84,10 @@ export default class InterviewLocations extends React.Component {
     }
 
     render() {
-        let locations = this.props.locations[this.props.archiveId];
+        let locations = this.props.locations[this.props.archiveId]
+        if (locations) {
+            locations =  locations.filter(l => l.ref_object);
+        }
         if (locations && this.props.placeOfBirth) {
             locations.push(this.props.placeOfBirth);
         }
