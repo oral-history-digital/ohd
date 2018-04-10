@@ -261,22 +261,31 @@
       color: $link-color;
       cursor: pointer;
     }
-    .scope-note,
-    .openReference {
+    .scope-note {
+      margin-top: 10px;
       border-top: 1px solid $gray-light;
-      padding: 10px;
+      padding: 20px 10px 10px;
       .title {
         font-size: $font-size-large;
         color: $gray-medium;
-        //text-transform: uppercase;
         letter-spacing: 0.1em;
         font-weight: bold;
+        @include pie-clearfix;
       }
       .note {
         margin: 10px 0;
       }
       .close {
-        text-align: right;
+        float: right;
+      }
+      .close::after {
+        font-family: FontAwesome;
+        content: "\f00d";
+        font-size: $font-size-large;
+        color: $gray-medium;
+        padding: 2px 4px;
+        cursor: pointer;
+        background-color: $gray-lightest;
       }
     }
   }

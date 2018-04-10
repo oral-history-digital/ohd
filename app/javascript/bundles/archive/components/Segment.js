@@ -64,7 +64,7 @@ export default class Segment extends React.Component {
             let openReference = this.state.openReference.desc_with_note[this.props.locale];
             return (
                 <div className='scope-note'>
-                    <div onClick={() => this.setOpenReference(null)} className='close'>X</div>
+                    <div onClick={() => this.setOpenReference(null)} className='close'></div>
                     <div className='title'>{openReference.title}</div>
                     <div className='note'>{openReference.note}</div>
                 </div>

@@ -619,15 +619,16 @@ a.search-result-link {
   }
 }
 
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
 .flyout-sub-tabs-container{
   .leaflet-container {
     height: 350px;
   }
-}
-
-.leaflet-container {
-  height: 500px;
-  width: 100%;
 }
 
 /* Letter spacing */
