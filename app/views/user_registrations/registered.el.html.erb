@@ -1,16 +1,14 @@
-<h1>Eine Registrierung f&uuml;r <span><%= @user_registration.email %></span> liegt bereits vor</h1>
+<h1>Η ηλεκτρονική διεύθυνση <span><%= @user_registration.email %></span>  έχει ήδη καταχωρηθεί.</h1>
 
-<p>Die von Ihnen angegebene E-Mail Adresse ist bereits f&uuml;r das Archiv "<%= Project.project_name['de'] %>" registriert.</p>
+<p>Η ηλεκτρονική διεύθυνση που χρησιμοποιείτε έχει ήδη καταχωρηθεί για το
+Αρχείο "<%= Project.project_name['el'] %>".</p>
 
 <% case @user_registration.workflow_state
     when 'checked' %>
-<p>Ihr Zugang muss nur noch aktiviert werden. Die f&uuml;r die Zugangsaktivierung notwendigen Informationen wurden Ihnen soeben nochmals per E-Mail zugesandt.</p>
+<p>Η πρόσβασή σας θα ενεργοποιηθεί σύντομα. Οι αναγκαίες πληροφορίες για την ενεργοποίηση της πρόσβασης έχουν σταλεί στην ηλεκτρονική σας διεύθυνση με E-Mail.</p>
 <%  when 'unchecked' %>
-<p>Ihr Zugang wird derzeit noch von unseren Mitarbeitern &uuml;berpr&uuml;ft. Bitte haben Sie noch etwas Geduld oder fragen per E-Mail nach unter <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
+<p>Η πρόσβασή σας βρίσκεται υπό εξέταση. Παρακαλούμε περιμένετε ή επικοινωνήστε μαζί μας με E-Mail στην ηλεκτρονική διεύθυνση <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
 <%  else %>
-<p>Ihr Zugang ist bereits aktiv. Falls Sie Ihre Zugangsdaten nicht mehr kennen, folgen Sie bitte diesem Link: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+<p>Η πρόσβασή σας έχει ενεργοποιηθεί. Εάν δεν γνωρίζετε πλέον τα στοιχεία πρόσβασής σας ακολουθήστε αυτόν τον σύνδεσμο: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
 <% end %>
 
-<br/>
-
-<p><a href="http://<%= Project.project_domain %>/sammlung" style="font-weight: bold;">Hier</a> erfahren Sie mehr &uuml;ber die Sammlung des Projektes "<%= Project.project_name['de'] %>".</p>
