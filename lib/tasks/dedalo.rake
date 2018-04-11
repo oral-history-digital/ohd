@@ -45,11 +45,26 @@ namespace :dedalo do
   desc 'list all references of all interviews'
   task :interview_references => :environment do
     p "list of all references of all interviews:"
-    Interview.all.each{|i| p "\n#{i.archive_id} => #{i.segment_registry_references.map {|s| s.registry_entry && s.registry_entry.localized_hash}}".gsub(/\"/,"")}
+    Interview.all.each do |i| 
+      p "#{i.archive_id}:"
+      errors = false
+      i.segment_registry_references.each do |s|
+        if s.registry_entry && s.registry_entry.registry_names.first
+          translations = s.registry_entry.registry_names.first.translations.each do |t|
+            if t.descriptor.blank? && t.locale != :eng
+              p "    Missing #{t.locale}-translation for thesaurus entry #{s.registry_entry.registry_names.first.descriptor(:eng)}!"
+              #p "    Missing #{t.locale}-translation for thesaurus entry #{t.registry_name_dedalo_id}!"
+              errors = true
+            end
+          end
+        end
+      end
+      p "    Everthing OK!" unless errors
+    end
   end
 
   desc 'check all'
-  task :check => ['dedalo:empty_segments', 'dedalo:birth_places', 'dedalo:interview_places'] do
+  task :check => ['dedalo:empty_segments', 'dedalo:birth_places', 'dedalo:interview_places', 'dedalo:interview_references'] do
     puts 'check complete.'
   end
 

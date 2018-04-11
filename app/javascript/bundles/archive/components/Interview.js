@@ -10,10 +10,12 @@ export default class Interview extends React.Component {
 
     componentDidMount() {
         this.loadInterview();
+        this.loadUserContents();
     }
 
     componentDidUpdate() {
         this.loadInterview();
+        this.loadUserContents();
     }
 
     loadInterview() {
@@ -24,6 +26,16 @@ export default class Interview extends React.Component {
 
     interviewLoaded() {
         return this.props.data && this.props.data.interview && this.props.archiveId === this.props.match.params.archiveId
+    }
+
+    loadUserContents() {
+        if (!this.userContentsLoaded() && !this.props.isFetchingUserContents) {
+            this.props.fetchUserContents();
+        }
+    }
+
+    userContentsLoaded() {
+        return this.props.userContents && !this.props.userContents.fetched;
     }
 
     loggedOutContent() {

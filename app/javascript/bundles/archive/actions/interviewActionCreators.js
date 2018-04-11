@@ -7,6 +7,7 @@ import {
   RECEIVE_INTERVIEW,
   INTERVIEW_URL,
   TRANSCRIPT_TIME_CHANGE,
+  SET_TAPE_AND_TIME,
   TRANSCRIPT_SCROLL,
 } from '../constants/archiveConstants';
 
@@ -46,6 +47,14 @@ export function fetchInterview(archiveId) {
 export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
+        videoTime: time,
+        tape: tape
+    }
+}
+
+export function setTapeAndTime(tape, time) {
+    return {
+        type: SET_TAPE_AND_TIME,
         videoTime: time,
         tape: tape
     }

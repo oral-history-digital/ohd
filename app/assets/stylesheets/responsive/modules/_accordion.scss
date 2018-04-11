@@ -46,7 +46,6 @@
     font-size: $font-size-medium;
     line-height: $line-height-medium;
     color: $gray-darkest;
-    //padding: 0 0 0 20px;
     margin: 0 0 10px 0;
   }
   .flyout-content-label {
@@ -76,6 +75,15 @@
     margin-top: 10px;
     color: $primary-color;
     cursor: pointer;
+  }
+  .leaflet-popup-content p {
+    color: $primary-color;
+  }
+  .explanation {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: $gray-darkest;
+    margin: 0 0 10px 0;
   }
 }
 

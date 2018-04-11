@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
-        orderNewPasswordStatus: state.account.orderNewPasswordStatus,
+        orderNewPasswordStatus: state.account.error,
     }
 }
 

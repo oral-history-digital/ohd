@@ -19,14 +19,28 @@ class Segment < ActiveRecord::Base
   # on these, as they are user-generated.
   has_many  :annotations
 
-  scope :with_heading,
-              -> { joins(:translations).where(
-                  #"segment_translations.locale = ? AND ((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))",
-                  #I18n.default_locale.to_s)
-                  "((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
-                  includes(:tape, :translations).
-                  order(:id)}
+  scope :with_heading, -> { 
+    joins(:translations).
+    where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
+    includes(:tape, :translations).
+    order(:id)}
 
+  scope :mainheadings_until, ->(segment_id, interview_id) { 
+    joins(:translations).
+    where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
+    where("segments.id <= ?", segment_id).
+    where(interview_id: interview_id).
+    includes(:tape, :translations).
+    order(:id)}
+
+  scope :subheadings_until, ->(segment_id, interview_id, mainheading_id) { 
+    joins(:translations).
+    where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
+    where("segments.id <= ?", segment_id).
+    where("segments.id > ?", mainheading_id).
+    where(interview_id: interview_id).
+    includes(:tape, :translations).
+    order(:id)}
 
   scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
 

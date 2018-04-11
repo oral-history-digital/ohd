@@ -7,6 +7,7 @@ import {
     SET_NEXT_TAPE,
 
     TRANSCRIPT_TIME_CHANGE,
+    SET_TAPE_AND_TIME,
     TRANSCRIPT_SCROLL,
 
     SET_LOCALE,
@@ -69,12 +70,20 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 tape: state.tape + 1,
                 videoTime: 0.1,
+                videoStatus: 'play',
             })
         case TRANSCRIPT_TIME_CHANGE:
             return Object.assign({}, state, {
                 videoTime: action.videoTime,
+                videoStatus: 'play',
+                transcriptTime: action.videoTime,
                 tape: action.tape,
-                //transcriptScrollEnabled: false
+                transcriptScrollEnabled: false
+            })
+        case SET_TAPE_AND_TIME:
+            return Object.assign({}, state, {
+                videoTime: action.videoTime,
+                tape: action.tape,
             })
         case TRANSCRIPT_SCROLL:
             return Object.assign({}, state, {

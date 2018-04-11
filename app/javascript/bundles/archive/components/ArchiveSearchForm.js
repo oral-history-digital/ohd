@@ -67,12 +67,13 @@ export default class ArchiveSearchForm extends React.Component {
         if (!this.props.isArchiveSearching) {
             // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
             // Thus the last checkbox would never uncheck.
+            let preparedQuery = {};
             for (let [key, value] of Object.entries(this.props.facets)) {
-                params[key] = params[key] && !(typeof params[key] == "string") ? params[key] : []
+                preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
             }
             if (params) {
                 let url = `/${this.props.locale}/searches/archive`;
-                this.props.searchInArchive(url, params);
+                this.props.searchInArchive(url, preparedQuery);
                 this.context.router.history.push(url);
             }
         }

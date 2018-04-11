@@ -20,7 +20,7 @@ export default class RegisterForm extends React.Component {
                 first_name: true,
                 last_name: true,
                 email: true,
-                research_intentions: true,
+                research_intention: true,
                 comments: true,
                 street: true,
                 zipcode: true,
@@ -65,6 +65,13 @@ export default class RegisterForm extends React.Component {
     }
 
     render() {
+        let conditionsLink; 
+        let privacyLink; 
+        if (this.props.externalLinks.conditions) {
+            conditionsLink = this.props.externalLinks.conditions[this.props.locale];
+            privacyLink = this.props.externalLinks.privacy_protection[this.props.locale];
+        }
+
         return (
             <div>
                 <form id='new_user_registration' className='user_registration default' onSubmit={this.handleSubmit}>
@@ -182,13 +189,6 @@ export default class RegisterForm extends React.Component {
                     />
                     <InputContainer 
                         scope='user_registration' 
-                        attribute='receive_newsletter' 
-                        type='checkbox' 
-                        handleChange={this.handleChange}
-                        help={t(this.props, 'user_registration.notes_on_receive_newsletter')}
-                    />
-                    <InputContainer 
-                        scope='user_registration' 
                         attribute='tos_agreement' 
                         type='checkbox' 
                         showErrors={this.state.showErrors}
@@ -196,7 +196,7 @@ export default class RegisterForm extends React.Component {
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                         help={
-                            <a href="" target="_blank" title="Externer Link">
+                            <a href={conditionsLink} target="_blank" title="Externer Link">
                                 {t(this.props, 'user_registration.notes_on_tos_agreement')}
                             </a>
                         }
@@ -210,7 +210,7 @@ export default class RegisterForm extends React.Component {
                         handleChange={this.handleChange}
                         handleErrors={this.handleErrors}
                         help={
-                            <a href="" target="_blank" title="Externer Link">
+                            <a href={privacyLink} target="_blank" title="Externer Link">
                                 {t(this.props, 'user_registration.notes_on_priv_agreement')}
                             </a>
                         }

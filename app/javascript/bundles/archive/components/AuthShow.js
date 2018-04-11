@@ -3,7 +3,7 @@ import React from 'react';
 export default class AuthShow extends React.Component {
 
     componentDidMount() {
-        if (!this.props.account.email) {
+        if (!this.props.account.email && !this.props.account.isFetchingAccount) {
             this.props.fetchAccount()
         }
     }

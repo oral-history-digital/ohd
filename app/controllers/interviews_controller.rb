@@ -28,7 +28,7 @@ class InterviewsController < BaseController
               segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
               headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
               references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id)
+              ref_tree: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil)
           }.to_json
         end
         render plain: json
@@ -60,6 +60,7 @@ class InterviewsController < BaseController
 
       end
       format.html
+      format.xml
     end
   end
 

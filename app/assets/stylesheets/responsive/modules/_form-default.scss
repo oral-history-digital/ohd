@@ -60,11 +60,14 @@ form.default {
     //float:right;
     margin-left: .75em;
     background:transparent;
-    border:none;
+    //border:none;
     margin-bottom: .75em;
     @include screen-l {
       width:auto;
     }
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    -o-appearance:none;
   }
   input[type='checkbox']:checked,
   input[type='checkbox']:not(:checked) {
@@ -112,7 +115,11 @@ form.default {
     @include screen-l {
       margin:10px 0 0 28%;
     }
+    &.annotation-confirmation-text {
+      margin: 10px 0 5px 0;
+    }
   }
+
   /* Register */
   .form-label {
     width: 100%;
@@ -148,3 +155,12 @@ form.default {
     padding: 5px 10px;
   }
 }
+.register {
+  .errors {
+    border: 1px solid red;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    color: red;
+  }
+}
+

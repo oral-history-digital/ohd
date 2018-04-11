@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import Interview from '../components/Interview';
-import * as actionCreators from '../actions/interviewActionCreators';
+import { fetchInterview } from '../actions/interviewActionCreators';
+import { fetchUserContents } from '../actions/userContentActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -13,10 +14,15 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.account,
+        userContents: state.userContent.contents,
+        fetchedUserContents: state.userContent.fetched,
+        isFetchingUserContents: state.userContent.isFetchingUserContents,
     }
 }
 
-// Don't forget to actually use connect!
-// Note that we don't export Interview, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, actionCreators)(Interview);
+const mapDispatchToProps = (dispatch) => ({
+    fetchUserContents: () => dispatch(fetchUserContents()),
+    fetchInterview: (archiveId) => dispatch(fetchInterview(archiveId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Interview);

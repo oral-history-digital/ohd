@@ -220,16 +220,16 @@
   margin-left: 8%;
   margin-bottom: 10px;
   border: 2px solid $gray-lighter;
-  padding: 20px 10px 10px 10px;
+  padding: 20px 10px 0 10px;
   float: none;
   clear: both;
-  p.content-trans-text-element-title {
+  .content-trans-text-element-title {
     margin-top: 0;
     font-size: $font-size-larger;
     color: $gray-medium;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-weight: bold;
+    font-weight: normal;
   }
   p.content-trans-text-element-group {
     font-size: $font-size-larger;
@@ -253,7 +253,40 @@
       display: inline-block;
       margin-bottom: 10px;
       padding: 0 10px;
-      border-right: 1px solid $gray-medium;
+      &:not(.last-item) {
+        border-right: 1px solid $gray-medium;
+      }
+    }
+    .scope-note-link {
+      color: $link-color;
+      cursor: pointer;
+    }
+    .scope-note {
+      margin-top: 10px;
+      border-top: 1px solid $gray-light;
+      padding: 20px 10px 10px;
+      .title {
+        font-size: $font-size-large;
+        color: $gray-medium;
+        letter-spacing: 0.1em;
+        font-weight: bold;
+        @include pie-clearfix;
+      }
+      .note {
+        margin: 10px 0;
+      }
+      .close {
+        float: right;
+      }
+      .close::after {
+        font-family: FontAwesome;
+        content: "\f00d";
+        font-size: $font-size-large;
+        color: $gray-medium;
+        padding: 2px 4px;
+        cursor: pointer;
+        background-color: $gray-lightest;
+      }
     }
   }
   @include screen-l {

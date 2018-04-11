@@ -72,7 +72,7 @@ export function submitLogin(params) {
 
 const authError = (json) => ({
         type: AUTH_ERROR,
-        error: json.error
+        error: json.error || "devise.failure.invalid"
 })
 
 const logout = () => ({

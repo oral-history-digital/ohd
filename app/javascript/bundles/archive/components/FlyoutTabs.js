@@ -28,7 +28,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.props.account.email) {
+        if (!this.props.account.email && !this.props.account.isFetchingAccount) {
             this.props.fetchAccount()
         }
     }

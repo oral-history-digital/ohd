@@ -64,7 +64,7 @@ default: &default
     en: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
     ru: '##ru##'
 
-  contact_email: 'mail@zwangsarbeit-archiv.de'
+  contact_email: 'registration@occupation-memories.org'
 
   smtp_server: 'mail.fu-berlin.de'
 

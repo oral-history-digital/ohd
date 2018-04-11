@@ -22,7 +22,7 @@ export default class Facet extends React.Component {
     }
 
     checkedFacets() {
-        return this.props.query[this.props.facet];
+        return this.props.query[`${this.props.facet}[]`];
     }
 
     handleClick(event) {
@@ -120,7 +120,7 @@ export default class Facet extends React.Component {
         return subfacetsArray.map((subfacetElement, index) => {
             let subfacetId = subfacetElement[0];
             let subfacet = this.props.data.subfacets[subfacetId];
-            if (subfacet.count) {
+            //if (subfacet.count) {
                 let checkedState = false;
                 if (this.checkedFacets()) {
                     checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
@@ -139,7 +139,7 @@ export default class Facet extends React.Component {
                         </label>
                     </div>
                 )
-            }
+            //}
         })
     }
 }
