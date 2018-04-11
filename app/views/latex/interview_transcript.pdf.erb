@@ -29,7 +29,6 @@
 \newpage
 
 <%= render partial: "./latex/observation" %>
-
 <%= render partial: "./latex/headings" %>
 
 \newpage
@@ -37,7 +36,6 @@
 <%= render partial: "./latex/legend" %>
 
 \newpage
-
 
 <%= render partial: "./latex/title",
            locals: {
@@ -117,7 +115,7 @@
       <% if i > 0 %>
         \vspace*{<%= 0.2 %>cm}
       <% end %>
-      \textbf{<%= paragraph['speaker'] %>}
+      \textit{<%= paragraph['speaker'] %>}
     <% end %>
     <%= paragraph['segment'] %>
   <% end %>
