@@ -93,7 +93,7 @@
     <% tape_info = true %>
     <%= render partial: "./latex/title",
                locals: {
-                   title: "Tape #{chapter['tape_number']}",
+                   title: "#{I18n.backend.translate(@language[:locale][0..1], 'tape')} #{chapter['tape_number']}",
                    space_above: chapter['tape_number']==1 ? 0 : 0.7,
                    space_below: 0.05,
                    font_size: 10
