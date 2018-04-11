@@ -1,0 +1,33 @@
+<%= render partial: "./latex/title",
+           locals: {
+               title: latex_escape(I18n.backend.translate(@language[:locale][0..1],'observation')),
+               space_above: 0,
+               space_below: 0.01,
+               font_size: 13
+           } %>
+\par{
+  \begin{description}[leftmargin=4em,style=nextline]
+    \item[\normalfont{( )}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_missed')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{[.]}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_comment')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{(-)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_1')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{(--)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_2')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{(---)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_3')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{(4)}] Text.<%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_4')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{\_}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_assert')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{'}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_omission')) %>
+  \end{description}
+}
+
+
+
+
+
+
+
