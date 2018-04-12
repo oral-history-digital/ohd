@@ -23,7 +23,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     xml.title "Lebensgeschichtliches Interview mit #{@interview.interviewees.first.first_name} #{@interview.interviewees.first.last_name}"
   end
 
-  xml.publisher "Interview-Archiv \"Erinnerungen an die Okkupation in Griechenland\""
+  xml.publisher "Interview-Archiv \"#{Project.project_name['de']}\""
   xml.publicationYear 2018
 
   xml.contributors do
@@ -78,8 +78,8 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.rightsList do
-    xml.rights rightsURI: "http://www.occupation-memories.org/de/archive/terms/index.html" do 
-      xml.text! "Nutzungsbedingungen des Interview-Archivs \"Erinnerungen an die Okkupation in Griechenland\""
+    xml.rights rightsURI: "#{Project.external_links['conditions']['de']}" do 
+      xml.text! "Nutzungsbedingungen des Interview-Archivs \"#{Project.project_name['de']}\""
     end
   end
 
