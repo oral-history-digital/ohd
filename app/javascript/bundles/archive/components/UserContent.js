@@ -78,7 +78,7 @@ export default class UserContent extends React.Component {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    onClick={() => this.props.handleSegmentClick(this.props.data.properties.tape_nbr, this.props.data.properties.time)}
+                    onClick={() => this.props.handleSegmentClick(this.props.data.properties.tape_nbr, this.props.data.properties.time - 30)}
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
                     {ArchiveUtils.translate(this.props, callKey)}

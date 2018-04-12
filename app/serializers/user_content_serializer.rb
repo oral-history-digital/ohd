@@ -10,4 +10,13 @@ class UserContentSerializer < ActiveModel::Serializer
     :reference_type, 
     :type,
     :workflow_state 
+
+  def reference_id
+    if object.is_a? UserAnnotation
+      Interview.find_by_archive_id(object.properties[:interview_archive_id]).segments[object.properties[:segmentIndex]].id
+    else
+      object.reference_id
+    end
+  end
+    
 end
