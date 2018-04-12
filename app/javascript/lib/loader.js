@@ -43,12 +43,17 @@ import noCache from 'superagent-no-cache';
         .set('Accept', 'application/json')
         .end( (error, res) => {
           if (res) {
+            let json = JSON.parse(res.text);
             if (res.error) {
               if (typeof errorCallback === "function") {
-                dispatch(errorCallback(JSON.parse(res.text)));
+                dispatch(errorCallback(json));
               } else {
                 console.log("loading json from " + url + " failed: " + error);
               }
+            } else if (json.error) {
+              if (typeof errorCallback === "function") {
+                dispatch(errorCallback(json));
+              } 
             } else {
               if (typeof successCallback === "function") {
                 dispatch(successCallback(JSON.parse(res.text)));
@@ -64,12 +69,17 @@ import noCache from 'superagent-no-cache';
         .set('Accept', 'application/json')
         .end( (error, res) => {
           if (res) {
+            let json = JSON.parse(res.text);
             if (res.error) {
               if (typeof errorCallback === "function") {
-                dispatch(errorCallback(JSON.parse(res.text)));
+                dispatch(errorCallback(json));
               } else {
                 console.log("loading json from " + url + " failed: " + error);
               }
+            } else if (json.error) {
+              if (typeof errorCallback === "function") {
+                dispatch(errorCallback(json));
+              } 
             } else {
               if (typeof successCallback === "function") {
                 dispatch(successCallback(JSON.parse(res.text)));

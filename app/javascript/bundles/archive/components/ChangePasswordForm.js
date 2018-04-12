@@ -130,7 +130,7 @@ export default class ChangePasswordForm extends React.Component {
         if (this.props.account.error) {
             return (
                 <p className='error'>
-                    {this.props.account.error}
+                    {t(this.props, this.props.account.error)}
                 </p>
             )
         }

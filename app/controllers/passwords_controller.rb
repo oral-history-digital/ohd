@@ -21,8 +21,8 @@ class PasswordsController < Devise::PasswordsController
       render json: resource
     else
       set_minimum_password_length
-      respond_with resource
-      render json: {error: t('account_activation_errors')}
+      #respond_with resource
+      render json: {active: true, error: 'devise.sessions.invalid_token'}
     end 
   end 
 

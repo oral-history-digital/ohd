@@ -52,7 +52,10 @@ const account = (state = {}, action) => {
                 //login: action.login,
             })
         case AUTH_ERROR:
-            return {error: action.error} 
+            return {
+                error: action.error,
+                active: action.active
+            } 
         case LOGOUT:
             return {} 
         case REGISTER:
