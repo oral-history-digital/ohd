@@ -1,0 +1,7 @@
+\par{\vspace*{<%= space_above %>cm}
+  {\fontsize{<%= font_size %> }{<%= (font_size * 1.2).round %>}\selectfont{<%= title %>}}
+  <% if space_below > 0 %>
+    \vspace*{<%= space_below %>cm}
+    \newline
+  <% end %>
+}

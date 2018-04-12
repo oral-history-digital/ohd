@@ -1,0 +1,35 @@
+<%= render partial: "./latex/title",
+           locals: {
+               title: latex_escape(I18n.backend.translate(@language[:locale][0..1],'table_of_contents')),
+               space_above: 3,
+               space_below: 0.01,
+               font_size: 13
+           } %>
+\par{
+  \begin{description}[leftmargin=4em,style=nextline]
+  <% main_index = 1 %>
+  <% last_main_heading = "" %>
+  <% last_main_index = 1 %>
+  <% sub_index = 1 %>
+  <% @interview.segments.with_heading.each_with_index do |heading, index| %>
+    <% if !heading.mainheading(@language[:locale]).blank? && last_main_heading != heading.mainheading(@language[:locale]) %>
+      \item[\normalfont{<%= main_index %>.}] <%= latex_escape(heading.mainheading(@language[:locale])) %>
+      <% sub_index = 1 %>
+      <% last_main_heading = heading.mainheading(@language[:locale]) %>
+      <% last_main_index = main_index %>
+      <% main_index += 1 %>
+    <% end %>
+    <% if !heading.subheading(@language[:locale]).blank? %>
+      \item[\normalfont{<%= "#{last_main_index}.#{sub_index}"%>.}] <%= latex_escape(heading.subheading(@language[:locale])) %>
+      <% sub_index += 1 %>
+    <% end %>
+  <% end %>
+  \end{description}
+}
+
+
+
+
+
+
+

@@ -252,6 +252,10 @@ class Interview < ActiveRecord::Base
     #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
   #end
 
+  def languages
+    translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2 if Project.available_locales.include?(ISO_639.find(t.locale.to_s).alpha2); mem }
+  end
+
   def to_vtt(type='transcript', tape_number=1)
     vtt = "WEBVTT\n"
     segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
