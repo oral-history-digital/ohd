@@ -80,7 +80,8 @@ const account = (state = {}, action) => {
         case ORDERED_NEW_PASSWORD:
             return Object.assign({}, state, {
                 isOrderingNewPassword: false,
-                orderNewPasswordStatus: 'ordered_new_password'
+                orderNewPasswordStatus: 'ordered_new_password',
+                error: null
             })
 
         default:
