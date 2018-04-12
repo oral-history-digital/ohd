@@ -190,6 +190,7 @@ export default class RegisterForm extends React.Component {
                     <InputContainer 
                         scope='user_registration' 
                         attribute='tos_agreement' 
+                        label='notes_on_tos_agreement'
                         type='checkbox' 
                         showErrors={this.state.showErrors}
                         validate={function(v){return v !== false && v !== '0'}} 
@@ -197,13 +198,14 @@ export default class RegisterForm extends React.Component {
                         handleErrors={this.handleErrors}
                         help={
                             <a href={conditionsLink} target="_blank" title="Externer Link">
-                                {t(this.props, 'user_registration.notes_on_tos_agreement')}
+                                {t(this.props, 'user_registration.tos_agreement')}
                             </a>
                         }
                     />
                     <InputContainer 
                         scope='user_registration' 
                         attribute='priv_agreement' 
+                        label='notes_on_priv_agreement'
                         type='checkbox' 
                         showErrors={this.state.showErrors}
                         validate={function(v){return v !== false && v !== '0'}} 
@@ -211,7 +213,7 @@ export default class RegisterForm extends React.Component {
                         handleErrors={this.handleErrors}
                         help={
                             <a href={privacyLink} target="_blank" title="Externer Link">
-                                {t(this.props, 'user_registration.notes_on_priv_agreement')}
+                                {t(this.props, 'user_registration.priv_agreement')}
                             </a>
                         }
                     />

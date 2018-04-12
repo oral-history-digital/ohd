@@ -13,7 +13,7 @@ export default class Element extends React.Component {
         let mandatory = this.props.mandatory ? ' *' : '';
         return (
             <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {t(this.props, `${this.props.scope}.${this.props.attribute}`) + mandatory}
+                {t(this.props, `${this.props.scope}.${this.props.label || this.props.attribute}`) + mandatory}
             </label>
         );
     }
