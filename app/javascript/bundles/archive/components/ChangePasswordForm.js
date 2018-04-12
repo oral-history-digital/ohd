@@ -91,14 +91,23 @@ export default class ChangePasswordForm extends React.Component {
     header() {
         if (!this.props.account.active) {
             return (
-                <h1>
-                    {t(this.props, 'devise.registrations.activate')}
-                    &nbsp;
-                    <em>{this.texts().display_name}</em>
-                </h1>
+                <div>
+                    <h1>
+                        {t(this.props, 'devise.registrations.activate')}
+                        &nbsp;
+                        <em>{this.texts().display_name}</em>
+                    </h1>
+                    <p>
+                        {t(this.props, 'devise.registrations.activate_text')}
+                    </p>
+                </div>
             );
         } else {
-            return null;
+            return (
+                <h1>
+                    {t(this.props, 'devise.passwords.change')}
+                </h1>
+            )
         }
     }
 
@@ -132,10 +141,6 @@ export default class ChangePasswordForm extends React.Component {
         return (
             <div>
                 {this.header()}
-                <p>
-                    {t(this.props, 'devise.registrations.activate_text')}
-                </p>
-                {this.userSalutation()}
                 {this.error()}
 
                 <form className='default' onSubmit={this.handleSubmit}>
