@@ -26,7 +26,7 @@ el:
       failure: "Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι \"%{reason}\"."
       success: "Επιτυχής έγκριση από το λογαριασμό %{kind}."
     passwords:
-      change: 'Ihr Passwort ändern'
+      change: 'Αλλάξτε τον κωδικό σας'
       password: "Κωδικός"
       password_confirmation: "Επανάληψη κωδικού"
       forgot: "Ξεχάσατε τον κωδικό σας?"
