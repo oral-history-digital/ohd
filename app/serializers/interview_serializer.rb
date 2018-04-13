@@ -4,6 +4,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :collection_id,
              :tape_count,
              :video,
+             :video_array,
              :media_type,
              :duration,
              :translated,
@@ -14,6 +15,7 @@ class InterviewSerializer < ActiveModel::Serializer
              #:proofread,
              :interview_date,
              :forced_labor_groups,
+             :forced_labor_fields,
              #:still_image_file_name,
              #:still_image_content_type,
              #:still_image_file_size,
@@ -25,7 +27,7 @@ class InterviewSerializer < ActiveModel::Serializer
              #:citation_timecode,
              #:indexed_at,
              :languages,
-             :languages_string,
+             :languages_array,
              :language_id,
              :lang,
              :title,
@@ -39,7 +41,8 @@ class InterviewSerializer < ActiveModel::Serializer
              :person_names,
              :place_of_interview,
              :translated,
-             :translation_lang
+             :translation_lang,
+             :year_of_birth
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -50,11 +53,38 @@ class InterviewSerializer < ActiveModel::Serializer
   has_many :segmentators, serializer: PersonSerializer
 
   def forced_labor_groups
+    # if object.respond_to? :forced_labor_groups
+    #   RegistryEntry.find(object.forced_labor_groups).map{|r| r.to_s}.join(', ')
+    # else
+    #   ''
+    # end
     if object.respond_to? :forced_labor_groups
-      RegistryEntry.find(object.forced_labor_groups).map{|r| r.to_s}.join(', ')
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(locale)}
+        mem
+      end
     else
       ''
     end
+  end
+
+  def forced_labor_fields
+    if object.respond_to? :forced_labor_fields
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(locale)}
+        mem
+      end
+    else
+      ''
+    end
+  end
+
+  def video_array
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = I18n.t(object.video ? 'media.video' : 'media.audio', locale: locale)
+      mem
+    end
+    # I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio')
   end
 
   def lang
@@ -75,9 +105,16 @@ class InterviewSerializer < ActiveModel::Serializer
     object.languages
   end
   
-    def languages_string
-      object.language.to_s + ' ' + ((object.translated)? I18n.t('status.translated') : '')
+  # def languages_string
+  #   object.language.to_s + ' ' + ((object.translated)? I18n.t('status.translated') : '')
+  # end
+
+  def languages_array
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.language.to_s(locale) + ' ' + ((object.translated)? I18n.t('status.translated', locale: locale) : '')
+      mem
     end
+  end
   
   def title
     object.localized_hash(true)
@@ -138,6 +175,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def interviewee_id
     object.interviewees.first.id
+  end
+
+  def year_of_birth
+    object.interviewees.first.year_of_birth
   end
 
   def created
