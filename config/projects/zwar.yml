@@ -133,7 +133,6 @@ default: &default
       source: 'person'
       use_as_facet: true
       values:
-        "1890s": "1890s"
         "1900s": "1900s"
         "1910s": "1910s"
         "1920s": "1920s"
