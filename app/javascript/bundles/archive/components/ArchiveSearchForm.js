@@ -68,6 +68,7 @@ export default class ArchiveSearchForm extends React.Component {
             // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
             // Thus the last checkbox would never uncheck.
             let preparedQuery = {};
+            if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
             for (let [key, value] of Object.entries(this.props.facets)) {
                 preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
             }
