@@ -54,9 +54,9 @@
 .slick-prev {
   left: 5px !important;
   z-index: 3100;
-  top: 30% !important;
-  width: 30px !important;
-  height: 30px !important;
+  top: 25% !important;
+  width: 40px !important;
+  height: 40px !important;
   @include screen-s {
     top: 50% !important;
   }
@@ -65,9 +65,9 @@
 .slick-next {
   right: 5px !important;
   z-index: 3100;
-  top: 30% !important;
-  width: 30px !important;
-  height: 30px !important;
+  top: 25% !important;
+  width: 40px !important;
+  height: 40px !important;
   @include screen-s {
     top: 50% !important;
   }
@@ -91,8 +91,10 @@
 }
 .slick-next:before,
 .slick-prev:before {
-  font-size: 30px !important;
+  font-size: 40px !important;
   line-height: 1;
-  opacity: .75;
+  opacity: .50 !important;;
   color: #fff;
 }
+
+
