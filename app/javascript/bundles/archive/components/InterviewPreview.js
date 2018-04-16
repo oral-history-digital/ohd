@@ -4,6 +4,7 @@ import {Link, hashHistory} from 'react-router-dom';
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
 import ArchiveUtils from "../../../lib/utils";
 
+import { t } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
@@ -19,14 +20,22 @@ export default class InterviewPreview extends React.Component {
         }
     }
 
+    facetToClass(facetname) {
+        // e.g. "forced-labor-groups" => "forced_labor_groups[]"
+        let query = facetname.replace(/-/g, '_') + '[]';
+        return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
+    }
+
     interviewDetails() {
         if (PROJECT === 'zwar') {
 
             return (
                 <p className={'search-result-data'}>
-                    <small>{this.props.interview.forced_labor_groups}</small><br/>
-                    <span>{this.props.interview.video}</span> <span>{this.props.interview.formatted_duration}</span><br/>
-                    <span>{this.props.interview.languages_string}</span>
+                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                    <span>{this.props.interview.languages_array[this.props.locale]}</span>
+                    <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
+                    <small className={this.facetToClass("decade-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
                 </p>
             );
         }

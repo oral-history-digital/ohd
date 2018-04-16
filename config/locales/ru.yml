@@ -100,6 +100,8 @@ ru:
   timecode: 'временной код'
   german: 'Немецкий'
 
+  year_of_birth: 'Год рождения'
+
   routes: # Pretty URLs for static pages.
     archive: 'archive'
     faq_index: 'faq'
@@ -594,6 +596,7 @@ ru:
     female: 'женщина'
     male: ' мужчина'
     decade_of_birth: 'Год рождения'
+    1890s: '1890-е годы'
     1900s: '1900-е годы'
     1910s: '1910-е годы'
     1920s: '1920-е годы'
@@ -603,3 +606,5 @@ ru:
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"
 
+  archive_results: 'Результаты поиска'
+  interviews: 'Интервью'
