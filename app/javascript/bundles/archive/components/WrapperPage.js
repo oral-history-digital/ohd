@@ -6,7 +6,6 @@ import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 
 import ResizeAware from 'react-resize-aware';
-import ArchiveUtils from '../../../lib/utils';
 
 import { PROJECT } from '../constants/archiveConstants';
 import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
@@ -186,7 +185,7 @@ export default class WrapperPage extends React.Component {
                     <li key={'external-link-' + key}>
                         <a href={link}
                             target="_blank">
-                            {ArchiveUtils.translate(props, key)}
+                            {t(props, key)}
                         </a>
                     </li>
                 )
@@ -230,7 +229,7 @@ export default class WrapperPage extends React.Component {
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={ArchiveUtils.translate(this.props, 'home')}>
+                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')}>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
                                 <span className="logo-text">{PROJECT}</span>
@@ -244,7 +243,7 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>{ArchiveUtils.translate(this.props, 'project_title')}</p>
+                            <p>{t(this.props, 'project_title')}</p>
                         </footer>
                         <div className={this.compensationCss()}/>
                     </div>
