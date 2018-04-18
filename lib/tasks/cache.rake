@@ -5,15 +5,13 @@ namespace :cache do
 
   desc 'visit start page'
   task :start => :environment do
-    Interview.all.each do |interview|
-      p "*** Getting #{interview.archive_id}"
-      uri = URI.parse("#{BASE_URL}/de/")
-      response = Net::HTTP.get_response(uri) rescue "error"
-      if response.is_a? String
-        p response
-      else
-        p "*** Got it #{response.code}"
-      end
+    p "*** Getting start page"
+    uri = URI.parse("#{BASE_URL}/de/")
+    response = Net::HTTP.get_response(uri) rescue "error"
+    if response.is_a? String
+      p response
+    else
+      p "*** Got it #{response.code}"
     end
   end
 
