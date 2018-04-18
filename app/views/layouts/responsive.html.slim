@@ -12,6 +12,8 @@ html
     /<meta name="robots" content="noindex,nofollow,noarchive" />
     /<meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
 
+    script src="https://cdn.polyfill.io/v2/polyfill.min.js"
+
     == javascript_pack_tag 'application' 
 
     == stylesheet_link_tag 'responsive'
