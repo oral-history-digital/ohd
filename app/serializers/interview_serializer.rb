@@ -170,7 +170,7 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def formatted_duration
-    Time.at(object.duration).utc.strftime("%H:%M:%S")
+    Time.at(object.duration).utc.strftime("%H:%M")
   end
 
   def interviewee_id
