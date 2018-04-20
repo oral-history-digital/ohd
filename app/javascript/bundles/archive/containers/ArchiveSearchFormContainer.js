@@ -10,7 +10,9 @@ import {
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
-  return { 
+  return {
+      allInterviewsTitles: state.search.allInterviewsTitles,
+      foundInterviews: state.search.foundInterviews,
       facets: state.search.facets,
       query: state.search.query,
       translations: state.archive.translations,

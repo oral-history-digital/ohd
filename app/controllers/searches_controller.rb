@@ -53,7 +53,7 @@ class SearchesController < BaseController
 
   def archive
     search = Interview.search do
-      fulltext params[:fulltext] 
+      fulltext params[:fulltext]
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
       end
@@ -62,12 +62,19 @@ class SearchesController < BaseController
       paginate page: params[:page] || 1, per_page: 12
     end
 
+    # https://github.com/sunspot/sunspot#stored-fields
+    all_interviews_titles = search.hits.map{ |hit| eval hit.stored(:title) }
+    # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
+    #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
+    #    ...]
+
     respond_to do |format|
       format.html do
         render :template => '/react/app.html'
       end
       format.json do
         render json: {
+            all_interviews_titles: all_interviews_titles,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,

@@ -157,6 +157,9 @@ class Interview < ActiveRecord::Base
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
     integer :collection_id, :stored => true, :references => Collection
+    
+    # in order to fast access a list of titles for the name autocomplete:
+    string :title, :stored => true
 
     text :transcript, :boost => 5 do
       indexing_interview_text = ''
@@ -181,10 +184,14 @@ class Interview < ActiveRecord::Base
       string :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
-      text :person_name, :boost => 20 do
-        build_full_title_from_name_parts(locale)
+      text :"person_name_#{locale}", :stored => true, :boost => 20 do
+        full_title(locale)
       end
     end
+    
+    # text :person_name, :boost => 20 do
+    #   build_full_title_from_name_parts(I18n.default_locale)
+    # end
 
   end
 
@@ -217,6 +224,10 @@ class Interview < ActiveRecord::Base
       mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  if Project.available_locales.include?( locale.to_s )
       mem
     end
+  end
+
+  def title
+    localized_hash(true)
   end
 
   def reverted_short_title(locale)
@@ -359,6 +370,7 @@ class Interview < ActiveRecord::Base
   def media_type
     read_attribute(:video) ? 'video' : 'audio'
   end
+
 
   def has_headings?
     segments.with_heading.count > 0 ? true : false
