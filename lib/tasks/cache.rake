@@ -1,7 +1,7 @@
 namespace :cache do
 
-  #BASE_URL = 'http://da02.cedis.fu-berlin.de:94'
-  BASE_URL = 'http://localhost:3000'
+  BASE_URL = 'https://archive.occupation-memories.org'
+  #BASE_URL = 'http://localhost:3000'
 
   desc 'visit start page'
   task :start => :environment do
