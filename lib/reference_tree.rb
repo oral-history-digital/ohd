@@ -40,13 +40,15 @@ class ReferenceTree
       children: [],
       leafe_count: 0
     }
+  rescue
+    nil
   end
 
   def find_or_create_node(array, node_id)
     result = array.select{|node| node[:id] == node_id}.first
     unless result
       result = create_node(node_id)
-      array << result
+      array << result if result
     end
     result
   end
@@ -76,8 +78,10 @@ class ReferenceTree
     @registry_references.each do |ref| 
       if ref.ref_object
         node = find_or_create_node(parent_nodes, ref.registry_entry_id)
-        node[:children] << leafe(ref.ref_object)
-        node[:leafe_count] += 1;
+        if node
+          node[:children] << leafe(ref.ref_object)
+          node[:leafe_count] += 1;
+        end
       end
     end
     parent_nodes
