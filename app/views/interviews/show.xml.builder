@@ -70,7 +70,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.language "el"
 
   xml.resourceType resourceTypeGeneral: "Audiovisual" do 
-    "Video-Interview"
+    xml.text! "Video-Interview"
   end
 
   xml.formats do
