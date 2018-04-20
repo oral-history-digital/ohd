@@ -28,6 +28,7 @@ class Segment < ActiveRecord::Base
   scope :mainheadings_until, ->(segment_id, interview_id) { 
     joins(:translations).
     where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
+    #where("(segment_translations.subheading IS NULL OR segment_translations.subheading = '')").
     where("segments.id <= ?", segment_id).
     where(interview_id: interview_id).
     includes(:tape, :translations).
@@ -37,7 +38,7 @@ class Segment < ActiveRecord::Base
     joins(:translations).
     where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
     where("segments.id <= ?", segment_id).
-    where("segments.id > ?", mainheading_id).
+    where("segments.id >= ?", mainheading_id).
     where(interview_id: interview_id).
     includes(:tape, :translations).
     order(:id)}
