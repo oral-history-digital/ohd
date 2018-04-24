@@ -51,8 +51,24 @@ class SearchesController < BaseController
     end
   end
 
+  # https://github.com/sunspot/sunspot#stored-fields
+  def all_interviews_titles
+    search = Interview.search do
+      adjust_solr_params do |params|
+        params[:rows] = Interview.all.size
+      end
+    end
+    search.hits.map{ |hit| eval hit.stored(:title) }
+    # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
+    #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
+    #    ...]
+  end
+
   def archive
     search = Interview.search do
+      adjust_solr_params do |params|
+        params[:rows] = 12
+      end
       fulltext params[:fulltext]
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
@@ -61,12 +77,6 @@ class SearchesController < BaseController
       order_by("person_name_#{locale}".to_sym, :asc)
       paginate page: params[:page] || 1, per_page: 12
     end
-
-    # https://github.com/sunspot/sunspot#stored-fields
-    all_interviews_titles = search.hits.map{ |hit| eval hit.stored(:title) }
-    # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
-    #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
-    #    ...]
 
     respond_to do |format|
       format.html do
