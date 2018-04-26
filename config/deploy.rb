@@ -32,4 +32,4 @@ append "tmp/cache"
 # set :local_user, -> { `git config user.name`.chomp }
 
 # Default value for keep_releases is 5
- set :keep_releases, 1
+ set :keep_releases, 2
