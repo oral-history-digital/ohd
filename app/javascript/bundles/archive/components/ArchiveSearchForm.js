@@ -90,9 +90,10 @@ export default class ArchiveSearchForm extends React.Component {
                     <form ref={(form) => {
                         this.form = form;
                     }} id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
-                        <input className={'search-input'} type="text" name="fulltext" value={fulltext}
+                        <input className="search-input" type="text" name="fulltext" value={fulltext}
                                placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
-                               onChange={this.handleChange}/>
+                               onChange={this.handleChange} list='inputList'/>
+                        {this.renderDataList()}
                         <input className="search-button" id="search-button"
                                title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
                         {this.renderFacets()}
@@ -126,6 +127,26 @@ export default class ArchiveSearchForm extends React.Component {
                 )
             })
         }
+    }
+
+    renderDataList() {
+        return (
+        <datalist id="inputList">
+            {this.renderOptions()}
+        </datalist>
+        );
+    }
+
+    renderOptions() {
+        return this.props.allInterviewsTitles.map((title, index) => {
+
+                return (
+                    <option key={"option-" + index}>
+                        {title[this.props.locale]}
+                    </option>
+                )
+            }
+        )
     }
 
     static contextTypes = {

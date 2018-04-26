@@ -43,6 +43,7 @@ de:
   segment: 'Ausschnitt'
   publish: 'Veröffentlichen'
   login: 'Anmelden'
+  login_name: 'Login'
   logout: 'Abmelden'
   login_errors: 'Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
   logged_in_as: 'Angemeldet als'

@@ -33,15 +33,18 @@ export default class ArchivePopup extends React.Component {
     }
 
     render() {
-        let popCss = this.props.popup.big ? 'popup big' : 'popup';
-        return (
-            <div className={this.css()} onClick={() => this.props.closeArchivePopup()} >
-                <div className={popCss} onClick={this.stopClicks}>
-                    {this.header()}
-                    <div className='content'> {this.props.popup.content} </div>
-                    {this.buttons()}
+        if (this.props.popup.show) {
+            let popCss = this.props.popup.big ? 'popup big' : 'popup';
+            return (
+                <div className={this.css()} onClick={() => this.props.closeArchivePopup()}>
+                    <div className={popCss} onClick={this.stopClicks}>
+                        {this.header()}
+                        <div className='content'> {this.props.popup.content} </div>
+                        {this.buttons()}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        return null;
     }
 }

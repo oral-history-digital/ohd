@@ -115,10 +115,6 @@ class InterviewSerializer < ActiveModel::Serializer
       mem
     end
   end
-  
-  def title
-    object.localized_hash(true)
-  end
 
   def short_title
     object.localized_hash

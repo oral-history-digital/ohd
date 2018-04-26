@@ -14,6 +14,7 @@ import {
 const initialState = {
     facets: null,
     query:{},
+    allInterviewsTitles: [],
     foundInterviews: [],
     interviews: {},
     allInterviewsCount: 0,
@@ -66,6 +67,7 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
+                allInterviewsTitles: action.allInterviewsTitles,
                 allInterviewsCount: action.allInterviewsCount,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,

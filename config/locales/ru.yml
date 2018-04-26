@@ -51,6 +51,18 @@
 
 ru:
   home: 'Главная'
+  login_page: 'Войти'
+  login: 'Войти'
+  login_name: 'логин'
+  logout_page: 'Выйти'
+  logout: 'Выйти'
+  logged_in_as: 'Вы вошли как'
+  password: 'Пароль'
+  user_content: 'Рабочая тетрадь'
+  archive_search: 'Поиск в архиве'
+  save_search: 'Сохранить поиск'
+  reset: 'отмена'
+  enter_field: 'Ключевое понятие'
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:
@@ -140,7 +152,7 @@ ru:
 
   interview_title_patterns:
     lastname_with_birthname: '%{lastname} (%{birthname})'
-    lastname_firstname: '%{lastname_with_birthname} %{first_names}'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
   user_interface:
     labels:

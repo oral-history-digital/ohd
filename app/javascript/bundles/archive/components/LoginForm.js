@@ -57,7 +57,7 @@ export default class LoginForm extends React.Component {
                 <form className={'default flyout-login'} onSubmit={this.handleSubmit}>
                     <div className='form-group'>
                         <label>
-                            {ArchiveUtils.translate(this.props, 'login')}
+                            {ArchiveUtils.translate(this.props, 'login_name')}
                         </label>
                         <input type="text" name='login' value={this.state.login} onChange={this.handleChange}/>
                     </div>
