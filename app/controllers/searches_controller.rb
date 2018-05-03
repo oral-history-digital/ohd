@@ -74,8 +74,17 @@ class SearchesController < BaseController
         with(facet.to_sym).any_of(params[facet]) if params[facet]
       end
       facet *Project.search_facets_names
-      order_by("person_name_#{locale}".to_sym, :asc)
+      order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
       paginate page: params[:page] || 1, per_page: 12
+    end
+
+    number_of_found_segments = search.hits.inject({}) do |mem, hit|
+      segsearch = Segment.search do
+        fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]
+        with(:archive_id, hit.instance.archive_id)
+      end
+      mem[hit.instance.archive_id] = segsearch.total
+      mem
     end
 
     respond_to do |format|
@@ -89,7 +98,7 @@ class SearchesController < BaseController
             result_pages_count: search.results.total_pages,
             results_count: search.total,
             interviews: search.results.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
-            #found_segments_for_interviews:  serialized_segments ,
+            found_segments_for_interviews:  number_of_found_segments,
             facets: Project.updated_search_facets(search),
         }
       end

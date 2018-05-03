@@ -25,6 +25,8 @@ en:
   email: 'E-Mail'
   change_password: 'Change password'
   archive_results: 'Search results'
+  segment_hits: 'Number of search hits'
+  no_interviews_results: 'No interviews found.'
   interview_id: 'Interview ID'
   interview_duration: 'Interview duration'
   home: 'Home'
@@ -138,6 +140,8 @@ en:
   conditions: 'Terms of use'
   privacy_protection: 'Protection of privacy'
   legal_info: 'Imprint'
+  request_for_use: 'Disclosure of Archive Materials'
+  annotation_guidelines: "Users' Annotations in the Archive"
   team: 'Team'
   contact: 'Contact'
   not_logged_in_interview_text: 'Das Video-Interview mit Vorname Nachname ist Teil des Interview-Archivs "Erinnerungen an die Okkupation in Griechenland", die rund 80 lebensgeschichtliche Interviews mit Überlebenden und Zeug(inn)en der deutschen Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland" ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen und Kapodistrias-Universität Athen.'

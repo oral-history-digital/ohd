@@ -61,6 +61,8 @@ de:
   email: 'E-Mail'
   change_password: 'Passwort ändern'
   archive_results: 'Suchergebnisse'
+  segment_hits: 'Treffer'
+  no_interviews_results: 'Keine Interviews gefunden.'
   interview_id: 'Interview-ID'
   interview_duration: 'Interviewdauer'
   home: 'Startseite'
@@ -196,6 +198,8 @@ de:
   conditions: 'Nutzungsbedingungen'
   privacy_protection: 'Datenschutz'
   legal_info: 'Impressum'
+  request_for_use: 'Herausgabe von Archivmaterial'
+  annotation_guidelines: "Nutzeranmerkungen im Archiv"
   team: 'Team'
   contact: 'Kontakt'
   help: 'Hilfe'

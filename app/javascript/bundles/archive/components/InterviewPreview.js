@@ -30,13 +30,14 @@ export default class InterviewPreview extends React.Component {
         if (PROJECT === 'zwar') {
 
             return (
-                <p className={'search-result-data'}>
+                <div className={'search-result-data'}>
                     <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
                     <span>{this.props.interview.languages_array[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
                     <small className={this.facetToClass("decade-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
-                </p>
+                    <small className={(this.props.foundSegmentsForInterview == 0)? 'hidden' : 'visible'}><br/>{t(this.props, 'segment_hits')}: {this.props.foundSegmentsForInterview}</small>
+                </div>
             );
         }
         else if (PROJECT === 'mog') {

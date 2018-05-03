@@ -41,17 +41,23 @@ export default class ArchiveSearch extends React.Component {
 
 
     foundInterviews() {
-        return (
-            this.props.foundInterviews.map((interview, index) => {
-                //let interviewData = this.props.interviews[interview.archive_id];
-                //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
-                //foundSegmentsForInterview={foundSegmentsForInterview}
-                return <InterviewPreviewContainer
-                    interview={interview}
-                    key={"interview-" + interview.id}
-                />;
-            })
-        )
+        if (this.props.foundInterviews.length == 0) {
+            return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
+        }
+        else {
+            return (
+                this.props.foundInterviews.map((interview, index) => {
+                    //let interviewData = this.props.interviews[interview.archive_id];
+                    //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
+                    //foundSegmentsForInterview={foundSegmentsForInterview}
+                    return <InterviewPreviewContainer
+                        interview={interview}
+                        foundSegmentsForInterview={this.props.foundSegmentsForInterviews[interview.archive_id]}
+                        key={"interview-" + interview.id}
+                    />;
+                })
+            )
+        }
     }
 
     handleClick(event) {
