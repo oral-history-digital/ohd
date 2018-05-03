@@ -181,14 +181,16 @@ export default class WrapperPage extends React.Component {
             let props = this.props;
             return Object.keys(this.props.externalLinks).map(function (key, index) {
                 let link = links[key][locale];
-                return (
-                    <li key={'external-link-' + key}>
-                        <a href={link}
-                            target="_blank">
-                            {t(props, key)}
-                        </a>
-                    </li>
-                )
+                if(link !== undefined) {
+                    return (
+                        <li key={'external-link-' + key}>
+                            <a href={link}
+                                target="_blank">
+                                {t(props, key)}
+                            </a>
+                        </li>
+                    )
+                }
             })
         }
     }
@@ -225,7 +227,7 @@ export default class WrapperPage extends React.Component {
 
         return (
             <ResizeAware onResize={this.onResize}>
-                <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div>
+                {/* <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div> */}
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
