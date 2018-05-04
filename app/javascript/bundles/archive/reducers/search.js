@@ -43,7 +43,7 @@ const search = (state = initialState, action) => {
             })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
-                query: action.params
+                query: Object.assign({}, state.query, action.params)
             })
         case RESET_QUERY:
             return Object.assign({}, state, {
