@@ -28,13 +28,17 @@ export default class Facet extends React.Component {
     handleClick(event) {
         if (event !== undefined) event.preventDefault();
         if (this.state.open) {
-            this.setState({['open']: false});
-            this.setState({['class']: "accordion"});
-            this.setState({['panelClass']: "panel"});
+            this.setState({
+                ['open']: false,
+                ['class']: "accordion",
+                ['panelClass']: "panel"
+            });
         } else {
-            this.setState({['open']: true});
-            this.setState({['class']: "accordion active"});
-            this.setState({['panelClass']: "panel open"});
+            this.setState({
+                ['open']: true,
+                ['class']: "accordion active",
+                ['panelClass']: "panel open"
+            });
         }
     }
 
