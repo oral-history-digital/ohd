@@ -35,7 +35,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleReset(event) {
         this.form.reset();
-        this.props.resetQuery({});
+        this.props.resetQuery();
         let url = `/${this.props.locale}/searches/archive`;
         this.props.searchInArchive(url, {});
     }
@@ -87,20 +87,36 @@ export default class ArchiveSearchForm extends React.Component {
             let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
             return(
                 <div>
-                    <form ref={(form) => {
-                        this.form = form;
-                    }} id="archiveSearchForm" className={'flyout-search'} onSubmit={this.handleSubmit}>
-                        <input className="search-input" type="text" name="fulltext" value={fulltext}
-                               placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
-                               onChange={this.handleChange} list='inputList'/>
+                    <form 
+                        ref={(form) => { this.form = form; }} 
+                        id="archiveSearchForm" 
+                        className={'flyout-search'} 
+                        onSubmit={this.handleSubmit}
+                    >
+                        <input 
+                            className="search-input" 
+                            type="text" 
+                            name="fulltext" 
+                            value={fulltext}
+                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
+                            onChange={this.handleChange} 
+                            list='inputList'
+                        />
                         {this.renderDataList()}
-                        <input className="search-button" id="search-button"
-                               title={ArchiveUtils.translate(this.props, 'archive_search')} type="submit" value=""/>
+                        <input 
+                            className="search-button" 
+                            id="search-button"
+                            title={ArchiveUtils.translate(this.props, 'archive_search')} 
+                            type="submit" 
+                            value=""
+                        />
                         {this.renderFacets()}
                     </form>
 
-                    <button className={'reset'}
-                            onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}</button>
+                    <button 
+                        className={'reset'}
+                        onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}
+                    </button>
                 </div>
 
             )
@@ -131,9 +147,9 @@ export default class ArchiveSearchForm extends React.Component {
 
     renderDataList() {
         return (
-        <datalist id="inputList">
-            {this.renderOptions()}
-        </datalist>
+            <datalist id="inputList">
+                {this.renderOptions()}
+            </datalist>
         );
     }
 
