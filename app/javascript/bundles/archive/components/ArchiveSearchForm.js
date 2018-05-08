@@ -13,7 +13,6 @@ export default class ArchiveSearchForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
-        this.handleInputList = this.handleInputList.bind(this);
     }
 
     componentDidMount() {
@@ -40,43 +39,44 @@ export default class ArchiveSearchForm extends React.Component {
         this.props.searchInArchive(url, {});
     }
 
-    handleInputList(event) {
-        for (let i = 0; i < event.currentTarget.list.children.length; i++) {
-            if (event.currentTarget.list.children[i].innerText === event.currentTarget.value) {
-                let facet = event.currentTarget.name;
-                let facetValue = event.currentTarget.list.children[i].dataset[facet];
-                let params = serialize(this.form, {hash: true});
-                for (let [key, value] of Object.entries(this.props.facets)) {
-                    if (key == facet) {
-                        params[key] = [facetValue];
-                    }
-                }
-                this.submit(params);
-                break;
-            }
-        }
-    }
-
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
         let params = serialize(this.form, {hash: true});
+        params = this.getValueFromDataList(params, event);
+        params = this.prepareQuery(params);
         this.submit(params);
+    }
+
+    getValueFromDataList(params, event) {
+        if (event && event.currentTarget.list) {
+            for (let i = 0; i < event.currentTarget.list.children.length; i++) {
+                if (event.currentTarget.list.children[i].innerText === event.currentTarget.value) {
+                    let facet = event.currentTarget.name;
+                    let facetValue = event.currentTarget.list.children[i].dataset[facet];
+                    params[facet] = [facetValue];
+                }
+            }
+        }
+        return params;
+    }
+
+    prepareQuery(params) {
+        // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
+        // Thus the last checkbox would never uncheck.
+        // Send list values. e.g. key[] = ["a", "b"]
+        let preparedQuery = {};
+        if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
+        for (let [key, value] of Object.entries(this.props.facets)) {
+            preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
+        }
+        return preparedQuery;
     }
 
     submit(params) {
         if (!this.props.isArchiveSearching) {
-            // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
-            // Thus the last checkbox would never uncheck.
-            let preparedQuery = {};
-            if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
-            for (let [key, value] of Object.entries(this.props.facets)) {
-                preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
-            }
-            if (params) {
-                let url = `/${this.props.locale}/searches/archive`;
-                this.props.searchInArchive(url, preparedQuery);
-                this.context.router.history.push(url);
-            }
+            let url = `/${this.props.locale}/searches/archive`;
+            this.props.searchInArchive(url, params);
+            this.context.router.history.push(url);
         }
     }
 
@@ -136,7 +136,6 @@ export default class ArchiveSearchForm extends React.Component {
                         facet={facet}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
-                        handleInputList={this.handleInputList}
                     />
                 )
             })

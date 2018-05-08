@@ -56,7 +56,7 @@ export default class Facet extends React.Component {
                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
                            name={this.props.facet}
                            onInput={this.handleInputForInputList}
-                           onChange={this.props.handleInputList}/>
+                           onChange={this.props.handleSubmit}/>
                     <datalist id="inputList">
                         {this.renderOptions()}
                     </datalist>
