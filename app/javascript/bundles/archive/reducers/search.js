@@ -67,7 +67,7 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
-                allInterviewsTitles: action.allInterviewsTitles,
+                //allInterviewsTitles: action.allInterviewsTitles,
                 allInterviewsCount: action.allInterviewsCount,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,

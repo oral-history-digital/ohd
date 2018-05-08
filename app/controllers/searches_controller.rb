@@ -84,7 +84,7 @@ class SearchesController < BaseController
       end
       format.json do
         render json: {
-            all_interviews_titles: all_interviews_titles,
+            #all_interviews_titles: all_interviews_titles,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
