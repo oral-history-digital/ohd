@@ -42,22 +42,22 @@ class Interview < ActiveRecord::Base
            :source => :person,
            :through => :contributions
 
-  has_many :interview_contributors,
-  #has_many :interviewers,
+  #has_many :interview_contributors,
+  has_many :interviewers,
            -> {where("contributions.contribution_type = '#{Project.interviewer_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :transcript_contributors,
-  #has_many :transcriptors,
+  #has_many :transcript_contributors,
+  has_many :transcriptors,
            -> {where("contributions.contribution_type = '#{Project.transcription_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :translation_contributors,
-  #has_many :translators,
+  #has_many :translation_contributors,
+  has_many :translators,
            -> {where("contributions.contribution_type = '#{Project.translation_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
@@ -76,22 +76,22 @@ class Interview < ActiveRecord::Base
            :through => :contributions
 
 
-  has_many :proofreading_contributors,
-  #has_many :proofreaders,
+  #has_many :proofreading_contributors,
+  has_many :proofreaders,
            -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :segmentation_contributors,
-  #has_many :segmentators,
+  #has_many :segmentation_contributors,
+  has_many :segmentators,
            -> {where("contributions.contribution_type = '#{Project.indexation_contribution_type}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  has_many :documentation_contributors,
-  #has_many :researchers,
+  #has_many :documentation_contributors,
+  has_many :researchers,
            -> {where("contributions.contribution_type = 'research'")},
            :class_name => 'Person',
            :source => :person,
@@ -131,12 +131,12 @@ class Interview < ActiveRecord::Base
            through: :segment_registry_references,
            source: :registry_entry
            
-  #translates :observations
-  # ZWAR_MIGRATE: the following translates is necessary to migrate zwar correctly
-  translates :first_name, :other_first_names, :last_name, :birth_name,
-             :return_date, :forced_labor_details,
-             :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+  translates :observations
+  # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
+  #translates :first_name, :other_first_names, :last_name, :birth_name,
+             #:return_date, :forced_labor_details,
+             #:interviewers, :transcriptors, :translators,
+             #:proofreaders, :segmentators, :researchers
 
   #validate :has_standard_name
 
@@ -255,12 +255,12 @@ class Interview < ActiveRecord::Base
   end
 
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
-  #Project.person_search_facets.each do |facet|
-    #define_method facet['id'] do 
-      ## TODO: what if there are more intervviewees?
-      #interviewees.first.send(facet['id'].to_sym).split(', ')
-    #end
-  #end
+  Project.person_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: what if there are more intervviewees?
+      interviewees.first.send(facet['id'].to_sym).split(', ')
+    end
+  end
   #def facet_category_ids(entry_code)
     #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
   #end
