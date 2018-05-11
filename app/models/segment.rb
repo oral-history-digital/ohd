@@ -52,7 +52,8 @@ class Segment < ActiveRecord::Base
   }
 
 
-  translates :mainheading, :subheading
+  # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
+  #translates :mainheading, :subheading, :text
 
   validates_presence_of :timecode, :media_id
   validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
