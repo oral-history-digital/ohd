@@ -66,9 +66,9 @@ class SearchesController < BaseController
 
   def archive
     search = Interview.search do
-      adjust_solr_params do |params|
-        params[:rows] = 12
-      end
+      #adjust_solr_params do |params|
+        #params[:rows] = 12
+      #end
       fulltext params[:fulltext]
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
@@ -93,7 +93,7 @@ class SearchesController < BaseController
       end
       format.json do
         render json: {
-            all_interviews_titles: all_interviews_titles,
+            #all_interviews_titles: all_interviews_titles,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,

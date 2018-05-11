@@ -44,7 +44,7 @@ const search = (state = initialState, action) => {
             })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
-                query: action.params
+                query: Object.assign({}, state.query, action.params)
             })
         case RESET_QUERY:
             return Object.assign({}, state, {
@@ -68,7 +68,7 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isArchiveSearching: false,
                 foundInterviews: action.foundInterviews,
-                allInterviewsTitles: action.allInterviewsTitles,
+                //allInterviewsTitles: action.allInterviewsTitles,
                 allInterviewsCount: action.allInterviewsCount,
                 foundSegmentsForInterviews: action.foundSegmentsForInterviews,
                 resultPagesCount: action.resultPagesCount,

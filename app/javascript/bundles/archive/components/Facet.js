@@ -6,7 +6,6 @@ export default class Facet extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.handleInputForInputList = this.handleInputForInputList.bind(this);
         let openState = false;
         if (this.checkedFacets()) {
@@ -28,13 +27,17 @@ export default class Facet extends React.Component {
     handleClick(event) {
         if (event !== undefined) event.preventDefault();
         if (this.state.open) {
-            this.setState({['open']: false});
-            this.setState({['class']: "accordion"});
-            this.setState({['panelClass']: "panel"});
+            this.setState({
+                ['open']: false,
+                ['class']: "accordion",
+                ['panelClass']: "panel"
+            });
         } else {
-            this.setState({['open']: true});
-            this.setState({['class']: "accordion active"});
-            this.setState({['panelClass']: "panel open"});
+            this.setState({
+                ['open']: true,
+                ['class']: "accordion active",
+                ['panelClass']: "panel open"
+            });
         }
     }
 
@@ -53,7 +56,7 @@ export default class Facet extends React.Component {
                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
                            name={this.props.facet}
                            onInput={this.handleInputForInputList}
-                           onChange={this.props.handleInputList}/>
+                           onChange={this.props.handleSubmit}/>
                     <datalist id="inputList">
                         {this.renderOptions()}
                     </datalist>
@@ -79,11 +82,6 @@ export default class Facet extends React.Component {
                 {this.panelContent()}
             </div>
         )
-    }
-
-
-    onChange(event) {
-        this.props.handleSubmit();
     }
 
     renderOptions() {
@@ -131,7 +129,7 @@ export default class Facet extends React.Component {
                                id={this.props.facet + "_" + subfacetId}
                                name={this.props.facet + "[]"} checked={checkedState} type="checkbox"
                                value={subfacetId}
-                               onChange={this.onChange}>
+                               onChange={() => this.props.handleSubmit()}>
                         </input>
                         <label htmlFor={this.props.facet + "_" + subfacetId}>
                             {subfacet.descriptor[locale]}
