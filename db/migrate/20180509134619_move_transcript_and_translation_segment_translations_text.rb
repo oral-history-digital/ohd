@@ -1,14 +1,14 @@
 class MoveTranscriptAndTranslationSegmentTranslationsText < ActiveRecord::Migration[5.0]
   def change
-    #reversible do |dir|
-      #dir.up do
-        #Segment.add_translation_fields! text: :text
-      #end
+    reversible do |dir|
+      dir.up do
+        Segment.add_translation_fields! text: :text
+      end
 
-      #dir.down do
-        #remove_column :segment_translations, :text
-      #end
-    #end
+      dir.down do
+        remove_column :segment_translations, :text
+      end
+    end
 
     Segment.find_each do |segment|
       transcript = connection.quote segment.transcript
