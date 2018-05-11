@@ -276,7 +276,7 @@ class Interview < ActiveRecord::Base
   end
 
   def transcript_locales
-    language.code.split('/')
+    language.code.split(/[\/-]/)
   end
 
   def right_to_left
