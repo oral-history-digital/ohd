@@ -1,4 +1,8 @@
 de:
+  de: 'deutsch'
+  en: 'englisch'
+  ru: 'russisch'
+  el: 'griechisch'
   observation: 'Interviewsituation'
   tape: 'Band'
   legend_title: 'Legende der Transkriptionszeichen'

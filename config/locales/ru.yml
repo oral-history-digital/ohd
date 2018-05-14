@@ -50,6 +50,10 @@
 # to the end ('German ').
 
 ru:
+  de: 'german'
+  en: 'english'
+  ru: 'russian'
+  el: 'greek'
   home: 'Главная'
   login_page: 'Войти'
   login: 'Войти'
