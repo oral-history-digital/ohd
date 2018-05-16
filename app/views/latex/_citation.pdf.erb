@@ -1,6 +1,6 @@
 <%= render partial: "./latex/title",
            locals: {
-               title: "#{latex_escape(I18n.backend.translate(@language[:locale][0..1],'citation'))}:",
+               title: "#{latex_escape(I18n.backend.translate(@alpha2_locale,'citation'))}:",
                space_above: 6,
                space_below: 0,
                font_size: 13
@@ -8,10 +8,10 @@
 
 \par{
   <%= "#{interviewee_name},
-  #{I18n.backend.translate(@language[:locale][0..1], 'interview')}
+  #{I18n.backend.translate(@alpha2_locale, 'interview')}
   #{@interview.archive_id},
   #{@interview.created_at.strftime("%d.%m.%Y")},
-  #{I18n.backend.translate(@language[:locale][0..1], 'interview_archive')} #{Project.project_name[@language[:locale][0..1]]}, #{Project.archive_domain},
-  #{I18n.backend.translate(@language[:locale][0..1], 'doi')}: #{Project.project_doi + @interview.archive_id},
-  (#{I18n.backend.translate(@language[:locale][0..1], 'called')}: #{Date.today.strftime("%d.%m.%Y")})" %>
+  #{I18n.backend.translate(@alpha2_locale, 'interview_archive')} #{Project.project_name[@alpha2_locale]}, #{Project.archive_domain},
+  #{I18n.backend.translate(@alpha2_locale, 'doi')}: #{Project.project_doi + @interview.archive_id},
+  (#{I18n.backend.translate(@alpha2_locale, 'called')}: #{Date.today.strftime("%d.%m.%Y")})" %>
 }
