@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180509134619) do
+ActiveRecord::Schema.define(version: 20180514100218) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20180509134619) do
     t.string   "gender"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "typology"
   end
 
   create_table "person_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -206,6 +207,7 @@ ActiveRecord::Schema.define(version: 20180509134619) do
     t.text     "descriptor",       limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "notes",            limit: 65535
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: { descriptor: 255 }, using: :btree
     t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true, using: :btree
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id", using: :btree
