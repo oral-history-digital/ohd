@@ -58,3 +58,13 @@ export function t(props, key) {
     }
 }
 
+export function fullname(props, person) {
+    if (person) {
+        try {
+            return `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+        } catch (e) {
+            debugger;
+            return `person ${person.id} has no name(s) in ${props.locale}`;
+        }
+    }
+}
