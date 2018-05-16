@@ -12,7 +12,12 @@ export default class InterviewInfo extends React.Component {
 
     fullName(person) {
         if (person) {
-            return `${person.names[this.props.locale].firstname} ${person.names[this.props.locale].lastname}`;
+            try {
+                return `${person.names[this.props.locale].firstname} ${person.names[this.props.locale].lastname}`;
+            } catch (e) {
+                debugger;
+                return `person ${person.id} has no name(s) in ${this.props.locale}`;
+            }
         }
     }
 
@@ -31,9 +36,8 @@ export default class InterviewInfo extends React.Component {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
-    download(transcript = true) {
-        let lang = transcript ? this.props.interview.lang : "de";
-        let textKey = transcript ? 'transcript' : 'translation';
+    download(lang) {
+        let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
         return (
             <p>
                 <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
@@ -89,8 +93,8 @@ export default class InterviewInfo extends React.Component {
                 {this.content(ArchiveUtils.translate(this.props, 'segmentation'), this.segmentators(), "")}
                 {this.content(ArchiveUtils.translate(this.props, 'id'), this.props.archiveId, "")}
                 <AuthShowContainer ifLoggedIn={true}>
-                    {this.download()}
-                    {this.download(false)}
+                    {this.download(this.props.interview.lang)}
+                    {this.download(this.props.locale)}
                 </AuthShowContainer>
             </div>
         );

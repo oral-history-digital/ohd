@@ -52,6 +52,10 @@ export default class Transcript extends React.Component {
         return this.props.data && this.props.data.segments || [];
     }
 
+    translated() {
+        return this.segments().length > 0 && this.segments()[0].transcripts.hasOwnProperty(this.props.locale)
+    }
+
     transcript(){
         let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.shownSegmentsFor(this.props.transcriptTime);
         let speakerId;
@@ -84,7 +88,7 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (!this.props.data.interview.translated && !this.props.originalLocale){
+        if (!this.translated() && !this.props.originalLocale){
             return this.emptyTranscript();
         } else {
             return this.transcript();

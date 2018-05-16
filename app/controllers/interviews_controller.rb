@@ -34,28 +34,20 @@ class InterviewsController < BaseController
         render plain: json
       end
       format.vtt do
-        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:type]}-#{params[:tape_number]}" do
-          @interview.to_vtt(params[:type], params[:tape_number])
+        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
+          @interview.to_vtt(params[:lang], params[:tape_number])
         end
         render plain: vtt
       end
       format.pdf do
-        locale = params[:lang]
-        letter3_locale = ISO_639.find(locale).send(Project.alpha)
-        transcript_type = "translation"
-        if @interview.language.code == letter3_locale
-          transcript_type = "transcript"
-        end
-        @language = {locale:letter3_locale, type: transcript_type}
+        @alpha2_locale = params[:lang]
+        @project_locale = ISO_639.find(params[:lang]).send(Project.alpha)
         if params[:kind] == "history"
           pdf = render_to_string(:template => '/latex/history.pdf.erb', :layout => 'latex.pdf.erbtex')
-          send_data pdf, filename: "#{@interview.archive_id}_biography_#{locale}.pdf", :type => "application/pdf",
-                    :disposition => "attachment"
+          send_data pdf, filename: "#{@interview.archive_id}_biography_#{params[:lang]}.pdf", :type => "application/pdf", :disposition => "attachment"
         elsif params[:kind] == "interview"
-
           pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-          send_data pdf, filename: "#{@interview.archive_id}_#{transcript_type}_#{locale}.pdf", :type => "application/pdf",
-                    :disposition => "attachment"
+          send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@alpha2_locale}.pdf", :type => "application/pdf", :disposition => "attachment"
         end
 
       end

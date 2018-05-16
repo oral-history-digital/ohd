@@ -29,6 +29,15 @@ export default class PersonData extends React.Component {
         }
     }
 
+    download(lang) {
+        return (
+            <a className='flyout-download-link-lang'
+                href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + lang + '&kind=history'}>
+                <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
+                <span>{lang}</span>
+            </a>
+        )
+    }
 
     render() {
         let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
@@ -40,17 +49,10 @@ export default class PersonData extends React.Component {
                 {this.placeOfBirth()}
                 {this.typologies()}
                 <AuthShowContainer ifLoggedIn={true}>
-                    <p><span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
-                        <a className='flyout-download-link-lang'
-                            href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=de&kind=history'}>
-                            <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
-                            <span>de</span>
-                        </a>
-                        <a className='flyout-download-link-lang'
-                            href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=el&kind=history'}>
-                            <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
-                            <span>el</span>
-                        </a>
+                    <p>
+                        <span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
+                        {this.download(this.props.interview.lang)}
+                        {this.download(this.props.locale)}
                     </p>
                 </AuthShowContainer>
             </div>
