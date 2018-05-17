@@ -66,12 +66,12 @@ export default class InterviewPreview extends React.Component {
 
     typologies(){
         let interviewee =  this.props.interview.interviewees[0];
-        if (interviewee) {
-            if (interviewee.typology && interviewee.typology[this.props.locale].length > 1) {
+        if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
+            //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
                 return this.content(ArchiveUtils.translate(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
-            } else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
-                return this.content(ArchiveUtils.translate(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
-            }
+            //} else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
+                //return this.content(ArchiveUtils.translate(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
+            //}
         }
     }
 
