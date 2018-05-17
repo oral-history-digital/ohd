@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
 
@@ -38,7 +38,7 @@ export default class ArchiveLocations extends React.Component {
         if (ref.descriptor[this.props.locale]) {
             return (
                 <div>
-                    {`${ArchiveUtils.translate(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
+                    {`${t(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
                 </div>
             )
         }

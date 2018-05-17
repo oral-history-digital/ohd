@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class PersonData extends React.Component {
@@ -16,16 +16,16 @@ export default class PersonData extends React.Component {
 
     placeOfBirth(){
         if (this.props.interviewee.place_of_birth){
-            return this.content(ArchiveUtils.translate(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale], "" );
+            return this.content(t(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.descriptor[this.props.locale], "" );
         }
     }
 
 
     typologies(){
         if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length > 1){
-            return this.content(ArchiveUtils.translate(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
+            return this.content(t(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
         } else if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length == 1){
-            return this.content(ArchiveUtils.translate(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
+            return this.content(t(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
         }
     }
 
@@ -33,7 +33,7 @@ export default class PersonData extends React.Component {
         return (
             <a className='flyout-download-link-lang'
                 href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + lang + '&kind=history'}>
-                <i className="fa fa-download flyout-content-ico" title={ArchiveUtils.translate(this.props, 'download')}></i>
+                <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                 <span>{lang}</span>
             </a>
         )
@@ -44,13 +44,13 @@ export default class PersonData extends React.Component {
         return (
             <div>
 
-                {this.content(ArchiveUtils.translate(this.props, 'interviewee_name'), fullName, "")}
-                {this.content(ArchiveUtils.translate(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
+                {this.content(t(this.props, 'interviewee_name'), fullName, "")}
+                {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
                 {this.placeOfBirth()}
                 {this.typologies()}
                 <AuthShowContainer ifLoggedIn={true}>
                     <p>
-                        <span className="flyout-content-label">{ArchiveUtils.translate(this.props, 'history')}:</span>
+                        <span className="flyout-content-label">{t(this.props, 'history')}:</span>
                         {this.download(this.props.interview.lang)}
                         {this.download(this.props.locale)}
                     </p>

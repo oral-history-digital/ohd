@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 
 export default class InterviewSearchForm extends React.Component {
@@ -31,7 +31,7 @@ export default class InterviewSearchForm extends React.Component {
                                className="search-input"
                                value={this.state.value}
                                onChange={this.handleChange}
-                               placeholder={ArchiveUtils.translate(this.props, 'enter_search_field')}/>
+                               placeholder={t(this.props, 'enter_search_field')}/>
                     </label>
                     <input type="submit" value="" className={'search-button'}/>
                 </form>

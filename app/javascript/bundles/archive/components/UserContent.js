@@ -3,7 +3,7 @@ import {Link, hashHistory} from 'react-router-dom';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class UserContent extends React.Component {
 
@@ -32,7 +32,7 @@ export default class UserContent extends React.Component {
 
     workflowState() {
         if (this.props.data.type === 'UserAnnotation') {
-            return ArchiveUtils.translate(this.props, this.props.data.workflow_state);
+            return t(this.props, this.props.data.workflow_state);
         }
     }
 
@@ -40,9 +40,9 @@ export default class UserContent extends React.Component {
         let titleKey = "edit" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title={ArchiveUtils.translate(this.props, 'edit')}
+            title={t(this.props, 'edit')}
             onClick={() => this.props.openArchivePopup({
-                title: ArchiveUtils.translate(this.props, titleKey ),
+                title: t(this.props, titleKey ),
                 content: this.userContentForm()
             })}
         >
@@ -53,9 +53,9 @@ export default class UserContent extends React.Component {
     delete() {
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title={ArchiveUtils.translate(this.props, 'delete')}
+            title={t(this.props, 'delete')}
             onClick={() => this.props.openArchivePopup({
-                title: ArchiveUtils.translate(this.props, 'delete_user_content'),
+                title: t(this.props, 'delete_user_content'),
                 content: this.userContentDelete()
             })}
         >
@@ -71,7 +71,7 @@ export default class UserContent extends React.Component {
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}>
-                    {ArchiveUtils.translate(this.props, callKey)}
+                    {t(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'UserAnnotation') {
@@ -81,7 +81,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.handleSegmentClick(this.props.data.properties.tape_nbr, this.props.data.properties.time - 30)}
                     to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
-                    {ArchiveUtils.translate(this.props, callKey)}
+                    {t(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
@@ -92,7 +92,7 @@ export default class UserContent extends React.Component {
                     onClick={() => this.props.searchInArchive(url, this.props.data.properties)}
                     to={'/' + this.props.locale + '/searches/archive'}
                 >
-                    {ArchiveUtils.translate(this.props, callKey)}
+                    {t(this.props, callKey)}
                 </Link>
             </p>
         } else {
@@ -103,7 +103,7 @@ export default class UserContent extends React.Component {
     paramsInfo(){
         if  (this.props.data.type === 'Search') {
             return  <p>
-                <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'query')}:</span>
+                <span className='flyout-content-label'>{t(this.props, 'query')}:</span>
                 <span className='flyout-content-data'>{ArchiveUtils.queryToText(this.props.data.properties, this.props)}</span>
             </p>
         } else {
@@ -117,7 +117,7 @@ export default class UserContent extends React.Component {
             <div>
                 <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
                 <p>
-                    <span className='flyout-content-label'>{ArchiveUtils.translate(this.props, 'description')}:</span>
+                    <span className='flyout-content-label'>{t(this.props, 'description')}:</span>
                     <span className='flyout-content-data'>{this.props.data.description}</span>
                 </p>
                 {this.workflowState()}

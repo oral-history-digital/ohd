@@ -4,7 +4,7 @@ import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 
 export default class ArchiveSearchForm extends React.Component {
@@ -98,13 +98,13 @@ export default class ArchiveSearchForm extends React.Component {
                             type="text" 
                             name="fulltext" 
                             value={fulltext}
-                            placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
+                            placeholder={t(this.props, 'enter_field')}
                             onChange={this.handleChange} 
                         />
                         <input 
                             className="search-button" 
                             id="search-button"
-                            title={ArchiveUtils.translate(this.props, 'archive_search')} 
+                            title={t(this.props, 'archive_search')} 
                             type="submit" 
                             value=""
                         />
@@ -113,7 +113,7 @@ export default class ArchiveSearchForm extends React.Component {
 
                     <button 
                         className={'reset'}
-                        onClick={this.handleReset}>{ArchiveUtils.translate(this.props, 'reset')}
+                        onClick={this.handleReset}>{t(this.props, 'reset')}
                     </button>
                 </div>
 

@@ -7,10 +7,6 @@ var ArchiveUtils = {
         return state.locations[state.archive.archiveId];
     },
 
-    translate: function (props, key) {
-        return props.translations && props.translations[props.locale] && props.translations[props.locale][key];
-    },
-
     queryToText(query, props) {
         let queryText = "";
         for (let [k, value] of Object.entries(query)) {
