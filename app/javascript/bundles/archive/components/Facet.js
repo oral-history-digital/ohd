@@ -85,40 +85,36 @@ export default class Facet extends React.Component {
     }
 
     renderOptions() {
-        let subfacetsArray = Object.keys(this.props.data.subfacets).map(key => [key, this.props.data.subfacets[key]]);
-        let locale = this.props.locale;
-        subfacetsArray.sort(function (a, b) {
-            return (a[1].descriptor[locale] > b[1].descriptor[locale]) ? 1 : ((b[1].descriptor[locale] > a[1].descriptor[locale]) ? -1 : 0);
+        //let length = this.state.inputValue.length ;
+        //let initals = subfacetsArray.map(i => localDescriptor(i).slice(0,length).toLowerCase());
+        //let firstIndex = initals.indexOf(this.state.inputValue.toLowerCase());
+        //let lastIndex = length === 0 ? 10 : initals.lastIndexOf(this.state.inputValue.toLowerCase());
+
+        //return this.sortedSubfacets().slice(firstIndex, lastIndex + 1).map((subfacetId, index) => {
+        return this.sortedSubfacets().slice(firstIndex, lastIndex + 1).map((subfacetId, index) => {
+            const dataProps = {[`data-${this.props.facet}`]: `${subfacetId}`};
+            return (
+                <option key={"subfacet-" + index} {...dataProps}>
+                {this.localDescriptor(subfacetId)}
+                </option>
+            )
+        })
+    }
+
+    localDescriptor(subfacetId) {
+        return this.props.data.subfacets[subfacetId].descriptor[this.props.locale];
+    }
+
+    sortedSubfacets() {
+        let _this = this;
+        return Object.keys(this.props.data.subfacets).sort(function (a, b) {
+            return (_this.localDescriptor(a) > _this.localDescriptor(b)) ? 1 : ((_this.localDescriptor(b) > _this.localDescriptor(a)) ? -1 : 0);
         });
-        let length = this.state.inputValue.length ;
-        let initals = subfacetsArray.map(i => i[1].descriptor[locale].slice(0,length).toLowerCase());
-        let firstIndex = initals.indexOf(this.state.inputValue.toLowerCase());
-        let lastIndex = length == 0 ? 10 : initals.lastIndexOf(this.state.inputValue.toLowerCase());
-        return subfacetsArray.slice(firstIndex, lastIndex + 1).map((subfacetElement, index) => {
-                let subfacetId = subfacetElement[0];
-                let subfacet = this.props.data.subfacets[subfacetId];
-                const dataProps = {[`data-${this.props.facet}`]: `${subfacetId}`};
-                return (
-                    <option key={"subfacet-" + index} {...dataProps}>
-                        {subfacet.descriptor[locale]}
-                    </option>
-                )
-            }
-        )
     }
 
     renderSubfacets() {
-        let subfacetsArray = Object.keys(this.props.data.subfacets).map(key => [key, this.props.data.subfacets[key]]);
-        let locale = this.props.locale;
-        if (this.props.inputField) {
-            subfacetsArray.sort(function (a, b) {
-                return (a[1].descriptor[locale] > b[1].descriptor[locale]) ? 1 : ((b[1].descriptor[locale] > a[1].descriptor[locale]) ? -1 : 0);
-            });
-        }
-        return subfacetsArray.map((subfacetElement, index) => {
-            let subfacetId = subfacetElement[0];
-            let subfacet = this.props.data.subfacets[subfacetId];
-            if ((this.props.inputField && subfacet.count) || !this.props.inputField ) {
+        return this.sortedSubfacets().map((subfacetId, index) => {
+            if ((this.props.inputField && this.props.data.subfacets[subfacetId].count) || !this.props.inputField ) {
                 let checkedState = false;
                 if (this.checkedFacets()) {
                     checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
@@ -132,7 +128,7 @@ export default class Facet extends React.Component {
                                onChange={() => this.props.handleSubmit()}>
                         </input>
                         <label htmlFor={this.props.facet + "_" + subfacetId}>
-                            {subfacet.descriptor[locale]}
+                            {this.localDescriptor(subfacetId)}
                         </label>
                     </div>
                 )
