@@ -52,11 +52,10 @@ class Segment < ActiveRecord::Base
   }
 
 
-  translates :mainheading, :subheading
+  # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
+  translates :mainheading, :subheading, :text
 
   validates_presence_of :timecode, :media_id
-  validates_presence_of :translation, :if => Proc.new{|i| i.transcript.blank? }
-  validates_presence_of :transcript, :if => Proc.new{|i| i.translation.blank? }
 
   # NOTE: NO UNIQUENESS OF MEDIA_ID!
   # due to segment splitting as captions, the media id can be repeated!!
@@ -87,8 +86,23 @@ class Segment < ActiveRecord::Base
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :timecode
-    text :transcript, stored: true # needs to be stored to enable highlighting
-    text :translation, stored: true # needs to be stored to enable highlighting
+
+    (Project.available_locales + [:orig]).each do |locale|
+      text :"text_#{locale}", stored: true
+    end
+    #dynamic_string :transcripts, stored: true  do # needs to be stored to enable highlighting
+      #translations.inject({}) do |mem, translation| 
+        #mem["text_#{ISO_639.find(translation.locale.to_s).alpha2}"] = translation.text
+        #mem
+      #end
+    #end
+    #
+    #
+    # the following won`t run because of undefined method `translations' for #<Sunspot::DSL::Fields:0x00000006b9f518>
+    #translations.each do |translation| 
+      #text :"#{translation.text}", stored: true # needs to be stored to enable highlighting
+    #end
+
     #text :mainheading, :boost => 10 do
       #mainheading = ''
       #translations.each do |translation|
@@ -118,6 +132,17 @@ class Segment < ActiveRecord::Base
       #end.join(' ')
     #end
     
+  end
+
+  (Project.available_locales + [:orig]).each do |locale|
+    define_method "text_#{locale}" do 
+      locale = orig_lang if locale == :orig
+      text(ISO_639.find(locale).send(Project.alpha))
+    end
+  end
+
+  def orig_lang
+    interview.language.first_code
   end
 
   def archive_id
@@ -178,25 +203,15 @@ class Segment < ActiveRecord::Base
     interview.alias_names || ''
   end
 
-  def transcript
-    filter_annotation( read_attribute(:transcript) ).to_s.gsub("&nbsp;", " ").strip
+  def transcripts
+    translations.inject({}) do |mem, translation|
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text.sub(/^\:+\s*\:*/,"").strip()
+      mem
+    end
   end
 
-  # The following method leads to errors in the globalize-gem:
-  #
-  # NoMethodError: undefined method `locale' for "":String
-  #   from /home/grgr/.rvm/gems/ruby-2.4.0@zwar/bundler/gems/globalize-6f9d3f38d132/lib/globalize/active_record/instance_methods.rb:146:in `save'
-  #
-  def translation
-    filter_annotation( read_attribute(:translation) ).to_s.gsub("&nbsp;", " ").strip
-  end
-
-  def joined_transcript_and_translation
-    ((transcript || '') + ' ' + (translation || ''))
-  end
-
-  def as_vtt_subtitles(type)
-    raw_segment_text = send(type)
+  def as_vtt_subtitles(lang)
+    raw_segment_text = text(lang)
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
@@ -207,8 +222,8 @@ class Segment < ActiveRecord::Base
     #Annotation.for_segment(self)
   #end
 
-  def speaker_changed(segment_type=transcript)
-    speaker_change || segment_type[0] == ":"
+  def speaker_changed
+    speaker_change || translations.first.text[0] == ":"
   end
 
   # returns the segment that leads the chapter

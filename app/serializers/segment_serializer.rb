@@ -20,6 +20,8 @@ class SegmentSerializer < ActiveModel::Serializer
              :speaker_id
              #:speaker_is_interviewee
 
+  belongs_to :speaking_person, serializer: PersonSerializer
+
   def speaker_changed
    object.speaker_changed
   end
@@ -36,18 +38,6 @@ class SegmentSerializer < ActiveModel::Serializer
   def tape_nbr
     #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
     object.tape.number
-  end
-
-  def transcripts
-    # TODO: fit this to zwar (migrate transcript and translation to a :text-attribute in segment_translations)
-    s_transcript = object.transcript
-    s_translation =   object.translation
-    transcript = s_transcript[0] == ":" ? s_transcript.sub(/^\:+\s*\:*/,"").strip() :  s_transcript
-    translation = s_translation[0] == ":" ? s_translation.sub(/^\:+\s*\:*/,"").strip() :  s_translation
-     {
-       de:translation,
-       "#{ISO_639.find(object.interview.language.code).alpha2}": transcript
-     }
   end
 
   def mainheading

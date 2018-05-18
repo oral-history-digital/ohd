@@ -1,47 +1,47 @@
 <% unless @interview.place_of_interview.nil? %>
-  \par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'place_of_interview')}: #{@interview.place_of_interview.localized_hash[@language[:locale][0..1]]}" ) %>}
+  \par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'place_of_interview')}: #{@interview.place_of_interview.localized_hash[@alpha2_locale]}" ) %>}
 <% end %>
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'date')}: #{@interview.created_at.strftime("%d.%m.%Y")}" ) %>}
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'language')}: #{I18n.backend.translate(@language[:locale][0..1],'language_' + @interview.languages.join)}" ) %>}
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'duration')}: #{Time.at(@interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'date')}: #{@interview.created_at.strftime("%d.%m.%Y")}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'language')}: #{I18n.backend.translate(@alpha2_locale,'language_' + @interview.languages.join)}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'duration')}: #{Time.at(@interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
 
 <% if (@interview.tapes.count > 1) %>
-  \par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'tapes')}: #{@interview.tapes.count}") %>}
+  \par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'tapes')}: #{@interview.tapes.count}") %>}
 <% end %>
 
 
 <% unless @interview.interviewers.blank? %>
-  <% first_name = "#{@interview.interviewers.first.translations.where(locale: @language[:locale]).first.first_name}" %>
-  <% last_name = "#{@interview.interviewers.first.translations.where(locale: @language[:locale]).first.last_name}" %>
+  <% first_name = "#{@interview.interviewers.first.translations.where(locale: @project_locale).first.first_name}" %>
+  <% last_name = "#{@interview.interviewers.first.translations.where(locale: @project_locale).first.last_name}" %>
   <% name = "#{first_name} #{last_name}" %>
 
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'interview')}: #{name}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'interview')}: #{name}" ) %>}
 <% end %>
 <% unless @interview.cinematographers.blank? %>
-<% first_name = "#{@interview.cinematographers.first.translations.where(locale: @language[:locale]).first.first_name}" %>
-<% last_name = "#{@interview.cinematographers.first.translations.where(locale: @language[:locale]).first.last_name}" %>
+<% first_name = "#{@interview.cinematographers.first.translations.where(locale: @project_locale).first.first_name}" %>
+<% last_name = "#{@interview.cinematographers.first.translations.where(locale: @project_locale).first.last_name}" %>
 <% name = "#{first_name} #{last_name}" %>
 
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'camera')}: #{name}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'camera')}: #{name}" ) %>}
 <% end %>
 <% unless @interview.transcriptors.blank? %>
-<% first_name = "#{@interview.transcriptors.first.translations.where(locale: @language[:locale]).first.first_name}" %>
-<% last_name = "#{@interview.transcriptors.first.translations.where(locale: @language[:locale]).first.last_name}" %>
+<% first_name = "#{@interview.transcriptors.first.translations.where(locale: @project_locale).first.first_name}" %>
+<% last_name = "#{@interview.transcriptors.first.translations.where(locale: @project_locale).first.last_name}" %>
 <% name = "#{first_name} #{last_name}" %>
 
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'transcript')}: #{name}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'transcript')}: #{name}" ) %>}
 <% end %>
 <% unless @interview.translators.blank? %>
-<% first_name = "#{@interview.translators.first.translations.where(locale: @language[:locale]).first.first_name}" %>
-<% last_name = "#{@interview.translators.first.translations.where(locale: @language[:locale]).first.last_name}" %>
+<% first_name = "#{@interview.translators.first.translations.where(locale: @project_locale).first.first_name}" %>
+<% last_name = "#{@interview.translators.first.translations.where(locale: @project_locale).first.last_name}" %>
 <% name = "#{first_name} #{last_name}" %>
 
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'translation')}: #{name}" ) %>}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'translation')}: #{name}" ) %>}
 <% end %>
 <% unless @interview.segmentators.blank? %>
-<% names = @interview.segmentators.map{|i| "#{i.translations.where(locale: 'deu').first.first_name} #{i.translations.where(locale: 'deu').first.last_name}" }.join(", ") %>
+<% names = @interview.segmentators.map{|i| "#{i.translations.where(locale: @project_locale).first.first_name} #{i.translations.where(locale: @project_locale).first.last_name}" }.join(", ") %>
 
-\par{<%= latex_escape( "#{I18n.backend.translate(@language[:locale][0..1],'segmentation')}: #{names}" ) %> \newline}
+\par{<%= latex_escape( "#{I18n.backend.translate(@alpha2_locale,'segmentation')}: #{names}" ) %> \newline}
 <% end %>
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from "../../../lib/utils";
+import { t } from "../../../lib/utils";
 
 export default class Facet extends React.Component {
 
@@ -53,7 +53,7 @@ export default class Facet extends React.Component {
                     <input className='input-list-search'
                            autoComplete="off"
                            list="inputList"
-                           placeholder={ArchiveUtils.translate(this.props, 'enter_field')}
+                           placeholder={t(this.props, 'enter_field')}
                            name={this.props.facet}
                            onInput={this.handleInputForInputList}
                            onChange={this.props.handleSubmit}/>

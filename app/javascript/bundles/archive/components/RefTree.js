@@ -1,7 +1,7 @@
 import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
-import ArchiveUtils from "../../../lib/utils";
+import { t } from "../../../lib/utils";
 
 export default class RefTree extends React.Component {
 
@@ -38,7 +38,7 @@ export default class RefTree extends React.Component {
 
     emptyRefTree() {
         if(this.props.translations !== undefined) {
-            return ArchiveUtils.translate(this.props, 'without_ref_tree');
+            return t(this.props, 'without_ref_tree');
         }
         return null;
     }

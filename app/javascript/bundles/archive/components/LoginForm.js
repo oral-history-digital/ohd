@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class LoginForm extends React.Component {
     constructor(props) {
@@ -42,7 +42,7 @@ export default class LoginForm extends React.Component {
     }
 
     setErrors() {
-        this.setState({errors: ArchiveUtils.translate(this.props, 'login_errors')})
+        this.setState({errors: t(this.props, 'login_errors')})
     }
 
     clearErrors() {
@@ -50,26 +50,26 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-        let submitLabel = ArchiveUtils.translate(this.props, 'login') ? ArchiveUtils.translate(this.props, 'login') : "";
+        let submitLabel = t(this.props, 'login') ? t(this.props, 'login') : "";
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
                 <form className={'default flyout-login'} onSubmit={this.handleSubmit}>
                     <div className='form-group'>
                         <label>
-                            {ArchiveUtils.translate(this.props, 'login_name')}
+                            {t(this.props, 'login_name')}
                         </label>
                         <input type="text" name='login' value={this.state.login} onChange={this.handleChange}/>
                     </div>
                     <div className='form-group'>
                         <label>
-                            {ArchiveUtils.translate(this.props, 'password')}
+                            {t(this.props, 'password')}
                         </label>
                         <input type='password' name='password' value={this.state.password} onChange={this.handleChange}/>
                     </div>
                     {/*<div className='form-group'>*/}
                         {/*<label>*/}
-                            {/*{ArchiveUtils.translate(this.props, 'remember')}*/}
+                            {/*{t(this.props, 'remember')}*/}
                         {/*</label>*/}
                         {/*<input type='checkbox' name='remember_me' value={this.state.rememberMe} onChange={this.handleChange}/>*/}
                     {/*</div>*/}

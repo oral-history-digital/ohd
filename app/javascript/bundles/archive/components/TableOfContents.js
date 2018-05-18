@@ -1,6 +1,6 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
-import ArchiveUtils from "../../../lib/utils";
+import { t } from "../../../lib/utils";
 
 export default class TableOfContents extends React.Component {
 
@@ -98,7 +98,7 @@ export default class TableOfContents extends React.Component {
     emptyHeadingsNote(headings) {
         if (headings.length <= 0) {
             if (this.props.translations !== undefined) {
-                return ArchiveUtils.translate(this.props, 'without_index');
+                return t(this.props, 'without_index');
             }
         }
     }

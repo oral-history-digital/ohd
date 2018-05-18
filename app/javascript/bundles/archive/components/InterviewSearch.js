@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
 
@@ -49,7 +49,7 @@ export default class InterviewSearch extends React.Component {
         return (
             <div>
                 <InterviewSearchFormContainer />
-                <div className="content-search-legend"><p>{count} {ArchiveUtils.translate(this.props, 'archive_results')}</p></div>
+                <div className="content-search-legend"><p>{count} {t(this.props, 'archive_results')}</p></div>
                 {this.renderSegments()}
             </div>
         );

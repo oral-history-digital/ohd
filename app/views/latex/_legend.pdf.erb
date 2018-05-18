@@ -1,27 +1,27 @@
 <%= render partial: "./latex/title",
            locals: {
-               title: latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_title')),
+               title: latex_escape(I18n.backend.translate(@alpha2_locale,'legend_title')),
                space_above: 0,
                space_below: 0.01,
                font_size: 13
            } %>
 \par{
   \begin{description}[leftmargin=4em,style=nextline]
-    \item[\normalfont{( )}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_missed')) %>
+    \item[\normalfont{( )}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_missed')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{[.]}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_comment')) %>
+    \item[\normalfont{[.]}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_comment')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{(-)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_1')) %>
+    \item[\normalfont{(-)}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_pause_1')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{(--)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_2')) %>
+    \item[\normalfont{(--)}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_pause_2')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{(---)}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_3')) %>
+    \item[\normalfont{(---)}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_pause_3')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{(4)}] Text.<%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_pause_4')) %>
+    \item[\normalfont{(4)}] Text.<%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_pause_4')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{\_}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_assert')) %>
+    \item[\normalfont{\_}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_assert')) %>
     \vspace*{0.2cm}
-    \item[\normalfont{'}] <%= latex_escape(I18n.backend.translate(@language[:locale][0..1],'legend_omission')) %>
+    \item[\normalfont{'}] <%= latex_escape(I18n.backend.translate(@alpha2_locale,'legend_omission')) %>
   \end{description}
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from "../../../lib/utils";
+import { t, fullname } from "../../../lib/utils";
 
 export default class Segment extends React.Component {
 
@@ -40,7 +40,7 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.interview.translation_lang;
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         return this.props.data.transcripts[locale]
     }
 
@@ -118,19 +118,6 @@ export default class Segment extends React.Component {
         }
     }
 
-    speakerName(){
-        let name = "";
-        if (this.props.data.speaker_id){
-            let id = this.props.data.speaker_id;
-            let locale = this.props.locale;
-            let speaker = this.props.interview.person_names[id];
-            if (speaker) {
-                name = `${speaker[locale].firstname} ${speaker[locale].lastname}`
-            }
-        }
-        return name;
-    }
-
     speakerChanged() {
         return (this.props.data.speaker_changed || this.props.data.speakerIdChanged);
     }
@@ -138,9 +125,8 @@ export default class Segment extends React.Component {
     speakerIcon() {
         if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
-            let title = this.speakerName();
             return (
-                <div className="content-trans-speaker-link" title={title}
+                <div className="content-trans-speaker-link" title={fullname(this.props.data.speaking_person)}
                      onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                     <i className={speakerCss}></i>
                 </div>
@@ -156,11 +142,11 @@ export default class Segment extends React.Component {
             let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>
-                    <div className={annotionCss} title={ArchiveUtils.translate(this.props, 'annotations')}
+                    <div className={annotionCss} title={t(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
                     </div>
-                    <div className={referenceCss} title={ArchiveUtils.translate(this.props, 'keywords')}
+                    <div className={referenceCss} title={t(this.props, 'keywords')}
                          onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
                     </div>
                 </div>

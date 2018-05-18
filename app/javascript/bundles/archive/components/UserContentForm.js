@@ -1,5 +1,5 @@
 import React from 'react';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class UserContentForm extends React.Component {
@@ -75,7 +75,7 @@ export default class UserContentForm extends React.Component {
     }
 
     setErrors() {
-        this.setState({errors: ArchiveUtils.translate(this.props, 'user_content_errors')});
+        this.setState({errors: t(this.props, 'user_content_errors')});
     }
 
     clearErrors() {
@@ -99,7 +99,7 @@ export default class UserContentForm extends React.Component {
             return <div>
                 <div className='popup-segment-nav-container'>
                     <div className='popup-segment-nav-label'>
-                        {ArchiveUtils.translate(this.props, 'segment')}
+                        {t(this.props, 'segment')}
                     </div>
                     <div className='popup-segment-nav'>
                         {this.previousSegment()}
@@ -163,7 +163,7 @@ export default class UserContentForm extends React.Component {
 
     label(term) {
         return <label className={'publish-label'}>
-            {ArchiveUtils.translate(this.props, term)}
+            {t(this.props, term)}
         </label>
     }
 
@@ -175,7 +175,7 @@ export default class UserContentForm extends React.Component {
                 let key = 'conditions';
                 let link = links[key][locale];
                 return <div className={'annotation-confirmation-text help-block'}
-                            dangerouslySetInnerHTML={{__html: ArchiveUtils.translate(this.props, 'annotation_confirmation')}}>
+                            dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation')}}>
                 </div>
             }
         }
@@ -183,7 +183,7 @@ export default class UserContentForm extends React.Component {
 
 
     render() {
-        let submitLabel = this.props.submitLabel ? this.props.submitLabel : ArchiveUtils.translate(this.props, 'save');
+        let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>

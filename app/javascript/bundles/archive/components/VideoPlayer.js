@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class VideoPlayer extends React.Component {
@@ -72,11 +72,11 @@ export default class VideoPlayer extends React.Component {
 
     rememberInterviewLink() {
         return <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-            title: ArchiveUtils.translate(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale],
+            title: t(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale],
             content: this.rememberInterviewForm()
         })}>
             <i className="fa fa-star"></i>
-            <span>{ArchiveUtils.translate(this.props, 'save_interview_reference')}</span>
+            <span>{t(this.props, 'save_interview_reference')}</span>
         </div>
     }
 
@@ -95,18 +95,18 @@ export default class VideoPlayer extends React.Component {
             reference_type='Interview'
             media_id={this.props.interview.archive_id}
             type='InterviewReference'
-            submitLabel={ArchiveUtils.translate(this.props, 'notice')}
+            submitLabel={t(this.props, 'notice')}
         />
     }
 
     annotateOnSegmentLink() {
         if (this.segments().filter(s => s.transcripts[this.props.locale]).length) {
             return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-                title: ArchiveUtils.translate(this.props, 'save_user_annotation'),
+                title: t(this.props, 'save_user_annotation'),
                 content: this.annotateOnSegmentForm(this.actualSegmentIndex())
             })}>
                 <i className="fa fa-pencil"></i>
-                <span>{ArchiveUtils.translate(this.props, 'save_user_annotation')}</span>
+                <span>{t(this.props, 'save_user_annotation')}</span>
             </div>
         }
     }
@@ -181,6 +181,20 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
+    subtitles() {
+        return this.props.locales.map((locale, index) => {
+            return (
+                <track 
+                    key={`subtitle-${locale}`}
+                    kind="subtitles"
+                    label={t(this.props, locale)}
+                    src={this.props.archiveId + '.vtt?lang=' + locale + '&tape_number=' + this.props.tape}
+                    srcLang={locale}
+                />
+            )
+        })
+    }
+
     handleVideoClick(e) {
         if(this.video) {
             if(navigator.userAgent.indexOf("Chrome") != -1 )
@@ -234,16 +248,7 @@ export default class VideoPlayer extends React.Component {
                             onClick={(e) => this.handleVideoClick(e)}
                             src={this.src()}
                         >
-                            <track kind="subtitles"
-                                   label={ArchiveUtils.translate(this.props, 'transcript')}
-                                   src={this.props.archiveId + '.vtt?type=transcript&tape_number=' + this.props.tape}
-                                   srcLang="el"
-                            />
-                            <track kind="subtitles"
-                                   label={ArchiveUtils.translate(this.props, 'translation')}
-                                   src={this.props.archiveId + '.vtt?type=translation&tape_number=' + this.props.tape}
-                                   srcLang="de"
-                            />
+                           {this.subtitles()}
                         </video>
                     </div>
                 </div>
