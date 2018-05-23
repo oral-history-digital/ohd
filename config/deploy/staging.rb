@@ -3,11 +3,19 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
+server "160.45.168.44", user: "deploy", roles: %w{app db web}#, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
+set :branch, :development
 
+set :deploy_to, "/home/deploy/applications/staging/occupation-memories.org"
+
+# rbenv settings
+set :rbenv_type, :system
+set :rbenv_ruby, '2.4.0'
+set :rbenv_custom_path, '/opt/rbenv'
 
 # role-based syntax
 # ==================

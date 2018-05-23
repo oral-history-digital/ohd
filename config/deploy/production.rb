@@ -7,6 +7,9 @@ server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app db web}#, my_pro
 #server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_property: :other_value
 #server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
 
+# Default branch is :master
+# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+set :branch, :stable_mog
 
 set :stage, :production
 set :user, 'deploy'
