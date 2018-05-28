@@ -35,6 +35,9 @@ en:
   login_page: 'Login'
   logout_page: 'Logout'
   interview: 'Interview'
+  edit_interview:
+    new: 'New interview'
+    edit: 'Edit interview'
   user_content: 'Workbook'
   user_content_errors: 'Please enter title and description (minimum 2 letters)'
   archive_search: 'Search the archive'

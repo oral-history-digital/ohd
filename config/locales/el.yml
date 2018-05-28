@@ -71,6 +71,9 @@ el:
   login_page: 'Είσοδος'
   logout_page: 'Έξοδος'
   interview: 'Συνέντευξη'
+  edit_interview:
+    new: 'New interview'
+    edit: 'Edit interview'
   user_content: 'Προσωπικός φάκελος χρήστη'
   user_content_errors: 'Παρακαλώ δώστε τον τίτλο και την περιγραφή'
   archive_search: 'Αναζήτηση στο Αρχείο'

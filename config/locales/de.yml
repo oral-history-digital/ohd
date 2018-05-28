@@ -72,6 +72,9 @@ de:
   login_page: 'Login'
   logout_page: 'Logout'
   interview: 'Interview'
+  edit_interview:
+    new: 'Neues Interview'
+    edit: 'Interview bearbeiten'
   user_content: 'Arbeitsmappe'
   user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
   archive_search: 'Suche im Archiv'

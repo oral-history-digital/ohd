@@ -54,6 +54,9 @@ ru:
   en: 'english'
   ru: 'russian'
   el: 'greek'
+  edit_interview:
+    new: 'New interview'
+    edit: 'Edit interview'
   language_rude: 'Russisch mit deutscher Übersetzung'
   home: 'Главная'
   login_page: 'Войти'
