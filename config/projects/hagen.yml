@@ -27,17 +27,17 @@ default: &default
   project_domain: 'da02.cedis.fu-berlin.de'
 
   external_links:
-    nutzungsbedingungen:
+    conditions:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.shtml'
     nutzungsantrag:
       de: 'https://deutsches-gedaechtnis.fernuni-hagen.de/archiv/registrieren?locale=de'
-    datenschutzbestimmungen:
+    privacy_protection:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.shtml'
     annotation_guidelines:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/archivnutzung.shtml'
     team:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.shtml'
-    kontakt:
+    contact:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.shtml'
     impressum:
       de: 'http://www.fernuni-hagen.de/impressum.shtml'
