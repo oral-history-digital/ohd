@@ -1,0 +1,29 @@
+.home-text
+  h1 Das Online-Archiv "Zwangsarbeit 1939-1945"
+
+  - @interview = Interview.random_featured
+  div style=("float: left; margin: 0 15px 0 0;")
+    a href=("#{interview_path(:id => @interview.archive_id)}") 
+      img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "http://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
+      h6
+        = @interview.short_title(I18n.locale)
+        br/
+        = t(@interview.video? ? 'media.video_interview' : 'media.audio_interview')
+        | , #{@interview.language.to_s}
+
+  p
+    | Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
+      von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern.
+      Es setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
+      finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
+      in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
+      Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
+      für Bildung und Wissenschaft zur Verfügung.
+  p
+    | Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller Länge, die
+      wir unter unseren Nutzungsbedingungen und Datenschutzbestimmungen im Web bereitstellen
+      können. 
+
+  p
+    | Aus Gründen des Persönlichkeitsschutzes müssen Sie zur Benutzung des Archivs "Zwangsarbeit
+      1939-1945" angemeldet sein und die Nutzungsbedingungen sowie die Datenschutzbestimmungen anerkennen. 
