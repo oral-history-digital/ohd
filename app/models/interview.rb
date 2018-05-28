@@ -194,7 +194,7 @@ class Interview < ActiveRecord::Base
   scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def self.random_featured
-    researched.with_still_image.order("RAND()").first
+    researched.with_still_image.order("RAND()").first || first
   end
 
   # referenced by archive_id
