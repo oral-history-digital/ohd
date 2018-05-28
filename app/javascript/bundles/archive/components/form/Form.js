@@ -77,6 +77,12 @@ export default class Form extends React.Component {
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
 
+        // set defaults for the possibillity to shorten elements list
+        if (!props.elementType) {
+            props['elementType'] = 'input';
+            props['type'] = 'text';
+        }
+
         return React.createElement(this.components()[props.elementType], props);
     }
 
