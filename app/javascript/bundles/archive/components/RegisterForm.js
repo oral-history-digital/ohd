@@ -11,7 +11,6 @@ export default class RegisterForm extends React.Component {
             conditionsLink = this.props.externalLinks.conditions[this.props.locale];
             privacyLink = this.props.externalLinks.privacy_protection[this.props.locale];
         }
-        debugger;
 
         return (
             <Form 
