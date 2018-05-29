@@ -604,6 +604,7 @@ ru:
     collection_id: 'Частичные собрания'
     language_id: 'Язык'
     age: 'Возраст'
+    media_type: 'media_type'
     gender: 'Пол'
     female: 'женщина'
     male: ' мужчина'

@@ -92,6 +92,17 @@ module Project
               subfacets
             end
           }
+        when 'media_type'
+          mem[facet['id'].to_sym] = {
+            descriptor: localized_hash_for("search_facets", facet['id']),
+            subfacets: Interview.all.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet['id'])] = {
+                descriptor: interview.localized_hash_for_media_type,
+                count: 0
+              }
+              subfacets
+            end
+          }
         end
         mem.with_indifferent_access
       end

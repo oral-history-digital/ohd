@@ -113,8 +113,8 @@ default: &default
     - id: 'language_id'
       source: 'language'
       use_as_facet: true
-    - id: 'forced_labor_groups'
-      source: 'registry_entry'
+    - id: 'media_type'
+      source: 'media_type'
       use_as_facet: true
     - id: 'gender'
       source: 'person'
@@ -130,6 +130,9 @@ default: &default
         "1910s": "1910s"
         "1920s": "1920s"
         "1930s": "1930s"
+    - id: 'forced_labor_groups'
+      source: 'registry_entry'
+      use_as_facet: true
     - id: 'forced_labor_fields'
       source: 'registry_entry'
       use_as_facet: true

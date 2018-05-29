@@ -195,6 +195,7 @@ en:
     1920s: '1920s'
     1930s: '1930s'
     1940s: '1940s'
+    media_type: 'media type'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'
