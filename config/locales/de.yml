@@ -245,7 +245,7 @@ de:
     interview_id: 'Interviews'
     archive_id: 'Name'
     collection_id: 'Teilsammlung'
-    media_type: 'Audio/Video'
+    media_type: 'Medientyp'
     language_id: 'Sprache'
     age: 'Alter'
     decade_of_birth: 'Geburtsjahr'
