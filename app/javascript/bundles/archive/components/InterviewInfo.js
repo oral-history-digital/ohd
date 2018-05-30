@@ -68,25 +68,29 @@ export default class InterviewInfo extends React.Component {
 
 
     render() {
-        return (
-            <div>
-                {this.content(t(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
-                {this.placeOfInterview()}
-                {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
-                {this.tapes()}
-                {this.language()}
-                {this.content(t(this.props, 'interview'), fullname(this.props.interviewer), "")}
-                {this.content(t(this.props, 'camera'), fullname(this.props.cinematographer), "")}
-                {this.content(t(this.props, 'transcript'), fullname(this.props.transcriptor), "")}
-                {this.content(t(this.props, 'translation'), fullname(this.props.translator), "")}
-                {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
-                {this.content(t(this.props, 'id'), this.props.archiveId, "")}
-                <AuthShowContainer ifLoggedIn={true}>
-                    {this.download(this.props.interview.lang)}
-                    {this.download(this.props.locale)}
-                </AuthShowContainer>
-            </div>
-        );
+        if (this.props.interview) {
+            return (
+                <div>
+                    {this.content(t(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
+                    {this.placeOfInterview()}
+                    {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
+                    {this.tapes()}
+                    {this.language()}
+                    {this.content(t(this.props, 'interview'), fullname(this.props.interviewer), "")}
+                    {this.content(t(this.props, 'camera'), fullname(this.props.cinematographer), "")}
+                    {this.content(t(this.props, 'transcript'), fullname(this.props.transcriptor), "")}
+                    {this.content(t(this.props, 'translation'), fullname(this.props.translator), "")}
+                    {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
+                    {this.content(t(this.props, 'id'), this.props.archiveId, "")}
+                    <AuthShowContainer ifLoggedIn={true}>
+                        {this.download(this.props.interview.lang)}
+                        {this.download(this.props.locale)}
+                    </AuthShowContainer>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
 
