@@ -23,7 +23,7 @@ export default class Input extends React.Component {
     }
 
     handleChange(event) {
-        const value =  event.target.value;
+        const value =  event.target.files ? event.target.files[0] : event.target.value;
         const name =  event.target.name;
 
         this.props.handleChange(name, value);
