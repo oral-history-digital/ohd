@@ -5,6 +5,7 @@ import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
 
 import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
+import EditInterviewContainer from '../containers/EditInterviewContainer';
 import SearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
 import ActivateAccountContainer from '../containers/ActivateAccountContainer';
@@ -16,6 +17,8 @@ const App = (props) => (
     <BrowserRouter history={hashHistory}>
       <div>
           <Route exact path="/:locale" component={HomeContainer} />
+          <Route path="/:locale/interviews/new" component={EditInterviewContainer} />
+          <Route path="/:locale/interviews/:archiveId/edit" component={EditInterviewContainer} />
           <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/searches/archive" component={SearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />

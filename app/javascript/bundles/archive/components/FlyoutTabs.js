@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
+import EditInterviewContainer from '../containers/EditInterviewContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
@@ -50,6 +51,14 @@ export default class FlyoutTabs extends React.Component {
             // interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
             this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 4) {
+            // new interview
+            this.context.router.history.push(`/${this.props.locale}/interviews/new`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 5) {
+            // edit interview
+            this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}/edit`);
+            this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
         }
@@ -96,6 +105,32 @@ export default class FlyoutTabs extends React.Component {
         })
     }
 
+    editTabs() {
+        // TODO: this is a fast unsafe way to decide whether user is admin!
+        // make it better!!
+        if (this.props.account.admin) {
+            return [
+                <Tab className='flyout-tab' key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
+                <Tab className='flyout-tab' key='edit_interview.edit'>{t(this.props, 'edit_interview.edit')}</Tab>
+            ];
+        }
+    }
+
+    editTabPanels() {
+        // TODO: this is a fast unsafe way to decide whether user is admin!
+        // make it better!!
+        if (this.props.account.admin) {
+            return [
+                <TabPanel key={'tabpanel-new-interview'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit_interview.new')}</div>
+                </TabPanel>,
+                <TabPanel key={'tabpanel-edit-interview'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit_interview.edit')}</div>
+                </TabPanel>,
+            ];
+        }
+    }
+
     renderMap() {
         if (this.props.account.email) {
             return <InterviewDataContainer
@@ -133,6 +168,7 @@ export default class FlyoutTabs extends React.Component {
                         {this.localeTabs()}
                         <Tab className='flyout-tab'>{t(this.props, 'archive_search')}</Tab>
                         <Tab className={interviewCSS}>{t(this.props, 'interview')}</Tab>
+                        {this.editTabs()}
                         <Tab className={userContentCSS}>{t(this.props, 'user_content')}</Tab>
                     </TabList>
 
@@ -164,6 +200,7 @@ export default class FlyoutTabs extends React.Component {
                                 content={<CitationInfoContainer/>}/>
                         </div>
                     </TabPanel>
+                    {this.editTabPanels()}
                     <TabPanel>
                         <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
                         <div className='flyout-sub-tabs-container flyout-folder'>

@@ -44,6 +44,30 @@ export function fetchInterview(archiveId) {
   }
 }
 
+//const updateInterview = (params) => ({
+    //type: UPDATE_INTERVIEW,
+    //params: params,
+//});
+
+//const removeInterview = (id) => ({
+    //type: REMOVE_INTERVIEW,
+    //id: id,
+//});
+
+export function submitInterview(params) {
+    if(params.id) {
+        return dispatch => {
+            //dispatch(updateInterview(params))
+            Loader.put(`${INTERVIEW_URL}/${params.id}`, params, dispatch, null);
+        }
+    } else {
+        return dispatch => {
+            Loader.post(INTERVIEW_URL, params, dispatch, null);
+            //Loader.post(INTERVIEW_URL, params, dispatch, receiveInterview);
+        }
+    }
+}
+
 export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
