@@ -4,6 +4,37 @@ class InterviewsController < BaseController
 
   skip_before_action :authenticate_user_account!, only: :show
 
+  def new
+    #@interview = Interview.create params[:interview]
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: :ok }
+    end
+  end
+
+  def create
+    transcript_file = params[:interview].delete(:data)
+    @interview = Interview.create interview_params
+    @interview.transcript = transcript_file #.path
+    respond_to do |format|
+      format.json { render json: @interview }
+    end
+  end
+
+  def edit
+    respond_to do |format|
+      format.html { render :show }
+    end
+  end
+
+  def update
+    @interview = Interview.find params[:id]
+    @interview.update_attributes params[:interview]
+    respond_to do |format|
+      format.json { render json: @interview }
+    end
+  end
+
   def show
     #LatexToPdf.config.merge! :command => 'xetex', :arguments => ['-etex'], :parse_runs => 2
     @interview = Interview.find_by_archive_id(params[:id])
@@ -54,6 +85,29 @@ class InterviewsController < BaseController
       format.html
       format.xml
     end
+  end
+
+  private
+
+  def interview_params
+    params.require(:interview).
+      permit(
+        'archive_id',
+        'language',
+        'collection',
+        'interview_date',
+        'video',
+        'translated',
+        'published',
+        'agreement',
+        'appellation',
+        'first_name',
+        'last_name',
+        'middle_names',
+        'birth_name',
+        'gender',
+        'date_of_birth',
+    )
   end
 
 end
