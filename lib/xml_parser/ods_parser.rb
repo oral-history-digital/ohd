@@ -37,7 +37,8 @@ module XMLParser
 
     def parse
       if @document.valid?
-        @parser.parse(loadzipfile(@file))
+        @parser.parse(File.open(@file.tempfile))
+        #@parser.parse(loadzipfile(@file))
         @document.parse_result
       else
         raise 'No parser, filename or tape/interview defined.'
@@ -65,8 +66,8 @@ module XMLParser
         @skip_first_row = options[:skip_first_row]
         @silent = options[:silent]
         if @valid_file
-          @file = file
-          @filename_tokens = (File.basename(file.downcase, '.ods') || '').split('_')
+          @file = file #.tempfile
+          @filename_tokens = (File.basename(file.original_filename, '.ods') || '').split('_')
           @parse_result = nil
         end
         super()
@@ -139,23 +140,24 @@ module XMLParser
       # check if given file is valid
       def check_file(file, filename_parts)
         # check file exists
-        unless  File.exist?(file)
+        unless  File.exist?(file.tempfile)
           Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' not Found'
           puts 'Datei ' + file + ' konnte nicht gefunden werden!'
           return false
         end
-        if File.directory?(file)
+        if File.directory?(file.tempfile)
           # skip directories silently
           return false
         end
         # check file-extension
-        unless File.extname(file).downcase == '.ods'
+        unless File.extname(file.tempfile).downcase == '.ods'
           Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' no .ods-file'
           puts 'Datei ' + file + ' keine .ods-Datei!'
           return false
         end
         # check file-name structure
-        unless File.split(file)[1].split('_').size == filename_parts
+        #unless File.split(file)[1].split('_').size == filename_parts
+        unless file.original_filename.split('_').size == filename_parts
           Rails.logger.debug 'XMLParser::ODSParser - File ' + file + ' filename structure failed'
           puts 'Datei ' + file + ' Dateistruktur fehlerhaft!'
           return false
@@ -232,9 +234,9 @@ module XMLParser
           @importable_fields = TRANSCRIPT_FIELDS
 
           tape_media_id = "#{@filename_tokens[0]}_#{@filename_tokens[1]}_#{@filename_tokens[2]}".upcase
-          @tape = Tape.find_or_initialize_by_media_id(tape_media_id) do |tape|
+          @tape = Tape.find_or_initialize_by(media_id: tape_media_id) do |tape|
             tape.interview_id = @interview.id
-            tape.filename = @file.split('/').last
+            tape.filename = @file.original_filename.split('/').last
           end
           raise @tape.errors.full_messages.join('; ') + '.' unless @tape.valid?
 
