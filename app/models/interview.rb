@@ -131,6 +131,10 @@ class Interview < ActiveRecord::Base
            through: :segment_registry_references,
            source: :registry_entry
            
+  has_many :checklist_items,
+           -> {order('item_type ASC')},
+           dependent: :destroy
+
   translates :observations
   # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
   #translates :first_name, :other_first_names, :last_name, :birth_name,
@@ -279,6 +283,13 @@ class Interview < ActiveRecord::Base
 
   def right_to_left
     language.code == 'heb' ? true : false
+  end
+
+  def transcript=(file)
+    # TODO: implement segment creation or update from transcript file
+    #
+    ods = XMLParser::ODSParser.new(file, :transcript) # do not import annotations for now
+    ods.parse
   end
 
   #def duration
@@ -463,6 +474,48 @@ class Interview < ActiveRecord::Base
       save
     end
   end
+
+  # Creates a task that marks the interview as prepared for research
+  # Also set the segmentation_state and workflow_state on the Segmentation task
+  def prepare!
+    self.reload
+    if self.segments.empty?
+      false
+    else
+      segmentation_task = self.tasks.for_workflow('Segmentation').first
+      # instead of requiring a complete segmentation task - make it so!
+      segmentation_task = self.tasks.create do |task|
+        task.workflow_type = 'Segmentation'
+      end if segmentation_task.nil?
+      Task.update_all "workflow_state = 'completed'", ['id = ?', segmentation_task.id]
+      changed = if self.qm_value.to_f > 1
+                  if self.tasks.for_workflow('Research').empty?
+                    # create the research task
+                    self.tasks.create do |task|
+                      task.workflow_type = 'Research'
+                    end
+                    true
+                  else
+                    false
+                  end
+                else
+                  # remove all tasks that don't have anyone assigned
+                  unless self.tasks.for_workflow('Research').empty?
+                  research_task = self.tasks.for_workflow('Research').first
+                  if research_task.responsible.nil?
+                    research_task.destroy
+                    true
+                  else
+                    false
+                  end
+                end
+    end
+    skip_versioning!
+    update_attribute :segmentation_state, 'qm'
+    save
+    changed
+  end
+end
 
   private
 
