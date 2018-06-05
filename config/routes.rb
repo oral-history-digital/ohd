@@ -31,7 +31,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :interviews, only: [:show, :index] do
+      resources :interviews do #, only: [:show, :index] do
         #member do 
           #get :text_materials
           #get :photos
