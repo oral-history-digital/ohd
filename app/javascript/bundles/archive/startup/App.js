@@ -17,9 +17,8 @@ const App = (props) => (
     <BrowserRouter history={hashHistory}>
       <div>
           <Route exact path="/:locale" component={HomeContainer} />
-          <Route path="/:locale/interviews/new" component={EditInterviewContainer} />
+          <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/interviews/:archiveId/edit" component={EditInterviewContainer} />
-          <Route path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/searches/archive" component={SearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />

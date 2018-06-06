@@ -8,10 +8,10 @@ import { submitInterview } from '../actions/interviewActionCreators';
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
     return { 
-        //archiveId: state.archive.archiveId,
         //data: ArchiveUtils.getInterview(state),
         locale: state.archive.locale,
         locales: state.archive.locales,
+        archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         account: state.account,
     }

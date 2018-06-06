@@ -7,8 +7,7 @@ import { t } from '../../../lib/utils';
 export default class EditInterview extends React.Component {
 
     render() {
-        let tabIndex = this.props.locales.length + 5
-        tabIndex = this.props.archiveId ? tabIndex + 1 : tabIndex
+        let tabIndex = this.props.locales.length + 4;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
