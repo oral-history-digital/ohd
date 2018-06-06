@@ -38,11 +38,12 @@ const archive = (state = initialState, action) => {
         case REQUEST_INTERVIEW:
             return Object.assign({}, state, {
                 isFetchingInterview: true,
-                didInvalidate: false
+                fetchedInterview: false,
             })
         case RECEIVE_INTERVIEW:
             return Object.assign({}, state, {
                 isFetchingInterview: false,
+                fetchedInterview: true,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
