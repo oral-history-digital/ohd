@@ -121,7 +121,7 @@ export default class FlyoutTabs extends React.Component {
     interviewTabPanel() {
         if (this.props.archiveId && this.props.archiveId !== 'new') {
             return (
-                <TabPanel>
+                <TabPanel key='interview'>
                     <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
                     <div className='flyout-sub-tabs-container flyout-video'>
                         <InterviewDataContainer
@@ -172,6 +172,30 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
+    userContentTab() {
+        let css = this.props.account.email ? 'flyout-tab' : 'hidden';
+        return <Tab className={css} key='userContent'>{t(this.props, 'user_content')}</Tab>;
+    }
+
+    userContentTabPanel() {
+        return (
+            <TabPanel key='userContent'>
+                <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
+                <div className='flyout-sub-tabs-container flyout-folder'>
+                    <UserContentsContainer
+                        type='Search'
+                        title={t(this.props, 'saved_searches')}/>
+                    <UserContentsContainer
+                        type='InterviewReference'
+                        title={t(this.props, 'saved_interviews')}/>
+                    <UserContentsContainer
+                        type='UserAnnotation'
+                        title={t(this.props, 'saved_annotations')}/>
+                </div>
+            </TabPanel>
+        )
+    }
+
     renderMap() {
         if (this.props.account.email) {
             return <InterviewDataContainer
@@ -190,7 +214,6 @@ export default class FlyoutTabs extends React.Component {
 
 
     render() {
-        let userContentCSS = this.props.account.email ? 'flyout-tab' : 'hidden';
 
         return (
             <Tabs
@@ -208,7 +231,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab'>{t(this.props, 'archive_search')}</Tab>
                         {this.interviewTab()}
                         {this.editTabs()}
-                        <Tab className={userContentCSS}>{t(this.props, 'user_content')}</Tab>
+                        {this.userContentTab()}
                     </TabList>
 
                     <TabPanel>
@@ -225,20 +248,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.editTabPanels()}
-                    <TabPanel>
-                        <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
-                        <div className='flyout-sub-tabs-container flyout-folder'>
-                            <UserContentsContainer
-                                type='Search'
-                                title={t(this.props, 'saved_searches')}/>
-                            <UserContentsContainer
-                                type='InterviewReference'
-                                title={t(this.props, 'saved_interviews')}/>
-                            <UserContentsContainer
-                                type='UserAnnotation'
-                                title={t(this.props, 'saved_annotations')}/>
-                        </div>
-                    </TabPanel>
+                    {this.userContentTabPanel()}
                 </div>
             </Tabs>
         );
