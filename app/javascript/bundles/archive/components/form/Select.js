@@ -44,11 +44,19 @@ export default class Select extends React.Component {
         let opts = [];
         if (this.props.values) {
             opts = this.props.values.map((value, index) => {
-                let text = this.props.optionsScope ? 
+                let text;
+                let val;
+                if (typeof value === 'string') {
+                    text = this.props.optionsScope ? 
                         t(this.props, `${this.props.optionsScope}.${value}`) :
                         t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)
+                    val = value;
+                } else {
+                    text = value.name[this.props.locale];
+                    val = value.value;
+                }
                 return (
-                    <option value={value} key={`${this.props.scope}-${index}`}>
+                    <option value={val} key={`${this.props.scope}-${index}`}>
                         {text}
                     </option>
                 )}
