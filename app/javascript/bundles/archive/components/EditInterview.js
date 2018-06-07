@@ -16,6 +16,13 @@ export default class EditInterview extends React.Component {
                         onSubmit={this.props.submitInterview}
                         submitText={this.props.archiveId ? 'edit_interview.new' : 'edit_interview.edit'}
                         elements={[
+                            {
+                                elementType: 'select',
+                                attribute: 'collection_id',
+                                values: this.props.collections,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
                             { attribute: 'archive_id' },
                             { attribute: 'language' },
                             { attribute: 'collection' },

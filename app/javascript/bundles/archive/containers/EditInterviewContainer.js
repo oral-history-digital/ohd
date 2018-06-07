@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
+        collections: state.archive.collections,
         account: state.account,
     }
 }
