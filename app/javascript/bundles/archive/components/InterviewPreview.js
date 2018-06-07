@@ -3,21 +3,21 @@ import {Link, hashHistory} from 'react-router-dom';
 
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
 import ArchiveUtils from "../../../lib/utils";
+import FoundSegmentContainer from '../containers/FoundSegmentContainer';
+import Slider from "react-slick";
+import f1 from '../../../images/slick.eot';
+import f2 from '../../../images/slick.svg';
+import f3 from '../../../images/slick.woff'
+import f4 from '../../../images/slick.ttf';
+import '../../../css/slick.css';
+import '../../../css/slick-theme.css';
 
 import { t } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
-    renderInterviewSegments() {
-        if (this.props.foundSegmentsForInterview.length > 0) {
-            return (
-                <Link
-                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-                >
-                    <p>{this.props.foundSegmentsForInterview.length}</p>
-                </Link>
-            )
-        }
+    componentDidMount() {
+        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
     }
 
     facetToClass(facetname) {
@@ -26,17 +26,47 @@ export default class InterviewPreview extends React.Component {
         return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
     }
 
+    renderSlider(){
+        if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
+            let settings = {
+                infinite: false,
+              };
+            return (
+                <div className={'archive-search-found-segments'}>
+                    <div className={'hits-count'}>
+                        <small>{t(this.props, 'segment_hits')}: {this.props.segments.foundSegments.length}</small>
+                    </div>
+                    <Slider {...settings}>
+                    { this.renderSegments() }
+                    </Slider>
+                </div>
+            )
+        }
+    }
+
+    renderSegments() {
+        return this.props.segments.foundSegments.map( (segment, index) => {
+            return (
+                <div key={"segment-wrapper" + segment.id}>
+                <FoundSegmentContainer
+                    data={segment}
+                    key={"segment-" + segment.id}
+                />
+                </div>
+            )
+        })
+    }
+
     interviewDetails() {
         if (PROJECT === 'zwar') {
-
             return (
                 <div className={'search-result-data'}>
                     <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
                     <span>{this.props.interview.languages_array[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
-                    <small className={this.facetToClass("decade-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
-                    <small className={(this.props.foundSegmentsForInterview == 0)? 'hidden' : 'visible'}><br/>{t(this.props, 'segment_hits')}: {this.props.foundSegmentsForInterview}</small>
+                    {/* <small className={(this.props.totalFoundSegments == 0)? 'hidden' : 'visible'}><br/>{t(this.props, 'segment_hits')}: {this.props.foundSegments.length}/{this.props.totalFoundSegments}</small> */}
                 </div>
             );
         }
@@ -96,8 +126,8 @@ export default class InterviewPreview extends React.Component {
                     <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
 
                     {this.interviewDetails()}
-
                 </Link>
+                {this.renderSlider()}
             </div>
         );
     }

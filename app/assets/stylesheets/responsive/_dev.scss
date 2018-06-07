@@ -33,6 +33,15 @@
   }
 }
 
+.archive-search-found-segments .slick-slide {
+  text-align: left !important;
+}
+
+.hits-count {
+  background-color: rgba(232,232,228, 0.95);
+  margin-top: 14px;
+}
+
 .slick-list {
   height: 80% !important;
   @include clearfix;

@@ -122,14 +122,11 @@ default: &default
       values:
         female: 'female'
         male: 'male'
-    - id: 'decade_of_birth'
+    - id: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-      values:
-        "1900s": "1900s"
-        "1910s": "1910s"
-        "1920s": "1920s"
-        "1930s": "1930s"
+      from: 1907
+      to: 1940
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true

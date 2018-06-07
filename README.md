@@ -136,3 +136,27 @@ Example: Switch from `mog` to `zwar`:
     ```javascript
     export const PROJECT = 'mog';
     ```
+
+5. in **r-archive.css.scss**, change
+    
+    ```css
+    @import "variables";
+    ```
+
+    to 
+
+    ```css
+    @import "variables-zwar";
+    ```
+
+6. in **archive.js**, change
+    
+    ```javascript
+    locales: ['de', 'el'],
+    ```
+
+    to
+
+    ```javascript
+    locales: ['de', 'en', 'ru'],
+    ```

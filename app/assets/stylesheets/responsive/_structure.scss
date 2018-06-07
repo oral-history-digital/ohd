@@ -546,7 +546,7 @@ a.search-result-link {
   color: $primary-color;
 }
 
-.search-result-data {
+.search-result-data, .archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
   font-size: $font-size-medium;
   line-height:$line-height-medium;
   color: $gray-dark;

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import Observer from 'react-intersection-observer'
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
@@ -9,31 +10,31 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import { t } from '../../../lib/utils';
 import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
+import ArchiveUtils from '../../../lib/utils';
 
 
 export default class ArchiveSearch extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
         window.scrollTo(0, 1);
     }
 
-
     content() {
-        if (this.props.isArchiveSearching) {
+        if (this.props.isArchiveSearching && this.props.query['page'] === 1) { 
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
         } else {
             return (
                 <div>
-                    {this.renderPagination()}
+                    {/* {this.renderPagination()} */}
                     <div className={'search-results-container'}>
                         {this.foundInterviews()}
                     </div>
-                    {this.renderPagination()}
+                    {/* {this.renderPagination()} */}
+                    {this.renderScrollObserver()}
                 </div>
             )
         }
@@ -52,7 +53,6 @@ export default class ArchiveSearch extends React.Component {
                     //foundSegmentsForInterview={foundSegmentsForInterview}
                     return <InterviewPreviewContainer
                         interview={interview}
-                        foundSegmentsForInterview={this.props.foundSegmentsForInterviews[interview.archive_id]}
                         key={"interview-" + interview.id}
                     />;
                 })
@@ -60,12 +60,21 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
-    handleClick(event) {
-        let page = ($(event.target).data().page);
-        let query = this.props.query;
-        query['page'] = page;
-        let url = `/${this.props.locale}/searches/archive`;
-        this.props.searchInArchive(url, query);
+    // handleClick(event) {
+    //     let page = ($(event.target).data().page);
+    //     let query = this.props.query;
+    //     query['page'] = page;
+    //     let url = `/${this.props.locale}/searches/archive`;
+    //     this.props.searchInArchive(url, query);
+    // }
+
+    handleScroll(inView) {
+        if(inView){
+            let query = this.props.query;
+            query['page'] = (this.props.query['page'] || 1) + 1;
+            let url = `/${this.props.locale}/searches/archive`;
+            this.props.searchInArchive(url, query);
+        }
     }
 
     renderPagination() {
@@ -77,6 +86,19 @@ export default class ArchiveSearch extends React.Component {
                     </ul>
                     <div className='search-results-from-to'>{this.resultsFromTo()}</div>
                 </div>
+            )
+        }
+    }
+
+    renderScrollObserver() {
+        if (this.props.isArchiveSearching) {
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+        }
+        else if (this.props.resultPagesCount > (this.props.query['page'] || 1)) {
+            return (
+                <Observer
+                    onChange={inView => this.handleScroll(inView)}
+                />
             )
         }
     }
@@ -140,6 +162,16 @@ export default class ArchiveSearch extends React.Component {
                 </div>
     }
 
+    renderArchiveResultsCount() {
+        if(!this.props.isArchiveSearching) {
+            return (
+                <div className="search-results-legend-text">
+                    {this.props.resultsCount} {t(this.props, 'archive_results')}
+                </div>
+            )
+        }
+    }
+
     render() {
         return (
             <WrapperPageContainer
@@ -149,14 +181,12 @@ export default class ArchiveSearch extends React.Component {
                 <div className='wrapper-content interviews'>
                     <h1 className="search-results-title">{t(this.props, 'archive_results')}</h1>
                     <div className="search-results-legend">
-                        <AuthShowContainer ifLoggedIn={true}>
-                            {this.saveSearchLink()}
-                        </AuthShowContainer>
-                        <div className="search-results-legend-text">
-                            {this.props.resultsCount} {t(this.props, 'archive_results')}
-                        </div>
+                                <AuthShowContainer ifLoggedIn={true}>
+                                    {this.saveSearchLink()}
+                                </AuthShowContainer>
+                        {this.renderArchiveResultsCount()}
                     </div>
-
+                    
                     <Tabs
                         className='tabs'
                         selectedTabClassName='active'

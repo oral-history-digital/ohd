@@ -166,7 +166,9 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def formatted_duration
-    Time.at(object.duration).utc.strftime("%H:%M")
+    # Time.at(object.duration).utc.strftime("%H:%M")
+    # TODO: localize this
+    Time.at(object.duration).utc.strftime("%-H h %M min")
   end
 
   def interviewee_id

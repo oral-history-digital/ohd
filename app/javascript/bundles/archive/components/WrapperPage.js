@@ -136,7 +136,7 @@ export default class WrapperPage extends React.Component {
         if (this.props.transcriptScrollEnabled) {
             //css.push("fix-video");
         } else {
-            window.scrollTo(0, 1);
+            // window.scrollTo(0, 1); // ACHIM?
         }
         return css.join(' ');
     }
@@ -147,7 +147,7 @@ export default class WrapperPage extends React.Component {
         if (this.props.transcriptScrollEnabled) {
             css.push("fix-video");
         } else {
-            window.scrollTo(0, 1);
+            // window.scrollTo(0, 1); // ACHIM?
         }
         return css.join(' ');
     }

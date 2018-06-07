@@ -1,5 +1,6 @@
 import React from 'react';
 import ArchiveUtils from "../../../lib/utils";
+import YearRangeContainer from "../containers/YearRangeContainer";
 
 export default class Facet extends React.Component {
 
@@ -74,14 +75,37 @@ export default class Facet extends React.Component {
     }
 
     render() {
-        return (
-            <div className="subfacet-container">
-                <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
-                    {this.props.data.descriptor[this.props.locale]}
-                </button>
-                {this.panelContent()}
-            </div>
-        )
+        if (this.props.slider) {
+            let style = { width: 400, paddingLeft: 11, paddingRight: 15 };
+            return (
+                <div className="subfacet-container">
+                    <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
+                        {this.props.data.descriptor[this.props.locale]}
+                    </button>
+                    <div style={style} className={this.state.panelClass}>
+                        <div className="flyout-radio-container">
+                            <YearRangeContainer 
+                                sliderMin={this.props.sliderMin}
+                                sliderMax={this.props.sliderMax}
+                                currentMin={this.props.currentMin}
+                                currentMax={this.props.currentMax}
+                                onChange={this.props.handleSubmit}
+                            />
+                        </div>
+                    </div>
+                </div>
+                )
+        }
+        else {
+            return (
+                <div className="subfacet-container">
+                    <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
+                        {this.props.data.descriptor[this.props.locale]}
+                    </button>
+                    {this.panelContent()}
+                </div>
+            )
+        }
     }
 
     renderOptions() {

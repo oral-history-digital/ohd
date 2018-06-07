@@ -65,12 +65,19 @@ const search = (state = initialState, action) => {
                 query: Object.assign({}, state.query, action.searchQuery)
             })
         case RECEIVE_ARCHIVE_SEARCH:
+            let foundInterviews = [];
+            let foundSegmentsForInterviews = {};
+            if (state.query.page != undefined && state.query.page > 1){
+                foundInterviews = state.foundInterviews.concat(action.foundInterviews);
+            }
+            else {
+                foundInterviews = action.foundInterviews;
+            }
             return Object.assign({}, state, {
                 isArchiveSearching: false,
-                foundInterviews: action.foundInterviews,
-                //allInterviewsTitles: action.allInterviewsTitles,
+                foundInterviews: foundInterviews,
+                allInterviewsTitles: action.allInterviewsTitles,
                 allInterviewsCount: action.allInterviewsCount,
-                foundSegmentsForInterviews: action.foundSegmentsForInterviews,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,
                 facets: action.facets,

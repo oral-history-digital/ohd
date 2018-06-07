@@ -36,7 +36,7 @@ class SearchesController < BaseController
         interview = Interview.find_by_archive_id(params[:id])
         json = {
           found_segments: search.hits.map do |hit| 
-            Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
+            Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
               segment = ::SegmentHitSerializer.new(hit.instance).as_json 
               segment[:transcripts] = highlighted_transkripts(hit, interview)
               segment
@@ -66,9 +66,6 @@ class SearchesController < BaseController
 
   def archive
     search = Interview.search do
-      #adjust_solr_params do |params|
-        #params[:rows] = 12
-      #end
       fulltext params[:fulltext]
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
@@ -78,14 +75,41 @@ class SearchesController < BaseController
       paginate page: params[:page] || 1, per_page: 12
     end
 
-    number_of_found_segments = search.hits.inject({}) do |mem, hit|
-      segsearch = Segment.search do
-        fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]
-        with(:archive_id, hit.instance.archive_id)
-      end
-      mem[hit.instance.archive_id] = segsearch.total
-      mem
-    end
+    # number_of_found_segments = search.hits.inject({}) do |mem, hit|
+    #   segsearch = Segment.search do
+    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]
+    #     with(:archive_id, hit.instance.archive_id)
+    #   end
+    #   mem[hit.instance.archive_id] = segsearch.total
+    #   mem
+    # end
+
+    # found_segments = search.hits.inject({}) do |mem, hit|
+    #   segsearch = Segment.search do
+    #     adjust_solr_params do |params|
+    #       params[:rows] = 5
+    #     end
+    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext] do
+    #       highlight :transcript
+    #       highlight :translation
+    #     end
+    #     with(:archive_id, hit.instance.archive_id)
+    #   end
+
+    #   interview = hit.instance
+      
+    #   mem[interview.archive_id] = {
+    #     total: segsearch.total,
+    #     segments: segsearch.hits.map do |hit| 
+    #       # Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
+    #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
+    #       segment[:transcripts] = highlighted_transkripts(hit, interview)
+    #       segment
+    #       # end
+    #     end
+    #   }
+    #   mem
+    # end
 
     respond_to do |format|
       format.html do
@@ -93,12 +117,13 @@ class SearchesController < BaseController
       end
       format.json do
         render json: {
-            #all_interviews_titles: all_interviews_titles,
+            all_interviews_titles: all_interviews_titles,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
             interviews: search.results.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
-            found_segments_for_interviews:  number_of_found_segments,
+            # found_segments_for_interviews: number_of_found_segments,
+            # found_segments_for_interviews: found_segments,
             facets: Project.updated_search_facets(search),
         }
       end
