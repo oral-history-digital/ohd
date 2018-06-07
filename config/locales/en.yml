@@ -1,5 +1,9 @@
 ---
 en:
+  de: 'german'
+  en: 'english'
+  ru: 'russian'
+  el: 'greek'
   download: 'Download'
   elde: 'Greek with German translation'
   project_title: ''

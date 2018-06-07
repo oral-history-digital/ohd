@@ -19,8 +19,9 @@ class SearchesController < BaseController
   def interview
     search = Segment.search do 
       fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do
-        highlight :transcript
-        highlight :translation
+        (Project.available_locales + [:orig]).each do |locale|
+          highlight :"text_#{locale}"
+        end
       end
       with(:archive_id, params[:id])
       #facet :chapter
@@ -38,7 +39,7 @@ class SearchesController < BaseController
           found_segments: search.hits.map do |hit| 
             Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
               segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-              segment[:transcripts] = highlighted_transkripts(hit, interview)
+              segment[:transcripts] = highlighted_transkripts(hit)
               segment
             end
           end,
@@ -132,12 +133,10 @@ class SearchesController < BaseController
 
   private
 
-  def highlighted_transkripts(hit, interview) 
-    {
-      de: :translation, 
-      "#{interview.language.code[0..1]}": :transcript
-    }.inject({}) do |mem, (locale, meth)|
-      mem[locale.to_s] = hit.highlights(meth).inject([]) do |m, highlight|
+  def highlighted_transkripts(hit) 
+    (Project.available_locales + [:orig]).each do |locale|
+      locale = orig_lang if locale == :orig
+      mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/,"").strip()
         m

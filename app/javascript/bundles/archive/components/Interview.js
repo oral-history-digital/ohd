@@ -4,7 +4,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 

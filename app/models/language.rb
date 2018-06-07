@@ -28,6 +28,10 @@ class Language < ActiveRecord::Base
     end
   end
 
+  def first_code
+    code.split(/[\/-]/)[0]
+  end
+
   def to_s(locale = I18n.locale)
     name(locale)
   end

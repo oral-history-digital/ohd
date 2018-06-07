@@ -20,6 +20,7 @@ const mapStateToProps = (state) => {
         videoTime: state.archive.videoTime,
         videoStatus: state.archive.videoStatus,
         locale: state.archive.locale,
+        locales: state.archive.locales,
         translations: state.archive.translations,
     }
 }

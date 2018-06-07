@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import ArchiveUtils from "../../../lib/utils";
+import { t } from "../../../lib/utils";
 
 export default class Transcript extends React.Component {
 
@@ -52,6 +52,10 @@ export default class Transcript extends React.Component {
         return this.props.data && this.props.data.segments || [];
     }
 
+    transcripted(locale) {
+        return this.segments().length > 0 && this.segments()[0].transcripts.hasOwnProperty(locale)
+    }
+
     transcript(){
         let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.shownSegmentsFor(this.props.transcriptTime);
         let speakerId;
@@ -76,18 +80,11 @@ export default class Transcript extends React.Component {
         );
     }
 
-    emptyTranscript() {
-        if(this.props.translations !== undefined) {
-            return ArchiveUtils.translate(this.props, 'without_translation');
-        }
-        return null;
-    }
-
     render () {
-        if (!this.props.data.interview.translated && !this.props.originalLocale){
-            return this.emptyTranscript();
+        if (this.props.originalLocale) {
+            return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
         } else {
-            return this.transcript();
+            return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
         }
     }
 }

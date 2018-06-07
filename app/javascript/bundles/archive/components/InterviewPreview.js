@@ -74,7 +74,7 @@ export default class InterviewPreview extends React.Component {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.typologies()}
-                    {this.content( ArchiveUtils.translate(this.props, 'duration'), this.props.interview.formatted_duration)}
+                    {this.content( t(this.props, 'duration'), this.props.interview.formatted_duration)}
                 </div>
             )
         }
@@ -97,12 +97,12 @@ export default class InterviewPreview extends React.Component {
 
     typologies(){
         let interviewee =  this.props.interview.interviewees[0];
-        if (interviewee) {
-            if (interviewee.typology && interviewee.typology[this.props.locale].length > 1) {
-                return this.content(ArchiveUtils.translate(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
-            } else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
-                return this.content(ArchiveUtils.translate(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
-            }
+        if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
+            //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
+                return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
+            //} else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
+                //return this.content(t(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
+            //}
         }
     }
 

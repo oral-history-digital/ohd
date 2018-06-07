@@ -7,10 +7,6 @@ var ArchiveUtils = {
         return state.locations[state.archive.archiveId];
     },
 
-    translate: function (props, key) {
-        return props.translations && props.translations[props.locale] && props.translations[props.locale][key];
-    },
-
     queryToText(query, props) {
         let queryText = "";
         for (let [k, value] of Object.entries(query)) {
@@ -58,3 +54,13 @@ export function t(props, key) {
     }
 }
 
+export function fullname(props, person) {
+    if (person) {
+        try {
+            return `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+        } catch (e) {
+            debugger;
+            return `person ${person.id} has no name(s) in ${props.locale}`;
+        }
+    }
+}

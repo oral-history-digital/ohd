@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205145104) do
+ActiveRecord::Schema.define(version: 20180514100218) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20180205145104) do
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", using: :btree
   end
 
-  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "locale"
     t.string  "observations"
     t.integer "interview_id"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20180205145104) do
     t.text     "descriptor",       limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "notes",            limit: 65535
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: { descriptor: 255 }, using: :btree
     t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true, using: :btree
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id", using: :btree
@@ -266,6 +267,7 @@ ActiveRecord::Schema.define(version: 20180205145104) do
     t.string   "mainheading"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "text",        limit: 65535
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id", using: :btree
   end
 
@@ -273,16 +275,14 @@ ActiveRecord::Schema.define(version: 20180205145104) do
     t.integer  "tape_id"
     t.string   "media_id"
     t.string   "timecode"
-    t.string   "transcript",      limit: 2000
-    t.string   "translation",     limit: 2000
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "duration",                     precision: 5, scale: 2
+    t.decimal  "duration",        precision: 5, scale: 2
     t.integer  "sequence_number"
     t.integer  "tape_number"
     t.string   "speaker"
-    t.boolean  "speaker_change",                                       default: false
-    t.boolean  "chapter_change",                                       default: false
+    t.boolean  "speaker_change",                          default: false
+    t.boolean  "chapter_change",                          default: false
     t.string   "section"
     t.integer  "interview_id"
     t.integer  "speaker_id"

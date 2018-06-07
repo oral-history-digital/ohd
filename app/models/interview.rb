@@ -132,6 +132,7 @@ class Interview < ActiveRecord::Base
            source: :registry_entry
            
   translates :observations
+  # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
   #translates :first_name, :other_first_names, :last_name, :birth_name,
              #:return_date, :forced_labor_details,
              #:interviewers, :transcriptors, :translators,
@@ -163,12 +164,9 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     text :transcript, :boost => 5 do
-      indexing_interview_text = ''
       segments.each do |segment|
-        indexing_interview_text << ' ' + segment.transcript
-        indexing_interview_text << ' ' + segment.translation
+        segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
       end
-      indexing_interview_text.squeeze(' ')
     end
     
     (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
@@ -190,10 +188,6 @@ class Interview < ActiveRecord::Base
       end
     end
     
-    # text :person_name, :boost => 20 do
-    #   build_full_title_from_name_parts(I18n.default_locale)
-    # end
-
   end
 
   scope :researched, -> {where(researched: true)}
@@ -261,6 +255,7 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  # ZWAR_MIGRATE: Uncomment this after migrating zwar
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
@@ -272,17 +267,21 @@ class Interview < ActiveRecord::Base
   #end
 
   def languages
-    translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2 if Project.available_locales.include?(ISO_639.find(t.locale.to_s).alpha2); mem }
+    if segments.first
+      segments.first.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem }
+    else
+      ISO_639.find(language.first_code).alpha2
+    end
   end
 
-  def to_vtt(type='transcript', tape_number=1)
+  def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
-    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(type)}\n"}
+    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
     vtt
   end
 
   def transcript_locales
-    language.code.split('/')
+    language.code.split(/[\/-]/)
   end
 
   def right_to_left

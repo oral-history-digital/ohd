@@ -25,10 +25,7 @@ class ReferenceTree
       time: Time.parse(segment.timecode).seconds_since_midnight,
       timecode: segment.timecode,
       tape_nbr: segment.tape.number,
-      transcripts:{
-          de:segment.translation.sub(/^\:+\s*\:*/,"").strip(),
-          "#{segment.interview.language.code[0..1]}": segment.transcript.sub(/^\:+\s*\:*/,"").strip()
-      }
+      transcripts: segment.transcripts
     }
   end
 

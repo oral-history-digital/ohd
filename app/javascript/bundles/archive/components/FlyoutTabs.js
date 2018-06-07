@@ -9,7 +9,7 @@ import InterviewDataContainer from '../containers/InterviewDataContainer';
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
-import ArchiveUtils from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 
@@ -72,10 +72,10 @@ export default class FlyoutTabs extends React.Component {
 
     loginTab() {
         if (!this.props.account.email) {
-            return <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'login_page')}</Tab>
+            return <Tab className='flyout-top-nav'>{t(this.props, 'login_page')}</Tab>
         }
         else {
-            return <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'logout_page')}</Tab>
+            return <Tab className='flyout-top-nav'>{t(this.props, 'logout_page')}</Tab>
         }
     }
 
@@ -99,7 +99,7 @@ export default class FlyoutTabs extends React.Component {
     renderMap() {
         if (this.props.account.email) {
             return <InterviewDataContainer
-                title={ArchiveUtils.translate(this.props, 'map')}
+                title={t(this.props, 'map')}
                 content={<InterviewLocationsContainer/>}/>
         }
     }
@@ -107,7 +107,7 @@ export default class FlyoutTabs extends React.Component {
     renderPhotos() {
         if (this.props.account.email) {
             return <InterviewDataContainer
-                title={ArchiveUtils.translate(this.props, 'photos')}
+                title={t(this.props, 'photos')}
                 content={<GalleryContainer/>}/>
         }
     }
@@ -128,12 +128,12 @@ export default class FlyoutTabs extends React.Component {
             >
                 <div className='scroll-flyout'>
                     <TabList className='flyout'>
-                        <Tab className='flyout-top-nav'>{ArchiveUtils.translate(this.props, 'home')}</Tab>
+                        <Tab className='flyout-top-nav'>{t(this.props, 'home')}</Tab>
                         {this.loginTab()}
                         {this.localeTabs()}
-                        <Tab className='flyout-tab'>{ArchiveUtils.translate(this.props, 'archive_search')}</Tab>
-                        <Tab className={interviewCSS}>{ArchiveUtils.translate(this.props, 'interview')}</Tab>
-                        <Tab className={userContentCSS}>{ArchiveUtils.translate(this.props, 'user_content')}</Tab>
+                        <Tab className='flyout-tab'>{t(this.props, 'archive_search')}</Tab>
+                        <Tab className={interviewCSS}>{t(this.props, 'interview')}</Tab>
+                        <Tab className={userContentCSS}>{t(this.props, 'user_content')}</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -144,38 +144,38 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.localeTabPanels()}
                     <TabPanel>
-                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'archive_search')}</div>
+                        <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
                         <ArchiveSearchFormContainer
                         />
                     </TabPanel>
                     <TabPanel>
-                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'interview')}</div>
+                        <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
                         <div className='flyout-sub-tabs-container flyout-video'>
                             <InterviewDataContainer
-                                title={ArchiveUtils.translate(this.props, 'person_info')}
+                                title={t(this.props, 'person_info')}
                                 content={<PersonDataContainer/>}/>
                             <InterviewDataContainer
-                                title={ArchiveUtils.translate(this.props, 'interview_info')}
+                                title={t(this.props, 'interview_info')}
                                 content={<InterviewInfoContainer/>}/>
                             {this.renderPhotos()}
                             {this.renderMap()}
                             <InterviewDataContainer
-                                title={ArchiveUtils.translate(this.props, 'citation')}
+                                title={t(this.props, 'citation')}
                                 content={<CitationInfoContainer/>}/>
                         </div>
                     </TabPanel>
                     <TabPanel>
-                        <div className='flyout-tab-title'>{ArchiveUtils.translate(this.props, 'user_content')}</div>
+                        <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
                         <div className='flyout-sub-tabs-container flyout-folder'>
                             <UserContentsContainer
                                 type='Search'
-                                title={ArchiveUtils.translate(this.props, 'saved_searches')}/>
+                                title={t(this.props, 'saved_searches')}/>
                             <UserContentsContainer
                                 type='InterviewReference'
-                                title={ArchiveUtils.translate(this.props, 'saved_interviews')}/>
+                                title={t(this.props, 'saved_interviews')}/>
                             <UserContentsContainer
                                 type='UserAnnotation'
-                                title={ArchiveUtils.translate(this.props, 'saved_annotations')}/>
+                                title={t(this.props, 'saved_annotations')}/>
                         </div>
                     </TabPanel>
                 </div>

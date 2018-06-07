@@ -1,4 +1,8 @@
 el:
+  de: 'german'
+  en: 'english'
+  ru: 'russian'
+  el: 'greek'
   observation: 'Περιγραφή συνέντευξης'
   tape: 'Ταινία'
   legend_title: 'Σύμβολα απομαγνητοφώνησης'
