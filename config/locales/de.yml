@@ -199,6 +199,18 @@ de:
       country: 'Bitte angeben'
       tos_agreement: 'Bitte zustimmen'
       priv_agreement: 'Bitte zustimmen'
+  #interview:
+    #collection_id: 'Sammlung'
+    #archive_id: 'Archiv ID'
+    #first_name: 'Vorname'
+    #last_name: 'Nachname'
+    #middle_name: 'weitere Namen'
+    #errors: 
+      #collection_id: 'Bitte angeben'
+      #archive_id: 'Muss zum Dateinamen passen'
+      #first_name: 'Muss mind. zwei Zeichen lang sein'
+      #last_name: 'Muss mind. zwei Zeichen lang sein'
+      #middle_name: 'Muss mind. zwei Zeichen lang sein'
   order_new_password: 'Passwort vergessen?'
   ordered_new_password: 'Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres Passwortes geschickt.'
   conditions: 'Nutzungsbedingungen'

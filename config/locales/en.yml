@@ -140,6 +140,18 @@ en:
       job_description: 'Bitte angeben'
       research_intention: 'Bitte angeben'
       comments: 'Bitte angeben'
+  #interview:
+    #collection_id: 'Collection'
+    #archive_id: 'Archiv ID'
+    #first_name: 'first name'
+    #last_name: 'last name'
+    #middle_name: 'middle name'
+    #errors: 
+      #collection_id: 'Bitte angeben'
+      #archive_id: 'has to fit the file name'
+      #first_name: 'Muss mind. zwei Zeichen lang sein'
+      #last_name: 'Muss mind. zwei Zeichen lang sein'
+      #middle_name: 'Muss mind. zwei Zeichen lang sein'
   order_new_password: 'Forgot your password?'
   ordered_new_password: 'You have been sent an email with instructions on how to change your password.'
   conditions: 'Terms of use'
