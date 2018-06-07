@@ -25,7 +25,6 @@ export default class EditInterview extends React.Component {
                             },
                             { attribute: 'archive_id' },
                             { attribute: 'language' },
-                            { attribute: 'collection' },
                             { attribute: 'interview_date' },
                             { attribute: 'video' },
                             { attribute: 'translated' },
