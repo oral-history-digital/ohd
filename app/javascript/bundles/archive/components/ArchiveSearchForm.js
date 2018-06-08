@@ -114,7 +114,8 @@ export default class ArchiveSearchForm extends React.Component {
                             name="fulltext" 
                             value={fulltext}
                             placeholder={t(this.props, 'enter_field')}
-                            onChange={this.handleChange} 
+                            onChange={this.handleChange}
+                            list='allInterviewTitles' 
                         />
                         {this.renderDataList()}
                         <input 
@@ -183,7 +184,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     renderDataList() {
         return (
-            <datalist id="inputList">
+            <datalist id="allInterviewTitles">
                 <select>
                     {this.renderOptions()}
                 </select>
