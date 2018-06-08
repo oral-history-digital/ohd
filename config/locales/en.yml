@@ -12,11 +12,14 @@ en:
   segment: 'Segment'
   publish: 'Publish'
   login: 'Login'
-  login_name: 'Login'
-  login_errors: 'Please correct your email and/or password'
+  user_account:
+    login: 'Login'
+    password: 'Password'
+    errors: 
+      login: 'Please correct your login'
+      password: 'Please correct your password'
   logged_in_as: 'Logged in as'
   user_name: 'User'
-  password: 'Password'
   notice: 'Save'
   forget_password: 'Forgot password?'
   account_activation_errors: 'Password and password confirmation must be the same and at least 6 characters long.'

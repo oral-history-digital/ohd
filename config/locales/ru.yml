@@ -59,6 +59,12 @@ ru:
     edit: 'Edit interview'
   language_rude: 'Russisch mit deutscher Übersetzung'
   home: 'Главная'
+  user_account:
+    login: 'Login'
+    password: 'Password'
+    errors: 
+      login: 'Please correct your login'
+      password: 'Please correct your password'
   login_page: 'Войти'
   login: 'Войти'
   login_name: 'логин'

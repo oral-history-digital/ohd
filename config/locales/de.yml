@@ -48,12 +48,17 @@ de:
   segment: 'Ausschnitt'
   publish: 'Veröffentlichen'
   login: 'Anmelden'
+  user_account:
+    login: 'Login'
+    password: 'Passwort'
+    errors: 
+      login: 'Bitte berichtigen Sie Ihre Email'
+      password: 'Bitte berichtigen Sie Ihr Passwort'
   login_name: 'Login'
   logout: 'Abmelden'
   login_errors: 'Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
   logged_in_as: 'Angemeldet als'
   user_name: 'Benutzer(in)'
-  password: 'Passwort'
   notice: 'Merken'
   forget_password: 'Passwort vergessen?'
   account_activation_errors: 'Passwort und Passwortbestätigung müssen gleich und mind. 6 Zeichen lang sein'
