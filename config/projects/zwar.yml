@@ -167,6 +167,9 @@ development:
 production:
   <<: *default
 
+staging:
+  <<: *default
+
 test:
   <<: *default
 
