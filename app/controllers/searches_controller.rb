@@ -134,7 +134,7 @@ class SearchesController < BaseController
   private
 
   def highlighted_transcripts(hit) 
-    (Project.available_locales + [:orig]).each do |locale|
+    (Project.available_locales + [:orig]).inject({}) do |mem, locale|
       locale = orig_lang if locale == :orig
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
