@@ -39,7 +39,7 @@ class SearchesController < BaseController
           found_segments: search.hits.map do |hit| 
             Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
               segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-              segment[:transcripts] = highlighted_transkripts(hit)
+              segment[:transcripts] = highlighted_transcripts(hit)
               segment
             end
           end,
@@ -104,7 +104,7 @@ class SearchesController < BaseController
     #     segments: segsearch.hits.map do |hit| 
     #       # Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
     #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-    #       segment[:transcripts] = highlighted_transkripts(hit, interview)
+    #       segment[:transcripts] = highlighted_transcripts(hit, interview)
     #       segment
     #       # end
     #     end
@@ -133,7 +133,7 @@ class SearchesController < BaseController
 
   private
 
-  def highlighted_transkripts(hit) 
+  def highlighted_transcripts(hit) 
     (Project.available_locales + [:orig]).each do |locale|
       locale = orig_lang if locale == :orig
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|

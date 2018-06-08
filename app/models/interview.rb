@@ -164,9 +164,11 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     text :transcript, :boost => 5 do
+      indexing_interview_text = ''
       segments.each do |segment|
-        segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
+        indexing_interview_text << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
       end
+      indexing_interview_text.squeeze(' ')
     end
     
     (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|

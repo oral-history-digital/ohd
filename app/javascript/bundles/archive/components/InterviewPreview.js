@@ -2,13 +2,8 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
-import ArchiveUtils from "../../../lib/utils";
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import Slider from "react-slick";
-import f1 from '../../../images/slick.eot';
-import f2 from '../../../images/slick.svg';
-import f3 from '../../../images/slick.woff'
-import f4 from '../../../images/slick.ttf';
 import '../../../css/slick.css';
 import '../../../css/slick-theme.css';
 
