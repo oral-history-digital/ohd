@@ -27,8 +27,4 @@ class Person < ApplicationRecord
     date_of_birth.blank? ? '?' : date_of_birth[/19\d{2}/]
   end
 
-  def decade_of_birth
-    date_of_birth.blank? ? '?' : date_of_birth[/1[89]\d/] + "0s"
-  end
-
 end

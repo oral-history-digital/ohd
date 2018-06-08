@@ -44,6 +44,7 @@ export default class ArchiveSearchForm extends React.Component {
         let params = serialize(this.form, {hash: true});
         params = this.getValueFromDataList(params, event);
         params = this.prepareQuery(params);
+        params['page'] = 1;
         this.submit(params);
     }
 
@@ -60,6 +61,16 @@ export default class ArchiveSearchForm extends React.Component {
         return params;
     }
 
+    arrayToRange(min, max) {
+        let array = [];
+        if (min <= max) {
+            for (let i = min; i <= max; i++){
+                array.push(i)
+            }
+        }
+        return array;
+    }
+    
     prepareQuery(params) {
         // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
         // Thus the last checkbox would never uncheck.
@@ -68,6 +79,10 @@ export default class ArchiveSearchForm extends React.Component {
         if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
         for (let [key, value] of Object.entries(this.props.facets)) {
             preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
+        }
+        // create list of years for year_of_birth
+        if (params['year_of_birth_min']) {
+            preparedQuery['year_of_birth[]'] = this.arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] ) 
         }
         return preparedQuery;
     }
@@ -99,8 +114,10 @@ export default class ArchiveSearchForm extends React.Component {
                             name="fulltext" 
                             value={fulltext}
                             placeholder={t(this.props, 'enter_field')}
-                            onChange={this.handleChange} 
+                            onChange={this.handleChange}
+                            list='allInterviewTitles' 
                         />
+                        {this.renderDataList()}
                         <input 
                             className="search-button" 
                             id="search-button"
@@ -125,6 +142,24 @@ export default class ArchiveSearchForm extends React.Component {
         return this.searchform();
     }
 
+    yearRange(facet) {
+        if (facet === 'year_of_birth') {
+            return [
+                parseInt(Object.keys(this.props.facets[facet]['subfacets']).sort(function(a, b){return a-b})[0]),
+                parseInt(Object.keys(this.props.facets[facet]['subfacets']).sort(function(a, b){return b-a})[0])
+            ]
+        }
+        else {
+            return []
+        }
+    }
+
+    currentYearRange(){
+        return [
+            this.props.query['year_of_birth[]'] && parseInt(this.props.query['year_of_birth[]'][0]),
+            this.props.query['year_of_birth[]'] && parseInt(this.props.query['year_of_birth[]'][this.props.query['year_of_birth[]'].length -1])
+        ]
+    }
 
     renderFacets() {
         if (this.facetsLoaded()) {
@@ -136,30 +171,37 @@ export default class ArchiveSearchForm extends React.Component {
                         facet={facet}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
+                        slider={facet === 'year_of_birth'}
+                        sliderMin={this.yearRange(facet)[0]}
+                        sliderMax={this.yearRange(facet)[1]}
+                        currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
+                        currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
                     />
                 )
             })
         }
     }
 
-    //renderDataList() {
-        //return (
-            //<datalist id="inputList">
-                //{this.renderOptions()}
-            //</datalist>
-        //);
-    //}
+    renderDataList() {
+        return (
+            <datalist id="allInterviewTitles">
+                <select>
+                    {this.renderOptions()}
+                </select>
+            </datalist>
+        );
+    }
 
-    //renderOptions() {
-        //return this.props.allInterviewsTitles.map((title, index) => {
-                //return (
-                    //<option key={"option-" + index}>
-                        //{title[this.props.locale]}
-                    //</option>
-                //)
-            //}
-        //)
-    //}
+    renderOptions() { 
+        return this.props.allInterviewsTitles.map((title, index) => {
+                return (
+                    <option key={"option-" + index} value={title[this.props.locale]}>
+                        {title[this.props.locale]}
+                    </option>
+                )
+            }
+        )
+    }
 
     static contextTypes = {
         router: PropTypes.object

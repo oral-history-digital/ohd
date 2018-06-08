@@ -146,3 +146,39 @@
   padding: 20px;
 }
 
+/* Slider */
+
+.rc-slider {
+  height: 60px !important;
+}
+
+.rc-slider-track {
+  background-color: $primary-color !important;
+}
+
+.rc-slider-handle {
+  border-color: $primary-color !important;
+}
+
+.rc-slider-dot {
+  border: 0 !important;
+  background-color: lighten($gray-warm, 20%) !important;
+}
+
+.rc-slider-dot-active {
+  border: 0 !important;
+  background-color: $primary-color !important;
+}
+
+.rc-slider-rail {
+  background-color: lighten($gray-warm, 20%) !important;
+}
+
+.rc-slider-tooltip {
+  z-index: 1000 !important;
+}
+
+.rc-slider-tooltip-inner {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

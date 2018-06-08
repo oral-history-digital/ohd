@@ -225,6 +225,7 @@ el:
   search_facets:
     fulltext: 'Όρος αναζήτησης'
     gender: 'Φύλο'
+    media_type: 'media type'
     Man: 'άρρεν'
     Woman: 'θήλυ'
     man: 'άρρεν'

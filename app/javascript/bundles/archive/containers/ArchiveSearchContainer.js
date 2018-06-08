@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
         foundInterviews: state.search.foundInterviews,
         allInterviewsCount: state.search.allInterviewsCount,
         resultPagesCount: state.search.resultPagesCount,
+        foundSegmentsForInterviews: state.search.foundSegmentsForInterviews,
         resultsCount: state.search.resultsCount,
         query: state.search.query,
         interviews: state.search.interviews,

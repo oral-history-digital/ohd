@@ -38,41 +38,34 @@ default: &default
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
-    nutzungsbedingungen:
+    conditions: #nutzungsbedingungen:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag:
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
+    request_for_use: #nutzungsantrag:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen:
+      # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    privacy_protection: #datenschutzbestimmungen:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
     annotation_guidelines:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     team:
       de: 'http://www.zwangsarbeit-archiv.de/team'
       en: 'http://www.zwangsarbeit-archiv.de/en/team'
-      ru: 'http://www.zwangsarbeit-archiv.de/team'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
-    kontakt:
+    contact: #kontakt:
       de: 'http://www.zwangsarbeit-archiv.de/kontakt'
       en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
-      ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
-    impressum:
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
+    legal_info: #impressum:
       de: 'http://www.zwangsarbeit-archiv.de/impressum'
       en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
-      ru: 'http://www.zwangsarbeit-archiv.de/impressum'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   # Please mount the CIFS storage server locally like this (read-only for normal users!):
   # sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
@@ -120,8 +113,8 @@ default: &default
     - id: 'language_id'
       source: 'language'
       use_as_facet: true
-    - id: 'forced_labor_groups'
-      source: 'registry_entry'
+    - id: 'media_type'
+      source: 'media_type'
       use_as_facet: true
     - id: 'gender'
       source: 'person'
@@ -129,14 +122,14 @@ default: &default
       values:
         female: 'female'
         male: 'male'
-    - id: 'decade_of_birth'
+    - id: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-      values:
-        "1900s": "1900s"
-        "1910s": "1910s"
-        "1920s": "1920s"
-        "1930s": "1930s"
+      from: 1907
+      to: 1940
+    - id: 'forced_labor_groups'
+      source: 'registry_entry'
+      use_as_facet: true
     - id: 'forced_labor_fields'
       source: 'registry_entry'
       use_as_facet: true

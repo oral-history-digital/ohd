@@ -158,6 +158,7 @@ class Interview < ActiveRecord::Base
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
     integer :collection_id, :stored => true, :references => Collection
+    string :media_type, :stored => true
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -216,6 +217,13 @@ class Interview < ActiveRecord::Base
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  if Project.available_locales.include?( locale.to_s )
+      mem
+    end
+  end
+
+  def localized_hash_for_media_type
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio', :locale => locale)
       mem
     end
   end

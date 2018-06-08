@@ -609,16 +609,11 @@ ru:
     collection_id: 'Частичные собрания'
     language_id: 'Язык'
     age: 'Возраст'
+    media_type: 'media_type'
     gender: 'Пол'
     female: 'женщина'
     male: ' мужчина'
-    decade_of_birth: 'Год рождения'
-    1890s: '1890-е годы'
-    1900s: '1900-е годы'
-    1910s: '1910-е годы'
-    1920s: '1920-е годы'
-    1930s: '1930-е годы'
-    1940s: '1940-е годы'
+    year_of_birth: 'Год рождения'
 
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"

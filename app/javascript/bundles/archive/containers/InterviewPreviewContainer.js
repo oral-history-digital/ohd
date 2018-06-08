@@ -4,13 +4,14 @@ import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { handleSegmentClick, setTapeAndTime } from '../actions/interviewActionCreators';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
       fulltext: state.search.query.fulltext,
       locale: state.archive.locale,
       translations: state.archive.translations,
-      query: state.search.query
-  }
+      query: state.search.query,
+      segments: state.search.interviews[ownProps.interview.archive_id] || {},
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({

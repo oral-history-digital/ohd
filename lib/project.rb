@@ -49,16 +49,31 @@ module Project
         when 'registry_reference_type'
           mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet['id'])).as_json
         when 'person'
-          mem[facet['id'].to_sym] = {
-            descriptor: localized_hash_for("search_facets", facet['id']),
-            subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
-              subfacets[value] = {
-                descriptor: localized_hash_for("search_facets", key),
-                count: 0
-              }
-              subfacets
-            end
-          }
+          if facet['id'] == 'year_of_birth'
+            mem[facet['id'].to_sym] = {
+              descriptor: localized_hash_for("search_facets", facet['id']),
+              subfacets: (facet['from']..facet['to']).inject({}) do |subfacets, key|
+                h = {}
+                I18n.available_locales.map{|l| h[l] = key}
+                subfacets[key] = {
+                  descriptor: h,
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          else
+            mem[facet['id'].to_sym] = {
+              descriptor: localized_hash_for("search_facets", facet['id']),
+              subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
+                subfacets[value] = {
+                  descriptor: localized_hash_for("search_facets", key),
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          end
         when 'interview'
           mem[facet['id'].to_sym] = {
             descriptor: localized_hash_for("search_facets", facet['id']),
@@ -87,6 +102,17 @@ module Project
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
                 descriptor: interview.language.localized_hash,
+                count: 0
+              }
+              subfacets
+            end
+          }
+        when 'media_type'
+          mem[facet['id'].to_sym] = {
+            descriptor: localized_hash_for("search_facets", facet['id']),
+            subfacets: Interview.all.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet['id'])] = {
+                descriptor: interview.localized_hash_for_media_type,
                 count: 0
               }
               subfacets

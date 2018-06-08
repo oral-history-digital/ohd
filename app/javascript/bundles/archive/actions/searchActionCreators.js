@@ -55,12 +55,12 @@ const requestArchiveSearch = (searchQuery) => ({
 function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
-        //allInterviewsTitles: json.all_interviews_titles,
+        allInterviewsTitles: json.all_interviews_titles,
         allInterviewsCount: json.all_interviews_count,
         resultPagesCount: json.result_pages_count,
         resultsCount: json.results_count,
         foundInterviews: json.interviews,
-        //foundSegmentsForInterviews: json.found_segments_for_interviews,
+        foundSegmentsForInterviews: json.found_segments_for_interviews,
         facets: json.facets,
         receivedAt: Date.now()
     }
