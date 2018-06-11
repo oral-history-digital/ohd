@@ -6,8 +6,26 @@ import { t } from '../../../lib/utils';
 
 export default class EditInterview extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            hideTapeAndArchiveInputs: false, 
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(name, value) {
+        if (name === 'tape_and_archive_id_from_file') {
+            this.setState({ 
+                hideTapeAndArchiveInputs: value
+            })
+        }
+    }
+
     render() {
         let tabIndex = this.props.locales.length + 4;
+        let _this = this;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
@@ -23,8 +41,34 @@ export default class EditInterview extends React.Component {
                                 withEmpty: true,
                                 validate: function(v){return v !== ''} 
                             },
-                            { attribute: 'archive_id' },
-                            { attribute: 'language' },
+                            { 
+                                attribute: 'tape_and_archive_id_from_file',
+                                elementType: 'input',
+                                type: 'checkbox',
+                                handleChangeCallback: this.handleChange
+                            },
+                            { 
+                                attribute: 'archive_id',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2}\d{3}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_count',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_number',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                            {
+                                elementType: 'select',
+                                attribute: 'language_id',
+                                values: this.props.languages,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
                             { attribute: 'interview_date' },
                             { attribute: 'video' },
                             { attribute: 'translated' },
@@ -42,6 +86,19 @@ export default class EditInterview extends React.Component {
                                 elementType: 'input',
                                 type: 'file',
                                 validate: function(v){return v instanceof File}
+                            },
+                            {
+                                attribute: 'timecode',
+
+                            },
+                            {
+                                attribute: 'transcript',
+                            },
+                            {
+                                attribute: 'translation',
+                            },
+                            {
+                                attribute: 'annotations',
                             },
                         ]}
                     />
