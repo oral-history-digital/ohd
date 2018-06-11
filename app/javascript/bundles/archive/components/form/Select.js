@@ -30,7 +30,7 @@ export default class Select extends React.Component {
         this.props.handleChange(name, value);
 
         if (this.props.validate !== undefined) {
-            if (this.props.validate(value)) {
+            if (this.props.hidden || this.props.validate(value)) {
                 this.props.handleErrors(name, false);
                 this.setState({valid: true})
             } else {
@@ -78,6 +78,8 @@ export default class Select extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 showErrors={this.props.showErrors}
+                css={this.props.css}
+                hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
             >

@@ -25,6 +25,10 @@ export default class Form extends React.Component {
         this.initErrors();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.initErrors();
+    }
+
     handleChange(name, value) {
         this.setState({ 
             values: Object.assign({}, this.state.values, {[name]: value})
@@ -41,8 +45,7 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors = Object.assign({}, errors, {[element.attribute]: element.validate ? true : false})
-                //return ([elementKey]: this.props.elements[elementKey].validate ? true : false);
+            errors = Object.assign({}, errors, {[element.attribute]: (element.hidden && element.validate) ? true : false})
         })
         this.setState({ errors: errors });
     }

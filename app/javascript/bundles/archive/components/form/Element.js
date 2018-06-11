@@ -31,7 +31,7 @@ export default class Element extends React.Component {
     }
 
     css() {
-        let name = 'form-group';
+        let name = `form-group ${this.props.css ? this.props.css : ''} ${this.props.hidden ? 'hidden' : ''}`;
         if (!this.props.valid && this.props.showErrors) {
             name += ' has-error';
         }

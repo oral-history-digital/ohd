@@ -28,12 +28,14 @@ export default class Textarea extends React.Component {
 
         this.props.handleChange(name, value);
 
-        if (this.props.validate(value)) {
-            this.props.handleErrors(name, false);
-            this.setState({valid: true})
-        } else {
-            this.props.handleErrors(name, true);
-            this.setState({valid: false})
+        if (this.props.validate !== undefined) {
+            if (this.props.hidden || this.props.validate(value)) {
+                this.props.handleErrors(name, false);
+                this.setState({valid: true})
+            } else {
+                this.props.handleErrors(name, true);
+                this.setState({valid: false})
+            }
         }
     }
 
@@ -43,6 +45,8 @@ export default class Textarea extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 showErrors={this.props.showErrors}
+                css={this.props.css}
+                hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
             >
