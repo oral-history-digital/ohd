@@ -31,6 +31,7 @@ class HomeController < BaseController
               mem
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             project: Rails.configuration.x.project.to_s,
             project_name: Project.project_name,
             project_domain: Project.project_domain,
