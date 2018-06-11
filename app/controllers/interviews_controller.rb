@@ -13,11 +13,25 @@ class InterviewsController < BaseController
   end
 
   def create
-    transcript_file = params[:interview].delete(:data)
-    @interview = Interview.create interview_params
-    @interview.transcript = transcript_file #.path
+    file = params[:interview].delete(:data)
+
+    if params[:interview].delete(:tape_and_archive_id_from_file)
+      archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
+    else
+      archive_id = interview_params[:archive_id]
+      tape_media_id = interview_params.slice(:archive_id, :tape_count, :tape_number).values.join('_')
+    end
+
+    interview = Interview.find_or_create_by collection_id: interview_params[:collection_id], archive_id: archive_id
+    
+    tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
+    interview.update_attributes interview_params
+
+    column_names = extract_file_column_names(params[:interview])
+    msg = interview.create_or_update_segments_from_file_for_tape(file, tape.id, column_names: column_names)
+
     respond_to do |format|
-      format.json { render json: @interview }
+      format.json { render json: msg || 'ok' }
     end
   end
 
@@ -92,9 +106,9 @@ class InterviewsController < BaseController
   def interview_params
     params.require(:interview).
       permit(
+        'collection_id',
         'archive_id',
-        'language',
-        'collection',
+        'language_id',
         'interview_date',
         'video',
         'translated',
@@ -108,6 +122,30 @@ class InterviewsController < BaseController
         'gender',
         'date_of_birth',
     )
+  end
+
+  def extract_file_column_names(params)
+    binding.pry
+    column_names = params.slice(
+      :timecode, 
+      :transcript, 
+      :translation, 
+      :annotations, 
+    )
+    binding.pry
+    column_names = column_names.empty? ? {
+      timecode: "IN",
+      transcript: "TRANSCRIPT",
+      translation: "Übersetzung",
+      annotation: "Anmerkungen",
+    } : column_names
+  end
+
+  def extract_archive_id_and_tape_media_id(file)
+    filename_tokens = (File.basename(file.original_filename, '.ods') || '').split('_')
+    archive_id = filename_tokens.first
+    tape_media_id = "#{filename_tokens[0]}_#{filename_tokens[1]}_#{filename_tokens[2]}".upcase
+    [archive_id, tape_media_id]
   end
 
 end

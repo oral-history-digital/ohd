@@ -285,11 +285,25 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def transcript=(file)
-    # TODO: implement segment creation or update from transcript file
-    #
-    ods = XMLParser::ODSParser.new(file, :transcript) # do not import annotations for now
-    ods.parse
+  def create_or_update_segments_from_file_for_tape(file, tape_id, opts={})
+    column_names = opts[:column_names].empty? ? {
+      timecode: "IN",
+      transcript: "TRANSCRIPT",
+      translation: "Übersetzung",
+      annotation: "Anmerkungen",
+    } : opts[:column_names]
+
+    ods = Roo::Spreadsheet.open(file.tempfile)
+    ods.each_with_pagename do |name, sheet|
+      sheet.each(column_names) do |row|
+        if row[:timecode] =~ /^\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}$/
+          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
+          segment.update_attributes text: row[:transcript], locale: ISO_639.find(language.code).send(Project.alpha)
+        end
+      end
+    end
+  rescue  Roo::HeaderRowNotFoundError
+    'header_row_not_found'
   end
 
   #def duration
@@ -313,6 +327,14 @@ class Interview < ActiveRecord::Base
       end
     end
     write_attribute :duration, time
+  end
+
+  # add the duration of all existing tapes
+  def recalculate_duration!
+    unless tapes.blank? || tapes.empty? || (tapes.select{|t| t.duration.nil? }.size > 0)
+      new_duration = tapes.inject(0){|dur, t| dur += t.duration.nil? ? t.estimated_duration.time : Timecode.new(t.duration).time }
+      update_attribute(:duration, new_duration) unless new_duration == self[:duration]
+    end
   end
 
   def build_full_title_from_name_parts(locale)
