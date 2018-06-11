@@ -21,6 +21,7 @@ gem 'globalize', git: 'https://github.com/globalize/globalize'
 gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
+gem 'roo', "~> 2.7.0"
 gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.0'
