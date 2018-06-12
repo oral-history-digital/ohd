@@ -42,7 +42,7 @@ export default class ArchiveSearch extends React.Component {
 
 
     foundInterviews() {
-        if (this.props.foundInterviews.length == 0) {
+        if (this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
         }
         else {
@@ -163,7 +163,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     renderArchiveResultsCount() {
-        if(!this.props.isArchiveSearching) {
+        if(!this.props.isArchiveSearching || (this.props.query['page'] || 1) > 1) {
             return (
                 <div className="search-results-legend-text">
                     {this.props.resultsCount} {t(this.props, 'archive_results')}
