@@ -14,6 +14,8 @@ class InterviewsController < BaseController
 
   def create
     file = params[:interview].delete(:data)
+    file_path = File.join(Rails.root, 'tmp', file.original_filename)
+    File.open(file_path, 'wb') {|f| f.write(file.read) }
 
     if params[:interview].delete(:tape_and_archive_id_from_file)
       archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
@@ -28,10 +30,10 @@ class InterviewsController < BaseController
     interview.update_attributes interview_params
 
     column_names = extract_file_column_names(params[:interview])
-    msg = interview.create_or_update_segments_from_file_for_tape(file, tape.id, column_names: column_names)
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, column_names: column_names)
 
     respond_to do |format|
-      format.json { render json: msg || 'ok' }
+      format.json { render json: 'ok' }
     end
   end
 
@@ -125,14 +127,12 @@ class InterviewsController < BaseController
   end
 
   def extract_file_column_names(params)
-    binding.pry
     column_names = params.slice(
       :timecode, 
       :transcript, 
       :translation, 
       :annotations, 
     )
-    binding.pry
     column_names = column_names.empty? ? {
       timecode: "IN",
       transcript: "TRANSCRIPT",

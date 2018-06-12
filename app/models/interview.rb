@@ -285,7 +285,7 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_file_for_tape(file, tape_id, opts={})
+  def create_or_update_segments_from_file_for_tape(file_path, tape_id, opts={})
     column_names = opts[:column_names].empty? ? {
       timecode: "IN",
       transcript: "TRANSCRIPT",
@@ -293,7 +293,7 @@ class Interview < ActiveRecord::Base
       annotation: "Anmerkungen",
     } : opts[:column_names]
 
-    ods = Roo::Spreadsheet.open(file.tempfile)
+    ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
       sheet.each(column_names) do |row|
         if row[:timecode] =~ /^\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}$/
