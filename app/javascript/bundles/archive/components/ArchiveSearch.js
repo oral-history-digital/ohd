@@ -7,11 +7,9 @@ import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t } from '../../../lib/utils';
+import { t, queryToText } from '../../../lib/utils';
 import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import ArchiveUtils from '../../../lib/utils';
-
 
 export default class ArchiveSearch extends React.Component {
 
@@ -141,7 +139,7 @@ export default class ArchiveSearch extends React.Component {
     saveSearchForm() {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
-        let queryText = ArchiveUtils.queryToText(this.props.query, this.props);
+        let queryText = queryToText(this.props.query, this.props);
         let title = queryText === "" ? now : queryText + " - " + now;
 
         return <UserContentFormContainer

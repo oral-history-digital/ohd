@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 
-export const PROJECT = 'mog';
 export const MISSING_STILL = 'https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg'
 
 export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';

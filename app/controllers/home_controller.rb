@@ -30,7 +30,7 @@ class HomeController < BaseController
               mem[locale] = ISO3166::Country.translations(locale).sort_by{|key, value| value}.to_h.keys
               mem
             end,
-            project: Rails.configuration.x.project.to_s,
+            project: Project.name.to_s,
             project_name: Project.project_name,
             project_domain: Project.project_domain,
             archive_domain: Project.archive_domain,

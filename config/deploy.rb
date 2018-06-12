@@ -6,7 +6,7 @@ set :repo_url, "git@gitlab.cedis.fu-berlin.de:Archive-Upgrade/zwar-archive.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, :stable_mog
+# set :branch, :development
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -19,7 +19,7 @@ set :branch, :stable_mog
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/project.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"

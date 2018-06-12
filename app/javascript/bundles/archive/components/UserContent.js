@@ -3,8 +3,7 @@ import {Link, hashHistory} from 'react-router-dom';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
-import { t } from '../../../lib/utils';
-import ArchiveUtils from '../../../lib/utils';
+import { t, queryToText } from '../../../lib/utils';
 
 export default class UserContent extends React.Component {
 
@@ -105,7 +104,7 @@ export default class UserContent extends React.Component {
         if  (this.props.data.type === 'Search') {
             return  <p>
                 <span className='flyout-content-label'>{t(this.props, 'query')}:</span>
-                <span className='flyout-content-data'>{ArchiveUtils.queryToText(this.props.data.properties, this.props)}</span>
+                <span className='flyout-content-data'>{queryToText(this.props.data.properties, this.props)}</span>
             </p>
         } else {
             return null

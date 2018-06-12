@@ -117,7 +117,7 @@
 .portlet a.workbook {
     padding-left: 20px;
     padding-top: 2px;
-    background-image: url(<%=  image_path "#{Rails.configuration.x.project}/icon_sprite.png" %>);
+    background-image: url(<%=  image_path "#{Project.name}/icon_sprite.png" %>);
     background-repeat: no-repeat;
     background-position: top left;
     font-weight: bold;
@@ -218,7 +218,7 @@ form #user_account_email {
 /* New Form Styles */
 #flashNotice {
     color: #fff;
-    background: transparent url(<%=  image_path "#{Rails.configuration.x.project}/flash_bg.png" %>) top left;
+    background: transparent url(<%=  image_path "#{Project.name}/flash_bg.png" %>) top left;
 }
 
 #flashAlert {

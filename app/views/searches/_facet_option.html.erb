@@ -11,7 +11,7 @@
     <% if category_facet && facet_entries.empty? %>
 
       <h2 class='more disabled'>
-        <img title="" src="<%= image_path "#{Rails.configuration.x.project}/pfeil_rot_rechts.gif" %>" id="<%= facet_name %>_query_closed" alt="<%= t('.arrow_right') %>" />
+        <img title="" src="<%= image_path "#{Project.name}/pfeil_rot_rechts.gif" %>" id="<%= facet_name %>_query_closed" alt="<%= t('.arrow_right') %>" />
         <%= human_readable_facet_name %>
       </h2>
 
@@ -19,10 +19,10 @@
 
       <h2 onclick="toggleCategory('<%= facet_name %>_query', <%= category_facet || item_list %>);" class="more <%= (category_facet && facet_entries.empty?) ? 'disabled' : '' %>">
 
-        <img title="" src="<%= image_path  "#{Rails.configuration.x.project}/pfeil_rot_rechts.gif" %>" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="<%= t('.arrow_right') %>" />
-        <img title="" src="<%= image_path  "#{Rails.configuration.x.project}/pfeil_rot_unten.gif" %>" id="<%= facet_name %>_query_open" class="arrow-open" alt="<%= t('.arrow_down') %>" />
+        <img title="" src="<%= image_path  "#{Project.name}/pfeil_rot_rechts.gif" %>" id="<%= facet_name %>_query_closed" class="arrow-closed" alt="<%= t('.arrow_right') %>" />
+        <img title="" src="<%= image_path  "#{Project.name}/pfeil_rot_unten.gif" %>" id="<%= facet_name %>_query_open" class="arrow-open" alt="<%= t('.arrow_down') %>" />
         <%= human_readable_facet_name %>
-        <%= search_facets.submit '&uuml;bernehmen', :style => 'display: none;', :type => 'image', :src => image_path("#{Rails.configuration.x.project}/suchpfeil_quad_grau.gif"), :title => t('.update'), :class => 'facet_refresh', :id => "#{facet_name}_submit", :onclick => "submitViaAjax();false;" %>
+        <%= search_facets.submit '&uuml;bernehmen', :style => 'display: none;', :type => 'image', :src => image_path("#{Project.name}/suchpfeil_quad_grau.gif"), :title => t('.update'), :class => 'facet_refresh', :id => "#{facet_name}_submit", :onclick => "submitViaAjax();false;" %>
       </h2>
       <fieldset style="<%= facet_closed ? 'display: none;' : ''%>" id="<%= facet_name %>_query" class="facet-field">
 

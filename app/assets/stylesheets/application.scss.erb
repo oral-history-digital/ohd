@@ -12,5 +12,5 @@
  *= require_tree ./shared
  */
 <% stylesheets_path = File.join("app", "assets", "stylesheets") %>
-<% project_assets =  File.join(stylesheets_path, "#{Rails.configuration.x.project}", "**", "*.{css,scss,erb}") %>
+<% project_assets =  File.join(stylesheets_path, "#{Project.name}", "**", "*.{css,scss,erb}") %>
 <% Dir.glob(project_assets).each{|i| require_asset(i.gsub(stylesheets_path + "/", '')) }  %>

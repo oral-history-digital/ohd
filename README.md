@@ -6,17 +6,12 @@ This is the web application for CeDiS-Archiv 2.0.
 
 1. generate the **database.yml** and setup the databases (`bundle exec rake db:create` or `bundle exec rake db:create:all`)
 2. run the migrations: `bundle exec rake db:migrate`
-3. set environment variable `EAZ_PROJECT_NAME` to `'hagen'` or `'zwar'`. 
-   e.g. add the following line to your **~/.bashrc** or **~/.profile** or similar:
+3. set symbolic link from the project file to config/project.yml:
 
     ```bash
-    export EAZ_PROJECT_NAME="zwar"
+    ln -s config/projects/zwar.yml config/project.yml
     ```
-    and source it afterwards, e.g.:
-   
-    ```bash
-    source ~/.bashrc
-    ```
+
 4.(not necessary for MOG and future versions) Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
 
 5.(not necessary for MOG and future versions) Import interviews
@@ -95,19 +90,7 @@ The font FiraSans-Regular.ttf is used and should be installed as well.
 
 Example: Switch from `mog` to `zwar`:
 
-1. In **application.rb**, change
-    
-    ```ruby
-    PROJECT = :mog
-    ```
-    
-    to
-    
-    ```ruby
-    PROJECT = :zwar
-    ```
-
-2. In **solr.xml**, change
+1. In **solr.xml**, change
 
     ```xml
     <core name="default" instanceDir="." dataDir="data/mog"/>
@@ -119,7 +102,7 @@ Example: Switch from `mog` to `zwar`:
     <core name="default" instanceDir="." dataDir="data/zwar"/>
     ```
     
-3. In **database.yml** switch to zwar database:
+2. In **database.yml** switch to zwar database:
     
     ```yml
     ...
@@ -131,32 +114,10 @@ Example: Switch from `mog` to `zwar`:
         ...
     ```
 
-4. in **archiveConstants.js**:
+## Deployment
 
-    ```javascript
-    export const PROJECT = 'mog';
-    ```
+1. Copy project file to shared/config/project.yml in initial setup or if the project file was updated:
 
-5. in **r-archive.css.scss**, change
-    
-    ```css
-    @import "variables";
-    ```
-
-    to 
-
-    ```css
-    @import "variables-zwar";
-    ```
-
-6. in **archive.js**, change
-    
-    ```javascript
-    locales: ['de', 'el'],
-    ```
-
-    to
-
-    ```javascript
-    locales: ['de', 'en', 'ru'],
+    ```bash
+    cp current/config/projects/zwar.yml shared/config/project.yml
     ```

@@ -1,5 +1,5 @@
 body#administration {
-    background-image: url(<%=  image_path "#{Rails.configuration.x.project}/admin_bg_body.gif" %>);
+    background-image: url(<%=  image_path "#{Project.name}/admin_bg_body.gif" %>);
 }
 span.new_registrations {
     position: absolute;
@@ -96,7 +96,7 @@ span.new_registrations a {
 #administration .userTable .translation_missing {
     display: block;
     color: transparent;
-    background: transparent url(<%=  image_path "#{Rails.configuration.x.project}/icon_sprite.png" %>) 0 -1080px no-repeat;
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 0 -1080px no-repeat;
 }
 #administration .userTable .translation_missing:hover {
     text-indent: 0;
@@ -198,7 +198,7 @@ a.userTableButtonLink:hover {
 #administration .column .inline-editable:hover,
 #administration .userTable .inline-editable:hover {
     background: #fffdc0;
-    background-image: url(<%=  image_path "#{Rails.configuration.x.project}/icon_sprite.png" %>);
+    background-image: url(<%=  image_path "#{Project.name}/icon_sprite.png" %>);
     background-repeat: no-repeat;
     background-position: 98% -1021px;
 }
@@ -323,10 +323,10 @@ a.userTableButtonLink:hover {
 #administration .more {
     padding-left: 15px;
     display: inline-block;
-    background: transparent url(<%= image_path "#{Rails.configuration.x.project}/pfeil_rot_unten.gif" %>) 2px 4px no-repeat;
+    background: transparent url(<%= image_path "#{Project.name}/pfeil_rot_unten.gif" %>) 2px 4px no-repeat;
 }
 #administration .closed .more {
-    background: transparent url(<%= image_path "#{Rails.configuration.x.project}/pfeil_rot_rechts.gif" %>) 2px 4px no-repeat;
+    background: transparent url(<%= image_path "#{Project.name}/pfeil_rot_rechts.gif" %>) 2px 4px no-repeat;
 }
 #administration .closed .details {
     display: none;
@@ -371,10 +371,10 @@ table.imports_for_interview td {
     color: #666;
 }
 #administration .sort.asc {
-    background: transparent url(<%=  image_path "#{Rails.configuration.x.project}/icon_sprite.png" %>) 98% -720px no-repeat;
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 98% -720px no-repeat;
 }
 #administration .sort.desc {
-    background: transparent url(<%=  image_path "#{Rails.configuration.x.project}/icon_sprite.png" %>) 98% -660px no-repeat;
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 98% -660px no-repeat;
 }
 
 /* Newsletter subscription interface */

@@ -53,7 +53,7 @@ export default class InterviewPreview extends React.Component {
     }
 
     interviewDetails() {
-        if (PROJECT === 'zwar') {
+        if (this.props.project === 'zwar') {
             return (
                 <div className={'search-result-data'}>
                     <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
@@ -65,7 +65,7 @@ export default class InterviewPreview extends React.Component {
                 </div>
             );
         }
-        else if (PROJECT === 'mog') {
+        else if (this.props.project === 'mog') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.typologies()}

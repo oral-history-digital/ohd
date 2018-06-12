@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
     return {
         photos: ArchiveUtils.getInterview(state).interview.photos,
         translations: state.archive.translations,
-        locale: state.archive.locale
+        locale: state.archive.locale,
+        project: state.archive.project,
     }
 }
 

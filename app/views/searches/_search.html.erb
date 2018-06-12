@@ -15,7 +15,7 @@
 </div>
 
 <div id="submit_search" class="action">
-  <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path("#{Rails.configuration.x.project}/suchpfeil_quad.gif"), :onclick => 'submitViaAjax(); false;' %>
+  <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path("#{Project.name}/suchpfeil_quad.gif"), :onclick => 'submitViaAjax(); false;' %>
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>

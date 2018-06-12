@@ -36,7 +36,7 @@ module ApplicationHelper
 
   def reset_search_link(options={})
     #options are ignored
-    link_to content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;'.html_safe + image_tag(image_path "#{Rails.configuration.x.project}/suche_reset1.gif"),
+    link_to content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;'.html_safe + image_tag(image_path "#{Project.name}/suche_reset1.gif"),
                    new_search_path(:referring_controller => controller_name, :referring_action => action_name),
             :method => :get
 

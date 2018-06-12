@@ -207,7 +207,7 @@ export default class WrapperPage extends React.Component {
 
     render() {
         let logoSrc = '';
-        switch(PROJECT) {
+        switch(this.props.project) {
             case 'mog':
                 logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
                 break;
@@ -234,7 +234,7 @@ export default class WrapperPage extends React.Component {
                             <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')}>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
-                                <span className="logo-text">{PROJECT}</span>
+                                <span className="logo-text">{this.props.project}</span>
                             </a>
                         </header>
 

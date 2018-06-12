@@ -1,12 +1,11 @@
 import React from 'react';
 import CarouselContainer from '../containers/CarouselContainer';
-import { PROJECT } from '../constants/archiveConstants'
 import { t } from '../../../lib/utils';
 
 export default class Gallery extends React.Component {
 
     thumbnailSrc(photo) {
-        switch(PROJECT) {
+        switch(this.props.project) {
            case 'mog': {
                return '/photos/thumb/' + photo.src;
                break;
