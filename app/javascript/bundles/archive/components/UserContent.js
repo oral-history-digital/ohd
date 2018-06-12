@@ -4,6 +4,7 @@ import {Link, hashHistory} from 'react-router-dom';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
 import { t } from '../../../lib/utils';
+import ArchiveUtils from '../../../lib/utils';
 
 export default class UserContent extends React.Component {
 
