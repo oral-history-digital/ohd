@@ -106,6 +106,7 @@ const archive = (state = initialState, action) => {
                 translations: action.translations,
                 country_keys: action.country_keys,
                 collections: action.collections,
+                languages: action.languages,
                 locales: action.locales,
                 project: action.project,
                 projectDoi: action.projectDoi,
