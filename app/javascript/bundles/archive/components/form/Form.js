@@ -41,7 +41,7 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors = Object.assign({}, errors, {[element.attribute]: (!element.hidden && element.validate) ? true : false})
+            errors = Object.assign({}, errors, {[element.attribute]: element.validate ? true : false})
         })
         this.setState({ errors: errors });
     }
