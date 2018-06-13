@@ -65,12 +65,13 @@ class HomeController < BaseController
 
   def translations
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") || instance_variable_set("@#{locale}", 
-                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].merge(
-                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
-                                                                                 countries: ISO3166::Country.translations(locale)
-                                                                                 )
-                                                                                )
+      mem[locale] = instance_variable_get("@#{locale}") || 
+        instance_variable_set("@#{locale}", 
+                              YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
+                                YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
+                                  countries: ISO3166::Country.translations(locale)
+                                )
+                             )
       mem
     end
   end
