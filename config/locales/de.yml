@@ -290,3 +290,121 @@ de:
     #countries: 'länder'
     #interviews: 'interviews'
 
+  activerecord:
+    models:
+      interview:
+        one: 'Interview'
+        other: 'Interviews'
+      tape:
+        one: 'Band'
+        other: 'Bänder'
+      segment:
+        one: 'Ausschnitt'
+        other: 'Ausschnitte'
+      collection:
+        one: 'Teilsammlung'
+        other: 'Teilsammlungen'
+      photo:
+        one: 'Bild'
+        other: 'Bilder'
+      user_content:
+        one: 'Inhalt'
+        other: 'Inhalte'
+      interview_reference:
+        one: 'Interview'
+        other: 'Interviews'
+      search:
+        one: 'Suchanfrage'
+        other: 'Suchanfragen'
+      user_annotation:
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
+      annotation:
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
+
+
+    attributes:
+      collection:
+        name: 'Name'
+        countries: 'Interviews in'
+        institution: 'Durchgeführt von'
+        responsibles: 'Verantwortliche'
+        interviewers: 'Interviewende'
+        homepage: 'Homepage'
+        notes: 'Weitere Anmerkungen'
+        interviews: 'Interviewte'
+      interview:
+        person_name: 'Name'
+        archive_id: 'Archiv-ID'
+        forced_labor_groups: 'Gruppe'
+        forced_labor_fields: 'Einsatzbereich'
+        forced_labor_habitations: 'Unterbringung / Inhaftierung'
+        forced_labor_locations: 'Lager und Einsatzorte'
+        forced_labor_details: 'Angaben zum Einsatz'
+        birth_date: 'Geboren am'
+        birth_locations: 'Geburtsort (heutiger Name)'
+        deportation: 'Deportationsort (heutiger Name), Jahr'
+        punishment: 'Strafmaßnamen'
+        liberation_date: 'Datum der Befreiung'
+        return_locations: 'Wohnorte ab 1945'
+        return_date: 'Datum der Rückkehr'
+        home_locations: 'Wohnort (Land)'
+        duration: 'Art und Länge des Interviews'
+        interview_date: 'geführt am'
+        interviewers: 'Interviewführung'
+        transcriptors: 'Transkription'
+        translators: 'Übersetzung'
+        researchers: 'Erschließung'
+        proofreaders: 'Lektorat'
+        segmentators: 'Segmentierung'
+        language: 'Sprache'
+        language_id: 'Sprache'
+        collection: 'Teilsammlung'
+        collection_id: 'Teilsammlung'
+      segment:
+        media_id: 'Segment-ID'
+        transcript: 'Transkription'
+        translation: 'Transkription (übersetzt)'
+      user_content:
+        title: 'Titel'
+        description: 'Notiz'
+        query: 'Suchkriterien'
+      user_annotation:
+        author: 'Autor'
+        archive_id: 'Archiv-ID'
+        timecode_string: 'Timecode'
+        submitted_at: 'Einreichung am'
+        description: 'Anmerkungstext'
+        link_url: 'Link'
+        workflow_state: 'Veröffentlichungsstatus'
+        description: 'Anmerkung'
+        heading: 'Kapitel'
+        media_id: 'Medien ID'
+
+    errors:
+      default:
+        select: 'Bitte auswählen'
+        textarea: 'Bitte angeben'
+        checkbox_input: 'Bitte auswählen'
+        text_input: 'Bitte angeben'
+        file_input: 'Bitte Datei auswählen'
+
+      template:
+        header: 'Ihre Anfrage konnte nicht bearbeitet werden'
+        body: 'Folgendes Problem ist aufgetreten:'
+      models:
+        interview:
+          attributes:
+            collection_id: 
+              empty: 'Bitte Teilsammlung auswählen'
+        user_annotation:
+          attributes:
+            description:
+              too_long: 'Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
+              modification_not_allowed: 'Überarbeitung des Anmerkungstextes ist nach Veröffentlichung nicht mehr gestattet.'
+        user_content:
+          attributes:
+            description:
+              too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
+
