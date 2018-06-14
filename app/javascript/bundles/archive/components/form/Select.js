@@ -29,8 +29,12 @@ export default class Select extends React.Component {
 
         this.props.handleChange(name, value);
 
+        if (typeof this.props.handleChangeCallback === 'function') {
+            this.props.handleChangeCallback(name, value);
+        }
+
         if (this.props.validate !== undefined) {
-            if (this.props.hidden || this.props.validate(value)) {
+            if (this.props.validate(value)) {
                 this.props.handleErrors(name, false);
                 this.setState({valid: true})
             } else {
@@ -82,6 +86,8 @@ export default class Select extends React.Component {
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
+                elementType='select'
+                individualErrorMsg={this.props.individualErrorMsg}
             >
                 <select 
                     name={this.props.attribute}

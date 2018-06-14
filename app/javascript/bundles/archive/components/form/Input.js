@@ -27,6 +27,7 @@ export default class Input extends React.Component {
         if (event.target.type === 'checkbox') {
             value = event.target.checked;
         }
+
         const name =  event.target.name;
 
         this.props.handleChange(name, value);
@@ -36,7 +37,7 @@ export default class Input extends React.Component {
         }
 
         if (this.props.validate !== undefined) {
-            if (this.props.hidden || this.props.validate(value)) {
+            if (this.props.validate(value)) {
                 this.props.handleErrors(name, false);
                 this.setState({valid: true})
             } else {
@@ -57,6 +58,8 @@ export default class Input extends React.Component {
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
+                elementType={`${this.props.type}_input`}
+                individualErrorMsg={this.props.individualErrorMsg}
             >
                 <input 
                     type={this.props.type} 
