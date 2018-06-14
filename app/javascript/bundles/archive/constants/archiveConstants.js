@@ -7,7 +7,7 @@ export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';
 export const INTERVIEW_URL = '/de/interviews';
 
-export const UPLOAD_TRANSCRIPT_URL = '/de/upload_transcript';
+export const UPLOAD_TRANSCRIPT_URL = '/de/transcripts';
 export const UPLOADED_TRANSCRIPT = 'UPLOADED_TRANSCRIPT';
 
 export const REQUEST_INTERVIEW_SEARCH = 'REQUEST_INTERVIEW_SEARCH';

@@ -51,7 +51,7 @@ export default class UploadTranscript extends React.Component {
                     <Form 
                         scope='interview'
                         onSubmit={this.props.submitTranscript}
-                        submitText='upload_transcript'
+                        submitText='edit_interview.upload_transcript'
                         elements={[
                             {
                                 elementType: 'select',
