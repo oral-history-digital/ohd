@@ -80,6 +80,7 @@ de:
   edit_interview:
     new: 'Neues Interview'
     edit: 'Interview bearbeiten'
+    upload_transcript: 'Transkript hochladen'
   user_content: 'Arbeitsmappe'
   user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
   archive_search: 'Suche im Archiv'

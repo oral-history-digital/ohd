@@ -12,7 +12,7 @@ class InterviewsController < BaseController
     end
   end
 
-  def create
+  def upload_transcript
     file = params[:interview].delete(:data)
     file_path = File.join(Rails.root, 'tmp', file.original_filename)
     File.open(file_path, 'wb') {|f| f.write(file.read) }
@@ -32,6 +32,12 @@ class InterviewsController < BaseController
     column_names = extract_file_column_names(params[:interview])
     ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, column_names: column_names)
 
+    respond_to do |format|
+      format.json { render json: 'ok' }
+    end
+  end
+
+  def create
     respond_to do |format|
       format.json { render json: 'ok' }
     end
@@ -134,10 +140,10 @@ class InterviewsController < BaseController
       :annotations, 
     )
     column_names = column_names.empty? ? {
-      timecode: "IN",
-      transcript: "TRANSCRIPT",
-      translation: "Übersetzung",
-      annotation: "Anmerkungen",
+      timecode: "timecode",
+      transcript: "transcript",
+      translation: "translation",
+      annotation: "annotations",
     } : column_names
   end
 

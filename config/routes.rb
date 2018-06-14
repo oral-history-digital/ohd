@@ -31,6 +31,8 @@ Rails.application.routes.draw do
         end
       end
 
+      post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+
       resources :interviews do #, only: [:show, :index] do
         #member do 
           #get :text_materials

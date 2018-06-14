@@ -3,12 +3,14 @@
 import Loader from '../../../lib/loader'
 
 import { 
-  REQUEST_INTERVIEW,
-  RECEIVE_INTERVIEW,
-  INTERVIEW_URL,
-  TRANSCRIPT_TIME_CHANGE,
-  SET_TAPE_AND_TIME,
-  TRANSCRIPT_SCROLL,
+    REQUEST_INTERVIEW,
+    RECEIVE_INTERVIEW,
+    INTERVIEW_URL,
+    TRANSCRIPT_TIME_CHANGE,
+    SET_TAPE_AND_TIME,
+    TRANSCRIPT_SCROLL,
+    UPLOAD_TRANSCRIPT_URL,
+    UPLOADED_TRANSCRIPT
 } from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
@@ -65,6 +67,17 @@ export function submitInterview(params) {
             Loader.post(INTERVIEW_URL, params, dispatch, null);
             //Loader.post(INTERVIEW_URL, params, dispatch, receiveInterview);
         }
+    }
+}
+
+const uploadedTranscript = (json) => ({
+    type: UPLOADED_TRANSCRIPT,
+    json: json
+});
+
+export function submitTranscript(params) {
+    return dispatch => {
+        Loader.post(UPLOAD_TRANSCRIPT_URL, params, dispatch, uploadedTranscript);
     }
 }
 

@@ -4,6 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import EditInterviewContainer from '../containers/EditInterviewContainer';
+import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
@@ -60,12 +61,12 @@ export default class FlyoutTabs extends React.Component {
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 4) {
-            // // new interview
-            //this.context.router.history.push(`/${this.props.locale}/interviews/new`);
-            //this.setState({tabIndex: tabIndex});
-        //} else if (tabIndex === this.props.locales.length + 5) {
-            // edit interview
+             //edit interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}/edit`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 5) {
+             // upload transcript
+            this.context.router.history.push(`/${this.props.locale}/upload_transcript`);
             this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
@@ -149,7 +150,8 @@ export default class FlyoutTabs extends React.Component {
         let css = this.props.account.admin ? 'flyout-tab' : 'hidden';
         return [
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
-            <Tab className={css} key='edit_interview.edit'>{t(this.props, 'edit_interview.edit')}</Tab>
+            <Tab className={css} key='edit_interview.edit'>{t(this.props, 'edit_interview.edit')}</Tab>,
+            <Tab className={css} key='edit_interview.upload_transcript'>{t(this.props, 'edit_interview.upload_transcript')}</Tab>
         ];
     }
 
@@ -163,6 +165,9 @@ export default class FlyoutTabs extends React.Component {
                 //</TabPanel>,
                 <TabPanel key={'tabpanel-edit-interview'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit_interview.edit')}</div>
+                </TabPanel>,
+                <TabPanel key={'tabpanel-upload-transcript'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit_interview.upload_transcript')}</div>
                 </TabPanel>,
             ];
         } else {
