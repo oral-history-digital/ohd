@@ -1,5 +1,7 @@
 server "160.45.168.44", user: "deploy", roles: %w{app db web}
 
+set :branch, :development
+
 set :stage, :staging
 set :user, 'deploy'
 
