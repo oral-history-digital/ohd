@@ -205,7 +205,7 @@ class Segment < ActiveRecord::Base
 
   def transcripts
     translations.inject({}) do |mem, translation|
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text.sub(/^\:+\s*\:*/,"").strip()
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? translation.text.sub(/^\:+\s*\:*/,"").strip() : ''
       mem
     end
   end
@@ -223,7 +223,7 @@ class Segment < ActiveRecord::Base
   #end
 
   def speaker_changed
-    speaker_change || translations.first.text[0] == ":"
+    speaker_change || translations.first.text && translations.first.text[0] == ":"
   end
 
   # returns the segment that leads the chapter
