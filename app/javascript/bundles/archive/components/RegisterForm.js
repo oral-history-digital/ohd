@@ -99,7 +99,7 @@ export default class RegisterForm extends React.Component {
                     {
                         elementType: 'input',
                         attribute: 'tos_agreement',
-                        label: 'notes_on_tos_agreement',
+                        label: 'user_registration.notes_on_tos_agreement',
                         type: 'checkbox',
                         validate: function(v){return v !== false && v !== '0'},
                         help: (
@@ -111,7 +111,7 @@ export default class RegisterForm extends React.Component {
                     {
                         elementType: 'input',
                         attribute: 'priv_agreement' ,
-                        label: 'notes_on_priv_agreement',
+                        label: 'user_registration.notes_on_priv_agreement',
                         type: 'checkbox',
                         validate: function(v){return v !== false && v !== '0'},
                         help: (
