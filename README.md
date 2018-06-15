@@ -46,41 +46,41 @@ This is the web application for CeDiS-Archiv 2.0.
 Normally you would have to start solr (`bundle exec rake solr:start`), rails server (`bundle exec rails s`) and a webpack dev server (`./bin/webpack-dev-server`) to compile js-resources.
 To prevent you having to manage all this stuff in three different terminals, just type:
 
-    ```bash
-    foreman start
-    ```
+```bash
+foreman start
+```
 
 ## Solr Setup and Indexing
 
 Try to start the Solr server in the Jetty container by running:
 
-    ```bash
-    bundle exec rake sunspot:solr:start
-    ```
+```bash
+bundle exec rake sunspot:solr:start
+```
 
 There is no output on either success or failure, but checking for a solr process will give some info:
 
-    ```bash
-    ps ax | grep solr
-    ```
+```bash
+ps ax | grep solr
+```
 
 In case of problems, there's a test rake task for starting up the Solr server with STDERR output:
 
-    ```bash
-    bundle exec rake solr:start
-    ```
+```bash
+bundle exec rake solr:start
+```
 
 Before indexing (mog only!!) run rake task to validate the presence of periods:
 
-    ```bash
-    bundle exec rake dedalo:validate_periods
-    ```
+```bash
+bundle exec rake dedalo:validate_periods
+```
 
 When the Solr server is running, you can index the data:
 
-    ```bash
-    bundle exec rake solr:reindex:all
-    ```
+```bash
+bundle exec rake solr:reindex:all
+```
 
 ## PDF Generation with Latex
 rails-latex.gem is used for generating pdfs.
