@@ -122,12 +122,6 @@ export default class RegisterForm extends React.Component {
                     },
                 ]}
             />
-            //<Form 
-                //formId='new_user_registration' 
-                //formClasses='user_registration default'
-                //onSubmit={this.props.submitRegister}
-                //submitScope='user_registration'
-            ///>
         );
     }
 }
