@@ -64,6 +64,7 @@ group :development do
   gem 'thin'
   #gem 'webpacker'
   gem 'foreman'
+  gem 'progress_bar'
 end
 
 #gem 'puma'
