@@ -1,6 +1,4 @@
 import React from 'react';
-import { t } from "../../../lib/utils";
-// import ArchiveUtils from "../../../lib/utils";
 import YearRangeContainer from "../containers/YearRangeContainer";
 
 export default class Facet extends React.Component {
@@ -8,7 +6,6 @@ export default class Facet extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        this.handleInputForInputList = this.handleInputForInputList.bind(this);
         let openState = false;
         if (this.checkedFacets()) {
             openState = this.checkedFacets().length > 0;
@@ -43,36 +40,14 @@ export default class Facet extends React.Component {
         }
     }
 
-    handleInputForInputList(event){
-        let word = event.currentTarget.value;
-        this.setState({['inputValue']: word});
-    }
-
     panelContent() {
-        if (this.props.inputField && Object.values(this.props.data.subfacets).filter(i => i.count > 0).length > 9) {
-            return (
-                <div className={this.state.panelClass}>
-                    <input className='input-list-search'
-                           autoComplete="off"
-                           list="inputList"
-                           placeholder={t(this.props, 'enter_field')}
-                           name={this.props.facet}
-                           onInput={this.handleInputForInputList}
-                           onChange={this.props.handleSubmit}/>
-                    <datalist id="inputList">
-                        {this.renderOptions()}
-                    </datalist>
+        return (
+            <div className={this.state.panelClass}>
+                <div className="flyout-radio-container">
+                    {this.renderSubfacets()}
                 </div>
-            )
-        } else {
-            return (
-                <div className={this.state.panelClass}>
-                    <div className="flyout-radio-container">
-                        {this.renderSubfacets()}
-                    </div>
-                </div>
-            )
-        }
+            </div>
+        )
     }
 
     render() {
@@ -107,23 +82,6 @@ export default class Facet extends React.Component {
                 </div>
             )
         }
-    }
-
-    renderOptions() {
-        //let length = this.state.inputValue.length ;
-        //let initals = subfacetsArray.map(i => localDescriptor(i).slice(0,length).toLowerCase());
-        //let firstIndex = initals.indexOf(this.state.inputValue.toLowerCase());
-        //let lastIndex = length === 0 ? 10 : initals.lastIndexOf(this.state.inputValue.toLowerCase());
-
-        //return this.sortedSubfacets().slice(firstIndex, lastIndex + 1).map((subfacetId, index) => {
-        return this.sortedSubfacets().slice(firstIndex, lastIndex + 1).map((subfacetId, index) => {
-            const dataProps = {[`data-${this.props.facet}`]: `${subfacetId}`};
-            return (
-                <option key={"subfacet-" + index} {...dataProps}>
-                {this.localDescriptor(subfacetId)}
-                </option>
-            )
-        })
     }
 
     localDescriptor(subfacetId) {

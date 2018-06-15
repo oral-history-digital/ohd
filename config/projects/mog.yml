@@ -97,7 +97,6 @@ default: &default
       descriptor: 'Person'
     - id: 'archive_id'
       source: 'interview'
-      use_as_facet: true
     - id: 'gender'
       source: 'person'
       use_as_facet: true

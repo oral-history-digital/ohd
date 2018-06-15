@@ -167,7 +167,6 @@ export default class ArchiveSearchForm extends React.Component {
                 return (
                     <FacetContainer
                         data={this.props.facets[facet]}
-                        inputField={facet === 'archive_id'}
                         facet={facet}
                         key={"facet-" + index}
                         handleSubmit={this.handleSubmit}
