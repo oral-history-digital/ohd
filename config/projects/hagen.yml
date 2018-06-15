@@ -29,7 +29,7 @@ default: &default
   external_links:
     conditions:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.shtml'
-    nutzungsantrag:
+    usage_application:
       de: 'https://deutsches-gedaechtnis.fernuni-hagen.de/archiv/registrieren?locale=de'
     privacy_protection:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.shtml'
@@ -39,7 +39,7 @@ default: &default
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.shtml'
     contact:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.shtml'
-    impressum:
+    legal_info:
       de: 'http://www.fernuni-hagen.de/impressum.shtml'
 
   cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'

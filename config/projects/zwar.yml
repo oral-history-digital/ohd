@@ -38,17 +38,17 @@ default: &default
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
-    nutzungsbedingungen:
+    conditions:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
       ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag:
+    usage_application:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen:
+    privacy_protection:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
       ru: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
@@ -63,12 +63,12 @@ default: &default
       en: 'http://www.zwangsarbeit-archiv.de/en/team'
       ru: 'http://www.zwangsarbeit-archiv.de/team'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
-    kontakt:
+    contact:
       de: 'http://www.zwangsarbeit-archiv.de/kontakt'
       en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
       ru: 'http://www.zwangsarbeit-archiv.de/kontakt'
       #ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
-    impressum:
+    legal_info:
       de: 'http://www.zwangsarbeit-archiv.de/impressum'
       en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
       ru: 'http://www.zwangsarbeit-archiv.de/impressum'
