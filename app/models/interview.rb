@@ -117,6 +117,7 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
+           -> { includes(:translations)},
            :dependent => :destroy
 
   has_many :segment_registry_references,
@@ -256,7 +257,7 @@ class Interview < ActiveRecord::Base
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first.send(facet['id'].to_sym).split(', ')
+      interviewees.first ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
     end
   end
   #def facet_category_ids(entry_code)
@@ -339,36 +340,40 @@ class Interview < ActiveRecord::Base
 
   def build_full_title_from_name_parts(locale)
     first_interviewee = interviewees.first
+    if first_interviewee
 
-    # Check whether we've got the requested locale. If not fall back to the
-    # default locale.
-    #used_locale = Globalize.fallbacks(locale).each do |l|
-      #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
-    #end
-    #return nil unless used_locale.is_a?(Symbol)
-    used_locale = projectified(locale)
+      # Check whether we've got the requested locale. If not fall back to the
+      # default locale.
+      #used_locale = Globalize.fallbacks(locale).each do |l|
+        #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
+      #end
+      #return nil unless used_locale.is_a?(Symbol)
+      used_locale = projectified(locale)
 
-    # Build last name with a locale-specific pattern.
-    last_name = first_interviewee.last_name(used_locale) || ''
-    birth_name = first_interviewee.birth_name(used_locale)
-    lastname_with_birthname = if birth_name.blank?
-                                last_name
-                              else
-                                I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
-                              end
+      # Build last name with a locale-specific pattern.
+      last_name = first_interviewee.last_name(used_locale) || ''
+      birth_name = first_interviewee.birth_name(used_locale)
+      lastname_with_birthname = if birth_name.blank?
+                                  last_name
+                                else
+                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                                end
 
-    # Build first name.
-    first_names = []
-    first_name = first_interviewee.first_name(used_locale)
-    first_names << first_name unless first_name.blank?
-    other_first_names = first_interviewee.other_first_names(used_locale)
-    first_names << other_first_names unless other_first_names.blank?
+      # Build first name.
+      first_names = []
+      first_name = first_interviewee.first_name(used_locale)
+      first_names << first_name unless first_name.blank?
+      other_first_names = first_interviewee.other_first_names(used_locale)
+      first_names << other_first_names unless other_first_names.blank?
 
-    # Combine first and last name with a locale-specific pattern.
-    if first_names.empty?
-      lastname_with_birthname
+      # Combine first and last name with a locale-specific pattern.
+      if first_names.empty?
+        lastname_with_birthname
+      else
+        I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      end
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      'no interviewee given'
     end
   end
 
