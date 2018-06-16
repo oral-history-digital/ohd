@@ -163,6 +163,10 @@ de:
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
 
+  admin:
+    change_to_normal_view: 'Nutzer Ansicht'
+    change_to_edit_view: 'Editier Ansicht'
+
   user_registration:
     registration: 'Registrierung'
     registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '

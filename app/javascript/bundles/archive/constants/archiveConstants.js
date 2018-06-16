@@ -91,3 +91,5 @@ export const ORDER_NEW_PASSWORD_URL = '/de/user_accounts/password';
 export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
 export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
 export const ACCOUNT_URL = '/de/account';
+
+export const CHANGE_TO_EDIT_VIEW = 'CHANGE_TO_EDIT_VIEW';

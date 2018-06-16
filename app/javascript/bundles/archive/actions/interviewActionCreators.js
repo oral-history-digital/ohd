@@ -10,7 +10,8 @@ import {
     SET_TAPE_AND_TIME,
     TRANSCRIPT_SCROLL,
     UPLOAD_TRANSCRIPT_URL,
-    UPLOADED_TRANSCRIPT
+    UPLOADED_TRANSCRIPT,
+    CHANGE_TO_EDIT_VIEW
 } from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
@@ -103,3 +104,11 @@ export function handleTranscriptScroll(bool) {
     transcriptScrollEnabled: bool,
   }
 }
+
+export function changeToEditView(bool) {
+    return {
+        type: CHANGE_TO_EDIT_VIEW,
+        editView: bool
+    }
+}
+

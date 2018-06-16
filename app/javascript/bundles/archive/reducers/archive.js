@@ -13,6 +13,8 @@ import {
     SET_LOCALE,
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
+
+    CHANGE_TO_EDIT_VIEW
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -31,6 +33,8 @@ const initialState = {
 
     homeContent: "",
     externalLinks: {},
+
+    editView: false,
 }
 
 const archive = (state = initialState, action) => {
@@ -113,6 +117,10 @@ const archive = (state = initialState, action) => {
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,
                 projectDomain: action.projectDomain
+            })
+        case CHANGE_TO_EDIT_VIEW:
+            return Object.assign({}, state, {
+                editView: action.editView
             })
 
         default:

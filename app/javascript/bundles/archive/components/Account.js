@@ -30,12 +30,14 @@ export default class Account extends React.Component {
 
     loginOrOut() {
         if (this.props.account.email) {
-            return <div
-                className='logout'
-                onClick={() => this.props.submitLogout()}
-            >
-                {t(this.props, 'logout')}
-            </div>
+            return (
+                <div
+                    className='logout'
+                    onClick={() => this.props.submitLogout()}
+                >
+                    {t(this.props, 'logout')}
+                </div>
+            )
         } else {
             return <div>
                 <LoginFormContainer/>
@@ -53,11 +55,27 @@ export default class Account extends React.Component {
         }
     }
 
+    changeToEditView() {
+        if (this.props.account.admin) {
+            return (
+                <div
+                    className='change-to-admin-view'
+                    onClick={() => this.props.changeToEditView(!this.props.editView)}
+                >
+                    {t(this.props, `${this.props.editView ? 'admin.change_to_normal_view' : 'admin.change_to_edit_view'}` )}
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div className={'flyout-login-container'}>
                 {this.info()}
                 {this.loginOrOut()}
+                {this.changeToEditView()}
             </div>
         );
     }
