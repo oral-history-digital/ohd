@@ -139,11 +139,15 @@ export default class FlyoutTabs extends React.Component {
             return <TabPanel key='interview'/>;
         }
     }
-
-    editTabs() {
+     
+    showEditView() {
         // TODO: this is a fast unsafe way to decide whether user is admin!
         // make it better!!
-        let css = this.props.account.admin ? 'flyout-tab' : 'hidden';
+        return this.props.account.admin && this.props.editView;
+    }
+
+    editTabs() {
+        let css = this.showEditView() ? 'flyout-tab' : 'hidden';
         return [
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
             <Tab className={css} key='edit.interview.edit'>{t(this.props, 'edit.interview.edit')}</Tab>,
@@ -152,9 +156,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     editTabPanels() {
-        // TODO: this is a fast unsafe way to decide whether user is admin!
-        // make it better!!
-        if (this.props.account.admin) {
+        if (this.showEditView()) {
             return [
                 //<TabPanel key={'tabpanel-new-interview'}>
                     //<div className='flyout-tab-title'>{t(this.props, 'edit_interview.new')}</div>
