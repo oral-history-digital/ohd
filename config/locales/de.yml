@@ -72,10 +72,6 @@ de:
   login_page: 'Login'
   logout_page: 'Logout'
   interview: 'Interview'
-  edit_interview:
-    new: 'Neues Interview'
-    edit: 'Interview bearbeiten'
-    upload_transcript: 'Transkript hochladen'
   user_content: 'Arbeitsmappe'
   user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
   archive_search: 'Suche im Archiv'
@@ -162,6 +158,12 @@ de:
   saved_searches: 'Gespeicherte Suchergebnisse'
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
+
+  edit:
+    interview:
+      new: 'Neues Interview'
+      edit: 'Interview bearbeiten'
+    upload_transcript: 'Transkript hochladen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
