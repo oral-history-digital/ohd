@@ -294,7 +294,7 @@ de:
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
         language: 'Sprache'
-        language_id: 'Sprache'
+        language_id: 'Originalsprache'
         collection: 'Teilsammlung'
         collection_id: 'Teilsammlung'
         data: 'Transkriptdatei'
@@ -305,6 +305,8 @@ de:
         tape_and_archive_id_from_file: 'Archiv-ID und Tapedaten aus dem Dateinamen erschliessen?'
         tape_count: 'Geamtzahl der Tapes'
         tape_number: 'Nummer dieses Tapes'
+        video: 'liegt ein Video vor?'
+        translated: 'ist das Interview bereits übersetzt?'
       segment:
         media_id: 'Segment-ID'
         transcript: 'Transkription'
