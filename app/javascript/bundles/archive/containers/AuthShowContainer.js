@@ -5,6 +5,7 @@ import { fetchAccount } from '../actions/accountActionCreators';
 const mapStateToProps = (state) => {
     return {
         account: state.account,
+        editView: state.archive.editView
     }
 }
 
