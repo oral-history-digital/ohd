@@ -48,8 +48,7 @@ export default class Select extends React.Component {
         let opts = [];
         if (this.props.values) {
             opts = this.props.values.map((value, index) => {
-                let text;
-                let val;
+                let val, text;
                 if (typeof value === 'string') {
                     text = this.props.optionsScope ? 
                         t(this.props, `${this.props.optionsScope}.${value}`) :
@@ -60,7 +59,7 @@ export default class Select extends React.Component {
                     val = value.value;
                 }
                 return (
-                    <option value={val} key={`${this.props.scope}-${index}`}>
+                    <option value={val} selected={this.props.selected === val} key={`${this.props.scope}-${index}`}>
                         {text}
                     </option>
                 )}
@@ -91,7 +90,6 @@ export default class Select extends React.Component {
             >
                 <select 
                     name={this.props.attribute}
-                    value={this.props.selected}
                     onChange={this.handleChange}
                 >
                     {this.options()}
