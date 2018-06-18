@@ -26,7 +26,7 @@ class InterviewsController < BaseController
 
   def update
     @interview = Interview.find params[:id]
-    @interview.update_attributes params[:interview]
+    @interview.update_attributes interview_params
     respond_to do |format|
       format.json { render json: @interview }
     end
@@ -95,15 +95,6 @@ class InterviewsController < BaseController
         'interview_date',
         'video',
         'translated',
-        'published',
-        'agreement',
-        'appellation',
-        'first_name',
-        'last_name',
-        'middle_names',
-        'birth_name',
-        'gender',
-        'date_of_birth',
     )
   end
 
