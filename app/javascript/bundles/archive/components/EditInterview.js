@@ -4,7 +4,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
 
-export default class EditInterview extends React.Component {
+export default class NewInterview extends React.Component {
 
     constructor(props) {
         super(props);
@@ -51,7 +51,7 @@ export default class EditInterview extends React.Component {
                     <Form 
                         scope='interview'
                         onSubmit={this.props.submitInterview}
-                        submitText={this.props.archiveId ? 'edit_interview.new' : 'edit_interview.edit'}
+                        submitText={this.props.archiveId ? 'edit.interview.new' : 'edit.interview.edit'}
                         elements={[
                             {
                                 elementType: 'select',
@@ -62,51 +62,11 @@ export default class EditInterview extends React.Component {
                                 individualErrorMsg: 'empty'
                             },
                             { 
-                                attribute: 'data',
-                                elementType: 'input',
-                                type: 'file',
-                                validate: function(v){return v instanceof File},
-                                //handleChangeCallback: this.handleFileChange
-                            },
-                            {
-                                attribute: 'timecode',
-
-                            },
-                            {
-                                attribute: 'transcript',
-                            },
-                            {
-                                attribute: 'translation',
-                            },
-                            {
-                                attribute: 'annotations',
-                            },
-                            { 
-                                attribute: 'tape_and_archive_id_from_file',
-                                elementType: 'input',
-                                type: 'checkbox',
-                                handleChangeCallback: this.handleTapeAndArchiveIdFromFileChange
-                            },
-                            { 
                                 attribute: 'archive_id',
                                 hidden: this.state.hideTapeAndArchiveInputs,
                                 //value: this.state.dummy,
                                 value: this.state.archiveId,
                                 validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2}\d{3}$/.test(v)}
-                            },
-                            { 
-                                attribute: 'tape_count',
-                                hidden: this.state.hideTapeAndArchiveInputs,
-                                //value: this.state.dummy,
-                                value: this.state.tapeCount,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                            },
-                            { 
-                                attribute: 'tape_number',
-                                hidden: this.state.hideTapeAndArchiveInputs,
-                                //value: this.state.dummy,
-                                value: this.state.tapeNumber,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
                             },
                             {
                                 elementType: 'select',
@@ -120,13 +80,6 @@ export default class EditInterview extends React.Component {
                             { attribute: 'translated' },
                             { attribute: 'published' },
                             { attribute: 'agreement' },
-                            { attribute: 'appellation' },
-                            { attribute: 'first_name' },
-                            { attribute: 'last_name' },
-                            { attribute: 'middle_names' },
-                            { attribute: 'birth_name' },
-                            { attribute: 'gender' },
-                            { attribute: 'date_of_birth' },
                         ]}
                     />
                 </AuthShowContainer>
@@ -135,5 +88,12 @@ export default class EditInterview extends React.Component {
                 </AuthShowContainer>
             </WrapperPageContainer>
         );
+                            //{ attribute: 'appellation' },
+                            //{ attribute: 'first_name' },
+                            //{ attribute: 'last_name' },
+                            //{ attribute: 'middle_names' },
+                            //{ attribute: 'birth_name' },
+                            //{ attribute: 'gender' },
+                            //{ attribute: 'date_of_birth' },
     }
 }

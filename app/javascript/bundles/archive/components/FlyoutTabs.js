@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
-import EditInterviewContainer from '../containers/EditInterviewContainer';
+import NewInterviewContainer from '../containers/NewInterviewContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';

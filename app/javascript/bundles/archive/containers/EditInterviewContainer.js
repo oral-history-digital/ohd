@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import EditInterview from '../components/EditInterview';
+import NewInterview from '../components/NewInterview';
 import { submitInterview } from '../actions/interviewActionCreators';
 
 //import ArchiveUtils from '../../../lib/utils';
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch) => ({
     submitInterview: (params) => dispatch(submitInterview(params))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditInterview);
+export default connect(mapStateToProps, mapDispatchToProps)(NewInterview);
