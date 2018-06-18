@@ -51,7 +51,7 @@ export default class NewInterview extends React.Component {
                     <Form 
                         scope='interview'
                         onSubmit={this.props.submitInterview}
-                        submitText={this.props.archiveId ? 'edit.interview.new' : 'edit.interview.edit'}
+                        submitText={this.props.archiveId ? 'edit.interview.edit' : 'edit.interview.new'}
                         elements={[
                             {
                                 elementType: 'select',
@@ -75,11 +75,21 @@ export default class NewInterview extends React.Component {
                                 withEmpty: true,
                                 validate: function(v){return v !== ''} 
                             },
-                            { attribute: 'interview_date' },
-                            { attribute: 'video' },
-                            { attribute: 'translated' },
-                            { attribute: 'published' },
-                            { attribute: 'agreement' },
+                            { 
+                                attribute: 'interview_date',
+                                elementType: 'input',
+                                type: 'date'
+                            },
+                            { 
+                                attribute: 'video',
+                                elementType: 'input',
+                                type: 'checkbox'
+                            },
+                            { 
+                                attribute: 'translated',
+                                elementType: 'input',
+                                type: 'checkbox'
+                            },
                         ]}
                     />
                 </AuthShowContainer>

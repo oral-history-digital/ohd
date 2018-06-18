@@ -5,7 +5,6 @@ class InterviewsController < BaseController
   skip_before_action :authenticate_user_account!, only: :show
 
   def new
-    #@interview = Interview.create params[:interview]
     respond_to do |format|
       format.html { render :show }
       format.json { render json: :ok }
@@ -13,6 +12,7 @@ class InterviewsController < BaseController
   end
 
   def create
+    @interview = Interview.create interview_params
     respond_to do |format|
       format.json { render json: 'ok' }
     end
