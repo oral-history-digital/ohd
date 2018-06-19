@@ -18,6 +18,10 @@ set :user, 'deploy'
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/data/applications/zwar_testplattform"
 
+set :default_env, { 
+    'project_name' => fetch(:application)
+  }
+
 # rbenv settings
 set :rbenv_type, :system
 set :rbenv_ruby, '2.4.0'

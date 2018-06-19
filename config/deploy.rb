@@ -1,7 +1,6 @@
 # config valid only for current version of Capistrano
 lock "3.9.1"
 
-set :application, "eog"
 set :repo_url, "git@gitlab.cedis.fu-berlin.de:Archive-Upgrade/zwar-archive.git"
 
 # Default branch is :master
@@ -27,9 +26,6 @@ append :linked_dirs, "tmp/cache", "solr"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
-set :default_env, { 
-    'project_name' => fetch(:application)
-  }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
