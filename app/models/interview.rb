@@ -20,7 +20,8 @@ class Interview < ActiveRecord::Base
 
   has_many :tapes,
            -> {includes(:interview)},
-           :dependent => :destroy
+           :dependent => :destroy,
+           inverse_of: :interview
 
   has_many :annotations,
            #-> {includes(:translations)},
@@ -118,7 +119,8 @@ class Interview < ActiveRecord::Base
 
   has_many :segments,
            -> { includes(:translations)},
-           :dependent => :destroy
+           :dependent => :destroy,
+           inverse_of: :interview
 
   has_many :segment_registry_references,
            -> {
