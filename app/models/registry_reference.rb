@@ -42,15 +42,17 @@ class RegistryReference < BaseRegistryReference
   searchable :auto_index => false do
     # Index the reference by registry entry descriptor and alias names.
     text :registry_entry, :boost => 12 do
-      registry_entry.search_string
+      registry_entry.search_string if registry_entry
     end
 
     # Also index the reference by all parent entries (classification)
     # of the registry entry and its respective alias names.
     text :classification, :boost => 6 do
-      registry_entry.ancestors.map do |ancestor|
-        ancestor.search_string
-      end.join(' ')
+      if registry_entry
+        registry_entry.ancestors.map do |ancestor|
+          ancestor.search_string
+        end.join(' ')
+      end
     end
   end
 
