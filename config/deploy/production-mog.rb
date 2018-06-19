@@ -9,7 +9,7 @@ server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app db web}#, my_pro
 
 set :application, "mog"
 
-set :branch, :stable_mog
+set :branch, :development
 
 set :stage, :production
 set :user, 'deploy'
