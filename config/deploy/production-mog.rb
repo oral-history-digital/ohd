@@ -7,6 +7,8 @@ server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app db web}#, my_pro
 #server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_property: :other_value
 #server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
 
+set :application, "mog"
+
 set :branch, :stable_mog
 
 set :stage, :production
@@ -15,6 +17,10 @@ set :user, 'deploy'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/data/applications/production/occupation-memories.org"
+
+set :default_env, { 
+    'project_name' => fetch(:application)
+  }
 
 # rbenv settings
 set :rbenv_type, :system

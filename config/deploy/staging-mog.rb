@@ -1,11 +1,17 @@
 server "160.45.168.44", user: "deploy", roles: %w{app db web}
 
+set :application, :mog
+
 set :branch, :development
 
 set :stage, :staging
 set :user, 'deploy'
 
 set :deploy_to, "/data/applications/production/occupation-memories.org"
+
+set :default_env, { 
+    'project_name' => fetch(:application)
+  }
 
 set :rbenv_type, :system
 set :rbenv_ruby, '2.4.0'
