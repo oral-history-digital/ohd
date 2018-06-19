@@ -8,7 +8,9 @@ namespace :solr do
       p "starting to reindex segments per interview ..."
       Interview.all.each do |i|  
         start_interview = Time.now
-        Sunspot.index! i.segments 
+        i.segments.each_slice(100) do |batch|
+          Sunspot.index! batch
+        end
         finish_interview = Time.now
         p "finished segments for interview #{i.archive_id} in #{(finish_interview - start_interview)} seconds."
       end
