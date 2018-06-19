@@ -7,6 +7,8 @@ server "160.45.168.36", user: "deploy", roles: %w{app db web}#, my_property: :my
 #server "da02.cedis.fu-berlin.de", user: "deploy", roles: %w{app web}#, other_property: :other_value
 #server "dedalo.cedis.fu-berlin.de", user: "cgregor", roles: %w{db}
 
+set :application, "zwar"
+
 set :branch, :development
 
 set :stage, :production
