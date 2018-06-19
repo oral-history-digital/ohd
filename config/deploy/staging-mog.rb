@@ -1,6 +1,6 @@
 server "160.45.168.44", user: "deploy", roles: %w{app db web}
 
-set :application, :mog
+set :application, "mog"
 
 set :branch, :development
 
