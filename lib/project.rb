@@ -90,7 +90,7 @@ module Project
             descriptor: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.collection.localized_hash,
+                descriptor: interview.collection ? interview.collection.localized_hash : {en: 'no collection'},
                 count: 0
               }
               subfacets
@@ -101,7 +101,7 @@ module Project
             descriptor: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.language.localized_hash,
+                descriptor: interview.language ? interview.language.localized_hash : {en: 'no language'},
                 count: 0
               }
               subfacets

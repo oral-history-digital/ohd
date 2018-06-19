@@ -35,7 +35,8 @@ const account = (state = {}, action) => {
                 firstName: action.firstName,
                 lastName: action.lastName,
                 email: action.email,
-                //login: action.login,
+                login: action.login,
+                admin: action.admin,
             })
         case LOGIN:
             return Object.assign({}, state, {

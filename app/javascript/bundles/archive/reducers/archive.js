@@ -13,6 +13,8 @@ import {
     SET_LOCALE,
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
+
+    CHANGE_TO_EDIT_VIEW
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -31,6 +33,8 @@ const initialState = {
 
     homeContent: "",
     externalLinks: {},
+
+    editView: false,
 }
 
 const archive = (state = initialState, action) => {
@@ -38,11 +42,12 @@ const archive = (state = initialState, action) => {
         case REQUEST_INTERVIEW:
             return Object.assign({}, state, {
                 isFetchingInterview: true,
-                didInvalidate: false
+                fetchedInterview: false,
             })
         case RECEIVE_INTERVIEW:
             return Object.assign({}, state, {
                 isFetchingInterview: false,
+                fetchedInterview: true,
                 archiveId: action.archiveId,
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
@@ -104,12 +109,18 @@ const archive = (state = initialState, action) => {
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.country_keys,
+                collections: action.collections,
+                languages: action.languages,
                 locales: action.locales,
                 project: action.project,
                 projectDoi: action.projectDoi,
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,
                 projectDomain: action.projectDomain
+            })
+        case CHANGE_TO_EDIT_VIEW:
+            return Object.assign({}, state, {
+                editView: action.editView
             })
 
         default:

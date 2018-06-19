@@ -117,6 +117,7 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
+           -> { includes(:translations)},
            :dependent => :destroy
 
   has_many :segment_registry_references,
@@ -131,6 +132,10 @@ class Interview < ActiveRecord::Base
            through: :segment_registry_references,
            source: :registry_entry
            
+  has_many :checklist_items,
+           -> {order('item_type ASC')},
+           dependent: :destroy
+
   translates :observations
   # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
   #translates :first_name, :other_first_names, :last_name, :birth_name,
@@ -164,11 +169,10 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     text :transcript, :boost => 5 do
-      indexing_interview_text = ''
-      segments.each do |segment|
-        indexing_interview_text << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
-      end
-      indexing_interview_text.squeeze(' ')
+      segments.inject([]) do |all, segment|
+        all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
+        all
+      end.join(' ')
     end
     
     (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
@@ -196,7 +200,7 @@ class Interview < ActiveRecord::Base
   scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def self.random_featured
-    researched.with_still_image.order("RAND()").first
+    researched.with_still_image.order("RAND()").first || first
   end
 
   # referenced by archive_id
@@ -261,7 +265,7 @@ class Interview < ActiveRecord::Base
   Project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first.send(facet['id'].to_sym).split(', ')
+      interviewees.first ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
     end
   end
   #def facet_category_ids(entry_code)
@@ -290,6 +294,27 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
+  def create_or_update_segments_from_file_for_tape(file_path, tape_id, opts={})
+    column_names = opts[:column_names].empty? ? {
+      timecode: "IN",
+      transcript: "TRANSCRIPT",
+      translation: "Übersetzung",
+      annotation: "Anmerkungen",
+    } : opts[:column_names]
+
+    ods = Roo::Spreadsheet.open(file_path)
+    ods.each_with_pagename do |name, sheet|
+      sheet.each(column_names) do |row|
+        if row[:timecode] =~ /^\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}$/
+          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
+          segment.update_attributes text: row[:transcript], locale: ISO_639.find(language.code).send(Project.alpha)
+        end
+      end
+    end
+  rescue  Roo::HeaderRowNotFoundError
+    'header_row_not_found'
+  end
+
   #def duration
     #@duration ||= Timecode.new read_attribute(:duration)
   #end
@@ -313,38 +338,50 @@ class Interview < ActiveRecord::Base
     write_attribute :duration, time
   end
 
+  # add the duration of all existing tapes
+  def recalculate_duration!
+    unless tapes.blank? || tapes.empty? || (tapes.select{|t| t.duration.nil? }.size > 0)
+      new_duration = tapes.inject(0){|dur, t| dur += t.duration.nil? ? t.estimated_duration.time : Timecode.new(t.duration).time }
+      update_attribute(:duration, new_duration) unless new_duration == self[:duration]
+    end
+  end
+
   def build_full_title_from_name_parts(locale)
     first_interviewee = interviewees.first
+    if first_interviewee
 
-    # Check whether we've got the requested locale. If not fall back to the
-    # default locale.
-    #used_locale = Globalize.fallbacks(locale).each do |l|
-      #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
-    #end
-    #return nil unless used_locale.is_a?(Symbol)
-    used_locale = projectified(locale)
+      # Check whether we've got the requested locale. If not fall back to the
+      # default locale.
+      #used_locale = Globalize.fallbacks(locale).each do |l|
+        #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
+      #end
+      #return nil unless used_locale.is_a?(Symbol)
+      used_locale = projectified(locale)
 
-    # Build last name with a locale-specific pattern.
-    last_name = first_interviewee.last_name(used_locale) || ''
-    birth_name = first_interviewee.birth_name(used_locale)
-    lastname_with_birthname = if birth_name.blank?
-                                last_name
-                              else
-                                I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
-                              end
+      # Build last name with a locale-specific pattern.
+      last_name = first_interviewee.last_name(used_locale) || ''
+      birth_name = first_interviewee.birth_name(used_locale)
+      lastname_with_birthname = if birth_name.blank?
+                                  last_name
+                                else
+                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                                end
 
-    # Build first name.
-    first_names = []
-    first_name = first_interviewee.first_name(used_locale)
-    first_names << first_name unless first_name.blank?
-    other_first_names = first_interviewee.other_first_names(used_locale)
-    first_names << other_first_names unless other_first_names.blank?
+      # Build first name.
+      first_names = []
+      first_name = first_interviewee.first_name(used_locale)
+      first_names << first_name unless first_name.blank?
+      other_first_names = first_interviewee.other_first_names(used_locale)
+      first_names << other_first_names unless other_first_names.blank?
 
-    # Combine first and last name with a locale-specific pattern.
-    if first_names.empty?
-      lastname_with_birthname
+      # Combine first and last name with a locale-specific pattern.
+      if first_names.empty?
+        lastname_with_birthname
+      else
+        I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      end
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      'no interviewee given'
     end
   end
 
@@ -472,6 +509,48 @@ class Interview < ActiveRecord::Base
       save
     end
   end
+
+  # Creates a task that marks the interview as prepared for research
+  # Also set the segmentation_state and workflow_state on the Segmentation task
+  def prepare!
+    self.reload
+    if self.segments.empty?
+      false
+    else
+      segmentation_task = self.tasks.for_workflow('Segmentation').first
+      # instead of requiring a complete segmentation task - make it so!
+      segmentation_task = self.tasks.create do |task|
+        task.workflow_type = 'Segmentation'
+      end if segmentation_task.nil?
+      Task.update_all "workflow_state = 'completed'", ['id = ?', segmentation_task.id]
+      changed = if self.qm_value.to_f > 1
+                  if self.tasks.for_workflow('Research').empty?
+                    # create the research task
+                    self.tasks.create do |task|
+                      task.workflow_type = 'Research'
+                    end
+                    true
+                  else
+                    false
+                  end
+                else
+                  # remove all tasks that don't have anyone assigned
+                  unless self.tasks.for_workflow('Research').empty?
+                  research_task = self.tasks.for_workflow('Research').first
+                  if research_task.responsible.nil?
+                    research_task.destroy
+                    true
+                  else
+                    false
+                  end
+                end
+    end
+    skip_versioning!
+    update_attribute :segmentation_state, 'qm'
+    save
+    changed
+  end
+end
 
   private
 

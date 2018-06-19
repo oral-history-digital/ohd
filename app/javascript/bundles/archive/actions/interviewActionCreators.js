@@ -3,12 +3,15 @@
 import Loader from '../../../lib/loader'
 
 import { 
-  REQUEST_INTERVIEW,
-  RECEIVE_INTERVIEW,
-  INTERVIEW_URL,
-  TRANSCRIPT_TIME_CHANGE,
-  SET_TAPE_AND_TIME,
-  TRANSCRIPT_SCROLL,
+    REQUEST_INTERVIEW,
+    RECEIVE_INTERVIEW,
+    INTERVIEW_URL,
+    TRANSCRIPT_TIME_CHANGE,
+    SET_TAPE_AND_TIME,
+    TRANSCRIPT_SCROLL,
+    UPLOAD_TRANSCRIPT_URL,
+    UPLOADED_TRANSCRIPT,
+    CHANGE_TO_EDIT_VIEW
 } from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
@@ -44,6 +47,41 @@ export function fetchInterview(archiveId) {
   }
 }
 
+//const updateInterview = (params) => ({
+    //type: UPDATE_INTERVIEW,
+    //params: params,
+//});
+
+//const removeInterview = (id) => ({
+    //type: REMOVE_INTERVIEW,
+    //id: id,
+//});
+
+export function submitInterview(params) {
+    if(params.id) {
+        return dispatch => {
+            //dispatch(updateInterview(params))
+            Loader.put(`${INTERVIEW_URL}/${params.id}`, params, dispatch, null);
+        }
+    } else {
+        return dispatch => {
+            Loader.post(INTERVIEW_URL, params, dispatch, null);
+            //Loader.post(INTERVIEW_URL, params, dispatch, receiveInterview);
+        }
+    }
+}
+
+const uploadedTranscript = (json) => ({
+    type: UPLOADED_TRANSCRIPT,
+    json: json
+});
+
+export function submitTranscript(params) {
+    return dispatch => {
+        Loader.post(UPLOAD_TRANSCRIPT_URL, params, dispatch, uploadedTranscript);
+    }
+}
+
 export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
@@ -66,3 +104,11 @@ export function handleTranscriptScroll(bool) {
     transcriptScrollEnabled: bool,
   }
 }
+
+export function changeToEditView(bool) {
+    return {
+        type: CHANGE_TO_EDIT_VIEW,
+        editView: bool
+    }
+}
+

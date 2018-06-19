@@ -77,6 +77,10 @@ class InterviewSerializer < ActiveModel::Serializer
     end
   end
 
+  def interview_date
+    Date.parse(object.interview_date).strftime("%Y-%m-%d")
+  end
+
   def video_array
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = I18n.t(object.video? ? 'media.video' : 'media.audio', locale: locale)
@@ -149,15 +153,17 @@ class InterviewSerializer < ActiveModel::Serializer
   def formatted_duration
     # Time.at(object.duration).utc.strftime("%H:%M")
     # TODO: localize this
-    Time.at(object.duration).utc.strftime("%-H h %M min")
+    if object.duration
+      Time.at(object.duration).utc.strftime("%-H h %M min")
+    end
   end
 
   def interviewee_id
-    object.interviewees.first.id
+    object.interviewees.first.id if object.interviewees.first
   end
 
   def year_of_birth
-    object.interviewees.first.year_of_birth
+    object.interviewees.first.year_of_birth if object.interviewees.first
   end
 
   def created

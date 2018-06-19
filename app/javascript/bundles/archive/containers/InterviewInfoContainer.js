@@ -16,7 +16,8 @@ const mapStateToProps = (state) => {
         transcriptor: data && data.interview.transcriptors.length && data.interview.transcriptors[0],
         translator: data && data.interview.translators.length && data.interview.translators[0],
         segmentators: data && data.interview.segmentators.length && data.interview.segmentators,
-        account: state.account
+        account: state.account,
+        editView: state.archive.editView
 
     }
 }

@@ -2,16 +2,18 @@ default: &default
 
   available_locales:
     - de
-    - alias
 
   default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
-  alpha: 'alpha3_terminologic'
+  alpha: 'alpha2'
 
-   interviewee_contribution_type: 'interviewee'
-   interviewer_contribution_type: 'interview'
+  interviewee_contribution_type: 'interviewee'
+  interviewer_contribution_type: 'interview'
+  transcription_contribution_type: 'transcript'
+  translation_contribution_type: 'translation'
+  indexation_contribution_type: 'segmentation'
   
   project_name:
     de: 'Deutsches Gedächtnis'
@@ -25,19 +27,19 @@ default: &default
   project_domain: 'da02.cedis.fu-berlin.de'
 
   external_links:
-    nutzungsbedingungen:
+    conditions:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/nutzungsbedingungen.shtml'
-    nutzungsantrag:
+    usage_application:
       de: 'https://deutsches-gedaechtnis.fernuni-hagen.de/archiv/registrieren?locale=de'
-    datenschutzbestimmungen:
+    privacy_protection:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/datenschutzbestimmungen.shtml'
     annotation_guidelines:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/archivnutzung.shtml'
     team:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/oateam.shtml'
-    kontakt:
+    contact:
       de: 'https://www.fernuni-hagen.de/geschichteundbiographie/deutschesgedaechtnis/kontakt.shtml'
-    impressum:
+    legal_info:
       de: 'http://www.fernuni-hagen.de/impressum.shtml'
 
   cifs_share: '/mnt/hagen.cedis.fu-berlin.de/data/'
@@ -59,39 +61,82 @@ default: &default
   person_properties:
     - id: 'person_reference'
       source: 'registry_entry'
-      descriptor: 'Person'
-    - id: 'pseudonym'
-      source: 'registry_entry'
-      descriptor: 'Pseudonym'
-      use_as_facet: true
-    - id: 'gender'
-      source: 'registry_entry'
-      descriptor: 'Geschlecht'
-      use_as_facet: true
-    - id: 'interview_dates'
-      source: 'registry_reference_type'
-      use_as_facet: true
-    - id: 'birth_dates'
-      source: 'registry_reference_type'
-      use_as_facet: true
     - id: 'birth_locations'
       source: 'registry_reference_type'
+    - id: 'language_id'
+      source: 'language'
       use_as_facet: true
-    - id: 'home_locations'
+    #- id: 'forced_labor_groups'
+      #source: 'registry_entry'
+      #use_as_facet: true
+    - id: 'gender'
+      source: 'person'
+      use_as_facet: true
+      values:
+        female: 'female'
+        male: 'male'
+    - id: 'decade_of_birth'
+      source: 'person'
+      use_as_facet: true
+      values:
+        "1900s": "1900s"
+        "1910s": "1910s"
+        "1920s": "1920s"
+        "1930s": "1930s"
+    #- id: 'forced_labor_fields'
+      #source: 'registry_entry'
+      #use_as_facet: true
+    - id: 'forced_labor_habitations'
+      source: 'registry_entry'
+      # use_as_facet: true
+    - id: 'home_location'
       source: 'registry_reference_type'
-      use_as_facet: true
-    - id: 'profession'
-      source: 'registry_entry'
-      descriptor: 'Beruf'
-      use_as_facet: true
-    - id: 'professional_position'
-      source: 'registry_entry'
-      descriptor: 'Stellung im Beruf'
-      use_as_facet: true
-    - id: 'industry'
-      source: 'registry_entry'
-      descriptor: 'Wirtschaftsbereich'
-      use_as_facet: true
+      # use_as_facet: true
+    - id: 'forced_labor_locations'
+      source: 'registry_reference_type'
+    - id: 'deportation_locations'
+      source: 'registry_reference_type'
+    - id: 'return_locations'
+      source: 'registry_reference_type'
+    - id: 'collection_id'
+      source: 'collection'
+      use_as_facet: true 
+  #person_properties:
+    #- id: 'person_reference'
+      #source: 'registry_entry'
+      #descriptor: 'Person'
+    #- id: 'pseudonym'
+      #source: 'registry_entry'
+      #descriptor: 'Pseudonym'
+      #use_as_facet: true
+    #- id: 'gender'
+      #source: 'registry_entry'
+      #descriptor: 'Geschlecht'
+      #use_as_facet: true
+    #- id: 'interview_dates'
+      #source: 'registry_reference_type'
+      #use_as_facet: true
+    #- id: 'birth_dates'
+      #source: 'registry_reference_type'
+      #use_as_facet: true
+    #- id: 'birth_locations'
+      #source: 'registry_reference_type'
+      #use_as_facet: true
+    #- id: 'home_locations'
+      #source: 'registry_reference_type'
+      #use_as_facet: true
+    #- id: 'profession'
+      #source: 'registry_entry'
+      #descriptor: 'Beruf'
+      #use_as_facet: true
+    #- id: 'professional_position'
+      #source: 'registry_entry'
+      #descriptor: 'Stellung im Beruf'
+      #use_as_facet: true
+    #- id: 'industry'
+      #source: 'registry_entry'
+      #descriptor: 'Wirtschaftsbereich'
+      #use_as_facet: true
 
   uses_map: false # Must be "false" for all projects except ZWAR until the map has been generalized.
 

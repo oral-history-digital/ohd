@@ -11,18 +11,23 @@ export default class Element extends React.Component {
 
     label() {
         let mandatory = this.props.mandatory ? ' *' : '';
+        // scope is equivalent to model here
         return (
             <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {t(this.props, `${this.props.scope}.${this.props.label || this.props.attribute}`) + mandatory}
+                {t(this.props, this.props.label ? this.props.label : `activerecord.attributes.${this.props.scope}.${this.props.attribute}`) + mandatory}
             </label>
         );
+                //{t(this.props, `${this.props.scope}.${this.props.label || this.props.attribute}`) + mandatory}
     }
 
     error() {
         if (!this.props.valid && this.props.showErrors) {
+            let msg = this.props.individualErrorMsg ? 
+                t(this.props, `activerecord.errors.models.${this.props.scope}.attributes.${this.props.attribute}.${this.props.individualErrorMsg}`) :
+                t(this.props, `activerecord.errors.default.${this.props.elementType}`) 
             return (
                 <div className='help-block'>
-                    {t(this.props, `${this.props.scope}.errors.${this.props.attribute}`)}
+                    {msg}
                 </div>
             )
         } else {
@@ -31,7 +36,7 @@ export default class Element extends React.Component {
     }
 
     css() {
-        let name = 'form-group';
+        let name = `form-group ${this.props.css ? this.props.css : ''} ${this.props.hidden ? 'hidden' : ''}`;
         if (!this.props.valid && this.props.showErrors) {
             name += ' has-error';
         }

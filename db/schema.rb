@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180514100218) do
+ActiveRecord::Schema.define(version: 20180611230746) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -35,15 +35,26 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.index ["segment_id"], name: "index_annotations_on_segment_id", using: :btree
   end
 
+  create_table "checklist_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "interview_id", null: false
+    t.integer  "user_id",      null: false
+    t.string   "item_type",    null: false
+    t.boolean  "checked"
+    t.datetime "checked_at"
+    t.datetime "updated_at"
+    t.index ["interview_id", "checked"], name: "index_checklist_items_on_interview_id_and_checked", using: :btree
+    t.index ["interview_id"], name: "index_checklist_items_on_interview_id", using: :btree
+  end
+
   create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "collection_id"
     t.string   "locale"
+    t.text     "interviewers",  limit: 65535
     t.string   "countries"
     t.string   "institution"
-    t.string   "responsibles"
-    t.text     "interviewers",  limit: 65535
-    t.string   "name"
     t.text     "notes",         limit: 65535
+    t.string   "responsibles"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
@@ -61,6 +72,21 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.string  "contribution_type"
     t.integer "person_id"
     t.index ["interview_id"], name: "index_contributions_on_interview_id", using: :btree
+  end
+
+  create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "priority",                 default: 0, null: false
+    t.integer  "attempts",                 default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
   create_table "histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -263,8 +289,8 @@ ActiveRecord::Schema.define(version: 20180514100218) do
   create_table "segment_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "segment_id"
     t.string   "locale"
-    t.string   "subheading"
     t.string   "mainheading"
+    t.string   "subheading"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "text",        limit: 65535
@@ -286,8 +312,9 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.string   "section"
     t.integer  "interview_id"
     t.integer  "speaker_id"
-    t.index ["interview_id"], name: "index_segments_on_interview_id", using: :btree
+    t.index ["interview_id", "section"], name: "index_segments_on_interview_id_and_section", using: :btree
     t.index ["media_id"], name: "index_segments_on_media_id", using: :btree
+    t.index ["tape_id"], name: "index_segments_on_tape_id", using: :btree
   end
 
   create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -310,6 +337,9 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.datetime "updated_at"
     t.boolean  "video"
     t.integer  "duration"
+    t.string   "filename"
+    t.string   "workflow_state", default: "digitized"
+    t.index ["workflow_state"], name: "index_tapes_on_workflow_state", using: :btree
   end
 
   create_table "text_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -379,9 +409,9 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.integer  "reference_id"
     t.string   "reference_type"
     t.integer  "position",                         default: 1
-    t.string   "workflow_state",                   default: "private"
     t.datetime "submitted_at"
     t.datetime "published_at"
+    t.string   "workflow_state",                   default: "private"
     t.string   "media_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
@@ -437,6 +467,21 @@ ActiveRecord::Schema.define(version: 20180514100218) do
     t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name", using: :btree
     t.index ["status"], name: "index_users_on_status", using: :btree
     t.index ["user_account_id"], name: "index_users_on_user_account_id", using: :btree
+  end
+
+  create_table "workflow_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "interview_id",                               null: false
+    t.integer  "user_id",                                    null: false
+    t.integer  "parent_id"
+    t.string   "workflow_type",                              null: false
+    t.boolean  "public",                      default: true
+    t.text     "comment",       limit: 65535
+    t.string   "user_initials", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["interview_id", "parent_id"], name: "index_workflow_comments_on_interview_id_and_parent_id", using: :btree
+    t.index ["interview_id", "public"], name: "index_workflow_comments_on_interview_id_and_public", using: :btree
+    t.index ["interview_id"], name: "index_workflow_comments_on_interview_id", using: :btree
   end
 
   add_foreign_key "histories", "people"
