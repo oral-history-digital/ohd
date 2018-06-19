@@ -29,6 +29,10 @@ export default class Select extends React.Component {
 
         this.props.handleChange(name, value);
 
+        if (typeof this.props.handleChangeCallback === 'function') {
+            this.props.handleChangeCallback(name, value);
+        }
+
         if (this.props.validate !== undefined) {
             if (this.props.validate(value)) {
                 this.props.handleErrors(name, false);
@@ -44,11 +48,18 @@ export default class Select extends React.Component {
         let opts = [];
         if (this.props.values) {
             opts = this.props.values.map((value, index) => {
-                let text = this.props.optionsScope ? 
+                let val, text;
+                if (typeof value === 'string') {
+                    text = this.props.optionsScope ? 
                         t(this.props, `${this.props.optionsScope}.${value}`) :
                         t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)
+                    val = value;
+                } else {
+                    text = value.name[this.props.locale];
+                    val = value.value;
+                }
                 return (
-                    <option value={value} key={`${this.props.scope}-${index}`}>
+                    <option value={val} selected={this.props.selected === val} key={`${this.props.scope}-${index}`}>
                         {text}
                     </option>
                 )}
@@ -70,12 +81,15 @@ export default class Select extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 showErrors={this.props.showErrors}
+                css={this.props.css}
+                hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={this.props.validate !== undefined}
+                elementType='select'
+                individualErrorMsg={this.props.individualErrorMsg}
             >
                 <select 
                     name={this.props.attribute}
-                    value={this.props.selected}
                     onChange={this.handleChange}
                 >
                     {this.options()}

@@ -12,11 +12,14 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         data: ArchiveUtils.getInterview(state),
         locale: state.archive.locale,
+        locales: state.archive.locales,
         translations: state.archive.translations,
         account: state.account,
         userContents: state.userContent.contents,
         fetchedUserContents: state.userContent.fetched,
         isFetchingUserContents: state.userContent.isFetchingUserContents,
+        isFetchingInterview: state.archive.isFetchingInterview,
+        fetchedInterview: state.archive.fetchedInterview,
     }
 }
 

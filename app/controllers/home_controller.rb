@@ -30,11 +30,13 @@ class HomeController < BaseController
               mem[locale] = ISO3166::Country.translations(locale).sort_by{|key, value| value}.to_h.keys
               mem
             end,
+            collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             project: Project.name.to_s,
             project_name: Project.project_name,
             project_domain: Project.project_domain,
-            archive_domain: Project.archive_domain,
             project_doi: Project.project_doi,
+            archive_domain: Project.archive_domain,
             locales: Project.available_locales
           }.to_json
         end
@@ -63,12 +65,13 @@ class HomeController < BaseController
 
   def translations
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") || instance_variable_set("@#{locale}", 
-                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].merge(
-                                                                                 YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
-                                                                                 countries: ISO3166::Country.translations(locale)
-                                                                                 )
-                                                                                )
+      mem[locale] = instance_variable_get("@#{locale}") || 
+        instance_variable_set("@#{locale}", 
+                              YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
+                                YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
+                                  countries: ISO3166::Country.translations(locale)
+                                )
+                             )
       mem
     end
   end

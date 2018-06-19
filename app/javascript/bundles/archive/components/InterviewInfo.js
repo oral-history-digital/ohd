@@ -2,6 +2,7 @@ import React from 'react';
 import { t, fullname } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import InterviewFormContainer from '../containers/InterviewFormContainer';
 
 import {
     INTERVIEW_URL
@@ -9,6 +10,10 @@ import {
 
 
 export default class InterviewInfo extends React.Component {
+
+    constructor(props, context) {
+        super(props, context);
+    }
 
     content(label, value, className) {
         if (value) {
@@ -45,11 +50,8 @@ export default class InterviewInfo extends React.Component {
     }
 
     language(){
-        if (this.props.interview.translated){
-            return this.content(t(this.props, 'language'), t(this.props, 'language_' + this.props.interview.languages.join('')), "");
-        } else {
-            return this.content(t(this.props, 'language'), t(this.props, 'language_' + this.props.interview.lang ), "");
-        }
+        let languages = this.props.interview.translated ? this.props.interview.languages.join('') : this.props.interview.lang
+        return this.content(t(this.props, 'language'), t(this.props, 'language_' + languages), "");
     }
 
     segmentators(){
@@ -66,27 +68,50 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
+    info() {
+        if (this.props.account.email && this.props.account.admin && this.props.editView) {
+            return ( 
+                <InterviewFormContainer 
+                    submitText='edit.interview.edit' 
+                    interview={this.props.interview}
+                />
+            );
+        } else {
+            return (
+                <div>
+                    {this.content(t(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
+                    {this.placeOfInterview()}
+                    {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
+                    {this.tapes()}
+                    {this.language()}
+                </div>
+            );
+        }
+    }
 
     render() {
-        return (
-            <div>
-                {this.content(t(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
-                {this.placeOfInterview()}
-                {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
-                {this.tapes()}
-                {this.language()}
-                {this.content(t(this.props, 'interview'), fullname(this.props.interviewer), "")}
-                {this.content(t(this.props, 'camera'), fullname(this.props.cinematographer), "")}
-                {this.content(t(this.props, 'transcript'), fullname(this.props.transcriptor), "")}
-                {this.content(t(this.props, 'translation'), fullname(this.props.translator), "")}
-                {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
-                {this.content(t(this.props, 'id'), this.props.archiveId, "")}
-                <AuthShowContainer ifLoggedIn={true}>
-                    {this.download(this.props.interview.lang)}
-                    {this.download(this.props.locale)}
-                </AuthShowContainer>
-            </div>
-        );
+        if (this.props.interview) {
+            return (
+                <div>
+                    {this.info()}
+                    {this.content(t(this.props, 'interview'), fullname(this.props.interviewer), "")}
+                    {this.content(t(this.props, 'camera'), fullname(this.props.cinematographer), "")}
+                    {this.content(t(this.props, 'transcript'), fullname(this.props.transcriptor), "")}
+                    {this.content(t(this.props, 'translation'), fullname(this.props.translator), "")}
+                    {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
+                    {this.content(t(this.props, 'id'), this.props.archiveId, "")}
+                    <AuthShowContainer ifLoggedIn={true}>
+                        {this.download(this.props.interview.lang)}
+                        {this.download(this.props.locale)}
+                    </AuthShowContainer>
+                </div>
+            );
+        } else {
+            return null;
+        }
+                    //<AuthShowContainer ifAdmin={true}>
+                        //<div className='edit-interview-link' onClick={this.setState({edit: true})}>{t(this.props, 'edit.interview.edit')}</div>
+                    //</AuthShowContainer>
     }
 }
 

@@ -21,6 +21,9 @@ gem 'globalize', git: 'https://github.com/globalize/globalize'
 gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
+gem 'roo', "~> 2.7.0"
+gem 'delayed_job_active_record'
+gem 'daemons'
 gem 'open4'
 gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.0'
@@ -61,6 +64,7 @@ group :development do
   gem 'thin'
   #gem 'webpacker'
   gem 'foreman'
+  gem 'progress_bar'
 end
 
 #gem 'puma'

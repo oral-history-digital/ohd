@@ -19,13 +19,13 @@ export default class Interview extends React.Component {
     }
 
     loadInterview() {
-        if (!this.interviewLoaded()) {
+        if (
+            !this.props.isFetchingInterview && 
+            this.props.match.params.archiveId !== 'new' &&
+            this.props.match.params.archiveId !== this.props.archiveId
+        ) {
             this.props.fetchInterview(this.props.match.params.archiveId);
         }
-    }
-
-    interviewLoaded() {
-        return this.props.data && this.props.data.interview && this.props.archiveId === this.props.match.params.archiveId
     }
 
     loadUserContents() {
@@ -61,8 +61,8 @@ export default class Interview extends React.Component {
     }
 
     content() {
-        if (this.interviewLoaded()) {
-            let tabIndex = this.props.account.email ? 5 : 5; // they changed their mind
+        if (this.props.fetchedInterview) {
+            let tabIndex = this.props.locales.length + 3;
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>

@@ -31,7 +31,12 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :interviews, only: [:show, :index] do
+      resources :transcripts, only: [:new, :create]
+
+      #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+      #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+
+      resources :interviews do #, only: [:show, :index] do
         #member do 
           #get :text_materials
           #get :photos

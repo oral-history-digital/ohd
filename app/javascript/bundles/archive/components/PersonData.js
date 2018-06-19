@@ -40,23 +40,27 @@ export default class PersonData extends React.Component {
     }
 
     render() {
-        let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
-        return (
-            <div>
+        if (this.props.interviewee) {
+            let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
+            return (
+                <div>
 
-                {this.content(t(this.props, 'interviewee_name'), fullName, "")}
-                {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
-                {this.placeOfBirth()}
-                {this.typologies()}
-                <AuthShowContainer ifLoggedIn={true}>
-                    <p>
-                        <span className="flyout-content-label">{t(this.props, 'history')}:</span>
-                        {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale)}
-                    </p>
-                </AuthShowContainer>
-            </div>
-        );
+                    {this.content(t(this.props, 'interviewee_name'), fullName, "")}
+                    {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
+                    {this.placeOfBirth()}
+                    {this.typologies()}
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <p>
+                            <span className="flyout-content-label">{t(this.props, 'history')}:</span>
+                            {this.download(this.props.interview.lang)}
+                            {this.download(this.props.locale)}
+                        </p>
+                    </AuthShowContainer>
+                </div>
+            );
+        } else {
+            return t(this.props, 'no_interviewee');
+        }
     }
 }
 

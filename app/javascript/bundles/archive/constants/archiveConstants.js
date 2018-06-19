@@ -6,6 +6,9 @@ export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';
 export const INTERVIEW_URL = '/de/interviews';
 
+export const UPLOAD_TRANSCRIPT_URL = '/de/transcripts';
+export const UPLOADED_TRANSCRIPT = 'UPLOADED_TRANSCRIPT';
+
 export const REQUEST_INTERVIEW_SEARCH = 'REQUEST_INTERVIEW_SEARCH';
 export const RECEIVE_INTERVIEW_SEARCH = 'RECEIVE_INTERVIEW_SEARCH';
 export const INTERVIEW_SEARCH_URL = '/de/searches/interview';
@@ -87,3 +90,5 @@ export const ORDER_NEW_PASSWORD_URL = '/de/user_accounts/password';
 export const REQUEST_ACCOUNT = 'REQUEST_ACCOUNT';
 export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
 export const ACCOUNT_URL = '/de/account';
+
+export const CHANGE_TO_EDIT_VIEW = 'CHANGE_TO_EDIT_VIEW';

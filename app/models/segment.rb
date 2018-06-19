@@ -55,17 +55,19 @@ class Segment < ActiveRecord::Base
   # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
   translates :mainheading, :subheading, :text
 
-  validates_presence_of :timecode, :media_id
+  validates_presence_of :timecode#, :media_id
 
+  # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
   # NOTE: NO UNIQUENESS OF MEDIA_ID!
   # due to segment splitting as captions, the media id can be repeated!!
   # validates_uniqueness_of :media_id
-  validates_format_of :media_id, :with => /\A[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}\z/i
+  #validates_format_of :media_id, :with => /\A[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}\z/i
 
   validates_associated :interview
   validates_associated :tape
 
-  after_create :reassign_user_content
+  # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
+  #after_create :reassign_user_content
 
   before_validation :do_before_validation_on_create, :on => :create
 
