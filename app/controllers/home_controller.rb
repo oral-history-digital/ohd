@@ -14,7 +14,9 @@ class HomeController < BaseController
         render :template => '/react/app.html'
       end
       format.json do
-        json = Rails.cache.fetch('static-content') do 
+        # include timestamp in cache-key if sth. of the static content changed!!!
+        #
+        json = Rails.cache.fetch('static-content-20.6.2018') do 
           locales = Project.available_locales.reject{|i| i == 'alias'}
           home_content = {}
           locales.each do |i|
