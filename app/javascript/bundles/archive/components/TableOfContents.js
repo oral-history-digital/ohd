@@ -1,6 +1,7 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
 import { t } from "../../../lib/utils";
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class TableOfContents extends React.Component {
 
@@ -117,18 +118,22 @@ export default class TableOfContents extends React.Component {
     }
 
     render() {
-        let headings = this.prepareHeadings();
-        return (
-            <div className={'content-index'}>
-                {this.emptyHeadingsNote(headings)}
-                {headings.map((heading, index) => {
-                    return <HeadingContainer
-                        key={'mainheading-' + index}
-                        data={heading}
-                    />
-                })}
-            </div>
-        );
+        if (this.props.interview.headings_status === 'fetched') {
+            let headings = this.prepareHeadings();
+            return (
+                <div className={'content-index'}>
+                    {this.emptyHeadingsNote(headings)}
+                    {headings.map((heading, index) => {
+                        return <HeadingContainer
+                            key={'mainheading-' + index}
+                            data={heading}
+                        />
+                    })}
+                </div>
+            );
+        } else {
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+        }
     }
 }
 
