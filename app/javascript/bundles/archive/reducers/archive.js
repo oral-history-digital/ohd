@@ -2,6 +2,9 @@ import {
     REQUEST_INTERVIEW,
     RECEIVE_INTERVIEW,
 
+    REQUEST_INTERVIEW_DATA,
+    RECEIVE_INTERVIEW_DATA,
+
     VIDEO_TIME_CHANGE,
     VIDEO_ENDED,
     SET_NEXT_TAPE,
@@ -52,11 +55,24 @@ const archive = (state = initialState, action) => {
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
                         interview: action.interview,
-                        doiContent: action.doiContent,
-                        segments: action.segments,
-                        headings: action.headings,
-                        references: action.references,
-                        refTree: action.refTree
+                    }),
+                }),
+                lastUpdated: action.receivedAt
+            })
+        case REQUEST_INTERVIEW_DATA:
+            return Object.assign({}, state, {
+                interviews: Object.assign({}, state.interviews, {
+                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
+                        [`${action.dataType}_status`]: 'fetching',
+                    }),
+                }),
+            })
+        case RECEIVE_INTERVIEW_DATA:
+            return Object.assign({}, state, {
+                interviews: Object.assign({}, state.interviews, {
+                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
+                        [action.dataType]: action.data,
+                        [`${action.dataType}_status`]: 'fetched',
                     }),
                 }),
                 lastUpdated: action.receivedAt

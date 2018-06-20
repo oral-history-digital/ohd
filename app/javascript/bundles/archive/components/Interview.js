@@ -34,6 +34,14 @@ export default class Interview extends React.Component {
         }
     }
 
+    loadDoiContent() {
+        if (
+            !this.props.data.doi_content_status
+        ) {
+            this.props.fetchInterviewData(this.props.match.params.archiveId, 'doi_content');
+        }
+    }
+
     userContentsLoaded() {
         return this.props.userContents && !this.props.userContents.fetched;
     }
@@ -53,11 +61,21 @@ export default class Interview extends React.Component {
                         <img src={this.props.data.interview.still_url}/>
                     </div>
                 </div>
+                {this.doiContent()}
+            </div>
+        )
+    }
+
+    doiContent() {
+        if (this.props.data.doi_content && this.props.data.doi_content_status === 'fetched') {
+            return (
                 <div className='wrapper-content'
                      dangerouslySetInnerHTML={{__html: this.props.data.doiContent[this.props.locale]}}
                 />
-            </div>
-        )
+            )
+        } else {
+            return null;
+        }
     }
 
     content() {

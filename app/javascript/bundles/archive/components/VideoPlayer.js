@@ -134,7 +134,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     segments() {
-        return this.props.segments;
+        return this.props.segments || [];
     }
 
 

@@ -2,8 +2,10 @@ import {connect} from 'react-redux';
 
 import TableOfContents from '../components/TableOfContents';
 import ArchiveUtils from '../../../lib/utils';
-import {handleTranscriptScroll} from '../actions/interviewActionCreators';
-
+import { 
+    handleTranscriptScroll,
+    fetchInterviewData
+} from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state) => {
     return {
@@ -16,11 +18,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
+    fetchInterviewData: (archiveId, dataType) => dispatch(fetchInterviewData(archiveId, dataType)),
 })
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableOfContents);
 

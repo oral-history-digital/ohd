@@ -9,8 +9,8 @@ export default class Transcript extends React.Component {
         this.handleScroll = this.handleScroll.bind(this);
     }
 
-
     componentDidMount() {
+        this.loadSegments();
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
         window.scrollTo(0, 1);
@@ -18,6 +18,19 @@ export default class Transcript extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    componentDidUpdate() {
+        this.loadSegments();
+    }
+
+    loadSegments() {
+        if (
+            this.props.loadSegments &&
+            !this.props.data.segment_status
+        ) {
+            this.props.fetchInterviewData(this.props.archiveId, 'segments');
+        }
     }
 
     componentDidUpdate(prevProps) {

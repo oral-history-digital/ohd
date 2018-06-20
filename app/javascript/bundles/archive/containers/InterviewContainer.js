@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 
 import Interview from '../components/Interview';
-import { fetchInterview } from '../actions/interviewActionCreators';
+import { 
+    fetchInterview,
+    fetchInterviewData
+} from '../actions/interviewActionCreators';
 import { fetchUserContents } from '../actions/userContentActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
@@ -25,7 +28,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchUserContents: () => dispatch(fetchUserContents()),
-    fetchInterview: (archiveId) => dispatch(fetchInterview(archiveId))
+    fetchInterview: (archiveId) => dispatch(fetchInterview(archiveId)),
+    fetchInterviewData: (archiveId, dataType) => dispatch(fetchInterviewData(archiveId, dataType)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Interview);

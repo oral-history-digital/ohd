@@ -59,6 +59,7 @@ export default class InterviewTabs extends React.Component {
                     <TabPanel>
                         <TranscriptContainer
                             originalLocale={true}
+                            loadSegments={true}
                         />
                     </TabPanel>
                     <TabPanel>

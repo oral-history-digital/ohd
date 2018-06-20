@@ -13,6 +13,19 @@ export default class TableOfContents extends React.Component {
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
         window.scrollTo(0, 1);
+        this.loadHeadings();
+    }
+
+    componentDidUpdate() {
+        this.loadHeadings();
+    }
+
+    loadHeadings() {
+        if (
+            !this.props.interview.headings_status
+        ) {
+            this.props.fetchInterviewData(this.props.archiveId, 'headings');
+        }
     }
 
     componentWillUnmount() {
