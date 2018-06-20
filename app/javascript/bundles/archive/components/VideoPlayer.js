@@ -236,8 +236,9 @@ export default class VideoPlayer extends React.Component {
                                 this.video = video;
                             }}
                             onTimeUpdate={(event) => {
-                                if (Math.round(event.target.currentTime*100)/100 !== this.props.videoTime) {
-                                    this.props.handleVideoTimeChange(event)
+                                let time = Math.round(event.target.currentTime*100)/100;
+                                if (time !== this.props.videoTime) {
+                                    this.props.handleVideoTimeChange(time)
                                 }
                             }}
                             onEnded={(event) => {
