@@ -6,10 +6,10 @@ import {
     SET_NEXT_TAPE
 } from '../constants/archiveConstants';
 
-export function handleVideoTimeChange(event) {
+export function handleVideoTimeChange(time) {
   return {
     type: VIDEO_TIME_CHANGE,
-    transcriptTime: Math.round(event.target.currentTime*100)/100 
+    transcriptTime: time
   }
 }
 
