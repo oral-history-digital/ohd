@@ -118,9 +118,9 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           -> { includes(:translations)},
-           :dependent => :destroy,
-           inverse_of: :interview
+           #-> { includes(:translations)},
+           :dependent => :destroy#,
+           #inverse_of: :interview
 
   has_many :segment_registry_references,
            -> {
