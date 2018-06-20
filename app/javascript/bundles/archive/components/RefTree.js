@@ -2,15 +2,16 @@ import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import { t } from "../../../lib/utils";
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class RefTree extends React.Component {
 
     componentDidMount() {
-        //this.loadRefTree();
+        this.loadRefTree();
     }
 
     componentDidUpdate() {
-        //this.loadRefTree();
+        this.loadRefTree();
     }
 
     loadRefTree() {
@@ -45,11 +46,14 @@ export default class RefTree extends React.Component {
     }
 
     refTree() {
-        if (false) {
-        //if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
-            return this.renderChildren(this.props.interview.ref_tree.children);
+        if (this.props.interview.ref_tree_status === 'fetched') {
+            if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
+                return this.renderChildren(this.props.interview.ref_tree.children);
+            } else {
+                return this.emptyRefTree();
+            }
         } else {
-            return this.emptyRefTree();
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         }
     }
 
