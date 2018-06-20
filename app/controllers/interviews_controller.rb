@@ -153,7 +153,7 @@ class InterviewsController < BaseController
             dataType: 'ref_tree',
             archive_id: params[:id]
           }
-        end#.to_json
+        end.to_json
         render plain: json
       end
     end
