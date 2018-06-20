@@ -2,7 +2,7 @@ class InterviewsController < BaseController
 
   layout 'responsive'
 
-  skip_before_action :authenticate_user_account!, only: :show
+  skip_before_action :authenticate_user_account!#, only: :show
 
   def new
     respond_to do |format|
@@ -37,27 +37,8 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-with-segments-#{@interview.id}-#{@interview.updated_at}" do
-          segments = Segment.
-              #includes(:translations, :annotations => [:translations], registry_references: {registry_entry: {registry_names: :translations} } ).
-              includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
-          ref_tree = ReferenceTree.new(@interview.segment_registry_references)
-          locales = Project.available_locales.reject{|i| i == 'alias'}
-          doi_content = {}
-          locales.each do |i|
-            I18n.locale = i
-            template = "/interviews/_doi.#{i}.html+#{Project.name.to_s}"
-            doi_content[i] = render_to_string(template: template, layout: false)
-          end
-          {
-              interview: ::InterviewSerializer.new(@interview).as_json,
-              doi_content: doi_content,
-              segments: segments.map {|s| ::SegmentSerializer.new(s).as_json},
-              headings: segments.with_heading.map {|s| ::SegmentSerializer.new(s).as_json},
-              references: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
-              ref_tree: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil)
-          }.to_json
+        json = Rails.cache.fetch "interview-#{@interview.id}-#{@interview.updated_at}" do
+            ::InterviewSerializer.new(@interview).to_json
         end
         render plain: json
       end
@@ -81,6 +62,99 @@ class InterviewsController < BaseController
       end
       format.html
       format.xml
+    end
+  end
+
+  def doi_content
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-doi-content-#{@interview.id}-#{@interview.updated_at}" do
+          doi_content = {}
+          locales = Project.available_locales.reject{|i| i == 'alias'}
+          locales.each do |i|
+            I18n.locale = i
+            template = "/interviews/_doi.#{i}.html+#{Project.name.to_s}"
+            doi_content[i] = render_to_string(template: template, layout: false)
+          end
+          {
+            data: doi_content,
+            dataType: 'doi_content',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
+  def segments
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+          segments = Segment.
+              includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
+              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
+          {
+            data: segments.map {|s| ::SegmentSerializer.new(s).as_json},
+            dataType: 'segments',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
+  def headings
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+          segments = Segment.
+              includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
+              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
+          {
+            data: segments.with_heading.map {|s| ::HeadingSerializer.new(s).as_json},
+            dataType: 'headings',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
+  def references
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-references-#{@interview.id}-#{@interview.segment_registry_references.maximum(:updated_at)}" do
+          {
+            data: @interview.segment_registry_references.map {|s| ::RegistryReferenceSerializer.new(s).as_json},
+            dataType: 'references',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
+  def ref_tree
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-ref-tree#{@interview.id}-#{@interview.segment_registry_references.maximum(:updated_at)}" do
+          {
+            data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil),
+            dataType: 'ref_tree',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
     end
   end
 
