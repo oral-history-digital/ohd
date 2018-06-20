@@ -1,7 +1,7 @@
 namespace :cache do
 
-  #BASE_URL = 'https://archive.occupation-memories.org'
-  BASE_URL = 'http://localhost:3000'
+  BASE_URL = 'https://archive.occupation-memories.org'
+  #BASE_URL = 'http://localhost:3000'
 
   desc 'visit start page'
   task :start => :environment do
