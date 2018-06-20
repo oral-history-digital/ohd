@@ -6,9 +6,6 @@ class SegmentSerializer < ActiveModel::Serializer
              :time,
              :tape_nbr,
              :transcripts,
-             :mainheading,
-             :subheading,
-             :last_heading,
              :annotation_texts,
              :start_time,
              :end_time,
@@ -40,40 +37,6 @@ class SegmentSerializer < ActiveModel::Serializer
     object.tape.number
   end
 
-  def mainheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.mainheading(projectified(locale))
-      mem
-    end
-  end
-
-  def subheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.subheading(projectified(locale))
-      mem
-    end
-  end
-
-  def last_heading
-    mainheadings = Segment.mainheadings_until(object.id, object.interview_id)
-    if mainheadings.count > 0
-      mainheadings_count = mainheadings.map{|mh| mh.mainheading(projectified(Project.available_locales.first))}.uniq.count
-      subheadings = Segment.subheadings_until(object.id, object.interview_id, mainheadings.last.id)
-      
-      if subheadings.count > 0
-        I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(projectified(locale))}"
-          mem
-        end
-      else
-        I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(projectified(locale))}"
-          mem
-        end
-      end
-    end
-  end
-
   def annotation_texts
     object.annotations.map(&:localized_hash)
   end
@@ -94,4 +57,5 @@ class SegmentSerializer < ActiveModel::Serializer
       }
     end
   end
+
 end
