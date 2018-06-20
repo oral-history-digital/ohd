@@ -1,7 +1,7 @@
 class Tape < ActiveRecord::Base
   include Workflow
 
-  belongs_to :interview, inverse_of: :tape
+  belongs_to :interview, inverse_of: :tapes
 
   has_many  :segments,
             -> { order('media_id ASC, timecode ASC')},
