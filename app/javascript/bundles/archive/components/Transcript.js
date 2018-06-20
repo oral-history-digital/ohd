@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
 import { t } from "../../../lib/utils";
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class Transcript extends React.Component {
 
@@ -94,10 +95,14 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (this.props.originalLocale) {
-            return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+        if (this.props.data.segments_status === 'fetched') {
+            if (this.props.originalLocale) {
+                return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+            } else {
+                return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+            }
         } else {
-            return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         }
     }
 }
