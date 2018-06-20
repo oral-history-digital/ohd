@@ -27,7 +27,7 @@ namespace :cache do
         :segments,
         :headings,
         #:references,
-        #:ref_tree
+        :ref_tree
       ].each do |data_type|
         p "*** Getting #{data_type} for #{interview.archive_id}"
         uri = URI.parse("#{BASE_URL}/de/interviews/#{interview.archive_id}/#{data_type}.json")
