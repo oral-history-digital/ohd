@@ -5,6 +5,22 @@ import { t } from "../../../lib/utils";
 
 export default class RefTree extends React.Component {
 
+    componentDidMount() {
+        //this.loadRefTree();
+    }
+
+    componentDidUpdate() {
+        //this.loadRefTree();
+    }
+
+    loadRefTree() {
+        if (
+            !this.props.interview.ref_tree_status
+        ) {
+            this.props.fetchInterviewData(this.props.archiveId, 'ref_tree');
+        }
+    }
+
     renderChildren(children) {
         let that = this;
         return children.map((entry, index) => {
@@ -29,8 +45,9 @@ export default class RefTree extends React.Component {
     }
 
     refTree() {
-        if (this.props.refTree && this.props.refTree.children) {
-            return this.renderChildren(this.props.refTree.children);
+        if (false) {
+        //if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
+            return this.renderChildren(this.props.interview.ref_tree.children);
         } else {
             return this.emptyRefTree();
         }
