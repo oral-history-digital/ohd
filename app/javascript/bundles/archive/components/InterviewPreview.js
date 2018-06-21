@@ -11,6 +11,34 @@ import { t } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+        let openState = false;
+        this.state = {
+            open: openState,
+            class: openState ? "accordion active" : "accordion",
+            panelClass: openState ? "panel open" : "panel"
+        };
+    }
+
+    handleClick(event) {
+        if (event !== undefined) event.preventDefault();
+        if (this.state.open) {
+            this.setState({
+                ['open']: false,
+                ['class']: "accordion",
+                ['panelClass']: "panel"
+            });
+        } else {
+            this.setState({
+                ['open']: true,
+                ['class']: "accordion active",
+                ['panelClass']: "panel open"
+            });
+        }
+    }
+
     componentDidMount() {
         this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
     }
@@ -27,13 +55,15 @@ export default class InterviewPreview extends React.Component {
                 infinite: false,
               };
             return (
-                <div className={'archive-search-found-segments'}>
-                    <div className={'hits-count'}>
+                <div>
+                    <div className={this.state.class + ' hits-count'} onClick={this.handleClick}>
                         <small>{t(this.props, 'segment_hits')}: {this.props.segments.foundSegments.length}</small>
                     </div>
-                    <Slider {...settings}>
-                    { this.renderSegments() }
-                    </Slider>
+                    <div className={this.state.panelClass + ' archive-search-found-segments'}>
+                        <Slider {...settings}>
+                        { this.renderSegments() }
+                        </Slider>
+                    </div>
                 </div>
             )
         }

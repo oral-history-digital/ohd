@@ -40,6 +40,17 @@
 .hits-count {
   background-color: rgba(232,232,228, 0.95);
   margin-top: 14px;
+  padding: 0 8px;
+  cursor: pointer;
+  &::after {
+    font-family: FontAwesome;
+    content: "\f067";
+    float: right;
+    // font-size: $font-size-large;
+  }
+  &.active::after {
+    content: "\f068";
+  }
 }
 
 .slick-list {
