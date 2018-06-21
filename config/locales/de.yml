@@ -67,7 +67,7 @@ de:
   email: 'E-Mail'
   change_password: 'Passwort ändern'
   archive_results: 'Suchergebnisse'
-  segment_hits: 'Treffer'
+  segment_hits: 'Treffer im Transkript'
   no_interviews_results: 'Keine Interviews gefunden.'
   interview_id: 'Interview-ID'
   interview_duration: 'Interviewdauer'
