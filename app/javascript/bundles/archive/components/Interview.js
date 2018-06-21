@@ -11,11 +11,13 @@ export default class Interview extends React.Component {
     componentDidMount() {
         this.loadInterview();
         this.loadUserContents();
+        this.loadDoiContent();
     }
 
     componentDidUpdate() {
         this.loadInterview();
         this.loadUserContents();
+        this.loadDoiContent();
     }
 
     loadInterview() {
@@ -36,6 +38,7 @@ export default class Interview extends React.Component {
 
     loadDoiContent() {
         if (
+            this.props.data &&
             !this.props.data.doi_content_status
         ) {
             this.props.fetchInterviewData(this.props.match.params.archiveId, 'doi_content');
@@ -67,10 +70,10 @@ export default class Interview extends React.Component {
     }
 
     doiContent() {
-        if (this.props.data.doi_content && this.props.data.doi_content_status === 'fetched') {
+        if (this.props.data && this.props.data.doi_content_status === 'fetched') {
             return (
                 <div className='wrapper-content'
-                     dangerouslySetInnerHTML={{__html: this.props.data.doiContent[this.props.locale]}}
+                     dangerouslySetInnerHTML={{__html: this.props.data.doi_content[this.props.locale]}}
                 />
             )
         } else {
