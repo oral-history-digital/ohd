@@ -49,6 +49,7 @@ const search = (state = initialState, action) => {
         case RESET_QUERY:
             return Object.assign({}, state, {
                 query: {},
+                interviews: {},
             })
         case REQUEST_FACETS:
             return Object.assign({}, state, {
