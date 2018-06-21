@@ -214,8 +214,8 @@ el:
     job_descriptions:
       researcher: 'Λέκτορας/ ερευνητής'
       filmmaker: 'Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα'
-      journalist: ''
-      teacher: ''
+      journalist: 'Δημοσιογράφος'
+      teacher: 'Δάσκαλος'
       memorial_staff: 'Εργαζόμενος/η σε μουσείο/μνημείο'
       pupil: 'Μαθητής/μαθήτρια'
       student: 'Φοιτητής/φοιτήτρια'
