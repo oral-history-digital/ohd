@@ -12,6 +12,7 @@ var Loader = {
                 if (error) {
                     console.log("loading json from " + url + " failed: " + error);
                     console.log("original error: " + error.original);
+                    dispatch(callback({error: error}));
                 } else if (res) {
                     if (res.error) {
                         console.log("loading json from " + url + " failed: " + res.error);
@@ -31,6 +32,7 @@ var Loader = {
                 if (error) {
                     console.log("loading json from " + url + " failed: " + error);
                     console.log("original error: " + error.original);
+                    dispatch(callback({error: error}));
                 } else if (res) {
                     if (res.error) {
                         console.log("deleting from " + url + " failed: " + error);
@@ -51,6 +53,7 @@ var Loader = {
                 if (error) {
                     console.log("loading json from " + url + " failed: " + error);
                     console.log("original error: " + error.original);
+                    dispatch(errorCallback({error: error}));
                 } else if (res) {
                     let json = JSON.parse(res.text);
                     if (res.error) {
@@ -90,6 +93,7 @@ var Loader = {
             if (error) {
                 console.log("loading json from " + url + " failed: " + error);
                 console.log("original error: " + error.original);
+                dispatch(errorCallback(error));
             } else if (res) {
                 let json = JSON.parse(res.text);
                 if (res.error) {

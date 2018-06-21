@@ -21,7 +21,7 @@ export default class Account extends React.Component {
             </div>
         } else if (this.props.account.error) {
             return <div className='error'>
-                {this.props.account.error}
+                {t(this.props, this.props.account.error)}
             </div>
         } else {
             return null
