@@ -33,13 +33,55 @@
   }
 }
 
-.archive-search-found-segments .slick-slide {
+.archive-search-found-segments {
+  .slick-slider {
+    padding-bottom: 20px;
+  }
+  .slick-slide {
   text-align: left !important;
+  }
+  .slick-arrow {
+    bottom: 0;
+    position: absolute;
+    top: auto !important;
+    font-size: auto !important;
+    &.slick-disabled::before {
+      color: grey !important;
+    }
+    &.slick-prev {
+      &::before {
+        font-family: FontAwesome;
+        content: '\f104';
+        color: black;
+        font-size: 20px !important;
+      }
+    }
+    &.slick-next {
+      &::before {
+        font-family: FontAwesome;
+        content: '\f105';
+        color: black;
+        font-size: 20px !important;
+      }
+    }
+  }
 }
 
 .hits-count {
-  background-color: rgba(232,232,228, 0.95);
+  // background-color: rgba(232,232,228, 0.95);
   margin-top: 14px;
+  padding: 0 8px 0 0;
+  cursor: pointer;
+  &::before {
+    font-family: FontAwesome;
+    content: "\f067";
+    float: left;
+    padding-right: 4px;
+    // font-size: $font-size-large;
+  }
+  &.active::before {
+    content: "\f068";
+  }
 }
 
 .slick-list {

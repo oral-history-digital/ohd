@@ -182,3 +182,14 @@ a.flyout-download-link-lang {
     cursor: default;
   }
 }
+
+.interview-preview.search-result {
+  .panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.2s ease-out;
+    &.open {
+      max-height: 100%;
+    }
+  }
+}
