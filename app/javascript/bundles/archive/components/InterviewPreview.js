@@ -91,7 +91,7 @@ export default class InterviewPreview extends React.Component {
 
 
     typologies(){
-        let interviewee =  this.props.interview.interviewees[0];
+        let interviewee =  this.props.interview.interviewees && this.props.interview.interviewees[0];
         if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
             //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
                 return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
@@ -118,7 +118,7 @@ export default class InterviewPreview extends React.Component {
                     <div className="search-result-img">
                         <img src={this.props.interview.still_url} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                     </div>
-                    <p className={'search-result-name'}>{this.props.interview.short_title[this.props.locale]}</p>
+                    <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
 
                     {this.interviewDetails()}
                 </Link>

@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
 import { t } from "../../../lib/utils";
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class Transcript extends React.Component {
 
@@ -9,8 +10,8 @@ export default class Transcript extends React.Component {
         this.handleScroll = this.handleScroll.bind(this);
     }
 
-
     componentDidMount() {
+        this.loadSegments();
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
         window.scrollTo(0, 1);
@@ -18,6 +19,19 @@ export default class Transcript extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    componentDidUpdate() {
+        this.loadSegments();
+    }
+
+    loadSegments() {
+        if (
+            this.props.loadSegments &&
+            !this.props.data.segment_status
+        ) {
+            this.props.fetchInterviewData(this.props.archiveId, 'segments');
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -81,10 +95,14 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (this.props.originalLocale) {
-            return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+        if (this.props.data.segments_status === 'fetched') {
+            if (this.props.originalLocale) {
+                return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+            } else {
+                return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+            }
         } else {
-            return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         }
     }
 }

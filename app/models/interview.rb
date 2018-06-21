@@ -118,9 +118,9 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           -> { includes(:translations)},
-           :dependent => :destroy,
-           inverse_of: :interview
+           #-> { includes(:translations)},
+           :dependent => :destroy#,
+           #inverse_of: :interview
 
   has_many :segment_registry_references,
            -> {
@@ -171,7 +171,7 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     text :transcript, :boost => 5 do
-      segments.inject([]) do |all, segment|
+      segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
       end.join(' ')

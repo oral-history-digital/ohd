@@ -29,14 +29,18 @@ export default class PersonData extends React.Component {
         }
     }
 
-    download(lang) {
-        return (
-            <a className='flyout-download-link-lang'
-                href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + lang + '&kind=history'}>
-                <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                <span>{lang}</span>
-            </a>
-        )
+    download(lang, condition) {
+        if (!condition) {
+            return (
+                <a className='flyout-download-link-lang'
+                    href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + lang + '&kind=history'}>
+                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
+                    <span>{lang}</span>
+                </a>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -53,7 +57,7 @@ export default class PersonData extends React.Component {
                         <p>
                             <span className="flyout-content-label">{t(this.props, 'history')}:</span>
                             {this.download(this.props.interview.lang)}
-                            {this.download(this.props.locale)}
+                            {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
                         </p>
                     </AuthShowContainer>
                 </div>

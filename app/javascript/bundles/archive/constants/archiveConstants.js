@@ -4,6 +4,8 @@ export const MISSING_STILL = 'https://medien.cedis.fu-berlin.de/zwar/stills/miss
 
 export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';
+export const REQUEST_INTERVIEW_DATA = 'REQUEST_INTERVIEW_DATA';
+export const RECEIVE_INTERVIEW_DATA = 'RECEIVE_INTERVIEW_DATA';
 export const INTERVIEW_URL = '/de/interviews';
 
 export const UPLOAD_TRANSCRIPT_URL = '/de/transcripts';

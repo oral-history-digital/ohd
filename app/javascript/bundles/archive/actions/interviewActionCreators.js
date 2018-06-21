@@ -5,6 +5,8 @@ import Loader from '../../../lib/loader'
 import { 
     REQUEST_INTERVIEW,
     RECEIVE_INTERVIEW,
+    REQUEST_INTERVIEW_DATA,
+    RECEIVE_INTERVIEW_DATA,
     INTERVIEW_URL,
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
@@ -15,35 +17,44 @@ import {
 } from '../constants/archiveConstants';
 
 const requestInterview = (archiveId) => ({
-  type: REQUEST_INTERVIEW,
-  archiveId: archiveId,
+    type: REQUEST_INTERVIEW,
+    archiveId: archiveId,
 });
 
-//const receiveInterview = (archiveId, json) => ({
-  //type: RECEIVE_INTERVIEW,
-  //archiveId: archiveId,
-  //interview: json.interview,
-  //receivedAt: Date.now()
-//});
+const requestInterviewData = (archiveId, dataType) => ({
+    type: REQUEST_INTERVIEW_DATA,
+    archiveId: archiveId,
+    dataType: dataType
+});
 
 function receiveInterview(json){
-  return {
-    type: RECEIVE_INTERVIEW,
-    archiveId: json.interview.archive_id,
-    interview: json.interview,
-    segments: json.segments,
-    headings: json.headings,
-    references: json.references,
-      doiContent: json.doi_content,
-    refTree: json.ref_tree,
-    receivedAt: Date.now()
-  }
+    return {
+        type: RECEIVE_INTERVIEW,
+        archiveId: json.archive_id,
+        interview: json,
+        receivedAt: Date.now()
+    }
 }
+
+const receiveInterviewData = (json) => ({
+    type: RECEIVE_INTERVIEW_DATA,
+    archiveId: json.archive_id,
+    data: json.data,
+    dataType: json.dataType,
+    receivedAt: Date.now()
+});
 
 export function fetchInterview(archiveId) {
   return dispatch => {
     dispatch(requestInterview(archiveId))
     Loader.getJson(`${INTERVIEW_URL}/${archiveId}`, null, dispatch, receiveInterview);
+  }
+}
+
+export function fetchInterviewData(archiveId, dataType) {
+  return dispatch => {
+    dispatch(requestInterviewData(archiveId, dataType))
+    Loader.getJson(`${INTERVIEW_URL}/${archiveId}/${dataType}`, null, dispatch, receiveInterviewData);
   }
 }
 

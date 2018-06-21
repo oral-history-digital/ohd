@@ -37,10 +37,13 @@ Rails.application.routes.draw do
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
       resources :interviews do #, only: [:show, :index] do
-        #member do 
-          #get :text_materials
-          #get :photos
-        #end
+        member do 
+          get :doi_content
+          get :segments
+          get :headings
+          get :references
+          get :ref_tree
+        end
         #collection do 
           #get :stills
         #end

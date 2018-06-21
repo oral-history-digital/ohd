@@ -30,16 +30,20 @@ export default class InterviewInfo extends React.Component {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
-    download(lang) {
-        let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
-        return (
-            <p>
-                <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                    <span>{t(this.props, textKey)}</span>
-                </a>
-            </p>
-        )
+    download(lang, condition) {
+        if (!condition) {
+            let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
+            return (
+                <p>
+                    <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
+                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
+                        <span>{t(this.props, textKey)}</span>
+                    </a>
+                </p>
+            )
+        } else {
+            return null;
+        }
     }
 
 
@@ -102,7 +106,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale)}
+                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
                     </AuthShowContainer>
                 </div>
             );

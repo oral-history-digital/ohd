@@ -8,7 +8,7 @@ namespace :solr do
       p "starting to reindex segments per interview ..."
       Interview.all.each do |i|  
         start_interview = Time.now
-        i.segments.each_slice(100) do |batch|
+        i.segments.includes(:translations).each_slice(100) do |batch|
           Sunspot.index! batch
         end
         finish_interview = Time.now
@@ -24,7 +24,7 @@ namespace :solr do
       p "starting to reindex interviews ..."
       Interview.reindex
       finish = Time.now
-      p "finished all inetrviews in #{(finish - start)} seconds."
+      p "finished all interviews in #{(finish - start)} seconds."
     end
 
     desc 'reindex registry_references'

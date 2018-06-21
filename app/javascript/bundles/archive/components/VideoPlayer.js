@@ -134,7 +134,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     segments() {
-        return this.props.segments;
+        return this.props.segments || [];
     }
 
 
@@ -236,7 +236,10 @@ export default class VideoPlayer extends React.Component {
                                 this.video = video;
                             }}
                             onTimeUpdate={(event) => {
-                               this.props.handleVideoTimeChange(event)
+                                let time = Math.round(event.target.currentTime*100)/100;
+                                if (time !== this.props.videoTime) {
+                                    this.props.handleVideoTimeChange(time)
+                                }
                             }}
                             onEnded={(event) => {
                                this.handleVideoEnded()

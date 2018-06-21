@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 
 import Transcript from '../components/Transcript';
-import { handleTranscriptScroll } from '../actions/interviewActionCreators';
+import { 
+    handleTranscriptScroll,
+    fetchInterviewData
+} from '../actions/interviewActionCreators';
 
 import ArchiveUtils from '../../../lib/utils';
 
@@ -19,6 +22,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
+    fetchInterviewData: (archiveId, dataType) => dispatch(fetchInterviewData(archiveId, dataType)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);
