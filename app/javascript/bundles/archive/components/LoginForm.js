@@ -13,7 +13,9 @@ export default class LoginForm extends React.Component {
                 elements={[
                     {
                         attribute: 'login',
-                        validate: function(v){return /^\w+@\w+\.[A-z]{2,3}$/.test(v)}
+                        elementType: 'input',
+                        type: 'email',
+                        validate: function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}
                     },
                     { 
                         attribute: 'password',
