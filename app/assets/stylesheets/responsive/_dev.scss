@@ -45,6 +45,7 @@
     position: absolute;
     top: auto !important;
     font-size: auto !important;
+    z-index: 800;
     &.slick-disabled::before {
       color: grey !important;
     }
@@ -67,11 +68,6 @@
   }
 }
 
-@media (pointer: coarse) {
-  .slick-arrow {
-    display: none !important;
-  }
-}
 .hits-count {
   // background-color: rgba(232,232,228, 0.95);
   margin-top: 14px;
