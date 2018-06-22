@@ -39,8 +39,8 @@ class RegistryEntry < ActiveRecord::Base
            :through => :links_as_descendant,
            :source => :ancestor
 
-  def self.descendant_ids(entry_code)
-    find_by_entry_code(entry_code).descendants.map(&:id)
+  def self.descendant_ids(entry_code, entry_dedalo_code=nil)
+    entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)
   end
 
   # Every registry entry (except for the root entry) must have at least one parent.

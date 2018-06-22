@@ -252,7 +252,7 @@ class Interview < ActiveRecord::Base
   Project.registry_entry_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
-      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
     end
   end
 
