@@ -41,7 +41,7 @@
   text-align: left !important;
   }
   .slick-arrow {
-    bottom: 0;
+    bottom: -20px;
     position: absolute;
     top: auto !important;
     font-size: auto !important;
@@ -67,6 +67,11 @@
   }
 }
 
+@media (pointer: coarse) {
+  .slick-arrow {
+    display: none !important;
+  }
+}
 .hits-count {
   // background-color: rgba(232,232,228, 0.95);
   margin-top: 14px;
