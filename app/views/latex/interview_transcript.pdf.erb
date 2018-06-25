@@ -50,17 +50,17 @@
 <% last_speaker_id = 0 %>
 <% chapter_hash = Hash.new %>
 <% tape_number = 0 %>
-<% @interview.segments.each_with_index do |segment, index| %>
+<% @interview.segments.includes(:translations).each_with_index do |segment, index| %>
   <% if (segment.speaker_changed && !segment.speaker_id.nil? && segment.speaker_id > 0) || (!segment.speaker_id.nil? && segment.speaker_id > 0 && segment.speaker_id != last_speaker_id) %>
     <% last_speaker_id = segment.speaker_id if segment.speaker_id > 0 %>
     <% new_line = true %>
     <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @project_locale).first %>
     <% speaker = latex_escape("#{person_translation.first_name} #{person_translation.last_name}".strip + ": ") %>
-    <% sentence = latex_escape(segment.text(@project_locale)).sub(/^\:{1}\s*\:*/, "") %>
+    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text).sub(/^\:{1}\s*\:*/, "") %>
   <% else %>
     <% speaker = nil %>
     <% new_line = false %>
-    <% sentence = latex_escape(segment.text(@project_locale)) %>
+    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text) %>
   <% end %>
 
   <% paragraph_hash = Hash.new %>
@@ -117,7 +117,7 @@
       <% end %>
       \textit{<%= paragraph['speaker'] %>}
     <% end %>
-    <%= paragraph['segment'] %>
+    <%= paragraph['segment'].html_safe %>
   <% end %>
 <% end %>
 
