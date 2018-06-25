@@ -278,7 +278,7 @@ class Interview < ActiveRecord::Base
     if segments.first
       segments.first.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem }
     else
-      ISO_639.find(language.first_code).alpha2
+      [ISO_639.find(language.first_code).alpha2]
     end
   end
 
