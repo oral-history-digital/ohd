@@ -98,11 +98,11 @@ export default class InterviewInfo extends React.Component {
             return (
                 <div>
                     {this.info()}
-                    {this.content(t(this.props, 'interview'), fullname(this.props.interviewer), "")}
-                    {this.content(t(this.props, 'camera'), fullname(this.props.cinematographer), "")}
-                    {this.content(t(this.props, 'transcript'), fullname(this.props.transcriptor), "")}
-                    {this.content(t(this.props, 'translation'), fullname(this.props.translator), "")}
-                    {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
+                    {this.content(t(this.props, 'interview'), fullname(this.props, this.props.interviewer), "")}
+                    {this.content(t(this.props, 'camera'), fullname(this.props, this.props.cinematographer), "")}
+                    {this.content(t(this.props, 'transcript'), fullname(this.props, this.props.transcriptor), "")}
+                    {this.content(t(this.props, 'translation'), fullname(this.props, this.props.translator), "")}
+                    {this.content(t(this.props, 'segmentation'), fullname(this.props, this.segmentators()), "")}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}
