@@ -126,7 +126,7 @@ export default class Segment extends React.Component {
         if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             return (
-                <div className="content-trans-speaker-link" title={fullname(this.props.data.speaking_person)}
+                <div className="content-trans-speaker-link" title={fullname(this.props, this.props.data.speaking_person)}
                      onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                     <i className={speakerCss}></i>
                 </div>

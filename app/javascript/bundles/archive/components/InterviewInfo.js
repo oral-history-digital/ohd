@@ -61,7 +61,7 @@ export default class InterviewInfo extends React.Component {
     segmentators(){
         let names = [];
         if (this.props.segmentators.length > 0){
-            names = this.props.segmentators.map(s => fullname(s));
+            names = this.props.segmentators.map(s => fullname(this.props, s));
         }
         return names.join(', ')
     }
@@ -102,7 +102,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'camera'), fullname(this.props, this.props.cinematographer), "")}
                     {this.content(t(this.props, 'transcript'), fullname(this.props, this.props.transcriptor), "")}
                     {this.content(t(this.props, 'translation'), fullname(this.props, this.props.translator), "")}
-                    {this.content(t(this.props, 'segmentation'), fullname(this.props, this.segmentators()), "")}
+                    {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}
