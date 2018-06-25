@@ -72,7 +72,7 @@ namespace :cache do
   end
 
   desc 'cache all'
-  task :all => ['cache:start', 'cache:interviews', 'cache:interview_data', 'cache:locations', 'cache:search'] do
+  task :all => ['cache:start', 'cache:search', 'cache:interviews', 'cache:interview_data', 'cache:interview_downloads', 'cache:locations'] do
     puts 'cache complete.'
   end
 
