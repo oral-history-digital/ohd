@@ -53,7 +53,7 @@ export default class InterviewPreview extends React.Component {
         if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
             let settings = {
                 infinite: false,
-              };
+            };
             return (
                 <div>
                     <div className={this.state.class + ' hits-count'} onClick={this.handleClick}>
@@ -100,6 +100,7 @@ export default class InterviewPreview extends React.Component {
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.typologies()}
                     {this.content( t(this.props, 'duration'), this.props.interview.formatted_duration)}
+                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                 </div>
             )
         }

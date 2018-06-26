@@ -19,28 +19,37 @@ module Project
       project_id
     end
 
+    
     def keys
       project_config.keys
     end
-
+    
     def person_properties
       project_config['person_properties']
     end
-
+    
     def search_facets
       person_properties.select{|c| c['use_as_facet'] }
     end
-
+    
     %w(registry_entry registry_reference_type person).each do |m|
       define_method "#{m}_search_facets" do
-       person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
+        person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
       end
     end
-
+    
     def search_facets_names
       person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id']}
     end
-
+    
+    def min_to_max_birth_year_range
+      Rails.cache.fetch("min_to_max_birth_year") do
+        first = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first
+        last = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last
+        (first..last)
+      end
+    end
+    
     def search_facets_hash
       @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
         case facet['source']
@@ -52,7 +61,7 @@ module Project
           if facet['id'] == 'year_of_birth'
             mem[facet['id'].to_sym] = {
               descriptor: localized_hash_for("search_facets", facet['id']),
-              subfacets: (facet['from']..facet['to']).inject({}) do |subfacets, key|
+              subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
                 I18n.available_locales.map{|l| h[l] = key}
                 subfacets[key] = {

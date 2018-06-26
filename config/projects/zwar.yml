@@ -125,8 +125,6 @@ default: &default
     - id: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-      from: 1907
-      to: 1940
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
