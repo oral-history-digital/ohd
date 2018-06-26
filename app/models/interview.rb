@@ -252,7 +252,7 @@ class Interview < ActiveRecord::Base
   Project.registry_entry_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
-      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
     end
   end
 
@@ -278,7 +278,7 @@ class Interview < ActiveRecord::Base
     if segments.first
       segments.first.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem }
     else
-      ISO_639.find(language.first_code).alpha2
+      [ISO_639.find(language.first_code).alpha2]
     end
   end
 

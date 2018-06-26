@@ -1,7 +1,7 @@
 namespace :cache do
 
-  BASE_URL = 'https://archive.occupation-memories.org'
-  #BASE_URL = 'http://localhost:3000'
+  #BASE_URL = 'https://archive.occupation-memories.org'
+  BASE_URL = 'http://localhost:3000'
 
   desc 'visit start page'
   task :start => :environment do
@@ -36,6 +36,22 @@ namespace :cache do
     end
   end
 
+  desc 'visit all interviews-download-routes to fill up cache'
+  task :interview_downloads => :environment do
+    Interview.all.each do |interview|
+      [
+        'history',
+        'interview',
+      ].each do |kind|
+        Project.available_locales.each do |locale|
+          p "*** Getting download #{kind} in #{locale} for #{interview.archive_id}"
+          uri = URI.parse("#{BASE_URL}/de/interviews/#{interview.archive_id}.pdf?lang=#{locale}&kind=#{kind}")
+          get uri
+        end
+      end
+    end
+  end
+
   desc 'visit all interviews locations to fill up cache'
   task :locations => :environment do
     Interview.all.each do |interview|
@@ -56,12 +72,15 @@ namespace :cache do
   end
 
   desc 'cache all'
-  task :all => ['cache:start', 'cache:interviews', 'cache:interview_data', 'cache:locations', 'cache:search'] do
+  task :all => ['cache:start', 'cache:search', 'cache:interviews', 'cache:interview_data', 'cache:interview_downloads', 'cache:locations'] do
     puts 'cache complete.'
   end
 
   def get(uri)
-    response = Net::HTTP.get_response(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.basic_auth("chrgregor@googlemail.com", "paul2paul")
+    response = http.request(request)
     p "*** Got it #{response.code}"
   rescue StandardError => e
     p "*** Error: #{e}"

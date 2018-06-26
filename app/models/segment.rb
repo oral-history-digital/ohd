@@ -207,7 +207,8 @@ class Segment < ActiveRecord::Base
 
   def transcripts
     translations.inject({}) do |mem, translation|
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? translation.text.sub(/^\:+\s*\:*/,"").strip() : ''
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*: /, "") : ''
+      #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
       mem
     end
   end
@@ -225,7 +226,7 @@ class Segment < ActiveRecord::Base
   #end
 
   def speaker_changed
-    speaker_change || translations.first.text && translations.first.text[0] == ":"
+    speaker_change || translations.first.text && translations.first.text[1] == ":"
   end
 
   # returns the segment that leads the chapter

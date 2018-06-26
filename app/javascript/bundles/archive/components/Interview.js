@@ -50,23 +50,27 @@ export default class Interview extends React.Component {
     }
 
     loggedOutContent() {
-        let intervieweeNames = this.props.data.interview.interviewees[0].names[this.props.locale];
+        if (this.props.data.interviewees) {
+            let intervieweeNames = this.props.data.interview.interviewees[0].names[this.props.locale];
 
-        return (
-            <div>
-                <div className='wrapper-video' >
-                    <div className={"video-title-container"}>
-                        <h1 className='video-title'>
-                            {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
-                        </h1>
+            return (
+                <div>
+                    <div className='wrapper-video' >
+                        <div className={"video-title-container"}>
+                            <h1 className='video-title'>
+                                {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
+                            </h1>
+                        </div>
+                        <div className='video-element'>
+                            <img src={this.props.data.interview.still_url}/>
+                        </div>
                     </div>
-                    <div className='video-element'>
-                        <img src={this.props.data.interview.still_url}/>
-                    </div>
+                    {this.doiContent()}
                 </div>
-                {this.doiContent()}
-            </div>
-        )
+            )
+        } else {
+            return null;
+        }
     }
 
     doiContent() {
