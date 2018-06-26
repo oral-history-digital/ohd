@@ -56,7 +56,7 @@
     <% new_line = true %>
     <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @project_locale).first %>
     <% speaker = latex_escape("#{person_translation.first_name} #{person_translation.last_name}".strip + ": ") %>
-    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text).sub(/^\:{1}\s*\:*/, "") %>
+    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text).sub(/^\S*: /, "") %>
   <% else %>
     <% speaker = nil %>
     <% new_line = false %>
