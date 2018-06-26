@@ -103,6 +103,9 @@ default: &default
       values:
         female: 'Woman'
         male: 'Man'
+    - id: 'year_of_birth'
+      source: 'person'
+      use_as_facet: true
     - id: 'typology'
       source: 'person'
       use_as_facet: true
