@@ -19,7 +19,7 @@ class PhotosController < ApplicationController
   end
 
   def sub_folder image_name
-    (image_name.split('_').last().to_i / 1000).to_s;
+    ((image_name.split('_').last().to_i / 1000) * 1000).to_s;
   end
 
 end
