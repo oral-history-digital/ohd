@@ -618,7 +618,7 @@ ru:
     collection_id: 'Частичные собрания'
     language_id: 'Язык'
     age: 'Возраст'
-    media_type: 'media_type'
+    media_type: 'Аудио/Видео'
     gender: 'Пол'
     female: 'женщина'
     male: ' мужчина'
@@ -628,4 +628,6 @@ ru:
     subject: "Ваш доступ к архиву '%{project_name}'"
 
   archive_results: 'Результаты поиска'
+  segment_hits: 'Результаты в тексте'
   interviews: 'Интервью'
+  places: 'Место рождения'
