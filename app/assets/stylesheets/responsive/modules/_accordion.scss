@@ -185,11 +185,13 @@ a.flyout-download-link-lang {
 
 .interview-preview.search-result {
   .panel {
+    padding: 0;
     max-height: 0;
     overflow: hidden;
     transition: 0.2s ease-out;
     &.open {
       max-height: 100%;
+      padding: 10px 0 20px 0;
     }
   }
 }
