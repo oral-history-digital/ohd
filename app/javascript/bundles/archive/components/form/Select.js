@@ -59,7 +59,7 @@ export default class Select extends React.Component {
                     val = value.value;
                 }
                 return (
-                    <option value={val} selected={this.props.selected === val} key={`${this.props.scope}-${index}`}>
+                    <option value={val} defaultValue={this.props.selected === val} key={`${this.props.scope}-${index}`}>
                         {text}
                     </option>
                 )}
