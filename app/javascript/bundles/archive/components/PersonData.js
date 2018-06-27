@@ -73,7 +73,12 @@ export default class PersonData extends React.Component {
 
     render() {
         if (admin(this.props)) {
-            return <EditPersonContainer person={this.props.interviewee} />;
+            return (
+                <EditPersonContainer 
+                    person={this.props.interviewee} 
+                    interviewId={this.props.interview.id}
+                />
+            );
         } else {
             return this.info();
         }
