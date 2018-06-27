@@ -1,6 +1,7 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, fullname, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import EditPersonContainer from '../containers/EditPersonContainer';
 
 export default class PersonData extends React.Component {
 
@@ -47,13 +48,12 @@ export default class PersonData extends React.Component {
         }
     }
 
-    render() {
+    info() {
         if (this.props.interviewee) {
-            let fullName = `${this.props.interviewee.names[this.props.locale].firstname} ${this.props.interviewee.names[this.props.locale].lastname} ${this.props.interviewee.names[this.props.locale].birthname}`
             return (
                 <div>
 
-                    {this.content(t(this.props, 'interviewee_name'), fullName, "")}
+                    {this.content(t(this.props, 'interviewee_name'), fullname(this.props, this.props.interviewee, true), "")}
                     {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
                     {this.placeOfBirth()}
                     {this.typologies()}
@@ -69,6 +69,15 @@ export default class PersonData extends React.Component {
         } else {
             return t(this.props, 'no_interviewee');
         }
+    }
+
+    render() {
+        if (admin(this.props)) {
+            return <EditPersonContainer person={this.props.interviewee} />;
+        } else {
+            return this.info();
+        }
+
     }
 }
 
