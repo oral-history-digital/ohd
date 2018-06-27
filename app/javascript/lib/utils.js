@@ -26,13 +26,25 @@ export function t(props, key) {
     }
 }
 
-export function fullname(props, person) {
+export function fullname(props, person, withBirthName=false) {
     if (person) {
         try {
-            return `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+            let name = `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+            let birthName = person.names[props.locale].birth_name;
+            if (withBirthName && birthName)
+                name += person.names[props.locale].birth_name;
+            return name;
         } catch (e) {
             return `person ${person.id} has no name(s) in ${props.locale}`;
         }
+    }
+}
+
+export function admin(props) {
+    if (props.account.email && props.account.admin && props.editView) {
+        return true;
+    } else {
+        return false;
     }
 }
 
