@@ -9,7 +9,7 @@ export default class EditPerson extends React.Component {
     render() {
         return (
             <Form 
-                scope='preson'
+                scope='person'
                 onSubmit={this.props.submitPerson}
                 submitText='submit'
                 elements={[
