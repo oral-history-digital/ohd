@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Annotation < ActiveRecord::Base
+  include IsoHelpers
 
   # this is only true for editorial annotations
   # user annotations are linked to the segment directly, to circumvent the
@@ -16,29 +17,22 @@ class Annotation < ActiveRecord::Base
   # that reassociates the user_annotation and annotation content.
   belongs_to :segment
 
-  named_scope :for_segment,
-              lambda{|segment|
-                {
-                    :conditions => [
-                        "media_id > ?",
-                        Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id
-                    ],
-                    :order => "media_id ASC",
-                    :limit => 1,
-                    :include => :translations
-                }
-              }
-  named_scope :for_interview,
-              lambda{|interview|
-                {
-                    :conditions => [
-                        "media_id LIKE ?",
-                        interview.archive_id.upcase.concat('%')
-                    ],
-                    :order => "user_content_id ASC",
-                    :include => :translations
-                }
-              }
+  scope :for_segment, -> (segment) {
+                        where(["media_id > ?",
+                                Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first &&
+                                Segment.for_media_id(segment.media_id.sub(/\d{4}$/,(segment.media_id[/\d{4}$/].to_i-1).to_s.rjust(4,'0'))).first.media_id
+                        ]).
+                        order("media_id ASC").
+                        includes(:translations).
+                        first
+                      }
+  scope :for_interview, -> (interview) {
+                        where(["media_id LIKE ?",
+                            interview.archive_id.upcase.concat('%')
+                        ]).
+                        order("user_content_id ASC").
+                        includes(:translations)
+                      }
 
   translates :text
 
@@ -63,7 +57,7 @@ class Annotation < ActiveRecord::Base
   end
 
   def archive_id
-    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
+    media_id[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
   def assign_segment
@@ -71,6 +65,13 @@ class Annotation < ActiveRecord::Base
     unless segment.nil?
       self.segment_id = segment.id
       self.timecode = segment.timecode
+    end
+  end
+
+  def localized_hash
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = ActionView::Base.full_sanitizer.sanitize(text(projectified(locale))).gsub("&nbsp;", " ")  if Project.available_locales.include?( locale.to_s )
+      mem
     end
   end
 

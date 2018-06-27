@@ -1,3 +1,5 @@
+require 'tags_helper'
+
 module UserContentsHelper
 
   include TagsHelper # acts_as_taggable_on_steroids
@@ -25,13 +27,13 @@ module UserContentsHelper
     preloaded_languages = language_ids.empty? ? [] : Language.all(:conditions => [ 'id IN (?)', language_ids ], :include => :translations)
 
     # Preload queried facet categories by ID.
-    category_names = CeDiS.archive_facet_category_ids.map(&:to_s)
+    category_names = Project.archive_facet_category_ids.map(&:to_s)
     category_ids = query.select{|key,value| category_names.include? key}.map(&:second).flatten.map(&:to_i).select{|id| id != 0}.compact.uniq
     preloaded_categories = category_ids.empty? ? [] : RegistryEntry.all(:conditions => [ 'id IN (?)', category_ids ], :include => {:registry_names => :translations})
 
     # Render keywords, categories and interviews.
     str += query.keys.inject([]) do |out, key|
-      human_readable_facet_name = CeDiS.is_category?(key) ? CeDiS.category_name(key, I18n.locale) : t(key, :scope => :facets)
+      human_readable_facet_name = Project.is_category?(key) ? Project.category_name(key, I18n.locale) : t(key, :scope => :facets)
       values = query[key]
       case values
         when Array
@@ -74,26 +76,24 @@ module UserContentsHelper
     context = options.delete(:context) || model_name
     update_path = (context == 'user_content') ? user_content_path(user_content) : eval("#{[path_prefix, model_name].compact.join('_')}_path(user_content)")
     form_options = options.merge({
-            :id => form_id,
-            :url => update_path,
-            :method => :put,
-            :before => "toggleFormAction('#{id}'); $('#{id + '_interface_status'}').value = ($('user_content_#{user_content.id}').hasClassName('closed') ? 'closed' : ''); addExtraneousFormElements(this, '.edit, .item', '.editor');",
-            :complete => 'togglingContent = 0;',
-            :html => options.merge({:class => 'inline'})
+            id: form_id,
+            method: :put,
+            remote: true,
+            class: 'inline edit',
+            user_content_id: user_content.id
     })
-    js_reset = "$('#{form_id}').hide(); $('#{display_id}').show(); Event.stop(event);"
-    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable', :onclick => "if(!this.up('.closed')) { showInlineEditForm('#{id}', #{text_area ? 'true' : 'false'}); Event.stop(event); }"})) # Event.stop(event)
+    html = content_tag(:span, value.blank? ? ('&nbsp;' * 8) : value, options.merge({:id => display_id, :class => 'inline-editable'}))
     html << content_tag((text_area ? :div : :span), options.merge({:id => form_id, :class => 'inline-editor', :style => 'display: none;'})) do
-      form_remote_tag(form_options) do
+      form_tag(update_path, form_options) do
         form_html = hidden_field_tag :interface_status, 'open', :id => id + '_interface_status'
         form_html += if text_area
-          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)') \
+          text_area_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor')
         else
-          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor', :onclick => 'Event.stop(event)')
+          text_field_tag(user_content, user_content.send(attribute.to_sym), :id => id, :name => "#{model_name}[#{attribute}]", :class => 'editor')
         end
         form_html += hidden_field_tag :context, context
-        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update', :onclick => 'togglingContent = 1;')
-        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' onclick=\"#{js_reset}\" class='reset'/>"
+        buttons_html = submit_tag(submit_text = t(:update, :scope => 'user_interface.actions'), :id => "#{id}_update",:title => submit_text,:class => 'update')
+        buttons_html += "<input type='reset' id='#{id}_reset' name='#{user_content.id}_#{attribute}_reset' title='#{t(:reset, :scope => 'user_interface.actions')}' class='reset'/>".html_safe
         spinner_html = image_tag(image_path('/images/spinner.gif'), :id => "#{id}_spinner", :style => 'display:none;')
         form_html + buttons_html + spinner_html
       end
@@ -110,7 +110,7 @@ module UserContentsHelper
         :conditions =>['archive_id IN (?)', search.interview_references]
     )
     image_list = search.interview_references.inject('') do |list, archive_id|
-      if archive_id =~ Regexp.new("^#{CeDiS.config.project_initials.downcase}\\d{3}$")
+      if archive_id =~ Regexp.new("^#{Project.project_initials.downcase}\\d{3}$")
         image = interview_stills.select{|still| still.archive_id == archive_id }.first
         image_file = if image.nil? || image.still_image_file_name.nil?
           image_path('/archive_images/missing_still.jpg')
@@ -122,7 +122,7 @@ module UserContentsHelper
       list
     end
     html << content_tag(:ul, image_list)
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_all, :scope => 'user_interface.labels')}", search_by_hash_path(:suche => search.properties['query_hash']), :target => '_blank'))
+   # html << content_tag(:span, link_to("»&nbsp;#{t(:show_all, :scope => 'user_interface.labels')}", search_by_hash_path(:suche => search.properties['query_hash']), :target => '_blank'))
     html
   end
 
@@ -140,7 +140,7 @@ module UserContentsHelper
     end
     return image_html if interview.nil?
     html = link_to(image_html, interview_path(:id => interview.archive_id), :target => '_blank')
-    html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
+    #html << content_tag(:span, link_to("»&nbsp;#{t(:show_interview, :scope => 'user_interface.labels')}", interview_path(:id => interview.archive_id), :target => '_blank'))
     biographic = ''
     # collection
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
@@ -175,7 +175,7 @@ module UserContentsHelper
            end
     html = link_to_segment(segment, '', false, false, { :link_text => image_html, :target => '_blank'})
     html << content_tag(:span, segment.timecode, :class => 'time-overlay')
-    html << content_tag(:span, link_to_segment(segment, '', false, false, { :link_text => "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}", :target => '_blank'}))
+    html << content_tag(:span, link_to_segment(segment, '', false, false, { :link_text => "&raquo;&nbsp;#{t(:show_segment, :scope => 'user_interface.labels')}".html_safe, :target => '_blank'}))
     annotation = content_tag(:li, label_tag(:heading, UserAnnotation.human_attribute_name(:heading)) \
                   + content_tag(:p, user_content.heading))
     transcript_field = user_content.translated? ? :translation : :transcript

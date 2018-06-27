@@ -1,6 +1,7 @@
 class CreateAnnotations < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
     create_table :annotations do |t|
       t.references :interview
       t.string :author
@@ -11,9 +12,12 @@ class CreateAnnotations < ActiveRecord::Migration
     end
     add_index :annotations, :interview_id
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
     drop_table :annotations
+  end
   end
 
 end

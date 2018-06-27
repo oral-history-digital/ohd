@@ -1,0 +1,40 @@
+<% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.first_name}" %>
+<% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.last_name}" %>
+<% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
+<% title = "#{I18n.backend.translate(@alpha2_locale, 'history')} #{interviewee_name}" %>
+<% header_text =  "#{I18n.backend.translate(@alpha2_locale, 'history_of')} #{interviewee_name} (#{I18n.backend.translate(@alpha2_locale, 'archive_id')} #{@interview.archive_id})" %>
+
+\title{<%= title %>}
+
+\begin{document}
+
+<%= render partial: "./latex/header_footer",
+           locals: {
+               header_text: header_text
+           } %>
+<%= render partial: "./latex/title",
+           locals:
+               {
+                   title: title,
+                   space_above: 0.4,
+                   space_below: 0.4,
+                   font_size: 18,
+               } %>
+
+<% @interview.interviewees.first.histories.each do |history| %>
+  <% start_date = history.translations.where(locale: @project_locale).first.deportation_date ||= "" %>
+  <% end_date = history.translations.where(locale: @project_locale).first.return_date ||= "" %>
+  <% span = end_date.blank? ? start_date.split('-').map{|i| "%.2i" %i}.join('.') : "#{start_date.split('-').map{|i| "%.2i" %i}.join('.')} - #{end_date.split('-').map{|i| "%.2i" %i}.join('.')}" %>
+  <%= render partial: "./latex/title",
+             locals:
+                 {
+                     title: latex_escape(span),
+                     space_above: 0.4,
+                     space_below: 0,
+                     font_size: 13,
+                 } %>
+  <% details = history.translations.where(locale: @project_locale).first.forced_labor_details %>
+  \par{<%= latex_escape(ActionView::Base.full_sanitizer.sanitize(details).gsub("&amp;", "&")) %>}
+<% end %>
+
+

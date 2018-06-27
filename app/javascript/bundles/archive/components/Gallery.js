@@ -1,0 +1,56 @@
+import React from 'react';
+import CarouselContainer from '../containers/CarouselContainer';
+import { t } from '../../../lib/utils';
+
+export default class Gallery extends React.Component {
+
+    thumbnailSrc(photo) {
+        switch(this.props.project) {
+           case 'mog': {
+               return '/photos/thumb/' + photo.src;
+               break;
+           }
+           case 'zwar': {
+                let p = photo.src.split('.')
+                return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_thumb.' + p[1];
+                break;
+           }
+           default: {
+               return null;
+           }
+        }
+    }
+
+    renderPhotos() {
+
+        return this.props.photos.map((photo, index) => {
+            return (
+                <div key={"photo-" + index}
+                     className={'thumbnail'}
+                     onClick={() => this.props.openArchivePopup({
+                         title: null,
+                         big: true,
+                         content: <CarouselContainer/>
+                     })}
+
+                >
+                    <img src={ this.thumbnailSrc(photo) }>
+                    </img>
+                </div>
+            )
+        })
+
+    }
+
+
+    render() {
+        return (
+            <div>
+                <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
+                <div className={'img-gallery'}>
+                    {this.renderPhotos()}
+                </div>
+            </div>
+        );
+    }
+}

@@ -1,319 +1,262 @@
-# This file contains translations used in text document templates.
-
-# Obs translator:
-
-# Please translate the quoted texts only.
-
-# Example:
-#   frontpage: 'Frontpage'
-# becomes
-#   frontpage: 'Deckblatt'    GOOD!
-# and NOT
-#   deckblatt: 'Deckblatt'    WRONG!
-# or whatever.
-
-# Lines starting with hash symbols (#) are comments. Please do NOT translate
-# comments.
-
-# Texts may contain placeholders. These placeholders take the form %{something}.
-# You may change the position of the placeholder but you may not change or
-# translate its content!
-
-# Example:
-#   colored_car: '%{color} car'
-# should be translated (e.g. in French) as
-#   colored_car: 'voiture %{color}'     GOOD!
-# but NOT as
-#   colored_car: 'voiture %{couleur}',  WRONG!
-#   colored_car: 'voiture couleur'      WRONG!
-# or whatever.
-
-# Sometimes you'll find that placeholders themselves refer to translatable
-# texts. In this case we'll comment on how the translated text is being used in
-# context so that you can translate the two texts together.
-
-# Example:
-#   transcript_with_german_translation: 'Transkript%{german_translation}'
-#   german_translation: ' in deutscher Übersetzung'
-# could be translated (e.g. in English) as
-#   transcript_with_german_translation: '%{german_translation}Transcript'
-#   german_translation: 'German '                                         GOOD!
-# which would result in 'German Transcript' and NOT as
-#   transcript_with_german_translation: 'Transcript%{german_translation}'
-#   german_translation: 'German translation'                              WRONG!
-# as this would result in 'TranscriptGerman translation' which is bad grammar
-# and does not contain the required space.
-
-# If you change the order of the placeholder then make sure that you place
-# spaces in the right place. See that in the above example the space in
-# german_translation has moved from the beginning (' in deutscher Übersetzung')
-# to the end ('German ').
 de:
-  # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/de.yml)
-  time:
-    formats:
-      short: ! '%d.%m.%Y, %H:%M Uhr'
-
-  # Global dictionary.
-  dictionary:
-    back_to_top_template: &back_to_top_template
-      back_to_top: 'Zum Seitenanfang'
-      image_back_to_top: 'Bild: Sprungmarke nach oben'
-
-    header_template: &header_template
-      skip: 'Springe direkt zu:'
-      content: 'Inhalt'
-      service_navigation: 'Service-Navigation'
-      logoff: 'Abmelden'
-
-    print_version_template: &print_version_template
-      print_preview_only: 'Diese Grafiken werden nur in der Druckvorschau verwendet:'
-      print_logo: 'Druckversion des Logos'
-
-    timecode:
-      minimal: '%{hours}h%{minutes}min'
-
+  de: 'deutsch'
+  en: 'englisch'
+  ru: 'russisch'
+  el: 'griechisch'
+  observation: 'Interviewsituation'
+  tape: 'Band'
+  legend_title: 'Legende der Transkriptionszeichen'
+  legend_missed: 'unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt'
+  legend_comment: 'Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen'
+  legend_pause_1: 'kurze Pause bis 1 Sekunde'
+  legend_pause_2: 'mittlere Pause bis 2 Sekunden'
+  legend_pause_3: 'längere Pause bis 3 Sekunden'
+  legend_pause_4: 'Lange Pause, Länge in Sekunden ab 4 Sekunden'
+  legend_assert: 'Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.'
+  legend_omission: 'Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen'
+  interview_with: 'Interview mit'
+  upload_transcript: 'Transkript hochladen'
+  archive_id: 'Archiv-ID'
+  history_of: 'Kurzbiografie von'
+  noscript: 'Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.'
+  interviews: 'Interviews'
+  places: 'Geburtsorte'
+  interview_location_desc_one: ' wird in Kapitel '
+  interview_location_desc_two: ' erwähnt.'
+  archive_map_explanation: 'Die Karte stellt die Geburtsorte der Interviewten dar.'
+  interview_map_explanation: 'Darstellung der im Interview erwähnten Orte'
+  interview_gallery_explanation: 'Die Bildergalerie zeigt Fotos von der Interviewsituation sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten Person.'
+  transcript_header: 'Übersetzung des Interviews mit'
+  tapes: 'Bänder'
+  without_translation: 'Dieses Interview wurde noch nicht ins Deutsche übersetzt.'
+  without_index: 'Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
+  without_ref_tree: 'Dieses Interviews wurde noch nicht verschlagwortet.'
+  private: 'Privat'
+  proposed: 'In Prüfung zur Veröffentlichung'
+  postponed: 'Zurückgestellt durch die Redaktion'
+  shared: 'Veröffentlicht'
+  rejected: 'Veröffentlichung abgelehnt'
+  segmentation: "Erschließung"
+  interview_archive: 'Interview-Archiv'
+  called: 'Abruf'
+  download: 'Download'
+  language_de: 'Deutsch'
+  language_elde: 'Griechisch mit deutscher Übersetzung'
+  language_eldeen: 'Griechisch mit deutscher Übersetzung'
+  language_rude: 'Russisch mit deutscher Übersetzung'
+  language_el: 'Griechisch'
+  project_title: 'Erinnerungen an die Okkupation in Griechenland'
+  project_text: 'Das Archiv „Erinnerungen an die Okkupation in Griechenland“ umfasst rund 80 Erinnerungsberichte von Zeitzeuginnen und Zeitzeugen der deutschen Besatzung Griechenlands während des Nationalsozialismus. Das Online-Archiv bewahrt diese Zeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.'
+  more: 'mehr erfahren'
+  segment: 'Ausschnitt'
+  publish: 'Veröffentlichen'
+  login: 'Anmelden'
+  login_name: 'Login'
+  logout: 'Abmelden'
+  login_errors: 'Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort'
+  logged_in_as: 'Angemeldet als'
+  user_name: 'Benutzer(in)'
+  notice: 'Merken'
+  forget_password: 'Passwort vergessen?'
+  account_activation_errors: 'Passwort und Passwortbestätigung müssen gleich und mind. 6 Zeichen lang sein'
+  submit: 'Absenden'
+  platform: 'Eine Plattform der'
+  cooperation: 'in Kooperation mit'
+  promoted: 'gefördert durch'
+  forget_password_question: 'Sie haben Ihr Passwort vergessen?'
+  enter_email: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
+  email: 'E-Mail'
+  change_password: 'Passwort ändern'
+  archive_results: 'Suchergebnisse'
+  segment_hits: 'Treffer im Transkript'
+  no_interviews_results: 'Keine Interviews gefunden.'
+  interview_id: 'Interview-ID'
+  interview_duration: 'Interviewdauer'
   home: 'Startseite'
-  home_link: 'Zur Startseite des Projektes: %{project_name}'
-  logo_title: 'Das Logo des Projektes: %{project_name}'
-  archive: 'Archiv'
-  interactive_map: 'Karte'
-  collections_map: 'Teilsammlungen'
+  login_page: 'Login'
+  logout_page: 'Logout'
+  interview: 'Interview'
+  user_content: 'Arbeitsmappe'
+  user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
+  archive_search: 'Suche im Archiv'
+  interviewee_name: 'Name'
+  periods: 'Zeitperioden'
+  keywords: 'Schlagworte'
+  annotations: 'Anmerkungen'
+  reset: 'zurücksetzen'
+  transcript: 'Transkript'
+  translation: 'Übersetzung'
+  table_of_contents: 'Inhaltsverzeichnis'
+  keywords: 'Schlagworte'
+  interview_search: 'Suche im Interview'
+  write_annotation: 'Anmerkung schreiben'
+  read_annotation: 'Anmerkung lesen'
+  annotation_for: 'Anmerkung zu '
+  annotation_for_chapter: 'Ihre Anmerkung zum Kapitel'
+  max_300: '300 verfügbare Zeichen'
+  annotation_explanation: 'Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
+  annotation_confirmation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich den den <a class="conditions-link" href="http://www.occupation-memories.org/de/archive/terms_user_comments" target="_blank">Richtlinien für Anmerkungen</a> zu.'
+  save: 'speichern'
+  cancel: 'abbrechen'
+  user_content: 'Arbeitsmappe'
+  person_info: 'Zur Person'
+  date_of_birth: 'Geburtsdatum'
+  year_of_birth: 'Jahrgang'
+  place_of_birth: 'Geburtsort'
+  place_of_interview: 'Interviewort'
+  typology: 'Erfahrung'
+  typologies: 'Erfahrungen'
+  history: 'Kurzbiografie'
+  interview_info: 'Zum Interview'
+  place: 'Ort'
+  duration: 'Dauer'
+  id: 'ID'
+  camera: 'Kamera: '
+  indexation: 'Erschließung'
+  annotation_for_interview: 'Anmerkungen zum Interview'
+  map: 'Karte'
+  photos: 'Fotos'
+  citation: 'Zitierweise'
+  user_content: 'Arbeitsmappe'
+  person_info: 'Zur Person'
+  date_of_birth: 'Geburtsdatum'
+  interview_info: 'Zum Interview'
+  date: 'Datum'
+  place: 'Ort'
+  interview_type: 'Art: Video'
+  language: 'Sprache'
+  camera: 'Kamera'
+  id: 'ID'
+  transcript: 'Transkript'
+  translation: 'Übersetzung'
+  doi: 'DOI'
+  citation: 'Zitierweise'
+  order_new_password: 'Passwort vergessen?'
+  ordered_new_password: 'Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres Passwortes geschickt.'
+  conditions: 'Nutzungsbedingungen'
+  privacy_protection: 'Datenschutz'
+  legal_info: 'Impressum'
+  request_for_use: 'Herausgabe von Archivmaterial'
+  annotation_guidelines: "Nutzeranmerkungen im Archiv"
   team: 'Team'
   contact: 'Kontakt'
-  legal_notice: 'Impressum'
-  faq: 'Hilfe'
-  previous: '&laquo;&nbsp;vor'
-  next: 'nächste&nbsp;&raquo;'
-  more: 'mehr'
-  back: 'zur&uuml;ck'
-  forward: 'weiter'
-  translated: 'übersetzt'
-  select_all: 'alle ausw&auml;hlen'
-  admin_area: 'Administratoren-Bereich'
-  and: 'und'
-  no_placeholder: 'Keine %{content}'
-  close: 'schlie&szlig;en'
-  here: 'hier'
-  timecode: 'Timecode'
-  german: 'Deutsch'
+  help: 'Hilfe'
+  annotation_guidelines: 'Anmerkungsrichtlinien'
+  usage_application: 'Nutzungsantrag'
+  save_interview_reference: 'Interview merken'
+  save_user_annotation: 'Anmerkung verfassen'
+  save_search: 'Suche speichern'
+  call_search: 'Suche aufrufen'
+  call_interview_reference: 'Interview aufrufen'
+  call_user_annotation: 'Anmerkung aufrufen'
+  title: 'Titel'
+  description: 'Beschreibung'
+  edit: 'Bearbeiten'
+  edit_interview_reference: 'Gespeichertes Interview Bearbeiten'
+  edit_user_annotation: 'Gespeicherte Anmerkung bearbeiten'
+  edit_search: 'Gespeicherte Suche bearbeiten'
+  query: 'Suchkriterien'
+  delete: 'Löschen'
+  delete_user_content: 'Aus Arbeitsmappe entfernen'
+  choose: 'Bitte auswählen'
+  enter_search_field: 'Bitte Suchbegriff eingeben ...'
+  enter_field: 'Name, Suchbegriff, ...' #'Eingabe ...'
+  saved_searches: 'Gespeicherte Suchergebnisse'
+  saved_interviews: 'Gespeicherte Interviews'
+  saved_annotations: 'Gespeicherte Anmerkungen'
 
-  page_urls: # Pretty URLs for static pages.
-    archive: 'archiv'
-    faq_index: 'hilfe'
-    faq_archive_contents: 'hilfe_zu_inhalten'
-    faq_searching: 'hilfe_zur_suche'
-    faq_technical: 'hilfe_zu_technischen_fragen'
-    map_tutorial: 'karteneinfuehrung'
+  edit:
+    interview:
+      new: 'Neues Interview'
+      edit: 'Interview bearbeiten'
+    upload_transcript: 'Transkript hochladen'
 
-  tasks:
-    interviewers: 'Interviewf&uuml;hrung'
-    transcriptors: 'Transkription'
-    translators: '&Uuml;bersetzung'
-    proofreaders: 'Lektorat'
-    segmentators: 'Segmentierung'
-    researchers: 'Erschlie&szlig;ung'
+  admin:
+    change_to_normal_view: 'Nutzer Ansicht'
+    change_to_edit_view: 'Editier Ansicht'
 
-  status:
-    translated: 'mit dt. &Uuml;bersetzung'
-    not_translated: 'ohne dt. &Uuml;bersetzung'
-    unknown: 'unbekannt'
-    date_unknown: 'Datum unbekannt'
-    not_specified: 'keine Angabe'
-    not_deported: 'Nicht deportiert'
-    other: 'Sonstige'
+  user_registration:
+    registration: 'Registrierung'
+    registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
+    registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
+    registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
+    notes_on_receive_newsletter: 'Ich möchte den Newsletter des Projektes "Erinnerungen an die Okkupation Griechenlands." abonnieren.'
+    notes_on_tos_agreement: 'Ich stimme den Nutzungsbedingungen zu.'
+    priv_agreement_alias: 'Datenschutzbestimmungen'
+    notes_on_priv_agreement: 'Ich stimme der  Datenschutzpraxis zu.'
+    register: 'Registrierung senden'
+    appellations:
+      ms: 'Frau'
+      ms_dr: 'Frau Dr.'
+      ms_prof: 'Frau Prof.'
+      mr: 'Herr'
+      mr_dr: 'Herr Dr.'
+      mr_prof: 'Herr Prof.'
+    job_description: 'Beruf'
+    job_descriptions:
+      researcher: 'Dozent(in)/Forscher(in)'
+      filmmaker: 'Filmemacher(in)'
+      journalist: 'Journalist(in)'
+      teacher: 'Lehrer(in)'
+      memorial_staff: 'Mitarbeiter(in) (Museen /Gedenkstätten)'
+      pupil: 'Schüler(in)'
+      student: 'Student(in)'
+      other: 'Sonstige'
+    research_intention: 'Rechercheanliegen'
+    research_intentions:
+      exhibition: 'Ausstellung'
+      education: 'Bildungsarbeit'
+      film: 'Dokumentarfilm'
+      genealogy: 'Familienforschung'
+      art: 'Kunstprojekt'
+      personal_interest: 'Persönliches Interesse'
+      press_publishing: 'Pressepublikation'
+      school_project: 'Schulprojekt /Referat'
+      university_teaching: 'universitäre Lehre'
+      scientific_paper: 'wissenschaftliche Publikation'
+      other: 'Sonstige'
+    tos_agreement: 'Nutzungsbedingungen'
+    priv_agreement: 'Hinweise zum Datenschutz'
 
-  search:
-    no_clips: 'keine Ausschnitte'
-    clip: '1 Ausschnitt'
-    clips: '%{count} Ausschnitte'
-
-  interview_title_patterns:
-    lastname_with_birthname: '%{lastname} (%{birthname})'
-    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
-
-  user_interface:
-    labels:
-      interview: 'Interview'
-      video_interview: 'Videointerview'
-      audio_interview: 'Audiointerview'
-      segment_link: 'zum Ausschnitt'
-      forced_labor_data: 'Daten zur Zwangsarbeit'
-      interview_data: 'Daten zum Interview'
-      biography: 'Biographie von'
-      transcript: 'Transkript'
-      translation: 'Übersetzung'
-      Biography: 'Biographie'
-      search_results: 'Suchergebnisse'
-      search_results_with_count: '%{count} Suchergebnisse'
-      headings: 'Inhaltsverzeichnis'
-      my_search: 'Meine Recherche'
-      search: 'suchen'
-      back_to_search: 'zur Suche'
-      status_update: 'Stand'
-      search_the_archive: 'Suche im Archiv'
-      search_the_interview: 'Suche im Interview'
-      workbook: 'Arbeitsmappe'
-      show_all: 'alle anzeigen'
-      show_interview: 'zum Interview'
-      show_segment: 'zum Ausschnitt'
-      maximize_all: 'alle maximieren'
-      minimize_all: 'alle minimieren'
-      filter_contents: 'Angezeigte Inhalte'
-      filter_by_tag: 'Angezeigte Themen'
-      more: 'mehr'
-      less: 'weniger'
-      please_select: 'Bitte w&auml;hlen...'
-    actions:
-      edit: 'bearbeiten'
-      update: 'aktualisieren'
-      save: 'speichern'
-      reset: 'abbrechen'
-      add: 'hinzuf&uuml;gen'
-      annotate_segment: 'Anmerkung verfassen'
-      show_existing_annotation: 'Anmerkung lesen'
-    player:
-      back: 'zur&uuml;ck'
-      forward: 'vor'
-      no_transcript: 'Für dieses Interview liegen noch keine Transkript-Untertitel vor.'
-      goto_citation: 'zum zitierten Ausschnitt'
-    annotations:
-      label: 'Anmerkung'
-      connective: ' zu'
-      editorial: 'Redaktion'
-    search:
-      search_term: 'Suchbegriff'
-      fulltext_title: 'Suchbegriff bitte hier eingeben'
-      reset: 'zur&uuml;cksetzen'
-      save: 'Suche speichern'
-      saved: 'Suche gespeichert'
-    status:
-      not_signed_in: 'nicht angemeldet'
-    user_content:
-      view: 'Ansicht'
-      edit: 'Bearbeiten'
-      topics: 'Themen'
-      topics_for: 'Themen&nbsp;f&uuml;r'
-      all_filters: 'Alle Inhaltsarten'
-      select_all_filters: 'Alle Inhaltsarten ausw&auml;hlen'
-      all_topics: 'Alle Themen'
-      edit_topics: 'Themen bearbeiten'
-      apply_topics: 'Thema angeben'
-      all_contents_for_topic: 'alle Inhalte zum Thema'
-      select_all_topics: 'Alle Themen ausw&auml;hlen'
-      delete: 'Entfernen'
-      save: 'Inhalt merken'
-      saved: 'Inhalt gemerkt'
-      publish: 'Veröffentlichen'
-      publish_something: '"%{something}"&nbsp;veröffentlichen'
-      retract: 'Veröffentlichung zurückziehen'
-      chars_allowed: '<span id="chars_allowed">%{chars_allowed}</span>&nbsp;verfügbare erlaubte Zeichen'
-      tags_explanation: 'Themen helfen Ihnen, Ihre gespeicherten Ergebnisse zu Gruppieren und zu Sortieren.'
-      user_tags: 'W&auml;hlen Sie die Themen aus oder geben Sie neue Begriffe ein um diesen Inhalt zu charakterisieren:'
-      tag_filters: 'Themen k&ouml;nnen durch &quot;bearbeiten&quot; der einzelnen Inhalte vergeben werden.'
-      user_annotation: 'Ihre Anmerkung zum Ausschnitt'
-      annotation_explanation: 'Ihre Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.'
-      publish_annotation: 'Ich möchte, dass diese Anmerkung veröffentlicht und allen angemeldeten Archivnutzern angezeigt wird. Ich stimme den %{annotation_guidelines} zu.'
-      annotation_guidelines: 'Richtlinien für Anmerkungen'
-    interview_reference:
-      save: 'Interview merken'
-      saved: 'Interview gemerkt'
-    sort:
-      activate: 'sortieren'
-      cancel: 'abbrechen'
-      update: 'aktualisieren'
-    messages:
-      no_segments_result: 'Es wurden keine Ausschnitte gefunden, die dieser Suche entsprechen.'
-      player_not_loaded: 'Der Medien-Player konnte nicht geladen werden!'
-      player_no_javascript: 'Für die korrekte Darstellung des Medien-Player muss JavaScript in Ihrem Browser aktiviert sein!'
-      search_no_javascript: 'Bitte aktivieren Sie Javascript, um die interaktive Suche zu nutzen!'
-      check_flash_version: 'Bitte &uuml;berpr&uuml;fen Sie, ob Sie eine aktuelle Version des Flash-Players installiert haben. Deaktivieren Sie gegebenenfalls für diese Seite Programme, die Webinhalte filtern, wie zum Beispiel Werbeblocker.'
-      registration_needed: 'Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen Sie zur Benutzung des Archivs "%{project_name}" registriert sein und die %{terms_of_use} sowie die %{privacy_policy} anerkennen.'
-      password_change_instructions1: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich bei uns registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
-      password_change_instructions2: 'Bitte w&auml;hlen Sie ein neues Passwort f&uuml;r Ihren Zugang.'
-      no_saved_contents: 'F&uuml;r Sie liegen noch keine gespeicherten Inhalte in Ihrer Arbeitsmappe vor.'
-      quality_disclaimer: "Transkription und Übersetzung zu diesem Interview sind nicht abschließend lektoriert."
-      delete_content: "Sie löschen %{content} aus der Arbeitsmappe. Wollen Sie fortfahren?"
-      need_javascript: "Um die Funktionen des Archivs zu Nutzen m&uuml;ssen Sie Javascript aktiviert haben. Bitte verwenden Sie standardkonforme Browser und Einstellungen."
-      need_ie8: "Ihr Browser ist nicht f&uuml;r die Verwendung der Archiv-Funktionen geeignet. Bitte verwenden Sie einen aktuellen, standardkonformen Browser (Firefox, Safari, Opera, IE ab Version 8)."
-      confirm_publish_content: 'Wollen Sie Ihre %{content} wirklich für die Veröffentlichung für alle Archiv-Nutzer freigeben? Sie akzeptieren damit unsere %{annotation_guidelines}.'
-      publish_alteration_notice: 'Veröffentlichte Anmerkungen können nicht mehr geändert werden, Sie können sie aber zur Bearbeitung wieder zurück ziehen und ggf neu einreichen zur Veröffentlichung.'
-      confirm_retract_content: 'Wollen Sie Ihre %{content} von der Veröffentlichung zurückziehen?'
-      published_annotation_change_notice: 'Ihre Anmerkung kann nicht geändert werden, da sie zur Veröffentlichung gekennzeichnet ist. Sie können die Anmerkung zurückziehen, bearbeiten und neu einreichen.'
-      no_headings_in_your_language: 'Das Inhaltsverzeichnis dieses Interviews ist nur in %{languages} verfügbar.'
-      no_annotations_in_your_language: 'Diese Anmerkung ist nur in %{languages} verfügbar.'
-      no_photo_captions_in_your_language: 'Hinweis: Diese Fotobeschreibung ist nur in %{languages} verfügbar.'
-      dont_show_again: 'Diese Meldung nicht mehr anzeigen.'
-
-  privacy:
-    label: 'Hinweis zum Datenschutz'
-    terms: 'Nutzungsbedingungen'
-    confirm: 'Zustimmen und Karte laden'
-    more_here: 'Näheres erfahren Sie hier'
-    google_acceptance: 'Durch den Klick erkennen Sie die Google Nutzungsbedingungen an'
-    google_notice: 'Wenn Sie folgende Inhalte durch einen Klick aktivieren, werden Nutzerdaten (insbesondere Ihre IP-Adresse) an Google übertragen, dort gespeichert, und unter Umständen mit weiteren Profilinformationen (z.B. Google+ etc.) dieses Anbieters abgeglichen.'
-    remember_settings: 'Google Maps Inhalte immer zulassen'
-
-  help:
-    sort:
-      title: 'Anleitung: Inhalte sortieren'
-      text1: 'Die Inhalte in der aktuellen Ansicht können durch Drag & Drop mit Hilfe der am linken Rand eingeblendeten Schieber sortiert werden.'
-      text2: 'Geänderte Inhalte werden durch die rote Farbe des Schiebers hervorgehoben. Wenn Sie mit der Reihenfolge zufrieden sind müssen Sie diese durch &quot;aktualisieren&quot; in der oberen Aktionsleiste bestätigen - erst dann wird die Reihenfolge dauerhaft übernommen.'
-
-  map:
-    noframes: 'Der eingebettete Inhalt kann in Ihrem Browser nicht dargestellt werden. Sie k&ouml;nnen den Inhalt aber %{here} direkt aufrufen.'
-    legend:
-      tabname: 'Legende / Filter'
-      title:  'Legende und Filter'
-      filter_header: 'Kartenansicht nach Arten der Ortsangaben filtern'
-      grouping_label: 'Gruppierung auf<br/>Ebene Region/Land'
-      grouping_header: 'Gruppierung auf niedrigen Zoomstufen ein bzw aus'
-      more_help: 'Hilfe benötigt? Mehr Erl&auml;uterungen finden Sie'
-    explanation:
-      title: 'Erl&auml;uterung der Kartenfunktionen'
-      filter: 'Wählen Sie die Ortskategorien aus, %{image}die Sie auf der Karte dargestellt haben wollen (Einsatzorte, Lager und Haftstätten, etc.). Verwenden Sie dazu die Filter rechts. Wenn alle Ortstypen abgewählt (grau) sind, können keine Orte mehr angezeigt werden.'
-      clustering: 'Zur Übersichtlichkeit bei niedriger Vergrößerung können die Ortsangaben nach Land und Region gebündelt werden. %{image}Diese Funktion können Sie jederzeit deaktivieren durch Abwahl des Punkts &quot;Gruppierungen...&quot; unter den Filtern.'
-      legend: 'Diese Auswahlmöglichkeiten stehen Ihnen jederzeit zur Verfügung. %{image}Wählen Sie nur die Schaltfläche &quot;Legende/Filter&quot; oben rechts an, um die Filtermöglichkeiten einzublenden. Ein Klick auf das &quot;X&quot; oben verbirgt die Filter wieder.'
-      finish: '%{close} Sie diese Anleitung, wenn Sie fertig sind.'
-    labels:
-      forced_labor_locations: 'Einsatzorte'
-      camps: 'Lager und Haftst&auml;tten'
-      companies: 'Firmen'
-      deportations: 'Deportationsorte'
-      places_of_birth: 'Geburtsorte'
-      postwar_residences: 'Wohnorte ab 1945'
-      postwar_camps: 'Lager ab 1945'
-      home_locations: 'Letzte Wohnorte'
-      mentions: 'Erwähnungen'
-    pagination:
-      place: 'Ort'
-      places: 'Orte'
-      of: 'von'
-    progress:
-      loading: 'Bitte warten...'
-      loaded: '%{percent}% geladen'
-
-  plugins:
-    noflash: 'Adobe Flash ben&ouml;tigt'
-    noflash_message: 'Um die Interviews des Archivs &quot;%{project_name}&quot; wiedergeben zu können benötigen Sie eine aktuelle Version des Adobe Flash Players.'
-    noflash_link: '» laden Sie Adobe Flash Player herunter'
-    nojs: 'Javascript aktivieren'
-    nojs_message: 'Für die Verwendung des Archivs ist die Aktivierung von Javascript in Ihrem Browser erforderlich. Ohne Javascript wird es nicht möglich sein, zu den Inhalten zu navigieren oder die Interviews abzurufen.'
-    nojs_link: '» wie aktiviere ich Javascript?'
-
-  months:
-    Jan: 'Jan'
-    Feb: 'Feb'
-    Mar: 'März'
-    Apr: 'April'
-    Mai: 'Mai'
-    Jun: 'Juni'
-    Jul: 'Juli'
-    Aug: 'Aug'
-    Sep: 'Sep'
-    Okt: 'Okt'
-    Nov: 'Nov'
-    Dez: 'Dez'
+  search_facets:
+    fulltext: 'Suchbegriff'
+    gender: 'Geschlecht'
+    Man: 'männlich'
+    Woman: 'weiblich'
+    man: 'männlich'
+    woman: 'weiblich'
+    male: 'männlich'
+    female: 'weiblich'
+    born: 'geb.'
+    typology: 'Erfahrungen'
+    resistance: 'Widerstand'
+    occupation: 'Besatzungsalltag'
+    flight: 'Flucht'
+    concentration_camp: 'Konzentrationslager'
+    persecution_of_jews: 'Judenverfolgung'
+    retaliation: 'Vergeltungsaktionen und Massenhinrichtungen'
+    collaboration: 'Kollaboration'
+    interview_id: 'Interviews'
+    archive_id: 'Name'
+    collection_id: 'Teilsammlung'
+    media_type: 'Medientyp'
+    language_id: 'Sprache'
+    age: 'Alter'
+    year_of_birth: 'Geburtsjahr'
+  #routes: # Pretty URLs for static pages.
+    #searches: 'suche'
+    #facets: 'facetten'
+    #user_contents: 'arbeitsmappe'
+    #locations: 'orte'
+    #archive: 'archiv'
+    #faq_index: 'hilfe'
+    #faq_archive_contents: 'hilfe_zu_inhalten'
+    #faq_searching: 'hilfe_zur_suche'
+    #faq_technical: 'hilfe_zu_technischen_fragen'
+    #map_tutorial: 'karteneinfuehrung'
+    #collections: 'teilsammlungen'
+    #countries: 'länder'
+    #interviews: 'interviews'
 
   activerecord:
     models:
@@ -370,21 +313,33 @@ de:
         birth_date: 'Geboren am'
         birth_locations: 'Geburtsort (heutiger Name)'
         deportation: 'Deportationsort (heutiger Name), Jahr'
-        punishment: 'Strafma&szlig;namen'
+        punishment: 'Strafmaßnamen'
         liberation_date: 'Datum der Befreiung'
         return_locations: 'Wohnorte ab 1945'
-        return_date: 'Datum der R&uuml;ckkehr'
+        return_date: 'Datum der Rückkehr'
         home_locations: 'Wohnort (Land)'
-        duration: 'Art und L&auml;nge des Interviews'
-        interview_date: 'gef&uuml;hrt am'
-        interviewers: 'Interviewf&uuml;hrung'
+        duration: 'Art und Länge des Interviews'
+        interview_date: 'geführt am'
+        interviewers: 'Interviewführung'
         transcriptors: 'Transkription'
         translators: 'Übersetzung'
-        researchers: 'Erschlie&szlig;ung'
+        researchers: 'Erschließung'
         proofreaders: 'Lektorat'
         segmentators: 'Segmentierung'
         language: 'Sprache'
+        language_id: 'Originalsprache'
         collection: 'Teilsammlung'
+        collection_id: 'Teilsammlung'
+        data: 'Transkriptdatei'
+        timecode: 'Timecode'
+        transcript: 'Transkript'
+        translation: 'Translation'
+        annotations: 'Anmerkungen'
+        tape_and_archive_id_from_file: 'Archiv-ID und Tapedaten aus dem Dateinamen erschliessen?'
+        tape_count: 'Geamtzahl der Tapes'
+        tape_number: 'Nummer dieses Tapes'
+        video: 'liegt ein Video vor?'
+        translated: 'ist das Interview bereits übersetzt?'
       segment:
         media_id: 'Segment-ID'
         transcript: 'Transkription'
@@ -404,12 +359,75 @@ de:
         description: 'Anmerkung'
         heading: 'Kapitel'
         media_id: 'Medien ID'
+      user_account:
+        login: 'Login'
+        password: 'Passwort'
+      user_registration:
+        appellation: 'Anrede'
+        appellations:
+          ms: 'Frau'
+          ms_dr: 'Frau Dr.'
+          ms_prof: 'Frau Prof.'
+          mr: 'Herr'
+          mr_dr: 'Herr Dr.'
+          mr_prof: 'Herr Prof.'
+        first_name: 'Vorname'
+        last_name: 'Nachname'
+        email: 'E-Mail'
+        job_description: 'Beruf'
+        job_descriptions:
+          researcher: 'Dozent(in)/Forscher(in)'
+          filmmaker: 'Filmemacher(in)'
+          journalist: 'Journalist(in)'
+          teacher: 'Lehrer(in)'
+          memorial_staff: 'Mitarbeiter(in) (Museen /Gedenkstätten)'
+          pupil: 'Schüler(in)'
+          student: 'Student(in)'
+          other: 'Sonstige'
+        research_intention: 'Rechercheanliegen'
+        research_intentions:
+          exhibition: 'Ausstellung'
+          education: 'Bildungsarbeit'
+          film: 'Dokumentarfilm'
+          genealogy: 'Familienforschung'
+          art: 'Kunstprojekt'
+          personal_interest: 'Persönliches Interesse'
+          press_publishing: 'Pressepublikation'
+          school_project: 'Schulprojekt /Referat'
+          university_teaching: 'universitäre Lehre'
+          scientific_paper: 'wissenschaftliche Publikation'
+          other: 'Sonstige'
+        comments: 'Präzisierung des Anliegens'
+        organization: 'Institution'
+        homepage: 'Homepage der Institution'
+        address: 'Adresse'
+        street: 'Straße'
+        zipcode: 'PLZ'
+        city: 'Ort'
+        country: 'Land'
+        receive_newsletter: 'Newsletter'
+        tos_agreement: 'Nutzungsbedingungen'
+        priv_agreement: 'Hinweise zum Datenschutz'
+        register: 'Registrierung senden'
 
     errors:
+      default:
+        select: 'Bitte auswählen'
+        textarea: 'Bitte angeben'
+        checkbox_input: 'Bitte zustimmen'
+        text_input: 'Bitte angeben'
+        file_input: 'Bitte Datei auswählen'
+        password_input: 'Bitte berichtigen Sie Ihr Passwort'
+        email_input: 'Bitte berichtigen Sie Ihre Email'
+
       template:
         header: 'Ihre Anfrage konnte nicht bearbeitet werden'
         body: 'Folgendes Problem ist aufgetreten:'
       models:
+        interview:
+          attributes:
+            collection_id: 
+              empty: 'Bitte Teilsammlung auswählen'
         user_annotation:
           attributes:
             description:
@@ -419,173 +437,4 @@ de:
           attributes:
             description:
               too_long: 'Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.'
-
-  personal_data:
-    male: 'männlich'
-    female: 'weiblich'
-    born: 'geb.'
-
-  user_annotations:
-    workflow_states:
-      private: 'Privat'
-      proposed: 'In Prüfung zur Veröffentlichung'
-      postponed: 'Zurückgestellt durch die Redaktion'
-      shared: 'Veröffentlicht'
-      rejected: 'Veröffentlichung abgelehnt'
-      all: 'Alle'
-    workflow_actions:
-      accept: 'veröffentlichen'
-      postpone: 'zurückstellen'
-      reject: 'ablehnen'
-      withdraw: 'zurückziehen'
-      retract: 'zurückziehen'
-      remove: 'entfernen'
-      review: 'weiter bearbeiten'
-    workflow_action_tooltips:
-      accept: 'Die Veröffentlichung der Anmerkung akzeptieren'
-      postpone: 'Die Anmerkung in einen Wartezustand zur Überprüfung überführen'
-      reject: 'Die Veröffentlichung der Anmerkung ablehnen'
-      withdraw: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
-      retract: 'Die Anmerkung aus der Veröffentlichung zurückziehen'
-      remove: 'Die Anmerkung aus der Veröffentlichung Archiv entfernen'
-      review: 'Die Anmerkung zur Wiederbearbeitung vorlegen'
-
-  media:
-    video_interview: 'Videointerview'
-    audio_interview: 'Audiointerview'
-    video: 'Video'
-    audio: 'Audio'
-    tape: 'Band'
-    of_tapes: 'von'
-    low_quality: 'Mittlere Qualität'
-    high_quality: 'Hohe Qualität'
-    subtitled: 'Untertitel vorhanden'
-    subtitles: 'Untertitel'
-    has_headings: 'Inhaltsverzeichnis liegt vor'
-
-  locations:
-    types:
-      forced_labor_location:  'Einsatzort'
-      forced_labor_camp:      'Lager oder Haftstätte'
-      forced_labor_company:   'Firma'
-      deportation_location:   'Deportationsort'
-      birth_location:         'Geburtsort'
-      home_location:          'Wohnort'
-      home_location_in_map:   'Letzter Wohnort'
-      return_location:        'Wohnort ab 1945'
-      postwar_camp:           'Lager ab 1945'
-      interview:              'Erwähnung'
-      interview_in_map:       'Erwähnung bei'
-
-  external_links:
-    notice: 'Externer Link'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team: 'http://www.zwangsarbeit-archiv.de/team'
-    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
-    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
-
-  facets:
-    interview_id: 'Name der Interviewten'
-    language_id: 'Sprache'
-    fulltext: 'Suchbegriff'
-
-  photos:
-    image: 'Bild'
-    of: 'von'
-
-  admin_nav:
-    user_registrations: 'Nutzer'
-    import: 'Import'
-    statistics: 'Statistik'
-    permissions: 'Rechte'
-    user_annotations: 'Anmerkungen'
-
-  import:
-    tapes: 'Medien/Bänder'
-    segments: 'Untertitel-Segmente'
-    annotations: 'Anmerkungen der Redaktion'
-    registry_references: 'Registernennungen'
-    registry_entries: 'Registereinträge'
-    contributions: 'Beteiligte Mitarbeiter'
-    photos: 'Bilder'
-    text_materials: 'Begleitmaterialien'
-
-# The following entries have been named by convention.
-
-  _admin_header:
-    << : *header_template
-
-  _header:
-    << : *header_template
-    map_link_title: 'Übersichtskarte der biografischen Stationen'
-    collections_link_title: 'Geografische Verteilung der Teilsammlungen'
-    faq_link_title: 'Fragen und Antworten zur Nutzung des Archivs'
-
-  _locale_chooser:
-    language_choice: 'Deutsch'
-    language_choice_title: 'Deutsche Version'
-
-  interviews:
-    content:
-      search_in_interview: 'Suchen in &#145;%{content}&#146;'
-      work_in_progress: 'Das Inhaltsverzeichnis für dieses Interview ist noch in Bearbeitung.'
-    segments:
-      in: 'In'
-    search:
-      all_interviews: &interviews_search_all_interviews 'alle&nbsp;Interviews'
-      one_selected: &interviews_search_one_selected 'ein&nbsp;Interview&nbsp;ausgewählt'
-      many_selected: &interviews_search_many_selected '%{search_hits}&nbsp;Interviews&nbsp;ausgewählt'
-      no_interviews_found: &interviews_search_no_interviews_found 'keine&nbsp;Interviews&nbsp;ausgewählt'
-    result:
-      segment_link: 'zum Ausschnitt: Band %{tape_nr}, %{timecode}'
-
-  layouts:
-    admin:
-      << : *print_version_template
-    application:
-      << : *print_version_template
-      << : *back_to_top_template
-    iframe:
-      title: '%{project_name}: Karte'
-    interview:
-      << : *print_version_template
-    workspace:
-      << : *print_version_template
-      << : *back_to_top_template
-
-  public:
-    '404':
-      << : *header_template
-      << : *back_to_top_template
-      << : *print_version_template
-    '422':
-      << : *header_template
-      << : *back_to_top_template
-      << : *print_version_template
-    '500':
-      << : *header_template
-      << : *back_to_top_template
-      << : *print_version_template
-
-  searches:
-    active_facet:
-      remove: 'entfernen'
-    facet_option:
-      arrow_down: 'Pfeil unten'
-      arrow_right: 'Pfeil rechts'
-      no_persons_found: 'keine Personen gefunden'
-      update: 'aktualisieren'
-    facets:
-      search: 'suchen'
-    search:
-      all_interviews: *interviews_search_all_interviews
-      one_selected: *interviews_search_one_selected
-      many_selected: *interviews_search_many_selected
-      no_interviews_found: *interviews_search_no_interviews_found
-
-  user_account_mailer:
-    subject: "Ihr Zugang zum Archiv '%{project_name}'"
 

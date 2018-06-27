@@ -20,4 +20,15 @@ class Collection < ActiveRecord::Base
     project_id
   end
 
+  def self.human_name
+    I18n.t(:collection)
+  end
+
+  def localized_hash
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = name(locale) if Project.available_locales.include?( locale.to_s )
+      mem
+    end
+  end
+
 end

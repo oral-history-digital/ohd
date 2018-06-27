@@ -2,6 +2,6 @@
 <% Import::CONTENT_ITEMS.each do |item| -%>
 <span class="<%= item -%>">
   <%= t(item, :scope => "import") %>:
-  <%= contents[item.to_sym] || '&mdash;' %>
+  <%= contents[item.to_sym] || '&mdash;'.html_safe %>
 </span>
 <% end -%>

@@ -1,76 +1,76 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  respond_to :json, :html
+  layout 'responsive'
+
   def new
     @user_registration = UserRegistration.new
+    respond_to do |format|
+      format.html do
+        render :template => '/react/app.html'
+      end
+    end
   end
 
   def create
-    @user_registration = UserRegistration.new(params['user_registration'])
+    @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      flash[:notice] = I18n.t(:successful, :scope => 'devise.registrations')
-      render :action => 'submitted'
-    elsif !@user_registration.errors.on('email').nil? && @user_registration.email =~ Devise::EMAIL_REGEX
-      @user_registration = UserRegistration.first(:conditions => ["email = ?", @user_registration.email])
+      UserAccountMailer.new_registration_info(@user_registration).deliver
+      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.deliver_account_activation_instructions(@user_registration, @user_registration.user_account)
+        UserAccountMailer.account_activation_instructions(@user_registration.user_account).deliver
       end
-      render :action => 'registered'
-    else
-      render :action => 'new'
+      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
   end
 
-  # GET /zugang_aktivieren/:confirmation_token
+  # GET 
   def activate
-    account_for_token(params[:confirmation_token])
+    # here the confirmation_token is passed as :id
+    account_for_token(params[:id])
 
     if !@user_account.nil? && @user_account.errors.empty?
-      @user_account.send(:generate_reset_password_token)
-      @user_account.save
+      @login = @user_account.login 
+      @display_name = @user_account.display_name
+      @active = @user_account.active?
     else
-      flash[:alert] = @user_account.nil? ? t('invalid_token', :scope => 'devise.confirmations') : @user_account.errors.full_messages
-      redirect_to new_user_account_session_url
+      @registration_status = t('invalid_token', :scope => 'devise.confirmations')
     end
   end
 
-  # POST /zugang_aktivieren/:confirmation_token
-  def confirm_activation
+  # POST 
+  def confirm
     # don't clear the confirmation_token until we have successfully
     # submitted the password
-    account_for_token(params[:confirmation_token])
+    # here the confirmation_token is passed as :id
+    account_for_token(params[:id])
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    if @user_account.nil?
-      flash[:alert] = t('invalid_token', :scope => 'devise.confirmations') if @user_account.nil?
-      redirect_to new_user_account_session_url
-    else
-      @user_account.confirm!(password, password_confirmation)
-      if @user_account.errors.empty?
-        @user_account.reset_password_token = nil
-        flash[:alert] = t('welcome', :scope => 'devise.registrations')
-        sign_in_and_redirect(:user_account, @user_account)
-      else
-        error_type = case @user_account.errors.map { |e| e.first }.compact.first
-                       when :password, 'password'
-                         'password_missing'
-                       when :password_confirmation, 'password_confirmation'
-                         'password_confirmation_missing'
-                       else
-                         'invalid_token'
-                     end
-        flash[:alert] = t(error_type, :scope => 'devise.confirmations')
-        render :action => :activate
-      end
+    @user_account.confirm!(password, password_confirmation)
+    if @user_account.errors.empty?
+      @user_account.reset_password_token = nil
+      flash[:alert] = t('welcome', :scope => 'devise.registrations')
+      sign_in(:user_account, @user_account)
+      respond_with @user_account, location: after_sign_in_path_for(@user_account)
     end
   end
 
   private
 
   def account_for_token(confirmation_token)
-    @user_account = UserAccount.find_by_confirmation_token(params[:confirmation_token], :include => :user_registration)
+    # do not accidently return first user with confirmation_token == nil !!!
+    unless confirmation_token.blank?
+      @user_account = UserAccount.where(confirmation_token: confirmation_token).includes(:user_registration).first
+    end
+  end
+
+  def user_registration_params
+    params.require(:user_registration).permit(:appellation, :first_name, :last_name, :email, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :state, :country, :receive_newsletter, :tos_agreement, :priv_agreement, :default_locale)
   end
 
 end

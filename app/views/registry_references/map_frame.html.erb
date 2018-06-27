@@ -30,7 +30,7 @@
                 <%= t(:remember_settings, :scope => 'privacy') %>
             </label>
           </p>
-          <%= button_to_function t(:confirm, :scope => 'privacy'), 'loadExternalScripts();', :class => 'privacy_agreement' %>
+          <%#= button_to_function t(:confirm, :scope => 'privacy'), 'loadExternalScripts();', :class => 'privacy_agreement' %>
       </div>
       <div class="service_attribution">
         &copy;2009 Google, TeleAtlas
@@ -118,7 +118,7 @@
         $$('#map-wrapper .preload-map').each(function(el){
             el.removeClassName('preload-map');
         });
-        mapSetup('interactive_map', {introURL: '<%= localized_home_path(:locale => I18n.locale, :page_id => t('page_urls.map_tutorial')) -%>', introId: 'initial_map_tutorial', locale: '<%= I18n.locale.to_s %>', dateStamp: '<%= map_data_datestamp -%>' });
+        mapSetup('interactive_map', {introURL: '<%= home_path(:locale => I18n.locale, :page_id => t('page_urls.map_tutorial')) -%>', introId: 'initial_map_tutorial', locale: '<%= I18n.locale.to_s %>', dateStamp: '<%= map_data_datestamp -%>' });
     }
 
     function loadClusters() {

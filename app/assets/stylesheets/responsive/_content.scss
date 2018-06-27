@@ -1,0 +1,130 @@
+// Content
+
+// Headlines
+h1, h2, h3 {
+  font-family: $font-family-heading;
+  font-weight: $font-family-heading-weight;
+}
+
+h1 {
+  margin: $font-size-heading-h1-large 0 $text-margin-large 0;
+  color: #000;
+  font-size: $font-size-heading-h1-large;
+  line-height: $line-height-heading-h1-large;
+  //@include screen-l {
+  //  margin: $font-size-heading-h1 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h1;
+  //  line-height: $line-height-heading-h1;
+  //}
+}
+
+h2 {
+  margin: $font-size-heading-h2-large 0 $text-margin-large 0;
+  color: #000;
+  font-size: $font-size-heading-h2-large;
+  line-height: $line-height-heading-h2-large;
+  //@include screen-l {
+  //  margin: $font-size-heading-h2 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h2;
+  //  line-height: $line-height-heading-h2;
+  //}
+}
+
+h3 {
+  margin: $font-size-heading-h3-large 0 $text-margin-large 0;
+  color: #000;
+  font-size: $font-size-heading-h3-large;
+  line-height: $line-height-heading-h3-large;
+  //@include screen-l {
+  //  margin: $font-size-heading-h3 0 $text-margin-medium 0;
+  //  font-size: $font-size-heading-h3;
+  //  line-height: $line-height-heading-h3;
+  //}
+}
+
+h4 {
+  margin: 13px 0 7px 0;
+  @include body-font;
+  color: $primary-color;
+  font-size: $font-size-heading-h4-large;
+  line-height: $line-height-heading-h4-large;
+  //@include screen-l {
+  //  font-size: $font-size-heading-h4;
+  //  line-height: $line-height-heading-h4;
+  //}
+}
+
+h5 {
+  margin: 13px 0;
+  padding: 10px;
+  @include body-font;
+  background-color: $gray-paler;
+  font-size: $font-size-heading-h5-large;
+  line-height: $line-height-heading-h5-large;
+  //@include screen-l {
+  //  font-size: $font-size-heading-h5;
+  //  line-height: $line-height-heading-h5;
+  //}
+}
+
+h6 {
+  margin: 11px 0 6px 0;
+  @include body-font;
+  color: $gray-dark;
+  font-size: $font-size-heading-h6-large;
+  line-height: $line-height-heading-h6-large;
+  //@include screen-l {
+  //  font-size: $font-size-heading-h6;
+  //  line-height: $line-height-heading-h6;
+  //}
+}
+
+// Links
+
+a {
+  &:link, &:visited {
+    color: $link-color;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  &[href]:hover, &:active {
+    text-decoration: underline;
+  }
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: none;
+    img {
+      text-decoration: none;
+    }
+  }
+  &:focus {
+    border: none;
+    text-decoration: none;
+  }
+}
+
+// General text formatting
+
+p {
+  font-size: $font-size-large;
+  margin: 0 0 $text-margin-large 0;
+  //@include screen-l {
+  //  font-size: $font-size-medium;
+  //  margin: 0 0 $text-margin-medium 0;
+  //}
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+em, i {
+  font-style: italic;
+}
+
+hr {
+  border: none;
+  border-top: 1px $gray-light solid;
+  height: 1px;
+  margin: 0 0 $text-margin-medium 0;
+}

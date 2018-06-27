@@ -50,6 +50,33 @@
 # to the end ('German ').
 
 ru:
+  de: 'german'
+  en: 'english'
+  ru: 'russian'
+  el: 'greek'
+  edit_interview:
+    new: 'New interview'
+    edit: 'Edit interview'
+  language_rude: 'Russisch mit deutscher Übersetzung'
+  home: 'Главная'
+  user_account:
+    login: 'Login'
+    password: 'Password'
+    errors: 
+      login: 'Please correct your login'
+      password: 'Please correct your password'
+  login_page: 'Войти'
+  login: 'Войти'
+  login_name: 'логин'
+  logout_page: 'Выйти'
+  logout: 'Выйти'
+  logged_in_as: 'Вы вошли как'
+  password: 'Пароль'
+  user_content: 'Рабочая тетрадь'
+  archive_search: 'Поиск в архиве'
+  save_search: 'Сохранить поиск'
+  reset: 'отмена'
+  enter_field: 'Ключевое понятие'
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:
@@ -74,7 +101,7 @@ ru:
     timecode:
       minimal: '%{hours}ч. %{minutes}мин.'
 
-  home: 'Главная'
+  start_page: 'Главная'
   home_link: 'На главную страницу проекта: %{project_name}'
   logo_title: 'Логотип проекта: %{project_name}'
   archive: 'Архив'
@@ -99,13 +126,21 @@ ru:
   timecode: 'временной код'
   german: 'Немецкий'
 
-  page_urls: # Pretty URLs for static pages.
+  year_of_birth: 'Год рождения'
+
+  routes: # Pretty URLs for static pages.
     archive: 'archive'
     faq_index: 'faq'
     faq_archive_contents: 'faq_contents'
     faq_searching: 'faq_search'
     faq_technical: 'faq_technical'
     map_tutorial: 'map_tutorial'
+    map: 'map'
+    mapframe: 'mapframe'
+    collections: 'teilsammlungen'
+    text_meterials: 'text_materialien'
+    interviews: 'interviews'
+    stills: 'stills'
 
   tasks:
     interviewers: 'Проведение интервью'
@@ -131,7 +166,7 @@ ru:
 
   interview_title_patterns:
     lastname_with_birthname: '%{lastname} (%{birthname})'
-    lastname_firstname: '%{lastname_with_birthname} %{first_names}'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
   user_interface:
     labels:
@@ -421,6 +456,7 @@ ru:
               too_long: 'Ваши заметки не должны превышать 300 знаков.'
 
   personal_data:
+    gender: 'gender'
     male: 'муж.'
     female: 'жен.'
     born: 'рожд.'
@@ -478,22 +514,7 @@ ru:
       interview_in_map:       'Упоминание в'
 
   external_links:
-    # TODO: Umstellen auf russ. Version, s. kommentierte Links unten.
     notice: 'Внешняя ссылка'
-    nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
-    #nutzungsbedingungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
-    nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    #nutzungsantrag: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
-    datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    #datenschutzbestimmungen: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    #annotation_guidelines: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team: 'http://www.zwangsarbeit-archiv.de/team'
-    #team: 'http://www.zwangsarbeit-archiv.de/ru/team'
-    kontakt: 'http://www.zwangsarbeit-archiv.de/kontakt'
-    #kontakt: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
-    impressum: 'http://www.zwangsarbeit-archiv.de/impressum'
-    #impressum: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   facets:
     interview_id: 'Имя интервьюируемого'
@@ -593,6 +614,20 @@ ru:
       many_selected: *interviews_search_many_selected
       no_interviews_found: *interviews_search_no_interviews_found
 
+  search_facets:
+    collection_id: 'Частичные собрания'
+    language_id: 'Язык'
+    age: 'Возраст'
+    media_type: 'Аудио/Видео'
+    gender: 'Пол'
+    female: 'женщина'
+    male: ' мужчина'
+    year_of_birth: 'Год рождения'
+
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"
 
+  archive_results: 'Результаты поиска'
+  segment_hits: 'Результаты в тексте'
+  interviews: 'Интервью'
+  places: 'Место рождения'

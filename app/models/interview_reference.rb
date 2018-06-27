@@ -2,7 +2,7 @@ class InterviewReference < UserContent
 
   def interview_references=(list_of_archive_ids)
     if list_of_archive_ids.is_a?(String)
-      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
+      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
     end
     self.reference = Interview.find_by_archive_id(list_of_archive_ids.first)
     write_attribute :interview_references, list_of_archive_ids.to_yaml
@@ -33,9 +33,10 @@ class InterviewReference < UserContent
   end
 
   # path to show the resource
-  def get_content_path
-    interview_path(:id => reference.archive_id)
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #interview_path(:id => reference.archive_id)
+  #end
 
   # sets the archive_id as id_hash instead of default
   def self.default_id_hash(instance)

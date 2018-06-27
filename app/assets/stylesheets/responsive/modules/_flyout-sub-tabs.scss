@@ -1,0 +1,184 @@
+.flyout-sub-tabs-container {
+  display: block;
+  margin: 30px 0;
+  padding: 0 20px;
+  @include screen-l {
+    padding: 0 40px 0 20px;
+  }
+}
+
+.flyout-sub-tabs-label {
+  font-size: $font-size-large;
+  color: $gray-dark;
+}
+
+
+/* Checkboxes */
+.flyout-radio-container-facet-count{
+  margin-left: 5px;
+}
+//label { font-size: 24px; }
+.flyout-radio-container {
+  width: 100%;
+  padding: 0;
+  font-size: $font-size-medium;
+  color: $primary-color;
+  //input[type=radio].with-font,
+  input[type=checkbox].with-font {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  input[type=checkbox].with-font ~ label {
+    color: $primary-color;
+  }
+  input[type=checkbox].with-font ~ label:before {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f1db";
+    letter-spacing: 10px;
+    font-size: $font-size-medium;
+    color: $primary-color;
+    width: 1.4em;
+  }
+  input[type=checkbox].with-font:checked ~ label {
+    color: $gray-darker;
+  }
+  input[type=checkbox].with-font:checked ~ label:before {
+    content: "\f00c";
+    font-size: $font-size-medium;
+    color: $gray-darker;
+    letter-spacing: 5px;
+  }
+}
+
+/* Button Reset */
+
+.wrapper-flyout {
+  button.reset {
+    background-color: lighten($gray-warm, 20%);
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 90%;
+    margin: 20px 40px 20px 20px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: $font-size-large;
+    transition: 0.4s;
+    margin-bottom: 40px;
+  }
+
+  button.reset.active,
+  button.reset:hover {
+    background-color: $secondary-color, 10%;
+  }
+
+  button.reset:after {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f0e2";
+    float: right;
+  }
+}
+
+/* Image Gallery */
+
+.img-gallery {
+  padding: 5px 10px;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  background-color: $gray-dark;
+  //align-items: stretch;
+  .thumbnail {
+    position: relative;
+    flex-grow: 0;
+    height: 100px;
+    margin: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    //:hover {
+    //  opacity: 0.5;
+    //}
+    img {
+      width: auto;
+      height: 100%;
+      //min-width: 100%;
+      //max-width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+.thumbnail:after{
+  font-family: FontAwesome;
+  content: '\f065';
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  color: #fff;
+  opacity: 0;
+  transition: all 300ms ease-in;
+}
+
+.thumbnail:hover:after{opacity: 1}
+
+.facets-spinner{
+  padding: 20px;
+}
+
+/* Slider */
+
+.rc-slider {
+  height: 60px !important;
+}
+
+.rc-slider-track {
+  background-color: $primary-color !important;
+}
+
+.rc-slider-handle {
+  border-color: $primary-color !important;
+}
+
+.rc-slider-dot {
+  border: 0 !important;
+  background-color: lighten($gray-warm, 20%) !important;
+}
+
+.rc-slider-dot-active {
+  border: 0 !important;
+  background-color: $primary-color !important;
+}
+
+.rc-slider-rail {
+  background-color: lighten($gray-warm, 20%) !important;
+}
+
+.rc-slider-tooltip {
+  z-index: 1000 !important;
+}
+
+.rc-slider-tooltip-inner {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

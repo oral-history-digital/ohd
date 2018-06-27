@@ -1,0 +1,163 @@
+.flyout {
+  list-style: none;
+  margin: 40px 0 0 0;
+  padding: 0;
+}
+
+//.flyout-top-nav-container {
+//  background: lighten($gray-warm, 30%);
+//  height: 100px;
+//  margin: 0;
+//  padding: 46px 10px 0 15px;
+//}
+
+.flyout-top-nav {
+  float: left;
+  //display: inline;
+  margin: 0;
+  padding: 6px 15px 0 0;
+  font-size: $font-size-large;
+  color: $gray-warm;
+  transition: color 0.3s;
+  cursor: pointer;
+  @include clearfix;
+  &.lang {
+    border-left: 2px solid lighten($gray-warm, 10%);
+    padding-left: 6px;
+    text-transform: uppercase;
+  }
+  &:hover {
+    color: $gray-darkest;
+  }
+  &.active {
+    color: $gray-darkest;
+    cursor: default;
+  }
+  &:first-child {
+    margin-left: 20px;
+  }
+  &.top-nav-last {
+    margin-bottom: 30px;
+  }
+}
+
+.flyout-tab {
+  clear: left;
+  display: block;
+  margin-top: 2px;
+  padding: 20px;
+  background: $gray-warm;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: 0.4s;
+  &.active {
+    display:none;
+  }
+  &:hover {
+    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
+    color: $flyout-tab-title-text-color;
+  }
+  animation-name: fade-in;
+  animation-duration: 1s;
+}
+
+@keyframes fade-in {
+  0%  {
+    background-color: transparent;
+    color: transparent;
+  }
+  25% {
+    background-color: transparent;
+    color: transparent;
+    opacity: 0.25;
+  }
+  50% {
+    background-color: $gray-warm;
+    color: #fff;
+    opacity: 0.50;
+  }
+  100% {
+    background-color: $gray-warm;
+    color: #fff;
+    opacity: 1;
+  }
+}
+
+@keyframes move-down {
+  0%  {
+    background-color: transparent;
+    color: transparent;
+    margin-top: -130px;
+  }
+  50% {
+    background-color: $secondary-color;
+    color: $flyout-tab-title-text-color;
+  }
+  100% {
+    background-color: $secondary-color;
+    color: $flyout-tab-title-text-color;
+    margin-top: 2px;
+  }
+}
+
+.flyout-tab-title {
+  clear: left;
+  display: block;
+  margin: 2px 0 40px 0;
+  padding: 20px;
+  background: $secondary-color;
+  color: $flyout-tab-title-text-color;
+  font-size: 1.25rem;
+  cursor: auto;
+  animation-name: move-down;
+  animation-duration: 1s;
+}
+
+.flyout-search {
+  margin: 0;
+  padding: 0 20px;
+  @include screen-l {
+    padding: 0 40px 0 20px;
+  }
+}
+
+.flyout-search{
+  .input-list-search{
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px;
+    border: 1px solid $gray-dark;
+    background-color: $gray-paler;
+  }
+  .search-input {
+    width: 80%;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-top: 1px solid $gray-dark;
+    border-bottom: 1px solid $gray-dark;
+    border-left: 1px solid $gray-dark;
+    background-color: $gray-paler;
+  }
+  ::placeholder {
+    color: $primary-color;
+  }
+  .search-button {
+    width: 20%;
+    font-family: FontAwesome;
+    content: "\f067";
+    color: $primary-color;
+    float: right;
+    transition: color 0.3s;
+    padding: 10px;
+    border-top: 1px solid $gray-dark;
+    border-bottom: 1px solid $gray-dark;
+    border-right: 1px solid $gray-dark;
+    background-color: $gray-paler;
+    text-align: right;
+    &:hover {
+      color: $gray-light;
+    }
+  }
+}
+

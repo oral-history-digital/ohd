@@ -15,13 +15,13 @@ namespace :storage do
 
         archive_id = interview.archive_id.downcase
 
-        photo_path = File.join(CeDiS.config.photo_storage_dir, 'interview_stills')
+        photo_path = File.join(Project.photo_storage_dir, 'interview_stills')
 
         Dir.glob(File.join(photo_path, "#{archive_id}*")).each do |file|
 
           file_name = file.split('/').last
 
-          if file_name.match(Regexp.new("^#{CeDiS.config.project_initials}\\d{3}\\.(png|jpg)$", Regexp::IGNORECASE))
+          if file_name.match(Regexp.new("^#{Project.project_initials}\\d{3}\\.(png|jpg)$", Regexp::IGNORECASE))
 
             if interview.still_image_file_name == nil or not File.exists?(interview.still_image_file_name)
               interview.still_image = File.open(file)
@@ -65,7 +65,7 @@ namespace :storage do
       Interview.all(:limit => "#{offset},#{batch}", :joins => joins, :conditions => conditions, :readonly => false).each do |interview|
 
         dir = interview.archive_id.upcase
-        archive_path = File.join(CeDiS.config.storage_dir, dir, "#{dir}_archive", 'data', 'av')
+        archive_path = File.join(Project.storage_dir, dir, "#{dir}_archive", 'data', 'av')
 
         puts "ERROR: no archive directory for #{dir}!" unless File.directory?(archive_path)
 

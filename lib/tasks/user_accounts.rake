@@ -27,7 +27,8 @@ namespace :user_accounts do
             invalid_records << attributes
             next
           end
-          user = UserAccount.find_or_initialize_by_login_and_email(attributes['login'].strip, attributes['mail'].strip)
+          #user = UserAccount.find_or_initialize_by_login_and_email(attributes['login'].strip, attributes['mail'].strip)
+          user = UserAccount.where(login: attributes['login'].strip, email: attributes['mail'].strip).first_or_initialize
           if user.new_record?
             user.encrypted_password = attributes['encrypted_password'].sub('{SSHA}','')
             user.password_salt = Base64.encode64(Base64.decode64(user.encrypted_password)[-4,4])

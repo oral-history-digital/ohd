@@ -1,10 +1,10 @@
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
-        <a href="http://www.<%= CeDiS.config.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
-          <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
+        <a href="http://www.<%= Project.project_domain -%><%= (I18n.locale == I18n.default_locale) ? '' : "/#{I18n.locale}" -%>" title="<%= t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]) %>" accesskey="H" lang="<%= I18n.locale.to_s %>">
+          <%= image_tag(image_path("#{Project.name}/project_logo_#{I18n.locale}.gif"), :class => 'baseHeaderLogo', :title => t(:home_link, :project_name => Project.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => Project.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s]  %></h2>
+        <h2 class="info"><%= Project.project_name[I18n.locale.to_s]  %></h2>
         <hr class="divider" />
         <p class="skip">
           <em><%= t '.skip' %></em> <a href="#inhalt"><%= t '.content' %></a>
@@ -16,13 +16,13 @@
         </h2>
         <div id="baseHeaderNavigation">
           <ul>
-            <li><%= link_to (t :home), localized_root_url(:locale => I18n.locale), :accesskey => '0' %></li>
+            <li><%= link_to t(:start_page), home_path, accesskey: '0' %></li>
             <%= render :partial => '/locale_chooser' %>
-            <% if CeDiS.config.uses_map %>
-                <li><%= link_to (t :interactive_map), localized_public_map_url(:locale => I18n.locale), :title => t('.map_link_title') %></li>
+            <% if Project.uses_map %>
+                <li><%= link_to t(:interactive_map), public_map_path, title: t('.map_link_title') %></li>
             <% end %>
-            <li><%= link_to (t :collections_map), url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %> </li>
-            <li><%= link_to (t :faq), url_for(:controller => :home, :action => :show, :page_id => t('page_urls.faq_index'),  :locale => I18n.locale), :title => t('.faq_link_title') %></li>
+            <li><%= link_to t(:collections_map), collections_path, title: t('.collections_link_title') %> </li>
+            <li><%= link_to t(:faq), faq_index_path, title: t('.faq_link_title') %></li>
           </ul>
         </div>
       </div>
@@ -36,13 +36,13 @@
               <p id="logoutUserLogin">
                 <%= truncate(current_user_account.try(:login), :length => 25) || t(:not_signed_in, :scope => 'user_interface.status') %>:
                 <% if current_user_account.nil? %>
-                    <%= link_to t(:link, :scope => 'devise.sessions'), anmelden_path, :name => 'buttonLogin' %>
+                    <%= link_to t(:login, :scope => 'devise.sessions'), new_user_account_session_path, :name => 'buttonLogin' %>
                 <% else %>
                     <% unless current_user.nil? || !request.path.scan('/admin/').empty? %>
                     <%= link_to t(:workbook, :scope => 'user_interface.labels'), { :controller => 'user_contents', :action => 'index' }, :class => 'workbook' %>
                     <span class='red'>&nbsp;|&nbsp;</span>
                     <% end %>
-                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout' %>
+                    <%= link_to t(:logout, :scope => 'devise.sessions'), destroy_user_account_session_path, :name => 'buttonLogout', method: :delete %>
                 <% end %>
               </p>
             <% unless flash[:notice].blank? %>

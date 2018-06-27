@@ -88,6 +88,7 @@ class TranslateCollections < ActiveRecord::Migration
     # Create globalize2 table.
     Collection.create_translation_table! TRANSLATED_COLUMNS
 
+  unless Project.name.to_sym == :mog
     # Migrate existing data to the translation table.
     execute "INSERT INTO collection_translations(collection_id, locale, name, institution, countries, interviewers, responsibles, notes, created_at, updated_at)
              SELECT id, 'de', name, institution, countries, interviewers, responsibles, notes, NOW(), NOW() FROM collections
@@ -124,11 +125,13 @@ class TranslateCollections < ActiveRecord::Migration
       end
     end
 
+  end
     # Drop obsolete column.
-    remove_columns :collections, TRANSLATED_COLUMNS.keys
+    #remove_columns :collections, TRANSLATED_COLUMNS.keys
   end
 
   def self.down
+  #unless Project.name.to_sym == :mog
     # Re-create migrated columns.
     TRANSLATED_COLUMNS.each do |column, type|
       add_column :collections, column, type
@@ -141,5 +144,6 @@ class TranslateCollections < ActiveRecord::Migration
 
     # Drop globalize2 table.
     Collection.drop_translation_table!
+  #end
   end
 end

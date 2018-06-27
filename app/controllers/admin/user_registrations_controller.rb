@@ -1,14 +1,10 @@
 class Admin::UserRegistrationsController < Admin::BaseController
 
+  before_action :collection, only: [:index]
+
   def index
-    collection
     respond_to do |format|
-      format.html do
-        render
-      end
-      format.js do
-        render :layout => false
-      end
+      format.html 
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
@@ -31,15 +27,16 @@ class Admin::UserRegistrationsController < Admin::BaseController
   end
 
   def edit
-    object
+    @object = UserRegistration.find(params[:id])
   end
 
   def update
-    @workflow_state = object.workflow_state
+    @object = UserRegistration.find(params[:id])
+    @workflow_state = @object.workflow_state
     # action dependent on submit value
-    @object.admin_comments = object_params['admin_comments']
+    @object.admin_comments = user_registration_params['admin_comments']
     workflow_changes = true
-    @object.update_attributes(object_params)
+    @object.update_attributes(user_registration_params)
     case params['workflow_event']
       when 'register'
         @object.register!
@@ -83,15 +80,18 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @object = UserRegistration.find(params[:id])
     @object.newsletter_signup = true
     @object.save
-    render_newsletter
   end
 
   def unsubscribe
-    object
+    @object = UserRegistration.find(params[:id])
     @object.newsletter_signup = false
     @object.save
-    render_newsletter
   end
+
+  def registration_filter_params
+    [:workflow_state, :workflow_events, :job_description, :state, :research_intentions, :job_description, :country, :first_name, :last_name, :format]
+  end
+  helper_method :registration_filter_params
 
   private
 
@@ -104,7 +104,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
-    @filters['workflow_state']
     # user name
     %w(last_name first_name).each do |name_part|
       @filters[name_part] = params[name_part]
@@ -123,24 +122,8 @@ class Admin::UserRegistrationsController < Admin::BaseController
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_registrations = UserRegistration.all(:conditions => conditions, :order => "created_at DESC")
-  end
-
-  def render_newsletter
-    respond_to do |format|
-      format.html do
-        if request.referer.blank?
-          render :nothing => true
-        else
-          redirect_to request.referer
-        end
-      end
-      format.js do
-        render :update do |page|
-          page.replace 'newsletter_subscription_status', :partial => 'newsletter', :object => @object
-        end
-      end
-    end
+    conditions = conditions.first if conditions.length == 1
+    @user_registrations = UserRegistration.where(conditions).order("created_at DESC")
   end
 
   def translate_field_or_value(field, value=nil)
@@ -170,6 +153,10 @@ class Admin::UserRegistrationsController < Admin::BaseController
               end
       t(value, :scope => scope, :locale => :de)
     end
+  end
+
+  def user_registration_params
+    params.require(:user_registration).permit(:admin_comments)
   end
 
 end

@@ -61,7 +61,7 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.references :registry_entry
       t.string :code
     end
-    RegistryReferenceType.create_translation_table! :name => :string
+    #RegistryReferenceType.create_translation_table! :name => :string
 
     create_table :registry_references do |t|
       t.references :registry_entry, :null => false
@@ -77,19 +77,21 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :languages do |t|
-      t.string :code
+    unless Project.name.to_sym == :mog
+      create_table :languages do |t|
+        t.string :code
+      end
+
+      add_column :interviews, :language_id, :integer
+      drop_table :categorizations
+      drop_table :category_translations
+      drop_table :categories
     end
     Language.create_translation_table! :abbreviated => :string, :name => :string
-
-    add_column :interviews, :language_id, :integer
-
-    drop_table :categorizations
-    drop_table :category_translations
-    drop_table :categories
   end
 
   def self.down
+  #unless Project.name.to_sym == :mog
     create_table :categories do |t|
       t.string :category_type
       t.string :code
@@ -120,4 +122,5 @@ class CreateConsolidatedRegistry < ActiveRecord::Migration
     drop_table :registry_hierarchies
     drop_table :registry_entries
   end
+  #end
 end

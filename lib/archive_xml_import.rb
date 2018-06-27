@@ -34,7 +34,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     @mappings = File.exists?(MAPPING_FILE) ? YAML::load_file(MAPPING_FILE) : {}
 
     # Load the interview to be imported.
-    @archive_id = (filename.split('/').last[Regexp.new("#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
+    @archive_id = (filename.split('/').last[Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
     raise "Invalid XML file name for import: #{filename}\nCannot map to archive_id. Aborting." if @archive_id.blank?
     @interview = Interview.find_by_archive_id(@archive_id)
     @interview ||= Interview.create(:archive_id => @archive_id, :last_name => 'preliminary')
@@ -167,7 +167,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
           if export_date_attr.nil? || export_date_attr.empty? || export_date_attr.last.blank?
             report_sanity_check_failure_for sanity_check, "Export creation date missing in XML."
           else
-            @date_of_export = ActiveRecord::ConnectionAdapters::Column.string_to_time(export_date_attr)
+            @date_of_export = DateTime.parse(export_date_attr)
             if @date_of_export <= @interview.import_time
               report_sanity_check_failure_for sanity_check, "Interview #{@interview.to_s} has an existing import which is just as recent or more than '#{@date_of_export.strftime('%d.%m.%Y')}'."
             else
@@ -206,12 +206,12 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             # NB: this does not respect :dependent => :delete/:destroy configuration so we have
             # to manually delete dependent translations to avoid orphans.
             if klass.translates?
-              ids = klass.all(:select => :id, :conditions => { :interview_id => @interview.id }).map(&:id).map(&:to_i)
+              ids = klass.where(interview_id: @interview.id ).map(&:id).map(&:to_i)
               num_deleted_records = klass.translation_class.delete_all("#{klass.table_name.singularize}_id" => ids)
-              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations)"
+              STDOUT.printf " (deleted #{num_deleted_records} #{klass.name} translations for interview #{@interview.id})"
             end
             num_deleted_records = klass.delete_all(:interview_id => @interview.id)
-            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize})"
+            STDOUT.printf " (deleted #{num_deleted_records} #{klass.name.pluralize} for interview #{@interview.id})"
             STDOUT.flush
           end
         end
@@ -455,13 +455,13 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
                              if belongs_to_interview
                                key_attribute_hash['interview_id'] = @interview.id
                              end
-                             dynamic_finder_name = 'find_or_initialize_by_' + key_attribute_hash.keys.sort.join('_and_')
-                             dynamic_finder_params = key_attribute_hash.keys.sort.map { |att| key_attribute_hash[att] }
-                             @current_context.send(dynamic_finder_name, *dynamic_finder_params)
+
+                             @current_context.where(key_attribute_hash).first_or_initialize
                            end
 
         # NB: Workaround to bypass DAG-logic / validation in the registry hierarchy.
         current_instance.do_not_perpetuate = true if current_instance.is_a? RegistryHierarchy
+        current_instance.do_not_validate_parents = true if current_instance.is_a? RegistryEntry
 
         # Progression feedback.
         if (@node_index += 1) % 15 == 12
@@ -471,18 +471,18 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
         assign_attributes_to_instance(current_instance)
 
         begin
-          current_instance.save!
-
+          saved =  current_instance.save!
+          puts "#{current_instance.class}  saved: #{saved}"
           # Link the interview to the current instance if the
           # interview belongs to the current instance (e.g. a collection).
           if @interview.respond_to?("#{name}_id=")
             @interview.send("#{name}_id=", current_instance.id)
           end
 
-        rescue ActiveRecord::RecordInvalid
+        rescue ActiveRecord::RecordInvalid => e
 
-          # Produce validation messages including all associations.
-          errors = [ current_instance.inspect, current_instance.errors.full_messages.to_s ]
+          # Produce a meaningful validation message.
+          errors = [ e.record.inspect, e.record.errors.full_messages.to_s ]
           associations = current_instance.class.reflect_on_all_associations.select { |assoc| assoc.macro == :belongs_to && assoc.name != :interview }
           associations.each do |assoc|
             associated_instance = current_instance.send(assoc.name.to_s)
@@ -492,7 +492,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             end
           end
 
-          message = "ERROR on #{current_instance.class.name}:\n#{errors.join("\n")}"
+          message = "ERROR on #{e.record.class.name}:\n#{errors.join("\n")}"
 
           if @current_mapping['skip_invalid']
             puts "\n\n#{message}"
@@ -527,8 +527,13 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     attributes.reject{|k,v| db_columns.include?(k.to_s)}.each do |attr, locales|
       if instance.respond_to?("#{attr}=")
         locales.each do |locale, value|
+unless value.blank?
+          puts locale
+          puts attr
+          puts value
+
           if instance.class.translates?
-            instance.class.with_locale(locale) do
+            instance.class.with_locales(locale) do
               instance.send("#{attr}=", value)
             end
           elsif instance.method("#{attr}=").arity.abs == 2
@@ -539,9 +544,11 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
             instance.send("#{attr}=", value)
           end
         end
+        end
       end
       @attributes[@current_context.name].delete(attr)
-    end
+      end
+
     attributes_by_locale = {}
     attributes.each do |attr, locales|
       locales.each do |locale, value|
@@ -551,7 +558,7 @@ class ArchiveXMLImport < Nokogiri::XML::SAX::Document
     end
     attributes_by_locale.each do |locale, attrs|
       if instance.class.translates?
-        instance.class.with_locale(locale) do
+        instance.class.with_locales(locale) do
           instance.attributes = attrs
         end
       else

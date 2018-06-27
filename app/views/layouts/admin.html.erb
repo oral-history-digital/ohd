@@ -2,8 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
     <%= render :partial => '/head' %>
-    <%= stylesheet_link_tag 'admin' %>
-    <%= javascript_include_tag 'builder', 'interview', 'carousel', 'lightbox', 'list.min', 'swfobject', :cache => 'admin' %>
 </head>
 
 <body id="administration">
@@ -25,7 +23,7 @@
           </p>
           <span class="new_registrations">
             <% new_user_count = UserRegistration.unchecked.count -%>
-            <%= link_to "#{(new_user_count < 1) ? 'Keine' : new_user_count} #{t(:new_registrations, :scope => "devise.workflow_states")} &raquo;", admin_user_management_url(:workflow_state => 'unchecked') %></span>
+            <%= link_to "#{(new_user_count < 1) ? 'Keine' : new_user_count} #{t(:new_registrations, :scope => "devise.workflow_states")} &raquo;".html_safe, admin_user_registrations_url(workflow_state: 'unchecked') %></span>
         </div>
 
         <hr class="divider" />
@@ -66,7 +64,7 @@
 
     <div id="printlogo">
       <p class="info"><em><%= t('.print_preview_only') %></em></p>
-      <img src="<%= image_path 'project_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
+      <img src="<%= image_path "#{Project.name}/project_logo_print.gif" %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
     </div>
 
 </body>

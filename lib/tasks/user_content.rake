@@ -7,7 +7,8 @@ namespace :user_content do
 
     index = 0
     updated = {}
-    UserContent.count(:group => :type).keys.each do |type|
+    #UserContent.count(:group => :type).keys.each do |type|
+    UserContent.all.group(:type).count.keys.each do |type|
       puts "\n#{type}:"
       klass = type.constantize
       updated[type] = 0

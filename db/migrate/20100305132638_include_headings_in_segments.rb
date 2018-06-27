@@ -1,6 +1,7 @@
 class IncludeHeadingsInSegments < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
 
     change_table :segments do |t|
       t.string :mainheading, :limit => 100
@@ -10,8 +11,10 @@ class IncludeHeadingsInSegments < ActiveRecord::Migration
     drop_table :headings
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
 
     create_table :headings do |t|
       t.references :tape
@@ -27,6 +30,7 @@ class IncludeHeadingsInSegments < ActiveRecord::Migration
       t.remove :subheading
     end
     
+  end
   end
 
 end

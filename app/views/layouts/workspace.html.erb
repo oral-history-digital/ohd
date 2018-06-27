@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
     <%= render :partial => '/head' %>
-    <%= javascript_include_tag 'accordion', 'search', 'workbook_filters', 'workbook_sorting', :cache => 'workbook' %>
 </head>
 
 <body id="<%= current_area_id %>" class="workbook">
@@ -28,7 +27,7 @@
             <div id="submit_search" class="action">
               <% search_hash = session[:query].blank? ? nil : Search.from_params(session[:query]).query_hash -%>
               <% search_path = search_hash.blank? ? new_search_path : search_by_hash_path(:suche => search_hash) -%>
-              <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path('suchpfeil_zurueck.gif'), :onclick => "window.location = '#{search_path}';" %>
+              <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path("#{Project.name}/suchpfeil_zurueck.gif"), :onclick => "window.location = '#{search_path}';" %>
             </div>
 
             <%= image_tag image_path('symbol_workbook.png'), :alt => '', :id => "folder_image" -%>
@@ -60,7 +59,7 @@
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="<%= t('.back_to_top') %>"><img src="<%= image_path 'sprungmarke.gif' %>" alt="<%= t('.image_back_to_top') %>" border="0" title="<%= t('.back_to_top') %>" /></a>
+            <a href="#seitenanfang" title="<%= t('.back_to_top') %>"><img src='<%=  image_path "#{Project.name}/sprungmarke.gif"  %>' alt="<%= t('.image_back_to_top') %>" border="0" title="<%= t('.back_to_top') %>" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -90,7 +89,7 @@
 
     <div id="printlogo">
       <p class="info"><em><%= t('.print_preview_only') %></em></p>
-      <img src="<%= image_path 'project_logo_print.gif' %>" border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
+      <img src='<%=  "#{Project.name}/project_logo_print.gif" %>' border="0" width="262" height="73" title="<%= t('.print_logo') %>" alt="<%= t('.print_logo') %>" />
     </div>
 
 </body>

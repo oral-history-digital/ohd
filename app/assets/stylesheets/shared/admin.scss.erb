@@ -1,0 +1,403 @@
+body#administration {
+    background-image: url(<%=  image_path "#{Project.name}/admin_bg_body.gif" %>);
+}
+span.new_registrations {
+    position: absolute;
+    top: 26px;
+    left: 10px;
+}
+span.new_registrations a {
+    display: block;
+    width: 200px;
+    height: 19px;
+    color: #fff;
+}
+
+#mainNavigation {
+    position: absolute;
+    top: 95px;
+    right: 280px;
+    background-color: #990000;
+    display: block;
+    width: 710px;
+    border-top: 1px #fff solid;
+    border-bottom: 1px #fff solid;
+    border-right: 1px #fff solid;
+}
+#mainNavigation span {
+    float: left;
+    font-weight: bold;
+    color: #fff;
+    padding: 1px 6px;
+}
+#mainNavigation ul {
+    float: right;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+#mainNavigation ul li {
+    float: right;
+    display: inline-block;
+    padding: 0 0 0 1px;
+}
+#mainNavigation ul li a {
+    color: #fff;
+    background-color: #990000;
+    display: block;
+    padding: 1px 6px;
+    width: 80px;
+    font-weight: bold;
+    text-decoration: none;
+}
+#mainNavigation ul li a:hover,
+#mainNavigation ul li a.current {
+    background-color: #660000;
+    color: #ccc;
+}
+
+#administration #baseContainerRight ul {
+    padding: 0;
+}
+
+#administration #baseContainerRight select {
+    font-size: 80%;
+    max-width: 220px;
+}
+
+#administration #submit_filters {
+    margin-top: 15px;
+}
+
+#administration select {
+    text-transform: capitalize;
+}
+
+#administration input[type=submit]:hover,
+#administration input[type=button]:hover,
+#administration input[type=reset]:hover {
+    opacity: 1.0;
+}
+
+#administration input[type=button].cancel,
+#administration input[type=reset] {
+    background-color: #b2afa1;
+    color: #660000;
+}
+
+#administration .userTable td.userTableList {
+    font-size: 85%;
+}
+
+#administration .userIndex .clickable {
+    cursor: pointer;
+}
+
+#administration .userTable .translation_missing {
+    display: block;
+    color: transparent;
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 0 -1080px no-repeat;
+}
+#administration .userTable .translation_missing:hover {
+    text-indent: 0;
+    color: #000;
+    background-image: none;
+}
+
+#administration .userTable .state {
+    font-weight: bold;
+}
+#administration .userTable .unchecked,
+#administration .userTable .rejected {
+    color: #990000;
+}
+#administration .userTable .checked,
+#administration .userTable .postponed {
+    font-style: italic;
+    font-weight: normal;
+}
+
+
+#administration input[type=button],
+#administration input[type=submit],
+a.userTableButtonLink {
+    background-color: #840F09;
+    color: #ffffff;
+    border: 1px solid #840F09;
+    padding: 0.25em 0.5em;
+    font-size: 80%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#administration input[type=button]:hover,
+#administration input[type=submit]:hover,
+a.userTableButtonLink:hover {
+    background-color: #fff;
+    color: #8B0F09;
+    border: 1px solid #999281;
+}
+
+#administration #modal_window .inline-editable,
+#administration #modal_window input[type='text'],
+#administration #modal_window textarea {
+    background: #fffdc0;
+    border: 1px solid #ccc;
+    padding: 0.2em;
+    font-family: Arial, Helvetica, serif !important;
+    min-width: 75%;
+}
+
+#administration #modal_window textarea {
+    font-size: 100% !important;
+}
+
+#administration #modal_window .inline-editable {
+    cursor: text;
+    width: 75%;
+}
+
+#administration a.userTableButtonLink {
+    padding: 2px;
+}
+
+#administration input.subdued {
+    background-color: #b2afa1;
+    border-top: 1px solid #b2afa1;
+    border-left: 1px solid #b2afa1;
+    border-right: 1px solid #b2afa1;
+    color: #660000;
+}
+
+#administration .inline-editor {
+    line-height: 100% !important;
+}
+
+#administration .column .inline-editor,
+#administration .userTable .inline-editor {
+    float: none !important;
+    margin: 0;
+    padding-right: 15px;
+}
+
+#administration .column select,
+#administration .userTable select {
+    width: 140px;
+    z-index: 100;
+    font-size: 105%;
+}
+
+#administration .column .inline-editable,
+#administration .userTable .inline-editable {
+    float: none !important;
+    padding-left: 0;
+    display: block;
+    min-height: 15px;
+}
+
+#administration .column .inline-editable:hover,
+#administration .userTable .inline-editable:hover {
+    background: #fffdc0;
+    background-image: url(<%=  image_path "#{Project.name}/icon_sprite.png" %>);
+    background-repeat: no-repeat;
+    background-position: 98% -1021px;
+}
+
+/* Imports */
+#administration .labels {
+    font-size: 85%;
+    font-weight: bold;
+}
+#administration ul.list li {
+    list-style-item: none;
+    background-image: none;
+    padding: 5px 0;
+    border-top: 1px dotted;
+    clear: both;
+}
+#administration .list {
+    border-bottom: 1px dotted;
+}
+#administration #date_sort,
+#admin_users .admin_flag {
+    float: right;
+    margin-right: 6px;
+}
+#user_annotations span,
+#interview_imports span,
+#admin_users span {
+    display: inline-block;
+    margin-right: 10px;
+}
+#user_annotations .user_annotation span {
+    font-size: 95%;
+}
+#user_annotations .details textarea {
+    width: 320px;
+}
+#user_annotations .status,
+#interview_imports .last_import,
+#interview_imports .time,
+#admin_users .last_login {
+    float: right;
+    width: 132px;
+}
+#user_annotations .list .author,
+#user_annotations .list .name,
+#interview_imports .import .archive_id,
+#interview_imports .import .last_import,
+#admin_users .user .name {
+    font-weight: bold;
+    vertical-align: top;
+}
+#admin_users .name{
+    width: 222px;
+}
+#admin_users .sort.name {
+    padding: 0px;
+}
+#administration #admin_users .name.asc {
+    background-position: 120px -720px;
+}
+#administration #admin_users .name.desc {
+    background-position: 120px -660px;
+}
+
+#administration #import_overview ul.details {
+    padding-left: 16px;
+}
+
+#user_annotations .author {
+    width: 180px;
+}
+#user_annotations .segment {
+    width: 140px;
+}
+#user_annotations .author small a:hover {
+    color: #990000;
+    text-decoration: underline;
+}
+#user_annotations .submission_date,
+#user_annotations #submission_sort {
+    float: right;
+    width: 140px;
+    text-align: right;
+}
+#user_annotations .list .submission_date {
+    padding-right: 30px;
+}
+#user_annotations .list .details {
+    width: 100%;
+    display: inline-block;
+    padding-left: 16px;
+    padding-top: 8px;
+}
+#user_annotations .details .textbox {
+    width: 45%;
+    padding: 8px;
+    margin-right: 12px;
+    border: 1px solid #ccc;
+    float: left;
+}
+#user_annotations .details div {
+    float: left;
+    clear: none;
+    display: block;
+}
+#user_annotations .details div.actions {
+    float: right;
+    width: 320px;
+}
+#user_annotations .details textarea {
+    float: left;
+}
+
+#user_annotations .author a,
+#interview_imports .archive_id a{
+    text-decoration: none;
+    color: #000;
+}
+#interview_imports .archive_id .spinner {
+    float: right;
+}
+#administration .more {
+    padding-left: 15px;
+    display: inline-block;
+    background: transparent url(<%= image_path "#{Project.name}/pfeil_rot_unten.gif" %>) 2px 4px no-repeat;
+}
+#administration .closed .more {
+    background: transparent url(<%= image_path "#{Project.name}/pfeil_rot_rechts.gif" %>) 2px 4px no-repeat;
+}
+#administration .closed .details {
+    display: none;
+}
+
+table.imports_for_interview {
+    margin: 10px 15px 0 15px;
+    font-size: 90%;
+}
+table.imports_for_interview tr {
+    vertical-align: top;
+    border-top: 1px solid #ccc;
+}
+table.imports_for_interview td {
+    opacity: 0.9;
+}
+
+.imports_for_interview span {
+    float: left;
+}
+.imports_for_interview .date {
+    display: block;
+    font-weight: bold;
+    width: 100%;
+}
+.imports_for_interview .contributions {
+    clear: left;
+}
+
+/* Sortable Lists */
+#administration .list li:nth-child(odd) {
+    background-color: #E4E4DA;
+}
+#administration #sorting_controls {
+    margin-right: 20px;
+    padding-left: 5px;
+}
+#administration .sort {
+    display: inline-block;
+    cursor: pointer;
+    padding-right: 22px;
+    color: #666;
+}
+#administration .sort.asc {
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 98% -720px no-repeat;
+}
+#administration .sort.desc {
+    background: transparent url(<%=  image_path "#{Project.name}/icon_sprite.png" %>) 98% -660px no-repeat;
+}
+
+/* Newsletter subscription interface */
+#edit_user_button,
+#newsletter_subscription_status {
+    width: auto;
+    float: left;
+}
+#edit_user_button {
+    margin-right: 235px;
+}
+
+.subscribed .unsubscribed,
+.unsubscribed .subscribed {
+    display: none;
+}
+
+#administration #innerContent {
+    position: relative;
+}
+
+#newsletter_spinner {
+    position: absolute;
+    top: 30px;
+    right: 60px;
+}

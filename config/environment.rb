@@ -1,50 +1,6 @@
-# Be sure to restart your server when you modify this file
+# Load the Rails application.
+require_relative 'application'
 
-# Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.18' unless defined? RAILS_GEM_VERSION
+# Initialize the Rails application.
+Rails.application.initialize!
 
-# Bootstrap the Rails environment, frameworks, and default configuration
-require File.join(File.dirname(__FILE__), 'boot')
-require 'project_config'
-
-AUTHORIZATION_MIXIN = "items and groups"
-
-Rails::Initializer.run do |config|
-  # Settings in config/environments/* take precedence over those specified here.
-  # Application configuration should go into files in config/initializers
-  # -- all .rb files in that directory are automatically loaded.
-
-  # Add additional load paths for your own custom dirs
-  config.autoload_paths += %W(#{Rails.root}/lib/search_filters.rb)
-  config.autoload_once_paths += %W( #{Rails.root}/lib/search_filters.rb )
-
-  # Gem configuration (config.gem ...): We use bundler, please place gem configuration into the Gemfile.
-
-  # Only load the plugins named here, in the order given (default is alphabetical).
-  # :all can be used as a placeholder for all plugins not explicitly named
-  # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-  # Skip frameworks you're not going to use. To use Rails without a database,
-  # you must remove the Active Record framework.
-  # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
-
-  # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-
-  # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-  # Run "rake -D time" for a list of tasks for finding time zone names.
-  config.time_zone = 'UTC'
-
-  # The default locale is :de and all translations from config/locales/*.rb,yml are auto loaded.
-  # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  require 'i18n'
-  I18n.enforce_available_locales = false
-  config.i18n.available_locales = CeDiS.config.available_locales.map(&:to_sym)
-  config.i18n.default_locale = CeDiS.config.default_locale.to_sym
-
-  # I18n for JS
-  config.middleware.use "SimplesIdeias::I18n::Middleware"
-
-  # RailsLTS config
-  config.rails_lts_options = { :default => :compatible }
-end

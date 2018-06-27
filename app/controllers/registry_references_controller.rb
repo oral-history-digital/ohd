@@ -1,31 +1,46 @@
+require 'action_dispatch/routing/mapper'
+
 class RegistryReferencesController < BaseController
 
   PER_PAGE = 3000
 
-  actions :index
-
   layout :check_for_iframe_render
 
-  skip_before_filter :check_user_authentication!
-  skip_before_filter :current_search_for_side_panel
-  before_filter :current_search_for_side_panel_if_html # TODO: This can be done more elegantly in Rails 3 using the new :if/:unless options.
+  skip_before_action :authenticate_user_account!
+  before_action :perform_search, only: :index
 
-  index do
-    before do
-      perform_search
+  def locations
+    respond_to do |format|
+      format.html do
+        render layout: 'webpacker'
+      end
+      format.json do
+        interview = Interview.find_by(archive_id: params[:archive_id])
+
+        json = Rails.cache.fetch "interview-locations-#{interview.id}-#{interview.updated_at}" do
+          segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
+          {
+            archive_id: params[:archive_id],
+            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e)},
+          }.to_json
+        end
+        render plain: json
+      end
     end
-    wants.html do
-      # this is only rendered when calling 'ortssuche.html' explicitly!
-      render :action => :index
-    end
-    wants.json do
-      # this is the response when calling 'ortssuche.json'
-      render :json => { 'results' => @results.compact.map(&:json_attrs) }.to_json
-    end
-    wants.js do
-      # this is the default response or when calling 'ortssuche.js'
-      json = { 'results' => @results.compact.map(&:json_attrs) }.to_json
-      render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+  end
+
+  def index
+    respond_to do |format|
+      format.html
+      format.json do
+        # this is the response when calling 'ortssuche.json'
+        render :json => { 'results' => @results.compact.map(&:json_attrs) }.to_json
+      end
+      format.js do
+        # this is the default response or when calling 'ortssuche.js'
+        json = { 'results' => @results.compact.map(&:json_attrs) }.to_json
+        render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+      end
     end
   end
 

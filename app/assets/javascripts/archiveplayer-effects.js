@@ -1,0 +1,284 @@
+/**
+ * requires Prototpye
+ **/
+
+//= require prototype
+
+var ArchivePlayerSlidesController = Class.create({
+  
+  initialize: function(captionsContainer, slideClass) {
+    this.caption = null;
+    this.captionContainer = $(captionsContainer);
+    this.slideClass = slideClass;
+    this.useSlides = this.slideClass != null;
+    this.currentSlide = null;
+    this.slideIndex = 0;
+    this.citation = true;
+    if (this.useSlides) {
+      this.slides = $$('#' + captionsContainer + ' .' + this.slideClass);
+      if (this.slides.length < 3) {
+        // a minimum of 3 slides is needed
+        this.useSlides = false;
+      } else {
+        this.slides.each(function(slide) {
+            slide.setStyle({ opacity: 0, display: 'none' });
+        })
+      }
+    }
+  },
+
+  nextSlideIndex: function() {
+    var nextIndex = this.slideIndex + 1;
+    if(nextIndex > this.slides.length -1) {
+        nextIndex = 0;
+    }
+    return nextIndex;
+  },
+
+  previousSlideIndex: function() {
+    var prevIndex = this.slideIndex -1;
+    if(prevIndex < 0) {
+        prevIndex = this.slides.length -1;
+    }
+    return prevIndex;
+  },
+
+  showCaptions: function(captionText) {
+    if(this.captionContainer) {
+      /*
+       // hide citation container - not working as intended!
+      if(this.citation) {
+          this.citation = false;
+          this.captionContainer.down('.initial').each(function(el){ el.hide(); });
+      }
+      */
+      // empty string if undefined
+      if(!captionText) { captionText = ""; }
+      // insert into next slide
+      var nextIndex = this.nextSlideIndex();
+      this.slides[nextIndex].innerHTML = captionText;
+      new Effect.Fade(this.slides[this.slideIndex], { duration: 0.25 });
+      new Effect.Appear(this.slides[nextIndex], { duration: 0.25, queue: 'end' });
+      this.slideIndex = nextIndex;
+    }
+  }
+
+});
+
+var TableOfContents = Class.create({
+
+  initialize: function(options) {
+
+    this.containerId = options.id || 'interview_headings';
+    this.mainClass = options.mainClass || 'mainheading';
+    this.subClass = options.subClass || 'subheading';
+    this.subListElem = options.subListElem || 'ul';
+    this.scrollPosition = options.scrollPosition || 1;
+    this.currentClassName = options.currentClassName || 'current';
+    this.scrollViewPosition = options.scrollViewPosition || 196;
+
+    this.currentHeading = null;
+    this.section = 0;
+    this.subsection = 0;
+
+    this.mainHeadings = $$('#' + this.containerId + ' .' + this.mainClass);
+    if((!this.mainHeadings) || (this.mainHeadings.length == 0)) {
+      throw("No Headings found for container " + this.containerId);
+    }
+
+  },
+
+  toggleSection: function(section) {
+    this.toggleSectionNumber(this.parseSectionNumber(section)[0], false, false);
+  },
+
+  toggleSectionNumber: function(sectionNum, closeAll, openOnly) {
+    var toggledSection = this.getHeading([sectionNum, 0]);
+    if((closeAll) && (sectionNum != 0)) {
+      for(var i=0; i < this.mainHeadings.length; i++) {
+        if((i - sectionNum > 2) || (i - sectionNum < -2)) {
+          var heading = this.mainHeadings[i];
+          if(heading.hasClassName('open')) {
+            heading.removeClassName('open');
+            heading.addClassName('closed');
+          }
+        }
+      }
+    }
+    if(toggledSection) {
+      if(toggledSection.hasClassName('open') && !openOnly) {
+        toggledSection.addClassName('closed');
+        toggledSection.removeClassName('open');
+      } else {
+        // check for className - headings without subheadings
+        // don't need to get toggled!
+        if(toggledSection.hasClassName('closed')) {
+          toggledSection.removeClassName('closed');
+          toggledSection.addClassName('open');
+        }
+      }
+    }
+  },
+
+  parseSectionNumber: function(sectionNum) {
+    var section = 0;
+    var subSection = 0;
+    if(!sectionNum) {
+      return [ 0, 0 ];
+    }
+    if(sectionNum.isString) {
+      if(sectionNum =~ /\d+\.\d+/) {
+        subSection = parseInt(sectionNum.sub(/^\d+\./,''));
+      }
+      section = parseInt(sectionNum.sub(/\.\d+$/,''));
+    } else {
+      section = Math.floor(sectionNum);
+      subSection = parseInt(sectionNum.toString().sub(/^\d+/,'').sub('.','') || '0');
+    }
+    return [section,subSection];
+  },
+
+  // get a Heading from sectionArray
+  getHeading: function(sectionArray) {
+    var section = sectionArray[0];
+    var subSection = sectionArray[1];
+    var heading = null;
+    if(section < 1) return null;
+    if(subSection < 1) {
+      heading = this.mainHeadings[section-1];
+    } else {
+      heading = this.mainHeadings[section-1].getElementsBySelector('.' + this.subClass)[subSection-1];
+    }
+    return heading;
+  },
+
+  markHeading: function(sectionInput) {
+    var sectionArray = this.parseSectionNumber(sectionInput);
+    var section = sectionArray[0];
+    var subSection = sectionArray[1];
+
+    // only do something when we have a new section or subsection
+    if((section != this.section) || (subSection != this.subSection)) {
+
+      // toggleSection on mainheading change
+      if(section != this.section) {
+        this.toggleSectionNumber(section, true, true);
+        this.section = section;
+      }
+
+      var newHeading = this.getHeading(sectionArray);
+
+      if(newHeading != this.currentHeading) {
+        if(this.currentHeading != null) {
+          this.currentHeading.removeClassName(this.currentClassName);
+        }
+        if(newHeading) {
+          newHeading.addClassName(this.currentClassName);
+        }
+      }
+      if(newHeading) {
+        // smoothly scroll to the new heading
+        var newOffset = 0;
+        var sectionHeading = newHeading;
+        if(newHeading.hasClassName(this.subClass)) {
+          // try to retrieve the mainheading
+          var sectionHeading = newHeading.up('.' + this.mainClass);
+          if(sectionHeading) {
+            // newOffset = newOffset + sectionHeading.offsetTop;
+          }
+          // add the subheading offsetTop (i.e. within the current section)
+          newOffset = newOffset + newHeading.offsetTop;
+        }
+        var prevOffset = 0;
+        // add all previous sections' heights (this works for both open/closed status)
+        if(sectionHeading) {
+            var sec = 1;
+            sectionHeading.previousSiblings().each(function(el){
+                prevOffset = prevOffset + el.offsetHeight;
+                sec = sec + 1;
+            })
+        }
+        newOffset = newOffset + prevOffset - this.scrollViewPosition;
+        if(newOffset < 0) { newOffset = 0; }
+        new Effect.Tween(this.containerId, $(this.containerId).scrollTop, newOffset, { duration: 0.6 }, 'scrollTop');
+
+        // update current status variables
+        this.currentHeading = newHeading;
+        this.subSection = subSection;
+      }
+    }
+  }
+
+});
+
+/* Class that handles display of annotations per segment */
+var AnnotationsDisplayController = Class.create({
+    initialize: function(domID, playerID, options) {
+        this.player = archiveplayer(playerID);
+        this.annotationsContainer = $(domID);
+        this.annotationPattern = /^\w{2}\d+_\d+_\d+_\d+$/;
+        this.player.annotations = this.annotationsContainer.select('.annotation');
+        this.player.onSegment = this.onSegment;
+        this.newAnnotationElemID = 'annotate_new_segment';
+        this.newAnnotationElem = null;
+        this.existingAnnotationElemID = 'annotate_existing_segment';
+        this.existingAnnotationElem = null;
+        this.segmentMediaID = '';
+    },
+    onSegment: function(event) {
+        var matching = false;
+        var annContainer = annotationsController.annotationsContainer;
+        var segmentMediaRange = event['segmentData']['mediaId'];
+        var mediaIdDelimiters = segmentMediaRange.split(/[-,;]+/).sort();
+        var currentMediaID = mediaIdDelimiters.shift();
+        var nextMediaID = annotationsController.nextMediaID(mediaIdDelimiters.shift() || currentMediaID);
+        var pattern = annotationsController.annotationPattern;
+        var aidx = this.annotations.length;
+        while(aidx--) {
+            var annotation = this.annotations[aidx];
+            var annotationMediaID = annotation.classNames().select(function(klass){return pattern.match(klass);}).first();
+            if(!annotationMediaID) { continue; }
+            if((annotationMediaID >= currentMediaID) && (annotationMediaID < nextMediaID)) {
+                annotation.addClassName('show');
+                annotation.show();
+                matching = true;
+            }  else {
+                annotation.hide();
+                annotation.removeClassName('show');
+            }
+        }
+        if(!matching) {
+            annContainer.hide();
+        } else {
+            new Effect.Appear(annContainer.id, { duration: 0.25, queue: 'end' });
+        }
+
+        // UserAnnotations
+        this.segmentMediaID = segmentMediaRange.split(/[-,;]+/).sort().first();
+        var userAnnotation = $('user_annotation_' + this.segmentMediaID);
+        if(!this.newAnnotationElem) {
+            this.newAnnotationElem = $(annotationsController.newAnnotationElemID);
+        }
+        if(!this.existingAnnotationElem) {
+            this.existingAnnotationElem = $(annotationsController.existingAnnotationElemID);
+        }
+        if(this.newAnnotationElem && this.existingAnnotationElem) {
+            if(userAnnotation) {
+                // show the link/button to existing annotation
+                this.newAnnotationElem.hide();
+                this.existingAnnotationElem.show();
+                // userAnnotationID points to an existing Annotation
+                this.userAnnotationID = parseInt(userAnnotation.innerHTML.gsub(/\s/,''));
+            } else {
+                // show the link/button to new annotation
+                this.existingAnnotationElem.hide();
+                this.newAnnotationElem.show();
+            }
+        }
+    },
+    nextMediaID: function(someMediaID) {
+        var baseMediaID = someMediaID.sub(/\d{4}$/,'');
+        var mediaIndex = (+someMediaID.split(/[-_.,;]+/).last()) + 1;
+        return baseMediaID + ('000' + mediaIndex).substr(-4);
+    }
+});

@@ -70,7 +70,7 @@
             </div>
 
             <br class="clear spacer" />
-            <a href="#seitenanfang" title="Zum Seitenanfang"><img src="<%= ActionController::Base.relative_url_root || '' %>/images/sprungmarke.gif" alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
+            <a href="#seitenanfang" title="Zum Seitenanfang"><img src='<%= image_path "#{Project.name}/sprungmarke.gif" %>' alt="Bild Sprungmarke nach oben" border="0" title="" /></a>
             <br class="clear" />
 
             <div class="clear"></div>
@@ -98,7 +98,7 @@
 
     <div id="printlogo">
       <p class="info"><em>Diese Grafiken werden nur in der Druckvorschau verwendet:</em></p>
-      <img src="<%= ActionController::Base.relative_url_root || '' %>/images/project_logo_print.gif" border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
+      <img src='<%= image_path  "#{Project.name}/project_logo_print.gif" %>' border="0" width="262" height="73" title="Druckversion des Logos" alt="Druckversion des Logos" />
     </div>
 
 </body>

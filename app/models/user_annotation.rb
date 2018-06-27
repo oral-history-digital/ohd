@@ -8,11 +8,11 @@ class UserAnnotation < UserContent
 
   has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
 
-  named_scope :for_interview, lambda{|interview| {:conditions => ['reference_type = ? and interview_references LIKE ?', 'Segment', "%#{interview.archive_id}%"]}}
-  named_scope :for_user, lambda{|user| {:conditions => ['user_id = ?', user.id]}}
+  scope :for_interview, -> (interview) { where('reference_type = ?', 'Segment').where('interview_references LIKE ?', "%#{interview.archive_id}%") }
+  scope :for_user, -> (user) { where('user_id = ?', user.id) }
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
-  named_scope :for_media_id, lambda{|m_id| { :conditions => ['reference_type = ? and media_id LIKE ?', 'Segment', "%#{m_id}"] } }
+  scope :for_media_id, -> (m_id) { where('reference_type = ?', 'Segment').where('media_id LIKE ?', "%#{m_id}") }
 
   PUBLICATION_STATES = %w(proposed postponed rejected shared)
   STATES = PUBLICATION_STATES + %w(private)
@@ -46,15 +46,15 @@ class UserAnnotation < UserContent
     end
   end
 
-  attr_accessible :description, :title, :position
+  #attr_accessible :description, :title, :position
 
-  validates_format_of :reference_type, :with => /^Segment$/
-  validates_uniqueness_of :reference_id, :scope => :user_id
+  #validates_format_of :reference_type, :with => /\ASegment\z/
+  #validates_uniqueness_of :reference_id, :scope => :user_id
 
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
   def validate
-    unless media_id =~ Regexp.new("#{CeDiS.config.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
+    unless media_id =~ Regexp.new("#{Project.project_initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
       errors.add :media_id, 'Invalid Media ID given.'
     end
     if description_changed?
@@ -73,11 +73,11 @@ class UserAnnotation < UserContent
   end
 
   def archive_id
-    media_id[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
+    media_id[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)].downcase
   end
 
-  def timecode_string
-    @timecode_string ||= "#{Tape.human_name} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
+  def timecode_string(locale)
+    @timecode_string ||= "#{I18n.t(Tape, locale: locale)} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
   end
 
   def translated=(trans)
@@ -95,7 +95,7 @@ class UserAnnotation < UserContent
   end
 
   def default_title(locale)
-    title_tokens = [UserAnnotation.human_name(:locale => locale) + I18n.t('user_interface.annotations.connective', :locale => locale)]
+    title_tokens = [I18n.t('activerecord.models.user_annotation.one', locale: locale) + I18n.t('user_interface.annotations.connective', locale: locale)]
     title_tokens << reference.interview.short_title(locale)
     title_tokens << "(#{reference.interview.archive_id})"
     title_tokens << reference.tape_number
@@ -140,16 +140,17 @@ class UserAnnotation < UserContent
   end
 
   # path to show the resource
-  def get_content_path
-    if reference.nil?
-      # just a failsafe - this could fail workbook view rendering
-      super.get_content_path
-    else
-      item = reference.tape.number
-      position = reference.start_time.round
-      interview_path(reference.interview, :item => item, :position => position)
-    end
-  end
+  # TODO: cleanup: delete this method!
+  #def get_content_path
+    #if reference.nil?
+      ## just a failsafe - this could fail workbook view rendering
+      #super.get_content_path
+    #else
+      #item = reference.tape.number
+      #position = reference.start_time.round
+      #Rails.application.routes.url_helpers.interview_path(reference.interview, :item => item, :position => position)
+    #end
+  #end
 
   private
 

@@ -1,6 +1,7 @@
 class ChangePhotosCaptionToText < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
 
     add_column :photos, :caption_string, :string
 
@@ -15,11 +16,14 @@ class ChangePhotosCaptionToText < ActiveRecord::Migration
     remove_column :photos, :caption_string
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
 
     # don't reverse the changes as the text field is backwards-compatible
 
+  end
   end
 
 end

@@ -1,0 +1,169 @@
+/* Customization of #600 */
+a:visited, a:hover,
+#administration input[type=button].cancel, #administration input[type=reset], #administration input.subdued,
+#workflow_actions #reject_user_registration input, #workflow_actions #postpone_user_registration input,
+#workflow_actions #expire_user_registration input, #workflow_actions #remove_user_registration input {
+    color: #333399;
+}
+
+#mainNavigation ul li a:hover, #mainNavigation ul li a.current,
+#navigationTopFlexible ul li .active, #navigationTopFlexible ul li a:hover, #navigationTopFlexible ul li a.active {
+    background-color: #333399;
+}
+
+
+/* Customization of #730f0f */
+#volumeSelect { background-color: #333399; }
+
+
+/* Customization of 840f08 */
+.formLabel .fieldWithErrors label, .fieldWithErrors label, form .flashAlert {
+    color: #333399;
+}
+
+#innerContent form input[type=submit], #innerContent form input[type=button], #innerContent form input[type=reset],
+#modal_window form input[type=submit], #modal_window form input[type=button], #modal_window form input[type=reset] {
+    background-color: #333399;
+}
+
+.edit_user_registration #workflow_actions .tooltipButton input {
+    border-top-color: #333399; border-left-color: #333399; border-right-color: #333399;
+}
+
+
+/* Customization of #840f09 */
+#baseLogout #submit, .searchString, #toggle_links .active #activate_sorting {
+    color: #333399;
+}
+
+#baseServices {
+    background-color: #333399;
+}
+
+#administration input[type=button], #administration input[type=submit], a.userTableButtonLink {
+    background-color: #333399;
+    border-color: #333399;
+}
+
+
+/* Customization of #8b0f09 */
+#administration input[type=button]:hover, #administration input[type=submit]:hover, a.userTableButtonLink:hover,
+#flashAlert, #errorExplanation ul li, #searchReset a,
+.fragmentTitle label, .section, .baseListBox h2, .tooltip,
+#tabsVideo li:hover, #tabsVideo li:hover p,
+#workflow_actions #register_user_registration.tooltipButton:hover input, #workflow_actions #activate_user_registration.tooltipButton:hover input,
+#workflow_actions #postpone_user_registration.tooltipButton:hover input, #workflow_actions #expire_user_registration.tooltipButton:hover input,
+#workflow_actions #reject_user_registration.tooltipButton:hover input, #workflow_actions #deactivate_user_registration.tooltipButton:hover input,
+#workflow_actions #reactivate_user_registration.tooltipButton:hover input, #workflow_actions #resend_info_user_registration.tooltipButton:hover input,
+#workflow_actions #remove_user_registration.tooltipButton:hover input,
+#language_select .captions_orig:hover, #language_select .captions_trans:hover, #language_select .captions_orig.active, #language_select .captions_trans.active {
+    color: #333399;
+}
+
+.portlet #submit:hover, #submit:focus,
+#tabsVideo ul li, #tabsVideo li.active {
+    background-color: #333399;
+}
+
+
+/* Customization of #900 */
+a:visited, a:hover, a:link, a:focus,
+h1 a:visited, h1 a:hover, h1 a:focus,
+a:link strong, a:hover strong, a:link b, a:hover b,
+a:visited strong, a:visited b, strong a:link,
+strong a:hover, b a:link, b a:hover,
+strong a:visited, b a:visited, .red,
+div.headings-container a:link,
+#baseHeaderNavigation ul li, #baseHeaderNavigation ul li a:hover,
+.baseListBox h3 a:link, .baseListBox h3 a:visited, .baseListBox h3 a:hover,
+.baseListBox li a:link, .baseListBox li a:visited, .baseListBox li a:hover, .baseListBox ul li,
+#innerContent .formInput div.fieldWithErrors input[type=text], #innerContent .formInput div.fieldWithErrors textarea,
+#innerContent .formInput div.fieldWithErrors select, #modal_window div.fieldWithErrors input[type=text],
+.formError, #search_facets .active-facet, #tabsOverview li:hover p,
+.teaserList .pagination a, .teaserList .pagination a.visited,
+#administration .userTable .unchecked, #administration .userTable .rejected,
+#user_annotations .author small a:hover, #user_contents .title, #user_contents .edit, #user_contents .header .title,
+#mainWrapper .save_user_content input[type="submit"], #mainWrapper .inline-editor form.inline input[type='text'],
+#modal_window .inline-editor form.inline input[type='text'] {
+    color: #333399;
+}
+
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li.current a,
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li a:hover,
+#mainNavigation, #mainNavigation ul li a,
+.item .handle.changed, #extendedControlbar span, #annotate_segment span a:hover,
+.containerVideo .playerControl, .playerControl .itemselection, .playerControl select,
+.teaserList .pagination span.current {
+    background-color: #333399;
+}
+
+#modal_window div.fieldWithErrors textarea, #modal_window div.fieldWithErrors select {
+    border-color: #333399;
+}
+
+
+/* Customization of #9f1313 */
+.heading a:hover, .subheading a:hover,
+#tabsOverview li p {
+    color: #333399;
+}
+
+
+/* Customization of #a21818 */
+#extendedControlbar span.active {
+    background-color: #333399;
+}
+
+
+/* Customization of #a31a1a */
+.playerControl select {
+    border-color: #333399 !important;
+}
+
+
+/* Customization of #aa2d2d */
+#extendedControlbar {
+    background-color: #333399;
+}
+
+
+/* Customization of #ac3131 */
+#baseContent .fragmentTitle h2 {
+    border-top-color: #333399;
+}
+#tabsVideo ul li {
+    border-color: #333399;
+}
+
+
+/* Customization of #c00 */
+.portlet .required, h4 {
+    color: #333399;
+}
+
+#errorExplanation h2 {
+    background-color: #333399;
+}
+
+
+/* Customization of #cd0a0a */
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+    border-color: #333399;
+    color: #333399;
+}
+
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a,
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text {
+    color: #333399;
+}
+
+
+/* Customization of "red" */
+.fieldWithErrors {
+    background-color: #333399;
+}
+#errorExplanation {
+    border-color: #333399;
+}
+
+

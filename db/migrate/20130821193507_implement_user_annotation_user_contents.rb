@@ -4,13 +4,17 @@ class ImplementUserAnnotationUserContents< ActiveRecord::Migration
     change_table :user_contents do |t|
       t.string :workflow_state, :default => 'private'
     end
-    change_table :annotations do |t|
-      t.belongs_to :user_content
+    unless Project.name.to_sym == :mog
+      change_table :annotations do |t|
+        t.belongs_to :user_content
+      end
     end
   end
 
   def self.down
-    remove_column :annotations, :user_content_id
+    unless Project.name.to_sym == :mog
+      remove_column :annotations, :user_content_id
+    end
     remove_column :user_contents, :workflow_state
   end
 

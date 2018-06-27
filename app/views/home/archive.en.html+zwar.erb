@@ -1,0 +1,115 @@
+<h1>The Online Archive “Forced Labor 1939-1945” </h1>
+
+<%= render 'teaser' %>
+
+<p></p>
+
+<p>The online archive “Forced Labor 1939-1945” contains interviews with nearly 600 former
+  forced laborers from 26 countries. The collection is made up of various subsets, which were
+  compiled worldwide between the years 2005 and 2006 and financed by the Foundation
+  “Remembrance, Responsibility and Future”. The digital archive preserves these testimonies
+  for the future and makes them available for educational and research purposes.</p>
+
+<% if current_user_account.nil? %>
+<p style="font-weight: bold">
+  In order to protect privacy rights you must be <%= link_to 'logged in', new_user_account_session_path(:en) %> and agree to the
+  <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> as well as
+  the <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>
+  before being granted access to the archive.
+</p>
+<% else %>
+<br/>
+<p>
+  As a registered user you are given access to all interviews in full length that
+  we have been given permission to publicize on the web under our
+  <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> and
+  <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %>.
+</p>
+<% end %>
+
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/categories.png") %>" alt="Categories"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Category Search</h3>
+<p>
+  Content categories in the search menu bar on the right give an overview of the classification system of the archive and provide thematically structured access.
+  <br/>
+    <%= link_to 'description of categories »',
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Which research features are available?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/fulltext.png") %>" alt="Fulltext Search"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Fulltext Search</h3>
+<p>
+  Fulltext search via the search field on the right enables an intuitive access via search terms which specifically suit your research motivation.
+  <br/>
+    <%= link_to 'explanation of fulltext search »',
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'How should I use full text search?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= public_map_path -%>">
+      <img src="<%= image_path("#{Project.name}/teaser/karte.png") %>" alt="Map"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Map</h3>
+<p>
+  An interactive map shows sites of biographical relevance to the interviewees: place of birth, deportation, camps, companies and prisons, places of residence after 1945.
+  <br/>
+    <%= link_to 'interactive map »', public_map_path, title: 'interactive Map' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= collections_path -%>">
+      <img src="<%= image_path("#{Project.name}/teaser/collections.png") %>" alt="Collections"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Overview of Collections</h3>
+<p>
+  The overview map of the project's collections illustrate the provenance of the archive and provide a regional access.
+  <br/>
+    <%= link_to 'overview map of collections »', collections_path, :title => 'geographic distribution of interview collections' %>
+    <br/>
+</p>
+
+<hr style="clear: both;"/>
+<h2 class="clear">Multilingual Archive</h2>
+<p>
+    The archive, with interviews conducted in 25 languages, is completely available in German. The user
+    interface and data about the people and the interviews are also available in English and Russian.
+</p>
+<p>
+    The table of contents, captions, short biographies and editorial comments are available in Russian
+    for the Russian interviews, and in English for the English interviews. Interviews in other languages
+    are displayed in German, even if you have selected the Russian or English archive version.
+</p>
+<h2 class="clear">FAQs</h2>
+<p>
+    Please see the <%= link_to t(:faq), faq_index_path, title: 'Q&A concerning archive features.' %>
+    for technical advice or if you have any questions about the archive contents or using the archive.
+    If your questions cannot be answered here, please  contact: <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Contact Email">mail@zwangsarbeit-archiv.de</a>
+</p>

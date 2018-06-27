@@ -1,0 +1,40 @@
+// Print
+
+@media print {
+ body {
+   font-size: 8pt;
+   line-height: 1.5em;
+ }
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+   page-break-after: avoid;
+ }
+
+ h1 {
+   font-size: 14pt;
+ }
+
+ h2 {
+   font-size: 12pt;
+ }
+
+ h3 {
+   font-size: 10pt;
+ }
+
+ h4,
+ h5,
+ h6 {
+   font-size: 8pt;
+ }
+
+ a[href] {
+   color: #ccc;
+   text-decoration: underline;
+ }
+}

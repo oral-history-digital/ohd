@@ -1,6 +1,7 @@
 class CreateCategories < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
 
     create_table :categories do |t|
       t.string  :name
@@ -23,14 +24,17 @@ class CreateCategories < ActiveRecord::Migration
     drop_table :forced_labor_habitations
 
   end
+  end
   
 
   def self.down
+  unless Project.name.to_sym == :mog
 
     drop_table :categories
 
     drop_table :categorizations
 
+  end
   end
   
 end

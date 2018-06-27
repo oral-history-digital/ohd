@@ -1,81 +1,79 @@
 class UserContentsController < BaseController
   include ERB::Util
 
-  layout 'workspace', :except => [ :show, :create ]
+  #layout 'workspace', :except => [ :show, :create ]
 
-  belongs_to :user
+  #before_action :object, except: [:index]
+  #before_action :collection, only: [:index]
 
-  actions :create, :update, :show, :index, :destroy
+  #belongs_to :user
 
-  before_filter :determine_user!
-  skip_before_filter :determine_user
+  #before_action :determine_user!
+  #skip_before_action :determine_user
 
-  skip_before_filter :current_search_for_side_panel
+  #before_action :collection, only: [:index]
 
-  before_filter :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
-  rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
+  #before_action :authorize_owner!, :only => [ :update, :destroy, :publish, :retract ]
+  #rescue_from ActiveRecord::ReadOnlyRecord, :with => :unauthorized_access
 
-  create do
-    wants.html do
-      render :action => 'show'
-    end
-    wants.js do
-      render :partial => 'show', :object => @object
-    end
-    failure do
-      wants.html do
-        render :action => 'show'
-      end
-      wants.js do
-        render :partial => 'show', :object => @object
-      end
-    end
-  end
+  def create
+    @user_content = UserContent.new(user_content_params)
+    @user_content.user_id = current_user_account.user.id
+    @user_content.save
+    @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 
-  destroy do
-    wants.html do
-      render :action => 'index'
-    end
-    wants.js do
-      render :update do |page|
-        page.visual_effect(:switch_off, "user_content_#{@object.id}", { 'afterFinish' => "function(){Element.remove($('user_content_#{@object.id}'));}" })
+    respond_to do |format|
+      #format.html do
+        #render :action => 'show'
+      #end
+      #format.js do 
+        #render :partial => 'show', object: @object
+      #end
+      format.json do
+        render json: @user_content
       end
     end
   end
 
-  create.flash nil
+  def destroy 
+    @user_content = UserContent.find(params[:id])
+    @user_content.destroy
 
-  update.flash nil
-
-  destroy.flash nil
-
-  index do
-    wants.html do
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.js
+      format.json { render json: :ok }
     end
-    wants.js do
-      html = render_to_string :template => '/user_contents/index.html.erb', :layout => false
-      render :update do |page|
-        page.replace_html 'innerContent', html
-        page.visual_effect :fade, 'overlay', :duration => 0.4, :queue => 'end'
+  end
+
+  def index 
+    user_contents = current_user_account ? UserContent.where(user_id: current_user_account.user.id) : []
+    respond_to do |format|
+      format.html 
+      format.js 
+      format.json do
+        render json: user_contents
       end
     end
   end
 
   # The show action is used to request info on any existing
   # context-based user_content, or the ability to create a new one (on a 404).
-  show do
-    wants.html do
-      if @object.nil? || @object.new_record?
-        render :nothing => true, :status => 404
-      else
-        render
+  def show 
+    respond_to do |format|
+      format.html do
+        if @object.nil? || @object.new_record?
+          render body: nil, :status => 404
+        end
       end
-    end
-    wants.js do
-      if @object.nil? || @object.new_record?
-        render :nothing => true, :status => 404
-      else
-        render :partial => 'show', :object => @object
+      format.js do
+        if @object.nil? || @object.new_record?
+          render json: { status: 404 }
+        else
+          render :partial => 'show', :object => @object
+        end
       end
     end
   end
@@ -100,7 +98,7 @@ class UserContentsController < BaseController
     segment = Segment.for_media_id(@media_id).scoped({:include => :interview}).first
     unless segment.nil?
       @object = UserAnnotation.new
-      @object.user = current_user
+      @object.user = current_user_account
       @object.reference = segment
       @object.attributes = @object.user_content_attributes
       @object.media_id = @media_id
@@ -118,15 +116,7 @@ class UserContentsController < BaseController
           format.html do
             render :partial => 'segment_annotation', :object => @object
           end
-          format.js do
-            html = render_to_string(:partial => 'segment_annotation', :object => @object)
-            render :update do |page|
-              page.replace_html :modal_window, html
-              page << "setTimeout('$(\"modal_window\").show(); new Effect.Appear(\"modal_window\");', 500);"
-              page.show :modal_window
-              page.visual_effect :appear, :modal_window
-            end
-          end
+          format.js
         end
       end
     end
@@ -149,15 +139,12 @@ class UserContentsController < BaseController
   end
 
   def publish_notice
-    object
     @context = params['context'] # need context for rendering correct response
     respond_to do |format|
       format.html do
         render :partial => 'publish_notice'
       end
-      format.js do
-        render :layout => false, :partial => 'publish_notice'
-      end
+      format.js 
     end
   end
 
@@ -168,15 +155,7 @@ class UserContentsController < BaseController
         redirect_to user_contents_path
       end
       format.js do
-        item_update = (params['context'] =~ /user_contents/) \
-          ? render_to_string(:partial => 'user_content', :object => @object) \
-          : render_to_string(:partial => 'show', :object => (@user_content = @object))
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page << "$('modal_window').hide();"
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        @partial = params['context'] =~ /user_contents/ ? 'user_content' : 'show'
       end
     end
   end
@@ -186,15 +165,23 @@ class UserContentsController < BaseController
     item_update_response
   end
 
-  update do
-    wants.html do
-      redirect_to :action => 'show'
-    end
-    wants.js do
-      context = (params['context'] || 'user_content').underscore
-      html = render_to_string :partial => context, :object => @object
-      render :update do |page|
-        page.replace "#{context}_#{object.id}", html
+  def update
+    @user_content = UserContent.find(params[:id])
+    @user_content.update_attributes(user_content_params)
+    @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
+
+    #@object.update_attributes(user_content_params)
+    respond_to do |format|
+      #format.html do
+        #redirect_to :action => 'show'
+      #end
+      #format.js do
+        #@context = (params['context'] || 'user_content').underscore
+        #@att = 'description'
+        #@base_id = "#{@context}_#{@object.id}_#{@att}"
+      #end
+      format.json do
+        render json: {status: :ok}
       end
     end
   end
@@ -207,9 +194,7 @@ class UserContentsController < BaseController
       format.html do
         render :partial => 'topics'
       end
-      format.js do
-        render :layout => false, :partial => 'topics'
-      end
+      format.js 
     end
   end
 
@@ -237,15 +222,7 @@ class UserContentsController < BaseController
         end
       end
       format.js do
-        item_update = (params['context'] =~ /user_contents/) \
-          ? render_to_string(:partial => 'user_content', :object => @object) \
-          : render_to_string(:partial => 'show', :object => (@user_content = @object))
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page << "$('modal_window').hide();"
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        @partial = (params['context'] =~ /user_contents/) ? 'user_content' : 'show'
       end
     end
   end
@@ -257,9 +234,7 @@ class UserContentsController < BaseController
         redirect_to user_contents_path
       end
       format.js do
-        render :update do |page|
-          page.visual_effect(:fade, 'overlay')
-        end
+        render js: "jQuery('#overlay').hide();"
       end
     end
   end
@@ -272,14 +247,31 @@ class UserContentsController < BaseController
 
   private
 
-  # make sure the current_user is the owner of the resource
+  def user_content_params
+    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
+    params.require(:user_content).
+      permit(:description,
+             :title,
+             :media_id,
+             :interview_references,
+             :reference_id, 
+             :reference_type, 
+             :type,
+             :link_url,
+             :persistent).
+      tap do |whitelisted|
+        whitelisted[:properties] = properties.permit!
+      end
+  end
+
+  # make sure the current_user_account is the owner of the resource
   def authorize_owner!
-    unless object.user == current_user
+    unless object.user == current_user_account.user
       raise ActiveRecord::ReadOnlyRecord
     end
   end
 
-  # find the object with the current_user id and the id_hash parameter
+  # find the object with the current_user_account id and the id_hash parameter
   def object
     @object ||= begin
       @id_hash = params[:id]
@@ -291,7 +283,7 @@ class UserContentsController < BaseController
             klass.new
           else
             id_attr = @id_hash.to_i > 0 ? 'id' : 'id_hash'
-            klass.find(:first, :conditions => ["user_id = ? AND #{id_attr} = ?", current_user.id, @id_hash ])
+            klass.where(["user_id = ? AND #{id_attr} = ?", current_user_account.user.id, @id_hash ]).first
           end
         end
       end
@@ -306,15 +298,15 @@ class UserContentsController < BaseController
       @type = params[:type] || type
       if params[:id].blank?
         # find by media_id
-        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user).first
+        @type.camelize.constantize.for_media_id(@media_id).for_user(current_user_account).first
       else
         # retrieve by user_content.id
-        @type.camelize.constantize.find(:first, :conditions => ['id = ?', params[:id]])
+        @type.camelize.constantize.where(['id = ?', params[:id]]).first
       end
     end
     @object ||= begin
       annotation = UserAnnotation.new
-      annotation.user = current_user
+      annotation.user = current_user_account
       annotation.media_id = @media_id
       annotation.reference = Segment.for_media_id(@media_id).first
       annotation
@@ -353,7 +345,7 @@ class UserContentsController < BaseController
 
   def build_object
     @object = model_name.camelize.constantize.new object_params
-    @object.user = current_user
+    @object.user = current_user_account
     @object
   end
 
@@ -379,7 +371,7 @@ class UserContentsController < BaseController
 
   def tag_filters
     filters = params['tag_filters'] || {}
-    if((filters.keys.size > 0) && (filters.keys.size < (current_user.tags.length+1)))
+    if((filters.keys.size > 0) && (filters.keys.size < (current_user_account.tags.length+1)))
       return filters.keys
     else
       return []
@@ -391,7 +383,7 @@ class UserContentsController < BaseController
     sql_conditions = []
     sql_conditions << [conditions.shift, 'user_id = ?'].delete_if{|el| el.blank? }.join(' AND ')
     sql_conditions += conditions
-    sql_conditions << current_user.id
+    sql_conditions << current_user_account.user.id
     includes = []
     tags = tag_filters
     unless tags.empty?
@@ -399,7 +391,7 @@ class UserContentsController < BaseController
       includes << :tags
       sql_conditions = [ sql_conditions.shift + " AND tags.name IN ('#{tags.map{|t| h(t)}.join("','")}')" ] + sql_conditions
     end
-    end_of_association_chain.all(:conditions => sql_conditions, :include => includes, :order => "position ASC, user_contents.created_at DESC")
+    @user_contents = UserContent.where(sql_conditions).includes(includes).order("position ASC, user_contents.created_at DESC")
   end
 
   def tag_list_from_ids(ids)
@@ -409,19 +401,19 @@ class UserContentsController < BaseController
       cond << id
     end
     cond.first << ')'
-    Tag.all(:conditions => cond).map(&:name)
+    Tag.where(cond).map(&:name) unless Tag.nil?
   end
 
   # positional sorting by id list
   def sort_by_list(ids)
-    current_contents = UserContent.all(:conditions => ["user_id = ? AND id IN (#{ids.join(',')})", current_user.id], :order => "position ASC, created_at DESC")
+    current_contents = UserContent.where(["user_id = ? AND id IN (#{ids.join(',')})", current_user_account.id]).order("position ASC, created_at DESC")
     pos = current_contents.map(&:position)
     current_pos = (0.75 * pos.min).round
     pos_per_step = ((1.25 * pos.max - current_pos) / pos.length).floor + 1
     ids.each do |id|
       item = current_contents.select{|c| c.id == id.to_i }.first
       unless item.nil?
-        UserContent.update_all ['position = ?', current_pos], "id = #{id} AND user_id = #{current_user.id}"
+        UserContent.update_all ['position = ?', current_pos], "id = #{id} AND user_id = #{current_user_account.id}"
         item.position = current_pos
       end
       current_pos += pos_per_step
@@ -434,20 +426,19 @@ class UserContentsController < BaseController
         redirect_to request.referer
       end
       format.js do
-        render :update do |page|
-          page << "closeModalWindow(); resumeAfterAnnotation();"
+        render js: <<JS
+          closeModalWindow(); 
+          resumeAfterAnnotation();"
           # inject a user_annotation list element if none exists
-          page << <<JS
-var annId = 'user_annotation_#{@object.media_id}';
-if(!$(annId)) {
-  $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
-  // toggle the link to user_content#segment_annotation
-  $(annotationsController.newAnnotationElemID).hide();
-  $(annotationsController.existingAnnotationElemID).show();
-  archiveplayer('interview-player').userAnnotationID = #{@object.id};
-}
+          var annId = 'user_annotation_#{@object.media_id}';
+          if(!$(annId)) {
+            $('user_annotations_list').insert({top: new Element('li', {id: annId}).update('#{@object.id}')});
+            // toggle the link to user_content#segment_annotation
+            $(annotationsController.newAnnotationElemID).hide();
+            $(annotationsController.existingAnnotationElemID).show();
+            archiveplayer('interview-player').userAnnotationID = #{@object.id};
+          }
 JS
-        end
       end
     end
   end
@@ -458,12 +449,7 @@ JS
         redirect_to request.referer
       end
       format.js do
-        item_update = render_to_string(:partial => 'user_content', :object => @object)
-        # didn't get highlighting to work without messing with background images etc.
-        render :update do |page|
-          page.visual_effect(:fade, 'shades', { :from => 0.6 })
-          page.replace("user_content_#{@object.id}", item_update)
-        end
+        render :item_update_response
       end
     end
   end

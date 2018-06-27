@@ -1,157 +1,188 @@
 require 'globalize'
+require "#{Rails.root}/lib" + '/reference_tree.rb'
+
 
 class Interview < ActiveRecord::Base
-  include CeDiS::CategoryExtension
-
-  NUMBER_OF_INTERVIEWS = Interview.count
+  include Paperclip
+  include IsoHelpers
 
   belongs_to :collection
 
   belongs_to :language
 
-  has_many  :photos,
-            :dependent => :destroy,
-            :include => [ :interview, :translations ]
-
-  has_many :text_materials,
+  has_many :photos,
+           #-> {includes(:interview, :translations)},
            :dependent => :destroy
 
-  has_many  :tapes,
-            :dependent => :destroy,
-            :include => :interview
+  # TODO: is this still necessary for zwar
+  #has_many :text_materials,
+           #:dependent => :destroy
 
-  has_many  :segments,
-            :dependent => :destroy
+  has_many :tapes,
+           -> {includes(:interview)},
+           :dependent => :destroy,
+           inverse_of: :interview
 
   has_many :annotations,
-           :dependent => :delete_all,
-           :include => :translations
+           #-> {includes(:translations)},
+           :dependent => :delete_all
 
-  has_many  :contributions,
-            :dependent => :delete_all
+  has_many :contributions,
+           :dependent => :delete_all
 
-  has_many  :contributors,
-            :through => :contributions
+  has_many :contributors,
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :interview_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type = 'interview'"
+  has_many :interviewees,
+          #  -> {where("contributions.contribution_type = 'Informants'")}, ## MOG
+          #  -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
+           -> {where("contributions.contribution_type = '#{Project.interviewee_contribution_type}'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :transcript_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type = 'transcript'"
+  #has_many :interview_contributors,
+  has_many :interviewers,
+           -> {where("contributions.contribution_type = '#{Project.interviewer_contribution_type}'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :translation_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type = 'translation'"
+  #has_many :transcript_contributors,
+  has_many :transcriptors,
+           -> {where("contributions.contribution_type = '#{Project.transcription_contribution_type}'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :proofreading_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type IN ('proofreading','proof_reading')"
+  #has_many :translation_contributors,
+  has_many :translators,
+           -> {where("contributions.contribution_type = '#{Project.translation_contribution_type}'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :segmentation_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type = 'segmentation'"
+  has_many :cinematographers,
+           -> {where("contributions.contribution_type = 'Camera recorder'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :documentation_contributors,
-            :class_name => 'Contributor',
-            :source => :contributor,
-            :through => :contributions,
-            :conditions => "contributions.contribution_type = 'research'"
+  has_many :quality_managers,
+           -> {where("contributions.contribution_type = 'Quality management interviewing'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
 
-  has_many  :imports,
-            :as => :importable,
-            :dependent => :delete_all
+
+  #has_many :proofreading_contributors,
+  has_many :proofreaders,
+           -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+  #has_many :segmentation_contributors,
+  has_many :segmentators,
+           -> {where("contributions.contribution_type = '#{Project.indexation_contribution_type}'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+  #has_many :documentation_contributors,
+  has_many :researchers,
+           -> {where("contributions.contribution_type = 'research'")},
+           :class_name => 'Person',
+           :source => :person,
+           :through => :contributions
+
+  # TODO: rm this after integration of zwar-BE
+  #has_many :imports,
+           #:as => :importable,
+           #:dependent => :delete_all
 
   has_attached_file :still_image,
-                    :styles => { :thumb => '88x66', :small => '140x105', :original => '400x300>' },
+                    :styles => {:thumb => '88x66', :small => '140x105', :original => '400x300>'},
                     :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
                     :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
                     :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
-  has_many  :registry_references,
-            :as => :ref_object,
-            :include => [{:registry_entry => {:registry_names => :translations}}, :registry_reference_type],
-            :dependent => :destroy
+  has_many :registry_references,
+           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
+           :as => :ref_object,
+           :dependent => :destroy
 
   has_many :registry_entries,
            :through => :registry_references
 
-  translates :first_name, :other_first_names, :last_name, :birth_name,
-             :return_date, :forced_labor_details,
-             :interviewers, :transcriptors, :translators,
-             :proofreaders, :segmentators, :researchers
+  has_many :segments,
+           #-> { includes(:translations)},
+           :dependent => :destroy#,
+           #inverse_of: :interview
 
-  validate :has_standard_name
-  def has_standard_name
-    if self.last_name(I18n.default_locale).blank?
-      errors.add(:last_name, ' must be set for default locale (=standard name).')
-    end
-  end
+  has_many :segment_registry_references,
+           -> {
+              includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}).
+              where("registry_references.ref_object_type='Segment'").
+              where("registry_references.registry_entry_id != '0'")
+           },
+           class_name: 'RegistryReference'
+           
+  has_many :segment_registry_entries,
+           through: :segment_registry_references,
+           source: :registry_entry
+           
+  has_many :checklist_items,
+           -> {order('item_type ASC')},
+           dependent: :destroy
+
+  translates :observations
+  # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
+  #translates :first_name, :other_first_names, :last_name, :birth_name,
+             #:return_date, :forced_labor_details,
+             #:interviewers, :transcriptors, :translators,
+             #:proofreaders, :segmentators, :researchers
+
+  #validate :has_standard_name
+
+  #def has_standard_name
+    #if self.last_name(I18n.default_locale).blank?
+      #errors.add(:last_name, ' must be set for default locale (=standard name).')
+    #end
+  #end
 
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
-  validates_attachment_content_type :still_image,
-                                    :content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                    :if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  # TODO: reuse this for zwar?
+  #validates_attachment_content_type :still_image,
+                                     #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
+                                     #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
   searchable :auto_index => false do
-    integer :interview_id, :using => :id, :stored => true, :references => Interview
     integer :language_id, :stored => true, :references => Language
-    string :archive_id, :stored => true
-    text :transcript, :boost => 5 do
-      indexing_interview_text = ''
-      segments.each do |segment|
-        indexing_interview_text << ' ' + segment.transcript
-        indexing_interview_text << ' ' + segment.translation
-      end
-      indexing_interview_text.squeeze(' ')
-    end
-    text :headings, :boost => 20 do
-      indexing_headings = ''
-      segments.with_heading.each do |segment|
-        segment.translations.each do |translation|
-          indexing_headings << ' ' + translation.mainheading unless translation.mainheading.blank?
-          indexing_headings << ' ' + translation.subheading unless translation.subheading.blank?
-        end
-      end
-      indexing_headings.squeeze(' ')
-    end
+    string :archive_id, :stored => true, :references => Interview
+    integer :collection_id, :stored => true, :references => Collection
+    string :media_type, :stored => true
+    
+    # in order to fast access a list of titles for the name autocomplete:
+    string :title, :stored => true
 
-    text :registry_entries, :boost => 10 do
-      registry_references.map do |reference|
-        (I18n.available_locales + [:alias]).map do |locale|
-          reference.registry_entry.to_s(locale)
-        end.uniq.reject(&:blank?).join(' ')
+    text :transcript, :boost => 5 do
+      segments.includes(:translations).inject([]) do |all, segment|
+        all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
+        all
       end.join(' ')
     end
-
-    CeDiS.archive_facet_category_ids.each do |category_id|
-      integer "#{category_id.to_s.singularize}_ids".to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+    
+    (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
+      integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
-    # Index archive id, facet categories and language (with all translations) for full text category search.
-    text :categories, :boost => 20 do
-      cats = [self.archive_id]
-      cats += (CeDiS.archive_facet_category_ids + [:language]).
-                  # Retrieve all category objects of this interview.
-                  map{|c| self.send(c)}.flatten.
-                  # Retrieve their translations.
-                  map do |cat|
-                    I18n.available_locales.map{|l| cat.to_s(l)}.join(' ')
-                  end
-      cats.join(' ')
+    Project.person_search_facets.each do |facet|
+      string facet['id'].to_sym, :multiple => true, :stored => true
     end
 
     # Create localized attributes so that we can order
@@ -160,17 +191,18 @@ class Interview < ActiveRecord::Base
       string :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
+      text :"person_name_#{locale}", :stored => true, :boost => 20 do
+        full_title(locale)
+      end
     end
-    text :person_name, :boost => 20 do
-      (
-        translations.map do |t|
-          build_full_title_from_name_parts(t.locale)
-        end.join(' ') + (" #{alias_names}" || '')
-      ).
-      strip.
-      squeeze(' ')
-    end
+    
+  end
 
+  scope :researched, -> {where(researched: true)}
+  scope :with_still_image, -> {where.not(still_image_file_name: nil)}
+
+  def self.random_featured
+    researched.with_still_image.order("RAND()").first || first
   end
 
   # referenced by archive_id
@@ -182,17 +214,112 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
+  def place_of_interview
+    if registry_references.length > 0
+      if registry_references.where(registry_reference_type_id: 3).length > 0
+        registry_references.where(registry_reference_type_id: 3).first.registry_entry
+      end
+    end
+  end
+
+  def localized_hash(use_full_title=false)
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  if Project.available_locales.include?( locale.to_s )
+      mem
+    end
+  end
+
+  def localized_hash_for_media_type
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio', :locale => locale)
+      mem
+    end
+  end
+
+  def title
+    localized_hash(true)
+  end
+
+  def reverted_short_title(locale)
+    locale = projectified(locale)
+    begin
+      [interviewees.first.last_name(locale), interviewees.first.first_name(locale)].join(', ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
+    end
+  end
+
+  Project.registry_entry_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
+      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+    end
+  end
+
+  Project.registry_reference_type_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
+      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
+    end
+  end
+
+  # ZWAR_MIGRATE: Uncomment this after migrating zwar
+  Project.person_search_facets.each do |facet|
+    define_method facet['id'] do 
+      # TODO: what if there are more intervviewees?
+      interviewees.first ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
+    end
+  end
+  #def facet_category_ids(entry_code)
+    #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
+  #end
+
+  def languages
+    if segments.first
+      segments.first.translations.inject([]) {|mem, t| mem << ISO_639.find(t.locale.to_s).alpha2; mem }
+    else
+      [ISO_639.find(language.first_code).alpha2]
+    end
+  end
+
+  def to_vtt(lang, tape_number=1)
+    vtt = "WEBVTT\n"
+    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
+    vtt
+  end
+
   def transcript_locales
-    language.code.split('/')
+    language.code.split(/[\/-]/)
   end
 
   def right_to_left
     language.code == 'heb' ? true : false
   end
 
-  def duration
-    @duration ||= Timecode.new read_attribute(:duration)
+  def create_or_update_segments_from_file_for_tape(file_path, tape_id, opts={})
+    column_names = opts[:column_names].empty? ? {
+      timecode: "IN",
+      transcript: "TRANSCRIPT",
+      translation: "Übersetzung",
+      annotation: "Anmerkungen",
+    } : opts[:column_names]
+
+    ods = Roo::Spreadsheet.open(file_path)
+    ods.each_with_pagename do |name, sheet|
+      sheet.each(column_names) do |row|
+        if row[:timecode] =~ /^\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}$/
+          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
+          segment.update_attributes text: row[:transcript], locale: ISO_639.find(language.code).send(Project.alpha)
+        end
+      end
+    end
+  rescue  Roo::HeaderRowNotFoundError
+    'header_row_not_found'
   end
+
+  #def duration
+    #@duration ||= Timecode.new read_attribute(:duration)
+  #end
 
   # Sets the duration either as an integer in seconds,
   # or applies a timecode by parsing. Even sub-timecodes
@@ -213,37 +340,50 @@ class Interview < ActiveRecord::Base
     write_attribute :duration, time
   end
 
-  def build_full_title_from_name_parts(locale)
-    locale = locale.to_sym
-
-    # Check whether we've got the requested locale. If not fall back to the
-    # default locale.
-    used_locale = Globalize.fallbacks(locale).each do |l|
-      break l unless translations.select{|t| t.locale.to_sym == l}.blank?
+  # add the duration of all existing tapes
+  def recalculate_duration!
+    unless tapes.blank? || tapes.empty? || (tapes.select{|t| t.duration.nil? }.size > 0)
+      new_duration = tapes.inject(0){|dur, t| dur += t.duration.nil? ? t.estimated_duration.time : Timecode.new(t.duration).time }
+      update_attribute(:duration, new_duration) unless new_duration == self[:duration]
     end
-    return nil unless used_locale.is_a?(Symbol)
+  end
 
-    # Build last name with a locale-specific pattern.
-    last_name = last_name(used_locale) || ''
-    birth_name = birth_name(used_locale)
-    lastname_with_birthname = if birth_name.blank?
-                                last_name
-                              else
-                                I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
-                              end
+  def build_full_title_from_name_parts(locale)
+    first_interviewee = interviewees.first
+    if first_interviewee
 
-    # Build first name.
-    first_names = []
-    first_name = first_name(used_locale)
-    first_names << first_name unless first_name.blank?
-    other_first_names = other_first_names(used_locale)
-    first_names << other_first_names unless other_first_names.blank?
+      # Check whether we've got the requested locale. If not fall back to the
+      # default locale.
+      #used_locale = Globalize.fallbacks(locale).each do |l|
+        #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
+      #end
+      #return nil unless used_locale.is_a?(Symbol)
+      used_locale = projectified(locale)
 
-    # Combine first and last name with a locale-specific pattern.
-    if first_names.empty?
-      lastname_with_birthname
+      # Build last name with a locale-specific pattern.
+      last_name = first_interviewee.last_name(used_locale) || ''
+      birth_name = first_interviewee.birth_name(used_locale)
+      lastname_with_birthname = if birth_name.blank?
+                                  last_name
+                                else
+                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                                end
+
+      # Build first name.
+      first_names = []
+      first_name = first_interviewee.first_name(used_locale)
+      first_names << first_name unless first_name.blank?
+      other_first_names = first_interviewee.other_first_names(used_locale)
+      first_names << other_first_names unless other_first_names.blank?
+
+      # Combine first and last name with a locale-specific pattern.
+      if first_names.empty?
+        lastname_with_birthname
+      else
+        I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      end
     else
-      I18n.t('interview_title_patterns.lastname_firstname', :locale => used_locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+      'no interviewee given'
     end
   end
 
@@ -252,19 +392,19 @@ class Interview < ActiveRecord::Base
   end
 
   def short_title(locale)
-    [first_name(locale), last_name(locale)].join(' ')
+    locale = projectified(locale) 
+    begin
+      [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+    rescue
+      "Interviewee might not be in DB, interview-id = #{id}"
+    end
   end
 
   def anonymous_title(locale)
     name_parts = []
-    name_parts << first_name(locale) unless first_name(locale).blank?
-    name_parts << "#{(last_name(locale).blank? ? '' : last_name(locale)).strip.chars.first}."
+    name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
+    name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
     name_parts.join(' ')
-  end
-
-  def year_of_birth
-    date = read_attribute(:date_of_birth)
-    date.blank? ? '?' : date[/(19|20)\d{2}/]
   end
 
   def video
@@ -274,6 +414,11 @@ class Interview < ActiveRecord::Base
   def video?
     read_attribute(:video)
   end
+
+  def media_type
+    read_attribute(:video) ? 'video' : 'audio'
+  end
+
 
   def has_headings?
     segments.with_heading.count > 0 ? true : false
@@ -285,10 +430,10 @@ class Interview < ActiveRecord::Base
 
   def citation_hash
     {
-      :original => read_attribute(:original_citation),
-      :translated => read_attribute(:translated_citation),
-      :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
-      :position => Timecode.new(read_attribute(:citation_timecode)).time.round
+        :original => read_attribute(:original_citation),
+        :translated => read_attribute(:translated_citation),
+        :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
+        :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
   end
 
@@ -296,9 +441,9 @@ class Interview < ActiveRecord::Base
     # assign the photo - but skip this part on subsequent changes of the file name
     # (because the filename gets assigned in the process of assigning the file)
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[Regexp.new("^#{CeDiS.config.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
+      archive_id = ((filename || '')[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       # construct the import file path
-      filepath = File.join(CeDiS.config.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
+      filepath = File.join(Project.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
       if File.exists?(filepath)
         if @assigned_filename != filename
           @assigned_filename = filename
@@ -317,9 +462,15 @@ class Interview < ActiveRecord::Base
   end
 
   def import_time
+
+    e = id
+    i = Import.for_interview(id).first
+
     @import_time ||= begin
       import = Import.for_interview(id).first
-      import.nil? ? Time.gm(2009,1,1) : import.time
+      import.nil? ? Time.gm(2009, 1, 1) : import.time
+    rescue
+          DateTime.now
     end
   end
 
@@ -341,7 +492,7 @@ class Interview < ActiveRecord::Base
     set_contributor_field_from('interviewers', 'interview_contributors')
     set_contributor_field_from('transcriptors', 'transcript_contributors')
     set_contributor_field_from('translators', 'translation_contributors')
-    set_contributor_field_from('proofreaders','proofreading_contributors')
+    set_contributor_field_from('proofreaders', 'proofreading_contributors')
     set_contributor_field_from('segmentators', 'segmentation_contributors')
     set_contributor_field_from('researchers', 'documentation_contributors')
     save
@@ -361,6 +512,48 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  # Creates a task that marks the interview as prepared for research
+  # Also set the segmentation_state and workflow_state on the Segmentation task
+  def prepare!
+    self.reload
+    if self.segments.empty?
+      false
+    else
+      segmentation_task = self.tasks.for_workflow('Segmentation').first
+      # instead of requiring a complete segmentation task - make it so!
+      segmentation_task = self.tasks.create do |task|
+        task.workflow_type = 'Segmentation'
+      end if segmentation_task.nil?
+      Task.update_all "workflow_state = 'completed'", ['id = ?', segmentation_task.id]
+      changed = if self.qm_value.to_f > 1
+                  if self.tasks.for_workflow('Research').empty?
+                    # create the research task
+                    self.tasks.create do |task|
+                      task.workflow_type = 'Research'
+                    end
+                    true
+                  else
+                    false
+                  end
+                else
+                  # remove all tasks that don't have anyone assigned
+                  unless self.tasks.for_workflow('Research').empty?
+                  research_task = self.tasks.for_workflow('Research').first
+                  if research_task.responsible.nil?
+                    research_task.destroy
+                    true
+                  else
+                    false
+                  end
+                end
+    end
+    skip_versioning!
+    update_attribute :segmentation_state, 'qm'
+    save
+    changed
+  end
+end
+
   private
 
   def set_contributor_field_from(field, association)
@@ -371,7 +564,7 @@ class Interview < ActiveRecord::Base
     field_contributors.each do |contributor|
       contributor.translations.each do |t|
         contributors_per_locale[t.locale] ||= []
-        contributors_per_locale[t.locale] << [ t.last_name, t.first_name ].compact.join(t.locale == :ru ? ' ' : ', ')
+        contributors_per_locale[t.locale] << [t.last_name, t.first_name].compact.join(t.locale == :ru ? ' ' : ', ')
       end
     end
 

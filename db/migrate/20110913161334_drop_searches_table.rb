@@ -1,9 +1,12 @@
 class DropSearchesTable < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :mog
     drop_table :searches
+  end
   end
 
   def self.down
+  unless Project.name.to_sym == :mog
     create_table "searches", :force => true do |t|
       t.string   "fulltext"
       t.string   "names"
@@ -18,5 +21,6 @@ class DropSearchesTable < ActiveRecord::Migration
     add_index "searches", ["fulltext", "names"], :name => "index_searches_on_fulltext_and_names"
     add_index "searches", ["fulltext"], :name => "index_searches_on_fulltext"
     add_index "searches", ["names", "categories"], :name => "index_searches_on_names_and_categories"
+  end
   end
 end

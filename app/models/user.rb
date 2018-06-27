@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
 
-  require 'archive-authorization'
-
-  attr_protected :admin
+  require 'user_account'
+  #require 'archive-authorization'
 
   belongs_to :user_account
   belongs_to :user_registration
@@ -11,7 +10,7 @@ class User < ActiveRecord::Base
 
   has_many :searches
 
-  acts_as_authorized_user
+  #acts_as_authorized_user
 
   has_many  :user_groups,
             :through => :users_user_groups
@@ -91,7 +90,7 @@ SQL
   end
 
   def tags
-    Tag.for_user(self)
+    Tag.for_user(self) unless Tag.nil?
   end
 
   # Authenticate a user based on configured attribute keys. Returns the
@@ -116,7 +115,7 @@ SQL
   #   end
   #
   def find_for_authentication(conditions)
-    UserAccount.find(:first, :conditions => conditions)
+    UserAccount.where(conditions).first
   end
 
 end

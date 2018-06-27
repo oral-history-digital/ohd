@@ -1,0 +1,547 @@
+// Tabs Navigation
+
+.content-tabs {
+  margin: 0;
+}
+
+.content-tabs-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.content-tabs-nav-link {
+  flex: 1;
+  margin-right: 0;
+  padding: 14px 12px;
+  color: #fff;
+  background-color: $primary-color;
+  text-align: center;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include screen-m {
+    padding: 12px;
+  }
+}
+
+.content-tabs-nav-link:last-child {
+  margin-right: 0;
+}
+
+.content-tabs-nav-link:hover {
+  color: $gray-dark;
+  text-decoration: none;
+  background-color: $gray-lighter;
+}
+
+.content-tabs-nav-link.active {
+  color: $gray-darkest;
+  background-color: $gray-lighter;
+}
+
+.fix-video .content-tabs-nav-link i {
+  display: block;
+  @include screen-m {
+    display: none;
+  }
+}
+
+.content-tabs-nav-link i {
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 21px;
+  @include screen-m {
+    margin-bottom: 8px;
+    font-size: 18px;
+    display: none;
+  }
+}
+
+.content-tabs-nav-link span {
+  margin: 0;
+  padding: 0;
+  display: none;
+  line-height: $line-height-medium;
+  @include screen-m {
+    display: block;
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+  }
+  @include screen-l {
+    display: block;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+  }
+}
+
+
+// Tabs Content
+
+.wrapper-content {
+  //display: none;
+  background-color: #fff;
+}
+
+.wrapper-content.active {
+  display: block;
+}
+
+/**
+ * Tabs no-js fallback
+ */
+
+//.content-tabs.no-js {
+//
+//  .content-tabs-nav {
+//    //display: none;
+//  }
+//
+//  .wrapper-content {
+//    display: block;
+//    margin-bottom: 30px;
+//  }
+//
+//  .wrapper-content:last-child {
+//    margin-bottom: 0;
+//  }
+//
+//}
+
+// Tab Content: Transcript
+
+.content-trans-row {
+  @include clearfix;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  .fa {
+    font-size: 20px;
+    color: $primary-color;
+  }
+  &.speaker-change {
+    margin-top: 15px;
+  }
+}
+
+.content-trans-speaker-ico,
+.content-trans-text {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.content-trans-speaker-ico {
+  .fa {
+    color: $gray-warm;
+  }
+  padding-top: 4px;
+  width: 4%;
+  margin-right: 4%;
+  @include screen-l {
+    width: 2%;
+    margin-right: 2%;
+  }
+}
+
+.content-trans-text {
+  width: 92%;
+  margin-right: 0;
+  @include screen-l {
+    width: 77%;
+    margin-right: 2%;
+  }
+  .segment {
+    padding: 4px;
+    color: $gray-dark;
+    cursor: pointer;
+    transition: 0.4s;
+    margin: 0;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    &.active {
+      background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+      color: $gray-darkest;
+    }
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.content-trans-text-ico {
+  display: block;
+  text-align: right;
+  width: 50%;
+  float: right;
+  @include pie-clearfix;
+  padding: 0;
+  border-bottom: 2px solid $gray-lighter;
+  @include screen-l {
+    width: 17%;
+    margin-left: 0;
+    float: none;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  &.active {
+    border: none;
+  }
+}
+.content-trans-text-ico-link {
+  display: inline-block;
+  margin-right: 2px;
+  padding: 6px 10px 0 10px;
+  color: $primary-color;
+  transition: 0.3s;
+  cursor: pointer;
+  &:last-child {
+    margin-right: 0;
+  }
+  &.active {
+    background-color: $gray-lighter;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+  &:hover {
+    background-color: $gray-lighter;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+}
+
+.content-trans-text-element {
+  width: 92%;
+  margin-left: 8%;
+  margin-bottom: 10px;
+  border: 2px solid $gray-lighter;
+  padding: 20px 10px 0 10px;
+  float: none;
+  clear: both;
+  .content-trans-text-element-title {
+    margin-top: 0;
+    font-size: $font-size-larger;
+    color: $gray-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: normal;
+  }
+  p.content-trans-text-element-group {
+    font-size: $font-size-larger;
+    color: $gray-dark;
+    margin-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid $gray-light;
+  }
+  p.content-trans-text-element-label {
+    font-size: $font-size-medium;
+    color: $gray-medium;
+    margin-bottom: 0;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+  }
+  .content-trans-text-element-data {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: $gray-dark;
+    span {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0 10px;
+      &:not(.last-item) {
+        border-right: 1px solid $gray-medium;
+      }
+    }
+    .scope-note-link {
+      color: $link-color;
+      cursor: pointer;
+    }
+    .scope-note {
+      margin-top: 10px;
+      border-top: 1px solid $gray-light;
+      padding: 20px 10px 10px;
+      .title {
+        font-size: $font-size-large;
+        color: $gray-medium;
+        letter-spacing: 0.1em;
+        font-weight: bold;
+        @include pie-clearfix;
+      }
+      .note {
+        margin: 10px 0;
+      }
+      .close {
+        float: right;
+        margin-left: 10px;
+      }
+      .close::after {
+        font-family: FontAwesome;
+        content: "\f00d";
+        font-size: $font-size-large;
+        color: $gray-medium;
+        padding: 2px 4px;
+        cursor: pointer;
+        background-color: $gray-lightest;
+      }
+    }
+  }
+  @include screen-l {
+    width: 80%;
+    margin-left: 0;
+    float: right;
+  }
+}
+
+// Tab Content: Index // Inhaltsverzeichnis
+
+.content-index {
+  .heading {
+    .heading-ico {
+      display: inline-block;
+      vertical-align: top;
+      padding: 4px 0;
+      cursor: pointer;
+      width: 6%;
+      margin-right: 2%;
+      @include screen-m {
+        width: 2%;
+        margin-right: 2%;
+      }
+      &::before {
+        font-family: FontAwesome;
+        content: "\f067";
+        color: $primary-color;
+        font-size: $font-size-medium;
+        transition: 0.4s;
+      }
+      &.active::before{
+        content: "\f068";
+      }
+      &:hover::before{
+        color: $gray-dark;
+      }
+    }
+    .mainheading {
+      display: inline-block;
+      width: 92%;
+      @include screen-m {
+        width: 96%;
+      }
+      cursor: pointer;
+      margin-bottom: 10px;
+      padding: 4px 0;
+      color: $gray-dark;
+      transition: 0.4s;
+      transition: 0.4s;
+      &:hover {
+        color: $primary-color !important;
+      }
+      &.active {
+        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        color: $gray-darkest;
+      }
+    }
+    .subheading {
+      cursor: pointer;
+      margin-bottom: 10px;
+      padding: 4px 0;
+      color: $gray-dark;
+      transition: 0.4s;
+      &:hover {
+        color: $primary-color;
+      }
+      &.active {
+        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        color: $gray-darkest;
+      }
+    }
+    .chapter-number{
+      vertical-align: top;
+      display: inline-block;
+      width: 15%;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+      @include screen-m {
+        width: 6%;
+      }
+    }
+    .chapter-text{
+      width: 85%;
+      display: inline-block;
+      @include screen-m {
+        width: 94%;
+      }
+    }
+  }
+  .expanded {
+    margin-left: 8%;
+    @include screen-m {
+      margin-left: 4%;
+    }
+    .mainheading {
+      font-weight: normal;
+    }
+    .heading {
+      margin-bottom: 0;
+    }
+  }
+  .collapsed {
+    display: none;
+  }
+}
+.content-tags {
+  .content-tags-segment {
+    margin-top: 5px;
+  }
+  .content-tags-segment-timecode {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium ;
+    margin-bottom: 0;
+  }
+  .content-tags-segment-text {
+    margin-bottom: 0;
+    color: $gray-dark;
+  }
+}
+div.mainheading + div {
+  margin-bottom: 0;
+}
+
+//.content-index-main-heading {
+//  li {
+//    margin-bottom: 10px;
+//  }
+//}
+
+// Tab Content: Search / Suche im Interview
+
+.content-search-legend {
+  margin-bottom: 20px;
+  font-size: $font-size-medium;
+}
+
+.content-search-text {
+  //width: 100%;
+  padding: 2px;
+  display: inline-block;
+  margin: 0 0 11px 0;
+  &:hover{
+    p, span {
+      color: $primary-color !important;
+    }
+  }
+  p {
+    display: inline-block;
+    color: $gray-dark;
+    cursor: pointer;
+    transition: 0.4s;
+    margin: 0;
+  }
+  p span.highlight {
+    padding: 0 4px;
+    background-color: rgba(255,250,129,0.6); //lighten($secondary-color, 30%);
+    color: $gray-darkest;
+  }
+
+  &.active {
+    background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+    color: $gray-darkest;
+  }
+}
+
+.content-search-row {
+  @include clearfix;
+  //margin-bottom: 15px;
+  padding-left: 2px;
+  .cont-search-title {
+  }
+  .content-search-timecode {
+    font-size: $font-size-small;
+    margin-bottom: 0;
+    padding-left: 2px;
+  }
+}
+
+.content-search {
+  font-size: $font-size-larger;
+  .search-input {
+    width: 80%;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-bottom: 2px solid $gray-light;
+    border-top: 2px solid $gray-light;
+  }
+  ::placeholder {
+    color: $primary-color;
+  }
+  .search-button {
+    width: 20%;
+    font-family: FontAwesome;
+    content: "\f067";
+    color: $primary-color;
+    float: right;
+    transition: color 0.3s;
+    padding: 10px;
+    border-bottom: 2px solid $gray-light;
+    border-top: 2px solid $gray-light;
+    &:hover {
+      color: $gray-light;
+    }
+  }
+  button,
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  button,
+  select {
+    text-transform: none;
+    cursor: pointer;
+  }
+}
+
+// Old classes tidying up later
+
+.column-content,
+.column-sidebar {
+  @include screen-m {
+    float: left;
+  }
+}
+
+.column-content {
+  @include screen-m {
+    width: 70%;
+    margin-right: 1%;
+  }
+}
+
+.column-sidebar {
+  @include screen-xs-s {
+    border-top: 1px solid $gray-lighter;
+    margin-top: 30px;
+    padding-top: 30px;
+  }
+  @include screen-m {
+    width: 24%;
+    padding: 2px 40px;
+    //border-left: 1px solid $gray-lighter;
+  }
+  // background: $gray-lightest;
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
+  color: $gray-dark;
+}

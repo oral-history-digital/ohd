@@ -1,6 +1,7 @@
 class AddCreditsToInterview < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
 
     change_table :interviews do |t|
       t.string :interviewers
@@ -12,8 +13,10 @@ class AddCreditsToInterview < ActiveRecord::Migration
     end
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
 
     remove_column :interviews, :interviewers
     remove_column :interviews, :transcriptors
@@ -22,6 +25,7 @@ class AddCreditsToInterview < ActiveRecord::Migration
     remove_column :interviews, :proofreaders
     remove_column :interviews, :segmentators
 
+  end
   end
 
 end

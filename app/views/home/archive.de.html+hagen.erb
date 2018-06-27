@@ -1,0 +1,120 @@
+<h1>Online-Archiv "<%= Project.project_name['de'] %>" im Institut für Geschichte und Biographie</h1>
+
+<div class="contentImagesLeft">
+<% @interview = Interview.first -%>
+<% interview_title = (current_user_account.nil? ? @interview.anonymous_title(I18n.locale) : @interview.short_title(I18n.locale))  %>
+<div class="contentImage200">
+<a href="<%= interview_path(:id => @interview.archive_id) -%>">
+    <img src="<%= image_path @interview.still_image.url(:original) %>" alt="<%= interview_title -%>" title="" width="200" height="150" />
+    <h6><%= interview_title -%>
+      <br/>
+      <%= t(@interview.video? ? 'media.video_interview' : 'media.audio_interview') %>,&nbsp;<%= @interview.language.to_s.downcase %><%= @interview.translated ? ' ' + content_tag(:span, '(' + t(:translated, :scope => 'status') + ')', :class => 'translated') : '' %>
+    </h6>
+</a>
+</div>
+</div>
+
+<p></p>
+
+<p>
+    Das Online-Archiv "Deutsches Gedächtnis" ist eine Kooperation des Instituts für
+    <%= link_to 'Geschichte und Biographie', 'https://www.fernuni-hagen.de/geschichteundbiographie/' %>
+    der FernUniversität in Hagen mit dem
+    <%= link_to 'Center für Digitale Systeme (CeDiS)', 'http://www.cedis.fu-berlin.de/' %> (Hyperlink) der Freien Universität Berlin.
+    Sein Aufbau wurde gefördert durch das Ministerium für Innovation, Wissenschaft und Forschung des Landes Nordrhein-Westfalen
+    in der Programmlinie "Infrastrukturelle Förderung für die GGW in NRW".
+</p>
+
+<p>
+    Das Online-Archiv "Deutsches Gedächtnis" bietet Zugang zu einer Auswahl von Zeitzeugeninterviews aus dem Archiv "Deutsches
+    Gedächtnis". Von den rund 3.000 lebensgeschichtlichen Interviews mit Zeitzeugen zu einer Vielzahl von Aspekten der deutschen
+    Geschichte sind derzeit <%= Interview.count %> Interviews online. Das Online-Archiv wird ständig erweitert.
+    Die Interviews im Online-Archiv stammen aus dem Projekt
+    <%= link_to '"Lebensgeschichte und Sozialkultur im Ruhrgebiet 1930-1960"', url_for(:controller => :collections, :action => :index, :locale => I18n.locale), :title => t('.collections_link_title') %>.
+    Interviews aus weiteren Projekten des Instituts für Geschichte und Biographie sind in Vorbereitung für die Bereitstellung
+    im Online-Archiv.
+</p>
+
+<% if current_user_account.nil? %>
+  <p style="font-weight: bold;">
+    Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
+    Sie zur Benutzung des Archivs "<%= Project.project_name['de'] %>" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
+    die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
+  </p>
+<% else %>
+  <br/>
+  <p>
+    Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller L&auml;nge, die
+    wir unter unseren <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> und
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> im Web bereitstellen
+    k&ouml;nnen.
+  </p>
+<% end %>
+
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/kategorien.png") %>" alt="Kategorien"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Kategorien-Suche</h3>
+<p>
+  Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
+  <br/>
+    <%= link_to 'Beschreibung der Kategorien »',
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Welche Recherchemöglichkeiten gibt es?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/volltext.png") %>" alt="Volltextsuche"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Volltextsuche</h3>
+<p>
+  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
+  <br/>
+    <%= link_to 'Beschreibung der Volltextsuche »',
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'Wie kann ich die Volltextsuche nutzen?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= collections_path -%>">
+      <img src="<%= image_path("#{Project.name}/teaser/collections.png") %>" alt="Teilsammlungen"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Sammlungen/Projekte</h3>
+<p>
+  Die Übersicht über Sammlungen und Projekte informiert über die derzeit online verfügbaren Projektbestände des
+  Archivs "Deutsches Gedächtnis" und bietet Informationen über die Forschungsprojekte, in denen die Interviews
+  erhoben wurden.
+  <br/>
+  <%= link_to 'zur Übersicht der Sammlungen »', collections_path, title: 'Übersicht über Sammlungen und Projekte' %>
+  <br/>
+</p>
+
+<hr style="clear: both;"/>
+<h2 class="clear">Fragen und Antworten</h2>
+<p>
+  Über die
+  <%= link_to t(:faq), faq_index_path, title: 'Fragen und Antworten zur Nutzung des Archivs' %>
+  auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
+  Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
+  <a href="mailto:deutsches-gedaechtnis@fernuni-hagen.de" target="_blank" title="Kontakt">
+      deutsches-gedaechtnis@fernuni-hagen.de
+  </a>
+</p>

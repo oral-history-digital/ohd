@@ -15,6 +15,7 @@ class TranslateInterviews < ActiveRecord::Migration
   TRANSLATED_COLUMNS = MIGRATED_COLUMNS.merge :birth_name => :string
 
   def self.up
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     # NB: We do this manually so that the migration remains compatible with
     # later changes to this table.
@@ -34,11 +35,13 @@ class TranslateInterviews < ActiveRecord::Migration
              WHERE first_name IS NOT NULL OR other_first_names IS NOT NULL OR last_name IS NOT NULL OR details_of_origin IS NOT NULL OR return_date IS NOT NULL OR forced_labor_details IS NOT NULL OR birth_location IS NOT NULL OR forced_labor_locations IS NOT NULL OR return_locations IS NOT NULL OR deportation_location IS NOT NULL"
 
     # Drop obsolete column.
-    remove_columns :interviews, MIGRATED_COLUMNS.keys
-    remove_columns :interviews, :full_title
+    #remove_columns :interviews, MIGRATED_COLUMNS.keys
+    #remove_columns :interviews, :full_title
+  end
   end
 
   def self.down
+  unless Project.name.to_sym == :mog
     # Re-create the full-title column but leave it empty (can be filled by re-importing all interviews if really needed).
     add_column :interviews, :full_title, :string
 
@@ -54,5 +57,6 @@ class TranslateInterviews < ActiveRecord::Migration
 
     # Drop globalize2 table.
     Interview.drop_translation_table!
+  end
   end
 end

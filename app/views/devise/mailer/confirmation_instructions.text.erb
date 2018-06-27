@@ -1,0 +1,25 @@
+<% case I18n.locale
+when :en -%>
+        Welcome <%= @resource.email %>!
+
+        You can confirm your account through the link below:
+
+        <%= confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :en) %>
+<% when :ru -%>
+        Добро пожаловать <%= @resource.email %>!
+
+        Вы можете подтвердить Ваш доступ, перейдя по следующей ссылке:
+
+        <%= confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :ru) %>
+<% when :el -%>
+        Καλώς ήρθατε <%= @resource.email %>!
+        Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:
+
+        <%= confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :el) %>
+<% else -%>
+        Willkommen <%= @resource.email %>!
+
+        Sie können Ihren Zugang jetzt bestätigen unter dem nachfolgenden Link:
+
+        <%= confirmation_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :de) %>
+<% end -%>

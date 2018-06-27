@@ -1,5 +1,5 @@
 .idea/
-assets
+/assets
 config/database.yml
 config/project_config
 log/
@@ -7,3 +7,5 @@ public/javascripts/translations.js
 solr/data
 sunspot-solr.pid
 tmp/
+/node_modules
+solr/pids/

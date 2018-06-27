@@ -14,6 +14,7 @@ class TranslateContributors < ActiveRecord::Migration
   }
 
   def self.up
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     Contributor.create_translation_table! CONTRIBUTOR_COLUMNS
 
@@ -32,11 +33,17 @@ class TranslateContributors < ActiveRecord::Migration
     end
 
     # Drop obsolete column.
-    remove_columns :contributors, CONTRIBUTOR_COLUMNS.keys
-    remove_columns :interviews, INTERVIEW_COLUMNS.keys
+    CONTRIBUTOR_COLUMNS.each do |column, type|
+      remove_column :contributors, column
+    end
+    INTERVIEW_COLUMNS.each do |column, type|
+      remove_column :interviews, column
+    end
+  end
   end
 
   def self.down
+  unless Project.name.to_sym == :mog
     # Re-create migrated columns.
     CONTRIBUTOR_COLUMNS.each do |column, type|
       add_column :contributors, column, type
@@ -56,5 +63,6 @@ class TranslateContributors < ActiveRecord::Migration
     # Drop globalize2 table/columns.
     Contributor.drop_translation_table!
     remove_columns :interview_translations, INTERVIEW_COLUMNS.keys
+  end
   end
 end

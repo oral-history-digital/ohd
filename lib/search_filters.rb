@@ -1,5 +1,6 @@
 module SearchFilters
 
+
   # This only runs the 'current_search_for_side_panel'
   # filter when html format is requested.
   def current_search_for_side_panel_if_html

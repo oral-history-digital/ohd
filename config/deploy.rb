@@ -1,104 +1,34 @@
-require 'bundler/capistrano'
+# config valid only for current version of Capistrano
+lock "3.9.1"
 
-set :repository, 'https://dev.cedis.fu-berlin.de/svn/eaz/zwar_archive/trunk'
-set :environment, :production
-set :scm, 'subversion'
-set :use_sudo, false
+set :repo_url, "git@gitlab.cedis.fu-berlin.de:Archive-Upgrade/zwar-archive.git"
 
-set :deploy_via, :remote_cache
-set :copy_exclude, ['.git/*', '.svn/*', '.DS_Store', 'deploy.rb', 'production.rb', 'Capfile', 'database.yml', 'solr.yml', 'sunspot.yml']
-set :bundle_dir, '/data/bundle/01'
+# Default branch is :master
+# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# set :branch, :development
 
-set :keep_releases, 6
+# Default value for :format is :airbrussh.
+# set :format, :airbrussh
 
-desc 'prepare to act on the production environment'
-task :production do
-  set :application, :zwar_archiv
-  set :project, :zwar
-  set :deploy_to, "/data/applications/#{application}"
-  role :app, 'da01.cedis.fu-berlin.de'
-  role :web, 'da01.cedis.fu-berlin.de'
-  role :db, 'da01.cedis.fu-berlin.de', :primary => true
-end
+# You can configure the Airbrussh format using :format_options.
+# These are the defaults.
+# set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
 
-desc 'prepare to act on the staging environment (ZWAR)'
-task :zwar_staging do
-  set :application, :zwar_archiv
-  set :project, :zwar
-  set :deploy_to, "/data/applications/staging/#{application}"
-  role :app, '160.45.170.50'
-  role :web, '160.45.170.50'
-  role :db, '160.45.170.50', :primary => true
-end
+# Default value for :pty is false
+# set :pty, true
 
-desc 'prepare to act on the staging environment (Hagen)'
-task :hagen_staging do
-  set :application, :hagen_archiv
-  set :project, :hagen
-  set :deploy_to, "/data/applications/staging/#{application}"
-  role :app, '160.45.170.50'
-  role :web, '160.45.170.50'
-  role :db, '160.45.170.50', :primary => true
-end
+# Default value for :linked_files is []
+append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/project.yml"
 
-# deploy restart: restart apache
-namespace :deploy do
+# Default value for linked_dirs is []
+# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+append :linked_dirs, "tmp/cache", "solr"
 
-  desc 'restart the server stack'
-  task :restart, :roles => :app do
-    run "touch #{current_release}/tmp/restart.txt"
-  end
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
-  task :symlink_configuration, :roles => :app do
-    %w{database.yml sunspot.yml environments/production.rb}.each do |config|
-      run "rm -f #{release_path}/config/#{config}"
-      run "ln -s #{shared_path}/config/#{config} #{release_path}/config/#{config}"
-      run "ln -nfs #{shared_path}/solr/data #{release_path}/solr/data"
-    end
-    # project configuration
-    run "rm -f #{release_path}/config/project.yml"
-    run "ln -sf project_config/project.yml #{release_path}/config/project.yml"
-    run "ln -sfT #{release_path}/config/projects/#{project}/ #{release_path}/config/project_config"
-    # stills
-    run "rm -rf #{release_path}/assets/archive_images"
-    run "ln -s #{shared_path}/assets/archive_images #{release_path}/assets/archive_images"
-    # text_materials
-    run "rm -rf #{release_path}/assets/archive_text_materials"
-    run "ln -s #{shared_path}/assets/archive_text_materials #{release_path}/assets/archive_text_materials"
-    # reports
-    run "rm -rf #{release_path}/assets/reports"
-    run "ln -s #{shared_path}/assets/reports #{release_path}/assets/reports"
-  end
+# Default value for local_user is ENV['USER']
+# set :local_user, -> { `git config user.name`.chomp }
 
-  task :rewrite_stylesheet_urls, :roles => :app do
-    # this places a /archiv before each image url
-    Dir.glob(File.join(File.dirname(__FILE__), '..', 'public', 'stylesheets', '*.css')).each do |file|
-      stylesheet = file.split('/').last
-      run "sed 's/\\/images/\\/archiv\\/images/g' #{current_release}/public/stylesheets/#{stylesheet} > #{current_release}/public/stylesheets/#{stylesheet}.new"
-      run "mv #{current_release}/public/stylesheets/#{stylesheet}.new #{current_release}/public/stylesheets/#{stylesheet}"
-    end
-  end
-
-  task :disable_web, :roles => :web do
-    # invoke with
-    # UNTIL="16:00 MST" REASON="a database upgrade" cap deploy:web:disable
-
-    on_rollback { rm "#{shared_path}/system/maintenance.html" }
-
-    require 'erb'
-    puts 'Wartungsarbeiten im Online-Archiv'
-    set(:reason) { Capistrano::CLI.ui.ask("Die Seite ist zur Zeit nicht erreichbar wegen: ['Wartungsarbeiten'] ")}
-    set(:deadline) { Capistrano::CLI.ui.ask('Voraussichtlich bis: [unabsehbar] ')}
-    maintenance = ERB.new(File.read('./app/views/layouts/maintenance.html.erb'), nil, '%').result(binding)
-
-    put maintenance, "#{shared_path}/system/maintenance.html", :mode => 0644
-  end
-
-  task :enable_web, :roles => :web do
-    run "rm #{shared_path}/system/maintenance.html"
-  end
-
-end
-
-after 'deploy:update_code', 'deploy:symlink_configuration'
-after 'deploy:update_code', 'deploy:rewrite_stylesheet_urls'
+# Default value for keep_releases is 5
+ set :keep_releases, 2

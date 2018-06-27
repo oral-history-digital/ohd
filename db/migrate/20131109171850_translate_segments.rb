@@ -1,5 +1,6 @@
 class TranslateSegments < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     Segment.create_translation_table! :mainheading => :string, :subheading => :string
 
@@ -19,8 +20,10 @@ class TranslateSegments < ActiveRecord::Migration
     remove_index :segments, :interview_id
     add_index :segments, [:interview_id, :section]
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
     # Drop indexes.
     remove_index :segments, [:interview_id, :section]
     add_index :segments, :interview_id
@@ -38,5 +41,6 @@ class TranslateSegments < ActiveRecord::Migration
 
     # Drop globalize2 table.
     Segment.drop_translation_table!
+  end
   end
 end

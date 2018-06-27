@@ -31,11 +31,17 @@ namespace :users do
   desc "Initialize admins"
   task :init_admins => :environment do
 
-    admins = { :fgrandel => %w(Herr Florian Grandel) }
+    admins = { 
+      'achim.hoch@cedis.fu-berlin.de' => %w(Herr Achim Hoch),
+      'chrgregor@googlemail.com' => %w(Herr Christian Gregor),
+      'nadia.el-obaidi@cedis.fu-berlin.de' => %w(Frau Nadia El-Obaidi),
+      'frank.beier@cedis.fu-berlin.de' => %w(Herr Frank Beier),
+      'anna-maria.droumpouki@cedis.fu-berlin.de' => %w(Frau Anna-Maria Droumpouki)
+    }
 
     admins.each do |login, name_parts|
-      account = UserAccount.find_by_login login.to_s
-      next if account.nil?
+      account = UserAccount.create login: login, email: login
+      #next if account.nil?
       reg = account.build_user_registration
       reg.appellation = name_parts[0]
       reg.first_name = name_parts[1]
@@ -48,7 +54,7 @@ namespace :users do
       reg.research_intentions = 'Projektmitarbeit'
       reg.comments = 'keine Angaben'
       reg.organization = 'CeDiS FU-Berlin'
-      reg.homepage = "www.#{CeDiS.config.project_domain}"
+      reg.homepage = "www.#{Project.project_domain}"
       reg.street = 'Ihnestr. 24'
       reg.zipcode = '14195'
       reg.city = 'Berlin'
@@ -56,7 +62,9 @@ namespace :users do
       reg.country = 'Deutschland'
       reg.save
       reg.register!
-      User.update_all "admin = true", "id = #{reg.user.id}"
+      User.where(id: reg.user.id).update_all admin: true
+      account.password = account.password_confirmation = "bla4bla"
+      account.save
       puts "created user: #{reg.user.reload}"
     end
 

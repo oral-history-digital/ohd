@@ -1,0 +1,75 @@
+// Utils
+// ------------------------------------------
+
+.skip, .hideme, .hide {
+  position: absolute;
+  left: -1000em; // ltr
+  top: -1000em;
+}
+
+.layout-indicator {
+  display: none !important;
+  width: 30px;
+  background: $gray-dark;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  margin-left: -15px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.no-print {
+  @media print {
+    display: none !important;
+  }
+}
+
+// Media Query / JS Sync
+// ------------------------------------------
+
+head { font-family:"XS"; }
+body:after { content:"XS"; display:none; }
+
+// Screen S
+@media screen and (min-width: $screen-s) {
+  head { font-family:"S"; }
+  body:after { content:"S"; }
+}
+
+// Screen M
+@media screen and (min-width: $screen-m) {
+  head { font-family:"M"; }
+  body:after { content:"M"; }
+}
+
+// Screen L
+@media screen and (min-width: $screen-l) {
+  head { font-family:"L"; }
+  body:after { content:"L"; }
+}
+
+// Screen XL
+@media screen and (min-width: $screen-xl) {  
+  head { font-family:"XL"; }
+  body:after { content:"XL"; }
+}
+
+
+// Floats
+// -------------------------
+
+.clearfix {
+  @include clearfix();
+}
+
+
+// Hide from screenreaders and browsers
+//
+// Credit: HTML5 Boilerplate
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}

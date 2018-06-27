@@ -1,18 +1,22 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
+require 'search_filters'
+require 'exception_notification'
+
 
 class ApplicationController < ActionController::Base
-  include ExceptionNotification::Notifiable
+  #include ExceptionNotification::Notifiable
 
   helper :all # include all helpers, all the time
 
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  filter_parameter_logging :password # Scrub sensitive parameters from your log
+  #protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  #filter_parameter_logging :password # Scrub sensitive parameters from your log
 
   include SearchFilters
-  before_filter :current_search_for_side_panel
 
-  prepend_before_filter :set_locale
+  before_action :set_variant
+
+  prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || I18n.default_locale).to_sym
     valid_locales = I18n.available_locales if valid_locales.empty?
@@ -36,6 +40,10 @@ class ApplicationController < ActionController::Base
     sign_out :user
   end
 
+  def set_variant
+    request.variant = Project.name.to_sym
+  end
+  
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end

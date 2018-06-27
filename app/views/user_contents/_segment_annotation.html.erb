@@ -4,18 +4,16 @@
     <%= segment_annotation.reference.interview.short_title(I18n.locale) -%>
     (<%= segment_annotation.reference.interview.archive_id -%>),
     <small>
-      <%= Tape.human_name_in_sentence -%>&nbsp;<%= segment_annotation.reference.tape.number -%>,
+      <%= t 'activerecord.models.tape.other' -%>&nbsp;<%= segment_annotation.reference.tape.number -%>,
       <%= (segment_annotation.reference.timecode || "::.").to_s.split('.').first.sub(/^\[\d+\]\s+/,'') -%>
     </small>
   </h2>
   <div>
     <%= error_message_on 'object', :description %>
     <% form_url = @object.new_record? ? create_annotation_user_contents_path(:method => :post) : update_annotation_user_content_path(@object) %>
-    <% remote_form_for @object,
-                       :url => form_url,
-                       :before => "new Effect.Fade('modal_window'); $('ajax-spinner').show();",
-                       :complete => "new Effect.Fade('shades');",
-                       :html => { :id => "annotations_form" } do |f| %>
+    <% form_for @object, form_url,
+                       remote: true,
+                       id: "annotations_form" do |f| %>
         <label name="user_annotation[description]">
           <%= t(:user_annotation, :scope => 'user_interface.user_content') -%>
         </label>

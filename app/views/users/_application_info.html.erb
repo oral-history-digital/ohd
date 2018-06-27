@@ -1,32 +1,34 @@
-<% user_record = application_info.user.nil? ? application_info : User.find_by_user_registration_id(application_info.id) -%>
+<%# user_record = application_info.user.nil? ? application_info : User.find_by_user_registration_id(application_info.id) -%>
+<% user_record = application_info -%>
+<% info = YAML.load(user_record.application_info) %>
 <tr>
   <td>
     <strong><%= "#{t(:name, :scope => "devise.registration_fields")}" %></strong>
-    <b><%= "#{user_record.appellation}" %>
+    <b><%= "#{info[:appellation]}" %>
     <%= "#{user_record.first_name}" %>
     <%= "#{user_record.last_name}" %></b>
   </td>
   <td rowspan="2" style="width:66%;max-width:200px;">
     <strong><%= "#{t(:adress, :scope => "devise.registration_fields")}" %></strong>
-    <%= [user_record.street,
-         "#{user_record.zipcode || ''} #{user_record.city || ''}",
-         user_record.country].delete_if{|p| p.blank?}.join(',<br/>') %>
+    <%= [info[:street],
+         "#{info[:zipcode] || ''} #{info[:city] || ''}",
+         info[:country]].delete_if{|p| p.blank?}.join(',<br/>').html_safe %>
   </td>
 </tr>
 <tr>
   <td>
     <strong><%= "#{t(:job_description, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{user_record.job_description}" %>
+    <%= "#{info[:job_description]}" %>
   </td>
 </tr>
 <tr>
   <td colspan="2" style="max-width: 360px;">
     <strong><%= "#{t(:organization, :scope => "devise.registration_fields")}" %></strong>
-    <% if user_record.homepage.blank? || user_record.homepage.eql?('/') %>
-        <%= user_record.organization %>
+    <% if info[:homepage].blank? || info[:homepage].eql?('/') %>
+        <%= info[:organization] %>
     <% else %>
-        <%= link_to "#{user_record.organization}",
-                "http://#{user_record.homepage}",
+        <%= link_to "#{info[:organization]}",
+                "http://#{info[:homepage]}",
                 :target => '_blank' %>
     <% end %>
   </td>
@@ -34,11 +36,11 @@
 <tr>
   <td>
     <strong><%= "#{t(:research_intentions, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{user_record.research_intentions}" %>
+    <%= "#{info[:research_intentions]}" %>
   </td>
   <td rowspan="2" style="max-width:200px;">
     <strong><%= "#{t(:comments, :scope => "devise.registration_fields")}" %></strong>
-    <%= "#{user_record.comments}" %>
+    <%= "#{info[:comments]}" %>
   </td>
 </tr>
 <tr>

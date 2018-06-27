@@ -1,0 +1,581 @@
+/* Facetted Search */
+#search_facets .active-facet {
+    display: block;
+    position: relative;
+    background: #999281;
+    color: #990000;
+    padding: 5px 10px;
+    margin-bottom: 1px;
+}
+
+/* overlays */
+.overlay {
+    opacity: 0.8;
+    background-color: #F1F1EB;
+    z-Index: 100;
+}
+
+#search_header_overlay {
+    height: 64px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 280px;
+}
+
+#search_facets_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150%;
+}
+
+#interview_search_overlay {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 500px;
+}
+
+#baseContainerRight {
+    position: relative;
+}
+
+/* spacing */
+#search_facets .fragmentTitle {
+    padding: 2px 10px 2px 4px;
+}
+
+.baseListBox #search_facets h2 {
+    margin-bottom: 0;
+    padding-left: 6px;
+}
+.baseListBox #search_facets h2.baseListBoxTitle {
+    margin-bottom:  0px;
+}
+#search_facets .fragmentTitle {
+    margin-top: 4px;
+}
+
+.active-facet ul,
+.active-facet ul li {
+    padding:0;
+    margin:0;
+}
+
+#search_facets .active-facet li {
+    width: auto;
+    display: inline;
+    color: #F1F1EB;
+}
+
+.active-facet .facet-remove {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    text-indent: -3000px;
+    overflow: hidden;
+    background: transparent url(<%=  image_path "#{Project.name}/close.png" %>) top right no-repeat;
+    height: 14px;
+    width: 14px;
+}
+
+/* facet toggle */
+.closed .fragmentTitle,
+.closed fieldset.facet-field,
+.closed.fragmentTitle .arrow-open {
+    display: none;
+}
+
+/* open arrow needs to be shifted left */
+.open.fragmentTitle .arrow-open {
+    display: inline-block;
+    margin-left: -3px;
+    margin-right: 3px;
+}
+
+.open.fragmentTitle .arrow-closed {
+    display: none;
+}
+
+/* empty facets */
+#search_facets .fragmentTitle .disabled {
+    color: #9a9a9a;
+    cursor: default;
+}
+
+/* Checkbox replacement */
+.facet-field .facet input.checkbox {
+    position: absolute;
+    right: -2000px;
+}
+
+.facet-field .facet {
+    padding-left: 19px;
+    display: block;
+    width: 240px;
+    background: transparent url(<%=  image_path "#{Project.name}/checkbox_n.gif" %>) left 2px no-repeat;
+}
+
+.facet-field .facet.checked {
+    background-image: url(<%=   image_path "#{Project.name}/checkbox_a2.gif" %>);
+}
+
+.facet-field .facet .facet-name {
+    font-size:90%;
+}
+
+/* transcript excerpts and segment selection */
+.baseContainerTeaserExcerpts .segment {
+    display: none;
+}
+.baseContainerTeaserExcerpts .segment.visible {
+    display: block;
+
+}
+
+/* Segment highlighting */
+.segment .highlight {
+    background-color: #e4e4da;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+/* hh */
+.baseContainerTeaserExcerpts .segment.visible a {
+    font-size:85%;
+}
+
+/* segment selection pagination */
+#innerContent .baseContainerTeaserExcerpts .segment_pagination {
+    float: right;
+    padding: 0;
+    margin: 0 8px 0 0;
+}
+
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li {
+    list-style-type: none;
+    background-image: none;
+    float: left;
+    clear: none;
+    padding:0;
+}
+
+/* hh */
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li a,
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li.current a {
+    padding: 0.2em 0.5em 0.1em 0.6em;
+}
+
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li.current a,
+#innerContent .baseContainerTeaserExcerpts .segment_pagination li a:hover { /* hh */
+    background-color: #990000;
+    color: #fff;
+    text-align: center;
+    /*padding: 0.1em 0.15em 0.1em 0.2em;*/ /* hh */
+    text-decoration: none;
+}
+
+.baseContainerTeaserExcerpts .segment .timecode,
+.baseContainerTeaserExcerpts .segment .tape
+{
+    font-weight: bold;
+    font-size: 80%;
+}
+
+/* fbeier */
+
+#baseHeaderSearch {
+    /*background: #fff url(/images/hits_bg_left.gif) top left no-repeat;*/
+    padding: 0;
+    position: absolute;
+    top: 26px;
+    left: 10px;
+    margin: 0;
+    font-size: 95%;
+    width: 120px;
+    height: 19px;
+}
+
+span.hits {
+    /*background: url(/images/hits_bg_right.gif) top right no-repeat;*/
+    display: block;
+    padding: 0 12px 0 0;
+    width: 200px;
+    height: 19px;
+}
+
+span.hits a,
+.mainSearch a:link,
+.mainSearch a:hover,
+.mainSearch a:visited {
+    color: #fff;
+    display: block;
+    padding: 0 12px 0 0;
+    width: 200px;
+    height: 19px;
+    text-decoration: none;
+}
+
+span.hits a:hover,
+.mainSearch a:hover {
+    text-decoration: none;
+}
+
+#submit_search {
+    float:right;
+    margin:10px 10px 0 0;
+}
+
+#searchReset {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    z-index: 10;
+}
+
+#searchReset a {
+    color: #8b0f09;
+    font-size: 85%;
+}
+
+#searchReset a:hover {
+    text-decoration: none;
+}
+
+#baseServices p {
+float:left;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+.searchString {
+    color: #840f09;
+    font-weight: bold;
+}
+
+.searchInput {
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+.baseInputSearch {
+    border-color: #666;
+    margin: 20px 0 11px 0;
+}
+
+#searchButton {
+    margin: 0 0 0 8px;
+
+}
+
+.fragmentTitle {
+    border-bottom: 1px solid #f1f1eb;
+    padding: 2px 10px;
+    position: relative;
+}
+
+.fragmentTitle.open {
+    padding-bottom:10px;
+}
+
+
+.facet_refresh {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+
+.spinner_search {
+    position: absolute;
+    top: 60px;
+    left: 113px;
+}
+
+/* Ebene Video (Suche im Interview, Inhaltsverzeichnis, MeinBereich)*/
+/* **************************************************************** */
+
+#interviewContentNavigation {
+    background: #e4e4da url(<%= image_path "#{Project.name}/interviewContentNavigation_bg.gif" %>) top repeat-x;
+}
+
+#search_in_interview {
+    padding:60px 0 0 0;
+    border-bottom: 1px solid #F1F1EB;
+
+}
+
+#back_to_search {
+    margin: 10px 10px 0 0;
+    float:right;
+}
+
+.fragmentTitle label {
+    display:block;
+    padding-top: 5px;
+    color:#8B0F09;
+    font-size:90%;
+    font-weight:bold;
+}
+
+#interview_fulltext {
+
+    margin:5px 0 10px 0px;
+    width: 200px;
+    border:1px solid #ccc;
+}
+
+#seach_in_interview_submit {
+    position:absolute;
+    margin:5px 0 0 5px;
+}
+
+.container-toggle {
+    clear:right;
+    height:20px;
+    text-indent: 22px;
+    padding-top: 6px;
+    border-bottom: 1px solid #F1F1EB;
+    cursor: pointer;
+    position: relative;
+}
+
+.container-toggle.open {
+    background: transparent url(<%=  image_path "#{Project.name}/pfeil_rot_unten.gif" %>) 6px 8px no-repeat;
+}
+
+.container-toggle.closed {
+    background: transparent url(<%=  image_path "#{Project.name}//pfeil_rot_rechts.gif" %>) 6px 8px no-repeat;
+}
+
+.container-toggle img {
+    position: absolute;
+    top: 7px;
+    right: 20px;
+    width: 12px;
+}
+
+.container-toggle .tooltip {
+    top: auto;
+    left: auto;
+    bottom: 25px;
+    right: 10px;
+    width: auto;
+    max-width: 230px;
+    text-indent: 0;
+    text-align: center;
+}
+
+#interviewSearch {
+    padding-left: 10px;
+}
+
+#interviewSearch h2 {
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+#baseContainerRight .container {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#search-results-toggle .hits {
+    display: inline;
+}
+
+#search-results.container,
+#locations.container {
+    height: 404px;
+    background: #F8F8F5;
+}
+
+.interview-contents ul,
+.interview-contents h4 {
+    margin-top:30px;
+    margin-left: 10px;
+    width:230px;
+}
+
+#headings .interview-contents ul {
+    margin-left: 20px;
+}
+
+.accordion-container h4 {
+    color: #333333;
+    font-size: 80%;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.accordion-container .subcontainer-toggle {
+    cursor: pointer;
+    padding-left: 10px;
+    background: url(<%= image_path "#{Project.name}/minus.gif" %>) no-repeat scroll left 0.3em transparent;
+}
+
+.accordion-container .subcontainer-toggle.closed {
+    background: url(<%=  image_path "#{Project.name}/plus.gif" %>) no-repeat scroll left 0.3em transparent;
+}
+
+.accordion-container ul.segment-list {
+    margin-top: 0px;
+    padding-left: 10px;
+}
+
+.accordion-container .segment-list li.section-heading {
+    margin-bottom: 0px;
+    margin-top: 15px;
+    /* font-weight: bold; */
+    color: #999;
+}
+
+.accordion-container .segment-list li {
+    position:relative;
+    background: none;
+    font-size: 80%;
+    width: 252px;
+    margin-top: 15px;
+}
+
+.container .segment-list .index {
+    position: relative;
+    left: -10px;
+    top: 4px;
+    font-size: 80%;
+    font-weight: bold;
+    color: #999;
+}
+
+.container .timecode {
+    position:absolute;
+    color:#999;
+    top:-12px;
+}
+
+
+/* ########### Inhaltsverzeichnis ########## */
+
+
+#headings.container {
+    height: 377px;
+    background: #F8F8F5;
+}
+
+.section {
+    color:#8b0f09;
+    vertical-align:top;
+    text-align:right;
+}
+
+.mainheading {
+    position:relative;
+    font-size:90%;
+}
+
+.mainheading .section {
+    cursor: pointer;
+    padding-left:10px;
+}
+
+.mainheading.closed .section {
+    background: transparent url(<%= image_path "#{Project.name}/plus.gif" %>) left 0.5em no-repeat;
+}
+
+.mainheading.open .section {
+    background: transparent url(<%= image_path "#{Project.name}/minus.gif" %>) left 0.5em no-repeat;
+}
+
+.mainheading.closed .subheadings {
+    display: none;
+}
+
+.mainheading ul.subheadings {
+    padding:5px 0 0 0;
+}
+
+.mainheading .heading a {
+    padding-left: 1px;
+    outline-style: none;
+}
+
+.mainheading .subheading{
+    padding-left: 1px;
+    font-size:90%;
+   /* width:210px;*/
+}
+
+#interview_headings {
+  margin: 15px 0 0 5px;
+  background-color: #F8F8F5;
+}
+
+#interview_headings .heading,
+#interview_headings .subheading {
+    position:relative;
+    display:block;
+}
+#interview_headings .heading {
+    width: 88%;
+    margin-bottom: 0.25em;
+}
+
+.heading a:hover,
+.subheading a:hover {
+    display: block;
+    color: #9F1313;
+    background-color: #e4e4da;
+    padding-left: 1px;
+}
+
+.heading .timecode,
+.subheading .timecode {
+    display:none;
+    position:absolute;
+    top:-16px;
+    right:29px;
+}
+
+.heading > a .timecode {
+    right:0px;
+}
+
+.heading a:hover .timecode,
+.subheading a:hover + .timecode {
+    color:#333;
+    display:block;
+    text-decoration:none;
+    padding:2px;
+    background: #e4e4da;
+    opacity:1;
+}
+
+#interview_headings .current a:hover + .timecode {
+  background:#b2afa1;
+  color:#fff;
+}
+
+#interview_headings .current > a,
+#interview_headings .current .heading > a {
+  /*background-color: #e4e4da;*/
+  background-color: #b2afa1;
+  /*color: #9F1313;*/
+  color:#fff;
+  display: block;
+}
+
+
+/* ########### Meine Recherche ########## */
+
+#my-results {
+    padding:10px;
+}
+
+
+/* ###### Interactives (save etc) ###### */
+#search-page .save_user_content a.save {
+    background: url(<%= image_path "#{Project.name}/suche_speichern.png" %>) top left no-repeat transparent;
+    padding-left: 16px;
+}

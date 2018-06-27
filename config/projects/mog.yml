@@ -1,0 +1,136 @@
+default: &default
+
+  react_locales:
+    - deu
+    - ell
+
+  available_locales:
+    - de
+    - el
+    #- alias
+
+  default_locale: all
+
+  # use 2- or 3-letter country-code
+  # have a look at https://github.com/alphabetum/iso-639 for possible methods
+  alpha: 'alpha3_terminologic'
+
+  # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
+  interviewee_contribution_type: 'Informants'
+  interviewer_contribution_type: 'Interviewer'
+  transcription_contribution_type: 'Transcribed / described'
+  translation_contribution_type: 'Translated'
+  indexation_contribution_type: 'Indexed'
+
+  project_name: # Will be used in titles, emails, etc.
+    de: 'Erinnerungen an die Okkupation in Griechenland'
+    en: 'Memories of the Occupation of Greece'
+    el: 'Μνήμες από την Κατοχή στην Ελλάδα'
+
+  project_domain: 'www.occupation-memories.org'
+
+  archive_domain: 'archive.occupation-memories.org'
+
+  project_id: 'mog'
+
+  project_shortname: 'MOG'
+
+  project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+
+  project_doi: '10.17169/mog.'
+
+  # TODO: Umstellen russ. Links, s. kommentierte Links unten.
+  external_links:
+    conditions:
+      de: 'http://www.occupation-memories.org/de/archive/terms'
+      el: 'http://www.occupation-memories.org/archive/terms'
+    privacy_protection:
+      de: 'http://www.occupation-memories.org/de/archive/privacy'
+      el: 'http://www.occupation-memories.org/archive/privacy'
+    team:
+      de: 'http://www.occupation-memories.org/de/project/team/index.html'
+      el: 'http://www.occupation-memories.org/de/project/team/index.html'
+    contact:
+      de: 'http://www.occupation-memories.org/de/contact/index.html'
+      el: 'http://www.occupation-memories.org/contact/index.html'
+    legal_info:
+      de: 'http://www.occupation-memories.org/de/imprint/index.html'
+      el: 'http://www.occupation-memories.org/de/imprint/index.html'
+    help:
+      de: 'http://www.occupation-memories.org/de/archive/help'
+      el: 'http://www.occupation-memories.org/archive/help'
+
+  video_src_base: "https://medien.cedis.fu-berlin.de/eog/interviews/mog"
+
+  meta_keywords:
+    de: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
+    en: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
+    ru: '##ru##'
+
+  contact_email: 'registration@occupation-memories.org'
+
+  smtp_server: 'mail.fu-berlin.de'
+
+  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084(changes wwhen publish)
+  # Thematic: entry_dedalo_code: "ts1_1", id: 637018(changes when publish)
+  # because thematic id changes: RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id is now used in InterviewController
+  ref_tree_nodes:
+    thematic: 
+      #id: 639654 #not used any more
+      entry_dedalo_code: "ts1_1"
+    centers_of_deprevation_of_liberty:
+      id: 
+      entry_dedalo_code: "on1_1129"
+
+  # Interview partner properties usually depend on the historical context and must therefore be configured
+  # on a per-project basis:
+  # - To create a property from sub-entries of a registry entry, use the (default language) descriptor to identify the
+  #   entry. The ID of the property will define the internal property name.
+  # - To create a property from references of a certain reference type, use the registry reference code
+  #   as ID. The clear name will be retrieved from the registry reference type table.
+  # - Interview partner properties will be used as search facets when setting the facet property to 'true'. The order of
+  #   entries is significant to determine in which order entries appear in the "search facet" section.
+  # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
+  person_properties:
+    - id: 'person_reference'
+      source: 'registry_entry'
+      descriptor: 'Person'
+    - id: 'archive_id'
+      source: 'interview'
+    - id: 'gender'
+      source: 'person'
+      use_as_facet: true
+      values:
+        female: 'Woman'
+        male: 'Man'
+    - id: 'year_of_birth'
+      source: 'person'
+      use_as_facet: true
+    - id: 'typology'
+      source: 'person'
+      use_as_facet: true
+      values: 
+        resistance: 'Resistance'
+        retaliation: 'Retaliation'
+        concentration_camp: 'Concentration camp'
+        persecution_of_jews: 'Persecution of Jews'
+        occupation: 'Occupation'
+        flight: 'Flight'
+        collaboration: 'Collaboration'
+    - id: 'periods'
+      source: 'registry_entry'
+      use_as_facet: true
+      entry_dedalo_code: "hierarchy1_246"
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+staging:
+  <<: *default
+
+test:
+  <<: *default
+

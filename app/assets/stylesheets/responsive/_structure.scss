@@ -1,0 +1,683 @@
+// structure
+
+// Reset the box-sizing
+
+* {
+  @include box-sizing-border-box;
+}
+
+*:before,
+*:after {
+  @include box-sizing-border-box;
+}
+
+html {
+  font-size: $font-size-root;
+}
+
+body {
+  margin: 0;
+  overflow-y: scroll;
+  font-family: $font-family;
+  color: $gray-darkest;
+  background: $body-bg-color;
+  font-size: $font-size-large;
+  line-height: $line-height-large;
+}
+
+.wrapper-page {
+  margin: 0;
+  @include screen-xl {
+    float: left;
+    width: 64%;
+  }
+}
+
+.wrapper-section {
+  padding: 0 10%;
+}
+
+.wrapper-section-inner {}
+
+header.site-header {
+  height: 80px;
+  background: #fff;
+  padding: 0 5%;
+  @include screen-m {
+    height: 100px;
+  }
+}
+
+.wrapper-content {
+  padding: 40px 5%;
+  @include clearfix;
+  //@include screen-m {
+  //  padding: 40px 10%;
+  //}
+}
+
+.active_map_popup_text{
+  color: $primary-color;
+  cursor: pointer;
+}
+
+
+.flyout-is-visible {
+  &.fix-video {
+    .wrapper-video {
+      @include screen-xl {
+        right: 36%;
+      }
+    }
+    .content-tabs {
+      @include screen-xl {
+        right: 36%;
+      }
+    }
+  }
+}
+
+.flyout-is-visible {
+  .wrapper-flyout {
+    z-index: 1000; //because of leaflet
+    width: 100%;
+    padding-right: 0;
+    overflow: hidden;
+    @include screen-m {
+      width: 44%;
+      padding-right: 15px;
+    }
+    @include screen-l {
+      width: 40%;
+      padding-right: 15px;
+    }
+    @include screen-xl {
+      width: 36%;
+      padding-right: 15px;
+    }
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(232,232,228, 0.95);
+    @include screen-xl {
+      border-left: 1px solid $gray-light;
+    }
+    @include screen-xl {
+      display: block !important;
+    }
+  }
+  .scroll-flyout {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height:100%;
+    @include screen-m {
+      margin-right: -35px;
+    }
+  }
+  .flyout-toggle {
+    @include screen-xl {
+      display: none;
+    }
+  }
+}
+
+.flyout-is-hidden {
+  .wrapper-flyout{
+    display: none;
+  }
+  &.fix-video {
+    .flyout-toggle {
+      color: #fff;
+    }
+  }
+}
+
+.compensation{
+  height: 400px
+}
+
+.fix-video {
+  .wrapper-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    @include screen-m {
+      height: 160px;
+    }
+    // -webkit-transition: height 1s;
+    // -moz-transition: height 1s;
+    // -ms-transition: height 1s;
+    // -o-transition: height 1s;
+    // transition: height 1s;
+
+    //  -webkit-transition: height .1s linear;
+    // -moz-transition: height .1s linear;
+    // -ms-transition: height .1s linear;
+    // -o-transition: height .1s linear;
+    // transition: height .1s linear;
+
+    .video-element {
+      margin: 0;
+      float: none;
+      @include screen-m {
+        float: left;
+      }
+      video, img {
+        height: 100px;
+        width: auto;
+      }
+    }
+    .video-title-container {
+      display: block;
+      margin-left: 0;
+      @include screen-m {
+        display: inline-block;
+        margin-left: 20px;
+      }
+    }
+    .video-icons-container {
+      float: none;
+      padding: 0;
+    }
+    h1.video-title {
+      float: none;
+      font-size: $font-size-larger;
+      line-height: $line-height-larger;
+    }
+  }
+
+  .content-tabs {
+    position: fixed;
+    top: 220px;
+    left: 0;
+    right: 0;
+    @include screen-m {
+      top: 160px;
+    }
+  }
+  .wrapper-content {
+    margin-top: 270px;
+    @include screen-m {
+      margin-top: 200px;
+    }
+    @include screen-xl {
+      margin-top: 240px;
+    }
+  }
+}
+
+.wrapper-video {
+  padding: 30px 5%;
+  height: auto;
+  background: $gray-darkest;
+  color: #fff;
+  // -webkit-transition: max-height 1s;
+  // transition: max-height 1s;
+  @include screen-m {
+    padding: 30px 5%;
+  }
+}
+.video-title-container {
+  @include clearfix();
+}
+
+h1.video-title {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: $font-size-heading-h1;
+  line-height: $line-height-heading-h1;
+  float: none;
+  @include screen-m {
+    font-size: $font-size-heading-h1-large;
+    line-height: $line-height-heading-h1-large;
+    float: left;
+  }
+}
+.video-icons-container {
+  float: none;
+  padding-top: 0;
+  @include screen-m {
+    float: right;
+    padding-top: 5px;
+  }
+}
+.video-bookmark,
+.video-text-note {
+  color: #fff;
+  font-size: $font-size-large;
+  line-height: $line-height-large;
+  cursor: pointer;
+  transition: 0.4s;
+  float: left;
+  margin-right: 20px;
+  span {
+    display: none;
+    @include screen-l {
+      display: inline-block;
+      font-size: $font-size-small;
+      line-height: $line-height-small;
+    }
+  }
+  .fa {
+    margin-right: 10px;
+    font-size: $font-size-larger;
+    @include screen-l {
+      font-size: $font-size-medium;
+    }
+  }
+  margin-bottom: 10px;
+  &:hover {
+    color: $gray-light;
+  }
+}
+.video-bookmark {
+  margin-right: 0;
+}
+.video-element {
+  margin: 0;
+  @include screen-m {
+    margin: 0 7.5%;
+  }
+  @include screen-l {
+    margin: 0 20%;
+  }
+  video, img {
+    width: 100%;
+  }
+}
+
+footer {
+  background: #fff; //$gray-dark;
+  border-top: 1px solid $gray-dark;
+  padding: 30px 5%;
+  p {
+    margin-top: 10px;
+    padding-top: 5px;
+    font-size: $font-size-medium;
+    color: $gray-dark;
+  }
+}
+
+.footer-bottom-nav {
+  margin: 0;
+  padding: 0;
+  font-size: $font-size-medium;
+  li {
+    background-image: none;
+    display: inline-block;
+    padding: 0 15px 0 0;
+  }
+  a:link,
+  a:visited {
+    color: $primary-color; //#fff;
+    transition: color 0.3s;
+  }
+  a[href]:hover, a:active {
+    text-decoration: none;
+    color: #ccc;
+  }
+}
+
+.flyout-toggle {
+  position: fixed;
+  top: 20px;
+  right: 22px;
+  width: 36px;
+  height: 36px;
+  padding: 4px 7px;
+  font-size: 26px;
+  z-index: 1100; //because of leaflet
+  cursor: pointer;
+  color: $gray-dark; //$primary-color;
+  background: rgba(255, 255, 255, 0.5);
+}
+.fix-video {
+  .fa-bars {
+    color: #fff;
+  }
+}
+.flyout-caption {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+
+/* Search-Result */
+
+h1.search-results-title {
+  margin-top: 0;
+  //float: left;
+  //margin-right: 30px;
+}
+.search-results-legend {
+  margin: 20px 0;
+  padding: 0;
+  @include pie-clearfix;
+}
+.search-results-ico-link {
+  float: none;
+  font-size: $font-size-large;
+  color: $primary-color;
+  transition: color 0.3s;
+  cursor: pointer;
+  .fa {
+    margin-right: 10px;
+  }
+  &:hover {
+    color: $gray-dark;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+  @include screen-m {
+    float: left;
+    margin-bottom: 0;
+  }
+}
+.search-results-legend-text {
+  float: none;
+  margin-bottom: 10px;
+  color: $gray-darker;
+  @include screen-m {
+    float: right;
+    margin-bottom: 0;
+  }
+}
+.search-results-tabs {
+  list-style: none;
+  margin: 0 0 20px 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid $gray-dark;
+  @include screen-m {
+
+  }
+}
+.search-results-tab {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: #fff;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  .fa {
+    margin-right: 0;
+    @include screen-m {
+      margin-right: 10px;
+    }
+  }
+  &.active {
+    background-color: #ddd;
+    .fa, span {
+      color: $gray-darker;
+    }
+  }
+  &:not(.active):hover {
+    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
+    color: $flyout-tab-title-text-color;
+    // .fa {
+    //   color: $gray-darker;
+    // }
+  }
+  span {
+    display: none;
+    @include screen-m {
+      display: inline-block;
+    }
+  }
+}
+
+ul.search-results-pagination {
+  list-style: none;
+  margin: 0 0 10px 0;
+  padding: 0;
+  li {
+    display: inline-block;
+    margin: 0 4px 4px 0;
+    padding: 4px 0;
+    background-color: #fff;
+    color: $gray-dark;
+    border: 1px solid $gray-medium;
+    text-align: center;
+    transition: color 0.3s;
+    transition: background-color 0.3s;
+    width: 38px;
+    cursor: pointer;
+    .fa {
+      margin-right: 0;
+      @include screen-m {
+        margin-right: 10px;
+      }
+    }
+    &.active {
+      background-color: #ddd;
+      .fa, span {
+        color: $gray-dark;
+      }
+    }
+    &:hover {
+      background-color: #ddd;
+      color: $gray-dark;
+      .fa {
+        color: $gray-dark;
+      }
+    }
+  }
+}
+.search-results-from-to {
+  margin-bottom: 20px;
+  font-size: $font-size-medium;
+}
+
+.search-results-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: 0 -20px;
+  a:link, a:visited {
+    color: $primary-color;
+    transition: color 0.3s;
+  }
+  a[href]:hover, a:hover, a:active {
+    text-decoration: none;
+    color: $gray-medium;
+  }
+}
+a.search-result-link {
+  overflow: hidden;
+  //img, p {
+  //  opacity: 1;
+  //  transition: opacity 0.3s;
+  //}
+  &:hover {
+    //img {
+    //  width: 110%;
+    //}
+    .search-result-name {
+      color: #666;
+    }
+  }
+}
+.search-result-img {
+  overflow: hidden;
+  img {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: .4s ease-in-out;
+    transition: .4s ease-in-out;
+  }
+  &:hover {
+    img {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+  }
+}
+
+.search-result {
+  width: 100%;
+  @include screen-m {
+    width: 50%;
+  }
+  @include screen-l {
+    width: 33.33%;
+  }
+  margin: 0 0 30px;
+  padding: 0 20px;
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+.search-result-img {
+  margin-bottom: 10px;
+}
+
+.search-result-name {
+  font-size: $font-size-large;
+  line-height: $line-height-large;
+  color: $primary-color;
+}
+
+.search-result-data, .archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
+  font-size: $font-size-medium;
+  line-height:$line-height-medium;
+  color: $gray-dark;
+  margin-bottom: 0;
+  -moz-hyphens: auto;
+  -o-hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+.search-result-data-inf {
+  margin-left: 10px;
+  color: $gray-darkest;
+}
+
+/* Home Video */
+
+.video-element.home-video {
+  margin: 0;
+  padding: 0;
+  background-color: #383838; //darken($gray-warm, 10%);
+  video{
+    display: block;
+  }
+  @include screen-l {
+    padding: 0;
+  }
+}
+
+.wrapper-content.register {
+  margin-top: 0px !important;
+}
+
+.wrapper-content.interviews {
+  margin-top: 0px !important;
+}
+
+.wrapper-content.home-content {
+  margin-top: 0px !important;
+  padding:0;
+  .home-text {
+    padding: 15px 5% 30px 5%;
+    background-color: #ddd;
+  }
+}
+.home-content-logos {
+  padding:40px 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  a {
+    width: 30%;
+    margin: 0 5% 20px 5%;
+    padding: 0;
+    @include screen-m {
+      width: 15%;
+      margin: 0 3%;
+    }
+    img {
+      width: 100%;
+    }
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.search-results-explanation {
+  margin-bottom: 30px;
+}
+
+.flyout-sub-tabs-container{
+  .leaflet-container {
+    height: 350px;
+  }
+}
+
+/* Letter spacing */
+
+.figure-letter-spacing {
+  letter-spacing: 0.1rem;
+}
+.messages {
+  position: absolute;
+  top: 5px;
+  left: 33%;
+  color: $gray-dark;
+  padding: 20px;
+  border: 1px solid $secondary-color;
+  background: #fff;
+  box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  -webkit-box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  -moz-box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  width: 260px;
+  z-index: 1000;
+}
+
+@-webkit-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
+@-moz-keyframes fade-out { from { opacity:1; } to { opacity:0; } }
+@keyframes fade-out { from { opacity:1; } to { opacity:0; } }
+
+
+.messages {
+  opacity:1;  /* make things invisible upon start */
+  -webkit-animation:fade-out ease-out 1;  /* use animattion ease-out and repeat it only 1 time */
+  -moz-animation:fade-out ease-out 1;
+  animation:fade-out ease-out 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1s;
+  -moz-animation-duration:1s;
+  animation-duration:1s;
+
+  -webkit-animation-delay: 1.6s;
+  -moz-animation-delay: 1.6s;
+  animation-delay: 1.6s;
+}
+
+
+

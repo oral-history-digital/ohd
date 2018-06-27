@@ -1,0 +1,2 @@
+jQuery("#interview_<%= @interview['archive_id'] %>").html('<%= escape_javascript(render partial: 'for_interview', layout: false, object: @interview) %>');
+

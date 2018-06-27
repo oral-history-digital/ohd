@@ -1,0 +1,191 @@
+import React from 'react';
+import { t, fullname } from "../../../lib/utils";
+
+export default class Segment extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: false,
+            contentOpen: false,
+            contentType: 'none'
+        };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType)) {
+            return true;
+        }
+        if (nextState.openReference !== this.state.openReference) {
+            return true;
+        }
+
+        let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
+        let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
+        return changingToActive || changingToInactive
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let active = this.props.data.end_time > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
+        if (active !== this.state.active) {
+            this.setState({
+                active: active
+            })
+        }
+    }
+
+    css() {
+        //let active = this.props.data.end_time >= this.props.transcriptTime && this.props.data.start_time <= this.props.transcriptTime; 
+        return 'segment ' + (this.state.active ? 'active' : 'inactive');
+    }
+
+    transcript() {
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
+        return this.props.data.transcripts[locale]
+    }
+
+    toggleAdditionalContent(type) {
+        let state = this.state.contentOpen;
+
+        let newState = type != this.state.contentType ? true : !state;
+
+        this.setState({
+            contentOpen: newState,
+            contentType: type
+        });
+    }
+
+    setOpenReference(reference) {
+        this.setState({openReference: reference});
+    }
+
+    openReference() {
+        if (this.state.openReference) {
+            let openReference = this.state.openReference.desc_with_note[this.props.locale];
+            return (
+                <div className='scope-note'>
+                    <div onClick={() => this.setOpenReference(null)} className='close'></div>
+                    <div className='title'>{openReference.title}</div>
+                    <div className='note'>{openReference.note}</div>
+                </div>
+            )
+        }
+    }
+
+    references(locale) {
+        if (this.state.contentType == 'references') {
+            //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
+            let refLen = this.props.data.references.length;
+            return this.props.data.references.map((reference, index) => {
+                if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
+                    return (
+                        <span 
+                            id={`reference_${reference.id}`} 
+                            className='scope-note-link'
+                            key={"reference-" + index} 
+                            onClick={() => this.setOpenReference(reference)}
+                        >
+                            {reference.desc_with_note[locale].title}
+                        </span>
+                    )
+                } else {
+                    return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
+                }
+            })
+        }
+    }
+
+    annotations(locale) {
+        if (this.state.contentType == 'annotations') {
+            return this.props.data.annotation_texts.map((annotation, index) => {
+                return <p className='content-trans-text-element-data'
+                          key={"annotation-" + index}>{annotation[locale]}</p>
+            })
+        }
+    }
+
+    userAnnotationsArray() {
+        return this.props.userContents.filter(content => content.reference_id === this.props.data.id && content.reference_type === 'Segment');
+    }
+
+    userAnnotations() {
+        if (this.state.contentType == 'annotations') {
+            return this.userAnnotationsArray().map((content, index) => {
+                    return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
+                                {content.description}
+                            </p>
+            })
+        }
+    }
+
+    speakerChanged() {
+        return (this.props.data.speaker_changed || this.props.data.speakerIdChanged);
+    }
+
+    speakerIcon() {
+        if (this.speakerChanged()) {
+            let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
+            return (
+                <div className="content-trans-speaker-link" title={fullname(this.props, this.props.data.speaking_person)}
+                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                    <i className={speakerCss}></i>
+                </div>
+            )
+        }
+    }
+
+    renderLinks() {
+        if (this.props.data.annotation_texts.length > 0 || this.props.data.references.length > 0 || this.userAnnotationsArray().length) {
+
+            let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
+            let annotionCss = this.props.data.annotation_texts.length > 0 || this.userAnnotationsArray().length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            return (
+                <div className={icoCss}>
+                    <div className={annotionCss} title={t(this.props, 'annotations')}
+                         onClick={() => this.toggleAdditionalContent('annotations')}><i
+                        className="fa fa-sticky-note-o"></i>
+                    </div>
+                    <div className={referenceCss} title={t(this.props, 'keywords')}
+                         onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    render() {
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
+        let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
+        let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
+        if (this.transcript()) {
+            return (
+                    <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
+                        <div className="content-trans-speaker-ico">
+                            {this.speakerIcon()}
+                        </div>
+                        <div className='content-trans-text'
+                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                            <div className={this.css()}
+                                 dangerouslySetInnerHTML={{__html: this.transcript()}}
+                            />
+                        </div>
+                        {this.renderLinks()}
+                        <div className={contentOpenClass}>
+                            <div>
+                                {this.annotations(locale)}
+                                {this.userAnnotations()}
+                            </div>
+                            <div className='content-trans-text-element-data'>
+                                {this.references(locale)}
+                                {this.openReference()}
+                            </div>
+                        </div>
+                    </div>
+                )
+        } else {
+            return null;
+        }
+    }
+}
+

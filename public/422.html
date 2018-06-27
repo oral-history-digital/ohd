@@ -7,12 +7,12 @@
     <meta http-equiv="pragma" content="no-cache" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
 
-    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'content', 'eaz-content', 'lightbox', 'archiv-portlet', 'search', 'transfer' %>
+    <%= stylesheet_link_tag 'archiv-standard', 'archiv-design', 'content', 'eaz-content', 'lightbox', 'archiv-portlet', 'search', 'transfer', 'project-customization' %>
 
     <link rel="shortcut icon" href="/favicon.ico" />
 </head>
 
-<body>
+<body class="<%= CeDiS.config.project_id %>_project">
     <div id="headerIdentityWrapper">
       <div id="baseHeader">
         <a name="seitenanfang" id="seitenanfang" accesskey="O"></a>
@@ -20,7 +20,7 @@
           <%= image_tag(image_path("project_logo_#{I18n.locale}.gif"), :class => "baseHeaderLogo", :title => t(:home_link, :project_name => CeDiS.config.project_name[I18n.locale.to_s]), :alt => t(:logo_title, :project_name => CeDiS.config.project_name[I18n.locale])) %>
         </a>
 
-        <h2 class="info"><%= CeDiS.config.project_name[I18n.locale.to_s] %></h2>
+        <h2 class="info"><%= Project.project_name[I18n.locale.to_s] %></h2>
         <hr class="divider" />
         <p class="skip">
           <em><%= t 'public.422.skip' %></em> <a href="#inhalt"><%= t 'public.422.content' %></a>

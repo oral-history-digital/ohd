@@ -9,7 +9,7 @@ class UserRegistration < ActiveRecord::Base
   has_one :user, :dependent => :destroy
 
   validates_format_of :email,
-                      :with => Devise::EMAIL_REGEX,
+                      :with => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
                       :on => :create
 
   validates_uniqueness_of :email, :on => :create
@@ -19,7 +19,7 @@ class UserRegistration < ActiveRecord::Base
 
   before_create :serialize_form_parameters
 
-  named_scope :unchecked, :conditions => ['workflow_state IS NULL OR workflow_state = ?', 'unchecked']
+  scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
 
   # fields expected for the user registration
   def self.define_registration_fields(fields)
@@ -133,12 +133,8 @@ EVAL
                                                  'Schleswig-Holstein',
                                                  'außerhalb Deutschlands' ]},
                                  { :name => 'country',
-                                   :type => :country },
-                                 { :name => 'receive_newsletter',
-                                   :mandatory => false,
-                                   :type => :boolean }
-
-                             ]
+                                   :type => :country }
+                             ] + (Project.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false, :type => :boolean }] : [])
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
@@ -173,7 +169,7 @@ EVAL
     end
     state :checked do
       event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? || self.user_account.password_salt.blank?
+        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? 
       end
       event :expire,    :transitions_to => :postponed
     end
@@ -198,12 +194,12 @@ EVAL
     self.processed_at = Time.now
     save
     unless @skip_mail_delivery
-      UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+      UserAccountMailer.account_activation_instructions(self.user_account).deliver
     end
   end
 
   def activate
-    update_attribute :activated_at, Time.now
+    self.user_account.update_attribute :confirmed_at, Time.now
   end
 
   # Flags the account as deactivated
@@ -225,7 +221,7 @@ EVAL
     else
       self.user_account.reactivate!
       if self.user_account.valid? and !@skip_mail_delivery
-        UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+        UserAccountMailer.account_activation_instructions(self.user_account).deliver
       end
     end
   end
@@ -243,7 +239,7 @@ EVAL
     user_account.generate_confirmation_token if user_account.confirmation_token.blank?
     user_account.confirmation_sent_at = Time.now
     user_account.save
-    UserAccountMailer.deliver_account_activation_instructions(self.user_account)
+    UserAccountMailer.account_activation_instructions(self.user_account).deliver
   end
 
   def full_name
@@ -298,7 +294,8 @@ EVAL
   end
 
   def create_account
-    self.user_account = UserAccount.find_or_initialize_by_email(self.email)
+    #self.user_account = UserAccount.find_or_initialize_by(email: self.email)
+    self.user_account = UserAccount.where(email: self.email).first_or_initialize
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.save
@@ -338,7 +335,7 @@ EVAL
     login = ideal_login
     # try email address if it's not too long and contains the last name
     try_email = (self.email.length < 20) && self.email.downcase.index(self.last_name.downcase)
-    while UserAccount.count(:conditions => ['login = ?', login]) > 0
+    while UserAccount.where('login = ?', login).count > 0
       if try_email
         login = self.email
         try_email = false

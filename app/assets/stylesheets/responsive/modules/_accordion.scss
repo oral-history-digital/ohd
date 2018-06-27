@@ -1,0 +1,197 @@
+/* Style the buttons that are used to open and close the accordion panel */
+.flyout-search,
+.flyout-video,
+.flyout-folder {
+  button.accordion {
+    background-color: transparent;
+    color: $primary-color;
+    cursor: pointer;
+    padding: 8px 15px 8px 2px;
+    width: 100%;
+    border-top: 1px solid $gray-dark;
+    text-align: left;
+    outline: none;
+    font-size: $font-size-large;
+    text-transform: uppercase;
+    transition: 0.4s;
+    margin-bottom: 2px;
+    //border-bottom: 1px solid $gray-warm;
+    //&.active,
+    &:hover {
+      //background-color: $secondary-color;
+      color: $gray-dark;
+    }
+    &::after {
+      font-family: FontAwesome;
+      content: "\f067";
+      float: right;
+      font-size: $font-size-large;
+    }
+    &.active::after {
+      content: "\f068";
+    }
+  }
+  .panel {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.2s ease-out;
+    &.open {
+      padding: 10px 0 20px 0;
+      max-height: 100%;
+      //padding-left: 20px;
+    }
+  }
+  p {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: $gray-darkest;
+    margin: 0 0 10px 0;
+  }
+  .flyout-content-label {
+    display: inline-block;
+    margin-right: 10px;
+    //margin-bottom: 5px;
+    color: $gray-dark;
+  }
+  .flyout-content-data {
+    display: inline-block;
+  }
+  a {
+    color: $primary-color;
+    &:hover {
+      color: $gray-dark;
+      text-decoration: none;
+    }
+  }
+  .fa {
+    color: $primary-color;
+    margin-right: 10px;
+    &:hover {
+      color: $gray-dark;
+    }
+  }
+  .flyout-sub-tabs-content-download {
+    margin-top: 10px;
+    color: $primary-color;
+    cursor: pointer;
+  }
+  .leaflet-popup-content p {
+    color: $primary-color;
+  }
+  .explanation {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: $gray-darkest;
+    margin: 0 0 10px 0;
+  }
+}
+
+.flyout-folder {
+  h3 {
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    margin-top: 0;
+  }
+  p {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: $gray-darkest;
+    //padding: 0 0 0 20px;
+    margin: 0;
+  }
+  .flyout-content-label {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    color: $gray-dark;
+  }
+  .flyout-content-data {
+    display: inline-block;
+  }
+  a {
+    color: $primary-color;
+  }
+  .fa {
+    margin-right: 10px;
+  }
+  .flyout-sub-tabs-content-link {
+    margin: 5px 0 0 0;
+    color: $primary-color;
+    cursor: pointer;
+  }
+}
+a.flyout-download-link-lang {
+  margin-right: 15px;
+}
+.flyout-sub-tabs-content-ico {
+  display: block;
+  text-align: right;
+  padding: 0;
+  border-bottom: 1px solid $gray-light;
+  margin-bottom: 15px;
+}
+.flyout-sub-tabs-content-ico-link {
+  display: inline-block;
+  margin-right: 2px;
+  padding: 6px 0 6px 10px;
+  color: $primary-color;
+  transition: 0.3s;
+  cursor: pointer;
+  &:last-child {
+    margin-right: 0;
+  }
+  &.active {
+    background-color: $gray-lighter;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+  &:hover {
+    background-color: $gray-lighter;
+    .fa {
+      color: $gray-dark;
+    }
+  }
+}
+
+/* form elements */
+
+.flyout-search,
+.flyout-sub-tabs-container {
+  button,
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  button,
+  select {
+    text-transform: none;
+    cursor: pointer;
+  }
+  button[disabled],
+  html input[disabled] {
+    cursor: default;
+  }
+}
+
+.interview-preview.search-result {
+  .panel {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.2s ease-out;
+    &.open {
+      max-height: 100%;
+      padding: 10px 0 20px 0;
+    }
+  }
+}

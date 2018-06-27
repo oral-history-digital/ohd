@@ -3,7 +3,7 @@
     - Suche speichern
     - Interview merken etc.
     For rendering user_contents in the workbook, refer to _user_content.html.erb -%>
-<% user_content ||= @user_content.reload
+<% user_content ||= @object.reload
    content_type ||= (user_content.type.is_a?(Class) ? user_content.type.name : user_content.type).underscore
    tags_exist = !user_content.tags.empty?
    label = tags_exist ? user_content.tags.map(&:name).join(', ') : t(:saved, :scope => "user_interface.#{content_type}")
@@ -13,12 +13,12 @@
    end -%>
 <span id="user_content_<%= user_content.id -%>" class="save_user_content">
   <% if tags_exist -%>
-  <%= link_to_function truncate(label, :length => 30), "$('user_content_#{user_content.id}_actions').toggle();", :class => 'saved' %>
+  <%= link_to truncate(label, :length => 30), '#', toggle: "user_content_#{user_content.id}_actions", user_content_id: user_content.id, class: 'saved toggle' %>
   <% else -%>
-  <%= link_to "»#{t(:apply_topics, :scope => 'user_interface.user_content')}", '#', :class => 'saved', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get, :class => 'topics' })}" %>
+  <%= link_to "»#{t(:apply_topics, :scope => 'user_interface.user_content')}", '#', class: 'saved open_modal', close: "user_content_#{user_content.id}_actions", url: topics_user_content_path(user_content) %>
   <% end -%>
   <span id="user_content_<%= user_content.id -%>_actions" class="saved_content_actions" style="display: none;">
-    <%= link_to "»&nbsp;#{t(:all_contents_for_topic, :scope => 'user_interface.user_content')}", user_contents_path(:tag_filters => tag_hash) << "#user_content_#{user_content.id}", :target => '_blank' %>
-    <%= link_to "»&nbsp;#{t(:topics, :scope => 'user_interface.user_content')}", '#', :onclick => "$('user_content_#{user_content.id}_actions').addClassName('closed');#{javascript_open_modal_window(topics_user_content_path(user_content), { :method => :get, :class => 'topics' })}" %>
+    <%= link_to "»&nbsp;#{t(:all_contents_for_topic, :scope => 'user_interface.user_content')}".html_safe, user_contents_path(:tag_filters => tag_hash) << "#user_content_#{user_content.id}", :target => '_blank' %>
+    <%= link_to "»&nbsp;#{t(:topics, :scope => 'user_interface.user_content')}".html_safe, '#', class: 'open_modal', close: "user_content_#{user_content.id}_actions", url: topics_user_content_path(user_content) %>
   </span>
 </span>

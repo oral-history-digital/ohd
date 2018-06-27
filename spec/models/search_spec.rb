@@ -13,7 +13,7 @@ describe Search, 'utilizing hashed parameters' do
 
   it "should encode query parameters into a hashed string" do
     @queries.each do |query|
-      Search.encode_parameters(query).should =~ /^[a-zA-Z0-9]+={0,2}(\n)?$/
+      expect(Search.encode_parameters(query)).to match(/^[a-zA-Z0-9]+={0,2}(\n)?$/)
     end
   end
 
@@ -21,14 +21,14 @@ describe Search, 'utilizing hashed parameters' do
     @queries.each do |query|
       hash = Search.encode_parameters(query)
       string_value_query = query.inject({}){|h,p| h[p.first.to_s] = (p.last.is_a?(Array) ? p.last.map{|v| v.to_s} : p.last.to_s) if (p.first.to_s != 'page'); h; }
-      Search.decode_parameters(hash).should == string_value_query
+      expect(Search.decode_parameters(hash)).to eq(string_value_query)
     end
   end
 
   it "should not hash non-query or page parameters" do
     @query = { :page => 3, :open_category => 'forced_labor_groups', :nonsense => 'faulty', :language_id => ["1"]}
-    Search.decode_parameters(Search.encode_parameters(@query)).should \
-      == { 'language_id' => ["1"] }
+    expect(Search.decode_parameters(Search.encode_parameters(@query))).to \
+      eq({ 'language_id' => ["1"] })
   end
 
 end
@@ -42,8 +42,8 @@ describe Search, 'when saving as a UserContent' do
   it "should store the query in the properties and serialize them as YAML" do
     @search = Search.create(@content_attributes)
     @search.user = User.create{|u| u.first_name = 'Jan'; u.last_name = 'Rietema' }
-    @search.should be_valid
-    @search.get_properties.should == @content_attributes['properties']
+    expect(@search).to be_valid
+    expect(@search.get_properties).to eq(@content_attributes['properties'])
   end
 
 end

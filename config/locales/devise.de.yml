@@ -1,7 +1,72 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
 de:
   devise:
+    confirmations:
+      link: 'Zugangsbestätigung nicht erhalten?'
+      resend: 'Bestätigung anfordern'
+      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
+      confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
+      invalid_token: 'Der angegebene Link ist nicht mehr gültig. Vermutlich ist Ihr Zugang bereits freigeschaltet. Bitte verwenden Sie die "Passwort vergessen" Funktion, falls Sie sich nicht anmelden können.'
+      password_missing: 'Zur Bestätigung müssen Sie ein Passwort auswählen.'
+      password_confirmation_missing: 'Die Passwort-Wiederholung stimmt nicht mit Ihrem Passwort überein.'
+      no_confirm_instructions: "Keine Bestätigungsanleitung bekommen?"
+      #confirmed_and_signed_in: "Vielen Dank für Deine Registrierung. Du bist jetzt angemeldet."
+      #send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Du Deine Registrierung bestätigen kannst."
+    failure:
+      already_authenticated: "Du bist bereits angemeldet."
+      inactive: "Dein Account ist nicht aktiv."
+      invalid: "Ungültige Anmeldedaten."
+      invalid_token: "Der Anmelde-Token ist ungültig."
+      locked: "Dein Account ist gesperrt."
+      not_found_in_database: "E-Mail-Adresse oder Passwort ungültig."
+      timeout: "Deine Sitzung ist abgelaufen, bitte melde Dich erneut an."
+      unauthenticated: "Du musst Dich anmelden oder registrieren, bevor Du fortfahren kannst."
+      unconfirmed: "Du musst Deinen Account bestätigen, bevor Du fortfahren kannst."
+    mailer:
+      confirmation_instructions:
+        subject: 'Schritte für die Freischaltung Ihres Zugangs'
+      reset_password_instructions:
+        subject: 'Schritte für die Wiederherstellung Ihres Passwortes'
+      unlock_instructions:
+        subject: 'Schritte für die Reaktivierung Ihres Zugangs'
+    omniauth_callbacks:
+      failure: "Du konntest nicht Deinem %{kind}-Account angemeldet werden, weil '%{reason}'."
+      success: "Sie haben Sich erfolgreich mit Ihrem Account angemeldet."
+    passwords:
+      change: 'Ihr Passwort ändern'
+      forgot: 'Sie haben Ihr Passwort vergessen?'
+      password: 'Passwort'
+      password_confirmation: 'Passwort wiederholen'
+      submit: 'Passwort jetzt ändern'
+      resend: 'Passwort ändern'
+      link: 'Passwort vergessen?'
+      send_instructions: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
+      updated: 'Ihr Passwort wurde erfolgreich geändert.'
+      no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen können."
+      updated: "Dein Passwort wurde geändert. Du bist jetzt angemeldet."
+      updated_not_active: "Dein Passwort wurde geändert."
+    registrations:
+      link: 'Registrierung'
+      not_yet_registered: 'Noch nicht registriert?'
+      link_to: 'Zur Registrierung »'
+      submit: 'Registrierung senden'
+      activate: 'Aktivierung des Nutzer(innen)-Accounts für '
+      activate_submit: 'absenden'
+      activate_text: 'Um Ihren Nutzer(-innen)-Account zu aktivieren wählen Sie bitte ein geeignetes Passwort für Ihren Zugang.'
+      successful: 'Ihre Registrierung ist bei uns eingegangen.'
+      signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
+      updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
+      destroyed: 'Ihre Zugangsdaten wurden erfolgreich gelöscht.'
+      welcome: 'Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie sind jetzt angemeldet. Bitte halten Sie Ihren Benutzernamen und Ihr Passwort bei Ihrem nächsten Besuch bereit.'
+      signed_up_but_inactive: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account inaktiv ist."
+      signed_up_but_locked: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account gesperrt ist."
+      signed_up_but_unconfirmed: "Du hast Dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account noch nicht bestätigt ist. Du erhältst in Kürze eine E-Mail mit der Anleitung, wie Du Deinen Account freischalten kannst."
+      update_needs_confirmation: "Deine Daten wurden aktualisiert, aber Du musst Deine neue E-Mail-Adresse bestätigen. Du erhälsts in wenigen Minuten eine E-Mail, mit der Du die Änderung Deiner E-Mail-Adresse abschließen kannst."
     sessions:
       link: 'Anmelden'
+      login: "Anmelden"
       signed_in: 'Sie sind jetzt angemeldet.'
       signed_out: 'Sie sind jetzt abgemeldet.'
       unauthenticated: 'Für diese Aktion ist eine Anmeldung erforderlich.'
@@ -14,46 +79,11 @@ de:
       inactive: 'Ihr Zugang ist zur Zeit deaktiviert.'
       remember_me: 'angemeldet bleiben'
       logout: 'abmelden'
-    passwords:
-      change: 'Ihr Passwort ändern'
-      forgot: 'Sie haben Ihr Passwort vergessen?'
-      password: 'Passwort'
-      password_confirmation: 'Passwort wiederholen'
-      submit: 'Passwort jetzt ändern'
-      resend: 'Passwort ändern'
-      link: 'Passwort vergessen?'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, mit denen Sie Ihr Passwort zurücksetzen können.'
-      updated: 'Ihr Passwort wurde erfolgreich geändert.'
-    confirmations:
-      link: 'Zugangsbestätigung nicht erhalten?'
-      resend: 'Bestätigung anfordern'
-      send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Schritten, um Ihren Zugang frei zu schalten.'
-      confirmed: 'Ihr Zugang wurde erfolgreich freigeschaltet. Sie sind jetzt angemeldet.'
-      invalid_token: 'Der angegebene Link ist nicht mehr gültig. Vermutlich ist Ihr Zugang bereits freigeschaltet. Bitte verwenden Sie die "Passwort vergessen" Funktion, falls Sie sich nicht anmelden können.'
-      password_missing: 'Zur Bestätigung müssen Sie ein Passwort auswählen.'
-      password_confirmation_missing: 'Die Passwort-Wiederholung stimmt nicht mit Ihrem Passwort überein.'
-    registrations:
-      link: 'Registrierung'
-      not_yet_registered: 'Noch nicht registriert?'
-      link_to: 'Zur Registrierung &raquo;'
-      submit: 'Registrierung senden'
-      activate: 'Zugangsaktivierung für'
-      activate_submit: 'absenden'
-      activate_text: 'Bitte wählen Sie ein geeignetes Passwort für Ihren Zugang.'
-      successful: 'Ihre Registrierung ist bei uns eingegangen.'
-      signed_up: 'Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre Registrierung bearbeitet haben erhalten Sie Informationen über weitere Schritte.'
-      updated: 'Ihre Zugangsdaten wurden erfolgreich geändert.'
-      destroyed: 'Ihre Zugangsdaten wurden erfolgreich gelöscht.'
-      welcome: 'Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie sind jetzt angemeldet. Bitte halten Sie Ihren Benutzernamen und Ihr Passwort bei Ihrem nächsten Besuch bereit.'
     unlocks:
       link: 'Zugang reaktivieren'
       send_instructions: 'Sie erhalten umgehend eine E-Mail Nachricht mit weiteren Anweisungen, wie Sie Ihren Zugang reaktivieren können.'
       unlocked: 'Ihr Zugang wurde erfolgreich reaktiviert. Sie sind jetzt angemeldet.'
-    mailer:
-      confirmation_instructions: 'Schritte für die Freischaltung Ihres Zugangs'
-      reset_password_instructions: 'Schritte für die Wiederherstellung Ihres Passwortes'
-      unlock_instructions: 'Schritte für die Reaktivierung Ihres Zugangs'
-
+      send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst."
     user_interface:
       status:
         not_signed_in: 'nicht angemeldet'
@@ -284,3 +314,13 @@ de:
         login: 'Benutzername'
         password: 'Passwort'
         password_confirmation: 'Passwort-Wiederholung'
+  errors:
+    messages:
+      already_confirmed: "wurde bereits bestätigt"
+      confirmation_period_expired: "muss innerhalb %{period} bestätigt werden, bitte fordere einen neuen Link an"
+      expired: "ist abgelaufen, bitte neu anfordern"
+      not_found: "nicht gefunden"
+      not_locked: "ist nicht gesperrt"
+      not_saved:
+        one: "Konnte %{resource} nicht speichern: ein Fehler."
+        other: "Konnte %{resource} nicht speichern: %{count} Fehler."

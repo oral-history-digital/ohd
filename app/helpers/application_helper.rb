@@ -1,9 +1,22 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def tab_index_for_params
+    case params[:controller]
+    when 'interviews'
+      3
+    when 'searches'
+      2
+    when 'home'
+      0
+    else
+      1
+    end
+  end
+
   def external_url(page_token)
     begin
-      url_for t(page_token.to_s, :scope => 'external_links')
+      url_for Project.external_links[page_token.to_s][I18n.locale.to_s]
     rescue
       ''
     end
@@ -14,21 +27,19 @@ module ApplicationHelper
   end
 
   def current_search_path
-    if !@search.is_a?(Search) || @search.query_hash.blank?
+    #if !@search.is_a?(Search) || @search.query_hash.blank?
       new_search_url
-    else
-      url_for({:controller => :searches, :action => :query, :suche => @search.query_hash })
-    end
+    #else
+      #url_for({:controller => :searches, :action => :query, :suche => @search.query_hash })
+    #end
   end
 
   def reset_search_link(options={})
-    link_to_remote content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;' + image_tag(image_path 'suche_reset1.gif'),
-                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
-  end
+    #options are ignored
+    link_to content_tag('span', t(:reset, :scope => 'user_interface.search')) + '&nbsp;'.html_safe + image_tag(image_path "#{Project.name}/suche_reset1.gif"),
+                   new_search_path(:referring_controller => controller_name, :referring_action => action_name),
+            :method => :get
 
-  def save_search_link(search)
-    link_to_remote content_tag('span', t(:save, :scope => 'user_interface.search')) + image_tag(image_path 'suche_speichern.gif'),
-                   options.merge!({ :url => new_search_path(:referring_controller => controller_name, :referring_action => action_name), :method => :get })
   end
 
   # Formats attributes for display
@@ -56,9 +67,9 @@ module ApplicationHelper
     link_text = options.delete(:link_text)
     link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text, 10, transcript_language), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
     if @object.is_a?(Interview) || ajax
-      link_to_function link_text, "archiveplayer('interview-player').seek(#{item-1},#{position});"
+      link_to link_text.html_safe, '#', class: 'seek_position', data: {item: item-1, position: position }
     else
-      link_to link_text, interview_path(interview, :item => item, :position => position), options
+      link_to link_text.html_safe, interview_path(interview, :item => item, :position => position), options
     end
   end
 
@@ -94,7 +105,7 @@ module ApplicationHelper
     else
       str = transcript.index(match_text) == 0 ? '' : '&hellip;'
       match_text.gsub!(Regexp.new('(\W|^)(\w*' + query_string + '\w*)', Regexp::IGNORECASE),"\\1<span class='highlight'>\\2</span>")
-      "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}"
+      "#{str}#{match_text}#{(match_text.last == '.' ? '' : '&hellip;')}".html_safe
     end
   end
 
@@ -107,23 +118,19 @@ module ApplicationHelper
                   }
   end
 
-  def random_featured_interview
-    Interview.first(:conditions => "(researched IS TRUE) AND (still_image_file_name IS NOT NULL)", :include => :translations, :order => "RAND()")
-  end
-
   def last_import
-    $last_import_date ||= begin
-      last_import = Import.last.first
-      last_import ||= Interview.first(:order => "created_at DESC")
-      case last_import
-        when Import
-          last_import.time
-        when Interview
-          last_import.created_at
-        else
+    # $last_import_date ||= begin
+    #   last_import = Import.last.first
+    #   last_import ||= Interview.first(:order => "created_at DESC")
+    #   case last_import
+    #     when Import
+    #       last_import.time
+    #     when Interview
+    #       last_import.created_at
+    #     else
           Time.gm(2010,9,22)
-      end
-    end
+    #   end
+    # end
   end
 
   # returns an area_id string per
@@ -138,42 +145,6 @@ module ApplicationHelper
       else
         'archive-page'
     end
-  end
-
-
-  # modal window dialog
-  def javascript_open_modal_window(ajax_url, options={})
-    params = (options[:parameters] || {}).to_a.map{|p| "#{p.first.to_s}: '#{p.last}'" }
-    dynamic_params = (options[:dynamic_parameters] || {}).to_a.map{|p| "#{p.first}: #{p.last}"}
-    params = (params + dynamic_params).join(', ')
-    method = options[:method] || :get
-    callback = options[:callback] || ''
-    before_callback = (options[:on_create] || '').concat(';')
-    nodeclass = options[:class] || ''
-    <<JS
-var windowEl = $('modal_window');
-if(!windowEl) {
-  var htmlBody = $$('body')[0];
-  windowEl = new Element('div',{id: 'modal_window', style: 'display: none;', class: '#{nodeclass}'});
-  htmlBody.insert({top: windowEl});
-  if(!$('shades')) {
-    var shades = new Element('div', { id: 'shades', style: 'display: none;'});
-    shades.insert({top: new Element('div', {id: 'ajax-spinner'})});
-    htmlBody.insert({top: shades});
-  }
-}
-windowEl.innerHTML = '';
-new Effect.Appear('shades', { to: 0.6, duration: 0.4 });
-$('ajax-spinner').show;
-new Ajax.Updater('modal_window', '#{ajax_url}',
-  { parameters: {#{params}},
-    method: '#{method}',
-    evalScripts: true,
-    onCreate:  function(){#{before_callback}},
-    onFailure: function(){$('ajax-spinner').hide(); new Effect.Fade('shades', { from: 0.6 })},
-    onSuccess: function(){$('ajax-spinner').hide(); new Effect.Appear('modal_window', { duration: 0.3 }); $('modal_window').addClassName('edit');#{callback}}
-    });
-JS
   end
 
   def javascript_instant_modal_window(dom_id, cookie=nil)
@@ -196,13 +167,13 @@ JS
   # request was engaged by XHTTP.
   def modal_window_close_button_on_javascript_request
     if request.xhr?
-      link_to('X', '#', :id => ('modal_window_close'), :onclick => "closeModalWindow(); return false;")
+      link_to('X', '#', id: 'modal_window_close')
     end
   end
 
   # provides a date stamp for the registry reference data to circumvent rigid caching
   def map_data_datestamp
-    date = Import.first :select => "time", :conditions => "time < '#{DateTime.now.beginning_of_week.to_s(:db)}'", :order => "time DESC"
+    date = Import.select("time").where("time < '#{DateTime.now.beginning_of_week.to_s(:db)}'").order("time DESC").first
     date = date.nil? ? DateTime.now.beginning_of_week : date.time
     date.strftime('%Y%m%d')
   end
@@ -238,12 +209,14 @@ JS
   # provides buttons for workflow state changes
   def workflow_action_for(model, action, instance, cancel=false)
     model_name = model.to_s.underscore.pluralize
-    button_to_remote t(action.to_s, :scope => "#{model_name}.workflow_actions"),
-                     { :url => eval("#{action}_admin_#{model_name.singularize}_path(:id=>#{instance.id})"),
-                       :before => "new Effect.Appear('shades', { to: 0.6 });",
-                       :complete => "new Effect.Fade('shades', { from: 0.6 })"},
-                     { :class => cancel ? 'cancel' : 'submit',
-                       :title => t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")}
+    link_to t(action.to_s, :scope => "#{model_name}.workflow_actions"), '#', 
+            class: "button remote #{cancel ? 'cancel' : 'submit'}",
+            url: eval("#{action}_admin_#{model_name.singularize}_path(id: #{instance.id})"),
+            title: t(action.to_s, :scope => "#{model_name}.workflow_action_tooltips")
+  end
+
+  def latex_escape(text)
+    LatexToPdf.escape_latex(text)
   end
 
 end

@@ -1,0 +1,166 @@
+form.default {
+  header {
+    margin: 0 0 20px 0;
+  }
+ .form-group {
+    width: 100%;
+    @include clearfix;
+    overflow: hidden;
+    padding: 1px;
+    margin: 0 0 15px 0;
+ }
+  label {
+    width: 100%;
+    float: none;
+    padding: 5px 0;
+    @include screen-l {
+      width: 25%;
+      float: left;
+      padding-right: 10px;
+      margin-right: 3%;
+      margin-bottom: 0;
+    }
+  }
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid $gray-medium;
+    padding: 5px 10px;
+    margin-top: 5px;
+    @include screen-l {
+      width: 72%;
+    }
+  }
+  input[type=text]:focus,
+  input[type=email]:focus,
+  input[type=url]:focus,
+  input[type=password]:focus,
+  textarea:focus {
+    outline: 0;
+    border-color: $primary-color;
+  }
+  input[type=submit] {
+    margin-left: 0;
+    width: 100%;
+    background-color: $gray-warm;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    @include screen-l {
+      margin-left: 28%;
+      width: 30%;
+    }
+    &:hover {
+      background-color: lighten($gray-warm, 10%);
+    }
+  }
+  input[type=checkbox] {
+    width:100%;
+    //float:right;
+    margin-left: .75em;
+    background:transparent;
+    //border:none;
+    margin-bottom: .75em;
+    @include screen-l {
+      width:auto;
+    }
+    //-moz-appearance:none;
+    //-webkit-appearance:none;
+    //-o-appearance:none;
+  }
+  input[type='checkbox']:checked,
+  input[type='checkbox']:not(:checked) {
+    background: transparent;
+    position: relative;
+    //visibility: hidden;
+    margin: 0 0 1em 0;
+    padding:0;
+  }
+  //input[type='checkbox']:checked::after,
+  //input[type='checkbox']:not(:checked)::after {
+  //  //content: " ";
+  //  //display:inline-block;
+  //  //width: 17px;
+  //  //height:17px;
+  //  //position: relative;
+  //  //top:4px;
+  //  //border: 1px solid $gray-dark;
+  //  //background: #fff;
+  //  //box-shadow: inset 0 1px 1px 0 rgba(0,0,0,.1);
+  //  //visibility: visible;
+  //}
+  //input[type='checkbox']:hover::after {
+  //  //background:#ddd;
+  //  //box-shadow: inset 0 0 0 2px white;
+  //}
+  //input[type='checkbox']:checked::after {
+  //  //background:$gray-darker;
+  //  //box-shadow: inset 0 0 0 2px white;
+  //}
+
+  .has-error {
+    label {
+      color: red;
+    }
+    input {
+      border-color: red;
+    }
+  }
+  .help-block {
+    margin:5px 0 0 0;
+    color: $gray-dark;
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    @include screen-l {
+      margin:10px 0 0 28%;
+    }
+    &.annotation-confirmation-text {
+      margin: 10px 0 5px 0;
+    }
+  }
+
+  /* Register */
+  .form-label {
+    width: 100%;
+    float: none;
+    @include screen-l {
+      width: 25%;
+      float: left;
+      margin-right: 3%;
+      margin-bottom: 0;
+    }
+    label {
+      width: 100%;
+    }
+  }
+  .form-input {
+    width: 100%;
+    margin-top: 5px;
+  }
+  select {
+    border: 1px solid $gray-medium;
+    padding: 5px 10px;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+   // -webkit-appearance: none;
+    @include screen-l {
+      width: 72%;
+    }
+  }
+  option {
+    padding: 5px 10px;
+  }
+}
+.register {
+  .errors {
+    border: 1px solid red;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    color: red;
+  }
+}
+

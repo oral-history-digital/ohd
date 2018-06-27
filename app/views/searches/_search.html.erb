@@ -1,26 +1,26 @@
 <h2 class="info">Service-Funktionen</h2>
-<p class="mainSearch"><%= link_to t(:search_the_archive, :scope => 'user_interface.labels'), current_search_path, :method => :post %></p>
+<p class="mainSearch"><%= link_to t(:search_the_archive, :scope => 'user_interface.labels'), current_search_path %></p>
 <div id="baseHeaderSearch">
   <span class="hits">
-    <% if search.hits == Interview::NUMBER_OF_INTERVIEWS %>
-      <%= link_to t('.all_interviews'), current_search_path, :method => :post %>
+    <% if search.hits == Interview.count %>
+      <%= link_to t('.all_interviews').html_safe, current_search_path %>
     <% elsif search.hits > 1 %>
-      <%= link_to t('.many_selected', :search_hits => search.hits), current_search_path, :method => :post %>
+      <%= link_to t('.many_selected', :search_hits => search.hits).html_safe, current_search_path %>
     <% elsif search.hits == 1 %>
-      <%= link_to t('.one_selected'), current_search_path, :method => :post %>
+      <%= link_to t('.one_selected').html_safe, current_search_path %>
     <% else %>
-      <%= t('.no_interviews_found') %>
+      <%= t('.no_interviews_found').html_safe %>
     <% end %>
   </span>
 </div>
 
 <div id="submit_search" class="action">
-  <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path('suchpfeil_quad.gif'), :onclick => 'submitViaAjax(); false;' %>
+  <%= submit_tag t(:search, :scope => 'user_interface.labels'), :type => :image, :src => image_path("#{Project.name}/suchpfeil_quad.gif"), :onclick => 'submitViaAjax(); false;' %>
 </div>
 
 <div id="search_header_overlay" class="overlay" style="display: none;"></div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
     var queryHash = '<%= (@search || Search.new).query_hash || '' %>';
     <% if action_name == 'new' && controller_name == 'searches' %>
     document.observe("dom:loaded", submitHashedQueryParams());

@@ -1,0 +1,53 @@
+doctype html
+
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="x-ua-compatible" content="ie=edge"
+    meta content="width=device-width, initial-scale=1.0" name="viewport"/
+
+    /<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    /<meta http-equiv="cache-control" content="no-cache" />
+    /<meta http-equiv="pragma" content="no-cache" />
+    /<meta name="robots" content="noindex,nofollow,noarchive" />
+    /<meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
+
+    == stylesheet_link_tag 'responsive'
+    == javascript_include_tag 'responsive'
+
+    /<link rel="shortcut icon" href="/favicon.ico" />
+    title == Project.project_name[I18n.locale.to_s]
+
+  body
+    .layout-indicator style="display: block;"
+
+    .wrapper-page
+      header.site-header
+        a.logo-link href="/" title="Zur Startseite MOG Archiv"
+          img.logo-img src="/assets/eog/mog-archiv-logo.svg"
+
+        .locales
+          - [:el, :de].each do |locale|
+            == link_to locale.to_s, url_for(controller: params[:controller], action: params[:action], locale: locale)
+
+        == link_to t(:start_page), root_path
+
+
+      .content
+        = yield
+
+
+    footer
+      .footer-links
+        == link_to "nutzungsbedingungen", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html", target: "_blank"
+        == link_to "nutzungsantrag", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html", target: "_blank"
+        == link_to "datenschutzbestimmungen", "http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html", target: "_blank"
+        /<a href="http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html" target="_blank">
+        /annotation_guidelines</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/team" target="_blank">
+        /team</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/kontakt" target="_blank">
+        /kontakt</a>
+        /<a href="http://www.zwangsarbeit-archiv.de/en/impressum" target="_blank">
+        /impressum</a>
+

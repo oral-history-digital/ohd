@@ -1,0 +1,28 @@
+
+.flyout-login-container {
+  padding: 30px 20px;
+  @include screen-l {
+    padding: 30px 40px 30px 20px;
+  }
+  .logout {
+    margin-left: 0;
+    width: 100%;
+    background-color: #8b8b7a;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background-color: lighten($gray-warm, 10%);
+    }
+  }
+  .info {
+    margin: 15px 0;
+  }
+}
+
+form.flyout-login {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

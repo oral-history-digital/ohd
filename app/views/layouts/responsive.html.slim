@@ -1,0 +1,34 @@
+doctype html
+
+html
+  head
+    meta charset="utf-8"
+    meta http-equiv="x-ua-compatible" content="ie=edge"
+    meta content="width=device-width, initial-scale=1.0" name="viewport"/
+
+    /<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    /<meta http-equiv="cache-control" content="no-cache" />
+    /<meta http-equiv="pragma" content="no-cache" />
+    /<meta name="robots" content="noindex,nofollow,noarchive" />
+    /<meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
+
+    script src="https://cdn.polyfill.io/v2/polyfill.min.js"
+
+    == javascript_pack_tag 'application' 
+
+    == stylesheet_link_tag 'responsive'
+    == stylesheet_pack_tag 'application'
+    == javascript_include_tag 'responsive'
+
+    == favicon_link_tag "/favicon-#{Project.project_config['project_id']}.ico"
+
+
+    /<link rel="shortcut icon" href="/favicon.ico" />
+    title == Project.project_name[I18n.locale.to_s]
+
+  body
+    .layout-indicator style="display: block;"
+
+    = yield
+
+

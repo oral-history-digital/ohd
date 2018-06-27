@@ -3,16 +3,18 @@ module InterviewHelper
   # Limits the number of displayed characters and adds a 'more' link
   # to expand the content.
   def expand(content, id=('field_' + (@expanded_fields = (@expanded_fields ||=0)+1).to_s), limit=150)
-    if content.length < limit+81
-      content
-    else
-      teaser = truncate(content, :length => limit)
-      teaser_id = id + '_teaser'
-      full_id = id + '_full'
-      more_link = link_to_function(t(:more, :scope => 'user_interface.labels') + '&nbsp;&raquo;', "$('#{teaser_id}').hide(); new Effect.BlindDown('#{full_id}');")
-      html = content_tag(:span, teaser + more_link, :id => teaser_id)
-      less_link = link_to_function('&laquo;&nbsp;' + t(:less, :scope => 'user_interface.labels'), "$('#{full_id}').hide(); $('#{teaser_id}').show();")
-      html << content_tag(:span, content + less_link, :id => full_id, :style => 'display: none;')
+    if content 
+      if content.length < limit+81
+        content
+      else
+        teaser = truncate(content, :length => limit)
+        teaser_id = id + '_teaser'
+        full_id = id + '_full'
+        more_link = link_to("#{t(:more, :scope => 'user_interface.labels')} &nbsp;&raquo;".html_safe, '#', hide: teaser_id, show: full_id, class: 'toggle')
+        html = content_tag(:span, teaser + more_link, :id => teaser_id)
+        less_link = link_to("&laquo;&nbsp; #{t(:less, :scope => 'user_interface.labels')}".html_safe, '#', hide: full_id, show: teaser_id, class: 'toggle')
+        html << content_tag(:span, content + less_link, :id => full_id, :style => 'display: none;')
+      end
     end
   end
 
@@ -61,7 +63,7 @@ module InterviewHelper
       item = citation[:item]
       position = citation[:position]
       unless item.nil? || position.nil?
-        html = link_to_function '&raquo;&nbsp;' + t(:goto_citation, :scope => 'user_interface.player'), "archiveplayer('interview-player').seek(#{item-1},#{position});"
+        html = 'TODO: replace when new video player runs' # link_to_function '&raquo;&nbsp;' + t(:goto_citation, :scope => 'user_interface.player'), "archiveplayer('interview-player').seek(#{item-1},#{position});"
       end
       html = content_tag(:span, text.to_s + html, :class => "citation")
       # (link_to '&raquo;&nbsp;' + t(:goto_citation, :scope => 'user_interface.player'), '#', :class => "segment-navigation"), :class => "citation")
@@ -117,6 +119,10 @@ module InterviewHelper
   def interview_player(interview)
     item = !params['item'].blank? ? params['item'].to_i-1 : nil
     position = !params['position'].blank? ? params['position'] : nil
+
+    video = playlist_interview_tapes_path(interview, :format => :xml),
+
+
     JWPlayer.new(playlist_interview_tapes_path(interview, :format => :xml),
                              :id => 'interview-player',
                              :item => (item),
@@ -152,7 +158,7 @@ module InterviewHelper
   # Return a human-readable list of available translations for the given database object.
   def available_languages(translated_object)
     language_codes = translated_object.translations.map{|t| I18n.three_letter_locale(t.locale)}
-    Language.find_all_by_code(language_codes).map{|c| c.name(I18n.locale)}.to_sentence
+    Language.where(code: language_codes).map{|c| c.name(I18n.locale)}.to_sentence
   end
 
   def language_adj_case(language)

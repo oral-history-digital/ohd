@@ -3,9 +3,9 @@ namespace :cleanup do
   desc 'cleans up UserRegistration#created_at'
   task :user_creation_dates => :environment do
     puts 'Cleaning up problematic creation dates for UserRegistration:'
-    ids = UserRegistration.all(:conditions => ['created_at = ?', '0000-00-00 00:00:00']).map(&:id)
-    updated = UserRegistration.update_all "created_at = '#{Time.gm(2010,1,1).to_s(:db)}'", "id IN (#{ids.join(',')})"
-    puts "#{updated} registrations updated."
+    #ids = UserRegistration.where('created_at = ?', '0000-00-00 00:00:00').map(&:id)
+    #updated = UserRegistration.update_all "created_at = '#{Time.gm(2010,1,1).to_s(:db)}'", "id IN (#{ids.join(',')})"
+    #puts "#{updated} registrations updated."
   end
 
   desc 'harmonize user job_descriptions and research_interests'

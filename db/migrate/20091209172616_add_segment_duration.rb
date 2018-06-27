@@ -1,6 +1,7 @@
 class AddSegmentDuration < ActiveRecord::Migration
 
   def self.up
+  unless Project.name.to_sym == :mog
 
     remove_column :segments, :duration
 
@@ -11,8 +12,10 @@ class AddSegmentDuration < ActiveRecord::Migration
     Rake::Task['data:segment_duration'].execute
 
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
 
     remove_column :segments, :duration
 
@@ -20,6 +23,7 @@ class AddSegmentDuration < ActiveRecord::Migration
       t.integer :duration
     end
     
+  end
   end
 
 end

@@ -7,14 +7,9 @@
 
      tag_filters = (params['tag_filters'] || {}).keys
      all_tags = tag_filters.empty?
-     tag_filters = current_user.tags.map(&:name) if all_tags -%>
+     tag_filters = current_user_account.tags.map(&:name) if all_tags -%>
 
-  <% form_remote_tag :url => user_contents_path,
-                     :method => :get,
-                     :html => { :action => user_contents_path,
-                                :method => :get,
-                                :name => "contentFilters",
-                                :id => "content_filters" } do |filter_selection| %>
+   <%= form_tag user_contents_path, method: :get, name: "contentFilters", id: "content_filters" do |filter_selection| %>
 
     <noscript>
       <div class="warning">
@@ -22,21 +17,21 @@
       </div>
     </noscript>
 
-  <div id="content-filters-toggle" class="open container-toggle" onclick="toggleContainer('content-filters-toggle', true, false);">
+  <div id="content-filters-toggle" class="open container-toggle" toggle='content-filters-toggle'>
     <h2><%= t('filter_contents', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="content-filters" class="container">
     <ul class="facet-field">
-      <li class="facet<%= all_contents ? ' checked' : '' -%>" onclick="checkFilter(null, this); Event.stop(event);">
+      <li class="facet<%= all_contents ? ' checked' : '' -%>">
         <%= check_box_tag "content_filters['_all_']", 1, all_contents, {:id => "filter_all_", :class => 'content_filter checkbox' } %>
         <span class="facet-name">
-          <span class="show-checked"><%= t(:all_filters, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
+          <span class="show-checked"><%= t(:all_filters, :scope => 'user_interface.user_content') -%><%= current_user_account.tags.size > 0 ? ':' : '' -%></span>
           <span class="show-unchecked"><%= t(:select_all_filters, :scope => 'user_interface.user_content') -%></span>
         </span>
       </li>
       <% UserContent::CONTENT_TYPES.each do |content_type| -%>
           <% active = content_filters.include?(content_type.to_s) ? true : false -%>
-      <li class="facet<%= active ? ' checked' : '' -%>" onclick="checkFilter('<%= "filter_#{content_type}" %>', this);">
+      <li class="facet<%= active ? ' checked' : '' -%>" check_filter_id='<%= "filter_#{content_type}" %>'>
         <%= check_box_tag "content_filters[#{content_type}]", 1, active, { :id => "filter_#{content_type}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= t(content_type.to_s, :scope => [:activerecord, :models], :count => 2) %></span>
       </li>
@@ -44,21 +39,21 @@
     </ul>
   </div>
 
-  <div id="tag-filters-toggle" class="open container-toggle" onclick="toggleContainer('tag-filters-toggle', true, false);">
+  <div id="tag-filters-toggle" class="open container-toggle" toggle='tag-filters-toggle'>
     <h2><%= t('filter_by_tag', :scope => 'user_interface.labels') %></h2>
   </div>
   <div id="tag-filters" class="container">
     <ul class="facet-field">
-      <li class="facet<%= all_tags ? ' checked' : '' %>" onclick="checkFilter(null, this); Event.stop(event);">
+      <li class="facet<%= all_tags ? ' checked' : '' %>">
         <%= check_box_tag "tag_filters['_all_']", 1, all_tags, {:id => "tagfilter_all_", :class => 'content_filter checkbox' } %>
         <span class="facet-name">
-          <span class="show-checked"><%= t(:all_topics, :scope => 'user_interface.user_content') -%><%= current_user.tags.size > 0 ? ':' : '' -%></span>
+          <span class="show-checked"><%= t(:all_topics, :scope => 'user_interface.user_content') -%><%= current_user_account.tags.size > 0 ? ':' : '' -%></span>
           <span class="show-unchecked"><%= t(:select_all_topics, :scope => 'user_interface.user_content') -%></span>
         </span>
       </li>
-      <% current_user.tags.sort{|a,b| Unicode::strcmp(a.name, b.name) }.each do |tag| -%>
+      <% current_user_account.tags.sort{|a,b| Unicode::strcmp(a.name, b.name) }.each do |tag| -%>
         <% active = tag_filters.include?(tag.name) -%>
-      <li class="facet<%= active ? ' checked' : '' -%>" onclick="checkFilter('<%= "tagfilter_#{tag}" %>', this);">
+      <li class="facet<%= active ? ' checked' : '' -%>" check_filter_id='<%= "tagfilter_#{tag}" %>'>
         <%= check_box_tag "tag_filters[#{tag}]", 1, active, { :id => "tagfilter_#{tag}", :class => 'content_filter checkbox' } %>
         <span class="facet-name"><%= tag %></span>
       </li>
@@ -69,11 +64,6 @@
 
   <% end -%>
 
-  <% javascript_tag do -%>
-      var categoryChange = 0;
-      var containerElems = $$('#baseContainerRight .container-toggle');
-  <% end -%>
-
-  <div id="content_filter_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path 'large_spinner.gif' %>" title="" alt="" /></div>
+  <div id="content_filter_overlay" class="overlay" style="display: none;"><img id="spinner_graphic" class="spinner_search" src="<%= image_path "#{Project.name}/large_spinner.gif" %>" title="" alt="" /></div>
 
 </div>

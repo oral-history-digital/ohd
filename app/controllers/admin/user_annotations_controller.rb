@@ -1,16 +1,11 @@
 class Admin::UserAnnotationsController < Admin::BaseController
 
-  actions :index, :show, :update
+  before_action :collection, only: [:index]
+  before_action :get_object, only: [:show, :update, :accept, :reject]
 
   def index
-    collection
     respond_to do |format|
-      format.html do
-        render
-      end
-      format.js do
-        render :layout => false
-      end
+      format.html 
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
@@ -32,73 +27,71 @@ class Admin::UserAnnotationsController < Admin::BaseController
     end
   end
 
+  def show
+  end
+
   # admin#update may only change description (independent of workflow_state!)
   def update
-    object.update_attribute :description, object_params['description']
+    @object.update_attribute :description, user_annotation_params['description']
     # also update the published annotation object
     unless @object.annotation.nil?
-      @object.annotation.update_attribute :text, object_params['description']
+      @object.annotation.update_attribute :text, user_annotation_params['description']
     end
     respond_to do |format|
-      format.html do
-        # this is just a fallback
-        render :action => :index
-      end
-      format.js do
-        html = render_to_string :partial => 'user_annotation', :object => @object, :locals => {:container_open => true}, :layout => false
-        render :update do |page|
-          page.replace "user_annotation_#{@object.id}", html
-          page.visual_effect :fade, 'shades'
-          page << "$('ajax_spinner').hide()"
-        end
-      end
+      format.html
+      format.js 
     end
   end
 
   def accept
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.accept!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.accept!
     @flash = 'Nutzeranmerkung veröffentlicht.'
     render_workflow_change
     expire_annotation_cache
   end
 
   def reject
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.reject!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.reject!
     @flash = 'Nutzeranmerkung abgelehnt.'
     render_workflow_change
   end
 
   def remove
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.remove!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.remove!
     @flash = 'Nutzeranmerkung aus dem Archiv entfernt.'
     render_workflow_change
     expire_annotation_cache
   end
 
   def withdraw
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.withdraw!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.withdraw!
     @flash = 'Nutzeranmerkung aus der Veröffentlichung zurückgezogen.'
     render_workflow_change
     expire_annotation_cache
   end
 
   def postpone
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.postpone!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.postpone!
     @flash = 'Veröffentlichung der Nutzeranmerkung zurückgestellt.'
     render_workflow_change
   end
 
   def review
-    object.update_attribute(:description, params['description']) unless params['description'].blank?
-    object.review!
+    @object.update_attribute(:description, params['description']) unless params['description'].blank?
+    @object.review!
     @flash = 'Ablehnung der Nutzeranmerkung aufgehoben.'
     render_workflow_change
   end
+
+  def annotation_filter_params
+    [:workflow_state, :media_id, :first_name, :last_name, :format]
+  end
+  helper_method :annotation_filter_params
 
   private
 
@@ -130,7 +123,12 @@ class Admin::UserAnnotationsController < Admin::BaseController
     conditionals << "workflow_state != ?"
     condition_args << "private"
     conditions = [ conditionals.join(' AND ') ] + condition_args
-    @user_annotations = UserAnnotation.all(:conditions => conditions, :include => :user, :order => "submitted_at DESC")
+    conditions = conditions.first if conditions.length == 1
+    @user_annotations = UserAnnotation.joins(:user).where(conditions).order("submitted_at DESC")
+  end
+
+  def get_object
+    @object = UserAnnotation.find(params[:id])
   end
 
   def render_workflow_change
@@ -140,11 +138,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
         redirect_to admin_user_annotations_path(params)
       end
       format.js do
-        flash.now[:alert] = @flash
-        annotation_html = render_to_string(:partial => 'user_annotation', :object => @object, :locals => {:container_open => true})
-        render :update do |page|
-          page.replace("user_annotation_#{@object.id}", annotation_html)
-        end
+        render :update
       end
     end
   end
@@ -181,6 +175,10 @@ class Admin::UserAnnotationsController < Admin::BaseController
     else
       t(field, :scope => 'activerecord.attributes.user_annotation', :locale => :de)
     end
+  end
+
+  def user_annotation_params
+    params.require(:user_annotation).permit(:description)
   end
 
 end

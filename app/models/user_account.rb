@@ -1,5 +1,12 @@
+require 'devise'
+
 class UserAccount < ActiveRecord::Base
-  unloadable
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+  #devise :database_authenticatable, :registerable,
+         #:recoverable, :rememberable, :trackable, :validatable
+  #attr_accessible :email, :password, :password_confirmation, :remember_me
+
 
   devise :database_authenticatable,
          :rememberable,
@@ -13,14 +20,12 @@ class UserAccount < ActiveRecord::Base
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
 
-  attr_accessible :email, :login, :password, :password_confirmation, :remember_me
-
   validates_uniqueness_of :login
   validates_presence_of :login
   validates_uniqueness_of :email
   validates_presence_of :email
-  validates_format_of :email, :with => Devise::EMAIL_REGEX
-  validates_length_of :password, :within => 5..20, :allow_blank => true
+  validates_format_of :email, :with => Devise.email_regexp
+  validates_length_of :password, :within => 5..50, :allow_blank => true
 
   # NOTE: validates_confirmation_of won't work on virtual attributes!
   # This is why we add a custom validation method later.
@@ -47,6 +52,11 @@ class UserAccount < ActiveRecord::Base
     self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
+  def tags
+    #user.tags
+    []
+  end
+
   def admin?
     !self.user.blank? && self.user.admin?
   end
@@ -59,7 +69,7 @@ class UserAccount < ActiveRecord::Base
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
   def confirm!(password, password_confirmation)
-    reset_password!(password, password_confirmation)
+    reset_password(password, password_confirmation)
     unless_confirmed do
       self.confirmation_token = nil
       self.confirmed_at = Time.now
@@ -68,7 +78,7 @@ class UserAccount < ActiveRecord::Base
       unless self.user_registration.nil?
         self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
       end
-      save(false)
+      save(validate: false)
     end
   end
 
@@ -129,17 +139,15 @@ class UserAccount < ActiveRecord::Base
 
   # Checks whether the record is confirmed or not, yielding to the block
   # if it's already confirmed, otherwise adds an error to email.
-  # It also stops on any validation errors, or if there is no
-  # password info given.
+  # It also stops on any validation errors.
   def unless_confirmed
     if confirmed?
-      self.class.add_error_on(self, :email, :already_confirmed)
+      errors.add(:email, :already_confirmed)
       false
     else
-      if !valid?
-        false
-      elsif encrypted_password.blank?
-        self.class.add_error_on(self, :password, :blank)
+      # valid? is not sufficient here!
+      #if !valid?
+      if !errors.empty?
         false
       else
         yield
@@ -159,7 +167,7 @@ class UserAccount < ActiveRecord::Base
   #
   def find_for_authentication(conditions)
     conditions[:deactivated_at] = nil
-    find(:first, :conditions => conditions)
+    where(conditions).first
   end
 
 end

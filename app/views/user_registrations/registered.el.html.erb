@@ -1,0 +1,14 @@
+<h1>Η ηλεκτρονική διεύθυνση <span><%= @user_registration.email %></span>  έχει ήδη καταχωρηθεί.</h1>
+
+<p>Η ηλεκτρονική διεύθυνση που χρησιμοποιείτε έχει ήδη καταχωρηθεί για το
+Αρχείο "<%= Project.project_name['el'] %>".</p>
+
+<% case @user_registration.workflow_state
+    when 'checked' %>
+<p>Η πρόσβασή σας θα ενεργοποιηθεί σύντομα. Οι αναγκαίες πληροφορίες για την ενεργοποίηση της πρόσβασης έχουν σταλεί στην ηλεκτρονική σας διεύθυνση με E-Mail.</p>
+<%  when 'unchecked' %>
+<p>Η πρόσβασή σας βρίσκεται υπό εξέταση. Παρακαλούμε περιμένετε ή επικοινωνήστε μαζί μας με E-Mail στην ηλεκτρονική διεύθυνση <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
+<%  else %>
+<p>Η πρόσβασή σας έχει ενεργοποιηθεί. Εάν δεν γνωρίζετε πλέον τα στοιχεία πρόσβασής σας ακολουθήστε αυτόν τον σύνδεσμο: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+<% end %>
+

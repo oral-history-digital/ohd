@@ -1,6 +1,6 @@
 class TestPages::StartPage < TestPages::ApplicationPage
   def initialize
-    still = File.new("#{CeDiS.config.cifs_share}archiv_backup/bilder/interview_stills/za465.JPG")
+    still = File.new("#{Project.cifs_share}archiv_backup/bilder/interview_stills/za465.JPG")
 
     # First create the interview that is hard coded to the start page
     # while logged out.

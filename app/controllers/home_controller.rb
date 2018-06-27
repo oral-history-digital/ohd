@@ -1,66 +1,81 @@
-# Controller for "static" pages in app/view/home
 class HomeController < BaseController
 
-  NO_LAYOUT = %w(map_tutorial)
+  layout 'responsive'
 
-  STATIC_PAGES = (Dir.entries(File.join(Rails.root, 'app/views/home')) - ['.','..']).map{|f| f[/^[^\.]*/]}.compact
+  skip_before_action :authenticate_user_account!
 
-  skip_before_filter :check_user_authentication!
+  def map_tutorial
+    render layout: false
+  end
 
-  def show
-    @page_action = (
-      if params[:page_id].blank?
-        # Display the home page by default.
-        'archive'
-      else
-        # Reverse lookup the page action for the given pretty URL
-        I18n.backend.send(:load_translations) unless I18n.backend.initialized?
-        (I18n.backend.send(:translations)[I18n.locale][:page_urls].index(params[:page_id]) || '')
+  def archive
+    respond_to do |format|
+      format.html do
+        render :template => '/react/app.html'
       end
-    ).to_s
+      format.json do
+        # include timestamp in cache-key if sth. of the static content changed!!!
+        #
+        json = Rails.cache.fetch('static-content-20.6.2018') do 
+          locales = Project.available_locales.reject{|i| i == 'alias'}
+          home_content = {}
+          locales.each do |i|
+            I18n.locale = i
+            template = "/home/home.#{i}.html+#{Project.name.to_s}"
+            home_content[i] = render_to_string(template: template, layout: false)
+          end
+          {
+            home_content: home_content,
+            external_links: Project.external_links,
+            translations: translations,
+            country_keys: locales.inject({}) do |mem, locale|
+              mem[locale] = ISO3166::Country.translations(locale).sort_by{|key, value| value}.to_h.keys
+              mem
+            end,
+            collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            project: Project.name.to_s,
+            project_name: Project.project_name,
+            project_domain: Project.project_domain,
+            project_doi: Project.project_doi,
+            archive_domain: Project.archive_domain,
+            locales: Project.available_locales
+          }.to_json
+        end
 
-    if @page_action.blank?
-      # Redirect to the home page if the page id is not valid.
-      return redirect_to :page_id => I18n.t('archive', :scope => :page_urls)
-    end
-
-    without_layout = NO_LAYOUT.include?(@page_action)
-    if STATIC_PAGES.include?(@page_action)
-      if without_layout
-        render_localized :action => @page_action, :layout => false
-      else
-        render_localized :action => @page_action
+        render plain: json
       end
-    else
-      raise ActionController::UnknownAction
     end
+  end
+
+  def faq_archive_contents
+  end
+
+  def faq_index
+  end
+
+  def faq_searching
+  end
+
+  def faq_technical
+  end
+
+  def map_tutorial
   end
 
   private
 
-  def render_localized(options = nil, extra_options = {}, &block)
-    if !options[:template].blank?
-      options[:template] = localize_template_path(options[:template])
-    elsif !options[:action].blank?
-      options[:action] = localize_template_path(options[:action].to_s)
+  def translations
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = instance_variable_get("@#{locale}") || 
+        instance_variable_set("@#{locale}", 
+                              YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
+                                YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
+                                  countries: ISO3166::Country.translations(locale)
+                                )
+                             )
+      mem
     end
-    if block_given?
-      render(options, extra_options) do
-        eval block
-      end
-    else
-      render(options, extra_options)
-    end
-  end
-
-  def localize_template_path(path)
-    path_tokens = path.split('/')
-    template_name = path_tokens.pop
-    path = path_tokens.join('/')
-    path << '/' unless path.blank?
-    template_name << '.html.erb' unless template_name.include?('.')
-    template_name_parts = template_name.split('.')
-    path << template_name_parts.shift << ".#{I18n.locale}." << template_name_parts.join('.')
   end
 
 end

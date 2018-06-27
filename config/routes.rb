@@ -1,104 +1,129 @@
-ActionController::Routing::Routes.draw do |map|
+Rails.application.routes.draw do
 
-  map.localized_interview_collection ':locale/teilsammlung/:project_id', :controller => :collections, :action => :show
-  map.interview_collection 'teilsammlung/:project_id', :controller => :collections, :action => :show
+  root :to => redirect('/de')
+  resources :people
+  root to: "home#archive", locale: :de
 
-  map.localized_interview_collections ':locale/teilsammlungen', :controller => :collections, :action => :index
-  map.interview_collections 'teilsammlungen', :controller => :collections, :action => :index
+  scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
+    devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
+    resources :user_registrations do
+      member do
+        post :confirm
+        get :activate
+      end
+    end
 
-  # ensure protected URLs to interview assets
-  map.text_materials 'interviews/:id/text_materials/:filename.:extension', :controller => :interviews, :action => :text_materials
-  map.photos 'interviews/:id/photos/:filename.:extension', :controller => :interviews, :action => :photos
-  map.stills 'interviews/stills/:filename.:extension', :controller => :interviews, :action => :stills
-  map.interview_registry_entries 'interviews/:id/in/:registry_entry_id', :controller => :interviews, :action => :show
+    localized do
+      get 'account' => 'accounts#show'
 
-  map.resources :interviews do |interview|
+      %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
+        get site, to: "home##{site}", as: site
+        get '/',  to: "home#archive", as: :home
+      end
 
-    interview.resources :tapes,
-                        :collection => { :playlist => :get },
-                        :member => { :transcript => :get }
+      #get 'map', to: 'registry_references#map', :as => :public_map
+      #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
+      get 'locations', to: 'registry_references#locations', :as => :locations
 
+      resources :collections, only: [:show, :index] do
+        collection do
+          get :countries
+        end
+      end
+
+      resources :transcripts, only: [:new, :create]
+
+      #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+      #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+
+      resources :interviews do #, only: [:show, :index] do
+        member do 
+          get :doi_content
+          get :segments
+          get :headings
+          get :references
+          get :ref_tree
+        end
+        #collection do 
+          #get :stills
+        #end
+        #resources :registry_entries, only: [:show]
+        resources :segments, only: [:index]
+        resources :tapes do
+          collection do
+            get :playlist
+          end
+          member do
+            get :transcript
+          end
+        end
+      end
+
+      resources :searches, only: [:new, :facets, :archive, :interview] do
+        collection do
+          get :facets
+          get :archive
+          get :interview
+        end
+      end
+    end
+
+    resources :user_contents do
+      collection do
+        get :segment_annotation
+        post :create_annotation
+        post :sort
+      end
+      member do
+        patch :publish
+        get :topics
+        post :retract
+        put :update_topics
+        put :update_annotation
+        get :publish_notice
+      end
+    end
+
+    namespace :admin do
+      resources :users do
+        collection do
+          get :admin
+        end
+        member do
+          post :flag
+        end
+      end
+      resources :user_registrations do
+        member do
+          post :subscribe
+          post :unsubscribe
+        end
+      end
+      resources :user_annotations do
+        member do
+          post :remove
+          post :reject
+          post :withdraw
+          post :postpone
+          post :accept
+          post :review
+        end
+      end
+      resources :user_statistics do
+        collection do
+          get :usage_report
+        end
+      end
+     # get 'benutzerstatistik' => 'user_statistics#index', :as => :user_statistics
+      resources :imports do
+        collection do
+          get :for_interview
+        end
+      end
+    end
   end
 
-  map.public_locations_search 'webservice/ortssuche', :controller => :registry_references, :action => :index, :format => :js
-  map.public_locations_search_by_format 'webservice/ortssuche.:format', :controller => :registry_references, :action => :index
-  map.public_locations_total_pages ':locale/webservice/locations/:date.:format', :controller => :registry_references, :action => :full_index
-  map.public_locations_by_page ':locale/webservice/locations/:date/page.:page.:format', :controller => :registry_references, :action => :full_index
-  map.public_map 'karte', :controller => :registry_references, :action => :map
-  map.localized_public_map ':locale/map', :controller => :registry_references, :action => :map
-  map.map_frame 'kartenframe', :controller => :registry_references, :action => :map_frame, :locale => :de
-  map.localized_map_frame ':locale/mapframe', :controller => :registry_references, :action => :map_frame
-
-  map.namespace :admin do |admin|
-    admin.resources :users, { :collection => { :admin => :get }, :member => { :flag => :post }}
-    admin.resources :user_registrations, { :member => { :subscribe => :post, :unsubscribe => :post } }
-    admin.resources :user_annotations, { :member => { :accept => :post, :reject => :post, :remove => :post, :withdraw => :post, :postpone => :post, :review => :post }}
-    admin.resources :user_statistics, {:collection => {:usage_report => :get}}
-    admin.user_management 'benutzerverwaltung', :controller => :user_registrations, :action => :index
-    admin.user_export     'benutzerverwaltung.:format', :controller => :user_registrations, :action => :index
-    admin.user_statistics 'benutzerstatistik', :controller => :user_statistics, :action => :index
-    #admin.usage_report  'zugriffsstatistik/:filename', :controller => :user_statistics, :action => :usage_report
-    admin.registration_details 'registrierung/:user_registration',
-                               :controller => :user_registrations,
-                               :action => :edit
-    admin.resources :imports,
-                    :collection => { :for_interview => :get }
-  end
-  map.admin_home 'admin', :controller => 'admin/user_registrations', :action => :index
-  map.admin_user_by_state 'admin/:workflow_state', :controller => 'admin/user_registrations', :action => :index
-
-  map.search_by_hash_page 'suche/:suche/:page', :controller => :searches, :action => :query
-  map.search_by_hash 'suche/:suche', :controller => :searches, :action => :query
-  map.new_search 'suchen/neu', :controller => :searches, :action => :new
-  map.search_by_page 'suchen/:page', :controller => :searches, :action => :query
-  map.search 'suchen', :controller => :searches, :action => :query
-
-  map.with_options :path_prefix => ':locale' do |localized|
-    localized.resources :searches, :collection => {
-        :query => :post,
-        :interview => :get,
-        :person_name => :get
-    }
-  end
-
-  map.connect 'arbeitsmappe', :controller => :user_contents, :action => :index
-  map.connect 'workbook', :locale => :en, :controller => :user_contents, :action => :index
-
-  map.resources :user_contents,
-                :member => { :topics => :get, :update_topics => :put, :update_annotation => :put, :publish_notice => :get, :publish => :put, :retract => :post },
-                :collection => { :sort => :post, :segment_annotation => :get, :create_annotation => :post }
-
-  map.resources :user_registrations, :path_prefix => 'anmeldung'
-
-  # DE
-  map.anmelden        'login',        :controller => :sessions, :action => :new
-  map.registrieren    'registrieren', :controller => :user_registrations, :action => :new
-
-  # EN
-  map.en_login        'sign_in',      :controller => :sessions, :action => :new, :locale => :en
-  map.en_register     'register',     :controller => :user_registrations, :action => :new, :locale => :en
-
-  map.confirm_account 'zugang_aktivieren/:confirmation_token', :controller => :user_registrations, :action => :activate, :method => :get
-  map.post_confirm_account 'zugangsaktivierung/:confirmation_token', :controller => :user_registrations, :action => :confirm_activation, :method => :post
-  map.reset_password  'passwort_vergessen', :controller => :passwords, :action => :new
-  map.change_password 'neues_passwort/:reset_password_token', :controller => :passwords, :action => :edit
-
-  map.devise_for :user_accounts
-
-  I18n.available_locales.each do |locale|
-    map.connect "#{locale}/:page_id", :locale => locale, :controller => :home, :action => :show
-    map.connect "#{locale}/:controller/:action", :locale => locale
-    map.connect "#{locale}/:controller/:action/:id", :locale => locale
-    map.connect "#{locale}/:controller/:action/:id.:format", :locale => locale
-    map.connect "#{locale}", :locale => locale, :controller => :home, :action => :show
-  end
-
-  map.home ':page_id', :controller => :home, :action => :show
-  map.localized_root ':locale', :controller => :home, :action => :show
-  map.localized_home  ':locale/:page_id', :controller => :home, :action => :show
-  map.root :controller => :home, :action => :show
-
-  map.connect ':controller/:action/:id', :locale => :de
-  map.connect ':controller/:action/:id.:format', :locale => :de
+  get 'photos/src/:name' => 'photos#src'
+  get 'photos/thumb/:name' => 'photos#thumb'
 
 end

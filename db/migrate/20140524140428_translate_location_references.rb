@@ -1,5 +1,6 @@
 class TranslateLocationReferences < ActiveRecord::Migration
   def self.up
+  unless Project.name.to_sym == :mog
     # Create globalize2 table.
     LocationReference.create_translation_table! :name => :string, :location_name => :string, :region_name => :string, :country_name => :string
 
@@ -9,8 +10,10 @@ class TranslateLocationReferences < ActiveRecord::Migration
     # Drop the migrated columns.
     remove_columns :location_references, :name, :location_name, :region_name, :country_name
   end
+  end
 
   def self.down
+  unless Project.name.to_sym == :mog
     # Re-create the original columns.
     add_column :location_references, :name, :string
     add_column :location_references, :location_name, :string
@@ -25,5 +28,6 @@ class TranslateLocationReferences < ActiveRecord::Migration
 
     # Drop globalize2 table.
     LocationReference.drop_translation_table!
+  end
   end
 end

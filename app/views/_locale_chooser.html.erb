@@ -1,20 +1,4 @@
-<% nonlocale_params = params.reject { |k, v| [:locale, :language].include? k.to_sym } %>
 <% I18n.available_locales.each do |available_locale| %>
-    <% unless I18n.locale.to_s =~ Regexp.new("^#{available_locale}", Regexp::IGNORECASE) %>
-        <li>
-            <%
-               link_params = if params[:page_id].blank?
-                               {:action => action_name, :controller => controller_name}
-                             else
-                               # Reverse lookup the translation for the current page_id.
-                               translation_id = (I18n.backend.send(:translations)[I18n.locale][:page_urls].index(params[:page_id]) || '')
-                               {:action => :show, :controller => :home, :page_id => I18n.t(translation_id, :scope => :page_urls, :locale => available_locale)}
-                             end
-               link_params[:locale] = available_locale
-               link_params.merge(nonlocale_params)
-            %>
-            <%= link_to t('.language_choice', :locale => available_locale), url_for(link_params),
-                        :title => t('.language_choice_title', :locale => available_locale) %>
-        </li>
-    <% end %>
+  <% title = t('.language_choice_title', :locale => available_locale) %>
+  <%= link_to title, {locale: available_locale}, title: title %>
 <% end %>

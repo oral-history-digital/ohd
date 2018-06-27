@@ -1,0 +1,138 @@
+<% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.first_name}" %>
+<% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.last_name}" %>
+<% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
+<% title = "#{I18n.backend.translate(@alpha2_locale, 'transcript_header')} #{interviewee_name}" %>
+<% header_text = "#{I18n.backend.translate(@alpha2_locale, 'transcript')}:  #{I18n.backend.translate(@alpha2_locale, 'interview_with')} #{interviewee_name} (#{I18n.backend.translate(@alpha2_locale, 'archive_id')} #{@interview.archive_id})" %>
+
+\title{<%= title %>}
+
+\begin{document}
+
+<%= render partial: "./latex/header_footer",
+           locals: {
+               header_text: header_text
+           } %>
+<%= render partial: "./latex/title",
+           locals: {
+               title: title,
+               space_above: 3,
+               space_below: 3,
+               font_size: 18
+
+           } %>
+<%= render partial: "./latex/info" %>
+<%= render partial: "./latex/citation",
+           locals: {
+               interviewee_name: interviewee_name
+           } %>
+
+\newpage
+
+<%= render partial: "./latex/observation" %>
+<%= render partial: "./latex/headings" %>
+
+\newpage
+
+<%= render partial: "./latex/legend" %>
+
+\newpage
+
+<%= render partial: "./latex/title",
+           locals: {
+               title: title,
+               space_above: 0,
+               space_below: 0.01,
+               font_size: 13
+           } %>
+
+<% chapters = [] %>
+<% paragraphs = [] %>
+<% last_speaker_id = 0 %>
+<% chapter_hash = Hash.new %>
+<% tape_number = 0 %>
+<% @interview.segments.includes(:translations).each_with_index do |segment, index| %>
+  <% if (segment.speaker_changed && !segment.speaker_id.nil? && segment.speaker_id > 0) || (!segment.speaker_id.nil? && segment.speaker_id > 0 && segment.speaker_id != last_speaker_id) %>
+    <% last_speaker_id = segment.speaker_id if segment.speaker_id > 0 %>
+    <% new_line = true %>
+    <% person_translation = Person.find(segment.speaker_id).translations.where(locale: @project_locale).first %>
+    <% speaker = latex_escape("#{person_translation.first_name} #{person_translation.last_name}".strip + ": ") %>
+    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text).sub(/^\S*: /, "") %>
+  <% else %>
+    <% speaker = nil %>
+    <% new_line = false %>
+    <% sentence = latex_escape(Nokogiri::HTML.parse(segment.text(@project_locale)).text) %>
+  <% end %>
+
+  <% paragraph_hash = Hash.new %>
+  <% paragraph_hash['speaker'] = speaker %>
+  <% paragraph_hash['segment'] = sentence %>
+  <% paragraph_hash['new_line'] = new_line %>
+
+  <% if !segment.mainheading(@project_locale).blank? || !segment.subheading(@project_locale).blank? || index == @interview.segments.count - 1 %>
+    <% if index == @interview.segments.count - 1 %>
+      <% paragraphs << paragraph_hash %>
+    <% end %>
+    <% chapter_hash['body'] = paragraphs.dup %>
+    <% chapters << chapter_hash %>
+    <% chapter_hash = Hash.new %>
+    <% chapter_hash['timecode'] = segment.timecode.split('] ')[1].split('.')[0] %>
+    <% if @interview.tapes.count > 1 && segment.tape.number != tape_number %>
+      <% tape_number = segment.tape.number %>
+      <% chapter_hash['tape_number'] = tape_number %>
+    <% end %>
+    <% paragraphs = [] %>
+  <% end %>
+  <% paragraphs << paragraph_hash %>
+<% end %>
+
+
+<% chapters.each_with_index do |chapter, index| %>
+
+  <% tape_info = false %>
+  <% unless chapter['tape_number'].nil? %>
+    <% tape_info = true %>
+    <%= render partial: "./latex/title",
+               locals: {
+                   title: "#{I18n.backend.translate(@alpha2_locale, 'tape')} #{chapter['tape_number']}",
+                   space_above: chapter['tape_number']==1 ? 0 : 0.7,
+                   space_below: 0.05,
+                   font_size: 10
+               } %>
+  <% end %>
+
+  <%= render partial: "./latex/title",
+             locals: {
+                 title: chapter['timecode'],
+                 space_above: tape_info ? 0 : 0.4,
+                 space_below: 0,
+                 font_size: 10
+             } %>
+  <% chapter['body'].each_with_index do |paragraph, i| %>
+    <% if paragraph['new_line'] || i == 0 %>
+      <%= "" %>
+    <% end %>
+    <% unless paragraph['speaker'].blank? %>
+      <% if i > 0 %>
+        \vspace*{<%= 0.2 %>cm}
+      <% end %>
+      \textit{<%= paragraph['speaker'] %>}
+    <% end %>
+    <%= paragraph['segment'].html_safe %>
+  <% end %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

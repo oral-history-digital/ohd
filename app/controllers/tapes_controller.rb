@@ -1,8 +1,6 @@
 class TapesController < BaseController
 
-  before_filter :parent_object
-
-  skip_before_filter :current_search_for_side_panel
+  before_action :parent_object
 
   def playlist
     @interview = parent_object
