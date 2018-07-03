@@ -1,4 +1,4 @@
 // aspect ration 4:3 for zwar
 .search-result-img {
-    @include aspect-ratio(16, 9);
+    @include aspect-ratio(4, 3);
 }
