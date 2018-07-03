@@ -137,11 +137,15 @@ class Segment < ActiveRecord::Base
     
   end
 
-  (Project.available_locales + [:orig]).each do |locale|
+  (Project.available_locales).each do |locale|
     define_method "text_#{locale}" do 
-      locale = orig_lang if locale == :orig
       text(ISO_639.find(locale).send(Project.alpha))
     end
+  end
+
+  def text_orig 
+    locale = orig_lang
+    text(ISO_639.find(locale).send(Project.alpha))
   end
 
   def orig_lang
