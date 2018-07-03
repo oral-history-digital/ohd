@@ -40,7 +40,9 @@ export default class InterviewPreview extends React.Component {
     }
 
     componentDidMount() {
-        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        if(this.props.fulltext) {
+            this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        }
     }
 
     facetToClass(facetname) {
