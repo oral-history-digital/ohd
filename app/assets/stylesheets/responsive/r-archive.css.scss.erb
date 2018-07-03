@@ -5,6 +5,10 @@
 // @import "variables-mog";
 @import "mixins";
 
+.xyzContainer {
+    @include aspect-ratio(4, 3);
+}
+
 // Normalize
 @import "normalize";
 
@@ -33,3 +37,6 @@
 
 // Print
 @import "print";
+
+// Project-specific
+@import "customization-<%= ENV['project_name'] || Project.name %>";
