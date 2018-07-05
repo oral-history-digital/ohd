@@ -170,6 +170,9 @@ class Interview < ActiveRecord::Base
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
 
+    # in order to fast access places of birth for all interviews
+    string :place_of_birth, :stored => true
+
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
@@ -238,6 +241,17 @@ class Interview < ActiveRecord::Base
 
   def title
     localized_hash(true)
+  end
+
+  def place_of_birth
+    return {
+      descriptor: interviewees[0].try(:place_of_birth).try(:localized_hash),
+      id: interviewees[0].try(:place_of_birth).try(:id),
+      latitude: interviewees[0].try(:place_of_birth).try(:latitude),
+      longitude: interviewees[0].try(:place_of_birth).try(:longitude),
+      names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
+      archive_id: archive_id
+    }
   end
 
   def reverted_short_title(locale)

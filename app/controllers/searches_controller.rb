@@ -65,6 +65,15 @@ class SearchesController < BaseController
     #    ...]
   end
 
+  def all_interviews_places_of_birth
+    search = Interview.search do
+      adjust_solr_params do |params|
+        params[:rows] = Interview.all.size
+      end
+    end
+    search.hits.map {|hit| eval hit.stored(:place_of_birth) }
+  end
+
   def archive
     search = Interview.search do
       fulltext params[:fulltext]
@@ -119,6 +128,7 @@ class SearchesController < BaseController
       format.json do
         render json: {
             all_interviews_titles: all_interviews_titles,
+            all_interviews_places_of_birth: all_interviews_places_of_birth,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
