@@ -191,7 +191,7 @@ export default class ArchiveSearch extends React.Component {
                         selectedTabPanelClassName='active'
                         defaultIndex={0}
                     >
-                        <TabList className={'search-results-tabs'}>
+                        <TabList className={'search-results-tabs' + (this.props.project === 'zwar' && ' hidden' || '')}>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-th"></i>
                                 <span>{t(this.props, 'interviews')}</span>
