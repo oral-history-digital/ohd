@@ -160,7 +160,7 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-ref-tree-#{@interview.id}-#{@interview.segment_registry_references.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil),
