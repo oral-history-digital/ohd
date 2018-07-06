@@ -1,19 +1,9 @@
 import {
-    REQUEST_INTERVIEW,
-    RECEIVE_INTERVIEW,
-
-    REQUEST_INTERVIEW_DATA,
-    RECEIVE_INTERVIEW_DATA,
-
-    VIDEO_TIME_CHANGE,
-    VIDEO_ENDED,
-    SET_NEXT_TAPE,
-
-    TRANSCRIPT_TIME_CHANGE,
-    SET_TAPE_AND_TIME,
     TRANSCRIPT_SCROLL,
 
     SET_LOCALE,
+    SET_ARCHIVE_ID,
+
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
 
@@ -24,15 +14,6 @@ const initialState = {
     locale: 'de',
     locales: ['de', 'el'],
     archiveId: null,
-    interviews: {},
-    tape: 1,
-    videoTime: 0,
-    videoStatus: 'pause',
-    transcriptTime: 0,
-    transcriptScrollEnabled: false,
-
-    isFetchingInterview: false,
-    isFetchingInterviewLocations: false,
 
     homeContent: "",
     externalLinks: {},
@@ -42,77 +23,13 @@ const initialState = {
 
 const archive = (state = initialState, action) => {
     switch (action.type) {
-        case REQUEST_INTERVIEW:
-            return Object.assign({}, state, {
-                isFetchingInterview: true,
-                fetchedInterview: false,
-            })
-        case RECEIVE_INTERVIEW:
-            return Object.assign({}, state, {
-                isFetchingInterview: false,
-                fetchedInterview: true,
-                archiveId: action.archiveId,
-                interviews: Object.assign({}, state.interviews, {
-                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                        interview: action.interview,
-                    }),
-                }),
-                lastUpdated: action.receivedAt
-            })
-        case REQUEST_INTERVIEW_DATA:
-            return Object.assign({}, state, {
-                interviews: Object.assign({}, state.interviews, {
-                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                        [`${action.dataType}_status`]: 'fetching',
-                    }),
-                }),
-            })
-        case RECEIVE_INTERVIEW_DATA:
-            return Object.assign({}, state, {
-                interviews: Object.assign({}, state.interviews, {
-                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
-                        [action.dataType]: action.data,
-                        [`${action.dataType}_status`]: 'fetched',
-                    }),
-                }),
-                lastUpdated: action.receivedAt
-            })
-        case VIDEO_TIME_CHANGE:
-            return Object.assign({}, state, {
-                transcriptTime: action.transcriptTime,
-            })
-        case VIDEO_ENDED:
-            return Object.assign({}, state, {
-                videoStatus: 'paused',
-                videoTime: 0,
-                transcriptTime: 0,
-            })
-        case SET_NEXT_TAPE:
-            return Object.assign({}, state, {
-                tape: state.tape + 1,
-                videoTime: 0.1,
-                videoStatus: 'play',
-            })
-        case TRANSCRIPT_TIME_CHANGE:
-            return Object.assign({}, state, {
-                videoTime: action.videoTime,
-                videoStatus: 'play',
-                transcriptTime: action.videoTime,
-                tape: action.tape,
-                transcriptScrollEnabled: false
-            })
-        case SET_TAPE_AND_TIME:
-            return Object.assign({}, state, {
-                videoTime: action.videoTime,
-                tape: action.tape,
-            })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
-            })
         case SET_LOCALE:
             return Object.assign({}, state, {
                 locale: action.locale
+            })
+        case SET_ARCHIVE_ID:
+            return Object.assign({}, state, {
+                archiveId: action.archiveId
             })
         case REQUEST_STATIC_CONTENT:
             return Object.assign({}, state, {
