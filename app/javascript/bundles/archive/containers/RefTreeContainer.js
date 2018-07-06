@@ -1,24 +1,21 @@
 import { connect } from 'react-redux';
 
 import RefTree from '../components/RefTree';
-import { 
-    fetchInterviewData
-} from '../actions/interviewActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let interview = ArchiveUtils.getInterview(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: interview
+        interview: getInterview(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchInterviewData: (archiveId, dataType) => dispatch(fetchInterviewData(archiveId, dataType)),
+    fetchData: (dataType, archiveId, nestedDataType) => dispatch(fetchData(dataType, archiveId, nestedDataType)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RefTree);

@@ -38,7 +38,11 @@ class InterviewsController < BaseController
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-#{@interview.id}-#{@interview.updated_at}" do
-          Rails.cache.fetch("interview-#{@interview.id}-#{@interview.updated_at}"){::InterviewSerializer.new(@interview).as_json} 
+          {
+            archive_id: params[:id],
+            data_type: 'interviews',
+            data: Rails.cache.fetch("interview-#{@interview.id}-#{@interview.updated_at}"){::InterviewSerializer.new(@interview).as_json},
+          }
         end.to_json
         render plain: json
       end
@@ -65,22 +69,23 @@ class InterviewsController < BaseController
     end
   end
 
-  def doi_content
+  def doi_contents
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-doi-content-#{@interview.id}-#{@interview.updated_at}" do
-          doi_content = {}
+        json = Rails.cache.fetch "interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
+          doi_contents = {}
           locales = Project.available_locales.reject{|i| i == 'alias'}
           locales.each do |i|
             I18n.locale = i
             template = "/interviews/_doi.#{i}.html+#{Project.name.to_s}"
-            doi_content[i] = render_to_string(template: template, layout: false)
+            doi_contents[i] = render_to_string(template: template, layout: false)
           end
           {
-            data: doi_content,
-            dataType: 'doi_content',
-            archive_id: params[:id]
+            archive_id: params[:id],
+            data_type: 'interviews',
+            nested_data_type: 'doi_contents',
+            data: doi_contents,
           }
         end.to_json
         render plain: json
@@ -93,12 +98,19 @@ class InterviewsController < BaseController
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
-          segments = Segment.
-              includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
           {
-            data: segments.map {|s| Rails.cache.fetch("segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}},
-            dataType: 'segments',
+            data: @interview.tapes.inject({}) do |tapes, t|
+              segments_for_tape = Segment.
+                includes(:translations, :annotations => [:translations]).
+                for_interview_id(@interview.id).
+                where(tape_id: t.id).
+                where.not(timecode: '00:00:00.000')
+
+              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
+              tapes
+            end,
+            nested_data_type: 'segments',
+            data_type: 'interviews',
             archive_id: params[:id]
           }
         end.to_json
@@ -117,7 +129,8 @@ class InterviewsController < BaseController
               for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
           {
             data: segments.with_heading.map {|s| Rails.cache.fetch("headings-#{s.id}-#{s.updated_at}"){::HeadingSerializer.new(s).as_json}},
-            dataType: 'headings',
+            nested_data_type: 'headings',
+            data_type: 'interviews',
             archive_id: params[:id]
           }
         end.to_json
@@ -130,10 +143,11 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-references-#{@interview.id}-#{@interview.segment_registry_references.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "interview-references-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           {
             data: @interview.segment_registry_references.map {|s| Rails.cache.fetch("registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}},
-            dataType: 'references',
+            nested_data_type: 'references',
+            data_type: 'interviews',
             archive_id: params[:id]
           }
         end.to_json
@@ -150,7 +164,8 @@ class InterviewsController < BaseController
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil),
-            dataType: 'ref_tree',
+            nested_data_type: 'ref_tree',
+            data_type: 'interviews',
             archive_id: params[:id]
           }
         end.to_json

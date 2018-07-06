@@ -12,6 +12,7 @@ export default class Form extends React.Component {
             showErrors: false, 
             values: {
                 default_locale: this.props.locale,
+                id: this.props.id
             },
             errors: {}
         };

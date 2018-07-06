@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, segments } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class UserContentForm extends React.Component {
@@ -83,12 +83,12 @@ export default class UserContentForm extends React.Component {
     }
 
     segment() {
-        return this.segments()[this.state.segmentIndex];
+        return segments(this.props)[this.state.segmentIndex];
     }
 
-    segments() {
-        return this.props.segments;
-    }
+    //segments() {
+        //return this.props.segments;
+    //}
 
     segmentTime() {
         return moment.utc(this.segment().start_time * 1000).format("HH:mm:ss");
@@ -119,7 +119,7 @@ export default class UserContentForm extends React.Component {
     }
 
     previousSegment() {
-        if (this.state.segmentIndex > 0) {
+        if (this.state.segmentIndex > this.props.interview.first_segment_id) {
             return <i className='fa fa-arrow-left popup-segment-nav-before'
                       onClick={() => this.setSegment(this.state.segmentIndex - 1)}/>
         } else {
@@ -128,7 +128,7 @@ export default class UserContentForm extends React.Component {
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.segments().length - 1) {
+        if (this.state.segmentIndex < this.props.interview.last_segment_id) {
             return <i className='fa fa-arrow-right popup-segment-nav-after'
                       onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
         } else {
@@ -137,7 +137,7 @@ export default class UserContentForm extends React.Component {
     }
 
     setSegment(segmentIndex) {
-        let segment = this.segments()[segmentIndex];
+        let segment = segments(this.props)[segmentIndex];
         this.setState({
             segmentIndex: segmentIndex,
             properties: {

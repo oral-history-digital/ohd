@@ -4,7 +4,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t } from '../../../lib/utils';
+import { t, fullname } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 
@@ -22,47 +22,60 @@ export default class Interview extends React.Component {
 
     loadInterview() {
         if (
-            !this.props.isFetchingInterview && 
-            this.props.match.params.archiveId !== 'new' &&
-            this.props.match.params.archiveId !== this.props.archiveId
+            //this.props.match.params.archiveId !== 'new' &&
+            //this.props.match.params.archiveId !== this.props.archiveId &&
+            //
+            !this.props.interviews ||
+            !this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`]
         ) {
-            this.props.fetchInterview(this.props.match.params.archiveId);
+            this.props.setArchiveId(this.props.match.params.archiveId);
+            this.props.fetchData('interviews', this.props.match.params.archiveId);
         }
     }
 
+    interviewLoaded() {
+        return this.props.interviews &&
+            this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`] === 'fetched';
+    }
+
+    interview() {
+        return this.interviewLoaded() ? this.props.interviews[this.props.archiveId] : {};
+    }
+
     loadUserContents() {
-        if (!this.userContentsLoaded() && !this.props.isFetchingUserContents) {
-            this.props.fetchUserContents();
+        if (!this.props.userContentsStatus) {
+            this.props.fetchData('user_contents');
         }
     }
 
     loadDoiContent() {
         if (
-            this.props.data &&
-            !this.props.data.doi_content_status
+            !this.props.interviews ||
+            !this.props.interviews[this.props.match.params.archiveId] ||
+            !this.props.interviews[this.props.match.params.archiveId].doi_contents_status
         ) {
-            this.props.fetchInterviewData(this.props.match.params.archiveId, 'doi_content');
+            this.props.fetchData('interviews', this.props.match.params.archiveId, 'doi_contents');
         }
     }
 
-    userContentsLoaded() {
-        return this.props.userContents && !this.props.userContents.fetched;
+    doiContentLoaded() {
+        return this.props.interviews &&
+            this.props.interviews[this.props.archiveId] &&
+            this.props.interviews[this.props.archiveId]['doi_contents_status'] === 'fetched';
     }
 
     loggedOutContent() {
-        if (this.props.data.interviewees) {
-            let intervieweeNames = this.props.data.interview.interviewees[0].names[this.props.locale];
-
+        if (this.interviewLoaded()) {
             return (
                 <div>
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
+                                {fullname(this.props, this.interview().interviewees[0], true)}
                             </h1>
                         </div>
                         <div className='video-element'>
-                            <img src={this.props.data.interview.still_url}/>
+                            <img src={this.interview().still_url}/>
                         </div>
                     </div>
                     {this.doiContent()}
@@ -74,10 +87,10 @@ export default class Interview extends React.Component {
     }
 
     doiContent() {
-        if (this.props.data && this.props.data.doi_content_status === 'fetched') {
+        if (this.doiContentLoaded()) {
             return (
                 <div className='wrapper-content'
-                     dangerouslySetInnerHTML={{__html: this.props.data.doi_content[this.props.locale]}}
+                     dangerouslySetInnerHTML={{__html: this.interview().doi_contents[this.props.locale]}}
                 />
             )
         } else {
@@ -86,7 +99,11 @@ export default class Interview extends React.Component {
     }
 
     content() {
-        if (this.props.fetchedInterview) {
+        if (
+            //this.props.interviews &&
+            //this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`] === 'fetched' 
+            this.interviewLoaded()
+        ){
             let tabIndex = this.props.locales.length + 3;
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>

@@ -38,7 +38,7 @@ Rails.application.routes.draw do
 
       resources :interviews do #, only: [:show, :index] do
         member do 
-          get :doi_content
+          get :doi_contents
           get :segments
           get :headings
           get :references

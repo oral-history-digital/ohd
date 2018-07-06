@@ -25,7 +25,7 @@ export default class TableOfContents extends React.Component {
         if (
             !this.props.interview.headings_status
         ) {
-            this.props.fetchInterviewData(this.props.archiveId, 'headings');
+            this.props.fetchData('interviews', this.props.archiveId, 'headings');
         }
     }
 
@@ -65,7 +65,7 @@ export default class TableOfContents extends React.Component {
                         end_time: segment.end_time,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
-                        interview_duration: this.props.interview.interview.duration,
+                        interview_duration: this.props.interview.duration,
                         subheadings: []
                     });
                     if (headings.length > 1) {

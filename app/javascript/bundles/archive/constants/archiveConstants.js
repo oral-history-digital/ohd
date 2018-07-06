@@ -2,11 +2,23 @@
 
 export const MISSING_STILL = 'https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg'
 
+export const ADD_DATA = 'ADD_DATA';
+export const UPDATE_DATA = 'UPDATE_DATA';
+export const REMOVE_DATA = 'REMOVE_DATA';
+export const REQUEST_DATA = 'REQUEST_DATA';
+export const RECEIVE_DATA = 'RECEIVE_DATA';
+
 export const REQUEST_INTERVIEW = 'REQUEST_INTERVIEW';
 export const RECEIVE_INTERVIEW = 'RECEIVE_INTERVIEW';
 export const REQUEST_INTERVIEW_DATA = 'REQUEST_INTERVIEW_DATA';
 export const RECEIVE_INTERVIEW_DATA = 'RECEIVE_INTERVIEW_DATA';
+export const UPDATE_INTERVIEW = 'UPDATE_INTERVIEW ';
 export const INTERVIEW_URL = '/de/interviews';
+
+export const REQUEST_PERSON = 'REQUEST_PERSON';
+export const RECEIVE_PERSON = 'RECEIVE_PERSON';
+export const UPDATE_PERSON = 'UPDATE_PERSON ';
+export const PEOPLE_URL = '/de/people';
 
 export const UPLOAD_TRANSCRIPT_URL = '/de/transcripts';
 export const UPLOADED_TRANSCRIPT = 'UPLOADED_TRANSCRIPT';
@@ -38,9 +50,11 @@ export const SET_NEXT_TAPE = 'SET_NEXT_TAPE';
 
 export const TRANSCRIPT_TIME_CHANGE = 'TRANSCRIPT_TIME_CHANGE';
 export const SET_TAPE_AND_TIME = 'SET_TAPE_AND_TIME';
+export const SET_ACTUAL_SEGMENT = 'SET_ACTUAL_SEGMENT';
 export const TRANSCRIPT_SCROLL = 'TRANSCRIPT_SCROLL';
 
 export const SET_LOCALE = 'SET_LOCALE';
+export const SET_ARCHIVE_ID = 'SET_ARCHIVE_ID';
 export const DEFAULT_LOCATION = [37.9838, 23.7275];
 
 export const OPEN_POPUP = 'OPEN_POPUP';

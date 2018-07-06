@@ -40,7 +40,9 @@ class InterviewSerializer < ActiveModel::Serializer
              :interviewee_id,
              :person_names,
              :place_of_interview,
-             :year_of_birth
+             :year_of_birth,
+             :last_segment_id,
+             :first_segment_id
 
   has_many :photos, serializer: PhotoSerializer
   has_many :interviewees, serializer: PersonSerializer
@@ -174,4 +176,11 @@ class InterviewSerializer < ActiveModel::Serializer
   #   object.duration.timecode
   # end
 
+  def last_segment_id
+    object.segments.last.id
+  end
+
+  def first_segment_id
+    object.segments.where.not(timecode: '00:00:00.000').first.id
+  end
 end

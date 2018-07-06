@@ -1,14 +1,51 @@
-var ArchiveUtils = {
-    getInterview: function (state) {
-        return state.archive.interviews[state.archive.archiveId];
-    },
+export function get(state, dataType, id) {
+    return state.data[dataType][id]
+}
 
-    getLocationsForInterview: function (state) {
-        return state.locations[state.archive.archiveId];
-    },
-};
+export function getInterview(state) {
+    return state.data.interviews[state.archive.archiveId];
+}
 
-export default ArchiveUtils;
+export function segments(props) {
+    return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
+}
+
+export function getSegmentId(time, segments, lastSegmentId, firstSegmentId) {
+
+    let found = false;
+    //
+    // aproximation based on the asumption that the mean or median segment duration is 7s
+    //
+    let segmentId = firstSegmentId + Math.round(time/7);
+    if (segmentId > lastSegmentId)
+        segmentId = lastSegmentId;
+
+    if (segments[segmentId].start_time > time) {
+        while (!found) {
+            if (
+                segments[segmentId].start_time <= time ||
+                segmentId === firstSegmentId
+            ) {
+                found = true;
+                break;
+            }
+            segmentId--;
+        }
+    } else if (segments[segmentId].start_time < time) {
+        while (!found) {
+            if (
+                segments[segmentId].start_time >= time ||
+                segmentId === lastSegmentId
+            ) {
+                found = true;
+                break;
+            }
+            segmentId++;
+        }
+    }
+
+    return segmentId;
+}
 
 export function t(props, key) {
     let text;

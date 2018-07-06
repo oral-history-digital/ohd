@@ -4,16 +4,14 @@ import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let data = ArchiveUtils.getInterview(state);
     return { 
         transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
         tape: state.archive.tape,
-        interview: data && data.interview,
-        references: data && data.references,
+        interview: getInterview(state),
         userContents: state.userContent.contents
     }
 }

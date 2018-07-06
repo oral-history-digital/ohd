@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs, showFlyoutTabs, toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
-import { fetchStaticContent, setLocale } from '../actions/wrapperPageActionCreators';
+import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
+import { setLocale } from '../actions/archiveActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {

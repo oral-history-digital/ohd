@@ -54,7 +54,10 @@ class UserContentsController < BaseController
       format.html 
       format.js 
       format.json do
-        render json: user_contents
+        render json: {
+            data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
+            data_type: 'user_contents'
+          }
       end
     end
   end
