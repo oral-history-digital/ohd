@@ -50,7 +50,7 @@ export default class Interview extends React.Component {
     }
 
     loggedOutContent() {
-        if (this.props.data.interviewees) {
+        if (this.props.data.interview.interviewees) {
             let intervieweeNames = this.props.data.interview.interviewees[0].names[this.props.locale];
 
             return (
