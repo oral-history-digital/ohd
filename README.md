@@ -136,3 +136,41 @@ Example: Switch from `mog` to `zwar`:
     ```bash
     cp current/config/projects/zwar.yml shared/config/project.yml
     ```
+
+2. If you changed JS-code after the last deploy, you need to commit the re-packed javascript before deployment. On your locale machine do:
+
+    ```bash
+    RAILS_ENV=production rake webpacker:compile
+    git add public/packs/
+    git push
+    ```
+
+3. Deploy the code with
+    ```bash
+    cap production-zwar deploy
+    ```
+    or
+    ```bash
+    cap production-mog deploy
+    ```
+
+## After release of new data on the live DB
+
+1. On the server, do a reindex:
+
+    ```bash
+    RAILS_ENV=production bundle exec rake solr:reindex:all
+    ```
+
+2. On the server, change the base url for caching, e.g.:
+
+    ```ruby
+    # lib/tasks/cache.rake
+    
+    BASE_URL = 'http://160.45.168.36:94'
+    ```
+    then, do:
+
+    ```bash
+    RAILS_ENV=production bundle exec rake cache:all
+    ```

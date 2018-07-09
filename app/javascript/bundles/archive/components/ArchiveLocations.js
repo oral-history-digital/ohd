@@ -19,20 +19,21 @@ export default class ArchiveLocations extends React.Component {
         this.context.router.history.push(`/${this.props.locale}/interviews/${archiveId}`);
     }
 
-    locations() {
-        let locations = [];
-        for (let i = 0; i < this.props.foundInterviews.length; i++) {
-            if (this.props.foundInterviews[i].interviewees.length) {
-                let loc = this.props.foundInterviews[i].interviewees[0].place_of_birth;
-                if (loc) {
-                    loc['names'] = this.props.foundInterviews[i].interviewees[0].names;
-                    loc['archive_id'] = this.props.foundInterviews[i].archive_id;
-                    locations = locations.concat(loc);
-                }
-            }
-        }
-        return locations;
-    }
+    // locations() {
+    //     let locations = [];
+    //     for (let i = 0; i < this.props.foundInterviews.length; i++) {
+    //         if (this.props.foundInterviews[i].interviewees.length) {
+    //             // let loc = this.props.allPlacesOfBirth
+    //             let loc = this.props.foundInterviews[i].interviewees[0].place_of_birth;
+    //             if (loc) {
+    //                 loc['names'] = this.props.foundInterviews[i].interviewees[0].names;
+    //                 loc['archive_id'] = this.props.foundInterviews[i].archive_id;
+    //                 locations = locations.concat(loc);
+    //             }
+    //         }
+    //     }
+    //     return locations;
+    // }
 
     placeOfBirth(ref) {
         if (ref.descriptor[this.props.locale]) {
@@ -58,7 +59,7 @@ export default class ArchiveLocations extends React.Component {
     render() {
         return (
             <LocationsContainer
-                data={this.locations()}
+                // data={this.locations()}
                 loaded={this.locationsLoaded()}
                 handleClick={this.handleClick.bind(this)}
                 popupContent={this.popupContent.bind(this)}

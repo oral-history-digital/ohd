@@ -33,3 +33,6 @@
 
 // Print
 @import "print";
+
+// Project-specific
+@import "customization-<%= ENV['project_name'] || Project.name %>";

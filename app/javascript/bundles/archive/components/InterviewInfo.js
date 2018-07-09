@@ -54,8 +54,9 @@ export default class InterviewInfo extends React.Component {
     }
 
     language(){
-        let languages = this.props.interview.translated ? this.props.interview.languages.join('') : this.props.interview.lang
-        return this.content(t(this.props, 'language'), t(this.props, 'language_' + languages), "");
+        return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
+        // let languages = this.props.interview.translated ? this.props.interview.languages.join('') : this.props.interview.lang
+        // return this.content(t(this.props, 'language'), t(this.props, 'language_' + languages), "");
     }
 
     segmentators(){

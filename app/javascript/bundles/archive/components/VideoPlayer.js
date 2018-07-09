@@ -157,7 +157,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     subtitles() {
-        return this.props.locales.map((locale, index) => {
+        // return this.props.locales.map((locale, index) => {
+        return this.props.interview.languages.map((locale, index) => {
             return (
                 <track 
                     key={`subtitle-${locale}`}

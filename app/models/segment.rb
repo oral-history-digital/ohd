@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Segment < ActiveRecord::Base
+  include IsoHelpers
 
   belongs_to :interview#, inverse_of: :segments
   belongs_to :speaking_person, 
@@ -136,11 +137,15 @@ class Segment < ActiveRecord::Base
     
   end
 
-  (Project.available_locales + [:orig]).each do |locale|
+  (Project.available_locales).each do |locale|
     define_method "text_#{locale}" do 
-      locale = orig_lang if locale == :orig
       text(ISO_639.find(locale).send(Project.alpha))
     end
+  end
+
+  def text_orig 
+    locale = orig_lang
+    text(ISO_639.find(locale).send(Project.alpha))
   end
 
   def orig_lang
@@ -214,7 +219,7 @@ class Segment < ActiveRecord::Base
   end
 
   def as_vtt_subtitles(lang)
-    raw_segment_text = text(lang)
+    raw_segment_text = text(projectified(lang))
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
@@ -225,8 +230,8 @@ class Segment < ActiveRecord::Base
     #Annotation.for_segment(self)
   #end
 
-  def speaker_changed
-    speaker_change || translations.first.text && translations.first.text[1] == ":"
+  def speaker_changed(raw_segment_text = false)
+    raw_segment_text && raw_segment_text[1] == ":"
   end
 
   # returns the segment that leads the chapter

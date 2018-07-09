@@ -191,7 +191,7 @@ export default class ArchiveSearch extends React.Component {
                         selectedTabPanelClassName='active'
                         defaultIndex={0}
                     >
-                        <TabList className={'search-results-tabs'}>
+                        <TabList className={'search-results-tabs' + (this.props.project === 'zwar' && ' hidden' || '')}>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-th"></i>
                                 <span>{t(this.props, 'interviews')}</span>
@@ -207,9 +207,9 @@ export default class ArchiveSearch extends React.Component {
                         <TabPanel>
                             <div>
                                 <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div>
-                                {this.renderPagination()}
+                                {/* {this.renderPagination()} */}
                                 <ArchiveLocationsContainer/>
-                                {this.renderPagination()}
+                                {/* {this.renderPagination()} */}
                             </div>
                         </TabPanel>
                     </Tabs>

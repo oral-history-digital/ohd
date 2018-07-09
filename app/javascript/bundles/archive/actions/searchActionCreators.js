@@ -56,11 +56,11 @@ function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
         allInterviewsTitles: json.all_interviews_titles,
+        allInterviewsPlacesOfBirth: json.all_interviews_places_of_birth,
         allInterviewsCount: json.all_interviews_count,
         resultPagesCount: json.result_pages_count,
         resultsCount: json.results_count,
         foundInterviews: json.interviews,
-        foundSegmentsForInterviews: json.found_segments_for_interviews,
         facets: json.facets,
         receivedAt: Date.now()
     }
