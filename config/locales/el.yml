@@ -1,8 +1,8 @@
 el:
-  de: 'german'
-  en: 'english'
-  ru: 'russian'
-  el: 'greek'
+  de: 'DE'
+  en: 'EN'
+  ru: 'RU'
+  el: 'EL'
   observation: 'Περιγραφή συνέντευξης'
   tape: 'Ταινία'
   legend_title: 'Σύμβολα απομαγνητοφώνησης'
