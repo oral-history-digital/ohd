@@ -39,6 +39,25 @@
   }
   .slick-slide {
   text-align: left !important;
+
+    // reset some styling that is not needed in archive view
+    .content-search-text {
+      p {
+      cursor: auto !important;
+      }
+      &.active {
+        background-color: initial !important;
+      }
+      &:hover {
+        p {
+        color: #666 !important;
+        }
+        span.highlight {
+          color: #222 !important;
+        }
+      }
+    }
+    /////
   }
   .slick-arrow {
     bottom: -20px;
