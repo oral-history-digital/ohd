@@ -65,15 +65,21 @@ export function submitData(params, locale='de') {
     //
     let dataType = Object.keys(params)[0]; 
 
+    // clean params to prevent problems with superagent through empty values
+    for (var prop in params[dataType]) {
+        if (!params[dataType][prop])
+            delete params[dataType][prop]
+    }
+
     if(params[dataType].id) {
         return dispatch => {
             dispatch(updateData(dataType, params[dataType].id, params[dataType]));
-            Loader.put(`${locale}/${dataType}/${params[dataType].id}`, params, dispatch, null);
+            Loader.put(`/${locale}/${dataType}/${params[dataType].id}`, params, dispatch, null);
         }
     } else {
         return dispatch => {
             //dispatch(addData(params));
-            Loader.post(`${locale}/${dataType}`, params, dispatch, receiveData);
+            Loader.post(`/${locale}/${dataType}`, params, dispatch, receiveData);
         }
     }
 }
@@ -81,7 +87,7 @@ export function submitData(params, locale='de') {
 export function deleteData(dataType, id, locale='de') {
     return dispatch => {
         dispatch(removeData(id, dataType))
-        Loader.delete(`${locale}/${dataType}/${id}`, dispatch, null);
+        Loader.delete(`/${locale}/${dataType}/${id}`, dispatch, null);
     }
 }
 
