@@ -3,7 +3,7 @@ export function get(state, dataType, id) {
 }
 
 export function getInterview(state) {
-    return state.data.interviews[state.archive.archiveId];
+    return state.data.interviews && state.data.interviews[state.archive.archiveId];
 }
 
 export function segments(props) {
