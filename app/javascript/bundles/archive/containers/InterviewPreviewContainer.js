@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
       locale: state.archive.locale,
       translations: state.archive.translations,
       query: state.search.query,
-      segments: state.search.interviews[ownProps.interview.archive_id] || {},
+      segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
       project: state.archive.project
     }
 }

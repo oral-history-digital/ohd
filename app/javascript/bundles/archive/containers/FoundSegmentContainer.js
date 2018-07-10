@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import FoundSegment from '../components/FoundSegment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let data = ArchiveUtils.getInterview(state);
+    let data = getInterview(state);
     let interview = data && data.interview;
     return {
         tape: state.archive.tape,

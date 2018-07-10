@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import YearRange from '../components/YearRange';
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 
 const mapStateToProps = (state) => {

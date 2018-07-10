@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import InterviewData from '../components/InterviewData';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 
 const mapStateToProps = (state) => {
     return {
-        interview: ArchiveUtils.getInterview(state),
+        interview: getInterview(state),
         locale: state.archive.locale,
     }
 }

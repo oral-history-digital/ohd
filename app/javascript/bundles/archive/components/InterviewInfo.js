@@ -4,11 +4,6 @@ import {Link, hashHistory} from 'react-router-dom';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
 
-import {
-    INTERVIEW_URL
-} from '../constants/archiveConstants';
-
-
 export default class InterviewInfo extends React.Component {
 
     constructor(props, context) {

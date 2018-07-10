@@ -4,11 +4,11 @@ import InterviewLocations from '../components/InterviewLocations';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { fetchLocations } from '../actions/locationsActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-    let interview = ArchiveUtils.getInterview(state);
+    let interview = getInterview(state);
     let placeOfBirth = null;
     if (interview && interview.interview && interview.interview.interviewees){
         placeOfBirth = interview.interview.interviewees[0].place_of_birth;
