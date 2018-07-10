@@ -267,7 +267,7 @@ class UserContentsController < BaseController
              :link_url,
              :persistent).
       tap do |whitelisted|
-      whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
+        whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
       end
   end
 

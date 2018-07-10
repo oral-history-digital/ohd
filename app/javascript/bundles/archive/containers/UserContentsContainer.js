@@ -1,19 +1,20 @@
 import { connect } from 'react-redux';
 
 import UserContents from '../components/UserContents';
-import { fetchUserContents } from '../actions/userContentActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
-        contents: state.userContent.contents,
-        fetched: state.userContent.fetched,
-        isFetchingUserContents: state.userContent.isFetchingUserContents,
+        contents: state.data.user_contents,
+        status: state.data.user_contents_status,
+        // the following is just a trick to force rerender after deletion
+        last_deleted: state.data.user_contents_last_deleted,
         locale: state.archive.locale,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchUserContents: () => dispatch(fetchUserContents())
+    fetchData: (dataType) => dispatch(fetchData(dataType))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContents);

@@ -4,7 +4,7 @@ import { t } from '../../../lib/utils';
 export default class UserContentDelete extends React.Component {
 
     destroy() {
-        this.props.deleteUserContent(this.props.id);
+        this.props.deleteData('user_contents', this.props.id);
         this.props.closeArchivePopup();
     }
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UserContentForm from '../components/UserContentForm';
-import { submitUserContent } from '../actions/userContentActionCreators';
+import { submitData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 import { getInterview } from '../../../lib/utils';
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitUserContent: (params) => dispatch(submitUserContent(params)),
+    submitData: (params) => dispatch(submitData(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
