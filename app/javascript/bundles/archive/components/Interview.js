@@ -9,15 +9,23 @@ import { t, fullname } from '../../../lib/utils';
 export default class Interview extends React.Component {
 
     componentDidMount() {
+        this.setArchiveId();
         this.loadInterview();
         this.loadUserContents();
         this.loadDoiContent();
     }
 
     componentDidUpdate() {
+        this.setArchiveId();
         this.loadInterview();
         this.loadUserContents();
         this.loadDoiContent();
+    }
+
+    setArchiveId() {
+        if ( this.props.match.params.archiveId !== this.props.archiveId) {
+            this.props.setArchiveId(this.props.match.params.archiveId);
+        }
     }
 
     loadInterview() {
@@ -28,7 +36,6 @@ export default class Interview extends React.Component {
             !this.props.interviews ||
             !this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`]
         ) {
-            this.props.setArchiveId(this.props.match.params.archiveId);
             this.props.fetchData('interviews', this.props.match.params.archiveId);
         }
     }
