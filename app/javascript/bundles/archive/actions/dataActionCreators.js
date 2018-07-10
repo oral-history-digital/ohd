@@ -17,17 +17,21 @@ import {
     //dataType: Object.keys(params)[0],
 //});
 
-const updateData = (dataType, id, data) => ({
+const updateData = (dataType, id, data, nestedDataType, nestedId) => ({
     type: UPDATE_DATA,
     id: id,
     dataType: dataType,
-    data: data
+    data: data,
+    nestedDataType: nestedDataType,
+    nestedId: nestedId,
 });
 
-const removeData = (id, dataType) => ({
+const removeData = (id, dataType, nestedDataType, nestedId) => ({
     type: REMOVE_DATA,
     id: id,
     dataType: dataType,
+    nestedDataType: nestedDataType,
+    nestedId: nestedId,
 });
 
 const requestData = (dataType, id, nestedDataType) => ({
@@ -40,10 +44,10 @@ const requestData = (dataType, id, nestedDataType) => ({
 const receiveData = (json) => ({
     type: RECEIVE_DATA,
     id: json.archive_id || json.id,
-    //id: json.data.archive_id || json.data.id,
     data: json.data,
     dataType: json.data_type,
     nestedDataType: json.nested_data_type,
+    nestedId: json.nestedId,
 });
 
 export function fetchData(dataType, id, nestedDataType, locale='de') {
@@ -73,6 +77,7 @@ export function submitData(params, locale='de') {
 
     if(params[dataType].id) {
         return dispatch => {
+            // TODO: extend params for updateData for nestedData-case
             dispatch(updateData(dataType, params[dataType].id, params[dataType]));
             Loader.put(`/${locale}/${dataType}/${params[dataType].id}`, params, dispatch, null);
         }
@@ -84,10 +89,14 @@ export function submitData(params, locale='de') {
     }
 }
 
-export function deleteData(dataType, id, locale='de') {
+export function deleteData(dataType, id, locale='de', nestedDataType, nestedId) {
+    let url = `/${locale}/${dataType}/${id}`
+    if  (nestedDataType)
+        url += `/${nestedDataType}/${nestedId}`
+
     return dispatch => {
-        dispatch(removeData(id, dataType))
-        Loader.delete(`/${locale}/${dataType}/${id}`, dispatch, null);
+        dispatch(removeData(id, dataType, nestedDataType, nestedId))
+        Loader.delete(url, dispatch, null);
     }
 }
 
