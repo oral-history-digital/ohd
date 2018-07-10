@@ -30,7 +30,11 @@ class UserContentsController < BaseController
         #render :partial => 'show', object: @object
       #end
       format.json do
-        render json: @user_content
+        render json: {
+          data_type: 'user_contents',
+          data: ::UserContentSerializer.new(@user_content),
+          id: @user_content.id
+        }
       end
     end
   end
@@ -251,8 +255,8 @@ class UserContentsController < BaseController
   private
 
   def user_content_params
-    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
-    params.require(:user_content).
+    properties = params[:user_contents].delete(:properties) if params[:user_contents][:properties]
+    params.require(:user_contents).
       permit(:description,
              :title,
              :media_id,
@@ -263,7 +267,7 @@ class UserContentsController < BaseController
              :link_url,
              :persistent).
       tap do |whitelisted|
-        whitelisted[:properties] = properties.permit!
+      whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
       end
   end
 

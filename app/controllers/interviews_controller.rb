@@ -37,14 +37,7 @@ class InterviewsController < BaseController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-#{@interview.id}-#{@interview.updated_at}" do
-          {
-            archive_id: params[:id],
-            data_type: 'interviews',
-            data: Rails.cache.fetch("interview-#{@interview.id}-#{@interview.updated_at}"){::InterviewSerializer.new(@interview).as_json},
-          }
-        end.to_json
-        render plain: json
+        render json: cache_interview(@interview)
       end
       format.vtt do
         vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do

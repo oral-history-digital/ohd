@@ -132,7 +132,7 @@ class SearchesController < BaseController
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
-            interviews: search.results.map{|i| Rails.cache.fetch("interview-#{i.id}-#{i.updated_at}"){::InterviewSerializer.new(i).as_json} },
+            interviews: search.results.map{|i| cache_interview(i)},
             # found_segments_for_interviews: number_of_found_segments,
             # found_segments_for_interviews: found_segments,
             facets: Project.updated_search_facets(search),
