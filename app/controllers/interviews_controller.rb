@@ -14,7 +14,13 @@ class InterviewsController < BaseController
   def create
     @interview = Interview.create interview_params
     respond_to do |format|
-      format.json { render json: 'ok' }
+      format.json do
+        render json: {
+          archive_id: @interview.archive_id,
+          data_type: 'interviews',
+          data: ::InterviewSerializer.new(@interview),
+        }
+      end
     end
   end
 
@@ -25,10 +31,16 @@ class InterviewsController < BaseController
   end
 
   def update
-    @interview = Interview.find params[:id]
+    @interview = Interview.find_by_archive_id params[:id]
     @interview.update_attributes interview_params
     respond_to do |format|
-      format.json { render json: @interview }
+      format.json do
+        render json: {
+          archive_id: @interview.archive_id,
+          data_type: 'interviews',
+          data: ::InterviewSerializer.new(@interview),
+        }
+      end
     end
   end
 
@@ -170,7 +182,7 @@ class InterviewsController < BaseController
   private
 
   def interview_params
-    params.require(:interview).
+    params.require(:interviews).
       permit(
         'collection_id',
         'archive_id',
