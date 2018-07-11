@@ -8,7 +8,9 @@ export default class InterviewForm extends React.Component {
         return (
             <Form 
                 scope='interviews'
-                id={this.props.interview && this.props.interview.archive_id}
+                values={{
+                    id: this.props.interview && this.props.interview.archive_id
+                }}
                 onSubmit={this.props.submitData}
                 submitText={this.props.submitText}
                 elements={[
