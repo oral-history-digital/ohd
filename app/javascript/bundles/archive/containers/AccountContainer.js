@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Account from '../components/Account';
 import { submitLogout, fetchAccount } from '../actions/accountActionCreators';
-import { changeToEditView } from '../actions/interviewActionCreators';
+import { changeToEditView } from '../actions/archiveActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
