@@ -69,12 +69,6 @@ export function submitData(params, locale='de') {
     //
     let dataType = Object.keys(params)[0]; 
 
-    // clean params to prevent problems with superagent through empty values
-    for (var prop in params[dataType]) {
-        if (!params[dataType][prop])
-            delete params[dataType][prop]
-    }
-
     if(params[dataType].id) {
         return dispatch => {
             // TODO: extend params for updateData for nestedData-case
