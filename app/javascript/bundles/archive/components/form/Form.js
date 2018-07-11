@@ -10,10 +10,7 @@ export default class Form extends React.Component {
         super(props);
         this.state = {
             showErrors: false, 
-            values: {
-                default_locale: this.props.locale,
-                id: this.props.id
-            },
+            values: this.props.values || {},
             errors: {}
         };
 
