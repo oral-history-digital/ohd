@@ -81,6 +81,8 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def interview_date
     Date.parse(object.interview_date).strftime("%Y-%m-%d")
+  rescue
+    'no date given'
   end
 
   def video_array
@@ -178,9 +180,13 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def last_segment_id
     object.segments.last.id
+  rescue
+    0
   end
 
   def first_segment_id
     object.segments.where.not(timecode: '00:00:00.000').first.id
+  rescue
+    0
   end
 end
