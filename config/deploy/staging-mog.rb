@@ -2,7 +2,7 @@ server "160.45.168.44", user: "deploy", roles: %w{app db web}
 
 set :application, "mog"
 
-set :branch, :development
+set :branch, :master
 
 set :stage, :staging
 set :user, 'deploy'

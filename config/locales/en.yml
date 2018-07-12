@@ -207,8 +207,11 @@ en:
   saved_interviews: 'Saved interviews'
   saved_annotations: 'Saved annotations'
   search_facets:
+    forced_labor_groups: 'Forced Labor Group'
+    forced_labor_fields: 'Deployment Area'
     fulltext: 'search keyword'
     gender: 'gender'
+    periods: 'Time periods'
     Man: 'Male'
     Woman: 'Female'
     man: 'male'

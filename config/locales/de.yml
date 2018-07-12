@@ -237,6 +237,9 @@ de:
     priv_agreement: 'Hinweise zum Datenschutz'
 
   search_facets:
+    forced_labor_fields: 'Einsatzbereich'
+    forced_labor_groups: 'Gruppe'
+    periods: 'Zeitperioden'
     fulltext: 'Suchbegriff'
     gender: 'Geschlecht'
     Man: 'männlich'
