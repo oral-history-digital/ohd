@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
         foundSegmentsForInterviews: state.search.foundSegmentsForInterviews,
         resultsCount: state.search.resultsCount,
         query: state.search.query,
+        facets: state.search.facets,
         interviews: state.search.interviews,
         translations: state.archive.translations,
         locale: state.archive.locale,

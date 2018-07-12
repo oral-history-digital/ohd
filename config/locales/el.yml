@@ -157,6 +157,7 @@ el:
   search_facets:
     fulltext: 'Όρος αναζήτησης'
     gender: 'Φύλο'
+    periods: 'Χρονικές περίοδοι'
     media_type: 'media type'
     Man: 'άρρεν'
     Woman: 'θήλυ'
