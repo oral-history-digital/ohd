@@ -49,8 +49,8 @@ export default class UploadTranscript extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <Form 
-                        scope='interview'
-                        onSubmit={this.props.submitTranscript}
+                        scope='transcripts'
+                        onSubmit={this.props.submitData}
                         submitText='edit_interview.upload_transcript'
                         elements={[
                             {
@@ -68,10 +68,32 @@ export default class UploadTranscript extends React.Component {
                                 validate: function(v){return v instanceof File},
                                 //handleChangeCallback: this.handleFileChange
                             },
-                            { attribute: 'timecode' },
-                            { attribute: 'transcript' },
-                            { attribute: 'translation' },
-                            { attribute: 'annotations' },
+                            { attribute: '[file_column_names]timecode' },
+                            { attribute: '[file_column_names]transcript' },
+                            {
+                                elementType: 'select',
+                                attribute: '[file_column_languages]transcript',
+                                values: this.props.languages,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
+                            { attribute: '[file_column_names]translation_one' },
+                            {
+                                elementType: 'select',
+                                attribute: '[file_column_languages]translation_one',
+                                values: this.props.languages,
+                                withEmpty: true,
+                                //validate: function(v){return v !== ''} 
+                            },
+                            { attribute: '[file_column_names]translation_two' },
+                            {
+                                elementType: 'select',
+                                attribute: '[file_column_languages]translation_two',
+                                values: this.props.languages,
+                                withEmpty: true,
+                                //validate: function(v){return v !== ''} 
+                            },
+                            { attribute: '[file_column_names]annotations' },
                             { 
                                 attribute: 'tape_and_archive_id_from_file',
                                 elementType: 'input',
@@ -98,13 +120,6 @@ export default class UploadTranscript extends React.Component {
                                 //value: this.state.dummy,
                                 //value: this.state.tapeNumber,
                                 validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: 'language_id',
-                                values: this.props.languages,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''} 
                             },
                         ]}
                     />

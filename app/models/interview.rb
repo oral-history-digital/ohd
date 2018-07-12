@@ -310,20 +310,16 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_file_for_tape(file_path, tape_id, opts={})
-    column_names = opts[:column_names].empty? ? {
-      timecode: "IN",
-      transcript: "TRANSCRIPT",
-      translation: "Übersetzung",
-      annotation: "Anmerkungen",
-    } : opts[:column_names]
-
+  def create_or_update_segments_from_file(file_path, tape_id, file_column_names, file_column_languages)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      sheet.each(column_names) do |row|
-        if row[:timecode] =~ /^\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}$/
-          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
-          segment.update_attributes text: row[:transcript], locale: ISO_639.find(language.code).send(Project.alpha)
+      sheet.each(file_column_names) do |row|
+        if row['timecode'] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
+          segment = Segment.find_or_create_by interview_id: id, timecode: row['timecode'], tape_id: tape_id
+          %w(transcript translation_one translation_two).each do |t|
+          segment.update_attributes text: row[t], 
+            locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) if file_column_languages[t]
+          end
         end
       end
     end
