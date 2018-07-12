@@ -245,7 +245,7 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>{t(this.props, 'project_title')}</p>
+                            <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
                         </footer>
                         <div className={this.compensationCss()}/>
                     </div>
