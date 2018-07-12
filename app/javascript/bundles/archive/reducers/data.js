@@ -103,11 +103,13 @@ const data = (state = initialState, action) => {
                         [action.id]: state[action.dataType] ? Object.assign({}, state[action.dataType][action.id], action.data) : action.data
                     })
                 })
-            } else {
+            } else if (action.dataType) {
                 return Object.assign({}, state, {
                     [`${action.dataType}_status`]: 'fetched',
                     [action.dataType]: action.data
                 })
+            } else {
+                return state;
             }
 
         default:
