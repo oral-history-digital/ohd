@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
         loggedInAt: state.account.loggedInAt,
         projectDomain: state.archive.projectDomain,
         project: state.archive.project,
+        projectName: state.archive.projectName,
     }
 }
 
