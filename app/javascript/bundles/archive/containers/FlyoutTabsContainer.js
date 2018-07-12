@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-import { setLocale } from '../actions/wrapperPageActionCreators';
+import { setLocale } from '../actions/archiveActionCreators';
 import { fetchAccount } from '../actions/accountActionCreators';
 
 import { getInterview } from '../../../lib/utils';
