@@ -104,15 +104,11 @@ export default class Segment extends React.Component {
         }
     }
 
-    userAnnotationsArray() {
-        return this.props.userContents.filter(content => content.reference_id === this.props.data.id && content.reference_type === 'Segment');
-    }
-
     userAnnotations() {
         if (this.state.contentType == 'annotations') {
-            return this.userAnnotationsArray().map((content, index) => {
+            return this.props.data.user_annotation_ids.map((uId, index) => {
                     return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
-                                {content.description}
+                                {this.props.userContents[uId].description}
                             </p>
             })
         }
@@ -135,10 +131,10 @@ export default class Segment extends React.Component {
     }
 
     renderLinks() {
-        if (this.props.data.annotation_texts.length > 0 || this.props.data.references.length > 0 || this.userAnnotationsArray().length) {
+        if (this.props.data.annotation_texts.length > 0 || this.props.data.references.length > 0 || this.props.data.user_annotation_ids.length) {
 
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = this.props.data.annotation_texts.length > 0 || this.userAnnotationsArray().length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>

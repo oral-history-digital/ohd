@@ -19,6 +19,7 @@ class Segment < ActiveRecord::Base
   # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
   has_many  :annotations
+  has_many  :user_annotations, as: :reference
 
   scope :with_heading, -> { 
     joins(:translations).

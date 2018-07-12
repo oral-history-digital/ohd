@@ -7,6 +7,7 @@ class SegmentSerializer < ActiveModel::Serializer
              :tape_nbr,
              :transcripts,
              :annotation_texts,
+             :user_annotation_ids,
              :start_time,
              :end_time,
              :references_count,
