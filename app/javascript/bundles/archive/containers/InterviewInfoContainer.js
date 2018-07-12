@@ -1,23 +1,22 @@
 import { connect } from 'react-redux';
 import InterviewInfo from '../components/InterviewInfo';
 
-import ArchiveUtils from '../../../lib/utils';
-
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let data = ArchiveUtils.getInterview(state);
+    let interview = getInterview(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: data && data.interview,
-        cinematographer: data && data.interview.cinematographers[0],
-        interviewer: data && data.interview.interviewers.length && data.interview.interviewers[0],
-        transcriptor: data && data.interview.transcriptors.length && data.interview.transcriptors[0],
-        translator: data && data.interview.translators.length && data.interview.translators[0],
-        segmentators: data && data.interview.segmentators.length && data.interview.segmentators,
+        editView: state.archive.editView,
+        interview: interview,
+        cinematographer: interview && interview.cinematographers[0],
+        interviewer: interview && interview.interviewers.length && interview.interviewers[0],
+        transcriptor: interview && interview.transcriptors.length && interview.transcriptors[0],
+        translator: interview && interview.translators.length && interview.translators[0],
+        segmentators: interview && interview.segmentators.length && interview.segmentators,
         account: state.account,
-        editView: state.archive.editView
 
     }
 }

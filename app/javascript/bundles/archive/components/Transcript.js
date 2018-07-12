@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import { t } from "../../../lib/utils";
+import { t, segments, getSegmentId } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class Transcript extends React.Component {
@@ -28,16 +28,15 @@ export default class Transcript extends React.Component {
     loadSegments() {
         if (
             this.props.loadSegments &&
-            !this.props.data.segment_status
+            !this.props.interview.segment_status
         ) {
-            this.props.fetchInterviewData(this.props.archiveId, 'segments');
+            this.props.fetchData('interviews', this.props.archiveId, 'segments');
         }
     }
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let activeSegmentId = this.shownSegmentsFor(this.props.transcriptTime)[0].id;
-            let activeSegment = document.getElementById(`segment_${activeSegmentId}`);
+            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)}`);
             if (activeSegment) {
                 let hight = activeSegment.offsetTop;
                 if (hight > 450)
@@ -55,49 +54,61 @@ export default class Transcript extends React.Component {
         }
     }
 
-    shownSegmentsFor(time) {
-        let shownSegments = this.segments().filter( segment => {
-            return (segment.tape_nbr === this.props.tape && segment.end_time >= time);
-        })
+    shownSegmentsCount() {
+        return 15;
+    }
+
+    shownSegmentsAround(segmentId) {
+        if (segmentId > this.props.interview.last_segment_id - this.shownSegmentsCount())
+            segmentId = this.props.interview.last_segment_id - this.shownSegmentsCount();
+
+        let shownSegments = {};
+        for (var i = 0; i < this.shownSegmentsCount(); i++) {
+            shownSegments[segmentId + i] = segments(this.props)[segmentId + i];
+        } 
+
         return shownSegments;
     }
 
-    segments() {
-        return this.props.data && this.props.data.segments || [];
+    firstSegment() {
+        return segments(this.props)[this.props.interview.first_segment_id];
     }
 
     transcripted(locale) {
-        return this.segments().length > 0 && this.segments()[0].transcripts.hasOwnProperty(locale)
+        return this.firstSegment() && this.firstSegment().transcripts.hasOwnProperty(locale);
     }
 
     transcript(){
-        let shownSegments = this.props.transcriptScrollEnabled ? this.segments() : this.shownSegmentsFor(this.props.transcriptTime);
+        let shownSegments = this.props.transcriptScrollEnabled ? 
+            segments(this.props) : 
+            this.shownSegmentsAround(
+                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)
+            );
         let speakerId;
+        let transcript = [];
 
-        return (
-            <div>
-                {shownSegments.map( (segment, index) => {
-                    segment.speaker_is_interviewee = this.props.data.interview.interviewee_id === segment.speaker_id;
-                    if (speakerId !== segment.speaker_id && segment.speaker_id !== null) {
-                        segment.speakerIdChanged = true;
-                        speakerId = segment.speaker_id;
-                    }
-                    return (
-                        <SegmentContainer
-                            data={segment}
-                            originalLocale={this.props.originalLocale}
-                            key={"segment-" + segment.id}
-                        />
-                    )
-                })}
-            </div>
-        );
+        for (var segmentId in shownSegments) {
+            let segment = shownSegments[segmentId];
+            segment.speaker_is_interviewee = this.props.interview.interviewee_id === segment.speaker_id;
+            if (speakerId !== segment.speaker_id && segment.speaker_id !== null) {
+                segment.speakerIdChanged = true;
+                speakerId = segment.speaker_id;
+            }
+            transcript.push(
+                <SegmentContainer
+                    data={segment}
+                    originalLocale={this.props.originalLocale}
+                    key={"segment-" + segment.id}
+                />
+            )
+        }
+        return transcript;
     }
 
     render () {
-        if (this.props.data.segments_status === 'fetched') {
+        if (this.props.interview.segments_status === 'fetched') {
             if (this.props.originalLocale) {
-                return this.transcripted(this.props.data.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+                return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
                 return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
             }

@@ -50,8 +50,8 @@ export default class ArchiveSearch extends React.Component {
                     //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
                     //foundSegmentsForInterview={foundSegmentsForInterview}
                     return <InterviewPreviewContainer
-                        interview={interview}
-                        key={"interview-" + interview.id}
+                        interview={interview.data}
+                        key={"interview-" + interview.archive_id}
                     />;
                 })
             )

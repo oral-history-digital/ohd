@@ -9,15 +9,18 @@ export default class EditPerson extends React.Component {
     render() {
         return (
             <Form 
-                scope='interview'
-                onSubmit={this.props.submitPerson}
+                scope='people'
+                onSubmit={this.props.submitData}
+                values={{
+                    archive_id: this.props.archiveId
+                }}
                 submitText='submit'
                 elements={[
                     {
                         elementType: 'select',
                         attribute: 'appellation',
                         values: ['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof'],
-                        selected: this.props.person && this.props.person.appelation,
+                        value: this.props.person && this.props.person.appelation,
                         withEmpty: true,
                         validate: function(v){return v !== ''} 
                     },

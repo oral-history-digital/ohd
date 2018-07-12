@@ -13,18 +13,18 @@ export default class UserContents extends React.Component {
     }
   
     componentDidMount() {
-        if (!this.userContentsLoaded() && !this.props.isFetchingUserContents) {
-            this.props.fetchUserContents();
+        if (!this.props.status) {
+            this.props.fetchData('user_contents');
         }
     }
 
     userContentsLoaded() {
-        return this.props.userContents && !this.props.userContents.fetched;
+        return this.props.status === 'fetched';
     }
 
     sortedContent() {
         let userContentByType = [];
-        for(let i = 0; i < this.props.contents.length; i++) {
+        for(var i in this.props.contents) {
             if(this.props.contents[i].type === this.props.type) {
                 userContentByType.push(<UserContentContainer
                     data={this.props.contents[i]}
@@ -41,13 +41,12 @@ export default class UserContents extends React.Component {
     render() {
         let headerCss =   this.state.open ? "accordion active" : 'accordion';
         let panelCss =   this.state.open ? "panel open" : 'panel';
-        let searches = this.sortedContent()
         return (
             <div className='userContents'>
                 <button className={headerCss} lang={this.props.locale} onClick={this.handleClick}>
                     {this.props.title}
                 </button>
-                <div className={panelCss}>{searches} </div>
+                <div className={panelCss}>{this.sortedContent()} </div>
             </div>
         );
     }

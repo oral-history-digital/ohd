@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import { t } from '../../../lib/utils';
+import { t, fullname, segments, getSegmentId } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class VideoPlayer extends React.Component {
@@ -100,46 +100,21 @@ export default class VideoPlayer extends React.Component {
     }
 
     annotateOnSegmentLink() {
-        if (this.segments().filter(s => s.transcripts[this.props.locale]).length) {
-            return <div className="video-text-note" onClick={() => this.props.openArchivePopup({
+        return (
+            <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                 title: t(this.props, 'save_user_annotation'),
-                content: this.annotateOnSegmentForm(this.actualSegmentIndex())
+                content: this.annotateOnSegmentForm(
+                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)
+                )
             })}>
                 <i className="fa fa-pencil"></i>
                 <span>{t(this.props, 'save_user_annotation')}</span>
             </div>
-        }
+        );
     }
-
-    actualSegmentIndex() {
-        let index = this.segments().findIndex(segment => {
-            return segment.tape_nbr === this.props.tape &&
-                segment.start_time <= this.video.currentTime &&
-                segment.end_time > this.video.currentTime;
-        });
-        if (index === -1) {
-            let filteredSegments = this.segments().filter(segment =>
-                segment.tape_nbr === this.props.tape );
-            if (this.video.currentTime < 100) {
-                index = this.segments().findIndex(segment => {
-                    return segment === filteredSegments[0];
-                });
-            } else {
-                index = this.segments().findIndex(segment => {
-                    return segment === filteredSegments[filteredSegments.length -1];
-                });
-            }
-        }
-        return index;
-    }
-
-    segments() {
-        return this.props.segments || [];
-    }
-
 
     annotateOnSegmentForm(segmentIndex) {
-        let segment = this.segments()[segmentIndex];
+        let segment = segments(this.props)[segmentIndex];
         return <UserContentFormContainer
             title={this.defaultTitle()}
             description=''
@@ -218,13 +193,12 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
-        let intervieweeNames = this.props.interviewee.names[this.props.locale];
         if (this.props.project) {
             return (
                 <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
-                            {intervieweeNames.firstname} {intervieweeNames.lastname} {intervieweeNames.birthname}
+                            {fullname(this.props, this.props.interview.interviewees[0], true)}
                         </h1>
                         <div className="video-icons-container">
                             {this.annotateOnSegmentLink()}

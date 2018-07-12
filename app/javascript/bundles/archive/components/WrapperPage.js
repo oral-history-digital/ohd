@@ -257,12 +257,12 @@ export default class WrapperPage extends React.Component {
                         </div>
                     </div>
 
-
-                    <ArchivePopupContainer/>
-
                     <FlyoutTabsContainer
                         tabIndex={this.props.tabIndex}
                     />
+
+                    <ArchivePopupContainer/>
+
                 </div>
             </ResizeAware>
 

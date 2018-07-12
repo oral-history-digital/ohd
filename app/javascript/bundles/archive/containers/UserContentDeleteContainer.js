@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UserContentDelete from '../components/UserContentDelete';
-import { deleteUserContent } from '../actions/userContentActionCreators';
+import { deleteData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    deleteUserContent: (id) => dispatch(deleteUserContent(id)),
+    deleteData: (dataType, id) => dispatch(deleteData(dataType, id)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 

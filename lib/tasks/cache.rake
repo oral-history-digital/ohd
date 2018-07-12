@@ -77,10 +77,11 @@ namespace :cache do
   end
 
   def get(uri)
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri)
-    request.basic_auth("chrgregor@googlemail.com", "paul2paul")
-    response = http.request(request)
+    #http = Net::HTTP.new(uri.host, uri.port)
+    #request = Net::HTTP::Get.new(uri.request_uri)
+    #request.basic_auth("chrgregor@googlemail.com", "******")
+    #response = http.request(request)
+    response = Net::HTTP.get_response(uri)
     p "*** Got it #{response.code}"
   rescue StandardError => e
     p "*** Error: #{e}"

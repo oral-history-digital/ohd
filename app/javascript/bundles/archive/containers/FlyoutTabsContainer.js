@@ -5,19 +5,18 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/wrapperPageActionCreators';
 import { fetchAccount } from '../actions/accountActionCreators';
 
-import ArchiveUtils from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let data = ArchiveUtils.getInterview(state);
     return {
         visible: state.flyoutTabs.visible,
         archiveId: state.archive.archiveId,
-        interview: data && data.interview,
         locale: state.archive.locale,
         locales: state.archive.locales,
+        editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.account,
-        editView: state.archive.editView,
+        interview: getInterview(state),
     }
 }
 

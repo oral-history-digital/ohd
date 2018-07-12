@@ -9,7 +9,7 @@ namespace :solr do
       Interview.all.each do |i|  
         start_interview = Time.now
         i.segments.includes(:translations).each_slice(100) do |batch|
-          Sunspot.index! batch
+          Sunspot.index batch
         end
         finish_interview = Time.now
         p "finished segments for interview #{i.archive_id} in #{(finish_interview - start_interview)} seconds."
@@ -36,8 +36,13 @@ namespace :solr do
       p "finished all registry_references in #{(finish - start)} seconds."
     end
 
+    desc 'commit all indices'
+    task :commit => :environment do
+      Sunspot.commit
+    end
+
     desc 'reindex all'
-    task :all => ['solr:reindex:interviews', 'solr:reindex:segments', 'solr:reindex:registry_references'] do
+    task :all => ['solr:reindex:interviews', 'solr:reindex:segments', 'solr:reindex:registry_references', 'solr:commit'] do
       RegistryReference.reindex
     end
 

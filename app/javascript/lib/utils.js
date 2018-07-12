@@ -1,14 +1,51 @@
-var ArchiveUtils = {
-    getInterview: function (state) {
-        return state.archive.interviews[state.archive.archiveId];
-    },
+export function get(state, dataType, id) {
+    return state.data[dataType][id]
+}
 
-    getLocationsForInterview: function (state) {
-        return state.locations[state.archive.archiveId];
-    },
-};
+export function getInterview(state) {
+    return state.data.interviews && state.data.interviews[state.archive.archiveId];
+}
 
-export default ArchiveUtils;
+export function segments(props) {
+    return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
+}
+
+export function getSegmentId(time, segments, lastSegmentId, firstSegmentId) {
+
+    let found = false;
+    //
+    // aproximation based on the asumption that the mean or median segment duration is 7s
+    //
+    let segmentId = firstSegmentId + Math.round(time/7);
+    if (segmentId > lastSegmentId)
+        segmentId = lastSegmentId;
+
+    if (segments[segmentId].start_time > time) {
+        while (!found) {
+            if (
+                segments[segmentId].start_time <= time ||
+                segmentId === firstSegmentId
+            ) {
+                found = true;
+                break;
+            }
+            segmentId--;
+        }
+    } else if (segments[segmentId].start_time < time) {
+        while (!found) {
+            if (
+                segments[segmentId].start_time >= time ||
+                segmentId === lastSegmentId
+            ) {
+                found = true;
+                break;
+            }
+            segmentId++;
+        }
+    }
+
+    return segmentId;
+}
 
 export function t(props, key) {
     let text;
@@ -26,13 +63,25 @@ export function t(props, key) {
     }
 }
 
-export function fullname(props, person) {
+export function fullname(props, person, withBirthName=false) {
     if (person) {
         try {
-            return `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+            let name = `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
+            let birthName = person.names[props.locale].birth_name;
+            if (withBirthName && birthName)
+                name += person.names[props.locale].birth_name;
+            return name;
         } catch (e) {
             return `person ${person.id} has no name(s) in ${props.locale}`;
         }
+    }
+}
+
+export function admin(props) {
+    if (props.account.email && props.account.admin && props.editView) {
+        return true;
+    } else {
+        return false;
     }
 }
 

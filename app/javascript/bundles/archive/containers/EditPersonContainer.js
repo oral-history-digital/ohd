@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import EditPerson from '../components/EditPerson';
-import { submitPerson } from '../actions/interviewActionCreators';
+import { submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitPerson: (params) => dispatch(submitPerson(params))
+    submitData: (params) => dispatch(submitData(params))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPerson);

@@ -11,16 +11,22 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find params[:id]
-    @person.update_attributes person_params
+    @person.update_attributes people_params
     respond_to do |format|
-      format.json { render json: @person }
+      format.json do
+        render json: {
+          id: @person.id,
+          data_type: 'people',
+          data: ::PersonSerializer.new(@person),
+        }
+      end
     end
   end
 
   private
 
   def people_params
-    params.require(:person).
+    params.require(:people).
       permit(
         'appellation',
         'first_name',

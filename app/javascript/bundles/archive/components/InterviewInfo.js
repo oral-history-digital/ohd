@@ -1,13 +1,8 @@
 import React from 'react';
-import { t, fullname } from '../../../lib/utils';
+import { t, fullname, admin } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
-
-import {
-    INTERVIEW_URL
-} from '../constants/archiveConstants';
-
 
 export default class InterviewInfo extends React.Component {
 
@@ -74,7 +69,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     info() {
-        if (this.props.account.email && this.props.account.admin && this.props.editView) {
+        if (admin(this.props)) {
             return ( 
                 <InterviewFormContainer 
                     submitText='edit.interview.edit' 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import InterviewForm from '../components/InterviewForm';
-import { submitInterview } from '../actions/interviewActionCreators';
+import { submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitInterview: (params) => dispatch(submitInterview(params))
+    submitData: (params) => dispatch(submitData(params))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);

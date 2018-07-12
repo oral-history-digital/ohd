@@ -64,8 +64,8 @@ export default class Input extends React.Component {
                 <input 
                     type={this.props.type} 
                     name={this.props.attribute}
-                    value={this.props.value}
-                    defaultChecked={this.props.defaultChecked}
+                    defaultValue={this.props.value}
+                    defaultChecked={this.props.value}
                     onChange={this.handleChange}
                 />
                 <p className='help-block'>

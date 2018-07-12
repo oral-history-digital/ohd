@@ -51,4 +51,13 @@ class BaseController < ApplicationController #ResourceController::Base
     end
   end
 
+  def cache_interview(interview)
+    Rails.cache.fetch "interview-#{interview.archive_id}-#{interview.updated_at}" do
+      {
+        archive_id: interview.archive_id,
+        data_type: 'interviews',
+        data: Rails.cache.fetch("interview-#{interview.id}-#{interview.updated_at}"){::InterviewSerializer.new(interview).as_json},
+      }
+    end
+  end
 end

@@ -7,15 +7,18 @@ export default class InterviewForm extends React.Component {
     render() {
         return (
             <Form 
-                scope='interview'
-                onSubmit={this.props.submitInterview}
+                scope='interviews'
+                values={{
+                    id: this.props.interview && this.props.interview.archive_id
+                }}
+                onSubmit={this.props.submitData}
                 submitText={this.props.submitText}
                 elements={[
                     {
                         elementType: 'select',
                         attribute: 'collection_id',
                         values: this.props.collections,
-                        selected: this.props.interview && this.props.interview.collection_id,
+                        value: this.props.interview && this.props.interview.collection_id,
                         withEmpty: true,
                         validate: function(v){return v !== ''},
                         individualErrorMsg: 'empty'
@@ -29,7 +32,7 @@ export default class InterviewForm extends React.Component {
                         elementType: 'select',
                         attribute: 'language_id',
                         values: this.props.languages,
-                        selected: this.props.interview && this.props.interview.language_id,
+                        value: this.props.interview && this.props.interview.language_id,
                         withEmpty: true,
                         validate: function(v){return v !== ''} 
                     },
@@ -41,13 +44,13 @@ export default class InterviewForm extends React.Component {
                     },
                     { 
                         attribute: 'video',
-                        defaultChecked: this.props.interview && this.props.interview.media_type.toLowerCase() === 'video',
+                        value: this.props.interview && this.props.interview.media_type.toLowerCase() === 'video',
                         elementType: 'input',
                         type: 'checkbox'
                     },
                     { 
                         attribute: 'translated',
-                        defaultChecked: this.props.interview && this.props.interview.translated,
+                        value: this.props.interview && this.props.interview.translated,
                         elementType: 'input',
                         type: 'checkbox'
                     },

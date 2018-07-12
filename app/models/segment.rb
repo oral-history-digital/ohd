@@ -3,13 +3,13 @@ require 'globalize'
 class Segment < ActiveRecord::Base
   include IsoHelpers
 
-  belongs_to :interview, inverse_of: :segments
+  belongs_to :interview#, inverse_of: :segments
   belongs_to :speaking_person, 
     -> { includes(:translations) },
     class_name: 'Person',
     foreign_key: 'speaker_id'
 
-  belongs_to :tape, inverse_of: :segments
+  belongs_to :tape#, inverse_of: :segments
 
   has_many  :registry_references,
             -> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },

@@ -19,7 +19,7 @@ export default class InterviewTabs extends React.Component {
     componentDidMount(){
         if (this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
             this.setState({['tabIndex']: 3});
-        } else if(this.props.locale != this.props.data.interview.lang){
+        } else if(this.props.locale != this.props.interview.lang){
             this.setState({['tabIndex']: 1});
         } else {
             this.setState({['tabIndex']: 0});
@@ -46,7 +46,7 @@ export default class InterviewTabs extends React.Component {
                     <TabList className={'content-tabs-nav'}>
                         <Tab className={'content-tabs-nav-link'}><i
                             className="fa fa-file-text-o"></i><span>{t(this.props, 'transcript')}</span></Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.data.interview.lang === this.props.locale ? 'hidden' : ''}`}><i
+                        <Tab className={`content-tabs-nav-link ${this.props.interview.lang === this.props.locale ? 'hidden' : ''}`}><i
                             className="fa fa-clone"></i><span>{t(this.props, 'translation')}</span></Tab>
                         <Tab className={'content-tabs-nav-link'}><i
                             className="fa fa-list"></i><span>{t(this.props, 'table_of_contents')}</span></Tab>
