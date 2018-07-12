@@ -8,17 +8,19 @@ import {openArchivePopup} from '../actions/archivePopupActionCreators';
 import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let interview = getInterview(state);
     return {
         project: state.archive.project,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        interview: getInterview(state),
+        interview: interview,
         tape: state.interview.tape,
         videoTime: state.interview.videoTime,
         videoStatus: state.interview.videoStatus,
         actualSegment: state.interview.actualSegment,
+        interviewee: interview && state.data.people && state.data.people[interview.interviewee_id],
     }
 }
 

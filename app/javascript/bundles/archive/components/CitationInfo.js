@@ -1,17 +1,11 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, fullname } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import moment from 'moment';
 
 
 
 export default class CitationInfoInfo extends React.Component {
-
-    name(person) {
-        if (person) {
-            return `${person.names[this.props.locale].firstname} ${person.names[this.props.locale].lastname}`;
-        }
-    }
 
     content(label, value, className) {
         return (
@@ -32,7 +26,7 @@ export default class CitationInfoInfo extends React.Component {
 
 
     render() {
-        let citation = `${this.name(this.props.interview.interviewees[0])}, 
+        let citation = `${fullname(this.props, this.props.interviewee)},
         ${t(this.props, 'interview')} 
         ${this.props.interview.archive_id},  
         ${this.props.interview.created},

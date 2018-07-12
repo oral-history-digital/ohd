@@ -5,7 +5,7 @@ class PeopleController < ApplicationController
   def create
     @person = Person.create person_params
     respond_to do |format|
-      format.json { render json: 'ok' }
+      format.json { render json: {}, status: :ok }
     end
   end
 
@@ -19,6 +19,21 @@ class PeopleController < ApplicationController
           data_type: 'people',
           data: ::PersonSerializer.new(@person),
         }
+      end
+    end
+  end
+
+  def index
+    @people = Person.all
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "people-#{Person.maximum(:updated_at)}" do
+          {
+            data: @people.inject({}){|mem, s| mem[s.id] = ::PersonSerializer.new(s).as_json; mem},
+            data_type: 'people',
+          }
+        end.to_json
+        render plain: json
       end
     end
   end

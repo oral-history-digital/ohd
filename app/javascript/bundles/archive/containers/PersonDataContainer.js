@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         editView: state.archive.editView,
         interview: interview,
-        interviewee: interview && interview.interviewees[0],
+        interviewee: interview && state.data.people && state.data.people[interview.interviewee_id],
         account: state.account,
     }
 }

@@ -11,6 +11,7 @@ export default class Interview extends React.Component {
     componentDidMount() {
         this.setArchiveId();
         this.loadInterview();
+        this.loadContributors();
         this.loadUserContents();
         this.loadDoiContent();
     }
@@ -18,6 +19,7 @@ export default class Interview extends React.Component {
     componentDidUpdate() {
         this.setArchiveId();
         this.loadInterview();
+        this.loadContributors();
         this.loadUserContents();
         this.loadDoiContent();
     }
@@ -43,6 +45,14 @@ export default class Interview extends React.Component {
     interviewLoaded() {
         return this.props.interviews &&
             this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`] === 'fetched';
+    }
+
+    loadContributors() {
+        // TODO: perhaps one might load only the contributors of this interview here
+        //       and all the other people not before starting to edit people
+        if (!this.props.people_status) {
+            this.props.fetchData('people');
+        }
     }
 
     interview() {
@@ -78,7 +88,7 @@ export default class Interview extends React.Component {
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {fullname(this.props, this.interview().interviewees[0], true)}
+                                {fullname(this.props, this.interviewee(), true)}
                             </h1>
                         </div>
                         <div className='video-element'>
@@ -91,6 +101,10 @@ export default class Interview extends React.Component {
         } else {
             return null;
         }
+    }
+
+    interviewee() {
+        return this.props.people && this.props.people[this.interview().interviewee_id];
     }
 
     doiContent() {

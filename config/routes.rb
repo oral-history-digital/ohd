@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   root :to => redirect('/de')
-  resources :people
   root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
@@ -14,6 +13,8 @@ Rails.application.routes.draw do
     end
 
     localized do
+      resources :people
+
       get 'account' => 'accounts#show'
 
       %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|

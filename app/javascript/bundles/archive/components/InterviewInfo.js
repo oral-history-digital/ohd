@@ -50,16 +50,18 @@ export default class InterviewInfo extends React.Component {
 
     language(){
         return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
-        // let languages = this.props.interview.translated ? this.props.interview.languages.join('') : this.props.interview.lang
-        // return this.content(t(this.props, 'language'), t(this.props, 'language_' + languages), "");
     }
 
     segmentators(){
-        let names = [];
-        if (this.props.segmentators.length > 0){
-            names = this.props.segmentators.map(s => fullname(this.props, s));
+        return this.contributors('segmentator').map(s => fullname(this.props, s)).join(', ');
+    }
+
+    contributors(contributionType) {
+        if (this.props.interview && this.props.people) {
+            return this.props.interview[`${contributionType}_ids`].map(cId => this.props.people[cId]);
+        } else {
+            return [];
         }
-        return names.join(', ')
     }
 
     tapes(){
@@ -94,10 +96,10 @@ export default class InterviewInfo extends React.Component {
             return (
                 <div>
                     {this.info()}
-                    {this.content(t(this.props, 'interview'), fullname(this.props, this.props.interviewer), "")}
-                    {this.content(t(this.props, 'camera'), fullname(this.props, this.props.cinematographer), "")}
-                    {this.content(t(this.props, 'transcript'), fullname(this.props, this.props.transcriptor), "")}
-                    {this.content(t(this.props, 'translation'), fullname(this.props, this.props.translator), "")}
+                    {this.content(t(this.props, 'interview'), fullname(this.props, this.contributors('interviewer')[0]), "")}
+                    {this.content(t(this.props, 'camera'), fullname(this.props, this.contributors('cinematographer')[0]), "")}
+                    {this.content(t(this.props, 'transcript'), fullname(this.props, this.contributors('transcriptor')[0]), "")}
+                    {this.content(t(this.props, 'translation'), fullname(this.props, this.contributors('translator')[0]), "")}
                     {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>

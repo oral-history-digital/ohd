@@ -198,7 +198,7 @@ export default class VideoPlayer extends React.Component {
                 <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
-                            {fullname(this.props, this.props.interview.interviewees[0], true)}
+                            {fullname(this.props, this.props.interviewee, true)}
                         </h1>
                         <div className="video-icons-container">
                             {this.annotateOnSegmentLink()}

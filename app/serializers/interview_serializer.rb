@@ -37,20 +37,23 @@ class InterviewSerializer < ActiveModel::Serializer
              :src_base,
              :references,
              :formatted_duration,
-             :interviewee_id,
              :person_names,
              :place_of_interview,
              :year_of_birth,
              :last_segment_id,
-             :first_segment_id
+             :first_segment_id,
+
+             :interviewee_id,
+             :interviewee_ids,
+             :cinematographer_ids,
+             :interviewer_ids,
+             :transcriptor_ids,
+             :translator_ids,
+             :segmentator_ids
+
+
 
   has_many :photos, serializer: PhotoSerializer
-  has_many :interviewees, serializer: PersonSerializer
-  has_many :cinematographers, serializer: PersonSerializer
-  has_many :interviewers, serializer: PersonSerializer
-  has_many :transcriptors, serializer: PersonSerializer
-  has_many :translators, serializer: PersonSerializer
-  has_many :segmentators, serializer: PersonSerializer
 
   def forced_labor_groups
     # if object.respond_to? :forced_labor_groups
