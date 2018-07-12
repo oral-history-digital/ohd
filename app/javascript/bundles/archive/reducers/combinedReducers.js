@@ -6,7 +6,6 @@ import data from './data'
 import search from './search'
 import popup from './popup'
 import flyoutTabs from './flyoutTabs'
-import userContent from './userContent'
 import locations from './locations'
 import account from './account'
 
@@ -17,7 +16,6 @@ const combinedReducer = combineReducers({
     search,
     popup,
     flyoutTabs,
-    userContent,
     locations,
     account,
 });
