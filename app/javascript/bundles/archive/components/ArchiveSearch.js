@@ -177,7 +177,7 @@ export default class ArchiveSearch extends React.Component {
                 
             >
                 <div className='wrapper-content interviews'>
-                    <h1 className="search-results-title">{t(this.props, 'archive_results')}</h1>
+                    <h1 className="search-results-title">{t(this.props, (this.props.project === 'mog') ? 'archive_results' : 'interviews')}</h1>
                     <div className="search-results-legend">
                                 <AuthShowContainer ifLoggedIn={true}>
                                     {this.saveSearchLink()}
