@@ -18,44 +18,31 @@ export default class EditPerson extends React.Component {
                 elements={[
                     {
                         elementType: 'select',
-                        attribute: 'appellation',
-                        values: ['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof'],
-                        value: this.props.person && this.props.person.appelation,
+                        attribute: 'gender',
+                        values: ['male', 'female'],
+                        value: this.props.person && this.props.person.gender,
                         withEmpty: true,
                         validate: function(v){return v !== ''} 
                     },
                     {
                         elementType: 'input',
                         attribute: 'first_name',
-                        value: this.props.person && this.props.person.first_name,
+                        value: this.props.person && this.props.person.names[this.props.locale].firstname,
                         type: 'text',
                         validate: function(v){return v.length > 1} 
                     },
                     {
                         elementType: 'input',
                         attribute: 'last_name',
-                        value: this.props.person && this.props.person.last_name,
+                        value: this.props.person && this.props.person.names[this.props.locale].lastname,
                         type: 'text',
                         validate: function(v){return v.length > 1} 
                     },
                     {
                         elementType: 'input',
                         attribute: 'birth_name',
-                        value: this.props.person && this.props.person.birth_name,
+                        value: this.props.person && this.props.person.names[this.props.locale].birthname,
                         type: 'text',
-                    },
-                    {
-                        elementType: 'input',
-                        attribute: 'middle_names',
-                        value: this.props.person && this.props.person.middle_names,
-                        type: 'text',
-                    },
-                    {
-                        elementType: 'select',
-                        attribute: 'gender',
-                        values: ['male', 'female'],
-                        withEmpty: true,
-                        validate: function(v){return v !== ''} 
                     },
                     { 
                         attribute: 'date_of_birth',

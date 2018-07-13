@@ -76,7 +76,6 @@ export default class PersonData extends React.Component {
             return (
                 <EditPersonContainer 
                     person={this.props.interviewee} 
-                    interviewId={this.props.interview.id}
                 />
             );
         } else {
