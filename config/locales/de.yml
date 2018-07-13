@@ -236,6 +236,10 @@ de:
     tos_agreement: 'Nutzungsbedingungen'
     priv_agreement: 'Hinweise zum Datenschutz'
 
+  genders:
+    female: 'weiblich'
+    male: 'männlich'
+
   search_facets:
     forced_labor_fields: 'Einsatzbereich'
     forced_labor_groups: 'Gruppe'
@@ -312,7 +316,6 @@ de:
         one: 'Anmerkung'
         other: 'Anmerkungen'
 
-
     attributes:
       collection:
         name: 'Name'
@@ -352,9 +355,13 @@ de:
         collection: 'Teilsammlung'
         collection_id: 'Teilsammlung'
         data: 'Transkriptdatei'
-        timecode: 'Timecode'
-        transcript: 'Transkript'
-        translation: 'Translation'
+        timecode: 'Spaltenüberschrift für Timecode'
+        transcript: 'Spaltenüberschrift für Transkript'
+        translation_one: 'Spaltenüberschrift für Übersetzung 1'
+        translation_two: 'Spaltenüberschrift für Übersetzung 2'
+        transcript_language: 'Transkript Sprache'
+        translation_one_language: 'Übersetzung 1 Sprache'
+        translation_two_language: 'Übersetzung 2 Sprache'
         annotations: 'Anmerkungen'
         tape_and_archive_id_from_file: 'Archiv-ID und Tapedaten aus dem Dateinamen erschliessen?'
         tape_count: 'Geamtzahl der Tapes'
@@ -430,6 +437,12 @@ de:
         tos_agreement: 'Nutzungsbedingungen'
         priv_agreement: 'Hinweise zum Datenschutz'
         register: 'Registrierung senden'
+      person:
+        gender: 'Geschlecht'
+        first_name: 'Vorname'
+        last_name: 'Nachname'
+        birth_name: 'Geburtsname'
+        date_of_birth: 'Geburtsdatum'
 
     errors:
       default:

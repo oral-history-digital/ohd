@@ -21,6 +21,7 @@ export default class EditPerson extends React.Component {
                         attribute: 'gender',
                         values: ['male', 'female'],
                         value: this.props.person && this.props.person.gender,
+                        optionsScope: 'genders',
                         withEmpty: true,
                         validate: function(v){return v !== ''} 
                     },
@@ -47,8 +48,8 @@ export default class EditPerson extends React.Component {
                     { 
                         attribute: 'date_of_birth',
                         value: this.props.person && this.props.person.date_of_birth,
-                        elementType: 'input',
-                        type: 'date'
+                        //elementType: 'input',
+                        //type: 'date'
                     },
                 ]}
             />
