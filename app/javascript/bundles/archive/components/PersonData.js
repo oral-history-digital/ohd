@@ -27,11 +27,16 @@ export default class PersonData extends React.Component {
 
 
     typologies(){
-        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length > 1){
+        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale]){
             return this.content(t(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
-        } else if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length == 1){
-            return this.content(t(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
+        } else {
+            return "";
         }
+        //if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length > 1){
+            //return this.content(t(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
+        //} else if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length == 1){
+            //return this.content(t(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
+        //}
     }
 
     download(lang, condition) {

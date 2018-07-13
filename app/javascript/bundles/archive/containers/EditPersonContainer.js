@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params) => dispatch(submitData(params))
+    submitData: (params, locale) => dispatch(submitData(params, locale))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPerson);

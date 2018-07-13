@@ -12,7 +12,7 @@ export default class EditPerson extends React.Component {
                 scope='person'
                 onSubmit={this.props.submitData}
                 values={{
-                    archive_id: this.props.archiveId
+                    id: this.props.person.id
                 }}
                 submitText='submit'
                 elements={[
@@ -28,21 +28,21 @@ export default class EditPerson extends React.Component {
                     {
                         elementType: 'input',
                         attribute: 'first_name',
-                        value: this.props.person && this.props.person.names[this.props.locale].firstname,
+                        value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].firstname,
                         type: 'text',
                         validate: function(v){return v.length > 1} 
                     },
                     {
                         elementType: 'input',
                         attribute: 'last_name',
-                        value: this.props.person && this.props.person.names[this.props.locale].lastname,
+                        value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].lastname,
                         type: 'text',
                         validate: function(v){return v.length > 1} 
                     },
                     {
                         elementType: 'input',
                         attribute: 'birth_name',
-                        value: this.props.person && this.props.person.names[this.props.locale].birthname,
+                        value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].birthname,
                         type: 'text',
                     },
                     { 

@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find params[:id]
-    @person.update_attributes people_params
+    @person.update_attributes person_params
     respond_to do |format|
       format.json do
         render json: {
@@ -40,8 +40,8 @@ class PeopleController < ApplicationController
 
   private
 
-  def people_params
-    params.require(:people).
+  def person_params
+    params.require(:person).
       permit(
         'appellation',
         'first_name',
