@@ -242,7 +242,8 @@ export default class VideoPlayer extends React.Component {
                            {this.subtitles()}
                         </video>
                     </div>
-                    <select defaultValue={this.props.tape} onChange={this.handleChange}>
+                    <select value={this.props.tape} onChange={this.handleChange}>
+                        {this.props.tape}
                         {this.tapeSelector()}
                     </select>
                 </div>
