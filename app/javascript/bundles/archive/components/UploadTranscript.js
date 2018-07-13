@@ -49,7 +49,7 @@ export default class UploadTranscript extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <Form 
-                        scope='transcripts'
+                        scope='interview'
                         onSubmit={this.props.submitData}
                         submitText='edit_interview.upload_transcript'
                         elements={[

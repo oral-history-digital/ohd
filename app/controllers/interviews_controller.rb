@@ -182,7 +182,7 @@ class InterviewsController < BaseController
   private
 
   def interview_params
-    params.require(:interviews).
+    params.require(:interview).
       permit(
         'collection_id',
         'archive_id',

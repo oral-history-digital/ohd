@@ -255,8 +255,8 @@ class UserContentsController < BaseController
   private
 
   def user_content_params
-    properties = params[:user_contents].delete(:properties) if params[:user_contents][:properties]
-    params.require(:user_contents).
+    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
+    params.require(:user_content).
       permit(:description,
              :title,
              :media_id,

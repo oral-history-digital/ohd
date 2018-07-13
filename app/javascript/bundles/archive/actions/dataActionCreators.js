@@ -68,17 +68,18 @@ export function submitData(params, locale='de') {
     //   params = {interviews: {id: 5, archiveId: 'mog002', language_id: 2}
     //
     let dataType = Object.keys(params)[0]; 
+    let pluralizedDataType = dataType === 'person' ? 'people' : `${dataType}s`;
 
     if(params[dataType].id) {
         return dispatch => {
             // TODO: extend params for updateData for nestedData-case
-            dispatch(updateData(dataType, params[dataType].id, params[dataType]));
-            Loader.put(`/${locale}/${dataType}/${params[dataType].id}`, params, dispatch, null);
+            dispatch(updateData(pluralizedDataType, params[dataType].id, params[dataType]));
+            Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, null);
         }
     } else {
         return dispatch => {
             //dispatch(addData(params));
-            Loader.post(`/${locale}/${dataType}`, params, dispatch, receiveData);
+            Loader.post(`/${locale}/${pluralizedDataType}`, params, dispatch, receiveData);
         }
     }
 }
