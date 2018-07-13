@@ -1,6 +1,7 @@
 namespace :cache do
 
   #BASE_URL = 'https://archive.occupation-memories.org'
+  #BASE_URL = 'http://160.45.168.36:94'
   BASE_URL = 'http://localhost:3000'
 
   desc 'visit start page'
