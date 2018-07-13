@@ -37,6 +37,7 @@ export default class InterviewSearch extends React.Component {
                     <FoundSegmentContainer
                         data={segment}
                         key={"segment-" + segment.id}
+                        tape_count={this.props.interview.tape_count}
                     />
                 )
             })

@@ -4,7 +4,6 @@ import InterviewInfo from '../components/InterviewInfo';
 import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let interview = getInterview(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
