@@ -73,8 +73,8 @@ export function submitData(params, locale='de') {
     if(params[dataType].id) {
         return dispatch => {
             // TODO: extend params for updateData for nestedData-case
-            dispatch(updateData(pluralizedDataType, params[dataType].id, params[dataType]));
-            Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, null);
+            //dispatch(updateData(pluralizedDataType, params[dataType].id, params[dataType]));
+            Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, receiveData);
         }
     } else {
         return dispatch => {
