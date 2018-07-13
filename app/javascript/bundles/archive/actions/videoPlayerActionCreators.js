@@ -3,7 +3,8 @@
 import { 
   VIDEO_TIME_CHANGE, 
   VIDEO_ENDED,
-    SET_NEXT_TAPE
+  SET_TAPE_AND_TIME,
+  SET_NEXT_TAPE
 } from '../constants/archiveConstants';
 
 export function handleVideoTimeChange(time) {
@@ -16,6 +17,14 @@ export function handleVideoTimeChange(time) {
 export function handleVideoEnded() {
   return {
     type: VIDEO_ENDED,
+  }
+}
+
+export function setTapeAndTime(tape, time) {
+  return {
+    type: SET_TAPE_AND_TIME,
+    videoTime: time,
+    tape: tape
   }
 }
 

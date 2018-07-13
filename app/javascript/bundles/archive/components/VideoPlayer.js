@@ -10,6 +10,7 @@ export default class VideoPlayer extends React.Component {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
         this.tracksVisible = false;
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -27,6 +28,10 @@ export default class VideoPlayer extends React.Component {
             this.setVideoTime()
             this.setVideoStatus()
         }
+    }
+
+    handleChange(e) {
+        this.props.setTapeAndTime(parseInt(e.target.value), 0);
     }
 
     setVideoTime() {
@@ -170,6 +175,14 @@ export default class VideoPlayer extends React.Component {
             )
         })
     }
+    
+    tapeSelector(){
+        let options = [];
+        for(var i = 1; i <= this.props.interview.tape_count; i++) {
+                options.push(<option value={i} key={'tape' + i}>{t(this.props, 'tape')} {i}</option>);
+        }
+        return options;
+    }
 
     handleVideoClick(e) {
         if(this.video) {
@@ -229,6 +242,9 @@ export default class VideoPlayer extends React.Component {
                            {this.subtitles()}
                         </video>
                     </div>
+                    <select defaultValue={this.props.tape} onChange={this.handleChange}>
+                        {this.tapeSelector()}
+                    </select>
                 </div>
             );
         } else {
