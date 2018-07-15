@@ -188,6 +188,7 @@ de:
       new: 'Neues Interview'
       edit: 'Interview bearbeiten'
     upload_transcript: 'Transkript hochladen'
+    add_person: 'Person hinzufügen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'

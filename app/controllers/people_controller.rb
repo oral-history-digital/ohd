@@ -2,10 +2,23 @@ class PeopleController < ApplicationController
 
   layout 'responsive'
 
+  def new
+    respond_to do |format|
+      format.html { render 'react/app' }
+      format.json { render json: {}, status: :ok }
+    end
+  end
+
   def create
     @person = Person.create person_params
     respond_to do |format|
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: {
+          id: @person.id,
+          data_type: 'people',
+          data: ::PersonSerializer.new(@person),
+        }
+      end
     end
   end
 

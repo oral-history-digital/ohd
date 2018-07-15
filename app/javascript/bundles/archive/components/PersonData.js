@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, fullname, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import EditPersonContainer from '../containers/EditPersonContainer';
+import PersonFormContainer from '../containers/PersonFormContainer';
 
 export default class PersonData extends React.Component {
 
@@ -79,7 +79,7 @@ export default class PersonData extends React.Component {
     render() {
         if (admin(this.props)) {
             return (
-                <EditPersonContainer 
+                <PersonFormContainer 
                     person={this.props.interviewee} 
                 />
             );
