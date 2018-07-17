@@ -51,6 +51,19 @@ class PeopleController < ApplicationController
     end
   end
 
+  def destroy 
+    @person = Person.find(params[:id])
+    @person.destroy
+
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.js
+      format.json { render json: {}, status: :ok }
+    end
+  end
+
   private
 
   def person_params
