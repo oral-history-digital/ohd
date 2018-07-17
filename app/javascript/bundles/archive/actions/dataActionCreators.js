@@ -63,12 +63,18 @@ export function fetchData(dataType, id, nestedDataType, locale='de') {
 }
 
 export function submitData(params, locale='de') {
-    //
-    // params should be in a pluralized scope, e.g.:
-    //   params = {interviews: {id: 5, archiveId: 'mog002', language_id: 2}
-    //
     let dataType = Object.keys(params)[0]; 
-    let pluralizedDataType = dataType === 'person' ? 'people' : `${dataType}s`;
+    let pluralizedDataType;
+    switch(dataType) {
+        case 'person':
+            pluralizedDataType = 'people';
+            break;
+        case 'history': 
+            pluralizedDataType = 'histories';
+            break;
+        default:
+            pluralizedDataType = `${dataType}s`;
+    }
 
     if(params[dataType].id) {
         return dispatch => {

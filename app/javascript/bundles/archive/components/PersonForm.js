@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
 
-export default class EditPerson extends React.Component {
+export default class PersonForm extends React.Component {
 
     render() {
         let _this = this;

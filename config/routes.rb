@@ -13,8 +13,12 @@ Rails.application.routes.draw do
     end
 
     localized do
-      resources :people
       resources :contributions, only: [:create, :destroy]
+      resources :histories, only: [:create, :update, :destroy]
+
+      resources :people do
+        resources :histories, only: [:create, :update, :destroy]
+      end
 
       get 'account' => 'accounts#show'
 

@@ -207,10 +207,19 @@ de:
     upload_transcript: 'Transkript hochladen'
     add_person: 'Person hinzufügen'
     add_contribution: 'Kontributor hinzufügen'
+    history: 'lebensgeschichtl. Ereignis'
+    add_history: 'lebensgeschichtl. Ereignis hinzufügen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
     change_to_edit_view: 'Editier Ansicht'
+
+  histories:
+    forced_labor_details: 'Zwangsarbeitdetails'
+    return_date: 'Rückkehrdatum'
+    deportation_date: 'Verschleppungsdatum'
+    punishment: 'Art der Mißhandlung'
+    liberation_date: 'Befreiungsdatum'
 
   user_registration:
     registration: 'Registrierung'
@@ -336,6 +345,12 @@ de:
         other: 'Anmerkungen'
 
     attributes:
+      history:
+        forced_labor_details: 'Zwangsarbeitdetails'
+        return_date: 'Rückkehrdatum'
+        deportation_date: 'Verschleppungsdatum'
+        punishment: 'Art der Mißhandlung'
+        liberation_date: 'Befreiungsdatum'
       contribution:
         contribution_type: 'Art des Beitrags'
         person_id: 'Person'

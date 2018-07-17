@@ -28,14 +28,8 @@ class PersonSerializer < ActiveModel::Serializer
   end
 
   def histories
-    object.histories.map{ |history|
-      history.translations.each_with_object({}) {|i, hsh |
-        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-        hsh[alpha2_locale] = {event_begin: i.deportation_date,
-                         event_end: i.return_date,
-                         event_description: i.forced_labor_details} if Project.available_locales.include?( alpha2_locale )}}
+    object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("history-#{c.id}-#{c.updated_at}", HistorySerializer.new(c).as_json); mem}
   end
-
 
   def place_of_birth
     RegistryEntrySerializer.new(object.place_of_birth) if object.place_of_birth
