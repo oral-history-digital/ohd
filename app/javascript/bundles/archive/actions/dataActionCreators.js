@@ -84,7 +84,7 @@ export function submitData(params, locale='de') {
     }
 }
 
-export function deleteData(dataType, id, locale='de', nestedDataType, nestedId) {
+export function deleteData(dataType, id, nestedDataType, nestedId, locale='de') {
     let url = `/${locale}/${dataType}/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`
