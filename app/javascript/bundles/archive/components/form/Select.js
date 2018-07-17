@@ -56,7 +56,7 @@ export default class Select extends React.Component {
                     val = value;
                 } else {
                     text = value.name[this.props.locale];
-                    val = value.value;
+                    val = value.value || value.id;
                 }
                 return (
                     <option value={val} key={`${this.props.scope}-${index}`}>
