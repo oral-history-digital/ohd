@@ -33,6 +33,7 @@ class HomeController < BaseController
               mem
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            contribution_types: Project.contribution_types,
             languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             project: Project.name.to_s,
             project_name: Project.project_name,

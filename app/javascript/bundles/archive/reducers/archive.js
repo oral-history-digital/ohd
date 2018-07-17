@@ -43,6 +43,7 @@ const archive = (state = initialState, action) => {
                 translations: action.translations,
                 country_keys: action.country_keys,
                 collections: action.collections,
+                contributionTypes: action.contributionTypes,
                 languages: action.languages,
                 locales: action.locales,
                 project: action.project,

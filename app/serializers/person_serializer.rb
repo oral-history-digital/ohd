@@ -1,6 +1,5 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :histories, :names, :typology, :place_of_birth
-
+  attributes :id, :date_of_birth, :gender, :histories, :name, :names, :typology, :place_of_birth
 
   def names
       object.translations.each_with_object({}) {|i, hsh |

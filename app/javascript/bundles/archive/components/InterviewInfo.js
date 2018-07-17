@@ -3,6 +3,7 @@ import { t, fullname, admin } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
+import ContributionFormContainer from '../containers/ContributionFormContainer';
 import PersonContainer from '../containers/PersonContainer';
 
 export default class InterviewInfo extends React.Component {
@@ -80,46 +81,39 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    //contributors() {
-        //if (this.props.interview && this.props.people_status === 'fetched') {
-            //return ['interviewer', 'cinematographer', 'transcriptor', 'translator'].map((contributionType, index) => {
-                //for (var first in this.props.interview[`${contributionType}_contributions`]) break;
-                //let contribution = this.props.interview[`${contributionType}_contributions`][first];
-                //if (contribution)
-                    //return <PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`${contribution.contribution_type}-${index}`} />;
-            //})
-        //} else {
-            //return null;
-        //}
-    //}
-
-    //segmentators(){
-        //if (this.props.interview && this.props.people_status === 'fetched') {
-            //let segmentators = [];
-            //for(var s  in this.props.interview.segmentator_contributions) {
-                //let contribution = this.props.interview.segmentator_contributions[s];
-                //segmentators.push(<PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`segmentator-${s}`}/>);
-            //}
-            //return segmentators;
-        //} else {
-            //return null;
-        //}
-    //}
-
     contributors() {
         let contributors = [];
-        if (this.props.interview && this.props.people_status === 'fetched') {
+        if (this.props.interview && this.props.people_status === 'fetched' && this.props.contributionTypes) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                if (
-                    contribution && 
-                    (['interviewer', 'cinematographer', 'transcriptor', 'translator', 'segmentator'].indexOf(contribution.contribution_type) > -1 || 
-                    this.props.editView)
-                )
+                //if (
+                    //contribution && 
+                    //(Object.values(this.props.contributionTypes).indexOf(contribution.contribution_type) > -1 || 
+                    //admin(this.props))
+                //)
+                if (contribution !== 'fetched') {
                     contributors.push(<PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
+                }
             }
         } 
         return contributors;
+    }
+
+    addContribution() {
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.add_contribution')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.add_contribution'),
+                        content: <ContributionFormContainer interview={this.props.interview} />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -128,6 +122,7 @@ export default class InterviewInfo extends React.Component {
                 <div>
                     {this.info()}
                     {this.contributors()}
+                    {this.addContribution()}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}
