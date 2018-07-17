@@ -180,12 +180,25 @@ de:
   saved_annotations: 'Gespeicherte Anmerkungen'
 
   contributions:
-    interviewer: 'Interview'
+    # general:
     interviewee: 'Interviewte(r)'
+    interviewer: 'Interview'
     transcriptor: 'Transkript'
     translator: 'Übersetzung'
     segmentator: 'Erschließung'
     cinematographer: 'Kamera'
+    # zwar, hagen
+    interviewee: 'Interviewte(r)'
+    interview: 'Interview'
+    transcript: 'Transkript'
+    translation: 'Übersetzung'
+    segmentation: 'Erschließung'
+    # mog
+    'Informants': 'Interviewte(r)'
+    'Interviewer': 'Interview'
+    'Transcribed / described': 'Transkript'
+    'Translated': 'Übersetzung'
+    'Indexed': 'Erschließung'
 
   edit:
     interview:
@@ -193,6 +206,7 @@ de:
       edit: 'Interview bearbeiten'
     upload_transcript: 'Transkript hochladen'
     add_person: 'Person hinzufügen'
+    add_contribution: 'Kontributor hinzufügen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
@@ -322,6 +336,9 @@ de:
         other: 'Anmerkungen'
 
     attributes:
+      contribution:
+        contribution_type: 'Art des Beitrags'
+        person_id: 'Person'
       collection:
         name: 'Name'
         countries: 'Interviews in'
