@@ -56,7 +56,6 @@ de:
   postponed: 'Zurückgestellt durch die Redaktion'
   shared: 'Veröffentlicht'
   rejected: 'Veröffentlichung abgelehnt'
-  segmentation: "Erschließung"
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
   download: 'Download'
@@ -129,9 +128,6 @@ de:
   place: 'Ort'
   duration: 'Dauer'
   id: 'ID'
-  camera: 'Kamera: '
-  indexation: 'Erschließung'
-  annotation_for_interview: 'Anmerkungen zum Interview'
   map: 'Karte'
   photos: 'Fotos'
   citation: 'Zitierweise'
@@ -182,6 +178,14 @@ de:
   saved_searches: 'Gespeicherte Suchergebnisse'
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
+
+  contributions:
+    interviewer: 'Interview'
+    interviewee: 'Interviewte(r)'
+    transcriptor: 'Transkript'
+    translator: 'Übersetzung'
+    segmentator: 'Erschließung'
+    cinematographer: 'Kamera'
 
   edit:
     interview:

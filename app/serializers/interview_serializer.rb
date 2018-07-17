@@ -44,16 +44,13 @@ class InterviewSerializer < ActiveModel::Serializer
              :first_segment_id,
 
              :interviewee_id,
-             :interviewee_ids,
-             :cinematographer_ids,
-             :interviewer_ids,
-             :transcriptor_ids,
-             :translator_ids,
-             :segmentator_ids
-
-
+             :contributions
 
   has_many :photos, serializer: PhotoSerializer
+
+  def contributions
+    object.contributions.inject({}){|mem, c| mem[c.id] = ContributionSerializer.new(c); mem}
+  end
 
   def forced_labor_groups
     # if object.respond_to? :forced_labor_groups
