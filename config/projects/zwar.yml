@@ -13,11 +13,12 @@ default: &default
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
 
-  interviewee_contribution_type: 'interviewee'
-  interviewer_contribution_type: 'interview'
-  transcriptor_contribution_type: 'transcript'
-  translator_contribution_type: 'translation'
-  segmentator_contribution_type: 'segmentation'
+  contribution_types:
+    interviewee: 'interviewee'
+    interviewer: 'interview'
+    transcriptor: 'transcript'
+    translator: 'translation'
+    segmentator: 'segmentation'
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'

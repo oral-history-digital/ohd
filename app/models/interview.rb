@@ -38,28 +38,28 @@ class Interview < ActiveRecord::Base
   has_many :interviewees,
           #  -> {where("contributions.contribution_type = 'Informants'")}, ## MOG
           #  -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
-           -> {where("contributions.contribution_type = '#{Project.interviewee_contribution_type}'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :interview_contributors,
   has_many :interviewers,
-           -> {where("contributions.contribution_type = '#{Project.interviewer_contribution_type}'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewer']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :transcript_contributors,
   has_many :transcriptors,
-           -> {where("contributions.contribution_type = '#{Project.transcriptor_contribution_type}'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['transcriptor']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :translation_contributors,
   has_many :translators,
-           -> {where("contributions.contribution_type = '#{Project.translator_contribution_type}'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['translator']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -86,7 +86,7 @@ class Interview < ActiveRecord::Base
 
   #has_many :segmentation_contributors,
   has_many :segmentators,
-           -> {where("contributions.contribution_type = '#{Project.segmentator_contribution_type}'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['segmentator']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions

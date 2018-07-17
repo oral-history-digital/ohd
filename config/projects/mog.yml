@@ -16,11 +16,12 @@ default: &default
   alpha: 'alpha3_terminologic'
 
   # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
-  interviewee_contribution_type: 'Informants'
-  interviewer_contribution_type: 'Interviewer'
-  transcriptor_contribution_type: 'Transcribed / described'
-  translator_contribution_type: 'Translated'
-  segmentator_contribution_type: 'Indexed'
+  contribution_types:
+    interviewee: 'Informants'
+    interviewer: 'Interviewer'
+    transcriptor: 'Transcribed / described'
+    translator: 'Translated'
+    segmentator: 'Indexed'
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation in Griechenland'
