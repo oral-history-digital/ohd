@@ -99,7 +99,7 @@ export default class Form extends React.Component {
                     return this.elementComponent(props);
                 })}
 
-                <input type="submit" value={t(this.props, this.props.submitText)}/>
+                <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
             </form>
         );
     }
