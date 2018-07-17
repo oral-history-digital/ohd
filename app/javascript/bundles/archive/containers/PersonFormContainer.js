@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import PersonForm from '../components/PersonForm';
 import { submitData } from '../actions/dataActionCreators';
+import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -11,7 +12,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params, locale) => dispatch(submitData(params, locale))
+    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonForm);

@@ -18,7 +18,7 @@ const initialState = {
     homeContent: "",
     externalLinks: {},
 
-    editView: false,
+    editView: true,
 }
 
 const archive = (state = initialState, action) => {

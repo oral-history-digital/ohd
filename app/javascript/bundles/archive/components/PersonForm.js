@@ -5,10 +5,11 @@ import { t } from '../../../lib/utils';
 export default class EditPerson extends React.Component {
 
     render() {
+        let _this = this;
         return (
             <Form 
                 scope='person'
-                onSubmit={this.props.submitData}
+                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                 values={{
                     id: this.props.person && this.props.person.id
                 }}

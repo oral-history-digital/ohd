@@ -3,22 +3,12 @@ import { t, fullname, admin } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
+import PersonContainer from '../containers/PersonContainer';
 
 export default class InterviewInfo extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-    }
-
-    content(label, value, className) {
-        if (value) {
-            return (
-                <p>
-                    <span className="flyout-content-label">{label}:</span>
-                    <span className={"flyout-content-data " + className}>{value}</span>
-                </p>
-            )
-        }
     }
 
     to() {
@@ -52,18 +42,6 @@ export default class InterviewInfo extends React.Component {
         return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
     }
 
-    segmentators(){
-        return this.contributors('segmentator').map(s => fullname(this.props, s)).join(', ');
-    }
-
-    contributors(contributionType) {
-        if (this.props.interview && this.props.people) {
-            return this.props.interview[`${contributionType}_ids`].map(cId => this.props.people[cId]);
-        } else {
-            return [];
-        }
-    }
-
     tapes(){
         if (this.props.interview.tape_count > 1){
             return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
@@ -91,16 +69,65 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
+    content(label, value, className) {
+        if (value) {
+            return (
+                <p>
+                    <span className="flyout-content-label">{label}:</span>
+                    <span className={"flyout-content-data " + className}>{value}</span>
+                </p>
+            )
+        }
+    }
+
+    //contributors() {
+        //if (this.props.interview && this.props.people_status === 'fetched') {
+            //return ['interviewer', 'cinematographer', 'transcriptor', 'translator'].map((contributionType, index) => {
+                //for (var first in this.props.interview[`${contributionType}_contributions`]) break;
+                //let contribution = this.props.interview[`${contributionType}_contributions`][first];
+                //if (contribution)
+                    //return <PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`${contribution.contribution_type}-${index}`} />;
+            //})
+        //} else {
+            //return null;
+        //}
+    //}
+
+    //segmentators(){
+        //if (this.props.interview && this.props.people_status === 'fetched') {
+            //let segmentators = [];
+            //for(var s  in this.props.interview.segmentator_contributions) {
+                //let contribution = this.props.interview.segmentator_contributions[s];
+                //segmentators.push(<PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`segmentator-${s}`}/>);
+            //}
+            //return segmentators;
+        //} else {
+            //return null;
+        //}
+    //}
+
+    contributors() {
+        let contributors = [];
+        if (this.props.interview && this.props.people_status === 'fetched') {
+            for (var c in this.props.interview.contributions) {
+                let contribution = this.props.interview.contributions[c];
+                if (
+                    contribution && 
+                    (['interviewer', 'cinematographer', 'transcriptor', 'translator', 'segmentator'].indexOf(contribution.contribution_type) > -1 || 
+                    this.props.editView)
+                )
+                    contributors.push(<PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
+            }
+        } 
+        return contributors;
+    }
+
     render() {
         if (this.props.interview) {
             return (
                 <div>
                     {this.info()}
-                    {this.content(t(this.props, 'interview'), fullname(this.props, this.contributors('interviewer')[0]), "")}
-                    {this.content(t(this.props, 'camera'), fullname(this.props, this.contributors('cinematographer')[0]), "")}
-                    {this.content(t(this.props, 'transcript'), fullname(this.props, this.contributors('transcriptor')[0]), "")}
-                    {this.content(t(this.props, 'translation'), fullname(this.props, this.contributors('translator')[0]), "")}
-                    {this.content(t(this.props, 'segmentation'), this.segmentators(), "")}
+                    {this.contributors()}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}
@@ -111,9 +138,6 @@ export default class InterviewInfo extends React.Component {
         } else {
             return null;
         }
-                    //<AuthShowContainer ifAdmin={true}>
-                        //<div className='edit-interview-link' onClick={this.setState({edit: true})}>{t(this.props, 'edit.interview.edit')}</div>
-                    //</AuthShowContainer>
     }
 }
 
