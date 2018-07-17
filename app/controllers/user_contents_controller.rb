@@ -23,12 +23,6 @@ class UserContentsController < BaseController
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 
     respond_to do |format|
-      #format.html do
-        #render :action => 'show'
-      #end
-      #format.js do 
-        #render :partial => 'show', object: @object
-      #end
       format.json do
         render json: {
           data_type: 'user_contents',
@@ -48,7 +42,7 @@ class UserContentsController < BaseController
         render :action => 'index'
       end
       format.js
-      format.json { render json: :ok }
+      format.json { render json: {}, status: :ok }
     end
   end
 
