@@ -183,6 +183,9 @@ de:
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
 
+  grid: 'Raster'
+  list: 'Liste'
+
   edit:
     interview:
       new: 'Neues Interview'
