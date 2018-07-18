@@ -116,6 +116,7 @@ export default class ArchiveSearchForm extends React.Component {
                             placeholder={t(this.props, 'enter_field')}
                             onChange={this.handleChange}
                             list='allInterviewTitles' 
+                            autoFocus
                         />
                         {this.renderDataList()}
                         <input 
