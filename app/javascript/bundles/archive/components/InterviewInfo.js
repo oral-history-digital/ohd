@@ -57,6 +57,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     contributors(contributionType) {
+        console.log(contributionType)
         if (this.props.interview && this.props.people) {
             return this.props.interview[`${contributionType}_ids`].map(cId => this.props.people[cId]);
         } else {
