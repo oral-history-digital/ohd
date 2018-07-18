@@ -4,6 +4,7 @@ import Observer from 'react-intersection-observer'
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
+import InterviewListRowContainer from '../containers/InterviewListRowContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
@@ -21,7 +22,7 @@ export default class ArchiveSearch extends React.Component {
         window.scrollTo(0, 1);
     }
 
-    content() {
+    content(displayType) {
         if (this.props.isArchiveSearching && this.props.query['page'] === 1) { 
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
         } else {
@@ -29,7 +30,7 @@ export default class ArchiveSearch extends React.Component {
                 <div>
                     {/* {this.renderPagination()} */}
                     <div className={'search-results-container'}>
-                        {this.foundInterviews()}
+                        {this.foundInterviews(displayType)}
                     </div>
                     {/* {this.renderPagination()} */}
                     {this.renderScrollObserver()}
@@ -38,33 +39,46 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
-
-    foundInterviews() {
+    foundInterviews(displayType) {
         if (this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
         }
         else {
-            return (
-                this.props.foundInterviews.map((interview, index) => {
-                    //let interviewData = this.props.interviews[interview.archive_id];
-                    //let foundSegmentsForInterview = interviewData && interviewData.foundSegments || [];
-                    //foundSegmentsForInterview={foundSegmentsForInterview}
-                    return <InterviewPreviewContainer
-                        interview={interview.data}
-                        key={"interview-" + interview.archive_id}
-                    />;
-                })
-            )
-        }
+            if(displayType === 'grid') {
+                return (
+                    this.props.foundInterviews.map((interview, index) => {
+                        return <InterviewPreviewContainer
+                            interview={interview.data}
+                            key={"interview-" + interview.archive_id}
+                        />;
+                    })
+                )
+            }
+            else {
+                return (
+                    <table style={{padding: '0 20px'}}>
+                        <thead>
+                            <tr>
+                                {/* <td>Archive ID</td> */}
+                                <td>Name</td>
+                                <td>Media Type</td>
+                                <td>Duration</td>
+                                <td>Language</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.props.foundInterviews.map((interview, index) => {
+                                return <InterviewListRowContainer
+                                    interview={interview.data}
+                                    key={"interview-row-" + interview.archive_id}
+                                />;
+                            })}
+                        </tbody>
+                    </table>
+                )
+            }
+        }   
     }
-
-    // handleClick(event) {
-    //     let page = ($(event.target).data().page);
-    //     let query = this.props.query;
-    //     query['page'] = page;
-    //     let url = `/${this.props.locale}/searches/archive`;
-    //     this.props.searchInArchive(url, query);
-    // }
 
     handleScroll(inView) {
         if(inView){
@@ -191,26 +205,34 @@ export default class ArchiveSearch extends React.Component {
                         selectedTabPanelClassName='active'
                         defaultIndex={0}
                     >
-                        <TabList className={'search-results-tabs' + (this.props.project === 'zwar' && ' hidden' || '')}>
+                        <TabList className={'search-results-tabs'}>
                             <Tab className='search-results-tab'>
                                 <i className="fa fa-th"></i>
-                                <span>{t(this.props, 'interviews')}</span>
+                                <span>{t(this.props, 'grid')}</span>
                             </Tab>
                             <Tab className='search-results-tab'>
+                                <i className="fa fa-th-list"></i>
+                                <span>{t(this.props, 'list')}</span>
+                            </Tab>
+                            <Tab className={'search-results-tab' + (this.props.project === 'zwar' && ' hidden' || '')}>
                                 <i className="fa fa-map-o"></i>
                                 <span>{t(this.props, 'places')}</span>
                             </Tab>
                         </TabList>
                         <TabPanel>
-                            {this.content()}
+                            {this.content('grid')}
                         </TabPanel>
                         <TabPanel>
-                            <div>
-                                <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div>
+                            {/* <div> */}
+                                {/* <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div> */}
                                 {/* {this.renderPagination()} */}
-                                <ArchiveLocationsContainer/>
+                                {/* <ArchiveLocationsContainer/> */}
                                 {/* {this.renderPagination()} */}
-                            </div>
+                            {/* </div> */}
+                            {this.content('list')}
+                        </TabPanel>
+                        <TabPanel>
+                            <ArchiveLocationsContainer/>
                         </TabPanel>
                     </Tabs>
                 </div>

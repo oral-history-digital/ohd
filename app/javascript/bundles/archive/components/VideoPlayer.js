@@ -243,7 +243,6 @@ export default class VideoPlayer extends React.Component {
                         </video>
                     </div>
                     <select value={this.props.tape} onChange={this.handleChange}>
-                        {this.props.tape}
                         {this.tapeSelector()}
                     </select>
                 </div>
