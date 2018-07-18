@@ -400,8 +400,8 @@ h1.search-results-title {
   display: inline-block;
   margin-right: 4px;
   padding: 10px 20px;
-  background-color: $primary-color;
-  color: #fff;
+  background-color: #ddd;
+  color: $gray-darker;
   transition: color 0.3s;
   transition: background-color 0.3s;
   cursor: pointer;
@@ -412,9 +412,9 @@ h1.search-results-title {
     }
   }
   &.active {
-    background-color: #ddd;
+    background-color: $primary-color;
     .fa, span {
-      color: $gray-darker;
+      color: #fff;
     }
   }
   &:not(.active):hover {
