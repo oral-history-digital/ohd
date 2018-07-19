@@ -37,6 +37,17 @@ namespace :cache do
     end
   end
 
+  desc 'visit all other necessary data to fill up cache'
+  task :other_data => :environment do
+    [
+      :people
+    ].each do |data_type|
+      p "*** Getting #{data_type}"
+      uri = URI.parse("#{BASE_URL}/de/#{data_type}.json")
+      get uri
+    end
+  end
+
   desc 'visit all interviews-download-routes to fill up cache'
   task :interview_downloads => :environment do
     Interview.all.each do |interview|
@@ -73,7 +84,7 @@ namespace :cache do
   end
 
   desc 'cache all'
-  task :all => ['cache:start', 'cache:search', 'cache:interviews', 'cache:interview_data', 'cache:interview_downloads', 'cache:locations'] do
+  task :all => ['cache:start', 'cache:search', 'cache:interviews', 'cache:interview_data', 'cache:other_data', 'cache:interview_downloads', 'cache:locations'] do
     puts 'cache complete.'
   end
 
