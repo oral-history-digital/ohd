@@ -109,7 +109,7 @@ export default class VideoPlayer extends React.Component {
             <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                 title: t(this.props, 'save_user_annotation'),
                 content: this.annotateOnSegmentForm(
-                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)
+                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])
                 )
             })}>
                 <i className="fa fa-pencil"></i>
@@ -242,7 +242,7 @@ export default class VideoPlayer extends React.Component {
                            {this.subtitles()}
                         </video>
                     </div>
-                    <select value={this.props.tape} onChange={this.handleChange}>
+                    <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
                         {this.tapeSelector()}
                     </select>
                 </div>
