@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import InterviewSearch from '../components/InterviewSearch';
 import {handleTranscriptScroll} from "../actions/interviewActionCreators";
 
-
+import { getInterview } from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     return {
         foundSegments: data && data.foundSegments,
         archiveId: state.archive.archiveId,
+        interview: getInterview(state),
         locale: state.archive.locale,
         translations: state.archive.translations,
         transcriptScrollEnabled: state.archive.transcriptScrollEnabled

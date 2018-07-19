@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-
+import { t } from '../../../lib/utils';
 
 export default class Segment extends React.Component {
 
@@ -19,6 +19,17 @@ export default class Segment extends React.Component {
             this.setState({
                 active: active
             })
+        }
+    }
+
+    tape() {
+        if (this.props.tape_count > 1){
+            return (
+                <span>
+                    {t(this.props, 'tape')} {this.props.data.tape_nbr}/{this.props.tape_count}
+                    &nbsp;|&nbsp;
+                </span>
+            )
         }
     }
 
@@ -42,7 +53,10 @@ export default class Segment extends React.Component {
     render() {
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
-                <p className="content-search-timecode">{moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}</p>
+                <p className="content-search-timecode">
+                    {this.tape()}
+                    {moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}
+                </p>
                 <div className={this.css()}>
                     <p  dangerouslySetInnerHTML = {{__html:this.transcript()}}></p>
                 </div>

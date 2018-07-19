@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import VideoPlayer from '../components/VideoPlayer';
-import {handleVideoTimeChange, handleVideoEnded, setNextTape} from '../actions/videoPlayerActionCreators';
+import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTime} from '../actions/videoPlayerActionCreators';
 import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
 
@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
     handleVideoTimeChange: time => dispatch(handleVideoTimeChange(time)),
     handleVideoEnded: () => dispatch(handleVideoEnded()),
     setNextTape: () => dispatch(setNextTape()),
+    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })

@@ -6,7 +6,7 @@ import { getInterview } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
-        photos: getInterview(state).interview.photos,
+        photos: getInterview(state).photos,
         project: state.archive.project,
     }
 }

@@ -42,7 +42,7 @@ namespace :solr do
     end
 
     desc 'reindex all'
-    task :all => ['solr:reindex:interviews', 'solr:reindex:segments', 'solr:reindex:registry_references', 'solr:commit'] do
+    task :all => ['solr:reindex:interviews', 'solr:reindex:segments', 'solr:reindex:registry_references', 'solr:reindex:commit'] do
       RegistryReference.reindex
     end
 

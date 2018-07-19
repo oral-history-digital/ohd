@@ -36,7 +36,7 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)}`);
+            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])}`);
             if (activeSegment) {
                 let hight = activeSegment.offsetTop;
                 if (hight > 450)
@@ -71,7 +71,7 @@ export default class Transcript extends React.Component {
     }
 
     firstSegment() {
-        return segments(this.props)[this.props.interview.first_segment_id];
+        return segments(this.props)[this.props.interview.first_segments_ids[this.props.tape]];
     }
 
     transcripted(locale) {
@@ -82,7 +82,7 @@ export default class Transcript extends React.Component {
         let shownSegments = this.props.transcriptScrollEnabled ? 
             segments(this.props) : 
             this.shownSegmentsAround(
-                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)
+                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])
             );
         let speakerId;
         let transcript = [];

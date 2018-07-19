@@ -10,6 +10,7 @@ export default class VideoPlayer extends React.Component {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
         this.tracksVisible = false;
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -27,6 +28,10 @@ export default class VideoPlayer extends React.Component {
             this.setVideoTime()
             this.setVideoStatus()
         }
+    }
+
+    handleChange(e) {
+        this.props.setTapeAndTime(parseInt(e.target.value), 0);
     }
 
     setVideoTime() {
@@ -104,7 +109,7 @@ export default class VideoPlayer extends React.Component {
             <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                 title: t(this.props, 'save_user_annotation'),
                 content: this.annotateOnSegmentForm(
-                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segment_id)
+                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])
                 )
             })}>
                 <i className="fa fa-pencil"></i>
@@ -170,6 +175,14 @@ export default class VideoPlayer extends React.Component {
             )
         })
     }
+    
+    tapeSelector(){
+        let options = [];
+        for(var i = 1; i <= this.props.interview.tape_count; i++) {
+                options.push(<option value={i} key={'tape' + i}>{t(this.props, 'tape')} {i}</option>);
+        }
+        return options;
+    }
 
     handleVideoClick(e) {
         if(this.video) {
@@ -229,6 +242,9 @@ export default class VideoPlayer extends React.Component {
                            {this.subtitles()}
                         </video>
                     </div>
+                    <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
+                        {this.tapeSelector()}
+                    </select>
                 </div>
             );
         } else {

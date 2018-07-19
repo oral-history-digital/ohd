@@ -41,7 +41,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :place_of_interview,
              :year_of_birth,
              :last_segment_id,
-             :first_segment_id,
+             :first_segments_ids,
 
              :interviewee_id,
              :contributions
@@ -184,9 +184,17 @@ class InterviewSerializer < ActiveModel::Serializer
     0
   end
 
-  def first_segment_id
-    object.segments.where.not(timecode: '00:00:00.000').first.id
-  rescue
-    0
+  def first_segments_ids
+    tape_counter = 0
+    object.tapes.inject({}) do |mem, tape|
+      tape_counter += 1
+      begin
+        mem[tape_counter] = tape.segments.where.not(timecode: '00:00:00.000').first.id
+        mem
+      rescue
+        0
+      end
+    end
   end
+  
 end

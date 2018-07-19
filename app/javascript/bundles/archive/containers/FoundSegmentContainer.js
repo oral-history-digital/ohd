@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
         tape: state.archive.tape,
         interview: data && data.interview,
         transcriptTime: state.archive.transcriptTime,
+        translations: state.archive.translations,
         locale: state.archive.locale,
         lang: interview && interview.lang,
     }

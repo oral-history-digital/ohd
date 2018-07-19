@@ -78,6 +78,7 @@ export default class InterviewPreview extends React.Component {
                 <FoundSegmentContainer
                     data={segment}
                     key={"segment-" + segment.id}
+                    tape_count={this.props.interview.tape_count}
                 />
                 </div>
             )

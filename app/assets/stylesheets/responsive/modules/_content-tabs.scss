@@ -15,8 +15,8 @@
   flex: 1;
   margin-right: 0;
   padding: 14px 12px;
-  color: #fff;
-  background-color: $primary-color;
+  color: $gray-darkest; //#fff;
+  background-color: $gray-lighter; //$primary-color;
   text-align: center;
   transition: background-color 0.3s;
   cursor: pointer;
@@ -39,8 +39,8 @@
 }
 
 .content-tabs-nav-link.active {
-  color: $gray-darkest;
-  background-color: $gray-lighter;
+  color: #fff;
+  background-color: $primary-color;
 }
 
 .fix-video .content-tabs-nav-link i {
