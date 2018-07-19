@@ -42,7 +42,7 @@ class PeopleController < ApplicationController
       format.json do
         json = Rails.cache.fetch "people-#{Person.maximum(:updated_at)}" do
           {
-            data: @people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("person-#{s.id}-#{s.updated_at}", ::PersonSerializer.new(s).as_json); mem},
+            data: @people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("person-#{s.id}-#{s.updated_at}"){::PersonSerializer.new(s).as_json}; mem},
             data_type: 'people',
           }
         end.to_json
