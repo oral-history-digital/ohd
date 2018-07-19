@@ -2,6 +2,7 @@ default: &default
 
   available_locales:
     - de
+    - en
 
   default_locale: de
 
@@ -9,12 +10,13 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
 
-  interviewee_contribution_type: 'interviewee'
-  interviewer_contribution_type: 'interview'
-  transcription_contribution_type: 'transcript'
-  translation_contribution_type: 'translation'
-  indexation_contribution_type: 'segmentation'
-  
+  contribution_types:
+    interviewee: 'interviewee'
+    interviewer: 'interview'
+    transcriptor: 'transcript'
+    translator: 'translation'
+    segmentator: 'segmentation'
+
   project_name:
     de: 'Deutsches Gedächtnis'
 

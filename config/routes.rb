@@ -13,7 +13,12 @@ Rails.application.routes.draw do
     end
 
     localized do
-      resources :people
+      resources :contributions, only: [:create, :destroy]
+      resources :histories, only: [:create, :update, :destroy]
+
+      resources :people do
+        resources :histories, only: [:create, :update, :destroy]
+      end
 
       get 'account' => 'accounts#show'
 
@@ -37,7 +42,7 @@ Rails.application.routes.draw do
       #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
-      resources :interviews do #, only: [:show, :index] do
+      resources :interviews do
         member do 
           get :doi_contents
           get :segments
@@ -49,7 +54,7 @@ Rails.application.routes.draw do
           #get :stills
         #end
         #resources :registry_entries, only: [:show]
-        resources :segments, only: [:index]
+        resources :contributions, only: [:create, :destroy]
         resources :tapes do
           collection do
             get :playlist

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
-import EditInterviewContainer from '../containers/EditInterviewContainer';
-import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
@@ -67,6 +65,10 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 5) {
              // upload transcript
             this.context.router.history.push(`/${this.props.locale}/transcripts/new`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 6) {
+             // add person
+            this.context.router.history.push(`/${this.props.locale}/people/new`);
             this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
@@ -151,7 +153,8 @@ export default class FlyoutTabs extends React.Component {
         return [
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
             <Tab className={css} key='edit.interview.edit'>{t(this.props, 'edit.interview.new')}</Tab>,
-            <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>
+            <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
+            <Tab className={css} key='edit.add_person'>{t(this.props, 'edit.add_person')}</Tab>
         ];
     }
 
@@ -167,11 +170,15 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-upload-transcript'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.upload_transcript')}</div>
                 </TabPanel>,
+                <TabPanel key={'tabpanel-add-person'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.add_person')}</div>
+                </TabPanel>,
             ];
         } else {
             return [
                 <TabPanel key='tabpanel-edit-interview'/>,
-                <TabPanel key='tabpanel-upload-transcript'/>
+                <TabPanel key='tabpanel-upload-transcript'/>,
+                <TabPanel key='tabpanel-add-person'/>
             ]
         }
     }

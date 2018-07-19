@@ -48,6 +48,7 @@ export default class Textarea extends React.Component {
             <ElementContainer
                 scope={this.props.scope}
                 attribute={this.props.attribute}
+                label={this.props.label}
                 showErrors={this.props.showErrors}
                 css={this.props.css}
                 hidden={this.props.hidden}

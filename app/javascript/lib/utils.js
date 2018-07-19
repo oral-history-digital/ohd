@@ -78,7 +78,7 @@ export function fullname(props, person, withBirthName=false) {
 }
 
 export function admin(props) {
-    if (props.account.email && props.account.admin && props.editView) {
+    if (props.account && props.account.admin && props.editView) {
         return true;
     } else {
         return false;

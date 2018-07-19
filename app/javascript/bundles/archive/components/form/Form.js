@@ -32,7 +32,7 @@ export default class Form extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
-            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
+            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.locale);
         } 
     }
 
@@ -99,7 +99,7 @@ export default class Form extends React.Component {
                     return this.elementComponent(props);
                 })}
 
-                <input type="submit" value={t(this.props, this.props.submitText)}/>
+                <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
             </form>
         );
     }

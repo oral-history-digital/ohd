@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         tape: state.archive.tape,
         interview: getInterview(state),
-        userContents: state.userContent.contents
+        userContents: state.data.user_contents
     }
 }
 

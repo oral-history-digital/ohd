@@ -43,7 +43,7 @@ const data = (state = initialState, action) => {
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: clone,
-                            [`${action.dataType}_last_deleted`]: new Date(),
+                            [`${action.nestedDataType}_last_deleted`]: new Date(),
                         })
                     })
                 })

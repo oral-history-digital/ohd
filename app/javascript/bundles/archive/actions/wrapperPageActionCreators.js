@@ -20,6 +20,7 @@ function receiveStaticContent(json){
         translations: json.translations,
         country_keys: json.country_keys,
         collections: json.collections,
+        contributionTypes: json.contribution_types,
         languages: json.languages,
         locales: json.locales,
         project: json.project,

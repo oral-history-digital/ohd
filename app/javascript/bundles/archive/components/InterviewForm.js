@@ -7,7 +7,7 @@ export default class InterviewForm extends React.Component {
     render() {
         return (
             <Form 
-                scope='interviews'
+                scope='interview'
                 values={{
                     id: this.props.interview && this.props.interview.archive_id
                 }}

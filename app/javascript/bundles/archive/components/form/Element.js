@@ -17,7 +17,6 @@ export default class Element extends React.Component {
                 {t(this.props, this.props.label ? this.props.label : `activerecord.attributes.${this.props.scope}.${this.props.attribute}`) + mandatory}
             </label>
         );
-                //{t(this.props, `${this.props.scope}.${this.props.label || this.props.attribute}`) + mandatory}
     }
 
     error() {

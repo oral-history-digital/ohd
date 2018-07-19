@@ -47,7 +47,7 @@ const receiveData = (json) => ({
     data: json.data,
     dataType: json.data_type,
     nestedDataType: json.nested_data_type,
-    nestedId: json.nestedId,
+    nestedId: json.nested_id,
 });
 
 export function fetchData(dataType, id, nestedDataType, locale='de') {
@@ -63,27 +63,34 @@ export function fetchData(dataType, id, nestedDataType, locale='de') {
 }
 
 export function submitData(params, locale='de') {
-    //
-    // params should be in a pluralized scope, e.g.:
-    //   params = {interviews: {id: 5, archiveId: 'mog002', language_id: 2}
-    //
     let dataType = Object.keys(params)[0]; 
+    let pluralizedDataType;
+    switch(dataType) {
+        case 'person':
+            pluralizedDataType = 'people';
+            break;
+        case 'history': 
+            pluralizedDataType = 'histories';
+            break;
+        default:
+            pluralizedDataType = `${dataType}s`;
+    }
 
     if(params[dataType].id) {
         return dispatch => {
             // TODO: extend params for updateData for nestedData-case
-            dispatch(updateData(dataType, params[dataType].id, params[dataType]));
-            Loader.put(`/${locale}/${dataType}/${params[dataType].id}`, params, dispatch, null);
+            //dispatch(updateData(pluralizedDataType, params[dataType].id, params[dataType]));
+            Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, receiveData);
         }
     } else {
         return dispatch => {
             //dispatch(addData(params));
-            Loader.post(`/${locale}/${dataType}`, params, dispatch, receiveData);
+            Loader.post(`/${locale}/${pluralizedDataType}`, params, dispatch, receiveData);
         }
     }
 }
 
-export function deleteData(dataType, id, locale='de', nestedDataType, nestedId) {
+export function deleteData(dataType, id, nestedDataType, nestedId, locale='de') {
     let url = `/${locale}/${dataType}/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`

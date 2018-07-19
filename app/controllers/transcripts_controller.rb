@@ -10,11 +10,11 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    file = params[:transcripts].delete(:data)
+    file = params[:interview].delete(:data)
     file_path = File.join(Rails.root, 'tmp', file.original_filename)
     File.open(file_path, 'wb') {|f| f.write(file.read) }
 
-    if params[:transcripts].delete(:tape_and_archive_id_from_file)
+    if params[:interview].delete(:tape_and_archive_id_from_file)
       archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
     else
       archive_id = transcript_params[:archive_id]
@@ -37,7 +37,7 @@ class TranscriptsController < ApplicationController
   private
 
   def transcript_params
-    params.require(:transcripts).
+    params.require(:interview).
       permit(
         :collection_id,
         :archive_id,

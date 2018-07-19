@@ -1,7 +1,8 @@
 import React from 'react';
 import { t, fullname, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import EditPersonContainer from '../containers/EditPersonContainer';
+import PersonFormContainer from '../containers/PersonFormContainer';
+import HistoriesContainer from '../containers/HistoriesContainer';
 
 export default class PersonData extends React.Component {
 
@@ -27,10 +28,10 @@ export default class PersonData extends React.Component {
 
 
     typologies(){
-        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length > 1){
+        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale]){
             return this.content(t(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
-        } else if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale].length == 1){
-            return this.content(t(this.props, 'typology'), this.props.interviewee.typology[this.props.locale][0], "");
+        } else {
+            return "";
         }
     }
 
@@ -52,7 +53,6 @@ export default class PersonData extends React.Component {
         if (this.props.interviewee) {
             return (
                 <div>
-
                     {this.content(t(this.props, 'interviewee_name'), fullname(this.props, this.props.interviewee, true), "")}
                     {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
                     {this.placeOfBirth()}
@@ -74,10 +74,12 @@ export default class PersonData extends React.Component {
     render() {
         if (admin(this.props)) {
             return (
-                <EditPersonContainer 
-                    person={this.props.interviewee} 
-                    interviewId={this.props.interview.id}
-                />
+                <div>
+                    <PersonFormContainer 
+                        person={this.props.interviewee} 
+                    />
+                    <HistoriesContainer person={this.props.interviewee} />
+                </div>
             );
         } else {
             return this.info();

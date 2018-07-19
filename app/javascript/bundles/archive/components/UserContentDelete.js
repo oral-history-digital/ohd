@@ -8,10 +8,6 @@ export default class UserContentDelete extends React.Component {
         this.props.closeArchivePopup();
     }
 
-    cancel() {
-        this.props.closeArchivePopup();
-    }
-
     render() {
         return (
             <div>
