@@ -82,7 +82,7 @@ class InterviewSerializer < ActiveModel::Serializer
   def interview_date
     Date.parse(object.interview_date).strftime("%Y-%m-%d")
   rescue
-    'no date given'
+    object.interview_date || 'no date given'
   end
 
   def video_array
