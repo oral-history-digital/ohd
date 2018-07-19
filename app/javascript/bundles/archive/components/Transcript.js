@@ -36,7 +36,7 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])}`);
+            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segments_ids[this.props.tape], this.props.interview.first_segments_ids[this.props.tape])}`);
             if (activeSegment) {
                 let hight = activeSegment.offsetTop;
                 if (hight > 450)
@@ -55,12 +55,12 @@ export default class Transcript extends React.Component {
     }
 
     shownSegmentsCount() {
-        return 15;
+        return 7;
     }
 
     shownSegmentsAround(segmentId) {
-        if (segmentId > this.props.interview.last_segment_id - this.shownSegmentsCount())
-            segmentId = this.props.interview.last_segment_id - this.shownSegmentsCount();
+        if (segmentId > this.props.interview.last_segments_ids[this.props.tape] - this.shownSegmentsCount())
+            segmentId = this.props.interview.last_segments_ids[this.props.tape] - this.shownSegmentsCount();
 
         let shownSegments = {};
         for (var i = 0; i < this.shownSegmentsCount(); i++) {
@@ -82,7 +82,7 @@ export default class Transcript extends React.Component {
         let shownSegments = this.props.transcriptScrollEnabled ? 
             segments(this.props) : 
             this.shownSegmentsAround(
-                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segment_id, this.props.interview.first_segments_ids[this.props.tape])
+                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segments_ids[this.props.tape], this.props.interview.first_segments_ids[this.props.tape])
             );
         let speakerId;
         let transcript = [];

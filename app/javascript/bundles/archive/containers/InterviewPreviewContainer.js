@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
-import { handleSegmentClick, setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -16,7 +16,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     searchInInterview: (props) => dispatch(searchInInterview(props)),
 })
