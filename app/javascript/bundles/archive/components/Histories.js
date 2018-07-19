@@ -9,7 +9,7 @@ export default class Histories extends React.Component {
         let histories = [];
         for (var c in this.props.person.histories) {
             let history = this.props.person.histories[c];
-            if (history !== 'fetched') {
+            if (history && history !== 'fetched') {
                 histories.push(<HistoryContainer history={history} key={`history-${history.id}`} />);
             }
         }
