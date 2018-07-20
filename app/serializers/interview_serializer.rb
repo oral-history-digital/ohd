@@ -40,7 +40,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :person_names,
              :place_of_interview,
              :year_of_birth,
-             :last_segment_id,
+             :last_segments_ids,
              :first_segments_ids,
 
              :interviewee_id,
@@ -178,10 +178,17 @@ class InterviewSerializer < ActiveModel::Serializer
   #   object.duration.timecode
   # end
 
-  def last_segment_id
-    object.segments.last.id
-  rescue
-    0
+  def last_segments_ids
+    tape_counter = 0
+    object.tapes.inject({}) do |mem, tape|
+      tape_counter += 1
+      begin
+        mem[tape_counter] = tape.segments.last.id
+        mem
+      rescue
+        0
+      end
+    end
   end
 
   def first_segments_ids

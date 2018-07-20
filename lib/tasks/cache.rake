@@ -83,8 +83,17 @@ namespace :cache do
     end
   end
 
+  desc 'search for all the names to fill up cache'
+  task :name_searches => :environment do
+    Interview.all.each  do |i|
+      p "*** Getting search for #{i.title[:de]}"
+      uri = URI.parse("#{BASE_URL}/de/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
+      get uri
+    end
+  end
+
   desc 'cache all'
-  task :all => ['cache:start', 'cache:search', 'cache:interviews', 'cache:interview_data', 'cache:other_data', 'cache:interview_downloads', 'cache:locations'] do
+  task :all => ['cache:start', 'cache:search', 'cache:name_searches', 'cache:interviews', 'cache:interview_data', 'cache:other_data', 'cache:interview_downloads', 'cache:locations'] do
     puts 'cache complete.'
   end
 
@@ -93,7 +102,12 @@ namespace :cache do
     #request = Net::HTTP::Get.new(uri.request_uri)
     #request.basic_auth("chrgregor@googlemail.com", "******")
     #response = http.request(request)
-    response = Net::HTTP.get_response(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.read_timeout = 600
+    http.open_timeout = 600
+    response = http.start() {|http|
+      http.get(uri.path)
+    }
     p "*** Got it #{response.code}"
   rescue StandardError => e
     p "*** Error: #{e}"

@@ -2,21 +2,17 @@ import { connect } from 'react-redux';
 
 import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from '../actions/searchActionCreators';
-import { handleSegmentClick, setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state, ownProps) => {
   return {
       fulltext: state.search.query.fulltext,
       locale: state.archive.locale,
       translations: state.archive.translations,
-      query: state.search.query,
-      segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
-      project: state.archive.project
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     searchInInterview: (props) => dispatch(searchInInterview(props)),
 })

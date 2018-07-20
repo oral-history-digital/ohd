@@ -43,6 +43,18 @@ export default class InterviewInfo extends React.Component {
         return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
     }
 
+    segmentators(){
+        return this.contributors('segmentator').map(s => fullname(this.props, s)).join(', ');
+    }
+
+    contributors(contributionType) {
+        if (this.props.interview && this.props.people) {
+            return this.props.interview[`${contributionType}_ids`].map(cId => this.props.people[cId]);
+        } else {
+            return [];
+        }
+    }
+
     tapes(){
         if (this.props.interview.tape_count > 1){
             return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
