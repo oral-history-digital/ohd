@@ -8,7 +8,6 @@ export default class Select extends React.Component {
     //   @scope
     //   @attribute
     //   @values
-    //   @selected
     //   @validate = function
     //   @handleChange = function
     //   @handleErrors = function
