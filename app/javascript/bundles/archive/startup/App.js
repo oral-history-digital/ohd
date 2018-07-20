@@ -1,4 +1,5 @@
 import polyfills from '../../../lib/polyfills';
+import 'intersection-observer';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
