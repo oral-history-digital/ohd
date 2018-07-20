@@ -49,9 +49,15 @@ export default class UploadTranscript extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <Form 
-                        scope='interview'
+                        scope='transcript'
                         onSubmit={this.props.submitData}
                         submitText='edit.upload_transcript'
+                        values={{
+                            // set default values in form`s own values as well:
+                            '[file_column_names]timecode': 'Timecode',
+                            '[file_column_names]transcript': 'Transkript',
+                            '[file_column_names]translation_one': 'Übersetzung'
+                        }}
                         elements={[
                             {
                                 elementType: 'select',
@@ -70,47 +76,50 @@ export default class UploadTranscript extends React.Component {
                             },
                             { 
                                 attribute: '[file_column_names]timecode',
-                                label: 'activerecord.attributes.interview.timecode'
+                                label: 'activerecord.attributes.transcript.timecode',
+                                value: 'Timecode'
                             },
                             { 
                                 attribute: '[file_column_names]transcript',
-                                label: 'activerecord.attributes.interview.transcript'
+                                label: 'activerecord.attributes.transcript.transcript',
+                                value: 'Transkript'
                             },
                             {
                                 elementType: 'select',
                                 attribute: '[file_column_languages]transcript',
-                                label: 'activerecord.attributes.interview.transcript_language',
+                                label: 'activerecord.attributes.transcript.transcript_language',
                                 values: this.props.languages,
                                 withEmpty: true,
                                 validate: function(v){return v !== ''} 
                             },
                             { 
                                 attribute: '[file_column_names]translation_one',
-                                label: 'activerecord.attributes.interview.translation_one'
+                                label: 'activerecord.attributes.transcript.translation_one',
+                                value: 'Übersetzung'
                             },
                             {
                                 elementType: 'select',
                                 attribute: '[file_column_languages]translation_one',
-                                label: 'activerecord.attributes.interview.translation_one_language',
+                                label: 'activerecord.attributes.transcript.translation_one_language',
                                 values: this.props.languages,
                                 withEmpty: true,
                                 //validate: function(v){return v !== ''} 
                             },
                             { 
                                 attribute: '[file_column_names]translation_two',
-                                label: 'activerecord.attributes.interview.translation_two',
+                                label: 'activerecord.attributes.transcript.translation_two',
                             },
                             {
                                 elementType: 'select',
                                 attribute: '[file_column_languages]translation_two',
-                                label: 'activerecord.attributes.interview.translation_two_language',
+                                label: 'activerecord.attributes.transcript.translation_two_language',
                                 values: this.props.languages,
                                 withEmpty: true,
                                 //validate: function(v){return v !== ''} 
                             },
                             { 
                                 attribute: '[file_column_names]annotations',
-                                label: 'activerecord.attributes.interview.annotations'
+                                label: 'activerecord.attributes.transcript.annotations'
                             },
                             { 
                                 attribute: 'tape_and_archive_id_from_file',

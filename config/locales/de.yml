@@ -368,6 +368,7 @@ de:
         interviews: 'Interviewte'
       interview:
         person_name: 'Name'
+        collection_id: 'Sammlung'
         archive_id: 'Archiv-ID'
         forced_labor_groups: 'Gruppe'
         forced_labor_fields: 'Einsatzbereich'
@@ -392,8 +393,11 @@ de:
         segmentators: 'Segmentierung'
         language: 'Sprache'
         language_id: 'Originalsprache'
-        collection: 'Teilsammlung'
-        collection_id: 'Teilsammlung'
+        video: 'liegt ein Video vor?'
+        translated: 'ist das Interview bereits übersetzt?'
+      transcript:
+        collection_id: 'Sammlung'
+        archive_id: 'Archiv-ID'
         data: 'Transkriptdatei'
         timecode: 'Spaltenüberschrift für Timecode'
         transcript: 'Spaltenüberschrift für Transkript'
@@ -406,8 +410,6 @@ de:
         tape_and_archive_id_from_file: 'Archiv-ID und Tapedaten aus dem Dateinamen erschliessen?'
         tape_count: 'Geamtzahl der Tapes'
         tape_number: 'Nummer dieses Tapes'
-        video: 'liegt ein Video vor?'
-        translated: 'ist das Interview bereits übersetzt?'
       segment:
         media_id: 'Segment-ID'
         transcript: 'Transkription'
