@@ -47,6 +47,33 @@ export default class Input extends React.Component {
         }
     }
 
+    cleanProps() {
+        let props = {
+            type: this.props.type, 
+            name: this.props.attribute,
+            defaultChecked: this.props.value,
+            //defaultValue: this.props.value,
+            onChange: this.handleChange,
+        };
+
+        // prevent email and password fields from being undeletable
+        // just a workaround the problem reminds on all other inputs 
+        // this is React specific
+        // don`t know how to solve really
+        //
+        if (['email', 'password'].indexOf(this.props.attribute) > -1) {
+            props['defaultValue'] = this.props.value;
+        } else {
+            props['value'] = this.props.value || '';
+        }
+
+        if (this.props.defaultValue) {
+            props['defaultValue'] = this.props.defaultValue;
+        }
+
+        return props;
+    }
+
     render() {
         return (
             <ElementContainer
@@ -61,13 +88,7 @@ export default class Input extends React.Component {
                 elementType={`${this.props.type}_input`}
                 individualErrorMsg={this.props.individualErrorMsg}
             >
-                <input 
-                    type={this.props.type} 
-                    name={this.props.attribute}
-                    defaultValue={this.props.value}
-                    defaultChecked={this.props.value}
-                    onChange={this.handleChange}
-                />
+                {React.createElement('input', this.cleanProps())}
                 <p className='help-block'>
                     {this.props.help}
                 </p>
