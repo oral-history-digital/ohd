@@ -63,10 +63,10 @@ export default class History extends React.Component {
 
     entry(name) {
         return (
-            <div>
+            <p key={name}>
                 <span className='flyout-content-label'>{t(this.props, `histories.${name}`)}:</span>
                 <span className='flyout-content-data'>{this.props.history[name][this.props.locale]}</span>
-            </div>
+            </p>
         )
     }
 
