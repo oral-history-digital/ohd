@@ -28,7 +28,7 @@ class PersonSerializer < ActiveModel::Serializer
   end
 
   def histories
-    object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("history-#{c.id}-#{c.updated_at}"){::HistorySerializer.new(c)}; mem}
+    object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("history-#{c.id}-#{c.updated_at}"){HistorySerializer.new(c)}; mem}
   end
 
   def place_of_birth
