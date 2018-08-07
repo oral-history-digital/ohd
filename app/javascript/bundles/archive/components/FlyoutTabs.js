@@ -152,9 +152,9 @@ export default class FlyoutTabs extends React.Component {
         let css = this.showEditView() ? 'flyout-tab' : 'hidden';
         return [
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
-            <Tab className={css} key='edit.interview.edit'>{t(this.props, 'edit.interview.new')}</Tab>,
+            <Tab className={css} key='edit.interview.new'>{t(this.props, 'edit.interview.new')}</Tab>,
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
-            <Tab className={css} key='edit.add_person'>{t(this.props, 'edit.add_person')}</Tab>
+            <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>
         ];
     }
 
@@ -171,7 +171,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.upload_transcript')}</div>
                 </TabPanel>,
                 <TabPanel key={'tabpanel-add-person'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.add_person')}</div>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
             ];
         } else {

@@ -14,7 +14,7 @@ export default class Person extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.person')}
+                title={t(this.props, 'edit.person.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.person'),
                     //content: this.form()

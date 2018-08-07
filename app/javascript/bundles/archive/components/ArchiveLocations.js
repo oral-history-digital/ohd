@@ -36,10 +36,10 @@ export default class ArchiveLocations extends React.Component {
     // }
 
     placeOfBirth(ref) {
-        if (ref.descriptor[this.props.locale]) {
+        if (ref.name[this.props.locale]) {
             return (
                 <div>
-                    {`${t(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
+                    {`${t(this.props, 'place_of_birth')}: ${ref.name[this.props.locale]}`}
                 </div>
             )
         }

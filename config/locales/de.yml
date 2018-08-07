@@ -190,6 +190,8 @@ de:
     translator: 'Übersetzung'
     segmentator: 'Erschließung'
     cinematographer: 'Kamera'
+    proof_reading: 'Korrekturlesen'
+    research: 'Forschung'
     # zwar, hagen
     interviewee: 'Interviewte(r)'
     interview: 'Interview'
@@ -208,10 +210,15 @@ de:
       new: 'Neues Interview'
       edit: 'Interview bearbeiten'
     upload_transcript: 'Transkript hochladen'
-    add_person: 'Person hinzufügen'
-    add_contribution: 'Kontributor hinzufügen'
-    history: 'lebensgeschichtl. Ereignis'
-    add_history: 'lebensgeschichtl. Ereignis hinzufügen'
+    person: 
+      new: 'Person hinzufügen'
+      edit: 'Person bearbeiten'
+    contribution: 
+      new: 'Kontributor hinzufügen'
+    registry_reference: 
+      new: 'Registereferenz hinzufügen'
+    history: 
+      new: 'lebensgeschichtl. Ereignis hinzufügen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
@@ -346,6 +353,12 @@ de:
       annotation:
         one: 'Anmerkung'
         other: 'Anmerkungen'
+      contributions:
+        one: 'Beitrag'
+        other: 'Beiträge'
+      registry_references:
+        one: 'Registerreferenz'
+        other: 'Registerreferenzen'
 
     attributes:
       history:
@@ -485,6 +498,12 @@ de:
         last_name: 'Nachname'
         birth_name: 'Geburtsname'
         date_of_birth: 'Geburtsdatum'
+      registry_entry:
+        name: 'Name'
+        notes: 'Anmerkungen'
+      registry_reference:
+        registry_entry_id: 'Registereintrag'
+        registry_reference_type_id: 'Referencetyp'
 
     errors:
       default:

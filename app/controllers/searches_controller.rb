@@ -71,7 +71,7 @@ class SearchesController < BaseController
         params[:rows] = Interview.all.size
       end
     end
-    search.hits.map {|hit| eval hit.stored(:place_of_birth) }
+    search.hits.map {|hit| hit.stored(:place_of_birth) }
   end
 
   def archive

@@ -34,6 +34,7 @@ class HomeController < BaseController
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             contribution_types: Project.contribution_types,
+            registry_entry_search_facets: Project.registry_entry_search_facets.inject({}){|mem, facet| mem[facet['id']] = RegistryEntrySerializer.new(RegistryEntry.find_by_entry_code(facet['id'])); mem},
             languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             project: Project.name.to_s,
             project_name: Project.project_name,

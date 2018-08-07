@@ -37,15 +37,19 @@ class PeopleController < ApplicationController
   end
 
   def index
-    @people = Person.all
+    @people = params[:contributors_for_interview] ?
+      Interview.find(params[:contributors_for_interview]).contributors :
+      Person.all
+
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "people-#{Person.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "people-#{Person.maximum(:updated_at)}" do
           {
             data: @people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("person-#{s.id}-#{s.updated_at}"){::PersonSerializer.new(s).as_json}; mem},
             data_type: 'people',
-          }
-        end.to_json
+            extra_params: "contributors_for_interview_#{params[:contributors_for_interview]}"
+        }.to_json
+        #end.to_json
         render plain: json
       end
     end

@@ -1,9 +1,9 @@
 class FacetSerializer < ActiveModel::Serializer
   attributes :id,
-             :descriptor,
+             :name,
              :subfacets
 
-  def descriptor
+  def name
     object.localized_hash
   end
 
@@ -12,7 +12,7 @@ class FacetSerializer < ActiveModel::Serializer
     when 'RegistryEntry'
       object.children.inject({}) do |mem, child|
         mem[child.id] = {
-          descriptor: child.localized_hash,
+          name: child.localized_hash,
           count: 0
         }
         mem
@@ -20,7 +20,7 @@ class FacetSerializer < ActiveModel::Serializer
     when 'RegistryReferenceType'
       object.registry_references.inject({}) do |mem, ref|
         mem[ref.registry_entry_id] = {
-          descriptor: ref.registry_entry.localized_hash,
+          name: ref.registry_entry.localized_hash,
           count: 0
         }
         mem

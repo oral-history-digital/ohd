@@ -73,6 +73,14 @@ class Segment < ActiveRecord::Base
 
   before_validation :do_before_validation_on_create, :on => :create
 
+  def identifier
+    id
+  end
+
+  def identifier_method
+    'id'
+  end
+
   def do_before_validation_on_create
     # Make sure we have a tape assigned.
     if self.tape.nil?

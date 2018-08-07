@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import InterviewInfo from '../components/InterviewInfo';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
 
 import { getInterview } from '../../../lib/utils';
 
@@ -15,14 +16,16 @@ const mapStateToProps = (state) => {
         people_status: state.data.people_status,
         contributions_last_deleted: state.data.contributions_last_deleted,
         contributionTypes: state.archive.contributionTypes,
+        registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         account: state.account,
-
+        data: state.data
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
+    closeArchivePopup: () => dispatch(closeArchivePopup()),
+    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewInfo);

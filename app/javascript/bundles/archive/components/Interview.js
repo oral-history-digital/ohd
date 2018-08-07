@@ -48,10 +48,11 @@ export default class Interview extends React.Component {
     }
 
     loadContributors() {
-        // TODO: perhaps one might load only the contributors of this interview here
-        //       and all the other people not before starting to edit people
-        if (!this.props.people_status) {
-            this.props.fetchData('people');
+        if ( 
+            this.interviewLoaded() &&
+            !this.props.data[`people_contributors_for_interview_${this.interview().id}_status`]
+        ) {
+            this.props.fetchData('people', null, null, this.props.locale, `contributors_for_interview=${this.interview().id}`);
         }
     }
 

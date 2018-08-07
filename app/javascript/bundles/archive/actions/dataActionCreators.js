@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import Loader from '../../../lib/loader'
+import { pluralize } from  '../../../lib/utils';
 
 import { 
     REQUEST_DATA,
@@ -34,11 +35,12 @@ const removeData = (id, dataType, nestedDataType, nestedId) => ({
     nestedId: nestedId,
 });
 
-const requestData = (dataType, id, nestedDataType) => ({
+const requestData = (dataType, id, nestedDataType, extraParams) => ({
     type: REQUEST_DATA,
     id: id,
     dataType: dataType,
     nestedDataType: nestedDataType,
+    extraParams: extraParams,
 });
 
 const receiveData = (json) => ({
@@ -48,33 +50,27 @@ const receiveData = (json) => ({
     dataType: json.data_type,
     nestedDataType: json.nested_data_type,
     nestedId: json.nested_id,
+    extraParams: json.extra_params,
 });
 
-export function fetchData(dataType, id, nestedDataType, locale='de') {
+export function fetchData(dataType, id, nestedDataType, locale='de', extraParams) {
     let url = `/${locale}/${dataType}`
     if  (id)
         url += `/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}`
+    if  (extraParams)
+        url += `?${extraParams}`
+
     return dispatch => {
-        dispatch(requestData(dataType, id, nestedDataType))
+        dispatch(requestData(dataType, id, nestedDataType, extraParams && extraParams.replace('=', '_')))
         Loader.getJson(url, null, dispatch, receiveData);
     }
 }
 
 export function submitData(params, locale='de') {
     let dataType = Object.keys(params)[0]; 
-    let pluralizedDataType;
-    switch(dataType) {
-        case 'person':
-            pluralizedDataType = 'people';
-            break;
-        case 'history': 
-            pluralizedDataType = 'histories';
-            break;
-        default:
-            pluralizedDataType = `${dataType}s`;
-    }
+    let pluralizedDataType = pluralize(dataType);
 
     if(params[dataType].id) {
         return dispatch => {

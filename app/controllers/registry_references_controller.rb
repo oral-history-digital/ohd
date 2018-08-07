@@ -4,10 +4,59 @@ class RegistryReferencesController < BaseController
 
   PER_PAGE = 3000
 
-  layout :check_for_iframe_render
+  #layout :check_for_iframe_render
 
-  skip_before_action :authenticate_user_account!
-  before_action :perform_search, only: :index
+  #skip_before_action :authenticate_user_account!
+  #before_action :perform_search, only: :index
+
+  def create
+    @registry_reference = RegistryReference.create(registry_reference_params)
+    clear_cache(@registry_reference.ref_object)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          data_type: @registry_reference.ref_object_type.underscore.pluralize,
+          "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
+          nested_data_type: 'registry_references',
+          nested_id: @registry_reference.id,
+          data: ::RegistryReferenceSerializer.new(@registry_reference)
+        }
+      end
+    end
+  end
+
+  def update
+    @registry_reference = RegistryReference.find params[:id]
+    @registry_reference.update_attributes registry_reference_params
+    clear_cache(@registry_reference.ref_object)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          data_type: @registry_reference.ref_object_type.underscore.pluralize,
+          "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
+          nested_data_type: 'registry_references',
+          nested_id: @registry_reference.id,
+          data: ::RegistryReferenceSerializer.new(@registry_reference)
+        }
+      end
+    end
+  end
+
+  def destroy 
+    @registry_reference = RegistryReference.find(params[:id])
+    ref_object = @registry_reference.ref_object 
+    @registry_reference.destroy
+    clear_cache ref_object
+
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.json { render json: {}, status: :ok }
+    end
+  end
 
   def locations
     respond_to do |format|
@@ -124,6 +173,11 @@ class RegistryReferencesController < BaseController
 
 
   private
+
+  def registry_reference_params
+    params.require(:registry_reference).permit(:registry_reference_type_id, :ref_object_id, :ref_object_type, :registry_entry_id, :ref_position, :workflow_state, :interview_id)
+  end
+
 
   def query(paginate=false)
     query = {}

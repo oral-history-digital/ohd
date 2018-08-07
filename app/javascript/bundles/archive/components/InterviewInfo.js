@@ -5,12 +5,11 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import PersonContainer from '../containers/PersonContainer';
+//import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
+//import RegistryEntryContainer from '../containers/RegistryEntryContainer';
+import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
 
 export default class InterviewInfo extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-    }
 
     to() {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
@@ -35,24 +34,12 @@ export default class InterviewInfo extends React.Component {
 
     placeOfInterview(){
         if (this.props.interview.place_of_interview){
-            return this.content(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.descriptor[this.props.locale], "" );
+            return this.content(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.name[this.props.locale], "" );
         }
     }
 
     language(){
         return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
-    }
-
-    segmentators(){
-        return this.contributors('segmentator').map(s => fullname(this.props, s)).join(', ');
-    }
-
-    contributors(contributionType) {
-        if (this.props.interview && this.props.people) {
-            return this.props.interview[`${contributionType}_ids`].map(cId => this.props.people[cId]);
-        } else {
-            return [];
-        }
     }
 
     tapes(){
@@ -95,7 +82,7 @@ export default class InterviewInfo extends React.Component {
 
     contributors() {
         let contributors = [];
-        if (this.props.interview && this.props.people_status === 'fetched' && this.props.contributionTypes) {
+        if (this.props.interview && this.props.data[`people_contributors_for_interview_${this.props.interview.id}_status`] === 'fetched' && this.props.contributionTypes) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
                 //if (
@@ -116,9 +103,9 @@ export default class InterviewInfo extends React.Component {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.add_contribution')}
+                    title={t(this.props, 'edit.contribution.new')}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.add_contribution'),
+                        title: t(this.props, 'edit.contribution.new'),
                         content: <ContributionFormContainer interview={this.props.interview} />
                     })}
                 >
@@ -128,13 +115,50 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
+    contributions() {
+        return (
+            <div>
+                <h3>{t(this.props, 'activerecord.models.contributions.other')}</h3>
+                {this.contributors()}
+                {this.addContribution()}
+            </div>
+        );
+    }
+
+    searchFacets() {
+        let facets = [];
+        for (var r in this.props.registryEntrySearchFacets) {
+            facets.push(
+                <RegistryEntrySearchFacetsContainer 
+                    key={`this.props.registry-entry-search-facets-${r}`} 
+                    parentEntry={this.props.registryEntrySearchFacets[r]} 
+                    interview={this.props.interview} 
+                />
+            );
+        }
+        return facets;
+    }
+
+    registryReferences() {
+        if (admin(this.props) && this.props.registryEntrySearchFacets) {
+            return (
+                <div>
+                    <h3>{t(this.props, 'activerecord.models.registry_references.other')}</h3>
+                    {this.searchFacets()}
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
+
     render() {
         if (this.props.interview) {
             return (
                 <div>
                     {this.info()}
-                    {this.contributors()}
-                    {this.addContribution()}
+                    {this.contributions()}
+                    {this.registryReferences()}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.download(this.props.interview.lang)}

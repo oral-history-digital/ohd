@@ -15,7 +15,7 @@ class RegistryReference < BaseRegistryReference
     where.not('registry_entries.longitude': -0.376295).where.not('registry_entries.latitude': 39.462571)
   }
 
-  before_validation :reconnect_reference
+  #before_validation :reconnect_reference
 
   # Set an alternative ID that will allow us to re-connect the
   # reference in the context of the public archive.
@@ -23,21 +23,21 @@ class RegistryReference < BaseRegistryReference
     @alternative_id = value
   end
 
-  def reconnect_reference
-    case ref_object_type
-      when 'Segment' then
-        segment = Segment.for_media_id(@alternative_id).first
-        self.ref_object = segment
-        self.interview_id = segment.interview_id
-      when 'Person' then
-        interview = Interview.find_by_archive_id(@alternative_id)
-        self.ref_object = interview
-        self.interview_id = interview.id
-      else
-        raise 'Imported invalid ref object type.'
-    end
-    raise "Cannot reconnect reference with #{@alternative_id}." if ref_object.blank?
-  end
+  #def reconnect_reference
+    #case ref_object_type
+      #when 'Segment' then
+        #segment = Segment.for_media_id(@alternative_id).first
+        #self.ref_object = segment
+        #self.interview_id = segment.interview_id
+      #when 'Person' then
+        #interview = Interview.find_by_archive_id(@alternative_id)
+        #self.ref_object = interview
+        #self.interview_id = interview.id
+      #else
+        #raise 'Imported invalid ref object type.'
+    #end
+    #raise "Cannot reconnect reference with #{@alternative_id}." if ref_object.blank?
+  #end
 
   searchable :auto_index => false do
     # Index the reference by registry entry descriptor and alias names.

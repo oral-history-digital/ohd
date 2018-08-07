@@ -40,10 +40,10 @@ export default class InterviewLocations extends React.Component {
     }
 
     placeOfBirth(ref) {
-        if (ref.descriptor[this.props.locale]) {
+        if (ref.name[this.props.locale]) {
             return (
                 <p>
-                    {`${t(this.props, 'place_of_birth')}: ${ref.descriptor[this.props.locale]}`}
+                    {`${t(this.props, 'place_of_birth')}: ${ref.name[this.props.locale]}`}
                 </p>
             )
         }
@@ -65,7 +65,7 @@ export default class InterviewLocations extends React.Component {
                     </p>
                 </div>
             )
-        } else if (ref.descriptor) {
+        } else if (ref.name) {
             return (
                 <div>
                     {this.placeOfBirth(ref)}

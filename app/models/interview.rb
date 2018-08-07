@@ -208,6 +208,14 @@ class Interview < ActiveRecord::Base
     researched.with_still_image.order("RAND()").first || first
   end
 
+  def identifier
+    archive_id
+  end
+
+  def identifier_method
+    'id'
+  end
+
   # referenced by archive_id
   def to_param
     archive_id
@@ -265,14 +273,16 @@ class Interview < ActiveRecord::Base
 
   Project.registry_entry_search_facets.each do |facet|
     define_method facet['id'] do 
-      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
-      segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) + registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+      if Project.name.to_sym == :mog
+        segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) 
+      else
+        registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+      end
     end
   end
 
   Project.registry_reference_type_search_facets.each do |facet|
     define_method facet['id'] do 
-      # TODO: fit this to registry_references with ref_object_type = 'Interview' (zwar)
       registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
     end
   end

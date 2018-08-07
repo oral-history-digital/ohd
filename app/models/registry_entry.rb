@@ -104,6 +104,20 @@ class RegistryEntry < ActiveRecord::Base
 
   scope :with_location, -> { where("latitude <> '' AND longitude <> ''")}
 
+  def name=(new_name)
+    registry_names.first.update_attribute :descriptor, new_name
+  end
+
+  def notes=(new_notes)
+    registry_names.first.update_attribute :notes, new_notes
+  end
+
+  def parent_id=(new_parent_id)
+    #TODO: implement this
+    # rm old registry_hierarchy and create new one 
+    # or update old first parents registry_hierarchy
+  end
+
   class << self
     # This is not a translated class but it can accept localized descriptors.
     def with_locale(locale)
@@ -850,6 +864,15 @@ class RegistryEntry < ActiveRecord::Base
     registry_names.first.translations.inject({}) do |mem, name|
       if Project.available_locales.include?( name.locale[0..1] )
         mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
+      end
+      mem
+    end
+  end
+
+  def localized_notes_hash
+    registry_names.first.translations.inject({}) do |mem, name|
+      if Project.available_locales.include?( name.locale[0..1] )
+        mem[name.locale[0..1]] = name.notes
       end
       mem
     end

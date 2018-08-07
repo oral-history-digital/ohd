@@ -56,7 +56,7 @@ export default class Facet extends React.Component {
             return (
                 <div className="subfacet-container">
                     <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
-                        {this.props.data.descriptor[this.props.locale]}
+                        {this.props.data.name[this.props.locale]}
                     </button>
                     <div style={style} className={this.state.panelClass}>
                         <div className="flyout-radio-container">
@@ -76,7 +76,7 @@ export default class Facet extends React.Component {
             return (
                 <div className="subfacet-container">
                     <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
-                        {this.props.data.descriptor[this.props.locale]}
+                        {this.props.data.name[this.props.locale]}
                     </button>
                     {this.panelContent()}
                 </div>
@@ -85,7 +85,7 @@ export default class Facet extends React.Component {
     }
 
     localDescriptor(subfacetId) {
-        return this.props.data.subfacets[subfacetId].descriptor[this.props.locale];
+        return this.props.data.subfacets[subfacetId].name[this.props.locale];
     }
 
     sortedSubfacets() {

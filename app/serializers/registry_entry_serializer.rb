@@ -2,10 +2,17 @@ class RegistryEntrySerializer < ActiveModel::Serializer
   attributes :id,
              :latitude,
              :longitude,
-             :descriptor
+             :name,
+             :notes,
+             :parent_ids,
+             :child_ids
 
-  def descriptor
+  def name
     object.localized_hash
+  end
+
+  def notes
+    object.localized_notes_hash
   end
 
   def latitude

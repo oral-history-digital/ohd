@@ -9,9 +9,9 @@ export default class History extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.history')}
+                title={t(this.props, 'edit.history.edit')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.history'),
+                    title: t(this.props, 'edit.history.edit'),
                     content: <HistoryFormContainer history={this.props.history} />
                 })}
             >

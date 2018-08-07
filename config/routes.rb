@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     localized do
       resources :contributions, only: [:create, :destroy]
       resources :histories, only: [:create, :update, :destroy]
+      resources :registry_entries, only: [:create, :update, :index, :destroy]
+      resources :registry_references, only: [:create, :update, :destroy]
+      resources :registry_reference_types, only: [:create, :update, :index, :destroy]
+      get 'locations', to: 'registry_references#locations', :as => :locations
 
       resources :people do
         resources :histories, only: [:create, :update, :destroy]
@@ -29,7 +33,6 @@ Rails.application.routes.draw do
 
       #get 'map', to: 'registry_references#map', :as => :public_map
       #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
-      get 'locations', to: 'registry_references#locations', :as => :locations
 
       resources :collections, only: [:show, :index] do
         collection do
@@ -55,6 +58,7 @@ Rails.application.routes.draw do
         #end
         #resources :registry_entries, only: [:show]
         resources :contributions, only: [:create, :destroy]
+        resources :registry_references, only: [:create, :update, :destroy]
         resources :tapes do
           collection do
             get :playlist

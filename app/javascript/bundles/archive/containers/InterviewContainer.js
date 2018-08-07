@@ -18,11 +18,12 @@ const mapStateToProps = (state) => {
         userContentsStatus: state.data.user_contents_status,
         people: state.data.people,
         people_status: state.data.people_status,
+        data: state.data
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, id, nestedDataType) => dispatch(fetchData(dataType, id, nestedDataType)),
+    fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
 })
 

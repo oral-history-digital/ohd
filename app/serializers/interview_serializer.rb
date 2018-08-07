@@ -44,12 +44,17 @@ class InterviewSerializer < ActiveModel::Serializer
              :first_segments_ids,
 
              :interviewee_id,
-             :contributions
+             :contributions,
+             :registry_references
 
   has_many :photos, serializer: PhotoSerializer
 
   def contributions
     object.contributions.inject({}){|mem, c| mem[c.id] = ContributionSerializer.new(c); mem}
+  end
+
+  def registry_references
+    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
 
   def forced_labor_groups

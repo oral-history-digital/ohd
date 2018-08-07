@@ -70,6 +70,10 @@ const data = (state = initialState, action) => {
                         [`${action.dataType}_${action.id}_status`]: 'fetching',
                     })
                 })
+            } else if (action.extraParams) {
+                return Object.assign({}, state, {
+                    [`${action.dataType}_${action.extraParams}_status`]: 'fetching',
+                })
             } else {
                 return Object.assign({}, state, {
                     [`${action.dataType}_status`]: 'fetching',
@@ -92,7 +96,7 @@ const data = (state = initialState, action) => {
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [`${action.nestedDataType}_status`]: 'fetched',
-                            [action.nestedDataType]: action.data,
+                            [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], action.data)
                         })
                     })
                 })
@@ -102,6 +106,11 @@ const data = (state = initialState, action) => {
                         [`${action.dataType}_${action.id}_status`]: 'fetched',
                         [action.id]: state[action.dataType] ? Object.assign({}, state[action.dataType][action.id], action.data) : action.data
                     })
+                })
+            } else if (action.extraParams) {
+                return Object.assign({}, state, {
+                    [`${action.dataType}_${action.extraParams}_status`]: 'fetched',
+                    [action.dataType]: Object.assign({}, state[action.dataType], action.data)
                 })
             } else if (action.dataType) {
                 return Object.assign({}, state, {

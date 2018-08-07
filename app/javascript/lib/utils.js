@@ -77,6 +77,26 @@ export function fullname(props, person, withBirthName=false) {
     }
 }
 
+export function pluralize(word) {
+    let pluralizedWord;
+    switch(word) {
+        case 'person':
+            pluralizedWord = 'people';
+            break;
+        // TODO: unify words ending on y
+        case 'history': 
+            pluralizedWord = 'histories';
+            break;
+        case 'registry_entry': 
+            pluralizedWord = 'registry_entries';
+            break;
+        default:
+            pluralizedWord = `${word}s`;
+    }
+
+    return pluralizedWord;
+}
+
 export function admin(props) {
     if (props.account && props.account.admin && props.editView) {
         return true;

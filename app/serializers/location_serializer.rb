@@ -10,7 +10,7 @@ class LocationSerializer < ActiveModel::Serializer
 
   def desc
     object.registry_entry && object.registry_entry.localized_hash
-    #object.registry_entry.descriptor(:all)
+    #object.registry_entry.name(:all)
   end
 
   def latitude
