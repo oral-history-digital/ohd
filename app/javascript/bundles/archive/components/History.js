@@ -79,9 +79,7 @@ export default class History extends React.Component {
     render() {
         return (
             <div>
-                <p>
-                    {this.entries()}
-                </p>
+                {this.entries()}
                 {this.buttons()}
             </div>
         )
