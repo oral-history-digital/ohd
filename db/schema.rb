@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180611230746) do
+ActiveRecord::Schema.define(version: 20180806084246) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -49,12 +49,12 @@ ActiveRecord::Schema.define(version: 20180611230746) do
   create_table "collection_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "collection_id"
     t.string   "locale"
-    t.text     "interviewers",  limit: 65535
     t.string   "countries"
     t.string   "institution"
-    t.text     "notes",         limit: 65535
     t.string   "responsibles"
+    t.text     "interviewers",  limit: 65535
     t.string   "name"
+    t.text     "notes",         limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id", using: :btree
@@ -266,8 +266,10 @@ ActiveRecord::Schema.define(version: 20180611230746) do
   end
 
   create_table "registry_reference_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "registry_entry_id"
-    t.string  "code"
+    t.integer  "registry_entry_id"
+    t.string   "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "registry_references", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -289,8 +291,8 @@ ActiveRecord::Schema.define(version: 20180611230746) do
   create_table "segment_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "segment_id"
     t.string   "locale"
-    t.string   "mainheading"
     t.string   "subheading"
+    t.string   "mainheading"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "text",        limit: 65535
@@ -312,9 +314,8 @@ ActiveRecord::Schema.define(version: 20180611230746) do
     t.string   "section"
     t.integer  "interview_id"
     t.integer  "speaker_id"
-    t.index ["interview_id", "section"], name: "index_segments_on_interview_id_and_section", using: :btree
+    t.index ["interview_id"], name: "index_segments_on_interview_id", using: :btree
     t.index ["media_id"], name: "index_segments_on_media_id", using: :btree
-    t.index ["tape_id"], name: "index_segments_on_tape_id", using: :btree
   end
 
   create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -337,8 +338,8 @@ ActiveRecord::Schema.define(version: 20180611230746) do
     t.datetime "updated_at"
     t.boolean  "video"
     t.integer  "duration"
-    t.string   "filename"
     t.string   "workflow_state", default: "digitized"
+    t.string   "filename"
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state", using: :btree
   end
 
@@ -409,9 +410,9 @@ ActiveRecord::Schema.define(version: 20180611230746) do
     t.integer  "reference_id"
     t.string   "reference_type"
     t.integer  "position",                         default: 1
+    t.string   "workflow_state",                   default: "private"
     t.datetime "submitted_at"
     t.datetime "published_at"
-    t.string   "workflow_state",                   default: "private"
     t.string   "media_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", using: :btree
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", using: :btree
