@@ -19,8 +19,6 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     loadRegistryEntries() {
-        // TODO: fit this to registry entries used as facets
-        //let entry = {id: 1};
         if (!this.props.data[`registry_entries_children_for_entry_${this.props.registryEntryParent.id}_status`]) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.registryEntryParent.id}`);
         }
@@ -40,7 +38,6 @@ export default class RegistryReferenceForm extends React.Component {
         } else {
             return [];
         }
-            //&& Object.values(this.props.registryEntries),
     }
 
     render() {
@@ -73,9 +70,7 @@ export default class RegistryReferenceForm extends React.Component {
                         attribute: 'registry_reference_type_id',
                         values: this.props.registry_reference_types_status === 'fetched' && Object.values(this.props.registryReferenceTypes),
                         value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id,
-                        //optionsScope: 'registry_references',
                         withEmpty: true,
-                        //validate: function(v){return v !== ''} 
                     },
                 ]}
             />
