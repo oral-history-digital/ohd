@@ -6,9 +6,6 @@ const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
-        //people: state.data.people,
-        //people_status: state.data.people_status,
-        //history_last_deleted: state.data.people.history_last_deleted,
         account: state.account,
         editView: state.archive.editView,
 
