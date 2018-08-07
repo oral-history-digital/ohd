@@ -6,10 +6,6 @@ import { t, fullname, admin } from '../../../lib/utils';
 
 export default class Person extends React.Component {
 
-    //form() {
-        //return <PersonFormContainer person={this.props.person} />; 
-    //}
-
     edit() {
         return (
             <div
@@ -17,7 +13,6 @@ export default class Person extends React.Component {
                 title={t(this.props, 'edit.person.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.person'),
-                    //content: this.form()
                     content: <PersonFormContainer person={this.props.person} />
                 })}
             >
@@ -28,7 +23,6 @@ export default class Person extends React.Component {
 
     destroy() {
         this.props.deleteData('interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
-        //this.props.deleteData('interviews', this.props.archiveId, `${this.props.contribution.contribution_type}_contributions`, this.props.contribution.id);
         this.props.closeArchivePopup();
     }
 
