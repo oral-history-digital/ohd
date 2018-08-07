@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     localized do
       resources :contributions, only: [:create, :destroy]
       resources :histories, only: [:create, :update, :destroy]
+      resources :segments, only: [:create, :update, :index, :destroy]
       resources :registry_entries, only: [:create, :update, :index, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       resources :registry_reference_types, only: [:create, :update, :index, :destroy]
@@ -48,7 +49,6 @@ Rails.application.routes.draw do
       resources :interviews do
         member do 
           get :doi_contents
-          get :segments
           get :headings
           get :references
           get :ref_tree
@@ -59,6 +59,7 @@ Rails.application.routes.draw do
         #resources :registry_entries, only: [:show]
         resources :contributions, only: [:create, :destroy]
         resources :registry_references, only: [:create, :update, :destroy]
+        resources :segments, only: [:create, :update, :index, :destroy]
         resources :tapes do
           collection do
             get :playlist
