@@ -92,6 +92,7 @@ export default class Select extends React.Component {
                     name={this.props.attribute}
                     value={this.props.value}
                     onChange={this.handleChange}
+                    handleChangeCallback={this.props.handleChangeCallback}
                 >
                     {this.options()}
                 </select>
