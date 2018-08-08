@@ -6,16 +6,24 @@ import {
     RECEIVE_DATA,
 } from '../constants/archiveConstants';
 
-const initialState = {}
+const initialState = {
+    statuses: {
+        interviews: {},
+        segments: {},
+        doi_contents: {},
+        headings: {},
+        ref_tree: {},
+        registry_references: {},
+        registry_entries: {},
+        contributions: {},
+        people: {},
+        user_contents: {},
+        annotations: {},
+    }
+}
 
 const data = (state = initialState, action) => {
     switch (action.type) {
-        //case ADD_DATA:
-            //return Object.assign({}, state, {
-                //[action.dataType]: Object.assign({}, state[action.dataType], {
-                    //[action.id]: action.data
-                //}),
-            //})
         case UPDATE_DATA:
             if (action.nestedId) {
                 return Object.assign({}, state, {
@@ -40,10 +48,10 @@ const data = (state = initialState, action) => {
                 clone = state[action.dataType][action.id][action.nestedDataType];
                 delete clone[action.nestedId];
                 return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {last_deleted: new Date()}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: clone,
-                            [`${action.nestedDataType}_last_deleted`]: new Date(),
                         })
                     })
                 })
@@ -51,70 +59,77 @@ const data = (state = initialState, action) => {
                 clone = state[action.dataType];
                 delete clone[action.id];
                 return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.dataType, {last_deleted: new Date()}), 
                     [action.dataType]: clone,
-                    [`${action.dataType}_last_deleted`]: new Date(),
                 })
             }
         case REQUEST_DATA:
             if (action.nestedDataType) {
                 return Object.assign({}, state, {
-                    [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [`${action.nestedDataType}_status`]: 'fetching',
-                        })
-                    })
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: 'fetching'}) 
                 })
             } else if (action.id) {
                 return Object.assign({}, state, {
-                    [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [`${action.dataType}_${action.id}_status`]: 'fetching',
-                    })
+                    statuses: updateStatus(state.statuses, action.dataType, {[action.id]: 'fetching'}), 
                 })
             } else if (action.extraParams) {
                 return Object.assign({}, state, {
-                    [`${action.dataType}_${action.extraParams}_status`]: 'fetching',
+                    statuses: updateStatus(state.statuses, action.dataType, {[action.extraParams]: 'fetching'}), 
                 })
             } else {
                 return Object.assign({}, state, {
-                    [`${action.dataType}_status`]: 'fetching',
+                    statuses: updateStatus(state.statuses, action.dataType, {all: 'fetching'}), 
                 })
             }
         case RECEIVE_DATA:
-            if (action.nestedId) {
+            if (action.extraId) {
                 return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`}), 
+                    [action.dataType]: Object.assign({}, state[action.dataType], {
+                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
+                            [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], {
+                                [action.extraId]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType][action.extraId], {
+                                    [action.nestedId]: action.data,
+                                })
+                            })
+                        })
+                    })
+                })
+            } else if (action.nestedId) {
+                return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], {
                                 [action.nestedId]: action.data,
-                                [`${action.nestedDataType}_${action.nestedId}_status`]: 'fetched',
                             })
                         })
                     })
                 })
             } else if (action.nestedDataType) {
                 return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [`${action.nestedDataType}_status`]: 'fetched',
                             [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], action.data)
                         })
                     })
                 })
             } else if (action.id) {
                 return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [`${action.dataType}_${action.id}_status`]: 'fetched',
                         [action.id]: state[action.dataType] ? Object.assign({}, state[action.dataType][action.id], action.data) : action.data
                     })
                 })
             } else if (action.extraParams) {
                 return Object.assign({}, state, {
-                    [`${action.dataType}_${action.extraParams}_status`]: 'fetched',
+                    statuses: updateStatus(state.statuses, action.dataType, {[action.extraParams]: `fetched-${new Date()}`}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], action.data)
                 })
             } else if (action.dataType) {
                 return Object.assign({}, state, {
-                    [`${action.dataType}_status`]: 'fetched',
+                    statuses: updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`}), 
                     [action.dataType]: action.data
                 })
             } else {
@@ -125,5 +140,11 @@ const data = (state = initialState, action) => {
             return state;
     }
 };
+
+function updateStatus(statuses, dataType, messageObject) {
+    return Object.assign({}, statuses, {
+        [dataType]: Object.assign({}, statuses[dataType], messageObject)
+    })
+}
 
 export default data;

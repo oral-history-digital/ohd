@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryReferenceTypes: state.data.registry_reference_types,
-        registry_reference_types_status: state.data.registry_reference_types_status,
-        data: state.data,
+        registryReferenceTypesStatus: state.data.statuses.registry_reference_types.all,
+        registryEntriesStatus: state.data.statuses.registry_entries,
     }
 }
 

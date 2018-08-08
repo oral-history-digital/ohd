@@ -28,7 +28,7 @@ export default class Transcript extends React.Component {
     loadSegments() {
         if (
             this.props.loadSegments &&
-            !this.props.interview.segment_status
+            !this.props.segmentsStatus[this.props.archiveId]
         ) {
             this.props.fetchData('interviews', this.props.archiveId, 'segments');
         }
@@ -106,7 +106,7 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (this.props.interview.segments_status === 'fetched') {
+        if (this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`] && this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched') {
             if (this.props.originalLocale) {
                 return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {

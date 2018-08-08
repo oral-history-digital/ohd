@@ -12,7 +12,10 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         tape: state.archive.tape,
         interview: getInterview(state),
-        userContents: state.data.user_contents
+        userContents: state.data.user_contents,
+        statuses: state.data.statuses.segments,
+        account: state.account,
+        editView: state.archive.editView
     }
 }
 

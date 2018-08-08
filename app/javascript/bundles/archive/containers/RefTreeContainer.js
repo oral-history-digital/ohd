@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: getInterview(state)
+        interview: getInterview(state),
+        refTreeStatus: state.data.statuses.ref_tree
     }
 }
 

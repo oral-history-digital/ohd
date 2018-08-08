@@ -6,9 +6,9 @@ import { fetchData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return { 
         contents: state.data.user_contents,
-        status: state.data.user_contents_status,
+        status: state.data.statuses.user_contents.all,
         // the following is just a trick to force rerender after deletion
-        last_deleted: state.data.user_contents_last_deleted,
+        last_deleted: state.data.statuses.user_contents.last_deleted,
         locale: state.archive.locale,
     }
 }

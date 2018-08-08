@@ -15,9 +15,7 @@ export default class RefTree extends React.Component {
     }
 
     loadRefTree() {
-        if (
-            !this.props.interview.ref_tree_status
-        ) {
+        if (!this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`]) {
             this.props.fetchData('interviews', this.props.archiveId, 'ref_tree');
         }
     }
@@ -46,7 +44,10 @@ export default class RefTree extends React.Component {
     }
 
     refTree() {
-        if (this.props.interview.ref_tree_status === 'fetched') {
+        if (
+            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`] && 
+            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched'
+        ) {
             if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
                 return this.renderChildren(this.props.interview.ref_tree.children);
             } else {

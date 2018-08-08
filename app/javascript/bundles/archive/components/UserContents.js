@@ -19,7 +19,7 @@ export default class UserContents extends React.Component {
     }
 
     userContentsLoaded() {
-        return this.props.status === 'fetched';
+        return this.props.status && this.props.status.split('-')[0] === 'fetched';
     }
 
     sortedContent() {

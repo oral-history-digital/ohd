@@ -5,8 +5,6 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import PersonContainer from '../containers/PersonContainer';
-//import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-//import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
 
 export default class InterviewInfo extends React.Component {
@@ -82,7 +80,12 @@ export default class InterviewInfo extends React.Component {
 
     contributors() {
         let contributors = [];
-        if (this.props.interview && this.props.data[`people_contributors_for_interview_${this.props.interview.id}_status`] === 'fetched' && this.props.contributionTypes) {
+        if (
+            this.props.interview &&
+            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
+            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`].split('-')[0] === 'fetched' && 
+            this.props.contributionTypes
+        ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
                 //if (

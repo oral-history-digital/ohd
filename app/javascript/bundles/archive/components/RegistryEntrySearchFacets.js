@@ -12,29 +12,25 @@ export default class RegistryEntrySearchFacets extends React.Component {
 
     componentDidMount() {
         this.loadRegistryEntries();
-        //this.loadRegistryReferenceTypes();
     }
 
     componentDidUpdate() {
         this.loadRegistryEntries();
-        //this.loadRegistryReferenceTypes();
     }
 
     loadRegistryEntries() {
-        if (!this.props.data[`registry_entries_children_for_entry_${this.props.parentEntry.id}_status`]) {
+        if (!this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`]) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntry.id}`);
         }
     }
 
-    //loadRegistryReferenceTypes() {
-        //if (admin(this.props) && !this.props.registry_reference_types_status) {
-            //this.props.fetchData('registry_reference_types');
-        //}
-    //}
-
     registryEntries() {
         let registryEntries = [];
-        if (this.props.interview && this.props.data[`registry_entries_children_for_entry_${this.props.parentEntry.id}_status`] === 'fetched') {
+        if (
+            this.props.interview && 
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`] &&
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`].split('-')[0] === 'fetched'
+        ) {
             for (var c in this.props.interview.registry_references) {
                 let registryReference = this.props.interview.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];

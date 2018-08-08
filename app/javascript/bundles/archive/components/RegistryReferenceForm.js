@@ -19,19 +19,22 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     loadRegistryEntries() {
-        if (!this.props.data[`registry_entries_children_for_entry_${this.props.registryEntryParent.id}_status`]) {
+        if (!this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`]) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.registryEntryParent.id}`);
         }
     }
 
     loadRegistryReferenceTypes() {
-        if (!this.props.registry_reference_types_status) {
+        if (!this.props.registryReferenceTypesStatus) {
             this.props.fetchData('registry_reference_types');
         }
     }
 
     registryEntries() {
-        if (this.props.data[`registry_entries_children_for_entry_${this.props.registryEntryParent.id}_status`] === 'fetched') {
+        if (
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`] && 
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched'
+        ) {
             return this.props.registryEntryParent.child_ids.map((id, index) => {
                 return this.props.registryEntries[id];
             })
@@ -68,7 +71,7 @@ export default class RegistryReferenceForm extends React.Component {
                     {
                         elementType: 'select',
                         attribute: 'registry_reference_type_id',
-                        values: this.props.registry_reference_types_status === 'fetched' && Object.values(this.props.registryReferenceTypes),
+                        values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
                         value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id,
                         withEmpty: true,
                     },

@@ -22,9 +22,7 @@ export default class TableOfContents extends React.Component {
     }
 
     loadHeadings() {
-        if (
-            !this.props.interview.headings_status
-        ) {
+        if (!this.props.headingsStatus[`for_interviews_${this.props.archiveId}`]) {
             this.props.fetchData('interviews', this.props.archiveId, 'headings');
         }
     }
@@ -51,7 +49,7 @@ export default class TableOfContents extends React.Component {
         let lastMainheading = '';
 
         if (this.props.interview && this.props.interview.headings) {
-            this.props.interview.headings.map((segment, index) => {
+            Object.values(this.props.interview.headings).map((segment, index) => {
                 if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && segment.mainheading[this.props.locale] !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
@@ -118,7 +116,10 @@ export default class TableOfContents extends React.Component {
     }
 
     render() {
-        if (this.props.interview.headings_status === 'fetched') {
+        if (
+            this.props.headingsStatus[`for_interviews_${this.props.archiveId}`] && 
+            this.props.headingsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched'
+        ) {
             let headings = this.prepareHeadings();
             return (
                 <div className={'content-index'}>

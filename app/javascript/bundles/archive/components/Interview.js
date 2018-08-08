@@ -31,26 +31,20 @@ export default class Interview extends React.Component {
     }
 
     loadInterview() {
-        if (
-            //this.props.match.params.archiveId !== 'new' &&
-            //this.props.match.params.archiveId !== this.props.archiveId &&
-            //
-            !this.props.interviews ||
-            !this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`]
-        ) {
+        if (!this.props.interviewsStatus[this.props.match.params.archiveId]) {
             this.props.fetchData('interviews', this.props.match.params.archiveId);
         }
     }
 
     interviewLoaded() {
-        return this.props.interviews &&
-            this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`] === 'fetched';
+        return this.props.interviewsStatus[this.props.match.params.archiveId] && 
+            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'fetched';
     }
 
     loadContributors() {
         if ( 
             this.interviewLoaded() &&
-            !this.props.data[`people_contributors_for_interview_${this.interview().id}_status`]
+            !this.props.peopleStatus[`contributors_for_interview_${this.interview().id}`]
         ) {
             this.props.fetchData('people', null, null, this.props.locale, `contributors_for_interview=${this.interview().id}`);
         }
@@ -67,19 +61,14 @@ export default class Interview extends React.Component {
     }
 
     loadDoiContent() {
-        if (
-            !this.props.interviews ||
-            !this.props.interviews[this.props.match.params.archiveId] ||
-            !this.props.interviews[this.props.match.params.archiveId].doi_contents_status
-        ) {
+        if (!this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`]) {
             this.props.fetchData('interviews', this.props.match.params.archiveId, 'doi_contents');
         }
     }
 
     doiContentLoaded() {
-        return this.props.interviews &&
-            this.props.interviews[this.props.archiveId] &&
-            this.props.interviews[this.props.archiveId]['doi_contents_status'] === 'fetched';
+        return this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`] && 
+               this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`].split('-')[0] === 'fetched';
     }
 
     loggedOutContent() {
@@ -121,11 +110,7 @@ export default class Interview extends React.Component {
     }
 
     content() {
-        if (
-            //this.props.interviews &&
-            //this.props.interviews[`interviews_${this.props.match.params.archiveId}_status`] === 'fetched' 
-            this.interviewLoaded()
-        ){
+        if (this.interviewLoaded()){
             let tabIndex = this.props.locales.length + 3;
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
