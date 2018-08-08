@@ -61,6 +61,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
                                  registryEntryParent={this.props.parentEntry}
+                                 goDeeper={false}
                              />
                 })}
             >

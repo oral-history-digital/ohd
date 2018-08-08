@@ -46,7 +46,9 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     handleSelectedRegistryEntry(name, value) {
-        this.setState({registryEntryParent: this.props.registryEntries[value]});
+        if (this.props.goDeeper) {
+            this.setState({registryEntryParent: this.props.registryEntries[value]});
+        }
     }
 
     selectedRegistryEntry() {
@@ -62,11 +64,30 @@ export default class RegistryReferenceForm extends React.Component {
         }
     }
 
+    goUp() {
+        if (this.state.registryEntryParent !== this.props.registryEntryParent) {
+            let parentRegistryEntry = this.state.registryEntryParent.parent_ids[0] === this.props.registryEntryParent.id ?
+                this.props.registryEntryParent :
+                this.props.registryEntries[this.state.registryEntryParent.parent_ids[0]]
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.registry_entry.go_up')}
+                    onClick={() => this.setState({registryEntryParent: parentRegistryEntry})}
+                >
+                    go up
+                    <i className="fa fa-arrow-alt-up"></i>
+                </div>
+            )
+        }
+    }
+
     render() {
         let _this = this;
         return (
             <div>
                 {this.selectedRegistryEntry()}
+                {this.goUp()}
                 <Form 
                     scope='registry_reference'
                     values={{

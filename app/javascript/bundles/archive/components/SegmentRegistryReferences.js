@@ -61,6 +61,7 @@ export default class SegmentRegistryReferences extends React.Component {
                                  refObjectType='Segment' 
                                  interview={this.props.interview} 
                                  registryEntryParent={this.props.rootRegistryEntry}
+                                 goDeeper={true}
                              />
                 })}
             >

@@ -223,6 +223,7 @@ de:
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
+      go_up: 'Eine Ebene höher'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
 
