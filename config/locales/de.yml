@@ -209,6 +209,8 @@ de:
     interview:
       new: 'Neues Interview'
       edit: 'Interview bearbeiten'
+    segment:
+      edit: 'Segment bearbeiten'
     upload_transcript: 'Transkript hochladen'
     person: 
       new: 'Person hinzufügen'
@@ -408,6 +410,8 @@ de:
         language_id: 'Originalsprache'
         video: 'liegt ein Video vor?'
         translated: 'ist das Interview bereits übersetzt?'
+      segment:
+        text: 'Text'
       transcript:
         collection_id: 'Sammlung'
         archive_id: 'Archiv-ID'
