@@ -75,8 +75,6 @@ export function submitData(params, locale='de') {
 
     if(params[dataType].id) {
         return dispatch => {
-            // TODO: extend params for updateData for nestedData-case
-            //dispatch(updateData(pluralizedDataType, params[dataType].id, params[dataType]));
             Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, receiveData);
         }
     } else {
@@ -87,14 +85,20 @@ export function submitData(params, locale='de') {
     }
 }
 
-export function deleteData(dataType, id, nestedDataType, nestedId, locale='de') {
+export function deleteData(dataType, id, nestedDataType, nestedId, skipRemove=false, locale='de') {
     let url = `/${locale}/${dataType}/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`
 
-    return dispatch => {
-        dispatch(removeData(id, dataType, nestedDataType, nestedId))
-        Loader.delete(url, dispatch, null);
+    if (skipRemove) { 
+        return dispatch => {
+            Loader.delete(url, dispatch, receiveData);
+        }
+    } else {
+        return dispatch => {
+            dispatch(removeData(id, dataType, nestedDataType, nestedId))
+            Loader.delete(url, dispatch, null);
+        }
     }
 }
 

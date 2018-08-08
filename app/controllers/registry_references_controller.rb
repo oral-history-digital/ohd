@@ -15,13 +15,26 @@ class RegistryReferencesController < BaseController
 
     respond_to do |format|
       format.json do
-        render json: {
-          data_type: @registry_reference.ref_object_type.underscore.pluralize,
-          "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
-          nested_data_type: 'registry_references',
-          nested_id: @registry_reference.id,
-          data: ::RegistryReferenceSerializer.new(@registry_reference)
-        }
+        json = {}
+        if @registry_reference.ref_object_type == 'Interview'
+          json = {
+            data_type: @registry_reference.ref_object_type.underscore.pluralize,
+            "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
+            nested_data_type: 'registry_references',
+            nested_id: @registry_reference.id,
+            data: ::RegistryReferenceSerializer.new(@registry_reference)
+          }
+        elsif @registry_reference.ref_object_type == 'Segment'
+          json = {
+            archive_id: @registry_reference.ref_object.interview.archive_id,
+            data_type: 'interviews',
+            nested_data_type: 'segments',
+            nested_id: @registry_reference.ref_object.id,
+            extra_id: @registry_reference.ref_object.tape.number,
+            data: ::SegmentSerializer.new(@registry_reference.ref_object)
+          }
+        end
+        render json: json
       end
     end
   end
@@ -54,7 +67,25 @@ class RegistryReferencesController < BaseController
       format.html do
         render :action => 'index'
       end
-      format.json { render json: {}, status: :ok }
+      format.json do 
+        json = {}
+        #
+        # if ref_object is a segment we do not delete the reference client-side
+        # because it is nested too deep
+        # so we send back the entire segment with all its nested stuff
+        #
+        if ref_object.class.name == 'Segment'
+          json = {
+            archive_id: ref_object.interview.archive_id,
+            data_type: 'interviews',
+            nested_data_type: 'segments',
+            nested_id: ref_object.id,
+            extra_id: ref_object.tape.number,
+            data: ::SegmentSerializer.new(ref_object)
+          }
+        end
+        render json: json, status: :ok
+      end
     end
   end
 

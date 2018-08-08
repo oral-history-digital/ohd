@@ -11,7 +11,8 @@ class SegmentSerializer < ActiveModel::Serializer
              :start_time,
              :end_time,
              :references_count,
-             :references,
+             :registry_references,
+             #:references,
              :media_id,
              :timecode,
              :speaker_changed,
@@ -46,17 +47,21 @@ class SegmentSerializer < ActiveModel::Serializer
     object.registry_references.count
   end
 
-  def references
-    object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
-      {
-        id: ref.registry_entry.id,
-        desc: ref.registry_entry.localized_hash,
-        desc_with_note: ref.registry_entry.localized_with_note,
-        #desc: ref.registry_entry.name(:all),
-        latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
-        longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
-      }
-    end
+  def registry_references
+    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
+
+  #def references
+    #object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
+      #{
+        #id: ref.registry_entry.id,
+        #desc: ref.registry_entry.localized_hash,
+        #desc_with_note: ref.registry_entry.localized_with_note,
+        ##desc: ref.registry_entry.name(:all),
+        #latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
+        #longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
+      #}
+    #end
+  #end
 
 end

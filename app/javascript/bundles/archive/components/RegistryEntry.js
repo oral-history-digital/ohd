@@ -10,9 +10,9 @@ export default class RegistryEntry extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry')}
+                title={t(this.props, 'edit.registry_entry.edit')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry'),
+                    title: t(this.props, 'edit.registry_entry.edit'),
                     content: <RegistryEntryFormContainer registryEntry={this.props.registryEntry} />
                 })}
             >
@@ -22,7 +22,11 @@ export default class RegistryEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData(pluralize(this.props.refObjectType), this.props.archiveId, 'registry_references', this.props.registryReference.id);
+        if (this.props.refObjectType === 'interview') {
+            this.props.deleteData(pluralize(this.props.refObjectType), this.props.archiveId, 'registry_references', this.props.registryReference.id);
+        } else {
+            this.props.deleteData('registry_references', this.props.registryReference.id, null, null, true);
+        }
         this.props.closeArchivePopup();
     }
 
@@ -53,24 +57,39 @@ export default class RegistryEntry extends React.Component {
     buttons() {
         if (admin(this.props)) {
             return (
-                <div className={'flyout-sub-tabs-content-ico'}>
+                <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
                     {this.delete()}
-                </div>
+                </span>
             )
         }
     }
 
-    render() {
+    entry() {
+        let css = this.props.registryEntry.notes[this.props.locale] ? 'scope-note-link' : '';
         return (
-            <div>
-                <p>
-                    <span className='flyout-content-label'>{t(this.props, 'activerecord.models.registry_references.one')}:</span>
-                    <span className='flyout-content-data'>{this.props.registryEntry.name[this.props.locale]}</span>
-                </p>
-                {this.buttons()}
-            </div>
+            <span 
+                id={`reference_${this.props.registryReference.id}`} 
+                className={css}
+                key={"reference-" + this.props.registryReference.id} 
+                //onClick={() => this.setOpenReference(reference)}
+            >
+                {this.props.registryEntry.name[this.props.locale]}
+            </span>
         )
     }
+
+    render() {
+        return (
+            <span>
+                {this.entry()}
+                {this.buttons()}
+            </span>
+        )
+    }
+                //<p>
+                    //<span className='flyout-content-label'>{t(this.props, 'activerecord.models.registry_references.one')}:</span>
+                    //<span className='flyout-content-data'>{this.props.registryEntry.name[this.props.locale]}</span>
+                //</p>
 }
 

@@ -14,6 +14,7 @@ const initialState = {
         headings: {},
         ref_tree: {},
         registry_references: {},
+        registry_reference_types: {},
         registry_entries: {},
         contributions: {},
         people: {},

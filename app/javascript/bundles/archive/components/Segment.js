@@ -1,5 +1,6 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
+import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
 import { t, fullname, admin } from "../../../lib/utils";
 
 export default class Segment extends React.Component {
@@ -21,7 +22,6 @@ export default class Segment extends React.Component {
             return true;
         }
         if (nextProps.statuses[this.props.data.id] !== this.props.statuses[this.props.data.id]) {
-            debugger;
             return true;
         }
 
@@ -79,24 +79,23 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (this.state.contentType == 'references') {
-            //return this.props.references.filter(ref => ref.ref_object_id === this.props.data.id).map((reference, index) => {
-            let refLen = this.props.data.references.length;
-            return this.props.data.references.map((reference, index) => {
-                if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
-                    return (
-                        <span 
-                            id={`reference_${reference.id}`} 
-                            className='scope-note-link'
-                            key={"reference-" + index} 
-                            onClick={() => this.setOpenReference(reference)}
-                        >
-                            {reference.desc_with_note[locale].title}
-                        </span>
-                    )
-                } else {
-                    return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
-                }
-            })
+            return <SegmentRegistryReferencesContainer segment={this.props.data} interview={this.props.interview} />
+            //return this.props.data.references.map((reference, index) => {
+                //if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
+                    //return (
+                        //<span 
+                            //id={`reference_${reference.id}`} 
+                            //className='scope-note-link'
+                            //key={"reference-" + index} 
+                            //onClick={() => this.setOpenReference(reference)}
+                        //>
+                            //{reference.desc_with_note[locale].title}
+                        //</span>
+                    //)
+                //} else {
+                    //return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
+                //}
+            //})
         }
     }
 
@@ -136,11 +135,11 @@ export default class Segment extends React.Component {
     }
 
     renderLinks() {
-        if (this.props.data.annotation_texts.length > 0 || this.props.data.references.length > 0 || this.props.data.user_annotation_ids.length) {
+        if (this.props.data.annotation_texts.length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length) {
 
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
             let annotionCss = this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>
                     {this.edit()}
