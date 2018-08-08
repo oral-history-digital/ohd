@@ -18,7 +18,7 @@ class SegmentSerializer < ActiveModel::Serializer
              :speaker_id
              #:speaker_is_interviewee
 
-  belongs_to :speaking_person, serializer: PersonSerializer
+  belongs_to :speaking_person, serializer: LightPersonSerializer
 
   def speaker_changed
    object.speaker_changed

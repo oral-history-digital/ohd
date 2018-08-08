@@ -13,7 +13,7 @@ class HeadingSerializer < ActiveModel::Serializer
              :media_id,
              :timecode
 
-  belongs_to :speaking_person, serializer: PersonSerializer
+  belongs_to :speaking_person, serializer: LightPersonSerializer
 
   def time
     # timecode as seconds 
