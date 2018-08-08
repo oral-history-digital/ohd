@@ -50,7 +50,7 @@ Rails.application.routes.draw do
         member do 
           get :doi_contents
           get :headings
-          get :references
+          #get :references
           get :ref_tree
         end
         #collection do 
