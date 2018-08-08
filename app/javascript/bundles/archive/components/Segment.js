@@ -1,5 +1,6 @@
 import React from 'react';
-import { t, fullname } from "../../../lib/utils";
+import SegmentFormContainer from '../containers/SegmentFormContainer';
+import { t, fullname, admin } from "../../../lib/utils";
 
 export default class Segment extends React.Component {
 
@@ -17,6 +18,10 @@ export default class Segment extends React.Component {
             return true;
         }
         if (nextState.openReference !== this.state.openReference) {
+            return true;
+        }
+        if (nextProps.statuses[this.props.data.id] !== this.props.statuses[this.props.data.id]) {
+            debugger;
             return true;
         }
 
@@ -138,6 +143,7 @@ export default class Segment extends React.Component {
             let referenceCss = this.props.data.references.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             return (
                 <div className={icoCss}>
+                    {this.edit()}
                     <div className={annotionCss} title={t(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
@@ -147,6 +153,25 @@ export default class Segment extends React.Component {
                     </div>
                 </div>
             )
+        }
+    }
+
+    edit() {
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.segment.edit')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.segment'),
+                        content: <SegmentFormContainer segment={this.props.data} />
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        } else {
+            return null;
         }
     }
 

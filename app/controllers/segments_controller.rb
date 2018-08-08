@@ -1,36 +1,41 @@
-class SegmentsController < ApplicationController
+class SegmentsController < BaseController
 
   layout 'responsive'
 
-  def new
-    respond_to do |format|
-      format.html { render 'react/app' }
-      format.json { render json: {}, status: :ok }
-    end
-  end
+  #def new
+    #respond_to do |format|
+      #format.html { render 'react/app' }
+      #format.json { render json: {}, status: :ok }
+    #end
+  #end
 
-  def create
-    @segment = Segment.create segment_params
-    respond_to do |format|
-      format.json do
-        render json: {
-          id: @segment.id,
-          data_type: 'segments',
-          data: ::SegmentSerializer.new(@segment),
-        }
-      end
-    end
-  end
+  #def create
+    #@segment = Segment.create segment_params
+    #respond_to do |format|
+      #format.json do
+        #render json: {
+          #id: @segment.id,
+          #data_type: 'segments',
+          #data: ::SegmentSerializer.new(@segment),
+        #}
+      #end
+    #end
+  #end
 
   def update
     @segment = Segment.find params[:id]
     @segment.update_attributes segment_params
+    clear_cache @segment
+
     respond_to do |format|
       format.json do
         render json: {
-          id: @segment.id,
-          data_type: 'segments',
-          data: ::SegmentSerializer.new(@segment),
+          archive_id: @segment.interview.archive_id,
+          data_type: 'interviews',
+          nested_data_type: 'segments',
+          nested_id: @segment.id,
+          extra_id: @segment.tape.number,
+          data: ::SegmentSerializer.new(@segment)
         }
       end
     end
@@ -62,31 +67,22 @@ class SegmentsController < ApplicationController
     end
   end
 
-  def destroy 
-    @segment = Segment.find(params[:id])
-    @segment.destroy
+  #def destroy 
+    #@segment = Segment.find(params[:id])
+    #@segment.destroy
 
-    respond_to do |format|
-      format.html do
-        render :action => 'index'
-      end
-      format.js
-      format.json { render json: {}, status: :ok }
-    end
-  end
+    #respond_to do |format|
+      #format.html do
+        #render :action => 'index'
+      #end
+      #format.js
+      #format.json { render json: {}, status: :ok }
+    #end
+  #end
 
   private
 
   def segment_params
-    params.require(:segment).
-      permit(
-        'appellation',
-        'first_name',
-        'last_name',
-        'middle_names',
-        'birth_name',
-        'gender',
-        'date_of_birth',
-    )
+    params.require(:segment).permit(:text)
   end
 end
