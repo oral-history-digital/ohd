@@ -60,12 +60,12 @@ module Project
         when 'person'
           if facet['id'] == 'year_of_birth'
             mem[facet['id'].to_sym] = {
-              descriptor: localized_hash_for("search_facets", facet['id']),
+              name: localized_hash_for("search_facets", facet['id']),
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
                 I18n.available_locales.map{|l| h[l] = key}
                 subfacets[key] = {
-                  descriptor: h,
+                  name: h,
                   count: 0
                 }
                 subfacets
@@ -73,10 +73,10 @@ module Project
             }
           else
             mem[facet['id'].to_sym] = {
-              descriptor: localized_hash_for("search_facets", facet['id']),
+              name: localized_hash_for("search_facets", facet['id']),
               subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
                 subfacets[value] = {
-                  descriptor: localized_hash_for("search_facets", key),
+                  name: localized_hash_for("search_facets", key),
                   count: 0
                 }
                 subfacets
@@ -85,10 +85,10 @@ module Project
           end
         when 'interview'
           mem[facet['id'].to_sym] = {
-            descriptor: localized_hash_for("search_facets", facet['id']),
+            name: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.localized_hash,
+                name: interview.localized_hash,
                 count: 0
               }
               subfacets
@@ -96,10 +96,10 @@ module Project
           }
         when 'collection'
           mem[facet['id'].to_sym] = {
-            descriptor: localized_hash_for("search_facets", facet['id']),
+            name: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.collection ? interview.collection.localized_hash : {en: 'no collection'},
+                name: interview.collection ? interview.collection.localized_hash : {en: 'no collection'},
                 count: 0
               }
               subfacets
@@ -107,10 +107,10 @@ module Project
           }
         when 'language'
           mem[facet['id'].to_sym] = {
-            descriptor: localized_hash_for("search_facets", facet['id']),
+            name: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.language ? interview.language.localized_hash : {en: 'no language'},
+                name: interview.language ? interview.language.localized_hash : {en: 'no language'},
                 count: 0
               }
               subfacets
@@ -118,10 +118,10 @@ module Project
           }
         when 'media_type'
           mem[facet['id'].to_sym] = {
-            descriptor: localized_hash_for("search_facets", facet['id']),
+            name: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                descriptor: interview.localized_hash_for_media_type,
+                name: interview.localized_hash_for_media_type,
                 count: 0
               }
               subfacets
@@ -171,8 +171,8 @@ module Project
       #category_config = category_config(category_id)
       #category_object = case category_config['source']
                         #when 'registry_entry'
-                          #RegistryEntry.find_by_entry_code(category_config['descriptor'])
-                          ##RegistryEntry.find_by_name(category_config['descriptor'])
+                          #RegistryEntry.find_by_entry_code(category_config['name'])
+                          ##RegistryEntry.find_by_name(category_config['name'])
                         #when 'registry_reference_type'
                           #RegistryReferenceType.find_by_code(category_id.to_s.singularize)
                         #else
