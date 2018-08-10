@@ -15,6 +15,14 @@ export default class SegmentForm extends React.Component {
                 submitText='submit'
                 elements={[
                     {
+                        attribute: 'mainheading',
+                        value: this.props.segment && this.props.segment.mainheading[this.props.locale],
+                    },
+                    {
+                        attribute: 'subheading',
+                        value: this.props.segment && this.props.segment.subheading[this.props.locale],
+                    },
+                    {
                         elementType: 'textarea',
                         attribute: 'text',
                         value: this.props.segment && this.props.segment.transcripts[this.props.locale],

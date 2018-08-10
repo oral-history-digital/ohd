@@ -6,7 +6,9 @@ class SegmentSerializer < ActiveModel::Serializer
              :time,
              :tape_nbr,
              :transcripts,
-             :annotation_texts,
+             :mainheading,
+             :subheading,
+             :annotations,
              :user_annotation_ids,
              :start_time,
              :end_time,
@@ -39,8 +41,8 @@ class SegmentSerializer < ActiveModel::Serializer
     object.tape.number
   end
 
-  def annotation_texts
-    object.annotations.map(&:localized_hash)
+  def annotations
+    object.annotations.inject({}){|mem, c| mem[c.id] = AnnotationSerializer.new(c); mem}
   end
 
   def references_count
@@ -51,17 +53,18 @@ class SegmentSerializer < ActiveModel::Serializer
     object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
 
-  #def references
-    #object.registry_references.select{|rr| rr.registry_entry}.map do |ref|
-      #{
-        #id: ref.registry_entry.id,
-        #desc: ref.registry_entry.localized_hash,
-        #desc_with_note: ref.registry_entry.localized_with_note,
-        ##desc: ref.registry_entry.name(:all),
-        #latitude: ref.registry_entry.latitude.blank? ? nil : ref.registry_entry.latitude.to_f,
-        #longitude: ref.registry_entry.longitude.blank? ? nil : ref.registry_entry.longitude.to_f
-      #}
-    #end
-  #end
+  def mainheading
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.mainheading(projectified(locale))
+      mem
+    end
+  end
+
+  def subheading
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.subheading(projectified(locale))
+      mem
+    end
+  end
 
 end

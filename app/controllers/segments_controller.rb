@@ -83,6 +83,6 @@ class SegmentsController < BaseController
   private
 
   def segment_params
-    params.require(:segment).permit(:text)
+    params.require(:segment).permit(:text, :mainheading, :subheading)
   end
 end
