@@ -87,9 +87,5 @@ export default class RegistryEntry extends React.Component {
             </span>
         )
     }
-                //<p>
-                    //<span className='flyout-content-label'>{t(this.props, 'activerecord.models.registry_references.one')}:</span>
-                    //<span className='flyout-content-data'>{this.props.registryEntry.name[this.props.locale]}</span>
-                //</p>
 }
 
