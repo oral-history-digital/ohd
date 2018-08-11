@@ -25,7 +25,9 @@ class SegmentsController < BaseController
   def update
     @segment = Segment.find params[:id]
     @segment.update_attributes segment_params
+
     clear_cache @segment
+    Rails.cache.delete "headings-#{@segment.id}-#{@segment.updated_at}"
 
     respond_to do |format|
       format.json do

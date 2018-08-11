@@ -11,7 +11,9 @@ class RegistryReferencesController < BaseController
 
   def create
     @registry_reference = RegistryReference.create(registry_reference_params)
+
     clear_cache(@registry_reference.ref_object)
+    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.json do
@@ -42,7 +44,9 @@ class RegistryReferencesController < BaseController
   def update
     @registry_reference = RegistryReference.find params[:id]
     @registry_reference.update_attributes registry_reference_params
+
     clear_cache(@registry_reference.ref_object)
+    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.json do
@@ -61,7 +65,9 @@ class RegistryReferencesController < BaseController
     @registry_reference = RegistryReference.find(params[:id])
     ref_object = @registry_reference.ref_object 
     @registry_reference.destroy
+
     clear_cache ref_object
+    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.html do
