@@ -226,6 +226,9 @@ de:
       go_up: 'Eine Ebene höher'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
+    annotation: 
+      new: 'Anmerkung hinzufügen'
+      edit: 'Anmerkung bearbeiten'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
@@ -366,6 +369,9 @@ de:
       registry_references:
         one: 'Registerreferenz'
         other: 'Registerreferenzen'
+      annotations:
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
 
     attributes:
       history:
@@ -436,6 +442,9 @@ de:
         media_id: 'Segment-ID'
         transcript: 'Transkription'
         translation: 'Transkription (übersetzt)'
+        mainheading: 'Überschrift'
+        subheading: 'Unter-Überschrift'
+        text: 'Text'
       user_content:
         title: 'Titel'
         description: 'Notiz'
@@ -513,6 +522,8 @@ de:
       registry_reference:
         registry_entry_id: 'Registereintrag'
         registry_reference_type_id: 'Referencetyp'
+      annotation:
+        text: 'Text'
 
     errors:
       default:

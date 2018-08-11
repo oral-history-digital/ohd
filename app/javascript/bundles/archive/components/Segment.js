@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
+import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from "../../../lib/utils";
 
 export default class Segment extends React.Component {
@@ -101,10 +102,17 @@ export default class Segment extends React.Component {
 
     annotations(locale) {
         if (this.state.contentType == 'annotations') {
-            return this.props.data.annotation_texts.map((annotation, index) => {
-                return <p className='content-trans-text-element-data'
-                          key={"annotation-" + index}>{annotation[locale]}</p>
-            })
+            return <AnnotationsContainer segment={this.props.data} />
+            //return this.props.data.annotation_texts.map((annotation, index) => {
+                //return (
+                    //<p 
+                        //className='content-trans-text-element-data'
+                        //key={"annotation-" + index}
+                    //>
+                        //{annotation[locale]}
+                    //</p>
+                //)
+            //})
         }
     }
 
@@ -135,11 +143,14 @@ export default class Segment extends React.Component {
     }
 
     renderLinks() {
-        if (this.props.data.annotation_texts.length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length) {
-
+        if (
+            admin(this.props) || 
+            (this.props.data.annotation_texts.length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
+        ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props) || this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+
             return (
                 <div className={icoCss}>
                     {this.edit()}
