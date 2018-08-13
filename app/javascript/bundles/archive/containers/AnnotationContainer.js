@@ -7,7 +7,6 @@ import { deleteData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
-        locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.account,
         editView: state.archive.editView

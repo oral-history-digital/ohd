@@ -5,9 +5,7 @@ import { submitData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
-        locale: state.archive.locale,
-    }
+    return { }
 }
 
 const mapDispatchToProps = (dispatch) => ({

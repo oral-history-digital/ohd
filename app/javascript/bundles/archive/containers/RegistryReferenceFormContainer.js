@@ -6,7 +6,6 @@ import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
-        locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,

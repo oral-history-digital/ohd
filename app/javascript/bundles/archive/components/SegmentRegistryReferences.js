@@ -40,6 +40,7 @@ export default class SegmentRegistryReferences extends React.Component {
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
                             refObjectType='segment'
+                            locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
                         />
                     );
@@ -61,6 +62,7 @@ export default class SegmentRegistryReferences extends React.Component {
                                  refObjectType='Segment' 
                                  interview={this.props.interview} 
                                  registryEntryParent={this.props.rootRegistryEntry}
+                                 locale={this.props.locale}
                                  goDeeper={true}
                              />
                 })}

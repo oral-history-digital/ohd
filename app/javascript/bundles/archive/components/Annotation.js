@@ -16,6 +16,7 @@ export default class Annotation extends React.Component {
                     content: <AnnotationFormContainer 
                                  annotation={this.props.annotation} 
                                  segment={this.props.segment}
+                                 locale={this.props.locale}
                              />
                 })}
             >

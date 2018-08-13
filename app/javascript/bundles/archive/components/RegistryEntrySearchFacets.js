@@ -40,6 +40,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
                             refObjectType='interview'
+                            locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
                         />
                     );
@@ -61,6 +62,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
                                  registryEntryParent={this.props.parentEntry}
+                                 locale={this.props.locale}
                                  goDeeper={false}
                              />
                 })}

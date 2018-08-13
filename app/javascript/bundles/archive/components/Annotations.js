@@ -10,7 +10,7 @@ export default class Annotations extends React.Component {
         let annotations = [];
         for (var c in this.props.segment.annotations) {
             let annotation = this.props.segment.annotations[c];
-            annotations.push(<AnnotationContainer annotation={annotation} segment={this.props.segment} key={`annotation-${annotation.id}`} />);
+            annotations.push(<AnnotationContainer annotation={annotation} segment={this.props.segment} key={`annotation-${annotation.id}`} locale={this.props.locale} />);
         }
         return annotations;
     }
@@ -24,6 +24,7 @@ export default class Annotations extends React.Component {
                     title: t(this.props, 'edit.annotation.new'),
                     content: <AnnotationFormContainer 
                                  segment={this.props.segment}
+                                 locale={this.props.locale}
                              />
                 })}
             >
