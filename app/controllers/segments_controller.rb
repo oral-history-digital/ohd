@@ -24,10 +24,18 @@ class SegmentsController < BaseController
 
   def update
     @segment = Segment.find params[:id]
-    @segment.update_attributes segment_params
+    # set headings like this, because blank values won`t be transmitted in params
+    # nulling a heading therefore would not be possible
+    #
+    @segment.mainheading = segment_params[:mainheading]
+    @segment.subheading = segment_params[:subheading]
+    @segment.text segment_params[:text]
+    @segment.save
 
     clear_cache @segment
-    Rails.cache.delete "headings-#{@segment.id}-#{@segment.updated_at}"
+    if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
+      Rails.cache.delete "headings-#{@segment.id}-#{@segment.updated_at}"
+    end
 
     respond_to do |format|
       format.json do
