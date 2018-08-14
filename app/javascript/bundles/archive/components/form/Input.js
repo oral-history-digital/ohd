@@ -52,7 +52,7 @@ export default class Input extends React.Component {
             type: this.props.type, 
             name: this.props.attribute,
             defaultChecked: this.props.value,
-            //defaultValue: this.props.value,
+            //defaultValue: this.props.defaultValue,
             onChange: this.handleChange,
         };
 
@@ -63,8 +63,8 @@ export default class Input extends React.Component {
         //
         if (['email', 'password'].indexOf(this.props.attribute) > -1) {
             props['defaultValue'] = this.props.value;
-        } else {
-            props['value'] = this.props.value || '';
+        } else if (this.props.value) {
+            props['value'] = this.props.value;
         }
 
         if (this.props.defaultValue) {
