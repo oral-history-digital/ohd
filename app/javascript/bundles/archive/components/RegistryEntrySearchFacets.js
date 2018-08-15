@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
+import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { t, admin } from '../../../lib/utils';
 
 export default class RegistryEntrySearchFacets extends React.Component {
@@ -36,7 +36,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
                 if (registryEntry && registryEntry.parent_ids.indexOf(this.props.parentEntry.id) > -1 && registryReference !== 'fetched') {
                     registryEntries.push(
-                        <RegistryEntryContainer 
+                        <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
                             refObjectType='interview'
