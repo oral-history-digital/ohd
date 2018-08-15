@@ -36,10 +36,12 @@ export default class RegistryEntries extends React.Component {
         ) {
             return this.props.registryEntryParent.child_ids.map((id, index) => {
                 return (
-                    <RegistryEntryContainer 
-                        registryEntry={this.props.registryEntries[id]} 
-                        key={`registry_entries-${id}`} 
-                    />
+                    <li>
+                        <RegistryEntryContainer 
+                            registryEntry={this.props.registryEntries[id]} 
+                            key={`registry_entries-${id}`} 
+                        />
+                    </li>
                 )
             })
         } else {
@@ -51,9 +53,9 @@ export default class RegistryEntries extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_reference.new')}
+                title={t(this.props, 'edit.registry_entry.new')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_reference.new'),
+                    title: t(this.props, 'edit.registry_entry.new'),
                     content: <RegistryEntryFormContainer 
                                  registryEntryParent={this.props.registryEntryParent}
                              />
@@ -67,7 +69,9 @@ export default class RegistryEntries extends React.Component {
     render() {
         return (
             <div>
-                {this.registryEntries()}
+                <ul>
+                    {this.registryEntries()}
+                </ul>
                 {this.addRegistryEntry()}
             </div>
         )

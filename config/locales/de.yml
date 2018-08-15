@@ -224,6 +224,10 @@ de:
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
       go_up: 'Eine Ebene höher'
+      parent: 'Elternknoten/-eintrag'
+      show_children: 'Kinderknoten/-einträge anzeigen'
+    registry_entries: 
+      edit: 'Registereinträge bearbeiten'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
     annotation: 

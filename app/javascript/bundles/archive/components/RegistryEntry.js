@@ -62,6 +62,7 @@ export default class RegistryEntry extends React.Component {
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
                     {this.delete()}
+                    {this.showHideChildren()}
                 </span>
             )
         }
@@ -82,7 +83,6 @@ export default class RegistryEntry extends React.Component {
         if (this.state.childrenVisible) {
             return <RegistryEntriesContainer registryEntryParent={this.props.registryEntry} />;
         } 
-        return this.showHideChildren();
     }
 
     showHideChildren() {
@@ -90,7 +90,7 @@ export default class RegistryEntry extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'show_registry_entry_children')}
+                title={t(this.props, 'edit.registry_entry.show_children')}
                 onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
             >
                 <i className={`fa fa-${css}`}></i>
