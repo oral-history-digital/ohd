@@ -1,5 +1,7 @@
 class RegistryEntriesController < ApplicationController
 
+  layout 'responsive'
+
   def create
     @registry_entry = RegistryEntry.create registry_entry_params
     respond_to do |format|
@@ -51,6 +53,7 @@ class RegistryEntriesController < ApplicationController
       end
 
     respond_to do |format|
+      format.html{ render 'react/app' }
       format.json do
         json = {
             data: @registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},

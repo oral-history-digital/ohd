@@ -42,7 +42,7 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def annotations
-    object.annotations.inject({}){|mem, c| mem[c.id] = ::AnnotationSerializer.new(c); mem}
+    object.annotations.inject({}){|mem, c| mem[c.id] = AnnotationSerializer.new(c); mem}
   end
 
   def references_count
@@ -50,7 +50,7 @@ class SegmentSerializer < ActiveModel::Serializer
   end
 
   def registry_references
-    object.registry_references.inject({}){|mem, c| mem[c.id] = ::RegistryReferenceSerializer.new(c); mem}
+    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
 
   def mainheading
