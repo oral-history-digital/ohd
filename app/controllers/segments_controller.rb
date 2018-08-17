@@ -29,7 +29,7 @@ class SegmentsController < BaseController
     #
     @segment.mainheading = segment_params[:mainheading]
     @segment.subheading = segment_params[:subheading]
-    @segment.text segment_params[:text]
+    @segment.text = segment_params[:text]
     @segment.save
 
     clear_cache @segment
