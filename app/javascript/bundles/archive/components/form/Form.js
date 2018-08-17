@@ -21,6 +21,7 @@ export default class Form extends React.Component {
 
     componentDidMount() {
         this.initErrors();
+        this.initValues();
     }
 
     handleChange(name, value) {
@@ -34,6 +35,12 @@ export default class Form extends React.Component {
         if(this.valid()) {
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.locale);
         } 
+    }
+
+    initValues() {
+        this.props.elements.map((element, index) => {
+            this.setState({ values: Object.assign({}, this.state.values, {[element.attribute]: element.value || element.defaultValue}) });
+        })
     }
 
     initErrors() {
@@ -76,7 +83,7 @@ export default class Form extends React.Component {
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
-        //props['value'] = this.state.values[props.attribute] || props.value;
+        //props['value'] = this.state.values[props.attribute] || props.value || props.defaultValue;
 
         // set defaults for the possibillity to shorten elements list
         if (!props.elementType) {
