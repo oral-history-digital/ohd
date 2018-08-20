@@ -5,12 +5,12 @@ import { t } from '../../../lib/utils';
 export default class RegistryEntryForm extends React.Component {
 
     parentRegistryEntry() {
-        return (
-            <div>
-                <span><b>{t(this.props, 'edit.registry_entry.parent') + ': '}</b></span>
-                <span>{this.props.registryEntryParent.name[this.props.locale]}</span>
-            </div>
-        )
+        //return (
+            //<div>
+                //<span><b>{t(this.props, 'edit.registry_entry.parent') + ': '}</b></span>
+                //<span>{this.props.registryEntryParent.name[this.props.locale]}</span>
+            //</div>
+        //)
     }
 
     render() {
