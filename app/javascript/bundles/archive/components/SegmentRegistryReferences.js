@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
+import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { t, admin } from '../../../lib/utils';
 
 export default class SegmentRegistryReferences extends React.Component {
@@ -24,8 +24,8 @@ export default class SegmentRegistryReferences extends React.Component {
         }
     }
 
-    registryEntries() {
-        let registryEntries = [];
+    registryReferences() {
+        let registryReferences = [];
         if (
             this.props.segment && 
             this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`] &&
@@ -35,8 +35,8 @@ export default class SegmentRegistryReferences extends React.Component {
                 let registryReference = this.props.segment.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
                 if (registryEntry && registryReference !== 'fetched') {
-                    registryEntries.push(
-                        <RegistryEntryContainer 
+                    registryReferences.push(
+                        <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
                             refObjectType='segment'
@@ -47,7 +47,7 @@ export default class SegmentRegistryReferences extends React.Component {
                 }
             }
         } 
-        return registryEntries;
+        return registryReferences;
     }
 
     addRegistryReference() {
@@ -75,7 +75,7 @@ export default class SegmentRegistryReferences extends React.Component {
     render() {
         return (
             <div>
-                {this.registryEntries()}
+                {this.registryReferences()}
                 {this.addRegistryReference()}
             </div>
         )
