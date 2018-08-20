@@ -34,14 +34,14 @@ export default class RegistryReference extends React.Component {
         if (this.props.registryReference) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
+                title={t(this.props, 'edit.registry_reference.delete')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
+                    title: t(this.props, 'edit.registry_reference.delete'),
                     content: (
                         <div>
                             <p>{this.props.registryEntry.name[this.props.locale]}</p>
                             <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
+                                {t(this.props, 'edit.registry_reference.delete')}
                             </div>
                         </div>
                     )

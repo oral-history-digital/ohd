@@ -220,6 +220,7 @@ de:
       new: 'Kontributor hinzufügen'
     registry_reference: 
       new: 'Registereferenz hinzufügen'
+      delete: 'Registereferenz hinzufügen'
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'

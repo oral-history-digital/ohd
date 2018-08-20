@@ -173,7 +173,7 @@ export default class Segment extends React.Component {
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.segment.edit')}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.segment'),
+                        title: t(this.props, 'edit.segment.edit'),
                         content: <SegmentFormContainer segment={this.props.data} locale={locale} />
                     })}
                 >
