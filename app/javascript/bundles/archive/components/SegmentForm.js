@@ -16,11 +16,11 @@ export default class SegmentForm extends React.Component {
                 elements={[
                     {
                         attribute: 'mainheading',
-                        defaultValue: this.props.segment && this.props.segment.mainheading[this.props.locale],
+                        value: this.props.segment && this.props.segment.mainheading[this.props.locale],
                     },
                     {
                         attribute: 'subheading',
-                        defaultValue: this.props.segment && this.props.segment.subheading[this.props.locale],
+                        value: this.props.segment && this.props.segment.subheading[this.props.locale],
                     },
                     {
                         elementType: 'textarea',
