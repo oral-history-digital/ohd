@@ -145,10 +145,10 @@ export default class Segment extends React.Component {
     renderLinks(locale) {
         if (
             admin(this.props) || 
-            (this.props.data.annotation_texts.length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
+            (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props) || this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
             let referenceCss = admin(this.props) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
 
             return (
