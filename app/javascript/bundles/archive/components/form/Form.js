@@ -38,17 +38,17 @@ export default class Form extends React.Component {
     }
 
     initValues() {
+        let values = this.state.values;
         this.props.elements.map((element, index) => {
-            this.setState({ values: Object.assign({}, this.state.values, {[element.attribute]: element.value || element.defaultValue}) });
+            values[element.attribute] = element.value
         })
+        this.setState({ values: values });
     }
 
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors = Object.assign({}, errors, {
-                [element.attribute]: element.validate && !element.value ? true : false
-            })
+            errors[element.attribute] = element.validate && !element.value ? true : false
         })
         this.setState({ errors: errors });
     }
@@ -83,7 +83,7 @@ export default class Form extends React.Component {
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
-        //props['value'] = this.state.values[props.attribute] || props.value || props.defaultValue;
+        props['value'] = this.state.values[props.attribute] || props.value;
 
         // set defaults for the possibillity to shorten elements list
         if (!props.elementType) {
