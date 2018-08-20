@@ -11,7 +11,7 @@ class HistoriesController < ApplicationController
           id: @history.person_id,
           nested_data_type: 'histories',
           nested_id: @history.id,
-          data: ::HistorySerializer.new(@history)
+          data: ::HistorySerializer.new(@history).as_json
         }
       end
     end
@@ -31,7 +31,7 @@ class HistoriesController < ApplicationController
           id: @history.person_id,
           nested_data_type: 'histories',
           nested_id: @history.id,
-          data: ::HistorySerializer.new(@history)
+          data: ::HistorySerializer.new(@history).as_json
         }
       end
     end

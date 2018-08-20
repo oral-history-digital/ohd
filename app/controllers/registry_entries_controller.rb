@@ -9,7 +9,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry),
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
         }
       end
     end
@@ -23,7 +23,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry),
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
         }
       end
     end

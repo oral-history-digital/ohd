@@ -9,7 +9,7 @@ class RegistryReferenceTypesController < BaseController
         render json: {
           data_type: 'registry_reference_types',
           id: @registry_reference_type.id,
-          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type)
+          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type).as_json
         }
       end
     end
@@ -25,7 +25,7 @@ class RegistryReferenceTypesController < BaseController
         render json: {
           data_type: 'registry_reference_types',
           id: @registry_reference_type.id,
-          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type)
+          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type).as_json
         }
       end
     end

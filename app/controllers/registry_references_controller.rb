@@ -24,7 +24,7 @@ class RegistryReferencesController < BaseController
             "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
             nested_data_type: 'registry_references',
             nested_id: @registry_reference.id,
-            data: ::RegistryReferenceSerializer.new(@registry_reference)
+            data: ::RegistryReferenceSerializer.new(@registry_reference).as_json
           }
         elsif @registry_reference.ref_object_type == 'Segment'
           json = {
@@ -33,7 +33,7 @@ class RegistryReferencesController < BaseController
             nested_data_type: 'segments',
             nested_id: @registry_reference.ref_object.id,
             extra_id: @registry_reference.ref_object.tape.number,
-            data: ::SegmentSerializer.new(@registry_reference.ref_object)
+            data: ::SegmentSerializer.new(@registry_reference.ref_object).as_json
           }
         end
         render json: json
@@ -55,7 +55,7 @@ class RegistryReferencesController < BaseController
           "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
           nested_data_type: 'registry_references',
           nested_id: @registry_reference.id,
-          data: ::RegistryReferenceSerializer.new(@registry_reference)
+          data: ::RegistryReferenceSerializer.new(@registry_reference).as_json
         }
       end
     end
@@ -87,7 +87,7 @@ class RegistryReferencesController < BaseController
             nested_data_type: 'segments',
             nested_id: ref_object.id,
             extra_id: ref_object.tape.number,
-            data: ::SegmentSerializer.new(ref_object)
+            data: ::SegmentSerializer.new(ref_object).as_json
           }
         end
         render json: json, status: :ok
@@ -107,7 +107,7 @@ class RegistryReferencesController < BaseController
           segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
           {
             archive_id: params[:archive_id],
-            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e)},
+            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
           }.to_json
         end
         render plain: json

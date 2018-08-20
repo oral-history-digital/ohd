@@ -16,7 +16,7 @@ class SegmentsController < BaseController
         #render json: {
           #id: @segment.id,
           #data_type: 'segments',
-          #data: ::SegmentSerializer.new(@segment),
+          #data: ::SegmentSerializer.new(@segment).as_json,
         #}
       #end
     #end
@@ -45,7 +45,7 @@ class SegmentsController < BaseController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: ::SegmentSerializer.new(@segment)
+          data: ::SegmentSerializer.new(@segment).as_json
         }
       end
     end
