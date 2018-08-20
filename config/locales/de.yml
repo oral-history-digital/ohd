@@ -212,7 +212,6 @@ de:
       edit: 'Interview bearbeiten'
     segment:
       edit: 'Segment bearbeiten'
-    upload_transcript: 'Transkript hochladen'
     person: 
       new: 'Person hinzufügen'
       edit: 'Person bearbeiten'
@@ -231,6 +230,7 @@ de:
       edit: 'Registereinträge bearbeiten'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
+      edit: 'lebensgeschichtl. Ereignis bearbeiten'
     annotation: 
       new: 'Anmerkung hinzufügen'
       edit: 'Anmerkung bearbeiten'
