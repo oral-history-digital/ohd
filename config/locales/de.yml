@@ -220,7 +220,7 @@ de:
       new: 'Kontributor hinzufügen'
     registry_reference: 
       new: 'Registereferenz hinzufügen'
-      delete: 'Registereferenz hinzufügen'
+      delete: 'Registereferenz löschen'
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
@@ -234,6 +234,7 @@ de:
     annotation: 
       new: 'Anmerkung hinzufügen'
       edit: 'Anmerkung bearbeiten'
+      delete: 'Anmerkung löschen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'

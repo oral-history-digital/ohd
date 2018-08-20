@@ -34,14 +34,14 @@ export default class Annotation extends React.Component {
         if (this.props.annotation) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
+                title={t(this.props, 'edit.annotation.delete')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
+                    title: t(this.props, 'edit.annotation.delete'),
                     content: (
                         <div>
                             <p>{this.props.annotation.text[this.props.locale]}</p>
                             <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
+                                {t(this.props, 'edit.annotation.delete')}
                             </div>
                         </div>
                     )
