@@ -12,15 +12,26 @@ export default class SegmentRegistryReferences extends React.Component {
 
     componentDidMount() {
         this.loadRegistryEntries();
+        this.loadRootRegistryEntry();
     }
 
     componentDidUpdate() {
         this.loadRegistryEntries();
+        this.loadRootRegistryEntry();
     }
 
     loadRegistryEntries() {
         if (!this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`]) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `references_for_segment=${this.props.segment.id}`);
+        }
+    }
+
+    loadRootRegistryEntry() {
+        // TODO: fit this for MOG - id of root entry will be different
+        if (
+            !this.props.registryEntriesStatus[1]
+        ) {
+            this.props.fetchData('registry_entries', 1);
         }
     }
 
@@ -51,25 +62,30 @@ export default class SegmentRegistryReferences extends React.Component {
     }
 
     addRegistryReference() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_reference.new')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_reference.new'),
-                    content: <RegistryReferenceFormContainer 
-                                 refObject={this.props.segment} 
-                                 refObjectType='Segment' 
-                                 interview={this.props.interview} 
-                                 registryEntryParent={this.props.rootRegistryEntry}
-                                 locale={this.props.locale}
-                                 goDeeper={true}
-                             />
-                })}
-            >
-                <i className="fa fa-plus"></i>
-            </div>
-        )
+        // TODO: fit this for MOG - id of root entry will be different
+        if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.registry_reference.new')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_reference.new'),
+                        content: <RegistryReferenceFormContainer 
+                                     refObject={this.props.segment} 
+                                     refObjectType='Segment' 
+                                     interview={this.props.interview} 
+                                     registryEntryParent={this.props.registryEntries[1]}
+                                     locale={this.props.locale}
+                                     goDeeper={true}
+                                 />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {

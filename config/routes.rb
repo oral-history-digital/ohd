@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resources :contributions, only: [:create, :destroy]
       resources :histories, only: [:create, :update, :destroy]
       resources :segments, only: [:create, :update, :index, :destroy]
-      resources :registry_entries, only: [:create, :update, :index, :destroy]
+      resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
       resources :registry_reference_types, only: [:create, :update, :index, :destroy]
       resources :annotations, only: [:create, :update, :destroy]

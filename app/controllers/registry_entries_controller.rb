@@ -29,6 +29,20 @@ class RegistryEntriesController < BaseController
     end
   end
 
+  def show
+    @registry_entry = RegistryEntry.find(params[:id])
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          id: @registry_entry.id,
+          data_type: 'registry_entries',
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
+        }
+      end
+    end
+  end
+
   def update
     @registry_entry = RegistryEntry.find params[:id]
     @registry_entry.update_attributes registry_entry_params
