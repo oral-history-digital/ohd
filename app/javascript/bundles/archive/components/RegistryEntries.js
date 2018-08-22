@@ -35,14 +35,17 @@ export default class RegistryEntries extends React.Component {
             this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched'
         ) {
             return this.props.registryEntryParent.child_ids.map((id, index) => {
-                return (
-                    <li>
-                        <RegistryEntryContainer 
-                            registryEntry={this.props.registryEntries[id]} 
-                            key={`registry_entries-${id}`} 
-                        />
-                    </li>
-                )
+                let registryEntry = this.props.registryEntries[id] 
+                if (registryEntry) {
+                    return (
+                        <li key={`registry_entries-li-${id}`} >
+                            <RegistryEntryContainer 
+                                registryEntry={registryEntry} 
+                                key={`registry_entries-${id}`} 
+                            />
+                        </li>
+                    )
+                }
             })
         } else {
             return [];
