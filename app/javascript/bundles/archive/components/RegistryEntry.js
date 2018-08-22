@@ -12,6 +12,23 @@ export default class RegistryEntry extends React.Component {
         this.state = {childrenVisible: false};
     }
 
+    componentDidMount() {
+        this.reloadRegistryEntry();
+    }
+
+    componentDidUpdate() {
+        this.reloadRegistryEntry();
+    }
+
+    reloadRegistryEntry() {
+        if (
+            this.props.registryEntriesStatus[this.props.registryEntry.id] &&
+            this.props.registryEntriesStatus[this.props.registryEntry.id].split('-')[0] === 'reload'
+        ) {
+            this.props.fetchData('registry_entries', this.props.registryEntry.id);
+        }
+    }
+
     edit() {
         return (
             <div
