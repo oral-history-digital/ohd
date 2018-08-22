@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
         render json: {
           id: @person.id,
           data_type: 'people',
-          data: ::PersonSerializer.new(@person),
+          data: ::PersonSerializer.new(@person).as_json,
         }
       end
     end
@@ -30,7 +30,7 @@ class PeopleController < ApplicationController
         render json: {
           id: @person.id,
           data_type: 'people',
-          data: ::PersonSerializer.new(@person),
+          data: ::PersonSerializer.new(@person).as_json,
         }
       end
     end

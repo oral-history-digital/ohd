@@ -2,9 +2,15 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
+import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import { t, pluralize, admin } from '../../../lib/utils';
 
 export default class RegistryEntry extends React.Component {
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {childrenVisible: false};
+    }
 
     edit() {
         return (
@@ -22,16 +28,12 @@ export default class RegistryEntry extends React.Component {
     }
 
     destroy() {
-        if (this.props.refObjectType === 'interview') {
-            this.props.deleteData(pluralize(this.props.refObjectType), this.props.archiveId, 'registry_references', this.props.registryReference.id);
-        } else {
-            this.props.deleteData('registry_references', this.props.registryReference.id, null, null, true);
-        }
+        this.props.deleteData('registry_entries', this.props.registryEntry.id);
         this.props.closeArchivePopup();
     }
 
     delete() {
-        if (this.props.registryReference) {
+        if (this.props.registryEntry) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -60,36 +62,50 @@ export default class RegistryEntry extends React.Component {
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
                     {this.delete()}
+                    {this.showHideChildren()}
                 </span>
             )
         }
     }
 
     entry() {
-        let css = this.props.registryEntry.notes[this.props.locale] ? 'scope-note-link' : '';
         return (
-            <span 
-                id={`reference_${this.props.registryReference.id}`} 
-                className={css}
-                key={"reference-" + this.props.registryReference.id} 
-                //onClick={() => this.setOpenReference(reference)}
+            <div 
+                id={`entry_${this.props.registryEntry.id}`} 
+                key={"entry-" + this.props.registryEntry.id} 
             >
                 {this.props.registryEntry.name[this.props.locale]}
-            </span>
+            </div>
+        )
+    }
+
+    children() {
+        if (this.state.childrenVisible) {
+            return <RegistryEntriesContainer registryEntryParent={this.props.registryEntry} />;
+        } 
+    }
+
+    showHideChildren() {
+        let css = this.state.childrenVisible ? 'minus' : 'plus';
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.registry_entry.show_children')}
+                onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
+            >
+                <i className={`fa fa-${css}`}></i>
+            </div>
         )
     }
 
     render() {
         return (
-            <span>
+            <div>
                 {this.entry()}
                 {this.buttons()}
-            </span>
+                {this.children()}
+            </div>
         )
     }
-                //<p>
-                    //<span className='flyout-content-label'>{t(this.props, 'activerecord.models.registry_references.one')}:</span>
-                    //<span className='flyout-content-data'>{this.props.registryEntry.name[this.props.locale]}</span>
-                //</p>
 }
 

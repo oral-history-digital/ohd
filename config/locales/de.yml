@@ -35,7 +35,6 @@ de:
   legend_assert: 'Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.'
   legend_omission: 'Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen'
   interview_with: 'Interview mit'
-  upload_transcript: 'Transkript hochladen'
   selected_registry_entry: 'Ausgewählter Registereintrag'
   archive_id: 'Archiv-ID'
   history_of: 'Kurzbiografie von'
@@ -212,7 +211,6 @@ de:
       edit: 'Interview bearbeiten'
     segment:
       edit: 'Segment bearbeiten'
-    upload_transcript: 'Transkript hochladen'
     person: 
       new: 'Person hinzufügen'
       edit: 'Person bearbeiten'
@@ -220,12 +218,23 @@ de:
       new: 'Kontributor hinzufügen'
     registry_reference: 
       new: 'Registereferenz hinzufügen'
+      delete: 'Registereferenz löschen'
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
       go_up: 'Eine Ebene höher'
+      parent: 'Elternknoten/-eintrag'
+      show_children: 'Kinderknoten/-einträge anzeigen'
+    registry_entries: 
+      edit: 'Registereinträge bearbeiten'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
+      edit: 'lebensgeschichtl. Ereignis bearbeiten'
+    annotation: 
+      new: 'Anmerkung hinzufügen'
+      edit: 'Anmerkung bearbeiten'
+      delete: 'Anmerkung löschen'
+    upload_transcript: 'Transkript hochladen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
@@ -366,6 +375,9 @@ de:
       registry_references:
         one: 'Registerreferenz'
         other: 'Registerreferenzen'
+      annotations:
+        one: 'Anmerkung'
+        other: 'Anmerkungen'
 
     attributes:
       history:
@@ -436,6 +448,9 @@ de:
         media_id: 'Segment-ID'
         transcript: 'Transkription'
         translation: 'Transkription (übersetzt)'
+        mainheading: 'Überschrift'
+        subheading: 'Unter-Überschrift'
+        text: 'Text'
       user_content:
         title: 'Titel'
         description: 'Notiz'
@@ -513,6 +528,8 @@ de:
       registry_reference:
         registry_entry_id: 'Registereintrag'
         registry_reference_type_id: 'Referencetyp'
+      annotation:
+        text: 'Text'
 
     errors:
       default:

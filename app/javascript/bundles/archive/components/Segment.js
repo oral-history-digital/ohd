@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
+import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from "../../../lib/utils";
 
 export default class Segment extends React.Component {
@@ -79,7 +80,7 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (this.state.contentType == 'references') {
-            return <SegmentRegistryReferencesContainer segment={this.props.data} interview={this.props.interview} />
+            return <SegmentRegistryReferencesContainer segment={this.props.data} interview={this.props.interview} locale={locale} />
             //return this.props.data.references.map((reference, index) => {
                 //if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
                     //return (
@@ -101,10 +102,17 @@ export default class Segment extends React.Component {
 
     annotations(locale) {
         if (this.state.contentType == 'annotations') {
-            return this.props.data.annotation_texts.map((annotation, index) => {
-                return <p className='content-trans-text-element-data'
-                          key={"annotation-" + index}>{annotation[locale]}</p>
-            })
+            return <AnnotationsContainer segment={this.props.data} locale={locale} />
+            //return this.props.data.annotation_texts.map((annotation, index) => {
+                //return (
+                    //<p 
+                        //className='content-trans-text-element-data'
+                        //key={"annotation-" + index}
+                    //>
+                        //{annotation[locale]}
+                    //</p>
+                //)
+            //})
         }
     }
 
@@ -134,15 +142,18 @@ export default class Segment extends React.Component {
         }
     }
 
-    renderLinks() {
-        if (this.props.data.annotation_texts.length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length) {
-
+    renderLinks(locale) {
+        if (
+            admin(this.props) || 
+            (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
+        ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = this.props.data.annotation_texts.length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+
             return (
                 <div className={icoCss}>
-                    {this.edit()}
+                    {this.edit(locale)}
                     <div className={annotionCss} title={t(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
@@ -155,15 +166,15 @@ export default class Segment extends React.Component {
         }
     }
 
-    edit() {
+    edit(locale) {
         if (admin(this.props)) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.segment.edit')}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.segment'),
-                        content: <SegmentFormContainer segment={this.props.data} />
+                        title: t(this.props, 'edit.segment.edit'),
+                        content: <SegmentFormContainer segment={this.props.data} locale={locale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>
@@ -190,7 +201,7 @@ export default class Segment extends React.Component {
                                  dangerouslySetInnerHTML={{__html: this.transcript()}}
                             />
                         </div>
-                        {this.renderLinks()}
+                        {this.renderLinks(locale)}
                         <div className={contentOpenClass}>
                             <div>
                                 {this.annotations(locale)}

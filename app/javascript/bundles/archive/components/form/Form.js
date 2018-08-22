@@ -21,6 +21,7 @@ export default class Form extends React.Component {
 
     componentDidMount() {
         this.initErrors();
+        this.initValues();
     }
 
     handleChange(name, value) {
@@ -36,12 +37,18 @@ export default class Form extends React.Component {
         } 
     }
 
+    initValues() {
+        let values = this.state.values;
+        this.props.elements.map((element, index) => {
+            values[element.attribute] = element.value
+        })
+        this.setState({ values: values });
+    }
+
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors = Object.assign({}, errors, {
-                [element.attribute]: element.validate && !element.value ? true : false
-            })
+            errors[element.attribute] = element.validate && !element.value ? true : false
         })
         this.setState({ errors: errors });
     }

@@ -16,7 +16,7 @@ class SegmentsController < BaseController
         #render json: {
           #id: @segment.id,
           #data_type: 'segments',
-          #data: ::SegmentSerializer.new(@segment),
+          #data: ::SegmentSerializer.new(@segment).as_json,
         #}
       #end
     #end
@@ -24,8 +24,18 @@ class SegmentsController < BaseController
 
   def update
     @segment = Segment.find params[:id]
-    @segment.update_attributes segment_params
+    # set headings like this, because blank values won`t be transmitted in params
+    # nulling a heading therefore would not be possible
+    #
+    @segment.mainheading = segment_params[:mainheading]
+    @segment.subheading = segment_params[:subheading]
+    @segment.text = segment_params[:text]
+    @segment.save
+
     clear_cache @segment
+    if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
+      Rails.cache.delete "headings-#{@segment.id}-#{@segment.updated_at}"
+    end
 
     respond_to do |format|
       format.json do
@@ -35,7 +45,7 @@ class SegmentsController < BaseController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: ::SegmentSerializer.new(@segment)
+          data: ::SegmentSerializer.new(@segment).as_json
         }
       end
     end
@@ -52,7 +62,7 @@ class SegmentsController < BaseController
                 includes(:translations, :annotations => [:translations]).
                 for_interview_id(@interview.id).
                 where(tape_id: t.id).
-                where.not(timecode: '00:00:00.000')
+                where.not(timecode: '00:00:00.000')#.first(20)
 
               tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
               tapes
@@ -83,6 +93,6 @@ class SegmentsController < BaseController
   private
 
   def segment_params
-    params.require(:segment).permit(:text)
+    params.require(:segment).permit(:text, :mainheading, :subheading)
   end
 end

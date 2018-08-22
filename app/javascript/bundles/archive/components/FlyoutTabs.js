@@ -70,6 +70,10 @@ export default class FlyoutTabs extends React.Component {
              // add person
             this.context.router.history.push(`/${this.props.locale}/people/new`);
             this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 7) {
+             // registry entries
+            this.context.router.history.push(`/${this.props.locale}/registry_entries`);
+            this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
         }
@@ -154,7 +158,8 @@ export default class FlyoutTabs extends React.Component {
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
             <Tab className={css} key='edit.interview.new'>{t(this.props, 'edit.interview.new')}</Tab>,
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
-            <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>
+            <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
+            <Tab className={css} key='edit.registry_entries.edit'>{t(this.props, 'edit.registry_entries.edit')}</Tab>,
         ];
     }
 
@@ -173,12 +178,16 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-add-person'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
+                <TabPanel key={'tabpanel-registry-entries'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.registry_entries.edit')}</div>
+                </TabPanel>,
             ];
         } else {
             return [
                 <TabPanel key='tabpanel-edit-interview'/>,
                 <TabPanel key='tabpanel-upload-transcript'/>,
-                <TabPanel key='tabpanel-add-person'/>
+                <TabPanel key='tabpanel-add-person'/>,
+                <TabPanel key='tabpanel-registry-entries'/>
             ]
         }
     }

@@ -1,13 +1,29 @@
-class RegistryEntriesController < ApplicationController
+class RegistryEntriesController < BaseController
+
+  layout 'responsive'
 
   def create
-    @registry_entry = RegistryEntry.create registry_entry_params
+    #r = registry_entry_params.merge(parents: [RegistryEntry.find(registry_entry_params[:parents].first[:id])])
+    #@registry_entry = RegistryEntry.create r
+
+    #@registry_entry = RegistryEntry.new entry_code: registry_entry_params[:descriptor], entry_desc: registry_entry_params[:descriptor], workflow_state: "public", list_priority: false
+    #@registry_entry.save(validate: false)
+    #hierarchy = RegistryHierarchy.create ancestor_id: registry_entry_params[:parents].first[:id], descendant_id: @registry_entry.id, direct: true
+    #name = RegistryName.create registry_entry_id: @registry_entry.id, registry_name_type_id: registry_entry_params[:registry_names_attributes][:registry_name_type_id], name_position: 0, descriptor: registry_entry_params[:descriptor]
+
+    @registry_entry = RegistryEntry.new entry_code: registry_entry_params[:descriptor], entry_desc: registry_entry_params[:descriptor], workflow_state: "public", list_priority: false
+    @registry_entry.save(validate: false)
+    hierarchy = RegistryHierarchy.create ancestor_id: registry_entry_params[:parent_id], descendant_id: @registry_entry.id, direct: true
+    name = RegistryName.create registry_entry_id: @registry_entry.id, registry_name_type_id: registry_entry_params[:registry_name_type_id], name_position: 0, descriptor: registry_entry_params[:descriptor]
+
+    clear_cache @registry_entry.parents.first
+
     respond_to do |format|
       format.json do
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry),
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
         }
       end
     end
@@ -21,7 +37,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry),
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
         }
       end
     end
@@ -51,6 +67,7 @@ class RegistryEntriesController < ApplicationController
       end
 
     respond_to do |format|
+      format.html{ render 'react/app' }
       format.json do
         json = {
             data: @registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},
@@ -78,7 +95,11 @@ class RegistryEntriesController < ApplicationController
   private
 
   def registry_entry_params
-    params.require(:registry_entry).  permit(:name, :parent_id, :notes)
+    params.require(:registry_entry).permit(:workflow_state, :parent_id, :registry_name_type_id, :name_position, :descriptor, :notes)
   end
+
+  #def registry_entry_params
+    #params.require(:registry_entry).permit(:workflow_state, parents: [:id], registry_names_attributes: [:registry_name_type_id, :name_position, :descriptor, :notes])
+  #end
 
 end

@@ -18,7 +18,7 @@ class InterviewsController < BaseController
         render json: {
           archive_id: @interview.archive_id,
           data_type: 'interviews',
-          data: ::InterviewSerializer.new(@interview),
+          data: ::InterviewSerializer.new(@interview).as_json,
         }
       end
     end
@@ -38,7 +38,7 @@ class InterviewsController < BaseController
         render json: {
           archive_id: @interview.archive_id,
           data_type: 'interviews',
-          data: ::InterviewSerializer.new(@interview),
+          data: ::InterviewSerializer.new(@interview).as_json,
         }
       end
     end

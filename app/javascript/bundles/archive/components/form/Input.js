@@ -52,24 +52,9 @@ export default class Input extends React.Component {
             type: this.props.type, 
             name: this.props.attribute,
             defaultChecked: this.props.value,
-            //defaultValue: this.props.value,
+            defaultValue: this.props.value,
             onChange: this.handleChange,
         };
-
-        // prevent email and password fields from being undeletable
-        // just a workaround the problem reminds on all other inputs 
-        // this is React specific
-        // don`t know how to solve really
-        //
-        if (['email', 'password'].indexOf(this.props.attribute) > -1) {
-            props['defaultValue'] = this.props.value;
-        } else {
-            props['value'] = this.props.value || '';
-        }
-
-        if (this.props.defaultValue) {
-            props['defaultValue'] = this.props.defaultValue;
-        }
 
         return props;
     }

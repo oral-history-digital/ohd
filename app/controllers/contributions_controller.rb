@@ -11,7 +11,7 @@ class ContributionsController < ApplicationController
           id: @contribution.interview.archive_id,
           nested_data_type: 'contributions',
           nested_id: @contribution.id,
-          data: ::ContributionSerializer.new(@contribution)
+          data: ::ContributionSerializer.new(@contribution).as_json
         }
       end
     end

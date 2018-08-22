@@ -21,8 +21,8 @@ class Segment < ActiveRecord::Base
 
   # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
-  has_many  :annotations
   has_many  :user_annotations, as: :reference
+  has_many  :annotations
 
   scope :with_heading, -> { 
     joins(:translations).
@@ -235,12 +235,6 @@ class Segment < ActiveRecord::Base
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
-
-
-  # not a true association, this is primarily used during Solr indexing
-  #def annotations
-    #Annotation.for_segment(self)
-  #end
 
   def speaker_changed(raw_segment_text = false)
     raw_segment_text && raw_segment_text[1] == ":"

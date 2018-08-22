@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180806084246) do
+ActiveRecord::Schema.define(version: 20180810090526) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -24,14 +24,12 @@ ActiveRecord::Schema.define(version: 20180806084246) do
   create_table "annotations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id"
     t.string   "author"
-    t.string   "media_id",        null: false
-    t.string   "timecode",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_content_id"
     t.integer  "segment_id"
+    t.integer  "author_id"
     t.index ["interview_id"], name: "index_annotations_on_interview_id", using: :btree
-    t.index ["media_id"], name: "index_annotations_on_media_id", using: :btree
     t.index ["segment_id"], name: "index_annotations_on_segment_id", using: :btree
   end
 
