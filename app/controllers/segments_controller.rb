@@ -45,7 +45,9 @@ class SegmentsController < BaseController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: ::SegmentSerializer.new(@segment).as_json
+          data: ::SegmentSerializer.new(@segment).as_json,
+          reload_data_type: 'headings',
+          reload_id: "for_interviews_#{@segment.interview.archive_id}"
         }
       end
     end
