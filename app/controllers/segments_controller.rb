@@ -62,7 +62,7 @@ class SegmentsController < BaseController
                 includes(:translations, :annotations => [:translations]).
                 for_interview_id(@interview.id).
                 where(tape_id: t.id).
-                where.not(timecode: '00:00:00.000')
+                where.not(timecode: '00:00:00.000')#.first(20)
 
               tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
               tapes
