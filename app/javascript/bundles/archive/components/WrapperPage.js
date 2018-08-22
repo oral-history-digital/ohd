@@ -86,7 +86,7 @@ export default class WrapperPage extends React.Component {
         activeMQ = activeMQ.replace(/'/g, "");
 
         // Conditions for each breakpoint
-        if (activeMQ != this.setState.currentMQ) {
+        if (activeMQ != this.state.currentMQ) {
             if (activeMQ == 'XS') {
                 this.setState({['currentMQ']: activeMQ});
                 // Add code you want to sync with this breakpoint
@@ -95,6 +95,9 @@ export default class WrapperPage extends React.Component {
                 //RA.respondToXS();
             }
             if (activeMQ == 'S') {
+                if(this.state.currentMQ != 'XS') {
+                    this.props.hideFlyoutTabs();
+                }
                 this.setState({['currentMQ']: activeMQ});
                 // Add code you want to sync with this breakpoint
                 // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
