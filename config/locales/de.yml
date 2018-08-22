@@ -35,7 +35,6 @@ de:
   legend_assert: 'Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.'
   legend_omission: 'Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen'
   interview_with: 'Interview mit'
-  upload_transcript: 'Transkript hochladen'
   selected_registry_entry: 'Ausgewählter Registereintrag'
   archive_id: 'Archiv-ID'
   history_of: 'Kurzbiografie von'
@@ -235,6 +234,7 @@ de:
       new: 'Anmerkung hinzufügen'
       edit: 'Anmerkung bearbeiten'
       delete: 'Anmerkung löschen'
+    upload_transcript: 'Transkript hochladen'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
