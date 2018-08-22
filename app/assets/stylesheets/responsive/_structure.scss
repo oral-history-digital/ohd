@@ -85,15 +85,15 @@ header.site-header {
     overflow: hidden;
     @include screen-m {
       width: 44%;
-      padding-right: 15px;
+      padding-right: 9px;
     }
     @include screen-l {
       width: 40%;
-      padding-right: 15px;
+      padding-right: 9px;
     }
     @include screen-xl {
       width: 36%;
-      padding-right: 15px;
+      padding-right: 9px;
     }
     position: fixed;
     top: 0;
@@ -109,10 +109,10 @@ header.site-header {
   }
   .scroll-flyout {
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     height:100%;
     @include screen-m {
-      margin-right: -35px;
+      margin-right: -9px;
     }
   }
   .flyout-toggle {

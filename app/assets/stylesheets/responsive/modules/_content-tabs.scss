@@ -15,8 +15,8 @@
   flex: 1;
   margin-right: 0;
   padding: 14px 12px;
-  color: $gray-darkest; //#fff;
-  background-color: $gray-lighter; //$primary-color;
+  color: $gray-darkest;
+  background-color: $gray-lighter;
   text-align: center;
   transition: background-color 0.3s;
   cursor: pointer;
@@ -458,8 +458,6 @@ div.mainheading + div {
   @include clearfix;
   //margin-bottom: 15px;
   padding-left: 2px;
-  .cont-search-title {
-  }
   .content-search-timecode {
     font-size: $font-size-small;
     margin-bottom: 0;
