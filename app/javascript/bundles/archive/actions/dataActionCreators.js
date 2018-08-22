@@ -52,6 +52,8 @@ const receiveData = (json) => ({
     nestedId: json.nested_id,
     extraParams: json.extra_params,
     extraId: json.extra_id,
+    reloadDataType: json.reload_data_type,
+    reloadId: json.reload_id,
 });
 
 export function fetchData(dataType, id, nestedDataType, locale='de', extraParams) {
