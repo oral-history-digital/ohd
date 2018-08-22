@@ -23,7 +23,14 @@ export default class RegistryEntryForm extends React.Component {
                     onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                     values={{
                         id: this.props.registryEntry && this.props.registryEntry.id,
-                        //parent_id: this.props.parent && this.props.parent.id
+                        workflow_state: this.props.registryEntry && this.props.registryEntry.workflow_state || 'preliminary',
+                        parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
+                        name_position: '0',
+                        registry_name_type_id: 4,
+                        //workflow_state: this.props.registryEntry && this.props.registryEntry.workflow_state || 'preliminary',
+                        //'[parents][]id': this.props.registryEntryParent && this.props.registryEntryParent.id,
+                        //'[registry_names_attributes][]name_position': '0',
+                        //'[registry_names_attributes][]registry_name_type_id': 4,
                     }}
                     submitText='submit'
                     elements={[
@@ -37,7 +44,8 @@ export default class RegistryEntryForm extends React.Component {
                         //},
                         {
                             elementType: 'input',
-                            attribute: 'name',
+                            attribute: 'descriptor',
+                            //attribute: '[registry_names_attributes][]descriptor',
                             value: this.props.registryEntry && this.props.registryEntry.name[this.props.locale],
                             type: 'text',
                             validate: function(v){return v.length > 1} 
@@ -45,6 +53,7 @@ export default class RegistryEntryForm extends React.Component {
                         {
                             elementType: 'textarea',
                             attribute: 'notes',
+                            //attribute: '[registry_names_attributes][]notes',
                             value: this.props.registryEntry && this.props.registryEntry.notes[this.props.locale],
                         },
                     ]}

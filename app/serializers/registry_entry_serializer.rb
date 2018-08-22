@@ -5,7 +5,8 @@ class RegistryEntrySerializer < ActiveModel::Serializer
              :name,
              :notes,
              :parent_ids,
-             :child_ids
+             :child_ids,
+             :workflow_state
 
   def name
     object.localized_hash

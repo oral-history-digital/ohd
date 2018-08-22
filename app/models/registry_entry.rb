@@ -22,6 +22,13 @@ class RegistryEntry < ActiveRecord::Base
            #-> { includes(:translations, :registry_name_type) },
            :dependent => :destroy
 
+  accepts_nested_attributes_for :registry_names
+
+  has_many :registry_hierarchies,
+           foreign_key: :descendant_id
+
+  accepts_nested_attributes_for :registry_hierarchies
+
   has_many :registry_references,
            :dependent => :destroy
 
@@ -104,18 +111,12 @@ class RegistryEntry < ActiveRecord::Base
 
   scope :with_location, -> { where("latitude <> '' AND longitude <> ''")}
 
-  def name=(new_name)
-    registry_names.first.update_attribute :descriptor, new_name
+  def identifier
+    id
   end
 
-  def notes=(new_notes)
-    registry_names.first.update_attribute :notes, new_notes
-  end
-
-  def parent_id=(new_parent_id)
-    #TODO: implement this
-    # rm old registry_hierarchy and create new one 
-    # or update old first parents registry_hierarchy
+  def identifier_method
+    'id'
   end
 
   class << self
@@ -765,85 +766,85 @@ class RegistryEntry < ActiveRecord::Base
     #registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
   end
 
-  def descriptor=(descriptor)
-    case descriptor
-      when Hash
-        # Could be a HashWithIndifferentAccess.
-        descriptors = descriptor.to_hash.symbolize_keys
-        descriptors.each do |locale, descriptor|
-          RegistryEntry.with_locale(locale) do
-            self.descriptor = descriptor
-          end
-        end
-        return
-      when String # no-op
-      when NilClass # no-op
-      else raise 'invalid descriptor'
-    end
+  #def descriptor=(descriptor)
+    #case descriptor
+      #when Hash
+        ## Could be a HashWithIndifferentAccess.
+        #descriptors = descriptor.to_hash.symbolize_keys
+        #descriptors.each do |locale, descriptor|
+          #RegistryEntry.with_locale(locale) do
+            #self.descriptor = descriptor
+          #end
+        #end
+        #return
+      #when String # no-op
+      #when NilClass # no-op
+      #else raise 'invalid descriptor'
+    #end
 
-    locale = RegistryEntry.locale || I18n.default_locale
-    raise if not (I18n.available_locales + [:alias]).include?(locale)
+    #locale = RegistryEntry.locale || I18n.default_locale
+    #raise if not (I18n.available_locales + [:alias]).include?(locale)
 
-    descriptor.strip! unless descriptor.nil?
-    parsed_name = if descriptor.blank?
-                    {}
-                  else
-                    RegistryEntry.parse_name(descriptor, :locale => locale)
-                  end
+    #descriptor.strip! unless descriptor.nil?
+    #parsed_name = if descriptor.blank?
+                    #{}
+                  #else
+                    #RegistryEntry.parse_name(descriptor, :locale => locale)
+                  #end
 
-    # First update existing registry names.
-    registry_names.each do |registry_name|
+    ## First update existing registry names.
+    #registry_names.each do |registry_name|
 
-      if parsed_name[registry_name.registry_name_type.to_sym].blank? or
-          parsed_name[registry_name.registry_name_type.to_sym][registry_name.name_position].blank?
-        # Delete obsolete registry name translation...
+      #if parsed_name[registry_name.registry_name_type.to_sym].blank? or
+          #parsed_name[registry_name.registry_name_type.to_sym][registry_name.name_position].blank?
+        ## Delete obsolete registry name translation...
 
-        # Delete the translation for the given locale.
-        registry_name_translation = registry_name.translations.detect { |t| t.locale == locale }
-        unless registry_name_translation.nil?
-          registry_name.translations.destroy(registry_name_translation)
-          registry_name.reload
-        end
+        ## Delete the translation for the given locale.
+        #registry_name_translation = registry_name.translations.detect { |t| t.locale == locale }
+        #unless registry_name_translation.nil?
+          #registry_name.translations.destroy(registry_name_translation)
+          #registry_name.reload
+        #end
 
-        # If this was its last translation: delete the whole registry name.
-        if registry_name.translations.empty?
-          registry_names.destroy(registry_name)
-        end
+        ## If this was its last translation: delete the whole registry name.
+        #if registry_name.translations.empty?
+          #registry_names.destroy(registry_name)
+        #end
 
-      else
-        # Update registry name.
-        RegistryName.with_locale(locale) do
-          registry_name.descriptor =
-              parsed_name[registry_name.registry_name_type.to_sym][registry_name.name_position]
-          registry_name.save!
-        end
-      end
-    end
-    registry_names.reload
+      #else
+        ## Update registry name.
+        #RegistryName.with_locale(locale) do
+          #registry_name.descriptor =
+              #parsed_name[registry_name.registry_name_type.to_sym][registry_name.name_position]
+          #registry_name.save!
+        #end
+      #end
+    #end
+    #registry_names.reload
 
-    # Then add new registry names.
-    parsed_name.each do |name_type, descriptors|
-      registry_names_with_type = registry_names.with_type(name_type)
-      if descriptors.size > registry_names_with_type.size
-        # Add new positions.
-        next_position = registry_names_with_type.size
-        descriptors[registry_names_with_type.size..-1].each do |descriptor|
-          # Add a registry name with the given type and position.
-          registry_name = registry_names.create \
-              :registry_name_type_id => RegistryNameType.find_by_code(name_type.to_s).id,
-              :name_position => next_position
+    ## Then add new registry names.
+    #parsed_name.each do |name_type, descriptors|
+      #registry_names_with_type = registry_names.with_type(name_type)
+      #if descriptors.size > registry_names_with_type.size
+        ## Add new positions.
+        #next_position = registry_names_with_type.size
+        #descriptors[registry_names_with_type.size..-1].each do |descriptor|
+          ## Add a registry name with the given type and position.
+          #registry_name = registry_names.create \
+              #:registry_name_type_id => RegistryNameType.find_by_code(name_type.to_s).id,
+              #:name_position => next_position
 
-          # Create a translation entry for the given locale.
-          registry_name.translations.create \
-              :locale => locale.to_s,
-              :descriptor => descriptor
+          ## Create a translation entry for the given locale.
+          #registry_name.translations.create \
+              #:locale => locale.to_s,
+              #:descriptor => descriptor
 
-          registry_names << registry_name
-          next_position += 1
-        end
-      end
-    end
-  end
+          #registry_names << registry_name
+          #next_position += 1
+        #end
+      #end
+    #end
+  #end
 
   def descriptor(locale = I18n.default_locale)
     if locale == :all
