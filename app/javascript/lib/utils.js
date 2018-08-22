@@ -115,7 +115,8 @@ export function queryToText(query, props) {
                 queryText = queryText + nextElement + key + ": ";
                 if (Array.isArray(value)) {
                     value.forEach(function (element, index) {
-                        let val = props.facets[k.replace('[]','')]['subfacets'][element]['descriptor'][props.locale]
+                        console.log(props.facets[k.replace('[]','')]['subfacets'][element])
+                        let val = props.facets[k.replace('[]','')]['subfacets'][element]['name'][props.locale]
                         // let locale_element = (element + '').toLowerCase().split().join('_')
                         // val = val || t(props, 'search_facets')[locale_element];
                         // val = val || locale_element
