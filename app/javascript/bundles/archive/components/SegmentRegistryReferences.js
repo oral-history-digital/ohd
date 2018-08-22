@@ -29,7 +29,8 @@ export default class SegmentRegistryReferences extends React.Component {
     loadRootRegistryEntry() {
         // TODO: fit this for MOG - id of root entry will be different
         if (
-            !this.props.registryEntriesStatus[1]
+            !this.props.registryEntriesStatus[1] || 
+            this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
         ) {
             this.props.fetchData('registry_entries', 1);
         }
