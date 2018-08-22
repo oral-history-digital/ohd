@@ -97,6 +97,7 @@ ru:
   save_search: 'Сохранить поиск'
   reset: 'отмена'
   enter_field: 'Ключевое понятие'
+  forget_password: 'Забыли пароль?'
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:
@@ -161,6 +162,9 @@ ru:
     text_meterials: 'text_materialien'
     interviews: 'interviews'
     stills: 'stills'
+
+  user_registration:
+    registration: 'Регистрация'
 
   tasks:
     interviewers: 'Проведение интервью'
