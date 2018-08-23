@@ -62,6 +62,7 @@ const loggedIn = (json) => ({
     lastName: json.last_name,
     email: json.email,
     login: json.login,
+    admin: json.admin,
 })
 
 export function submitLogin(params) {
