@@ -137,7 +137,7 @@ export default class WrapperPage extends React.Component {
     css() {
         let css = ["wrapper-page"];
         if (this.props.transcriptScrollEnabled) {
-            //css.push("fix-video");
+            css.push("fix-video");
         } else {
             // window.scrollTo(0, 1); // ACHIM?
         }
