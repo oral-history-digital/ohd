@@ -79,11 +79,17 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
-        let shownSegments = this.props.transcriptScrollEnabled ? 
-            segments(this.props) : 
-            this.shownSegmentsAround(
-                getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segments_ids[this.props.tape], this.props.interview.first_segments_ids[this.props.tape])
-            );
+        let activeSegmentId = getSegmentId(
+            this.props.transcriptTime, 
+            segments(this.props), 
+            this.props.interview.last_segments_ids[this.props.tape], 
+            this.props.interview.first_segments_ids[this.props.tape]
+        )
+
+        let shownSegments = this.props.transcriptScrollEnabled ?
+            segments(this.props) :
+            this.shownSegmentsAround(activeSegmentId);
+
         let speakerId;
         let transcript = [];
 
@@ -98,6 +104,7 @@ export default class Transcript extends React.Component {
                 <SegmentContainer
                     data={segment}
                     originalLocale={this.props.originalLocale}
+                    active={parseInt(segmentId) === activeSegmentId}
                     key={"segment-" + segment.id}
                 />
             )

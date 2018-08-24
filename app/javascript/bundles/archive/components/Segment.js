@@ -25,24 +25,15 @@ export default class Segment extends React.Component {
         if (nextProps.statuses[this.props.data.id] !== this.props.statuses[this.props.data.id]) {
             return true;
         }
-
-        let changingToActive = !this.state.active && this.props.data.end_time >= nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
-        let changingToInactive = this.state.active && (this.props.data.end_time < nextProps.transcriptTime || this.props.data.start_time > nextProps.transcriptTime);
-        return changingToActive || changingToInactive
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let active = this.props.data.end_time > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
-        if (active !== this.state.active) {
-            this.setState({
-                active: active
-            })
+        if (nextProps.active !== this.props.active) {
+            return true;
         }
+
+        return false;
     }
 
     css() {
-        //let active = this.props.data.end_time >= this.props.transcriptTime && this.props.data.start_time <= this.props.transcriptTime; 
-        return 'segment ' + (this.state.active ? 'active' : 'inactive');
+        return 'segment ' + (this.props.active ? 'active' : 'inactive');
     }
 
     transcript() {
@@ -103,16 +94,6 @@ export default class Segment extends React.Component {
     annotations(locale) {
         if (this.state.contentType == 'annotations') {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
-            //return this.props.data.annotation_texts.map((annotation, index) => {
-                //return (
-                    //<p 
-                        //className='content-trans-text-element-data'
-                        //key={"annotation-" + index}
-                    //>
-                        //{annotation[locale]}
-                    //</p>
-                //)
-            //})
         }
     }
 
