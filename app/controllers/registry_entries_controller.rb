@@ -24,6 +24,22 @@ class RegistryEntriesController < BaseController
           id: @registry_entry.id,
           data_type: 'registry_entries',
           data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
+          reload_data_type: 'registry_entries',
+          reload_id: @registry_entry.parents.first.id
+        }
+      end
+    end
+  end
+
+  def show
+    @registry_entry = RegistryEntry.find(params[:id])
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          id: @registry_entry.id,
+          data_type: 'registry_entries',
+          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
         }
       end
     end

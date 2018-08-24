@@ -18,7 +18,8 @@ class SegmentSerializer < ActiveModel::Serializer
              :media_id,
              :timecode,
              :speaker_changed,
-             :speaker_id
+             :speaker_id,
+             :speaker
              #:speaker_is_interviewee
 
   belongs_to :speaking_person, serializer: LightPersonSerializer

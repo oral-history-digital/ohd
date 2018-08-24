@@ -5,7 +5,12 @@ import { submitData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
-    return { }
+    return { 
+        locale: state.archive.locale,
+        locales: state.archive.locales,
+        translations: state.archive.translations,
+        people: state.data.people,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({

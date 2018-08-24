@@ -50,6 +50,7 @@ const account = (state = {}, action) => {
                 firstName: action.firstName,
                 lastName: action.lastName,
                 email: action.email,
+                admin: action.admin,
                 //login: action.login,
             })
         case AUTH_ERROR:

@@ -30,6 +30,7 @@ class SegmentsController < BaseController
     @segment.mainheading = segment_params[:mainheading]
     @segment.subheading = segment_params[:subheading]
     @segment.text = segment_params[:text]
+    @segment.speaker_id = segment_params[:speaker_id]
     @segment.save
 
     clear_cache @segment
@@ -45,7 +46,9 @@ class SegmentsController < BaseController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: ::SegmentSerializer.new(@segment).as_json
+          data: ::SegmentSerializer.new(@segment).as_json,
+          reload_data_type: 'headings',
+          reload_id: "for_interviews_#{@segment.interview.archive_id}"
         }
       end
     end
@@ -93,6 +96,6 @@ class SegmentsController < BaseController
   private
 
   def segment_params
-    params.require(:segment).permit(:text, :mainheading, :subheading)
+    params.require(:segment).permit(:text, :mainheading, :subheading, :speaker_id)
   end
 end

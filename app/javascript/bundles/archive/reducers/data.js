@@ -84,8 +84,10 @@ const data = (state = initialState, action) => {
             }
         case RECEIVE_DATA:
             if (action.extraId) {
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`});
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], {
@@ -97,8 +99,10 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.nestedId) {
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`});
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], {
@@ -108,8 +112,10 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.nestedDataType) {
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`});
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], action.data)
@@ -117,20 +123,26 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.id) {
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: state[action.dataType] ? Object.assign({}, state[action.dataType][action.id], action.data) : action.data
                     })
                 })
             } else if (action.extraParams) {
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.extraParams]: `fetched-${new Date()}`}); 
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {[action.extraParams]: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], action.data)
                 })
             } else if (action.dataType) {
+                let statuses = updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`});
+                statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`}), 
+                    statuses: statuses,
                     [action.dataType]: action.data
                 })
             } else {
@@ -143,9 +155,13 @@ const data = (state = initialState, action) => {
 };
 
 function updateStatus(statuses, dataType, messageObject) {
-    return Object.assign({}, statuses, {
-        [dataType]: Object.assign({}, statuses[dataType], messageObject)
-    })
+    if (dataType) {
+        return Object.assign({}, statuses, {
+            [dataType]: Object.assign({}, statuses[dataType], messageObject)
+        })
+    } else {
+        return statuses;
+    }
 }
 
 export default data;

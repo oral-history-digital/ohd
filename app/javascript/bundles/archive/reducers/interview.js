@@ -4,7 +4,6 @@ import {
     SET_NEXT_TAPE,
 
     TRANSCRIPT_TIME_CHANGE,
-    TRANSCRIPT_SCROLL,
 
     SET_TAPE_AND_TIME,
     SET_ACTUAL_SEGMENT
@@ -46,10 +45,6 @@ const interview = (state = initialState, action) => {
                 transcriptTime: action.videoTime,
                 tape: action.tape,
                 transcriptScrollEnabled: false
-            })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
             })
         case SET_TAPE_AND_TIME:
             return Object.assign({}, state, {
