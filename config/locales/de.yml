@@ -211,6 +211,7 @@ de:
       edit: 'Interview bearbeiten'
     segment:
       edit: 'Segment bearbeiten'
+      speaker_string: 'Sprecher (als String)'
     person: 
       new: 'Person hinzufügen'
       edit: 'Person bearbeiten'
@@ -427,8 +428,6 @@ de:
         language_id: 'Originalsprache'
         video: 'liegt ein Video vor?'
         translated: 'ist das Interview bereits übersetzt?'
-      segment:
-        text: 'Text'
       transcript:
         collection_id: 'Sammlung'
         archive_id: 'Archiv-ID'
@@ -451,6 +450,7 @@ de:
         mainheading: 'Überschrift'
         subheading: 'Unter-Überschrift'
         text: 'Text'
+        speaker_id: 'Sprecher'
       user_content:
         title: 'Titel'
         description: 'Notiz'

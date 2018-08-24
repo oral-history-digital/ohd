@@ -30,6 +30,7 @@ class SegmentsController < BaseController
     @segment.mainheading = segment_params[:mainheading]
     @segment.subheading = segment_params[:subheading]
     @segment.text = segment_params[:text]
+    @segment.speaker_id = segment_params[:speaker_id]
     @segment.save
 
     clear_cache @segment
@@ -95,6 +96,6 @@ class SegmentsController < BaseController
   private
 
   def segment_params
-    params.require(:segment).permit(:text, :mainheading, :subheading)
+    params.require(:segment).permit(:text, :mainheading, :subheading, :speaker_id)
   end
 end
