@@ -5,6 +5,7 @@ require "#{Rails.root}/lib" + '/reference_tree.rb'
 class Interview < ActiveRecord::Base
   include Paperclip
   include IsoHelpers
+  include Workflow
 
   belongs_to :collection
 
@@ -203,6 +204,15 @@ class Interview < ActiveRecord::Base
 
   scope :researched, -> {where(researched: true)}
   scope :with_still_image, -> {where.not(still_image_file_name: nil)}
+
+  workflow do
+    state :unshared do
+      event :publish, transition_to: :public
+    end
+    state :public do
+      event :unpublish, transitions_to: :unshared
+    end
+  end
 
   def self.random_featured
     researched.with_still_image.order("RAND()").first || first

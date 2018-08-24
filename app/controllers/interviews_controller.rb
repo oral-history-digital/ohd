@@ -13,13 +13,11 @@ class InterviewsController < BaseController
 
   def create
     @interview = Interview.create interview_params
+    @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
+
     respond_to do |format|
       format.json do
-        render json: {
-          archive_id: @interview.archive_id,
-          data_type: 'interviews',
-          data: ::InterviewSerializer.new(@interview).as_json,
-        }
+        render json: cache_interview(@interview)
       end
     end
   end
@@ -33,13 +31,13 @@ class InterviewsController < BaseController
   def update
     @interview = Interview.find_by_archive_id params[:id]
     @interview.update_attributes interview_params
+    @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
+
+    clear_cache @interview
+
     respond_to do |format|
       format.json do
-        render json: {
-          archive_id: @interview.archive_id,
-          data_type: 'interviews',
-          data: ::InterviewSerializer.new(@interview).as_json,
-        }
+        render json: cache_interview(@interview)
       end
     end
   end
