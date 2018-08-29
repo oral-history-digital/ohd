@@ -43,11 +43,18 @@ class InterviewSerializer < ActiveModel::Serializer
              :last_segments_ids,
              :first_segments_ids,
 
+             :workflow_state,
+             :transitions_to,
+
              :interviewee_id,
              :contributions,
              :registry_references
 
   has_many :photos, serializer: PhotoSerializer
+
+  def transitions_to
+    object.current_state.events.map{|e| e.first}
+  end
 
   def contributions
     object.contributions.inject({}){|mem, c| mem[c.id] = ContributionSerializer.new(c); mem}

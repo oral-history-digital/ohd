@@ -54,6 +54,13 @@ export default class InterviewForm extends React.Component {
                         elementType: 'input',
                         type: 'checkbox'
                     },
+                    {
+                        elementType: 'select',
+                        attribute: 'workflow_state',
+                        values: Object.values(this.props.interview.transitions_to),
+                        optionsScope: 'workflow_states',
+                        withEmpty: true,
+                    },
                 ]}
             />
         );

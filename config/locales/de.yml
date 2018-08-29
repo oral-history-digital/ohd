@@ -182,6 +182,12 @@ de:
   grid: 'Raster'
   list: 'Liste'
 
+  workflow_states:
+    unshared: 'nicht öffentlich'
+    unpublish: 'nicht öffentlich'
+    public: 'öffentlich'
+    publish: 'öffentlich'
+
   contributions:
     # general:
     interviewee: 'Interviewte(r)'
@@ -428,6 +434,7 @@ de:
         language_id: 'Originalsprache'
         video: 'liegt ein Video vor?'
         translated: 'ist das Interview bereits übersetzt?'
+        workflow_state: 'Status ändern zu:'
       transcript:
         collection_id: 'Sammlung'
         archive_id: 'Archiv-ID'
