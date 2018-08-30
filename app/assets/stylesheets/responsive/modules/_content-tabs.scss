@@ -33,9 +33,11 @@
 }
 
 .content-tabs-nav-link:hover {
-  color: $gray-dark;
+  // color: $gray-dark;
+  color: #fff;
   text-decoration: none;
-  background-color: $gray-lighter;
+  // background-color: $gray-lighter;
+  background-color: $primary-color;
 }
 
 .content-tabs-nav-link.active {

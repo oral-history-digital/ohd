@@ -55,7 +55,7 @@
     display:none;
   }
   &:hover {
-    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
+    background-color: $secondary-color; //rgba(255,250,129,0.5);
     color: $flyout-tab-title-text-color;
   }
   animation-name: fade-in;

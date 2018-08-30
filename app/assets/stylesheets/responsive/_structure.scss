@@ -418,7 +418,7 @@ h1.search-results-title {
     }
   }
   &:not(.active):hover {
-    background-color: lighten($secondary-color, 20%); //rgba(255,250,129,0.5);
+    background-color: $secondary-color; //rgba(255,250,129,0.5);
     color: $flyout-tab-title-text-color;
     // .fa {
     //   color: $gray-darker;
