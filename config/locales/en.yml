@@ -234,7 +234,7 @@ en:
     collaboration: 'Collaboration'
     interview_id: 'Interviews'
     archive_id: 'Interview ID'
-    collection_id: 'Collection'
+    collection_id: 'Subcollection'
     language_id: 'Language'
     media_type: 'media type'
     year_of_birth: 'Year of birth'
