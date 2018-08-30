@@ -6,9 +6,18 @@
 // --------------------------------------------------
 
 $primary-color: #006fb7 !default;
-$secondary-color: #d6c537 !default;
+$secondary-color: $primary-color !default;
 
 $header-logo-padding: 0;
+
+.logo-img {
+    background-color: #b2afa1;
+    padding: 15px 0px 18px 25px;
+}
+
+.wrapper-page header.site-header {
+    padding-left: 0;
+}
 
 $gray-darkest:  #222 !default;
 $gray-darker:   #333 !default;
@@ -22,7 +31,7 @@ $gray-paler:    #f4f4f4 !default;
 
 $gray-warm:     #8b8b7a !default;
 
-$flyout-tab-title-text-color: $gray-darkest !default;
+$flyout-tab-title-text-color: #fff !default;
 
 
 // Basics

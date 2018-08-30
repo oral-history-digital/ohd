@@ -150,7 +150,7 @@ export default class InterviewPreview extends React.Component {
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
                     <div className="search-result-img">
-                        <img src={this.props.interview.still_url} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                        <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                     </div>
                     <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
 

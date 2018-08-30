@@ -4,6 +4,8 @@ import UserContentFormContainer from '../containers/UserContentFormContainer';
 import { t, fullname, segments, getSegmentId } from '../../../lib/utils';
 import moment from 'moment';
 
+import { MISSING_STILL } from '../constants/archiveConstants'
+
 export default class VideoPlayer extends React.Component {
 
     constructor(props) {
@@ -71,6 +73,9 @@ export default class VideoPlayer extends React.Component {
                         return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3`
                     }
                 }
+            }
+            case 'hagen': {
+                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}.mp3`
             }
         }
     }
@@ -235,16 +240,16 @@ export default class VideoPlayer extends React.Component {
                             playsInline={true}
                             controls={true}
                             controlsList="nodownload"
-                            poster={this.props.interview.still_url}
+                            poster={this.props.interview.still_url || MISSING_STILL}
                             onClick={(e) => this.handleVideoClick(e)}
                             src={this.src()}
                         >
                            {this.subtitles()}
                         </video>
+                        <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
+                            {this.tapeSelector()}
+                        </select>
                     </div>
-                    <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
-                        {this.tapeSelector()}
-                    </select>
                 </div>
             );
         } else {

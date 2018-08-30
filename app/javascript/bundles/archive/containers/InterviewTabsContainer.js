@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         interview: getInterview(state),
         interviewFulltext: data && data.fulltext,
-
+        project: state.archive.project,
     }
 }
 

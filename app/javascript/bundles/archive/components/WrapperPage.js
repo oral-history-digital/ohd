@@ -13,6 +13,7 @@ import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
+import hagenLogo from '../../../images/hagen-logo.gif'
 
 import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
@@ -226,6 +227,9 @@ export default class WrapperPage extends React.Component {
                         logoSrc = zwarLogoRu;
                         break;
                 }
+            case 'hagen':
+                logoSrc = hagenLogo;
+                break;
         }
 
         return (

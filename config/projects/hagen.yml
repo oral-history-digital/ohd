@@ -2,7 +2,7 @@ default: &default
 
   available_locales:
     - de
-    - en
+    # - en
 
   default_locale: de
 
@@ -53,6 +53,8 @@ default: &default
 
   streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
+  video_src_base: "https://medien.cedis.fu-berlin.de/zwar/hagen"
+
   meta_keywords:
     de: ''
 
@@ -65,9 +67,9 @@ default: &default
       source: 'registry_entry'
     - id: 'birth_locations'
       source: 'registry_reference_type'
-    - id: 'language_id'
-      source: 'language'
-      use_as_facet: true
+    # - id: 'language_id'
+    #   source: 'language'
+    #   use_as_facet: true
     #- id: 'forced_labor_groups'
       #source: 'registry_entry'
       #use_as_facet: true
