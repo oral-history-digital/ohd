@@ -227,6 +227,7 @@ export default class WrapperPage extends React.Component {
                         logoSrc = zwarLogoRu;
                         break;
                 }
+                break;
             case 'hagen':
                 logoSrc = hagenLogo;
                 break;
