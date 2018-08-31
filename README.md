@@ -142,6 +142,7 @@ Example: Switch from `mog` to `zwar`:
     ```bash
     RAILS_ENV=production rake webpacker:compile
     git add public/packs/
+    git commit -m "fresh compile"
     git push
     ```
 
