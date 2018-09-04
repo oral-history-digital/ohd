@@ -137,6 +137,10 @@ header.site-header {
   height: 400px
 }
 
+.expand {
+  display: none;
+}
+
 .fix-video {
   .wrapper-video {
     position: fixed;
@@ -158,6 +162,14 @@ header.site-header {
     // -ms-transition: height .1s linear;
     // -o-transition: height .1s linear;
     // transition: height .1s linear;
+    .expand {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      cursor: pointer;
+      padding: 25px 22px 22px 25px;
+    }
 
     .video-element {
       margin: 0;
@@ -210,6 +222,7 @@ header.site-header {
 }
 
 .wrapper-video {
+  position: relative;
   padding: 30px 5%;
   height: auto;
   background: $gray-darkest;
@@ -245,6 +258,14 @@ h1.video-title {
     padding-top: 5px;
   }
 }
+.tapeselector {
+  float: left;
+  margin-right: 20px;
+  font-family: FiraSans;
+  font-size: 0.75rem;
+  transition: 0.4s;
+  margin-top: 2px;
+}
 .video-bookmark,
 .video-text-note {
   color: #fff;
@@ -278,12 +299,12 @@ h1.video-title {
   margin-right: 0;
 }
 .video-element {
-  margin: 0;
+  margin: $video-element-margin;
   @include screen-m {
-    margin: 0 7.5%;
+    margin: $video-element-margin-m;
   }
   @include screen-l {
-    margin: 0 20%;
+    margin: $video-element-margin-l;
   }
   video, img {
     width: 100%;

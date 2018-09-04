@@ -46,7 +46,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     reconnectVideoProgress() {
-        this.props.handleTranscriptScroll(false)
+        this.props.handleTranscriptScroll(false);
+        window.scrollTo(0, 1);
     }
 
     handleVideoEnded() {
@@ -213,18 +214,23 @@ export default class VideoPlayer extends React.Component {
     render() {
         if (this.props.project) {
             return (
-                <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
+                <div className='wrapper-video'>
+                    <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, this.props.interviewee, true)}
                         </h1>
                         <div className="video-icons-container">
+                            <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
+                                {this.tapeSelector()}
+                            </select>
                             {this.annotateOnSegmentLink()}
                             {this.rememberInterviewLink()}
                         </div>
                     </div>
                     <div className='video-element'>
                         <video 
+                            id='video'
                             ref={(video) => {
                                 this.video = video;
                             }}
@@ -235,7 +241,7 @@ export default class VideoPlayer extends React.Component {
                                 }
                             }}
                             onEnded={(event) => {
-                               this.handleVideoEnded()
+                            this.handleVideoEnded()
                             }}
                             playsInline={true}
                             controls={true}
@@ -244,11 +250,8 @@ export default class VideoPlayer extends React.Component {
                             onClick={(e) => this.handleVideoClick(e)}
                             src={this.src()}
                         >
-                           {this.subtitles()}
+                        {this.subtitles()}
                         </video>
-                        <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
-                            {this.tapeSelector()}
-                        </select>
                     </div>
                 </div>
             );
