@@ -22,6 +22,17 @@ export default class Segment extends React.Component {
         }
     }
 
+    heading() {
+        if (this.props.data.lead_segment_heading[this.props.locale].length > 0) {
+            return (
+                <span>
+                {t(this.props, 'in')}: "{this.props.data.lead_segment_heading[this.props.locale]}"
+                &nbsp;|&nbsp;
+            </span>
+        )
+    }
+    }
+
     tape() {
         if (this.props.tape_count > 1){
             return (
@@ -54,6 +65,7 @@ export default class Segment extends React.Component {
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
                 <p className="content-search-timecode">
+                    {this.heading()}
                     {this.tape()}
                     {moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}
                 </p>

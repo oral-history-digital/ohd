@@ -230,7 +230,6 @@ export default class VideoPlayer extends React.Component {
                     </div>
                     <div className='video-element'>
                         <video 
-                            id='video'
                             ref={(video) => {
                                 this.video = video;
                             }}
