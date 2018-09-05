@@ -65,6 +65,18 @@ class SearchesController < BaseController
     #    ...]
   end
 
+  # hagen only
+  # in order to being able to get a dropdown list in search field
+  def all_interviews_pseudonyms
+    search = Interview.search do
+      adjust_solr_params do |params|
+        params[:rows] = Interview.all.size
+      end
+    end
+    ps = search.hits.map{ |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)}
+    ps - [nil]
+  end
+
   def all_interviews_places_of_birth
     search = Interview.search do
       adjust_solr_params do |params|
@@ -82,6 +94,7 @@ class SearchesController < BaseController
       end
       facet *Project.search_facets_names
       order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
+      # TODO: sort linguistically
       paginate page: params[:page] || 1, per_page: 12
     end
 
@@ -128,6 +141,7 @@ class SearchesController < BaseController
       format.json do
         render json: {
             all_interviews_titles: all_interviews_titles,
+            all_interviews_pseudonyms: all_interviews_pseudonyms,
             all_interviews_places_of_birth: all_interviews_places_of_birth,
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
