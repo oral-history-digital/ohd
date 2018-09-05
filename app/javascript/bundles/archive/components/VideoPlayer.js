@@ -238,7 +238,7 @@ export default class VideoPlayer extends React.Component {
                   },
                   src: _this.src()
                 },
-                _this.subtitles()
+                (_this.props.project != 'hagen') && _this.subtitles()
               )
         )
     }
