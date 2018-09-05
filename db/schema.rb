@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180810090526) do
+ActiveRecord::Schema.define(version: 20180824122816) do
 
   create_table "annotation_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "annotation_id"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20180810090526) do
     t.index ["segment_id"], name: "index_annotations_on_segment_id", using: :btree
   end
 
-  create_table "checklist_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "checklist_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id", null: false
     t.integer  "user_id",      null: false
     t.string   "item_type",    null: false
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20180810090526) do
     t.index ["interview_id"], name: "index_contributions_on_interview_id", using: :btree
   end
 
-  create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "priority",                 default: 0, null: false
     t.integer  "attempts",                 default: 0, null: false
     t.text     "handler",    limit: 65535,             null: false
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20180810090526) do
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", using: :btree
   end
 
-  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "interview_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "locale"
     t.string  "observations"
     t.integer "interview_id"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20180810090526) do
     t.string   "citation_timecode",        limit: 18
     t.datetime "indexed_at"
     t.integer  "language_id"
+    t.string   "workflow_state",                         default: "unshared"
   end
 
   create_table "language_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -468,7 +469,7 @@ ActiveRecord::Schema.define(version: 20180810090526) do
     t.index ["user_account_id"], name: "index_users_on_user_account_id", using: :btree
   end
 
-  create_table "workflow_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "workflow_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "interview_id",                               null: false
     t.integer  "user_id",                                    null: false
     t.integer  "parent_id"
