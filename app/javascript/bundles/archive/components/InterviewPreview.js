@@ -107,6 +107,13 @@ export default class InterviewPreview extends React.Component {
                 </div>
             )
         }
+        else if (this.props.project === 'hagen') {
+            return (
+                <div className={'search-result-data'} lang={this.props.locale}>
+                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                </div>
+            )
+        }
         return null;
     }
 
