@@ -76,11 +76,10 @@ export default class RegistryEntry extends React.Component {
     buttons() {
         if (admin(this.props)) {
             return (
-                <span className={'flyout-sub-tabs-content-ico'}>
+                <div className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
                     {this.delete()}
-                    {this.showHideChildren()}
-                </span>
+                </div>
             )
         }
     }
@@ -90,6 +89,7 @@ export default class RegistryEntry extends React.Component {
             <div 
                 id={`entry_${this.props.registryEntry.id}`} 
                 key={"entry-" + this.props.registryEntry.id} 
+                className={'registry-entry-label'}
             >
                 {this.props.registryEntry.name[this.props.locale]}
             </div>
@@ -103,10 +103,10 @@ export default class RegistryEntry extends React.Component {
     }
 
     showHideChildren() {
-        let css = this.state.childrenVisible ? 'minus' : 'plus';
+        let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
         return (
             <div
-                className='flyout-sub-tabs-content-ico-link'
+                className='show-hide-children'
                 title={t(this.props, 'edit.registry_entry.show_children')}
                 onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
             >
@@ -118,6 +118,7 @@ export default class RegistryEntry extends React.Component {
     render() {
         return (
             <div>
+                {this.showHideChildren()}
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}

@@ -177,9 +177,9 @@ header.site-header {
       @include screen-m {
         float: left;
       }
-      video, img {
+      video, audio, img {
         height: 100px;
-        width: auto;
+        width: 100%;
       }
     }
     .video-title-container {
@@ -306,7 +306,7 @@ h1.video-title {
   @include screen-l {
     margin: $video-element-margin-l;
   }
-  video, img {
+  video, audio, img {
     width: 100%;
   }
 }
@@ -637,6 +637,19 @@ a.search-result-link {
     &:last-child {
       margin-right: 0;
     }
+  }
+}
+
+ul.registry-entries-ul {
+  list-style: none;
+  .show-hide-children {
+    float: left;
+    margin-right: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  .registry-entry-label {
+    float: left;
   }
 }
 
