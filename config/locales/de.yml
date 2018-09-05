@@ -241,7 +241,13 @@ de:
       new: 'Anmerkung hinzufügen'
       edit: 'Anmerkung bearbeiten'
       delete: 'Anmerkung löschen'
+    upload:
+      upload: 'Upload'
     upload_transcript: 'Transkript hochladen'
+
+  upload:
+    types: 
+      campscape: 'Campscape'
 
   admin:
     change_to_normal_view: 'Nutzer Ansicht'
@@ -450,6 +456,9 @@ de:
         tape_and_archive_id_from_file: 'Archiv-ID und Tapedaten aus dem Dateinamen erschliessen?'
         tape_count: 'Geamtzahl der Tapes'
         tape_number: 'Nummer dieses Tapes'
+      upload:
+        type: 'Art des Uploads'
+        data: 'Datei'
       segment:
         media_id: 'Segment-ID'
         transcript: 'Transkription'

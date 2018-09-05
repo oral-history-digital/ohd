@@ -8,6 +8,7 @@ import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
 import EditInterviewContainer from '../containers/EditInterviewContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
+import UploadsContainer from '../containers/UploadsContainer';
 import EditPersonContainer from '../containers/EditPersonContainer';
 import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeContainer';
 import SearchContainer from '../containers/ArchiveSearchContainer';
@@ -24,6 +25,7 @@ const App = (props) => (
           <Route exact path="/:locale/interviews/new" component={EditInterviewContainer} />
           <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/transcripts/new" component={UploadTranscriptContainer} />
+          <Route path="/:locale/uploads/new" component={UploadsContainer} />
           <Route exact path="/:locale/people/new" component={EditPersonContainer} />
           <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
           <Route path="/:locale/searches/archive" component={SearchContainer} />

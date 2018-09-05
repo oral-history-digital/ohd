@@ -24,6 +24,7 @@ function receiveStaticContent(json){
         rootRegistryEntry: json.root_registry_entry,
         registryEntrySearchFacets: json.registry_entry_search_facets,
         languages: json.languages,
+        uploadTypes: json.upload_types,
         locales: json.locales,
         project: json.project,
         projectDoi: json.project_doi,
