@@ -55,7 +55,7 @@ export default class Transcript extends React.Component {
     }
 
     shownSegmentsCount() {
-        return 7;
+        return 20;
     }
 
     shownSegmentsAround(segmentId) {
