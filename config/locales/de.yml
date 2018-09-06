@@ -245,6 +245,8 @@ de:
       delete: 'Anmerkung löschen'
     upload:
       upload: 'Upload'
+      processing: 'Wird bearbeitet: '
+      return: 'Weiterer Upload'
     upload_transcript: 'Transkript hochladen'
 
   upload:

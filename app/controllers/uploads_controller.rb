@@ -20,7 +20,13 @@ class UploadsController < ApplicationController
 
     respond_to do |format|
       format.html { render 'react/app' }
-      format.json {render json: {msg: "#{upload_params[:type]}.file.processing"}, status: :ok}
+      format.json do 
+        render json: {
+          msg: "processing",
+          id: file.original_filename,
+          data_type: 'uploads'
+        }, status: :ok
+      end
     end
   end
 

@@ -4,6 +4,7 @@ import {
     REMOVE_DATA,
     REQUEST_DATA,
     RECEIVE_DATA,
+    DELETE_PROCESS_MSG,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -20,11 +21,22 @@ const initialState = {
         people: {},
         user_contents: {},
         annotations: {},
+        uploads: {},
     }
 }
 
 const data = (state = initialState, action) => {
     switch (action.type) {
+        case DELETE_PROCESS_MSG:
+            let clone = state.statuses[action.dataType];
+            delete clone.processing;
+            delete clone.processed;
+            clone.lastModified = new Date();
+            return Object.assign({}, state, {
+                statuses: Object.assign({}, state.statuses, {
+                    [action.dataType]: clone
+                })
+            })
         case UPDATE_DATA:
             if (action.nestedId) {
                 return Object.assign({}, state, {
@@ -44,12 +56,11 @@ const data = (state = initialState, action) => {
                 })
             }
         case REMOVE_DATA:
-            let clone;
             if (action.nestedId) {
                 clone = state[action.dataType][action.id][action.nestedDataType];
                 delete clone[action.nestedId];
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {last_deleted: new Date()}), 
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: clone,
@@ -60,7 +71,7 @@ const data = (state = initialState, action) => {
                 clone = state[action.dataType];
                 delete clone[action.id];
                 return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {last_deleted: new Date()}), 
+                    statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
                     [action.dataType]: clone,
                 })
             }
@@ -123,7 +134,11 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.id) {
-                let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
+                // if action comes with a msg (like 'processed') we use msg as id and the id instead of 'fetched'.
+                // like this after submiting a form it can be checked if sth. is processed (the id is not known before for new objects)
+                // and thus the form can be hidden
+                //
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.msg || action.id]: `${action.msg ? action.id : 'fetched'}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
                     statuses: statuses,

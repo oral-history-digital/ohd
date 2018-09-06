@@ -12,33 +12,61 @@ export default class Uploads extends React.Component {
         };
     }
 
+    returnToForm() {
+        this.props.returnToForm('uploads');
+    }
+
+    content() {
+        if (
+            this.props.processing 
+        ) {
+            return (
+                <div>
+                    <p>
+                        {t(this.props, 'edit.upload.processing')}
+                        {this.props.processing}
+                    </p>
+                    <div 
+                        className='return-to-upload'
+                        onClick={() => this.returnToForm()}
+                    >
+                        {t(this.props, 'edit.upload.return')}
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <Form 
+                    scope='upload'
+                    onSubmit={this.props.submitData}
+                    submitText='edit.upload.upload'
+                    elements={[
+                        {
+                            elementType: 'select',
+                            attribute: 'type',
+                            values: this.props.uploadTypes,
+                            withEmpty: true,
+                            validate: function(v){return v !== ''},
+                            individualErrorMsg: 'empty'
+                        },
+                        { 
+                            attribute: 'data',
+                            elementType: 'input',
+                            type: 'file',
+                            validate: function(v){return v instanceof File},
+                        },
+                    ]}
+                />
+            )
+        }
+    }
+
     render() {
         let tabIndex = this.props.locales.length + 6;
-        let _this = this;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <Form 
-                        scope='upload'
-                        onSubmit={this.props.submitData}
-                        submitText='edit.upload.upload'
-                        elements={[
-                            {
-                                elementType: 'select',
-                                attribute: 'type',
-                                values: this.props.uploadTypes,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''},
-                                individualErrorMsg: 'empty'
-                            },
-                            { 
-                                attribute: 'data',
-                                elementType: 'input',
-                                type: 'file',
-                                validate: function(v){return v instanceof File},
-                            },
-                        ]}
-                    />
+                    {this.content()}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}
