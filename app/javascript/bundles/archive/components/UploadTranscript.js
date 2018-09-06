@@ -16,6 +16,136 @@ export default class UploadTranscript extends React.Component {
         //this.handleFileChange = this.handleFileChange.bind(this);
     }
 
+    returnToForm() {
+        this.props.returnToForm('uploads');
+    }
+
+    content() {
+        if (
+            this.props.processing 
+        ) {
+            return (
+                <div>
+                    <p>
+                        {t(this.props, 'edit.upload.processing')}
+                        {this.props.processing}
+                    </p>
+                    <div 
+                        className='return-to-upload'
+                        onClick={() => this.returnToForm()}
+                    >
+                        {t(this.props, 'edit.upload.return')}
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <Form 
+                    scope='transcript'
+                    onSubmit={this.props.submitData}
+                    submitText='edit.upload_transcript'
+                    values={{
+                        // set default values in form`s own values as well:
+                        '[file_column_names]timecode': 'Timecode',
+                        '[file_column_names]transcript': 'Transkript',
+                        '[file_column_names]translation_one': 'Übersetzung'
+                    }}
+                    elements={[
+                        {
+                            elementType: 'select',
+                            attribute: 'collection_id',
+                            values: this.props.collections,
+                            withEmpty: true,
+                            validate: function(v){return v !== ''},
+                            individualErrorMsg: 'empty'
+                        },
+                        { 
+                            attribute: 'data',
+                            elementType: 'input',
+                            type: 'file',
+                            validate: function(v){return v instanceof File},
+                            //handleChangeCallback: this.handleFileChange
+                        },
+                        { 
+                            attribute: '[file_column_names]timecode',
+                            label: 'activerecord.attributes.transcript.timecode',
+                            value: 'Timecode'
+                        },
+                        { 
+                            attribute: '[file_column_names]transcript',
+                            label: 'activerecord.attributes.transcript.transcript',
+                            value: 'Transkript'
+                        },
+                        {
+                            elementType: 'select',
+                            attribute: '[file_column_languages]transcript',
+                            label: 'activerecord.attributes.transcript.transcript_language',
+                            values: this.props.languages,
+                            withEmpty: true,
+                            validate: function(v){return v !== ''} 
+                        },
+                        { 
+                            attribute: '[file_column_names]translation_one',
+                            label: 'activerecord.attributes.transcript.translation_one',
+                            value: 'Übersetzung'
+                        },
+                        {
+                            elementType: 'select',
+                            attribute: '[file_column_languages]translation_one',
+                            label: 'activerecord.attributes.transcript.translation_one_language',
+                            values: this.props.languages,
+                            withEmpty: true,
+                            //validate: function(v){return v !== ''} 
+                        },
+                        { 
+                            attribute: '[file_column_names]translation_two',
+                            label: 'activerecord.attributes.transcript.translation_two',
+                        },
+                        {
+                            elementType: 'select',
+                            attribute: '[file_column_languages]translation_two',
+                            label: 'activerecord.attributes.transcript.translation_two_language',
+                            values: this.props.languages,
+                            withEmpty: true,
+                            //validate: function(v){return v !== ''} 
+                        },
+                        { 
+                            attribute: '[file_column_names]annotations',
+                            label: 'activerecord.attributes.transcript.annotations'
+                        },
+                        { 
+                            attribute: 'tape_and_archive_id_from_file',
+                            elementType: 'input',
+                            type: 'checkbox',
+                            handleChangeCallback: this.handleTapeAndArchiveIdFromFileChange
+                        },
+                        { 
+                            attribute: 'archive_id',
+                            hidden: this.state.hideTapeAndArchiveInputs,
+                            //value: this.state.dummy,
+                            //value: this.state.archiveId,
+                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2}\d{3}$/.test(v)}
+                        },
+                        { 
+                            attribute: 'tape_count',
+                            hidden: this.state.hideTapeAndArchiveInputs,
+                            //value: this.state.dummy,
+                            //value: this.state.tapeCount,
+                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                        },
+                        { 
+                            attribute: 'tape_number',
+                            hidden: this.state.hideTapeAndArchiveInputs,
+                            //value: this.state.dummy,
+                            //value: this.state.tapeNumber,
+                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                        },
+                    ]}
+                />
+            )
+        }
+    }
+
     handleTapeAndArchiveIdFromFileChange(name, checked) {
         if (name === 'tape_and_archive_id_from_file') {
             // trigger the handleChange and with it the validate function of the inputs archiveId, tapeCount and tapeNumber
@@ -48,108 +178,7 @@ export default class UploadTranscript extends React.Component {
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <Form 
-                        scope='transcript'
-                        onSubmit={this.props.submitData}
-                        submitText='edit.upload_transcript'
-                        values={{
-                            // set default values in form`s own values as well:
-                            '[file_column_names]timecode': 'Timecode',
-                            '[file_column_names]transcript': 'Transkript',
-                            '[file_column_names]translation_one': 'Übersetzung'
-                        }}
-                        elements={[
-                            {
-                                elementType: 'select',
-                                attribute: 'collection_id',
-                                values: this.props.collections,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''},
-                                individualErrorMsg: 'empty'
-                            },
-                            { 
-                                attribute: 'data',
-                                elementType: 'input',
-                                type: 'file',
-                                validate: function(v){return v instanceof File},
-                                //handleChangeCallback: this.handleFileChange
-                            },
-                            { 
-                                attribute: '[file_column_names]timecode',
-                                label: 'activerecord.attributes.transcript.timecode',
-                                value: 'Timecode'
-                            },
-                            { 
-                                attribute: '[file_column_names]transcript',
-                                label: 'activerecord.attributes.transcript.transcript',
-                                value: 'Transkript'
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: '[file_column_languages]transcript',
-                                label: 'activerecord.attributes.transcript.transcript_language',
-                                values: this.props.languages,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''} 
-                            },
-                            { 
-                                attribute: '[file_column_names]translation_one',
-                                label: 'activerecord.attributes.transcript.translation_one',
-                                value: 'Übersetzung'
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: '[file_column_languages]translation_one',
-                                label: 'activerecord.attributes.transcript.translation_one_language',
-                                values: this.props.languages,
-                                withEmpty: true,
-                                //validate: function(v){return v !== ''} 
-                            },
-                            { 
-                                attribute: '[file_column_names]translation_two',
-                                label: 'activerecord.attributes.transcript.translation_two',
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: '[file_column_languages]translation_two',
-                                label: 'activerecord.attributes.transcript.translation_two_language',
-                                values: this.props.languages,
-                                withEmpty: true,
-                                //validate: function(v){return v !== ''} 
-                            },
-                            { 
-                                attribute: '[file_column_names]annotations',
-                                label: 'activerecord.attributes.transcript.annotations'
-                            },
-                            { 
-                                attribute: 'tape_and_archive_id_from_file',
-                                elementType: 'input',
-                                type: 'checkbox',
-                                handleChangeCallback: this.handleTapeAndArchiveIdFromFileChange
-                            },
-                            { 
-                                attribute: 'archive_id',
-                                hidden: this.state.hideTapeAndArchiveInputs,
-                                //value: this.state.dummy,
-                                //value: this.state.archiveId,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2}\d{3}$/.test(v)}
-                            },
-                            { 
-                                attribute: 'tape_count',
-                                hidden: this.state.hideTapeAndArchiveInputs,
-                                //value: this.state.dummy,
-                                //value: this.state.tapeCount,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                            },
-                            { 
-                                attribute: 'tape_number',
-                                hidden: this.state.hideTapeAndArchiveInputs,
-                                //value: this.state.dummy,
-                                //value: this.state.tapeNumber,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                            },
-                        ]}
-                    />
+                    {this.content()}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}

@@ -31,7 +31,13 @@ class TranscriptsController < ApplicationController
     ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, file_column_names, file_column_languages)
 
     respond_to do |format|
-      format.json {render json: {}, status: :ok}
+      format.json do
+        render json: {
+          msg: "processing",
+          id: file.original_filename,
+          data_type: 'uploads'
+        }, status: :ok
+      end
     end
   end
 

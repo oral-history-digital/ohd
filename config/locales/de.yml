@@ -217,12 +217,16 @@ de:
     interview:
       new: 'Neues Interview'
       edit: 'Interview bearbeiten'
+      processed: 'Interview angelegt: '
+      return: 'Weiteres Interview anlegen'
     segment:
       edit: 'Segment bearbeiten'
       speaker_string: 'Sprecher (als String)'
     person: 
       new: 'Person hinzufügen'
       edit: 'Person bearbeiten'
+      processed: 'Person angelegt: '
+      return: 'Weitere Person anlegen'
     contribution: 
       new: 'Kontributor hinzufügen'
     registry_reference: 

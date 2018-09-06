@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UploadTranscript from '../components/UploadTranscript';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData, returnToForm } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -12,11 +12,14 @@ const mapStateToProps = (state) => {
         collections: state.archive.collections,
         languages: state.archive.languages,
         account: state.account,
+        processing: state.data.statuses.uploads.processing, 
+        lastModified: state.data.statuses.uploads.lastModified, 
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params) => dispatch(submitData(params))
+    submitData: (params) => dispatch(submitData(params)),
+    returnToForm: (dataType) => dispatch(returnToForm(dataType))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadTranscript);

@@ -17,7 +17,7 @@ class InterviewsController < BaseController
 
     respond_to do |format|
       format.json do
-        render json: cache_interview(@interview)
+        render json: cache_interview(@interview, 'processed')
       end
     end
   end
@@ -165,14 +165,14 @@ class InterviewsController < BaseController
     )
   end
 
-  def cache_interview(interview)
-    Rails.cache.fetch "interview-#{interview.archive_id}-#{interview.updated_at}" do
-      {
-        archive_id: interview.archive_id,
-        data_type: 'interviews',
-        data: ::InterviewSerializer.new(interview).as_json,
-      }
-    end
+  def cache_interview(interview, msg=nil)
+    json = {
+      archive_id: interview.archive_id,
+      data_type: 'interviews',
+      data: ::InterviewSerializer.new(interview).as_json,
+    }
+    json.update(msg: msg) if msg
+    Rails.cache.fetch("interview-#{interview.archive_id}-#{interview.updated_at}"){ json }
   end
 
 end
