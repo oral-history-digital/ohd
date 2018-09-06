@@ -167,6 +167,9 @@ class Interview < ActiveRecord::Base
     string :archive_id, :stored => true, :references => Interview
     integer :collection_id, :stored => true, :references => Collection
     string :media_type, :stored => true
+
+    # in order to find pseudonyums by string (hagen)
+    text :pseudonym_string, :stored => true if Project.project_id == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -229,6 +232,10 @@ class Interview < ActiveRecord::Base
   # referenced by archive_id
   def to_param
     archive_id
+  end
+
+  def pseudonym_string(locale = I18n.locale)
+    (self.respond_to? :pseudonym) ? pseudonym.map{|p| RegistryEntry.find(p).registry_names.first.descriptor locale}.join("; ") : nil
   end
 
   def to_s(locale = I18n.locale)

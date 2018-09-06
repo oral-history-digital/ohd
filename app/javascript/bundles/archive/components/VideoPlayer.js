@@ -4,6 +4,8 @@ import UserContentFormContainer from '../containers/UserContentFormContainer';
 import { t, fullname, segments, getSegmentId } from '../../../lib/utils';
 import moment from 'moment';
 
+import { MISSING_STILL } from '../constants/archiveConstants'
+
 export default class VideoPlayer extends React.Component {
 
     constructor(props) {
@@ -44,7 +46,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     reconnectVideoProgress() {
-        this.props.handleTranscriptScroll(false)
+        this.props.handleTranscriptScroll(false);
+        window.scrollTo(0, 1);
     }
 
     handleVideoEnded() {
@@ -71,6 +74,9 @@ export default class VideoPlayer extends React.Component {
                         return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3`
                     }
                 }
+            }
+            case 'hagen': {
+                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}.mp3`
             }
         }
     }
@@ -184,6 +190,59 @@ export default class VideoPlayer extends React.Component {
         return options;
     }
 
+    mediaElement(_this) {
+        return(
+            //     <video 
+            //         ref={(video) => {
+            //             this.video = video;
+            //         }}
+            //         onTimeUpdate={(event) => {
+            //             let time = Math.round(event.target.currentTime*100)/100;
+            //             if (time !== this.props.videoTime) {
+            //                 this.props.handleVideoTimeChange(time)
+            //             }
+            //         }}
+            //         onEnded={(event) => {
+            //         this.handleVideoEnded()
+            //         }}
+            //         playsInline={true}
+            //         controls={true}
+            //         controlsList="nodownload"
+            //         poster={this.props.interview.still_url || MISSING_STILL}
+            //         onClick={(e) => this.handleVideoClick(e)}
+            //         src={this.src()}
+            //     >
+            //     {this.subtitles()}
+            // </video>
+            React.createElement(
+                _this.props.project == 'hagen' ? 'audio' : 'video',
+                {
+                  ref: function ref(video) {
+                    _this.video = video;
+                  },
+                  onTimeUpdate: function onTimeUpdate(event) {
+                    var time = Math.round(event.target.currentTime * 100) / 100;
+                    if (time !== _this.props.videoTime) {
+                      _this.props.handleVideoTimeChange(time);
+                    }
+                  },
+                  onEnded: function onEnded(event) {
+                    _this.handleVideoEnded();
+                  },
+                  playsInline: true,
+                  controls: true,
+                  controlsList: "nodownload",
+                  poster: _this.props.interview.still_url || MISSING_STILL,
+                  onClick: function onClick(e) {
+                    return _this.handleVideoClick(e);
+                  },
+                  src: _this.src()
+                },
+                (_this.props.project != 'hagen') && _this.subtitles()
+              )
+        )
+    }
+
     handleVideoClick(e) {
         if(this.video) {
             if(navigator.userAgent.indexOf("Chrome") != -1 )
@@ -208,43 +267,23 @@ export default class VideoPlayer extends React.Component {
     render() {
         if (this.props.project) {
             return (
-                <div className='wrapper-video' onClick={() => this.reconnectVideoProgress()}>
+                <div className='wrapper-video'>
+                    <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, this.props.interviewee, true)}
                         </h1>
                         <div className="video-icons-container">
+                            <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
+                                {this.tapeSelector()}
+                            </select>
                             {this.annotateOnSegmentLink()}
                             {this.rememberInterviewLink()}
                         </div>
                     </div>
                     <div className='video-element'>
-                        <video 
-                            ref={(video) => {
-                                this.video = video;
-                            }}
-                            onTimeUpdate={(event) => {
-                                let time = Math.round(event.target.currentTime*100)/100;
-                                if (time !== this.props.videoTime) {
-                                    this.props.handleVideoTimeChange(time)
-                                }
-                            }}
-                            onEnded={(event) => {
-                               this.handleVideoEnded()
-                            }}
-                            playsInline={true}
-                            controls={true}
-                            controlsList="nodownload"
-                            poster={this.props.interview.still_url}
-                            onClick={(e) => this.handleVideoClick(e)}
-                            src={this.src()}
-                        >
-                           {this.subtitles()}
-                        </video>
+                        {this.mediaElement(this)}
                     </div>
-                    <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden' : ''}>
-                        {this.tapeSelector()}
-                    </select>
                 </div>
             );
         } else {

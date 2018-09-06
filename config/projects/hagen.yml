@@ -2,7 +2,7 @@ default: &default
 
   available_locales:
     - de
-    - en
+    # - en
 
   default_locale: de
 
@@ -53,6 +53,8 @@ default: &default
 
   streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
+  video_src_base: "https://medien.cedis.fu-berlin.de/zwar/hagen"
+
   meta_keywords:
     de: ''
 
@@ -61,16 +63,11 @@ default: &default
   smtp_server: 'mail.fu-berlin.de'
 
   person_properties:
-    - id: 'person_reference'
-      source: 'registry_entry'
-    - id: 'birth_locations'
-      source: 'registry_reference_type'
-    - id: 'language_id'
-      source: 'language'
+    # - id: 'person_reference'
+    #   source: 'registry_entry'
+    - id: 'pseudonym'
+      source: 'registry_entry' # id: 12
       use_as_facet: true
-    #- id: 'forced_labor_groups'
-      #source: 'registry_entry'
-      #use_as_facet: true
     - id: 'gender'
       source: 'person'
       use_as_facet: true
@@ -80,68 +77,30 @@ default: &default
     - id: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-    #- id: 'decade_of_birth'
-      #source: 'person'
-      #use_as_facet: true
-      #values:
-        #"1900s": "1900s"
-        #"1910s": "1910s"
-        #"1920s": "1920s"
-        #"1930s": "1930s"
-    #- id: 'forced_labor_fields'
-      #source: 'registry_entry'
-      #use_as_facet: true
-    - id: 'forced_labor_habitations'
-      source: 'registry_entry'
-      # use_as_facet: true
+    - id: 'interview_date'
+      source: 'registry_reference_type'
+      use_as_facet: true
+    - id: 'birth_location'
+      source: 'registry_reference_type'
+      use_as_facet: true
     - id: 'home_location'
       source: 'registry_reference_type'
-      # use_as_facet: true
-    - id: 'forced_labor_locations'
-      source: 'registry_reference_type'
-    - id: 'deportation_locations'
-      source: 'registry_reference_type'
-    - id: 'return_locations'
-      source: 'registry_reference_type'
-    - id: 'collection_id'
-      source: 'collection'
-      use_as_facet: true 
-  #person_properties:
-    #- id: 'person_reference'
-      #source: 'registry_entry'
-      #descriptor: 'Person'
-    #- id: 'pseudonym'
-      #source: 'registry_entry'
-      #descriptor: 'Pseudonym'
-      #use_as_facet: true
-    #- id: 'gender'
-      #source: 'registry_entry'
-      #descriptor: 'Geschlecht'
-      #use_as_facet: true
-    #- id: 'interview_dates'
-      #source: 'registry_reference_type'
-      #use_as_facet: true
-    #- id: 'birth_dates'
-      #source: 'registry_reference_type'
-      #use_as_facet: true
-    #- id: 'birth_locations'
-      #source: 'registry_reference_type'
-      #use_as_facet: true
-    #- id: 'home_locations'
-      #source: 'registry_reference_type'
-      #use_as_facet: true
-    #- id: 'profession'
-      #source: 'registry_entry'
-      #descriptor: 'Beruf'
-      #use_as_facet: true
-    #- id: 'professional_position'
-      #source: 'registry_entry'
-      #descriptor: 'Stellung im Beruf'
-      #use_as_facet: true
-    #- id: 'industry'
-      #source: 'registry_entry'
-      #descriptor: 'Wirtschaftsbereich'
-      #use_as_facet: true
+      use_as_facet: true
+    - id: 'profession'
+      source: 'registry_entry' #id: 210
+      descriptor: 'Beruf'
+      use_as_facet: true
+    - id: 'professional_position'
+      source: 'registry_entry' # id: 7
+      descriptor: 'Stellung im Beruf'
+      use_as_facet: true
+    # - id: 'collection_id'
+    #   source: 'collection'
+    #   use_as_facet: true 
+    # - id: 'industry'
+    #   source: 'registry_entry' #id: 8
+    #   descriptor: 'Wirtschaftsbereich'
+    #   use_as_facet: true
 
   uses_map: false # Must be "false" for all projects except ZWAR until the map has been generalized.
 

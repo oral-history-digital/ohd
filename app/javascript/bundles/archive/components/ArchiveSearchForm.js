@@ -113,7 +113,7 @@ export default class ArchiveSearchForm extends React.Component {
                             type="text" 
                             name="fulltext" 
                             value={fulltext}
-                            placeholder={t(this.props, 'enter_field')}
+                            placeholder={t(this.props, (this.props.project === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
                             onChange={this.handleChange}
                             list='allInterviewTitles' 
                             autoFocus
@@ -193,9 +193,11 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     renderOptions() { 
-        return this.props.allInterviewsTitles.map((title, index) => {
+        return (this.props.allInterviewsTitles.concat(this.props.allInterviewsPseudonyms)).map((title, index) => {
                 return (
-                    <option key={"option-" + index} value={title[this.props.locale]}>
+                    // <option key={"option-" + index} value={'"' + 'muss Beispiel' + '"'}>
+                    // <option key={"option-" + index} value={'"' + title[this.props.locale] + '"'}>
+                    <option key={"option-" + index} value={`"${title[this.props.locale]}"`}>
                         {title[this.props.locale]}
                     </option>
                 )

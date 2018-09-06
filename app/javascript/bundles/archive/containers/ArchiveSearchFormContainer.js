@@ -12,11 +12,13 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 const mapStateToProps = (state) => {
   return {
       allInterviewsTitles: state.search.allInterviewsTitles,
+      allInterviewsPseudonyms: state.search.allInterviewsPseudonyms,
       facets: state.search.facets,
       query: state.search.query,
       translations: state.archive.translations,
       locale: state.archive.locale,
-      isArchiveSearching: state.search.isArchiveSearching
+      isArchiveSearching: state.search.isArchiveSearching,
+      project: state.archive.project,
   }
 }
 

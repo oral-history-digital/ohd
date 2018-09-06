@@ -6,8 +6,8 @@ import { handleSegmentClick } from '../actions/interviewActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
-        transcriptTime: state.archive.transcriptTime,
-        tape: state.archive.tape,
+        transcriptTime: state.interview.transcriptTime,
+        tape: state.interview.tape,
     }
 }
 

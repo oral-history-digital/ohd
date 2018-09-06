@@ -15,9 +15,8 @@ export default class Heading extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        let endTime =  (this.state.expanded) ? this.props.data.start_time : this.props.data.next_start_time;
-        endTime = endTime ? endTime : this.props.data.interview_duration;
-        let active = this.props.tape === this.props.data.tape_nbr  && endTime > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
+        let endTime = (this.props.nextHeading) ? this.props.nextHeading.start_time : this.props.data.interview_duration;
+        let active = this.props.tape === this.props.data.tape_nbr && endTime > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
         if (active !== this.state.active) {
             this.setState({
                 active: active
@@ -47,7 +46,9 @@ export default class Heading extends React.Component {
                 {this.props.data.subheadings.map((heading, index) => {
                     return <SubHeadingContainer
                         key={'heading-' + index}
-                        data={heading}/>
+                        data={heading}
+                        nextSubHeading={this.props.data.subheadings[index+1] || this.props.nextHeading}
+                    />
                 })}
             </div>;
         }

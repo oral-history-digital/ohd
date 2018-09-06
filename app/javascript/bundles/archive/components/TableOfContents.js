@@ -131,6 +131,7 @@ export default class TableOfContents extends React.Component {
                         return <HeadingContainer
                             key={'mainheading-' + index}
                             data={heading}
+                            nextHeading={headings[index+1]}
                         />
                     })}
                 </div>

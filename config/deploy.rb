@@ -1,7 +1,7 @@
 # config valid only for current version of Capistrano
 lock "3.9.1"
 
-set :repo_url, "git@gitlab.cedis.fu-berlin.de:Archive-Upgrade/zwar-archive.git"
+set :repo_url, "git@gitlab.cedis.fu-berlin.de:dis/zwar-archive.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

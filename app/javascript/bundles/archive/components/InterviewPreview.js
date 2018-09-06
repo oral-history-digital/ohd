@@ -107,6 +107,13 @@ export default class InterviewPreview extends React.Component {
                 </div>
             )
         }
+        else if (this.props.project === 'hagen') {
+            return (
+                <div className={'search-result-data'} lang={this.props.locale}>
+                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                </div>
+            )
+        }
         return null;
     }
 
@@ -150,7 +157,7 @@ export default class InterviewPreview extends React.Component {
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
                     <div className="search-result-img">
-                        <img src={this.props.interview.still_url} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                        <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                     </div>
                     <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
 

@@ -38,7 +38,7 @@ export default class RegistryEntries extends React.Component {
                 let registryEntry = this.props.registryEntries[id] 
                 if (registryEntry) {
                     return (
-                        <li key={`registry_entries-li-${id}`} >
+                        <li key={`registry_entries-li-${id}`}>
                             <RegistryEntryContainer 
                                 registryEntry={registryEntry} 
                                 key={`registry_entries-${id}`} 
@@ -72,7 +72,7 @@ export default class RegistryEntries extends React.Component {
     render() {
         return (
             <div>
-                <ul>
+                <ul className={'registry-entries-ul'}>
                     {this.registryEntries()}
                 </ul>
                 {this.addRegistryEntry()}

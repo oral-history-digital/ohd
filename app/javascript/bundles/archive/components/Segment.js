@@ -28,6 +28,9 @@ export default class Segment extends React.Component {
         if (nextProps.active !== this.props.active) {
             return true;
         }
+        if (nextProps.editView !== this.props.editView) {
+            return true;
+        }
 
         return false;
     }
