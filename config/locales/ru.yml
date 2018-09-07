@@ -650,6 +650,8 @@ ru:
     year_of_birth: 'Год рождения'
     forced_labor_groups: 'Группа'
     forced_labor_fields: 'Сфера деятельности'
+    video: 'Видео'
+    audio: 'Аудио'
 
   user_account_mailer:
     subject: "Ваш доступ к архиву '%{project_name}'"

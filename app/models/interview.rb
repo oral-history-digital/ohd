@@ -166,7 +166,6 @@ class Interview < ActiveRecord::Base
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
     integer :collection_id, :stored => true, :references => Collection
-    string :media_type, :stored => true
 
     # in order to find pseudonyums by string (hagen)
     text :pseudonym_string, :stored => true if Project.project_id == 'hagen'
@@ -190,6 +189,10 @@ class Interview < ActiveRecord::Base
 
     Project.person_search_facets.each do |facet|
       string facet['id'].to_sym, :multiple => true, :stored => true
+    end
+
+    Project.interview_search_facets.each do |facet|
+      string facet['id'].to_sym, :stored => true
     end
 
     # Create localized attributes so that we can order

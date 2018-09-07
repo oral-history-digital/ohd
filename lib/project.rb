@@ -32,7 +32,7 @@ module Project
       person_properties.select{|c| c['use_as_facet'] }
     end
     
-    %w(registry_entry registry_reference_type person).each do |m|
+    %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "#{m}_search_facets" do
         person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
       end
@@ -88,7 +88,7 @@ module Project
             name: localized_hash_for("search_facets", facet['id']),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
               subfacets[interview.send(facet['id'])] = {
-                name: interview.localized_hash,
+                name: interview.send("localized_hash_for_" + facet['id']),
                 count: 0
               }
               subfacets
@@ -116,17 +116,18 @@ module Project
               subfacets
             end
           }
-        when 'media_type'
-          mem[facet['id'].to_sym] = {
-            name: localized_hash_for("search_facets", facet['id']),
-            subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet['id'])] = {
-                name: interview.localized_hash_for_media_type,
-                count: 0
-              }
-              subfacets
-            end
-          }
+          # media_type is not valid as source anymore. is now covered by 'interview'
+        # when 'media_type'
+        #   mem[facet['id'].to_sym] = {
+        #     name: localized_hash_for("search_facets", facet['id']),
+        #     subfacets: Interview.all.inject({}) do |subfacets, interview|
+        #       subfacets[interview.send(facet['id'])] = {
+        #         name: interview.localized_hash_for_media_type,
+        #         count: 0
+        #       }
+        #       subfacets
+        #     end
+        #   }
         end
         mem.with_indifferent_access
       end

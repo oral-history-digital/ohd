@@ -315,6 +315,8 @@ de:
     woman: 'weiblich'
     male: 'männlich'
     female: 'weiblich'
+    video: 'Video'
+    audio: 'Audio'
     born: 'geb.'
     typology: 'Erfahrungen'
     resistance: 'Widerstand'

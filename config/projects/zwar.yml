@@ -115,7 +115,7 @@ default: &default
       source: 'language'
       use_as_facet: true
     - id: 'media_type'
-      source: 'media_type'
+      source: 'interview'
       use_as_facet: true
     - id: 'gender'
       source: 'person'

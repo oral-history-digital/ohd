@@ -239,6 +239,8 @@ en:
     language_id: 'Language'
     media_type: 'media type'
     year_of_birth: 'Year of birth'
+    audio: 'Audio'
+    video: 'Video'
     # decade_of_birth: 'Year of birth'
     # 1890s: '1890s'
     # 1900s: '1900s'
