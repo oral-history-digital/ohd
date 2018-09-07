@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       end
 
       resources :transcripts, only: [:new, :create]
+      resources :uploads, only: [:new, :create]
 
       #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript

@@ -36,6 +36,7 @@ class HomeController < BaseController
             contribution_types: Project.contribution_types,
             registry_entry_search_facets: Project.registry_entry_search_facets.inject({}){|mem, facet| mem[facet['id']] = RegistryEntrySerializer.new(RegistryEntry.find_by_entry_code(facet['id'])).as_json; mem},
             languages: Language.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            upload_types: Project.upload_types,
             project: Project.name.to_s,
             project_name: Project.project_name,
             project_domain: Project.project_domain,

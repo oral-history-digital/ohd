@@ -67,10 +67,14 @@ export default class FlyoutTabs extends React.Component {
             this.context.router.history.push(`/${this.props.locale}/transcripts/new`);
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 6) {
+             // uploads
+            this.context.router.history.push(`/${this.props.locale}/uploads/new`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 7) {
              // add person
             this.context.router.history.push(`/${this.props.locale}/people/new`);
             this.setState({tabIndex: tabIndex});
-        } else if (tabIndex === this.props.locales.length + 7) {
+        } else if (tabIndex === this.props.locales.length + 8) {
              // registry entries
             this.context.router.history.push(`/${this.props.locale}/registry_entries`);
             this.setState({tabIndex: tabIndex});
@@ -158,6 +162,7 @@ export default class FlyoutTabs extends React.Component {
             //<Tab className={css} key='edit_interview.new'>{t(this.props, 'edit_interview.new')}</Tab>,
             <Tab className={css} key='edit.interview.new'>{t(this.props, 'edit.interview.new')}</Tab>,
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
+            <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
             <Tab className={css} key='edit.registry_entries.edit'>{t(this.props, 'edit.registry_entries.edit')}</Tab>,
         ];
@@ -175,6 +180,9 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-upload-transcript'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.upload_transcript')}</div>
                 </TabPanel>,
+                <TabPanel key={'tabpanel-uploads'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.upload.upload')}</div>
+                </TabPanel>,
                 <TabPanel key={'tabpanel-add-person'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
@@ -186,6 +194,7 @@ export default class FlyoutTabs extends React.Component {
             return [
                 <TabPanel key='tabpanel-edit-interview'/>,
                 <TabPanel key='tabpanel-upload-transcript'/>,
+                <TabPanel key='tabpanel-uploads'/>,
                 <TabPanel key='tabpanel-add-person'/>,
                 <TabPanel key='tabpanel-registry-entries'/>
             ]

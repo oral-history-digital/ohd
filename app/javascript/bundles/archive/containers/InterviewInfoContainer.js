@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
         // the following is just a trick to force rerender after deletion
-        contributions_last_deleted: state.data.statuses.contributions.last_deleted,
+        contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         account: state.account,

@@ -29,7 +29,7 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 7;
+        let tabIndex = this.props.locales.length + 8;
         if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>

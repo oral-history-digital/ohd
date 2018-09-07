@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
         contents: state.data.user_contents,
         status: state.data.statuses.user_contents.all,
         // the following is just a trick to force rerender after deletion
-        last_deleted: state.data.statuses.user_contents.last_deleted,
+        lastModified: state.data.statuses.user_contents.lastModified,
         locale: state.archive.locale,
     }
 }

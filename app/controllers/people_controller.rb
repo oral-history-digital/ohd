@@ -17,6 +17,7 @@ class PeopleController < ApplicationController
           id: @person.id,
           data_type: 'people',
           data: ::PersonSerializer.new(@person).as_json,
+          msg: 'processed'
         }
       end
     end

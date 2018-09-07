@@ -9,6 +9,7 @@ import {
     UPDATE_DATA,
     //ADD_DATA,
     REMOVE_DATA,
+    DELETE_PROCESS_MSG,
 } from '../constants/archiveConstants';
 
 //const addData = (params) => ({
@@ -54,6 +55,12 @@ const receiveData = (json) => ({
     extraId: json.extra_id,
     reloadDataType: json.reload_data_type,
     reloadId: json.reload_id,
+    msg: json.msg
+});
+
+const deleteProcessMsg = (dataType) => ({
+    type: DELETE_PROCESS_MSG,
+    dataType: dataType,
 });
 
 export function fetchData(dataType, id, nestedDataType, locale='de', extraParams) {
@@ -103,4 +110,10 @@ export function deleteData(dataType, id, nestedDataType, nestedId, skipRemove=fa
         }
     }
 }
+
+export function returnToForm(dataType) {
+    return dispatch => {
+        dispatch(deleteProcessMsg(dataType))
+    }
+};
 
