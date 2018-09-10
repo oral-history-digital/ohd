@@ -9,8 +9,8 @@ class Person < ApplicationRecord
 
   has_many :contributions
   has_many :interviews,
-    through: :contributions,
-    -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")}
+    -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
+    through: :contributions
 
   has_many :histories, dependent: :destroy
 
