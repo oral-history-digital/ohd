@@ -130,11 +130,11 @@ export default class InterviewInfo extends React.Component {
 
     searchFacets() {
         let facets = [];
-        for (var r in this.props.registryEntrySearchFacets) {
+        for (var r in this.props.registryEntrySearchFacetIds) {
             facets.push(
                 <RegistryEntrySearchFacetsContainer 
                     key={`this.props.registry-entry-search-facets-${r}`} 
-                    parentEntry={this.props.registryEntrySearchFacets[r]} 
+                    parentEntryId={this.props.registryEntrySearchFacetIds[r]} 
                     interview={this.props.interview} 
                 />
             );
@@ -143,7 +143,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     registryReferences() {
-        if (admin(this.props) && this.props.registryEntrySearchFacets) {
+        if (admin(this.props) && this.props.registryEntrySearchFacetIds) {
             return (
                 <div>
                     <h3>{t(this.props, 'activerecord.models.registry_references.other')}</h3>

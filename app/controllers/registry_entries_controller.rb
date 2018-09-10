@@ -39,7 +39,7 @@ class RegistryEntriesController < BaseController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
+          data: Rails.cache.fetch("registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
         }
       end
     end
@@ -53,7 +53,7 @@ class RegistryEntriesController < BaseController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
+          data: Rails.cache.fetch("registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
         }
       end
     end
@@ -97,14 +97,24 @@ class RegistryEntriesController < BaseController
 
   def destroy 
     @registry_entry = RegistryEntry.find(params[:id])
+    parent = @registry_entry.parents.first
     @registry_entry.destroy
+
+    clear_cache parent
+    parent.touch
+    parent.reload
 
     respond_to do |format|
       format.html do
         render :action => 'index'
       end
-      format.js
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: {
+          id: parent.id,
+          data_type: 'registry_entries',
+          data: Rails.cache.fetch("registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
+        }, status: :ok 
+      end
     end
   end
 

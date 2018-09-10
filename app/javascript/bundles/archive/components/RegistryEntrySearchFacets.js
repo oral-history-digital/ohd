@@ -12,29 +12,45 @@ export default class RegistryEntrySearchFacets extends React.Component {
 
     componentDidMount() {
         this.loadRegistryEntries();
+        this.loadParentEntry();
     }
 
     componentDidUpdate() {
         this.loadRegistryEntries();
+        this.loadParentEntry();
     }
 
     loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntry.id}`);
+        if (
+            !this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] 
+        ) {
+            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntryId}`);
         }
     }
+
+    loadParentEntry() {
+        if (
+            //(this.props.registryEntries && !this.props.registryEntries[this.props.parentEntryId]) ||
+            !this.props.registryEntriesStatus[this.props.parentEntryId] ||
+            (this.props.registryEntriesStatus[this.props.parentEntryId] &&
+            this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload')
+        ) {
+            this.props.fetchData('registry_entries', this.props.parentEntryId);
+        }
+    }
+
 
     registryEntries() {
         let registryEntries = [];
         if (
             this.props.interview && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`] &&
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntry.id}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] &&
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`].split('-')[0] === 'fetched'
         ) {
             for (var c in this.props.interview.registry_references) {
                 let registryReference = this.props.interview.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryEntry && registryEntry.parent_ids.indexOf(this.props.parentEntry.id) > -1 && registryReference !== 'fetched') {
+                if (registryEntry && registryEntry.parent_ids.indexOf(this.props.parentEntryId) > -1 && registryReference !== 'fetched') {
                     registryEntries.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
@@ -61,7 +77,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                                  refObject={this.props.interview} 
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
-                                 registryEntryParent={this.props.parentEntry}
+                                 registryEntryParentId={this.props.parentEntryId}
                                  locale={this.props.locale}
                                  goDeeper={false}
                              />
@@ -73,13 +89,17 @@ export default class RegistryEntrySearchFacets extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <h4>{this.props.parentEntry.name[this.props.locale]}</h4>
-                {this.registryEntries()}
-                {this.addRegistryReference()}
-            </div>
-        )
+        if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId]) {
+            return (
+                <div>
+                    <h4>{this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}</h4>
+                    {this.registryEntries()}
+                    {this.addRegistryReference()}
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 }
 

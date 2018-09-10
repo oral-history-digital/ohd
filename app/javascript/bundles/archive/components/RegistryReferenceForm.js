@@ -6,7 +6,7 @@ export default class RegistryReferenceForm extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {registryEntryParent: this.props.registryEntryParent};
+        this.state = {registryEntryParentId: this.props.registryEntryParentId};
         this.handleSelectedRegistryEntry = this.handleSelectedRegistryEntry.bind(this);
     }
 
@@ -21,8 +21,12 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParent.id}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.state.registryEntryParent.id}`);
+        if (
+            !this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParentId}`] ||
+            (this.props.registryEntriesStatus[this.state.registryEntryParentId] &&
+            this.props.registryEntriesStatus[this.state.registryEntryParentId].split('-')[0] === 'reload')
+        ) {
+            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.state.registryEntryParentId}`);
         }
     }
 
@@ -32,12 +36,16 @@ export default class RegistryReferenceForm extends React.Component {
         }
     }
 
+    registryEntryParent() {
+        return this.props.registryEntries[this.state.registryEntryParentId];
+    }
+
     registryEntries() {
         if (
-            this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParent.id}`] && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParent.id}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParentId}`] && 
+            this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParentId}`].split('-')[0] === 'fetched'
         ) {
-            return this.state.registryEntryParent.child_ids.map((id, index) => {
+            return this.registryEntryParent().child_ids.map((id, index) => {
                 return this.props.registryEntries[id];
             })
         } else {
@@ -47,16 +55,16 @@ export default class RegistryReferenceForm extends React.Component {
 
     handleSelectedRegistryEntry(name, value) {
         if (this.props.goDeeper) {
-            this.setState({registryEntryParent: this.props.registryEntries[value]});
+            this.setState({registryEntryParentId: value});
         }
     }
 
     selectedRegistryEntry() {
-        if (this.state.registryEntryParent !== this.props.registryEntryParent) {
+        if (this.state.registryEntryParentId !== this.props.registryEntryParentId) {
             return (
                 <div>
                     <span><b>{t(this.props, 'selected_registry_entry') + ': '}</b></span>
-                    <span>{this.state.registryEntryParent.name[this.props.locale]}</span>
+                    <span>{this.registryEntryParent().name[this.props.locale]}</span>
                 </div>
             )
         } else {
@@ -65,15 +73,15 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     goUp() {
-        if (this.state.registryEntryParent !== this.props.registryEntryParent) {
-            let parentRegistryEntry = this.state.registryEntryParent.parent_ids[0] === this.props.registryEntryParent.id ?
-                this.props.registryEntryParent :
-                this.props.registryEntries[this.state.registryEntryParent.parent_ids[0]]
+        if (this.state.registryEntryParentId !== this.props.registryEntryParentId) {
+            let parentRegistryEntryId = this.registryEntryParent().parent_ids[0] === this.props.registryEntryParentId ?
+                this.props.registryEntryParentId :
+                this.props.registryEntries[this.registryEntryParent().parent_ids[0]]
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.registry_entry.go_up')}
-                    onClick={() => this.setState({registryEntryParent: parentRegistryEntry})}
+                    onClick={() => this.setState({registryEntryParentId: parentRegistryEntryId})}
                 >
                     go up
                     <i className="fa fa-arrow-alt-up"></i>

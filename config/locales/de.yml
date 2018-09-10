@@ -549,7 +549,7 @@ de:
         birth_name: 'Geburtsname'
         date_of_birth: 'Geburtsdatum'
       registry_entry:
-        name: 'Name'
+        descriptor: 'Name'
         notes: 'Anmerkungen'
       registry_reference:
         registry_entry_id: 'Registereintrag'

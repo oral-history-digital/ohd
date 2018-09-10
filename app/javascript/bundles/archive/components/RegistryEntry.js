@@ -45,7 +45,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('registry_entries', this.props.registryEntry.id);
+        this.props.deleteData('registry_entries', this.props.registryEntry.id, null, null, true);
         this.props.closeArchivePopup();
     }
 
