@@ -8,6 +8,10 @@ class Person < ApplicationRecord
            :dependent => :destroy
 
   has_many :contributions
+  has_many :interviews,
+    through: :contributions,
+    -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")}
+
   has_many :histories, dependent: :destroy
 
 
