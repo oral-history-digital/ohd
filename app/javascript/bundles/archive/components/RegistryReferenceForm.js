@@ -76,7 +76,7 @@ export default class RegistryReferenceForm extends React.Component {
         if (this.state.registryEntryParentId !== this.props.registryEntryParentId) {
             let parentRegistryEntryId = this.registryEntryParent().parent_ids[0] === this.props.registryEntryParentId ?
                 this.props.registryEntryParentId :
-                this.props.registryEntries[this.registryEntryParent().parent_ids[0]]
+                this.registryEntryParent().parent_ids[0]
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
