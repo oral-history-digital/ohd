@@ -275,6 +275,7 @@ class Interview < ActiveRecord::Base
       mem
     end
   end
+  
   def title
     localized_hash(true)
   end
