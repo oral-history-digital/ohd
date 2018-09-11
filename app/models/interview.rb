@@ -165,6 +165,8 @@ class Interview < ActiveRecord::Base
   searchable :auto_index => false do
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
+    # in order to be able to search for archive_id with fulltextsearch
+    text :archive_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
 
     # in order to find pseudonyms with fulltextsearch (hagen)
