@@ -167,8 +167,8 @@ class Interview < ActiveRecord::Base
     string :archive_id, :stored => true, :references => Interview
     integer :collection_id, :stored => true, :references => Collection
 
-    # in order to find pseudonyums by string (hagen)
-    text :pseudonym_string, :stored => true if Project.project_id == 'hagen'
+    # in order to find pseudonyms with fulltextsearch (hagen)
+    (text :pseudonym_string, :stored => true) if Project.project_id == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
