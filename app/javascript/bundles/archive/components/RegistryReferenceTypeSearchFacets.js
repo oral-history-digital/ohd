@@ -44,8 +44,8 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
         let registryEntries = [];
         if (
             this.props.interview && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentReferenceType.registry_entry_id}`] &&
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentReferenceType.registry_entry_id}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] &&
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`].split('-')[0] === 'fetched'
         ) {
             for (var c in this.props.interview.registry_references) {  
                 let registryReference = this.props.interview.registry_references[c];
@@ -79,7 +79,7 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
                                  interview={this.props.interview} 
                                  registryEntryParentId={this.props.parentEntryId}
                                  locale={this.props.locale}
-                                 goDeeper={false}
+                                 goDeeper={true}
                                  //  allowed values: true, false, 'hidden'
                                  selectRegistryReferenceType={false}
                                  refTypeId={this.props.parentReferenceType.id}
