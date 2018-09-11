@@ -27,7 +27,7 @@ export default class Person extends React.Component {
     }
 
     delete() {
-        return <div
+        return <span
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => this.props.openArchivePopup({
@@ -43,7 +43,7 @@ export default class Person extends React.Component {
             })}
         >
             <i className="fa fa-trash-o"></i>
-        </div>
+        </span>
     }
 
     buttons() {
