@@ -37,6 +37,13 @@ module Project
         person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
       end
     end
+
+    # could be used in the future for metadata that is not used as facet
+    %w(registry_entry registry_reference_type person interview).each do |m|
+      define_method "person_properties_with_source_#{m}" do
+        person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
+      end
+    end
     
     def search_facets_names
       person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id']}

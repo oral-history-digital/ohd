@@ -125,11 +125,13 @@ a.flyout-download-link-lang {
   margin-right: 15px;
 }
 .flyout-sub-tabs-content-ico {
-  display: block;
+  display: inline;
   text-align: right;
   padding: 0;
-  border-bottom: 1px solid $gray-light;
-  margin-bottom: 15px;
+}
+span:not(:last-child) .flyout-sub-tabs-content-ico {
+  margin-right: 15px;
+  border-right: 1px solid $gray-light;
 }
 .flyout-sub-tabs-content-ico-link {
   display: inline-block;

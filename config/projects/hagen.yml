@@ -78,7 +78,7 @@ default: &default
       source: 'person'
       use_as_facet: true
     - id: 'interview_date'
-      source: 'registry_reference_type'
+      source: 'interview' # or registry_reference_type?
       use_as_facet: true
     - id: 'birth_location'
       source: 'registry_reference_type'

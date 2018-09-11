@@ -49,10 +49,10 @@ export default class Person extends React.Component {
     buttons() {
         if (admin(this.props)) {
             return (
-                <div className={'flyout-sub-tabs-content-ico'}>
-                    {this.edit()}
+                <span className={'flyout-sub-tabs-content-ico'}>
+                    {/* {this.edit()} */}
                     {this.delete()}
-                </div>
+                </span>
             )
         }
     }
@@ -63,8 +63,8 @@ export default class Person extends React.Component {
                 <p>
                     <span className='flyout-content-label'>{t(this.props, `contributions.${this.props.contribution.contribution_type}`)}:</span>
                     <span className='flyout-content-data'>{fullname(this.props, this.props.person)}</span>
+                    {this.buttons()}
                 </p>
-                {this.buttons()}
             </div>
         )
     }

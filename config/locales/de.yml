@@ -228,10 +228,10 @@ de:
       processed: 'Person angelegt: '
       return: 'Weitere Person anlegen'
     contribution: 
-      new: 'Kontributor hinzufügen'
+      new: 'Mitwirkende/n hinzufügen'
     registry_reference: 
-      new: 'Registereferenz hinzufügen'
-      delete: 'Registereferenz löschen'
+      new: 'Registererwähnung hinzufügen'
+      delete: 'Registererwähnung löschen'
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
@@ -345,6 +345,7 @@ de:
     language_id: 'Sprache'
     age: 'Alter'
     year_of_birth: 'Geburtsjahr'
+    interview_date: 'Entstehungszeit'
   #routes: # Pretty URLs for static pages.
     #searches: 'suche'
     #facets: 'facetten'
@@ -396,8 +397,8 @@ de:
         one: 'Beitrag'
         other: 'Beiträge'
       registry_references:
-        one: 'Registerreferenz'
-        other: 'Registerreferenzen'
+        one: 'Registererwähnung'
+        other: 'Registererwähnungen'
       annotations:
         one: 'Anmerkung'
         other: 'Anmerkungen'
@@ -551,9 +552,10 @@ de:
       registry_entry:
         descriptor: 'Name'
         notes: 'Anmerkungen'
+        descriptor: 'Name'
       registry_reference:
         registry_entry_id: 'Registereintrag'
-        registry_reference_type_id: 'Referencetyp'
+        registry_reference_type_id: 'Art der Beziehung'
       annotation:
         text: 'Text'
 

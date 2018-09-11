@@ -58,7 +58,7 @@ export default class RegistryReference extends React.Component {
         if (admin(this.props)) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
-                    {this.edit()}
+                    {/* {this.edit()} */}
                     {this.delete()}
                 </span>
             )
