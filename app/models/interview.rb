@@ -269,6 +269,12 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def localized_hash_for_interview_date
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = interview_date
+      mem
+    end
+  end
   def title
     localized_hash(true)
   end
