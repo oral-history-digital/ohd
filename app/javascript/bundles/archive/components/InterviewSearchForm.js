@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '../../../lib/utils';
+import PixelLoader from '../../../lib/PixelLoader'
 
 
 export default class InterviewSearchForm extends React.Component {
@@ -22,10 +23,16 @@ export default class InterviewSearchForm extends React.Component {
         this.props.searchInInterview({fulltext: this.state.value, id: this.props.archiveId});
     }
 
+    loader(){
+        if (this.props.isInterviewSearching) { 
+            return <PixelLoader />
+        }
+    }
+
     render() {
         return (
-            <div>
-                <form onSubmit={this.handleSubmit} className={'content-search'}>
+            <div className={'content-search'}>
+                <form onSubmit={this.handleSubmit}>
                     <label>
                         <input type="text"
                                className="search-input"
@@ -35,6 +42,7 @@ export default class InterviewSearchForm extends React.Component {
                     </label>
                     <input type="submit" value="" className={'search-button'}/>
                 </form>
+                {this.loader()}
             </div>
         );
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import { t } from '../../../lib/utils';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
-import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class InterviewSearch extends React.Component {
 
@@ -46,10 +45,7 @@ export default class InterviewSearch extends React.Component {
     }
 
     contentSearchResults() {
-        if (this.props.isInterviewSearching) { 
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
-        } 
-        else {
+        if (!this.props.isInterviewSearching) {
             let count = this.props.foundSegments ? this.props.foundSegments.length : 0;
             return (
                 <div>
