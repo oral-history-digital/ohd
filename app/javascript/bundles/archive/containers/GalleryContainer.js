@@ -5,9 +5,12 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
     return {
-        photos: getInterview(state).photos,
+        interview: getInterview(state),
         translations: state.archive.translations,
         locale: state.archive.locale,
+        editView: state.archive.editView,
+        translations: state.archive.translations,
+        account: state.account,
         project: state.archive.project,
     }
 }

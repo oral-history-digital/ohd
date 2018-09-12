@@ -48,9 +48,8 @@ class InterviewSerializer < ActiveModel::Serializer
 
              :interviewee_id,
              :contributions,
-             :registry_references
-
-  has_many :photos, serializer: PhotoSerializer
+             :registry_references,
+             :photos
 
   def transitions_to
     object.current_state.events.map{|e| e.first}
@@ -62,6 +61,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def registry_references
     object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
+  end
+
+  def photos
+    object.photos.inject({}){|mem, c| mem[c.id] = PhotoSerializer.new(c); mem}
   end
 
   def forced_labor_groups
