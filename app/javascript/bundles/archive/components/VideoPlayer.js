@@ -68,7 +68,7 @@ export default class VideoPlayer extends React.Component {
             case 'zwar': {
                 switch (this.props.interview.media_type) {
                     case 'video': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_sd720p.mp4`
                     }
                     case 'audio': {
                         return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3`
