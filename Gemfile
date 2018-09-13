@@ -4,8 +4,9 @@ source 'https://rubygems.org'
 ruby '2.4.0'
 
 gem 'rdoc'
-gem 'rails', '~>5.0.0'
+gem 'rails', '~>5.2.0'
 gem 'mysql2'
+gem "redis", "~> 4.0"
 gem 'exception_notification'
 gem 'workflow'
 gem 'i18n-js'
