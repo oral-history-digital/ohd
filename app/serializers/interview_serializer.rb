@@ -64,7 +64,7 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def photos
-    object.photos.inject({}){|mem, c| mem[c.id] = PhotoSerializer.new(c); mem}
+    object.photos.includes(:translations).inject({}){|mem, c| mem[c.id] = PhotoSerializer.new(c); mem}
   end
 
   def forced_labor_groups
