@@ -1,35 +1,8 @@
 import React from 'react';
-import { t, fullname, admin } from '../../../lib/utils';
-import {Link, hashHistory} from 'react-router-dom';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { t, admin } from '../../../lib/utils';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
-import ContributionFormContainer from '../containers/ContributionFormContainer';
-import PersonContainer from '../containers/PersonContainer';
-import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
-import RegistryReferenceTypeSearchFacetsContainer from '../containers/RegistryReferenceTypeSearchFacetsContainer';
 
 export default class InterviewInfo extends React.Component {
-
-    to() {
-        return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
-    }
-
-    download(lang, condition) {
-        if (!condition) {
-            let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
-            return (
-                <p>
-                    <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
-                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                        <span>{t(this.props, textKey)}</span>
-                    </a>
-                </p>
-            )
-        } else {
-            return null;
-        }
-    }
-
 
     placeOfInterview(){
         if (this.props.interview.place_of_interview){
@@ -79,106 +52,12 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    contributors() {
-        let contributors = [];
-        if (
-            this.props.interview &&
-            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
-            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`].split('-')[0] === 'fetched' && 
-            this.props.contributionTypes
-        ) {
-            for (var c in this.props.interview.contributions) {
-                let contribution = this.props.interview.contributions[c];
-                //if (
-                    //contribution && 
-                    //(Object.values(this.props.contributionTypes).indexOf(contribution.contribution_type) > -1 || 
-                    //admin(this.props))
-                //)
-                if (contribution !== 'fetched') {
-                    contributors.push(<PersonContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
-                }
-            }
-        } 
-        return contributors;
-    }
-
-    addContribution() {
-        if (admin(this.props)) {
-            return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.contribution.new')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.contribution.new'),
-                        content: <ContributionFormContainer interview={this.props.interview} />
-                    })}
-                >
-                    <i className="fa fa-plus"></i>
-                </div>
-            )
-        }
-    }
-
-    contributions() {
-        return (
-            <div>
-                <h3>{t(this.props, 'activerecord.models.contributions.other')}</h3>
-                {this.contributors()}
-                {this.addContribution()}
-            </div>
-        );
-    }
-
-    searchFacets() {
-        let facets = [];
-        for (var r in this.props.registryEntrySearchFacetIds) {
-            facets.push(
-                <RegistryEntrySearchFacetsContainer 
-                    key={`this.props.registry-entry-search-facets-${r}`} 
-                    parentEntryId={this.props.registryEntrySearchFacetIds[r]} 
-                    interview={this.props.interview} 
-                />
-            );
-        }
-        for (var r in this.props.registryReferenceTypeSearchFacets) {
-            facets.push(
-                <RegistryReferenceTypeSearchFacetsContainer
-                    key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    parentReferenceType={this.props.registryReferenceTypeSearchFacets[r]} 
-                    parentEntryId={this.props.registryReferenceTypeSearchFacets[r]['registry_entry_id']}
-                    interview={this.props.interview}
-                >
-                </RegistryReferenceTypeSearchFacetsContainer>
-            );
-        }
-        return facets;
-    }
-
-    registryReferences() {
-        if (admin(this.props) && this.props.registryEntrySearchFacetIds) {
-            return (
-                <div>
-                    <h3>{t(this.props, 'activerecord.models.registry_references.other')}</h3>
-                    {this.searchFacets()}
-                </div>
-            );
-        } else {
-            return null;
-        }
-    }
-
     render() {
         if (this.props.interview) {
             return (
                 <div>
-                    {this.info()}
-                    {this.contributions()}
-                    {this.registryReferences()}
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}
-                    <AuthShowContainer ifLoggedIn={true}>
-                        {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
-                    </AuthShowContainer>
+                    {this.info()}
                 </div>
             );
         } else {

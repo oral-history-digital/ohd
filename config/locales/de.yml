@@ -67,7 +67,7 @@ de:
   language_el: 'Griechisch'
   more: 'mehr erfahren'
   segment: 'Ausschnitt'
-  publish: 'Veröffentlichen'
+  publish: 'An die Redaktion zur Veröffentlichung absenden'
   login: 'Anmelden'
   login_name: 'Login'
   logout: 'Abmelden'
@@ -180,6 +180,7 @@ de:
   saved_searches: 'Gespeicherte Suchergebnisse'
   saved_interviews: 'Gespeicherte Interviews'
   saved_annotations: 'Gespeicherte Anmerkungen'
+  text_materials: 'Textmaterialien'
 
   grid: 'Raster'
   list: 'Liste'
@@ -258,8 +259,8 @@ de:
       campscape: 'Campscape'
 
   admin:
-    change_to_normal_view: 'Nutzer Ansicht'
-    change_to_edit_view: 'Editier Ansicht'
+    change_to_normal_view: 'Nutzeransicht'
+    change_to_edit_view: 'Redaktion'
 
   histories:
     forced_labor_details: 'Zwangsarbeitdetails'
@@ -394,8 +395,8 @@ de:
         one: 'Anmerkung'
         other: 'Anmerkungen'
       contributions:
-        one: 'Beitrag'
-        other: 'Beiträge'
+        one: 'Mitwirkende/r'
+        other: 'Mitwirkende'
       registry_references:
         one: 'Registererwähnung'
         other: 'Registererwähnungen'

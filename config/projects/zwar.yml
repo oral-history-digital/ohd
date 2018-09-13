@@ -88,7 +88,7 @@ default: &default
 
   streaming_server: 'rtmpt://stream.cedis.fu-berlin.de/zwangsarbeit-archiv'
 
-  video_src_base: "https://medien.cedis.fu-berlin.de/zwar/test"
+  video_src_base: "https://medien.cedis.fu-berlin.de/zwar/zwar"
 
   meta_keywords:
     de: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
@@ -112,8 +112,9 @@ default: &default
   person_properties:
     - id: 'person_reference'
       source: 'registry_entry'
-    - id: 'birth_locations'
+    - id: 'birth_location'
       source: 'registry_reference_type'
+      use_as_facet: 'true'
     - id: 'language_id'
       source: 'language'
       use_as_facet: true
@@ -140,13 +141,16 @@ default: &default
       # use_as_facet: true
     - id: 'home_location'
       source: 'registry_reference_type'
-      # use_as_facet: true
-    - id: 'forced_labor_locations'
+      use_as_facet: true
+    - id: 'forced_labor_location'
       source: 'registry_reference_type'
-    - id: 'deportation_locations'
+      use_as_facet: true
+    - id: 'deportation_location'
       source: 'registry_reference_type'
-    - id: 'return_locations'
+      use_as_facet: true
+    - id: 'return_location'
       source: 'registry_reference_type'
+      use_as_facet: true
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 

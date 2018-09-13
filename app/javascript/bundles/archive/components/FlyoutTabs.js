@@ -6,6 +6,9 @@ import InterviewLocationsContainer from '../containers/InterviewLocationsContain
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserContentsContainer from '../containers/UserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
+import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
+import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
+import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
@@ -131,14 +134,23 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='interview'>
                     <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
                     <div className='flyout-sub-tabs-container flyout-video'>
-                        <InterviewDataContainer
+                        {/* <InterviewDataContainer
                             title={t(this.props, 'person_info')}
-                            content={<PersonDataContainer/>}/>
+                            content={<PersonDataContainer/>}/> */}
                         <InterviewDataContainer
                             title={t(this.props, 'interview_info')}
                             content={<InterviewInfoContainer/>}/>
+                        <InterviewDataContainer
+                            title={t(this.props, 'activerecord.models.contributions.other')}
+                            content={<InterviewContributorsContainer/>}/>
+                        <InterviewDataContainer
+                            title={t(this.props, 'activerecord.models.registry_references.other')}
+                            content={<InterviewRegistryReferencesContainer/>}/>
+                        <InterviewDataContainer
+                            title={t(this.props, 'text_materials')}
+                            content={<InterviewTextMaterialsContainer/>}/>
                         {this.renderPhotos()}
-                        {this.renderMap()}
+                        {(this.props.project === 'mog') && this.renderMap()}
                         <InterviewDataContainer
                             title={t(this.props, 'citation')}
                             content={<CitationInfoContainer/>}/>
