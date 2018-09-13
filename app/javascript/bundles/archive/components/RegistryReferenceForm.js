@@ -132,6 +132,7 @@ export default class RegistryReferenceForm extends React.Component {
                         ref_object_id: this.props.refObject.id,
                         ref_object_type: this.props.refObjectType,
                         interview_id: this.props.interview.id,
+                        registry_reference_type_id: this.props.refTypeId || null,
                         // TODO: change following dummy-values with meaningfull ones
                         ref_position: 1,
                         workflow_state: 'preliminary'
