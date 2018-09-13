@@ -21,7 +21,6 @@ export default class InterviewRegistryReferences extends React.Component {
                 <RegistryReferenceTypeSearchFacetsContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     parentReferenceType={this.props.registryReferenceTypeSearchFacets[r]} 
-                    parentEntryId={this.props.registryReferenceTypeSearchFacets[r]['registry_entry_id']}
                     interview={this.props.interview}
                 >
                 </RegistryReferenceTypeSearchFacetsContainer>

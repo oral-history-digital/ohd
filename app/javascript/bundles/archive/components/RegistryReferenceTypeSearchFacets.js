@@ -11,45 +11,17 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
     }
 
     componentDidMount() {
-        this.loadRegistryEntries();
-        this.loadParentEntry();
+        // load parent entry
+        this.loadRegistryEntry(this.props.parentReferenceType.registry_entry_id);
     }
 
     componentDidUpdate() {
-        this.loadRegistryEntries();
-        this.loadParentEntry();
-    }
-
-    // shouldComponentUpdate(nextProps) {
-    //     if(this.props.registryEntries && nextProps.registryEntries && Object.keys(this.props.registryEntries).length != Object.keys(nextProps.registryEntries).length){
-    //         return true
-    //     }
-    //     return false
-    // }
-
-    loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`children_for_entry_${this.props.parentReferenceType.registry_entry_id}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentReferenceType.registry_entry_id}`);
-        }
-        if (!this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntryId}`);
-        }
-    }
-
-    loadParentEntry() {
-        if (
-            //(this.props.registryEntries && !this.props.registryEntries[this.props.parentEntryId]) ||
-            !this.props.registryEntriesStatus[this.props.parentEntryId] ||
-            (this.props.registryEntriesStatus[this.props.parentEntryId] &&
-            this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload')
-        ) {
-            this.props.fetchData('registry_entries', this.props.parentEntryId);
-        }
+        // load parent entry
+        this.loadRegistryEntry(this.props.parentReferenceType.registry_entry_id);
     }
 
     loadRegistryEntry(id){
         if (
-            //(this.props.registryEntries && !this.props.registryEntries[this.props.parentEntryId]) ||
             !this.props.registryEntriesStatus[id] ||
             (this.props.registryEntriesStatus[id] &&
             this.props.registryEntriesStatus[id].split('-')[0] === 'reload')
@@ -61,25 +33,25 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
     registryEntries() {
         let registryEntries = [];
         if (
-            this.props.interview && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] &&
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`].split('-')[0] === 'fetched'
+            this.props.interview
         ) {
             for (var c in this.props.interview.registry_references) {  
                 let registryReference = this.props.interview.registry_references[c];
                 if (registryReference.registry_reference_type_id == this.props.parentReferenceType.id) {
                     this.loadRegistryEntry(registryReference.registry_entry_id);
-                    let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                    if (registryEntry) {
-                        registryEntries.push(
-                            <RegistryReferenceContainer 
-                                registryEntry={registryEntry} 
-                                registryReference={registryReference} 
-                                refObjectType='interview'
-                                locale={this.props.locale}
-                                key={`registry_reference-${registryReference.id}`} 
-                            />
-                        );
+                    if(this.props.registryEntries) {
+                        let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
+                        if (registryEntry) {
+                            registryEntries.push(
+                                <RegistryReferenceContainer 
+                                    registryEntry={registryEntry} 
+                                    registryReference={registryReference} 
+                                    refObjectType='interview'
+                                    locale={this.props.locale}
+                                    key={`registry_reference-${registryReference.id}`} 
+                                />
+                            );
+                        }
                     }
                 }
             }
@@ -98,7 +70,7 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
                                  refObject={this.props.interview} 
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
-                                 registryEntryParentId={this.props.parentEntryId}
+                                 registryEntryParentId={this.props.parentReferenceType.registry_entry_id}
                                  locale={this.props.locale}
                                  goDeeper={true}
                                  //  allowed values: true, false, 'hidden'
