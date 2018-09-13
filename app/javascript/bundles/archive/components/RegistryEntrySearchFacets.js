@@ -70,16 +70,18 @@ export default class RegistryEntrySearchFacets extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_reference.new')}
+                title={`${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_reference.new'),
+                    title: `${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`,
                     content: <RegistryReferenceFormContainer 
                                  refObject={this.props.interview} 
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
                                  registryEntryParentId={this.props.parentEntryId}
                                  locale={this.props.locale}
-                                 goDeeper={false}
+                                 goDeeper={true}
+                                 //  allowed values: true, false, 'hidden'
+                                 selectRegistryReferenceType={false}
                              />
                 })}
             >

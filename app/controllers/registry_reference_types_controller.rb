@@ -46,7 +46,11 @@ class RegistryReferenceTypesController < BaseController
   end
 
   def index
-    @registry_reference_types = RegistryReferenceType.all
+    # @registry_reference_types = RegistryReferenceType.all
+
+    # Vorschlag: es werden nur Referenztypen zurückgegeben die Teil der registry_reference_type_search_facets sind 
+    # (Könnte später auf Teil der person_properties_with_source_registry_reference_type geändert werden):
+    @registry_reference_types = RegistryReferenceType.where(code: Project.registry_reference_type_search_facets.map{|f| f['id'] })
 
     respond_to do |format|
       format.json do

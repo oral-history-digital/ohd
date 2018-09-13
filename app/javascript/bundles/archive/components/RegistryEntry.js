@@ -36,7 +36,10 @@ export default class RegistryEntry extends React.Component {
                 title={t(this.props, 'edit.registry_entry.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.registry_entry.edit'),
-                    content: <RegistryEntryFormContainer registryEntry={this.props.registryEntry} />
+                    content: <RegistryEntryFormContainer 
+                        registryEntry={this.props.registryEntry} 
+                        registryEntryParent={this.props.registryEntryParent}
+                        />
                 })}
             >
                 <i className="fa fa-pencil"></i>

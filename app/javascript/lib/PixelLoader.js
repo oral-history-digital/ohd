@@ -1,0 +1,112 @@
+import React, { Component } from 'react';
+
+export default class PixelLoader extends Component {
+    render(){
+        return (
+            <div className="container">
+                <div className="loaderPixel">
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                    <div className="pixels" />
+                </div>
+            </div>
+        )
+    }
+}

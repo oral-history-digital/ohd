@@ -190,7 +190,8 @@ export default class VideoPlayer extends React.Component {
         return options;
     }
 
-    mediaElement(_this) {
+    mediaElement() {
+        let _this = this;
         return(
             //     <video 
             //         ref={(video) => {

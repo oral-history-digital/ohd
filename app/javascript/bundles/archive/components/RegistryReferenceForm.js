@@ -24,7 +24,7 @@ export default class RegistryReferenceForm extends React.Component {
         if (
             !this.props.registryEntriesStatus[`children_for_entry_${this.state.registryEntryParentId}`] ||
             (this.props.registryEntriesStatus[this.state.registryEntryParentId] &&
-            this.props.registryEntriesStatus[this.state.registryEntryParentId].split('-')[0] === 'reload')
+                this.props.registryEntriesStatus[this.state.registryEntryParentId].split('-')[0] === 'reload')
         ) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.state.registryEntryParentId}`);
         }
@@ -38,6 +38,35 @@ export default class RegistryReferenceForm extends React.Component {
 
     registryEntryParent() {
         return this.props.registryEntries[this.state.registryEntryParentId];
+    }
+    
+    elements() {
+        let _this = this;
+        let elements = [
+            {
+                elementType: 'select',
+                attribute: 'registry_entry_id',
+                values: this.registryEntries(),
+                value: this.props.registry_reference && this.props.registry_reference.registry_entry_id,
+                withEmpty: true,
+                validate: function(v){return v !== ''},
+                individualErrorMsg: 'empty',
+                handleChangeCallback: _this.handleSelectedRegistryEntry
+            }
+        ]
+        if (_this.props.selectRegistryReferenceType) {
+            elements.push(
+                {
+                    elementType: 'select',
+                    attribute: 'registry_reference_type_id',
+                    values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
+                    value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id || this.props.refTypeId,
+                    withEmpty: false,
+                    hidden: (_this.props.selectRegistryReferenceType == 'hidden') ? true : false
+                }
+            )
+        }
+        return elements;
     }
 
     registryEntries() {
@@ -108,25 +137,7 @@ export default class RegistryReferenceForm extends React.Component {
                         workflow_state: 'preliminary'
                     }}
                     onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
-                    elements={[
-                        {
-                            elementType: 'select',
-                            attribute: 'registry_entry_id',
-                            values: this.registryEntries(),
-                            value: this.props.registry_reference && this.props.registry_reference.registry_entry_id,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''},
-                            individualErrorMsg: 'empty',
-                            handleChangeCallback: _this.handleSelectedRegistryEntry
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: 'registry_reference_type_id',
-                            values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
-                            value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id,
-                            withEmpty: true,
-                        },
-                    ]}
+                    elements={_this.elements()}
                 />
             </div>
         );

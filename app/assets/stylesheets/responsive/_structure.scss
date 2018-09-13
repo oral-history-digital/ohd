@@ -714,4 +714,84 @@ ul.registry-entries-ul {
 }
 
 
+// PixelLoader
+$color1 : lightgrey;
+$color2 : lightgrey;
+$color3 :lightgrey;
+$color4 : lightgrey;
 
+@for $i from 1 through 101{
+  .pixels:nth-child(#{$i}){
+    animation: magic 2.5s ease-out infinite;
+    animation-delay:$i*.02s;
+  }
+}
+@keyframes magic {
+  0%{
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+    background: $color1;
+    box-shadow: 0 -1px 0px $color1;
+  }
+  28%{
+    opacity:1;
+  }
+  30% {   
+    background: $color2;
+    box-shadow: 0 -1px 0px $color2;
+  }
+  50%{
+    background: $color3;
+      box-shadow: 0 -1px 0px $color3;
+  }
+  65%{
+    background: $color4;
+      box-shadow: 0 -1px 0px $color4;
+  }
+  80%{
+    background: $color3;
+    box-shadow: 0 -1px 0px $color3;
+  }
+  90%{
+     opacity:1;
+    box-shadow: 0 -1px 0px $color2;
+     background: $color2;
+  }
+  100%{
+    opacity:0;
+    background: $color1;
+   
+  }
+}
+
+.container{
+  height : 100% ;
+  width : 100% ;
+  position: relative ; 
+  .loaderPixel{
+    display: flex;
+    margin:auto;
+    position: relative;
+    margin-bottom: 0;
+    width:100%;
+    h1{
+      text-align: center;
+    }
+    .pixels{
+      float: left; 
+      box-shadow: 0 -1px 0px $color1;
+      margin-top:0;
+      margin-bottom:0;
+      opacity:0;
+      height: 5px;
+      width: 50px;
+      // height: calc(100vw / 49) ;
+      // width : calc(100vw / 50);
+    } 
+  }
+}
+  
+
+  

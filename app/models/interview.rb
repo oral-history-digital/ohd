@@ -165,10 +165,12 @@ class Interview < ActiveRecord::Base
   searchable :auto_index => false do
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
+    # in order to be able to search for archive_id with fulltextsearch
+    text :archive_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
 
-    # in order to find pseudonyums by string (hagen)
-    text :pseudonym_string, :stored => true if Project.project_id == 'hagen'
+    # in order to find pseudonyms with fulltextsearch (hagen)
+    (text :pseudonym_string, :stored => true) if Project.project_id == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -267,6 +269,13 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def localized_hash_for_interview_date
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = interview_date
+      mem
+    end
+  end
+  
   def title
     localized_hash(true)
   end
