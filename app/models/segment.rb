@@ -12,7 +12,7 @@ class Segment < ActiveRecord::Base
   belongs_to :tape#, inverse_of: :segments
 
   has_many  :registry_references,
-            #-> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },
+            -> { includes(registry_entry: {registry_names: :translations}, registry_reference_type: {}) },
             :as => :ref_object,
             :dependent => :destroy
 
