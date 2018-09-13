@@ -252,6 +252,10 @@ de:
       upload: 'Upload'
       processing: 'Wird bearbeitet: '
       return: 'Weiterer Upload'
+    photo: 
+      new: 'Foto hinzufügen'
+      edit: 'Foto bearbeiten'
+      delete: 'Foto löschen'
     upload_transcript: 'Transkript hochladen'
 
   upload:
@@ -559,6 +563,9 @@ de:
         registry_reference_type_id: 'Art der Beziehung'
       annotation:
         text: 'Text'
+      photo:
+        caption: 'Fotobeschreibung'
+        data: 'Fotodatei'
 
     errors:
       default:

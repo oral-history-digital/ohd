@@ -125,11 +125,12 @@ const data = (state = initialState, action) => {
             } else if (action.nestedDataType) {
                 let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
+                let nestedData = (state[action.dataType] && state[action.dataType][action.id] && state[action.dataType][action.id][action.nestedDataType]) || {};
                 return Object.assign({}, state, {
                     statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [action.nestedDataType]: Object.assign({}, state[action.dataType][action.id][action.nestedDataType], action.data)
+                        [action.id]: Object.assign({}, state[action.dataType] && state[action.dataType][action.id], {
+                            [action.nestedDataType]: Object.assign({}, nestedData, action.data)
                         })
                     })
                 })

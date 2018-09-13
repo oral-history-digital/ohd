@@ -1,6 +1,7 @@
 import React from 'react';
 import CarouselContainer from '../containers/CarouselContainer';
-import { t } from '../../../lib/utils';
+import PhotoFormContainer from '../containers/PhotoFormContainer';
+import { t, admin } from '../../../lib/utils';
 
 export default class Gallery extends React.Component {
 
@@ -22,26 +23,55 @@ export default class Gallery extends React.Component {
     }
 
     renderPhotos() {
-
-        return this.props.photos.map((photo, index) => {
-            return (
-                <div key={"photo-" + index}
-                     className={'thumbnail'}
-                     onClick={() => this.props.openArchivePopup({
-                         title: null,
-                         big: true,
-                         content: <CarouselContainer/>
-                     })}
-
-                >
-                    <img src={ this.thumbnailSrc(photo) }>
-                    </img>
-                </div>
-            )
-        })
-
+        let photos = [];
+        if (
+            this.props.interview 
+        ) {
+            for (var c in this.props.interview.photos) {
+                let photo = this.props.interview.photos[c];
+                if (photo !== 'fetched') {
+                    photos.push(this.photo(photo));
+                }
+            }
+        } 
+        return photos;
     }
 
+    photo(photo) {
+        return (
+            <div key={"photo-" + photo.id}
+                 className={'thumbnail'}
+                 onClick={() => this.props.openArchivePopup({
+                     title: null,
+                     big: true,
+                     content: <CarouselContainer/>
+                 })}
+
+            >
+                <img src={ this.thumbnailSrc(photo) } />
+            </div>
+        )
+    }
+
+    addPhoto() {
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.photo.new')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.photo.new'),
+                        content: <PhotoFormContainer 
+                            interview={this.props.interview} 
+                            withUpload={true}
+                        />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        }
+    }
 
     render() {
         return (
@@ -49,6 +79,7 @@ export default class Gallery extends React.Component {
                 <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
                 <div className={'img-gallery'}>
                     {this.renderPhotos()}
+                    {this.addPhoto()}
                 </div>
             </div>
         );
