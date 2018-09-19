@@ -4,9 +4,6 @@ require 'iso-639'
 module IsoHelpers
   extend ActiveSupport::Concern
 
-  included do
-  end
-
   def fit(attribute, locale)
     send(attribute, projectified(locale))
   end
