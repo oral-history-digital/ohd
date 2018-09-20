@@ -12,13 +12,13 @@ class PhotoSerializer < ActiveModel::Serializer
 
   def src
     #url_for object.image
-    Rails.application.routes.url_helpers.rails_blob_path(object.image, only_path: true) if object.image.attachment
+    Rails.application.routes.url_helpers.rails_blob_path(object.photo, only_path: true) if object.photo.attachment
   end
 
   def thumb_src
-    #url_for object.image.variant(resize_to_fit: [100, 100])
+    #url_for object.photo.variant(resize_to_fit: [100, 100])
     #rails_representation_url(variant)
-    Rails.application.routes.url_helpers.rails_blob_path(object.image, only_path: true) if object.image.attachment
+    Rails.application.routes.url_helpers.rails_blob_path(object.photo, only_path: true) if object.photo.attachment
   end
 
 end

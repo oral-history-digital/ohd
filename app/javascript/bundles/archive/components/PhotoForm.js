@@ -23,10 +23,11 @@ export default class PhotoForm extends React.Component {
     }
 
     render() {
+        let _this = this;
         return (
             <Form 
                 scope='photo'
-                onSubmit={this.props.submitData}
+                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                 submitText='edit.photo.photo'
                 values={{interview_id: this.props.interview && this.props.interview.id}}
                 elements={this.elements()}

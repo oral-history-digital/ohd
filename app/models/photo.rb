@@ -3,7 +3,7 @@ require 'globalize'
 class Photo < ActiveRecord::Base
 
   belongs_to :interview
-  has_one_attached :image
+  has_one_attached :photo
 
   # TODO: fit this again to be used in zwar?
   #has_attached_file :photo,

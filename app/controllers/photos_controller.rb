@@ -1,4 +1,4 @@
-class PhotosController < ApplicationController
+class PhotosController < BaseController
   require 'open-uri'
 
   def create
@@ -8,8 +8,9 @@ class PhotosController < ApplicationController
     #data.title = photo_params[:caption]
     #data.save
     @photo = Photo.create(photo_params)
-    @photo.image.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}")
+    @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}")
 
+    clear_cache @photo.interview
 
     #file_path = File.join(Rails.root, 'tmp', file.original_filename)
     #File.open(file_path, 'wb') {|f| f.write(file.read) }
@@ -30,6 +31,7 @@ class PhotosController < ApplicationController
 
   def edit
     @photo = Photo.update_attributes(photo_params)
+    clear_cache @photo.interview
 
     respond_to do |format|
       format.json do
@@ -47,6 +49,7 @@ class PhotosController < ApplicationController
   def destroy 
     @photo = Photo.find(params[:id])
     @photo.destroy
+    clear_cache @photo.interview
 
     respond_to do |format|
       format.html do
