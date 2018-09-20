@@ -37,6 +37,9 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  # Store files locally.
+  config.active_storage.service = :local
+
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 

@@ -9,20 +9,21 @@ import '../../../css/slick-theme.css';
 export default class Carousel extends React.Component {
 
     photoSrc(photo) {
-        switch(this.props.project) {
-            case 'mog': {
-                return '/photos/src/'+photo.src;
-                break;
-            }
-            case 'zwar': {
-                 let p = photo.src.split('.')
-                 return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_original.' + p[1];
-                 break;
-            }
-            default: {
-                return null;
-            }
-         }
+        //switch(this.props.project) {
+            //case 'mog': {
+                //return '/photos/src/'+photo.src;
+                //break;
+            //}
+            //case 'zwar': {
+                 //let p = photo.src.split('.')
+                 //return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_original.' + p[1];
+                 //break;
+            //}
+            //default: {
+                //return null;
+            //}
+         //}
+        return photo.src;
     }
 
     caption(photo) {

@@ -3,7 +3,6 @@ require "#{Rails.root}/lib" + '/reference_tree.rb'
 
 
 class Interview < ActiveRecord::Base
-  include Paperclip
   include IsoHelpers
   include Workflow
 
@@ -103,12 +102,6 @@ class Interview < ActiveRecord::Base
   #has_many :imports,
            #:as => :importable,
            #:dependent => :delete_all
-
-  has_attached_file :still_image,
-                    :styles => {:thumb => '88x66', :small => '140x105', :original => '400x300>'},
-                    :url => (ApplicationController.relative_url_root || '') + '/interviews/stills/:basename_still_:style.:extension',
-                    :path => ':rails_root/assets/archive_images/stills/:basename_still_:style.:extension',
-                    :default_url => (ApplicationController.relative_url_root || '') + '/archive_images/missing_still.jpg'
 
   has_many :registry_references,
            -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},

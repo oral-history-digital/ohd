@@ -6,20 +6,21 @@ import { t, admin } from '../../../lib/utils';
 export default class Gallery extends React.Component {
 
     thumbnailSrc(photo) {
-        switch(this.props.project) {
-           case 'mog': {
-               return '/photos/thumb/' + photo.src;
-               break;
-           }
-           case 'zwar': {
-                let p = photo.src.split('.')
-                return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_thumb.' + p[1];
-                break;
-           }
-           default: {
-               return null;
-           }
-        }
+        //switch(this.props.project) {
+           //case 'mog': {
+               //return '/photos/thumb/' + photo.src;
+               //break;
+           //}
+           //case 'zwar': {
+                //let p = photo.src.split('.')
+                //return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_thumb.' + p[1];
+                //break;
+           //}
+           //default: {
+               //return null;
+           //}
+        //}
+        return photo.thumb_src;
     }
 
     renderPhotos() {
