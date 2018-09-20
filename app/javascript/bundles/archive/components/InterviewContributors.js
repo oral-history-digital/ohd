@@ -5,6 +5,24 @@ import PersonContainer from '../containers/PersonContainer';
 
 export default class InterviewContributors extends React.Component {
 
+    componentDidMount() {
+        if (admin(this.props)) {
+            this.loadAllPeople();
+        }
+    }
+
+    componentDidUpdate() {
+        if (admin(this.props)) {
+            this.loadAllPeople();
+        }
+    }
+
+    loadAllPeople() {
+        if (!this.props.peopleStatus.all) {
+            this.props.fetchData('people');
+        }
+    }
+
     contributors() {
         let contributors = [];
         if (

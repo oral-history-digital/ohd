@@ -38,19 +38,22 @@ class PeopleController < ApplicationController
   end
 
   def index
-    @people = params[:contributors_for_interview] ?
-      Interview.find(params[:contributors_for_interview]).contributors :
-      Person.all
 
     respond_to do |format|
+      extra_params = params[:contributors_for_interview] ?  "contributors_for_interview_#{params[:contributors_for_interview]}" : nil
+
       format.json do
-        json = #Rails.cache.fetch "people-#{Person.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "people-#{extra_params ? extra_params : 'all'}-#{Person.maximum(:updated_at)}" do
+          people = params[:contributors_for_interview] ?
+            Interview.find(params[:contributors_for_interview]).contributors :
+            Person.all
+          people = people.includes(:translations, :histories, :biographical_entries, :registry_references)
           {
-            data: @people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("person-#{s.id}-#{s.updated_at}"){::PersonSerializer.new(s).as_json}; mem},
+            data: people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("person-#{s.id}-#{s.updated_at}"){::PersonSerializer.new(s).as_json}; mem},
             data_type: 'people',
-            extra_params: "contributors_for_interview_#{params[:contributors_for_interview]}"
-        }.to_json
-        #end.to_json
+            extra_params: extra_params
+          }
+        end.to_json
         render plain: json
       end
     end
