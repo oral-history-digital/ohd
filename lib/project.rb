@@ -51,8 +51,8 @@ module Project
     
     def min_to_max_birth_year_range
       Rails.cache.fetch("min_to_max_birth_year") do
-        first = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first
-        last = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last
+        first = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
+        last = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
         (first..last)
       end
     end
