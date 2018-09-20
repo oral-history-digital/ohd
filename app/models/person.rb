@@ -13,7 +13,7 @@ class Person < ApplicationRecord
     through: :contributions
 
   has_many :histories, dependent: :destroy
-
+  has_many :biographical_entries, dependent: :destroy
 
   validates :gender, inclusion: %w(male female), allow_nil: true
 

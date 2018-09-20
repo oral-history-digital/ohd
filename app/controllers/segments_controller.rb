@@ -62,7 +62,7 @@ class SegmentsController < BaseController
           {
             data: @interview.tapes.inject({}) do |tapes, t|
               segments_for_tape = Segment.
-                includes(:translations, :registry_references, annotations: [:translations]).
+                includes(:translations, :registry_references, :user_annotations, annotations: [:translations]).
                 for_interview_id(@interview.id).
                 where(tape_id: t.id).
                 where.not(timecode: '00:00:00.000')#.first(20)

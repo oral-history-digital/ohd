@@ -14,7 +14,9 @@ Rails.application.routes.draw do
 
     localized do
       resources :contributions, only: [:create, :destroy]
-      resources :histories, only: [:create, :update, :destroy]
+      #resources :histories, only: [:create, :update, :destroy]
+      resources :biographical_entries, only: [:create, :show, :update]
+      resources :photos, only: [:create, :update, :destroy]
       resources :segments, only: [:create, :update, :index, :destroy]
       resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
       resources :registry_references, only: [:create, :update, :destroy]
@@ -23,7 +25,8 @@ Rails.application.routes.draw do
       get 'locations', to: 'registry_references#locations', :as => :locations
 
       resources :people do
-        resources :histories, only: [:create, :update, :destroy]
+        #resources :histories, only: [:create, :update, :destroy]
+        resources :biographical_entries, only: [:destroy]
       end
 
       get 'account' => 'accounts#show'
@@ -60,6 +63,7 @@ Rails.application.routes.draw do
         #end
         #resources :registry_entries, only: [:show]
         resources :contributions, only: [:create, :destroy]
+        resources :photos, only: [:create, :update, :destroy]
         resources :registry_references, only: [:create, :update, :destroy]
         resources :segments, only: [:create, :update, :index, :destroy]
         resources :tapes do

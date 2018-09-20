@@ -134,9 +134,9 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='interview'>
                     <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
                     <div className='flyout-sub-tabs-container flyout-video'>
-                        {/* <InterviewDataContainer
+                        <InterviewDataContainer
                             title={t(this.props, 'person_info')}
-                            content={<PersonDataContainer/>}/> */}
+                            content={<PersonDataContainer/>}/> 
                         <InterviewDataContainer
                             title={t(this.props, 'interview_info')}
                             content={<InterviewInfoContainer/>}/>

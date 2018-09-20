@@ -2,7 +2,7 @@ import React from 'react';
 import { t, fullname, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
-import HistoriesContainer from '../containers/HistoriesContainer';
+import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 
 export default class PersonData extends React.Component {
 
@@ -39,7 +39,7 @@ export default class PersonData extends React.Component {
         if (!condition) {
             return (
                 <a className='flyout-download-link-lang'
-                    href={"/" + this.props.locale + '/interviews/' + this.props.archiveId + '.pdf?lang=' + lang + '&kind=history'}>
+                    href={"/" + this.props.locale + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                     <span>{lang}</span>
                 </a>
@@ -75,10 +75,8 @@ export default class PersonData extends React.Component {
         if (admin(this.props)) {
             return (
                 <div>
-                    <PersonFormContainer 
-                        person={this.props.interviewee} 
-                    />
-                    <HistoriesContainer person={this.props.interviewee} />
+                    {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, this.props.interviewee, true), "")}
+                    <BiographicalEntriesContainer person={this.props.interviewee} />
                 </div>
             );
         } else {

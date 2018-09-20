@@ -16,10 +16,6 @@ class InterviewSerializer < ActiveModel::Serializer
              :interview_date,
              :forced_labor_groups,
              :forced_labor_fields,
-             #:still_image_file_name,
-             #:still_image_content_type,
-             #:still_image_file_size,
-             #:still_image_updated_at,
              #:inferior_quality,
              #:original_citation,
              #:translated_citation,
@@ -136,7 +132,6 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def still_url
-    #object.still_image.url(:original)
     case Project.name.to_sym
     when :mog
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"

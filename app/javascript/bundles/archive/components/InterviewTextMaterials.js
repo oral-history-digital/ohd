@@ -13,7 +13,7 @@ export default class InterviewTextMaterials extends React.Component {
             let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
                 <p>
-                    <a href={`${this.to()}.pdf?lang=${lang}&kind=interview`}>
+                    <a href={`${this.to()}.pdf?lang=${lang}`}>
                         <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                         <span>{t(this.props, textKey)}</span>
                     </a>

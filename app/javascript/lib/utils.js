@@ -87,6 +87,9 @@ export function pluralize(word) {
         case 'history': 
             pluralizedWord = 'histories';
             break;
+        case 'biographical_entry': 
+            pluralizedWord = 'biographical_entries';
+            break;
         case 'registry_entry': 
             pluralizedWord = 'registry_entries';
             break;

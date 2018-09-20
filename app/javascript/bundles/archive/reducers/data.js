@@ -22,6 +22,7 @@ const initialState = {
         user_contents: {},
         annotations: {},
         uploads: {},
+        biographical_entries: {},
     }
 }
 

@@ -125,6 +125,7 @@ de:
   typology: 'Erfahrung'
   typologies: 'Erfahrungen'
   history: 'Kurzbiografie'
+  biographical_entries_from: 'Biografische Einträge von'
   interview_info: 'Zum Interview'
   place: 'Ort'
   duration: 'Dauer'
@@ -244,6 +245,9 @@ de:
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
       edit: 'lebensgeschichtl. Ereignis bearbeiten'
+    biographical_entry: 
+      new: 'lebensgeschichtl. Ereignis hinzufügen'
+      edit: 'lebensgeschichtl. Ereignis bearbeiten'
     annotation: 
       new: 'Anmerkung hinzufügen'
       edit: 'Anmerkung bearbeiten'
@@ -265,13 +269,6 @@ de:
   admin:
     change_to_normal_view: 'Nutzeransicht'
     change_to_edit_view: 'Redaktion'
-
-  histories:
-    forced_labor_details: 'Zwangsarbeitdetails'
-    return_date: 'Rückkehrdatum'
-    deportation_date: 'Verschleppungsdatum'
-    punishment: 'Art der Mißhandlung'
-    liberation_date: 'Befreiungsdatum'
 
   user_registration:
     registration: 'Registrierung'
@@ -415,6 +412,10 @@ de:
         deportation_date: 'Verschleppungsdatum'
         punishment: 'Art der Mißhandlung'
         liberation_date: 'Befreiungsdatum'
+      biographical_entry:
+        text: 'Ereignis'
+        start_date: 'Beginn'
+        end_date: 'Ende'
       contribution:
         contribution_type: 'Art des Beitrags'
         person_id: 'Person'
