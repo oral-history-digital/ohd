@@ -2,19 +2,12 @@ class PhotosController < BaseController
   require 'open-uri'
 
   def create
-    # Writing meta data
     data = params[:photo].delete(:data)
-    #data = MiniExiftool.new params[:photo].delete(:data)
-    #data.title = photo_params[:caption]
-    #data.save
     @photo = Photo.create(photo_params)
-    @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}")
+    @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
 
+    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
     clear_cache @photo.interview
-
-    #file_path = File.join(Rails.root, 'tmp', file.original_filename)
-    #File.open(file_path, 'wb') {|f| f.write(file.read) }
-    #@photo.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
 
     respond_to do |format|
       format.json do
@@ -31,6 +24,7 @@ class PhotosController < BaseController
 
   def edit
     @photo = Photo.update_attributes(photo_params)
+    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
     clear_cache @photo.interview
 
     respond_to do |format|
