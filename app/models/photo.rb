@@ -21,6 +21,10 @@ class Photo < ActiveRecord::Base
 
   validates_associated :interview
 
+  def file_path 
+    File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
+  end
+
   # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
   #
   #def src(image_name)
