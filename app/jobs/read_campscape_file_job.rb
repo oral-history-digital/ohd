@@ -14,7 +14,7 @@ class ReadCampscapeFileJob < ApplicationJob
     #File.foreach('testfile') {|x| print "GOT", x }
     content = File.readlines file_path
     content[4..(content.length - 1)].each do |line|
-      data = line.split(;)
+      data = line.split(';')
       unless data[1].blank?
         interviewee = Person.find_or_create_by first_name: data[1], birth_name: data[2], last_name: data[3], other_first_name: data[4], gender: data[5], date_of_bith: data[6] || data[7]
         interview_date = Date.parse(data[17])
@@ -22,9 +22,9 @@ class ReadCampscapeFileJob < ApplicationJob
 
         interview_data = {
           interview_date: interview_date,
-          collection_id = find_collection_id(data[12])
-          language_id = find_language_id(data[16])
-          duration = data[22]
+          collection_id: find_collection_id(data[12]),
+          language_id: find_language_id(data[16]),
+          duration: data[22]
         }
 
         if interview
