@@ -2,13 +2,10 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
+import {Link, hashHistory} from 'react-router-dom';
 import { t } from '../../../lib/utils';
 
 export default class EditInterview extends React.Component {
-
-    returnToForm() {
-        this.props.returnToForm('interviews');
-    }
 
     content() {
         if (
@@ -18,14 +15,16 @@ export default class EditInterview extends React.Component {
                 <div>
                     <p>
                         {t(this.props, 'edit.interview.processed')}
-                        {this.props.processed}
+                        <Link to={'/' + this.props.locale + '/interviews/' + this.props.processed}>
+                            {this.props.processed}
+                        </Link>
                     </p>
-                    <div 
+                    <button 
                         className='return-to-upload'
-                        onClick={() => this.returnToForm()}
+                        onClick={() => this.props.returnToForm('interviews')}
                     >
                         {t(this.props, 'edit.interview.return')}
-                    </div>
+                    </button>
                 </div>
             )
         } else {

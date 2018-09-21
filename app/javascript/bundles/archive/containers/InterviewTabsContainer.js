@@ -1,8 +1,5 @@
 import {connect} from 'react-redux';
-
 import InterviewTabs from '../components/InterviewTabs';
-
-import { getInterview } from '../../../lib/utils';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
@@ -11,7 +8,6 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         locale: state.archive.locale,
-        interview: getInterview(state),
         interviewFulltext: data && data.fulltext,
         project: state.archive.project,
     }

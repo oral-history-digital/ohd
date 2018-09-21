@@ -31,7 +31,10 @@ export default class Interview extends React.Component {
     }
 
     loadInterview() {
-        if (!this.props.interviewsStatus[this.props.match.params.archiveId]) {
+        if (
+            !this.props.interviewsStatus[this.props.match.params.archiveId] ||
+            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'reload'
+        ) {
             this.props.fetchData('interviews', this.props.match.params.archiveId);
         }
     }
@@ -51,7 +54,7 @@ export default class Interview extends React.Component {
     }
 
     interview() {
-        return this.interviewLoaded() ? this.props.interviews[this.props.archiveId] : {};
+        return this.interviewLoaded() ? this.props.interviews[this.props.match.params.archiveId] : {};
     }
 
     loadUserContents() {
@@ -115,8 +118,8 @@ export default class Interview extends React.Component {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <VideoPlayerContainer/>
-                        <InterviewTabsContainer/>
+                        <VideoPlayerContainer interview={this.interview()}/>
+                        <InterviewTabsContainer interview={this.interview()}/>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.loggedOutContent()}

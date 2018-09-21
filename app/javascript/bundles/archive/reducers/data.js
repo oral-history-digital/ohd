@@ -140,8 +140,10 @@ const data = (state = initialState, action) => {
                 // like this after submiting a form it can be checked if sth. is processed (the id is not known before for new objects)
                 // and thus the form can be hidden
                 //
-                let statuses = updateStatus(state.statuses, action.dataType, {[action.msg || action.id]: `${action.msg ? action.id : 'fetched'}`});
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
+                if (action.msg)
+                    statuses = updateStatus(statuses, action.dataType, {[action.msg]: action.id});
                 return Object.assign({}, state, {
                     statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {

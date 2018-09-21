@@ -32,6 +32,7 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
 
     registryEntries() {
         let registryEntries = [];
+        debugger;
         if (
             this.props.interview
         ) {

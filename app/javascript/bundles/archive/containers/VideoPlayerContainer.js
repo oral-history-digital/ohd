@@ -15,7 +15,6 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        interview: interview,
         tape: state.interview.tape,
         videoTime: state.interview.videoTime,
         videoStatus: state.interview.videoStatus,

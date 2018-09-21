@@ -1,8 +1,16 @@
-class ContributionsController < ApplicationController
+class ContributionsController < BaseController
 
   def create
     @contribution = Contribution.create(contribution_params)
     clear_cache @contribution.interview
+
+    if @contribution.contribution_type == Project.contribution_types['interviewee']
+      reload_data_type = 'interviews'
+      reload_id = @contribution.interview_id
+    else
+      reload_data_type = nil
+      reload_id = nil
+    end
 
     respond_to do |format|
       format.json do
@@ -11,7 +19,9 @@ class ContributionsController < ApplicationController
           id: @contribution.interview.archive_id,
           nested_data_type: 'contributions',
           nested_id: @contribution.id,
-          data: ::ContributionSerializer.new(@contribution).as_json
+          data: ::ContributionSerializer.new(@contribution).as_json,
+          reload_data_type: reload_data_type,
+          reload_id: reload_id
         }
       end
     end
