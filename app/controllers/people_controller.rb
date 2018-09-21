@@ -38,7 +38,6 @@ class PeopleController < ApplicationController
   end
 
   def index
-
     respond_to do |format|
       extra_params = params[:contributors_for_interview] ?  "contributors_for_interview_#{params[:contributors_for_interview]}" : nil
 
