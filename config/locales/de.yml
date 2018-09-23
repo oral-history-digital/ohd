@@ -50,6 +50,7 @@ de:
   transcript_header: 'Übersetzung des Interviews mit'
   tapes: 'Bänder'
   without_translation: 'Dieses Interview wurde noch nicht ins Deutsche übersetzt.'
+  without_transcript: 'Dieses Interview wurde noch nicht transkribiert.'
   without_index: 'Die Überschriften dieses Interviews wurde noch nicht ins Deutsche übersetzt.'
   without_ref_tree: 'Dieses Interviews wurde noch nicht verschlagwortet.'
   private: 'Privat'
