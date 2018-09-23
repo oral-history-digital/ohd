@@ -11,7 +11,6 @@ class SegmentSerializer < ActiveModel::Serializer
              :annotations,
              :user_annotation_ids,
              :start_time,
-             :end_time,
              :references_count,
              :registry_references,
              #:references,

@@ -5,12 +5,11 @@ class SegmentHitSerializer < ActiveModel::Serializer
              :interview_id,
              :time,
              :start_time,
-             :end_time,
              :tape_nbr,
              :transcripts,
              :timecode,
              :speaker_id,
-             :lead_segment_heading,
+             :last_heading
 
   def time
     # timecode as seconds 
@@ -23,13 +22,6 @@ class SegmentHitSerializer < ActiveModel::Serializer
 
   def transcripts
     {}
-  end
-
-  def lead_segment_heading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.section_lead_segment.subheading(projectified(locale)) || object.section_lead_segment.mainheading(projectified(locale))
-      mem
-    end
   end
 
 end

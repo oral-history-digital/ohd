@@ -10,6 +10,15 @@ export function segments(props) {
     return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
 }
 
+export function activeSegmentId(props) {
+    return getSegmentId(
+        props.transcriptTime, 
+        segments(props), 
+        props.interview.last_segments_ids[props.tape], 
+        props.interview.first_segments_ids[props.tape]
+    )
+}
+
 export function getSegmentId(time, segments, lastSegmentId, firstSegmentId) {
 
     let found = false;

@@ -7,26 +7,19 @@ export default class Segment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active: false,
             contentOpen: false,
             contentType: 'none'
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        let active = this.props.data.end_time > nextProps.transcriptTime && this.props.data.start_time <= nextProps.transcriptTime;
-        if (active !== this.state.active) {
-            this.setState({
-                active: active
-            })
-        }
     }
 
     heading() {
-        if (this.props.data.lead_segment_heading[this.props.locale].length > 0) {
+        if (this.props.data.last_heading[this.props.locale]) {
             return (
                 <span>
-                {t(this.props, 'in')}: "{this.props.data.lead_segment_heading[this.props.locale]}"
+                {t(this.props, 'in')}: "{this.props.data.last_heading[this.props.locale]}"
                 &nbsp;|&nbsp;
             </span>
         )
@@ -58,7 +51,7 @@ export default class Segment extends React.Component {
     }
 
     css() {
-        return 'content-search-text ' + (this.state.active ? 'active' : 'inactive');
+        return 'content-search-text ' + (this.props.active ? 'active' : 'inactive');
     }
 
     render() {

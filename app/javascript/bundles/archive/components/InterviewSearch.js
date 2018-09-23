@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, activeSegmentId } from '../../../lib/utils';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
 
@@ -36,6 +36,7 @@ export default class InterviewSearch extends React.Component {
                 return (
                     <FoundSegmentContainer
                         data={segment}
+                        active={parseInt(segment.id) === activeSegmentId(this.props)}
                         key={"segment-" + segment.id}
                         tape_count={this.props.interview.tape_count}
                     />

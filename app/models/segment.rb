@@ -214,10 +214,6 @@ class Segment < ActiveRecord::Base
     @time ||= Time.parse(raw_timecode).seconds_since_midnight
   end
 
-  def end_time
-    (start_time + duration).to_f
-  end
-
   def alias_names
     interview.alias_names || ''
   end
@@ -243,6 +239,28 @@ class Segment < ActiveRecord::Base
   # returns the segment that leads the chapter
   def section_lead_segment
     Segment.where(["interview_id = ? AND section = ?", interview_id, section]).order(:media_id).first
+  end
+
+  def last_heading
+    mainheadings = Segment.mainheadings_until(id, interview_id)
+    if mainheadings.count > 0
+      mainheadings_count = mainheadings.map{|mh| mh.mainheading(projectified(Project.available_locales.first))}.uniq.count
+      subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
+      
+      if subheadings.count > 0
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(projectified(locale))}"
+          mem
+        end
+      else
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(projectified(locale))}"
+          mem
+        end
+      end
+    else
+      {}
+    end
   end
 
   def has_heading?

@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, segments, getSegmentId } from '../../../lib/utils';
+import { t, segments, getSegmentId, activeSegmentId } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class Transcript extends React.Component {
@@ -36,7 +36,7 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let activeSegment = document.getElementById(`segment_${getSegmentId(this.props.transcriptTime, segments(this.props), this.props.interview.last_segments_ids[this.props.tape], this.props.interview.first_segments_ids[this.props.tape])}`);
+            let activeSegment = document.getElementById(`segment_${activeSegmentId(this.props)}`);
             if (activeSegment) {
                 let hight = activeSegment.offsetTop;
                 if (hight > 450)
@@ -79,16 +79,10 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
-        let activeSegmentId = getSegmentId(
-            this.props.transcriptTime, 
-            segments(this.props), 
-            this.props.interview.last_segments_ids[this.props.tape], 
-            this.props.interview.first_segments_ids[this.props.tape]
-        )
-
+        let activeId = activeSegmentId(this.props);
         let shownSegments = this.props.transcriptScrollEnabled ?
             segments(this.props) :
-            this.shownSegmentsAround(activeSegmentId);
+            this.shownSegmentsAround(activeId);
 
         let speakerId;
         let transcript = [];
@@ -104,7 +98,7 @@ export default class Transcript extends React.Component {
                 <SegmentContainer
                     data={segment}
                     originalLocale={this.props.originalLocale}
-                    active={parseInt(segmentId) === activeSegmentId}
+                    active={parseInt(segmentId) === activeId}
                     key={"segment-" + segment.id}
                 />
             )

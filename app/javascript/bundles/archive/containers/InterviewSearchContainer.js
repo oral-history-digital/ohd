@@ -11,6 +11,8 @@ const mapStateToProps = (state) => {
         foundSegments: data && data.foundSegments,
         archiveId: state.archive.archiveId,
         interview: getInterview(state),
+        tape: state.interview.tape,
+        transcriptTime: state.interview.transcriptTime,
         locale: state.archive.locale,
         translations: state.archive.translations,
         transcriptScrollEnabled: state.archive.transcriptScrollEnabled,

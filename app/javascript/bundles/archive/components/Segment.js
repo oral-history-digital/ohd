@@ -9,7 +9,6 @@ export default class Segment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active: false,
             contentOpen: false,
             contentType: 'none'
         };
