@@ -18,7 +18,7 @@ class TranscriptsController < ApplicationController
       archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
     else
       archive_id = transcript_params[:archive_id]
-      tape_media_id = transcript_params.slice(:archive_id, :tape_count, :tape_number).values.join('_')
+      tape_media_id = [transcript_params[:archive_id], format('%02d', transcript_params[:tape_count]), format('%02d', transcript_params[:tape_number])].join('_')
     end
 
     interview = Interview.find_or_create_by archive_id: archive_id
@@ -48,6 +48,8 @@ class TranscriptsController < ApplicationController
       permit(
         :collection_id,
         :archive_id,
+        :tape_count,
+        :tape_number,
         file_column_names: [:timecode, :transcript, :translation_one, :translation_two, :annotations],
         file_column_languages: [:transcript, :translation_one, :translation_two],
     )

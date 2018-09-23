@@ -349,8 +349,10 @@ class Interview < ActiveRecord::Base
         if row['timecode'] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
           segment = Segment.find_or_create_by interview_id: id, timecode: row['timecode'], tape_id: tape_id
           %w(transcript translation_one translation_two).each do |t|
-          segment.update_attributes text: row[t], 
-            locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) if file_column_languages[t]
+            if file_column_languages[t]
+              segment.update_attributes text: row[t], 
+                locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) 
+            end
           end
         end
       end
