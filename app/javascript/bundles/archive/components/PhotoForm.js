@@ -7,7 +7,7 @@ export default class PhotoForm extends React.Component {
     elements() {
         let elements = [{
             attribute: 'caption',
-            value: this.props.photo && this.props.photo.caption && this.props.photo.caption[this.props.locale]
+            value: this.props.photo && this.props.photo.captions && this.props.photo.captions[this.props.locale]
         }]
 
         if (this.props.withUpload) {
@@ -28,7 +28,10 @@ export default class PhotoForm extends React.Component {
             <Form 
                 scope='photo'
                 onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
-                values={{interview_id: this.props.interview && this.props.interview.id}}
+                values={{
+                    interview_id: this.props.interview && this.props.interview.id,
+                    id: this.props.photo.id
+                }}
                 elements={this.elements()}
             />
         );

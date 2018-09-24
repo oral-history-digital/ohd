@@ -81,9 +81,9 @@ export default class Carousel extends React.Component {
                 key={"slider-image-" + photo.id}
                 className={'slider-image-container'} 
             >
+                {this.delete(photo)}
                 <img src={ this.photoSrc(photo) } />
                 <div className="slider-text">{this.caption(photo)}</div>
-                {this.delete(photo)}
             </div>
         )
     }

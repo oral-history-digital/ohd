@@ -22,8 +22,9 @@ class PhotosController < BaseController
     end
   end
 
-  def edit
-    @photo = Photo.update_attributes(photo_params)
+  def update
+    @photo = Photo.find(params[:id])
+    @photo.update_attributes(photo_params)
     WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
     clear_cache @photo.interview
 

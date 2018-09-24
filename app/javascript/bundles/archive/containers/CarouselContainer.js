@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import Carousel from '../components/Carousel';
 import { getInterview } from '../../../lib/utils';
-
+import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { deleteData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return {
@@ -15,5 +16,11 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    deleteData: (dataType, id, nestedDataType, nestedId) => dispatch(deleteData(dataType, id, nestedDataType, nestedId)),
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
+})
 
-export default connect(mapStateToProps)(Carousel);
+export default connect(mapStateToProps, mapDispatchToProps)(Carousel);
+
