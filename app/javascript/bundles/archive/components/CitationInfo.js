@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname } from '../../../lib/utils';
+import { t, fullname, getInterviewee } from '../../../lib/utils';
 import {Link, hashHistory} from 'react-router-dom';
 import moment from 'moment';
 
@@ -26,7 +26,7 @@ export default class CitationInfoInfo extends React.Component {
 
 
     render() {
-        let citation = `${fullname(this.props, this.props.interviewee)},
+        let citation = `${fullname(this.props, getInterviewee(this.props))},
         ${t(this.props, 'interview')} 
         ${this.props.interview.archive_id},  
         ${this.props.interview.created},

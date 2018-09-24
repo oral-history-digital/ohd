@@ -42,7 +42,6 @@ class InterviewSerializer < ActiveModel::Serializer
              :workflow_state,
              :transitions_to,
 
-             :interviewee_id,
              :contributions,
              :registry_references,
              :photos
@@ -170,10 +169,6 @@ class InterviewSerializer < ActiveModel::Serializer
     if object.duration
       Time.at(object.duration).utc.strftime("%-H h %M min")
     end
-  end
-
-  def interviewee_id
-    object.interviewees.first.id if object.interviewees.first
   end
 
   def year_of_birth

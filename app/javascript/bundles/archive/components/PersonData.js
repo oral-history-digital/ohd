@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, admin } from '../../../lib/utils';
+import { t, fullname, admin, getInterviewee } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
@@ -17,19 +17,21 @@ export default class PersonData extends React.Component {
     }
 
     placeOfBirth(){
+        let interviewee = getInterviewee(this.props);
         if (
-            this.props.interviewee.place_of_birth &&
-            this.props.interviewee.place_of_birth.name[this.props.locale] && 
-            this.props.interviewee.place_of_birth.name[this.props.locale] !== ""
+            interviewee.place_of_birth &&
+            interviewee.place_of_birth.name[this.props.locale] && 
+            interviewee.place_of_birth.name[this.props.locale] !== ""
         ){
-            return this.content(t(this.props, 'place_of_birth'), this.props.interviewee.place_of_birth.name[this.props.locale], "" );
+            return this.content(t(this.props, 'place_of_birth'), interviewee.place_of_birth.name[this.props.locale], "" );
         }
     }
 
 
     typologies(){
-        if (this.props.interviewee.typology && this.props.interviewee.typology[this.props.locale]){
-            return this.content(t(this.props, 'typologies'), this.props.interviewee.typology[this.props.locale].join(', '),"" );
+        let interviewee = getInterviewee(this.props);
+        if (interviewee.typology && interviewee.typology[this.props.locale]){
+            return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
         } else {
             return "";
         }
@@ -50,11 +52,12 @@ export default class PersonData extends React.Component {
     }
 
     info() {
-        if (this.props.interviewee) {
+        let interviewee = getInterviewee(this.props);
+        if (interviewee) {
             return (
                 <div>
-                    {this.content(t(this.props, 'interviewee_name'), fullname(this.props, this.props.interviewee, true), "")}
-                    {this.content(t(this.props, 'date_of_birth'), this.props.interviewee.date_of_birth, "figure-letter-spacing")}
+                    {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
+                    {this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "figure-letter-spacing")}
                     {this.placeOfBirth()}
                     {this.typologies()}
                     <AuthShowContainer ifLoggedIn={true}>
@@ -72,11 +75,12 @@ export default class PersonData extends React.Component {
     }
 
     render() {
+        let interviewee = getInterviewee(this.props);
         if (admin(this.props)) {
             return (
                 <div>
-                    {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, this.props.interviewee, true), "")}
-                    <BiographicalEntriesContainer person={this.props.interviewee} />
+                    {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
+                    <BiographicalEntriesContainer person={interviewee} />
                 </div>
             );
         } else {

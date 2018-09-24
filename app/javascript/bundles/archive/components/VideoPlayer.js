@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import { t, fullname, segments, getSegmentId } from '../../../lib/utils';
+import { t, fullname, segments, getSegmentId, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
@@ -272,7 +272,7 @@ export default class VideoPlayer extends React.Component {
                     <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
-                            {fullname(this.props, this.props.interviewee, true)}
+                            {fullname(this.props, getInterviewee(this.props), true)}
                         </h1>
                         <div className="video-icons-container">
                             <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>

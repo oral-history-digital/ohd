@@ -56,6 +56,15 @@ export function getSegmentId(time, segments, lastSegmentId, firstSegmentId) {
     return segmentId;
 }
 
+export function getInterviewee(props) {
+    if (props.interview && props.people && props.contributionTypes) {
+        for(var c in props.interview.contributions) {
+            if (props.interview.contributions[c].contribution_type === props.contributionTypes.interviewee)
+                return props.people[props.interview.contributions[c].person_id];
+        }
+    }
+}
+
 export function t(props, key) {
     let text;
     let cmd = `text = props.translations.${props.locale}.${key}`

@@ -4,7 +4,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t, fullname } from '../../../lib/utils';
+import { t, fullname, getInterviewee } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 
@@ -81,7 +81,7 @@ export default class Interview extends React.Component {
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {fullname(this.props, this.interviewee(), true)}
+                                {fullname(this.props, getInterviewee(this.props), true)}
                             </h1>
                         </div>
                         <div className='video-element'>
@@ -94,10 +94,6 @@ export default class Interview extends React.Component {
         } else {
             return null;
         }
-    }
-
-    interviewee() {
-        return this.props.people && this.props.people[this.interview().interviewee_id];
     }
 
     doiContent() {

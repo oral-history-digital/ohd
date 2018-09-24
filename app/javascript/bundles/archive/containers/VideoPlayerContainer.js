@@ -19,7 +19,8 @@ const mapStateToProps = (state) => {
         videoTime: state.interview.videoTime,
         videoStatus: state.interview.videoStatus,
         actualSegment: state.interview.actualSegment,
-        interviewee: interview && state.data.people && state.data.people[interview.interviewee_id],
+        people: state.data.people,
+        contributionTypes: state.archive.contributionTypes,
     }
 }
 

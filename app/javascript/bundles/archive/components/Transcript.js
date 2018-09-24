@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, segments, getSegmentId, activeSegmentId } from '../../../lib/utils';
+import { t, segments, getSegmentId, activeSegmentId, getInterviewee } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class Transcript extends React.Component {
@@ -89,7 +89,8 @@ export default class Transcript extends React.Component {
 
         for (var segmentId in shownSegments) {
             let segment = shownSegments[segmentId];
-            segment.speaker_is_interviewee = this.props.interview.interviewee_id === segment.speaker_id;
+            let interviewee = getInterviewee(this.props);
+            segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (speakerId !== segment.speaker_id && segment.speaker_id !== null) {
                 segment.speakerIdChanged = true;
                 speakerId = segment.speaker_id;
