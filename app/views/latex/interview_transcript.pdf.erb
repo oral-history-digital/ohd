@@ -29,7 +29,7 @@
 \newpage
 
 <%= render partial: "./latex/observation" %>
-<%= render partial: "./latex/headings" %>
+<%= render(partial: "./latex/headings") unless @interview.segments.with_heading.blank? %>
 
 \newpage
 
