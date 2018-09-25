@@ -2,7 +2,6 @@ class BiographicalEntriesController < BaseController
 
   def create
     @biographical_entry = BiographicalEntry.create(biographical_entry_params)
-    clear_person_cache @biographical_entry.person
 
     respond_to do |format|
       format.json do
@@ -34,7 +33,6 @@ class BiographicalEntriesController < BaseController
     @biographical_entry = BiographicalEntry.find(params[:id])
     updated_at = @biographical_entry.updated_at
     @biographical_entry.update_attributes(biographical_entry_params)
-    clear_person_cache @biographical_entry.person
     clear_biographical_entry_cache @biographical_entry.id, updated_at
 
     respond_to do |format|
@@ -52,9 +50,7 @@ class BiographicalEntriesController < BaseController
 
   def destroy 
     @biographical_entry = BiographicalEntry.find(params[:id])
-    person = @biographical_entry.person 
     @biographical_entry.destroy
-    clear_person_cache person
 
     respond_to do |format|
       format.html do
@@ -68,10 +64,6 @@ class BiographicalEntriesController < BaseController
 
   def biographical_entry_params
     params.require(:biographical_entry).permit(:person_id, :text, :start_date, :end_date)
-  end
-
-  def clear_person_cache(person)
-    Rails.cache.delete "person-#{person.id}-#{person.updated_at}"
   end
 
   def clear_biographical_entry_cache id, updated_at

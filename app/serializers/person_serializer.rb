@@ -11,21 +11,24 @@ class PersonSerializer < ActiveModel::Serializer
   end
 
   def date_of_birth
-    return "" if object.date_of_birth.blank?
-    if Project.name.to_sym === :mog
-      object.date_of_birth.sub(/^\.+/,"").split('.').map{|i| "%.2i" %i}.join('.')
-    else
-      object.date_of_birth
+    unless object.date_of_birth.blank?
+      if Project.name.to_sym === :mog
+        object.date_of_birth.sub(/^\.+/,"").split('.').map{|i| "%.2i" %i}.join('.')
+      else
+        object.date_of_birth
+      end
     end
   end
 
   def typology
-    facets = object.typology ? object.typology.split(',') : []
-    object.translations.each_with_object({}) {|i, hsh |
-      alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-      hsh[alpha2_locale] = facets.map{|typology|
-        I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}")
-      } if Project.available_locales.include?( alpha2_locale )}
+    if object.typology
+      facets = object.typology.split(',')
+      object.translations.each_with_object({}) {|i, hsh |
+        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+        hsh[alpha2_locale] = facets.map{|typology|
+          I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: '_')}")
+        } if Project.available_locales.include?( alpha2_locale )}
+    end
   end
 
   #def histories

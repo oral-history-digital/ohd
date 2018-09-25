@@ -33,9 +33,7 @@ export default class BiographicalEntry extends React.Component {
                 title: `${t(this.props, 'delete')}`,
                 content: (
                     <div>
-                        <p>{this.props.biographicalEntry.text[this.props.locale]}</p>
-                        <p>{this.props.biographicalEntry.start_date[this.props.locale]}</p>
-                        <p>{this.props.biographicalEntry.end_date[this.props.locale]}</p>
+                        {this.entries()}
 
                         <div className='any-button' onClick={() => this.destroy()}>
                             {t(this.props, 'delete')}
@@ -70,7 +68,8 @@ export default class BiographicalEntry extends React.Component {
 
     entries() {
         return ['text', 'start_date', 'end_date'].map((entry, index) => {
-            return this.entry(entry);
+            if (this.props.biographicalEntry[entry][this.props.locale]) 
+                return this.entry(entry);
         })
     }
 
