@@ -36,7 +36,10 @@ class SearchesController < BaseController
       format.json do
         interview = Interview.find_by_archive_id(params[:id])
         json = {
-          found_segments: search.hits.map do |hit| 
+          # in some cases esp. in mog their might be hits but their segments do not exist anymore
+          # so either reindex all or save here with the following select statement
+          #
+          found_segments: search.select{|h| h.instance}.hits.map do |hit| 
             Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
               segment = ::SegmentHitSerializer.new(hit.instance).as_json 
               segment[:transcripts] = highlighted_transcripts(hit)
