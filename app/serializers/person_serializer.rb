@@ -1,5 +1,6 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :histories, :name, :names, :typology, :place_of_birth, :biographical_entries
+  attributes :id, :date_of_birth, :gender, :name, :names, :typology, :place_of_birth, :biographical_entries
+            # :histories
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -27,9 +28,9 @@ class PersonSerializer < ActiveModel::Serializer
       } if Project.available_locales.include?( alpha2_locale )}
   end
 
-  def histories
-    object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("history-#{c.id}-#{c.updated_at}"){HistorySerializer.new(c)}; mem}
-  end
+  #def histories
+    #object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("history-#{c.id}-#{c.updated_at}"){HistorySerializer.new(c)}; mem}
+  #end
 
   def biographical_entries
     object.biographical_entries.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("biographical_entry-#{c.id}-#{c.updated_at}"){BiographicalEntrySerializer.new(c)}; mem}
