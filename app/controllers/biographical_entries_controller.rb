@@ -18,6 +18,8 @@ class BiographicalEntriesController < BaseController
   end
 
   def show
+    @interview = Interview.find_by_archive_id params[:id]
+    @alpha2_locale = params[:lang]
     respond_to do |format|
       format.pdf do
         @alpha2_locale = params[:lang]

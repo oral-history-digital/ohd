@@ -38,7 +38,7 @@ de:
   interview_with: 'Interview mit'
   selected_registry_entry: 'Ausgewählter Registereintrag'
   archive_id: 'Archiv-ID'
-  history_of: 'Kurzbiografie von'
+  biographical_entries_of: 'Kurzbiografie von'
   noscript: 'Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.'
   interviews: 'Interviews'
   places: 'Geburtsorte'
@@ -402,9 +402,12 @@ de:
       registry_references:
         one: 'Registererwähnung'
         other: 'Registererwähnungen'
-      annotations:
+      annotation:
         one: 'Anmerkung'
         other: 'Anmerkungen'
+      biographical_entry:
+        one: 'Kurzbiographie'
+        other: 'Kurzbiographieen'
 
     attributes:
       history:

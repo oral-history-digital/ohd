@@ -1,8 +1,8 @@
 <% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.first_name}" %>
 <% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.last_name}" %>
 <% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
-<% title = "#{I18n.backend.translate(@alpha2_locale, 'biographical_entry')} #{interviewee_name}" %>
-<% header_text =  "#{I18n.backend.translate(@alpha2_locale, 'biographical_entry_of')} #{interviewee_name} (#{I18n.backend.translate(@alpha2_locale, 'archive_id')} #{@interview.archive_id})" %>
+<% title = "#{I18n.translate('activerecord.models.biographical_entry.one', locale: @alpha2_locale)} #{interviewee_name}" %>
+<% header_text =  "#{I18n.translate('biographical_entries_of', locale: @alpha2_locale)} #{interviewee_name} (#{I18n.translate('archive_id', locale: @alpha2_locale)} #{@interview.archive_id})" %>
 
 \title{<%= title %>}
 
@@ -22,26 +22,19 @@
                } %>
 
 <% @interview.interviewees.first.biographical_entries.each do |biographical_entry| %>
-  <% start_date = biographical_entry.translations.where(locale: @project_locale).first.start_date ||= "" %>
-  <% end_date = biographical_entry.translations.where(locale: @project_locale).first.end_date ||= "" %>
-  <% if start_date.blank? && end_date.blank? 
-       span = ''
-     elsif end_date.blank? 
-       span = start_date.split('-').map{|i| "%.2i" %i}.join('.')  
-     else
-       span = "#{start_date.split('-').map{|i| "%.2i" %i}.join('.')} - #{end_date.split('-').map{|i| "%.2i" %i}.join('.')}" 
-     end
-  %>
+  <% start_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.start_date).strftime("%d.%m.%Y") rescue nil %>
+  <% end_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.end_date).strftime("%d.%m.%Y") rescue nil %>
+  <% title = [start_date, end_date].compact.join(' - ') || '' %>
   <%= render partial: "./latex/title",
              locals:
                  {
-                     title: latex_escape(span),
+                     title: latex_escape(title),
                      space_above: 0.4,
                      space_below: 0,
                      font_size: 13,
                  } %>
-  <% details = biographical_entry.translations.where(locale: @project_locale).first.forced_labor_details %>
-  \par{<%= latex_escape(ActionView::Base.full_sanitizer.sanitize(details).gsub("&amp;", "&")) %>}
+  <% text = biographical_entry.translations.where(locale: @project_locale).first.text %>
+  \par{<%= latex_escape(ActionView::Base.full_sanitizer.sanitize(text).gsub("&amp;", "&")) %>}
 <% end %>
 
 
