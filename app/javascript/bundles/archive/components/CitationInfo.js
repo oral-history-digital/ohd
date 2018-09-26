@@ -29,7 +29,7 @@ export default class CitationInfoInfo extends React.Component {
         let citation = `${fullname(this.props, getInterviewee(this.props))},
         ${t(this.props, 'interview')} 
         ${this.props.interview.archive_id},  
-        ${this.props.interview.created},
+        ${this.props.interview.interview_date},
         ${this.project()},
         ${t(this.props, 'doi')}: ${this.props.projectDoi + this.props.interview.archive_id}, 
         (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;

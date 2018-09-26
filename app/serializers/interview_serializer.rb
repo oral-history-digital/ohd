@@ -8,7 +8,6 @@ class InterviewSerializer < ActiveModel::Serializer
              :media_type,
              :duration,
              :translated,
-             :created,
              #:updated_at,
              #:segmented,
              #:researched,
@@ -90,7 +89,7 @@ class InterviewSerializer < ActiveModel::Serializer
   end
 
   def interview_date
-    Date.parse(object.interview_date).strftime("%Y-%m-%d")
+    Date.parse(object.interview_date).strftime("%d.%m.%Y")
   rescue
     object.interview_date || 'no date given'
   end
@@ -173,10 +172,6 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def year_of_birth
     object.interviewees.first.year_of_birth if object.interviewees.first
-  end
-
-  def created
-    object.created_at.strftime("%d.%m.%Y")
   end
 
   # def duration

@@ -31,7 +31,7 @@ export default class InterviewInfo extends React.Component {
         } else {
             return (
                 <div>
-                    {this.content(t(this.props, 'date'), this.props.interview.created, "figure-letter-spacing")}
+                    {this.content(t(this.props, 'date'), this.props.interview.interview_date, "figure-letter-spacing")}
                     {this.placeOfInterview()}
                     {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
                     {this.tapes()}
