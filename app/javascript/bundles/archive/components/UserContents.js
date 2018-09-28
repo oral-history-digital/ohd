@@ -12,16 +12,6 @@ export default class UserContents extends React.Component {
         };
     }
   
-    componentDidMount() {
-        if (!this.props.status) {
-            this.props.fetchData('user_contents');
-        }
-    }
-
-    userContentsLoaded() {
-        return this.props.status && this.props.status.split('-')[0] === 'fetched';
-    }
-
     sortedContent() {
         let userContentByType = [];
         for(var i in this.props.contents) {

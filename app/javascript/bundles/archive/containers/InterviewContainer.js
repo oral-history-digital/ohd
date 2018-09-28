@@ -15,8 +15,6 @@ const mapStateToProps = (state) => {
         account: state.account,
         interviews: state.data.interviews,
         interviewsStatus: state.data.statuses.interviews,
-        userContents: state.data.user_contents,
-        userContentsStatus: state.data.statuses.user_contents.all,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
         doiContentsStatus: state.data.statuses.doi_contents,

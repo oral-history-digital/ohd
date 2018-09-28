@@ -12,7 +12,6 @@ export default class Interview extends React.Component {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
-        this.loadUserContents();
         this.loadDoiContent();
     }
 
@@ -20,7 +19,6 @@ export default class Interview extends React.Component {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
-        this.loadUserContents();
         this.loadDoiContent();
     }
 
@@ -55,12 +53,6 @@ export default class Interview extends React.Component {
 
     interview() {
         return this.interviewLoaded() ? this.props.interviews[this.props.match.params.archiveId] : {};
-    }
-
-    loadUserContents() {
-        if (!this.props.userContentsStatus) {
-            this.props.fetchData('user_contents');
-        }
     }
 
     loadDoiContent() {
