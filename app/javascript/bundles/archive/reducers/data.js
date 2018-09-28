@@ -136,10 +136,6 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.id) {
-                // if action comes with a msg (like 'processed') we use msg as id and the id instead of 'fetched'.
-                // like this after submiting a form it can be checked if sth. is processed (the id is not known before for new objects)
-                // and thus the form can be hidden
-                //
                 let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 if (action.msg)
