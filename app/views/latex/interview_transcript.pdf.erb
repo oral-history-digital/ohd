@@ -1,5 +1,5 @@
 <% 
-  interviewee_name = @interview.interviewees.first.full_name(@project_locale)
+  interviewee_name = @interview.interviewees.first.name(@project_locale)
   title = "#{I18n.t('transcript_header', locale: @alpha2_locale)} #{interviewee_name}"
   header_text = "#{I18n.t('transcript', locale: @alpha2_locale)}:  #{I18n.t('interview_with', locale: @alpha2_locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @alpha2_locale)} #{@interview.archive_id})"
   tape = 0
@@ -71,7 +71,7 @@
 
   <% if segment.speaker_id != speaker_id && segment.speaking_person %>
     \vspace*{<%= 0.2 %>cm}
-    \textit{<%= segment.speaking_person.full_name(@project_locale) + ': ' %>}
+    \textit{<%= segment.speaking_person.name(@project_locale) + ': ' %>}
   <% end %>
   <%= latex_escape(segment.text(@project_locale)) %>
 
