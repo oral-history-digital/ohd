@@ -12,12 +12,10 @@ export default class RegistryEntrySearchFacets extends React.Component {
 
     componentDidMount() {
         this.loadRegistryEntries();
-        this.loadParentEntry();
     }
 
     componentDidUpdate() {
         this.loadRegistryEntries();
-        this.loadParentEntry();
     }
 
     loadRegistryEntries() {
@@ -27,18 +25,6 @@ export default class RegistryEntrySearchFacets extends React.Component {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntryId}`);
         }
     }
-
-    loadParentEntry() {
-        if (
-            //(this.props.registryEntries && !this.props.registryEntries[this.props.parentEntryId]) ||
-            !this.props.registryEntriesStatus[this.props.parentEntryId] ||
-            (this.props.registryEntriesStatus[this.props.parentEntryId] &&
-            this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload')
-        ) {
-            this.props.fetchData('registry_entries', this.props.parentEntryId);
-        }
-    }
-
 
     registryEntries() {
         let registryEntries = [];
@@ -77,7 +63,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                                  refObject={this.props.interview} 
                                  refObjectType='Interview' 
                                  interview={this.props.interview} 
-                                 registryEntryParentId={this.props.parentEntryId}
+                                 parentEntryId={this.props.parentEntryId}
                                  locale={this.props.locale}
                                  goDeeper={true}
                                  //  allowed values: true, false, 'hidden'

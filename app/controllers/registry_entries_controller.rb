@@ -71,6 +71,11 @@ class RegistryEntriesController < BaseController
           Segment.find(params[:references_for_segment]).registry_entries,
          "references_for_segment_#{params[:references_for_segment]}"
         ]
+      elsif params[:references_for_interview]
+        [
+          Interview.find_by_archive_id(params[:references_for_interview]).registry_references.where(registry_reference_type_id: params[:type_id]).map(&:registry_entry),
+         "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}"
+        ]
       elsif params[:facets]
         [
           Project.registry_entry_search_facets.inject([]) do |mem, facet|

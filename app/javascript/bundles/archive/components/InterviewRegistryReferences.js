@@ -20,7 +20,7 @@ export default class InterviewRegistryReferences extends React.Component {
             facets.push(
                 <RegistryReferenceTypeSearchFacetsContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    parentReferenceType={this.props.registryReferenceTypeSearchFacets[r]} 
+                    referenceType={this.props.registryReferenceTypeSearchFacets[r]} 
                     interview={this.props.interview}
                 >
                 </RegistryReferenceTypeSearchFacetsContainer>
