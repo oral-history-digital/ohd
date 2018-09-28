@@ -9,6 +9,7 @@ import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
 import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
 import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
+import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContainer';
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
@@ -143,6 +144,9 @@ export default class FlyoutTabs extends React.Component {
                         <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.contributions.other')}
                             content={<InterviewContributorsContainer/>}/>
+                        <InterviewDataContainer
+                            title={t(this.props, 'assign_speakers')}
+                            content={<AssignSpeakersFormContainer interview={this.props.interview} />}/>
                         <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/>

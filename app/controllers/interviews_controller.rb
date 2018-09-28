@@ -37,7 +37,29 @@ class InterviewsController < BaseController
 
     respond_to do |format|
       format.json do
-        render json: cache_interview(@interview)
+        render json: {
+          archive_id: @interview.archive_id,
+          data_type: 'interviews',
+          data: ::InterviewSerializer.new(@interview).as_json,
+          #reload_data_type: 'segments',
+          #reload_id: "for_interviews_#{@interview.archive_id}"
+        }
+      end
+    end
+  end
+
+  def update_speakers
+    @interview = Interview.find_by_archive_id params[:id]
+    AssignSpeakersJob.perform_later(@interview, update_speakers_params[:split_segments], update_speakers_params[:cut_initials], speakers)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          msg: "processing_speaker_update",
+          id: @interview.archive_id,
+          data_type: 'interviews',
+          nested_data_type: 'initials'
+        }, status: :ok
       end
     end
   end
@@ -110,6 +132,23 @@ class InterviewsController < BaseController
     end
   end
 
+  def initials
+    @interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "interview-initials-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+          {
+            data: @interview.initials,
+            nested_data_type: 'initials',
+            data_type: 'interviews',
+            archive_id: params[:id]
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
   def references
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
@@ -157,6 +196,19 @@ class InterviewsController < BaseController
         'video',
         'translated',
     )
+  end
+
+  def update_speakers_params
+    params.require(:update_speaker).
+      permit(
+        :split_segments,
+        :cut_initials,
+        speakers: {}
+    )
+  end
+
+  def speakers
+    update_speakers_params[:speakers].to_h
   end
 
 end

@@ -119,6 +119,7 @@ de:
   save: 'speichern'
   cancel: 'abbrechen'
   user_content: 'Arbeitsmappe'
+  assign_speakers: 'Sprecher zuordnen'
   person_info: 'Zur Person'
   date_of_birth: 'Geburtsdatum'
   year_of_birth: 'Jahrgang'
@@ -258,6 +259,11 @@ de:
       upload: 'Upload'
       processing: 'Wird bearbeitet: '
       return: 'Weiterer Upload'
+    update_speaker:
+      cut_initials: 'Initialen herausschneiden'
+      split_segments: 'Segmente bei Sprecherwechsel schneiden'
+      speaker_for_initials: 'Sprecher für: '
+      processing_speaker_update: 'Die Sprecher werden zugeordnet'
     photo: 
       new: 'Foto hinzufügen'
       edit: 'Foto bearbeiten'

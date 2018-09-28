@@ -51,10 +51,13 @@ Rails.application.routes.draw do
       #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
+      put 'update_speakers/:id', to: 'interviews#update_speakers'
+
       resources :interviews do
         member do 
           get :doi_contents
           get :headings
+          get :initials
           #get :references
           get :ref_tree
         end

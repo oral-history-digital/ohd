@@ -268,6 +268,19 @@ class Interview < ActiveRecord::Base
       mem
     end
   end
+
+  def initials
+    locale = projectified(language.code)
+    inits = []
+    segments.includes(:translations).where("segment_translations.locale": locale).each do |segment|
+        if !segment.text(locale).blank?
+          raw_initials = segment.text(locale)[/\*\w+:\*/]
+          inits << raw_initials[/\w+/] if raw_initials
+        end
+    end
+    inits.uniq
+  end
+
   
   def title
     localized_hash(true)

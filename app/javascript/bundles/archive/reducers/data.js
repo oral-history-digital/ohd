@@ -23,6 +23,7 @@ const initialState = {
         annotations: {},
         uploads: {},
         biographical_entries: {},
+        initials: {},
     }
 }
 
@@ -126,6 +127,8 @@ const data = (state = initialState, action) => {
             } else if (action.nestedDataType) {
                 let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
+                if (action.msg)
+                    statuses = updateStatus(statuses, action.nestedDataType, {[action.msg]: action.id});
                 let nestedData = (state[action.dataType] && state[action.dataType][action.id] && state[action.dataType][action.id][action.nestedDataType]) || {};
                 return Object.assign({}, state, {
                     statuses: statuses,
