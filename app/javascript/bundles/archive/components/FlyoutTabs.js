@@ -4,7 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
-import UserContentsContainer from '../containers/UserContentsContainer';
+import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
 import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
@@ -223,15 +223,7 @@ export default class FlyoutTabs extends React.Component {
             <TabPanel key='user-content'>
                 <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
                 <div className='flyout-sub-tabs-container flyout-folder'>
-                    <UserContentsContainer
-                        type='Search'
-                        title={t(this.props, 'saved_searches')}/>
-                    <UserContentsContainer
-                        type='InterviewReference'
-                        title={t(this.props, 'saved_interviews')}/>
-                    <UserContentsContainer
-                        type='UserAnnotation'
-                        title={t(this.props, 'saved_annotations')}/>
+                    <AllUserContentsContainer />
                 </div>
             </TabPanel>
         )
