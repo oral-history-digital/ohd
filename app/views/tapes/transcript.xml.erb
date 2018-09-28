@@ -4,12 +4,12 @@
   <% @previous_segment = nil -%>
   <% @tape.segments.each do |segment| -%>
     <% if @previous_segment -%>
-  <segment section="<%= "#{@previous_segment.section}" %>" begin="<%= "#{@previous_segment.start_time.to_i}" -%>" end="<%= "#{@previous_segment.end_time.to_i}" -%>">
-    <transcript><%= format_transcript @previous_segment.transcript -%></transcript>
-    <translation><%= format_transcript @previous_segment.translation -%></translation>
-    <section><%= @previous_segment.section.to_s -%></section>
-    <mediaId><%= @previous_segment.media_ids_up_to(segment).join('-') -%></mediaId>
-  </segment>
+      <segment section="<%= "#{@previous_segment.section}" %>" begin="<%= "#{@previous_segment.start_time.to_i}" -%>" end="<%= "#{segment.start_time.to_i}" -%>">
+        <transcript><%= format_transcript @previous_segment.transcript -%></transcript>
+        <translation><%= format_transcript @previous_segment.translation -%></translation>
+        <section><%= @previous_segment.section.to_s -%></section>
+        <mediaId><%= @previous_segment.media_ids_up_to(segment).join('-') -%></mediaId>
+      </segment>
     <% end -%>
     <% @previous_segment = segment -%>
   <% end -%>

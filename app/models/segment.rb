@@ -214,6 +214,14 @@ class Segment < ActiveRecord::Base
     @time ||= Time.parse(raw_timecode).seconds_since_midnight
   end
 
+  def next
+    interview.segments.where("timecode > ?", read_attribute(:timecode)).first
+  end
+
+  def prev
+    interview.segments.where("timecode < ?", read_attribute(:timecode)).last
+  end
+
   def alias_names
     interview.alias_names || ''
   end
@@ -229,7 +237,7 @@ class Segment < ActiveRecord::Base
   def as_vtt_subtitles(lang)
     raw_segment_text = text(projectified(lang))
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
-    "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
+    "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(self.next.start_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
 
   def speaker_changed(raw_segment_text = false)

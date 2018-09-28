@@ -63,7 +63,6 @@ export default class TableOfContents extends React.Component {
                         chapter: mainIndex + '.',
                         heading: mainheading,
                         start_time: segment.start_time,
-                        end_time: segment.end_time,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         interview_duration: this.props.interview.duration,
@@ -92,7 +91,6 @@ export default class TableOfContents extends React.Component {
                         heading: subheading,
                         chapter: mainIndex + '.' + subIndex + '.',
                         start_time: segment.start_time,
-                        end_time: segment.end_time,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         interview_duration: this.props.interview.duration

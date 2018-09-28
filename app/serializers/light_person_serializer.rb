@@ -1,5 +1,5 @@
 class LightPersonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :names
+  attributes :id, :names
 
   def names
       object.translations.each_with_object({}) {|i, hsh |

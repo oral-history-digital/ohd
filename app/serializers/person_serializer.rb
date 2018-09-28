@@ -1,5 +1,5 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :name, :names, :typology, :place_of_birth, :biographical_entries
+  attributes :id, :date_of_birth, :gender, :names, :typology, :place_of_birth, :biographical_entries
             # :histories
 
   def names
