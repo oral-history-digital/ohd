@@ -112,8 +112,8 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           #-> { includes(:translations)},
-           :dependent => :destroy#,
+    -> { includes(:translations).order(:timecode)},
+           dependent: :destroy
            #inverse_of: :interview
 
   has_many :segment_registry_references,
@@ -273,15 +273,11 @@ class Interview < ActiveRecord::Base
     locale = projectified(language.code)
     inits = []
     segments.includes(:translations).where("segment_translations.locale": locale).each do |segment|
-        if !segment.text(locale).blank?
-          raw_initials = segment.text(locale)[/\*\w+:\*/]
-          inits << raw_initials[/\w+/] if raw_initials
-        end
+      inits << segment.initials
     end
-    inits.uniq
+    inits.flatten.uniq
   end
 
-  
   def title
     localized_hash(true)
   end

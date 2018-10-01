@@ -31,32 +31,28 @@ export default class AssignSpeakersForm extends React.Component {
         this.props.returnToForm('interviews');
     }
 
-    //formValues() {
-        //let values = {};
-        //for (var i in this.props.initials) {
-
     formElements() {
         let elements = [];
         for (var i in this.props.interview.initials) {
             elements.push({ 
                 elementType: 'select',
                 attribute: `[speakers]${this.props.interview.initials[i]}`,
-                label: `${t(this.props, 'speaker_for_initials')} ${this.props.interview.initials[i]}`,
+                label: `${t(this.props, 'edit.update_speaker.speaker_for_initials')} ${this.props.interview.initials[i]}`,
                 values: Object.values(this.props.people),
                 withEmpty: true,
                 //validate: function(v){return v !== ''} 
             });
         }
-        elements.push({ 
-            attribute: 'split_segments',
-            elementType: 'input',
-            type: 'checkbox',
-        });
-        elements.push({ 
-            attribute: 'cut_initials',
-            elementType: 'input',
-            type: 'checkbox',
-        });
+        //elements.push({ 
+            //attribute: 'split_segments',
+            //elementType: 'input',
+            //type: 'checkbox',
+        //});
+        //elements.push({ 
+            //attribute: 'cut_initials',
+            //elementType: 'input',
+            //type: 'checkbox',
+        //});
         return elements;
     }
         

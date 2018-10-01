@@ -50,7 +50,7 @@ class InterviewsController < BaseController
 
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
-    AssignSpeakersJob.perform_later(@interview, update_speakers_params[:split_segments], update_speakers_params[:cut_initials], speakers)
+    AssignSpeakersJob.perform_later(@interview, speakers)
 
     respond_to do |format|
       format.json do
@@ -201,8 +201,8 @@ class InterviewsController < BaseController
   def update_speakers_params
     params.require(:update_speaker).
       permit(
-        :split_segments,
-        :cut_initials,
+        #:split_segments,
+        #:cut_initials,
         speakers: {}
     )
   end

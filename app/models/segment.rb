@@ -196,6 +196,15 @@ class Segment < ActiveRecord::Base
     ids
   end
 
+  def initials(locale)
+    inits = []
+    if !text(locale).blank?
+      raw_initials = text(locale)[/\*\w+:\*/]
+      inits << raw_initials[/\w+/] if raw_initials
+    end
+    inits
+  end
+
   def timecode
     timestr = read_attribute(:timecode).sub(/\.\d\d$/,'')
     unless tape.blank?
