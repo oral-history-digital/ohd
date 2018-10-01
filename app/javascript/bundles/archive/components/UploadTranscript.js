@@ -69,50 +69,50 @@ export default class UploadTranscript extends React.Component {
                         },
                         { 
                             attribute: '[file_column_names]timecode',
-                            label: 'activerecord.attributes.transcript.timecode',
+                            label: t(this.props, 'activerecord.attributes.transcript.timecode'),
                             value: 'Timecode'
                         },
                         { 
                             attribute: '[file_column_names]transcript',
-                            label: 'activerecord.attributes.transcript.transcript',
+                            label: t(this.props, 'activerecord.attributes.transcript.transcript'),
                             value: 'Transkript'
                         },
                         {
                             elementType: 'select',
                             attribute: '[file_column_languages]transcript',
-                            label: 'activerecord.attributes.transcript.transcript_language',
+                            label: t(this.props, 'activerecord.attributes.transcript.transcript_language'),
                             values: this.props.languages,
                             withEmpty: true,
                             validate: function(v){return v !== ''} 
                         },
                         { 
                             attribute: '[file_column_names]translation_one',
-                            label: 'activerecord.attributes.transcript.translation_one',
+                            label: t(this.props, 'activerecord.attributes.transcript.translation_one'),
                             value: 'Übersetzung'
                         },
                         {
                             elementType: 'select',
                             attribute: '[file_column_languages]translation_one',
-                            label: 'activerecord.attributes.transcript.translation_one_language',
+                            label: t(this.props, 'activerecord.attributes.transcript.translation_one_language'),
                             values: this.props.languages,
                             withEmpty: true,
                             //validate: function(v){return v !== ''} 
                         },
                         { 
                             attribute: '[file_column_names]translation_two',
-                            label: 'activerecord.attributes.transcript.translation_two',
+                            label: t(this.props, 'activerecord.attributes.transcript.translation_two'),
                         },
                         {
                             elementType: 'select',
                             attribute: '[file_column_languages]translation_two',
-                            label: 'activerecord.attributes.transcript.translation_two_language',
+                            label: t(this.props, 'activerecord.attributes.transcript.translation_two_language'),
                             values: this.props.languages,
                             withEmpty: true,
                             //validate: function(v){return v !== ''} 
                         },
                         { 
                             attribute: '[file_column_names]annotations',
-                            label: 'activerecord.attributes.transcript.annotations'
+                            label: t(this.props, 'activerecord.attributes.transcript.annotations')
                         },
                         { 
                             attribute: 'tape_and_archive_id_from_file',

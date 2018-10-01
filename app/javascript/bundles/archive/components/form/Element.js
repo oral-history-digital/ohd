@@ -14,7 +14,7 @@ export default class Element extends React.Component {
         // scope is equivalent to model here
         return (
             <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {t(this.props, this.props.label ? this.props.label : `activerecord.attributes.${this.props.scope}.${this.props.attribute}`) + mandatory}
+                {(this.props.label ? this.props.label : t(this.props, `activerecord.attributes.${this.props.scope}.${this.props.attribute}`)) + mandatory}
             </label>
         );
     }

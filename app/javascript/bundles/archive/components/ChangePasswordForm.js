@@ -145,7 +145,7 @@ export default class ChangePasswordForm extends React.Component {
 
                 <form className='default' onSubmit={this.handleSubmit}>
                     <InputContainer 
-                        label='devise.passwords.password'
+                        label={t(this.props, 'devise.passwords.password')}
                         attribute='password' 
                         type='password' 
                         showErrors={this.state.showErrors}
@@ -154,7 +154,7 @@ export default class ChangePasswordForm extends React.Component {
                         handleErrors={this.handleErrors}
                     />
                     <InputContainer 
-                        label='devise.passwords.password_confirmation'
+                        label={t(this.props, 'devise.passwords.password_confirmation')}
                         attribute='password_confirmation' 
                         type='password' 
                         showErrors={this.state.showErrors}
