@@ -13,7 +13,7 @@ import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContain
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 
@@ -144,9 +144,7 @@ export default class FlyoutTabs extends React.Component {
                         <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.contributions.other')}
                             content={<InterviewContributorsContainer/>}/>
-                        <InterviewDataContainer
-                            title={t(this.props, 'assign_speakers')}
-                            content={<AssignSpeakersFormContainer interview={this.props.interview} />}/>
+                        {this.assignSpeakersForm()}
                         <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/>
@@ -163,6 +161,17 @@ export default class FlyoutTabs extends React.Component {
             );
         } else {
             return <TabPanel key='interview'/>;
+        }
+    }
+
+    assignSpeakersForm() {
+        if (admin(this.props)) {
+            <InterviewDataContainer
+                title={t(this.props, 'assign_speakers')}
+                content={<AssignSpeakersFormContainer interview={this.props.interview} />}
+            />
+        } else {
+            return null;
         }
     }
      
