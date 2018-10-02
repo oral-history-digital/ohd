@@ -56,25 +56,19 @@ export default class AssignSpeakersForm extends React.Component {
         return elements;
     }
         
+    msg() {
+        let msg;
+        if (this.props.initialsStatus.processing_speaker_update === this.props.interview.archive_id) {
+            //msg = this.props.processing_speakers_update;
+            msg = 'edit.update_speaker.processing_speakers_update';
+        } else if (Object.keys(this.props.interview.initials).length < 1) {
+            msg = 'edit.update_speaker.no_initials_found';
+        }
+        return msg;
+    }
+
     render() {
         if (
-            this.props.initialsStatus.processing_speaker_update === this.props.interview.archive_id
-        ) {
-            return (
-                <div>
-                    <p>
-                        {t(this.props, 'edit.update_speaker.processing_speakers_update')}
-                        {this.props.processing_speakers_update}
-                    </p>
-                    <div 
-                        className='return-to-upload'
-                        onClick={() => this.returnToForm()}
-                    >
-                        {t(this.props, 'edit.upload.return')}
-                    </div>
-                </div>
-            )
-        } else if (
             // initials used in this interview`s segments loaded?
             this.props.initialsStatus[`for_interviews_${this.props.archiveId}`] &&
             this.props.initialsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched' &&
@@ -83,17 +77,29 @@ export default class AssignSpeakersForm extends React.Component {
             this.props.peopleStatus.all &&
             this.props.peopleStatus.all.split('-')[0] === 'fetched'
         ) {
-            let _this = this;
-            return (
-                <Form 
-                    scope='update_speaker'
-                    onSubmit={this.props.submitData}
-                    values={{
-                        id: this.props.interview.archive_id
-                    }}
-                    elements={_this.formElements()}
-                />
-            )
+
+            let msg = this.msg();
+            if (msg) {
+                return (
+                    <div>
+                        <p>
+                            {t(this.props, msg)}
+                        </p>
+                    </div>
+                )
+            } else {
+                let _this = this;
+                return (
+                    <Form 
+                        scope='update_speaker'
+                        onSubmit={this.props.submitData}
+                        values={{
+                            id: this.props.interview.archive_id
+                        }}
+                        elements={_this.formElements()}
+                    />
+                )
+            }
         } else {
             return <div className="facets-spinner"><img src={spinnerSrc} /></div>;
         }
