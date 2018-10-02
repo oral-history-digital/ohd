@@ -195,6 +195,7 @@ class InterviewsController < BaseController
         'interview_date',
         'video',
         'translated',
+        'observations'
     )
   end
 
