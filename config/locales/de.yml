@@ -264,6 +264,7 @@ de:
       split_segments: 'Segmente bei Sprecherwechsel schneiden'
       speaker_for_initials: 'Sprecher für: '
       processing_speaker_update: 'Die Sprecher werden zugeordnet'
+      no_initials_found: 'In dem Transkript wurden keine Initialen gefunden' 
     photo: 
       new: 'Foto hinzufügen'
       edit: 'Foto bearbeiten'
@@ -469,6 +470,7 @@ de:
         video: 'liegt ein Video vor?'
         translated: 'ist das Interview bereits übersetzt?'
         workflow_state: 'Status ändern zu:'
+        observations: 'Protokoll'
       transcript:
         collection_id: 'Sammlung'
         archive_id: 'Archiv-ID'

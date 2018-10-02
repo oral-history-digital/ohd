@@ -255,6 +255,13 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def localized_hash_for(method)
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = self.send(method, projectified(locale))
+      mem
+    end
+  end
+
   def localized_hash_for_media_type
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio', :locale => locale)
@@ -273,7 +280,7 @@ class Interview < ActiveRecord::Base
     locale = projectified(language.code)
     inits = []
     segments.includes(:translations).where("segment_translations.locale": locale).each do |segment|
-      inits << segment.initials
+      inits << segment.initials(locale)
     end
     inits.flatten.uniq
   end

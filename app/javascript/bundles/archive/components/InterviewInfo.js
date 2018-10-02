@@ -36,6 +36,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "figure-letter-spacing")}
                     {this.tapes()}
                     {this.language()}
+                    {this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")}
                 </div>
             );
         }

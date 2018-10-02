@@ -43,6 +43,11 @@ export default class InterviewForm extends React.Component {
                         type: 'date'
                     },
                     { 
+                        attribute: 'observations',
+                        value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
+                        elementType: 'textarea',
+                    },
+                    { 
                         attribute: 'video',
                         value: this.props.interview && this.props.interview.media_type.toLowerCase() === 'video',
                         elementType: 'input',

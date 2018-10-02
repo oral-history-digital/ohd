@@ -43,7 +43,8 @@ class InterviewSerializer < ActiveModel::Serializer
 
              :contributions,
              :registry_references,
-             :photos
+             :photos,
+             :observations
 
   def transitions_to
     object.current_state.events.map{|e| e.first}
@@ -59,6 +60,10 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def photos
     object.photos.includes(:translations).inject({}){|mem, c| mem[c.id] = PhotoSerializer.new(c); mem}
+  end
+
+  def observations
+    object.localized_hash_for(:observations)
   end
 
   def forced_labor_groups
