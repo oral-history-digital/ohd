@@ -25,6 +25,7 @@ gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
 gem 'roo', "~> 2.7.0"
+gem 'yomu'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'open4'

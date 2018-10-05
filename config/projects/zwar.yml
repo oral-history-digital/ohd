@@ -22,6 +22,7 @@ default: &default
 
   upload_types:
     - campscape
+    - protocols
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'

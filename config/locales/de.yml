@@ -274,6 +274,7 @@ de:
   upload:
     types: 
       campscape: 'Campscape'
+      protocols: 'Protokolle Zip'
 
   admin:
     change_to_normal_view: 'Nutzeransicht'
