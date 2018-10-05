@@ -189,7 +189,7 @@ export default class FlyoutTabs extends React.Component {
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
             <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
-            <Tab className={css} key='edit.registry_entries.edit'>{t(this.props, 'edit.registry_entries.edit')}</Tab>,
+            <Tab className='flyout-tab' key='activerecord.models.registry_entries.other'>{t(this.props, 'activerecord.models.registry_entries.other')}</Tab>,
         ];
     }
 
@@ -212,7 +212,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
                 <TabPanel key={'tabpanel-registry-entries'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.registry_entries.edit')}</div>
+                    <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
                 </TabPanel>,
             ];
         } else {

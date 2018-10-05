@@ -2,9 +2,9 @@ class TextMaterial < ActiveRecord::Base
 
   belongs_to :interview
 
-  #has_attached_file :document,
-                    #:url => (ActionController::Base.relative_url_root || '') + '/interviews/:interview/text_materials/:basename.:extension',
-                    #:path => ':rails_root/assets/archive_text_materials/:interview/:basename.:extension'
+  has_attached_file :document,
+                    :url => (ActionController::Base.relative_url_root || '') + '/interviews/:interview/text_materials/:basename.:extension',
+                    :path => ':rails_root/assets/archive_text_materials/:interview/:basename.:extension'
 
   DOCUMENT_TYPES = %w(Biography Transcript Translation)
 

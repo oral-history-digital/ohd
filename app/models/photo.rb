@@ -6,10 +6,10 @@ class Photo < ActiveRecord::Base
   has_one_attached :photo
 
   # TODO: fit this again to be used in zwar?
-  #has_attached_file :photo,
-                    #:styles => { :thumb => "240x80", :original => "500x500>" },
-                    #:url => (ApplicationController.relative_url_root || '') + "/interviews/:interview/photos/:basename_:style.:extension",
-                    #:path => ":rails_root/assets/archive_images/gallery/:basename_:style.:extension"
+  has_attached_file :photo,
+                    :styles => { :thumb => "240x80", :original => "500x500>" },
+                    :url => (ApplicationController.relative_url_root || '') + "/interviews/:interview/photos/:basename_:style.:extension",
+                    :path => ":rails_root/assets/archive_images/gallery/:basename_:style.:extension"
 
   translates :caption
 

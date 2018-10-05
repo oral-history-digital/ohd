@@ -47,6 +47,24 @@ export default class RegistryEntry extends React.Component {
         )
     }
 
+    show() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'activerecord.models.registry_entries.actions.show'),
+                    content: <RegistryEntryFormContainer 
+                        registryEntry={this.props.registryEntry} 
+                        registryEntryParent={this.props.registryEntryParent}
+                        />
+                })}
+            >
+                <i className="fa fa-eye"></i>
+            </div>
+        )
+    }
+
     destroy() {
         this.props.deleteData('registry_entries', this.props.registryEntry.id, null, null, true);
         this.props.closeArchivePopup();
@@ -77,6 +95,15 @@ export default class RegistryEntry extends React.Component {
     }
 
     buttons() {
+        return (
+            <div className={'flyout-sub-tabs-content-ico'}>
+                {this.show()}
+                {this.editButtons()}
+            </div>
+        )
+    }
+
+    editButtons() {
         if (admin(this.props)) {
             return (
                 <div className={'flyout-sub-tabs-content-ico'}>

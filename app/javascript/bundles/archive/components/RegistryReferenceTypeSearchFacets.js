@@ -47,10 +47,17 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
                 }
             }
         } 
+        if (registryEntries.length > 0) {
         return registryEntries;
+        } else if (!admin(this.props)){
+            return (
+                <span>---</span>
+            )
+    }
     }
 
     addRegistryReference() {
+        if (admin(this.props)) {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
@@ -73,6 +80,9 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
                 <i className="fa fa-plus"></i>
             </div>
         )
+        } else {
+            return null;
+        }
     }
 
     render() {

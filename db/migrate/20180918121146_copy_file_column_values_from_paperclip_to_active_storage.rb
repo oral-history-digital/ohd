@@ -34,9 +34,7 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
           end
         end.compact
 
-        binding.pry
         if attachments.length > 0
-          binding.pry
           model.find_each.each do |instance|
             attachments.each do |attachment|
               if !instance.send("#{attachment}_file_name").blank?
@@ -85,7 +83,7 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
     #Digest::MD5.base64digest(Net::HTTP.get(URI(url)))
 
     # zwar:
-    if Project.name.to_sym == :zwar
+    if Project.name.to_sym != :mog
       p = instance.send("#{attachment}_file_name").split('.')
       url = 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_original.' + p[1]
       Digest::MD5.base64digest(Net::HTTP.get(URI(url)))

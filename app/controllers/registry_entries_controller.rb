@@ -45,9 +45,13 @@ class RegistryEntriesController < BaseController
     end
   end
 
+  # TODO: test for multiple languages
   def update
     @registry_entry = RegistryEntry.find params[:id]
-    @registry_entry.update_attributes registry_entry_params
+    # @registry_entry.update_attributes registry_entry_params
+    @registry_entry.entry_code = @registry_entry.entry_desc = registry_entry_params[:descriptor]
+    @registry_entry.save
+    clear_cache @registry_entry.parents.first
     respond_to do |format|
       format.json do
         render json: {
