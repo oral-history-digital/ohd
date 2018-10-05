@@ -32,11 +32,9 @@ namespace :users do
   task :init_admins => :environment do
 
     admins = { 
-      'achim.hoch@cedis.fu-berlin.de' => %w(Herr Achim Hoch),
-      'chrgregor@googlemail.com' => %w(Herr Christian Gregor),
-      'nadia.el-obaidi@cedis.fu-berlin.de' => %w(Frau Nadia El-Obaidi),
-      'frank.beier@cedis.fu-berlin.de' => %w(Herr Frank Beier),
-      'anna-maria.droumpouki@cedis.fu-berlin.de' => %w(Frau Anna-Maria Droumpouki)
+      'joerg-michael.baur@cedis.fu-berlin.de' => %w(Herr Micahael Baur),
+      'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
+      'chrgregor@googlemail.com' => %w(Herr Christian Gregor)
     }
 
     admins.each do |login, name_parts|
