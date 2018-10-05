@@ -389,6 +389,7 @@ el:
         priv_agreement_alias: 'προσωπικών δεδομένων'
       user_account:
         login: 'Όνομα σύνδεσης'
+        email: 'Ηλεκτρονική διεύθυνση'
         password: 'Κωδικός'
 
 
