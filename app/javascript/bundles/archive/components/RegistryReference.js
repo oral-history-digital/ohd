@@ -1,6 +1,4 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
-
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import { t, pluralize, admin } from '../../../lib/utils';
 
@@ -81,7 +79,7 @@ export default class RegistryReference extends React.Component {
 
     render() {
         return (
-            <span>
+            <span className={'registry-reference'}>
                 {this.entry()}
                 {this.buttons()}
             </span>

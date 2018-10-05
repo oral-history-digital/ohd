@@ -28,7 +28,6 @@ class MakeSegmentSpeakerAssociated < ActiveRecord::Migration[5.0]
             end
           end
           if speaker_id.nil?
-            binding.pry
             p "*** Segment #{segment.id} of Interview #{segment.interview.id} has no speaker!!" 
           end
           segment.update_attributes speaker_id: speaker_id

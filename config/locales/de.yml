@@ -411,6 +411,12 @@ de:
       registry_references:
         one: 'Registererwähnung'
         other: 'Registererwähnungen'
+      registry_entries:
+        one: 'Registereintrag'
+        other: 'Registereinträge'
+        actions:
+          show: 'Registereintrag anzeigen'
+          index: 'Registereinträge anzeigen'
       annotation:
         one: 'Anmerkung'
         other: 'Anmerkungen'

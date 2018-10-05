@@ -129,14 +129,18 @@ a.flyout-download-link-lang {
   text-align: right;
   padding: 0;
 }
-span:not(:last-child) .flyout-sub-tabs-content-ico {
+span.registry-reference:not(:last-child) {
   margin-right: 15px;
+  padding-right: 10px;
   border-right: 1px solid $gray-light;
+  .fa {
+    margin-right: 0;
+  }
 }
 .flyout-sub-tabs-content-ico-link {
   display: inline-block;
   margin-right: 2px;
-  padding: 6px 0 6px 10px;
+  padding: 0 0 6px 10px;
   color: $primary-color;
   transition: 0.3s;
   cursor: pointer;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { admin } from '../../../lib/utils';
 import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
 import RegistryReferenceTypeSearchFacetsContainer from '../containers/RegistryReferenceTypeSearchFacetsContainer';
 
@@ -22,15 +21,14 @@ export default class InterviewRegistryReferences extends React.Component {
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     referenceType={this.props.registryReferenceTypeSearchFacets[r]} 
                     interview={this.props.interview}
-                >
-                </RegistryReferenceTypeSearchFacetsContainer>
+                />
             );
         }
         return facets;
     }
 
     registryReferences() {
-        if (admin(this.props) && this.props.registryEntrySearchFacetIds) {
+        if (this.props.registryEntrySearchFacetIds || this.props.registryReferenceTypeSearchFacets) {
             return (
                 <div>
                     {this.searchFacets()}

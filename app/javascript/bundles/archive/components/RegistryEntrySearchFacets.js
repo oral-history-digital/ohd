@@ -20,10 +20,16 @@ export default class RegistryEntrySearchFacets extends React.Component {
 
     loadRegistryEntries() {
         if (
+            !this.props.registryEntriesStatus[this.props.parentEntryId]
+        ) {
+            this.props.fetchData('registry_entries', this.props.parentEntryId);
+        }
+
+        if (
             !this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] 
         ) {
             this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntryId}`);
-        }
+        } 
     }
 
     registryEntries() {
@@ -49,31 +55,41 @@ export default class RegistryEntrySearchFacets extends React.Component {
                 }
             }
         } 
-        return registryEntries;
+        if (registryEntries.length > 0) {
+            return registryEntries;
+        } else if (!admin(this.props)){
+            return (
+                <span>---</span>
+            )
+        }
     }
 
     addRegistryReference() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={`${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`}
-                onClick={() => this.props.openArchivePopup({
-                    title: `${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`,
-                    content: <RegistryReferenceFormContainer 
-                                 refObject={this.props.interview} 
-                                 refObjectType='Interview' 
-                                 interview={this.props.interview} 
-                                 parentEntryId={this.props.parentEntryId}
-                                 locale={this.props.locale}
-                                 goDeeper={true}
-                                 //  allowed values: true, false, 'hidden'
-                                 selectRegistryReferenceType={false}
-                             />
-                })}
-            >
-                <i className="fa fa-plus"></i>
-            </div>
-        )
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={`${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`}
+                    onClick={() => this.props.openArchivePopup({
+                        title: `${this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]} - ${t(this.props, 'edit.registry_reference.new')}`,
+                        content: <RegistryReferenceFormContainer 
+                                    refObject={this.props.interview} 
+                                    refObjectType='Interview' 
+                                    interview={this.props.interview} 
+                                    registryEntryParentId={this.props.parentEntryId}
+                                    locale={this.props.locale}
+                                    goDeeper={true}
+                                    //  allowed values: true, false, 'hidden'
+                                    selectRegistryReferenceType={false}
+                                />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {
