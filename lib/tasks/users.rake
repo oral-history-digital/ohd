@@ -32,7 +32,7 @@ namespace :users do
   task :init_admins => :environment do
 
     admins = { 
-      'joerg-michael.baur@cedis.fu-berlin.de' => %w(Herr Micahael Baur),
+      'jmb@cedis.fu-berlin.de' => %w(Herr Michael Baur),
       'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
       'chrgregor@googlemail.com' => %w(Herr Christian Gregor)
     }
