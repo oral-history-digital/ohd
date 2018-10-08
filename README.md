@@ -6,10 +6,7 @@ This is the web application for CeDiS-Archiv 2.0.
 
 1. generate the **database.yml** and setup the databases (`bundle exec rake db:setup`)
 
-2. create initial admin users: `bundle exec rake users:create`
-   (have a look in lib/tasks/users.rb after l.34 to add other users)
-
-3. set symbolic link from the project file to config/project.yml:
+2. set symbolic link from the project file to config/project.yml:
 
     ```bash
     cd config
@@ -21,6 +18,9 @@ This is the web application for CeDiS-Archiv 2.0.
     # or for a new empty project
     ln -s projects/empty.yml project.yml
     ```
+
+3. create initial admin users: `bundle exec rake users:init_admins`
+   (have a look in lib/tasks/users.rb after l.34 to add other users)
 
 4. (not necessary for MOG and future versions) Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
 
