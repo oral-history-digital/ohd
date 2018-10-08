@@ -1,6 +1,7 @@
 .idea/
 /assets
 config/database.yml
+config/project.yml
 config/project_config
 log/
 public/javascripts/translations.js
