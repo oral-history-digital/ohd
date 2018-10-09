@@ -42,7 +42,8 @@ class ReadCampscapeFileJob < ApplicationJob
           collection_id: find_or_create_collection(data[12]).id,
           language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
           duration: data[22],
-          video: data[15].downcase == 'video'
+          video: data[15].downcase == 'video',
+          archive_id: archive_id
         }
 
         if interview
@@ -67,6 +68,11 @@ class ReadCampscapeFileJob < ApplicationJob
 
   def gender(name)
     %w(m male man männlich mann).include?(name.downcase) ? 'male' : 'female'
+  end
+   
+  def archive_id
+    number = Interview.last ? (Interview.last.id + 1) : 1
+    "new#{format("%04d", number)}"
   end
 
   def find_or_create_group(name)
