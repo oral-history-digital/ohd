@@ -125,7 +125,7 @@ export default class UploadTranscript extends React.Component {
                             hidden: this.state.hideTapeAndArchiveInputs,
                             //value: this.state.dummy,
                             //value: this.state.archiveId,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3}$/.test(v)}
+                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3,4}$/.test(v)}
                         },
                         { 
                             attribute: 'tape_count',

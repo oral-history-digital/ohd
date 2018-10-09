@@ -26,7 +26,7 @@ export default class InterviewForm extends React.Component {
                     { 
                         attribute: 'archive_id',
                         value: this.props.interview && this.props.interview.archive_id,
-                        validate: function(v){return /^[A-z]{2,3}\d{3}$/.test(v)}
+                        validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}
                     },
                     {
                         elementType: 'select',
