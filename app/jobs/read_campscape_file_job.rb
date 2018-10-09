@@ -2,40 +2,60 @@ class ReadCampscapeFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path)
-    # TODO: implement
-    # TODO: index and cache interviews, people, registry_entries, etc.
     read_file(file_path)
     File.delete(file_path) if File.exist?(file_path)
+    Interview.reindex
+    Sunspot.commit
+    #p report
     # TODO: send mail to someone informing about finished interview
   end
 
   def read_file(file_path)
-    #File.open("/home/grgr/Documents/arbeit/fu/Campscapes/campscapes-jasenovac-2018-07-13.csv", "r") do |f| f.each_line do |line| p line end end
-    #File.foreach('testfile') {|x| print "GOT", x }
+    report << ""
+    report << "Import Report for file #{file_path.split('/').last}:"
+
     content = File.readlines file_path
     content[4..(content.length - 1)].each do |line|
-      data = line.split(';')
+      data = line.split(';') rescue []
       unless data[1].blank?
-        interviewee = Person.find_or_create_by first_name: data[1], birth_name: data[2], last_name: data[3], other_first_name: data[4], gender: data[5], date_of_bith: data[6] || data[7]
-        interview_date = Date.parse(data[17])
-        interview = interviewee.interviews.where(interview_date: interview_date.strftime("%d.%m.%Y")) if interview_date
+
+        report << ""
+        report << "  Interview from line #{line}:"
+
+        interviewee = Person.where(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7]).first
+        if interviewee
+          report << "    Used existing Person #{interviewee.id}, #{interviewee.name[:en]} as interviewee."
+        else
+          interviewee = Person.create first_name: data[1][0..200], birth_name: data[2][0..200], last_name: data[3][0..200], other_first_names: data[4][0..200], gender: gender(data[5]), date_of_birth: data[6] || data[7]
+          report << "    Created Person #{interviewee.id}, #{interviewee.name[:en]} as interviewee."
+        end
+        interview_date = Date.parse(data[17]) rescue nil
+        if interview_date
+          interview_date = interview_date.strftime("%d.%m.%Y")
+          interview = interviewee.interviews.where(interview_date: interview_date).first 
+        else
+          interview = interviewee.interviews.first 
+        end
 
         interview_data = {
           interview_date: interview_date,
-          collection_id: find_collection_id(data[12]),
-          language_id: find_language_id(data[16]),
-          duration: data[22]
+          collection_id: find_or_create_collection(data[12]).id,
+          language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
+          duration: data[22],
+          video: data[15].downcase == 'video'
         }
 
         if interview
           interview.update_attributes interview_data
+          report << "    Updated existing interview #{interview.id}."
         else
           interview = Interview.create interview_data
+          report << "    Created interview #{interview.id}."
         end
 
         Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: Project.contribution_types['interviewee']
 
-        group_id = find_group_id(data[8])
+        group_id = find_or_create_group(data[8]).id
         create_reference(group_id, interview) if group_id
       end
     end
@@ -45,31 +65,57 @@ class ReadCampscapeFileJob < ApplicationJob
     @report ||= ''
   end
 
-  def find_group_id
-    group_id = nil
+  def gender(name)
+    %w(m male man männlich mann).include?(name.downcase) ? 'male' : 'female'
+  end
+
+  def find_or_create_group(name)
+    group = nil
+    forced_labor_groups = RegistryEntry.find_by_entry_code('forced_labor_groups')
+    forced_labor_groups = RegistryEntry.create_with_parent_and_name(RegistryEntry.root_node.id, 'forced_labor_groups') unless forced_labor_groups
+    
     # the following group_names contain only the first registry_name of a registry_entry with all it s translations!!
-    RegistryEntry.find_by_entry_code('forced_labor_groups').children.each do |c| 
-      group_id = c.id if c.registry_names.first.translations.map(&:descriptor).include?(data[8])
+    forced_labor_groups.children.each do |c| 
+      group = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
     end
-    group_id
+
+    if group
+      report << "    Added to group #{group.localized_hash[:en]}."
+    else
+      group = RegistryEntry.create_with_parent_and_name(forced_labor_groups.id, name[0..200]) 
+      report << "    Created group #{group.localized_hash[:en]} and added interview to it."
+    end
+    group
   end
 
-  def find_collection_id(name)
-    collection_id = nil
+  def find_or_create_collection(name)
+    collection = nil
     Collection.all.each do |c| 
-      collection_id = c.id if c.translations.map(&:name).include?(name)
+      collection = c if c.translations.map(&:name).include?(name)
     end
-    collection_id
+
+    if collection
+      report << "    Added to collection #{collection.localized_hash[:en]}."
+    else
+      collection = Collection.create(name: name[0..200])
+      report << "    Created collection #{collection.localized_hash[:en]} and added interview to it."
+    end
+    collection
   end
 
-  def find_language_id(name)
-    language_id = nil
-    lang = ISO_639.find(data[16])
+  def find_or_create_language(name)
+    lang = ISO_639.find(name)
+    lang = ISO_639.find_by_english_name(name) unless lang
     if lang
       language = Language.find_by_code(lang.alpha3_terminologic) 
-      language_id = language && language.id
+      language = Language.create(code: lang.alpha3_terminologic) unless language
     end
-    language_id
+    if language
+      report << "    Used #{language.code}." 
+    else
+      report << "    No Language for #{name}." 
+    end
+    language
   end
 
   def create_reference(registry_entry_id, interview)
