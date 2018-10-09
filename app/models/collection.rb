@@ -6,7 +6,7 @@ class Collection < ActiveRecord::Base
 
   translates :name, :institution, :countries, :interviewers, :responsibles, :notes
 
-  validates_presence_of :name, :project_id
+  validates_presence_of :name#, :project_id
 
   def to_s
     name(I18n.locale)

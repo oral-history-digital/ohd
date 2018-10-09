@@ -147,9 +147,9 @@ class Interview < ActiveRecord::Base
     #end
   #end
 
-  validates_associated :collection
-  validates_presence_of :archive_id
-  validates_uniqueness_of :archive_id
+  #validates_associated :collection
+  #validates_presence_of :archive_id
+  #validates_uniqueness_of :archive_id
   # TODO: reuse this for zwar?
   #validates_attachment_content_type :still_image,
                                      #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
