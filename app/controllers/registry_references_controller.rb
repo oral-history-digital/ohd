@@ -116,16 +116,25 @@ class RegistryReferencesController < BaseController
   end
 
   def index
+    @registry_references, extra_params = 
+    if params[:registry_entry_id]
+      [
+        RegistryReference.where(registry_entry_id: params[:registry_entry_id]),
+        "registry_entry_id_#{params[:registry_entry_id]}"
+      ]
+    else
+      [RegistryReference.all, nil]
+    end
+
     respond_to do |format|
-      format.html
+      format.html { render 'react/app' }
       format.json do
-        # this is the response when calling 'ortssuche.json'
-        render :json => { 'results' => @results.compact.map(&:json_attrs) }.to_json
-      end
-      format.js do
-        # this is the default response or when calling 'ortssuche.js'
-        json = { 'results' => @results.compact.map(&:json_attrs) }.to_json
-        render :js => params['callback'].blank? ? json : "#{params['callback']}(#{json});"
+        json = {
+          data: @registry_references.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}; mem},
+          data_type: 'registry_references',
+          extra_params: extra_params
+        }.to_json
+        render plain: json
       end
     end
   end

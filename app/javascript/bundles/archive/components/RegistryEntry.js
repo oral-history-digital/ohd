@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
+import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import { t, pluralize, admin } from '../../../lib/utils';
 
@@ -53,8 +54,8 @@ export default class RegistryEntry extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'activerecord.models.registry_entries.actions.show'),
-                    content: <RegistryEntryFormContainer 
+                    title: this.props.registryEntry.name[this.props.locale],
+                    content: <RegistryEntryShowContainer 
                         registryEntry={this.props.registryEntry} 
                         registryEntryParent={this.props.registryEntryParent}
                         />

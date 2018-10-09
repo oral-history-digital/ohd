@@ -6,7 +6,8 @@ class RegistryEntrySerializer < ActiveModel::Serializer
              :notes,
              :parent_ids,
              :child_ids,
-             :workflow_state
+             :workflow_state,
+             :registry_references
 
   def name
     object.localized_hash
@@ -24,4 +25,7 @@ class RegistryEntrySerializer < ActiveModel::Serializer
     object.longitude.to_f
   end
 
+  def registry_references
+    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
+  end
 end
