@@ -63,6 +63,7 @@ el:
   email: 'E-Mail'
   change_password: 'Αλλαγή κωδικού'
   archive_results: 'Αποτελέσματα αναζήτησης'
+  no_interviews_results: 'Δε βρέθηκαν συνεντεύξεις.'
   interview_id: 'Κωδικός συνέντευξης'
   interview_duration: 'Διάρκεια συνέντευξης'
   home: 'Αρχική σελίδα'
@@ -389,6 +390,7 @@ el:
         priv_agreement_alias: 'προσωπικών δεδομένων'
       user_account:
         login: 'Όνομα σύνδεσης'
+        email: 'Ηλεκτρονική διεύθυνση'
         password: 'Κωδικός'
 
 
