@@ -3,19 +3,7 @@ class RegistryEntriesController < BaseController
   layout 'responsive'
 
   def create
-    #r = registry_entry_params.merge(parents: [RegistryEntry.find(registry_entry_params[:parents].first[:id])])
-    #@registry_entry = RegistryEntry.create r
-
-    #@registry_entry = RegistryEntry.new entry_code: registry_entry_params[:descriptor], entry_desc: registry_entry_params[:descriptor], workflow_state: "public", list_priority: false
-    #@registry_entry.save(validate: false)
-    #hierarchy = RegistryHierarchy.create ancestor_id: registry_entry_params[:parents].first[:id], descendant_id: @registry_entry.id, direct: true
-    #name = RegistryName.create registry_entry_id: @registry_entry.id, registry_name_type_id: registry_entry_params[:registry_names_attributes][:registry_name_type_id], name_position: 0, descriptor: registry_entry_params[:descriptor]
-
-    @registry_entry = RegistryEntry.new entry_code: registry_entry_params[:descriptor], entry_desc: registry_entry_params[:descriptor], workflow_state: "public", list_priority: false
-    @registry_entry.save(validate: false)
-    hierarchy = RegistryHierarchy.create ancestor_id: registry_entry_params[:parent_id], descendant_id: @registry_entry.id, direct: true
-    name = RegistryName.create registry_entry_id: @registry_entry.id, registry_name_type_id: registry_entry_params[:registry_name_type_id], name_position: 0, descriptor: registry_entry_params[:descriptor]
-
+    @registry_entry = RegistryEntry.create_with_parent_and_name(registry_entry_params[:parent_id], registry_entry_params[:descriptor]) 
     clear_cache @registry_entry.parents.first
 
     respond_to do |format|

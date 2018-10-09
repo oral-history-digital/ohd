@@ -25,7 +25,8 @@ class RegistryEntry < ActiveRecord::Base
   accepts_nested_attributes_for :registry_names
 
   has_many :registry_hierarchies,
-           foreign_key: :descendant_id
+           foreign_key: :descendant_id,
+           :dependent => :destroy
 
   accepts_nested_attributes_for :registry_hierarchies
 
@@ -46,20 +47,16 @@ class RegistryEntry < ActiveRecord::Base
            :through => :links_as_descendant,
            :source => :ancestor
 
-  def self.descendant_ids(entry_code, entry_dedalo_code=nil)
-    entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)
-  end
-
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
   attr_writer :do_not_validate_parents
-  validate :must_have_parents
-  def must_have_parents
-    return if id == ROOT_NODE_ID || @do_not_validate_parents
-    if parents.empty?
-      errors[:base] << 'Ein Registereintrag braucht mindestens eine Klassifizierung.'
-    end
-  end
+  #validate :must_have_parents
+  #def must_have_parents
+    #return if id == ROOT_NODE_ID || @do_not_validate_parents
+    #if parents.empty?
+      #errors[:base] << 'Ein Registereintrag braucht mindestens eine Klassifizierung.'
+    #end
+  #end
 
   WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
@@ -120,6 +117,17 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   class << self
+    def descendant_ids(entry_code, entry_dedalo_code=nil)
+      entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)
+    end
+
+    def create_with_parent_and_name(parent_id, name, code=nil)
+      registry_entry = RegistryEntry.create entry_code: code || name, entry_desc: name, workflow_state: "public", list_priority: false
+      RegistryHierarchy.create ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true
+      RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 4, name_position: 0, descriptor: name
+      registry_entry
+    end
+
     # This is not a translated class but it can accept localized descriptors.
     def with_locale(locale)
       previous_locale, self.locale = self.locale, locale
