@@ -109,13 +109,17 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def lang
     # return only the first language code in cases like 'slk/ces'
-    ISO_639.find(object.language.first_code).alpha2
+    object.language && ISO_639.find(object.language.first_code).alpha2
   end
 
   def languages_array
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.language.to_s(locale) + ' ' + ((object.translated)? I18n.t('status.translated', locale: locale) : '')
-      mem
+    if object.language
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = "#{object.language.to_s(locale)} #{object.translated && I18n.t('status.translated', locale: locale)}"
+        mem
+      end
+    else
+      {}
     end
   end
 
