@@ -21,7 +21,7 @@ class HomeController < BaseController
           home_content = {}
           locales.each do |i|
             I18n.locale = i
-            template = "/home/home.#{i}.html+#{Project.name.to_s}"
+            template = "/home/home.#{i}.html+#{Project.name == 'empty' ? 'zwar' : Project.name}"
             home_content[i] = render_to_string(template: template, layout: false)
           end
           {
