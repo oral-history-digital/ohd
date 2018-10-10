@@ -1,8 +1,8 @@
 class CollectionsController < BaseController
 
   #skip_before_action authenticate_user_account!, :only => :index
-  before_filter :collection, only: :index
-  before_filter :object, only: :show
+  before_action :collection, only: :index
+  before_action :object, only: :show
 
   def show
   end
