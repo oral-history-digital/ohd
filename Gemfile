@@ -62,7 +62,7 @@ group :development do
   gem 'guard-cucumber'
   gem 'ruby-debug-ide'
   gem 'debase'
-  gem "capistrano", "~> 3.9"
+  gem "capistrano", "= 3.11.0"
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'

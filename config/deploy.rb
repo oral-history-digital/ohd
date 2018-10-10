@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock "3.9.1"
+lock "3.11.0"
 
 set :repo_url, "git@gitlab.cedis.fu-berlin.de:dis/zwar-archive.git"
 
