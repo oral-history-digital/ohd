@@ -195,9 +195,7 @@ export default class ArchiveSearchForm extends React.Component {
     renderOptions() { 
         return (this.props.allInterviewsTitles.concat(this.props.allInterviewsPseudonyms)).map((title, index) => {
                 return (
-                    // <option key={"option-" + index} value={'"' + 'muss Beispiel' + '"'}>
-                    // <option key={"option-" + index} value={'"' + title[this.props.locale] + '"'}>
-                    <option key={"option-" + index} value={`${title[this.props.locale]}`} />
+                    <option key={"option-" + index} value={`"${title[this.props.locale]}"`} />
                 )
             }
         )
