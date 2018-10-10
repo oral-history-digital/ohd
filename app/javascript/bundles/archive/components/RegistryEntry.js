@@ -121,8 +121,10 @@ export default class RegistryEntry extends React.Component {
                 id={`entry_${this.props.registryEntry.id}`} 
                 key={"entry-" + this.props.registryEntry.id} 
                 className={'registry-entry-label'}
+                title={this.props.registryEntry.name[this.props.locale]}
             >
                 {this.props.registryEntry.name[this.props.locale]}
+                {(this.props.registryEntry.child_ids.length > 0) && ` (${this.props.registryEntry.child_ids.length})`}
             </div>
         )
     }
@@ -138,7 +140,7 @@ export default class RegistryEntry extends React.Component {
         return (
             <div
                 className='show-hide-children'
-                title={t(this.props, 'edit.registry_entry.show_children')}
+                title={`${this.props.registryEntry.child_ids.length} ${t(this.props, 'edit.registry_entry.show_children')}`}
                 onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
             >
                 <i className={`fa fa-${css}`}></i>
