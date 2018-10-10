@@ -66,7 +66,7 @@ export default class RegistryEntries extends React.Component {
                              />
                 })}
             >
-                <i className="fa fa-plus-circle"></i>
+                <i className="fa fa-plus-square"></i>
             </div>
         )
     }
