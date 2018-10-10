@@ -13,6 +13,7 @@
     "coffee-script": "^1.12.6",
     "compression-webpack-plugin": "^0.4.0",
     "css-loader": "^0.28.4",
+    "datalist-polyfill": "^1.22.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
     "form-serialize": "^0.7.2",
