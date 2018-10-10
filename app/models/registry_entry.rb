@@ -124,7 +124,7 @@ class RegistryEntry < ActiveRecord::Base
     def create_with_parent_and_name(parent_id, name, code=nil)
       registry_entry = RegistryEntry.create entry_code: code || name, entry_desc: name, workflow_state: "public", list_priority: false
       RegistryHierarchy.create ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true
-      RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 4, name_position: 0, descriptor: name
+      RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name.gsub('_', ' ')
       registry_entry
     end
 
