@@ -497,7 +497,7 @@ DEPENDENCIES
   activemodel-serializers-xml
   acts-as-dag!
   acts_as_taggable_on_steroids
-  capistrano (~> 3.9)
+  capistrano (= 3.11.0)
   capistrano-passenger
   capistrano-rails
   capistrano-rbenv
