@@ -58,8 +58,8 @@ export default class YearRange extends React.Component {
           <div>
             <div style={style}>
               <span>{this.state.min} - {this.state.max}</span>
-              <input name='year_of_birth_min' disabled={this.state.inputDisabled} id='year_of_birth_min' value={this.state.min} type='hidden' size='4' readOnly='true' />
-              <input name='year_of_birth_max' disabled={this.state.inputDisabled} id='year_of_birth_max' value={this.state.max} type='hidden' size='4' readOnly='true' />
+              <input name='year_of_birth_min' disabled={this.state.inputDisabled} id='year_of_birth_min' value={this.state.min} type='hidden' size='4' readOnly={true} />
+              <input name='year_of_birth_max' disabled={this.state.inputDisabled} id='year_of_birth_max' value={this.state.max} type='hidden' size='4' readOnly={true} />
             </div>
             <Range defaultValue={[this.state.min, this.state.max]} min={this.props.sliderMin} max={this.props.sliderMax}
               onAfterChange={this.onAfterSliderChange} onChange={this.onSliderChange} allowCross={true} 
