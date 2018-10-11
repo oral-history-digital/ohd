@@ -3,6 +3,7 @@ class SegmentSerializer < ActiveModel::Serializer
 
   attributes :id,
              :interview_id,
+             :interview_archive_id,
              :time,
              :tape_nbr,
              :transcripts,
@@ -23,6 +24,10 @@ class SegmentSerializer < ActiveModel::Serializer
 
   belongs_to :speaking_person, serializer: LightPersonSerializer
 
+  def interview_archive_id
+    object.interview.archive_id
+  end  
+  
   def speaker_changed
    object.speaker_changed
   end

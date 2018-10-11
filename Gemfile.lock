@@ -497,7 +497,7 @@ DEPENDENCIES
   activemodel-serializers-xml
   acts-as-dag!
   acts_as_taggable_on_steroids
-  capistrano (~> 3.9)
+  capistrano (= 3.11.0)
   capistrano-passenger
   capistrano-rails
   capistrano-rbenv
@@ -571,7 +571,7 @@ DEPENDENCIES
   yomu
 
 RUBY VERSION
-   ruby 2.4.0p0
+   ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.1
+   1.16.6

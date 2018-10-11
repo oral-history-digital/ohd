@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router-dom';
 
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
+import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import { t, pluralize, admin } from '../../../lib/utils';
 
@@ -53,8 +54,8 @@ export default class RegistryEntry extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'activerecord.models.registry_entries.actions.show'),
-                    content: <RegistryEntryFormContainer 
+                    title: this.props.registryEntry.name[this.props.locale],
+                    content: <RegistryEntryShowContainer 
                         registryEntry={this.props.registryEntry} 
                         registryEntryParent={this.props.registryEntryParent}
                         />
@@ -120,8 +121,10 @@ export default class RegistryEntry extends React.Component {
                 id={`entry_${this.props.registryEntry.id}`} 
                 key={"entry-" + this.props.registryEntry.id} 
                 className={'registry-entry-label'}
+                title={this.props.registryEntry.name[this.props.locale]}
             >
                 {this.props.registryEntry.name[this.props.locale]}
+                {(this.props.registryEntry.child_ids.length > 0) && ` (${this.props.registryEntry.child_ids.length})`}
             </div>
         )
     }
@@ -137,7 +140,7 @@ export default class RegistryEntry extends React.Component {
         return (
             <div
                 className='show-hide-children'
-                title={t(this.props, 'edit.registry_entry.show_children')}
+                title={`${this.props.registryEntry.child_ids.length} ${t(this.props, 'edit.registry_entry.show_children')}`}
                 onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
             >
                 <i className={`fa fa-${css}`}></i>

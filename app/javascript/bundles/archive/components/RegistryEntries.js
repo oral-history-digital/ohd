@@ -3,6 +3,7 @@ import React from 'react';
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import { t, admin } from '../../../lib/utils';
+import PixelLoader from '../../../lib/PixelLoader'
 
 export default class RegistryEntries extends React.Component {
 
@@ -49,7 +50,7 @@ export default class RegistryEntries extends React.Component {
                 }
             })
         } else {
-            return [];
+            return <li><PixelLoader /></li>
         }
     }
 

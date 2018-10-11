@@ -1,7 +1,7 @@
 #source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
-ruby '2.4.0'
+ruby '2.5.1'
 
 gem 'rdoc'
 gem 'rails', '~>5.2.0'
@@ -62,7 +62,7 @@ group :development do
   gem 'guard-cucumber'
   gem 'ruby-debug-ide'
   gem 'debase'
-  gem "capistrano", "~> 3.9"
+  gem "capistrano", "= 3.11.0"
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'

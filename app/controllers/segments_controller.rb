@@ -93,6 +93,15 @@ class SegmentsController < BaseController
     #end
   #end
 
+  def show
+    @segment = Segment.find(params[:id])
+    respond_to do |format|
+      format.json do
+        render json: cache_segment(@segment)
+      end
+    end
+  end
+
   private
 
   def segment_params
