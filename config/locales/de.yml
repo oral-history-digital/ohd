@@ -218,6 +218,9 @@ de:
     'Transcribed / described': 'Transkript'
     'Translated': 'Übersetzung'
     'Indexed': 'Erschließung'
+  
+  status:
+    translated: 'mit dt. Übersetzung'
 
   edit:
     interview:

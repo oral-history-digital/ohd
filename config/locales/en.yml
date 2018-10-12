@@ -208,6 +208,9 @@ en:
   saved_interviews: 'Saved interviews'
   saved_annotations: 'Saved annotations'
 
+  status:
+    translated: 'with translation'
+
   genders:
     female: 'female'
     male: 'male'
