@@ -1,7 +1,7 @@
 <% unless @interview.place_of_interview.nil? %>
   \par{<%= latex_escape( "#{I18n.t('place_of_interview', locale: @alpha2_locale)}: #{@interview.place_of_interview.localized_hash[@alpha2_locale]}" ) %>}
 <% end %>
-\par{<%= latex_escape( "#{I18n.t('date', locale: @alpha2_locale)}: #{@interview.created_at.strftime("%d.%m.%Y")}" ) %>}
+\par{<%= latex_escape( "#{I18n.t('date', locale: @alpha2_locale)}: #{@interview.interview_date.strftime("%d.%m.%Y")}" ) %>}
 \par{<%= latex_escape( "#{I18n.t('language', locale: @alpha2_locale)}: #{I18n.t('language_' + @interview.languages.join, locale: @alpha2_locale)}" ) %>}
 \par{<%= latex_escape( "#{I18n.t('duration', locale: @alpha2_locale)}: #{Time.at(@interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
 
