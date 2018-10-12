@@ -3,7 +3,7 @@ class SanitizeMogSegments < ActiveRecord::Migration[5.0]
     if Project.name.to_s == :mog
       Segment.find_each do |segment|
         segment.translations.each do |t|
-          t.update_attributes text: Nokogiri::HTML.parse(t.text).text.sub(/^:[\S ]/, "")
+          t.update_attributes text: Nokogiri::HTML.parse(t.text).text.sub(/^\S*:[\S ]/, "")
         end
       end
     end
