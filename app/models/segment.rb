@@ -236,20 +236,23 @@ class Segment < ActiveRecord::Base
   end
 
   def transcripts
+    # TODO: rm Nokogiri parser after segment sanitation
     translations.inject({}) do |mem, translation|
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*: /, "") : ''
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "") : ''
       #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
       mem
     end
   end
 
   def as_vtt_subtitles(lang)
+    # TODO: rm strip
     raw_segment_text = text(projectified(lang))
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(self.next.start_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
 
   def speaker_changed(raw_segment_text = false)
+    # TODO: rm this method after segment sanitation and replace it s occurences
     raw_segment_text && raw_segment_text[1] == ":"
   end
 
