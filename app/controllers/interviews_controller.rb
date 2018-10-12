@@ -1,5 +1,5 @@
 class InterviewsController < BaseController
-
+  include IsoHelpers
   layout 'responsive'
 
   skip_before_action :authenticate_user_account!#, only: :show
@@ -78,10 +78,11 @@ class InterviewsController < BaseController
         render plain: vtt
       end
       format.pdf do
-        @alpha2_locale = params[:lang]
-        @project_locale = ISO_639.find(params[:lang]).send(Project.alpha)
+        @lang = params[:lang].to_sym
+        @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
+        @orig_lang = projectified(@interview.language.code).to_sym
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@alpha2_locale}.pdf", :type => "application/pdf", :disposition => "attachment"
+        send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.html
       format.xml

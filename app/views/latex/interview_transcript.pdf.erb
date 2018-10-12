@@ -1,7 +1,7 @@
 <% 
-  interviewee_name = @interview.interviewees.first.name(@project_locale)
-  title = "#{I18n.t('transcript_header', locale: @alpha2_locale)} #{interviewee_name}"
-  header_text = "#{I18n.t('transcript', locale: @alpha2_locale)}:  #{I18n.t('interview_with', locale: @alpha2_locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @alpha2_locale)} #{@interview.archive_id})"
+  interviewee_name = @interview.interviewees.first.name[@locale]
+  title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_header' : 'translation_header', locale: @locale)} #{interviewee_name}"
+  header_text = "#{I18n.t('transcript', locale: @locale)}:  #{I18n.t('interview_with', locale: @locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
   tape = 0
   speaker_id = nil
  %>
@@ -31,10 +31,10 @@
 
 \newpage
 
-<%= render partial: "./latex/observation" if @interview.observations(@project_locale) %>
+<%= render partial: "./latex/observation" if @interview.observations(@locale) %>
 
 <%# set title of  tableofcontents: %>
-\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @alpha2_locale) %>}
+\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
 \tableofcontents
 
 \newpage
@@ -51,32 +51,33 @@
                font_size: 13
            } %>
 
-<% @interview.segments.includes(:translations).each_with_index do |segment, index| %>
+<% @interview.tapes.each do |tape| %>
+  <% tape.segments.order('id').includes(:translations).each do |segment| %>
 
-  <% space_above = 0.4 %>
+    <% space_above = 0.4 %>
 
-  <% if !segment.mainheading.blank? %>
-    \section{<%= segment.mainheading %>}
-    <% if tape != segment.tape.number %> 
-      <% space_above = 0 %>
-      <%= render partial: "./latex/title", locals: {title: "#{I18n.t('tape', locale: @alpha2_locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
+    <% if !segment.mainheading.blank? %>
+      \section{<%= latex_escape(segment.mainheading(@lang)) %>}
+      <% if tape != segment.tape.number %> 
+        <% space_above = 0 %>
+        <%= render partial: "./latex/title", locals: {title: "#{I18n.t('tape', locale: @locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
+      <% end %>
+      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
-    <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
+
+    <% if !segment.subheading.blank? %>
+      \subsection{<%= latex_escape(segment.subheading(@lang)) %>}
+      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
+    <% end %>
+
+    <% if segment.speaker_id != speaker_id && segment.speaking_person %>
+      \vspace*{<%= 0.2 %>cm}
+      \textit{<%= segment.speaking_person.name[@locale] + ': ' %>}
+    <% end %>
+    <%= latex_escape(segment.text(@lang)) %>
+
+    <% tape = segment.tape.number %>
+    <% speaker_id = segment.speaker_id %>
   <% end %>
-
-  <% if !segment.subheading.blank? %>
-    \subsection{<%= segment.subheading %>}
-    <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
-  <% end %>
-
-  <% if segment.speaker_id != speaker_id && segment.speaking_person %>
-    \vspace*{<%= 0.2 %>cm}
-    \textit{<%= segment.speaking_person.name(@project_locale) + ': ' %>}
-  <% end %>
-  <%= latex_escape(segment.text(@project_locale)) %>
-
-  <% tape = segment.tape.number %>
-  <% speaker_id = segment.speaker_id %>
-
 <% end %>
 

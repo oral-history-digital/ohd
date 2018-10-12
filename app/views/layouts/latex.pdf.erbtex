@@ -21,7 +21,7 @@
 \definecolor{mogBlue}{rgb}{0,0.43529411764705883,0.7176470588235294}
 
 \usepackage{graphicx}
-\graphicspath{ {<%= "#{Rails.root}/app/assets/images/eog/" %>} }
+\graphicspath{ {<%= "#{Rails.root}/app/assets/images/pdf/" %>} }
 
 \usepackage{hyperref}
 \hypersetup{

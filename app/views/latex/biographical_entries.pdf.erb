@@ -1,5 +1,5 @@
-<% interviewee_first_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.first_name}" %>
-<% interviewee_last_name = "#{@interview.interviewees.first.translations.where(locale: @project_locale).first.last_name}" %>
+<% interviewee_first_name = "#{@interview.interviewees.first.first_name(@locale)}" %>
+<% interviewee_last_name = "#{@interview.interviewees.first.last_name(@locale)}" %>
 <% interviewee_name = "#{interviewee_first_name} #{interviewee_last_name}" %>
 <% title = "#{I18n.translate('activerecord.models.biographical_entry.one', locale: @alpha2_locale)} #{interviewee_name}" %>
 <% header_text =  "#{I18n.translate('biographical_entries_of', locale: @alpha2_locale)} #{interviewee_name} (#{I18n.translate('archive_id', locale: @alpha2_locale)} #{@interview.archive_id})" %>
