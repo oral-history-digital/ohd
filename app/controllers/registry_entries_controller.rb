@@ -76,7 +76,7 @@ class RegistryEntriesController < BaseController
           'facets_true'
         ]
       else
-        [RegistryEntry.all, nil]
+        [RegistryEntry.where(entry_code: ['camps', 'companies', 'people']).map{|e| e.descendants.includes(registry_names: :translations)}.flatten.sort{|a,b| a.descriptor <=> b.descriptor}, nil]
       end
 
     respond_to do |format|
@@ -88,6 +88,11 @@ class RegistryEntriesController < BaseController
             extra_params: extra_params
         }.to_json
         render plain: json
+      end
+      format.pdf do
+        @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
+        pdf =   render_to_string(:template => '/registry_entries/index.pdf.erb', :layout => 'latex.pdf.erbtex')
+        send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
     end
   end

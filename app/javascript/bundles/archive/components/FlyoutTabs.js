@@ -189,7 +189,6 @@ export default class FlyoutTabs extends React.Component {
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
             <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
-            <Tab className='flyout-tab' key='activerecord.models.registry_entries.other'>{t(this.props, 'activerecord.models.registry_entries.other')}</Tab>,
         ];
     }
 
@@ -211,9 +210,6 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-add-person'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
-                <TabPanel key={'tabpanel-registry-entries'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
-                </TabPanel>,
             ];
         } else {
             return [
@@ -221,9 +217,31 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='tabpanel-upload-transcript'/>,
                 <TabPanel key='tabpanel-uploads'/>,
                 <TabPanel key='tabpanel-add-person'/>,
-                <TabPanel key='tabpanel-registry-entries'/>
             ]
         }
+    }
+
+    registryEntriesTab() {
+        let css = this.props.account.email ? 'flyout-tab' : 'hidden';
+        return (
+            <Tab className={css} key='activerecord.models.registry_entries.other'>
+                {t(this.props, 'activerecord.models.registry_entries.other')}
+            </Tab>
+        );
+    }
+
+    registryEntriesTabPanel() {
+        return (
+            <TabPanel key={'tabpanel-registry-entries'}>
+                <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
+                <div className='flyout-sub-tabs-container'>
+                    <a href={`/${this.props.locale}/registry_entries.pdf`}>
+                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
+                        <span>{` ${t(this.props, 'download')}`}</span>
+                    </a>
+                </div>
+            </TabPanel>
+        )
     }
 
     userContentTab() {
@@ -276,6 +294,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab' key='archive-search'>{t(this.props, 'archive_search')}</Tab>
                         {this.interviewTab()}
                         {this.editTabs()}
+                        {this.registryEntriesTab()}
                         {this.userContentTab()}
                     </TabList>
 
@@ -292,6 +311,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.editTabPanels()}
+                    {this.registryEntriesTabPanel()}
                     {this.userContentTabPanel()}
                 </div>
             </Tabs>

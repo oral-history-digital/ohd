@@ -997,7 +997,7 @@ class RegistryEntry < ActiveRecord::Base
     # alias representation to provide an editable placeholder (e.g.
     # in the media view).
     if available_name_types.include? :birth_name or (pattern_name == :person and locale == :alias)
-      pattern += " (#{I18n.t('registry_entry.born', :locale => locale)} %{birth_name})"
+      pattern += " (#{I18n.t('activerecord.attributes.registry_entry.born', :locale => locale)} %{birth_name})"
     end
 
     # Add the differentiator to the pattern if available.

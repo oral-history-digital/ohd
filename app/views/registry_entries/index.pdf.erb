@@ -1,0 +1,56 @@
+<% 
+  title = I18n.t('activerecord.models.registry_entries.other', locale: @locale)
+  last_entry = nil
+%>
+
+\title{<%= title %>}
+
+\begin{document}
+
+<%= render partial: "./latex/header_footer",
+           locals: {
+               header_text: title
+           } %>
+
+<%= render partial: "./latex/title",
+           locals: {
+               title: title,
+               space_above: 3,
+               space_below: 3,
+               font_size: 18
+
+           } %>
+
+\newpage
+
+<%# set title of  tableofcontents: %>
+\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
+\tableofcontents
+
+\newpage
+
+<%= render partial: "./latex/title",
+           locals: {
+               title: title,
+               space_above: 0,
+               space_below: 0.01,
+               font_size: 13
+           } %>
+
+<% @registry_entries.each do |registry_entry| %>
+  <% unless registry_entry.descriptor.blank? %>
+    <%# get first char for table of contents %>
+    <% if last_entry && last_entry.descriptor[0] != registry_entry.descriptor[0] %>
+      \section*{<%= registry_entry.descriptor[0].upcase %>}
+      \addcontentsline{toc}{section}{<%= registry_entry.descriptor[0].upcase %>}
+    <% end %>
+  
+    \textbf{<%= latex_escape(registry_entry.descriptor) %>}\\
+    <% unless registry_entry.registry_names.first.notes.blank? %>
+      <%= latex_escape(registry_entry.registry_names.first.notes) %>\\
+    <% end %>
+  
+    <% last_entry = registry_entry %>
+  <% end %>
+<% end %>
+
