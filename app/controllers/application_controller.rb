@@ -1,20 +1,21 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-require 'search_filters'
 require 'exception_notification'
 
-
 class ApplicationController < ActionController::Base
-  #include ExceptionNotification::Notifiable
+  include Pundit
 
-  helper :all # include all helpers, all the time
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  #protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  #filter_parameter_logging :password # Scrub sensitive parameters from your log
-
-  include SearchFilters
-
+  before_action :authenticate_user_account!
   before_action :set_variant
+
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
+  helper :all
+
+  def pundit_user
+    current_user_account
+  end
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
@@ -29,23 +30,38 @@ class ApplicationController < ActionController::Base
     options.merge({ :locale => I18n.locale })
   end
 
-  # Resetting the remember_me_token on CSRF failure.
-  def handle_unverified_request
-    begin
-      super
-    rescue Exception => e
-      logger.warn e.message
-    end
-    cookies.delete 'remember_user_token'
-    sign_out :user
-  end
-
   def set_variant
     request.variant = Project.name.to_sym
   end
   
   def not_found
     raise ActionController::RoutingError.new('Not Found')
+  end
+
+  private
+
+  def cache_interview(interview, msg=nil)
+    json = {
+      archive_id: interview.archive_id,
+      data_type: 'interviews',
+      data: ::InterviewSerializer.new(interview).as_json,
+    }
+    json.update(msg: msg) if msg
+    Rails.cache.fetch("interview-#{interview.archive_id}-#{interview.updated_at}"){ json }
+  end
+
+  def cache_segment(segment, msg=nil)
+    json = {
+      id: segment.id,
+      data_type: 'segments',
+      data: ::SegmentSerializer.new(segment).as_json,
+    }
+    json.update(msg: msg) if msg
+    Rails.cache.fetch("segment-#{segment.id}-#{segment.updated_at}"){ json }
+  end
+
+  def clear_cache(ref_object)
+    Rails.cache.delete "#{ref_object.class.name.underscore}-#{ref_object.identifier}-#{ref_object.updated_at}"
   end
 
 end

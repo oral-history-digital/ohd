@@ -1,4 +1,4 @@
-class RegistryEntriesController < BaseController
+class RegistryEntriesController < ApplicationController
 
   layout 'responsive'
 

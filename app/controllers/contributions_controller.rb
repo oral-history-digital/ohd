@@ -1,4 +1,4 @@
-class ContributionsController < BaseController
+class ContributionsController < ApplicationController
 
   def create
     @contribution = Contribution.create(contribution_params)

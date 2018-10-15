@@ -1,4 +1,4 @@
-class RegistryReferenceTypesController < BaseController
+class RegistryReferenceTypesController < ApplicationController
 
   def create
     @registry_reference_type = RegistryReferenceType.create(registry_reference_type_params)

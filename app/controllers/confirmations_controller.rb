@@ -1,4 +1,4 @@
-class ConfirmationsController < BaseController
+class ConfirmationsController < ApplicationController
   #include Devise::Controllers::InternalHelpers
 
   # GET /resource/confirmation?confirmation_token=abcdef

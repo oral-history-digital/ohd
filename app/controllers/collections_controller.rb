@@ -1,4 +1,4 @@
-class CollectionsController < BaseController
+class CollectionsController < ApplicationController
 
   #skip_before_action authenticate_user_account!, :only => :index
   before_action :collection, only: :index

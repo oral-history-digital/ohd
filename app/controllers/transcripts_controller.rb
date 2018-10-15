@@ -1,4 +1,4 @@
-class TranscriptsController < BaseController
+class TranscriptsController < ApplicationController
 
   layout 'responsive'
 

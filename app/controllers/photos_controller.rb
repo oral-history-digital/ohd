@@ -1,4 +1,4 @@
-class PhotosController < BaseController
+class PhotosController < ApplicationController
   require 'open-uri'
 
   def create

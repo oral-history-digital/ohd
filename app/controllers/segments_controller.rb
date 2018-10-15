@@ -1,4 +1,4 @@
-class SegmentsController < BaseController
+class SegmentsController < ApplicationController
 
   layout 'responsive'
 

@@ -1,4 +1,4 @@
-class BiographicalEntriesController < BaseController
+class BiographicalEntriesController < ApplicationController
 
   def create
     @biographical_entry = BiographicalEntry.create(biographical_entry_params)

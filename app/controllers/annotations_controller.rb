@@ -1,4 +1,4 @@
-class AnnotationsController < BaseController
+class AnnotationsController < ApplicationController
 
   layout 'responsive'
 

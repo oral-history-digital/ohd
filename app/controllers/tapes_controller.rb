@@ -1,4 +1,4 @@
-class TapesController < BaseController
+class TapesController < ApplicationController
 
   before_action :parent_object
 

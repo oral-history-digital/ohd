@@ -1,4 +1,4 @@
-class UserContentsController < BaseController
+class UserContentsController < ApplicationController
 
   def create
     @user_content = UserContent.new(user_content_params)

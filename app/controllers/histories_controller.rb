@@ -1,4 +1,4 @@
-class HistoriesController < BaseController
+class HistoriesController < ApplicationController
 
   def create
     @history = History.create(history_params)

@@ -1,4 +1,4 @@
-class SearchesController < BaseController
+class SearchesController < ApplicationController
 
   layout 'responsive'
 

@@ -1,4 +1,4 @@
-class InterviewsController < BaseController
+class InterviewsController < ApplicationController
   include IsoHelpers
   layout 'responsive'
 

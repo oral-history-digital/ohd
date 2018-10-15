@@ -1,4 +1,4 @@
-class UploadsController < BaseController
+class UploadsController < ApplicationController
 
   layout 'responsive'
 
