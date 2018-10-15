@@ -1,4 +1,4 @@
-class UserRegistrationsController < ApplicationController
+class UserRegistrationsController < BaseController
   include Devise::Controllers::Helpers
 
   respond_to :json, :html

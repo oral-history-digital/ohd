@@ -1,4 +1,4 @@
-class PeopleController < ApplicationController
+class PeopleController < BaseController
 
   layout 'responsive'
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HelloWorldController < ApplicationController
+class HelloWorldController < BaseController
   layout "hello_world"
 
   def index

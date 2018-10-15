@@ -1,4 +1,4 @@
-class AccountsController < ApplicationController
+class AccountsController < BaseController
 
   layout 'responsive'
 
