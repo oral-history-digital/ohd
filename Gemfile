@@ -8,6 +8,7 @@ gem 'rails', '~>5.2.0'
 gem 'mysql2'
 gem "redis", "~> 4.0"
 gem 'exception_notification'
+gem 'pundit'
 gem 'workflow'
 gem 'i18n-js'
 gem 'jquery-rails'

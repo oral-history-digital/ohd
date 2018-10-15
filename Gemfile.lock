@@ -309,6 +309,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.3)
+    pundit (2.0.0)
+      activesupport (>= 3.0.0)
     rack (2.0.5)
     rack-maintenance (2.1.0)
       rack (>= 1.0)
@@ -542,6 +544,7 @@ DEPENDENCIES
   paperclip
   progress_bar
   pry
+  pundit
   rack-maintenance
   rails (~> 5.2.0)
   rails-erd
