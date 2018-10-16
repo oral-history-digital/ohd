@@ -3,6 +3,7 @@ class UploadsController < ApplicationController
   layout 'responsive'
 
   def new
+    authorize :upload, :new?
     respond_to do |format|
       format.html { render 'react/app' }
       format.json { render json: :ok }
@@ -10,6 +11,7 @@ class UploadsController < ApplicationController
   end
 
   def create
+    authorize :upload, :create?
     # write a tmp-file to be processed in bg-job later
     #
     file = params[:upload].delete(:data)

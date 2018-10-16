@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   layout 'responsive'
 
   skip_before_action :authenticate_user_account!
+  skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
   def map_tutorial
     render layout: false

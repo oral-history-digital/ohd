@@ -24,6 +24,7 @@ class SegmentsController < ApplicationController
 
   def update
     @segment = Segment.find params[:id]
+    authorize @segment
     # set headings like this, because blank values won`t be transmitted in params
     # nulling a heading therefore would not be possible
     #
@@ -56,6 +57,7 @@ class SegmentsController < ApplicationController
 
   def index
     @interview = Interview.find_by_archive_id(params[:interview_id])
+    policy_scope(Segment)
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
@@ -95,6 +97,7 @@ class SegmentsController < ApplicationController
 
   def show
     @segment = Segment.find(params[:id])
+    authorize @segment
     respond_to do |format|
       format.json do
         render json: cache_segment(@segment)

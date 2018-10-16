@@ -3,6 +3,8 @@ class SearchesController < ApplicationController
   layout 'responsive'
 
   skip_before_action :authenticate_user_account!
+  skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
   def facets
     json = Rails.cache.fetch "search-facets-#{RegistryEntry.maximum(:updated_at)}" do

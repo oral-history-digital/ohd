@@ -1,6 +1,7 @@
 class UserContentsController < ApplicationController
 
   def create
+    policy_scope(UserContent)
     @user_content = UserContent.new(user_content_params)
     @user_content.user_id = current_user_account.user.id
     @user_content.save
@@ -19,6 +20,7 @@ class UserContentsController < ApplicationController
 
   def destroy 
     @user_content = UserContent.find(params[:id])
+    authorize @user_content
     @user_content.destroy
 
     respond_to do |format|
@@ -31,7 +33,7 @@ class UserContentsController < ApplicationController
   end
 
   def index 
-    user_contents = current_user_account ? UserContent.where(user_id: current_user_account.user.id) : []
+    user_contents = policy_scope(UserContent)
     respond_to do |format|
       format.html 
       format.js 
@@ -46,6 +48,7 @@ class UserContentsController < ApplicationController
 
   def update
     @user_content = UserContent.find(params[:id])
+    authorize @user_content
     @user_content.update_attributes(user_content_params)
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
 

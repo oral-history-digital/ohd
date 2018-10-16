@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
     current_user_account
   end
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || I18n.default_locale).to_sym
@@ -39,6 +41,14 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def user_not_authorized
+    respond_to do |format|
+      format.json do
+        render json: {msg: 'not_authorized'}, status: :ok
+      end
+    end
+  end
 
   def cache_interview(interview, msg=nil)
     json = {

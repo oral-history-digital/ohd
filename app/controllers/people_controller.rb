@@ -3,6 +3,7 @@ class PeopleController < ApplicationController
   layout 'responsive'
 
   def new
+    authorize Person
     respond_to do |format|
       format.html { render 'react/app' }
       format.json { render json: {}, status: :ok }
@@ -10,6 +11,7 @@ class PeopleController < ApplicationController
   end
 
   def create
+    authorize Person
     @person = Person.create person_params
     respond_to do |format|
       format.json do
@@ -25,6 +27,7 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find params[:id]
+    authorize @person
     @person.update_attributes person_params
     respond_to do |format|
       format.json do
@@ -38,6 +41,7 @@ class PeopleController < ApplicationController
   end
 
   def index
+    policy_scope(Person)
     respond_to do |format|
       extra_params = params[:contributors_for_interview] ?  "contributors_for_interview_#{params[:contributors_for_interview]}" : nil
 
@@ -60,6 +64,7 @@ class PeopleController < ApplicationController
 
   def destroy 
     @person = Person.find(params[:id])
+    authorize @person
     @person.destroy
 
     respond_to do |format|

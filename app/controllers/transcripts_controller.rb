@@ -3,6 +3,7 @@ class TranscriptsController < ApplicationController
   layout 'responsive'
 
   def new
+    authorize :upload, :new?
     respond_to do |format|
       format.html { render 'react/app' }
       format.json { render json: :ok }
@@ -10,6 +11,7 @@ class TranscriptsController < ApplicationController
   end
 
   def create
+    authorize :upload, :create?
     file = params[:transcript].delete(:data)
     file_path = File.join(Rails.root, 'tmp', file.original_filename)
     File.open(file_path, 'wb') {|f| f.write(file.read) }

@@ -5,6 +5,7 @@ class InterviewsController < ApplicationController
   skip_before_action :authenticate_user_account!#, only: :show
 
   def new
+    authorize Interview
     respond_to do |format|
       format.html { render :show }
       format.json { render json: :ok }
@@ -12,6 +13,7 @@ class InterviewsController < ApplicationController
   end
 
   def create
+    authorize Interview
     @interview = Interview.create interview_params
     @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
 
@@ -23,6 +25,7 @@ class InterviewsController < ApplicationController
   end
 
   def edit
+    authorize Interview
     respond_to do |format|
       format.html { render :show }
     end
@@ -30,6 +33,7 @@ class InterviewsController < ApplicationController
 
   def update
     @interview = Interview.find_by_archive_id params[:id]
+    authorize @interview
     @interview.update_attributes interview_params
     @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
 
@@ -50,6 +54,7 @@ class InterviewsController < ApplicationController
 
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
+    authorize @interview
     AssignSpeakersJob.perform_later(@interview, speakers)
 
     respond_to do |format|
@@ -67,6 +72,7 @@ class InterviewsController < ApplicationController
   def show
     #LatexToPdf.config.merge! :command => 'xetex', :arguments => ['-etex'], :parse_runs => 2
     @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
     respond_to do |format|
       format.json do
         render json: cache_interview(@interview)
@@ -91,6 +97,7 @@ class InterviewsController < ApplicationController
 
   def doi_contents
     @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
@@ -115,6 +122,7 @@ class InterviewsController < ApplicationController
 
   def headings
     @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
@@ -135,6 +143,7 @@ class InterviewsController < ApplicationController
 
   def initials
     @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-initials-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
@@ -150,25 +159,9 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def references
-    @interview = Interview.find_by_archive_id(params[:id])
-    respond_to do |format|
-      format.json do
-        json = Rails.cache.fetch "interview-references-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
-          {
-            data: @interview.segment_registry_references.map {|s| Rails.cache.fetch("registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}},
-            nested_data_type: 'references',
-            data_type: 'interviews',
-            archive_id: params[:id]
-          }
-        end.to_json
-        render plain: json
-      end
-    end
-  end
-
   def ref_tree
     @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
