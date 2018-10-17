@@ -239,7 +239,7 @@ export default class FlyoutTabs extends React.Component {
                     <RegistryEntrySearchFormContainer />
                     <div>
                         <button onClick={() => this.props.changeRegistryEntriesViewMode(!this.props.showRegistryEntriesTree)}>
-                            {t(this.props, 'activerecord.models.registry_entries.' + this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree')}
+                            {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                         </button>
                     </div>
                     <a href={`/${this.props.locale}/registry_entries.pdf`}>
