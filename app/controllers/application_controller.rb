@@ -3,7 +3,7 @@ require 'exception_notification'
 class ApplicationController < ActionController::Base
   include Pundit
 
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   before_action :authenticate_user_account!
   before_action :set_variant

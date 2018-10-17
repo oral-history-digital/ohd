@@ -4,7 +4,9 @@ class RegistryEntriesController < ApplicationController
 
   def create
     authorize RegistryEntry
+    I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
     @registry_entry = RegistryEntry.create_with_parent_and_name(registry_entry_params[:parent_id], registry_entry_params[:descriptor]) 
+    @registry_entry.reload.update_attributes registry_entry_params.slice(:latitude, :longitude, :notes)
     clear_cache @registry_entry.parents.first
 
     respond_to do |format|
@@ -39,9 +41,9 @@ class RegistryEntriesController < ApplicationController
   def update
     @registry_entry = RegistryEntry.find params[:id]
     authorize @registry_entry
-    # @registry_entry.update_attributes registry_entry_params
-    @registry_entry.entry_code = @registry_entry.entry_desc = registry_entry_params[:descriptor]
-    @registry_entry.save
+    I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
+    @registry_entry.update_attributes registry_entry_params.slice(:descriptor, :notes, :latitude, :longitude)
+    clear_cache @registry_entry
     clear_cache @registry_entry.parents.first
 
     respond_to do |format|
@@ -133,7 +135,7 @@ class RegistryEntriesController < ApplicationController
   private
 
   def registry_entry_params
-    params.require(:registry_entry).permit(:workflow_state, :parent_id, :registry_name_type_id, :name_position, :descriptor, :notes)
+    params.require(:registry_entry).permit(:workflow_state, :parent_id, :registry_name_type_id, :name_position, :descriptor, :notes, :latitude, :longitude, :lang)
   end
 
   #def registry_entry_params

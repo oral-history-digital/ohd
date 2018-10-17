@@ -866,6 +866,10 @@ class RegistryEntry < ActiveRecord::Base
     #end
   #end
 
+  def descriptor=(descriptor)
+    registry_names.first.update_attribute :descriptor, descriptor
+  end
+
   def descriptor(locale = I18n.default_locale)
     if locale == :all
       available_translations.inject({}) do |result, locale|
@@ -875,6 +879,10 @@ class RegistryEntry < ActiveRecord::Base
     else
       to_s(locale)
     end
+  end
+
+  def notes=(notes)
+    registry_names.first.update_attribute :notes, notes
   end
 
   def localized_hash

@@ -583,6 +583,8 @@ de:
         notes: 'Anmerkungen'
         descriptor: 'Name'
         born: 'geb.'
+        latitude: 'Latitude'
+        longitude: 'Longitude'
       registry_reference:
         registry_entry_id: 'Registereintrag'
         registry_reference_type_id: 'Art der Beziehung'
