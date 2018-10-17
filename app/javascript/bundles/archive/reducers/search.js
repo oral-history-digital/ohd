@@ -2,6 +2,10 @@ import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
 
+    REQUEST_REGISTRY_ENTRY_SEARCH,
+    RECEIVE_REGISTRY_ENTRY_SEARCH,
+    CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
+
     SET_QUERY_PARAMS,
     RESET_QUERY,
     RECEIVE_FACETS,
@@ -20,6 +24,10 @@ const initialState = {
     foundInterviews: [],
     foundSegmentsForInterviews: {},
     interviews: {},
+    registryEntries: {
+        showRegistryEntriesTree: true,
+        results: []
+    },
     allInterviewsCount: 0,
     resultPagesCount: 1,
     resultsCount: 0,
@@ -44,6 +52,18 @@ const search = (state = initialState, action) => {
                     })
                 })
             })
+        case REQUEST_REGISTRY_ENTRY_SEARCH:
+            return Object.assign({}, state, {
+                isRegistryEntrySearching: true,
+            })
+        case RECEIVE_REGISTRY_ENTRY_SEARCH:
+            return Object.assign({}, state, {
+                isRegistryEntrySearching: false,
+                registryEntries: {
+                    showRegistryEntriesTree: false,
+                    results: action.registryEntries
+                }
+            })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
                 query: Object.assign({}, state.query, action.params)
@@ -61,6 +81,12 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isFetchingFacets: false,
                 facets: action.facets,
+            })
+        case CHANGE_REGISTRY_ENTRIES_VIEW_MODE:
+            return Object.assign({}, state, {
+                registryEntries: Object.assign({}, state.registryEntries, {
+                    showRegistryEntriesTree: action.bool
+                })
             })
         case REQUEST_ARCHIVE_SEARCH:
             return Object.assign({}, state, {

@@ -155,7 +155,7 @@ class Interview < ActiveRecord::Base
                                      #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                      #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
-  searchable :auto_index => false do
+  searchable do
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
     # in order to be able to search for archive_id with fulltextsearch

@@ -116,6 +116,18 @@ class RegistryEntry < ActiveRecord::Base
     'id'
   end
 
+  searchable do
+    text :names
+  end
+
+  def names
+    registry_names.map do |rn|
+      rn.translations.map do |t|
+        t.descriptor
+      end
+    end.flatten.uniq.join(' ')
+  end
+
   class << self
     def descendant_ids(entry_code, entry_dedalo_code=nil)
       entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)

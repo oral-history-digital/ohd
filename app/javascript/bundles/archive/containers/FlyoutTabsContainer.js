@@ -4,6 +4,7 @@ import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
 import { fetchAccount } from '../actions/accountActionCreators';
+import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
 import { getInterview } from '../../../lib/utils';
 
@@ -18,12 +19,14 @@ const mapStateToProps = (state) => {
         account: state.account,
         interview: getInterview(state),
         project: state.archive.project,
+        showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setLocale: locale => dispatch(setLocale(locale)),
+    changeRegistryEntriesViewMode: bool => dispatch(changeRegistryEntriesViewMode(bool)),
     fetchAccount: () => dispatch(fetchAccount()),
 })
 

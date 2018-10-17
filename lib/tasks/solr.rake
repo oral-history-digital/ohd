@@ -27,13 +27,13 @@ namespace :solr do
       p "finished all interviews in #{(finish - start)} seconds."
     end
 
-    desc 'reindex registry_references'
-    task :registry_references => :environment do
+    desc 'reindex registry_entries'
+    task :registry_entries => :environment do
       start = Time.now
-      p "starting to reindex registry_references ..."
-      RegistryReference.reindex
+      p "starting to reindex registry_entries ..."
+      RegistryEntry.reindex
       finish = Time.now
-      p "finished all registry_references in #{(finish - start)} seconds."
+      p "finished all registry_entries in #{(finish - start)} seconds."
     end
 
     desc 'commit all indices'

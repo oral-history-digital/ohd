@@ -18,6 +18,36 @@ class SearchesController < ApplicationController
     end
   end
 
+  def registry_entry
+    search = RegistryEntry.search do 
+      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all registry_entries (this is a comment)" : params[:fulltext]
+      #order_by(:names, :asc)
+      paginate page: params[:page] || 1, per_page: 2000
+    end
+
+    respond_to do |format|
+      format.html do
+        render :template => '/react/app.html'
+      end
+      format.json do
+        json = {
+          result_pages_count: search.results.total_pages,
+          results_count: search.total,
+          registry_entries: search.results.map do |result| 
+            Rails.cache.fetch("registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
+              registry_entry = ::RegistryEntrySerializer.new(result).as_json 
+              ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json }
+              {registry_entry: registry_entry, ancestors: ancestors}
+            end
+          end,
+          fulltext: params[:fulltext],
+        }.to_json
+
+        render plain: json
+      end
+    end
+  end
+
   def interview
     search = Segment.search do 
       fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do

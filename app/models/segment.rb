@@ -97,7 +97,7 @@ class Segment < ActiveRecord::Base
     end
   end
 
-  searchable :auto_index => false do
+  searchable do
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :timecode

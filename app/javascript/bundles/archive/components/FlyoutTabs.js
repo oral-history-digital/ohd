@@ -4,6 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
+import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
@@ -235,6 +236,12 @@ export default class FlyoutTabs extends React.Component {
             <TabPanel key={'tabpanel-registry-entries'}>
                 <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
                 <div className='flyout-sub-tabs-container'>
+                    <RegistryEntrySearchFormContainer />
+                    <div>
+                        <button onClick={() => this.props.changeRegistryEntriesViewMode(!this.props.showRegistryEntriesTree)}>
+                            {t(this.props, 'activerecord.models.registry_entries.' + this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree')}
+                        </button>
+                    </div>
                     <a href={`/${this.props.locale}/registry_entries.pdf`}>
                         <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                         <span>{` ${t(this.props, 'download')}`}</span>

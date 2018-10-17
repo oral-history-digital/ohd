@@ -87,7 +87,7 @@ class RegistryEntriesController < ApplicationController
           end
 
         json = Rails.cache.fetch "#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
-          registry_entries.includes(registry_names: :translations)
+          #registry_entries.includes(registry_names: :translations)
           {
             data: registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},
             data_type: 'registry_entries',

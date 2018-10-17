@@ -418,6 +418,8 @@ de:
         actions:
           show: 'Registereintrag anzeigen'
           index: 'Registereinträge anzeigen'
+          show_tree: 'Baum anzeigen'
+          show_search_results: 'Suchergebnisse zeigen'
       annotation:
         one: 'Anmerkung'
         other: 'Anmerkungen'

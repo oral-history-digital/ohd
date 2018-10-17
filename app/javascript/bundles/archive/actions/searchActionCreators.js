@@ -7,8 +7,14 @@ import {
     RESET_QUERY,
     RECEIVE_FACETS,
     REQUEST_FACETS,
+
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
+
+    REQUEST_REGISTRY_ENTRY_SEARCH,
+    RECEIVE_REGISTRY_ENTRY_SEARCH,
+    CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
+
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
     INTERVIEW_SEARCH_URL,
@@ -95,3 +101,32 @@ export function searchInInterview(searchQuery) {
         Loader.getJson(INTERVIEW_SEARCH_URL, searchQuery, dispatch, receiveInterviewSearchResults);
     }
 }
+
+const requestRegistryEntrySearch = (searchQuery) => ({
+    type: REQUEST_REGISTRY_ENTRY_SEARCH,
+    searchQuery: searchQuery,
+});
+
+function receiveRegistryEntrySearchResults(json){
+    return {
+        type: RECEIVE_REGISTRY_ENTRY_SEARCH,
+        registryEntries: json.registry_entries,
+        fulltext: json.fulltext,
+        receivedAt: Date.now()
+    }
+}
+
+export function searchRegistryEntry(url, searchQuery) {
+    return dispatch => {
+        dispatch(requestRegistryEntrySearch(searchQuery))
+        Loader.getJson(url, searchQuery, dispatch, receiveRegistryEntrySearchResults);
+    }
+}
+
+export function changeRegistryEntriesViewMode(bool){
+    return {
+        type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
+        bool: bool
+    }
+}
+

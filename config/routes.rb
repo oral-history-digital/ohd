@@ -84,6 +84,7 @@ Rails.application.routes.draw do
           get :facets
           get :archive
           get :interview
+          get :registry_entry
         end
       end
     end
