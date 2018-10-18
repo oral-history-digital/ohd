@@ -9,7 +9,7 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     download(lang, condition) {
-        if (!condition) {
+        if (condition) {
             let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
                 <p>
@@ -29,8 +29,8 @@ export default class InterviewTextMaterials extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
+                        {this.download(this.props.interview.lang, true)}
+                        {this.download(this.props.locale, (this.props.interview.languages.indexOf(this.props.locale) > -1 && this.props.interview.lang !== this.props.locale))}
                     </AuthShowContainer>
                 </div>
             );

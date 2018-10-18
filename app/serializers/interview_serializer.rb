@@ -115,7 +115,7 @@ class InterviewSerializer < ActiveModel::Serializer
   def languages_array
     if object.language
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = "#{object.language.to_s(locale)} #{object.translated && I18n.t('status.translated', locale: locale)}"
+        mem[locale] = "#{object.language.to_s(locale)} #{(object.translated) ? I18n.t('status.translated', locale: locale) : ''}"
         mem
       end
     else
