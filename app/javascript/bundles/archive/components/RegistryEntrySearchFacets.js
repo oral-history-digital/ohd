@@ -42,7 +42,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
             for (var c in this.props.interview.registry_references) {
                 let registryReference = this.props.interview.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryEntry && registryEntry.parent_ids.indexOf(this.props.parentEntryId) > -1 && registryReference !== 'fetched') {
+                if (registryEntry && registryEntry.parent_ids[this.props.locale].indexOf(this.props.parentEntryId) > -1 && registryReference !== 'fetched') {
                     registryEntries.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 

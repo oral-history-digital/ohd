@@ -76,20 +76,13 @@ class RegistryEntriesController < ApplicationController
             ]
           elsif params[:references_for_interview]
             [
-              Interview.find_by_archive_id(params[:references_for_interview]).registry_references.where(registry_reference_type_id: params[:type_id]).map(&:registry_entry),
+              Interview.find_by_archive_id(params[:references_for_interview]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
              "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}"
             ]
-          #elsif params[:facets]
-            #[
-              #Project.registry_entry_search_facets.inject([]) do |mem, facet|
-                #mem << RegistryEntry.find_by_entry_code(facet['id'])
-              #end,
-              #'facets_true'
-            #]
           end
 
         json = Rails.cache.fetch "#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
-          #registry_entries.includes(registry_names: :translations)
+          registry_entries = registry_entries.includes(registry_names: :translations)#.
           {
             data: registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},
             data_type: 'registry_entries',
@@ -137,9 +130,5 @@ class RegistryEntriesController < ApplicationController
   def registry_entry_params
     params.require(:registry_entry).permit(:workflow_state, :parent_id, :registry_name_type_id, :name_position, :descriptor, :notes, :latitude, :longitude, :lang)
   end
-
-  #def registry_entry_params
-    #params.require(:registry_entry).permit(:workflow_state, parents: [:id], registry_names_attributes: [:registry_name_type_id, :name_position, :descriptor, :notes])
-  #end
 
 end

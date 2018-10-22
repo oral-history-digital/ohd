@@ -28,4 +28,18 @@ class RegistryEntrySerializer < ActiveModel::Serializer
   def registry_references
     object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
   end
+
+  def child_ids
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale.to_s] = object.alphanum_sorted_ids(:children, locale)
+      mem
+    end
+  end
+
+  def parent_ids
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale.to_s] = object.alphanum_sorted_ids(:parents, locale)
+      mem
+    end
+  end
 end

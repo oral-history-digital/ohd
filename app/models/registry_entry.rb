@@ -128,6 +128,42 @@ class RegistryEntry < ActiveRecord::Base
     end.flatten.uniq.join(' ')
   end
 
+  # method should be one of 'children' or 'parents'
+  #
+  def alphanum_sorted_ids(method, locale)
+    self.send(method).includes(registry_names: :translations).map{|c| 
+      #
+      # replace e.g. ö with o - than remove all non alphanumeric chars
+      #
+      translation = c.registry_names.first.translations.where(locale: locale).first 
+      local_name = translation ? 
+        translation.descriptor.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n,'').gsub(/\W/, '').downcase.to_s :
+        'ZZZZZZZZZZZ'
+
+      [
+        c.id, 
+        local_name
+      ]
+    }.sort{|a,b| a[1] <=> b[1]}.map{|a| a[0]}
+  end
+
+  def alphanum_sorted_children_ids(locale)
+    # registry_names of children 
+    RegistryName.where(registry_entry_id: RegistryHierarchy.select('descendant_id').where(ancestor_id: self.id, direct: true)).
+      # select only local name and order by it
+      joins(:translations).
+      where("registry_name_translations.locale": locale).
+      #
+      # REGEXP_REPLACE comes with MySQL 8.0+. Without replacement of non-chars sth.like "\"Zora\"" will be placed before "Anne" :(
+      # perhaps there is a possibility to change the collation in use?
+      #
+      #select("REGEXP_REPLACE(registry_name_translations.descriptor, '\W', '') AS name, registry_entry_id").
+      #
+      select("registry_name_translations.descriptor AS name, registry_entry_id").
+      order("registry_name_translations.descriptor").
+      map(&:registry_entry_id)
+  end
+
   class << self
     def descendant_ids(entry_code, entry_dedalo_code=nil)
       entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)

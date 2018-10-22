@@ -91,7 +91,7 @@ export default class RegistryReferenceForm extends React.Component {
             this.props.registryEntriesStatus[`children_for_entry_${this.state.parentEntryId}`] && 
             this.props.registryEntriesStatus[`children_for_entry_${this.state.parentEntryId}`].split('-')[0] === 'fetched'
         ) {
-            return this.registryEntryParent().child_ids.map((id, index) => {
+            return this.registryEntryParent().child_ids[this.props.locale].map((id, index) => {
                 return this.props.registryEntries[id];
             })
         } else {
@@ -120,9 +120,9 @@ export default class RegistryReferenceForm extends React.Component {
 
     goUp() {
         if (this.state.parentEntryId !== this.props.parentEntryId) {
-            let parentRegistryEntryId = this.registryEntryParent().parent_ids[0] === this.props.parentEntryId ?
+            let parentRegistryEntryId = this.registryEntryParent().parent_ids[this.props.locale][0] === this.props.parentEntryId ?
                 this.props.parentEntryId :
-                this.registryEntryParent().parent_ids[0]
+                this.registryEntryParent().parent_ids[this.props.locale][0]
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

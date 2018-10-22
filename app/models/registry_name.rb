@@ -13,4 +13,8 @@ class RegistryName < ActiveRecord::Base
 
   scope :with_type, -> (code) { where(registry_name_types: {code: code.to_s}) }
 
+  scope :select_local_descriptor, ->(locale) {
+          joins(:translations).select("registry_name_translations.descriptor AS name, registry_entry_id")
+  }
+
 end
