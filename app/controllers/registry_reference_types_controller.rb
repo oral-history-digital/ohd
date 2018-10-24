@@ -1,6 +1,7 @@
 class RegistryReferenceTypesController < ApplicationController
 
   def create
+    policy_scope RegistryReferenceType
     @registry_reference_type = RegistryReferenceType.create(registry_reference_type_params)
     clear_cache @registry_reference_type 
 
@@ -17,6 +18,7 @@ class RegistryReferenceTypesController < ApplicationController
 
   def update
     @registry_reference_type = RegistryReferenceType.find params[:id]
+    authorize @registry_reference_type
     @registry_reference_type.update_attributes registry_reference_type_params
     clear_cache @registry_reference_type 
 
@@ -33,6 +35,7 @@ class RegistryReferenceTypesController < ApplicationController
 
   def destroy 
     @registry_reference_type = RegistryReferenceType.find(params[:id])
+    authorize @registry_reference_type
     registry_reference_type = @registry_reference_type
     @registry_reference_type.destroy
     clear_cache registry_reference_type 
@@ -46,6 +49,7 @@ class RegistryReferenceTypesController < ApplicationController
   end
 
   def index
+    policy_scope RegistryReferenceType
     # @registry_reference_types = RegistryReferenceType.all
 
     # Vorschlag: es werden nur Referenztypen zurückgegeben die Teil der registry_reference_type_search_facets sind 
