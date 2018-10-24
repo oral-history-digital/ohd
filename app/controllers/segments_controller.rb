@@ -33,6 +33,8 @@ class SegmentsController < ApplicationController
     @segment.text = segment_params[:text]
     @segment.speaker_id = segment_params[:speaker_id]
     @segment.save
+    #@segment.update_attributes(segment_params)
+    binding.pry
 
     clear_cache @segment
     if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
@@ -60,7 +62,7 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.tapes.inject({}) do |tapes, t|
               segments_for_tape = Segment.
@@ -75,8 +77,9 @@ class SegmentsController < ApplicationController
             nested_data_type: 'segments',
             data_type: 'interviews',
             archive_id: params[:interview_id]
-          }
-        end.to_json
+        }.to_json
+          #}
+        #end.to_json
         render plain: json
       end
     end

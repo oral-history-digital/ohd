@@ -1,5 +1,6 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
+import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from "../../../lib/utils";
@@ -137,6 +138,7 @@ export default class Segment extends React.Component {
             return (
                 <div className={icoCss}>
                     {this.edit(locale)}
+                    {this.editHeadings(locale)}
                     <div className={annotionCss} title={t(this.props, 'annotations')}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
@@ -158,6 +160,25 @@ export default class Segment extends React.Component {
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit'),
                         content: <SegmentFormContainer segment={this.props.data} locale={locale} />
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
+
+    editHeadings(locale) {
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.segment.edit_heading')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.segment.edit_heading'),
+                        content: <SegmentHeadingFormContainer segment={this.props.data} locale={locale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>

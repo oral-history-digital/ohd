@@ -230,6 +230,7 @@ de:
       return: 'Weiteres Interview anlegen'
     segment:
       edit: 'Segment bearbeiten'
+      edit_heading: 'Überschriften bearbeiten'
       speaker_string: 'Sprecher (als String)'
     person: 
       new: 'Person hinzufügen'

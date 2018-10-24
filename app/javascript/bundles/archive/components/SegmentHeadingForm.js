@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
 
-export default class SegmentForm extends React.Component {
+export default class SegmentHeadingForm extends React.Component {
 
     render() {
         let _this = this;
@@ -18,19 +18,12 @@ export default class SegmentForm extends React.Component {
                     submitText='submit'
                     elements={[
                         {
-                            elementType: 'select',
-                            attribute: 'speaker_id',
-                            values: Object.values(this.props.people),
-                            value: this.props.segment && this.props.segment.speaker_id,
-                            withEmpty: true,
-                            //validate: function(v){return v !== ''},
-                            individualErrorMsg: 'empty'
+                            attribute: 'mainheading',
+                            value: this.props.segment && this.props.segment.mainheading[this.props.locale],
                         },
                         {
-                            elementType: 'textarea',
-                            attribute: 'text',
-                            value: this.props.segment && this.props.segment.transcripts[this.props.locale],
-                            validate: function(v){return v.length > 1} 
+                            attribute: 'subheading',
+                            value: this.props.segment && this.props.segment.subheading[this.props.locale],
                         },
                     ]}
                 />
