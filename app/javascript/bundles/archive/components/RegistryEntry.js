@@ -4,6 +4,7 @@ import {Link, hashHistory} from 'react-router-dom';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
+import RegistryHierarchyFormContainer from '../containers/RegistryHierarchyFormContainer';
 import { t, pluralize, admin } from '../../../lib/utils';
 
 export default class RegistryEntry extends React.Component {
@@ -95,6 +96,56 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    rmParent(parentId) {
+        this.props.deleteData('registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
+        this.props.closeArchivePopup();
+    }
+
+    parentRegistryHierarchyId() {
+        return this.props.registryEntry.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
+    }
+
+    deleteParent() {
+        if (this.props.registryEntry.parent_ids[this.props.locale].length > 1) {
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.registry_entry.delete_parent')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'edit.registry_entry.delete_parent'),
+                    content: (
+                        <div>
+                            <p>{this.props.registryEntryParent.name[this.props.locale]}</p>
+                            <div className='any-button' onClick={() => this.rmParent()}>
+                                {t(this.props, 'delete')}
+                            </div>
+                        </div>
+                    )
+                })}
+            >
+                <i className="fa fa-trash-o"></i>
+            </div>
+        } else {
+            return null;
+        }
+    }
+
+    addParent() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.registry_entry.add_parent')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'edit.registry_entry.add_parent'),
+                    content: <RegistryHierarchyFormContainer 
+                                 descendantRegistryEntry={this.props.registryEntry}
+                             />
+                })}
+            >
+                <i className="fa fa-plus"></i>
+            </div>
+        )
+    }
+
     buttons() {
         return (
             <div className={'flyout-sub-tabs-content-ico'}>
@@ -110,6 +161,8 @@ export default class RegistryEntry extends React.Component {
                 <div className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}
                     {this.delete()}
+                    {this.addParent()}
+                    {this.deleteParent()}
                 </div>
             )
         }
@@ -125,6 +178,7 @@ export default class RegistryEntry extends React.Component {
             >
                 {this.props.registryEntry.name[this.props.locale]}
                 {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`}
+                {` (ID: ${this.props.registryEntry.id})`}
             </div>
         )
     }

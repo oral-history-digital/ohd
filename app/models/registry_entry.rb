@@ -24,11 +24,15 @@ class RegistryEntry < ActiveRecord::Base
 
   accepts_nested_attributes_for :registry_names
 
-  has_many :registry_hierarchies,
+  has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
-           :dependent => :destroy
+           dependent: :destroy,
+           class_name: 'RegistryHierarchy'
 
-  accepts_nested_attributes_for :registry_hierarchies
+  has_many :child_registry_hierarchies,
+           foreign_key: :ancestor_id,
+           dependent: :destroy,
+           class_name: 'RegistryHierarchy'
 
   has_many :registry_references,
            :dependent => :destroy
@@ -919,6 +923,10 @@ class RegistryEntry < ActiveRecord::Base
 
   def notes=(notes)
     registry_names.first.update_attribute :notes, notes
+  end
+
+  def parent_id=(pid)
+    parents << RegistryEntry.find(pid)
   end
 
   def localized_hash

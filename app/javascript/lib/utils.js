@@ -111,6 +111,9 @@ export function pluralize(word) {
         case 'registry_entry': 
             pluralizedWord = 'registry_entries';
             break;
+        case 'registry_hierarchy': 
+            pluralizedWord = 'registry_hierarchies';
+            break;
         default:
             pluralizedWord = `${word}s`;
     }

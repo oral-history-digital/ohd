@@ -247,6 +247,8 @@ de:
       go_up: 'Eine Ebene höher'
       parent: 'Elternknoten/-eintrag'
       show_children: 'Kinderknoten/-einträge anzeigen'
+      add_parent: 'Elternknoten hinzufügen'
+      delete_parent: 'Elternknoten löschen'
     registry_entries: 
       edit: 'Registereinträge bearbeiten'
     history: 
@@ -588,9 +590,12 @@ de:
         born: 'geb.'
         latitude: 'Latitude'
         longitude: 'Longitude'
+        lang: 'Sprache'
       registry_reference:
         registry_entry_id: 'Registereintrag'
         registry_reference_type_id: 'Art der Beziehung'
+      registry_hierarchy:
+        ancestor_id: 'ID des Elternknoten'
       annotation:
         text: 'Text'
       photo:
