@@ -35,7 +35,6 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
     @interview.update_attributes interview_params
-    @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
 
     clear_cache @interview
 
@@ -189,7 +188,8 @@ class InterviewsController < ApplicationController
         'interview_date',
         'video',
         'translated',
-        'observations'
+        'observations',
+        'workflow_state'
     )
   end
 

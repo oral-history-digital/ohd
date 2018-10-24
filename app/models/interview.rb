@@ -289,6 +289,10 @@ class Interview < ActiveRecord::Base
     localized_hash(true)
   end
 
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
+
   def place_of_birth
     return {
       descriptor: interviewees[0].try(:place_of_birth).try(:localized_hash),
