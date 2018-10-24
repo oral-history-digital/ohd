@@ -443,6 +443,7 @@ de:
         text: 'Ereignis'
         start_date: 'Beginn'
         end_date: 'Ende'
+        workflow_state: 'Status ändern zu:'
       contribution:
         contribution_type: 'Art des Beitrags'
         person_id: 'Person'

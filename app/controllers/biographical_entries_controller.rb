@@ -1,6 +1,7 @@
 class BiographicalEntriesController < ApplicationController
 
   def create
+    authorize BiographicalEntry
     @biographical_entry = BiographicalEntry.create(biographical_entry_params)
 
     respond_to do |format|
@@ -17,6 +18,7 @@ class BiographicalEntriesController < ApplicationController
   end
 
   def show
+    authorize BiographicalEntry
     @interview = Interview.find_by_archive_id params[:id]
     @alpha2_locale = params[:lang]
     respond_to do |format|
@@ -31,6 +33,7 @@ class BiographicalEntriesController < ApplicationController
 
   def update
     @biographical_entry = BiographicalEntry.find(params[:id])
+    authorize @biographical_entry
     updated_at = @biographical_entry.updated_at
     @biographical_entry.update_attributes(biographical_entry_params)
     clear_biographical_entry_cache @biographical_entry.id, updated_at
@@ -50,6 +53,7 @@ class BiographicalEntriesController < ApplicationController
 
   def destroy 
     @biographical_entry = BiographicalEntry.find(params[:id])
+    authorize @biographical_entry
     @biographical_entry.destroy
 
     respond_to do |format|
@@ -63,7 +67,7 @@ class BiographicalEntriesController < ApplicationController
   private
 
   def biographical_entry_params
-    params.require(:biographical_entry).permit(:person_id, :text, :start_date, :end_date)
+    params.require(:biographical_entry).permit(:person_id, :text, :start_date, :end_date, :workflow_state)
   end
 
   def clear_biographical_entry_cache id, updated_at

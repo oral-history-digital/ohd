@@ -11,23 +11,30 @@ export default class BiographicalEntryForm extends React.Component {
                 scope='biographical_entry'
                 onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                 values={{
-                    id: this.props.biographical_entry && this.props.biographical_entry.id,
-                    person_id: (this.props.person && this.props.person.id) || (this.props.biographical_entry && this.props.biographical_entry.person_id)
+                    id: this.props.biographicalEntry && this.props.biographicalEntry.id,
+                    person_id: (this.props.person && this.props.person.id) || (this.props.biographicalEntry && this.props.biographicalEntry.person_id)
                 }}
                 elements={[
                     {
                         elementType: 'textarea',
                         attribute: 'text',
-                        value: this.props.biographical_entry && this.props.biographical_entry.text[this.props.locale],
+                        value: this.props.biographicalEntry && this.props.biographicalEntry.text[this.props.locale],
                         validate: function(v){return v.length > 1} 
                     },
                     {
                         attribute: 'start_date',
-                        value: this.props.biographical_entry && this.props.biographical_entry.start_date[this.props.locale],
+                        value: this.props.biographicalEntry && this.props.biographicalEntry.start_date[this.props.locale],
                     },
                     {
                         attribute: 'end_date',
-                        value: this.props.biographical_entry && this.props.biographical_entry.end_date[this.props.locale],
+                        value: this.props.biographicalEntry && this.props.biographicalEntry.end_date[this.props.locale],
+                    },
+                    {
+                        elementType: 'select',
+                        attribute: 'workflow_state',
+                        values: this.props.biographicalEntry && Object.values(this.props.biographicalEntry.transitions_to),
+                        optionsScope: 'workflow_states',
+                        withEmpty: true,
                     },
                 ]}
             />

@@ -1,6 +1,15 @@
 class BiographicalEntrySerializer < ActiveModel::Serializer
 
-  attributes :id, :person_id, :text, :end_date, :start_date
+  attributes :id, :person_id, 
+    :text, 
+    :end_date, 
+    :start_date,
+    :workflow_state,
+    :transitions_to
+
+  def transitions_to
+    object.current_state.events.map{|e| e.first}
+  end
 
   [:text, :end_date, :start_date].each do |entry|
     define_method entry do
