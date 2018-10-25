@@ -112,7 +112,7 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-    -> { includes(:translations).order(:timecode)},
+           -> { includes(:translations).order([:tape_number, :timecode]) },
            dependent: :destroy
            #inverse_of: :interview
 

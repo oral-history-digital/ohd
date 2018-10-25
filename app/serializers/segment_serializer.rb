@@ -43,7 +43,7 @@ class SegmentSerializer < ActiveModel::Serializer
 
   def tape_nbr
     #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
-    object.tape.number
+    object.tape_number
   end
 
   def annotations

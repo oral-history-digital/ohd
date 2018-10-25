@@ -205,22 +205,8 @@ class Segment < ActiveRecord::Base
     inits
   end
 
-  def timecode
-    timestr = read_attribute(:timecode).sub(/\.\d\d$/,'')
-    unless tape.blank?
-      "[#{tape.number}] #{timestr}"
-    else
-      timestr
-    end
-  end
-
-  def raw_timecode
-    read_attribute :timecode
-  end
-
   def start_time
-    #@time ||= Timecode.new(raw_timecode).time
-    @time ||= Time.parse(raw_timecode).seconds_since_midnight
+    @time ||= Time.parse(timecode).seconds_since_midnight
   end
 
   def next
