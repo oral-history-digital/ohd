@@ -28,12 +28,12 @@ class SegmentsController < ApplicationController
     # set headings like this, because blank values won`t be transmitted in params
     # nulling a heading therefore would not be possible
     #
-    @segment.mainheading = segment_params[:mainheading]
-    @segment.subheading = segment_params[:subheading]
-    @segment.text = segment_params[:text]
-    @segment.speaker_id = segment_params[:speaker_id]
-    @segment.save
-    #@segment.update_attributes(segment_params)
+    #@segment.mainheading = segment_params[:mainheading]
+    #@segment.subheading = segment_params[:subheading]
+    #@segment.text = segment_params[:text]
+    #@segment.speaker_id = segment_params[:speaker_id]
+    #@segment.save
+    @segment.update_attributes(segment_params)
     binding.pry
 
     clear_cache @segment

@@ -53,7 +53,7 @@ export default class TableOfContents extends React.Component {
 
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).map((segment, index) => {
-                if (segment.mainheading[this.props.locale] && segment.mainheading[this.props.locale] !== '' && segment.mainheading[this.props.locale] !== lastMainheading) {
+                if (segment.mainheading[this.props.locale] && /\w+/.test(segment.subheading[this.props.locale]) && segment.mainheading[this.props.locale] !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
                     lastMainheading = segment.mainheading[this.props.locale];
@@ -83,7 +83,7 @@ export default class TableOfContents extends React.Component {
                         }
                     }
                 }
-                if (segment.subheading[this.props.locale] && segment.subheading[this.props.locale] !== '') {
+                if (segment.subheading[this.props.locale] && /\w+/.test(segment.subheading[this.props.locale])) {
                     subIndex += 1;
                     subheading = segment.subheading[this.props.locale];
                     headings[mainIndex - 1].subheadings.push({
