@@ -4,8 +4,6 @@ class ReadCampscapeFileJob < ApplicationJob
   def perform(file_path)
     read_file(file_path)
     File.delete(file_path) if File.exist?(file_path)
-    Interview.reindex
-    Sunspot.commit
     #p report
     # TODO: send mail to someone informing about finished interview
   end
