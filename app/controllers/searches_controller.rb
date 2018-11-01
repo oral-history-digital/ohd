@@ -22,7 +22,7 @@ class SearchesController < ApplicationController
     search = RegistryEntry.search do 
       fulltext params[:fulltext].blank? ? "empty fulltext should not result in all registry_entries (this is a comment)" : params[:fulltext]
       #order_by(:names, :asc)
-      paginate page: params[:page] || 1, per_page: 2000
+      paginate page: params[:page] || 1, per_page: 200
     end
 
     respond_to do |format|
@@ -36,8 +36,8 @@ class SearchesController < ApplicationController
           registry_entries: search.results.map do |result| 
             Rails.cache.fetch("registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
               registry_entry = ::RegistryEntrySerializer.new(result).as_json 
-              ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json }
-              {registry_entry: registry_entry, ancestors: ancestors}
+              ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
+              {registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb}
             end
           end,
           fulltext: params[:fulltext],

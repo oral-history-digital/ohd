@@ -168,6 +168,12 @@ class RegistryEntry < ActiveRecord::Base
       map(&:registry_entry_id)
   end
 
+  def bread_crumb
+    if parents.count > 0
+      parents.inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem} 
+    end
+  end
+
   class << self
     def descendant_ids(entry_code, entry_dedalo_code=nil)
       entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)

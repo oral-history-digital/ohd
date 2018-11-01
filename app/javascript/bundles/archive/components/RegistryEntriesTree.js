@@ -2,7 +2,7 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
+import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
 import { t } from '../../../lib/utils';
 
 export default class RegistryEntriesTree extends React.Component {
@@ -34,12 +34,12 @@ export default class RegistryEntriesTree extends React.Component {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
         } else {
             return (
-                this.props.foundRegistryEntries.results.map((found, index) => {
+                this.props.foundRegistryEntries.results.map((result, index) => {
                     return (
-                        <RegistryEntryContainer 
-                            registryEntry={found.registry_entry} 
-                            key={`registry_entries-${found.registry_entry.id}`} 
-                            registryEntryParent={this.props.registryEntryParent}
+                        <RegistryEntrySearchResultContainer 
+                            result={result} 
+                            key={`registry_entries-${result.registry_entry.id}`} 
+                            //registryEntryParent={this.props.registryEntryParent}
                         />
                     )
                 })
