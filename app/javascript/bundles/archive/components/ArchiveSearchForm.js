@@ -17,7 +17,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            let url = `/${this.props.locale}/searches/archive`;
+            let url = `/${this.context.router.route.match.params.locale}/searches/archive`;
             this.props.searchInArchive(url, {});
         }
     }
@@ -35,7 +35,7 @@ export default class ArchiveSearchForm extends React.Component {
     handleReset(event) {
         this.form.reset();
         this.props.resetQuery();
-        let url = `/${this.props.locale}/searches/archive`;
+        let url = `/${this.context.router.route.match.params.locale}/searches/archive`;
         this.props.searchInArchive(url, {});
     }
 
@@ -89,7 +89,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     submit(params) {
         if (!this.props.isArchiveSearching) {
-            let url = `/${this.props.locale}/searches/archive`;
+            let url = `/${this.context.router.route.match.params.locale}/searches/archive`;
             this.props.searchInArchive(url, params);
             this.context.router.history.push(url);
         }
