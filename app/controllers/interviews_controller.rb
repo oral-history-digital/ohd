@@ -2,7 +2,8 @@ class InterviewsController < ApplicationController
   include IsoHelpers
   layout 'responsive'
 
-  skip_before_action :authenticate_user_account!#, only: :show
+  skip_before_action :authenticate_user_account!, only: [:show, :doi_contents]
+  skip_after_action :verify_authorized, only: [:show, :doi_contents]
 
   def new
     authorize Interview
