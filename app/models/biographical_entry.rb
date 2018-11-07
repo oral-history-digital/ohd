@@ -18,4 +18,15 @@ class BiographicalEntry < ApplicationRecord
     self.send("#{change}!")
   end
 
+  searchable do
+    string :archive_id, :multiple => true, :stored => true do
+      person.interviews.map{|i| i.archive_id }
+    end
+    string :start_date, :stored => true
+    (Project.available_locales + [:orig]).each do |locale|
+      text :"text_#{locale}" do
+        text(locale)
+      end
+    end
+  end
 end

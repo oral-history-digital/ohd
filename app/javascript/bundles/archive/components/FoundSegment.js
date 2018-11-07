@@ -38,11 +38,11 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        let segment = this.props.data.transcripts[this.props.locale];
+        let segment = this.props.data.texts[this.props.locale];
         if (!segment || segment.length === 0){
-            for (let lang in this.props.data.transcripts) {
+            for (let lang in this.props.data.texts) {
                 if (lang != this.props.locale) {
-                    segment = this.props.data.transcripts[lang];
+                    segment = this.props.data.texts[lang];
                     if (segment.length > 0) break;
                 }
             }

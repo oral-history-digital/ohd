@@ -27,6 +27,33 @@ namespace :solr do
       p "finished all interviews in #{(finish - start)} seconds."
     end
 
+    desc 'reindex people'
+    task :people => :environment do
+      start = Time.now
+      p "starting to reindex people ..."
+      Person.reindex
+      finish = Time.now
+      p "finished all people in #{(finish - start)} seconds."
+    end
+
+    desc 'reindex biographical_entries'
+    task :biographical_entries => :environment do
+      start = Time.now
+      p "starting to reindex biographical_entries ..."
+      BiographicalEntry.reindex
+      finish = Time.now
+      p "finished all biographical_entries in #{(finish - start)} seconds."
+    end
+
+    desc 'reindex photos'
+    task :photos => :environment do
+      start = Time.now
+      p "starting to reindex photos ..."
+      Photo.reindex
+      finish = Time.now
+      p "finished all photos in #{(finish - start)} seconds."
+    end
+
     desc 'reindex registry_entries'
     task :registry_entries => :environment do
       start = Time.now
@@ -42,9 +69,7 @@ namespace :solr do
     end
 
     desc 'reindex all'
-    task :all => ['solr:reindex:interviews', 'solr:reindex:segments', 'solr:reindex:registry_references', 'solr:reindex:commit'] do
-      RegistryReference.reindex
-    end
+    task :all => ['solr:reindex:interviews', 'solr:reindex:people', 'solr:reindex:biographical_entries', 'solr:reindex:photos', 'solr:reindex:segments', 'solr:reindex:commit'] 
 
   end
 

@@ -19,6 +19,9 @@ default: &default
     transcriptor: 'transcript'
     translator: 'translation'
     segmentator: 'segmentation'
+    cinematographer: 'Camera recorder'
+    quality_manager: 'Quality management interviewing'
+    proofreader: ['proofreading','proof_reading']
 
   upload_types:
     - campscape

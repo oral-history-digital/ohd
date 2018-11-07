@@ -111,7 +111,7 @@ export default class UserContentForm extends React.Component {
                 </div>
                 <div className='popup-segment-nav-container'>
                     <div className='popup-segment'>
-                        {this.segment().transcripts[this.props.locale]}
+                        {this.segment().texts[this.props.locale]}
                     </div>
                 </div>
             </div>

@@ -89,6 +89,9 @@ function receiveInterviewSearchResults(json){
     return {
         type: RECEIVE_INTERVIEW_SEARCH,
         foundSegments: json.found_segments,
+        foundPeople: json.found_people,
+        foundPhotos: json.found_photos,
+        foundBiographicalEntries: json.found_biographical_entries,
         fulltext: json.fulltext,
         archiveId: json.archiveId,
         receivedAt: Date.now()

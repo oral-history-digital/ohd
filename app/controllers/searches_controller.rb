@@ -48,17 +48,39 @@ class SearchesController < ApplicationController
     end
   end
 
-  def interview
-    search = Segment.search do 
+  def search(model, order)
+    model.search do 
       fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do
         (Project.available_locales + [:orig]).each do |locale|
           highlight :"text_#{locale}"
         end
       end
       with(:archive_id, params[:id])
-      #facet :chapter
-      order_by(:timecode, :asc)
+      order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
+    end
+  end
+
+  def found_instances(model, search)
+    search.hits.select{|h| h.instance}.map do |hit| 
+      Rails.cache.fetch("#{model.name.underscore}-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
+        instance = "#{model.name}#{model == Segment ? 'Hit' : ''}Serializer".constantize.new(hit.instance).as_json 
+        instance[:texts] = highlighted_texts(hit)
+        instance
+      end
+    end
+  end
+
+  def interview
+    models_and_order = [
+      [Segment, :timecode],
+      [BiographicalEntry, :start_date],
+      [Photo, :id],
+      [Person, "name_#{locale}".to_sym]
+    ]
+      
+    models_and_order.each do |model, order|
+      instance_variable_set "@#{model.name.underscore}_search", search(model, order)
     end
 
     respond_to do |format|
@@ -68,21 +90,15 @@ class SearchesController < ApplicationController
       format.json do
         interview = Interview.find_by_archive_id(params[:id])
         json = {
-          # in some cases esp. in mog their might be hits but their segments do not exist anymore
-          # so either reindex all or save here with the following select statement
-          #
-          found_segments: search.hits.select{|h| h.instance}.map do |hit| 
-            Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
-              segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-              segment[:transcripts] = highlighted_transcripts(hit)
-              segment
-            end
-          end,
           fulltext: params[:fulltext],
           archiveId: params[:id]
-        }.to_json
+        }
+          
+        models_and_order.each do |model, order|
+          json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
+        end
 
-        render plain: json
+        render plain: json.to_json
       end
     end
   end
@@ -192,7 +208,7 @@ class SearchesController < ApplicationController
 
   private
 
-  def highlighted_transcripts(hit) 
+  def highlighted_texts(hit) 
     (Project.available_locales + [:orig]).inject({}) do |mem, locale|
       # locale = hit.instance.orig_lang if locale == :orig
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|

@@ -25,6 +25,18 @@ class Photo < ActiveRecord::Base
     File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
   end
 
+  searchable do
+    string :archive_id, :multiple => true, :stored => true do
+      interview.archive_id
+    end
+    integer :id, :stored => true
+    (Project.available_locales + [:orig]).each do |locale|
+      text :"text_#{locale}" do
+        caption(locale)
+      end
+    end
+  end
+
   # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
   #
   #def src(image_name)

@@ -19,6 +19,29 @@ class Person < ApplicationRecord
 
   translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names
 
+  searchable do
+    string :archive_id, :multiple => true, :stored => true do
+      contributions.map{|c| c.interview.archive_id }
+    end
+    (Project.available_locales + [:orig]).each do |locale|
+      string :"name_#{locale}" do
+        "#{first_name(locale)} #{last_name(locale)}" 
+      end
+      text :"text_#{locale}" do
+        "#{first_name(locale)} #{last_name(locale)}" 
+      end
+    end
+    # contributions
+    # find them through fulltext search 
+    # e.g.: 'Kamera Hans Peter'
+    #
+    I18n.available_locales.each do |locale|
+      text :"contributions_#{locale}" do
+        contributions.map(&:contribution_type).uniq.map{|c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)]}.flatten.join(' ')
+      end
+    end
+  end
+
   def place_of_birth
     if registry_references.length > 0
       if registry_references.where(registry_reference_type_id: 4).length > 0

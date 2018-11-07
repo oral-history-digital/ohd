@@ -65,13 +65,13 @@ class Interview < ActiveRecord::Base
            :through => :contributions
 
   has_many :cinematographers,
-           -> {where("contributions.contribution_type = 'Camera recorder'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['cinematographer']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   has_many :quality_managers,
-           -> {where("contributions.contribution_type = 'Quality management interviewing'")},
+           -> {where("contributions.contribution_type = '#{Project.contribution_types['quality_manager']}'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -79,7 +79,7 @@ class Interview < ActiveRecord::Base
 
   #has_many :proofreading_contributors,
   has_many :proofreaders,
-           -> {where("contributions.contribution_type IN ('proofreading','proof_reading')")},
+           -> {where("contributions.contribution_type": Project.contribution_types['proofreader'])},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -201,6 +201,31 @@ class Interview < ActiveRecord::Base
       end
     end
     
+    # contributions
+    # find them through fulltext search 
+    # e.g.: 'Kamera Hans Peter'
+    #
+    I18n.available_locales.each do |locale|
+      text :"contributions_#{locale}" do
+        contributions.map{|c| [I18n.t(c.contribution_type, locale: locale), c.person.first_name(locale), c.person.last_name(locale)]}.flatten.join(' ')
+      end
+    end
+
+    # biographical entries texts
+    #
+    I18n.available_locales.each do |locale|
+      text :"biography_#{locale}" do
+        interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
+      end
+    end
+
+    # photo caption texts
+    #
+    I18n.available_locales.each do |locale|
+      text :"photo_captions_#{locale}" do
+        photos.map{|p| p.caption(locale)}.join(' ')
+      end
+    end
   end
 
   scope :researched, -> {where(researched: true)}

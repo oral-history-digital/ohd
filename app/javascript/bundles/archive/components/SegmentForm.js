@@ -29,7 +29,7 @@ export default class SegmentForm extends React.Component {
                         {
                             elementType: 'textarea',
                             attribute: 'text',
-                            value: this.props.segment && this.props.segment.transcripts[this.props.locale],
+                            value: this.props.segment && this.props.segment.texts[this.props.locale],
                             validate: function(v){return v.length > 1} 
                         },
                     ]}
