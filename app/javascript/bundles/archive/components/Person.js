@@ -13,7 +13,7 @@ export default class Person extends React.Component {
                 title={t(this.props, 'edit.person.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.person'),
-                    content: <PersonFormContainer person={this.props.person} />
+                    content: <PersonFormContainer person={this.props.data} />
                 })}
             >
                 <i className="fa fa-pencil"></i>
@@ -34,7 +34,7 @@ export default class Person extends React.Component {
                 title: `${t(this.props, 'delete')} ${t(this.props, 'contributions.' + this.props.contribution.contribution_type)}`,
                 content: (
                     <div>
-                        <p>{fullname(this.props, this.props.person)}</p>
+                        <p>{fullname(this.props, this.props.data)}</p>
                         <div className='any-button' onClick={() => this.destroy()}>
                             {t(this.props, 'delete')}
                         </div>
@@ -58,15 +58,25 @@ export default class Person extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <p>
-                    <span className='flyout-content-label'>{t(this.props, `contributions.${this.props.contribution.contribution_type}`)}:</span>
-                    <span className='flyout-content-data'>{fullname(this.props, this.props.person)}</span>
-                    {this.buttons()}
-                </p>
-            </div>
-        )
+        if (this.props.contributions) {
+            return (
+                <div>
+                    <p>
+                        <span className='flyout-content-label'>{t(this.props, `contributions.${this.props.contribution.contribution_type}`)}:</span>
+                        <span className='flyout-content-data'>{fullname(this.props, this.props.data)}</span>
+                        {this.buttons()}
+                    </p>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <p>
+                        <span className='flyout-content-data'>{fullname(this.props, this.props.data)}</span>
+                    </p>
+                </div>
+            )
+        }
     }
 }
 

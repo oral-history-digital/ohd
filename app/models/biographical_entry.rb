@@ -24,7 +24,7 @@ class BiographicalEntry < ApplicationRecord
     end
     string :start_date, :stored => true
     (Project.available_locales + [:orig]).each do |locale|
-      text :"text_#{locale}" do
+      text :"text_#{locale}", stored: true do
         text(locale)
       end
     end

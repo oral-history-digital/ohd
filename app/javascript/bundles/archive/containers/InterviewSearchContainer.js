@@ -9,6 +9,9 @@ const mapStateToProps = (state) => {
     let data = state.search.interviews[state.archive.archiveId];
     return {
         foundSegments: data && data.foundSegments,
+        foundPeople: data && data.foundPeople,
+        foundBiographicalEntries: data && data.foundBiographicalEntries,
+        foundPhotos: data && data.foundPhotos,
         archiveId: state.archive.archiveId,
         interview: getInterview(state),
         tape: state.interview.tape,

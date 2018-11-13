@@ -31,7 +31,7 @@ class Photo < ActiveRecord::Base
     end
     integer :id, :stored => true
     (Project.available_locales + [:orig]).each do |locale|
-      text :"text_#{locale}" do
+      text :"text_#{locale}", stored: true do
         caption(locale)
       end
     end

@@ -27,7 +27,7 @@ class Person < ApplicationRecord
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}" 
       end
-      text :"text_#{locale}" do
+      text :"text_#{locale}", stored: true do
         "#{first_name(locale)} #{last_name(locale)}" 
       end
     end

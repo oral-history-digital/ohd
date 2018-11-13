@@ -12,7 +12,7 @@ export default class BiographicalEntry extends React.Component {
                 title={t(this.props, 'edit.biographical_entry.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.biographical_entry.edit'),
-                    content: <BiographicalEntryFormContainer biographicalEntry={this.props.biographicalEntry} />
+                    content: <BiographicalEntryFormContainer biographicalEntry={this.props.data} />
                 })}
             >
                 <i className="fa fa-pencil"></i>
@@ -21,7 +21,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('people', this.props.biographicalEntry.person_id, 'biographical_entries', this.props.biographicalEntry.id);
+        this.props.deleteData('people', this.props.data.person_id, 'biographical_entries', this.props.data.id);
         this.props.closeArchivePopup();
     }
 
@@ -61,14 +61,14 @@ export default class BiographicalEntry extends React.Component {
         return (
             <p key={name}>
                 <span className='flyout-content-label'>{t(this.props, `activerecord.attributes.biographical_entry.${name}`)}:</span>
-                <span className='flyout-content-data'>{this.props.biographicalEntry[name][this.props.locale]}</span>
+                <span className='flyout-content-data'>{this.props.data[name][this.props.locale]}</span>
             </p>
         )
     }
 
     entries() {
         return ['text', 'start_date', 'end_date'].map((entry, index) => {
-            if (this.props.biographicalEntry[entry][this.props.locale]) 
+            if (this.props.data[entry][this.props.locale]) 
                 return this.entry(entry);
         })
     }
