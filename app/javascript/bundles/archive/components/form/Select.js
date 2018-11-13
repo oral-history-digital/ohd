@@ -28,8 +28,8 @@ export default class Select extends React.Component {
 
         this.props.handleChange(name, value);
 
-        if (typeof this.props.handleChangeCallback === 'function') {
-            this.props.handleChangeCallback(name, value);
+        if (typeof this.props.handlechangecallback === 'function') {
+            this.props.handlechangecallback(name, value);
         }
 
         if (this.props.validate !== undefined) {
@@ -92,7 +92,7 @@ export default class Select extends React.Component {
                     name={this.props.attribute}
                     value={this.props.value}
                     onChange={this.handleChange}
-                    handleChangeCallback={this.props.handleChangeCallback}
+                    handlechangecallback={this.props.handlechangecallback}
                 >
                     {this.options()}
                 </select>

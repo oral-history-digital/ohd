@@ -63,7 +63,7 @@ export default class RegistryReferenceForm extends React.Component {
                 withEmpty: true,
                 validate: function(v){return v !== ''},
                 individualErrorMsg: 'empty',
-                handleChangeCallback: _this.handleSelectedRegistryEntry
+                handlechangecallback: _this.handleSelectedRegistryEntry
             }
         ]
         if (_this.props.selectRegistryReferenceType) {

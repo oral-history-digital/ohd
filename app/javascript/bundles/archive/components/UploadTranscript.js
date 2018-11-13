@@ -65,7 +65,7 @@ export default class UploadTranscript extends React.Component {
                             elementType: 'input',
                             type: 'file',
                             validate: function(v){return v instanceof File},
-                            //handleChangeCallback: this.handleFileChange
+                            //handlechangecallback: this.handleFileChange
                         },
                         { 
                             attribute: '[file_column_names]timecode',
@@ -118,7 +118,7 @@ export default class UploadTranscript extends React.Component {
                             attribute: 'tape_and_archive_id_from_file',
                             elementType: 'input',
                             type: 'checkbox',
-                            handleChangeCallback: this.handleTapeAndArchiveIdFromFileChange
+                            handlechangecallback: this.handleTapeAndArchiveIdFromFileChange
                         },
                         { 
                             attribute: 'archive_id',

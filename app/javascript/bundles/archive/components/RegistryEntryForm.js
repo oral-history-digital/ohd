@@ -95,7 +95,7 @@ export default class RegistryEntryForm extends React.Component {
                             values: this.props.languages,
                             value: this.state.lang.value,
                             withEmpty: true,
-                            handleChangeCallback: this.handleLanguageChange,
+                            handlechangecallback: this.handleLanguageChange,
                             validate: function(v){return v !== ''} 
                         },
                         {
