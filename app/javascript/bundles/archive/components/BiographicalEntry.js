@@ -61,7 +61,7 @@ export default class BiographicalEntry extends React.Component {
         return (
             <p key={name}>
                 <span className='flyout-content-label'>{t(this.props, `activerecord.attributes.biographical_entry.${name}`)}:</span>
-                <span className='flyout-content-data' dangerouslySetInnerHTML = {{__html: this.props.data[name][this.props.locale]}}></span>
+                <span className='flyout-content-data' dangerouslySetInnerHTML={{__html: this.props.data[name][this.props.locale]}} />
             </p>
         )
     }

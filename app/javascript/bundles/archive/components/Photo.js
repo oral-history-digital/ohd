@@ -25,9 +25,7 @@ export default class Photo extends React.Component {
         return (
             <div key={"photo-" + this.props.data.id} >
                 <img src={ this.thumbnailSrc(this.props.data) } />
-                <div className='caption'>
-                    {this.props.data.text[this.props.locale]}
-                </div>
+                <div className='caption' dangerouslySetInnerHTML={{__html: this.props.data.text[this.props.locale]}} />
             </div>
         )
     }

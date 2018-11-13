@@ -63,7 +63,7 @@ export default class Segment extends React.Component {
                     {moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}
                 </p>
                 <div className={this.css()}>
-                    <p  dangerouslySetInnerHTML = {{__html:this.transcript()}}></p>
+                    <p dangerouslySetInnerHTML={{__html:this.transcript()}} />
                 </div>
             </div>
         )

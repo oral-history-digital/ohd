@@ -73,7 +73,7 @@ export default class Person extends React.Component {
             return (
                 <div>
                     <p>
-                        <span className='flyout-content-data' dangerouslySetInnerHTML = {{__html: this.props.data.text[this.props.locale]}}></span>
+                        <span className='flyout-content-data' dangerouslySetInnerHTML={{__html: this.props.data.text[this.props.locale]}} />
                     </p>
                 </div>
             )
