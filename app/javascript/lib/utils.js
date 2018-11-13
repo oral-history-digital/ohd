@@ -96,27 +96,16 @@ export function fullname(props, person, withBirthName=false) {
 }
 
 export function pluralize(word) {
+    // TODO: fit this to all upcase words like PERSON
+    // or be aware that you have to upcase later!
+    //
     let pluralizedWord;
-    switch(word) {
-        case 'person':
-            pluralizedWord = 'people';
-            break;
-        // TODO: unify words ending on y
-        case 'history': 
-            pluralizedWord = 'histories';
-            break;
-        case 'biographical_entry': 
-            pluralizedWord = 'biographical_entries';
-            break;
-        case 'registry_entry': 
-            pluralizedWord = 'registry_entries';
-            break;
-        case 'registry_hierarchy': 
-            pluralizedWord = 'registry_hierarchies';
-            break;
-        default:
-            pluralizedWord = `${word}s`;
-    }
+    if (word.toLowerCase() === 'person') 
+        pluralizedWord = word[0] + 'eople';
+    else if (word[word.length - 1] === 'y')
+        pluralizedWord = word.slice(0, -1) + 'ies'
+    else
+        pluralizedWord = word + 's';
 
     return pluralizedWord;
 }
