@@ -27,6 +27,9 @@ class Person < ApplicationRecord
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}" 
       end
+    end
+    
+    (Project.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
         "#{first_name(locale)} #{last_name(locale)}" 
       end
