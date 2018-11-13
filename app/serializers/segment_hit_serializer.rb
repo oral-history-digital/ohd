@@ -6,7 +6,7 @@ class SegmentHitSerializer < ActiveModel::Serializer
              :time,
              :start_time,
              :tape_nbr,
-             :texts,
+             :text,
              :timecode,
              :speaker_id,
              :last_heading
@@ -20,7 +20,7 @@ class SegmentHitSerializer < ActiveModel::Serializer
     object.tape.number
   end
 
-  def texts
+  def text
     {}
   end
 

@@ -65,7 +65,7 @@ class SearchesController < ApplicationController
     search.hits.select{|h| h.instance}.map do |hit| 
       Rails.cache.fetch("#{model.name.underscore}-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
         instance = "#{model.name}#{model == Segment ? 'Hit' : ''}Serializer".constantize.new(hit.instance).as_json 
-        instance[:texts] = highlighted_texts(hit)
+        instance[:text] = highlighted_text(hit)
         instance
       end
     end
@@ -208,7 +208,7 @@ class SearchesController < ApplicationController
 
   private
 
-  def highlighted_texts(hit) 
+  def highlighted_text(hit) 
     (Project.available_locales + [:orig]).inject({}) do |mem, locale|
       # locale = hit.instance.orig_lang if locale == :orig
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|

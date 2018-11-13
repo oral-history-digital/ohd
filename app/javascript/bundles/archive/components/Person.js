@@ -69,10 +69,11 @@ export default class Person extends React.Component {
                 </div>
             )
         } else {
+            // search result with highlight:
             return (
                 <div>
                     <p>
-                        <span className='flyout-content-data'>{fullname(this.props, this.props.data)}</span>
+                        <span className='flyout-content-data' dangerouslySetInnerHTML = {{__html: this.props.data.text[this.props.locale]}}></span>
                     </p>
                 </div>
             )

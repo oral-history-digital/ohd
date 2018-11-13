@@ -26,7 +26,7 @@ export default class Photo extends React.Component {
             <div key={"photo-" + this.props.data.id} >
                 <img src={ this.thumbnailSrc(this.props.data) } />
                 <div className='caption'>
-                    {this.props.data.texts[this.props.locale]}
+                    {this.props.data.text[this.props.locale]}
                 </div>
             </div>
         )

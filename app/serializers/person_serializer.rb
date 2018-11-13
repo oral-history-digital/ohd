@@ -1,5 +1,5 @@
 class PersonSerializer < ActiveModel::Serializer
-  attributes :id, :date_of_birth, :gender, :names, :name, :typology, :place_of_birth, :biographical_entries
+  attributes :id, :date_of_birth, :gender, :names, :name, :typology, :place_of_birth, :biographical_entries, :text
             # :histories
 
   def names
@@ -8,6 +8,11 @@ class PersonSerializer < ActiveModel::Serializer
         hsh[alpha2_locale] = {firstname: i.first_name,
                          lastname: i.last_name,
                          birthname: i.birth_name} if Project.available_locales.include?( alpha2_locale )}
+  end
+
+  # dummy. will be filled in search
+  def text
+    {}
   end
 
   def date_of_birth

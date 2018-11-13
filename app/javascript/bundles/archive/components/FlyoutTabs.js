@@ -69,7 +69,7 @@ export default class FlyoutTabs extends React.Component {
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 5) {
              // upload transcript
-            this.context.router.history.push(`/${this.props.locale}/texts/new`);
+            this.context.router.history.push(`/${this.props.locale}/transcripts/new`);
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 6) {
              // uploads

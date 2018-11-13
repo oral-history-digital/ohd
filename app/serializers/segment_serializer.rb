@@ -6,7 +6,7 @@ class SegmentSerializer < ActiveModel::Serializer
              :interview_archive_id,
              :time,
              :tape_nbr,
-             :texts,
+             :text,
              :mainheading,
              :subheading,
              :annotations,
