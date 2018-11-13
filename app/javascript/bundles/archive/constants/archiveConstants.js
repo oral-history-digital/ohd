@@ -85,3 +85,5 @@ export const RECEIVE_ACCOUNT = 'RECEIVE_ACCOUNT';
 export const ACCOUNT_URL = '/de/account';
 
 export const CHANGE_TO_EDIT_VIEW = 'CHANGE_TO_EDIT_VIEW';
+export const SEGMENTS_AFTER = 20;
+export const SEGMENTS_BEFORE = 2;

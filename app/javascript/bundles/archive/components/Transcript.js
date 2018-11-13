@@ -2,6 +2,10 @@ import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
 import { t, segments, getSegmentId, activeSegmentId, getInterviewee } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
+import {
+    SEGMENTS_AFTER,
+    SEGMENTS_BEFORE
+} from '../constants/archiveConstants';
 
 export default class Transcript extends React.Component {
 
@@ -28,7 +32,7 @@ export default class Transcript extends React.Component {
     loadSegments() {
         if (
             this.props.loadSegments &&
-            !this.props.segmentsStatus[this.props.archiveId]
+            !this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]
         ) {
             this.props.fetchData('interviews', this.props.archiveId, 'segments');
         }
@@ -54,16 +58,15 @@ export default class Transcript extends React.Component {
         }
     }
 
-    shownSegmentsCount() {
-        return 20;
-    }
-
     shownSegmentsAround(segmentId) {
-        if (segmentId > this.props.interview.last_segments_ids[this.props.tape] - this.shownSegmentsCount())
-            segmentId = this.props.interview.last_segments_ids[this.props.tape] - this.shownSegmentsCount();
+        if (segmentId > this.props.interview.last_segments_ids[this.props.tape] - SEGMENTS_AFTER)
+            segmentId = this.props.interview.last_segments_ids[this.props.tape] - SEGMENTS_AFTER;
+
+        if (segmentId < this.props.interview.first_segments_ids[this.props.tape] + SEGMENTS_BEFORE)
+            segmentId = this.props.interview.first_segments_ids[this.props.tape] + SEGMENTS_BEFORE;
 
         let shownSegments = {};
-        for (var i = 0; i < this.shownSegmentsCount(); i++) {
+        for (var i = -SEGMENTS_BEFORE; i < SEGMENTS_AFTER; i++) {
             shownSegments[segmentId + i] = segments(this.props)[segmentId + i];
         } 
 
