@@ -38,7 +38,7 @@ export default class RegistryEntriesTree extends React.Component {
                     return (
                         <RegistryEntrySearchResultContainer 
                             result={result} 
-                            key={`registry_entries-${result.registry_entry.id}`} 
+                            key={`registry_entries-${result.registry_entry.id}-${index}`} 
                             //registryEntryParent={this.props.registryEntryParent}
                         />
                     )
