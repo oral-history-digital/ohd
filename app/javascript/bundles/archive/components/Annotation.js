@@ -70,9 +70,8 @@ export default class Annotation extends React.Component {
             <p 
                 className='content-trans-text-element-data'
                 key={"annotation-" + this.props.annotation.id}
-            >
-                {this.props.annotation.text[this.props.locale]}
-            </p>
+                dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}}
+            />
         )
     }
 

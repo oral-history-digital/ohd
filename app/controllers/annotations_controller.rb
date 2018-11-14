@@ -3,6 +3,7 @@ class AnnotationsController < ApplicationController
   layout 'responsive'
 
   def create
+    policy_scope(Annotation)
     @annotation = Annotation.new(annotation_params)
     @annotation.author_id = current_user_account.user.id
     @annotation.save
@@ -29,6 +30,7 @@ class AnnotationsController < ApplicationController
 
   def update
     @annotation = Annotation.find params[:id]
+    authorize @annotation
     @annotation.update_attributes annotation_params
 
     clear_cache @annotation.segment
@@ -51,6 +53,7 @@ class AnnotationsController < ApplicationController
 
   def destroy 
     @annotation = Annotation.find(params[:id])
+    authorize @annotation
     @annotation.destroy
 
     clear_cache @annotation.segment
