@@ -221,15 +221,6 @@ class Segment < ActiveRecord::Base
     interview.alias_names || ''
   end
 
-  def text
-    # TODO: rm Nokogiri parser after segment sanitation
-    translations.inject({}) do |mem, translation|
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "") : ''
-      #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
-      mem
-    end
-  end
-
   def as_vtt_subtitles(lang)
     # TODO: rm strip
     raw_segment_text = text(projectified(lang))
