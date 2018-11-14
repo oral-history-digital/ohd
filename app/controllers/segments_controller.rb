@@ -34,7 +34,6 @@ class SegmentsController < ApplicationController
     #@segment.speaker_id = segment_params[:speaker_id]
     #@segment.save
     @segment.update_attributes(segment_params)
-    binding.pry
 
     clear_cache @segment
     if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
