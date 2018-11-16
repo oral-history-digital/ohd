@@ -11,7 +11,6 @@ class SegmentSerializer < ActiveModel::Serializer
              :subheading,
              :annotations,
              :user_annotation_ids,
-             :start_time,
              :references_count,
              :registry_references,
              #:references,
@@ -35,11 +34,6 @@ class SegmentSerializer < ActiveModel::Serializer
   #def speaker_is_interviewee
     #object.speaker_id == object.interview.interviewees.first.id
   #end
-
-  def time
-    # timecode as seconds 
-    Time.parse(object.timecode).seconds_since_midnight
-  end
 
   def tape_nbr
     #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i

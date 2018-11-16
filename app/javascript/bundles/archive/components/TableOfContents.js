@@ -62,7 +62,7 @@ export default class TableOfContents extends React.Component {
                         main: true,
                         chapter: mainIndex + '.',
                         heading: mainheading,
-                        start_time: segment.start_time,
+                        time: segment.time,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         interview_duration: this.props.interview.duration,
@@ -71,13 +71,13 @@ export default class TableOfContents extends React.Component {
                     if (headings.length > 1) {
                         if (index < this.props.interview.headings.length) {
                             if (headings[headings.length - 2].tape_nbr == segment.tape_nbr) {
-                                headings[headings.length - 2].next_start_time = segment.start_time;
+                                headings[headings.length - 2].next_time = segment.time;
                             }
                         }
                         if (headings[headings.length - 2].subheadings.length > 0) {
-                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time) {
+                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time) {
                                 if (headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].tape_nbr == segment.tape_nbr) {
-                                    headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_start_time = segment.start_time;
+                                    headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time = segment.time;
                                 }
                             }
                         }
@@ -90,7 +90,7 @@ export default class TableOfContents extends React.Component {
                         main: false,
                         heading: subheading,
                         chapter: mainIndex + '.' + subIndex + '.',
-                        start_time: segment.start_time,
+                        time: segment.time,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         interview_duration: this.props.interview.duration
@@ -98,7 +98,7 @@ export default class TableOfContents extends React.Component {
                     if (headings[mainIndex - 1].subheadings.length > 1) {
                         if (index < (this.props.interview.headings.length)) {
                             if (headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].tape_nbr == segment.tape_nbr) {
-                                headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_start_time = segment.start_time;
+                                headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_time = segment.time;
                             }
                         }
                     }

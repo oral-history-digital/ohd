@@ -25,11 +25,11 @@ export default class InterviewLocations extends React.Component {
 
     handleClick(segmentId, archiveId) {
         let segment = this.getSegment(segmentId);
-        this.props.handleSegmentClick(segment.tape_nbr, segment.start_time);
+        this.props.handleSegmentClick(segment.tape_nbr, segment.time);
     }
 
-    //handleClick(tape_nbr, start_time) {
-    //this.props.handleSegmentClick(tape_nbr, start_time);
+    //handleClick(tape_nbr, time) {
+    //this.props.handleSegmentClick(tape_nbr, time);
     //}
 
     getSegment(segmentId) {

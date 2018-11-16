@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, activeSegmentId, pluralize } from '../../../lib/utils';
+import { t, pluralize } from '../../../lib/utils';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
@@ -43,14 +43,21 @@ export default class InterviewSearch extends React.Component {
     
     renderResults(model) {
         if(this.props[`found${pluralize(model)}`]) {
+            let active = false;
+            active: parseInt(data.id) === activeSegmentId(this.props)
             return this.props[`found${pluralize(model)}`].map( (data, index) => {
+                if (model === 'Segment') {
+                    if (data.time <= this.props.transcriptTime + 10 && data.time >= this.props.transcriptTime - 5) {
+                        active = true;
+                    }
+                }
                 return (
                     React.createElement(this.components()[model], 
                         {
                             data: data,
                             key: `${model}-${data.id}`,
                             tape_count: this.props.interview.tape_count,
-                            active: parseInt(data.id) === activeSegmentId(this.props)
+                            active: active
                         }
                     )
                 )

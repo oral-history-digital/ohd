@@ -60,7 +60,7 @@ export default class Segment extends React.Component {
                 <p className="content-search-timecode">
                     {this.heading()}
                     {this.tape()}
-                    {moment.utc(this.props.data.start_time * 1000).format("HH:mm:ss")}
+                    {moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}
                 </p>
                 <div className={this.css()}>
                     <p dangerouslySetInnerHTML={{__html:this.transcript()}} />

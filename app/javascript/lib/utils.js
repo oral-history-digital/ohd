@@ -10,50 +10,48 @@ export function segments(props) {
     return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
 }
 
-export function activeSegmentId(props) {
-    return getSegmentId(
-        props.transcriptTime, 
-        segments(props), 
-        props.interview.last_segments_ids[props.tape], 
-        props.interview.first_segments_ids[props.tape]
-    )
-}
-
-export function getSegmentId(time, segments, lastSegmentId, firstSegmentId) {
+export function activeSegment(time, props) {
 
     let found = false;
+    let sortedSegments = Object.values(segments(props)).sort(function(a, b) {a.time - b.time})
     //
     // aproximation based on the asumption that the mean or median segment duration is 7s
     //
-    let segmentId = firstSegmentId + Math.round(time/7);
-    if (segmentId > lastSegmentId)
-        segmentId = lastSegmentId;
+    let index = Math.round(time/7);
+    let firstSegment = sortedSegments[0];
+    let lastSegment = sortedSegments[sortedSegments.length - 1];
 
-    if (segments[segmentId].start_time > time) {
+    if (index === 0)
+        return firstSegment;
+
+    if (index >= sortedSegments.length)
+        return lastSegment;
+
+    if (sortedSegments[index].time > time) {
         while (!found) {
             if (
-                segments[segmentId].start_time <= time ||
-                segmentId === firstSegmentId
+                sortedSegments[index].time <= time ||
+                index === 0
             ) {
                 found = true;
                 break;
             }
-            segmentId--;
+            index--;
         }
-    } else if (segments[segmentId].start_time < time) {
+    } else if (sortedSegments[index].time < time) {
         while (!found) {
             if (
-                segments[segmentId].start_time >= time ||
-                segmentId === lastSegmentId
+                sortedSegments[index].time >= time ||
+                index === sortedSegments.length - 1
             ) {
                 found = true;
                 break;
             }
-            segmentId++;
+            index++;
         }
     }
 
-    return segmentId;
+    return sortedSegments[index];
 }
 
 export function getInterviewee(props) {

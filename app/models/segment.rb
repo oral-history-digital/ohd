@@ -205,7 +205,7 @@ class Segment < ActiveRecord::Base
     inits
   end
 
-  def start_time
+  def time
     @time ||= Time.parse(timecode).seconds_since_midnight
   end
 

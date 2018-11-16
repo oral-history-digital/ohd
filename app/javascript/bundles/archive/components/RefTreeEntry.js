@@ -65,7 +65,7 @@ export default class RefTreeEntry extends React.Component {
                 />
                 <div
                     className='mainheading'
-                    onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.start_time)} 
+                    onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.time)} 
                 >
                     {this.desc()}
                 </div>

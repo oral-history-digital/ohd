@@ -91,7 +91,7 @@ export default class UserContentForm extends React.Component {
     //}
 
     segmentTime() {
-        return moment.utc(this.segment().start_time * 1000).format("HH:mm:ss");
+        return moment.utc(this.segment().time * 1000).format("HH:mm:ss");
     }
 
     segmentSelect() {
@@ -141,7 +141,7 @@ export default class UserContentForm extends React.Component {
         this.setState({
             segmentIndex: segmentIndex,
             properties: {
-                time: segment.start_time,
+                time: segment.time,
                 tape_nbr: segment.tape_nbr,
                 segmentIndex: segmentIndex,
                 interview_archive_id: this.props.archiveId

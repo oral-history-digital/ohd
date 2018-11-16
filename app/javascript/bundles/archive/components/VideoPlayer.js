@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import { t, fullname, segments, getSegmentId, getInterviewee } from '../../../lib/utils';
+import { t, fullname, segments, activeSegment, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
@@ -115,7 +115,7 @@ export default class VideoPlayer extends React.Component {
             <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                 title: t(this.props, 'save_user_annotation'),
                 content: this.annotateOnSegmentForm(
-                    getSegmentId(this.video.currentTime, segments(this.props), this.props.interview.last_segments_ids[this.props.tape], this.props.interview.first_segments_ids[this.props.tape])
+                    activeSegment(this.video.currentTime, this.props).id
                 )
             })}>
                 <i className="fa fa-pencil"></i>
@@ -130,7 +130,7 @@ export default class VideoPlayer extends React.Component {
             title={this.defaultTitle()}
             description=''
             properties={{
-                time: segment.start_time,
+                time: segment.time,
                 tape_nbr: segment.tape_nbr,
                 segmentIndex: segmentIndex,
                 interview_archive_id: this.props.interview.archive_id
