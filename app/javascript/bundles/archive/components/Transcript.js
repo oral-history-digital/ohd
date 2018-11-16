@@ -16,13 +16,13 @@ export default class Transcript extends React.Component {
 
     componentDidMount() {
         this.loadSegments();
-        window.removeEventListener('scroll', this.handleScroll);
-        window.addEventListener('scroll', this.handleScroll);
+        //window.removeEventListener('wheel', this.handleScroll);
+        window.addEventListener('wheel', this.handleScroll);
         window.scrollTo(0, 1);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('wheel', this.handleScroll);
     }
 
     componentDidUpdate() {
@@ -50,12 +50,8 @@ export default class Transcript extends React.Component {
     }
 
     handleScroll() {
-        let fixVideo = ($(document).scrollTop() > $(".site-header").height());
-        if (fixVideo && !this.props.transcriptScrollEnabled) {
+        if (!this.props.transcriptScrollEnabled) 
             this.props.handleTranscriptScroll(true)
-        } else if (!fixVideo && this.props.transcriptScrollEnabled) {
-            this.props.handleTranscriptScroll(false)
-        }
     }
 
     shownSegmentsAround(segmentId) {
