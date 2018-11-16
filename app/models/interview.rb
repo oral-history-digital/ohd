@@ -207,7 +207,11 @@ class Interview < ActiveRecord::Base
     #
     I18n.available_locales.each do |locale|
       text :"contributions_#{locale}" do
-        contributions.map{|c| [I18n.t(c.contribution_type, locale: locale), c.person.first_name(locale), c.person.last_name(locale)]}.flatten.join(' ')
+        contributions.map do |c| 
+          if c.person
+            [I18n.t(c.contribution_type, locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
+          end
+        end.flatten.join(' ')
       end
     end
 
