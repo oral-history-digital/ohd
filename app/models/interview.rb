@@ -194,7 +194,9 @@ class Interview < ActiveRecord::Base
     # interviews in all languages.
     I18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
-        full_title(locale)
+        title = full_title(locale).mb_chars.normalize(:kd)
+        Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
+        title.downcase.to_s
       end
       text :"person_name_#{locale}", :stored => true, :boost => 20 do
         full_title(locale)

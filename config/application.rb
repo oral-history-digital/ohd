@@ -19,6 +19,7 @@ module Archive
     config.i18n.default_locale = :de
     config.autoload_paths << Rails.root.join('lib')
 
+    config.mapping_to_ascii = config_for("mapping_to_ascii")
     config.project = config_for("project")
 
     config.i18n.available_locales = config.project["available_locales"]
