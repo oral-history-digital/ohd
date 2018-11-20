@@ -11,5 +11,5 @@ set :bundle_path, "/data/bundle/01"
 #    }
 
 set :rbenv_type, :system
-set :rbenv_ruby, '2.5.1'
+set :rbenv_ruby, '2.5.3'
 set :rbenv_custom_path, '/opt/rbenv'
