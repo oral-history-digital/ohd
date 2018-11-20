@@ -42,7 +42,7 @@ default: &default
 
   archive_domain: 'zwangsarbeit-archiv.de/archiv'
 
-  project_doi: 'BITTE EINGÜGEN'
+  project_doi: '10.5072'
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:

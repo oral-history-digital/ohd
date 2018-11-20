@@ -62,9 +62,10 @@ Rails.application.routes.draw do
           #get :references
           get :ref_tree
         end
-        #collection do 
+        collection do 
+          post :dois
           #get :stills
-        #end
+        end
         #resources :registry_entries, only: [:show]
         resources :contributions, only: [:create, :destroy]
         resources :photos, only: [:create, :update, :destroy]

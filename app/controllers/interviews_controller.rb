@@ -4,6 +4,7 @@ class InterviewsController < ApplicationController
 
   skip_before_action :authenticate_user_account!, only: [:show, :doi_contents]
   skip_after_action :verify_authorized, only: [:show, :doi_contents]
+  skip_after_action :verify_policy_scoped, only: [:show, :doi_contents]
 
   def new
     authorize Interview
@@ -70,9 +71,7 @@ class InterviewsController < ApplicationController
   end
 
   def show
-    #LatexToPdf.config.merge! :command => 'xetex', :arguments => ['-etex'], :parse_runs => 2
     @interview = Interview.find_by_archive_id(params[:id])
-    authorize @interview
     respond_to do |format|
       format.json do
         render json: cache_interview(@interview)
@@ -95,19 +94,38 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def dois
+    # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
+    uri = URI.parse("https://api.test.datacite.org/dois")
+    header = {"Content-Type": "application/vnd.api+json"}
+    http = Net::HTTP.new(uri.host, uri.port)
+    binding.pry
+
+    params[:archive_ids].each do |archive_id|
+      request = Net::HTTP::Post.new(uri.request_uri, header)
+      request.basic_auth("10.5072", "")
+      response = Net::HTTP.start(uri.hostname, uri.port) {|http|
+        #post_data = URI.encode_www_form(doi_json(archive_id))
+        #http.request(request, post_data)
+        http.request(request, doi_json(archive_id).to_json)
+      }
+      binding.pry
+    end
+
+    respond_to do |format|
+      format.json do
+        render json: response.body
+      end
+    end
+  end
+
   def doi_contents
     @interview = Interview.find_by_archive_id(params[:id])
-    authorize @interview
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
-          doi_contents = {}
-          locales = Project.available_locales.reject{|i| i == 'alias'}
-          locales.each do |i|
-            I18n.locale = i
-            template = "/interviews/_doi.#{i}.html+#{Project.name.to_s}"
-            doi_contents[i] = render_to_string(template: template, layout: false)
-          end
+          locales = Project.available_locales.reject{|locale| locale == 'alias'}
+          doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
           {
             archive_id: params[:id],
             data_type: 'interviews',
@@ -207,4 +225,30 @@ class InterviewsController < ApplicationController
     update_speakers_params[:speakers].to_h
   end
 
+  def doi_json(archive_id)
+    {
+      "data": {
+        "type": "dois",
+        "attributes": {
+          "doi": "10.5072/#{archive_id}",
+          "event": "publish",
+          "url": "https://www.datacite.org",
+          "xml": Base64.encode64(doi_content(locale, Interview.find_by_archive_id(archive_id)))
+        },
+        "relationships": {
+          "client": {
+            "data": {
+              "type": "clients",
+              "id": "demo.datacite"
+            }
+          }
+        }
+      }
+    }#.to_json
+  end
+
+  def doi_content(locale, interview)
+    template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
+    render_to_string(template: template, locals: {interview: interview}, layout: false)
+  end
 end

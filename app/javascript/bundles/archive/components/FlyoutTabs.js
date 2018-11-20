@@ -17,6 +17,7 @@ import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import { t, admin } from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
+import ExportInterviewContainer from '../containers/ExportInterviewContainer';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -157,6 +158,9 @@ export default class FlyoutTabs extends React.Component {
                         <InterviewDataContainer
                             title={t(this.props, 'citation')}
                             content={<CitationInfoContainer/>}/>
+                        <InterviewDataContainer
+                            title={t(this.props, 'export')}
+                            content={<ExportInterviewContainer/>}/>
                     </div>
                 </TabPanel>
             );

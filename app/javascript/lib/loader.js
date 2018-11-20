@@ -93,7 +93,7 @@ var Loader = {
                     } 
                 } else {
                     if (typeof successCallback === "function") {
-                        dispatch(successCallback(JSON.parse(res.text)));
+                        dispatch(successCallback(json));
                     }
                 }
             }

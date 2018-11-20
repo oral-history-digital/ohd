@@ -6,7 +6,9 @@ import {
     TRANSCRIPT_TIME_CHANGE,
 
     SET_TAPE_AND_TIME,
-    SET_ACTUAL_SEGMENT
+    SET_ACTUAL_SEGMENT,
+
+    RECEIVE_MSG
 
     //UPDATE_INTERVIEW,
 } from '../constants/archiveConstants';
@@ -54,6 +56,10 @@ const interview = (state = initialState, action) => {
         case SET_ACTUAL_SEGMENT:
             return Object.assign({}, state, {
                 actualSegment: action.segment
+            })
+        case RECEIVE_MSG:
+            return Object.assign({}, state, {
+                msg: action.msg
             })
 
         default:
