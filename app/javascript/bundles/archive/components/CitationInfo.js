@@ -1,9 +1,6 @@
 import React from 'react';
 import { t, fullname, getInterviewee } from '../../../lib/utils';
-import {Link, hashHistory} from 'react-router-dom';
 import moment from 'moment';
-
-
 
 export default class CitationInfoInfo extends React.Component {
 
@@ -16,14 +13,12 @@ export default class CitationInfoInfo extends React.Component {
         )
     }
 
-
     project(){
         if (this.props.projectName && this.props.projectDomain){
             return `${t(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", ${this.props.archiveDomain}`;
         }
         return "";
     }
-
 
     render() {
         let citation = `${fullname(this.props, getInterviewee(this.props))},

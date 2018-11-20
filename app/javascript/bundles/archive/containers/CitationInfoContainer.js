@@ -10,8 +10,6 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         interview: interview,
-        people: state.data.people,
-        contributionTypes: state.archive.contributionTypes,
         project: state.archive.project,
         projectDoi: state.archive.projectDoi,
         projectName: state.archive.projectName,
