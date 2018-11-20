@@ -92,21 +92,35 @@ namespace :cache do
     end
   end
 
+  desc 'visit all registry_entries to fill up cache'
+  task :registry_entries => :environment do
+    RegistryEntry.all.each do |registry_entry|
+      p "*** Getting registry_entry #{registry_entry.id}"
+      uri = URI.parse("#{BASE_URL}/de/registry_entries/#{registry_entry.id}.json")
+      get uri
+    end
+  end
+
   desc 'cache all'
-  task :all => ['cache:start', 'cache:search', 'cache:name_searches', 'cache:interviews', 'cache:interview_data', 'cache:other_data', 'cache:interview_downloads', 'cache:locations'] do
+  task :all => [
+    'cache:start',
+    'cache:search',
+    'cache:name_searches',
+    'cache:interviews',
+    'cache:interview_data',
+    'cache:other_data',
+    'cache:interview_downloads',
+    'cache:locations',
+    'cache:registry_entries'
+  ] do
     puts 'cache complete.'
   end
 
   def get(uri)
-    #http = Net::HTTP.new(uri.host, uri.port)
-    #request = Net::HTTP::Get.new(uri.request_uri)
-    #request.basic_auth("chrgregor@googlemail.com", "******")
-    #response = http.request(request)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.read_timeout = 600
-    http.open_timeout = 600
-    response = http.start() {|http|
-      http.get(uri.path)
+    request = Net::HTTP::Get.new(uri)
+    request.basic_auth("chrgregor@googlemail.com", "bla4bla")
+    response = Net::HTTP.start(uri.hostname, uri.port) {|http|
+      http.request(request)
     }
     p "*** Got it #{response.code}"
   rescue StandardError => e
