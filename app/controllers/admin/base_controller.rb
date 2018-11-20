@@ -1,4 +1,4 @@
-class Admin::BaseController < BaseController
+class Admin::BaseController < ApplicationController
   #include ExceptionNotification::Notifiable
 
   before_action :authenticate_admin_account
