@@ -221,7 +221,11 @@ class Interview < ActiveRecord::Base
     #
     I18n.available_locales.each do |locale|
       text :"biography_#{locale}" do
-        interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
+        if interviewees.first
+          interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
+        else
+          ''
+        end
       end
     end
 
