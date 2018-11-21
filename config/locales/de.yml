@@ -62,6 +62,8 @@ de:
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
   download: 'Download'
+  export: 'Export'
+  export_doi: 'DOI'
   language_de: 'Deutsch'
   language_elde: 'Griechisch mit deutscher Übersetzung'
   language_eldeen: 'Griechisch mit deutscher Übersetzung'
