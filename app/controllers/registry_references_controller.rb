@@ -2,14 +2,8 @@ require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
 
-  PER_PAGE = 3000
-
-  #layout :check_for_iframe_render
-
-  #skip_before_action :authenticate_user_account!
-  #before_action :perform_search, only: :index
-
   def create
+    authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
 
     clear_cache(@registry_reference.ref_object)
@@ -43,6 +37,7 @@ class RegistryReferencesController < ApplicationController
 
   def update
     @registry_reference = RegistryReference.find params[:id]
+    authorize @registry_reference
     @registry_reference.update_attributes registry_reference_params
 
     clear_cache(@registry_reference.ref_object)
@@ -63,6 +58,7 @@ class RegistryReferencesController < ApplicationController
 
   def destroy 
     @registry_reference = RegistryReference.find(params[:id])
+    authorize @registry_reference
     ref_object = @registry_reference.ref_object 
     @registry_reference.destroy
 
@@ -116,6 +112,7 @@ class RegistryReferencesController < ApplicationController
   end
 
   def index
+    policy_scope RegistryReference
     @registry_references, extra_params = 
     if params[:registry_entry_id]
       [
