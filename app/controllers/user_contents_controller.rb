@@ -1,7 +1,7 @@
 class UserContentsController < ApplicationController
 
   def create
-    policy_scope(UserContent)
+    authorize(UserContent)
     @user_content = UserContent.new(user_content_params)
     @user_content.user_id = current_user_account.user.id
     @user_content.save
