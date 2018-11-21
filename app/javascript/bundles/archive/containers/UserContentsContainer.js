@@ -6,6 +6,7 @@ import { fetchData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return { 
         contents: state.data.user_contents,
+        status: state.data.statuses.user_contents.lastModified,
         locale: state.archive.locale,
     }
 }
