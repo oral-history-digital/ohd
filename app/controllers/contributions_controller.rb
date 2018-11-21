@@ -1,6 +1,7 @@
 class ContributionsController < ApplicationController
 
   def create
+    authorize Contribution
     @contribution = Contribution.create(contribution_params)
     clear_cache @contribution.interview
 
@@ -29,6 +30,7 @@ class ContributionsController < ApplicationController
 
   def destroy 
     @contribution = Contribution.find(params[:id])
+    authorize @contribution
     interview = @contribution.interview 
     @contribution.destroy
     clear_cache interview
