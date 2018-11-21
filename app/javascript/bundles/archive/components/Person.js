@@ -58,7 +58,7 @@ export default class Person extends React.Component {
     }
 
     render() {
-        if (this.props.contributions) {
+        if (this.props.contribution) {
             return (
                 <div>
                     <p>
