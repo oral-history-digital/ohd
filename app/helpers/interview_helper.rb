@@ -35,7 +35,7 @@ module InterviewHelper
         headings_hash[section_number] = {
             :title => segment_with_heading.mainheading(headings_locale),
             :item => player_item,
-            :timecode => segment_with_heading.raw_timecode.to_s,
+            :timecode => segment_with_heading.timecode.to_s,
             :pos => player_pos,
             :id => heading_id,
             :subheadings => []
@@ -46,7 +46,7 @@ module InterviewHelper
         headings_hash[section_number][:subheadings] << {
             :title => segment_with_heading.subheading(headings_locale),
             :item => player_item,
-            :timecode => segment_with_heading.raw_timecode.to_s,
+            :timecode => segment_with_heading.timecode.to_s,
             :pos => player_pos,
             :id => heading_id
         }

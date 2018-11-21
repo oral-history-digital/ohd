@@ -62,12 +62,12 @@
         <% space_above = 0 %>
         <%= render partial: "./latex/title", locals: {title: "#{I18n.t('tape', locale: @locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
       <% end %>
-      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
+      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if !segment.subheading.blank? %>
       \subsection{<%= latex_escape(segment.subheading(@lang)) %>}
-      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.raw_timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
+      <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
     <% end %>
 
     <% if segment.speaker_id != speaker_id && segment.speaking_person %>
