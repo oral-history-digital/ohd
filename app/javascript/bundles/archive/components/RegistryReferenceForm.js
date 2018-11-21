@@ -40,9 +40,14 @@ export default class RegistryReferenceForm extends React.Component {
 
     loadParentEntry() {
         if (
-            !this.props.registryEntriesStatus[this.props.parentEntryId] ||
-            (this.props.registryEntriesStatus[this.props.parentEntryId] &&
-            this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload')
+            (
+                this.props.parentEntryId && 
+                !this.props.registryEntriesStatus[this.props.parentEntryId]
+            ) ||
+            (
+                this.props.registryEntriesStatus[this.props.parentEntryId] &&
+                this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload'
+            )
         ) {
             this.props.fetchData('registry_entries', this.props.parentEntryId);
         }
