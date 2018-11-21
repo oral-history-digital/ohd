@@ -2,6 +2,7 @@ class PhotosController < ApplicationController
   require 'open-uri'
 
   def create
+    authorize Photo
     data = params[:photo].delete(:data)
     @photo = Photo.create(photo_params)
     @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
@@ -24,6 +25,7 @@ class PhotosController < ApplicationController
 
   def update
     @photo = Photo.find(params[:id])
+    authorize @photo
     @photo.update_attributes(photo_params)
     WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
     clear_cache @photo.interview
@@ -43,6 +45,7 @@ class PhotosController < ApplicationController
 
   def destroy 
     @photo = Photo.find(params[:id])
+    authorize @photo
     @photo.destroy
     clear_cache @photo.interview
 
