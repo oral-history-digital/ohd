@@ -40,7 +40,8 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let activeSegmentElement = document.getElementById(`segment_${activeSegment(this.props.transcriptTime, this.props).id}`);
+            let actualSegment = activeSegment(this.props.transcriptTime, this.props);
+            let activeSegmentElement = document.getElementById(`segment_${actualSegment && actualSegment.id}`);
             if (activeSegmentElement) {
                 let hight = activeSegmentElement.offsetTop;
                 if (hight > 450)
