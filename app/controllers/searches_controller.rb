@@ -7,7 +7,7 @@ class SearchesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def facets
-    json = Rails.cache.fetch "search-facets-#{RegistryEntry.maximum(:updated_at)}" do
+    json = Rails.cache.fetch "#{Project.project_id}-search-facets-#{RegistryEntry.maximum(:updated_at)}" do
       {facets: Project.search_facets_hash}.to_json
     end
 
@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result| 
-            Rails.cache.fetch("registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
+            Rails.cache.fetch("#{Project.project_id}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
               registry_entry = ::RegistryEntrySerializer.new(result).as_json 
               ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
               {registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb}
@@ -63,7 +63,7 @@ class SearchesController < ApplicationController
 
   def found_instances(model, search)
     search.hits.select{|h| h.instance}.map do |hit| 
-      Rails.cache.fetch("#{model.name.underscore}-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
+      Rails.cache.fetch("#{Project.project_id}-#{model.name.underscore}-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
         instance = "#{model.name}#{model == Segment ? 'Hit' : ''}Serializer".constantize.new(hit.instance).as_json 
         instance[:text] = highlighted_text(hit)
         instance
@@ -175,7 +175,7 @@ class SearchesController < ApplicationController
     #   mem[interview.archive_id] = {
     #     total: segsearch.total,
     #     segments: segsearch.hits.map do |hit| 
-    #       # Rails.cache.fetch("segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
+    #       # Rails.cache.fetch("#{Project.project_id}-segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
     #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
     #       segment[:transcripts] = highlighted_transcripts(hit, interview)
     #       segment

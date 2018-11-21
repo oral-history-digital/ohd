@@ -37,7 +37,7 @@ class SegmentsController < ApplicationController
 
     clear_cache @segment
     if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
-      Rails.cache.delete "headings-#{@segment.id}-#{@segment.updated_at}"
+      Rails.cache.delete "#{Project.project_id}-headings-#{@segment.id}-#{@segment.updated_at}"
     end
 
     respond_to do |format|
@@ -61,7 +61,7 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        json = #Rails.cache.fetch "interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "#{Project.project_id}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.tapes.inject({}) do |tapes, t|
               segments_for_tape = Segment.
@@ -70,7 +70,7 @@ class SegmentsController < ApplicationController
                 where(tape_id: t.id).
                 where.not(timecode: '00:00:00.000')#.first(20)
 
-              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
+              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{Project.project_id}-segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
               tapes
             end,
             nested_data_type: 'segments',
