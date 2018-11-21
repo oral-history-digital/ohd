@@ -225,7 +225,7 @@ class Segment < ActiveRecord::Base
     # TODO: rm strip
     raw_segment_text = text(projectified(lang))
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
-    "#{Time.at(start_time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(self.next.start_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
+    "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(self.next.time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
 
   def speaker_changed(raw_segment_text = false)

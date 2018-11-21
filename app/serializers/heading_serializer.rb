@@ -8,7 +8,6 @@ class HeadingSerializer < ActiveModel::Serializer
              :mainheading,
              :subheading,
              :last_heading,
-             :start_time,
              :media_id,
              :timecode
 

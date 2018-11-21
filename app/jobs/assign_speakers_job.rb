@@ -9,8 +9,8 @@ class AssignSpeakersJob < ApplicationJob
     interview.segments.each do |segment|
       initials = segment.initials(orig_lang) unless segment.initials(orig_lang).blank?
       if initials.length > 1
-        start_time = segment.start_time
-        end_time = segment.next && segment.next.start_time
+        start_time = segment.time
+        end_time = segment.next && segment.next.time
         duration = end_time ? end_time - start_time : 7.seconds
         orig_text_length = segment.text(orig_lang).length
         duration_per_char = duration / orig_text_length

@@ -4,8 +4,7 @@ class LastHeadingSerializer < ActiveModel::Serializer
   attributes :id,
              :interview_id,
              :time,
-             :last_heading,
-             :start_time
+             :last_heading
 
   belongs_to :speaking_person, serializer: PersonSerializer
 
