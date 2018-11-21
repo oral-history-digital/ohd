@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export default class InterviewData extends React.Component {
 
     constructor(props) {
@@ -16,10 +15,7 @@ export default class InterviewData extends React.Component {
         this.setState({['open']: !this.state.open});
     }
 
-
-
     render() {
-
         let headerCss =   this.state.open ? "accordion active" : 'accordion';
         let panelCss =   this.state.open ? "panel open" : 'panel';
 
