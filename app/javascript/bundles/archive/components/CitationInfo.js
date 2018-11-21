@@ -21,20 +21,24 @@ export default class CitationInfoInfo extends React.Component {
     }
 
     render() {
-        let citation = `${fullname(this.props, getInterviewee(this.props))},
-        ${t(this.props, 'interview')} 
-        ${this.props.interview.archive_id},  
-        ${this.props.interview.interview_date},
-        ${this.project()},
-        ${t(this.props, 'doi')}: ${this.props.projectDoi + this.props.interview.archive_id}, 
-        (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
+        if (this.props.interview) {
+            let citation = `${fullname(this.props, getInterviewee(this.props))},
+            ${t(this.props, 'interview')} 
+            ${this.props.interview.archive_id},  
+            ${this.props.interview.interview_date},
+            ${this.project()},
+            ${t(this.props, 'doi')}: ${this.props.projectDoi + this.props.interview.archive_id}, 
+            (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
 
-        return (
-            <div>
-                {this.content(t(this.props, 'citation'), citation)}
-                {this.content(t(this.props, 'doi'), this.props.projectDoi + this.props.interview.archive_id)}
-            </div>
-        );
+            return (
+                <div>
+                    {this.content(t(this.props, 'citation'), citation)}
+                    {this.content(t(this.props, 'doi'), this.props.projectDoi + this.props.interview.archive_id)}
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
 
