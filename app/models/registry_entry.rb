@@ -936,7 +936,9 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def parent_id=(pid)
-    parents << RegistryEntry.find(pid)
+    unless parent_ids.include? pid.to_i
+      parents << RegistryEntry.find(pid)
+    end
   end
 
   def localized_hash
