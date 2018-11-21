@@ -44,7 +44,6 @@ export default class InterviewSearch extends React.Component {
     renderResults(model) {
         if(this.props[`found${pluralize(model)}`]) {
             let active = false;
-            active: parseInt(data.id) === activeSegmentId(this.props)
             return this.props[`found${pluralize(model)}`].map( (data, index) => {
                 if (model === 'Segment') {
                     if (data.time <= this.props.transcriptTime + 10 && data.time >= this.props.transcriptTime - 5) {
