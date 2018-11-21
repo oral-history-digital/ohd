@@ -76,7 +76,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                                     refObject={this.props.interview} 
                                     refObjectType='Interview' 
                                     interview={this.props.interview} 
-                                    registryEntryParentId={this.props.parentEntryId}
+                                    parentEntryId={this.props.parentEntryId}
                                     locale={this.props.locale}
                                     goDeeper={true}
                                     //  allowed values: true, false, 'hidden'
