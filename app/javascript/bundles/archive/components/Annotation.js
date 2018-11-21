@@ -39,7 +39,7 @@ export default class Annotation extends React.Component {
                     title: t(this.props, 'edit.annotation.delete'),
                     content: (
                         <div>
-                            <p>{this.props.annotation.text[this.props.locale]}</p>
+                            <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}} />
                             <div className='any-button' onClick={() => this.destroy()}>
                                 {t(this.props, 'edit.annotation.delete')}
                             </div>

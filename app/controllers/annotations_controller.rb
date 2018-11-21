@@ -3,7 +3,7 @@ class AnnotationsController < ApplicationController
   layout 'responsive'
 
   def create
-    policy_scope(Annotation)
+    authorize Annotation
     @annotation = Annotation.new(annotation_params)
     @annotation.author_id = current_user_account.user.id
     @annotation.save
