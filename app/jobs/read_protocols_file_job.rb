@@ -26,7 +26,7 @@ class ReadProtocolsFileJob < ApplicationJob
       interview = Interview.find_by_archive_id(name_parts.first)
       locale = ISO_639.find(name_parts.last).send(Project.alpha)
       translation = interview.translations.find_or_create_by(locale: locale)
-      translation.update_attribute :observations, txt
+      translation.update_attribute :observations, text
 
       File.delete(rtf) if File.exist?(rtf)
     end
