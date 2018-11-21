@@ -21,4 +21,8 @@ class InterviewPolicy < ApplicationPolicy
     show?
   end
 
+  def update_speakers?
+    show?
+  end
+
 end

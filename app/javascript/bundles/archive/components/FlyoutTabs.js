@@ -171,7 +171,7 @@ export default class FlyoutTabs extends React.Component {
 
     assignSpeakersForm() {
         if (admin(this.props)) {
-            <InterviewDataContainer
+            return <InterviewDataContainer
                 title={t(this.props, 'assign_speakers')}
                 content={<AssignSpeakersFormContainer interview={this.props.interview} />}
             />
