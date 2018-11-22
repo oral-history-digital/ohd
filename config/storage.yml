@@ -1,6 +1,6 @@
 local:
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  root: /mnt/cedis_stream04_da/zwar/gallery
  
 test:
   service: Disk
