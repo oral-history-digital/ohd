@@ -71,7 +71,7 @@ class BiographicalEntriesController < ApplicationController
   end
 
   def clear_biographical_entry_cache id, updated_at
-    Rails.cache.delete "biographical_entry-#{id}-#{updated_at}"
+    Rails.cache.delete "#{Project.project_id}-biographical_entry-#{id}-#{updated_at}"
   end
 
 end

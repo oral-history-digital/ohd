@@ -31,7 +31,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
+          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
         }
       end
     end
@@ -51,7 +51,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
+          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
         }
       end
     end
@@ -81,7 +81,7 @@ class RegistryEntriesController < ApplicationController
             ]
           end
 
-        json = Rails.cache.fetch "#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
           registry_entries = registry_entries.includes(registry_names: :translations)#.
           {
             data: registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},
@@ -119,7 +119,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: parent.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
+          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
         }, status: :ok 
       end
     end

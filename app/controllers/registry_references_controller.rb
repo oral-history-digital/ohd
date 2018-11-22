@@ -7,7 +7,7 @@ class RegistryReferencesController < ApplicationController
     @registry_reference = RegistryReference.create(registry_reference_params)
 
     clear_cache(@registry_reference.ref_object)
-    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.json do
@@ -41,7 +41,7 @@ class RegistryReferencesController < ApplicationController
     @registry_reference.update_attributes registry_reference_params
 
     clear_cache(@registry_reference.ref_object)
-    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.json do
@@ -63,7 +63,7 @@ class RegistryReferencesController < ApplicationController
     @registry_reference.destroy
 
     clear_cache ref_object
-    Rails.cache.delete "interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
 
     respond_to do |format|
       format.html do
@@ -99,7 +99,7 @@ class RegistryReferencesController < ApplicationController
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
-        json = Rails.cache.fetch "interview-locations-#{interview.id}-#{interview.updated_at}" do
+        json = Rails.cache.fetch "#{Project.project_id}-interview-locations-#{interview.id}-#{interview.updated_at}" do
           segment_ref_locations = RegistryReference.for_interview(interview.id).with_locations.first(100)
           {
             archive_id: params[:archive_id],
@@ -127,7 +127,7 @@ class RegistryReferencesController < ApplicationController
       format.html { render 'react/app' }
       format.json do
         json = {
-          data: @registry_references.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}; mem},
+          data: @registry_references.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{Project.project_id}-registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}; mem},
           data_type: 'registry_references',
           extra_params: extra_params
         }.to_json

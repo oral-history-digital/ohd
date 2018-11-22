@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
       data: ::InterviewSerializer.new(interview).as_json,
     }
     json.update(msg: msg) if msg
-    Rails.cache.fetch("interview-#{interview.archive_id}-#{interview.updated_at}"){ json }
+    Rails.cache.fetch("#{Project.project_id}-interview-#{interview.archive_id}-#{interview.updated_at}"){ json }
   end
 
   def cache_segment(segment, msg=nil)
@@ -70,11 +70,11 @@ class ApplicationController < ActionController::Base
       data: ::SegmentSerializer.new(segment).as_json,
     }
     json.update(msg: msg) if msg
-    Rails.cache.fetch("segment-#{segment.id}-#{segment.updated_at}"){ json }
+    Rails.cache.fetch("#{Project.project_id}-segment-#{segment.id}-#{segment.updated_at}"){ json }
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{ref_object.class.name.underscore}-#{ref_object.identifier}-#{ref_object.updated_at}"
+    Rails.cache.delete "#{Project.project_id}-#{ref_object.class.name.underscore}-#{ref_object.identifier}-#{ref_object.updated_at}"
   end
 
 end

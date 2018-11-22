@@ -18,7 +18,7 @@ class HomeController < ApplicationController
       format.json do
         # include timestamp in cache-key if sth. of the static content changed!!!
         #
-        json = Rails.cache.fetch('static-content-20.6.2018') do 
+        json = Rails.cache.fetch("#{Project.project_id}-static-content-20.6.2018") do 
           locales = Project.available_locales.reject{|i| i == 'alias'}
           home_content = {}
           locales.each do |i|

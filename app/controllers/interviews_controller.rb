@@ -77,7 +77,7 @@ class InterviewsController < ApplicationController
         render json: cache_interview(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
+        vtt = Rails.cache.fetch "#{Project.project_id}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
           @interview.to_vtt(params[:lang], params[:tape_number])
         end
         render plain: vtt
@@ -123,7 +123,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
+        json = Rails.cache.fetch "#{Project.project_id}-interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
           locales = Project.available_locales.reject{|locale| locale == 'alias'}
           doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
           {
@@ -143,12 +143,12 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.project_id}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           segments = Segment.
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
               for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
           {
-            data: segments.with_heading.map {|s| Rails.cache.fetch("headings-#{s.id}-#{s.updated_at}"){::HeadingSerializer.new(s).as_json}},
+            data: segments.with_heading.map {|s| Rails.cache.fetch("#{Project.project_id}-headings-#{s.id}-#{s.updated_at}"){::HeadingSerializer.new(s).as_json}},
             nested_data_type: 'headings',
             data_type: 'interviews',
             archive_id: params[:id]
@@ -164,7 +164,7 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-initials-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.project_id}-interview-initials-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.initials,
             nested_data_type: 'initials',
@@ -182,7 +182,7 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.project_id}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(nil),
