@@ -24,7 +24,7 @@
     "leaflet": "^1.0.3",
     "leaflet.markercluster": "^1.2.0",
     "moment": "^2.19.3",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.11.0",
     "path-complete-extname": "^0.1.0",
     "postcss-loader": "^2.0.6",
     "postcss-smart-import": "^0.7.4",
@@ -56,9 +56,9 @@
     "superagent-no-cache": "^0.1.1",
     "webpack": "^3.0.0",
     "webpack-manifest-plugin": "^1.1.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.4"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.5.0"
+    "webpack-dev-server": "^2.11.3"
   }
 }
