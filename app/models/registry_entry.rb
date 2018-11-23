@@ -946,11 +946,15 @@ class RegistryEntry < ActiveRecord::Base
       #mem[locale] = descriptor(projectified(locale))
       #mem
     #end
-    registry_names.first.translations.inject({}) do |mem, name|
-      if Project.available_locales.include?( name.locale[0..1] )
-        mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
+    if registry_names.first
+      registry_names.first.translations.inject({}) do |mem, name|
+        if Project.available_locales.include?( name.locale[0..1] )
+          mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
+        end
+        mem
       end
-      mem
+    else
+      {}
     end
   end
 

@@ -5,6 +5,10 @@ class InterviewPolicy < ApplicationPolicy
     end
   end
 
+  def dois
+    user.admin?
+  end
+
   def doi_contents?
     show?
   end
