@@ -20,7 +20,7 @@ class BiographicalEntry < ApplicationRecord
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      person.interviews.map{|i| i.archive_id }
+      person ? person.interviews.map{|i| i.archive_id } : ''
     end
     string :start_date, :stored => true
     (Project.available_locales + [:orig]).each do |locale|
