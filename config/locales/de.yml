@@ -479,7 +479,7 @@ de:
         liberation_date: 'Datum der Befreiung'
         return_locations: 'Wohnorte ab 1945'
         return_date: 'Datum der Rückkehr'
-        home_locations: 'Wohnort (Land)'
+        home_locations: 'Wohnort'
         duration: 'Art und Länge des Interviews'
         interview_date: 'geführt am'
         interviewers: 'Interviewführung'
