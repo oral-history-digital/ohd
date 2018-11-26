@@ -16,7 +16,7 @@ export default class Segment extends React.Component {
     }
 
     heading() {
-        if (this.props.data.last_heading[this.props.locale]) {
+        if (this.props.data.last_heading && this.props.data.last_heading[this.props.locale]) {
             return (
                 <span>
                 {t(this.props, 'in')}: "{this.props.data.last_heading[this.props.locale]}"

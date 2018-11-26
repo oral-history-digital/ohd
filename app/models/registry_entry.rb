@@ -942,20 +942,20 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def localized_hash
-    #I18n.available_locales.inject({}) do |mem, locale|
-      #mem[locale] = descriptor(projectified(locale))
-      #mem
-    #end
-    if registry_names.first
-      registry_names.first.translations.inject({}) do |mem, name|
-        if Project.available_locales.include?( name.locale[0..1] )
-          mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
-        end
-        mem
-      end
-    else
-      {}
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = descriptor(projectified(locale))
+      mem
     end
+    #if registry_names.first
+      #registry_names.first.translations.inject({}) do |mem, name|
+        #if Project.available_locales.include?( name.locale[0..1] )
+          #mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
+        #end
+        #mem
+      #end
+    #else
+      #{}
+    #end
   end
 
   def localized_notes_hash
