@@ -10,7 +10,7 @@ module IsoHelpers
 
   def projectified(locale)
     code = ISO_639.find(locale.to_s)
-    code.send(Project.alpha)
+    code.send(Project.alpha).to_sym
   end
 
   class_methods do

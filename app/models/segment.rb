@@ -160,6 +160,15 @@ class Segment < ActiveRecord::Base
     text(ISO_639.find(locale).send(Project.alpha))
   end
 
+  def transcripts
+    # TODO: rm Nokogiri parser after segment sanitation
+    translations.inject({}) do |mem, translation|
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "") : ''
+      #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
+      mem
+    end
+  end
+
   def orig_lang
     interview.language.first_code
   end

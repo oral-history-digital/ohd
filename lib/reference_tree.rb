@@ -20,11 +20,10 @@ class ReferenceTree
   def leafe(segment)
     {
       type: 'leafe',
-      start_time: segment.start_time,
       time: Time.parse(segment.timecode).seconds_since_midnight,
       timecode: segment.timecode,
       tape_nbr: segment.tape.number,
-      transcripts: segment.transcripts
+      text: segment.transcripts
     }
   end
 
