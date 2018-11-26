@@ -48,7 +48,7 @@ export default class ArchiveSearch extends React.Component {
                 return (
                     this.props.foundInterviews.map((interview, index) => {
                         return <InterviewPreviewContainer
-                            interview={interview.data}
+                            interview={interview}
                             key={"interview-" + interview.archive_id}
                         />;
                     })
