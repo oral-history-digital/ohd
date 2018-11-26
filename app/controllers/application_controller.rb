@@ -53,24 +53,32 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def cache_interview(interview, msg=nil)
-    json = {
-      archive_id: interview.archive_id,
-      data_type: 'interviews',
-      data: ::InterviewSerializer.new(interview).as_json,
-    }
-    json.update(msg: msg) if msg
-    Rails.cache.fetch("#{Project.project_id}-interview-#{interview.archive_id}-#{interview.updated_at}"){ json }
+  #
+  # serialized compiled cache of an instance
+  #
+  def cache_single(data, name=nil)
+    Rails.cache.fetch("#{Project.project_id}-#{data.class.name.underscore}-#{data.id}-#{data.updated_at}") do
+      raw = "#{name || data.class.name}Serializer".constantize.new(data)
+      # compile raw-json to string first (making all db-requests!!) using to_json
+      # without to_json the lazy serializers wouldn`t do the work to really request the db
+      #
+      # then parse it back to json
+      #
+      JSON.parse(raw.to_json)
+    end
   end
 
-  def cache_segment(segment, msg=nil)
+  #
+  # single instance structure for data-reducer
+  #
+  def data_json(data, msg=nil)
     json = {
-      id: segment.id,
-      data_type: 'segments',
-      data: ::SegmentSerializer.new(segment).as_json,
+      "#{data.identifier_method}": data.identifier,
+      data_type: data.class.name.underscore.pluralize,
+      data: cache_single(data)
     }
     json.update(msg: msg) if msg
-    Rails.cache.fetch("#{Project.project_id}-segment-#{segment.id}-#{segment.updated_at}"){ json }
+    json
   end
 
   def clear_cache(ref_object)

@@ -36,9 +36,9 @@ class SegmentsController < ApplicationController
     @segment.update_attributes(segment_params)
 
     clear_cache @segment
-    if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
-      Rails.cache.delete "#{Project.project_id}-headings-#{@segment.id}-#{@segment.updated_at}"
-    end
+    #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
+      #Rails.cache.delete "#{Project.project_id}-headings-#{@segment.id}-#{@segment.updated_at}"
+    #end
 
     respond_to do |format|
       format.json do
@@ -48,7 +48,7 @@ class SegmentsController < ApplicationController
           nested_data_type: 'segments',
           nested_id: @segment.id,
           extra_id: @segment.tape.number,
-          data: ::SegmentSerializer.new(@segment).as_json,
+          data: cache_single(@segment),
           reload_data_type: 'headings',
           reload_id: "for_interviews_#{@segment.interview.archive_id}"
         }
@@ -61,7 +61,7 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        json = #Rails.cache.fetch "#{Project.project_id}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch("#{Project.project_id}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           {
             data: @interview.tapes.inject({}) do |tapes, t|
               segments_for_tape = Segment.
@@ -70,16 +70,15 @@ class SegmentsController < ApplicationController
                 where(tape_id: t.id).
                 where.not(timecode: '00:00:00.000')#.first(20)
 
-              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{Project.project_id}-segment-#{s.id}-#{s.updated_at}"){::SegmentSerializer.new(s).as_json}; mem}
+              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
               tapes
             end,
             nested_data_type: 'segments',
             data_type: 'interviews',
             archive_id: params[:interview_id]
-        }.to_json
-          #}
-        #end.to_json
-        render plain: json
+          }
+        end
+        render json: json
       end
     end
   end
@@ -102,7 +101,7 @@ class SegmentsController < ApplicationController
     authorize @segment
     respond_to do |format|
       format.json do
-        render json: cache_segment(@segment)
+        render json: data_json(@segment)
       end
     end
   end

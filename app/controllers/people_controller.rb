@@ -47,17 +47,18 @@ class PeopleController < ApplicationController
 
       format.json do
         json = Rails.cache.fetch "#{Project.project_id}-people-#{extra_params ? extra_params : 'all'}-#{Person.maximum(:updated_at)}" do
-          people = params[:contributors_for_interview] ?
-            Interview.find(params[:contributors_for_interview]).contributors :
-            Person.all
-          people = people.includes(:translations, :histories, :biographical_entries, :registry_references)
+          people = (
+            params[:contributors_for_interview] ?
+              Interview.find(params[:contributors_for_interview]).contributors :
+              Person.all
+          ).includes(:translations, :histories, :biographical_entries, :registry_references)
           {
-            data: people.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{Project.project_id}-person-#{s.id}-#{s.updated_at}"){::PersonSerializer.new(s).as_json}; mem},
+            data: people.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'people',
             extra_params: extra_params
           }
-        end.to_json
-        render plain: json
+        end
+        render json: json
       end
     end
   end

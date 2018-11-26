@@ -30,7 +30,7 @@ class SearchesController < ApplicationController
         render :template => '/react/app.html'
       end
       format.json do
-        json = {
+        render json: {
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result| 
@@ -41,9 +41,7 @@ class SearchesController < ApplicationController
             end
           end,
           fulltext: params[:fulltext],
-        }.to_json
-
-        render plain: json
+        }
       end
     end
   end
@@ -63,11 +61,9 @@ class SearchesController < ApplicationController
 
   def found_instances(model, search)
     search.hits.select{|h| h.instance}.map do |hit| 
-      Rails.cache.fetch("#{Project.project_id}-#{model.name.underscore}-#{hit.instance.id}-#{hit.instance.updated_at}-#{params[:fulltext]}") do 
-        instance = "#{model.name}#{model == Segment ? 'Hit' : ''}Serializer".constantize.new(hit.instance).as_json 
-        instance[:text] = highlighted_text(hit)
-        instance
-      end
+      instance = cache_single(hit.instance, model == Segment ? 'SegmentHit' : nil)
+      instance[:text] = highlighted_text(hit)
+      instance
     end
   end
 
@@ -105,36 +101,42 @@ class SearchesController < ApplicationController
 
   # https://github.com/sunspot/sunspot#stored-fields
   def all_interviews_titles
-    search = Interview.search do
-      adjust_solr_params do |params|
-        params[:rows] = Interview.all.size
+    Rails.cache.fetch("#{Project.project_id}-all_interviews_titles") do
+      search = Interview.search do
+        adjust_solr_params do |params|
+          params[:rows] = Interview.all.size
+        end
       end
+      search.hits.map{ |hit| eval hit.stored(:title) }
+      # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
+      #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
+      #    ...]
     end
-    search.hits.map{ |hit| eval hit.stored(:title) }
-    # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
-    #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
-    #    ...]
   end
 
   # hagen only
   # in order to being able to get a dropdown list in search field
   def all_interviews_pseudonyms
-    search = Interview.search do
-      adjust_solr_params do |params|
-        params[:rows] = Interview.all.size
+    Rails.cache.fetch("#{Project.project_id}-all_interviews_pseudonyms") do
+      search = Interview.search do
+        adjust_solr_params do |params|
+          params[:rows] = Interview.all.size
+        end
       end
+      ps = search.hits.map{ |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)}
+      ps.compact
     end
-    ps = search.hits.map{ |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)}
-    ps - [nil]
   end
 
   def all_interviews_places_of_birth
-    search = Interview.search do
-      adjust_solr_params do |params|
-        params[:rows] = Interview.all.size
+    Rails.cache.fetch("#{Project.project_id}-all_interviews_places_of_birth") do
+      search = Interview.search do
+        adjust_solr_params do |params|
+          params[:rows] = Interview.all.size
+        end
       end
+      search.hits.map {|hit| hit.stored(:place_of_birth) }
     end
-    search.hits.map {|hit| hit.stored(:place_of_birth) }
   end
 
   def archive
@@ -197,7 +199,7 @@ class SearchesController < ApplicationController
             all_interviews_count: Interview.count,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
-            interviews: search.results.map{|i| cache_interview(i)},
+            interviews: search.results.map{|i| cache_single(i)},
             # found_segments_for_interviews: number_of_found_segments,
             # found_segments_for_interviews: found_segments,
             facets: Project.updated_search_facets(search),

@@ -21,7 +21,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: cache_interview(@interview, 'processed')
+        render json: data_json(@interview, 'created')
       end
     end
   end
@@ -42,13 +42,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {
-          archive_id: @interview.archive_id,
-          data_type: 'interviews',
-          data: ::InterviewSerializer.new(@interview).as_json,
-          #reload_data_type: 'segments',
-          #reload_id: "for_interviews_#{@interview.archive_id}"
-        }
+        render json: data_json(@interview, 'updated')
       end
     end
   end
@@ -74,7 +68,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.json do
-        render json: cache_interview(@interview)
+        render json: data_json(@interview)
       end
       format.vtt do
         vtt = Rails.cache.fetch "#{Project.project_id}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do

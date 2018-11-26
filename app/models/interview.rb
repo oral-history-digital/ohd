@@ -259,7 +259,7 @@ class Interview < ActiveRecord::Base
   end
 
   def identifier_method
-    'id'
+    'archive_id'
   end
 
   # referenced by archive_id

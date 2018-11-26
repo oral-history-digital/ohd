@@ -14,7 +14,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: ::RegistryEntrySerializer.new(@registry_entry).as_json,
+          data: cache_single(@registry_entry),
           reload_data_type: 'registry_entries',
           reload_id: @registry_entry.parents.first.id
         }
@@ -31,7 +31,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
+          data: cache_single(@registry_entry),
         }
       end
     end
@@ -51,7 +51,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{@registry_entry.id}-#{@registry_entry.updated_at}"){::RegistryEntrySerializer.new(@registry_entry).as_json},
+          data: cache_single(@registry_entry),
         }
       end
     end
@@ -82,9 +82,9 @@ class RegistryEntriesController < ApplicationController
           end
 
         json = Rails.cache.fetch "#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
-          registry_entries = registry_entries.includes(registry_names: :translations)#.
+          registry_entries = registry_entries.includes(registry_names: :translations)
           {
-            data: registry_entries.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("registry_entry-#{s.id}-#{s.updated_at}"){::RegistryEntrySerializer.new(s).as_json}; mem},
+            data: registry_entries.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'registry_entries',
             extra_params: extra_params
           }
