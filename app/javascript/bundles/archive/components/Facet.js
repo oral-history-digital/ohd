@@ -88,10 +88,17 @@ export default class Facet extends React.Component {
         return this.props.data.subfacets[subfacetId].name[this.props.locale];
     }
 
+    priority(subfacetId) {
+        return this.props.data.subfacets[subfacetId].priority;
+    }
+
+    // sort first alphabetically, then put prioritized down in the list (like "others"/"sonstige")
     sortedSubfacets() {
         let _this = this;
         return Object.keys(this.props.data.subfacets).sort(function (a, b) {
             return (_this.localDescriptor(a) > _this.localDescriptor(b)) ? 1 : ((_this.localDescriptor(b) > _this.localDescriptor(a)) ? -1 : 0);
+        }).sort(function (a, b) {
+            return (_this.priority(a) > _this.priority(b)) ? 1 : ((_this.priority(b) > _this.priority(a)) ? -1 : 0);
         });
     }
 
