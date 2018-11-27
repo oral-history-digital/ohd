@@ -87,11 +87,11 @@ export default class RegistryReferenceTypeSearchFacets extends React.Component {
 
     render() {
         return (
-            <div>
+            <p>
                 <h4>{this.props.referenceType.name[this.props.locale]}</h4>
                 {this.registryEntries()}
                 {this.addRegistryReference()}
-            </div>
+            </p>
         )
     }
 }

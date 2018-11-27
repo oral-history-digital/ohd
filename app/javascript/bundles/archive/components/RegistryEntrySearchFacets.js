@@ -95,11 +95,11 @@ export default class RegistryEntrySearchFacets extends React.Component {
     render() {
         if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId]) {
             return (
-                <div>
+                <p>
                     <h4>{this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}</h4>
                     {this.registryEntries()}
                     {this.addRegistryReference()}
-                </div>
+                </p>
             )
         } else {
             return null;
