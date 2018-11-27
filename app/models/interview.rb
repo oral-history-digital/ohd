@@ -277,8 +277,8 @@ class Interview < ActiveRecord::Base
 
   def place_of_interview
     if registry_references.length > 0
-      if registry_references.where(registry_reference_type_id: 3).length > 0
-        registry_references.where(registry_reference_type_id: 3).first.registry_entry
+      if registry_references.where(registry_reference_type_id: 8).length > 0
+        registry_references.where(registry_reference_type_id: 8).first.registry_entry
       end
     end
   end
