@@ -39,7 +39,7 @@ export default class InterviewContributors extends React.Component {
                     //admin(this.props))
                 //)
                 if (contribution !== 'fetched') {
-                    contributors.push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
+                    (contribution.contribution_type !== 'interviewee') && contributors.push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
                 }
             }
         } 
