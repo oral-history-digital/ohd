@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import RegistryReferenceTypeSearchFacets from '../components/RegistryReferenceTypeSearchFacets';
+import PersonPropertiesRegistryReferenceType from '../components/PersonPropertiesRegistryReferenceType';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
@@ -20,4 +20,4 @@ const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryReferenceTypeSearchFacets);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonPropertiesRegistryReferenceType);

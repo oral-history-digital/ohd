@@ -4,7 +4,7 @@ import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormC
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { t, admin } from '../../../lib/utils';
 
-export default class RegistryReferenceTypeSearchFacets extends React.Component {
+export default class PersonPropertiesRegistryReferenceType extends React.Component {
 
     constructor(props, context) {
         super(props, context);

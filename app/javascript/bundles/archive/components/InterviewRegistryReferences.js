@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
-import RegistryReferenceTypeSearchFacetsContainer from '../containers/RegistryReferenceTypeSearchFacetsContainer';
+import PersonPropertiesRegistryReferenceTypeContainer from '../containers/PersonPropertiesRegistryReferenceTypeContainer';
 
 export default class InterviewRegistryReferences extends React.Component {
 
@@ -15,11 +15,11 @@ export default class InterviewRegistryReferences extends React.Component {
                 />
             );
         }
-        for (var r in this.props.registryReferenceTypeSearchFacets) {
+        for (var r in this.props.personPropertiesRegistryReferenceType) {
             facets.push(
-                <RegistryReferenceTypeSearchFacetsContainer
+                <PersonPropertiesRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    referenceType={this.props.registryReferenceTypeSearchFacets[r]} 
+                    referenceType={this.props.personPropertiesRegistryReferenceType[r]} 
                     interview={this.props.interview}
                 />
             );
@@ -28,7 +28,7 @@ export default class InterviewRegistryReferences extends React.Component {
     }
 
     registryReferences() {
-        if (this.props.registryEntrySearchFacetIds || this.props.registryReferenceTypeSearchFacets) {
+        if (this.props.registryEntrySearchFacetIds || this.props.personPropertiesRegistryReferenceType) {
             return (
                 <div>
                     {this.searchFacets()}

@@ -52,9 +52,7 @@ class RegistryReferenceTypesController < ApplicationController
     policy_scope RegistryReferenceType
     # @registry_reference_types = RegistryReferenceType.all
 
-    # Vorschlag: es werden nur Referenztypen zurückgegeben die Teil der registry_reference_type_search_facets sind 
-    # (Könnte später auf Teil der person_properties_with_source_registry_reference_type geändert werden):
-    @registry_reference_types = RegistryReferenceType.where(code: Project.registry_reference_type_search_facets.map{|f| f['id'] })
+    @registry_reference_types = RegistryReferenceType.where(code: Project.person_properties_registry_reference_type.map{|f| f['id'] })
 
     respond_to do |format|
       format.json do

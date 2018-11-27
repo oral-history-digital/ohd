@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         interview: getInterview(state),
         registryEntrySearchFacetIds: state.archive.registryEntrySearchFacetIds,
-        registryReferenceTypeSearchFacets: state.archive.registryReferenceTypeSearchFacets,
+        personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,
         account: state.account,
     }
 }
