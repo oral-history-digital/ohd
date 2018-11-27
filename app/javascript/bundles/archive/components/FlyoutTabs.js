@@ -139,28 +139,26 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-sub-tabs-container flyout-video'>
                         <InterviewDataContainer
                             title={t(this.props, 'person_info')}
-                            content={<PersonDataContainer/>}/> 
+                            content={<div><PersonDataContainer/><InterviewRegistryReferencesContainer/></div>}/> 
                         <InterviewDataContainer
                             title={t(this.props, 'interview_info')}
-                            content={<InterviewInfoContainer/>}/>
-                        <InterviewDataContainer
-                            title={t(this.props, 'activerecord.models.contributions.other')}
-                            content={<InterviewContributorsContainer/>}/>
+                            content={<div><InterviewInfoContainer/><InterviewContributorsContainer/></div>}/>
                         {this.assignSpeakersForm()}
-                        <InterviewDataContainer
+                        {/* <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
-                            content={<InterviewRegistryReferencesContainer/>}/>
+                            content={<InterviewRegistryReferencesContainer/>}/> */}
                         <InterviewDataContainer
                             title={t(this.props, 'text_materials')}
                             content={<InterviewTextMaterialsContainer/>}/>
                         {this.renderPhotos()}
                         {(this.props.project === 'mog') && this.renderMap()}
-                        <InterviewDataContainer
+                        {/* remove for now */}
+                        {/* <InterviewDataContainer
                             title={t(this.props, 'citation')}
                             content={<CitationInfoContainer/>}/>
                         <InterviewDataContainer
                             title={t(this.props, 'export')}
-                            content={<ExportInterviewContainer/>}/>
+                            content={<ExportInterviewContainer/>}/> */}
                     </div>
                 </TabPanel>
             );
