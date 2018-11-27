@@ -5,6 +5,8 @@ export default class Facet extends React.Component {
 
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
         let openState = false;
         if (this.checkedFacets()) {
@@ -15,12 +17,22 @@ export default class Facet extends React.Component {
             inputValue: "",
             open: openState,
             class: openState ? "accordion active" : "accordion",
-            panelClass: openState ? "panel open" : "panel"
+            panelClass: openState ? "panel open" : "panel",
+            filter: "",
         };
     }
 
     checkedFacets() {
         return this.props.query[`${this.props.facet}[]`];
+    }
+
+    handleChange(event) {
+        event.preventDefault();
+        this.setState({filter: event.target.value});
+    }
+
+    handleKeyDown(event) {
+        if (event.keyCode == 13) event.preventDefault();;
     }
 
     handleClick(event) {
@@ -40,10 +52,29 @@ export default class Facet extends React.Component {
         }
     }
 
+    filterInput() {
+        // filter only where size of list >= 15
+        if (Object.keys(this.props.data.subfacets).length >= 15) {
+            return(
+                <div>
+                    <i className="fa fa-search"></i>
+                    <input type='text' className={'filter ' + this.props.facet} value={this.state.filter}
+                    onChange={this.handleChange}
+                    onKeyDown={this.handleKeyDown}
+                    style={{borderBottom: '1px solid ', marginBottom: '0.7rem'}}
+                    />
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
+
     panelContent() {
         return (
             <div className={this.state.panelClass}>
                 <div className="flyout-radio-container">
+                    {this.filterInput()}
                     {this.renderSubfacets()}
                 </div>
             </div>
@@ -103,7 +134,9 @@ export default class Facet extends React.Component {
     }
 
     renderSubfacets() {
-        return this.sortedSubfacets().map((subfacetId, index) => {
+        return this.sortedSubfacets().filter(subfacetId => {
+            return this.props.data.subfacets[subfacetId].name[this.props.locale].toLowerCase().includes(this.state.filter.toLowerCase());
+        }).map((subfacetId, index) => {
             if ((this.props.inputField && this.props.data.subfacets[subfacetId].count) || !this.props.inputField ) {
                 let checkedState = false;
                 if (this.checkedFacets()) {
