@@ -54,6 +54,9 @@ export default class RegistryEntrySearchFacets extends React.Component {
                     );
                 }
             }
+            if (registryEntries.length > 1) registryEntries.unshift(
+                <br key={this.props.parentEntryId}/>
+            )
         } 
         if (registryEntries.length > 0) {
             return registryEntries;
@@ -96,7 +99,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
         if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId]) {
             return (
                 <p>
-                    <h4>{this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</h4>
+                    <span className={'flyout-content-label'}>{this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</span>
                     {this.registryEntries()}
                     {this.addRegistryReference()}
                 </p>

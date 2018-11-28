@@ -46,6 +46,9 @@ export default class PersonPropertiesRegistryReferenceType extends React.Compone
                     );
                 }
             }
+            if (registryEntries.length > 1) registryEntries.unshift(
+                <br key={this.props.referenceType.id}/>
+            )
         } 
         if (registryEntries.length > 0) {
         return registryEntries;
@@ -88,7 +91,7 @@ export default class PersonPropertiesRegistryReferenceType extends React.Compone
     render() {
         return (
             <p>
-                <h4>{this.props.referenceType.name[this.props.locale]}:</h4>
+                <span className={'flyout-content-label'}>{this.props.referenceType.name[this.props.locale]}:</span>
                 {this.registryEntries()}
                 {this.addRegistryReference()}
             </p>
