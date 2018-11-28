@@ -54,9 +54,9 @@ export default class InterviewSearch extends React.Component {
                     React.createElement(this.components()[model], 
                         {
                             data: data,
-                            key: `${model}-${data.id}`,
+                            key: `search-result-${model}-${data.id}`,
                             tape_count: this.props.interview.tape_count,
-                            active: active
+                            active: false
                         }
                     )
                 )
