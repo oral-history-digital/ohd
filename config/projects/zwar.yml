@@ -133,7 +133,7 @@ default: &default
       use_as_facet: true
     - id: 'birth_location'
       source: 'registry_reference_type'
-      use_as_facet: 'true'
+      use_as_facet: false
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
