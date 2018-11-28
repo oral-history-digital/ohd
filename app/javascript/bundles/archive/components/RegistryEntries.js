@@ -55,20 +55,22 @@ export default class RegistryEntries extends React.Component {
     }
 
     addRegistryEntry() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.new')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.new'),
-                    content: <RegistryEntryFormContainer 
-                                 registryEntryParent={this.props.registryEntryParent}
-                             />
-                })}
-            >
-                <i className="fa fa-plus"></i>
-            </div>
-        )
+        if (admin(this.props)) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.registry_entry.new')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.new'),
+                        content: <RegistryEntryFormContainer 
+                                    registryEntryParent={this.props.registryEntryParent}
+                                />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        }
     }
 
     render() {
