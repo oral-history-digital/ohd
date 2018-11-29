@@ -2,12 +2,11 @@ require "open-uri"
 
 namespace :cache do
 
-  #BASE_URL = 'https://archive.occupation-memories.org'
-  #BASE_URL = 'https://responsive.zwangsarbeit-archiv.de'
-  if p Rails.env.development?
+  if Rails.env.development?
     BASE_URL = 'http://localhost:3000'
   else
-    case Project.name.to_sym
+    project = Archive::Application.config.project["project_id"]
+    case project.to_sym
       when :zwar
         BASE_URL = 'https://responsive.zwangsarbeit-archiv.de'
       when :hagen
