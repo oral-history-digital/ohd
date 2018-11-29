@@ -13,7 +13,8 @@ class FacetSerializer < ActiveModel::Serializer
       object.children.inject({}) do |mem, child|
         mem[child.id] = {
           name: child.localized_hash,
-          count: 0
+          count: 0,
+          priority: child.list_priority
         }
         mem
       end

@@ -5,6 +5,7 @@ import request from 'superagent';
 import { 
     TRANSCRIPT_TIME_CHANGE,
     TRANSCRIPT_SCROLL,
+    SET_INTERVIEW_TAB_INDEX,
 
     SET_TAPE_AND_TIME,
     SET_ACTUAL_SEGMENT,
@@ -13,11 +14,12 @@ import {
     RECEIVE_MSG
 } from '../constants/archiveConstants';
 
-export function handleSegmentClick(tape, time) {
+export function handleSegmentClick(tape, time, tabIndex) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
         videoTime: time,
-        tape: tape
+        tape: tape,
+        tabIndex: tabIndex,
     }
 }
 
@@ -26,6 +28,13 @@ export function setTapeAndTime(tape, time) {
         type: SET_TAPE_AND_TIME,
         videoTime: time,
         tape: tape
+    }
+}
+
+export function setInterviewTabIndex(tabIndex) {
+    return {
+        tabIndex: tabIndex,
+        type: SET_INTERVIEW_TAB_INDEX,
     }
 }
 

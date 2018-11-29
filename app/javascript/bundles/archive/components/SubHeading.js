@@ -23,7 +23,8 @@ export default class Heading extends React.Component {
 
 
     handleClick(tape, time) {
-            this.props.handleSegmentClick(tape, time);
+            let tabIndex = (this.props.interview.lang === this.props.locale) ? 0 : 1;
+            this.props.handleSegmentClick(tape, time, tabIndex);
     }
 
 

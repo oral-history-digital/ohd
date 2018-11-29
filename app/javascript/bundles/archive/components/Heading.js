@@ -36,7 +36,8 @@ export default class Heading extends React.Component {
         if (this.props.data.subheadings.length > 0) {
             this.toggle();
         } else {
-            this.props.handleSegmentClick(tape, time);
+            let tabIndex = (this.props.interview.lang === this.props.locale) ? 0 : 1;
+            this.props.handleSegmentClick(tape, time, tabIndex);
         }
     }
 

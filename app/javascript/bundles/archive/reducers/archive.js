@@ -1,6 +1,4 @@
 import {
-    TRANSCRIPT_SCROLL,
-
     SET_LOCALE,
     SET_ARCHIVE_ID,
 
@@ -31,10 +29,6 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 archiveId: action.archiveId
             })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
-            })
         case REQUEST_STATIC_CONTENT:
             return Object.assign({}, state, {
                 isFetchingExternalLinks: true
@@ -50,7 +44,7 @@ const archive = (state = initialState, action) => {
                 contributionTypes: action.contributionTypes,
                 rootRegistryEntry: action.rootRegistryEntry,
                 registryEntrySearchFacetIds: action.registryEntrySearchFacetIds,
-                registryReferenceTypeSearchFacets: action.registryReferenceTypeSearchFacets,
+                personPropertiesRegistryReferenceType: action.personPropertiesRegistryReferenceType,
                 languages: action.languages,
                 uploadTypes: action.uploadTypes,
                 locales: action.locales,

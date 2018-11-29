@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
+    handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })
 

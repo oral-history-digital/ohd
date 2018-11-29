@@ -19,7 +19,7 @@ export default class PersonData extends React.Component {
     dateOfBirth(){
         let interviewee = getInterviewee(this.props);
         if (interviewee.date_of_birth){
-            return this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "figure-letter-spacing")
+            return this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "")
         }
     }
 
@@ -66,13 +66,14 @@ export default class PersonData extends React.Component {
                     {this.dateOfBirth()}
                     {this.placeOfBirth()}
                     {this.typologies()}
-                    <AuthShowContainer ifLoggedIn={true}>
+                    {/* remove for now */}
+                    {/* <AuthShowContainer ifLoggedIn={true}>
                         <p>
                             <span className="flyout-content-label">{t(this.props, 'history')}:</span>
                             {this.download(this.props.interview.lang)}
                             {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
                         </p>
-                    </AuthShowContainer>
+                    </AuthShowContainer> */}
                 </div>
             );
         } else {

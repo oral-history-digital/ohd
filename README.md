@@ -151,11 +151,15 @@ Example: Switch from `mog` to `zwar`:
 
 3. Deploy the code with
     ```bash
-    cap production-zwar deploy
+    cap zwar_archive deploy
     ```
-    or
+
+4. Restart solr on the deployed app after every deploy
     ```bash
-    cap production-mog deploy
+    cd /data/applications/zwar_archive/current
+    bundle exec rake sunspot:solr:stop
+    # verify that port 9001 has been killed
+    bundle exec rake sunspot:solr:start
     ```
 
 ## After release of new data on the live DB

@@ -67,7 +67,7 @@ default: &default
     #   source: 'registry_entry'
     - id: 'pseudonym'
       source: 'registry_entry' # id: 12
-      use_as_facet: true
+      use_as_facet: false
     - id: 'gender'
       source: 'person'
       use_as_facet: true

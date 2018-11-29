@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
     return {
         externalLinks:  state.archive.externalLinks,
         archiveId: state.archive.archiveId,
-        transcriptScrollEnabled: state.archive.transcriptScrollEnabled,
+        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         locale: state.archive.locale,
         translations: state.archive.translations,
         disabled: state.popup.show,

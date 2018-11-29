@@ -54,9 +54,9 @@ export default class InterviewSearch extends React.Component {
                     React.createElement(this.components()[model], 
                         {
                             data: data,
-                            key: `${model}-${data.id}`,
+                            key: `search-result-${model}-${data.id}`,
                             tape_count: this.props.interview.tape_count,
-                            active: active
+                            active: false
                         }
                     )
                 )
@@ -68,7 +68,7 @@ export default class InterviewSearch extends React.Component {
         if (!this.props.isInterviewSearching) {
             let count = this.props[`found${pluralize(model)}`] ? this.props[`found${pluralize(model)}`].length : 0;
             return (
-                <div>
+                <div key={modelIndex}>
                     <div className="content-search-legend"><p>{count} {t(this.props, model.toLowerCase() + '_results')}</p></div>
                     {this.renderResults(model)}
                 </div>

@@ -56,7 +56,7 @@ export default class InterviewListRow extends React.Component {
                 </td>
                 <td>{this.props.interview.video_array[this.props.locale]}</td>
                 <td>{this.props.interview.formatted_duration}</td>
-                <td>{this.props.interview.lang}</td>
+                <td>{this.props.interview.languages_array[this.props.locale]}</td>
             </tr>
         );
     }

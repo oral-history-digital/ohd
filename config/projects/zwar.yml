@@ -116,9 +116,6 @@ default: &default
   person_properties:
     - id: 'person_reference'
       source: 'registry_entry'
-    - id: 'birth_location'
-      source: 'registry_reference_type'
-      use_as_facet: 'true'
     - id: 'language_id'
       source: 'language'
       use_as_facet: true
@@ -134,6 +131,9 @@ default: &default
     - id: 'year_of_birth'
       source: 'person'
       use_as_facet: true
+    - id: 'birth_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
@@ -145,16 +145,16 @@ default: &default
       # use_as_facet: true
     - id: 'home_location'
       source: 'registry_reference_type'
-      use_as_facet: true
+      use_as_facet: false
     - id: 'forced_labor_location'
       source: 'registry_reference_type'
-      use_as_facet: true
+      use_as_facet: false
     - id: 'deportation_location'
       source: 'registry_reference_type'
-      use_as_facet: true
+      use_as_facet: false
     - id: 'return_location'
       source: 'registry_reference_type'
-      use_as_facet: true
+      use_as_facet: false
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 

@@ -1,8 +1,20 @@
+require "open-uri"
+
 namespace :cache do
 
-  #BASE_URL = 'https://archive.occupation-memories.org'
-  #BASE_URL = 'http://160.45.168.36:94'
-  BASE_URL = 'http://localhost:3000'
+  if Rails.env.development?
+    BASE_URL = 'http://localhost:3000'
+  else
+    project = Archive::Application.config.project["project_id"]
+    case project.to_sym
+      when :zwar
+        BASE_URL = 'https://responsive.zwangsarbeit-archiv.de'
+      when :hagen
+        BASE_URL = 'http://da03.cedis.fu-berlin.de:81'
+      when :mog
+        BASE_URL = 'https://archive.occupation-memories.org'
+    end
+  end
 
   desc 'visit start page'
   task :start => :environment do
@@ -117,12 +129,9 @@ namespace :cache do
   end
 
   def get(uri)
-    request = Net::HTTP::Get.new(uri)
-    request.basic_auth("chrgregor@googlemail.com", "bla4bla")
-    response = Net::HTTP.start(uri.hostname, uri.port) {|http|
-      http.request(request)
-    }
-    p "*** Got it #{response.code}"
+    open(uri, http_basic_authentication: ["chrgregor@googlemail.com", "bla4bla"]) do |f|
+      p "*** Got it #{f.status[0]} (#{f.status[1]})"
+    end
   rescue StandardError => e
     p "*** Error: #{e}"
     p "*** backtrace: #{e.backtrace}"

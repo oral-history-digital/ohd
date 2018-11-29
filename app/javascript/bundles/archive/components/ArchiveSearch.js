@@ -56,20 +56,20 @@ export default class ArchiveSearch extends React.Component {
             }
             else {
                 return (
-                    <table style={{padding: '0 20px'}}>
+                    <table style={{padding: '0 20px', width: '100%'}}>
                         <thead>
                             <tr>
                                 {/* <td>Archive ID</td> */}
-                                <td>Name</td>
-                                <td>Media Type</td>
-                                <td>Duration</td>
-                                <td>Language</td>
+                                <td><strong>{t(this.props, 'interviewee_name')}</strong></td>
+                                <td><strong>{t(this.props, 'search_facets.media_type')}</strong></td>
+                                <td><strong>{t(this.props, 'duration')}</strong></td>
+                                <td><strong>{t(this.props, 'language')}</strong></td>
                             </tr>
                         </thead>
                         <tbody>
                             {this.props.foundInterviews.map((interview, index) => {
                                 return <InterviewListRowContainer
-                                    interview={interview.data}
+                                    interview={interview}
                                     key={"interview-row-" + interview.archive_id}
                                 />;
                             })}

@@ -6,20 +6,18 @@ import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let data = getInterview(state);
-    let interview = data && data.interview;
+    let interview = getInterview(state);
     return {
         tape: state.archive.tape,
-        interview: data && data.interview,
+        interview: interview,
         transcriptTime: state.archive.transcriptTime,
         translations: state.archive.translations,
         locale: state.archive.locale,
-        lang: interview && interview.lang,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
+    handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundSegment);
