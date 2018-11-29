@@ -2,17 +2,19 @@ import { connect } from 'react-redux';
 
 import SubHeading from '../components/SubHeading';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
+import {getInterview } from '../../../lib/utils'
 
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         transcriptTime: state.interview.transcriptTime,
         tape: state.interview.tape,
+        interview: getInterview(state),
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
+    handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
 })
 
 // Don't forget to actually use connect!

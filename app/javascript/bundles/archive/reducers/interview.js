@@ -2,6 +2,8 @@ import {
     VIDEO_TIME_CHANGE,
     VIDEO_ENDED,
     SET_NEXT_TAPE,
+    TRANSCRIPT_SCROLL,
+    SET_INTERVIEW_TAB_INDEX,
 
     TRANSCRIPT_TIME_CHANGE,
 
@@ -46,12 +48,17 @@ const interview = (state = initialState, action) => {
                 videoStatus: 'play',
                 transcriptTime: action.videoTime,
                 tape: action.tape,
-                transcriptScrollEnabled: false
+                transcriptScrollEnabled: false,
+                tabIndex: action.tabIndex,
             })
         case SET_TAPE_AND_TIME:
             return Object.assign({}, state, {
                 videoTime: action.videoTime,
                 tape: action.tape,
+            })
+        case SET_INTERVIEW_TAB_INDEX:
+            return Object.assign({}, state, {
+                tabIndex: action.tabIndex
             })
         case SET_ACTUAL_SEGMENT:
             return Object.assign({}, state, {
@@ -61,7 +68,10 @@ const interview = (state = initialState, action) => {
             return Object.assign({}, state, {
                 msg: action.msg
             })
-
+        case TRANSCRIPT_SCROLL:
+            return Object.assign({}, state, {
+                transcriptScrollEnabled: action.transcriptScrollEnabled
+            })
         default:
             return state;
     }

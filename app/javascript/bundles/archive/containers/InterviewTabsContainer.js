@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import InterviewTabs from '../components/InterviewTabs';
+import { setInterviewTabIndex } from '../actions/interviewActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
@@ -10,10 +11,15 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         interviewFulltext: data && data.fulltext,
         project: state.archive.project,
+        tabIndex: state.interview.tabIndex,
     }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    setInterviewTabIndex: (tabIndex) => dispatch(setInterviewTabIndex(tabIndex)),
+})
 
 // Don't forget to actually use connect!
 // Note that we don't export Interview, but the redux "connected" version of it.
 // See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps)(InterviewTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewTabs);

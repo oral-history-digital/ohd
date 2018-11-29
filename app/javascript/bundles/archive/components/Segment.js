@@ -117,9 +117,10 @@ export default class Segment extends React.Component {
     speakerIcon() {
         if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
+            let tabIndex = this.props.originalLocale ? 0 : 1;
             return (
                 <div className="content-trans-speaker-link" title={fullname(this.props, this.props.data.speaking_person)}
-                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                     <i className={speakerCss}></i>
                 </div>
             )
@@ -194,13 +195,14 @@ export default class Segment extends React.Component {
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         if (this.transcript()) {
+            let tabIndex = this.props.originalLocale ? 0 : 1;
             return (
                     <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
                         <div className="content-trans-speaker-ico">
                             {this.speakerIcon()}
                         </div>
                         <div className='content-trans-text'
-                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                             <div className={this.css()}
                                  dangerouslySetInnerHTML={{__html: this.transcript()}}
                             />

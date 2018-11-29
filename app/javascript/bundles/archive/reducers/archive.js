@@ -1,6 +1,4 @@
 import {
-    TRANSCRIPT_SCROLL,
-
     SET_LOCALE,
     SET_ARCHIVE_ID,
 
@@ -30,10 +28,6 @@ const archive = (state = initialState, action) => {
         case SET_ARCHIVE_ID:
             return Object.assign({}, state, {
                 archiveId: action.archiveId
-            })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
             })
         case REQUEST_STATIC_CONTENT:
             return Object.assign({}, state, {

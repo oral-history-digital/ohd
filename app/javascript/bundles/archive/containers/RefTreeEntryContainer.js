@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import RefTreeEntry from '../components/RefTreeEntry';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import {handleTranscriptScroll} from "../actions/interviewActionCreators";
+import {getInterview } from "../../../lib/utils";
 
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
-        transcriptScrollEnabled: state.archive.transcriptScrollEnabled
+        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
+        interview: getInterview(state),
     }
 }
 

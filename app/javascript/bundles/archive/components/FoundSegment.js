@@ -55,8 +55,14 @@ export default class Segment extends React.Component {
     }
 
     render() {
+        let tabIndex = 0
+        if(this.props.data.text['orig']){
+            tabIndex = (this.props.data.text['orig'] === '') ? 1 : 0; 
+        } else {
+            tabIndex = (this.props.locale === this.props.interview.lang) ? 0 : 1;
+        }
         return (
-            <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time)}>
+            <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                 <p className="content-search-timecode">
                     {this.heading()}
                     {this.tape()}

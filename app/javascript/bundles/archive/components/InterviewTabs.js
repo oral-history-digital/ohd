@@ -30,6 +30,8 @@ export default class InterviewTabs extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (!prevProps.interviewFulltext && this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
             this.setState({['tabIndex']: 3});
+        } else if (prevProps.tabIndex !== this.props.tabIndex) {
+            this.setState({['tabIndex']: this.props.tabIndex});
         }
     }
 
@@ -40,7 +42,7 @@ export default class InterviewTabs extends React.Component {
                 selectedTabClassName='active'
                 selectedTabPanelClassName='active'
                 selectedIndex={this.state.tabIndex}
-                onSelect={tabIndex => this.setState({tabIndex})}
+                onSelect={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
                 <div className='content-tabs'>
                     <TabList className={'content-tabs-nav'}>
@@ -62,11 +64,13 @@ export default class InterviewTabs extends React.Component {
                         <TranscriptContainer
                             originalLocale={true}
                             loadSegments={true}
+                            selectedIndex={this.state.tabIndex}
                         />
                     </TabPanel>
                     <TabPanel>
                         <TranscriptContainer
                             originalLocale={false}
+                            selectedIndex={this.state.tabIndex}
                         />
                     </TabPanel>
                     <TabPanel>

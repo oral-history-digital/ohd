@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         transcriptTime: state.interview.transcriptTime,
         locale: state.archive.locale,
         translations: state.archive.translations,
-        transcriptScrollEnabled: state.archive.transcriptScrollEnabled,
+        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         isInterviewSearching: state.search.isInterviewSearching,
     }
 }
