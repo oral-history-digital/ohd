@@ -50,6 +50,10 @@ export default class VideoPlayer extends React.Component {
         window.scrollTo(0, 1);
     }
 
+    compressVideo() {
+        this.props.handleTranscriptScroll(true);
+    }
+
     handleVideoEnded() {
         if (this.props.tape < this.props.interview.tape_count) {
             this.props.setNextTape();
@@ -270,6 +274,7 @@ export default class VideoPlayer extends React.Component {
             return (
                 <div className='wrapper-video'>
                     <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
+                    <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, getInterviewee(this.props), true)}

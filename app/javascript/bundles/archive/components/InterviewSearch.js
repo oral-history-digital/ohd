@@ -31,8 +31,8 @@ export default class InterviewSearch extends React.Component {
         let fixVideo = ($(document).scrollTop() > $(".site-header").height());
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
-        } else if (!fixVideo && this.props.transcriptScrollEnabled) {
-            this.props.handleTranscriptScroll(false)
+        // } else if (!fixVideo && this.props.transcriptScrollEnabled) {
+        //     this.props.handleTranscriptScroll(false)
         }
     }
 

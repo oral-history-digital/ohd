@@ -22,8 +22,8 @@ export default class Transcript extends React.Component {
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;
             if (offset > 450) {
-                (window.innerHeight > 900) && this.handleScroll();
-                window.scrollTo(0, offset - 400);
+                (window.innerHeight < 900) && this.handleScroll();
+                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
             } else {
                 window.scrollTo(0, 1);
             }
