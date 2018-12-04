@@ -16,9 +16,18 @@ export default class Transcript extends React.Component {
 
     componentDidMount() {
         this.loadSegments();
-        //window.removeEventListener('wheel', this.handleScroll);
         window.addEventListener('wheel', this.handleScroll);
-        window.scrollTo(0, 1);
+        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+        let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
+        if (activeSegmentElement) {
+            let offset = activeSegmentElement.offsetTop;
+            if (offset > 450) {
+                (window.innerHeight > 900) && this.handleScroll();
+                window.scrollTo(0, offset - 400);
+            } else {
+                window.scrollTo(0, 1);
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -40,12 +49,16 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let actualSegment = activeSegment(this.props.transcriptTime, this.props);
-            let activeSegmentElement = document.getElementById(`segment_${actualSegment && actualSegment.id}`);
+            let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+            let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
             if (activeSegmentElement) {
-                let hight = activeSegmentElement.offsetTop;
-                if (hight > 450)
-                    window.scrollTo(0, hight - 400);
+                let offset = activeSegmentElement.offsetTop;
+                if (offset > 450) {
+                    (window.innerHeight < 900) && this.handleScroll();
+                    window.scrollTo(0, offset - 400);
+                } else {
+                    window.scrollTo(0, 1);
+                }
             }
         }
     }

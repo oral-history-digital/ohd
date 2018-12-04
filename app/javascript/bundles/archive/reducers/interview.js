@@ -48,8 +48,7 @@ const interview = (state = initialState, action) => {
                 videoStatus: 'play',
                 transcriptTime: action.videoTime,
                 tape: action.tape,
-                transcriptScrollEnabled: false,
-                tabIndex: action.tabIndex,
+                tabIndex: action.tabIndex || state.tabIndex,
             })
         case SET_TAPE_AND_TIME:
             return Object.assign({}, state, {

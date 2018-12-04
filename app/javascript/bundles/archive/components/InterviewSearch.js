@@ -16,7 +16,11 @@ export default class InterviewSearch extends React.Component {
     componentDidMount() {
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
-        window.scrollTo(0, 1);
+        if(this.props.transcriptScrollEnabled) {
+            window.scrollTo(0, 114);
+        } else {
+            window.scrollTo(0, 1);
+        }
     }
 
     componentWillUnmount() {
