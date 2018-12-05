@@ -52,7 +52,7 @@
            } %>
 
 <% @interview.tapes.each do |tape| %>
-  <% tape.segments.order('id').includes(:translations).each do |segment| %>
+  <% tape.segments.order([:tape_number, :timecode]).includes(:translations).each do |segment| %>
 
     <% space_above = 0.4 %>
 
