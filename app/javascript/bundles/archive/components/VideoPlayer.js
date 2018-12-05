@@ -172,7 +172,6 @@ export default class VideoPlayer extends React.Component {
     }
 
     subtitles() {
-        // return this.props.locales.map((locale, index) => {
         return this.props.interview.languages.map((locale, index) => {
             return (
                 <track 
@@ -197,28 +196,6 @@ export default class VideoPlayer extends React.Component {
     mediaElement() {
         let _this = this;
         return(
-            //     <video 
-            //         ref={(video) => {
-            //             this.video = video;
-            //         }}
-            //         onTimeUpdate={(event) => {
-            //             let time = Math.round(event.target.currentTime*100)/100;
-            //             if (time !== this.props.videoTime) {
-            //                 this.props.handleVideoTimeChange(time)
-            //             }
-            //         }}
-            //         onEnded={(event) => {
-            //         this.handleVideoEnded()
-            //         }}
-            //         playsInline={true}
-            //         controls={true}
-            //         controlsList="nodownload"
-            //         poster={this.props.interview.still_url || MISSING_STILL}
-            //         onClick={(e) => this.handleVideoClick(e)}
-            //         src={this.src()}
-            //     >
-            //     {this.subtitles()}
-            // </video>
             React.createElement(
                 _this.props.project == 'hagen' ? 'audio' : 'video',
                 {
@@ -254,18 +231,6 @@ export default class VideoPlayer extends React.Component {
             {
                 this.video.paused ? this.video.play() : this.video.pause();
             }
-            //else if(navigator.userAgent.indexOf("Safari") != -1)
-            //{
-            //}
-            //else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
-            //{
-            //}
-            //else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
-            //{
-            //}  
-            //else 
-            //{
-            //}
         }
     }
 
