@@ -139,6 +139,40 @@ class SearchesController < ApplicationController
     end
   end
 
+  def export_archive_search
+    search = Interview.search do
+      adjust_solr_params do |params|
+        params[:rows] = 1000
+      end
+      fulltext params[:fulltext]
+      Project.search_facets_names.each do |facet|
+        with(facet.to_sym).any_of(params[facet]) if params[facet]
+      end
+      facet *Project.search_facets_names
+      order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
+    end
+
+    respond_to do |format|
+      format.csv do
+        desired_columns = [:archive_id, [:short_title,:de], :media_type]
+        options = {}
+        csv = CSV.generate(options) do |csv|
+          csv << desired_columns.map{|c| c.to_s}
+          search.results.each do |interview|
+            csv << desired_columns.map{ |c| interview.send(*c) }
+          end
+        end
+        send_data csv
+      end
+      format.json do
+        render json: {
+            interviews: search.results,
+        }
+      end
+
+    end
+  end
+
   def archive
     search = Interview.search do
       fulltext params[:fulltext]

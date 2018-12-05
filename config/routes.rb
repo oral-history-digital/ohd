@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         collection do
           get :facets
           get :archive
+          get :export_archive_search
           get :interview
           get :registry_entry
         end

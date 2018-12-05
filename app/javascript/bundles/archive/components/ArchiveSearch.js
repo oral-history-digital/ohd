@@ -174,6 +174,35 @@ export default class ArchiveSearch extends React.Component {
                 </div>
     }
 
+    exportSearch() {
+        let query = this.props.query;
+        delete query['page'];
+        let url = `/${this.props.locale}/searches/export_archive_search.csv`;
+        for (let param of Object.keys(query)) {
+            if(query[param] && query[param].length > 0) url += `?${param}=${query[param]}` 
+        }
+        return (
+            <ul>
+                <li>
+                    <a href={url}>CSV</a>
+                </li>
+            </ul>
+        )
+    }
+
+    exportSearchLink() {
+        if(Object.keys(this.props.query).length > 0) {
+            return (
+                <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'export_search_results'),
+                    content: this.exportSearch()
+                })}>
+                <i className="fa fa-download"></i><span>{t(this.props, 'export_search_results')}</span>
+                </div>
+            )
+        } else return null;
+    }
+
     renderArchiveResultsCount() {
         if(!this.props.isArchiveSearching || (this.props.query['page'] || 1) > 1) {
             return (
@@ -195,6 +224,7 @@ export default class ArchiveSearch extends React.Component {
                     <div className="search-results-legend">
                                 <AuthShowContainer ifLoggedIn={true}>
                                     {this.saveSearchLink()}
+                                    {this.exportSearchLink()}
                                 </AuthShowContainer>
                         {this.renderArchiveResultsCount()}
                     </div>
