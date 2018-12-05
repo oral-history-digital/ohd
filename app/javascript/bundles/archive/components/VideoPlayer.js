@@ -172,14 +172,14 @@ export default class VideoPlayer extends React.Component {
     }
 
     subtitles() {
-        return this.props.interview.languages.map((locale, index) => {
+        return this.props.interview.languages.map((language, index) => {
             return (
                 <track 
-                    key={`subtitle-${locale}`}
+                    key={`subtitle-${language}-${this.props.locale}-${this.props.tape}`}
                     kind="subtitles"
-                    label={t(this.props, locale)}
-                    src={this.props.archiveId + '.vtt?lang=' + locale + '&tape_number=' + this.props.tape}
-                    srcLang={locale}
+                    label={t(this.props, language)}
+                    src={this.props.archiveId + '.vtt?lang=' + language + '&tape_number=' + this.props.tape}
+                    srcLang={language}
                 />
             )
         })
