@@ -1,54 +1,4 @@
-# This file contains translations used in text document templates.
-
-# Obs translator:
-
-# Please translate the quoted texts only.
-
-# Example:
-#   frontpage: 'Frontpage'
-# becomes
-#   frontpage: 'Deckblatt'    GOOD!
-# and NOT
-#   deckblatt: 'Deckblatt'    WRONG!
-# or whatever.
-
-# Lines starting with hash symbols (#) are comments. Please do NOT translate
-# comments.
-
-# Texts may contain placeholders. These placeholders take the form %{something}.
-# You may change the position of the placeholder but you may not change or
-# translate its content!
-
-# Example:
-#   colored_car: '%{color} car'
-# should be translated (e.g. in French) as
-#   colored_car: 'voiture %{color}'     GOOD!
-# but NOT as
-#   colored_car: 'voiture %{couleur}',  WRONG!
-#   colored_car: 'voiture couleur'      WRONG!
-# or whatever.
-
-# Sometimes you'll find that placeholders themselves refer to translatable
-# texts. In this case we'll comment on how the translated text is being used in
-# context so that you can translate the two texts together.
-
-# Example:
-#   transcript_with_german_translation: 'Transkript%{german_translation}'
-#   german_translation: ' in deutscher Übersetzung'
-# could be translated (e.g. in English) as
-#   transcript_with_german_translation: '%{german_translation}Transcript'
-#   german_translation: 'German '                                         GOOD!
-# which would result in 'German Transcript' and NOT as
-#   transcript_with_german_translation: 'Transcript%{german_translation}'
-#   german_translation: 'German translation'                              WRONG!
-# as this would result in 'TranscriptGerman translation' which is bad grammar
-# and does not contain the required space.
-
-# If you change the order of the placeholder then make sure that you place
-# spaces in the right place. See that in the above example the space in
-# german_translation has moved from the beginning (' in deutscher Übersetzung')
-# to the end ('German ').
-
+---
 ru:
   bg: 'BG'
   bs: 'BS'
@@ -75,6 +25,7 @@ ru:
   sr: 'SR'
   uk: 'UK'
   in: 'В'
+  tape: 'Запись'
   biographical_entries_of: 'Краткая биография'
   edit_interview:
     new: 'New interview'
@@ -96,7 +47,10 @@ ru:
   password: 'Пароль'
   user_content: 'Рабочая тетрадь'
   archive_search: 'Поиск в архиве'
+  enter_search_field: 'Поиск в архиве'
   save_search: 'Сохранить поиск'
+  save_user_annotation: 'Создать аннотацию'
+  save_interview_reference: 'Добавить в сохраненные интервью'
   reset: 'отмена'
   enter_field: 'Ключевое понятие'
   forget_password: 'Забыли пароль?'
@@ -194,37 +148,66 @@ ru:
     lastname_with_birthname: '%{lastname} (%{birthname})'
     lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
+  interview: 'Интервью'
+  video_interview: 'Видеоинтервью'
+  audio_interview: 'Аудиоинтервью'
+  segment_link: 'к фрагменту'
+  forced_labor_data: 'Сведения о работе'
+  biography: 'Биография'
+  transcript: 'Транскрипт'
+  translation: 'Перевод'
+  Biography: 'Биография'
+  search_results: 'Результаты поиска'
+  search_results_with_count: 'Результаты поиска: %{count}'
+  headings: 'Содержание'
+  my_search: 'Мой поиск'
+  search: 'поиск'
+  back_to_search: 'к поиску'
+  status_update: 'Состояние на'
+  search_the_archive: 'Поиск в архиве'
+  search_the_interview: 'Поиск в интервью'
+  workbook: 'Рабочая тетрадь'
+  show_all: 'показать все'
+  show_interview: 'к интервью'
+  show_segment: 'к фрагменту'
+  maximize_all: 'увеличить все'
+  minimize_all: 'уменьшить все'
+  filter_contents: 'Фильтр контента'
+  filter_by_tag: 'Фильтр тем'
+  more: 'подробнее'
+  less: 'кратко'
+  please_select: 'Пожалуйста, выберите...'
+  table_of_contents: 'Оглавление'
+  interview_search: 'Поиск в интервью'
+  keywords: 'Ключевые слова'
+  person_info: 'О человеке'
+  interview_info: 'об интервью'
+  text_materials: 'текстовые материалы'
+  photos: 'Фотографии'
+  date_of_birth: 'Дата рождения'
+  person_name: 'Имя'
+  history: 'Краткая биография'
+  id: 'ID'
+  date: 'Дата'
+  duration: 'Продолжительность интервью'
+  tapes: 'Записи'
+  language: 'Язык'
+  interview_gallery_explanation: 'Фотогалерея содержит фотографии интервью, а также семейные и другие исторические фотографии из частной коллекции интервьюируемого лица.'
+  segment_results: 'Результаты поиска транскриптов'
+  photo_results: 'Результаты поиска на фотографиях'
+  biographicalentry_results: 'Результаты поиска в биографических данных'
+  person_results: 'Результаты поиска для людей'
+
+  contributions:
+    interviewee: 'интервьюируемый'
+    proof_reading: 'корректура'
+    interview: 'интервью'
+    transcript: 'транскрипция'
+    translation: 'перевод'
+    segmentation: 'сегментация'
+
   user_interface:
     labels:
-      interview: 'Интервью'
-      video_interview: 'Видеоинтервью'
-      audio_interview: 'Аудиоинтервью'
-      segment_link: 'к фрагменту'
-      forced_labor_data: 'Сведения о работе'
-      biography: 'Биография'
-      transcript: 'Транскрипт'
-      translation: 'Перевод'
-      Biography: 'Биография'
-      search_results: 'Результаты поиска'
-      search_results_with_count: 'Результаты поиска: %{count}'
-      headings: 'Содержание'
-      my_search: 'Мой поиск'
-      search: 'поиск'
-      back_to_search: 'к поиску'
-      status_update: 'Состояние на'
-      search_the_archive: 'Поиск в архиве'
-      search_the_interview: 'Поиск в интервью'
-      workbook: 'Рабочая тетрадь'
-      show_all: 'показать все'
-      show_interview: 'к интервью'
-      show_segment: 'к фрагменту'
-      maximize_all: 'увеличить все'
-      minimize_all: 'уменьшить все'
-      filter_contents: 'Фильтр контента'
-      filter_by_tag: 'Фильтр тем'
-      more: 'подробнее'
-      less: 'кратко'
-      please_select: 'Пожалуйста, выберите...'
     actions:
       edit: 'правка'
       update: 'обновить'
@@ -411,6 +394,9 @@ ru:
       biographical_entry:
         one: 'Краткая биография'
         other: 'Краткие биографии'
+      registry_entries:
+        one: 'Registry Entry'
+        other: 'Registry Entries'
 
 
     attributes:
@@ -549,10 +535,6 @@ ru:
     interview_id: 'Имя интервьюируемого'
     language_id: 'Язык'
     fulltext: 'Ключевое понятие'
-
-  photos:
-    image: 'Фотография'
-    of: 'из'
 
   admin_nav:
     user_registrations: 'Пользователь'

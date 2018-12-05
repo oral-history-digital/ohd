@@ -25,6 +25,12 @@ en:
   sr: 'serbian'
   uk: 'ukrainian'
   in: 'in'
+  tape: 'Tape'
+  interview_gallery_explanation: 'The picture gallery contains photos of the interview situation as well as family photos and other historical photos from the interviewed person''s private collection.'
+  segment_results: 'Search results in transcript'
+  photo_results: 'Search results in photos'
+  biographicalentry_results: 'Search results in biographical entries'
+  person_results: 'Search results for persons'
   download: 'Download'
   elde: 'Greek with German translation'
   more: 'more'
@@ -207,6 +213,7 @@ en:
   saved_searches: 'Saved search results'
   saved_interviews: 'Saved interviews'
   saved_annotations: 'Saved annotations'
+  text_materials: 'Textmaterialien'
 
   status:
     translated: 'with translation'
@@ -214,6 +221,12 @@ en:
   genders:
     female: 'female'
     male: 'male'
+
+  activerecord:
+    models:
+      registry_entries:
+        one: 'Registry Entry'
+        other: 'Registry Entries'
 
   search_facets:
     forced_labor_groups: 'Forced Labor Group'

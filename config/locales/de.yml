@@ -1,3 +1,4 @@
+---
 de:
   bg: 'bulgarisch'
   bs: 'bosnisch'
@@ -115,7 +116,6 @@ de:
   translation: 'Übersetzung'
   segmentation: 'Segmentierung'
   table_of_contents: 'Inhaltsverzeichnis'
-  keywords: 'Schlagworte'
   interview_search: 'Suche im Interview'
   write_annotation: 'Anmerkung schreiben'
   read_annotation: 'Anmerkung lesen'
