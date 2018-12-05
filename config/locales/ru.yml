@@ -75,6 +75,7 @@ ru:
   sr: 'SR'
   uk: 'UK'
   in: 'В'
+  biographical_entries_of: 'Краткая биография'
   edit_interview:
     new: 'New interview'
     edit: 'Edit interview'
@@ -407,6 +408,9 @@ ru:
       annotation:
         one: 'Комментарий'
         other: 'Комментарии'
+      biographical_entry:
+        one: 'Краткая биография'
+        other: 'Краткие биографии'
 
 
     attributes:

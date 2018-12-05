@@ -438,7 +438,7 @@ de:
         other: 'Anmerkungen'
       biographical_entry:
         one: 'Kurzbiographie'
-        other: 'Kurzbiographieen'
+        other: 'Kurzbiographien'
 
     attributes:
       history:
