@@ -60,5 +60,6 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^2.11.3"
-  }
+  },
+  "postcss": {}
 }
