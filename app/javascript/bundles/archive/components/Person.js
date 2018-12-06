@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
 
 import PersonFormContainer from '../containers/PersonFormContainer';
 import { t, fullname, admin } from '../../../lib/utils';

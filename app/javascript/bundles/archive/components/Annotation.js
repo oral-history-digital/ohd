@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
 
 import AnnotationFormContainer from '../containers/AnnotationFormContainer';
 import { t, pluralize, admin } from '../../../lib/utils';

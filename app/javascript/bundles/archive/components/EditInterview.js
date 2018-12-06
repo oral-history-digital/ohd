@@ -2,7 +2,7 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
-import {Link, hashHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { t } from '../../../lib/utils';
 
 export default class EditInterview extends React.Component {
