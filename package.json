@@ -32,7 +32,7 @@
     "prop-types": "^15.5.10",
     "query-string": "^5.0.1",
     "rails-erb-loader": "^5.0.2",
-    "rc-slider": "^8.6.1",
+    "rc-slider": "^8.6.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-intersection-observer": "^5.0.5",
