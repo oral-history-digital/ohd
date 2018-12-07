@@ -5,8 +5,11 @@
 ReactOnRails.configure do |config|
   # This configures the script to run to build the production assets by webpack. Set this to nil
   # if you don't want react_on_rails building this file for you.
-  # config.build_production_command = "RAILS_ENV=production bin/webpack"
-  config.build_production_command = nil
+
+  # https://stackoverflow.com/a/49709493
+  config.build_production_command = 'YARN_EVN=production yarn install && echo "module.exports = {};" >> node_modules/rc-slider/assets/postcss.config.js && RAILS_ENV=production bin/webpack'
+  
+  # config.build_production_command = nil
 
   ################################################################################
   ################################################################################

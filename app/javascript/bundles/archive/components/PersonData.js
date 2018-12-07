@@ -49,7 +49,7 @@ export default class PersonData extends React.Component {
                 <a className='flyout-download-link-lang'
                     href={"/" + this.props.locale + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                    <span>{lang}</span>
+                    <span>{t(this.props, lang)}</span>
                 </a>
             )
         } else {
@@ -66,14 +66,13 @@ export default class PersonData extends React.Component {
                     {this.dateOfBirth()}
                     {this.placeOfBirth()}
                     {this.typologies()}
-                    {/* remove for now */}
-                    {/* <AuthShowContainer ifLoggedIn={true}>
+                    <AuthShowContainer ifLoggedIn={true}>
                         <p>
                             <span className="flyout-content-label">{t(this.props, 'history')}:</span>
                             {this.download(this.props.interview.lang)}
                             {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
                         </p>
-                    </AuthShowContainer> */}
+                    </AuthShowContainer>
                 </div>
             );
         } else {

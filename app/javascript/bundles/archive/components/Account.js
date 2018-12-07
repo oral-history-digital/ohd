@@ -2,7 +2,7 @@ import React from 'react';
 
 import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
-import {Link, hashHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import { t } from '../../../lib/utils';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';

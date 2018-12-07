@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
 
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import { t } from '../../../lib/utils';

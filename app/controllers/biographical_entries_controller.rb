@@ -23,7 +23,7 @@ class BiographicalEntriesController < ApplicationController
     @alpha2_locale = params[:lang]
     respond_to do |format|
       format.pdf do
-        @alpha2_locale = params[:lang]
+        @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
         @project_locale = ISO_639.find(params[:lang]).send(Project.alpha)
         pdf = render_to_string(:template => '/latex/biographical_entries.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_biography_#{params[:lang]}.pdf", :type => "application/pdf", :disposition => "attachment"

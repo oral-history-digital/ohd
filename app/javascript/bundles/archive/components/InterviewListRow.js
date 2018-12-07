@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import { t } from '../../../lib/utils';
 

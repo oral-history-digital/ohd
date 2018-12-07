@@ -137,8 +137,27 @@ header.site-header {
   height: 400px
 }
 
+.expand, .compress {
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: $primary-color;
+    transition: background-color 0.3s;
+    // color: black;
+  }
+}
+
 .expand {
   display: none;
+}
+
+.compress {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  padding: 20px 17px 17px 20px;
+  margin: 10px;
 }
 
 .fix-video {
@@ -168,7 +187,12 @@ header.site-header {
       right: 0;
       bottom: 0;
       cursor: pointer;
-      padding: 25px 22px 22px 25px;
+      padding: 20px 17px 17px 20px;
+      margin: 10px;
+    }
+
+    .compress {
+      display: none;
     }
 
     .video-element {
@@ -396,7 +420,8 @@ h1.search-results-title {
   }
   @include screen-m {
     float: left;
-    margin-bottom: 0;
+    margin-bottom: 0; 
+    margin-right: 1em;
   }
 }
 .search-results-legend-text {

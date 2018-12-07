@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, hashHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';

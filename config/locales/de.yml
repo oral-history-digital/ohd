@@ -1,3 +1,4 @@
+---
 de:
   bg: 'bulgarisch'
   bs: 'bosnisch'
@@ -64,6 +65,7 @@ de:
   download: 'Download'
   export: 'Export'
   export_doi: 'DOI'
+  export_search_results: 'Suchergebnisse exportieren'
   language_de: 'Deutsch'
   language_elde: 'Griechisch mit deutscher Übersetzung'
   language_eldeen: 'Griechisch mit deutscher Übersetzung'
@@ -114,7 +116,6 @@ de:
   translation: 'Übersetzung'
   segmentation: 'Segmentierung'
   table_of_contents: 'Inhaltsverzeichnis'
-  keywords: 'Schlagworte'
   interview_search: 'Suche im Interview'
   write_annotation: 'Anmerkung schreiben'
   read_annotation: 'Anmerkung lesen'
@@ -437,7 +438,7 @@ de:
         other: 'Anmerkungen'
       biographical_entry:
         one: 'Kurzbiographie'
-        other: 'Kurzbiographieen'
+        other: 'Kurzbiographien'
 
     attributes:
       history:

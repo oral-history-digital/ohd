@@ -41,13 +41,17 @@ export default class VideoPlayer extends React.Component {
     }
 
     setVideoStatus() {
-        let isPlaying = this.video.currentTime > 0 && !this.video.paused && !this.video.ended && this.video.readyState > 2;
-        this.props.videoStatus === 'play' && !isPlaying ? this.video.play() : this.video.pause();
+        // let isPlaying = this.video.currentTime > 0 && !this.video.paused && !this.video.ended && this.video.readyState > 2;
+        this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
     }
 
     reconnectVideoProgress() {
         this.props.handleTranscriptScroll(false);
         window.scrollTo(0, 1);
+    }
+
+    compressVideo() {
+        this.props.handleTranscriptScroll(true);
     }
 
     handleVideoEnded() {
@@ -168,15 +172,14 @@ export default class VideoPlayer extends React.Component {
     }
 
     subtitles() {
-        // return this.props.locales.map((locale, index) => {
-        return this.props.interview.languages.map((locale, index) => {
+        return this.props.interview.languages.map((language, index) => {
             return (
                 <track 
-                    key={`subtitle-${locale}`}
+                    key={`subtitle-${language}-${this.props.locale}-${this.props.tape}`}
                     kind="subtitles"
-                    label={t(this.props, locale)}
-                    src={this.props.archiveId + '.vtt?lang=' + locale + '&tape_number=' + this.props.tape}
-                    srcLang={locale}
+                    label={t(this.props, language)}
+                    src={this.props.archiveId + '.vtt?lang=' + language + '&tape_number=' + this.props.tape}
+                    srcLang={language}
                 />
             )
         })
@@ -193,28 +196,6 @@ export default class VideoPlayer extends React.Component {
     mediaElement() {
         let _this = this;
         return(
-            //     <video 
-            //         ref={(video) => {
-            //             this.video = video;
-            //         }}
-            //         onTimeUpdate={(event) => {
-            //             let time = Math.round(event.target.currentTime*100)/100;
-            //             if (time !== this.props.videoTime) {
-            //                 this.props.handleVideoTimeChange(time)
-            //             }
-            //         }}
-            //         onEnded={(event) => {
-            //         this.handleVideoEnded()
-            //         }}
-            //         playsInline={true}
-            //         controls={true}
-            //         controlsList="nodownload"
-            //         poster={this.props.interview.still_url || MISSING_STILL}
-            //         onClick={(e) => this.handleVideoClick(e)}
-            //         src={this.src()}
-            //     >
-            //     {this.subtitles()}
-            // </video>
             React.createElement(
                 _this.props.project == 'hagen' ? 'audio' : 'video',
                 {
@@ -250,18 +231,6 @@ export default class VideoPlayer extends React.Component {
             {
                 this.video.paused ? this.video.play() : this.video.pause();
             }
-            //else if(navigator.userAgent.indexOf("Safari") != -1)
-            //{
-            //}
-            //else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
-            //{
-            //}
-            //else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
-            //{
-            //}  
-            //else 
-            //{
-            //}
         }
     }
 
@@ -270,6 +239,7 @@ export default class VideoPlayer extends React.Component {
             return (
                 <div className='wrapper-video'>
                     <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
+                    <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, getInterviewee(this.props), true)}

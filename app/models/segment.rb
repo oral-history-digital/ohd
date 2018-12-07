@@ -219,11 +219,11 @@ class Segment < ActiveRecord::Base
   end
 
   def next
-    interview.segments.where("timecode > ?", read_attribute(:timecode)).first
+    tape.segments.where("timecode > ?", read_attribute(:timecode)).first
   end
 
   def prev
-    interview.segments.where("timecode < ?", read_attribute(:timecode)).last
+    tape.segments.where("timecode < ?", read_attribute(:timecode)).last
   end
 
   def alias_names
@@ -234,7 +234,8 @@ class Segment < ActiveRecord::Base
     # TODO: rm strip
     raw_segment_text = text(projectified(lang))
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
-    "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(self.next.time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
+    end_time = self.next.try(:time) || 9999
+    "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
 
   def speaker_changed(raw_segment_text = false)

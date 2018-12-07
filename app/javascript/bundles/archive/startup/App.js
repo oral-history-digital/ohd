@@ -3,7 +3,7 @@ import 'intersection-observer';
 import 'datalist-polyfill';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import archiveStore from '../store/archiveStore';
 import InterviewContainer from '../containers/InterviewContainer';
@@ -20,7 +20,7 @@ import HomeContainer from '../containers/HomeContainer';
 
 const App = (props) => (
   <Provider store={archiveStore(props)}>
-    <BrowserRouter history={hashHistory}>
+    <BrowserRouter>
       <div>
           <Route exact path="/:locale" component={HomeContainer} />
           <Route exact path="/:locale/interviews/new" component={EditInterviewContainer} />
