@@ -1,5 +1,23 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+// Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const environment = require('./environment')
+/* eslint global-require: 0 */
 
-module.exports = environment.toWebpackConfig()
+const TerserPlugin = require('terser-webpack-plugin');
+const merge = require('webpack-merge')
+const CompressionPlugin = require('compression-webpack-plugin')
+const sharedConfig = require('./shared.js')
+
+module.exports = merge(sharedConfig, {
+  mode: 'production',
+  output: { filename: '[name]-[chunkhash].js' },
+  devtool: 'source-map',
+  stats: 'normal',
+  optimization: {
+    minimizer: [new TerserPlugin()]
+  },
+  plugins: [
+    new CompressionPlugin({
+      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/
+    })
+  ]
+})

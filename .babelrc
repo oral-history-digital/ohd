@@ -4,43 +4,21 @@
       "@babel/preset-env",
       {
         "modules": false,
-        "forceAllTransforms": true,
-        "useBuiltIns": "entry"
+        "targets": {
+          "browsers": "> 1%"
+        },
+        "useBuiltIns": "entry",
+        "forceAllTransforms": true
       }
     ],
-    [
-      "@babel/preset-react",
-      {
-        "useBuiltIns": true
-      }
-    ]
+    "@babel/react"
   ],
   "plugins": [
-    "@babel/plugin-transform-destructuring",
-    "@babel/plugin-syntax-dynamic-import",
+    "syntax-dynamic-import",
     [
-      "@babel/plugin-proposal-object-rest-spread",
+      "transform-class-properties",
       {
-        "useBuiltIns": true
-      }
-    ],
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "helpers": false,
-        "regenerator": true
-      }
-    ],
-    [
-      "@babel/plugin-transform-regenerator",
-      {
-        "async": false
-      }
-    ],
-    [
-      "@babel/plugin-proposal-class-properties",
-      {
-        "loose": true
+        "spec": true
       }
     ]
   ]
