@@ -15,7 +15,7 @@ namespace :photo do
         dest = File.join(dest_dir, c.photo.key)
 
         csv << "\n"
-        csv << [c.interview.archive_id, c.interview.interviewees.first.last_name, c.interview.interviewees.first.first_name, c.photo_file_name, c.caption, c.interview.collection.name, dest].map{|s| "\"#{s}\""}.join(",")
+        csv << [c.interview.archive_id, c.interview.interviewees.first.last_name, c.interview.interviewees.first.first_name, c.photo_file_name, c.caption, c.interview.collection.name, dest].map{|s|s.gsub(/"/, '""')}.map{|s| "\"#{s}\""}.join(",")
       end
     end
   end
