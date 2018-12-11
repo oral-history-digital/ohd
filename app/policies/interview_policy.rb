@@ -5,7 +5,7 @@ class InterviewPolicy < ApplicationPolicy
     end
   end
 
-  def dois
+  def dois?
     user.admin?
   end
 

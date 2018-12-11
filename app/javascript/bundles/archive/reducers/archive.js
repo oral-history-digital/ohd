@@ -5,7 +5,10 @@ import {
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
 
-    CHANGE_TO_EDIT_VIEW
+    CHANGE_TO_EDIT_VIEW,
+
+    //EXPORT_DOI,
+    RECEIVE_RESULT
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -17,6 +20,7 @@ const initialState = {
     externalLinks: {},
 
     editView: true,
+    doiResult: {}
 }
 
 const archive = (state = initialState, action) => {
@@ -57,6 +61,10 @@ const archive = (state = initialState, action) => {
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {
                 editView: action.editView
+            })
+        case RECEIVE_RESULT:
+            return Object.assign({}, state, {
+                doiResult: action.result
             })
 
         default:

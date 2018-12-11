@@ -197,6 +197,10 @@ de:
   grid: 'Raster'
   list: 'Liste'
 
+  doi:
+    created: 'Erfolgreich veröffentlicht!'
+    already_registered: 'Bereits zu einem früheren Zeitpunkt veröffentlicht!'
+
   workflow_states:
     unshared: 'nicht öffentlich'
     unpublish: 'nicht öffentlich'

@@ -89,4 +89,4 @@ export const CHANGE_TO_EDIT_VIEW = 'CHANGE_TO_EDIT_VIEW';
 export const SEGMENTS_AFTER = 8;
 export const SEGMENTS_BEFORE = 2;
 
-export const RECEIVE_MSG = 'RECEIVE_MSG';
+export const RECEIVE_RESULT = 'RECEIVE_RESULT';

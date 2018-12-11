@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
+import request from 'superagent';
 import Loader from '../../../lib/loader'
 
 import { 
@@ -9,7 +10,10 @@ import {
     //UPLOAD_TRANSCRIPT_URL,
     //UPLOADED_TRANSCRIPT,
 
-    CHANGE_TO_EDIT_VIEW
+    CHANGE_TO_EDIT_VIEW,
+
+    //EXPORT_DOI,
+    RECEIVE_RESULT
 } from '../constants/archiveConstants';
 
 export const setLocale = (locale) => ({
@@ -40,3 +44,21 @@ export function changeToEditView(bool) {
     }
 }
 
+const receiveResult = (result) => ({
+    type: RECEIVE_RESULT,
+    result: result
+});
+
+export function submitDois(archiveIds, locale='de') {
+    return dispatch => {
+        request
+            .post('/de/interviews/dois')
+            .send({ archive_ids: archiveIds })
+            .set('Accept', 'application/json')
+            .then(res => {
+                if (res) {
+                    dispatch(receiveResult(JSON.parse(res.text)));
+                }
+            });
+    }
+}

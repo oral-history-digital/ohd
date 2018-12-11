@@ -153,12 +153,12 @@ export default class FlyoutTabs extends React.Component {
                         {this.renderPhotos()}
                         {(this.props.project === 'mog') && this.renderMap()}
                         {/* remove for now */}
-                        {/* <InterviewDataContainer
+                        <InterviewDataContainer
                             title={t(this.props, 'citation')}
                             content={<CitationInfoContainer/>}/>
                         <InterviewDataContainer
                             title={t(this.props, 'export')}
-                            content={<ExportInterviewContainer/>}/> */}
+                            content={<ExportInterviewContainer/>}/> 
                     </div>
                 </TabPanel>
             );

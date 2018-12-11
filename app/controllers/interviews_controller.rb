@@ -89,26 +89,28 @@ class InterviewsController < ApplicationController
   end
 
   def dois
+    results = {}
+
     # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
     uri = URI.parse("https://api.test.datacite.org/dois")
     header = {"Content-Type": "application/vnd.api+json"}
     http = Net::HTTP.new(uri.host, uri.port)
-    binding.pry
+    http.use_ssl = true
 
     params[:archive_ids].each do |archive_id|
-      request = Net::HTTP::Post.new(uri.request_uri, header)
-      request.basic_auth("10.5072", "")
-      response = Net::HTTP.start(uri.hostname, uri.port) {|http|
-        #post_data = URI.encode_www_form(doi_json(archive_id))
-        #http.request(request, post_data)
-        http.request(request, doi_json(archive_id).to_json)
-      }
-      binding.pry
+      authorize Interview.find_by_archive_id(archive_id)
+
+      request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/json'})
+      request.basic_auth("TIB.FUB", "Epub_test!")
+      request.body = doi_json(archive_id)
+
+      response = http.request(request)
+      results[archive_id] = response.code
     end
 
     respond_to do |format|
       format.json do
-        render json: response.body
+        render json: results
       end
     end
   end
@@ -238,7 +240,7 @@ class InterviewsController < ApplicationController
           }
         }
       }
-    }#.to_json
+    }.to_json
   end
 
   def doi_content(locale, interview)
