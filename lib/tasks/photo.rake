@@ -14,8 +14,8 @@ namespace :photo do
           c.photo.key.first(4).last(2))
         dest = File.join(dest_dir, c.photo.key)
 
-        csv << [c.interview.archive_id, c.interview.interviewees.first.last_name, c.interview.interviewees.first.first_name, c.photo_file_name, c.caption, c.interview.collection.name, dest]
         csv << "\n"
+        csv << [c.interview.archive_id, c.interview.interviewees.first.last_name, c.interview.interviewees.first.first_name, c.photo_file_name, c.caption, c.interview.collection.name, dest].map{|s| "\"#{s}\""}.join(",")
       end
     end
   end
