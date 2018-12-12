@@ -21,7 +21,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, 'created')
+        render json: data_json(@interview, 'processed')
       end
     end
   end
@@ -42,7 +42,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, 'updated')
+        render json: data_json(@interview, 'processed')
       end
     end
   end
@@ -116,20 +116,24 @@ class InterviewsController < ApplicationController
   end
 
   def doi_contents
-    @interview = Interview.find_by_archive_id(params[:id])
+    json = {}
+    unless params[:id] == 'new'
+      @interview = Interview.find_by_archive_id(params[:id])
+      json = Rails.cache.fetch "#{Project.project_id}-interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
+        locales = Project.available_locales.reject{|locale| locale == 'alias'}
+        doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
+        {
+          archive_id: params[:id],
+          data_type: 'interviews',
+          nested_data_type: 'doi_contents',
+          data: doi_contents,
+        }
+      end
+    end
+
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{Project.project_id}-interview-doi-contents-#{@interview.id}-#{@interview.updated_at}" do
-          locales = Project.available_locales.reject{|locale| locale == 'alias'}
-          doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
-          {
-            archive_id: params[:id],
-            data_type: 'interviews',
-            nested_data_type: 'doi_contents',
-            data: doi_contents,
-          }
-        end.to_json
-        render plain: json
+        render json: json, status: :ok
       end
     end
   end
