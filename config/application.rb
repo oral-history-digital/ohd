@@ -21,6 +21,7 @@ module Archive
 
     config.mapping_to_ascii = config_for("mapping_to_ascii")
     config.project = config_for("project")
+    config.datacite = config_for("datacite")
 
     config.i18n.available_locales = config.project["available_locales"]
   end

@@ -1,0 +1,7 @@
+development:
+  client_id: "TIB.FUB"
+  password: "Epub_test!"
+  url: "https://api.test.datacite.org/dois"
+
+production:
+  url: "https://api.datacite.org/dois"
