@@ -30,13 +30,14 @@ const initialState = {
 const data = (state = initialState, action) => {
     switch (action.type) {
         case DELETE_PROCESS_MSG:
-            let clone = state.statuses[action.dataType];
-            delete clone.processing;
-            delete clone.processed;
-            clone.lastModified = new Date();
             return Object.assign({}, state, {
                 statuses: Object.assign({}, state.statuses, {
-                    [action.dataType]: clone
+                    [action.dataType]: Object.keys(state.statuses[action.dataType]).reduce((acc, key) => {
+                        if ('processing' !== key && 'processed' !== key) {
+                            return {...acc, [key]: state.statuses[action.dataType][key]}
+                        }
+                        return acc;
+                    }, {lastModified: new Date()})
                 })
             })
         case UPDATE_DATA:
@@ -59,22 +60,29 @@ const data = (state = initialState, action) => {
             }
         case REMOVE_DATA:
             if (action.nestedId) {
-                clone = state[action.dataType][action.id][action.nestedDataType];
-                delete clone[action.nestedId];
+                let obj = state[action.dataType][action.id][action.nestedDataType];
                 return Object.assign({}, state, {
                     statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [action.nestedDataType]: clone,
+                            [action.nestedDataType]: Object.keys(obj).reduce((acc, key) => {
+                                if (key !== action.nestedId) {
+                                    return {...acc, [key]: obj[key]}
+                                }
+                                return acc;
+                            }, {})
                         })
                     })
                 })
             } else {
-                clone = state[action.dataType];
-                delete clone[action.id];
                 return Object.assign({}, state, {
                     statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
-                    [action.dataType]: clone,
+                    [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
+                        if (key !== action.nestedId) {
+                            return {...acc, [key]: state[action.dataType][key]}
+                        }
+                        return acc;
+                    }, {})
                 })
             }
         case REQUEST_DATA:
