@@ -158,7 +158,7 @@ export default class FlyoutTabs extends React.Component {
                             content={<CitationInfoContainer/>}/>
                         <InterviewDataContainer
                             title={t(this.props, 'export')}
-                            content={<ExportInterviewContainer/>}/> 
+                            content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}/> 
                     </div>
                 </TabPanel>
             );
@@ -317,6 +317,12 @@ export default class FlyoutTabs extends React.Component {
                     <TabPanel key='archive-search'>
                         <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
                         <ArchiveSearchFormContainer/>
+                        <div className='flyout-sub-tabs-container flyout-video'>
+                            <InterviewDataContainer
+                                title={t(this.props, 'export')}
+                                content={<ExportInterviewContainer archiveIds={this.props.selectedArchiveIds} />}
+                            /> 
+                        </div>
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.editTabPanels()}

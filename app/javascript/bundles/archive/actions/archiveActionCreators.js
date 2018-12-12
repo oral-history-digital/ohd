@@ -13,7 +13,8 @@ import {
     CHANGE_TO_EDIT_VIEW,
 
     //EXPORT_DOI,
-    RECEIVE_RESULT
+    RECEIVE_RESULT,
+    UPDATE_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
 
 export const setLocale = (locale) => ({
@@ -62,3 +63,15 @@ export function submitDois(archiveIds, locale='de') {
             });
     }
 }
+
+const updateSelectedArchiveIds = (archiveId) => ({
+    type: UPDATE_SELECTED_ARCHIVE_IDS,
+    archiveId: archiveId
+});
+
+export function addRemoveArchiveId(archiveId) {
+    return dispatch => {
+        dispatch(updateSelectedArchiveIds(archiveId))
+    }
+};
+

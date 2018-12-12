@@ -164,6 +164,9 @@ export default class InterviewPreview extends React.Component {
                     {this.interviewDetails()}
                 </Link>
                 {this.renderSlider()}
+                <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
+                    <input type='checkbox' />
+                </div>
             </div>
         );
     }

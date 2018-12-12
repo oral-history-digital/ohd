@@ -8,7 +8,8 @@ import {
     CHANGE_TO_EDIT_VIEW,
 
     //EXPORT_DOI,
-    RECEIVE_RESULT
+    RECEIVE_RESULT,
+    UPDATE_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -20,7 +21,8 @@ const initialState = {
     externalLinks: {},
 
     editView: true,
-    doiResult: {}
+    doiResult: {},
+    selectedArchiveIds: []
 }
 
 const archive = (state = initialState, action) => {
@@ -33,6 +35,12 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 archiveId: action.archiveId
             })
+        case UPDATE_SELECTED_ARCHIVE_IDS:
+            if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
+                return Object.assign({}, state, { selectedArchiveIds: [...state.selectedArchiveIds, action.archiveId] })
+            } else {
+                return Object.assign({}, state, { selectedArchiveIds: state.selectedArchiveIds.filter(archiveId => archiveId !== action.archiveId) })
+            }
         case REQUEST_STATIC_CONTENT:
             return Object.assign({}, state, {
                 isFetchingExternalLinks: true

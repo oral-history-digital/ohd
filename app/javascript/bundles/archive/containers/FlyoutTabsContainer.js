@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     return {
         visible: state.flyoutTabs.visible,
         archiveId: state.archive.archiveId,
+        selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: state.archive.locales,
         editView: state.archive.editView,

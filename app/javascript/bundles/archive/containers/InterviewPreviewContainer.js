@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { addRemoveArchiveId } from '../actions/archiveActionCreators';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -18,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => ({
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     searchInInterview: (props) => dispatch(searchInInterview(props)),
+    addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
 })
 
 // Don't forget to actually use connect!
