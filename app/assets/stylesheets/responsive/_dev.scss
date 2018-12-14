@@ -168,4 +168,11 @@
   color: #fff;
 }
 
-
+video::cue {
+	left: 0;
+	right: 0;
+	position: absolute;
+	padding: 1%;
+	margin: 0 3%;
+	font-family: $font-family;
+}
