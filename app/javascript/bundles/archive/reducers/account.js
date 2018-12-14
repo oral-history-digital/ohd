@@ -41,6 +41,7 @@ const account = (state = {}, action) => {
         case LOGIN:
             return Object.assign({}, state, {
                 isLoggingIn: true,
+                error: null,
             })
         case LOGGED_IN:
             return Object.assign({}, state, {
@@ -56,7 +57,8 @@ const account = (state = {}, action) => {
         case AUTH_ERROR:
             return {
                 error: action.error,
-                active: action.active
+                active: action.active,
+                email: action.email,
             } 
         case LOGOUT:
             return {} 

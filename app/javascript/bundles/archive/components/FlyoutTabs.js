@@ -105,7 +105,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     loginTab() {
-        let text = this.props.account.email ? 'logout_page' : 'login_page';
+        let text = (this.props.account.email && !this.props.account.error ) ? 'logout_page' : 'login_page';
         return <Tab className='flyout-top-nav' key='account'>{t(this.props, text)}</Tab>
     }
 
@@ -225,7 +225,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     registryEntriesTab() {
-        let css = this.props.account.email ? 'flyout-tab' : 'hidden';
+        let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='activerecord.models.registry_entries.other'>
                 {t(this.props, 'activerecord.models.registry_entries.other')}
@@ -254,7 +254,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     userContentTab() {
-        let css = this.props.account.email ? 'flyout-tab' : 'hidden';
+        let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='user-content'>{t(this.props, 'user_content')}</Tab>;
     }
 

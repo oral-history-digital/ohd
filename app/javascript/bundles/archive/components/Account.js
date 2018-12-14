@@ -9,13 +9,13 @@ import { t } from '../../../lib/utils';
 export default class Account extends React.Component {
 
     componentDidMount() {
-        if (!this.props.account.email && !this.props.account.isFetchingAccount) {
+        if (!this.props.account.email && !this.props.account.isFetchingAccount && !this.props.account.error) {
             this.props.fetchAccount()
         }
     }
 
     info() {
-        if (this.props.account.email) {
+        if (this.props.account.email &&!this.props.account.error) {
             return <div className='info'>
                 {`${t(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
             </div>
@@ -29,7 +29,7 @@ export default class Account extends React.Component {
     }
 
     loginOrOut() {
-        if (this.props.account.email) {
+        if (this.props.account.email && !this.props.account.error) {
             return (
                 <div
                     className='logout'
