@@ -28,6 +28,7 @@ const initialState = {
 const archive = (state = initialState, action) => {
     switch (action.type) {
         case SET_LOCALE:
+            if (state.projectName) document.title = state.projectName[action.locale] 
             return Object.assign({}, state, {
                 locale: action.locale
             })
