@@ -1,6 +1,10 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
+  skip_before_action :authenticate_user_account!
+  skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
+
   respond_to :json, :html
   layout 'responsive'
 

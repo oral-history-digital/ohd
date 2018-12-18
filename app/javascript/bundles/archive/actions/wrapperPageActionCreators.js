@@ -18,7 +18,7 @@ function receiveStaticContent(json){
         externalLinks: json.external_links,
         homeContent: json.home_content,
         translations: json.translations,
-        country_keys: json.country_keys,
+        countryKeys: json.country_keys,
         collections: json.collections,
         contributionTypes: json.contribution_types,
         rootRegistryEntry: json.root_registry_entry,
