@@ -1,11 +1,10 @@
 class ReadCampscapeFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path)
+  def perform(file_path, receiver)
     read_file(file_path)
     File.delete(file_path) if File.exist?(file_path)
-    #p report
-    # TODO: send mail to someone informing about finished interview
+    AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
   def read_file(file_path)

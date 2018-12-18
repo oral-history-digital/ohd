@@ -30,7 +30,7 @@ class TranscriptsController < ApplicationController
     tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
 
     #interview.create_or_update_segments_from_file(file_path, tape.id, file_column_names, file_column_languages)
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, file_column_names, file_column_languages)
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, file_column_names, file_column_languages, current_user_account)
 
     respond_to do |format|
       format.json do

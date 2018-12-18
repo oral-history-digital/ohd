@@ -2,7 +2,7 @@ class ReadProtocolsFileJob < ApplicationJob
   include IsoHelpers
   queue_as :default
 
-  def perform(file_path)
+  def perform(file_path, receiver)
     zip_content = []
     Zip::File.open(file_path) do |zip_file|
       zip_file.each do |entry|
@@ -31,7 +31,7 @@ class ReadProtocolsFileJob < ApplicationJob
       File.delete(rtf) if File.exist?(rtf)
     end
     File.delete(file_path) if File.exist?(file_path)
-    # TODO: send mail to someone informing about finished interview
+    AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
   end
 
 end
