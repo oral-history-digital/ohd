@@ -1,6 +1,7 @@
 class AdminMailer < ApplicationMailer
 
-  def new_registration_info(registration)
+  def new_registration_info
+    registration = params[:registration]
     @user_name = registration.full_name
     @url = edit_admin_user_registration_url(id: registration.id, locale: 'de')
 

@@ -20,7 +20,7 @@ class UserRegistrationsController < ApplicationController
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      AdminMailer.new_registration_info(@user_registration).deliver
+      AdminMailer.with(registration: @user_registration).new_registration_info.deliver
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       @user_registration = UserRegistration.where(email: @user_registration.email).first
