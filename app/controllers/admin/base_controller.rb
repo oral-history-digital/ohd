@@ -1,16 +1,22 @@
 class Admin::BaseController < ApplicationController
-  #include ExceptionNotification::Notifiable
 
   before_action :authenticate_admin_account
   #skip_before_action  :check_user_authentication!
 
   layout 'admin'
 
-  private
-
-  def set_locale(locale = :nil, valid_locales = [])
-    super I18n.default_locale, [I18n.default_locale]
+  # overwrite pundit`s actions  here to always use scoped policies for admin actions
+  # https://github.com/varvet/pundit#policy-namespacing
+  # 
+  def policy_scope(scope)
+    super([:admin, scope])
   end
+
+  def authorize(record, query = nil)
+    super([:admin, record], query)
+  end
+
+  private
 
   def authenticate_admin_account
     if !signed_in?(:user_account)

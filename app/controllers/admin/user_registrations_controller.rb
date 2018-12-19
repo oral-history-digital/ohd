@@ -3,6 +3,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
   before_action :collection, only: [:index]
 
   def index
+    policy_scope(UserRegistration)
     respond_to do |format|
       format.html 
       format.csv do
@@ -28,10 +29,12 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   def edit
     @object = UserRegistration.find(params[:id])
+    authorize @object
   end
 
   def update
     @object = UserRegistration.find(params[:id])
+    authorize @object
     @workflow_state = @object.workflow_state
     # action dependent on submit value
     @object.admin_comments = user_registration_params['admin_comments']
@@ -78,12 +81,14 @@ class Admin::UserRegistrationsController < Admin::BaseController
 
   def subscribe
     @object = UserRegistration.find(params[:id])
+    authorize @object
     @object.newsletter_signup = true
     @object.save
   end
 
   def unsubscribe
     @object = UserRegistration.find(params[:id])
+    authorize @object
     @object.newsletter_signup = false
     @object.save
   end
