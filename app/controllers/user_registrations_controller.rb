@@ -26,7 +26,7 @@ class UserRegistrationsController < ApplicationController
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.account_activation_instructions(@user_registration.user_account).deliver
+        UserAccountMailer.with(user_account: @user_registration.user_account).account_activation_instructions.deliver
       end
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end

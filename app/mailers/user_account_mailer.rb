@@ -1,7 +1,7 @@
 class UserAccountMailer < ActionMailer::Base
 
-  def account_activation_instructions(account)
-    mail_headers_and_info account
+  def account_activation_instructions
+    mail_headers_and_info params[:user_account]
   end
 
   private
