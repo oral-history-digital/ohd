@@ -62,7 +62,7 @@ module ApplicationHelper
   def link_to_segment(segment, match_text='', show_segment_text=false, ajax=false, options={})
     interview = segment.interview
     item = segment.tape.number
-    position = segment.start_time.round
+    position = segment.time.round
     transcript_language = options.delete(:transcript_language)
     link_text = options.delete(:link_text)
     link_text ||= show_segment_text ? "#{content_tag(:span, "#{segment.timecode}", :class => :timecode)}#{truncate(segment_excerpt_for_match(segment, match_text, 10, transcript_language), :length => 300)}" : t(:segment_link, :scope => "user_interface.labels")
