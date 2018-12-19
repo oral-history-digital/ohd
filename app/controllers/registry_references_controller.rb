@@ -112,15 +112,15 @@ class RegistryReferencesController < ApplicationController
   end
 
   def index
-    policy_scope RegistryReference
+    
     @registry_references, extra_params = 
     if params[:registry_entry_id]
       [
-        RegistryReference.where(registry_entry_id: params[:registry_entry_id]),
+        policy_scope(RegistryReference).where(registry_entry_id: params[:registry_entry_id]),
         "registry_entry_id_#{params[:registry_entry_id]}"
       ]
     else
-      [RegistryReference.all, nil]
+      [policy_scope(RegistryReference), nil]
     end
 
     respond_to do |format|
