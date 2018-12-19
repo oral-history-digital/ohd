@@ -3,7 +3,6 @@ class Admin::UserRegistrationsController < Admin::BaseController
   before_action :collection, only: [:index]
 
   def index
-    policy_scope(UserRegistration)
     respond_to do |format|
       format.html 
       format.csv do
@@ -128,7 +127,7 @@ class Admin::UserRegistrationsController < Admin::BaseController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
-    @user_registrations = UserRegistration.where(conditions).order("created_at DESC")
+    @user_registrations = policy_scope(UserRegistration).where(conditions).order("created_at DESC")
   end
 
   def translate_field_or_value(field, value=nil)

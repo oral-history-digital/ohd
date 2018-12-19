@@ -1,14 +1,6 @@
-class Admin::UserRegistrationPolicy < ApplicationPolicy
+class Admin::UserAccountPolicy < ApplicationPolicy
 
   def show?
-    user.admin?
-  end
-
-  def subscribe?
-    user.admin?
-  end
-
-  def unsubscribe?
     user.admin?
   end
 

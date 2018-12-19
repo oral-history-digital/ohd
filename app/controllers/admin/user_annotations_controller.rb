@@ -4,6 +4,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
   before_action :get_object, only: [:show, :update, :accept, :reject]
 
   def index
+    policy_scope(UserAnnotation)
     respond_to do |format|
       format.html 
       format.csv do
@@ -129,6 +130,7 @@ class Admin::UserAnnotationsController < Admin::BaseController
 
   def get_object
     @object = UserAnnotation.find(params[:id])
+    authorize @object
   end
 
   def render_workflow_change

@@ -1,21 +1,17 @@
-class Admin::UserRegistrationPolicy < ApplicationPolicy
+class Admin::UserPolicy < ApplicationPolicy
 
   def show?
     user.admin?
   end
 
-  def subscribe?
-    user.admin?
-  end
-
-  def unsubscribe?
+  def flag?
     user.admin?
   end
 
   class Scope < Scope
     def resolve
       if user.admin?
-        scope.all
+        scope.where(admin: true).order(last_name: :asc)
       else
         []
       end

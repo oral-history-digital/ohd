@@ -1,7 +1,11 @@
 class Admin::UsersController < Admin::BaseController
 
+  after_action :verify_policy_scoped, only: [:index, :admin]
+  after_action :verify_authorized, except: [:index, :admin]
+
   def show
     @user = User.find(params[:id])
+    authorize @user
     respond_to do |format|
       format.html 
       format.js 
@@ -9,7 +13,10 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    User.find(params[:id]).update_attributes(user_params)
+    @user = User.find(params[:id])
+    authorize @user
+    @user.update_attributes(user_params)
+
     respond_to do |format|
       format.html do
         redirect_to edit_admin_user_registration_path(object.user_registration_id)
@@ -29,20 +36,22 @@ class Admin::UsersController < Admin::BaseController
       end
     end
     conditions = [conditionals.join(' OR ')] + condition_args
-    @users = User.joins(:user_account, :user_registration).
+    @users = policy_scope(User).joins(:user_account, :user_registration).
                   where("user_registrations.workflow_state": 'registered').
-                  where(admin: true).
-                  where(conditions).
-                  order("admin ASC, users.last_name ASC")
+                  where(conditions)
+
+
     respond_to do |format|
       format.html 
     end
   end
 
   def flag
-    @object = User.find(params[:id])
-    @object.admin = params['admin']
-    @object.save
+    @user = User.find(params[:id])
+    authorize @user
+    @user.admin = params['admin']
+    @user.save
+
     respond_to do |format|
       format.html do
         if request.referer.blank?
