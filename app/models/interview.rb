@@ -161,6 +161,7 @@ class Interview < ActiveRecord::Base
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id, :stored => true
     integer :collection_id, :stored => true, :references => Collection
+    string :workflow_state
 
     # in order to find pseudonyms with fulltextsearch (hagen)
     (text :pseudonym_string, :stored => true) if Project.project_id == 'hagen'
@@ -250,6 +251,10 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
+
   def self.random_featured
     researched.with_still_image.order("RAND()").first || first
   end
@@ -322,10 +327,6 @@ class Interview < ActiveRecord::Base
 
   def title
     localized_hash(true)
-  end
-
-  def workflow_state=(change)
-    self.send("#{change}!")
   end
 
   def place_of_birth

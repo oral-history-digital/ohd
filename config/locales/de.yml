@@ -614,6 +614,7 @@ de:
       photo:
         caption: 'Fotobeschreibung'
         data: 'Fotodatei'
+        workflow_state: 'Status ändern zu:'
 
     errors:
       default:

@@ -22,6 +22,7 @@ class BiographicalEntry < ApplicationRecord
     string :archive_id, :multiple => true, :stored => true do
       person ? person.interviews.map{|i| i.archive_id } : ''
     end
+    string :workflow_state
     string :start_date, :stored => true
     (Project.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do

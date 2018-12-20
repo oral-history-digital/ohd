@@ -21,7 +21,7 @@
                    font_size: 18,
                } %>
 
-<% @interview.interviewees.first.biographical_entries.each do |biographical_entry| %>
+<% @interview.interviewees.first.biographical_entries.with_public_state.each do |biographical_entry| %>
   <% start_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.start_date).strftime("%d.%m.%Y") rescue nil %>
   <% end_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.end_date).strftime("%d.%m.%Y") rescue nil %>
   <% title = [start_date, end_date].compact.join(' - ') || '' %>

@@ -68,7 +68,7 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.require(:photo).permit(:interview_id, :caption)
+    params.require(:photo).permit(:interview_id, :caption, :workflow_state)
   end
 
   def deliver file_name

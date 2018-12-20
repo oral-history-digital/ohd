@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{Project.project_id}-#{ref_object.class.name.underscore}-#{ref_object.identifier}-#{ref_object.updated_at}"
+    Rails.cache.delete "#{Project.project_id}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
   end
 
 end

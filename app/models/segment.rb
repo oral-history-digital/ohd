@@ -102,6 +102,11 @@ class Segment < ActiveRecord::Base
     string :media_id, :stored => true
     string :timecode
 
+    # dummy method, necessary for generic search
+    string :workflow_state do
+      'public'
+    end
+
     (Project.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true
     end

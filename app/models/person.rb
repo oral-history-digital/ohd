@@ -23,6 +23,12 @@ class Person < ApplicationRecord
     string :archive_id, :multiple => true, :stored => true do
       contributions.map{|c| c.interview.archive_id }
     end
+
+    # dummy method, necessary for generic search
+    string :workflow_state do
+      'public'
+    end
+
     (Project.available_locales + [:orig]).each do |locale|
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}" 

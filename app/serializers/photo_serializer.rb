@@ -1,7 +1,17 @@
 class PhotoSerializer < ActiveModel::Serializer
   include IsoHelpers
 
-  attributes :id, :captions, :src, :thumb_src
+  attributes :id, 
+             :captions, 
+             :src, 
+             :thumb_src,
+             :text,
+             :workflow_state,
+             :transitions_to
+
+  def transitions_to
+    object.current_state.events.map{|e| e.first}
+  end
 
   def captions
     I18n.available_locales.inject({}) do |mem, locale|
@@ -19,6 +29,11 @@ class PhotoSerializer < ActiveModel::Serializer
     #url_for object.photo.variant(resize_to_fit: [100, 100])
     #rails_representation_url(variant)
     Rails.application.routes.url_helpers.rails_blob_path(object.photo, only_path: true) if object.photo.attachment
+  end
+
+  # dummy. will be filled in search
+  def text
+    {}
   end
 
 end

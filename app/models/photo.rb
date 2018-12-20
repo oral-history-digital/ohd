@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Photo < ActiveRecord::Base
+  include Workflow
 
   belongs_to :interview
   has_one_attached :photo
@@ -29,12 +30,26 @@ class Photo < ActiveRecord::Base
     string :archive_id, :multiple => true, :stored => true do
       interview.archive_id
     end
+    string :workflow_state
     integer :id, :stored => true
     (Project.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
         caption(locale)
       end
     end
+  end
+
+  workflow do
+    state :unshared do
+      event :publish, transition_to: :public
+    end
+    state :public do
+      event :unpublish, transitions_to: :unshared
+    end
+  end
+
+  def workflow_state=(change)
+    self.send("#{change}!")
   end
 
   # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
