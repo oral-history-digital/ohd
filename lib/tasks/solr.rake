@@ -18,49 +18,15 @@ namespace :solr do
       p "finished all segments in #{(finish - start)} seconds."
     end
 
-    desc 'reindex interviews'
-    task :interviews => :environment do
-      start = Time.now
-      p "starting to reindex interviews ..."
-      Interview.reindex
-      finish = Time.now
-      p "finished all interviews in #{(finish - start)} seconds."
-    end
-
-    desc 'reindex people'
-    task :people => :environment do
-      start = Time.now
-      p "starting to reindex people ..."
-      Person.reindex
-      finish = Time.now
-      p "finished all people in #{(finish - start)} seconds."
-    end
-
-    desc 'reindex biographical_entries'
-    task :biographical_entries => :environment do
-      start = Time.now
-      p "starting to reindex biographical_entries ..."
-      BiographicalEntry.reindex
-      finish = Time.now
-      p "finished all biographical_entries in #{(finish - start)} seconds."
-    end
-
-    desc 'reindex photos'
-    task :photos => :environment do
-      start = Time.now
-      p "starting to reindex photos ..."
-      Photo.reindex
-      finish = Time.now
-      p "finished all photos in #{(finish - start)} seconds."
-    end
-
-    desc 'reindex registry_entries'
-    task :registry_entries => :environment do
-      start = Time.now
-      p "starting to reindex registry_entries ..."
-      RegistryEntry.reindex
-      finish = Time.now
-      p "finished all registry_entries in #{(finish - start)} seconds."
+    %w(interview person biographical_entry photo registry_entry).each do |that|
+      desc "reindex #{that.pluralize}"
+      task that.pluralize.to_sym => :environment do
+        start = Time.now
+        p "starting to reindex #{that.pluralize} ..."
+        that.classify.constantize.reindex
+        finish = Time.now
+        p "finished all #{that.pluralize} in #{(finish - start)} seconds."
+      end
     end
 
     desc 'commit all indices'
