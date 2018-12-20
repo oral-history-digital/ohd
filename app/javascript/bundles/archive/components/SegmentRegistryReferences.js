@@ -54,6 +54,7 @@ export default class SegmentRegistryReferences extends React.Component {
                             refObjectType='segment'
                             locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
+                            setOpenReference={this.props.setOpenReference}
                         />
                     );
                 }

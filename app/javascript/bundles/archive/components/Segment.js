@@ -13,6 +13,8 @@ export default class Segment extends React.Component {
             contentOpen: false,
             contentType: 'none'
         };
+
+        this.setOpenReference = this.setOpenReference.bind(this);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -55,18 +57,17 @@ export default class Segment extends React.Component {
         });
     }
 
-    setOpenReference(reference) {
-        this.setState({openReference: reference});
+    setOpenReference(entry) {
+        this.setState({openReference: entry});
     }
 
     openReference() {
         if (this.state.openReference) {
-            let openReference = this.state.openReference.desc_with_note[this.props.locale];
             return (
                 <div className='scope-note'>
                     <div onClick={() => this.setOpenReference(null)} className='close'></div>
-                    <div className='title'>{openReference.title}</div>
-                    <div className='note'>{openReference.note}</div>
+                    <div className='title'>{this.state.openReference.name[this.props.locale]}</div>
+                    <div className='note'>{this.state.openReference.notes[this.props.locale]}</div>
                 </div>
             )
         }
@@ -74,7 +75,12 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (this.state.contentType == 'references') {
-            return <SegmentRegistryReferencesContainer segment={this.props.data} interview={this.props.interview} locale={locale} />
+            return <SegmentRegistryReferencesContainer 
+                       segment={this.props.data} 
+                       interview={this.props.interview} 
+                       locale={locale} 
+                       setOpenReference={this.setOpenReference}
+                   />
             //return this.props.data.references.map((reference, index) => {
                 //if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
                     //return (
