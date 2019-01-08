@@ -1,10 +1,13 @@
 class Admin::UserRegistrationsController < Admin::BaseController
 
+  layout 'responsive'
   before_action :collection, only: [:index]
 
   def index
     respond_to do |format|
-      format.html 
+      format.html { render 'react/app' }
+      format.json do |format|
+      end
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'

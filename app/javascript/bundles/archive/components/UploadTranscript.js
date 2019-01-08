@@ -174,7 +174,7 @@ export default class UploadTranscript extends React.Component {
     //}
 
     render() {
-        let tabIndex = this.props.locales.length + 5;
+        let tabIndex = this.props.locales.length + 6;
         let _this = this;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>

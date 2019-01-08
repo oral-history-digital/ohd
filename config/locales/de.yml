@@ -264,6 +264,8 @@ de:
       delete_parent: 'Elternknoten löschen'
     registry_entries: 
       edit: 'Registereinträge bearbeiten'
+    users: 
+      admin: 'Benutzer verwalten'
     history: 
       new: 'lebensgeschichtl. Ereignis hinzufügen'
       edit: 'lebensgeschichtl. Ereignis bearbeiten'

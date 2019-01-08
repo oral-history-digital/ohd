@@ -36,7 +36,7 @@ export default class EditPerson extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 7;
+        let tabIndex = this.props.locales.length + 8;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>

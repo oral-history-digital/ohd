@@ -14,10 +14,10 @@ import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContain
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
-import { t, admin } from '../../../lib/utils';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 import ExportInterviewContainer from '../containers/ExportInterviewContainer';
+import { t, admin } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -65,24 +65,28 @@ export default class FlyoutTabs extends React.Component {
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 4) {
+             // registry entries
+            this.context.router.history.push(`/${this.props.locale}/registry_entries`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 5) {
              //edit interview
             this.context.router.history.push(`/${this.props.locale}/interviews/new`);
             this.setState({tabIndex: tabIndex});
-        } else if (tabIndex === this.props.locales.length + 5) {
+        } else if (tabIndex === this.props.locales.length + 6) {
              // upload transcript
             this.context.router.history.push(`/${this.props.locale}/transcripts/new`);
             this.setState({tabIndex: tabIndex});
-        } else if (tabIndex === this.props.locales.length + 6) {
+        } else if (tabIndex === this.props.locales.length + 7) {
              // uploads
             this.context.router.history.push(`/${this.props.locale}/uploads/new`);
             this.setState({tabIndex: tabIndex});
-        } else if (tabIndex === this.props.locales.length + 7) {
+        } else if (tabIndex === this.props.locales.length + 8) {
              // add person
             this.context.router.history.push(`/${this.props.locale}/people/new`);
             this.setState({tabIndex: tabIndex});
-        } else if (tabIndex === this.props.locales.length + 8) {
-             // registry entries
-            this.context.router.history.push(`/${this.props.locale}/registry_entries`);
+        } else if (tabIndex === this.props.locales.length + 9) {
+             // users administration
+            this.context.router.history.push(`/${this.props.locale}/admin/user_registrations`);
             this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
@@ -192,6 +196,7 @@ export default class FlyoutTabs extends React.Component {
             <Tab className={css} key='edit.upload_transcript'>{t(this.props, 'edit.upload_transcript')}</Tab>,
             <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
+            <Tab className={css} key='edit.users.admin'>{t(this.props, 'edit.users.admin')}</Tab>,
         ];
     }
 
@@ -213,6 +218,9 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-add-person'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.person.new')}</div>
                 </TabPanel>,
+                <TabPanel key={'tabpanel-users-admin'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
+                </TabPanel>,
             ];
         } else {
             return [
@@ -220,6 +228,7 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='tabpanel-upload-transcript'/>,
                 <TabPanel key='tabpanel-uploads'/>,
                 <TabPanel key='tabpanel-add-person'/>,
+                <TabPanel key='tabpanel-users-admin'/>,
             ]
         }
     }
@@ -302,8 +311,8 @@ export default class FlyoutTabs extends React.Component {
                         {this.localeTabs()}
                         <Tab className='flyout-tab' key='archive-search'>{t(this.props, 'archive_search')}</Tab>
                         {this.interviewTab()}
-                        {this.editTabs()}
                         {this.registryEntriesTab()}
+                        {this.editTabs()}
                         {this.userContentTab()}
                     </TabList>
 
@@ -325,8 +334,8 @@ export default class FlyoutTabs extends React.Component {
                         </div>
                     </TabPanel>
                     {this.interviewTabPanel()}
-                    {this.editTabPanels()}
                     {this.registryEntriesTabPanel()}
+                    {this.editTabPanels()}
                     {this.userContentTabPanel()}
                 </div>
             </Tabs>

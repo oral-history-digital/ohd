@@ -62,7 +62,7 @@ export default class Uploads extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 6;
+        let tabIndex = this.props.locales.length + 7;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
