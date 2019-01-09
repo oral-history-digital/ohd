@@ -1,4 +1,20 @@
-class Admin::UserRegistrationPolicy < ApplicationPolicy
+class UserRegistrationPolicy < ApplicationPolicy
+
+  #def new?
+    #true
+  #end
+
+  #def create?
+    #new?
+  #end
+
+  #def activate?
+    #new?
+  #end
+
+  #def confirm?
+    #new?
+  #end
 
   def show?
     user.admin?

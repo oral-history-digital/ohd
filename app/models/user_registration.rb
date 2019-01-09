@@ -185,6 +185,10 @@ EVAL
     end
   end
 
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
+
   # Registers a UserAccount by generating a confirmation token
   def register
     create_account
@@ -244,6 +248,10 @@ EVAL
 
   def full_name
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
+  end
+
+  def updated_at
+    (user && user.updated_at) || created_at
   end
 
   def form_parameters

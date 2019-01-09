@@ -32,7 +32,7 @@ const App = (props) => (
           <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
           <Route path="/:locale/searches/archive" component={SearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
-          <Route path="/:locale/admin/user_registrations" component={UserRegistrationsContainer} />
+          <Route path="/:locale/user_registrations" component={UserRegistrationsContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
           <Route path="/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
           <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />

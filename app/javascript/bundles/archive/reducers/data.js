@@ -24,6 +24,7 @@ const initialState = {
         uploads: {},
         biographical_entries: {},
         initials: {},
+        user_registrations: {},
     }
 }
 

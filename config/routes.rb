@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       member do
         post :confirm
         get :activate
+        #post :subscribe
+        #post :unsubscribe
       end
     end
 
@@ -115,12 +117,6 @@ Rails.application.routes.draw do
         end
         member do
           post :flag
-        end
-      end
-      resources :user_registrations do
-        member do
-          post :subscribe
-          post :unsubscribe
         end
       end
       resources :user_annotations do
