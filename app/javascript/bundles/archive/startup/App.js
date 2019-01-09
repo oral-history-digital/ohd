@@ -12,7 +12,7 @@ import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import UploadsContainer from '../containers/UploadsContainer';
 import EditPersonContainer from '../containers/EditPersonContainer';
 import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeContainer';
-import SearchContainer from '../containers/ArchiveSearchContainer';
+import ArchiveSearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
 import UserRegistrationsContainer from '../containers/UserRegistrationsContainer';
 import ActivateAccountContainer from '../containers/ActivateAccountContainer';
@@ -30,7 +30,7 @@ const App = (props) => (
           <Route path="/:locale/uploads/new" component={UploadsContainer} />
           <Route exact path="/:locale/people/new" component={EditPersonContainer} />
           <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
-          <Route path="/:locale/searches/archive" component={SearchContainer} />
+          <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
           <Route path="/:locale/user_registrations" component={UserRegistrationsContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
