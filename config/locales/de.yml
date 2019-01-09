@@ -207,6 +207,9 @@ de:
     unpublish: 'nicht öffentlich'
     public: 'öffentlich'
     publish: 'öffentlich'
+    register: 'registriert'
+    reject: 'zurückgewiesen'
+    postpone: 'zurückgestellt'
 
   contributions:
     # general:
@@ -290,6 +293,8 @@ de:
       new: 'Foto hinzufügen'
       edit: 'Foto bearbeiten'
       delete: 'Foto löschen'
+    user_registration:
+      edit: 'Bearbeiten'
     upload_transcript: 'Transkript hochladen'
 
   upload:
@@ -306,20 +311,21 @@ de:
     registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
     registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
     registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
+    tos_agreement: 'Nutzungsbedingungen'
+    priv_agreement: 'Hinweise zum Datenschutz'
     notes_on_receive_newsletter: 'Ich möchte den Newsletter des Projektes "Erinnerungen an die Okkupation Griechenlands." abonnieren.'
     notes_on_tos_agreement: 'Ich stimme den Nutzungsbedingungen zu.'
     priv_agreement_alias: 'Datenschutzbestimmungen'
     notes_on_priv_agreement: 'Ich stimme der  Datenschutzpraxis zu.'
     register: 'Registrierung senden'
-    appellations:
+    appellation:
       ms: 'Frau'
       ms_dr: 'Frau Dr.'
       ms_prof: 'Frau Prof.'
       mr: 'Herr'
       mr_dr: 'Herr Dr.'
       mr_prof: 'Herr Prof.'
-    job_description: 'Beruf'
-    job_descriptions:
+    job_description:
       researcher: 'Dozent(in)/Forscher(in)'
       filmmaker: 'Filmemacher(in)'
       journalist: 'Journalist(in)'
@@ -328,7 +334,6 @@ de:
       pupil: 'Schüler(in)'
       student: 'Student(in)'
       other: 'Sonstige'
-    research_intention: 'Rechercheanliegen'
     research_intentions:
       exhibition: 'Ausstellung'
       education: 'Bildungsarbeit'
@@ -341,8 +346,6 @@ de:
       university_teaching: 'universitäre Lehre'
       scientific_paper: 'wissenschaftliche Publikation'
       other: 'Sonstige'
-    tos_agreement: 'Nutzungsbedingungen'
-    priv_agreement: 'Hinweise zum Datenschutz'
 
   genders:
     female: 'weiblich'
@@ -446,6 +449,9 @@ de:
       biographical_entry:
         one: 'Kurzbiographie'
         other: 'Kurzbiographien'
+      user_registration:
+        one: 'Benutzer/ Registrierung'
+        other: 'Benutzer/ Registrierung'
 
     attributes:
       history:
@@ -547,40 +553,17 @@ de:
         login: 'Login'
         password: 'Passwort'
       user_registration:
+        created_at: 'Erstellt am'
+        activated_at: 'Aktiviert am'
+        processed_at: 'Bearbeitet am'
+        admin_comments: 'Kommentar'
+        default_locale: 'Standart Locale'
         appellation: 'Anrede'
-        appellations:
-          ms: 'Frau'
-          ms_dr: 'Frau Dr.'
-          ms_prof: 'Frau Prof.'
-          mr: 'Herr'
-          mr_dr: 'Herr Dr.'
-          mr_prof: 'Herr Prof.'
         first_name: 'Vorname'
         last_name: 'Nachname'
         email: 'E-Mail'
         job_description: 'Beruf'
-        job_descriptions:
-          researcher: 'Dozent(in)/Forscher(in)'
-          filmmaker: 'Filmemacher(in)'
-          journalist: 'Journalist(in)'
-          teacher: 'Lehrer(in)'
-          memorial_staff: 'Mitarbeiter(in) (Museen /Gedenkstätten)'
-          pupil: 'Schüler(in)'
-          student: 'Student(in)'
-          other: 'Sonstige'
-        research_intention: 'Rechercheanliegen'
-        research_intentions:
-          exhibition: 'Ausstellung'
-          education: 'Bildungsarbeit'
-          film: 'Dokumentarfilm'
-          genealogy: 'Familienforschung'
-          art: 'Kunstprojekt'
-          personal_interest: 'Persönliches Interesse'
-          press_publishing: 'Pressepublikation'
-          school_project: 'Schulprojekt /Referat'
-          university_teaching: 'universitäre Lehre'
-          scientific_paper: 'wissenschaftliche Publikation'
-          other: 'Sonstige'
+        research_intentions: 'Rechercheanliegen'
         comments: 'Präzisierung des Anliegens'
         organization: 'Institution'
         homepage: 'Homepage der Institution'
@@ -593,6 +576,8 @@ de:
         tos_agreement: 'Nutzungsbedingungen'
         priv_agreement: 'Hinweise zum Datenschutz'
         register: 'Registrierung senden'
+        workflow_state: 'Status'
+        transition_to: 'Status ändern zu:'
       person:
         gender: 'Geschlecht'
         first_name: 'Vorname'

@@ -40,9 +40,7 @@ export default class RegisterForm extends React.Component {
                     {
                         elementType: 'input',
                         attribute: 'email',
-                        //type: 'text',
                         type: 'email',
-                        //validate: function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}
                         validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
                     },
                     {
@@ -53,7 +51,7 @@ export default class RegisterForm extends React.Component {
                     },
                     {
                         elementType: 'select',
-                        attribute: 'research_intention',
+                        attribute: 'research_intentions',
                         values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
                         withEmpty: true,
                     },

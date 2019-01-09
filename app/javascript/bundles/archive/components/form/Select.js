@@ -51,7 +51,7 @@ export default class Select extends React.Component {
                 if (typeof value === 'string') {
                     text = this.props.optionsScope ? 
                         t(this.props, `${this.props.optionsScope}.${value}`) :
-                        t(this.props, `${this.props.scope}.${this.props.attribute}s.${value}`)
+                        t(this.props, `${this.props.scope}.${this.props.attribute}.${value}`)
                     val = value;
                 } else {
                     text = value.name[this.props.locale];
