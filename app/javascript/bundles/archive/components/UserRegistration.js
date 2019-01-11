@@ -16,7 +16,6 @@ export default class UserRegistration extends React.Component {
                         'email',
                         'job_description',
                         'research_intentions',
-                        'research_intention',
                         'comments',
                         'organization',
                         'homepage',
