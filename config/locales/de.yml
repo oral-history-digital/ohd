@@ -210,6 +210,8 @@ de:
     register: 'registriert'
     reject: 'zurückgewiesen'
     postpone: 'zurückgestellt'
+    activate: 'aktiviert'
+    expire: 'zurückgestellt'
 
   contributions:
     # general:
