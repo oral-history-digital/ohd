@@ -111,7 +111,6 @@ class UserRegistrationsController < ApplicationController
             extra_params: extra_params
           }
         end
-        binding.pry
         render json: json
       end
       format.csv do

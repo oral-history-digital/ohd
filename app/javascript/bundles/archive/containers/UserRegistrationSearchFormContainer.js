@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import UserRegistrationSearchForm from '../components/UserRegistrationSearchForm';
-import { fetchData } from '../actions/dataActionCreators';
 import { 
     resetUserRegistrationQuery, 
     setUserRegistrationQueryParams, 
+    searchUserRegistration,
 } from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
@@ -12,12 +12,12 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         locale: state.archive.locale,
         query: state.search.userRegistrations.query,
-        userRegistrationsStatus: state.data.statuses.user_registrations,
+        isUserRegistrationSearching: state.search.isUserRegistrationSearching,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    searchUserRegistration: (url) => dispatch(searchUserRegistration(url)),
     setUserRegistrationQueryParams: (params) => dispatch(setUserRegistrationQueryParams(params)),
     resetUserRegistrationQuery: () => dispatch(resetUserRegistrationQuery()),
 })

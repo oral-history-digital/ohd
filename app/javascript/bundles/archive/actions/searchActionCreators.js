@@ -22,6 +22,8 @@ import {
 
     SET_USER_REGISTRATION_QUERY_PARAMS,
     RESET_USER_REGISTRATION_QUERY,
+    REQUEST_USER_REGISTRATION_SEARCH,
+    RECEIVE_USER_REGISTRATION_SEARCH,
 } from '../constants/archiveConstants';
 
 export function setQueryParams(params){
@@ -146,6 +148,25 @@ export function setUserRegistrationQueryParams(params){
 export function resetUserRegistrationQuery(){
     return {
         type: RESET_USER_REGISTRATION_QUERY,
+    }
+}
+
+const requestUserRegistrationSearch = (searchQuery) => ({
+    type: REQUEST_USER_REGISTRATION_SEARCH,
+});
+
+function receiveUserRegistrationSearchResults(json){
+    return {
+        type: RECEIVE_USER_REGISTRATION_SEARCH,
+        results: json.data,
+        receivedAt: Date.now()
+    }
+}
+
+export function searchUserRegistration(url, searchQuery) {
+    return dispatch => {
+        dispatch(requestUserRegistrationSearch(searchQuery))
+        Loader.getJson(url, searchQuery, dispatch, receiveUserRegistrationSearchResults);
     }
 }
 

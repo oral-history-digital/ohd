@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        userRegistrations: state.data.user_registrations,
+        userRegistrations: state.search.userRegistrations.results,
     }
 }
 

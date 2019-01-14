@@ -14,22 +14,17 @@ export default class UserRegistrationSearchForm extends React.Component {
     }
 
     componentDidMount() {
-        this.loadUserRegistrations();
+        this.getDataForQuery();
     }
 
-    loadUserRegistrations() {
+
+    getDataForQuery() {
         if (
-            !this.props.userRegistrationsStatus[this.statifiedQuery()]
+            !this.props.isUserRegistrationSearching
         ) {
-            this.props.fetchData('user_registrations', null, null, this.props.locale, this.parametrizedQuery());
+            let url = `/${this.context.router.route.match.params.locale}/user_registrations?${this.parametrizedQuery()}`;
+            this.props.searchUserRegistration(url);
         }
-    }
-
-    userRegistrationsLoaded() {
-        return (
-            this.props.userRegistrationsStatus[this.statifiedQuery()] &&
-            this.props.userRegistrationsStatus[this.statifiedQuery()].split('-')[0] === 'fetched' 
-        )
     }
 
     parametrizedQuery() {
@@ -38,10 +33,6 @@ export default class UserRegistrationSearchForm extends React.Component {
             params.push(`${key}=${this.props.query[key]}`);
         });
         return params.join('&');
-    }
-
-    statifiedQuery() {
-        return this.parametrizedQuery().replace(/[=&]/g, '_');
     }
 
     handleChange(event) {
@@ -58,8 +49,7 @@ export default class UserRegistrationSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        let parametrized = this.parametrizedQuery();
-        this.props.fetchData('user_registrations', null, null, this.props.locale, parametrized);
+        this.getDataForQuery();
     }
 
     workflowStateOptions() {

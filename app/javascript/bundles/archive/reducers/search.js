@@ -8,6 +8,8 @@ import {
 
     SET_USER_REGISTRATION_QUERY_PARAMS,
     RESET_USER_REGISTRATION_QUERY,
+    REQUEST_USER_REGISTRATION_SEARCH,
+    RECEIVE_USER_REGISTRATION_SEARCH,
 
     SET_QUERY_PARAMS,
     RESET_QUERY,
@@ -34,6 +36,8 @@ const initialState = {
     userRegistrations: {
         query: {
             workflow_state: 'unchecked',
+        },
+        results: {
         }
     },
     allInterviewsCount: 0,
@@ -95,6 +99,17 @@ const search = (state = initialState, action) => {
                 userRegistrations: Object.assign({}, state.userRegistrations, {
                     query: {workflow_state: 'unchecked'},
                 }),
+            })
+        case REQUEST_USER_REGISTRATION_SEARCH:
+            return Object.assign({}, state, {
+                isUserRegistrationSearching: true,
+            })
+        case RECEIVE_USER_REGISTRATION_SEARCH:
+            return Object.assign({}, state, {
+                isUserRegistrationSearching: false,
+                userRegistrations: Object.assign({}, state.userRegistrations, {
+                    results: action.results
+                })
             })
         case REQUEST_FACETS:
             return Object.assign({}, state, {

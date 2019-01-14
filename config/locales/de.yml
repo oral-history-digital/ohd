@@ -212,6 +212,12 @@ de:
     postpone: 'zurückgestellt'
     activate: 'aktiviert'
     expire: 'zurückgestellt'
+    all: 'Alle'
+    unchecked: 'unbeantwortet'
+    checked: 'geprüft'
+    postponed: 'zurückgestellt'
+    rejected: 'abgelehnt'
+    registered: 'registriert'
 
   contributions:
     # general:
