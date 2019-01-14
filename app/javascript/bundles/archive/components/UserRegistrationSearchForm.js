@@ -30,7 +30,10 @@ export default class UserRegistrationSearchForm extends React.Component {
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        this.props.setUserRegistrationQueryParams({[name]: value});
+        this.props.setUserRegistrationQueryParams({
+            [name]: value,
+            page: 1,
+        });
     }
 
     handleReset(event) {

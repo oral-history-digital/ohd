@@ -113,7 +113,6 @@ class UserRegistrationsController < ApplicationController
             result_pages_count: @user_registrations.total_pages
           }
         end
-        binding.pry
         render json: json
       end
       format.csv do

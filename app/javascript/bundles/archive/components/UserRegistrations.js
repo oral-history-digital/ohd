@@ -24,8 +24,6 @@ export default class UserRegistrations extends React.Component {
     handleScroll(inView) {
         if(inView){
             this.props.setUserRegistrationQueryParams({page: this.props.query.page + 1});
-            //let query = this.props.query;
-            //query['page'] = (this.props.query['page'] || 1) + 1;
             let url = `/${this.props.locale}/user_registrations`;
             this.props.searchUserRegistration(url, this.props.query);
         }
