@@ -36,9 +36,11 @@ const initialState = {
     userRegistrations: {
         query: {
             workflow_state: 'unchecked',
+            page: 1,
         },
         results: {
-        }
+        },
+        resultPagesCount: 1,
     },
     allInterviewsCount: 0,
     resultPagesCount: 1,
@@ -105,10 +107,19 @@ const search = (state = initialState, action) => {
                 isUserRegistrationSearching: true,
             })
         case RECEIVE_USER_REGISTRATION_SEARCH:
+            let results = {};
+            if (action.page > 1){
+                results = Object.assign({}, state.userRegistrations.results, action.results)
+            }
+            else {
+                results = action.results;
+            }
+
             return Object.assign({}, state, {
                 isUserRegistrationSearching: false,
                 userRegistrations: Object.assign({}, state.userRegistrations, {
-                    results: action.results
+                    results: results,
+                    resultPagesCount: action.resultPagesCount,
                 })
             })
         case REQUEST_FACETS:

@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    searchUserRegistration: (url) => dispatch(searchUserRegistration(url)),
+    searchUserRegistration: (url, query) => dispatch(searchUserRegistration(url, query)),
     setUserRegistrationQueryParams: (params) => dispatch(setUserRegistrationQueryParams(params)),
     resetUserRegistrationQuery: () => dispatch(resetUserRegistrationQuery()),
 })

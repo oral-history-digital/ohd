@@ -159,6 +159,7 @@ function receiveUserRegistrationSearchResults(json){
     return {
         type: RECEIVE_USER_REGISTRATION_SEARCH,
         results: json.data,
+        resultPagesCount: json.result_pages_count,
         receivedAt: Date.now()
     }
 }

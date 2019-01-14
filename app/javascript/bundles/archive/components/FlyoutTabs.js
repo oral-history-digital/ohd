@@ -87,7 +87,7 @@ export default class FlyoutTabs extends React.Component {
             this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 9) {
              // users administration
-            this.context.router.history.push(`/${this.props.locale}/admin/user_registrations`);
+            this.context.router.history.push(`/${this.props.locale}/user_registrations`);
             this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})

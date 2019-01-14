@@ -22,17 +22,9 @@ export default class UserRegistrationSearchForm extends React.Component {
         if (
             !this.props.isUserRegistrationSearching
         ) {
-            let url = `/${this.context.router.route.match.params.locale}/user_registrations?${this.parametrizedQuery()}`;
-            this.props.searchUserRegistration(url);
+            let url = `/${this.context.router.route.match.params.locale}/user_registrations`;
+            this.props.searchUserRegistration(url, this.props.query);
         }
-    }
-
-    parametrizedQuery() {
-        let params = [];
-        Object.keys(this.props.query).map((key, index) => {
-            params.push(`${key}=${this.props.query[key]}`);
-        });
-        return params.join('&');
     }
 
     handleChange(event) {

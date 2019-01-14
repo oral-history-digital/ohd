@@ -104,13 +104,16 @@ class UserRegistrationsController < ApplicationController
       format.json do |format|
         extra_params = @filters.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
         #render json: Rails.cache.fetch("#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{User.maximum(:updated_at)}") do
-        json = Rails.cache.fetch("#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{User.maximum(:updated_at)}") do
+        json = Rails.cache.fetch("#{Project.project_id}-#{Project.project_id}-#{extra_params}-page-#{params[:page]}-#{User.maximum(:updated_at)}") do
           {
             data: @user_registrations.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'user_registrations',
-            extra_params: extra_params
+            extra_params: extra_params,
+            page: params[:page], 
+            result_pages_count: @user_registrations.total_pages
           }
         end
+        binding.pry
         render json: json
       end
       format.csv do
