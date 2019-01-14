@@ -6,6 +6,9 @@ import {
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
 
+    SET_USER_REGISTRATION_QUERY_PARAMS,
+    RESET_USER_REGISTRATION_QUERY,
+
     SET_QUERY_PARAMS,
     RESET_QUERY,
     RECEIVE_FACETS,
@@ -27,6 +30,11 @@ const initialState = {
     registryEntries: {
         showRegistryEntriesTree: true,
         results: []
+    },
+    userRegistrations: {
+        query: {
+            workflow_state: 'unchecked',
+        }
     },
     allInterviewsCount: 0,
     resultPagesCount: 1,
@@ -75,6 +83,18 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 query: {},
                 interviews: {},
+            })
+        case SET_USER_REGISTRATION_QUERY_PARAMS :
+            return Object.assign({}, state, {
+                userRegistrations: Object.assign({}, state.userRegistrations, {
+                    query: Object.assign({}, state.userRegistrations.query, action.params)
+                })
+            })
+        case RESET_USER_REGISTRATION_QUERY:
+            return Object.assign({}, state, {
+                userRegistrations: Object.assign({}, state.userRegistrations, {
+                    query: {workflow_state: 'unchecked'},
+                }),
             })
         case REQUEST_FACETS:
             return Object.assign({}, state, {

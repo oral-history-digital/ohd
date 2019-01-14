@@ -100,7 +100,6 @@ class UserRegistrationsController < ApplicationController
 
   def index
     respond_to do |format|
-      #format.html
       format.html { render 'react/app' }
       format.json do |format|
         extra_params = @filters.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
@@ -112,6 +111,7 @@ class UserRegistrationsController < ApplicationController
             extra_params: extra_params
           }
         end
+        binding.pry
         render json: json
       end
       format.csv do
@@ -176,7 +176,7 @@ class UserRegistrationsController < ApplicationController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
-    @user_registrations = policy_scope(UserRegistration).where(conditions).order("created_at DESC")
+    @user_registrations = policy_scope(UserRegistration).where(conditions).order("created_at DESC").paginate page: params[:page] || 1
   end
 
   def translate_field_or_value(field, value=nil)

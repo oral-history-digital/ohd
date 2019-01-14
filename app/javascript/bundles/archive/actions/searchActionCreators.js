@@ -19,11 +19,14 @@ import {
     RECEIVE_INTERVIEW_SEARCH,
     INTERVIEW_SEARCH_URL,
     FACETS_URL,
+
+    SET_USER_REGISTRATION_QUERY_PARAMS,
+    RESET_USER_REGISTRATION_QUERY,
 } from '../constants/archiveConstants';
 
 export function setQueryParams(params){
     return {
-        type: SET_QUERY_PARAMS ,
+        type: SET_QUERY_PARAMS,
         params: params
     }
 }
@@ -130,6 +133,19 @@ export function changeRegistryEntriesViewMode(bool){
     return {
         type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
         bool: bool
+    }
+}
+
+export function setUserRegistrationQueryParams(params){
+    return {
+        type: SET_USER_REGISTRATION_QUERY_PARAMS,
+        params: params
+    }
+}
+
+export function resetUserRegistrationQuery(){
+    return {
+        type: RESET_USER_REGISTRATION_QUERY,
     }
 }
 

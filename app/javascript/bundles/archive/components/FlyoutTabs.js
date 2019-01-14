@@ -4,6 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
+import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
@@ -220,7 +221,8 @@ export default class FlyoutTabs extends React.Component {
                 </TabPanel>,
                 <TabPanel key={'tabpanel-users-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
-                </TabPanel>,
+                    <UserRegistrationSearchFormContainer/>
+                </TabPanel>
             ];
         } else {
             return [
