@@ -20,8 +20,6 @@ import {
     INTERVIEW_SEARCH_URL,
     FACETS_URL,
 
-    SET_USER_REGISTRATION_QUERY_PARAMS,
-    RESET_USER_REGISTRATION_QUERY,
     REQUEST_USER_REGISTRATION_SEARCH,
     RECEIVE_USER_REGISTRATION_SEARCH,
 } from '../constants/archiveConstants';
@@ -138,19 +136,6 @@ export function changeRegistryEntriesViewMode(bool){
     return {
         type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
         bool: bool
-    }
-}
-
-export function setUserRegistrationQueryParams(params){
-    return {
-        type: SET_USER_REGISTRATION_QUERY_PARAMS,
-        params: params
-    }
-}
-
-export function resetUserRegistrationQuery(){
-    return {
-        type: RESET_USER_REGISTRATION_QUERY,
     }
 }
 

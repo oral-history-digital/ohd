@@ -6,8 +6,6 @@ import {
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
 
-    SET_USER_REGISTRATION_QUERY_PARAMS,
-    RESET_USER_REGISTRATION_QUERY,
     REQUEST_USER_REGISTRATION_SEARCH,
     RECEIVE_USER_REGISTRATION_SEARCH,
 
@@ -90,18 +88,6 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 [action.scope]: Object.assign({}, state[action.scope], {
                     query: {},
-                }),
-            })
-        case SET_USER_REGISTRATION_QUERY_PARAMS :
-            return Object.assign({}, state, {
-                userRegistrations: Object.assign({}, state.userRegistrations, {
-                    query: Object.assign({}, state.userRegistrations.query, action.params)
-                })
-            })
-        case RESET_USER_REGISTRATION_QUERY:
-            return Object.assign({}, state, {
-                userRegistrations: Object.assign({}, state.userRegistrations, {
-                    query: {workflow_state: 'unchecked'},
                 }),
             })
         case REQUEST_USER_REGISTRATION_SEARCH:

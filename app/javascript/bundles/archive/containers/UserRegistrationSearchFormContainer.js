@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 
 import UserRegistrationSearchForm from '../components/UserRegistrationSearchForm';
 import { 
-    resetUserRegistrationQuery, 
-    setUserRegistrationQueryParams, 
+    resetQuery, 
+    setQueryParams, 
     searchUserRegistration,
 } from '../actions/searchActionCreators';
 
@@ -18,8 +18,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     searchUserRegistration: (url, query) => dispatch(searchUserRegistration(url, query)),
-    setUserRegistrationQueryParams: (params) => dispatch(setUserRegistrationQueryParams(params)),
-    resetUserRegistrationQuery: () => dispatch(resetUserRegistrationQuery()),
+    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
+    resetQuery: (scope) => dispatch(resetQuery(scope)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRegistrationSearchForm);
