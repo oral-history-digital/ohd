@@ -26,16 +26,18 @@ import {
     RECEIVE_USER_REGISTRATION_SEARCH,
 } from '../constants/archiveConstants';
 
-export function setQueryParams(params){
+export function setQueryParams(scope, params){
     return {
         type: SET_QUERY_PARAMS,
+        scope: scope,
         params: params
     }
 }
 
-export function resetQuery(){
+export function resetQuery(scope){
     return {
         type: RESET_QUERY,
+        scope: scope,
     }
 }
 
@@ -74,6 +76,7 @@ function receiveArchiveSearchResults(json){
         resultsCount: json.results_count,
         foundInterviews: json.interviews,
         facets: json.facets,
+        page: json.page,
         receivedAt: Date.now()
     }
 }

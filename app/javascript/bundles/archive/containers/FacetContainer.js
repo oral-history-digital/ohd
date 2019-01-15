@@ -4,8 +4,8 @@ import Facet from '../components/Facet';
 
 const mapStateToProps = (state) => {
     return { 
-        facets: state.search.facets,
-        query: state.search.query,
+        facets: state.search.archive.facets,
+        query: state.search.archive.query,
         locale: state.archive.locale,
         translations: state.archive.translations
     }

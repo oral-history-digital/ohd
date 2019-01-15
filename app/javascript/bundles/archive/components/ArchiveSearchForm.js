@@ -29,12 +29,12 @@ export default class ArchiveSearchForm extends React.Component {
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        this.props.setQueryParams({[name]: value});
+        this.props.setQueryParams('archive', {[name]: value});
     }
 
     handleReset(event) {
         this.form.reset();
-        this.props.resetQuery();
+        this.props.resetQuery('archive');
         let url = `/${this.context.router.route.match.params.locale}/searches/archive`;
         this.props.searchInArchive(url, {});
     }
