@@ -2,6 +2,9 @@ require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
 
+  after_action :verify_authorized, except: [:index, :locations]
+  after_action :verify_policy_scoped, only: [:index, :locations]
+
   def create
     authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
@@ -92,6 +95,7 @@ class RegistryReferencesController < ApplicationController
   end
 
   def locations
+    policy_scope(RegistryReference)
     respond_to do |format|
       format.html do
         render layout: 'webpacker'
@@ -112,7 +116,7 @@ class RegistryReferencesController < ApplicationController
   end
 
   def index
-    
+    policy_scope(RegistryReference)
     @registry_references, extra_params = 
     if params[:registry_entry_id]
       [
