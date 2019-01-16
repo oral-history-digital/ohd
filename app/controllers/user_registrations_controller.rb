@@ -146,7 +146,28 @@ class UserRegistrationsController < ApplicationController
   end
 
   def user_registration_params
-    params.require(:user_registration).permit(:appellation, :first_name, :last_name, :email, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :state, :country, :receive_newsletter, :tos_agreement, :priv_agreement, :default_locale, :workflow_state, :admin_comments)
+    params.require(:user_registration).permit(
+      :appellation,
+      :first_name,
+      :last_name,
+      :email,
+      :job_description,
+      :research_intentions,
+      :comments,
+      :organization,
+      :homepage,
+      :street,
+      :zipcode,
+      :city,
+      :state,
+      :country,
+      :receive_newsletter,
+      :tos_agreement,
+      :priv_agreement,
+      :default_locale,
+      :workflow_state,
+      :admin_comments
+    )
   end
 
   def filter_user_registrations

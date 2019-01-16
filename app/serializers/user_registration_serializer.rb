@@ -30,7 +30,8 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :state,
     :country,
     :transitions_to,
-    :roles
+    :roles,
+    :tasks
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -46,7 +47,11 @@ class UserRegistrationSerializer < ActiveModel::Serializer
   end
 
   def roles
-    object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem}
+    object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  end
+
+  def tasks
+    object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
   end
 
   def created_at
