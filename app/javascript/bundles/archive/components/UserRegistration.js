@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
-//import TasksContainer from '../containers/TasksContainer';
+import TasksContainer from '../containers/TasksContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
 import { t, fullname, admin } from '../../../lib/utils';
 
@@ -118,6 +118,7 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
+                    <TasksContainer tasks={this.props.userRegistration.tasks} userId={this.props.userRegistration.user_id} />
                 </div>
             )
         } else {
@@ -125,7 +126,6 @@ export default class UserRegistration extends React.Component {
         }
     }
 
-                    //<TasksContainer tasks={this.props.userRegistration.tasks} userId={this.props.userRegistration.user_id} />
     render() {
         if (this.props.userRegistration) {
             return (

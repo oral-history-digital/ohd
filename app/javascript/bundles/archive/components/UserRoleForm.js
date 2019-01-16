@@ -29,7 +29,7 @@ export default class UserRoleForm extends React.Component {
                     scope='user_role'
                     onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                     values={{
-                        user_id: this.props.userRole && this.props.userRole.id,
+                        user_id: this.props.userId,
                     }}
                     elements={[
                         {

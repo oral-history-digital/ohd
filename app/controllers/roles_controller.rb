@@ -22,11 +22,12 @@ class RolesController < ApplicationController
   end
 
   def index
+    roles = policy_scope(Role)
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{Role.maximum(:updated_at)}" do
           {
-            data: policy_scope(Role).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: roles.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'roles'
           }
         end
