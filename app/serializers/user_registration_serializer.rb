@@ -29,7 +29,8 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :city,
     :state,
     :country,
-    :transitions_to
+    :transitions_to,
+    :roles
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -42,6 +43,10 @@ class UserRegistrationSerializer < ActiveModel::Serializer
 
   def transitions_to
     object.current_state.events.map{|e| e.first}
+  end
+
+  def roles
+    object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem}
   end
 
   def created_at

@@ -1,7 +1,7 @@
 class TaskPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.all
+      scope.where(user: user).or.where(supervisor: user)
     end
   end
 end
