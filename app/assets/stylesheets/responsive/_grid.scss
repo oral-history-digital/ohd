@@ -12,7 +12,8 @@
 .box {
   display: table-cell;
   /*text-align: center;*/
-  vertical-align:middle;
+  vertical-align: top;
+  min-width: 100px;
   .name, .title {
     font-weight: bold;
   }

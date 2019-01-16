@@ -12,6 +12,7 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :activated_at,
     :admin_comments,
     :user_account_id,
+    :user_id,
     :login,
     :processed_at,
     :default_locale,
@@ -32,6 +33,10 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :transitions_to,
     :roles,
     :tasks
+
+  def user_id
+    object.user && object.user.id
+  end
 
   def names
       object.translations.each_with_object({}) {|i, hsh |

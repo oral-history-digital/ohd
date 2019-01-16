@@ -1,9 +1,27 @@
 import React from 'react';
 
 import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
+//import TasksContainer from '../containers/TasksContainer';
+import UserRolesContainer from '../containers/UserRolesContainer';
 import { t, fullname, admin } from '../../../lib/utils';
 
 export default class UserRegistration extends React.Component {
+
+    baseData() {
+        return (
+            <div className='user-base-data box'>
+                <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
+                <p className='created-at'>
+                    <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
+                    <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
+                </p>
+                <p className='workflow-state'>
+                    <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
+                    <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
+                </p>
+            </div>
+        )
+    }
 
     details() {
         return (
@@ -74,32 +92,48 @@ export default class UserRegistration extends React.Component {
     buttons() {
         if (admin(this.props)) {
             return (
-                <span className={'buttons'}>
+                <div className={'buttons box'}>
                     {this.show()}
                     {this.edit()}
-                </span>
+                </div>
             )
         }
     }
 
+    roles() {
+        if (this.props.userRegistration.user_id) {
+            return (
+                <div className={'roles box'}>
+                    <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
+                    <UserRolesContainer userRoles={this.props.userRegistration.roles} userId={this.props.userRegistration.user_id} />
+                </div>
+            )
+        } else {
+            return <div className={'roles box'} />;
+        }
+    }
+
+    tasks() {
+        if (this.props.userRegistration.user_id) {
+            return (
+                <div className={'tasks box'}>
+                    <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
+                </div>
+            )
+        } else {
+            return <div className={'tasks box'} />;
+        }
+    }
+
+                    //<TasksContainer tasks={this.props.userRegistration.tasks} userId={this.props.userRegistration.user_id} />
     render() {
         if (this.props.userRegistration) {
             return (
                 <div className='user-registration boxes'>
-                    <div className='user-details box'>
-                        <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
-                        <p className='created-at'>
-                            <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
-                            <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
-                        </p>
-                        <p className='workflow-state'>
-                            <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
-                            <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
-                        </p>
-                    </div>
-                    <div className='buttons box'>
-                        {this.buttons()}
-                    </div>
+                    {this.baseData()}
+                    {this.buttons()}
+                    {this.roles()}
+                    {this.tasks()}
                 </div>
             )
         } else {

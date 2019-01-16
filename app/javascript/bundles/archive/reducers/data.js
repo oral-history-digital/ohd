@@ -25,6 +25,9 @@ const initialState = {
         biographical_entries: {},
         initials: {},
         user_registrations: {},
+        roles: {},
+        permissions: {},
+        tasks: {}
     }
 }
 
