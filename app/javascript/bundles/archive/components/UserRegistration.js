@@ -41,6 +41,21 @@ export default class UserRegistration extends React.Component {
         )
     }
 
+    show() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.user_registration.show')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'edit.user_registration.show'),
+                    content: this.details()
+                })}
+            >
+                <i className="fa fa-eye"></i>
+            </div>
+        )
+    }
+
     edit() {
         return (
             <div
@@ -48,7 +63,7 @@ export default class UserRegistration extends React.Component {
                 title={t(this.props, 'edit.user_registration.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.user_registration.edit'),
-                    content: [this.details(), <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />]
+                    content: <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />
                 })}
             >
                 <i className="fa fa-pencil"></i>
@@ -60,6 +75,7 @@ export default class UserRegistration extends React.Component {
         if (admin(this.props)) {
             return (
                 <span className={'buttons'}>
+                    {this.show()}
                     {this.edit()}
                 </span>
             )

@@ -302,6 +302,7 @@ de:
       edit: 'Foto bearbeiten'
       delete: 'Foto löschen'
     user_registration:
+      show: 'Details'
       edit: 'Bearbeiten'
     upload_transcript: 'Transkript hochladen'
 
