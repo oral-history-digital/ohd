@@ -69,17 +69,21 @@ export default class UserRegistration extends React.Component {
     render() {
         if (this.props.userRegistration) {
             return (
-                <div className='user-registration'>
-                    <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
-                    <p className='created-at'>
-                        <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
-                        <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
-                    </p>
-                    <p className='workflow-state'>
-                        <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
-                        <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
-                    </p>
-                    {this.buttons()}
+                <div className='user-registration boxes'>
+                    <div className='user-details box'>
+                        <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
+                        <p className='created-at'>
+                            <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
+                            <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
+                        </p>
+                        <p className='workflow-state'>
+                            <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
+                            <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
+                        </p>
+                    </div>
+                    <div className='buttons box'>
+                        {this.buttons()}
+                    </div>
                 </div>
             )
         } else {
