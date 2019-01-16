@@ -30,11 +30,9 @@ export default class UserRegistrations extends React.Component {
     }
 
     userRegistrations() {
-        let userRegistrations = [];
-        for (var c in this.props.userRegistrations) {
-            userRegistrations.push(<UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />);
-        }
-        return userRegistrations;
+        return Object.keys(this.props.userRegistrations).map((c, index) => {
+            return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
+        })
     }
 
     render() {
