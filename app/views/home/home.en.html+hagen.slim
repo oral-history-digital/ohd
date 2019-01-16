@@ -4,7 +4,7 @@
   - @interview = Interview.random_featured
   div style=("float: left; margin: 0 15px 0 0;")
     a href=("#{interview_path(:id => @interview.archive_id)}") 
-      img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "http://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
+      img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "https://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
       h6
         = @interview.short_title(I18n.locale)
         br/
