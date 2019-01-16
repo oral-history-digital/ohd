@@ -56,7 +56,7 @@ export default class Facet extends React.Component {
         // filter only where size of list >= 15
         if (Object.keys(this.props.data.subfacets).length >= 15) {
             return(
-                <div>
+                <div className={'facet-filter'}>
                     <i className="fa fa-search"></i>
                     <input type='text' className={'filter ' + this.props.facet} value={this.state.filter}
                     onChange={this.handleChange}
@@ -143,7 +143,7 @@ export default class Facet extends React.Component {
                     checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
                 }
                 return (
-                    <div key={"subfacet-" + index}>
+                    <div key={"subfacet-" + index} className={'subfacet-entry' + (checkedState ? ' checked' : '')}>
                         <input className={'with-font ' + this.props.facet + ' checkbox'}
                                id={this.props.facet + "_" + subfacetId}
                                name={this.props.facet + "[]"} checked={checkedState} type="checkbox"

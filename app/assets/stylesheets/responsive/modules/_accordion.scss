@@ -6,7 +6,7 @@
     background-color: transparent;
     color: $primary-color;
     cursor: pointer;
-    padding: 8px 15px 8px 2px;
+    padding: 8px 15px 0 2px;
     width: 100%;
     border-top: 1px solid $gray-dark;
     text-align: left;
@@ -33,13 +33,38 @@
   }
   .panel {
     padding: 0;
-    max-height: 0;
-    overflow: hidden;
+    max-height: 1000px;
+    // overflow: hidden;
     transition: 0.2s ease-out;
+    .facet-filter, .year-range-state, .rc-slider {
+      display: none;
+    }
+    .year-range-state.filtered {
+      display: inline;
+      color: black;
+    }
+    .subfacet-entry {
+      display: none;
+      &.checked {
+        display: inline;
+        label {
+          margin-right: 10px;
+          &:last-child {
+            padding-bottom: 20px;
+          }
+        }
+      }
+    }
     &.open {
       padding: 10px 0 20px 0;
       max-height: 100%;
       //padding-left: 20px;
+      .subfacet-entry, .facet-filter, .year-range-state, .rc-slider {
+        display: block;
+      }
+      .year-range-state.filtered {
+        color: inherit;
+      }
     }
   }
   p {

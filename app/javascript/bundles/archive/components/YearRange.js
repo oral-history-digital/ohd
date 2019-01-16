@@ -16,6 +16,7 @@ export default class YearRange extends React.Component {
           min: this.props.currentMin,
           max: this.props.currentMax,
           inputDisabled: true,
+          usedFilter: false,
         }
       }
 
@@ -27,11 +28,21 @@ export default class YearRange extends React.Component {
             max: nextProps.currentMax,
           });
         }
+        // set usedFilter to false if values are being reset (either manually or by form reset)
+        if(nextProps.currentMin === this.props.sliderMin) {
+          this.setState({
+            usedFilter: false,
+          })
+        }
       }
 
       onSliderChange = (value) => {
         // enable the input fields to make them appear in params
-        this.setState({min: value[0], max: value[1], inputDisabled: false});
+        this.setState({
+          min: value[0],
+          max: value[1],
+          inputDisabled: false,
+          usedFilter: true});
       }
 
       onAfterSliderChange = () => {
@@ -56,7 +67,7 @@ export default class YearRange extends React.Component {
       render() {
         return (
           <div>
-            <div style={style}>
+            <div style={style} className={'year-range-state' + (this.state.usedFilter ? ' filtered' : '')}>
               <span>{this.state.min} - {this.state.max}</span>
               <input name='year_of_birth_min' disabled={this.state.inputDisabled} id='year_of_birth_min' value={this.state.min} type='hidden' size='4' readOnly={true} />
               <input name='year_of_birth_max' disabled={this.state.inputDisabled} id='year_of_birth_max' value={this.state.max} type='hidden' size='4' readOnly={true} />
