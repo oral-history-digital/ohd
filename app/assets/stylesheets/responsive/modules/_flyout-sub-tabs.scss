@@ -20,7 +20,7 @@
 //label { font-size: 24px; }
 .flyout-radio-container {
   width: 100%;
-  padding: 0 0 8px 0;
+  padding: 0;
   font-size: $font-size-medium;
   color: $primary-color;
   //input[type=radio].with-font,
@@ -54,6 +54,12 @@
     font-size: $font-size-medium;
     color: $gray-darker;
     letter-spacing: 5px;
+  }
+}
+
+.flyout-search {
+  .flyout-radio-container {
+    padding: 0 0 8px 0;
   }
 }
 
