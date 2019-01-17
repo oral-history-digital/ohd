@@ -20,22 +20,22 @@ import {
     INTERVIEW_SEARCH_URL,
     FACETS_URL,
 
-    SET_USER_REGISTRATION_QUERY_PARAMS,
-    RESET_USER_REGISTRATION_QUERY,
     REQUEST_USER_REGISTRATION_SEARCH,
     RECEIVE_USER_REGISTRATION_SEARCH,
 } from '../constants/archiveConstants';
 
-export function setQueryParams(params){
+export function setQueryParams(scope, params){
     return {
         type: SET_QUERY_PARAMS,
+        scope: scope,
         params: params
     }
 }
 
-export function resetQuery(){
+export function resetQuery(scope){
     return {
         type: RESET_QUERY,
+        scope: scope,
     }
 }
 
@@ -74,6 +74,7 @@ function receiveArchiveSearchResults(json){
         resultsCount: json.results_count,
         foundInterviews: json.interviews,
         facets: json.facets,
+        page: json.page,
         receivedAt: Date.now()
     }
 }
@@ -135,19 +136,6 @@ export function changeRegistryEntriesViewMode(bool){
     return {
         type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
         bool: bool
-    }
-}
-
-export function setUserRegistrationQueryParams(params){
-    return {
-        type: SET_USER_REGISTRATION_QUERY_PARAMS,
-        params: params
-    }
-}
-
-export function resetUserRegistrationQuery(){
-    return {
-        type: RESET_USER_REGISTRATION_QUERY,
     }
 }
 

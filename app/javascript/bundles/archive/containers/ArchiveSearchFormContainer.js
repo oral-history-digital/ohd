@@ -11,10 +11,10 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
   return {
-      allInterviewsTitles: state.search.allInterviewsTitles,
-      allInterviewsPseudonyms: state.search.allInterviewsPseudonyms,
-      facets: state.search.facets,
-      query: state.search.query,
+      allInterviewsTitles: state.search.archive.allInterviewsTitles,
+      allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
+      facets: state.search.archive.facets,
+      query: state.search.archive.query,
       translations: state.archive.translations,
       locale: state.archive.locale,
       isArchiveSearching: state.search.isArchiveSearching,
@@ -24,8 +24,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    setQueryParams: (params) => dispatch(setQueryParams(params)),
-    resetQuery: () => dispatch(resetQuery()),
+    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
+    resetQuery: (scope) => dispatch(resetQuery(scope)),
     //loadFacets: () => dispatch(loadFacets()),
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
 })

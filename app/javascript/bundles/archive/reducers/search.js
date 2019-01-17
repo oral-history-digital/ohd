@@ -6,8 +6,6 @@ import {
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
 
-    SET_USER_REGISTRATION_QUERY_PARAMS,
-    RESET_USER_REGISTRATION_QUERY,
     REQUEST_USER_REGISTRATION_SEARCH,
     RECEIVE_USER_REGISTRATION_SEARCH,
 
@@ -21,13 +19,18 @@ import {
 } from '../constants/archiveConstants';
 
 const initialState = {
-    facets: null,
-    query:{},
-    allInterviewsTitles: [],
-    allInterviewsPseudonyms: [],
-    allInterviewsPlacesOfBirth: [],
-    foundInterviews: [],
-    foundSegmentsForInterviews: {},
+    archive: {
+        facets: null,
+        query:{},
+        allInterviewsTitles: [],
+        allInterviewsPseudonyms: [],
+        allInterviewsPlacesOfBirth: [],
+        foundInterviews: [],
+        //foundSegmentsForInterviews: {},
+        allInterviewsCount: 0,
+        resultPagesCount: 1,
+        resultsCount: 0,
+    },
     interviews: {},
     registryEntries: {
         showRegistryEntriesTree: true,
@@ -42,12 +45,6 @@ const initialState = {
         },
         resultPagesCount: 1,
     },
-    allInterviewsCount: 0,
-    resultPagesCount: 1,
-    resultsCount: 0,
-
-    isArchiveSearching: false,
-    isInterviewSearching: false,
 }
 
 const search = (state = initialState, action) => {
@@ -60,13 +57,13 @@ const search = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isInterviewSearching: false,
                 interviews: Object.assign({}, state.interviews, {
-                    [action.archiveId]: Object.assign({}, state.interviews[action.archiveId], {
+                    [action.archiveId]: {
                         foundSegments: action.foundSegments,
                         foundPeople: action.foundPeople,
                         foundPhotos: action.foundPhotos,
                         foundBiographicalEntries: action.foundBiographicalEntries,
                         fulltext: action.fulltext
-                    })
+                    }
                 })
             })
         case REQUEST_REGISTRY_ENTRY_SEARCH:
@@ -83,23 +80,14 @@ const search = (state = initialState, action) => {
             })
         case SET_QUERY_PARAMS :
             return Object.assign({}, state, {
-                query: Object.assign({}, state.query, action.params)
+                [action.scope]: Object.assign({}, state[action.scope], {
+                    query: Object.assign({}, state[action.scope].query, action.params)
+                })
             })
         case RESET_QUERY:
             return Object.assign({}, state, {
-                query: {},
-                interviews: {},
-            })
-        case SET_USER_REGISTRATION_QUERY_PARAMS :
-            return Object.assign({}, state, {
-                userRegistrations: Object.assign({}, state.userRegistrations, {
-                    query: Object.assign({}, state.userRegistrations.query, action.params)
-                })
-            })
-        case RESET_USER_REGISTRATION_QUERY:
-            return Object.assign({}, state, {
-                userRegistrations: Object.assign({}, state.userRegistrations, {
-                    query: {workflow_state: 'unchecked'},
+                [action.scope]: Object.assign({}, state[action.scope], {
+                    query: {},
                 }),
             })
         case REQUEST_USER_REGISTRATION_SEARCH:
@@ -140,27 +128,31 @@ const search = (state = initialState, action) => {
         case REQUEST_ARCHIVE_SEARCH:
             return Object.assign({}, state, {
                 isArchiveSearching: true,
-                query: Object.assign({}, state.query, action.searchQuery)
+                archive: Object.assign({}, state.archive, {
+                    query: Object.assign({}, state.archive.query, action.searchQuery)
+                })
             })
         case RECEIVE_ARCHIVE_SEARCH:
             let foundInterviews = [];
-            let foundSegmentsForInterviews = {};
-            if (state.query.page != undefined && state.query.page > 1){
-                foundInterviews = state.foundInterviews.concat(action.foundInterviews);
+            //let foundSegmentsForInterviews = {};
+            if (action.page > 1){
+                foundInterviews = state.archive.foundInterviews.concat(action.foundInterviews);
             }
             else {
                 foundInterviews = action.foundInterviews;
             }
             return Object.assign({}, state, {
+                archive: Object.assign({}, state.archive, {
+                    foundInterviews: foundInterviews,
+                    allInterviewsTitles: action.allInterviewsTitles,
+                    allInterviewsPseudonyms: action.allInterviewsPseudonyms,
+                    allInterviewsPlacesOfBirth: action.allInterviewsPlacesOfBirth,
+                    allInterviewsCount: action.allInterviewsCount,
+                    resultPagesCount: action.resultPagesCount,
+                    resultsCount: action.resultsCount,
+                    facets: action.facets,
+                }),
                 isArchiveSearching: false,
-                foundInterviews: foundInterviews,
-                allInterviewsTitles: action.allInterviewsTitles,
-                allInterviewsPseudonyms: action.allInterviewsPseudonyms,
-                allInterviewsPlacesOfBirth: action.allInterviewsPlacesOfBirth,
-                allInterviewsCount: action.allInterviewsCount,
-                resultPagesCount: action.resultPagesCount,
-                resultsCount: action.resultsCount,
-                facets: action.facets,
             })
 
         default:

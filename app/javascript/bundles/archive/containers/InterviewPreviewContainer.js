@@ -7,10 +7,10 @@ import { addRemoveArchiveId } from '../actions/archiveActionCreators';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-      fulltext: state.search.query.fulltext,
+      fulltext: state.search.archive.query.fulltext,
       locale: state.archive.locale,
       translations: state.archive.translations,
-      query: state.search.query,
+      query: state.search.archive.query,
       segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
       project: state.archive.project
     }

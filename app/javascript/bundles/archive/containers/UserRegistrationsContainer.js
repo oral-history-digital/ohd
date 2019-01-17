@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import UserRegistrations from '../components/UserRegistrations';
 import { 
     searchUserRegistration,
-    setUserRegistrationQueryParams, 
+    setQueryParams, 
 } from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     searchUserRegistration: (url, query) => dispatch(searchUserRegistration(url, query)),
-    setUserRegistrationQueryParams: (params) => dispatch(setUserRegistrationQueryParams(params)),
+    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRegistrations);
