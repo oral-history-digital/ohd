@@ -75,14 +75,20 @@ export default class Gallery extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
-                <div className={'img-gallery'}>
-                    {this.renderPhotos()}
-                    {this.addPhoto()}
+        if (this.renderPhotos().length > 0) {
+            return (
+                <div>
+                    <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
+                    <div className={'img-gallery'}>
+                        {this.renderPhotos()}
+                        {this.addPhoto()}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className='explanation'>{t(this.props, 'interview_empty_gallery_explanation')}</div>
+            ) 
+        }
     }
 }

@@ -27,6 +27,7 @@ en:
   in: 'in'
   tape: 'Tape'
   interview_gallery_explanation: 'The picture gallery contains photos of the interview situation as well as family photos and other historical photos from the interviewed person''s private collection.'
+  interview_empty_gallery_explanation: 'There are no photos available for this interview.'
   segment_results: 'Search results in transcript'
   photo_results: 'Search results in photos'
   biographicalentry_results: 'Search results in biographical entries'
