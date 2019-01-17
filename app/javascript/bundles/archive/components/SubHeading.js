@@ -36,7 +36,7 @@ export default class Heading extends React.Component {
                     className={css}
                     onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
                 >
-                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text'>{this.props.data.heading}</div>
+                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text' dangerouslySetInnerHTML={{__html: this.props.data.heading}} />
                 </div>
             </div>
         )

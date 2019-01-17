@@ -57,22 +57,27 @@
   }
 }
 
+.flyout-search {
+  .flyout-radio-container {
+    padding: 0 0 8px 0;
+  }
+}
+
 /* Button Reset */
 
 .wrapper-flyout {
   button.reset {
-    background-color: lighten($gray-warm, 20%);
+    background-color: $gray-warm;
     color: #fff;
     cursor: pointer;
     padding: 10px 15px;
-    width: 90%;
-    margin: 20px 40px 20px 20px;
+    width: 100%;
+    margin: 0 0 20px;
     border: none;
     text-align: left;
     outline: none;
     font-size: $font-size-large;
     transition: 0.4s;
-    margin-bottom: 40px;
   }
 
   button.reset.active,

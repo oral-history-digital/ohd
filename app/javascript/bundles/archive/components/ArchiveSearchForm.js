@@ -95,6 +95,19 @@ export default class ArchiveSearchForm extends React.Component {
         }
     }
 
+    renderResetButton() {
+        if(Object.keys(this.props.query).length > 0 && this.props.query['page']) {
+            return (
+                <button 
+                    className={'reset'}
+                    onClick={this.handleReset}>{t(this.props, 'reset')}
+                </button>
+            )
+        } else {
+            return null;
+        }
+    }
+
     searchform(){
         if (!this.facetsLoaded()) {
             return <div className="facets-spinner"> <img src={spinnerSrc} /></div>;
@@ -126,13 +139,9 @@ export default class ArchiveSearchForm extends React.Component {
                             type="submit" 
                             value=""
                         />
+                        {this.renderResetButton()}
                         {this.renderFacets()}
                     </form>
-
-                    <button 
-                        className={'reset'}
-                        onClick={this.handleReset}>{t(this.props, 'reset')}
-                    </button>
                 </div>
 
             )

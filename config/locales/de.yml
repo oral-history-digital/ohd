@@ -49,6 +49,7 @@ de:
   archive_map_explanation: 'Die Karte stellt die Geburtsorte der Interviewten dar.'
   interview_map_explanation: 'Darstellung der im Interview erwähnten Orte'
   interview_gallery_explanation: 'Die Bildergalerie zeigt Fotos von der Interviewsituation sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten Person.'
+  interview_empty_gallery_explanation: 'Zu diesem Interview sind keine Fotos vorhanden.'
   transcript_header: 'Transkript des Interviews mit'
   translation_header: 'Übersetzung des Interviews mit'
   tapes: 'Bänder'
@@ -225,16 +226,16 @@ de:
     interviewer: 'Interview'
     transcriptor: 'Transkript'
     translator: 'Übersetzung'
-    segmentator: 'Erschließung'
+    segmentator: 'Segmentierung'
     cinematographer: 'Kamera'
-    proof_reading: 'Korrekturlesen'
-    research: 'Forschung'
+    proof_reading: 'Lektorat'
+    research: 'Erschließung'
     # zwar, hagen
     interviewee: 'Interviewte(r)'
     interview: 'Interview'
     transcript: 'Transkript'
     translation: 'Übersetzung'
-    segmentation: 'Erschließung'
+    segmentation: 'Segmentierung'
     # mog
     'Informants': 'Interviewte(r)'
     'Interviewer': 'Interview'
@@ -270,8 +271,8 @@ de:
     contribution: 
       new: 'Mitwirkende/n hinzufügen'
     registry_reference: 
-      new: 'Registererwähnung hinzufügen'
-      delete: 'Registererwähnung löschen'
+      new: 'Erwähnung hinzufügen'
+      delete: 'Erwähnung löschen'
     registry_entry: 
       new: 'Registereintrag hinzufügen'
       edit: 'Registereintrag bearbeiten'
@@ -457,8 +458,8 @@ de:
         one: 'Mitwirkende/r'
         other: 'Mitwirkende'
       registry_references:
-        one: 'Registererwähnung'
-        other: 'Registererwähnungen'
+        one: 'Erwähnung'
+        other: 'Erwähnungen'
       registry_entries:
         one: 'Registereintrag'
         other: 'Registereinträge'

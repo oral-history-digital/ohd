@@ -201,3 +201,41 @@ span.registry-reference:not(:last-child) {
     }
   }
 }
+
+.flyout-search {
+  button.accordion {
+    padding: 8px 15px 0 2px;
+  }
+  .panel {
+    max-height: 1000px;
+    overflow: visible;
+    .facet-filter, .year-range-state, .rc-slider {
+      display: none;
+    }
+    .year-range-state.filtered {
+      display: inline;
+      color: black;
+    }
+    .subfacet-entry {
+      display: none;
+      &.checked {
+        display: inline;
+        label {
+          margin-right: 10px;
+          &:last-child {
+            padding-bottom: 20px;
+          }
+        }
+      }
+    }
+    &.open {
+      .subfacet-entry, .facet-filter, .year-range-state, .rc-slider {
+        display: block;
+      }
+      .year-range-state.filtered {
+        color: inherit;
+      }
+    }
+  }
+
+}
