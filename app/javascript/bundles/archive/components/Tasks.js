@@ -11,7 +11,7 @@ export default class Tasks extends React.Component {
             return (
                 <li key={`user-role-li-${id}`}>
                     <TaskContainer 
-                        task={task} 
+                        task={this.props.tasks[id]} 
                         key={`task-${id}`} 
                     />
                 </li>

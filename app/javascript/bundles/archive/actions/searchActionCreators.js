@@ -19,9 +19,6 @@ import {
     RECEIVE_INTERVIEW_SEARCH,
     INTERVIEW_SEARCH_URL,
     FACETS_URL,
-
-    REQUEST_USER_REGISTRATION_SEARCH,
-    RECEIVE_USER_REGISTRATION_SEARCH,
 } from '../constants/archiveConstants';
 
 export function setQueryParams(scope, params){
@@ -136,26 +133,6 @@ export function changeRegistryEntriesViewMode(bool){
     return {
         type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
         bool: bool
-    }
-}
-
-const requestUserRegistrationSearch = (searchQuery) => ({
-    type: REQUEST_USER_REGISTRATION_SEARCH,
-});
-
-function receiveUserRegistrationSearchResults(json){
-    return {
-        type: RECEIVE_USER_REGISTRATION_SEARCH,
-        results: json.data,
-        resultPagesCount: json.result_pages_count,
-        receivedAt: Date.now()
-    }
-}
-
-export function searchUserRegistration(url, searchQuery) {
-    return dispatch => {
-        dispatch(requestUserRegistrationSearch(searchQuery))
-        Loader.getJson(url, searchQuery, dispatch, receiveUserRegistrationSearchResults);
     }
 }
 

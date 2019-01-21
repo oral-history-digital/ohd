@@ -615,6 +615,7 @@ de:
         authorized_id: 'ID oder Archiv ID'
         authorized_type: 'Typ'
         transition_to: 'Status ändern zu:'
+        name: 'Name'
         desc: 'Beschreibung'
       person:
         gender: 'Geschlecht'

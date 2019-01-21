@@ -4,20 +4,21 @@ import UserRegistrationSearchForm from '../components/UserRegistrationSearchForm
 import { 
     resetQuery, 
     setQueryParams, 
-    searchUserRegistration,
 } from '../actions/searchActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return {
         translations: state.archive.translations,
         locale: state.archive.locale,
         query: state.search.userRegistrations.query,
+        userRegistrationsStatus: state.data.statuses.user_registrations,
         isUserRegistrationSearching: state.search.isUserRegistrationSearching,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    searchUserRegistration: (url, query) => dispatch(searchUserRegistration(url, query)),
+    fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     resetQuery: (scope) => dispatch(resetQuery(scope)),
 })

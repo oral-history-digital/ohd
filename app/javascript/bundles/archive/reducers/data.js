@@ -24,7 +24,7 @@ const initialState = {
         uploads: {},
         biographical_entries: {},
         initials: {},
-        user_registrations: {},
+        user_registrations: {resultPagesCount: 1},
         roles: {},
         permissions: {},
         tasks: {}
@@ -164,16 +164,18 @@ const data = (state = initialState, action) => {
             } else if (action.extraParams) {
                 let statuses = updateStatus(state.statuses, action.dataType, {[action.extraParams]: `fetched-${new Date()}`}); 
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
+                statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {
                     statuses: statuses,
-                    [action.dataType]: Object.assign({}, state[action.dataType], action.data)
+                    [action.dataType]: (action.page === 1) ? action.data : Object.assign({}, state[action.data_type], action.data)
                 })
             } else if (action.dataType) {
                 let statuses = updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
+                statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {
                     statuses: statuses,
-                    [action.dataType]: action.data
+                    [action.dataType]: (action.page === 1) ? action.data : Object.assign({}, state[action.data_type], action.data)
                 })
             } else {
                 return state;

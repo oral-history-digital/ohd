@@ -61,6 +61,7 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).
       permit(
+        :name,
         :desc,
         :authorized_type,
         :authorized_id,

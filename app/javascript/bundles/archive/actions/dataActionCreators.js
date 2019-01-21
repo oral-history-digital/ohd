@@ -55,7 +55,9 @@ const receiveData = (json) => ({
     extraId: json.extra_id,
     reloadDataType: json.reload_data_type,
     reloadId: json.reload_id,
-    msg: json.msg
+    msg: json.msg, 
+    page: json.page,
+    resultPagesCount: json.result_pages_count,
 });
 
 const deleteProcessMsg = (dataType) => ({

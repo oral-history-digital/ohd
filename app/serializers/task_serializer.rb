@@ -1,5 +1,6 @@
 class TaskSerializer < ActiveModel::Serializer
   attributes :id,
+    :name,
     :desc,
     :authorized_type,
     :authorized_id,

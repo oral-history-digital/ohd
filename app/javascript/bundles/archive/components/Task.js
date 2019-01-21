@@ -2,16 +2,38 @@ import React from 'react';
 
 import { t, pluralize, admin } from '../../../lib/utils';
 
-export default class UserRole extends React.Component {
+export default class Task extends React.Component {
+
+    details() {
+        return (
+            <div className='details'>
+                {
+                    [
+                        'name',
+                        'desc',
+                        'authorized_id',
+                        'authorized_type',
+                    ].map((detail, index) => {
+                        return (
+                            <p className='detail'>
+                                <span className='name'>{t(this.props, `activerecord.attributes.task.${detail}`) + ': '}</span>
+                                <span className='content'>{this.props.task[detail]}</span>
+                            </p>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
 
     show() {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_role.show')}
+                title={t(this.props, 'edit.tasks.show')}
                 onClick={() => this.props.openArchivePopup({
-                    title: this.props.userRole.name,
-                    content: this.props.userRole.desc
+                    title: this.props.task.name,
+                    content: this.details()
                 })}
             >
                 <i className="fa fa-eye"></i>
@@ -20,12 +42,12 @@ export default class UserRole extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('user_roles', this.props.userRole.id, null, null, true);
+        this.props.deleteData('tasks', this.props.task.id, null, null, true);
         this.props.closeArchivePopup();
     }
 
     delete() {
-        if (this.props.userRole) {
+        if (this.props.task) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -33,7 +55,7 @@ export default class UserRole extends React.Component {
                     title: t(this.props, 'delete'),
                     content: (
                         <div>
-                            <p>{this.props.userRole.name}</p>
+                            <p>{this.props.task.name}</p>
                             <div className='any-button' onClick={() => this.destroy()}>
                                 {t(this.props, 'delete')}
                             </div>
@@ -60,7 +82,7 @@ export default class UserRole extends React.Component {
     render() {
         return (
             <div>
-                {this.props.userRole.name}
+                {this.props.task.name}
                 {this.buttons()}
             </div>
         )

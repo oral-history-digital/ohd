@@ -16,6 +16,16 @@ export default class TaskForm extends React.Component {
                     }}
                     elements={[
                         {
+                            attribute: 'name',
+                            validate: function(v){return v.length > 1} 
+                        },
+                        {
+                            elementType: 'textarea',
+                            attribute: 'desc',
+                            value: this.props.task && this.props.task.desc,
+                            validate: function(v){return v.length > 1} 
+                        },
+                        {
                             elementType: 'select',
                             attribute: 'authorized_type',
                             values: ['Interview', 'BiographicalEntry', 'RegistryReference', 'Contribution', 'Photo'],
@@ -34,11 +44,6 @@ export default class TaskForm extends React.Component {
                             values: this.props.task && this.props.task.transitions_to,
                             optionsScope: 'workflow_states',
                             withEmpty: true,
-                        },
-                        {
-                            elementType: 'textarea',
-                            attribute: 'desc',
-                            value: this.props.task && this.props.task.desc,
                         },
                     ]}
                 />

@@ -87,6 +87,11 @@
   }
   .content {
     position: relative;
+    .details {
+      .name {
+        font-weight: bold;
+      }
+    }
   }
   h3 {
     margin-top: 0;
