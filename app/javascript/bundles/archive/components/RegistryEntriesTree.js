@@ -51,7 +51,11 @@ export default class RegistryEntriesTree extends React.Component {
         if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
             return <RegistryEntriesContainer registryEntryParent={this.props.registryEntries[1]} />;
         } else {
-            return this.foundRegistryEntries();
+            return (
+                <ul className={'registry-entries-ul'}>
+                    {this.foundRegistryEntries()}
+                </ul>
+                )
         }
     }
 

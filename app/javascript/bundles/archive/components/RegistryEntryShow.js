@@ -13,18 +13,6 @@ export default class RegistryEntryShow extends React.Component {
         this.loadRegistryReferenceTypes()
     }
 
-    
-    parentRegistryEntry() {
-        if (this.props.registryEntryParent){
-            return (
-                <div>
-                    <span><b>{t(this.props, 'edit.registry_entry.parent') + ': '}</b></span>
-                    <span>{this.props.registryEntryParent.name[this.props.locale]}</span>
-                </div>
-            )
-        }
-    }
-
     fetchInterview(archiveId) {
         if(!this.props.interviewsStatus || !this.props.interviewsStatus[archiveId]) {
             this.props.fetchData('interviews', archiveId)
@@ -128,17 +116,55 @@ export default class RegistryEntryShow extends React.Component {
         }
     }
 
+    show(id, key) {
+        return (
+            <span className={'breadcrumb'} key={key}>
+                {this.props.registryEntry.ancestors[id].name[this.props.locale]}
+                {/* {` (ID: ${id})`} */}
+            </span>
+        )
+    }
+
+    breadCrumb() {
+        let paths = []
+        // debugger;
+        let bread_crumbs = this.props.registryEntry.bread_crumb;
+        if (bread_crumbs) {
+            Object.keys(bread_crumbs).map((id, key) => {
+                let breadCrumbPath = [];
+                breadCrumbPath.push(this.show(id, `${key}`));
+                let current = bread_crumbs[id]
+                let counter = 0
+                while (current) {
+                    counter = counter + 1;
+                    let currentId = Object.keys(current)[0];
+                    breadCrumbPath.push(this.show(currentId, `${key}-${counter}`));
+                    current = current[currentId];
+                }
+                paths.push(breadCrumbPath.reverse().splice(1)); // remove first "Register"
+                paths.push(<br key={key}/>)
+            })
+            paths.splice(-1,1) //remove last <br />
+        }
+        return paths;
+    }
+
     render() {
         return (
             <div>
-                {this.parentRegistryEntry()}
-                <br/>
+                <div>
+                    {this.breadCrumb()}
+                </div>
+                <h3>
+                    {this.props.registryEntry.name[this.props.locale]}
+                </h3>
                 <h4>
                     {Object.keys(this.props.registryEntry.registry_references).length}
                     &nbsp;
                     {(Object.keys(this.props.registryEntry.registry_references).length === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
                     {(Object.keys(this.props.registryEntry.registry_references).length > 0) ? ':' : ''}
                 </h4>
+                <br/>
                 <ul>
                     {this.registryReferences()}
                 </ul>

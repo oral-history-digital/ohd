@@ -8,7 +8,9 @@ class RegistryEntrySerializer < ActiveModel::Serializer
              :child_ids,
              :workflow_state,
              :registry_references,
-             :parent_registry_hierarchy_ids
+             :parent_registry_hierarchy_ids,
+             :bread_crumb,
+             :ancestors
 
   def name
     object.localized_hash
@@ -46,6 +48,10 @@ class RegistryEntrySerializer < ActiveModel::Serializer
 
   def parent_registry_hierarchy_ids
     object.parent_registry_hierarchies.inject({}){|mem, h| mem[h.ancestor_id] = h.id; mem}
+  end
+
+  def ancestors
+    ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
   end
 
 end

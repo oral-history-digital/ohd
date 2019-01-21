@@ -677,6 +677,16 @@ ul.registry-entries-ul {
   .registry-entry-label {
     float: left;
   }
+  li {
+    padding-bottom: 6px;
+  }
+  .search-result {
+    padding-bottom: 0;
+    margin-bottom: 30px; //16px
+    border-left: solid 4px lightgrey;
+    padding-left: 5px;
+    width: 100%;
+  }
 }
 
 .leaflet-container {
