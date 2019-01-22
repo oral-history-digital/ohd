@@ -22,11 +22,14 @@ class PermissionsController < ApplicationController
   end
 
   def index
+    permissions = policy_scope(Permission)
+
     respond_to do |format|
+      format.html { render :template => '/react/app.html' }
       format.json do
         json = Rails.cache.fetch "#{Project.project_id}-permissions-visible-for-#{current_user.id}-#{Permission.maximum(:updated_at)}" do
           {
-            data: policy_scope(Permission).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: permissions.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'permissions'
           }
         end
@@ -50,6 +53,7 @@ class PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).
       permit(
+        :name,
         :desc,
         :controller,
         :action

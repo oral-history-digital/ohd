@@ -24,6 +24,7 @@ class RolesController < ApplicationController
   def index
     roles = policy_scope(Role)
     respond_to do |format|
+      format.html { render :template => '/react/app.html' }
       format.json do
         json = Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{Role.maximum(:updated_at)}" do
           {
