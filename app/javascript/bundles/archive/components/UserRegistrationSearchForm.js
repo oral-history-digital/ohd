@@ -25,13 +25,6 @@ export default class UserRegistrationSearchForm extends React.Component {
          }
      }
 
-    userRegistrationsLoaded() {
-        return (
-            this.props.userRegistrationsStatus[this.statifiedQuery()] &&
-            this.props.userRegistrationsStatus[this.statifiedQuery()].split('-')[0] === 'fetched'
-        )
-    }
-
     statifiedQuery() {
         return parametrizedQuery(this.props.query).replace(/[=&]/g, '_');
     }
