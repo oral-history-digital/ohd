@@ -77,7 +77,7 @@ export default class Data extends React.Component {
                     title: t(this.props, 'delete'),
                     content: (
                         <div>
-                            <p>{this.props.data.name[this.props.locale] && this.props.data.name}</p>
+                            <p>{this.props.data.name[this.props.locale] || this.props.data.name}</p>
                             <div className='any-button' onClick={() => this.destroy()}>
                                 {t(this.props, 'delete')}
                             </div>

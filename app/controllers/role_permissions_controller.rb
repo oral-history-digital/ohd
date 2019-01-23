@@ -47,7 +47,9 @@ class RolePermissionsController < ApplicationController
     role.touch 
 
     respond_to do |format|
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: data_json(role, 'processed')
+      end
     end
   end
 
