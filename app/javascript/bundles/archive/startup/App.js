@@ -15,8 +15,8 @@ import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeConta
 import ArchiveSearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
 import UserRegistrationsContainer from '../containers/UserRegistrationsContainer';
-import RolesContainer from '../containers/RolesContainer';
-import PermissionsContainer from '../containers/PermissionsContainer';
+import WrappedRolesContainer from '../containers/WrappedRolesContainer';
+import WrappedPermissionsContainer from '../containers/WrappedPermissionsContainer';
 import ActivateAccountContainer from '../containers/ActivateAccountContainer';
 import OrderNewPasswordContainer from '../containers/OrderNewPasswordContainer';
 import HomeContainer from '../containers/HomeContainer';
@@ -35,8 +35,8 @@ const App = (props) => (
           <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
           <Route path="/:locale/user_registrations" component={UserRegistrationsContainer} />
-          <Route path="/:locale/roles" component={RolesContainer} />
-          <Route path="/:locale/permissions" component={PermissionsContainer} />
+          <Route path="/:locale/roles" component={WrappedRolesContainer} />
+          <Route path="/:locale/permissions" component={WrappedPermissionsContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
           <Route path="/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
           <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
