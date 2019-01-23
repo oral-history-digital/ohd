@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { t, admin, pluraliize } from '../../../lib/utils';
+import { t, admin, pluralize } from '../../../lib/utils';
 
 export default class Data extends React.Component {
 
@@ -64,7 +64,7 @@ export default class Data extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData(pluralize(this.props.scope), this.props.registryEntry.id, null, null, true);
+        this.props.deleteData(pluralize(this.props.scope), this.props.data.id, null, null, true);
         this.props.closeArchivePopup();
     }
 
@@ -92,6 +92,25 @@ export default class Data extends React.Component {
         }
     }
 
+    joinedData() {
+        if (this.props.joinedData) {
+            return Object.keys(this.props.joinedData).map((joined_model_name_underscore, index) => {
+                let props = {
+                    data: this.props.data[pluralize(joined_model_name_underscore)], 
+                    initialFormValues: {[`${this.props.scope}_id`]: this.props.data.id}
+                }
+                return (
+                    <div className={`${pluralize(joined_model_name_underscore)} box`}>
+                        <div className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</div>
+                        {React.createElement(this.props.joinedData[joined_model_name_underscore], props)}
+                    </div>
+                )
+            })
+        } else {
+            return null;
+        }
+    }
+
     buttons() {
         if (admin(this.props)) {
             return (
@@ -110,6 +129,7 @@ export default class Data extends React.Component {
                 <div className='data boxes'>
                     {this.baseData()}
                     {this.buttons()}
+                    {this.joinedData()}
                 </div>
             )
         } else {

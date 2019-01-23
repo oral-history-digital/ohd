@@ -1,7 +1,5 @@
 import React from 'react';
-import Observer from 'react-intersection-observer'
-import WrapperPageContainer from '../containers/WrapperPageContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
+//import Observer from 'react-intersection-observer'
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
 import { t, admin, pluralize, parametrizedQuery } from '../../../lib/utils';
@@ -14,25 +12,17 @@ export default class WrappedDataLists extends React.Component {
         this.form = this.form.bind(this);
     }
 
-    renderScrollObserver() {
-        if (this.props.isDataSearching) {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
-        }
-        else if (this.props.resultPagesCount > (this.props.query.page)) {
-            return (
-                <Observer
-                    onChange={inView => this.handleScroll(inView)}
-                />
-            )
-        }
+    componentDidMount() {
+        this.loadJoinData();
     }
 
-    handleScroll(inView) {
-        if(inView){
-            this.props.setQueryParams(pluralize(this.props.scope), {page: this.props.query.page + 1});
-            this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
-        }
-    }
+    loadJoinData() {
+         if (
+            !this.props.joinDataStatus.all
+         ) {
+            this.props.fetchData(this.props.joinDataScope, null, null, this.props.locale, null);
+         }
+     }
 
     data() {
         if (this.props.data) {
@@ -42,7 +32,6 @@ export default class WrappedDataLists extends React.Component {
                         data={this.props.data[c]} 
                         scope={this.props.scope}
                         detailsAttributes={this.props.detailsAttributes}
-                        joinedData={this.props.joinedData}
                         form={this.form}
                         key={`${this.props.scope}-${c}`} 
                     />
@@ -58,7 +47,7 @@ export default class WrappedDataLists extends React.Component {
         return (
             <Form 
                 data={data}
-                //values={{ id: data && data.id }}
+                values={this.props.initialFormValues}
                 scope={this.props.scope}
                 onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                 submitText='submit'
@@ -85,19 +74,11 @@ export default class WrappedDataLists extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + this.props.baseTabIndex;
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1>{t(this.props, pluralize(this.props.scope))}</h1>
-                    {this.data()}
-                    {this.add()}
-                    {this.renderScrollObserver()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </WrapperPageContainer>
+            <div>
+                {this.data()}
+                {this.add()}
+            </div>
         );
     }
 }

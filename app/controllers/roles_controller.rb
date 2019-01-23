@@ -34,7 +34,7 @@ class RolesController < ApplicationController
             data_type: 'roles',
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: role.total_pages
+            result_pages_count: roles.total_pages
           }
         end
         render json: json

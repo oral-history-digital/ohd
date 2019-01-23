@@ -1,10 +1,6 @@
 import { connect } from 'react-redux';
 
-import WrappedDataList from '../components/WrappedDataList';
-import RolePermissionsContainer from '../containers/RolePermissionsContainer';
-import { 
-    setQueryParams, 
-} from '../actions/searchActionCreators';
+import DataList from '../components/DataList';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
@@ -15,24 +11,21 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         account: state.account,
         editView: state.archive.editView,
-        data: state.data.roles,
-        resultPagesCount: state.data.statuses.roles.resultPagesCount,
-        query: state.search.roles.query,
-        isDataSearching: state.search.isRoleSearching,
-        scope: 'role',
-        baseTabIndex: 10,
-        detailsAttributes: ['desc', 'controller', 'action'],
+        //data: state.data.permissions,
+        joinDataStatus: state.data.statuses.permissions,
+        joinDataScope: 'permissions',
+        scope: 'role_permission',
+        detailsAttributes: ['name', 'desc', 'controller', 'action'],
         formElements: [
             {
-                attribute: 'name',
-                validate: function(v){return v.length > 1} 
-            },
-            {
-                elementType: 'textarea',
-                attribute: 'desc',
-            },
+                elementType: 'select',
+                attribute: 'permission_id',
+                values: state.data.permissions,
+                withEmpty: true,
+                validate: function(v){return v.length > 0} 
+            }
         ],
-        joinedData: {role_permission: RolePermissionsContainer}
+        ensureLoaded: 'permissions'
     }
 }
 
@@ -40,9 +33,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
     deleteData: (dataType, id, nestedDataType, nestedId) => dispatch(deleteData(dataType, id, nestedDataType, nestedId)),
     submitData: (params, locale) => dispatch(submitData(params, locale)),
-    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);
+export default connect(mapStateToProps, mapDispatchToProps)(DataList);
