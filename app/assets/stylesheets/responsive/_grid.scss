@@ -1,3 +1,27 @@
 //
 // Grid system
 // --------------------------------------------------
+
+.boxes {
+  display:table;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 3%;
+}
+
+.box {
+  display: table-cell;
+  /*text-align: center;*/
+  vertical-align: top;
+  min-width: 100px;
+  .name, .title {
+    font-weight: bold;
+  }
+}
+
+@include screen-xs {
+  .box {
+    display: block;
+    width: 100%;
+  }
+}

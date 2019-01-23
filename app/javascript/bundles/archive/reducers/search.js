@@ -6,9 +6,6 @@ import {
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
 
-    REQUEST_USER_REGISTRATION_SEARCH,
-    RECEIVE_USER_REGISTRATION_SEARCH,
-
     SET_QUERY_PARAMS,
     RESET_QUERY,
     RECEIVE_FACETS,
@@ -41,9 +38,6 @@ const initialState = {
             workflow_state: 'unchecked',
             page: 1,
         },
-        results: {
-        },
-        resultPagesCount: 1,
     },
 }
 
@@ -89,26 +83,6 @@ const search = (state = initialState, action) => {
                 [action.scope]: Object.assign({}, state[action.scope], {
                     query: {},
                 }),
-            })
-        case REQUEST_USER_REGISTRATION_SEARCH:
-            return Object.assign({}, state, {
-                isUserRegistrationSearching: true,
-            })
-        case RECEIVE_USER_REGISTRATION_SEARCH:
-            let results = {};
-            if (action.page > 1){
-                results = Object.assign({}, state.userRegistrations.results, action.results)
-            }
-            else {
-                results = action.results;
-            }
-
-            return Object.assign({}, state, {
-                isUserRegistrationSearching: false,
-                userRegistrations: Object.assign({}, state.userRegistrations, {
-                    results: results,
-                    resultPagesCount: action.resultPagesCount,
-                })
             })
         case REQUEST_FACETS:
             return Object.assign({}, state, {

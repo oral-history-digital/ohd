@@ -12,6 +12,7 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :activated_at,
     :admin_comments,
     :user_account_id,
+    :user_id,
     :login,
     :processed_at,
     :default_locale,
@@ -29,7 +30,13 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :city,
     :state,
     :country,
-    :transitions_to
+    :transitions_to,
+    :roles,
+    :tasks
+
+  def user_id
+    object.user && object.user.id
+  end
 
   def names
       object.translations.each_with_object({}) {|i, hsh |
@@ -42,6 +49,14 @@ class UserRegistrationSerializer < ActiveModel::Serializer
 
   def transitions_to
     object.current_state.events.map{|e| e.first}
+  end
+
+  def roles
+    object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  end
+
+  def tasks
+    object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
   end
 
   def created_at

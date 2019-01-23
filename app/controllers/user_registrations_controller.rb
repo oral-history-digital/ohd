@@ -103,17 +103,13 @@ class UserRegistrationsController < ApplicationController
       format.html { render 'react/app' }
       format.json do |format|
         extra_params = @filters.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
-        #render json: Rails.cache.fetch("#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{User.maximum(:updated_at)}") do
-        json = Rails.cache.fetch("#{Project.project_id}-#{Project.project_id}-#{extra_params}-page-#{params[:page]}-#{User.maximum(:updated_at)}") do
-          {
+        render json: {
             data: @user_registrations.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'user_registrations',
             extra_params: extra_params,
             page: params[:page], 
             result_pages_count: @user_registrations.total_pages
           }
-        end
-        render json: json
       end
       format.csv do
         response.headers['Pragma'] = 'no-cache'
@@ -146,7 +142,28 @@ class UserRegistrationsController < ApplicationController
   end
 
   def user_registration_params
-    params.require(:user_registration).permit(:appellation, :first_name, :last_name, :email, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :state, :country, :receive_newsletter, :tos_agreement, :priv_agreement, :default_locale, :workflow_state, :admin_comments)
+    params.require(:user_registration).permit(
+      :appellation,
+      :first_name,
+      :last_name,
+      :email,
+      :job_description,
+      :research_intentions,
+      :comments,
+      :organization,
+      :homepage,
+      :street,
+      :zipcode,
+      :city,
+      :state,
+      :country,
+      :receive_newsletter,
+      :tos_agreement,
+      :priv_agreement,
+      :default_locale,
+      :workflow_state,
+      :admin_comments
+    )
   end
 
   def filter_user_registrations

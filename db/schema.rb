@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_20_101707) do
+ActiveRecord::Schema.define(version: 2019_01_21_105757) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -212,6 +212,14 @@ ActiveRecord::Schema.define(version: 2018_12_20_101707) do
     t.string "typology"
   end
 
+  create_table "permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "controller"
+    t.string "action"
+    t.text "desc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "person_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "person_id", null: false
     t.string "locale", null: false
@@ -328,6 +336,22 @@ ActiveRecord::Schema.define(version: 2018_12_20_101707) do
     t.datetime "updated_at"
   end
 
+  create_table "role_permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "permission_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
+    t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "desc"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "segment_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "segment_id"
     t.string "locale"
@@ -381,6 +405,20 @@ ActiveRecord::Schema.define(version: 2018_12_20_101707) do
     t.string "workflow_state", default: "digitized"
     t.string "filename"
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state"
+  end
+
+  create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "authorized_type"
+    t.string "authorized_id"
+    t.text "desc"
+    t.string "workflow_state"
+    t.bigint "user_id"
+    t.bigint "supervisor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["supervisor_id"], name: "index_tasks_on_supervisor_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -479,6 +517,13 @@ ActiveRecord::Schema.define(version: 2018_12_20_101707) do
     t.index ["email"], name: "index_user_registrations_on_email"
     t.index ["workflow_state", "email"], name: "index_user_registrations_on_workflow_state_and_email"
     t.index ["workflow_state"], name: "index_user_registrations_on_workflow_state"
+  end
+
+  create_table "user_roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_user_roles_on_role_id"
+    t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

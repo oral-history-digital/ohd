@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import { t } from '../../../lib/utils';
+import { t, parametrizedQuery } from '../../../lib/utils';
 
 
 export default class UserRegistrationSearchForm extends React.Component {
@@ -14,17 +14,26 @@ export default class UserRegistrationSearchForm extends React.Component {
     }
 
     componentDidMount() {
-        this.getDataForQuery();
+        this.loadUserRegistrations();
     }
 
+    loadUserRegistrations() {
+         if (
+            !this.props.userRegistrationsStatus[this.statifiedQuery()]
+         ) {
+            this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
+         }
+     }
 
-    getDataForQuery() {
-        if (
-            !this.props.isUserRegistrationSearching
-        ) {
-            let url = `/${this.context.router.route.match.params.locale}/user_registrations`;
-            this.props.searchUserRegistration(url, this.props.query);
-        }
+    userRegistrationsLoaded() {
+        return (
+            this.props.userRegistrationsStatus[this.statifiedQuery()] &&
+            this.props.userRegistrationsStatus[this.statifiedQuery()].split('-')[0] === 'fetched'
+        )
+    }
+
+    statifiedQuery() {
+        return parametrizedQuery(this.props.query).replace(/[=&]/g, '_');
     }
 
     handleChange(event) {
@@ -42,12 +51,12 @@ export default class UserRegistrationSearchForm extends React.Component {
     handleReset(event) {
         this.form.reset();
         this.props.resetQuery('userRegistrations');
-        this.getDataForQuery();
+        this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
     }
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.getDataForQuery();
+        this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
     }
 
     workflowStateOptions() {

@@ -1,9 +1,27 @@
 import React from 'react';
 
 import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
+import TasksContainer from '../containers/TasksContainer';
+import UserRolesContainer from '../containers/UserRolesContainer';
 import { t, fullname, admin } from '../../../lib/utils';
 
 export default class UserRegistration extends React.Component {
+
+    baseData() {
+        return (
+            <div className='user-base-data box'>
+                <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
+                <p className='created-at'>
+                    <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
+                    <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
+                </p>
+                <p className='workflow-state'>
+                    <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
+                    <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
+                </p>
+            </div>
+        )
+    }
 
     details() {
         return (
@@ -41,6 +59,21 @@ export default class UserRegistration extends React.Component {
         )
     }
 
+    show() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.user_registration.show')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'edit.user_registration.show'),
+                    content: this.details()
+                })}
+            >
+                <i className="fa fa-eye"></i>
+            </div>
+        )
+    }
+
     edit() {
         return (
             <div
@@ -48,7 +81,7 @@ export default class UserRegistration extends React.Component {
                 title={t(this.props, 'edit.user_registration.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.user_registration.edit'),
-                    content: [this.details(), <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />]
+                    content: <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />
                 })}
             >
                 <i className="fa fa-pencil"></i>
@@ -59,27 +92,48 @@ export default class UserRegistration extends React.Component {
     buttons() {
         if (admin(this.props)) {
             return (
-                <span className={'buttons'}>
+                <div className={'buttons box'}>
+                    {this.show()}
                     {this.edit()}
-                </span>
+                </div>
             )
+        }
+    }
+
+    roles() {
+        if (this.props.userRegistration.user_id) {
+            return (
+                <div className={'roles box'}>
+                    <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
+                    <UserRolesContainer userRoles={this.props.userRegistration.roles} userId={this.props.userRegistration.user_id} />
+                </div>
+            )
+        } else {
+            return <div className={'roles box'} />;
+        }
+    }
+
+    tasks() {
+        if (this.props.userRegistration.user_id) {
+            return (
+                <div className={'tasks box'}>
+                    <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
+                    <TasksContainer tasks={this.props.userRegistration.tasks} userId={this.props.userRegistration.user_id} />
+                </div>
+            )
+        } else {
+            return <div className={'tasks box'} />;
         }
     }
 
     render() {
         if (this.props.userRegistration) {
             return (
-                <div className='user-registration'>
-                    <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
-                    <p className='created-at'>
-                        <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.created_at') + ': '}</span>
-                        <span className='content'>{`${this.props.userRegistration.created_at}`}</span>
-                    </p>
-                    <p className='workflow-state'>
-                        <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
-                        <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
-                    </p>
+                <div className='user-registration boxes'>
+                    {this.baseData()}
                     {this.buttons()}
+                    {this.roles()}
+                    {this.tasks()}
                 </div>
             )
         } else {

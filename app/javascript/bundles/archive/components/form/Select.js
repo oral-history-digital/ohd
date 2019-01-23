@@ -46,7 +46,15 @@ export default class Select extends React.Component {
     options() {
         let opts = [];
         if (this.props.values) {
-            opts = this.props.values.map((value, index) => {
+            let values;
+            if (Array.isArray(this.props.values)) {
+                values = this.props.values;
+            } else {
+                values = Object.keys(this.props.values).map((id, i) => {
+                    return {id: id, name: this.props.values[id].name}
+                })
+            }
+            opts = values.map((value, index) => {
                 let val, text;
                 if (typeof value === 'string') {
                     text = this.props.optionsScope ? 
@@ -54,7 +62,7 @@ export default class Select extends React.Component {
                         t(this.props, `${this.props.scope}.${this.props.attribute}.${value}`)
                     val = value;
                 } else {
-                    text = value.name[this.props.locale];
+                    text = value.name[this.props.locale] || value.name;
                     val = value.value || value.id;
                 }
                 return (

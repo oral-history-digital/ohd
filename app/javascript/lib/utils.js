@@ -116,6 +116,13 @@ export function admin(props) {
     }
 }
 
+export function parametrizedQuery(query) {
+    return Object.keys(query).map((key, index) => {
+        return `${key}=${query[key]}`;
+    }).join('&');
+}
+
+
 export function queryToText(query, props) {
     let queryText = "";
     for (let [k, value] of Object.entries(query)) {

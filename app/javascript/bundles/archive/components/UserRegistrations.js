@@ -3,7 +3,7 @@ import Observer from 'react-intersection-observer'
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import UserRegistrationContainer from '../containers/UserRegistrationContainer';
-import { t } from '../../../lib/utils';
+import { t, parametrizedQuery } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class UserRegistrations extends React.Component {
@@ -25,16 +25,18 @@ export default class UserRegistrations extends React.Component {
         if(inView){
             this.props.setQueryParams('userRegistrations', {page: this.props.query.page + 1});
             let url = `/${this.props.locale}/user_registrations`;
-            this.props.searchUserRegistration(url, this.props.query);
+            this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
         }
     }
 
     userRegistrations() {
-        let userRegistrations = [];
-        for (var c in this.props.userRegistrations) {
-            userRegistrations.push(<UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />);
+        if (this.props.userRegistrations) {
+            return Object.keys(this.props.userRegistrations).map((c, index) => {
+                return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
+            })
+        } else {
+            return null;
         }
-        return userRegistrations;
     }
 
     render() {

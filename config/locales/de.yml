@@ -242,6 +242,13 @@ de:
     'Transcribed / described': 'Transkript'
     'Translated': 'Übersetzung'
     'Indexed': 'Erschließung'
+
+  tasks:
+    'Interview': 'Interview'
+    'BiographicalEntry': 'Biographie'
+    'RegistryReference': 'Nennungen / Referenzen'
+    'Contribution': 'Beiträge'
+    'Photo': 'Fotos'
   
   status:
     translated: 'mit dt. Übersetzung'
@@ -303,7 +310,16 @@ de:
       edit: 'Foto bearbeiten'
       delete: 'Foto löschen'
     user_registration:
+      show: 'Details'
       edit: 'Bearbeiten'
+    user_role:
+      show: 'Beschreibung'
+      edit: 'Bearbeiten'
+      new: 'Hinzufügen'
+    task:
+      show: 'Beschreibung'
+      edit: 'Bearbeiten'
+      new: 'Hinzufügen'
     upload_transcript: 'Transkript hochladen'
 
   upload:
@@ -461,6 +477,12 @@ de:
       user_registration:
         one: 'Benutzer/ Registrierung'
         other: 'Benutzer/ Registrierung'
+      role: 
+        one: 'Rolle'
+        other: 'Rollen'
+      task:
+        one: 'Aufgabe'
+        other: 'Aufgaben'
 
     attributes:
       history:
@@ -587,6 +609,14 @@ de:
         register: 'Registrierung senden'
         workflow_state: 'Status'
         transition_to: 'Status ändern zu:'
+      user_role:
+        role_id: 'Rolle'
+      task:
+        authorized_id: 'ID oder Archiv ID'
+        authorized_type: 'Typ'
+        transition_to: 'Status ändern zu:'
+        name: 'Name'
+        desc: 'Beschreibung'
       person:
         gender: 'Geschlecht'
         first_name: 'Vorname'

@@ -110,6 +110,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :user_roles, only: [:create, :destroy]
+    resources :roles
+    resources :role_permissions, only: [:create, :destroy]
+    resources :permissions
+    resources :tasks
+
     namespace :admin do
       resources :users do
         collection do

@@ -1,7 +1,5 @@
 class PeopleController < ApplicationController
 
-  layout 'responsive'
-
   def new
     authorize Person
     respond_to do |format|
@@ -15,12 +13,7 @@ class PeopleController < ApplicationController
     @person = Person.create person_params
     respond_to do |format|
       format.json do
-        render json: {
-          id: @person.id,
-          data_type: 'people',
-          data: ::PersonSerializer.new(@person).as_json,
-          msg: 'processed'
-        }
+        render json: data_json(@person, 'processed')
       end
     end
   end
@@ -31,11 +24,7 @@ class PeopleController < ApplicationController
     @person.update_attributes person_params
     respond_to do |format|
       format.json do
-        render json: {
-          id: @person.id,
-          data_type: 'people',
-          data: ::PersonSerializer.new(@person).as_json,
-        }
+        render json: data_json(@person)
       end
     end
   end
