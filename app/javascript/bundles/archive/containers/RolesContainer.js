@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         query: state.search.roles.query,
         isDataSearching: state.search.isRoleSearching,
         scope: 'role',
-        baseTabIndex: 11,
+        baseTabIndex: 10,
         detailsAttributes: ['desc', 'controller', 'action'],
         formElements: [
             {

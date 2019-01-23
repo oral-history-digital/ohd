@@ -35,8 +35,8 @@ const App = (props) => (
           <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
           <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
           <Route path="/:locale/user_registrations" component={UserRegistrationsContainer} />
-          <Route path="/:locale/roles" render={(props) => <RolesContainer {...props} baseTabIndex={10} />} />
-          <Route path="/:locale/permissions" render={(props) => <PermissionsContainer {...props} baseTabIndex={11} />} />
+          <Route path="/:locale/roles" component={RolesContainer} />
+          <Route path="/:locale/permissions" component={PermissionsContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
           <Route path="/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
           <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
