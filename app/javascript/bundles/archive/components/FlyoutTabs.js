@@ -208,8 +208,8 @@ export default class FlyoutTabs extends React.Component {
             <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
             <Tab className={css} key='edit.users.admin'>{t(this.props, 'edit.users.admin')}</Tab>,
-            <Tab className={css} key='edit.roles.admin'>{t(this.props, 'edit.roles.admin')}</Tab>,
-            <Tab className={css} key='edit.permissions.admin'>{t(this.props, 'edit.permissions.admin')}</Tab>,
+            <Tab className={css} key='edit.role.admin'>{t(this.props, 'edit.role.admin')}</Tab>,
+            <Tab className={css} key='edit.permission.admin'>{t(this.props, 'edit.permission.admin')}</Tab>,
         ];
     }
 
@@ -235,12 +235,12 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
                     <UserRegistrationSearchFormContainer/>
                 </TabPanel>,
-                <TabPanel key={'tabpanel-roles-admin'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.roles.admin')}</div>
+                <TabPanel key={'tabpanel-role-admin'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.role.admin')}</div>
                     <RoleSearchFormContainer/>
                 </TabPanel>,
-                <TabPanel key={'tabpanel-permissions-admin'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.permissions.admin')}</div>
+                <TabPanel key={'tabpanel-permission-admin'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.permission.admin')}</div>
                     <PermissionSearchFormContainer/>
                 </TabPanel>
             ];
@@ -251,8 +251,8 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='tabpanel-uploads'/>,
                 <TabPanel key='tabpanel-add-person'/>,
                 <TabPanel key='tabpanel-users-admin'/>,
-                <TabPanel key='tabpanel-roles-admin'/>,
-                <TabPanel key='tabpanel-permissions-admin'/>,
+                <TabPanel key='tabpanel-role-admin'/>,
+                <TabPanel key='tabpanel-permission-admin'/>,
             ]
         }
     }

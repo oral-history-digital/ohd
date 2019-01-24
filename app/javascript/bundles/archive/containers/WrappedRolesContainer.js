@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
         isDataSearching: state.search.isRoleSearching,
         scope: 'role',
         baseTabIndex: 10,
-        detailsAttributes: ['desc', 'controller', 'action'],
+        detailsAttributes: ['name', 'desc'],
         formElements: [
             {
                 attribute: 'name',
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
                 attribute: 'desc',
             },
         ],
-        joinedData: {role_permission: RolePermissionsContainer}
+        joinedData: {role_permission: RolePermissionsContainer},
     }
 }
 

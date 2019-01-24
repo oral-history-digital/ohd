@@ -159,5 +159,21 @@
       color: $gray-light;
     }
   }
+  .lonely-search-button {
+    width: 100%;
+    font-family: FontAwesome;
+    color: $primary-color;
+    transition: color 0.3s;
+    padding: 10px;
+    border-top: 1px solid $gray-dark;
+    border-bottom: 1px solid $gray-dark;
+    border-right: 1px solid $gray-dark;
+    background-color: $gray-paler;
+    text-align: middle;
+    margin-bottom: 5px;
+    &:hover {
+      color: $gray-light;
+    }
+  }
 }
 
