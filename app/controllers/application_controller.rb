@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   # single instance structure for data-reducer
   #
   def data_json(data, msg=nil)
-    identifier = data.respond_to?(:archive_id) ? :archive_id : :id
+    identifier = (data.class.name.underscore == 'interview') ? :archive_id : :id
     json = {
       "#{identifier}": data.send(identifier),
       data_type: data.class.name.underscore.pluralize,
