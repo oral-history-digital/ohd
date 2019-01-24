@@ -5,6 +5,8 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
+import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
+import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
@@ -88,6 +90,14 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 9) {
              // users administration
             this.context.router.history.push(`/${this.props.locale}/user_registrations`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 10) {
+             // roles
+            this.context.router.history.push(`/${this.props.locale}/roles`);
+            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === this.props.locales.length + 11) {
+             // permissions
+            this.context.router.history.push(`/${this.props.locale}/permissions`);
             this.setState({tabIndex: tabIndex});
         } else {
             this.setState({tabIndex: tabIndex})
@@ -197,6 +207,8 @@ export default class FlyoutTabs extends React.Component {
             <Tab className={css} key='edit.upload.upload'>{t(this.props, 'edit.upload.upload')}</Tab>,
             <Tab className={css} key='edit.person.new'>{t(this.props, 'edit.person.new')}</Tab>,
             <Tab className={css} key='edit.users.admin'>{t(this.props, 'edit.users.admin')}</Tab>,
+            <Tab className={css} key='edit.roles.admin'>{t(this.props, 'edit.roles.admin')}</Tab>,
+            <Tab className={css} key='edit.permissions.admin'>{t(this.props, 'edit.permissions.admin')}</Tab>,
         ];
     }
 
@@ -221,6 +233,14 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-users-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
                     <UserRegistrationSearchFormContainer/>
+                </TabPanel>,
+                <TabPanel key={'tabpanel-roles-admin'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.roles.admin')}</div>
+                    <RoleSearchFormContainer/>
+                </TabPanel>,
+                <TabPanel key={'tabpanel-permissions-admin'}>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.permissions.admin')}</div>
+                    <PermissionSearchFormContainer/>
                 </TabPanel>
             ];
         } else {
@@ -230,6 +250,8 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key='tabpanel-uploads'/>,
                 <TabPanel key='tabpanel-add-person'/>,
                 <TabPanel key='tabpanel-users-admin'/>,
+                <TabPanel key='tabpanel-roles-admin'/>,
+                <TabPanel key='tabpanel-permissions-admin'/>,
             ]
         }
     }

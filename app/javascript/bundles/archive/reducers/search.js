@@ -39,6 +39,8 @@ const initialState = {
             page: 1,
         },
     },
+    roles: { query: {} },
+    permissions: { query: {} }
 }
 
 const search = (state = initialState, action) => {

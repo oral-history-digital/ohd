@@ -22,13 +22,19 @@ class RolesController < ApplicationController
   end
 
   def index
-    roles = policy_scope(Role)
+    roles = policy_scope(Role).where(search_params).order("created_at DESC").paginate page: params[:page] || 1
+    extra_params = search_params.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+
     respond_to do |format|
+      format.html { render :template => '/react/app.html' }
       format.json do
-        json = Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{Role.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
           {
             data: roles.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'roles'
+            data_type: 'roles',
+            extra_params: extra_params,
+            page: params[:page], 
+            result_pages_count: roles.total_pages
           }
         end
         render json: json
@@ -54,5 +60,9 @@ class RolesController < ApplicationController
         :name,
         :desc
     )
+  end
+
+  def search_params
+    params.permit(:name, :desc).to_h
   end
 end

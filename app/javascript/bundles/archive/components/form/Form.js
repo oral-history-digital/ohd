@@ -39,8 +39,10 @@ export default class Form extends React.Component {
 
     initValues() {
         let values = this.state.values;
+        if (this.props.data)
+            values.id = this.props.data.id
         this.props.elements.map((element, index) => {
-            values[element.attribute] = element.value
+            values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
         })
         this.setState({ values: values });
     }

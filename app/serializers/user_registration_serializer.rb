@@ -60,15 +60,15 @@ class UserRegistrationSerializer < ActiveModel::Serializer
   end
 
   def created_at
-    object.created_at && object.created_at.strftime('%d.%m.%Y %M:%H Uhr')
+    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M Uhr')
   end
 
   def activated_at
-    object.activated_at && object.activated_at.strftime('%d.%m.%Y %M:%H Uhr')
+    object.activated_at && object.activated_at.strftime('%d.%m.%Y %H:%M Uhr')
   end
 
   def processed_at
-    object.processed_at && object.processed_at.strftime('%d.%m.%Y %M:%H Uhr')
+    object.processed_at && object.processed_at.strftime('%d.%m.%Y %H:%M Uhr')
   end
 
   def receive_newsletter

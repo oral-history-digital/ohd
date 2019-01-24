@@ -34,7 +34,7 @@ export default class PersonPropertiesRegistryReferenceType extends React.Compone
             for (var c in this.props.interview.registry_references) {  
                 let registryReference = this.props.interview.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryReference.registry_reference_type_id == this.props.referenceType.id) {
+                if (registryEntry && registryReference.registry_reference_type_id == this.props.referenceType.id) {
                     registryEntries.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
