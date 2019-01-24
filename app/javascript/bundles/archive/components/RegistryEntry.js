@@ -49,21 +49,26 @@ export default class RegistryEntry extends React.Component {
     }
 
     show() {
-        return (
-            <div
+        if (Object.keys(this.props.registryEntry.registry_references).length > 0 ) {
+
+            return (
+                <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
                 onClick={() => this.props.openArchivePopup({
-                    title: this.props.registryEntry.name[this.props.locale],
+                    // title: this.props.registryEntry.name[this.props.locale],
                     content: <RegistryEntryShowContainer 
-                        registryEntry={this.props.registryEntry} 
-                        registryEntryParent={this.props.registryEntryParent}
-                        />
-                })}
-            >
-                <i className="fa fa-eye"></i>
-            </div>
-        )
+                    registryEntry={this.props.registryEntry} 
+                    registryEntryParent={this.props.registryEntryParent}
+                    />
+                    })}
+                >
+                    <i className="fa fa-eye"></i>
+                </div>
+            )
+        } else {
+            return <div className='flyout-sub-tabs-content-ico-link' />;
+        }
     }
 
     destroy() {
@@ -177,7 +182,7 @@ export default class RegistryEntry extends React.Component {
             >
                 {this.props.registryEntry.name[this.props.locale]}
                 {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`}
-                {` (ID: ${this.props.registryEntry.id})`}
+                {/* {` (ID: ${this.props.registryEntry.id})`} */}
             </div>
         )
     }
@@ -189,16 +194,21 @@ export default class RegistryEntry extends React.Component {
     }
 
     showHideChildren() {
-        let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
-        return (
-            <div
-                className='show-hide-children'
-                title={`${this.props.registryEntry.child_ids[this.props.locale].length} ${t(this.props, 'edit.registry_entry.show_children')}`}
-                onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
-            >
-                <i className={`fa fa-${css}`}></i>
-            </div>
-        )
+        if (this.props.registryEntry.child_ids[this.props.locale].length > 0) {
+
+            let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
+            return (
+                <div
+                    className='show-hide-children'
+                    title={`${this.props.registryEntry.child_ids[this.props.locale].length} ${t(this.props, 'edit.registry_entry.show_children')}`}
+                    onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
+                    >
+                    <i className={`fa fa-${css}`}></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {

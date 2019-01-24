@@ -176,3 +176,11 @@ video::cue {
 	margin: 0 3%;
 	font-family: $font-family;
 }
+
+span.breadcrumb
+{
+  color: grey;
+  &+span:before {
+    content: ' > ';
+  }
+}
