@@ -58,11 +58,10 @@ export default class Account extends React.Component {
     changeToEditView() {
         if (this.props.account.admin) {
             return (
-                <div
-                    className='change-to-admin-view'
-                    onClick={() => this.props.changeToEditView(!this.props.editView)}
-                >
-                    {t(this.props, `${this.props.editView ? 'admin.change_to_normal_view' : 'admin.change_to_edit_view'}` )}
+                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.props.editView)}>
+                    <span className={`switch-input ${this.props.editView ? 'checked' : ''}`} type="checkbox" />
+                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span> 
+                    <span className="switch-handle"></span> 
                 </div>
             )
         } else {
@@ -74,8 +73,8 @@ export default class Account extends React.Component {
         return (
             <div className={'flyout-login-container'}>
                 {this.info()}
-                {this.loginOrOut()}
                 {this.changeToEditView()}
+                {this.loginOrOut()}
             </div>
         );
     }

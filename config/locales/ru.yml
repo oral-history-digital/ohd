@@ -42,6 +42,7 @@ ru:
   login: 'Войти'
   login_name: 'логин'
   logout_page: 'Выйти'
+  account_page: 'Учетная запись'
   logout: 'Выйти'
   logged_in_as: 'Вы вошли как'
   password: 'Пароль'

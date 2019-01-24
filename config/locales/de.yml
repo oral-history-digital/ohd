@@ -105,6 +105,7 @@ de:
   home: 'Startseite'
   login_page: 'Login'
   logout_page: 'Logout'
+  account_page: 'Konto'
   interview: 'Interview'
   user_content: 'Arbeitsmappe'
   user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
@@ -329,7 +330,7 @@ de:
 
   admin:
     change_to_normal_view: 'Nutzeransicht'
-    change_to_edit_view: 'Redaktion'
+    change_to_edit_view: 'Redaktionsansicht'
 
   user_registration:
     registration: 'Registrierung'

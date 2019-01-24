@@ -110,7 +110,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     loginTab() {
-        let text = (this.props.account.email && !this.props.account.error ) ? 'logout_page' : 'login_page';
+        let text = (this.props.account.email && !this.props.account.error ) ? 'account_page' : 'login_page';
         return <Tab className='flyout-top-nav' key='account'>{t(this.props, text)}</Tab>
     }
 
@@ -156,8 +156,7 @@ export default class FlyoutTabs extends React.Component {
                             title={t(this.props, 'text_materials')}
                             content={<InterviewTextMaterialsContainer/>}/>
                         {this.renderPhotos()}
-                        {(this.props.project === 'mog') && this.renderMap()}
-                        {/* remove for now */}
+                        {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
                         <InterviewDataContainer
                             title={t(this.props, 'citation')}
                             content={<CitationInfoContainer/>}/>
