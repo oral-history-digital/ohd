@@ -111,7 +111,10 @@ en:
   interview_content_without_user: ''
   interview_type: ''
   language: 'Language'
-  doi: 'DOI'
+  doi:
+    name: 'DOI'
+    created: 'Created!'
+    already_registered: 'already_registered'
 
   user_registration:
     registration: 'Registrierung'

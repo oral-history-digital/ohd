@@ -160,7 +160,6 @@ de:
   id: 'ID'
   transcript: 'Transkript'
   translation: 'Übersetzung'
-  doi: 'DOI'
   citation: 'Zitierweise'
   order_new_password: 'Passwort vergessen?'
   ordered_new_password: 'Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres Passwortes geschickt.'
@@ -202,6 +201,7 @@ de:
   list: 'Liste'
 
   doi:
+    name: 'doi'
     created: 'Erfolgreich veröffentlicht!'
     already_registered: 'Bereits zu einem früheren Zeitpunkt veröffentlicht!'
 
