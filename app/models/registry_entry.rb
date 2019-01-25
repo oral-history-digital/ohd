@@ -34,6 +34,11 @@ class RegistryEntry < ActiveRecord::Base
            dependent: :destroy,
            class_name: 'RegistryHierarchy'
 
+  has_many :registry_entry_relations
+  has_many :related_registry_entries, 
+           through: :registry_entry_relations,
+           source: :related
+
   has_many :registry_references,
            :dependent => :destroy
 
