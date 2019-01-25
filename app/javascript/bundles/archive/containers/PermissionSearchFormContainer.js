@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
         dataStatus: state.data.statuses.permissions,
         isDataSearching: state.search.isPermissionsSearching,
         scope: 'permission',
+        searchableAttributes: ['name', 'desc', 'controller', 'action']
     }
 }
 

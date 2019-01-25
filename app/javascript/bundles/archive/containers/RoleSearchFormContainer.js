@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
         dataStatus: state.data.statuses.roles,
         isDataSearching: state.search.isRolesSearching,
         scope: 'role',
+        searchableAttributes: ['name', 'desc']
     }
 }
 

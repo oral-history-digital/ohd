@@ -12,13 +12,13 @@ export default class WrappedDataLists extends React.Component {
     constructor(props) {
         super(props);
         this.form = this.form.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     renderScrollObserver() {
         if (this.props.isDataSearching) {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
-        }
-        else if (this.props.resultPagesCount > (this.props.query.page)) {
+        } else if (this.props.resultPagesCount > (this.props.query.page)) {
             return (
                 <Observer
                     onChange={inView => this.handleScroll(inView)}
@@ -44,6 +44,7 @@ export default class WrappedDataLists extends React.Component {
                         detailsAttributes={this.props.detailsAttributes}
                         joinedData={this.props.joinedData}
                         form={this.form}
+                        hideEdit={this.props.hideEdit}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -72,9 +73,9 @@ export default class WrappedDataLists extends React.Component {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.data.new')}
+                    title={t(this.props, `edit.${this.props.scope}.new`)}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.data.new'),
+                        title: t(this.props, `edit.${this.props.scope}.new`),
                         content: this.form()
                     })}
                 >
@@ -89,7 +90,7 @@ export default class WrappedDataLists extends React.Component {
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1>{t(this.props, pluralize(this.props.scope))}</h1>
+                    <h1>{t(this.props, `activerecord.models.${this.props.scope}.other`)}</h1>
                     {this.data()}
                     {this.add()}
                     {this.renderScrollObserver()}

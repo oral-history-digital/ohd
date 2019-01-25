@@ -53,6 +53,20 @@ export default class DataSearchForm extends React.Component {
         this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
     }
 
+    searchFormElement(attribute) {
+        return (
+            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${attribute}`)} >
+                <input 
+                    className="search-input" 
+                    type="text" 
+                    name={attribute}
+                    value={this.props.query[attribute]}
+                    onChange={this.handleChange}
+                />
+            </FormElement>
+        )
+    }
+
     render() {
         let _this = this;
         return (
@@ -63,25 +77,14 @@ export default class DataSearchForm extends React.Component {
                     className={'flyout-search default'} 
                     onSubmit={this.handleSubmit}
                 >
-                    <FormElement label={t(this.props, 'name')} >
-                        <input 
-                            className="search-input" 
-                            type="text" 
-                            name="name" 
-                            value={this.props.query.name}
-                            onChange={this.handleChange}
-                        />
-                    </FormElement>
-                    <FormElement label={t(this.props, 'desc')} >
-                        <input 
-                            className="search-input" 
-                            type="text" 
-                            name="desc" 
-                            value={this.props.query.desc}
-                            onChange={this.handleChange}
-                        />
-                    </FormElement>
-                    <input type="submit" value={t(this.props, this.props.submitText || 'search')}/>
+                    {this.props.searchableAttributes.map((attribute, index) => {
+                        return this.searchFormElement(attribute);
+                    })}
+                    <input 
+                        className="lonely-search-button" 
+                        value={t(this.props, this.props.submitText || 'search')}
+                        type="submit" 
+                    />
                 </form>
                 <button 
                     className={'reset'}

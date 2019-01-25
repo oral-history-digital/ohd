@@ -110,6 +110,7 @@ de:
   user_content: 'Arbeitsmappe'
   user_content_errors: 'Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)'
   archive_search: 'Suche im Archiv'
+  search: 'Suchen'
   interviewee_name: 'Name'
   periods: 'Zeitperioden'
   keywords: 'Schlagworte'
@@ -313,6 +314,20 @@ de:
     user_registration:
       show: 'Details'
       edit: 'Bearbeiten'
+    role: 
+      new: 'Rolle hinzufügen'
+      edit: 'Rolle bearbeiten'
+      delete: 'Rolle löschen'
+      admin: 'Rollen bearbeiten'
+    role_permission: 
+      new: 'Erlaubnis hinzufügen'
+      edit: 'Erlaubnis bearbeiten'
+      delete: 'Erlaubnis löschen'
+    permission: 
+      new: 'Erlaubnis hinzufügen'
+      edit: 'Erlaubnis bearbeiten'
+      delete: 'Erlaubnis löschen'
+      admin: 'Erlaubnisse bearbeiten'
     user_role:
       show: 'Beschreibung'
       edit: 'Bearbeiten'
@@ -484,6 +499,12 @@ de:
       task:
         one: 'Aufgabe'
         other: 'Aufgaben'
+      permission:
+        one: 'Erlaubnis'
+        other: 'Erlaubnisse'
+      role_permission:
+        one: 'Zur Rolle gehörende Erlaubnis'
+        other: 'Zur Rolle gehörende Erlaubnisse'
 
     attributes:
       history:
@@ -612,6 +633,23 @@ de:
         transition_to: 'Status ändern zu:'
       user_role:
         role_id: 'Rolle'
+      role:
+        created_at: 'angelegt'
+        name: 'Name'
+        desc: 'Beschreibung'
+      role_permission:
+        name: 'Name'
+        desc: 'Beschreibung'
+        permission_id: 'Erlaubnis'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
+      permission:
+        name: 'Name'
+        desc: 'Beschreibung'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
       task:
         authorized_id: 'ID oder Archiv ID'
         authorized_type: 'Typ'

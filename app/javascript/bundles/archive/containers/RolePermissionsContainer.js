@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
                 validate: function(v){return v.length > 0} 
             }
         ],
-        ensureLoaded: 'permissions'
+        hideEdit: true
     }
 }
 

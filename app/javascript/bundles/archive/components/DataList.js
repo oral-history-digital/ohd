@@ -33,6 +33,7 @@ export default class WrappedDataLists extends React.Component {
                         scope={this.props.scope}
                         detailsAttributes={this.props.detailsAttributes}
                         form={this.form}
+                        hideEdit={this.props.hideEdit}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -61,9 +62,9 @@ export default class WrappedDataLists extends React.Component {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.data.new')}
+                    title={t(this.props, `edit.${this.props.scope}.new`)}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.data.new'),
+                        title: t(this.props, `edit.${this.props.scope}.new`),
                         content: this.form()
                     })}
                 >

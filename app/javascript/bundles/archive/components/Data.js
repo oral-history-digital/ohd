@@ -8,12 +8,12 @@ export default class Data extends React.Component {
         return (
             <div className='base-data box'>
                 <p className='name'>{this.props.data.name}</p>
-                <p className='created-at'>
-                    <span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.created_at`) + ': '}</span>
-                    <span className='content'>{this.props.data.created_at}</span>
-                </p>
             </div>
         )
+                //<p className='created-at'>
+                    //<span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.created_at`) + ': '}</span>
+                    //<span className='content'>{this.props.data.created_at}</span>
+                //</p>
     }
 
     details() {
@@ -37,9 +37,9 @@ export default class Data extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.data.show')}
+                title={t(this.props, `edit.${this.props.scope}.show`)}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.data.show'),
+                    title: this.props.data.name || this.props.data.title,
                     content: this.details()
                 })}
             >
@@ -49,18 +49,22 @@ export default class Data extends React.Component {
     }
 
     edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.data.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.data.edit'),
-                    content: this.props.form(this.props.data)
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
+        if (!this.props.hideEdit) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, `edit.${this.props.scope}.edit`)}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, `edit.${this.props.scope}.edit`),
+                        content: this.props.form(this.props.data)
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     destroy() {
@@ -101,7 +105,7 @@ export default class Data extends React.Component {
                 }
                 return (
                     <div className={`${pluralize(joined_model_name_underscore)} box`}>
-                        <div className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</div>
+                        <h4 className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</h4>
                         {React.createElement(this.props.joinedData[joined_model_name_underscore], props)}
                     </div>
                 )
