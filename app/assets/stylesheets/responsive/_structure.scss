@@ -393,7 +393,7 @@ footer {
 
 /* Search-Result */
 
-h1.search-results-title {
+h1.search-results-title, h1.registry-entries-title {
   margin-top: 0;
   //float: left;
   //margin-right: 30px;
@@ -667,7 +667,8 @@ a.search-result-link {
 
 ul.registry-entries-ul {
   list-style: none;
-  padding-left: 10px;
+  padding-left: 21px;
+  margin-top: 20px;
   .show-hide-children {
     float: left;
     margin-right: 8px;
@@ -675,7 +676,13 @@ ul.registry-entries-ul {
     cursor: pointer;
   }
   .registry-entry-label {
+    cursor: pointer;
     float: left;
+    &.open, &:hover {
+      border-bottom: 1px dashed #383838;
+      margin-bottom: 1px;
+      padding-bottom: 4px;
+    }
   }
   li {
     padding-bottom: 6px;
@@ -686,6 +693,9 @@ ul.registry-entries-ul {
     border-left: solid 4px lightgrey;
     padding-left: 5px;
     width: 100%;
+    & > div {
+      margin-bottom: 6px;
+    }
   }
 }
 

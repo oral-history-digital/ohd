@@ -65,7 +65,12 @@ export default class RegistryEntriesTree extends React.Component {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.content()}
+                        <div className='wrapper-content'>
+                            <h1 className='registry-entries-title'>
+                                {t(this.props, 'activerecord.models.registry_entries.other')}
+                            </h1>
+                            {this.content()}
+                        </div>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {t(this.props, 'devise.failure.unauthenticated')}

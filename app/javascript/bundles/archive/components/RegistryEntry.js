@@ -172,13 +172,21 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    showChildren() {
+        if (this.props.registryEntry.child_ids[this.props.locale].length > 0) {
+             this.setState({ childrenVisible: !this.state.childrenVisible }) 
+        }
+    }
+
     entry() {
+        let css = this.state.childrenVisible ? 'open' : '';
         return (
             <div 
                 id={`entry_${this.props.registryEntry.id}`} 
                 key={"entry-" + this.props.registryEntry.id} 
-                className={'registry-entry-label'}
+                className={`registry-entry-label ${css}`}
                 title={this.props.registryEntry.name[this.props.locale]}
+                onClick={() => this.showChildren()}
             >
                 {this.props.registryEntry.name[this.props.locale]}
                 {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`}
