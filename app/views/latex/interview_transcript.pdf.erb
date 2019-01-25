@@ -28,7 +28,7 @@
            locals: {
                interviewee_name: interviewee_name
            } %>
-
+           
 \newpage
 
 <%= render partial: "./latex/observation" if @interview.observations(@locale) %>
@@ -57,7 +57,7 @@
     <% space_above = 0.4 %>
 
     <% if !segment.mainheading.blank? %>
-      \section{<%= latex_escape(segment.mainheading(@lang)) %>}
+      \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(@lang)) %>}
       <% if tape != segment.tape.number %> 
         <% space_above = 0 %>
         <%= render partial: "./latex/title", locals: {title: "#{I18n.t('tape', locale: @locale)} #{segment.tape.number}", space_above: 0.7, space_below: 0.05, font_size: 10} %>
@@ -66,7 +66,7 @@
     <% end %>
 
     <% if !segment.subheading.blank? %>
-      \subsection{<%= latex_escape(segment.subheading(@lang)) %>}
+      \subsection{<%= latex_escape(CGI::unescapeHTML segment.subheading(@lang)) %>}
       <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
     <% end %>
 
@@ -74,7 +74,7 @@
       \vspace*{<%= 0.2 %>cm}
       \textit{<%= segment.speaking_person.name[@locale] + ': ' %>}
     <% end %>
-    <%= latex_escape(segment.text(@lang)) %>
+    <%= latex_escape(CGI::unescapeHTML segment.text(@lang)) %>
 
     <% tape = segment.tape.number %>
     <% speaker_id = segment.speaker_id %>
