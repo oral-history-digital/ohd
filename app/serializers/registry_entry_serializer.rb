@@ -51,7 +51,8 @@ class RegistryEntrySerializer < ActiveModel::Serializer
   end
 
   def ancestors
-    ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
+    # ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
+    object.ancestors.inject({}){|mem, a| mem[a.id] = {id: a.id, name: a.localized_hash}.as_json; mem }
   end
 
 end
