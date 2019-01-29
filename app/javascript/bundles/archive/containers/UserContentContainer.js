@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
+        facets: state.search.archive.facets,
     }
 }
 
