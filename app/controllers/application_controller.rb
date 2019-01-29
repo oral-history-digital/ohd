@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   layout 'responsive'
 
   def pundit_user
-    current_user_account
+    current_user_account.user
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
