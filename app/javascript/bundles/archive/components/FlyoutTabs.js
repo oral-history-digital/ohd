@@ -276,10 +276,10 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                         </button>
                     </div>
-                    <a href={`/${this.props.locale}/registry_entries.pdf`}>
+                    {/* <a href={`/${this.props.locale}/registry_entries.pdf`}>
                         <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                         <span>{` ${t(this.props, 'download')}`}</span>
-                    </a>
+                    </a> */}
                 </div>
             </TabPanel>
         )

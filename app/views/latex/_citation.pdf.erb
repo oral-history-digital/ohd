@@ -12,6 +12,6 @@
   #{@interview.archive_id},
   #{@interview.created_at.strftime("%d.%m.%Y")},
   #{I18n.backend.translate(@locale, 'interview_archive')} #{Project.project_name[@locale]}, #{Project.archive_domain},
-  #{I18n.backend.translate(@locale, 'doi')}: #{Project.project_doi + @interview.archive_id},
+  #{I18n.backend.translate(@locale, 'doi.name')}: #{Project.project_doi + @interview.archive_id},
   (#{I18n.backend.translate(@locale, 'called')}: #{Date.today.strftime("%d.%m.%Y")})" %>
 }

@@ -29,6 +29,9 @@ default: &default
     el: 'Μνήμες από την Κατοχή στην Ελλάδα'
 
   project_domain: 'www.occupation-memories.org'
+  # el: 'www.occupation-memories.org'
+  # de: 'www.occupation-memories.org/de'
+  # en: 'www.occupation-memories.org/en'
 
   archive_domain: 'archive.occupation-memories.org'
 
@@ -96,8 +99,6 @@ default: &default
     - id: 'person_reference'
       source: 'registry_entry'
       descriptor: 'Person'
-    - id: 'archive_id'
-      source: 'interview'
     - id: 'gender'
       source: 'person'
       use_as_facet: true

@@ -126,7 +126,10 @@ el:
   language: 'Γλώσσα'
   camera: 'Κάμερα'
   id: 'ID'
-  doi: 'DOI'
+  doi:
+    name: 'DOI'
+    created: 'Created!'
+    already_registered: 'already_registered'
   citation: 'Τρόπος παραπομπής συνέντευξης'
   order_new_password: 'Ξεχάσατε τον κωδικό σας;'
   ordered_new_password: 'Εστάλη σε εσάς ένα μέιλ με οδηγίες για την αλλαγή του κωδικού σας.'
