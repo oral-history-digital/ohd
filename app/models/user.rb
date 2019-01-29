@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :user_roles
   has_many :roles, through: :user_roles
+  has_many :permissions, through: :roles
 
   has_many :tasks
   has_many :supervised_tasks,
@@ -25,6 +26,10 @@ class User < ActiveRecord::Base
 
   def tasks?(record)
     !tasks.where(authorized: record).blank?
+  end
+
+  def permissions?(controller, action)
+    !permissions.where(controller: controller, action: action).blank?
   end
 
   def roles?(controller, action)
