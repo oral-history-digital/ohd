@@ -122,6 +122,10 @@ export function parametrizedQuery(query) {
     }).join('&');
 }
 
+export function statifiedQuery(query) {
+    return parametrizedQuery(query).replace(/[=&]/g, '_');
+}
+
 
 export function queryToText(query, props) {
     let queryText = "";

@@ -13,7 +13,6 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         query: state.search.roles.query,
         dataStatus: state.data.statuses.roles,
-        isDataSearching: state.search.isRolesSearching,
         scope: 'role',
         searchableAttributes: ['name', 'desc']
     }

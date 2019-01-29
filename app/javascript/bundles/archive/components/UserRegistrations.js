@@ -8,6 +8,12 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class UserRegistrations extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleScroll = this.handleScroll.bind(this);
+        this.renderScrollObserver = this.renderScrollObserver.bind(this);
+    }
+
     renderScrollObserver() {
         if (this.props.isUserRegistrationSearching) {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;

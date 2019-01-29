@@ -102,7 +102,7 @@ class UserRegistrationsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do |format|
-        extra_params = @filters.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+        extra_params = @filters.update(page: params[:page] || 1).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
         render json: {
             data: @user_registrations.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'user_registrations',

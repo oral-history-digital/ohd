@@ -22,8 +22,9 @@ class PermissionsController < ApplicationController
   end
 
   def index
+    page = params[:page] || 1
     permissions = policy_scope(Permission).where(search_params).order("created_at DESC").paginate page: params[:page] || 1
-    extra_params = search_params.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
 
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
