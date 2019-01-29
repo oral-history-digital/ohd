@@ -149,6 +149,9 @@ ru:
     lastname_with_birthname: '%{lastname} (%{birthname})'
     lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
 
+  transcript_header: 'Транскрипт интервью'
+  translation_header: 'Перевод интервью'
+
   interview: 'Интервью'
   video_interview: 'Видеоинтервью'
   audio_interview: 'Аудиоинтервью'

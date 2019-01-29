@@ -116,6 +116,9 @@ en:
     created: 'Created!'
     already_registered: 'already_registered'
 
+  transcript_header: 'Transcript of the interview with'
+  translation_header: 'Translation of the interview with'
+
   user_registration:
     registration: 'Registrierung'
     registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
