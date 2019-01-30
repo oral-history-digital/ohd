@@ -54,7 +54,7 @@ class SearchesController < ApplicationController
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, current_user_account.admin? && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
+      with(:workflow_state, (current_user_account && current_user_account.admin?) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
@@ -107,7 +107,7 @@ class SearchesController < ApplicationController
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
         end
-        with(:workflow_state, current_user_account.admin? ? Interview.workflow_spec.states.keys : 'public')
+        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       end
       search.hits.map{ |hit| eval hit.stored(:title) }
       # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
@@ -124,7 +124,7 @@ class SearchesController < ApplicationController
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
         end
-        with(:workflow_state, current_user_account.admin? ? Interview.workflow_spec.states.keys : 'public')
+        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       end
       ps = search.hits.map{ |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)}
       ps.compact
@@ -137,7 +137,7 @@ class SearchesController < ApplicationController
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
         end
-        with(:workflow_state, current_user_account.admin? ? Interview.workflow_spec.states.keys : 'public')
+        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       end
       search.hits.map {|hit| hit.stored(:place_of_birth) }
     end
@@ -152,7 +152,7 @@ class SearchesController < ApplicationController
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
       end
-      with(:workflow_state, current_user_account.admin? ? Interview.workflow_spec.states.keys : 'public')
+      with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       facet *Project.search_facets_names
       order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
     end
@@ -184,7 +184,7 @@ class SearchesController < ApplicationController
       Project.search_facets_names.each do |facet|
         with(facet.to_sym).any_of(params[facet]) if params[facet]
       end
-      with(:workflow_state, current_user_account.admin? ? Interview.workflow_spec.states.keys : 'public')
+      with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       facet *Project.search_facets_names
       order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
       # TODO: sort linguistically
