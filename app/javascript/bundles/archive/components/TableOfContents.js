@@ -56,8 +56,8 @@ export default class TableOfContents extends React.Component {
         let lastMainheading = '';
 
         if (this.props.interview && this.props.interview.headings) {
-            Object.values(this.props.interview.headings).map((segment, index) => {
-                if (segment.mainheading[this.props.locale] && /\w+/.test(segment.subheading[this.props.locale]) && segment.mainheading[this.props.locale] !== lastMainheading) {
+            Object.values(this.props.interview.headings).sort(function(a, b) {a.time - b.time}).map((segment, index) => {
+                if (segment.mainheading[this.props.locale] && /\w+/.test(segment.mainheading[this.props.locale]) && segment.mainheading[this.props.locale] !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
                     lastMainheading = segment.mainheading[this.props.locale];
@@ -90,21 +90,26 @@ export default class TableOfContents extends React.Component {
                 if (segment.subheading[this.props.locale] && /\w+/.test(segment.subheading[this.props.locale])) {
                     subIndex += 1;
                     subheading = segment.subheading[this.props.locale];
-                    headings[mainIndex - 1].subheadings.push({
-                        main: false,
-                        heading: subheading,
-                        chapter: mainIndex + '.' + subIndex + '.',
-                        time: segment.time,
-                        time: segment.time,
-                        tape_nbr: segment.tape_nbr,
-                        interview_duration: this.props.interview.duration
-                    });
-                    if (headings[mainIndex - 1].subheadings.length > 1) {
-                        if (index < (this.props.interview.headings.length)) {
-                            if (headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].tape_nbr == segment.tape_nbr) {
-                                headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_time = segment.time;
+                    if (headings[mainIndex - 1]) {
+                        headings[mainIndex - 1].subheadings.push({
+                            main: false,
+                            heading: subheading,
+                            chapter: mainIndex + '.' + subIndex + '.',
+                            time: segment.time,
+                            time: segment.time,
+                            tape_nbr: segment.tape_nbr,
+                            interview_duration: this.props.interview.duration
+                        });
+                        if (headings[mainIndex - 1].subheadings.length > 1) {
+                            if (index < (this.props.interview.headings.length)) {
+                                if (headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].tape_nbr == segment.tape_nbr) {
+                                    headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_time = segment.time;
+                                }
                             }
                         }
+                    } else {
+                        console.log(`segment ${segment.id} with locale ${this.props.locale} tries to add a subheading to headings with index ${mainIndex -1}`);
+                        console.log(`There are ${headings.length} headings at this point`);
                     }
                 }
             })
