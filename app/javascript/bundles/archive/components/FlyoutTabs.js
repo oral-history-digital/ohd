@@ -195,7 +195,7 @@ export default class FlyoutTabs extends React.Component {
     showEditView() {
         // TODO: this is a fast unsafe way to decide whether user is admin!
         // make it better!!
-        return this.props.account.admin && this.props.editView;
+        return admin(this.props) && this.props.editView;
     }
 
     editTabs() {

@@ -7,7 +7,7 @@ import Slider from "react-slick";
 import '../../../css/slick.css';
 import '../../../css/slick-theme.css';
 
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
@@ -142,9 +142,15 @@ export default class InterviewPreview extends React.Component {
         }
     }
 
-
-
-
+    renderExportCheckbox() {
+        if (admin(this.props) && this.props.editView) {
+            <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
+                <input type='checkbox' />
+            </div>
+        } else {
+            return null;
+        }
+    }
 
     render() {
         return (
@@ -164,9 +170,7 @@ export default class InterviewPreview extends React.Component {
                     {this.interviewDetails()}
                 </Link>
                 {this.renderSlider()}
-                <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
-                    <input type='checkbox' />
-                </div>
+                {this.renderExportCheckbox()}
             </div>
         );
     }
