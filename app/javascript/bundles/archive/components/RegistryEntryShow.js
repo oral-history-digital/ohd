@@ -153,18 +153,18 @@ export default class RegistryEntryShow extends React.Component {
         return (
             <div>
                 <div>
-                    {this.breadCrumb()}
                     <small style={{float: 'right'}}>
                         <i className='fa fa-globe' />
                         &nbsp;    
                         <a 
-                            href={`https://www.openstreetmap.org/#map=6/${this.props.registryEntry.latitude}/${this.props.registryEntry.longitude}`}
+                            href={`https://www.openstreetmap.org/#map=6/${this.props.registryEntry.longitude}/${this.props.registryEntry.latitude}`}
                             target="_blank"
-                        >
-                            {`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
+                            >
+                            {`${this.props.registryEntry.longitude}, ${this.props.registryEntry.latitude}`}
                             &nbsp;
                         </a>
                     </small> 
+                    {this.breadCrumb()}
                 </div>
                 <h3>
                     {this.props.registryEntry.name[this.props.locale]}
