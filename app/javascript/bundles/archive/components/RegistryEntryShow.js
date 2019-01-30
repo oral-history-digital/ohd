@@ -157,7 +157,7 @@ export default class RegistryEntryShow extends React.Component {
                         <i className='fa fa-globe' />
                         &nbsp;    
                         <a 
-                            href={`https://www.openstreetmap.org/#map=6/${this.props.registryEntry.latitude}/${this.props.registryEntry.longitude}`}
+                            href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
                             target="_blank"
                             >
                             {`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
