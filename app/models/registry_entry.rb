@@ -76,6 +76,15 @@ class RegistryEntry < ActiveRecord::Base
     children.count == 0 and registry_references.count == 0
   end
 
+  searchable do
+    I18n.available_locales.each do |locale|
+      text :"name_#{locale}", :stored => true do
+        descriptor(locale)
+      end
+    end
+    text :entry_desc
+  end
+
   scope :with_state, -> (workflow_state) {
     where(workflow_state: workflow_state)
   }

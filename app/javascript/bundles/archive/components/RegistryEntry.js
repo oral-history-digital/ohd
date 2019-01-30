@@ -219,6 +219,14 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    description() {
+        if(this.props.registryEntry.entry_desc !== ''){
+            return (
+                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.registryEntry.entry_desc}</div>
+            )
+        }
+    }
+
     render() {
         return (
             <div>
@@ -226,6 +234,7 @@ export default class RegistryEntry extends React.Component {
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}
+                {this.description()}
             </div>
         )
     }

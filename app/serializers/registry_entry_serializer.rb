@@ -2,6 +2,7 @@ class RegistryEntrySerializer < ActiveModel::Serializer
   attributes :id,
              :latitude,
              :longitude,
+             :entry_desc,
              :name,
              :notes,
              :parent_ids,
