@@ -22,8 +22,9 @@ class RolesController < ApplicationController
   end
 
   def index
-    roles = policy_scope(Role).where(search_params).order("created_at DESC").paginate page: params[:page] || 1
-    extra_params = search_params.inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    page = params[:page] || 1
+    roles = policy_scope(Role).where(search_params).order("created_at DESC").paginate page: page
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
 
     respond_to do |format|
       format.html { render :template => '/react/app.html' }

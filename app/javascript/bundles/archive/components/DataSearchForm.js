@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import FormElement from './form/Element'
-import { t, pluralize, parametrizedQuery } from '../../../lib/utils';
+import { t, pluralize, parametrizedQuery, statifiedQuery } from '../../../lib/utils';
 
 
 export default class DataSearchForm extends React.Component {
@@ -20,15 +20,11 @@ export default class DataSearchForm extends React.Component {
 
     loadData() {
          if (
-            !this.props.dataStatus[this.statifiedQuery()]
+            !this.props.dataStatus[statifiedQuery(this.props.query)]
          ) {
             this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
          }
      }
-
-    statifiedQuery() {
-        return parametrizedQuery(this.props.query).replace(/[=&]/g, '_');
-    }
 
     handleChange(event) {
         const value = event.target.value;

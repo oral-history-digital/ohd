@@ -21,11 +21,13 @@ export function activeSegment(time, props) {
     let firstSegment = sortedSegments[0];
     let lastSegment = sortedSegments[sortedSegments.length - 1];
 
-    if (index === 0)
+    if (index === 0) {
         return firstSegment;
+    }
 
-    if (index >= sortedSegments.length)
-        return lastSegment;
+    if (index >= sortedSegments.length) {
+        index = sortedSegments.length - 1;
+    }
 
     if (sortedSegments[index].time > time) {
         while (!found) {
@@ -120,6 +122,10 @@ export function parametrizedQuery(query) {
     return Object.keys(query).map((key, index) => {
         return `${key}=${query[key]}`;
     }).join('&');
+}
+
+export function statifiedQuery(query) {
+    return parametrizedQuery(query).replace(/[=&]/g, '_');
 }
 
 
