@@ -12,7 +12,8 @@ const mapStateToProps = (state, ownProps) => {
       translations: state.archive.translations,
       query: state.search.archive.query,
       segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
-      project: state.archive.project
+      project: state.archive.project,
+      editView: state.archive.editView,
     }
 }
 

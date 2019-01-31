@@ -150,10 +150,30 @@ export default class RegistryEntry extends React.Component {
         )
     }
 
+    osmLink() {
+        if((this.props.registryEntry.latitude + this.props.registryEntry.longitude) !== 0 ) {
+            return (
+                <a 
+                    href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
+                    target="_blank"
+                    className="flyout-sub-tabs-content-ico-link"
+                    title={`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
+                >
+                    <i className='fa fa-globe' />
+                    &nbsp;
+                </a>
+            )
+        }
+        else {
+            return null;
+        }
+    }
+
     buttons() {
         return (
             <div className={'flyout-sub-tabs-content-ico'}>
                 {this.show()}
+                {this.osmLink()}
                 {this.editButtons()}
             </div>
         )
@@ -219,6 +239,14 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    description() {
+        if(this.props.registryEntry.entry_desc !== ''){
+            return (
+                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.registryEntry.entry_desc}</div>
+            )
+        }
+    }
+
     render() {
         return (
             <div>
@@ -226,6 +254,7 @@ export default class RegistryEntry extends React.Component {
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}
+                {this.description()}
             </div>
         )
     }

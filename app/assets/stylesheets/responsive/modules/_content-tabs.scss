@@ -481,6 +481,7 @@ div.mainheading + div {
     color: $primary-color;
   }
   .search-button {
+    cursor: pointer;
     width: 20%;
     font-family: FontAwesome;
     content: "\f067";

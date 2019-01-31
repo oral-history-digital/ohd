@@ -27,6 +27,7 @@ class InterviewSerializer < ActiveModel::Serializer
              :lang,
              :title,
              :short_title,
+             :anonymous_title,
              :still_url,
              #:src,
              :src_base,
@@ -125,6 +126,16 @@ class InterviewSerializer < ActiveModel::Serializer
 
   def short_title
     object.localized_hash
+  end
+
+  def anonymous_title
+    I18n.available_locales.inject({}) do |mem, locale|
+      name_parts = []
+      name_parts << object.interviewees.first.first_name(locale) unless object.interviewees.first.first_name(locale).blank?
+      name_parts << "#{(object.interviewees.first.last_name(locale).blank? ? '' : object.interviewees.first.last_name(locale)).strip.chars.first}."
+      mem[locale] = name_parts.join(' ')
+      mem
+    end
   end
 
   def person_names

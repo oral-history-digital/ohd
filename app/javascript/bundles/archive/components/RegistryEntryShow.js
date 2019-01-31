@@ -149,15 +149,39 @@ export default class RegistryEntryShow extends React.Component {
         return paths;
     }
 
+    osmLink() {
+        if((this.props.registryEntry.latitude + this.props.registryEntry.longitude) !== 0 ) {
+            return(
+                <small style={{float: 'right'}}>
+                    <i className='fa fa-globe' />
+                    &nbsp;    
+                    <a 
+                        href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
+                        target="_blank"
+                        >
+                        {`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
+                        &nbsp;
+                    </a>
+                </small> 
+            ) 
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div>
                 <div>
-                    {this.breadCrumb()}
+                {this.osmLink()}
+                {this.breadCrumb()}
                 </div>
                 <h3>
                     {this.props.registryEntry.name[this.props.locale]}
                 </h3>
+                <p>
+                    {this.props.registryEntry.entry_desc} 
+                </p>
                 <h4>
                     {Object.keys(this.props.registryEntry.registry_references).length}
                     &nbsp;
