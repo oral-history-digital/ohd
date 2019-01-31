@@ -6,6 +6,7 @@ import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import Slider from "react-slick";
 import '../../../css/slick.css';
 import '../../../css/slick-theme.css';
+import AuthShowContainer from '../containers/AuthShowContainer';
 
 import { t, admin } from '../../../lib/utils';
 
@@ -165,7 +166,12 @@ export default class InterviewPreview extends React.Component {
                     <div className="search-result-img">
                         <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                     </div>
-                    <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
+                    </AuthShowContainer>
 
                     {this.interviewDetails()}
                 </Link>
