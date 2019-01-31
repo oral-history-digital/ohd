@@ -25,7 +25,8 @@ class User < ActiveRecord::Base
            :to => :user_account
 
   def tasks?(record)
-    !tasks.where(authorized: record).blank?
+    !tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
+    #!supervised_tasks.where(authorized: record).blank?
   end
 
   def permissions?(controller, action)
