@@ -6,7 +6,7 @@ import { setTapeAndTime } from '../actions/interviewActionCreators';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-      fulltext: state.search.query.fulltext,
+      fulltext: state.search.query && state.search.query.fulltext || '',
       locale: state.archive.locale,
       translations: state.archive.translations,
     }
