@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
         interviewFulltext: data && data.fulltext,
         project: state.archive.project,
         tabIndex: state.interview.tabIndex,
+        numberOfFoundSegments: data && data.foundSegments.length || 0,
     }
 }
 

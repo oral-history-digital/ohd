@@ -17,7 +17,7 @@ export default class InterviewTabs extends React.Component {
     }
 
     componentDidMount(){
-        if (this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
+        if (this.props.interviewFulltext && ( this.props.interviewFulltext !== "" ) && (this.props.numberOfFoundSegments > 0)) {
             this.setState({['tabIndex']: 3});
         } else if(this.props.locale != this.props.interview.lang){
             this.setState({['tabIndex']: 1});
