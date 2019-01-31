@@ -5,7 +5,7 @@ import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import { t } from '../../../lib/utils';
-
+import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class ArchiveSearchForm extends React.Component {
     constructor(props) {
@@ -108,11 +108,36 @@ export default class ArchiveSearchForm extends React.Component {
         }
     }
 
+    renderInputField() {
+        let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
+        return (
+            <div>
+                <input 
+                    className="search-input" 
+                    type="text" 
+                    name="fulltext" 
+                    value={fulltext}
+                    placeholder={t(this.props, (this.props.project === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
+                    onChange={this.handleChange}
+                    list='allInterviewTitles' 
+                    autoFocus
+                    />
+                {this.renderDataList()}
+                <input 
+                    className="search-button" 
+                    id="search-button"
+                    title={t(this.props, 'archive_search')} 
+                    type="submit" 
+                    value=""
+                    />
+            </div>
+        )
+    }
+
     searchform(){
         if (!this.facetsLoaded()) {
             return <div className="facets-spinner"> <img src={spinnerSrc} /></div>;
         } else {
-            let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
             return(
                 <div>
                     <form 
@@ -121,24 +146,9 @@ export default class ArchiveSearchForm extends React.Component {
                         className={'flyout-search'} 
                         onSubmit={this.handleSubmit}
                     >
-                        <input 
-                            className="search-input" 
-                            type="text" 
-                            name="fulltext" 
-                            value={fulltext}
-                            placeholder={t(this.props, (this.props.project === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
-                            onChange={this.handleChange}
-                            list='allInterviewTitles' 
-                            autoFocus
-                        />
-                        {this.renderDataList()}
-                        <input 
-                            className="search-button" 
-                            id="search-button"
-                            title={t(this.props, 'archive_search')} 
-                            type="submit" 
-                            value=""
-                        />
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.renderInputField()}
+                        </AuthShowContainer>
                         {this.renderResetButton()}
                         {this.renderFacets()}
                     </form>
