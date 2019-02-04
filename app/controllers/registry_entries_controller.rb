@@ -1,5 +1,7 @@
 class RegistryEntriesController < ApplicationController
 
+  skip_before_action :authenticate_user_account!, only: [:index, :show]
+
   layout 'responsive'
 
   def create

@@ -119,6 +119,7 @@ default: &default
     - id: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
+      display_on_landing_page: true`
     - id: 'forced_labor_fields'
       source: 'registry_entry'
       use_as_facet: true
@@ -143,6 +144,7 @@ default: &default
     - id: 'birth_location'
       source: 'registry_reference_type'
       use_as_facet: false
+      display_on_landing_page: false
     - id: 'forced_labor_habitations'
       source: 'registry_entry'
       # use_as_facet: true

@@ -67,13 +67,13 @@ export default class Interview extends React.Component {
     }
 
     loggedOutContent() {
-        if (this.interviewLoaded()) {
+        if (this.interviewLoaded() && this.props.interviews) {
             return (
                 <div>
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {fullname(this.props, getInterviewee(this.props), true)}
+                                {this.props.interviews[this.props.archiveId].anonymous_title[this.props.locale]}
                             </h1>
                         </div>
                         <div className='video-element'>

@@ -62,10 +62,15 @@ export default class PersonData extends React.Component {
         if (interviewee) {
             return (
                 <div>
-                    {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                    {this.dateOfBirth()}
-                    {this.placeOfBirth()}
-                    {this.typologies()}
+                    <AuthShowContainer ifLoggedIn={true}>
+                        {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
+                        {this.dateOfBirth()}
+                        {this.placeOfBirth()}
+                        {this.typologies()}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
+                    </AuthShowContainer>
                     <AuthShowContainer ifLoggedIn={true}>
                         <p>
                             <span className="flyout-content-label">{t(this.props, 'history')}:</span>
