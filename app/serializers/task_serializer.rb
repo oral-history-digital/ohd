@@ -13,4 +13,8 @@ class TaskSerializer < ActiveModel::Serializer
     object.current_state.events.map{|e| e.first}
   end
 
+  def authorized_type
+    object.authorized_type.underscore
+  end
+
 end

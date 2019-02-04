@@ -14,6 +14,8 @@ class UserAccount < ActiveRecord::Base
          :trackable
 
   has_one :user
+  has_many :tasks, through: :user
+  has_many :permissions, through: :user
 
   has_one :user_registration
 

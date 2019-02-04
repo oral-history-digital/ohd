@@ -4,7 +4,12 @@ class UserAccountSerializer < ActiveModel::Serializer
     :login,
     :first_name,
     :last_name,
-    :admin
+    :admin,
+    :permissions,
+    :tasks
+
+  has_many :tasks#, serializer: TaskSerializer
+  has_many :permissions#, serializer: TaskSerializer
 
   def first_name
     object.user && object.user.first_name
