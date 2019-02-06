@@ -217,15 +217,14 @@ export default class ArchiveSearch extends React.Component {
         return (
             <WrapperPageContainer
                 tabIndex={ this.props.locales.length + 2 }
-                
             >
                 <div className='wrapper-content interviews'>
                     <h1 className="search-results-title">{t(this.props, (this.props.project === 'mog') ? 'archive_results' : 'interviews')}</h1>
                     <div className="search-results-legend">
-                                <AuthShowContainer ifLoggedIn={true}>
-                                    {this.saveSearchLink()}
-                                    {this.exportSearchLink()}
-                                </AuthShowContainer>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.saveSearchLink()}
+                            {this.exportSearchLink()}
+                        </AuthShowContainer>
                         {this.renderArchiveResultsCount()}
                     </div>
                     

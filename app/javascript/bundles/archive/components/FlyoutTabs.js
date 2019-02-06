@@ -20,6 +20,7 @@ import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 import ExportInterviewContainer from '../containers/ExportInterviewContainer';
+import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
@@ -157,22 +158,31 @@ export default class FlyoutTabs extends React.Component {
                             content={<div><PersonDataContainer/><InterviewRegistryReferencesContainer/></div>}/> 
                         <InterviewDataContainer
                             title={t(this.props, 'interview_info')}
-                            content={<div><InterviewInfoContainer/><InterviewContributorsContainer/></div>}/>
+                            content={
+                                <div>
+                                    <InterviewInfoContainer/>
+                                    <AuthShowContainer ifLoggedIn={true}>
+                                        <InterviewContributorsContainer/>
+                                    </AuthShowContainer>
+                                </div>
+                            }/>
                         {this.assignSpeakersForm()}
                         {/* <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/> */}
-                        <InterviewDataContainer
-                            title={t(this.props, 'text_materials')}
-                            content={<InterviewTextMaterialsContainer/>}/>
-                        {this.renderPhotos()}
-                        {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
-                        <InterviewDataContainer
-                            title={t(this.props, 'citation')}
-                            content={<CitationInfoContainer/>}/>
-                        <InterviewDataContainer
-                            title={t(this.props, 'export')}
-                            content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}/> 
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <InterviewDataContainer
+                                title={t(this.props, 'text_materials')}
+                                content={<InterviewTextMaterialsContainer/>}/>
+                            {this.renderPhotos()}
+                            {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
+                            <InterviewDataContainer
+                                title={t(this.props, 'citation')}
+                                content={<CitationInfoContainer/>}/>
+                            <InterviewDataContainer
+                                title={t(this.props, 'export')}
+                                content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}/> 
+                        </AuthShowContainer>
                     </div>
                 </TabPanel>
             );

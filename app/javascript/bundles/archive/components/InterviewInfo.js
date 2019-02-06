@@ -14,6 +14,14 @@ export default class InterviewInfo extends React.Component {
         return this.content(t(this.props, 'language'), this.props.interview.languages_array[this.props.locale], "");
     }
 
+    collection(){
+        if(this.props.collections){
+            let collection_id = this.props.interview.collection_id;
+            let collection_name = this.props.collections.filter(collection => collection.value === collection_id)[0].name[this.props.locale];
+            return this.content(t(this.props, 'activerecord.models.collection.one'), collection_name, "")
+        }
+    }
+
     tapes(){
         if (this.props.interview.tape_count > 1){
             return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
@@ -36,6 +44,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "")}
                     {this.tapes()}
                     {this.language()}
+                    {this.collection()}
                     {this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")}
                 </div>
             );

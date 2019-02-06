@@ -6,29 +6,33 @@ export default class InterviewRegistryReferences extends React.Component {
 
     searchFacets() {
         let facets = [];
-        for (var r in this.props.registryEntrySearchFacetIds) {
-            facets.push(
-                <RegistryEntrySearchFacetsContainer 
-                    key={`this.props.registry-entry-search-facets-${r}`} 
-                    parentEntryId={this.props.registryEntrySearchFacetIds[r]} 
-                    interview={this.props.interview} 
-                />
-            );
+        for (var r in this.props.registryEntrySearchFacets) {
+            if (this.props.account.email || this.props.registryEntrySearchFacets[r]['display_on_landing_page']) {
+                facets.push(
+                    <RegistryEntrySearchFacetsContainer 
+                        key={`this.props.registry-entry-search-facets-${this.props.registryEntrySearchFacets[r]['id']}`} 
+                        parentEntryId={this.props.registryEntrySearchFacets[r]['id']} 
+                        interview={this.props.interview} 
+                        />
+                );
+            }
         }
         for (var r in this.props.personPropertiesRegistryReferenceType) {
-            facets.push(
-                <PersonPropertiesRegistryReferenceTypeContainer
+            if (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page']) {
+                facets.push(  
+                    <PersonPropertiesRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     referenceType={this.props.personPropertiesRegistryReferenceType[r]} 
                     interview={this.props.interview}
-                />
-            );
+                    />  
+                );
+            }
         }
         return facets;
     }
 
     registryReferences() {
-        if (this.props.registryEntrySearchFacetIds || this.props.personPropertiesRegistryReferenceType) {
+        if (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType) {
             return (
                 <div>
                     {this.searchFacets()}

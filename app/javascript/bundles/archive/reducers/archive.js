@@ -56,7 +56,7 @@ const archive = (state = initialState, action) => {
                 collections: action.collections,
                 contributionTypes: action.contributionTypes,
                 rootRegistryEntry: action.rootRegistryEntry,
-                registryEntrySearchFacetIds: action.registryEntrySearchFacetIds,
+                registryEntrySearchFacets: action.registryEntrySearchFacets,
                 personPropertiesRegistryReferenceType: action.personPropertiesRegistryReferenceType,
                 languages: action.languages,
                 uploadTypes: action.uploadTypes,

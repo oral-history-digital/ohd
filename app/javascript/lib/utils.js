@@ -111,7 +111,7 @@ export function pluralize(word) {
 }
 
 export function admin(props, obj) {
-    if (props.account && props.editView) {
+    if (props.account && props.editView && (props.account.admin || props.account.permissions)) {
         if (
             props.account.admin ||
             (props.account.permissions && props.account.permissions.filter(permission => permission.controller === obj.type && permission.action === obj.action)) ||

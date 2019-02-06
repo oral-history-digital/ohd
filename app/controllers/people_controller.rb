@@ -1,5 +1,7 @@
 class PeopleController < ApplicationController
 
+  skip_before_action :authenticate_user_account!, only: :index
+
   def new
     authorize Person
     respond_to do |format|

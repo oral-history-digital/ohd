@@ -36,7 +36,7 @@ class HomeController < ApplicationController
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
             contribution_types: Project.contribution_types,
-            registry_entry_search_facet_ids: Project.registry_entry_search_facets.map{|facet| RegistryEntry.find_by_entry_code(facet['id']).id},
+            registry_entry_search_facets: Project.registry_entry_search_facets.map{|facet| {id: RegistryEntry.find_by_entry_code(facet['id']).id, display_on_landing_page: facet['display_on_landing_page']}},
             person_properties_registry_reference_type: Project.person_properties_registry_reference_type.inject({}){|mem, facet| mem[facet['id']] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet['id'])).as_json; mem},
             languages: Language.all.map{|c| {value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2}}, 
             upload_types: Project.upload_types,
