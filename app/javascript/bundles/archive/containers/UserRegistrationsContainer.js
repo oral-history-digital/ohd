@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         userRegistrations: state.data.user_registrations,
         resultPagesCount: state.data.statuses.user_registrations.resultPagesCount,
-        query: state.search.userRegistrations.query,
+        query: state.search.user_registrations.query,
         isUserRegistrationSearching: state.search.isUserRegistrationSearching,
     }
 }

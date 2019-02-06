@@ -49,18 +49,30 @@ export default class DataSearchForm extends React.Component {
         this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
     }
 
-    searchFormElement(attribute) {
-        return (
-            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${attribute}`)} >
-                <input 
-                    className="search-input" 
-                    type="text" 
-                    name={attribute}
-                    value={this.props.query[attribute]}
-                    onChange={this.handleChange}
-                />
-            </FormElement>
-        )
+    optionsForSelect(attributeName, opts) {
+        return opts.map((value, index) => {
+            return (
+                <option value={value} key={`${attributeName}-option-${index}`}>
+                    {t(this.props, `${pluralize(attributeName)}.${value}`)}
+                </option>
+            )
+        })
+    }
+
+    searchFormElement(element) {
+        let opts = {
+            className: "search-input" ,
+            name: element.attributeName,
+            value: this.props.query[element.attributeName],
+            onChange: this.handleChange,
+        };
+
+        if (element.type === 'select') {
+            return React.createElement('select', opts, this.optionsForSelect(element.attributeName, element.values));
+        } else {
+            opts.type = "text";
+            return React.createElement('input', opts);
+        }
     }
 
     render() {
@@ -73,8 +85,12 @@ export default class DataSearchForm extends React.Component {
                     className={'flyout-search default'} 
                     onSubmit={this.handleSubmit}
                 >
-                    {this.props.searchableAttributes.map((attribute, index) => {
-                        return this.searchFormElement(attribute);
+                    {this.props.searchableAttributes.map((element, index) => {
+                        return (
+                            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} >
+                                {this.searchFormElement(element)}
+                            </FormElement>
+                        )
                     })}
                     <input 
                         className="lonely-search-button" 

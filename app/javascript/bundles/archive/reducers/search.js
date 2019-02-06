@@ -33,7 +33,7 @@ const initialState = {
         showRegistryEntriesTree: true,
         results: []
     },
-    userRegistrations: {
+    user_registrations: {
         query: {
             workflow_state: 'unchecked',
             page: 1,
