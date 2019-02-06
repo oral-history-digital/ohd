@@ -15,23 +15,23 @@ class ApplicationPolicy
   end
 
   def create?
-    user.admin? || user.tasks?(record) || user.permissions?(record.class_name.underscore, :create)
+    user.admin? || user.permissions?(record.class_name.underscore, :create)
   end
 
   def new?
-    user.admin? || user.tasks?(record) || user.permissions?(record.class_name.underscore, :new)
+    user.admin? || user.permissions?(record.class_name.underscore, :new)
   end
 
   def update?
-    user.admin? || user.tasks?(record) || user.permissions?(record.class_name.underscore, :update)
+    user.admin? || user.permissions?(record.class_name.underscore, :update) || user.tasks?(record) 
   end
 
   def edit?
-    user.admin? || user.tasks?(record) || user.permissions?(record.class_name.underscore, :edit)
+    user.admin? || user.permissions?(record.class_name.underscore, :edit) || user.tasks?(record) 
   end
 
   def destroy?
-    user.admin? || user.tasks?(record) || user.permissions?(record.class_name.underscore, :destroy)
+    user.admin? || user.permissions?(record.class_name.underscore, :destroy)
   end
 
   class Scope

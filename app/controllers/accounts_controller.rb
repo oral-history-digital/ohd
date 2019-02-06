@@ -7,7 +7,7 @@ class AccountsController < ApplicationController
   def show
     respond_to do |format|
       format.html {}
-      format.json { render json: current_user_account || {} }
+      format.json { render json: current_user_account && ::UserAccountSerializer.new(current_user_account).to_json || {} }
     end
   end
 
