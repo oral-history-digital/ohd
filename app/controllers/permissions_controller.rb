@@ -22,9 +22,15 @@ class PermissionsController < ApplicationController
   end
 
   def index
-    page = params[:page] || 1
-    permissions = policy_scope(Permission).where(search_params).order("created_at DESC").paginate page: params[:page] || 1
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    permissions, extra_params = params[:page] ?
+      [
+        policy_scope(Permission).where(search_params).order("name DESC").paginate(page: params[:page]),
+        search_params.update(page: params[:page]).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.sort().join("_")
+      ] : 
+      [
+        policy_scope(Permission),
+        'all'
+      ]
 
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
@@ -35,7 +41,7 @@ class PermissionsController < ApplicationController
             data_type: 'permissions',
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: permissions.total_pages
+            result_pages_count: permissions.respond_to?(:total_pages) ? permissions.total_pages : 1
           }
         end
         render json: json

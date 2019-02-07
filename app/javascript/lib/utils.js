@@ -125,7 +125,7 @@ export function admin(props, obj) {
 }
 
 export function parametrizedQuery(query) {
-    return Object.keys(query).map((key, index) => {
+    return Object.keys(query).sort().map((key, index) => {
         return `${key}=${query[key]}`;
     }).join('&');
 }

@@ -167,7 +167,7 @@ const data = (state = initialState, action) => {
                 statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {
                     statuses: statuses,
-                    [action.dataType]: (action.page === 1) ? action.data : Object.assign({}, state[action.dataType], action.data)
+                    [action.dataType]: (action.page === '1') ? action.data : Object.assign({}, state[action.dataType], action.data)
                 })
             } else if (action.dataType) {
                 let statuses = updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`});
@@ -175,7 +175,7 @@ const data = (state = initialState, action) => {
                 statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {
                     statuses: statuses,
-                    [action.dataType]: (action.page === 1) ? action.data : Object.assign({}, state[action.dataType], action.data)
+                    [action.dataType]: (action.page === '1') ? action.data : Object.assign({}, state[action.dataType], action.data)
                 })
             } else {
                 return state;
