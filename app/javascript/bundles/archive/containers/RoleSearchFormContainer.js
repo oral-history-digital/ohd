@@ -14,7 +14,10 @@ const mapStateToProps = (state) => {
         query: state.search.roles.query,
         dataStatus: state.data.statuses.roles,
         scope: 'role',
-        searchableAttributes: ['name', 'desc']
+        searchableAttributes: [
+            {attributeName: 'name'}, 
+            {attributeName: 'desc'}, 
+        ]
     }
 }
 
