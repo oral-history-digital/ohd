@@ -254,7 +254,7 @@ export default class RegistryEntry extends React.Component {
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}
-                {this.description()}
+                {/* {this.description()} */}
             </div>
         )
     }
