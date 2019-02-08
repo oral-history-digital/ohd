@@ -163,6 +163,7 @@ export default class FlyoutTabs extends React.Component {
                                     <InterviewInfoContainer/>
                                     <AuthShowContainer ifLoggedIn={true}>
                                         <InterviewContributorsContainer/>
+                                        <InterviewTextMaterialsContainer/>
                                     </AuthShowContainer>
                                 </div>
                             }/>
@@ -171,9 +172,6 @@ export default class FlyoutTabs extends React.Component {
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/> */}
                         <AuthShowContainer ifLoggedIn={true}>
-                            <InterviewDataContainer
-                                title={t(this.props, 'text_materials')}
-                                content={<InterviewTextMaterialsContainer/>}/>
                             {this.renderPhotos()}
                             {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
                             <InterviewDataContainer
