@@ -941,7 +941,7 @@ class RegistryEntry < ActiveRecord::Base
         result
       end
     else
-      to_s(locale)
+      to_s(locale, true)
     end
   end
 
