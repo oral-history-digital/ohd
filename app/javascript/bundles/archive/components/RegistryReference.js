@@ -70,7 +70,7 @@ export default class RegistryReference extends React.Component {
                 id={`reference_${this.props.registryReference.id}`} 
                 className={css}
                 key={"reference-" + this.props.registryReference.id} 
-                onClick={() => this.props.setOpenReference(this.props.registryEntry)}
+                onClick={() => this.props.project === 'mog' && this.props.setOpenReference(this.props.registryEntry)}
             >
                 {this.props.registryEntry.name[this.props.locale]}
             </span>
