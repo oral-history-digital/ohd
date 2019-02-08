@@ -67,16 +67,22 @@ export function getInterviewee(props) {
 
 export function t(props, key) {
     let text;
+    let keyArray;
     let cmd = `text = props.translations.${props.locale}.${key}`
     try{
         eval(cmd);
     } catch (e) {
-        text = `translation for ${props.locale}.${key} is missing!`;
+        // text = `translation for ${props.locale}.${key} is missing!`;
+        keyArray = key.split('.')
+        text = keyArray[keyArray.length - 1]
     } finally {
         if (typeof(text) === 'string') {
             return text 
         } else {
-            return `translation for ${props.locale}.${key} is missing!`;
+            // return `translation for ${props.locale}.${key} is missing!`;
+            keyArray = key.split('.')
+            text = keyArray[keyArray.length - 1]
+            return text;
         }
     }
 }
