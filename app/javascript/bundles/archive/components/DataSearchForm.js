@@ -98,10 +98,6 @@ export default class DataSearchForm extends React.Component {
                         type="submit" 
                     />
                 </form>
-                <button 
-                    className={'reset'}
-                    onClick={this.handleReset}>{t(this.props, 'reset')}
-                </button>
             </div>
         );
     }

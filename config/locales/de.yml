@@ -65,6 +65,7 @@ de:
   interview_archive: 'Interview-Archiv'
   called: 'Abruf'
   download: 'Download'
+  download_user_statistics: 'Benutzerstatistik runterladen'
   export: 'Export'
   export_doi: 'DOI'
   export_search_results: 'Suchergebnisse exportieren'
