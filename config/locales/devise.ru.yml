@@ -317,7 +317,7 @@ ru:
     attributes:
       user_account:
         email: 'Электр. адрес'
-        login: 'Имя пользователя'
+        login: 'Логин'
         password: 'Пароль'
         password_confirmation: 'Повторный пароль'
   errors:

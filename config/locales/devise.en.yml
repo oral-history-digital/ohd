@@ -227,7 +227,7 @@ en:
     attributes:
       user_account:
         email: 'Email'
-        login: 'username'
+        login: 'login'
         password: 'password'
         password_confirmation: 'password confirmation'
   errors:

@@ -311,7 +311,7 @@ de:
     attributes:
       user_account:
         email: 'E-Mail'
-        login: 'Benutzername'
+        login: 'Login'
         password: 'Passwort'
         password_confirmation: 'Passwort-Wiederholung'
   errors:

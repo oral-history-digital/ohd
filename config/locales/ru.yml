@@ -40,6 +40,7 @@ ru:
       password: 'Please correct your password'
   login_page: 'Войти'
   login: 'Войти'
+  change_to_bcrypt: 'Недавно мы обновили способ хранения паролей. Пожалуйста, нажмите на ссылку "Забыли пароль?", чтобы восстановить пароль. Спасибо за понимание.'
   login_name: 'логин'
   logout_page: 'Выйти'
   account_page: 'Учетная запись'
