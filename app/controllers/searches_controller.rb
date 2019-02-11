@@ -162,7 +162,8 @@ class SearchesController < ApplicationController
         desired_columns = [:archive_id, [:short_title,:de], :media_type]
         options = {}
         csv = CSV.generate(options) do |csv|
-          csv << desired_columns.map{|c| c.to_s}
+          # csv << desired_columns.map{|c| c.to_s}
+          csv << ["ID", "Titel", "Medientyp"]
           search.results.each do |interview|
             csv << desired_columns.map{ |c| interview.send(*c) }
           end
