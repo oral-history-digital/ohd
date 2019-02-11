@@ -1,7 +1,11 @@
 development:
+  prefix: '10.5072'
   client_id: "TIB.FUB"
   password: "Epub_test!"
   url: "https://api.test.datacite.org/dois"
 
 production:
+  prefix: '10.17169'
+  client_id: "***" 
+  password: "***"
   url: "https://api.datacite.org/dois"
