@@ -7,6 +7,9 @@ class UserAccount < ActiveRecord::Base
          #:recoverable, :rememberable, :trackable, :validatable
   #attr_accessible :email, :password, :password_confirmation, :remember_me
 
+  # Virtual attribute for authenticating by either login or email
+  # This is in addition to a real persisted field like 'login'
+  attr_accessor :login
 
   devise :database_authenticatable,
          :rememberable,
@@ -22,8 +25,9 @@ class UserAccount < ActiveRecord::Base
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
 
-  validates_uniqueness_of :login
-  validates_presence_of :login
+  validates :login, presence: :true, uniqueness: { case_sensitive: false }
+  # Only allow letter, number, underscore and punctuation.
+  validates_format_of :login, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
@@ -170,6 +174,15 @@ class UserAccount < ActiveRecord::Base
   def find_for_authentication(conditions)
     conditions[:deactivated_at] = nil
     where(conditions).first
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login_string = conditions.delete(:login)
+      where(conditions.to_hash).where(["lower(login) = :value OR lower(email) = :value", { :value => login_string.downcase }]).first
+    elsif conditions.has_key?(:login) || conditions.has_key?(:email)
+      where(conditions.to_hash).first
+    end
   end
 
 end

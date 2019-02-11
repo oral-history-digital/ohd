@@ -11,7 +11,7 @@ class SessionsController < Devise::SessionsController
   rescue BCrypt::Errors::InvalidHash
     respond_to do |format|
       format.json {
-        render json: {error: 'change_to_bcrypt', email: params['user_account']['email']}
+        render json: {error: 'change_to_bcrypt', email: params['user_account']['login']}
       }
     end
   end
