@@ -19,6 +19,8 @@ class PersonSerializer < ActiveModel::Serializer
     unless object.date_of_birth.blank?
       if Project.name.to_sym === :mog
         object.date_of_birth.sub(/^\.+/,"").split('.').map{|i| "%.2i" %i}.join('.')
+      elsif Project.name.to_sym === :zwar
+        object.date_of_birth.split("-").reverse.join(".")
       else
         object.date_of_birth
       end

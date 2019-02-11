@@ -46,6 +46,7 @@ en:
       password: 'Please correct your password'
   logged_in_as: 'Logged in as'
   user_name: 'User'
+  change_to_bcrypt: 'We have recently updated the way we store our passwords. Please click on the "Forgot your password?" link to recover your password. Thank you for your understanding.'
   notice: 'Save'
   forget_password: 'Forgot password?'
   account_activation_errors: 'Password and password confirmation must be the same and at least 6 characters long.'

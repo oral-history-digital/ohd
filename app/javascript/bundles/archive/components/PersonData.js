@@ -57,6 +57,22 @@ export default class PersonData extends React.Component {
         }
     }
 
+    history() {
+        if(this.props.project === 'mog'){
+            return (
+                <AuthShowContainer ifLoggedIn={true}>
+                    <p>
+                        <span className="flyout-content-label">{t(this.props, 'history')}:</span>
+                        {this.download(this.props.interview.lang)}
+                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
+                    </p>
+                </AuthShowContainer>
+            )
+        } else {
+            return null;
+        }
+    }
+
     info() {
         let interviewee = getInterviewee(this.props);
         if (interviewee) {
@@ -71,13 +87,7 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <p>
-                            <span className="flyout-content-label">{t(this.props, 'history')}:</span>
-                            {this.download(this.props.interview.lang)}
-                            {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
-                        </p>
-                    </AuthShowContainer>
+                    {this.history()}
                 </div>
             );
         } else {

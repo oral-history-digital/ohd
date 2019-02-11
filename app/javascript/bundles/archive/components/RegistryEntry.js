@@ -209,7 +209,7 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.showChildren()}
             >
                 {this.props.registryEntry.name[this.props.locale]}
-                {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`}
+                {/* {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`} */}
                 {/* {` (ID: ${this.props.registryEntry.id})`} */}
             </div>
         )
@@ -254,7 +254,7 @@ export default class RegistryEntry extends React.Component {
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}
-                {this.description()}
+                {/* {this.description()} */}
             </div>
         )
     }

@@ -89,23 +89,25 @@ class ReferenceTree
 
     until nodes.empty?
       node = nodes.shift
-      parent = RegistryEntry.find(node[:id]).parents.first
+      parents = RegistryEntry.find(node[:id]).parents
 
-      # a parent registry_entry exists!
-      if parent 
-        parents_found = true
-        # is one of the current nodes parent of this (shifted) node?
-        parent_node, ancestors = deep_find_node(parent_nodes, parent.id) 
-        parent_node, ancestors = deep_find_node(nodes, parent.id) unless parent_node
-        # the parent-node does not exist in the current nodes-tree:
-        unless parent_node
-          parent_node = create_node(parent.id) 
-          parent_nodes << parent_node
+      if parents.size > 0 
+        parents.each do |parent|
+          # a parent registry_entry exists!
+          parents_found = true
+          # is one of the current nodes parent of this (shifted) node?
+          parent_node, ancestors = deep_find_node(parent_nodes, parent.id) 
+          parent_node, ancestors = deep_find_node(nodes, parent.id) unless parent_node
+          # the parent-node does not exist in the current nodes-tree:
+          unless parent_node
+            parent_node = create_node(parent.id) 
+            parent_nodes << parent_node
+          end
+          parent_node[:children] << node
+          parent_node[:leafe_count] += node[:leafe_count]
+          ancestors.each{|a| a[:leafe_count] += node[:leafe_count]} if ancestors
+          # there is no parent registry_entry:
         end
-        parent_node[:children] << node
-        parent_node[:leafe_count] += node[:leafe_count]
-        ancestors.each{|a| a[:leafe_count] += node[:leafe_count]} if ancestors
-      # there is no parent registry_entry:
       else
         p "*** node #{node[:id]} has no parents!"
         #nodes_without_parents_count += 1

@@ -57,6 +57,9 @@
   .flyout-content-data {
     display: inline-block;
   }
+  a.flyout-content-data {
+    margin-right: 10px;
+  }
   a {
     color: $primary-color;
     &:hover {
