@@ -3,6 +3,7 @@ class Admin::UserStatisticsController < Admin::BaseController
   require 'csv'
 
   def index
+    policy_scope(User)
     @usage_reports = Dir.glob(File.join(UsageReport.report_file_path, '*.csv')).map{|f| f.split('/').last}
     @tiered_reports = {}
     @usage_reports.each do |r|
@@ -43,7 +44,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       category_results = User.group(field_name).count.sort_by { |group| -group.last }
       category_results.each do |category_result|
         label = category_result.first
-        label = "k. A. (#{category})" if label.empty?
+        label = "k. A. (#{category})" if label.blank?
         if mappings.keys.include?(field_name)
           category_mappings = mappings[field_name]
           if category_mappings.keys.include?(label)
@@ -93,7 +94,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       categories.each do |category, field_name|
         results = User.where(conditions).group(field_name).count
         results.each do |label, value|
-          label = "k. A. (#{category})" if label.empty?
+          label = "k. A. (#{category})" if label.blank?
 
           if mappings.keys.include?(field_name)
             category_mappings = mappings[field_name]
@@ -115,7 +116,29 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    render_csv("#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{Project.project_shortname}-Benutzerstatistik")
+    content = CSV.generate(:col_sep => "\t") do |csv|
+      @list.each do |col|
+        row = @rows[col]
+        if row === nil
+          csv << [ col ]
+        else
+          cells_for_row = [ row[:label], row[:sum] ]
+          @month_labels.each do |month_label|
+            cells_for_row << row[:cols][month_label]
+          end
+          csv << cells_for_row
+        end
+      end
+      csv << []
+      csv << [ "Stand der Erhebung: #{Time.now.strftime("%d.%m.%Y %H:%M")}" ]
+      csv << [ "Zeitraum: Gesamt" ]
+      csv << [ @errors.size == 0 ? 'Keine Fehlermeldungen.' : 'Fehler / Warnungen:' ]
+      @errors.each do |error|
+        csv << [ error ]
+      end
+    end
+
+    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{Project.project_shortname}-Benutzerstatistik.csv")
   end
 
 end
