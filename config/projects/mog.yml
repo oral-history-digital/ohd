@@ -43,6 +43,15 @@ default: &default
 
   project_doi: '10.17169/mog.'
 
+  cooperation_partner: "Nationale Kapodistrias-Universität Athen"
+  leader: "Apostolopoulos, Nicolas; Fleischer, Hagen"
+  manager: "Athanasiadou, Ozeni; Droumpouki, Anna Maria; Nägel, Verena"
+  hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
+  funder_names: 
+    - "Auswärtiges Amt der Bundesrepublik Deutschland"
+    - "Stavros Niarchos Foundation"
+    - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
+
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions:
