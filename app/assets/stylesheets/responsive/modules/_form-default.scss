@@ -47,10 +47,10 @@ form.default {
     padding: 10px;
     border: none;
     cursor: pointer;
-    @include screen-l {
-      margin-left: 28%;
-      width: 30%;
-    }
+    //@include screen-l {
+      //margin-left: 28%;
+      //width: 30%;
+    //}
     &:hover {
       background-color: lighten($gray-warm, 10%);
     }

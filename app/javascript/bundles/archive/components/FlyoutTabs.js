@@ -240,7 +240,13 @@ export default class FlyoutTabs extends React.Component {
                 </TabPanel>,
                 <TabPanel key={'tabpanel-users-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
-                    <UserRegistrationSearchFormContainer/>
+                    <div className='flyout-sub-tabs-container'>
+                        <UserRegistrationSearchFormContainer/>
+                        <a href={`/${this.props.locale}/admin/user_statistics.csv`}>
+                            <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
+                            <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
+                        </a>
+                    </div>
                 </TabPanel>,
                 <TabPanel key={'tabpanel-role-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.role.admin')}</div>

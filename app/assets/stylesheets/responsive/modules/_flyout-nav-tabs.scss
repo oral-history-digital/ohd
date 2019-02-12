@@ -131,7 +131,7 @@
     background-color: $gray-paler;
   }
   .search-input {
-    width: 80%;
+    width: 100%;
     margin-bottom: 30px;
     padding: 10px;
     border-top: 1px solid $gray-dark;
@@ -170,7 +170,7 @@
     border-right: 1px solid $gray-dark;
     background-color: $gray-paler;
     text-align: middle;
-    margin-bottom: 5px;
+    margin-bottom: 40px;
     &:hover {
       color: $gray-light;
     }
