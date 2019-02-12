@@ -45,7 +45,8 @@ class HomeController < ApplicationController
             project_domain: Project.project_domain,
             project_doi: Project.project_doi,
             archive_domain: Project.archive_domain,
-            locales: Project.available_locales
+            locales: Project.available_locales,
+            hidden_registry_entry_ids: Project.hidden_registry_entry_ids,
           }.to_json
         end
 

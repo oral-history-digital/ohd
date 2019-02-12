@@ -173,6 +173,11 @@ default: &default
 
   has_newsletter: true
 
+  hidden_registry_entry_ids:
+    - 28205
+    - 28221
+    - 28237
+
 development:
   <<: *default
 
