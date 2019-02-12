@@ -1,47 +1,42 @@
-module Project
+class Project < ApplicationRecord
+
+  has_many :search_facets 
+  has_many :external_links 
 
   class << self
 
-    def project_config
-      @project_config ||= Rails.configuration.project
+    # TODO: fit this method 
+    def actual
+      first
     end
 
     def method_missing(n)
-      if project_config.has_key? n.to_s 
-        project_config[n.to_s] 
+      if actual.respond_to?(n)
+        actual.send(n)
       else 
         #raise "#{self} does NOT have a key named #{n}"
         nil
       end
     end
 
-    def name
-      project_id
-    end
-
+    #def person_properties
+      #project_config['person_properties']
+    #end
     
-    def keys
-      project_config.keys
-    end
-    
-    def person_properties
-      project_config['person_properties']
-    end
-    
-    def search_facets
-      person_properties.select{|c| c['use_as_facet'] }
-    end
+    #def search_facets
+      #person_properties.select{|c| c['use_as_facet'] }
+    #end
     
     %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "#{m}_search_facets" do
-        person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
+        search_facets.where(use_as_facet: true, facet_type: m.classify)
       end
     end
 
     # used for metadata that is not used as facet
     %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "person_properties_#{m}" do
-        person_properties.select{|c| c['source'] == m }
+        search_facets.where(facet_type: m.classify)
       end
     end
     

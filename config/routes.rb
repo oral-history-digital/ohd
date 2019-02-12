@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :projects
   root :to => redirect('/de')
   root to: "home#archive", locale: :de
 

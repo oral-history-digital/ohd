@@ -230,7 +230,7 @@ class InterviewsController < ApplicationController
       "data": {
         "type": "dois",
         "attributes": {
-          "doi": "10.5072/#{archive_id}",
+          "doi": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(doi_content(locale, Interview.find_by_archive_id(archive_id)))
@@ -248,7 +248,7 @@ class InterviewsController < ApplicationController
   end
 
   def doi_content(locale, interview)
-    template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
-    render_to_string(template: template, locals: {interview: interview}, layout: false)
+    #template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
+    render_to_string(template: "/interviews/show.xml", locals: {interview: interview, locale: params[:locale]}, layout: false)
   end
 end

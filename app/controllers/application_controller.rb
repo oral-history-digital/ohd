@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  def current_project
+    Project.find_by_name(params[:project]) 
+  end
+
   private
 
   def user_not_authorized
