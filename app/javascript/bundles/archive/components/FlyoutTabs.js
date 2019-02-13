@@ -271,8 +271,8 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTab() {
         let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
         return (
-            <Tab className={css} key='activerecord.models.registry_entries.other'>
-                {t(this.props, 'activerecord.models.registry_entries.other')}
+            <Tab className={css} key='registry'>
+                {t(this.props, 'registry')}
             </Tab>
         );
     }
@@ -280,7 +280,7 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTabPanel() {
         return (
             <TabPanel key={'tabpanel-registry-entries'}>
-                <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
+                <div className='flyout-tab-title'>{t(this.props, 'registry')}</div>
                 <div className='flyout-sub-tabs-container'>
                     <RegistryEntrySearchFormContainer />
                     <div>

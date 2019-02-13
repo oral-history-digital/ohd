@@ -78,7 +78,8 @@ en:
   archive_search: 'Search the archive'
   interviewee_name: 'Name'
   periods: 'Time periods'
-  keywords: 'Keywords'
+  keywords: 'Index terms'
+  registry: 'Index'
   annotations: 'Annotations'
   reset: 'Reset'
   transcript: 'Transcript'
@@ -207,8 +208,8 @@ en:
   activerecord:
     models:
       registry_entries:
-        one: 'Registry Entry'
-        other: 'Registry Entries'
+        one: 'Index Term'
+        other: 'Index Terms'
 
   search_facets:
     forced_labor_groups: 'Forced Labor Group'

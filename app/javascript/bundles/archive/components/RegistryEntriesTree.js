@@ -67,7 +67,7 @@ export default class RegistryEntriesTree extends React.Component {
                     <AuthShowContainer ifLoggedIn={true}>
                         <div className='wrapper-content'>
                             <h1 className='registry-entries-title'>
-                                {t(this.props, 'activerecord.models.registry_entries.other')}
+                                {t(this.props, 'registry')}
                             </h1>
                             {this.content()}
                         </div>
