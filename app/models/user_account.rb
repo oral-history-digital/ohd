@@ -7,10 +7,6 @@ class UserAccount < ActiveRecord::Base
          #:recoverable, :rememberable, :trackable, :validatable
   #attr_accessible :email, :password, :password_confirmation, :remember_me
 
-  # Virtual attribute for authenticating by either login or email
-  # This is in addition to a real persisted field like 'login'
-  attr_accessor :login
-
   devise :database_authenticatable,
          :rememberable,
          :recoverable,
