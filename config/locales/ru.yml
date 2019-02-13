@@ -216,6 +216,7 @@ ru:
     transcript: 'транскрипция'
     translation: 'перевод'
     segmentation: 'сегментация'
+    research: 'обработка'
 
   user_interface:
     labels:
