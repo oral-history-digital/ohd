@@ -20,7 +20,7 @@ const initialState = {
     homeContent: "",
     externalLinks: {},
 
-    editView: true,
+    editView: false,
     doiResult: {},
     selectedArchiveIds: []
 }
