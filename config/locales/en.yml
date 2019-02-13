@@ -115,6 +115,7 @@ en:
   interview_content_without_user: ''
   interview_type: ''
   language: 'Language'
+  export_search_results: 'Export search results'
   doi:
     name: 'DOI'
     created: 'Created!'
