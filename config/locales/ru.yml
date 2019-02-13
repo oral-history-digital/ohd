@@ -60,6 +60,7 @@ ru:
   reset: 'отмена'
   enter_field: 'Ключевое понятие'
   forget_password: 'Забыли пароль?'
+  legal_info: 'Импрессум'
   # Localization formats (see https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ru.yml)
   time:
     formats:
