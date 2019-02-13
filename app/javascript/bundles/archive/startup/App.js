@@ -33,13 +33,13 @@ const App = (props) => (
           <Route exact path="/:locale/people/new" component={EditPersonContainer} />
           <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
           <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
-          <Route path="/:locale/user_registrations/new" component={RegisterContainer} />
-          <Route path="/:locale/user_registrations" component={UserRegistrationsContainer} />
           <Route path="/:locale/roles" component={WrappedRolesContainer} />
           <Route path="/:locale/permissions" component={WrappedPermissionsContainer} />
           <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
           <Route path="/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
-          <Route path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
+          <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
+          <Route exact path="/:locale/user_registrations/new" component={RegisterContainer} />
+          <Route exact path="/:locale/user_registrations" component={UserRegistrationsContainer} />
       </div>
     </BrowserRouter>
   </Provider>
