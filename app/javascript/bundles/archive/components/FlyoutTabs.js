@@ -177,15 +177,24 @@ export default class FlyoutTabs extends React.Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 content={<CitationInfoContainer/>}/>
-                            <InterviewDataContainer
-                                title={t(this.props, 'export')}
-                                content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}/> 
+                            {this.exportPanel([this.props.archiveId])}
                         </AuthShowContainer>
                     </div>
                 </TabPanel>
             );
         } else {
             return <TabPanel key='interview'/>;
+        }
+    }
+
+    exportPanel(archiveIds) {
+        if (admin(this.props)) {
+            return <InterviewDataContainer
+                title={t(this.props, 'export')}
+                content={<ExportInterviewContainer archiveIds={archiveIds} />}
+            /> 
+        } else {
+            return null;
         }
     }
 
@@ -364,10 +373,7 @@ export default class FlyoutTabs extends React.Component {
                         <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
                         <ArchiveSearchFormContainer/>
                         <div className='flyout-sub-tabs-container flyout-video'>
-                            <InterviewDataContainer
-                                title={t(this.props, 'export')}
-                                content={<ExportInterviewContainer archiveIds={this.props.selectedArchiveIds} />}
-                            /> 
+                            {this.exportPanel(this.props.selectedArchiveIds)}
                         </div>
                     </TabPanel>
                     {this.interviewTabPanel()}
