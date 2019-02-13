@@ -40,6 +40,9 @@ export default class Account extends React.Component {
             )
         } else {
             return <div>
+                <p>
+                    {t(this.props, 'registration_needed')}
+                </p>
                 <LoginFormContainer/>
                 <div className={'register-link'}>
                     <Link to={'/' + this.props.locale + '/user_registrations/new'}>

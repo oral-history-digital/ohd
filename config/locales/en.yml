@@ -46,6 +46,7 @@ en:
       password: 'Please correct your password'
   logged_in_as: 'Logged in as'
   user_name: 'User'
+  registration_needed: 'For reasons of privacy you have to register. After registration you have access to all testimonies in full length.'
   change_to_bcrypt: 'We have recently updated the way we store our passwords. Please click on the "Forgot your password?" link to recover your password. Thank you for your understanding.'
   notice: 'Save'
   forget_password: 'Forgot password?'
@@ -121,7 +122,7 @@ en:
   translation_header: 'Translation of the interview with'
 
   user_registration:
-    registration: 'Registrierung'
+    registration: 'Register'
     registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
     registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
     registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'

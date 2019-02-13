@@ -25,6 +25,7 @@ de:
   sr: 'serbisch'
   uk: 'ukrainisch'
   in: 'in'
+  registration_needed: 'Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren. Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.'
   change_to_bcrypt: 'Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet. Bitte klicken Sie auf den Link "Passwort vergessen?", um Ihr Passwort wiederherzustellen. Vielen Dank für Ihr Verständnis.'
   observation: 'Interviewsituation'
   tape: 'Band'

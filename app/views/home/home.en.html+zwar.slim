@@ -1,26 +1,31 @@
 .home-text
   h1 The Online Archive "Forced Labor 1939-1945"
 
-  - @interview = Interview.random_featured
-  - if @interview
-    div style=("float: left; margin: 0 15px 0 0;")
-      a href=("#{interview_path(:id => @interview.archive_id)}") 
-        img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "https://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
-        h6
-          = @interview.short_title(I18n.locale)
-          br/
-          = t(@interview.video? ? 'media.video_interview' : 'media.audio_interview')
-          | , #{@interview.language.to_s}
+  p
+    | Nearly 600 former forced laborers from 26 countries tell their life stories in detailed
+      audio and video interviews. After registering in the online archive, you can search and
+      listen to the complete testimonies, coming with transcripts, German translations, photos,
+      short biographies, tables of contents and annotations. Further information on Nazi forced
+      labor, the project and educational material can be found on the accompanying 
+    a href="https://www.zwangsarbeit-archiv.de/en/index.html" website
+    | .
 
-  p
-    | The online archive “Forced Labor 1939-1945” contains interviews with nearly 600 former
-      forced laborers from 26 countries. The collection is made up of various subsets, which were
-      compiled worldwide between the years 2005 and 2006 and financed by the Foundation “Remembrance,
-      Responsibility and Future”. The digital archive preserves these testimonies
-      for the future and makes them available for educational and research purposes.
-  p
-    | In order to protect privacy rights you must be logged in and agree to the Terms of Use
-      as well as the Privacy Policy before being granted access to the archive. 
-  p
-    | As a registered user you are given access to all interviews in full length that we have
-      been given permission to publicize on the web under our Terms of Use and Privacy Policy. 
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{interview.short_title(:en)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:en]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:en)} #{(interview.translated) ? I18n.t('status.translated', locale: :en) : ''}
+        
