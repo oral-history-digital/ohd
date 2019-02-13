@@ -87,16 +87,21 @@ export function t(props, key) {
     }
 }
 
-export function fullname(props, person, withBirthName=false) {
+export function fullname(props, person, withBirthName=false, locale=props.locale) {
     if (person) {
         try {
-            let name = `${person.names[props.locale].firstname} ${person.names[props.locale].lastname}`;
-            let birthName = person.names[props.locale].birth_name;
+            let name = `${person.names[locale].firstname} ${person.names[locale].lastname}`;
+            let birthName = person.names[locale].birth_name;
             if (withBirthName && birthName)
-                name += person.names[props.locale].birth_name;
+                name += person.names[locale].birth_name;
             return name;
         } catch (e) {
-            return `person ${person.id} has no name(s) in ${props.locale}`;
+            if(locale == 'de') {
+                return ''
+            }
+            else {
+                return fullname(props, person, false, 'de');
+            }
         }
     }
 }
