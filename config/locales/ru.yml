@@ -40,7 +40,11 @@ ru:
       password: 'Please correct your password'
   login_page: 'Войти'
   login: 'Войти'
+  registration_needed: 'В целях защиты персональных данных тех, чьи истории жизни представлены в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ ко всем интервью в полном объеме.'
   change_to_bcrypt: 'Недавно мы обновили способ хранения паролей. Пожалуйста, нажмите на ссылку "Забыли пароль?", чтобы восстановить пароль. Спасибо за понимание.'
+  interview_archive: 'Архив интервью'
+  called: 'получен'
+  citation: 'Метод цитирования'
   login_name: 'логин'
   logout_page: 'Выйти'
   account_page: 'Учетная запись'
@@ -185,6 +189,7 @@ ru:
   table_of_contents: 'Оглавление'
   interview_search: 'Поиск в интервью'
   keywords: 'Ключевые слова'
+  registry: 'Регистр'
   person_info: 'О человеке'
   interview_info: 'об интервью'
   text_materials: 'текстовые материалы'
@@ -211,6 +216,7 @@ ru:
     transcript: 'транскрипция'
     translation: 'перевод'
     segmentation: 'сегментация'
+    research: 'обработка'
 
   user_interface:
     labels:
@@ -401,8 +407,8 @@ ru:
         one: 'Краткая биография'
         other: 'Краткие биографии'
       registry_entries:
-        one: 'Registry Entry'
-        other: 'Registry Entries'
+        one: 'Регистр'
+        other: 'Регистр'
 
 
     attributes:

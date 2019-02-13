@@ -29,6 +29,7 @@ function receiveStaticContent(json){
         locales: json.locales,
         project: json.project,
         projectDoi: json.project_doi,
+        hiddenRegistryEntryIds: json.hidden_registry_entry_ids,
         projectName: json.project_name,
         projectDomain: json.project_domain,
         archiveDomain: json.archive_domain,

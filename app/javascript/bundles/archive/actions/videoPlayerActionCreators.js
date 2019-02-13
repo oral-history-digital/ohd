@@ -24,6 +24,7 @@ export function setTapeAndTime(tape, time) {
   return {
     type: SET_TAPE_AND_TIME,
     videoTime: time,
+    transcriptTime: time,
     tape: tape
   }
 }

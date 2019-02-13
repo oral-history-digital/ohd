@@ -29,6 +29,16 @@ export default class RegistryEntries extends React.Component {
         }
     }
 
+    hideRegistryEntry(id) {
+        // let hiddenEntries = [28205, 28221, 28237]
+        if (this.props.hiddenRegistryEntryIds && this.props.hiddenRegistryEntryIds.indexOf(id) !== -1 && !admin(this.props)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     registryEntries() {
         if (
             this.props.registryEntryParent &&
@@ -37,7 +47,7 @@ export default class RegistryEntries extends React.Component {
         ) {
             return this.props.registryEntryParent.child_ids[this.props.locale].map((id, index) => {
                 let registryEntry = this.props.registryEntries[id] 
-                if (registryEntry) {
+                if (registryEntry && !this.hideRegistryEntry(id)) {
                     return (
                         <li key={`registry_entries-li-${id}`}>
                             <RegistryEntryContainer 

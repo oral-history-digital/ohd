@@ -28,6 +28,7 @@ en:
   tape: 'Tape'
   interview_gallery_explanation: 'The picture gallery contains photos of the interview situation as well as family photos and other historical photos from the interviewed person''s private collection.'
   interview_empty_gallery_explanation: 'There are no photos available for this interview.'
+  interview_archive: 'Interview archive'
   segment_results: 'Search results in transcript'
   photo_results: 'Search results in photos'
   biographicalentry_results: 'Search results in biographical entries'
@@ -46,6 +47,7 @@ en:
       password: 'Please correct your password'
   logged_in_as: 'Logged in as'
   user_name: 'User'
+  registration_needed: 'For reasons of privacy you have to register. After registration you have access to all testimonies in full length.'
   change_to_bcrypt: 'We have recently updated the way we store our passwords. Please click on the "Forgot your password?" link to recover your password. Thank you for your understanding.'
   notice: 'Save'
   forget_password: 'Forgot password?'
@@ -76,7 +78,8 @@ en:
   archive_search: 'Search the archive'
   interviewee_name: 'Name'
   periods: 'Time periods'
-  keywords: 'Keywords'
+  keywords: 'Index terms'
+  registry: 'Index'
   annotations: 'Annotations'
   reset: 'Reset'
   transcript: 'Transcript'
@@ -121,7 +124,7 @@ en:
   translation_header: 'Translation of the interview with'
 
   user_registration:
-    registration: 'Registrierung'
+    registration: 'Register'
     registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
     registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
     registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
@@ -173,6 +176,7 @@ en:
   not_logged_in_interview_text: 'Das Video-Interview mit Vorname Nachname ist Teil des Interview-Archivs "Erinnerungen an die Okkupation in Griechenland", die rund 80 lebensgeschichtliche Interviews mit Überlebenden und Zeug(inn)en der deutschen Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland" ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen und Kapodistrias-Universität Athen.'
   save_interview_reference: 'Add to saved interviews'
   save_user_annotation: 'Write an annotation'
+  called: 'accessed'
   save_search: 'Save search'
   call_search: 'Call up search'
   call_interview_reference: 'View interview'
@@ -204,8 +208,8 @@ en:
   activerecord:
     models:
       registry_entries:
-        one: 'Registry Entry'
-        other: 'Registry Entries'
+        one: 'Index Term'
+        other: 'Index Terms'
 
   search_facets:
     forced_labor_groups: 'Forced Labor Group'

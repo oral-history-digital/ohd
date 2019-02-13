@@ -63,6 +63,7 @@ const archive = (state = initialState, action) => {
                 locales: action.locales,
                 project: action.project,
                 projectDoi: action.projectDoi,
+                hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,
                 projectDomain: action.projectDomain

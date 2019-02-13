@@ -37,7 +37,7 @@ default: &default
 
   project_domain: 'zwangsarbeit-archiv.de'
 
-  archive_domain: 'zwangsarbeit-archiv.de/archiv'
+  archive_domain: 'archiv.zwangsarbeit-archiv.de'
 
   project_doi: 'BITTE EINGÜGEN'
 

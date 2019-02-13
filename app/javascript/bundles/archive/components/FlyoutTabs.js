@@ -173,11 +173,11 @@ export default class FlyoutTabs extends React.Component {
                             content={<InterviewRegistryReferencesContainer/>}/> */}
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.renderPhotos()}
-                            {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
+                            {/* {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()} */}
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 content={<CitationInfoContainer/>}/>
-                            {this.exportPanel([this.props.archiveId])}
+                            {this.renderExport([this.props.archiveId])}
                         </AuthShowContainer>
                     </div>
                 </TabPanel>
@@ -187,7 +187,7 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
-    exportPanel(archiveIds) {
+    renderExport(archiveIds) {
         if (admin(this.props)) {
             return <InterviewDataContainer
                 title={t(this.props, 'export')}
@@ -282,8 +282,8 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTab() {
         let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
         return (
-            <Tab className={css} key='activerecord.models.registry_entries.other'>
-                {t(this.props, 'activerecord.models.registry_entries.other')}
+            <Tab className={css} key='registry'>
+                {t(this.props, 'registry')}
             </Tab>
         );
     }
@@ -291,7 +291,7 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTabPanel() {
         return (
             <TabPanel key={'tabpanel-registry-entries'}>
-                <div className='flyout-tab-title'>{t(this.props, 'activerecord.models.registry_entries.other')}</div>
+                <div className='flyout-tab-title'>{t(this.props, 'registry')}</div>
                 <div className='flyout-sub-tabs-container'>
                     <RegistryEntrySearchFormContainer />
                     <div>
@@ -340,7 +340,6 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
-
     render() {
         return (
             <Tabs
@@ -373,7 +372,7 @@ export default class FlyoutTabs extends React.Component {
                         <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
                         <ArchiveSearchFormContainer/>
                         <div className='flyout-sub-tabs-container flyout-video'>
-                            {this.exportPanel(this.props.selectedArchiveIds)}
+                            {this.renderExport(this.props.selectedArchiveIds)}
                         </div>
                     </TabPanel>
                     {this.interviewTabPanel()}

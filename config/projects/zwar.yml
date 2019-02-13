@@ -40,7 +40,7 @@ default: &default
 
   project_domain: 'zwangsarbeit-archiv.de'
 
-  archive_domain: 'zwangsarbeit-archiv.de/archiv'
+  archive_domain: 'archiv.zwangsarbeit-archiv.de'
 
   project_doi: '10.5072'
 
@@ -179,6 +179,11 @@ default: &default
   uses_map: true
 
   has_newsletter: true
+
+  hidden_registry_entry_ids:
+    - 28205
+    - 28221
+    - 28237
 
 development:
   <<: *default

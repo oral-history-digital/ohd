@@ -45,6 +45,15 @@ export default class RegistryEntryShow extends React.Component {
         }
     }
 
+    tape(segment) {
+        if (segment && segment.tape_count && segment.tape_count > 1){
+            return `(${t(this.props, 'tape')} ${segment.tape_nbr}/${segment.tape_count})`
+        }
+        else {
+            return '';
+        }
+    }
+
     refObject(rr) {
         let ref_object_string = ''
         switch (rr.ref_object_type.toLowerCase()) {
@@ -71,7 +80,7 @@ export default class RegistryEntryShow extends React.Component {
                     let interview_id = this.props.segments[rr.ref_object_id].interview_archive_id
                     this.fetchInterview(interview_id)
                     if (this.interviewIsFetched(interview_id)) {
-                        ref_object_string = `${this.props.segments[rr.ref_object_id].timecode} ${t(this.props, 'in')} ${this.props.interviews[interview_id].short_title[this.props.locale]} (${this.props.interviews[interview_id].archive_id})`
+                        ref_object_string = `${this.props.segments[rr.ref_object_id].timecode} ${this.tape(this.props.segments[rr.ref_object_id])} ${t(this.props, 'in')} ${this.props.interviews[interview_id].short_title[this.props.locale]} (${this.props.interviews[interview_id].archive_id})`
                         return (
                             <Link className={'search-result-link'}
                             onClick={() => {

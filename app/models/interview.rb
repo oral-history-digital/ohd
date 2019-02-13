@@ -255,8 +255,12 @@ class Interview < ActiveRecord::Base
     self.send("#{change}!")
   end
 
-  def self.random_featured
-    researched.with_still_image.order("RAND()").first || first
+  def self.random_featured(n = 1)
+    if n == 1
+      researched.with_still_image.order(Arel.sql('RAND()')).first || first
+    else
+      researched.with_still_image.order(Arel.sql('RAND()')).first(n) || first(n)
+    end
   end
 
   def identifier

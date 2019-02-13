@@ -1,28 +1,30 @@
 .home-text
   h1 Онлайн-архив "Принудительный труд 1939-1945"
 
-  - @interview = Interview.random_featured
-  - if @interview
-    div style=("float: left; margin: 0 15px 0 0;")
-      a href=("#{interview_path(:id => @interview.archive_id)}") 
-        img alt="#{@interview.short_title(I18n.locale)}" height="150" src=("#{ "https://medien.cedis.fu-berlin.de/zwar/stills/#{@interview.archive_id}_still_original.JPG"}") title="" width="200" /
-        h6
-          = @interview.short_title(I18n.locale)
-          br/
-          = t(@interview.video? ? 'media.video_interview' : 'media.audio_interview')
-          | , #{@interview.language.to_s}
+  p
+    | Около 600 бывших подневольных рабочих из 26 стран рассказывают свои истории в подробных видео- и аудио-интервью.
+      Зарегистрировавшись в архиве, Вы можете найти и прослушать необходимые интервью. Они снабжены транскрипциями, переводами,
+      фотографиями и краткими биографиями респондентов.  Дополнительную информацию о нацистском принудительном труде, проекте и
+      возможностях получения образования можно найти на соответствующем 
+    a href="https://www.zwangsarbeit-archiv.de/ru/index.html" веб-сайте
+    | .
 
-  p
-    | Онлайн-архив "Принудительный труд 1939-1945" содержит интервью почти с 600 бывшими невольниками
-      и невольницами труда из 26 стран. Архив состоит из нескольких частей, составленных в 2005 - 2006гг.
-      различными проектными группами по всему миру при финансовой поддержке фонда "Память, ответственность
-      и будущее". Цифровой архив хранит свидетельства времени для будущих поколений и обеспечивает их
-      использование в сфере образования и науки 
-  p
-    | В целях защиты прав личности для использования архива "Принудительный труд 1939-1945" Вы должны
-      войти в систему и принять как Правила пользования сайтом, так и Положения о защите персональных данных.  
-
-  p
-    | B качестве зарегистрированного пользователя Вы получите доступ ко всем интервью, представленным
-      в полном объеме в интернет, при условии, что будут соблюдены Правила пользования сайтом и Положения
-      о защите персональных данных. 
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{interview.short_title(:ru)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:ru]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:ru)} #{(interview.translated) ? I18n.t('status.translated', locale: :ru) : ''}
+        
