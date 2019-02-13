@@ -3,7 +3,7 @@ class AdminMailer < ApplicationMailer
   def new_registration_info
     registration = params[:registration]
     @user_name = registration.full_name
-    @url = edit_admin_user_registration_url(id: registration.id, locale: 'de')
+    @url = user_registrations_url(locale: 'de')
 
     mail(
       subject: "new registration for #{Project.project_shortname}",
