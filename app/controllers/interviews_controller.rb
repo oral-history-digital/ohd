@@ -78,8 +78,8 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = params[:lang].to_sym
-        @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
-        @orig_lang = projectified(@interview.language.code).to_sym
+        @locale = projectified(params[:locale])
+        @orig_lang = projectified(@interview.language.code)
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
@@ -230,7 +230,7 @@ class InterviewsController < ApplicationController
       "data": {
         "type": "dois",
         "attributes": {
-          "doi": "10.5072/#{archive_id}",
+          "doi": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(doi_content(locale, Interview.find_by_archive_id(archive_id)))
@@ -248,7 +248,10 @@ class InterviewsController < ApplicationController
   end
 
   def doi_content(locale, interview)
-    template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
-    render_to_string(template: template, locals: {interview: interview}, layout: false)
+    #template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
+    #render_to_string(template: template, locals: {interview: interview}, layout: false)
+    @interview = interview
+    @locale = projectified(params[:locale])
+    render_to_string(template: "/interviews/show.xml", layout: false)
   end
 end

@@ -125,8 +125,8 @@ export function admin(props, obj) {
     if (props.account && props.editView && (props.account.admin || props.account.permissions)) {
         if (
             props.account.admin ||
-            (props.account.permissions && props.account.permissions.filter(permission => permission.controller === obj.type && permission.action === obj.action)) ||
-            (props.account.tasks && props.account.tasks.filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id))
+            (props.account.permissions && props.account.permissions.filter(permission => permission.controller === obj.type && permission.action === obj.action).length > 0) ||
+            (props.account.tasks && props.account.tasks.filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0)
         ) {
             return true;
         }

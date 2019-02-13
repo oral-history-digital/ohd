@@ -8,7 +8,6 @@ class UserRegistrationsController < ApplicationController
   before_action :filter_user_registrations, only: [:index]
 
   respond_to :json, :html
-  layout 'responsive'
 
   def new
     @user_registration = UserRegistration.new

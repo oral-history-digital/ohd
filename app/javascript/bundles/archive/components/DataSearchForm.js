@@ -61,7 +61,7 @@ export default class DataSearchForm extends React.Component {
 
     searchFormElement(element) {
         let opts = {
-            className: "search-input" ,
+            className: "search-input full" ,
             name: element.attributeName,
             value: this.props.query[element.attributeName],
             onChange: this.handleChange,

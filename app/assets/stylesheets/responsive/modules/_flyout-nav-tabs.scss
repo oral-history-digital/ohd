@@ -142,6 +142,9 @@
   ::placeholder {
     color: $primary-color;
   }
+  .full {
+    width: 100%;
+  }
   .search-button {
     width: 20%;
     font-family: FontAwesome;

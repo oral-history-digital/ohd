@@ -44,6 +44,13 @@ default: &default
 
   project_doi: '10.5072'
 
+  cooperation_partner: "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
+  leader: "Apostolopoulos, Nicolas; Pickhan, Gertrud"
+  manager: "Tausendfreund, Doris; Pagenstecher, Cord"
+  hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
+  funder_names: 
+    - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
+
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
