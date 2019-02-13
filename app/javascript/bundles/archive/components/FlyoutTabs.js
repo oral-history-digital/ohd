@@ -173,13 +173,11 @@ export default class FlyoutTabs extends React.Component {
                             content={<InterviewRegistryReferencesContainer/>}/> */}
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.renderPhotos()}
-                            {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()}
+                            {/* {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()} */}
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 content={<CitationInfoContainer/>}/>
-                            <InterviewDataContainer
-                                title={t(this.props, 'export')}
-                                content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}/> 
+                            {admin(this.props) && this.renderExport()}
                         </AuthShowContainer>
                     </div>
                 </TabPanel>
@@ -329,6 +327,15 @@ export default class FlyoutTabs extends React.Component {
                 title={t(this.props, 'photos')}
                 content={<GalleryContainer/>}/>
         }
+    }
+
+    renderExport() {
+        return (
+            <InterviewDataContainer
+                title={t(this.props, 'export')}
+                content={<ExportInterviewContainer archiveIds={[this.props.archiveId]} />}
+            /> 
+        )
     }
 
 
