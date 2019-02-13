@@ -205,6 +205,7 @@ de:
     name: 'doi'
     created: 'Erfolgreich veröffentlicht!'
     already_registered: 'Bereits zu einem früheren Zeitpunkt veröffentlicht!'
+    bad: 'Etwas stimmt nicht'
 
   workflow_states:
     unshared: 'nicht öffentlich'

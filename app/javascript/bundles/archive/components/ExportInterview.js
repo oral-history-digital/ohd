@@ -20,6 +20,9 @@ export default class ExportInterviewInfo extends React.Component {
                 msg = 'doi.created';
                 //return t(this.props, 'doi.created');
                 break;
+            case 400:
+                msg = 'doi.bad';
+                break;
             case 422:
                 msg = 'doi.already_registered';
                 //return t(this.props, 'doi.already_registered');
