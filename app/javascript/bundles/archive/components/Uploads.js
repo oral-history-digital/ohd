@@ -8,8 +8,26 @@ export default class Uploads extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = { };
+        this.handleUploadTypeChange = this.handleUploadTypeChange.bind(this);
+    }
+
+    handleUploadTypeChange(name, value) {
+        this.setState({ 
+            explanation: value
+        })
+    }
+
+    explanations() {
+        if (this.state.explanation) {
+            return (
+                <p className='explanation'>
+                    {t(this.props, `upload.explanation.${this.state.explanation}`)}
+                </p>
+            )
+        } else {
+            return null;
+        }
     }
 
     returnToForm() {
@@ -36,27 +54,31 @@ export default class Uploads extends React.Component {
             )
         } else {
             return (
-                <Form 
-                    scope='upload'
-                    onSubmit={this.props.submitData}
-                    submitText='edit.upload.upload'
-                    elements={[
-                        {
-                            elementType: 'select',
-                            attribute: 'type',
-                            values: this.props.uploadTypes,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''},
-                            individualErrorMsg: 'empty'
-                        },
-                        { 
-                            attribute: 'data',
-                            elementType: 'input',
-                            type: 'file',
-                            validate: function(v){return v instanceof File},
-                        },
-                    ]}
-                />
+                <div>
+                    {this.explanations()}
+                    <Form 
+                        scope='upload'
+                        onSubmit={this.props.submitData}
+                        submitText='edit.upload.upload'
+                        elements={[
+                            {
+                                elementType: 'select',
+                                attribute: 'type',
+                                values: this.props.uploadTypes,
+                                handlechangecallback: this.handleUploadTypeChange,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''},
+                                individualErrorMsg: 'empty'
+                            },
+                            { 
+                                attribute: 'data',
+                                elementType: 'input',
+                                type: 'file',
+                                validate: function(v){return v instanceof File},
+                            },
+                        ]}
+                    />
+                </div>
             )
         }
     }
