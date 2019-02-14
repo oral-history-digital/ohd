@@ -127,6 +127,7 @@ ru:
     interviews: 'interviews'
     stills: 'stills'
 
+  privacy_protection: 'Положения о защите персональных данных'
   interviewee_name: 'Имя интервьюируемого'
   conditions: 'Условия пользования'
   user_registration:
@@ -137,6 +138,37 @@ ru:
     tos_agreement: 'Правила пользования сайтом'
     priv_agreement: 'Положения о защите персональных данных'
     priv_agreement_alias: 'Положения о защите персональных данных'
+    notes_on_priv_agreement: 'Я принимаю Правила пользования сайтом.'
+    notes_on_tos_agreement: 'Я принимаю Положения о защите персональных данных.'
+    register: 'Отправить регистрацию'
+    appellation:
+      ms: 'Госпожа'
+      ms_dr: 'Госпожа др.'
+      ms_prof: 'Госпожа проф.'
+      mr: 'Господин'
+      mr_dr: 'Господин др.'
+      mr_prof: 'Господин проф.'
+    job_description:
+      researcher: 'Доцент/Научный сотрудник'
+      filmmaker: 'Автор фильмов'
+      journalist: 'Журналист'
+      teacher: 'Учитель'
+      memorial_staff: 'Сотрудник (Музеи/Мемориалы)'
+      pupil: 'Учащийся'
+      student: 'Студент'
+      other: 'Прочее'
+    research_intentions:
+      exhibition: 'Выставка'
+      education: 'Просветительная работа'
+      film: 'Документальный фильм'
+      genealogy: 'Семейные исследования'
+      art: 'Проект в области искусства'
+      personal_interest: 'Личный интерес'
+      press_publishing: 'Публикация в прессе'
+      school_project: 'Школьный проект/реферат'
+      university_teaching: 'Университетское преподавание'
+      scientific_paper: 'Научная публикация'
+      other: 'Прочее'
 
   tasks:
     interviewers: 'Проведение интервью'
@@ -381,6 +413,8 @@ ru:
     Nov: 'Ноя'
     Dez: 'Дек'
 
+  choose: 'Пожалуйста, выберите...'
+
   activerecord:
     models:
       interview:
@@ -394,7 +428,7 @@ ru:
         other: 'Фрагменты'
       collection:
         one: 'Частичное собрание'
-        other: 'Частичные собрания'
+        other: 'Частичные собрания' 
       photo:
         one: 'Фотография'
         other: 'Фотографии'
@@ -419,9 +453,32 @@ ru:
       registry_entries:
         one: 'Регистр'
         other: 'Регистр'
-
-
     attributes:
+      user_registration:
+        created_at: 'Erstellt am'
+        activated_at: 'Aktiviert am'
+        processed_at: 'Bearbeitet am'
+        admin_comments: 'Kommentar'
+        default_locale: 'Standart Locale'
+        appellation: 'Обращение'
+        first_name: 'Имя'
+        last_name: 'Фамилия'
+        email: 'Электр. адрес'
+        job_description: 'Профессия'
+        research_intentions: 'Цель изысканий'
+        comments: 'Уточнение цели'
+        organization: 'Учреждение'
+        homepage: 'Интернет-страница учреждения'
+        street: 'Улица'
+        zipcode: 'Индекс'
+        city: 'Населённый пункт'
+        country: 'Страна'
+        receive_newsletter: 'Newsletter'
+        tos_agreement: 'Правила пользования сайтом'
+        priv_agreement: 'Hinweise zum Datenschutz'
+        register: 'Отправить регистрацию'
+        workflow_state: 'Status'
+        transition_to: 'Status ändern zu:'
       collection:
         name: 'Имя'
         countries: 'Страна'
