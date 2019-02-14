@@ -35,12 +35,12 @@ de:
       success: "Sie haben Sich erfolgreich mit Ihrem Account angemeldet."
     passwords:
       change: 'Ihr Passwort ändern'
-      forgot: 'Sie haben Ihr Passwort vergessen?'
+      forgot: 'Passwort wiederherstellen'
       password: 'Passwort'
       password_confirmation: 'Passwort wiederholen'
       submit: 'Passwort jetzt ändern'
       resend: 'Passwort ändern'
-      link: 'Passwort vergessen?'
+      link: 'Passwort wiederherstellen'
       send_instructions: 'Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.'
       updated: 'Ihr Passwort wurde erfolgreich geändert.'
       no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
