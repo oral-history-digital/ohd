@@ -8,8 +8,8 @@ class AdminMailer < ApplicationMailer
     mail(
       subject: "new registration for #{Project.project_shortname}",
       from: "no-reply@cedis.fu-berlin.de",
-      recipients: "#{Project.contact_email}",
-      date:         Time.now
+      to: Project.contact_email,
+      date: Time.now
     )
   end
 
