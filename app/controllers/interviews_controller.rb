@@ -226,6 +226,9 @@ class InterviewsController < ApplicationController
   end
 
   def doi_json(archive_id)
+    @interview = Interview.find_by_archive_id(archive_id)
+    @locale = projectified(params[:locale])
+    xml = render_to_string(template: "/interviews/show.xml", layout: false)
     {
       "data": {
         "type": "dois",
@@ -233,7 +236,7 @@ class InterviewsController < ApplicationController
           "doi": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
-          "xml": Base64.encode64(doi_content(locale, Interview.find_by_archive_id(archive_id)))
+          "xml": Base64.encode64(xml)
         },
         "relationships": {
           "client": {
@@ -248,10 +251,7 @@ class InterviewsController < ApplicationController
   end
 
   def doi_content(locale, interview)
-    #template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
-    #render_to_string(template: template, locals: {interview: interview}, layout: false)
-    @interview = interview
-    @locale = projectified(params[:locale])
-    render_to_string(template: "/interviews/show.xml", layout: false)
+    template = "/interviews/_doi.#{locale}.html+#{Project.name.to_s}"
+    render_to_string(template: template, locals: {interview: interview}, layout: false)
   end
 end
