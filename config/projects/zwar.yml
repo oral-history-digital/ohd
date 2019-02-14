@@ -24,8 +24,8 @@ default: &default
     proofreader: 'proof_reading' 
 
   upload_types:
-    - campscape
-    - protocols
+    - bulk_metadata
+    - bulk_protocols
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'

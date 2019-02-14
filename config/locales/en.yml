@@ -202,6 +202,14 @@ en:
   status:
     translated: 'with translation'
 
+  upload:
+    types: 
+      bulk_metadata: 'Bulk Metadata Import'
+      bulk_protocols: 'Bulk Protocol Import'
+    explanations: 
+      bulk_metadata: 'Download this spreadsheet template, fill in your data, save as csv and upload. Keep column number and names as well as field types.'
+      bulk_protocols: 'Download zip template, compress your rtf files into this zip file and upload. Plain text will be pasted into protocol field. File names must be like ID_Language.rtf, eg. za123_de.rtf.'
+
   genders:
     female: 'female'
     male: 'male'
