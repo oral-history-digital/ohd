@@ -20,9 +20,8 @@ export default class Account extends React.Component {
                 {`${t(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
             </div>
         } else if (this.props.account.error) {
-            return <div className='error'>
-                {t(this.props, this.props.account.error)}
-            </div>
+            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.account.error)}}/>
+                
         } else {
             return null
         }
@@ -41,7 +40,7 @@ export default class Account extends React.Component {
         } else {
             return <div>
                 <p>
-                    {t(this.props, 'registration_needed')}
+                    {this.props.account.error ? '' : t(this.props, 'registration_needed')}
                 </p>
                 <LoginFormContainer/>
                 <div className={'register-link'}>
