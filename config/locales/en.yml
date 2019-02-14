@@ -50,13 +50,14 @@ en:
   registration_needed: 'For reasons of privacy you have to register. After registration you have access to all testimonies in full length.'
   change_to_bcrypt: 'We have recently updated the way we store our passwords. Please click on the "Forgot your password?" link to recover your password. Thank you for your understanding.'
   notice: 'Save'
-  forget_password: 'Forgot password?'
+  forget_password: 'Recover password'
   account_activation_errors: 'Password and password confirmation must be the same and at least 6 characters long.'
   submit: 'Submit'
   platform: 'platform'
   cooperation: 'In cooperation with'
   promoted: 'Supported by'
-  forget_password_question: 'Forgot password?'
+  tapes: 'Tapes'
+  forget_password_question: 'Recover password'
   enter_email: 'Please enter the e-mail address you used to register in the archive. You will then receive an e-mail with a link for password renewal.'
   email: 'E-Mail'
   change_password: 'Change password'
@@ -211,6 +212,9 @@ en:
       registry_entries:
         one: 'Index Term'
         other: 'Index Terms'
+    collection:
+        one: 'Collection'
+        other: 'Collections'
 
   search_facets:
     forced_labor_groups: 'Forced Labor Group'
