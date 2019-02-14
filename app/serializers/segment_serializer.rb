@@ -4,6 +4,7 @@ class SegmentSerializer < ActiveModel::Serializer
   attributes :id,
              :interview_id,
              :interview_archive_id,
+             :sort_key,
              :time,
              :tape_nbr,
              :tape_count,

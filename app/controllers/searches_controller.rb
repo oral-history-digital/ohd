@@ -70,7 +70,7 @@ class SearchesController < ApplicationController
 
   def interview
     models_and_order = [
-      [Segment, :timecode],
+      [Segment, :sort_key],
       [BiographicalEntry, :start_date],
       [Photo, :id],
       [Person, "name_#{locale}".to_sym]

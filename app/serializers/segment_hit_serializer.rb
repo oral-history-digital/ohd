@@ -8,7 +8,8 @@ class SegmentHitSerializer < ActiveModel::Serializer
              :text,
              :timecode,
              :speaker_id,
-             :last_heading
+             :last_heading,
+             :sort_key
 
   def time
     # timecode as seconds 
