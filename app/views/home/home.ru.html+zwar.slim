@@ -17,7 +17,7 @@
           img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
         div
           p.search-result-name
-            | #{interview.short_title(:ru)}
+            | #{current_user_account ? interview.short_title(:ru) : interview.anonymous_title(:ru)}
         .search-result-data
           span
             | #{interview.localized_hash_for_media_type[:ru]}
