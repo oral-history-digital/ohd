@@ -45,6 +45,10 @@ export default class ArchiveSearchForm extends React.Component {
         params = this.getValueFromDataList(params, event);
         params = this.prepareQuery(params);
         params['page'] = 1;
+        // close flyout if in XS oder S resolution
+        if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
+            this.props.hideFlyoutTabs();
+        }
         this.submit(params);
     }
 
