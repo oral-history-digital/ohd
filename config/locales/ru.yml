@@ -127,6 +127,8 @@ ru:
     interviews: 'interviews'
     stills: 'stills'
 
+  interviewee_name: 'Имя интервьюируемого'
+  conditions: 'Условия пользования'
   user_registration:
     registration: 'Регистрация'
     registration_text_one: 'Для поиска информации в архиве "Принудительный труд 1939-1945" необходима регистрация. '

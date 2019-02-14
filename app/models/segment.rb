@@ -101,6 +101,7 @@ class Segment < ActiveRecord::Base
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :timecode
+    string :sort_key
 
     # dummy method, necessary for generic search
     string :workflow_state do
@@ -172,6 +173,10 @@ class Segment < ActiveRecord::Base
       #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
       mem
     end
+  end
+
+  def sort_key
+    "#{tape_id}.#{timecode}"
   end
 
   def orig_lang
