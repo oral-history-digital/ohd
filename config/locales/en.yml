@@ -126,14 +126,14 @@ en:
 
   user_registration:
     registration: 'Register'
-    registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
-    registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
-    registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
-    tos_agreement: 'Nutzungsbedingungen'
-    priv_agreement: 'Hinweise zum Datenschutz'
-    notes_on_receive_newsletter: 'Ich möchte den Newsletter des Projektes "Erinnerungen an die Okkupation Griechenlands." abonnieren.'
+    registration_text_one: 'Registration is required for research in the archive. The '
+    registration_text_two: ' explain for whom and for which purposes the archive can be used. The '
+    registration_text_three: ' clarifies which personal data we process and what we use it for. Within two working days of sending your data you will receive a response and/or your login data.'
+    tos_agreement: 'Terms of Use'
+    priv_agreement: 'Privacy Policy'
+    notes_on_receive_newsletter: 'Ich möchte den Newsletter abonnieren.'
     notes_on_tos_agreement: 'Ich stimme den Nutzungsbedingungen zu.'
-    priv_agreement_alias: 'Datenschutzbestimmungen'
+    priv_agreement_alias: 'Privacy Policy'
     notes_on_priv_agreement: 'Ich stimme der  Datenschutzpraxis zu.'
     register: 'Registrierung senden'
     appellation:

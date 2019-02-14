@@ -353,7 +353,7 @@ de:
 
   user_registration:
     registration: 'Registrierung'
-    registration_text_one: 'Um die Interviews im Archiv "Erinnerungen an die Okkupation in Griechenland“ ansehen zu können ist eine Registrierung notwendig. Die '
+    registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine Registrierung notwendig. Die '
     registration_text_two: ' erklären, für wen und für welche Zwecke das Archiv nutzbar ist. Die '
     registration_text_three: ' erläutern, warum wir welche Daten verarbeiten und wofür wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung.'
     tos_agreement: 'Nutzungsbedingungen'
