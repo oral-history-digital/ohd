@@ -196,7 +196,7 @@ header.site-header {
 .wrapper-video {
   padding: 30px 10%;
   height: auto;
-  background: $gray-darkest;
+  background: $gray-darker;
   color: #fff;
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
@@ -308,7 +308,7 @@ footer {
   margin-bottom: 10px;
   margin-right: 10px;
   &.active {
-    background: $gray-darkest;
+    background: $gray-darker;
     color: #fff;
   }
 }
@@ -321,7 +321,7 @@ footer {
   margin-right: 10px;
   color: #fff;
   &.open {
-    background: $gray-darkest;
+    background: $gray-darker;
     color: #fff;
     .subfacets {
       height: auto;
