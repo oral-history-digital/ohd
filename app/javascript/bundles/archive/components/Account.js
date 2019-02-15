@@ -27,6 +27,11 @@ export default class Account extends React.Component {
         }
     }
 
+    // this is only a workaround
+    closeFlyout(){
+        return true;
+    }
+
     loginOrOut() {
         if (this.props.account.email && !this.props.account.error) {
             return (
@@ -44,12 +49,12 @@ export default class Account extends React.Component {
                 </p>
                 <LoginFormContainer/>
                 <div className={'register-link'}>
-                    <Link to={'/' + this.props.locale + '/user_registrations/new'}>
+                    <Link to={'/' + this.props.locale + '/user_registrations/new'} onClick={() => this.closeFlyout()}>
                         {t(this.props, 'user_registration.registration')}
                     </Link>
                 </div>
                 <div className={'order-new-password-link'}>
-                    <Link to={'/' + this.props.locale + '/user_accounts/password/new'}>
+                    <Link to={'/' + this.props.locale + '/user_accounts/password/new'} onClick={() => this.closeFlyout()}>
                         {t(this.props, 'forget_password')}
                     </Link>
                 </div>
