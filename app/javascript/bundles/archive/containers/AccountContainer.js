@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Account from '../components/Account';
 import { submitLogout, fetchAccount } from '../actions/accountActionCreators';
 import { changeToEditView } from '../actions/archiveActionCreators';
+import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -17,6 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
     submitLogout: () => dispatch(submitLogout()),
     fetchAccount: () => dispatch(fetchAccount()),
     changeToEditView: (bool) => dispatch(changeToEditView(bool)),
+    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
