@@ -1,9 +1,9 @@
 .home-text
-  h1 The Online Archive "Forced Labor 1939-1945"
+  h1 The Interview Archive "Forced Labor 1939-1945"
 
   p
     | Nearly 600 former forced laborers from 26 countries tell their life stories in detailed
-      audio and video interviews. After registering in the online archive, you can search and
+      audio and video interviews. After registering in the interview archive, you can search and
       listen to the complete testimonies, coming with transcripts, German translations, photos,
       short biographies, tables of contents and annotations. Further information on Nazi forced
       labor, the project and educational material can be found on the accompanying 
@@ -13,7 +13,7 @@
 .search-results-container
   - Interview.random_featured(6).each do |interview|
     .interview-preview.search-result
-      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+      a.search-result-link[href="/en/interviews/#{interview.archive_id}"]
         .search-result-img
           img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
         div

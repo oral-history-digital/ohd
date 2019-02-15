@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 
 import { t } from '../../../lib/utils';
 
+import AuthShowContainer from '../containers/AuthShowContainer';
+
 export default class InterviewListRow extends React.Component {
 
     constructor(props) {
@@ -51,7 +53,12 @@ export default class InterviewListRow extends React.Component {
                         to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                         element='tr'
                     >
-                        {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
+                        </AuthShowContainer>
                     </Link>
                 </td>
                 <td>{this.props.interview.video_array[this.props.locale]}</td>

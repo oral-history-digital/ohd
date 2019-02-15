@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
     return {
         interview: getInterview(state),
         locale: state.archive.locale,
+        account: state.account,
     }
 }
 

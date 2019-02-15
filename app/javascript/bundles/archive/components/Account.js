@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link} from 'react-router-dom';
@@ -7,6 +7,10 @@ import {Link} from 'react-router-dom';
 import { t } from '../../../lib/utils';
 
 export default class Account extends React.Component {
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     componentDidMount() {
         if (!this.props.account.email && !this.props.account.isFetchingAccount && !this.props.account.error) {
@@ -27,6 +31,14 @@ export default class Account extends React.Component {
         }
     }
 
+    openLink(path, e) {
+        e.preventDefault();
+        this.context.router.history.push(path);
+        if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
+            this.props.hideFlyoutTabs();
+        }
+    }
+
     loginOrOut() {
         if (this.props.account.email && !this.props.account.error) {
             return (
@@ -44,14 +56,14 @@ export default class Account extends React.Component {
                 </p>
                 <LoginFormContainer/>
                 <div className={'register-link'}>
-                    <Link to={'/' + this.props.locale + '/user_registrations/new'}>
+                    <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
                         {t(this.props, 'user_registration.registration')}
-                    </Link>
+                    </a>
                 </div>
                 <div className={'order-new-password-link'}>
-                    <Link to={'/' + this.props.locale + '/user_accounts/password/new'}>
+                    <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
                         {t(this.props, 'forget_password')}
-                    </Link>
+                    </a>
                 </div>
             </div>
         }

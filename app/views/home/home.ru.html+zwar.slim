@@ -1,5 +1,5 @@
 .home-text
-  h1 Онлайн-архив "Принудительный труд 1939-1945"
+  h1 Архив интервью "Принудительный труд 1939-1945"
 
   p
     | Около 600 бывших подневольных рабочих из 26 стран рассказывают свои истории в подробных видео- и аудио-интервью.
@@ -12,7 +12,7 @@
 .search-results-container
   - Interview.random_featured(6).each do |interview|
     .interview-preview.search-result
-      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+      a.search-result-link[href="/ru/interviews/#{interview.archive_id}"]
         .search-result-img
           img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
         div
