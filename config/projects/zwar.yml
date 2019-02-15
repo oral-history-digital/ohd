@@ -28,9 +28,9 @@ default: &default
     - bulk_protocols
 
   project_name: # Will be used in titles, emails, etc.
-    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
-    en: 'Forced Labor 1939-1945. Memory and History.'
-    ru: 'Принудительный труд 1939-1945. Воспоминания и история.'
+    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
+    en: 'Forced Labor 1939-1945. Memory and History'
+    ru: 'Принудительный труд 1939-1945. Воспоминания и история'
 
   project_id: 'zwar'
 
