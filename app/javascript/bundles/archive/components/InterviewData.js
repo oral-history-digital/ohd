@@ -6,7 +6,7 @@ export default class InterviewData extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            open: false
+            open: (this.props.account.email && !this.props.account.error) ? false : true
         };
 
     }
