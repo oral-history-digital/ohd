@@ -238,7 +238,7 @@ export default class WrapperPage extends React.Component {
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')}>
+                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')} target='_blank'>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
                                 {/* <span className="logo-text">{this.props.project}</span> */}
