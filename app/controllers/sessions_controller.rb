@@ -1,5 +1,6 @@
 class SessionsController < Devise::SessionsController  
 
+  skip_before_action :authenticate_user_account!, only: [:create]
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 

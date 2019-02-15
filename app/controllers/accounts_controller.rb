@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+
+  skip_before_action :authenticate_user_account!, only: [:show]
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
