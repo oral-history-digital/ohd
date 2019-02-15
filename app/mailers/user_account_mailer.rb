@@ -19,6 +19,7 @@ class UserAccountMailer < ActionMailer::Base
 
     @user_name = registration.nil? ? account.display_name : registration.full_name
     @login = account.login
+    @email = account.email
 
     mail(
       subject:      I18n.t('user_account_mailer.subject', locale: @mail_locale, project_name: Project.project_name[@mail_locale.to_s]),
