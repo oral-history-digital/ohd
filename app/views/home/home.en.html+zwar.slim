@@ -13,7 +13,7 @@
 .search-results-container
   - Interview.random_featured(6).each do |interview|
     .interview-preview.search-result
-      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+      a.search-result-link[href="/en/interviews/#{interview.archive_id}"]
         .search-result-img
           img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
         div
