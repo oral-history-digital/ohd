@@ -70,8 +70,8 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     if @interview.respond_to?(:typology)
       xml.subject "Erfahrungen: #{@interview.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
     else
-      xml.subject "Gruppe: #{@interview.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(@locale)}}"
-      xml.subject "Lager und Einsatzorte: #{@interview.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(@locale)}}"
+      xml.subject "Gruppe: #{@interview.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
+      xml.subject "Lager und Einsatzorte: #{@interview.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
     end
   end
 
