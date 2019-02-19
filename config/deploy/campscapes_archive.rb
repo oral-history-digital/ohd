@@ -1,13 +1,13 @@
 server "deploy_da03", roles: %w{app db web}
 
-set :application, "hagen_archive"
+set :application, "campscapes_archive"
 set :branch, :development
 set :stage, :production
 set :deploy_to, "/data/applications/#{fetch :application}"
 set :bundle_path, "/data/bundle/01"
-set :project_yml, "hagen.yml"
+set :project_yml, "campscapes.yml"
 
-#set :default_env, { 
+#set :default_env, {
 #      'project_name' => fetch(:application)
 #    }
 
