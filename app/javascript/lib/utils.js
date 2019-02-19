@@ -21,6 +21,10 @@ export function activeSegment(time, props) {
     let firstSegment = sortedSegments[0];
     let lastSegment = sortedSegments[sortedSegments.length - 1];
 
+    if(!firstSegment){
+        return null;
+    }
+
     if (index === 0) {
         return firstSegment;
     }
