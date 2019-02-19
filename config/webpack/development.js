@@ -6,7 +6,7 @@ const { settings, output } = require('./configuration.js')
 
 module.exports = merge(sharedConfig, {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'cheap-eval-source-map',
 
   stats: {
     errorDetails: true
