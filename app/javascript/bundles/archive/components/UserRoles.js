@@ -11,7 +11,7 @@ export default class UserRoles extends React.Component {
             return (
                 <li key={`user-role-li-${id}`}>
                     <UserRoleContainer 
-                        userRole={userRole} 
+                        userRole={this.props.userRoles[id]} 
                         key={`userRole-${id}`} 
                     />
                 </li>
