@@ -5,7 +5,10 @@
       {
         "modules": false,
         "targets": {
-          "browsers": "> 1%"
+          // "browsers": "> 1%"
+
+          // https://stackoverflow.com/a/45212317
+          "browsers": ["last 2 versions", "ie >= 11"]
         },
         "useBuiltIns": "entry",
         "forceAllTransforms": true
