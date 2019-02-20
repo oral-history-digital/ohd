@@ -10,7 +10,7 @@ const sharedConfig = require('./shared.js')
 module.exports = merge(sharedConfig, {
   mode: 'production',
   output: { filename: '[name]-[chunkhash].js' },
-  devtool: 'eval',
+  devtool: 'none',
   stats: 'normal',
   optimization: {
     minimizer: [new TerserPlugin()]
