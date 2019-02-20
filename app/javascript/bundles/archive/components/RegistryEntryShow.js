@@ -167,6 +167,7 @@ export default class RegistryEntryShow extends React.Component {
                     <a 
                         href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
                         target="_blank"
+                        rel="noopener"
                         >
                         {`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
                         &nbsp;
