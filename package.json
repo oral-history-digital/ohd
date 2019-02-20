@@ -1,5 +1,5 @@
 {
-  "browserslist": "> 0.25%, not dead",
+  "browserslist": "> 0.25%",
   "license": "UNLICENSED",
   "dependencies": {
     "@babel/core": "^7.3.3",
