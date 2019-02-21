@@ -15,15 +15,15 @@ class UserAccount < ActiveRecord::Base
   has_one :user
   has_many :tasks, through: :user
   has_many :permissions, through: :user
+  has_many :roles, through: :user
 
   has_one :user_registration
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
 
-  # Only allow letter, number, underscore and punctuation.
-  validates_format_of :login, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   validates_uniqueness_of :login
+  validates_presence_of :login
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
