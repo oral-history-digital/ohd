@@ -324,14 +324,14 @@ de:
       delete: 'Rolle löschen'
       admin: 'Rollen bearbeiten'
     role_permission: 
-      new: 'Erlaubnis hinzufügen'
-      edit: 'Erlaubnis bearbeiten'
-      delete: 'Erlaubnis löschen'
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
     permission: 
-      new: 'Erlaubnis hinzufügen'
-      edit: 'Erlaubnis bearbeiten'
-      delete: 'Erlaubnis löschen'
-      admin: 'Erlaubnisse bearbeiten'
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
+      admin: 'Berechtigungen bearbeiten'
     user_role:
       show: 'Beschreibung'
       edit: 'Bearbeiten'
@@ -507,11 +507,11 @@ de:
         one: 'Aufgabe'
         other: 'Aufgaben'
       permission:
-        one: 'Erlaubnis'
-        other: 'Erlaubnisse'
+        one: 'Berechtigung'
+        other: 'Berechtigungen'
       role_permission:
-        one: 'Zur Rolle gehörende Erlaubnis'
-        other: 'Zur Rolle gehörende Erlaubnisse'
+        one: 'Zur Rolle gehörende Berechtigung'
+        other: 'Zur Rolle gehörende Berechtigungen'
 
     attributes:
       history:
@@ -647,7 +647,7 @@ de:
       role_permission:
         name: 'Name'
         desc: 'Beschreibung'
-        permission_id: 'Erlaubnis'
+        permission_id: 'Berechtigung'
         controller: 'Controller'
         action: 'Action'
         created_at: 'angelegt'
