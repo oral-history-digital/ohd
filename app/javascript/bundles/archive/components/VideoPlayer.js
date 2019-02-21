@@ -22,6 +22,7 @@ export default class VideoPlayer extends React.Component {
             this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
             this.video.addEventListener('mozfullscreenchange', this.fullscreenChange);
             this.video.addEventListener('fullscreenchange', this.fullscreenChange);
+            this.video.addEventListener('contextmenu',function(e) { e.preventDefault(); return false; });
         }
     }
 
@@ -29,6 +30,7 @@ export default class VideoPlayer extends React.Component {
         if (this.video) {
             this.setVideoTime()
             this.setVideoStatus()
+            this.video.addEventListener('contextmenu',function(e) { e.preventDefault(); return false; });
         }
     }
 

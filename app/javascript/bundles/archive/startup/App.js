@@ -1,4 +1,5 @@
-import polyfills from '../../../lib/polyfills';
+import polyfills from '../../../lib/polyfills'; 
+import '@babel/polyfill';
 import 'intersection-observer';
 import 'datalist-polyfill';
 import React from 'react';
