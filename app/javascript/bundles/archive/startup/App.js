@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom'
 
 import archiveStore from '../store/archiveStore';
+import WrappedAccountContainer from '../containers/WrappedAccountContainer';
 import InterviewContainer from '../containers/InterviewContainer';
 import EditInterviewContainer from '../containers/EditInterviewContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
@@ -27,6 +28,7 @@ const App = (props) => (
     <BrowserRouter>
       <div>
           <Route exact path="/:locale" component={HomeContainer} />
+          <Route exact path="/:locale/account" component={WrappedAccountContainer} />
           <Route exact path="/:locale/interviews/new" component={EditInterviewContainer} />
           <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/transcripts/new" component={UploadTranscriptContainer} />

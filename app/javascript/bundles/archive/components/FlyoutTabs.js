@@ -55,7 +55,9 @@ export default class FlyoutTabs extends React.Component {
         if (tabIndex === 0) {
             // home
             this.context.router.history.push(`/${this.props.locale}`);
-            this.setState({tabIndex: tabIndex});
+        } else if (tabIndex === 1) {
+            // account
+            this.context.router.history.push(`/${this.props.locale}/account`);
         } else if (tabIndex > 1 && tabIndex < this.props.locales.length + 2) {
             // locales (language switchers)
             this.switchLocale(this.props.locales[tabIndex - 2]);
@@ -63,46 +65,35 @@ export default class FlyoutTabs extends React.Component {
             // arrchive-search
             let url = `/${this.props.locale}/searches/archive`;
             this.context.router.history.push(url);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 3) {
             // interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 4) {
              // registry entries
             this.context.router.history.push(`/${this.props.locale}/registry_entries`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 5) {
              //edit interview
             this.context.router.history.push(`/${this.props.locale}/interviews/new`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 6) {
              // upload transcript
             this.context.router.history.push(`/${this.props.locale}/transcripts/new`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 7) {
              // uploads
             this.context.router.history.push(`/${this.props.locale}/uploads/new`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 8) {
              // add person
             this.context.router.history.push(`/${this.props.locale}/people/new`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 9) {
              // users administration
             this.context.router.history.push(`/${this.props.locale}/user_registrations`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 10) {
              // roles
             this.context.router.history.push(`/${this.props.locale}/roles`);
-            this.setState({tabIndex: tabIndex});
         } else if (tabIndex === this.props.locales.length + 11) {
              // permissions
             this.context.router.history.push(`/${this.props.locale}/permissions`);
-            this.setState({tabIndex: tabIndex});
-        } else {
-            this.setState({tabIndex: tabIndex})
         }
+        this.setState({tabIndex: tabIndex});
     }
 
     switchLocale(locale) {

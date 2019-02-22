@@ -500,6 +500,9 @@ de:
       user_registration:
         one: 'Benutzer/ Registrierung'
         other: 'Benutzer/ Registrierung'
+      user_account:
+        one: 'Benutzerkonto'
+        other: 'Benutzerkonten'
       role: 
         one: 'Rolle'
         other: 'Rollen'

@@ -43,8 +43,11 @@ const receiveAccount = (json) => ({
     email: json.email,
     login: json.login,
     admin: json.admin,
+    userId: json.user_id,
     permissions: json.permissions,
+    roles: json.roles,
     tasks: json.tasks,
+    supervisedTasks: json.supervised_tasks,
 });
 
 export function fetchAccount() {

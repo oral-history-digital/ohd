@@ -11,7 +11,9 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         account: state.account,
         editView: state.archive.editView,
-        //data: state.data.permissions,
+        //
+        //
+        //
         joinDataStatus: state.data.statuses.permissions,
         joinDataScope: 'permissions',
         scope: 'role_permission',

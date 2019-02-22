@@ -14,6 +14,7 @@ class UserAccount < ActiveRecord::Base
 
   has_one :user
   has_many :tasks, through: :user
+  has_many :supervised_tasks, through: :user
   has_many :permissions, through: :user
   has_many :roles, through: :user
 
