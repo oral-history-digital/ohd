@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
-import { fetchAccount } from '../actions/accountActionCreators';
 import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
 import { getInterview } from '../../../lib/utils';
@@ -28,7 +27,6 @@ const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setLocale: locale => dispatch(setLocale(locale)),
     changeRegistryEntriesViewMode: bool => dispatch(changeRegistryEntriesViewMode(bool)),
-    fetchAccount: () => dispatch(fetchAccount()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlyoutTabs);
