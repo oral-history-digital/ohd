@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
+    resources :accounts, only: [:show, :update]
     resources :user_registrations do
       member do
         post :confirm
@@ -31,8 +32,6 @@ Rails.application.routes.draw do
         #resources :histories, only: [:create, :update, :destroy]
         resources :biographical_entries, only: [:destroy]
       end
-
-      get 'account' => 'accounts#show'
 
       %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
         get site, to: "home##{site}", as: site

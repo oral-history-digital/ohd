@@ -14,7 +14,15 @@ export default class Account extends React.Component {
 
     componentDidMount() {
         if (!this.props.account.email && !this.props.account.isFetchingAccount && !this.props.account.error) {
-            this.props.fetchAccount()
+            this.loadAccount()
+        }
+    }
+
+    loadAccount() {
+        if (
+            !this.props.accountsStatus.current 
+        ) {
+            this.props.fetchData('accounts', 'current');
         }
     }
 

@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

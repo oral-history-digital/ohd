@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
-        account: state.account
+        account: state.data.accounts.current
     }
 }
 

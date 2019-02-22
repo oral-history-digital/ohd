@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         interview: interview,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

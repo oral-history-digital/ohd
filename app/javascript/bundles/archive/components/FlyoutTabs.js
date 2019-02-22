@@ -51,7 +51,7 @@ export default class FlyoutTabs extends React.Component {
             this.context.router.history.push(`/${this.props.locale}`);
         } else if (tabIndex === 1) {
             // account
-            this.context.router.history.push(`/${this.props.locale}/account`);
+            this.context.router.history.push(`/${this.props.locale}/accounts/current`);
         } else if (tabIndex > 1 && tabIndex < this.props.locales.length + 2) {
             // locales (language switchers)
             this.switchLocale(this.props.locales[tabIndex - 2]);

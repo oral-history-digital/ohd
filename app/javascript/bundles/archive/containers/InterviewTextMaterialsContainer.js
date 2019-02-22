@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         interview: getInterview(state),
         // the following is just a trick to force rerender after deletion
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

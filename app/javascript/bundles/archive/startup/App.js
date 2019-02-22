@@ -28,7 +28,7 @@ const App = (props) => (
     <BrowserRouter>
       <div>
           <Route exact path="/:locale" component={HomeContainer} />
-          <Route exact path="/:locale/account" component={WrappedAccountContainer} />
+          <Route path="/:locale/accounts/current" component={WrappedAccountContainer} />
           <Route exact path="/:locale/interviews/new" component={EditInterviewContainer} />
           <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
           <Route path="/:locale/transcripts/new" component={UploadTranscriptContainer} />

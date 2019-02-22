@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         translations: state.archive.translations,
         uploadTypes: state.archive.uploadTypes,
-        account: state.account,
+        account: state.data.accounts.current,
         processing: state.data.statuses.uploads.processing, 
         lastModified: state.data.statuses.uploads.lastModified, 
     }

@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

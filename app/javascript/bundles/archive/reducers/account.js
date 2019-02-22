@@ -1,7 +1,4 @@
 import { 
-    REQUEST_ACCOUNT,
-    RECEIVE_ACCOUNT,
-
     LOGIN,
     LOGGED_IN,
     AUTH_ERROR,
@@ -25,24 +22,6 @@ import {
 
 const account = (state = {}, action) => {
     switch (action.type) {
-        case REQUEST_ACCOUNT:
-            return Object.assign({}, state, {
-                isFetchingAccount: true,
-            })
-        case RECEIVE_ACCOUNT:
-            return Object.assign({}, state, {
-                isFetchingAccount: false,
-                firstName: action.firstName,
-                lastName: action.lastName,
-                email: action.email,
-                login: action.login,
-                admin: action.admin,
-                userId: action.userId,
-                permissions: action.permissions,
-                tasks: action.tasks,
-                supervisedTasks: action.supervisedTasks,
-                roles: action.roles,
-            })
         case LOGIN:
             return Object.assign({}, state, {
                 isLoggingIn: true,

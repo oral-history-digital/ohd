@@ -3,10 +3,6 @@
 import Loader from '../../../lib/loader'
 
 import { 
-    REQUEST_ACCOUNT,
-    RECEIVE_ACCOUNT,
-    ACCOUNT_URL,
-
     LOGIN,
     LOGGED_IN,
     AUTH_ERROR,
@@ -31,31 +27,6 @@ import {
     ORDERED_NEW_PASSWORD,
     ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
-
-const requestAccount = () => ({
-    type: REQUEST_ACCOUNT,
-});
-
-const receiveAccount = (json) => ({
-    type: RECEIVE_ACCOUNT,
-    firstName: json.first_name,
-    lastName: json.last_name,
-    email: json.email,
-    login: json.login,
-    admin: json.admin,
-    userId: json.user_id,
-    permissions: json.permissions,
-    roles: json.roles,
-    tasks: json.tasks,
-    supervisedTasks: json.supervised_tasks,
-});
-
-export function fetchAccount() {
-    return dispatch => {
-        dispatch(requestAccount())
-        Loader.getJson(ACCOUNT_URL, null, dispatch, receiveAccount);
-    }
-}
 
 const login = () => ({
     type: LOGIN,
