@@ -45,8 +45,9 @@ export default class Select extends React.Component {
 
     options() {
         let opts = [];
+        let values;
+
         if (this.props.values) {
-            let values;
             if (Array.isArray(this.props.values)) {
                 values = this.props.values;
             } else {
@@ -54,6 +55,11 @@ export default class Select extends React.Component {
                     return {id: id, name: this.props.values[id].name}
                 })
             }
+        } else if (this.props.data && this.props.attribute === 'workflow_state') {
+            values = this.props.data.transitions_to;
+        }
+
+        if (values) {
             opts = values.map((value, index) => {
                 let val, text;
                 if (typeof value === 'string') {
@@ -72,6 +78,7 @@ export default class Select extends React.Component {
                 )}
             )
         }
+
         if (this.props.withEmpty) {
             opts.unshift(
                 <option value='' key={`${this.props.scope}-choose`}>

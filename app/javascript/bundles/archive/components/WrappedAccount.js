@@ -77,21 +77,31 @@ export default class WrappedAccount extends React.Component {
         return (
             <div className={'tasks box'}>
                 <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                <TasksContainer tasks={this.props.account.tasks || []} userId={this.props.account.user_id} />
+                <TasksContainer tasks={this.props.account.tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
+            </div>
+        )
+    }
+
+    supervisedTasks() {
+        return (
+            <div className={'tasks box'}>
+                <div className='title'>{t(this.props, 'supervised_tasks')}</div>
+                <TasksContainer tasks={this.props.account.supervised_tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
             </div>
         )
     }
 
 
+
     render() {
-        let tabIndex = this.props.locales.length + this.props.baseTabIndex;
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
+            <WrapperPageContainer tabIndex={1}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
                     <div className='user-registration boxes'>
                         {this.roles()}
                         {this.tasks()}
+                        {this.supervisedTasks()}
                     </div>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
