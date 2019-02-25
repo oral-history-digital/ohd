@@ -4,7 +4,7 @@ import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link} from 'react-router-dom';
 
-import { t } from '../../../lib/utils';
+import { t, loggedIn } from '../../../lib/utils';
 
 export default class Account extends React.Component {
 
@@ -12,31 +12,8 @@ export default class Account extends React.Component {
         router: PropTypes.object
     }
 
-    componentDidMount() {
-        if (
-            !this.props.accountsStatus.current 
-        ) {
-            this.loadAccount()
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (!prevProps.authStatus.isLoggedIn && this.props.authStatus.isLoggedIn) {
-            this.loadAccount();
-        }
-    }
-
-    loadAccount() {
-        this.props.fetchData('accounts', 'current');
-    }
-
-    loggedIn() {
-        return this.props.authStatus.isLoggedIn && this.props.account.email;
-    }
-
     info() {
-        if (this.loggedIn()){
-        //if (this.props.authStatus.isLoggedIn &&!this.props.authStatus.error) {
+        if (loggedIn(this.props) &&!this.props.authStatus.error){
             return <div className='info'>
                 {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
             </div>
@@ -57,7 +34,7 @@ export default class Account extends React.Component {
     }
 
     loginOrOut() {
-        if (this.loggedIn()){
+        if (loggedIn(this.props)){
             return (
                 <div>
                     {this.changeToEditView()}

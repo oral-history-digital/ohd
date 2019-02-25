@@ -21,7 +21,7 @@ import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 import ExportInterviewContainer from '../containers/ExportInterviewContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t, admin } from '../../../lib/utils';
+import { t, admin, loggedIn } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -96,17 +96,8 @@ export default class FlyoutTabs extends React.Component {
         this.props.setLocale(locale);
     }
 
-    saveSearchForm() {
-        return <UserContentFormContainer
-            title=''
-            description=''
-            properties={Object.assign({}, this.props.searchQuery, {fulltext: this.props.fulltext})}
-            type='Search'
-        />
-    }
-
     loginTab() {
-        let text = (this.props.account.email && !this.props.account.error ) ? 'account_page' : 'login_page';
+        let text = loggedIn(this.props) ? 'account_page' : 'login_page';
         return <Tab className='flyout-top-nav' key='account'>{t(this.props, text)}</Tab>
     }
 
@@ -265,7 +256,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     registryEntriesTab() {
-        let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
+        let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='registry'>
                 {t(this.props, 'registry')}
@@ -294,7 +285,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     userContentTab() {
-        let css = ( this.props.account.email && !this.props.account.error ) ? 'flyout-tab' : 'hidden';
+        let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='user-content'>{t(this.props, 'user_content')}</Tab>;
     }
 
@@ -310,7 +301,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderMap() {
-        if (this.props.account.email) {
+        if (loggedIn(this.props)) {
             return <InterviewDataContainer
                 title={t(this.props, 'map')}
                 content={<InterviewLocationsContainer/>}/>
@@ -318,7 +309,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderPhotos() {
-        if (this.props.account.email) {
+        if (loggedIn(this.props)) {
             return <InterviewDataContainer
                 title={t(this.props, 'photos')}
                 content={<GalleryContainer/>}/>

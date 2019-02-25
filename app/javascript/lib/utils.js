@@ -125,6 +125,10 @@ export function pluralize(word) {
     return pluralizedWord;
 }
 
+export function loggedIn(props) {
+    return !props.authStatus.isLoggedOut && props.account.email;
+}
+
 export function admin(props, obj) {
     if (props.account && props.editView && (props.account.admin || props.account.permissions)) {
         if (
