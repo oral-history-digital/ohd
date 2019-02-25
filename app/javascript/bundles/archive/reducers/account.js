@@ -20,7 +20,7 @@ import {
     ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
 
-const account = (state = {}, action) => {
+const account = (state = {isLoggedIn: false}, action) => {
     switch (action.type) {
         case LOGIN:
             return Object.assign({}, state, {
@@ -35,8 +35,6 @@ const account = (state = {}, action) => {
                 firstName: action.firstName,
                 lastName: action.lastName,
                 email: action.email,
-                admin: action.admin,
-                //login: action.login,
             })
         case AUTH_ERROR:
             return {
@@ -45,7 +43,14 @@ const account = (state = {}, action) => {
                 email: action.email,
             } 
         case LOGOUT:
-            return {} 
+            return Object.assign({}, state, {
+                isLoggedIn: false,
+                isLoggedOut: true,
+                loggedInAt: 'no',
+                firstName: 'no',
+                lastName: 'no',
+                email: 'no',
+            })
         case REGISTER:
             return Object.assign({}, state, {
                 isRegistering: true

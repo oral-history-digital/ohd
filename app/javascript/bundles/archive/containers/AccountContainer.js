@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
+        authStatus: state.account,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,
         editView: state.archive.editView

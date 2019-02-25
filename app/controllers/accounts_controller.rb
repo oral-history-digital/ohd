@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
         render json: current_user_account && {
           id: 'current',
           data_type: 'accounts',
-          data: ::AccountSerializer.new(current_user_account)
+          data: ::UserAccountSerializer.new(current_user_account)
         } || {} 
       end
     end

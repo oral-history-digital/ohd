@@ -13,26 +13,35 @@ export default class Account extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.props.account.email && !this.props.account.isFetchingAccount && !this.props.account.error) {
+        if (
+            !this.props.accountsStatus.current 
+        ) {
             this.loadAccount()
         }
     }
 
-    loadAccount() {
-        if (
-            !this.props.accountsStatus.current 
-        ) {
-            this.props.fetchData('accounts', 'current');
+    componentDidUpdate(prevProps) {
+        if (!prevProps.authStatus.isLoggedIn && this.props.authStatus.isLoggedIn) {
+            this.loadAccount();
         }
     }
 
+    loadAccount() {
+        this.props.fetchData('accounts', 'current');
+    }
+
+    loggedIn() {
+        return this.props.authStatus.isLoggedIn && this.props.account.email;
+    }
+
     info() {
-        if (this.props.account.email &&!this.props.account.error) {
+        if (this.loggedIn()){
+        //if (this.props.authStatus.isLoggedIn &&!this.props.authStatus.error) {
             return <div className='info'>
-                {`${t(this.props, 'logged_in_as')} ${this.props.account.firstName} ${this.props.account.lastName}`}
+                {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
             </div>
-        } else if (this.props.account.error) {
-            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.account.error)}}/>
+        } else if (this.props.authStatus.error) {
+            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
                 
         } else {
             return null
@@ -48,19 +57,22 @@ export default class Account extends React.Component {
     }
 
     loginOrOut() {
-        if (this.props.account.email && !this.props.account.error) {
+        if (this.loggedIn()){
             return (
-                <div
-                    className='logout'
-                    onClick={() => this.props.submitLogout()}
-                >
-                    {t(this.props, 'logout')}
+                <div>
+                    {this.changeToEditView()}
+                    <div
+                        className='logout'
+                        onClick={() => this.props.submitLogout()}
+                    >
+                        {t(this.props, 'logout')}
+                    </div>
                 </div>
             )
         } else {
             return <div>
                 <p>
-                    {this.props.account.error ? '' : t(this.props, 'registration_needed')}
+                    {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
                 </p>
                 <LoginFormContainer/>
                 <div className={'register-link'}>
@@ -98,7 +110,6 @@ export default class Account extends React.Component {
         return (
             <div className={'flyout-login-container'}>
                 {this.info()}
-                {this.changeToEditView()}
                 {this.loginOrOut()}
             </div>
         );

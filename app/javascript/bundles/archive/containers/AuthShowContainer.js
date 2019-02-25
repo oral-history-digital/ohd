@@ -3,6 +3,7 @@ import AuthShow from '../components/AuthShow';
 
 const mapStateToProps = (state) => {
     return {
+        authStatus: state.account,
         account: state.data.accounts.current,
         editView: state.archive.editView
     }
