@@ -1,4 +1,5 @@
 import React from 'react';
+import { loggedIn } from '../../../lib/utils';
 
 export default class InterviewData extends React.Component {
 
@@ -6,7 +7,7 @@ export default class InterviewData extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            open: (this.props.account.email && !this.props.account.error) ? false : true
+            open: loggedIn(this.props) ? false : true
         };
 
     }
