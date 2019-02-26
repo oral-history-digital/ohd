@@ -84,8 +84,8 @@ export function t(props, key) {
             return text 
         } else {
             // return `translation for ${props.locale}.${key} is missing!`;
-            keyArray = key.split('.')
-            text = keyArray[keyArray.length - 1]
+            keyArray = key ? key.split('.') : [];
+            text = keyArray[keyArray.length - 1];
             return text;
         }
     }
