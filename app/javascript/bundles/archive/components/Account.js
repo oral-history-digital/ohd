@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AuthShowContainer from '../containers/AuthShowContainer'
 import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link} from 'react-router-dom';
@@ -13,16 +14,16 @@ export default class Account extends React.Component {
     }
 
     info() {
-        if (loggedIn(this.props) &&!this.props.authStatus.error){
-            return <div className='info'>
-                {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
+        return (
+            <div>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <div className='info'>
+                        {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
+                    </div>
+                </AuthShowContainer>
+                <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
             </div>
-        } else if (this.props.authStatus.error) {
-            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
-                
-        } else {
-            return null
-        }
+        )
     }
 
     openLink(path, e) {
@@ -34,9 +35,9 @@ export default class Account extends React.Component {
     }
 
     loginOrOut() {
-        if (loggedIn(this.props)){
-            return (
-                <div>
+        return (
+            <div>
+                <AuthShowContainer ifLoggedIn={true}>
                     {this.changeToEditView()}
                     <div
                         className='logout'
@@ -44,26 +45,25 @@ export default class Account extends React.Component {
                     >
                         {t(this.props, 'logout')}
                     </div>
-                </div>
-            )
-        } else {
-            return <div>
-                <p>
-                    {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
-                </p>
-                <LoginFormContainer/>
-                <div className={'register-link'}>
-                    <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
-                        {t(this.props, 'user_registration.registration')}
-                    </a>
-                </div>
-                <div className={'order-new-password-link'}>
-                    <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
-                        {t(this.props, 'forget_password')}
-                    </a>
-                </div>
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true}>
+                    <p>
+                        {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
+                    </p>
+                    <LoginFormContainer/>
+                    <div className={'register-link'}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
+                            {t(this.props, 'user_registration.registration')}
+                        </a>
+                    </div>
+                    <div className={'order-new-password-link'}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
+                            {t(this.props, 'forget_password')}
+                        </a>
+                    </div>
+                </AuthShowContainer>
             </div>
-        }
+        )
     }
 
     changeToEditView() {
