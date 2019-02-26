@@ -13,57 +13,12 @@ export default class Account extends React.Component {
         router: PropTypes.object
     }
 
-    info() {
-        return (
-            <div>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <div className='info'>
-                        {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
-                    </div>
-                </AuthShowContainer>
-                <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
-            </div>
-        )
-    }
-
     openLink(path, e) {
         e.preventDefault();
         this.context.router.history.push(path);
         if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
             this.props.hideFlyoutTabs();
         }
-    }
-
-    loginOrOut() {
-        return (
-            <div>
-                <AuthShowContainer ifLoggedIn={true}>
-                    {this.changeToEditView()}
-                    <div
-                        className='logout'
-                        onClick={() => this.props.submitLogout()}
-                    >
-                        {t(this.props, 'logout')}
-                    </div>
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    <p>
-                        {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
-                    </p>
-                    <LoginFormContainer/>
-                    <div className={'register-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
-                            {t(this.props, 'user_registration.registration')}
-                        </a>
-                    </div>
-                    <div className={'order-new-password-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
-                            {t(this.props, 'forget_password')}
-                        </a>
-                    </div>
-                </AuthShowContainer>
-            </div>
-        )
     }
 
     changeToEditView() {
@@ -86,9 +41,39 @@ export default class Account extends React.Component {
     render() {
         return (
             <div className={'flyout-login-container'}>
-                {this.info()}
-                {this.loginOrOut()}
+                <AuthShowContainer ifLoggedIn={true}>
+                    <div className='info'>
+                        {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
+                    </div>
+                    {this.changeToEditView()}
+                    <div
+                        className='logout'
+                        onClick={() => this.props.submitLogout()}
+                    >
+                        {t(this.props, 'logout')}
+                    </div>
+                </AuthShowContainer>
+
+                <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
+
+                <AuthShowContainer ifLoggedOut={true}>
+                    <p>
+                        {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
+                    </p>
+                    <LoginFormContainer/>
+                    <div className={'register-link'}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
+                            {t(this.props, 'user_registration.registration')}
+                        </a>
+                    </div>
+                    <div className={'order-new-password-link'}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
+                            {t(this.props, 'forget_password')}
+                        </a>
+                    </div>
+                </AuthShowContainer>
             </div>
-        );
+        )
     }
+
 }
