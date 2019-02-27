@@ -45,7 +45,7 @@ export default class UserRegistrations extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 9;
+        let tabIndex = this.props.locales.length + 6;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>

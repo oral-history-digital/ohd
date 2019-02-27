@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.roles.resultPagesCount,
         query: state.search.roles.query,
         scope: 'role',
-        baseTabIndex: 10,
+        baseTabIndex: 6,
         detailsAttributes: ['name', 'desc'],
         formElements: [
             {

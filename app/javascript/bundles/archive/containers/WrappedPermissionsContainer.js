@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.permissions.resultPagesCount,
         query: state.search.permissions.query,
         scope: 'permission',
-        baseTabIndex: 11,
+        baseTabIndex: 6,
         detailsAttributes: ['name', 'desc', 'controller', 'action'],
         formElements: [
             {

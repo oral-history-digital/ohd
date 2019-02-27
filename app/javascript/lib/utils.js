@@ -126,7 +126,7 @@ export function pluralize(word) {
 }
 
 export function loggedIn(props) {
-    return !props.authStatus.isLoggedOut && props.account.email;
+    return !!(!props.authStatus.isLoggedOut && props.account.email);
 }
 
 export function admin(props, obj) {
