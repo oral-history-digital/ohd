@@ -18,9 +18,11 @@ export default class InterviewData extends React.Component {
     }
 
     handleClick(){
-        this.setState({['open']: !this.state.open});
-        if (this.props.url) {
+        if (this.props.url && this.context.router.route.location.pathname !== this.props.url) {
+            this.setState({['open']: true});
             this.context.router.history.push(this.props.url);
+        } else {
+            this.setState({['open']: !this.state.open});
         }
     }
 

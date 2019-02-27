@@ -169,7 +169,7 @@ export default class FlyoutTabs extends React.Component {
      
     subTab(title, content, url) {
         return (
-            <div className='flyout-sub-tabs-container'>
+            <div className='flyout-sub-tabs-container flyout-video'>
                 <InterviewDataContainer
                     title={t(this.props, title)}
                     content={content}
