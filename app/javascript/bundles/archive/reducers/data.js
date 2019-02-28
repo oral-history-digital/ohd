@@ -8,7 +8,9 @@ import {
 } from '../constants/archiveConstants';
 
 const initialState = {
+    accounts: {current: {}}, 
     statuses: {
+        accounts: {},
         interviews: {},
         segments: {},
         doi_contents: {},

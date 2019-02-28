@@ -4,12 +4,22 @@ class UserAccountSerializer < ActiveModel::Serializer
     :login,
     :first_name,
     :last_name,
-    :admin,
-    :permissions,
-    :tasks
+    :user_id,
+    #:organization,
+    #:homepage,
+    #:street,
+    #:zipcode,
+    #:city,
+    #:state,
+    #:country,
+    #:receive_newsletter,
+    #:newsletter_signup,
+    :admin
 
-  has_many :tasks#, serializer: TaskSerializer
-  has_many :permissions#, serializer: TaskSerializer
+  has_many :tasks
+  has_many :supervised_tasks
+  has_many :permissions
+  has_many :roles
 
   def first_name
     object.user && object.user.first_name
@@ -21,6 +31,10 @@ class UserAccountSerializer < ActiveModel::Serializer
 
   def admin
     object.user && object.user.admin
+  end
+
+  def user_id
+    object.user.id
   end
 
 end

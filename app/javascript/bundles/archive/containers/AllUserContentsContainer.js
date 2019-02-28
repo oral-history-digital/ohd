@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         lastModified: state.data.statuses.user_contents.lastModified,
         locale: state.archive.locale,
         translations: state.archive.translations,
-        account: state.account
+        account: state.data.accounts.current
     }
 }
 

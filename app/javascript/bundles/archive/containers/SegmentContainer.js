@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         userContents: state.data.user_contents,
         statuses: state.data.statuses.segments,
-        account: state.account,
+        account: state.data.accounts.current,
         editView: state.archive.editView
     }
 }

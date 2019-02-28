@@ -1,7 +1,4 @@
 import { 
-    REQUEST_ACCOUNT,
-    RECEIVE_ACCOUNT,
-
     LOGIN,
     LOGGED_IN,
     AUTH_ERROR,
@@ -23,23 +20,8 @@ import {
     ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
 
-const account = (state = {}, action) => {
+const account = (state = {isLoggedIn: false}, action) => {
     switch (action.type) {
-        case REQUEST_ACCOUNT:
-            return Object.assign({}, state, {
-                isFetchingAccount: true,
-            })
-        case RECEIVE_ACCOUNT:
-            return Object.assign({}, state, {
-                isFetchingAccount: false,
-                firstName: action.firstName,
-                lastName: action.lastName,
-                email: action.email,
-                login: action.login,
-                admin: action.admin,
-                permissions: action.permissions,
-                tasks: action.tasks,
-            })
         case LOGIN:
             return Object.assign({}, state, {
                 isLoggingIn: true,
@@ -53,8 +35,6 @@ const account = (state = {}, action) => {
                 firstName: action.firstName,
                 lastName: action.lastName,
                 email: action.email,
-                admin: action.admin,
-                //login: action.login,
             })
         case AUTH_ERROR:
             return {
@@ -63,7 +43,14 @@ const account = (state = {}, action) => {
                 email: action.email,
             } 
         case LOGOUT:
-            return {} 
+            return Object.assign({}, state, {
+                isLoggedIn: false,
+                isLoggedOut: true,
+                loggedInAt: 'no',
+                firstName: 'no',
+                lastName: 'no',
+                email: 'no',
+            })
         case REGISTER:
             return Object.assign({}, state, {
                 isRegistering: true

@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
         hiddenRegistryEntryIds: state.archive.hiddenRegistryEntryIds,
-        account: state.account,
+        account: state.data.accounts.current,
         editView: state.archive.editView,
     }
 }

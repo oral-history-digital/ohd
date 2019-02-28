@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
-        account: state.account,
+        account: state.data.accounts.current,
         editView: state.archive.editView
     }
 }

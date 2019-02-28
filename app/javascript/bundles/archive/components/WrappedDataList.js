@@ -7,7 +7,7 @@ import Form from '../containers/form/Form';
 import { t, admin, pluralize, parametrizedQuery, statifiedQuery } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
-export default class WrappedDataLists extends React.Component {
+export default class WrappedDataList extends React.Component {
 
     constructor(props) {
         super(props);

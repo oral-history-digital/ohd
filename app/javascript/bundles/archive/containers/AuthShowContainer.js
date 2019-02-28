@@ -1,16 +1,15 @@
 import { connect } from 'react-redux';
 import AuthShow from '../components/AuthShow';
-import { fetchAccount } from '../actions/accountActionCreators';
 
 const mapStateToProps = (state) => {
     return {
-        account: state.account,
+        authStatus: state.account,
+        account: state.data.accounts.current,
         editView: state.archive.editView
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchAccount: () => dispatch(fetchAccount()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthShow);

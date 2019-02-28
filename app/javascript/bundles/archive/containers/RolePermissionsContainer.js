@@ -9,9 +9,11 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        account: state.account,
+        account: state.data.accounts.current,
         editView: state.archive.editView,
-        //data: state.data.permissions,
+        //
+        //
+        //
         joinDataStatus: state.data.statuses.permissions,
         joinDataScope: 'permissions',
         scope: 'role_permission',

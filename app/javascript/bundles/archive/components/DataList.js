@@ -18,7 +18,7 @@ export default class WrappedDataLists extends React.Component {
 
     loadJoinData() {
          if (
-            !this.props.joinDataStatus.all
+            this.props.joinDataStatus && !this.props.joinDataStatus.all
          ) {
             this.props.fetchData(this.props.joinDataScope, null, null, this.props.locale, null);
          }

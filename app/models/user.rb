@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_many :tasks
   has_many :supervised_tasks,
            class_name: 'Task',
-           as: :supervisor
+           foreign_key: :supervisor_id
 
   delegate :email, :login,
            :to => :user_account
