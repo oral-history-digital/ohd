@@ -4,8 +4,8 @@ class RolePermissionSerializer < ApplicationSerializer
     :permission_id,
     :name,
     :desc,
-    :controller,
-    :action,
+    :klass,
+    :action_name,
     :created_at
 
   def created_at
@@ -15,8 +15,8 @@ class RolePermissionSerializer < ApplicationSerializer
   [
     :name,
     :desc,
-    :controller,
-    :action
+    :klass,
+    :action_name
   ].each do |att|
     define_method att do 
       object.permission.send(att)

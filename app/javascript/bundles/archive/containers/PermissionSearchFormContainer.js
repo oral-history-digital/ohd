@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
         searchableAttributes: [
             {attributeName: 'name'}, 
             {attributeName: 'desc'}, 
-            {attributeName: 'controller'}, 
-            {attributeName: 'action'}, 
+            {attributeName: 'klass'}, 
+            {attributeName: 'action_name'}, 
         ]
     }
 }

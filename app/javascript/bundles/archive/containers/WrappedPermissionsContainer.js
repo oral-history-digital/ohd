@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
         query: state.search.permissions.query,
         scope: 'permission',
         baseTabIndex: 6,
-        detailsAttributes: ['name', 'desc', 'controller', 'action'],
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 attribute: 'name',
@@ -31,11 +31,11 @@ const mapStateToProps = (state) => {
                 attribute: 'desc',
             },
             {
-                attribute: 'controller',
+                attribute: 'klass',
                 validate: function(v){return v.length > 1} 
             },
             {
-                attribute: 'action',
+                attribute: 'action_name',
                 validate: function(v){return v.length > 1} 
             },
         ]

@@ -66,8 +66,8 @@ class PermissionsController < ApplicationController
       permit(
         :name,
         :desc,
-        :controller,
-        :action
+        :klass,
+        :action_name
     )
   end
 
