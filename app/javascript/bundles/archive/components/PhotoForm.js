@@ -39,7 +39,7 @@ export default class PhotoForm extends React.Component {
                 onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
                 values={{
                     interview_id: this.props.interview && this.props.interview.id,
-                    id: this.props.photo.id
+                    id: this.props.photo && this.props.photo.id
                 }}
                 elements={this.elements()}
             />
