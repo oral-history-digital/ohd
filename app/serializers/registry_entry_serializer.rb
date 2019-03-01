@@ -1,4 +1,4 @@
-class RegistryEntrySerializer < ActiveModel::Serializer
+class RegistryEntrySerializer < ApplicationSerializer
   attributes :id,
              :latitude,
              :longitude,

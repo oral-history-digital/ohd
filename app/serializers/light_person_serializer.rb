@@ -1,4 +1,4 @@
-class LightPersonSerializer < ActiveModel::Serializer
+class LightPersonSerializer < ApplicationSerializer
   attributes :id, :names, :name
 
   def names

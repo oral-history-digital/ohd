@@ -1,4 +1,4 @@
-class TaskSerializer < ActiveModel::Serializer
+class TaskSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :desc,

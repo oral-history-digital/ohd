@@ -1,6 +1,6 @@
 # ecoding: utf-8
 #
-class UserRegistrationSerializer < ActiveModel::Serializer
+class UserRegistrationSerializer < ApplicationSerializer
   attributes :id,
     :first_name,
     :last_name,

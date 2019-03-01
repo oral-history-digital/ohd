@@ -1,4 +1,4 @@
-class UserAccountSerializer < ActiveModel::Serializer
+class UserAccountSerializer < ApplicationSerializer
   attributes :id,
     :email,
     :login,

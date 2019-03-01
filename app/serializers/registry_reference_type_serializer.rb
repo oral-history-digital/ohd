@@ -1,4 +1,4 @@
-class RegistryReferenceTypeSerializer < ActiveModel::Serializer
+class RegistryReferenceTypeSerializer < ApplicationSerializer
   attributes :id,
              :name,
              :registry_reference_ids,

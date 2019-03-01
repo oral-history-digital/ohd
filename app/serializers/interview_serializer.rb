@@ -1,4 +1,4 @@
-class InterviewSerializer < ActiveModel::Serializer
+class InterviewSerializer < ApplicationSerializer
   attributes :id,
              :archive_id,
              :collection_id,

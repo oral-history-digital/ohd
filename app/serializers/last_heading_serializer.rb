@@ -1,4 +1,4 @@
-class LastHeadingSerializer < ActiveModel::Serializer
+class LastHeadingSerializer < ApplicationSerializer
   include IsoHelpers
 
   attributes :id,

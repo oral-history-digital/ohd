@@ -1,4 +1,4 @@
-class AnnotationSerializer < ActiveModel::Serializer
+class AnnotationSerializer < ApplicationSerializer
   attributes :id, :text, :author_id, :author
 
   def text

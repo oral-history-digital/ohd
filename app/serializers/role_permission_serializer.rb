@@ -1,4 +1,4 @@
-class RolePermissionSerializer < ActiveModel::Serializer
+class RolePermissionSerializer < ApplicationSerializer
   attributes :id,
     :role_id,
     :permission_id,
