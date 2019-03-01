@@ -1,4 +1,8 @@
-local:
+dev:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+ 
+fu_server:
   service: Disk
   root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/zwar/storage
  
