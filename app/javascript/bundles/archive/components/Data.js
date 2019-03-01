@@ -116,7 +116,7 @@ export default class Data extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, this.props.data)) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}

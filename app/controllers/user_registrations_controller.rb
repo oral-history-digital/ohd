@@ -78,7 +78,7 @@ class UserRegistrationsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_registration, 'processed')
+        render json: data_json(@user_registration, msg: 'processed')
       end
     end
   end

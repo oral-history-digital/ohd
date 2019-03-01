@@ -43,8 +43,7 @@ const mapStateToProps = (state) => {
                 optionsScope: 'workflow_states',
                 withEmpty: true,
             },
-        ],
-        hideEdit: false
+        ]
     }
 }
 

@@ -13,6 +13,23 @@ export default class Account extends React.Component {
         router: PropTypes.object
     }
 
+    componentDidMount() {
+        this.loadAccount()
+    }
+
+    componentDidUpdate(prevProps) {
+        this.loadAccount();
+    }
+
+    loadAccount() {
+        if (
+            !this.props.accountsStatus.current ||
+            this.props.accountsStatus.current.split('-')[0] === 'reload'
+        ) {
+            this.props.fetchData('accounts', 'current');
+        }
+    }
+
     openLink(path, e) {
         e.preventDefault();
         this.context.router.history.push(path);

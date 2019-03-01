@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
     @person = Person.create person_params
     respond_to do |format|
       format.json do
-        render json: data_json(@person, 'processed')
+        render json: data_json(@person, msg: 'processed')
       end
     end
   end

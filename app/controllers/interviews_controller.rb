@@ -21,7 +21,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, 'processed')
+        render json: data_json(@interview, msg: 'processed')
       end
     end
   end
@@ -42,7 +42,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, 'processed')
+        render json: data_json(@interview, msg: 'processed')
       end
     end
   end

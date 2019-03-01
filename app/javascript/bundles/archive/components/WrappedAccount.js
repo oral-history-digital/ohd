@@ -67,7 +67,7 @@ export default class WrappedAccount extends React.Component {
     roles() {
         return (
             <div className={'roles box'}>
-                <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
+                <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
                 <UserRolesContainer userRoles={this.props.account.roles || []} userId={this.props.account.user_id} />
             </div>
         )
@@ -76,8 +76,12 @@ export default class WrappedAccount extends React.Component {
     tasks() {
         return (
             <div className={'tasks box'}>
-                <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                <TasksContainer tasks={this.props.account.tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
+                <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
+                <TasksContainer 
+                    data={this.props.account.tasks || []} 
+                    initialFormValues={{user_id: this.props.account.userId}} 
+                    hideEdit={false}
+                />
             </div>
         )
     }
@@ -85,8 +89,12 @@ export default class WrappedAccount extends React.Component {
     supervisedTasks() {
         return (
             <div className={'tasks box'}>
-                <div className='title'>{t(this.props, 'supervised_tasks')}</div>
-                <TasksContainer tasks={this.props.account.supervised_tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
+                <h4 className='title'>{t(this.props, 'supervised_tasks')}</h4>
+                <TasksContainer 
+                    data={this.props.account.supervised_tasks || []} 
+                    initialFormValues={{user_id: this.props.account.userId}} 
+                    hideEdit={false}
+                />
             </div>
         )
     }

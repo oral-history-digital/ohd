@@ -5,7 +5,7 @@ class RolesController < ApplicationController
     @role = Role.create role_params
     respond_to do |format|
       format.json do
-        render json: data_json(@role, 'processed')
+        render json: data_json(@role, msg: 'processed')
       end
     end
   end
@@ -16,7 +16,7 @@ class RolesController < ApplicationController
     @role.update_attributes role_params
     respond_to do |format|
       format.json do
-        render json: data_json(@role, 'processed')
+        render json: data_json(@role, msg: 'processed')
       end
     end
   end

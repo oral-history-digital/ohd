@@ -118,7 +118,11 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                    <TasksContainer tasks={this.props.userRegistration.tasks} initialFormValues={{user_id: this.props.userRegistration.user_id}} />
+                    <TasksContainer 
+                        data={this.props.userRegistration.tasks} 
+                        initialFormValues={{user_id: this.props.userRegistration.user_id}} 
+                        hideEdit={true}
+                    />
                 </div>
             )
         } else {

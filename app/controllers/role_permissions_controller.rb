@@ -7,7 +7,7 @@ class RolePermissionsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@role_permission.role, 'processed')
+        render json: data_json(@role_permission.role, msg: 'processed')
       end
     end
   end
@@ -20,7 +20,7 @@ class RolePermissionsController < ApplicationController
 
     #respond_to do |format|
       #format.json do
-        #render json: data_json(@role_permission.role, 'processed')
+        #render json: data_json(@role_permission.role, msg: 'processed')
       #end
     #end
   #end
@@ -48,7 +48,7 @@ class RolePermissionsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(role, 'processed')
+        render json: data_json(role, msg: 'processed')
       end
     end
   end
