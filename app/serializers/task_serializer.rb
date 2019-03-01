@@ -14,7 +14,7 @@ class TaskSerializer < ApplicationSerializer
   end
 
   def authorized_type
-    object.authorized_type.underscore
+    object.authorized_type
   end
 
 end

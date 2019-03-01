@@ -50,7 +50,7 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors[element.attribute] = element.validate && !element.value ? true : false
+            errors[element.attribute] = element.validate && !(element.value || (this.props.data && this.props.data[element.attribute])) ? true : false
         })
         this.setState({ errors: errors });
     }

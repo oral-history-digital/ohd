@@ -79,7 +79,7 @@ export default class WrappedAccount extends React.Component {
                 <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
                 <TasksContainer 
                     data={this.props.account.tasks || []} 
-                    initialFormValues={{user_id: this.props.account.userId}} 
+                    initialFormValues={{user_id: this.props.account.user_id}} 
                     hideEdit={false}
                 />
             </div>
@@ -92,7 +92,7 @@ export default class WrappedAccount extends React.Component {
                 <h4 className='title'>{t(this.props, 'supervised_tasks')}</h4>
                 <TasksContainer 
                     data={this.props.account.supervised_tasks || []} 
-                    initialFormValues={{user_id: this.props.account.userId}} 
+                    initialFormValues={{user_id: this.props.account.user_id}} 
                     hideEdit={false}
                 />
             </div>
