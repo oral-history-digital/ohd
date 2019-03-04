@@ -72,7 +72,7 @@ const data = (state = initialState, action) => {
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
                             [action.nestedDataType]: Object.keys(nestedData).reduce((acc, key) => {
-                                if (key !== action.nestedId) {
+                                if (parseInt(key) !== action.nestedId) {
                                     return {...acc, [key]: nestedData[key]}
                                 }
                                 return acc;
