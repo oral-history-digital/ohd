@@ -174,6 +174,14 @@ class UserRegistrationsController < ApplicationController
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
+    # other attributes
+    %w(email default_locale).each do |att|
+      @filters[att] = params[att]
+      unless @filters[att].blank?
+        conditionals << "#{att} = ?"
+        condition_args << @filters[att]
+      end
+    end
     # user name
     %w(last_name first_name).each do |name_part|
       @filters[name_part] = params[name_part]
