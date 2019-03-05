@@ -129,11 +129,20 @@ export function loggedIn(props) {
     return !!(!props.authStatus.isLoggedOut && props.account.email);
 }
 
+// props should contain:
+//   - account ~ state.data.accounts.current
+//   - editView ~ state.archive.editView
+//
+// obj can be the serialized json of e.g. an interview or a segment
+// 
+// but obj can also be sth. like {type: 'Segment', id: 2345} or {type: 'UserRegistration', action: 'update'}
+// so obj should contain a type and (id or action) 
+//
 export function admin(props, obj={}) {
     if (props.account && props.editView) {
         if (
             props.account.admin ||
-            obj && (
+            (obj.type && (obj.id || obj.action)) && (
                 // if obj is a task of current_user_account, he/she should be able to edit it 
                 (props.account.tasks && obj.type === 'Task' && props.account.tasks.filter(task => task.supervisor_id ===  props.account.user_id || task.user_id === props.account.user_id).length > 0) || 
                 // if obj.type and/or id correspond to some role or task, current_user_account should be able to edit it
