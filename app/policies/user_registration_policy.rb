@@ -30,10 +30,10 @@ class UserRegistrationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.admin?
+      if user.admin? || user.permissions.map(&:klass).include?(scope.to_s)
         scope.all
       else
-        []
+        scope.none
       end
     end
   end

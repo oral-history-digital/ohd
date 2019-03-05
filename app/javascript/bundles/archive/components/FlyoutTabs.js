@@ -169,17 +169,21 @@ export default class FlyoutTabs extends React.Component {
         }
     }
      
-    subTab(title, content, url) {
-        return (
-            <div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(this.props, title)}
-                    content={content}
-                    url={url}
-                    open={false}
-                /> 
-            </div>
-        )
+    subTab(title, content, url, obj) {
+        if (admin(this.props, obj)) {
+            return (
+                <div className='flyout-sub-tabs-container flyout-video'>
+                    <InterviewDataContainer
+                        title={t(this.props, title)}
+                        content={content}
+                        url={url}
+                        open={false}
+                    /> 
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     indexingTab() {
@@ -206,12 +210,12 @@ export default class FlyoutTabs extends React.Component {
     }
 
     usersAdminTab() {
-        let css = admin(this.props) ? 'flyout-tab' : 'hidden';
+        let css = admin(this.props, {type: 'UserRegistration', action: 'update'}) ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='user_administration'>{t(this.props, 'user_administration')}</Tab>;
     }
 
     usersAdminTabPanel() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <TabPanel key={'tabpanel-users-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
@@ -225,7 +229,8 @@ export default class FlyoutTabs extends React.Component {
                                     <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
                                 </a>
                             </div>,
-                            `/${this.props.locale}/user_registrations`
+                            `/${this.props.locale}/user_registrations`,
+                            {type: 'UserRegistration', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.role.admin', 
