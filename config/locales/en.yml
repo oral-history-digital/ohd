@@ -1,316 +1,644 @@
 ---
 en:
-  bg: 'bulgarian'
-  bs: 'bosnian'
-  ca: 'catalan'
-  cs: 'czech'
-  de: 'german'
-  el: 'greek'
-  en: 'english'
-  es: 'spanish'
-  fr: 'french'
-  he: 'hebrew'
-  hr: 'croatian'
-  hu: 'hungarian'
-  it: 'italian'
-  lv: 'latvian'
-  mk: 'macedonian'
-  nl: 'dutch'
-  no: 'norwegian'
-  pl: 'polish'
-  ro: 'romanian'
-  ru: 'russian'
-  sk: 'slovak'
-  sl: 'slovenian'
-  sr: 'serbian'
-  uk: 'ukrainian'
-  in: 'in'
-  tape: 'Tape'
-  interview_gallery_explanation: 'The picture gallery contains photos of the interview situation as well as family photos and other historical photos from the interviewed person''s private collection.'
-  interview_empty_gallery_explanation: 'There are no photos available for this interview.'
-  interview_archive: 'Interview archive'
-  segment_results: 'Search results in transcript'
-  photo_results: 'Search results in photos'
-  biographicalentry_results: 'Search results in biographical entries'
-  person_results: 'Search results for persons'
-  download: 'Download'
-  elde: 'Greek with German translation'
-  more: 'more'
-  segment: 'Segment'
-  publish: 'Publish'
-  login: 'Login'
-  user_account:
-    login: 'Login'
-    password: 'Password'
-    errors: 
-      login: 'Please correct your login'
-      password: 'Please correct your password'
-  logged_in_as: 'Logged in as'
-  user_name: 'User'
-  registration_needed: 'For reasons of privacy you have to register. After registration you have access to all testimonies in full length.'
-  change_to_bcrypt: 'We have recently updated the way we store our passwords. Please click on the "Forgot your password?" link to recover your password. Thank you for your understanding.'
-  notice: 'Save'
-  forget_password: 'Recover password'
-  account_activation_errors: 'Password and password confirmation must be the same and at least 6 characters long.'
-  submit: 'Submit'
-  platform: 'platform'
-  cooperation: 'In cooperation with'
-  promoted: 'Supported by'
-  tapes: 'Tapes'
-  forget_password_question: 'Recover password'
-  enter_email: 'Please enter the e-mail address you used to register in the archive. You will then receive an e-mail with a link for password renewal.'
-  email: 'E-Mail'
-  change_password: 'Change password'
-  archive_results: 'Search results'
-  segment_hits: 'Number of search hits'
-  no_interviews_results: 'No interviews found.'
-  interview_id: 'Interview ID'
-  interview_duration: 'Interview duration'
-  home: 'Home'
-  login_page: 'Login'
-  logout_page: 'Logout'
-  account_page: 'Account'
-  interview: 'Interview'
-  edit_interview:
-    new: 'New interview'
-    edit: 'Edit interview'
-  user_content: 'Workbook'
-  user_content_errors: 'Please enter title and description (minimum 2 letters)'
-  archive_search: 'Search the archive'
-  interviewee_name: 'Name'
-  periods: 'Time periods'
-  keywords: 'Index terms'
-  registry: 'Index'
-  annotations: 'Annotations'
-  reset: 'Reset'
-  transcript: 'Transcript'
-  translation: 'Translation'
-  table_of_contents: 'Table of contents'
-  interview_search: 'Interview search'
-  write_annotation: 'Write annotation'
-  read_annotation: 'Read annotation'
+  bg: bulgarian
+  bs: bosnian
+  ca: catalan
+  cs: czech
+  de: german
+  el: greek
+  en: english
+  es: spanish
+  fr: french
+  he: hebrew
+  hr: croatian
+  hu: hungarian
+  it: italian
+  lv: latvian
+  mk: macedonian
+  nl: dutch
+  no: norwegian
+  pl: polish
+  ro: romanian
+  ru: russian
+  sk: slovak
+  sl: slovenian
+  sr: serbian
+  uk: ukrainian
+  in: in
+  registration_needed: For reasons of privacy you have to register. After registration
+    you have access to all testimonies in full length.
+  change_to_bcrypt: We have recently updated the way we store our passwords. Please
+    click on the "Forgot your password?" link to recover your password. Thank you
+    for your understanding.
+  observation: Interviewsituation
+  tape: Tape
+  legend_title: Legende der Transkriptionszeichen
+  legend_missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben,
+    Erklärung von Dialekt
+  legend_comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher
+    Wörter/Passagen
+  legend_pause_1: kurze Pause bis 1 Sekunde
+  legend_pause_2: mittlere Pause bis 2 Sekunden
+  legend_pause_3: längere Pause bis 3 Sekunden
+  legend_pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
+  legend_assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung
+    / einer Satzstruktur.
+  legend_omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei
+    Buchstaben wegfallen
+  interview_with: Interview mit
+  selected_registry_entry: Ausgewählter Registereintrag
+  archive_id: Archiv-ID
+  biographical_entries_of: Kurzbiografie von
+  noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
+  interviews: Interviews
+  places: Birth places
+  interview_location_desc_one: " wird in Kapitel "
+  interview_location_desc_two: " erwähnt."
+  archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
+  interview_map_explanation: Darstellung der im Interview erwähnten Orte
+  interview_gallery_explanation: The picture gallery contains photos of the interview
+    situation as well as family photos and other historical photos from the interviewed
+    person's private collection.
+  interview_empty_gallery_explanation: There are no photos available for this interview.
+  transcript_header: Transcript of the interview with
+  translation_header: Translation of the interview with
+  tapes: Tapes
+  without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
+  without_transcript: Dieses Interview wurde noch nicht transkribiert.
+  without_index: Die Überschriften dieses Interviews wurde noch nicht ins Deutsche
+    übersetzt.
+  without_ref_tree: Dieses Interviews wurde noch nicht verschlagwortet.
+  private: Privat
+  proposed: In Prüfung zur Veröffentlichung
+  postponed: Zurückgestellt durch die Redaktion
+  shared: Veröffentlicht
+  rejected: Veröffentlichung abgelehnt
+  interview_archive: Interview archive
+  called: accessed
+  download: Download
+  download_user_statistics: Benutzerstatistik runterladen
+  export: Export
+  export_doi: DOI
+  export_search_results: Export search results
+  language_de: Deutsch
+  language_elde: Griechisch mit deutscher Übersetzung
+  language_eldeen: Griechisch mit deutscher Übersetzung
+  language_rude: Russisch mit deutscher Übersetzung
+  language_el: Griechisch
+  more: more
+  segment: Segment
+  publish: Publish
+  login: Login
+  login_name: Login
+  logout: Abmelden
+  login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
+  logged_in_as: Logged in as
+  user_name: User
+  notice: Save
+  forget_password: Recover password
+  account_activation_errors: Password and password confirmation must be the same and
+    at least 6 characters long.
+  submit: Submit
+  platform: platform
+  cooperation: In cooperation with
+  promoted: Supported by
+  forget_password_question: Recover password
+  enter_email: Please enter the e-mail address you used to register in the archive.
+    You will then receive an e-mail with a link for password renewal.
+  email: E-Mail
+  change_password: Change password
+  archive_results: Search results
+  segment_results: Search results in transcript
+  photo_results: Search results in photos
+  biographicalentry_results: Search results in biographical entries
+  person_results: Search results for persons
+  segment_hits: Number of search hits
+  no_interviews_results: No interviews found.
+  interview_id: Interview ID
+  interview_duration: Interview duration
+  home: Home
+  login_page: Login
+  logout_page: Logout
+  account_page: Account
+  interview: Interview
+  user_content: Workbook
+  user_content_errors: Please enter title and description (minimum 2 letters)
+  archive_search: Search the archive
+  search: Suchen
+  interviewee_name: Name
+  periods: Time periods
+  keywords: Index terms
+  registry: Index
+  annotations: Annotations
+  reset: Reset
+  transcript: Transcript
+  translation: Translation
+  segmentation: Segmentierung
+  table_of_contents: Table of contents
+  interview_search: Interview search
+  write_annotation: Write annotation
+  read_annotation: Read annotation
   annotation_for: 'Annotation on '
-  annotation_for_chapter: 'Your annotation on the chapter'
-  max_300: '300 characters available'
-  annotation_explanation: 'Annotations can be viewed in your workbook.'
-  annotation_confirmation: 'I would like this annotation to be published and displayed to all logged-in archive users. I agree with the guidelines for remarks.'
-  save: 'Save'
-  cancel: 'Cancel'
-  person_info: 'About the person'
-  date_of_birth: 'Date of birth'
-  place_of_birth: 'Place of birth'
-  year_of_birth: 'Born in'
-  typology: 'Experience background'
-  history: 'Short biography'
-  interview_info: 'About the interview'
-  date: 'Date'
-  place: 'Place'
-  duration: 'Duration'
-  id: 'ID'
-  camera: 'Camera: '
-  indexation: 'Indexation'
-  annotation_for_interview: 'Annotations on the interview'
-  map: 'Map'
-  photos: 'Photos'
-  citation: 'Citation'
-  interview_content_without_user: ''
+  annotation_for_chapter: Your annotation on the chapter
+  max_300: 300 characters available
+  annotation_explanation: Annotations can be viewed in your workbook.
+  annotation_confirmation: I would like this annotation to be published and displayed
+    to all logged-in archive users. I agree with the guidelines for remarks.
+  save: Save
+  cancel: Cancel
+  assign_speakers: Sprecher zuordnen
+  person_info: About the person
+  date_of_birth: Date of birth
+  year_of_birth: Born in
+  place_of_birth: Place of birth
+  place_of_interview: Interviewort
+  typology: Experience background
+  typologies: Erfahrungen
+  history: Short biography
+  biographical_entries_from: Biografische Einträge von
+  interview_info: About the interview
+  place: Place
+  duration: Duration
+  id: ID
+  map: Map
+  photos: Photos
+  citation: Citation
+  date: Date
   interview_type: ''
-  language: 'Language'
-  export_search_results: 'Export search results'
+  language: Language
+  camera: 'Camera: '
+  order_new_password: Forgot your password?
+  ordered_new_password: You have been sent an email with instructions on how to change
+    your password.
+  conditions: Terms of use
+  privacy_protection: Protection of privacy
+  legal_info: Imprint
+  request_for_use: Disclosure of Archive Materials
+  annotation_guidelines: Users' Annotations in the Archive
+  team: Team
+  contact: Contact
+  help: Hilfe
+  usage_application: Nutzungsantrag
+  save_interview_reference: Add to saved interviews
+  save_user_annotation: Write an annotation
+  save_search: Save search
+  call_search: Call up search
+  call_interview_reference: View interview
+  call_user_annotation: View annotation
+  title: Title
+  description: Description
+  edit: Edit
+  edit_interview_reference: Edit saved interview
+  edit_user_annotation: Ed saved annotation
+  edit_search: Edit saved search
+  query: search criteria
+  delete: Delete
+  delete_user_content: Remove from workbook
+  choose: Please select
+  enter_search_field: Please enter search term ...
+  enter_field: Search ...
+  enter_field_hagen: Name, Pseudonym, Suchbegriff, ...
+  saved_searches: Saved search results
+  saved_interviews: Saved interviews
+  saved_annotations: Saved annotations
+  text_materials: Textmaterialien
+  grid: Raster
+  list: Liste
   doi:
-    name: 'DOI'
-    created: 'Created!'
-    already_registered: 'already_registered'
-
-  transcript_header: 'Transcript of the interview with'
-  translation_header: 'Translation of the interview with'
-
-  user_registration:
-    registration: 'Register'
-    registration_text_one: 'Registration is required for research in the archive. The '
-    registration_text_two: ' explain for whom and for which purposes the archive can be used. The '
-    registration_text_three: ' clarifies which personal data we process and what we use it for. Within two working days of sending your data you will receive a response and/or your login data.'
-    tos_agreement: 'Terms of Use'
-    priv_agreement: 'Privacy Policy'
-    notes_on_receive_newsletter: 'Ich möchte den Newsletter abonnieren.'
-    notes_on_tos_agreement: 'I agree to the Terms of Use.'
-    priv_agreement_alias: 'Privacy Policy'
-    notes_on_priv_agreement: 'I agree to the Privacy Policy.'
-    register: 'Registrierung senden'
-    appellation:
-      ms: 'Ms'
-      ms_dr: 'Ms Dr'
-      ms_prof: 'Ms Prof'
-      mr: 'Mr'
-      mr_dr: 'Mr Dr'
-      mr_prof: 'Mr Prof'
-    job_description:
-      researcher: 'Researcher'
-      filmmaker: 'Filmmaker'
-      journalist: 'Journalist'
-      teacher: 'Teacher'
-      memorial_staff: 'Memorial staff'
-      pupil: 'Pupil'
-      student: 'Student'
-      other: 'Other'
-    research_intentions:
-      exhibition: 'Exhibition'
-      education: 'Education'
-      film: 'Film'
-      genealogy: 'Genealogy'
-      art: 'Art project'
-      personal_interest: 'Personal interest'
-      press_publishing: 'Press publishing'
-      school_project: 'School project'
-      university_teaching: 'University teaching'
-      scientific_paper: 'Scientific paper'
-      other: 'Other'
-
-  order_new_password: 'Forgot your password?'
-  ordered_new_password: 'You have been sent an email with instructions on how to change your password.'
-  conditions: 'Terms of use'
-  privacy_protection: 'Protection of privacy'
-  legal_info: 'Imprint'
-  request_for_use: 'Disclosure of Archive Materials'
-  annotation_guidelines: "Users' Annotations in the Archive"
-  team: 'Team'
-  contact: 'Contact'
-  not_logged_in_interview_text: 'Das Video-Interview mit Vorname Nachname ist Teil des Interview-Archivs "Erinnerungen an die Okkupation in Griechenland", die rund 80 lebensgeschichtliche Interviews mit Überlebenden und Zeug(inn)en der deutschen Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland" ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen und Kapodistrias-Universität Athen.'
-  save_interview_reference: 'Add to saved interviews'
-  save_user_annotation: 'Write an annotation'
-  called: 'accessed'
-  save_search: 'Save search'
-  call_search: 'Call up search'
-  call_interview_reference: 'View interview'
-  call_user_annotation: 'View annotation'
-  title: 'Title'
-  description: 'Description'
-  edit: 'Edit'
-  edit_interview_reference: 'Edit saved interview'
-  edit_user_annotation: 'Ed saved annotation'
-  edit_search: 'Edit saved search'
-  query: 'search criteria'
-  delete: 'Delete'
-  delete_user_content: 'Remove from workbook'
-  choose: 'Please select'
-  enter_search_field: 'Please enter search term ...'
-  enter_field: 'Search ...'
-  saved_searches: 'Saved search results'
-  saved_interviews: 'Saved interviews'
-  saved_annotations: 'Saved annotations'
-  text_materials: 'Textmaterialien'
-
+    name: DOI
+    created: Created!
+    already_registered: already_registered
+    bad: Etwas stimmt nicht
+  workflow_states:
+    unshared: nicht öffentlich
+    unpublish: nicht öffentlich
+    public: öffentlich
+    publish: öffentlich
+    register: registriert
+    reject: zurückgewiesen
+    postpone: zurückgestellt
+    activate: aktiviert
+    expire: zurückgestellt
+    all: Alle
+    unchecked: unbeantwortet
+    checked: geprüft
+    postponed: zurückgestellt
+    rejected: abgelehnt
+    registered: registriert
   contributions:
-    interview: 'Interview'
-    interviewee: 'Interviewee'
-    proof_reading: 'Proof reading'
-    research: 'Research'
-    segmentation: 'Segmentation'
-    transcript: 'Transcript'
-    translation: 'Translation'
-
+    interviewee: Interviewee
+    interviewer: Interview
+    transcriptor: Transkript
+    translator: Übersetzung
+    segmentator: Segmentierung
+    cinematographer: Kamera
+    proof_reading: Proof reading
+    research: Research
+    interview: Interview
+    transcript: Transcript
+    translation: Translation
+    segmentation: Segmentation
+    Informants: Interviewte(r)
+    Interviewer: Interview
+    Transcribed / described: Transkript
+    Translated: Übersetzung
+    Indexed: Erschließung
+  tasks:
+    Interview: Interview
+    BiographicalEntry: Biographie
+    RegistryReference: Nennungen / Referenzen
+    Contribution: Beiträge
+    Photo: Fotos
   status:
-    translated: 'with German translation'
-
+    translated: with German translation
   upload:
-    types: 
-      bulk_metadata: 'Bulk Metadata Import'
-      bulk_protocols: 'Bulk Protocol Import'
-    explanations: 
-      bulk_metadata: 'Download this spreadsheet template, fill in your data, save as csv and upload. Keep column number and names as well as field types.'
-      bulk_protocols: 'Download zip template, compress your rtf files into this zip file and upload. Plain text will be pasted into protocol field. File names must be like ID_Language.rtf, eg. za123_de.rtf.'
-
+    type:
+      bulk_metadata: Massenimport von Metadaten
+      bulk_protocols: Massenimport von Interviewprotokollen
+    explanation:
+      bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
+        als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
+        sowie Feldart.
+      bulk_protocols: Lade die zip-Vorlage herunter, komprimiere deine rtf-Dateien
+        in diese zip-Datei und lade sie hoch. Der Text wird im Protokoll-Feld angezeigt.
+        Dateinamen müssen dem Muster ID_Sprache.rtf folgen, z. B. za123_de.rtf.
+    types:
+      bulk_metadata: Bulk Metadata Import
+      bulk_protocols: Bulk Protocol Import
+    explanations:
+      bulk_metadata: Download this spreadsheet template, fill in your data, save as
+        csv and upload. Keep column number and names as well as field types.
+      bulk_protocols: Download zip template, compress your rtf files into this zip
+        file and upload. Plain text will be pasted into protocol field. File names
+        must be like ID_Language.rtf, eg. za123_de.rtf.
+  admin:
+    change_to_normal_view: Nutzeransicht
+    change_to_edit_view: Redaktionsansicht
+  user_registration:
+    registration: Register
+    registration_text_one: 'Registration is required for research in the archive.
+      The '
+    registration_text_two: " explain for whom and for which purposes the archive can
+      be used. The "
+    registration_text_three: " clarifies which personal data we process and what we
+      use it for. Within two working days of sending your data you will receive a
+      response and/or your login data."
+    tos_agreement: Terms of Use
+    priv_agreement: Privacy Policy
+    notes_on_receive_newsletter: Ich möchte den Newsletter abonnieren.
+    notes_on_tos_agreement: I agree to the Terms of Use.
+    priv_agreement_alias: Privacy Policy
+    notes_on_priv_agreement: I agree to the Privacy Policy.
+    register: Registrierung senden
+    appellation:
+      ms: Ms
+      ms_dr: Ms Dr
+      ms_prof: Ms Prof
+      mr: Mr
+      mr_dr: Mr Dr
+      mr_prof: Mr Prof
+    job_description:
+      researcher: Researcher
+      filmmaker: Filmmaker
+      journalist: Journalist
+      teacher: Teacher
+      memorial_staff: Memorial staff
+      pupil: Pupil
+      student: Student
+      other: Other
+    research_intentions:
+      exhibition: Exhibition
+      education: Education
+      film: Film
+      genealogy: Genealogy
+      art: Art project
+      personal_interest: Personal interest
+      press_publishing: Press publishing
+      school_project: School project
+      university_teaching: University teaching
+      scientific_paper: Scientific paper
+      other: Other
   genders:
-    female: 'female'
-    male: 'male'
-
+    female: female
+    male: male
+  search_facets:
+    forced_labor_fields: Deployment Area
+    forced_labor_groups: Forced Labor Group
+    periods: Time periods
+    fulltext: search keyword
+    gender: gender
+    Man: Male
+    Woman: Female
+    man: male
+    woman: female
+    male: male
+    female: female
+    video: Video
+    audio: Audio
+    born: born
+    typology: Experience background
+    resistance: resistance
+    occupation: Occupation
+    flight: flight
+    concentration_camp: concentration camp
+    persecution_of_jews: Persecution of Jews
+    retaliation: Retaliation and mass executions
+    collaboration: Collaboration
+    interview_id: Interviews
+    archive_id: Interview ID
+    collection_id: Subcollection
+    media_type: media type
+    language_id: Language
+    age: Alter
+    year_of_birth: Year of birth
+    interview_date: Entstehungszeit
   activerecord:
     models:
-      registry_entries:
-        one: 'Index Term'
-        other: 'Index Terms'
+      interview:
+        one: Interview
+        other: Interviews
+      tape:
+        one: Band
+        other: Bänder
+      segment:
+        one: Ausschnitt
+        other: Ausschnitte
       collection:
-        one: 'Collection'
-        other: 'Collections'
-    attributes:
+        one: Collection
+        other: Collections
+      photo:
+        one: Bild
+        other: Bilder
+      user_content:
+        one: Inhalt
+        other: Inhalte
+      interview_reference:
+        one: Interview
+        other: Interviews
+      search:
+        one: Suchanfrage
+        other: Suchanfragen
+      user_annotation:
+        one: Anmerkung
+        other: Anmerkungen
+      annotation:
+        one: Anmerkung
+        other: Anmerkungen
+      contributions:
+        one: Mitwirkende/r
+        other: Mitwirkende
+      registry_references:
+        one: Erwähnung
+        other: Erwähnungen
+      registry_entries:
+        one: Index Term
+        other: Index Terms
+        actions:
+          show: Registereintrag anzeigen
+          index: Registereinträge anzeigen
+          show_tree: Alle Einträge zeigen
+          show_search_results: Suchergebnisse zeigen
+      biographical_entry:
+        one: Kurzbiographie
+        other: Kurzbiographien
       user_registration:
-        created_at: 'Created at'
-        activated_at: 'Activated At'
-        processed_at: 'Processed At'
-        admin_comments: 'Admin Comments'
-        default_locale: 'Default Locale'
-        appellation: 'Appellation'
-        first_name: 'First Name'
-        last_name: 'Last Name'
-        email: 'Email'
-        job_description: 'Job Description'
-        research_intentions: 'Research Intentions'
-        comments: 'Comments'
-        organization: 'Organization'
-        homepage: 'Homepage'
-        street: 'Street'
-        zipcode: 'Zipcode'
-        city: 'City'
-        country: 'Country'
-        receive_newsletter: 'Receive Newsletter'
-        tos_agreement: 'Tos Agreement'
-        priv_agreement: 'Priv Agreement'
-        register: 'Register'
-        workflow_state: 'Workflow State'
-        transition_to: 'Transition To'
+        one: Benutzer/ Registrierung
+        other: Benutzer/ Registrierung
+      user_account:
+        one: Benutzerkonto
+        other: Benutzerkonten
+      role:
+        one: Rolle
+        other: Rollen
+      task:
+        one: Aufgabe
+        other: Aufgaben
+      permission:
+        one: Erlaubnis
+        other: Erlaubnisse
+      role_permission:
+        one: Zur Rolle gehörende Erlaubnis
+        other: Zur Rolle gehörende Erlaubnisse
+    attributes:
+      history:
+        forced_labor_details: Zwangsarbeitdetails
+        return_date: Rückkehrdatum
+        deportation_date: Verschleppungsdatum
+        punishment: Art der Mißhandlung
+        liberation_date: Befreiungsdatum
+      biographical_entry:
+        text: Ereignis
+        start_date: Beginn
+        end_date: Ende
+        workflow_state: 'Status ändern zu:'
+      contribution:
+        contribution_type: Art des Beitrags
+        person_id: Person
+      collection:
+        name: Name
+        countries: Interviews in
+        institution: Durchgeführt von
+        responsibles: Verantwortliche
+        interviewers: Interviewende
+        homepage: Homepage
+        notes: Weitere Anmerkungen
+        interviews: Interviewte
+      interview:
+        person_name: Name
+        collection_id: Sammlung
+        archive_id: Archiv-ID
+        forced_labor_groups: Gruppe
+        forced_labor_fields: Einsatzbereich
+        forced_labor_habitations: Unterbringung / Inhaftierung
+        forced_labor_locations: Lager und Einsatzorte
+        forced_labor_details: Angaben zum Einsatz
+        birth_date: Geboren am
+        birth_locations: Geburtsort (heutiger Name)
+        deportation: Deportationsort (heutiger Name), Jahr
+        punishment: Strafmaßnamen
+        liberation_date: Datum der Befreiung
+        return_locations: Wohnorte ab 1945
+        return_date: Datum der Rückkehr
+        home_locations: Wohnort
+        duration: Art und Länge des Interviews
+        interview_date: geführt am
+        interviewers: Interviewführung
+        transcriptors: Transkription
+        translators: Übersetzung
+        researchers: Erschließung
+        proofreaders: Lektorat
+        segmentators: Segmentierung
+        language: Sprache
+        language_id: Originalsprache
+        video: liegt ein Video vor?
+        translated: ist das Interview bereits übersetzt?
+        workflow_state: 'Status ändern zu:'
+        observations: Protokoll
+      transcript:
+        collection_id: Sammlung
+        archive_id: Archiv-ID
+        data: Transkriptdatei
+        timecode: Spaltenüberschrift für Timecode
+        transcript: Spaltenüberschrift für Transkript
+        translation_one: Spaltenüberschrift für Übersetzung 1
+        translation_two: Spaltenüberschrift für Übersetzung 2
+        transcript_language: Transkript Sprache
+        translation_one_language: Übersetzung 1 Sprache
+        translation_two_language: Übersetzung 2 Sprache
+        annotations: Anmerkungen
+        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
+          erschliessen?
+        tape_count: Geamtzahl der Tapes
+        tape_number: Nummer dieses Tapes
+      upload:
+        type: Art des Uploads
+        data: Datei
+      segment:
+        media_id: Segment-ID
+        transcript: Transkription
+        translation: Transkription (übersetzt)
+        mainheading: Überschrift
+        subheading: Unter-Überschrift
+        text: Text
+        speaker_id: Sprecher
+      user_content:
+        title: Titel
+        description: Notiz
+        query: Suchkriterien
+      user_annotation:
+        author: Autor
+        archive_id: Archiv-ID
+        timecode_string: Timecode
+        submitted_at: Einreichung am
+        description: Anmerkung
+        link_url: Link
+        workflow_state: Veröffentlichungsstatus
+        heading: Kapitel
+        media_id: Medien ID
+      user_account:
+        login: Login
+        password: Passwort
+      user_registration:
+        created_at: Created at
+        activated_at: Activated At
+        processed_at: Processed At
+        admin_comments: Admin Comments
+        default_locale: Default Locale
+        appellation: Appellation
+        first_name: First Name
+        last_name: Last Name
+        email: Email
+        job_description: Job Description
+        research_intentions: Research Intentions
+        comments: Comments
+        organization: Organization
+        homepage: Homepage
+        address: Adresse
+        street: Street
+        zipcode: Zipcode
+        city: City
+        country: Country
+        receive_newsletter: Receive Newsletter
+        tos_agreement: Tos Agreement
+        priv_agreement: Priv Agreement
+        register: Register
+        workflow_state: Workflow State
+        transition_to: Transition To
+      user_role:
+        role_id: Rolle
+      role:
+        created_at: angelegt
+        name: Name
+        desc: Beschreibung
+      role_permission:
+        name: Name
+        desc: Beschreibung
+        permission_id: Erlaubnis
+        controller: Controller
+        action: Action
+        created_at: angelegt
+      permission:
+        name: Name
+        desc: Beschreibung
+        controller: Controller
+        action: Action
+        created_at: angelegt
+      task:
+        authorized_id: ID oder Archiv ID
+        authorized_type: Typ
+        transition_to: 'Status ändern zu:'
+        name: Name
+        desc: Beschreibung
+      person:
+        gender: Geschlecht
+        first_name: Vorname
+        last_name: Nachname
+        birth_name: Geburtsname
+        date_of_birth: Geburtsdatum
+      registry_entry:
+        descriptor: Name
+        notes: Anmerkungen
+        born: geb.
+        latitude: Latitude
+        longitude: Longitude
+        lang: Sprache
+      registry_reference:
+        registry_entry_id: Registereintrag
+        registry_reference_type_id: Art der Beziehung
+      registry_hierarchy:
+        ancestor_id: ID des Elternknoten
+      annotation:
+        text: Text
+      photo:
+        caption: Fotobeschreibung
+        data: Fotodatei
+        workflow_state: 'Status ändern zu:'
+    errors:
+      default:
+        select: Bitte auswählen
+        textarea: Bitte angeben
+        checkbox_input: Bitte zustimmen
+        text_input: Bitte angeben
+        file_input: Bitte Datei auswählen
+        password_input: Bitte berichtigen Sie Ihr Passwort
+        email_input: Bitte berichtigen Sie Ihre Email
+      template:
+        header: Ihre Anfrage konnte nicht bearbeitet werden
+        body: 'Folgendes Problem ist aufgetreten:'
+      models:
+        interview:
+          attributes:
+            collection_id:
+              empty: Bitte Teilsammlung auswählen
+        user_annotation:
+          attributes:
+            description:
+              too_long: Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.
+              modification_not_allowed: Überarbeitung des Anmerkungstextes ist nach
+                Veröffentlichung nicht mehr gestattet.
+        user_content:
+          attributes:
+            description:
+              too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
     collection:
-        one: 'Collection'
-        other: 'Collections'
-
-  search_facets:
-    forced_labor_groups: 'Forced Labor Group'
-    forced_labor_fields: 'Deployment Area'
-    fulltext: 'search keyword'
-    gender: 'gender'
-    periods: 'Time periods'
-    Man: 'Male'
-    Woman: 'Female'
-    man: 'male'
-    woman: 'female'
-    male: 'male'
-    female: 'female'
-    born: 'born'
-    typology: 'Experience background'
-    resistance: 'resistance'
-    occupation: 'Occupation'
-    flight: 'flight'
-    concentration_camp: 'concentration camp'
-    persecution_of_jews: 'Persecution of Jews'
-    retaliation: 'Retaliation and mass executions'
-    collaboration: 'Collaboration'
-    interview_id: 'Interviews'
-    archive_id: 'Interview ID'
-    collection_id: 'Subcollection'
-    language_id: 'Language'
-    media_type: 'media type'
-    year_of_birth: 'Year of birth'
-    audio: 'Audio'
-    video: 'Video'
-    # decade_of_birth: 'Year of birth'
-    # 1890s: '1890s'
-    # 1900s: '1900s'
-    # 1910s: '1910s'
-    # 1920s: '1920s'
-    # 1930s: '1930s'
-    # 1940s: '1940s'
-  #routes: # Pretty URLs for static pages.
-    #searches: 'suche'
-    #facets: 'facetten'
-    #user_contents: 'arbeitsmappe'
-    #locations: 'orte'
-    #archive: 'archiv'
-    #faq_index: 'hilfe'
-    #faq_archive_contents: 'hilfe_zu_inhalten'
-    #faq_searching: 'hilfe_zur_suche'
-    #faq_technical: 'hilfe_zu_technischen_fragen'
-    #map_tutorial: 'karteneinfuehrung'
-    #collections: 'teilsammlungen'
-    #countries: 'länder'
-    #interviews: 'interviews'
-  interviews: 'Interviews'
-  places: 'Birth places'
+      one: Collection
+      other: Collections
+  elde: Greek with German translation
+  user_account:
+    login: Login
+    password: Password
+    errors:
+      login: Please correct your login
+      password: Please correct your password
+  edit_interview:
+    new: New interview
+    edit: Edit interview
+  indexation: Indexation
+  annotation_for_interview: Annotations on the interview
+  interview_content_without_user: ''
+  not_logged_in_interview_text: Das Video-Interview mit Vorname Nachname ist Teil
+    des Interview-Archivs "Erinnerungen an die Okkupation in Griechenland", die rund
+    80 lebensgeschichtliche Interviews mit Überlebenden und Zeug(inn)en der deutschen
+    Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland"
+    ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen
+    und Kapodistrias-Universität Athen.
