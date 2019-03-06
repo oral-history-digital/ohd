@@ -17,7 +17,8 @@ class UserAccountSerializer < ApplicationSerializer
     :admin,
     :tasks,
     :supervised_tasks,
-    :user_roles
+    :user_roles,
+    :permissions
 
   def first_name
     object.user && object.user.first_name
@@ -47,5 +48,8 @@ class UserAccountSerializer < ApplicationSerializer
     object.user ? object.user.supervised_tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
   end
 
+  def permissions
+    object.user ? object.user.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem} : {}
+  end
 
 end

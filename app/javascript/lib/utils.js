@@ -144,10 +144,10 @@ export function admin(props, obj={}) {
             props.account.admin ||
             (obj.type && (obj.id || obj.action)) && (
                 // if obj is a task of current_user_account, he/she should be able to edit it 
-                (props.account.tasks && obj.type === 'Task' && props.account.tasks.filter(task => task.supervisor_id ===  props.account.user_id || task.user_id === props.account.user_id).length > 0) || 
+                (props.account.tasks && obj.type === 'Task' && Object.values(props.account.tasks).filter(task => task.supervisor_id ===  props.account.user_id || task.user_id === props.account.user_id).length > 0) || 
                 // if obj.type and/or id correspond to some role or task, current_user_account should be able to edit it
-                (props.account.permissions && props.account.permissions.filter(permission => permission.klass === obj.type && permission.action_name === obj.action).length > 0) ||
-                (props.account.tasks && props.account.tasks.filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0) 
+                (props.account.permissions && Object.values(props.account.permissions).filter(permission => permission.klass === obj.type && permission.action_name === obj.action).length > 0) ||
+                (props.account.tasks && Object.values(props.account.tasks).filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0) 
             )
         ) {
             return true;
