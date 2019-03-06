@@ -90,7 +90,7 @@ export default class UserRegistration extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}
