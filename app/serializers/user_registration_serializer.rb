@@ -31,7 +31,7 @@ class UserRegistrationSerializer < ApplicationSerializer
     :state,
     :country,
     :transitions_to,
-    :roles,
+    :user_roles,
     :tasks
 
   def user_id
@@ -51,9 +51,13 @@ class UserRegistrationSerializer < ApplicationSerializer
     object.current_state.events.map{|e| e.first}
   end
 
-  def roles
-    object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  def user_roles
+    object.user ? object.user.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
   end
+
+  #def roles
+    #object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  #end
 
   def tasks
     object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
