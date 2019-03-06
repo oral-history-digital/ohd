@@ -105,7 +105,11 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'roles box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                    <UserRolesContainer userRoles={this.props.userRegistration.user_roles} userId={this.props.userRegistration.user_id} />
+                    <UserRolesContainer 
+                        userRoles={this.props.userRegistration.user_roles || []} 
+                        userId={this.props.userRegistration.user_id} 
+                        hideEdit={false}
+                    />
                 </div>
             )
         } else {

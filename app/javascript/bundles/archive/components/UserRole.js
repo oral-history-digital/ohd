@@ -49,12 +49,16 @@ export default class UserRole extends React.Component {
     }
 
     buttons() {
-        return (
-            <span className={'flyout-sub-tabs-content-ico'}>
-                {this.show()}
-                {this.delete()}
-            </span>
-        )
+        if (!this.props.hideEdit) {
+            return (
+                <span className={'flyout-sub-tabs-content-ico'}>
+                    {this.show()}
+                    {this.delete()}
+                </span>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {

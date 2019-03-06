@@ -13,6 +13,7 @@ export default class UserRoles extends React.Component {
                     <UserRoleContainer 
                         userRole={this.props.userRoles[id]} 
                         key={`userRole-${id}`} 
+                        hideEdit={this.props.hideEdit}
                     />
                 </li>
             )

@@ -68,7 +68,11 @@ export default class WrappedAccount extends React.Component {
         return (
             <div className={'roles box'}>
                 <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
-                <UserRolesContainer userRoles={this.props.account.user_roles || []} userId={this.props.account.user_id} />
+                <UserRolesContainer 
+                    userRoles={this.props.account.user_roles || []} 
+                    userId={this.props.account.user_id} 
+                    hideEdit={true}
+                />
             </div>
         )
     }
