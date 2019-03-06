@@ -188,14 +188,14 @@ export default class FlyoutTabs extends React.Component {
 
     indexingTab() {
         let css = admin(this.props) ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='indexing'>{t(this.props, 'indexing')}</Tab>;
+        return <Tab className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
     }
 
     indexingTabPanel() {
         if (admin(this.props)) {
             return (
                 <TabPanel key={'tabpanel-indexing'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'indexing')}</div>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab('edit.interview.new', 'erklärung', `/${this.props.locale}/interviews/new`)}
                         {this.subTab('edit.upload_transcript', 'erklärung', `/${this.props.locale}/transcripts/new`)}
@@ -211,14 +211,14 @@ export default class FlyoutTabs extends React.Component {
 
     usersAdminTab() {
         let css = admin(this.props, {type: 'UserRegistration', action: 'update'}) ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='user_administration'>{t(this.props, 'user_administration')}</Tab>;
+        return <Tab className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
     }
 
     usersAdminTabPanel() {
         if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <TabPanel key={'tabpanel-users-admin'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.users.admin')}</div>
+                    <div className='flyout-tab-title'>{t(this.props, 'edit.administration')}</div>
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab(
                             'edit.users.admin', 

@@ -187,7 +187,90 @@ en:
   call_user_annotation: View annotation
   title: Title
   description: Description
-  edit: Edit
+  edit:
+    interview:
+      new: Neues Interview
+      edit: Interview bearbeiten
+      processed: 'Interview angelegt: '
+      return: Weiteres Interview anlegen
+    segment:
+      edit: Segment bearbeiten
+      edit_heading: Überschriften bearbeiten
+      speaker_string: Sprecher (als String)
+    person:
+      new: Person hinzufügen
+      edit: Person bearbeiten
+      processed: 'Person angelegt: '
+      return: Weitere Person anlegen
+    contribution:
+      new: Mitwirkende/n hinzufügen
+    registry_reference:
+      new: Erwähnung hinzufügen
+      delete: Erwähnung löschen
+    registry_entry:
+      new: Registereintrag hinzufügen
+      edit: Registereintrag bearbeiten
+      go_up: Eine Ebene höher
+      parent: Elternknoten/-eintrag
+      show_children: Kinderknoten/-einträge anzeigen
+      add_parent: Elternknoten hinzufügen
+      delete_parent: Elternknoten löschen
+    registry_entries:
+      edit: Registereinträge bearbeiten
+    users:
+      admin: Benutzer verwalten
+    history:
+      new: lebensgeschichtl. Ereignis hinzufügen
+      edit: lebensgeschichtl. Ereignis bearbeiten
+    biographical_entry:
+      new: lebensgeschichtl. Ereignis hinzufügen
+      edit: lebensgeschichtl. Ereignis bearbeiten
+    annotation:
+      new: Anmerkung hinzufügen
+      edit: Anmerkung bearbeiten
+      delete: Anmerkung löschen
+    upload:
+      upload: Upload
+      processing: 'Wird bearbeitet: '
+      return: Weiterer Upload
+    update_speaker:
+      cut_initials: Initialen herausschneiden
+      split_segments: Segmente bei Sprecherwechsel schneiden
+      speaker_for_initials: 'Sprecher für: '
+      processing_speaker_update: Die Sprecher werden zugeordnet
+      no_initials_found: In dem Transkript wurden keine Initialen gefunden
+    photo:
+      new: Foto hinzufügen
+      edit: Foto bearbeiten
+      delete: Foto löschen
+    user_registration:
+      show: Details
+      edit: Bearbeiten
+    role:
+      new: Rolle hinzufügen
+      edit: Rolle bearbeiten
+      delete: Rolle löschen
+      admin: Rollen bearbeiten
+    role_permission:
+      new: Erlaubnis hinzufügen
+      edit: Erlaubnis bearbeiten
+      delete: Erlaubnis löschen
+    permission:
+      new: Erlaubnis hinzufügen
+      edit: Erlaubnis bearbeiten
+      delete: Erlaubnis löschen
+      admin: Erlaubnisse bearbeiten
+    user_role:
+      show: Beschreibung
+      edit: Bearbeiten
+      new: Hinzufügen
+    task:
+      show: Beschreibung
+      edit: Bearbeiten
+      new: Hinzufügen
+    upload_transcript: Transkript hochladen
+    administration: administration
+    indexing: curation/ indexing
   edit_interview_reference: Edit saved interview
   edit_user_annotation: Ed saved annotation
   edit_search: Edit saved search
@@ -413,6 +496,7 @@ en:
       task:
         one: Aufgabe
         other: Aufgaben
+        supervised_other: supervised tasks
       permission:
         one: Erlaubnis
         other: Erlaubnisse

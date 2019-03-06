@@ -322,6 +322,8 @@ ru:
       edit: Bearbeiten
       new: Hinzufügen
     upload_transcript: Transkript hochladen
+    administration: Verwaltung
+    indexing: освое́ние
   edit_interview_reference: Gespeichertes Interview Bearbeiten
   edit_user_annotation: Gespeicherte Anmerkung bearbeiten
   edit_search: Gespeicherte Suche bearbeiten
@@ -549,6 +551,7 @@ ru:
       task:
         one: Aufgabe
         other: Aufgaben
+        supervised_other: Betreute Aufgaben
       permission:
         one: Erlaubnis
         other: Erlaubnisse
