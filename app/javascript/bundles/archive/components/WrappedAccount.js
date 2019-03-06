@@ -89,7 +89,7 @@ export default class WrappedAccount extends React.Component {
     supervisedTasks() {
         return (
             <div className={'tasks box'}>
-                <h4 className='title'>{t(this.props, 'supervised_tasks')}</h4>
+                <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
                 <TasksContainer 
                     data={this.props.account.supervised_tasks || []} 
                     initialFormValues={{user_id: this.props.account.user_id}} 
