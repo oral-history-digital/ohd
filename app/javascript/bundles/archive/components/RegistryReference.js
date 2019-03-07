@@ -5,18 +5,26 @@ import { t, pluralize, admin } from '../../../lib/utils';
 export default class RegistryReference extends React.Component {
 
     edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.edit'),
-                    content: <RegistryEntryFormContainer registryEntry={this.props.registryEntry} />
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
+        if (
+            this.props.registryEntry &&
+            !this.props.hideEdit &&
+            admin(this.props, this.props.registryEntry)
+        ) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.registry_entry.edit')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.edit'),
+                        content: <RegistryEntryFormContainer registryEntry={this.props.registryEntry} />
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     destroy() {
@@ -29,7 +37,11 @@ export default class RegistryReference extends React.Component {
     }
 
     delete() {
-        if (this.props.registryReference) {
+        if (
+            this.props.registryReference &&
+            !this.props.hideEdit &&
+            admin(this.props, this.props.registryReference)
+        ) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_reference.delete')}
@@ -53,14 +65,12 @@ export default class RegistryReference extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
-            return (
-                <span className={'flyout-sub-tabs-content-ico'}>
-                    {/* {this.edit()} */}
-                    {this.delete()}
-                </span>
-            )
-        }
+        return (
+            <span className={'flyout-sub-tabs-content-ico'}>
+                {/* {this.edit()} */}
+                {this.delete()}
+            </span>
+        )
     }
 
     entry() {

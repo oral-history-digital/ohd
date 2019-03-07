@@ -180,7 +180,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     editButtons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
             return (
                 <div className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}

@@ -30,7 +30,7 @@ export default class Gallery extends React.Component {
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props)) {
+                if (photo.workflow_state === 'public' || admin(this.props, photo)) {
                     photos.push(this.photo(photo));
                 }
             }

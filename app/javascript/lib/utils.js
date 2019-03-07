@@ -125,6 +125,11 @@ export function pluralize(word) {
     return pluralizedWord;
 }
 
+export function camelcase(str) {
+    str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export function loggedIn(props) {
     return !!(!props.authStatus.isLoggedOut && props.account.email);
 }

@@ -97,7 +97,7 @@ export default class PersonData extends React.Component {
 
     render() {
         let interviewee = getInterviewee(this.props);
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
             return (
                 <div>
                     {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}

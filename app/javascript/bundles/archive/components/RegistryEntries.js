@@ -31,7 +31,7 @@ export default class RegistryEntries extends React.Component {
 
     hideRegistryEntry(id) {
         // let hiddenEntries = [28205, 28221, 28237]
-        if (this.props.hiddenRegistryEntryIds && this.props.hiddenRegistryEntryIds.indexOf(id) !== -1 && !admin(this.props)) {
+        if (this.props.hiddenRegistryEntryIds && this.props.hiddenRegistryEntryIds.indexOf(id) !== -1 && !admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
             return true;
         }
         else {
@@ -65,7 +65,7 @@ export default class RegistryEntries extends React.Component {
     }
 
     addRegistryEntry() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

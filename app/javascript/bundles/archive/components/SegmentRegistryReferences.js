@@ -65,7 +65,7 @@ export default class SegmentRegistryReferences extends React.Component {
 
     addRegistryReference() {
         // TODO: fit this for MOG - id of root entry will be different
-        if (admin(this.props) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (admin(this.props, {type: 'RegistryReference', action: 'create'}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

@@ -47,23 +47,6 @@ export default class WrappedAccount extends React.Component {
         //);
     //}
 
-    //add() {
-        //if (admin(this.props)) {
-            //return (
-                //<div
-                    //className='flyout-sub-tabs-content-ico-link'
-                    //title={t(this.props, `edit.${this.props.scope}.new`)}
-                    //onClick={() => this.props.openArchivePopup({
-                        //title: t(this.props, `edit.${this.props.scope}.new`),
-                        //content: this.form()
-                    //})}
-                //>
-                    //<i className="fa fa-plus"></i>
-                //</div>
-            //)
-        //}
-    //}
-
     roles() {
         return (
             <div className={'roles box'}>

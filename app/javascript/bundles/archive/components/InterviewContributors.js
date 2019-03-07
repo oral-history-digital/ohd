@@ -6,13 +6,13 @@ import PersonContainer from '../containers/PersonContainer';
 export default class InterviewContributors extends React.Component {
 
     componentDidMount() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
             this.loadAllPeople();
         }
     }
 
     componentDidUpdate() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
             this.loadAllPeople();
         }
     }
@@ -33,11 +33,6 @@ export default class InterviewContributors extends React.Component {
         ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                //if (
-                    //contribution && 
-                    //(Object.values(this.props.contributionTypes).indexOf(contribution.contribution_type) > -1 || 
-                    //admin(this.props))
-                //)
                 if (contribution !== 'fetched') {
                     (contribution.contribution_type !== 'interviewee') && contributors.push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
                 }
@@ -47,7 +42,7 @@ export default class InterviewContributors extends React.Component {
     }
 
     addContribution() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

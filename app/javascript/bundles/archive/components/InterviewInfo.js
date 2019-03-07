@@ -29,7 +29,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     info() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return ( 
                 <InterviewFormContainer 
                     submitText='edit.interview.edit' 

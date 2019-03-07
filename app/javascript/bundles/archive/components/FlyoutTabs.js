@@ -148,7 +148,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderExport(archiveIds) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'dois'})) {
             return <InterviewDataContainer
                 title={t(this.props, 'export')}
                 content={<ExportInterviewContainer archiveIds={archiveIds} />}
@@ -159,7 +159,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     assignSpeakersForm() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'update_speakers'})) {
             return <InterviewDataContainer
                 title={t(this.props, 'assign_speakers')}
                 content={<AssignSpeakersFormContainer interview={this.props.interview} />}
@@ -187,20 +187,20 @@ export default class FlyoutTabs extends React.Component {
     }
 
     indexingTab() {
-        let css = admin(this.props) ? 'flyout-tab' : 'hidden';
+        let css = admin(this.props, {type: 'Interview', action: 'update'}) ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
     }
 
     indexingTabPanel() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return (
                 <TabPanel key={'tabpanel-indexing'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
-                        {this.subTab('edit.interview.new', 'erklärung', `/${this.props.locale}/interviews/new`)}
-                        {this.subTab('edit.upload_transcript', 'erklärung', `/${this.props.locale}/transcripts/new`)}
-                        {this.subTab('edit.upload.upload', 'erklärung', `/${this.props.locale}/uploads/new`)}
-                        {this.subTab('edit.person.new', 'erklärung', `/${this.props.locale}/people/new`)}
+                        {this.subTab('edit.interview.new', 'erklärung', `/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
+                        {this.subTab('edit.upload_transcript', 'erklärung', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {this.subTab('edit.upload.upload', 'erklärung', `/${this.props.locale}/uploads/new, {type: 'Interview', action: 'update'}`)}
+                        {this.subTab('edit.person.new', 'erklärung', `/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
                     </div>
                 </TabPanel>
             )
@@ -235,12 +235,14 @@ export default class FlyoutTabs extends React.Component {
                         {this.subTab(
                             'edit.role.admin', 
                             <RoleSearchFormContainer/>,
-                            `/${this.props.locale}/roles`
+                            `/${this.props.locale}/roles`,
+                            {type: 'Role', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.permission.admin', 
                             <PermissionSearchFormContainer/>,
-                            `/${this.props.locale}/permissions`
+                            `/${this.props.locale}/permissions`,
+                            {type: 'Permission', action: 'update'}
                         )}
                     </div>
                 </TabPanel>
