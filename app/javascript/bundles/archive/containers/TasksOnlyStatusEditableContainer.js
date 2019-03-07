@@ -20,27 +20,6 @@ const mapStateToProps = (state) => {
         detailsAttributes: ['name', 'desc', 'workflow_state', 'authorized_id', 'authorized_type'],
         formElements: [
             {
-                attribute: 'name',
-                validate: function(v){return v.length > 1} 
-            },
-            {
-                attribute: 'desc',
-                elementType: 'textarea',
-                validate: function(v){return v.length > 1} 
-            },
-            {
-                attribute: 'authorized_type',
-                elementType: 'select',
-                values: ['Interview', 'BiographicalEntry', 'RegistryReference', 'Contribution', 'Photo'],
-                optionsScope: 'tasks',
-                withEmpty: true,
-                validate: function(v){return v !== ''} 
-            },
-            {
-                attribute: 'authorized_id',
-                validate: function(v){return v.length > 1} 
-            },
-            {
                 attribute: 'workflow_state',
                 elementType: 'select',
                 optionsScope: 'workflow_states',

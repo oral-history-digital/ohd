@@ -49,6 +49,7 @@ export default class WrappedDataList extends React.Component {
                         joinedData={this.props.joinedData}
                         form={this.form}
                         hideEdit={this.props.hideEdit}
+                        hideDelete={this.props.hideDelete}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )

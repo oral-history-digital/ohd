@@ -79,7 +79,8 @@ class TasksController < ApplicationController
         :authorized_type,
         :authorized_id,
         :user_id,
-        :supervisor_id
+        :supervisor_id,
+        :workflow_state
     )
   end
 end

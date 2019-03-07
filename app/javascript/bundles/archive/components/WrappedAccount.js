@@ -1,6 +1,7 @@
 import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import TasksContainer from '../containers/TasksContainer';
+import TasksOnlyStatusEditableContainer from '../containers/TasksOnlyStatusEditableContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
@@ -64,10 +65,12 @@ export default class WrappedAccount extends React.Component {
         return (
             <div className={'tasks box'}>
                 <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
-                <TasksContainer 
+                <TasksOnlyStatusEditableContainer 
                     data={this.props.account.tasks || []} 
                     initialFormValues={{user_id: this.props.account.user_id}} 
                     hideEdit={false}
+                    hideDelete={true}
+                    hideAdd={true}
                 />
             </div>
         )
@@ -81,6 +84,8 @@ export default class WrappedAccount extends React.Component {
                     data={this.props.account.supervised_tasks || []} 
                     initialFormValues={{user_id: this.props.account.user_id}} 
                     hideEdit={false}
+                    hideAdd={true}
+                    hideDelete={true}
                 />
             </div>
         )
