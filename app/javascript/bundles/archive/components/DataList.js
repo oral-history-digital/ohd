@@ -34,6 +34,8 @@ export default class WrappedDataLists extends React.Component {
                         detailsAttributes={this.props.detailsAttributes}
                         form={this.form}
                         hideEdit={this.props.hideEdit}
+                        hideDelete={this.props.hideDelete}
+                        editView={this.props.editView}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -58,7 +60,10 @@ export default class WrappedDataLists extends React.Component {
     }
 
     add() {
-        if (admin(this.props, {type: camelcase(this.props.scope), action: 'create'})) {
+        if (
+            admin(this.props, {type: camelcase(this.props.scope), action: 'create'}) && 
+            !this.props.hideAdd
+        ) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

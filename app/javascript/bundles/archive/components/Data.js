@@ -78,7 +78,7 @@ export default class Data extends React.Component {
     delete() {
         if (
             this.props.data &&
-            !this.props.hideEdit &&
+            !this.props.hideDelete &&
             admin(this.props, this.props.data)
         ) {
             return <div
