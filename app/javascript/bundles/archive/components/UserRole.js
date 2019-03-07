@@ -25,7 +25,11 @@ export default class UserRole extends React.Component {
     }
 
     delete() {
-        if (this.props.userRole) {
+        if (
+            this.props.userRole &&
+            !this.props.hideEdit &&
+            admin(this.props, this.props.userRole)
+        ) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -49,16 +53,12 @@ export default class UserRole extends React.Component {
     }
 
     buttons() {
-        if (!this.props.hideEdit) {
-            return (
-                <span className={'flyout-sub-tabs-content-ico'}>
-                    {this.show()}
-                    {this.delete()}
-                </span>
-            )
-        } else {
-            return null;
-        }
+        return (
+            <span className={'flyout-sub-tabs-content-ico'}>
+                {this.show()}
+                {this.delete()}
+            </span>
+        )
     }
 
     render() {

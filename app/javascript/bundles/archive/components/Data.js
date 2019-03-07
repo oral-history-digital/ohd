@@ -49,7 +49,10 @@ export default class Data extends React.Component {
     }
 
     edit() {
-        if (!this.props.hideEdit) {
+        if (
+            !this.props.hideEdit &&
+            admin(this.props, this.props.data)
+        ) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -73,7 +76,11 @@ export default class Data extends React.Component {
     }
 
     delete() {
-        if (this.props.data) {
+        if (
+            this.props.data &&
+            !this.props.hideEdit &&
+            admin(this.props, this.props.data)
+        ) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}

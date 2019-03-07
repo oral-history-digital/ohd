@@ -125,7 +125,7 @@ export default class UserRegistration extends React.Component {
                     <TasksContainer 
                         data={this.props.userRegistration.tasks} 
                         initialFormValues={{user_id: this.props.userRegistration.user_id}} 
-                        hideEdit={true}
+                        hideEdit={false}
                     />
                 </div>
             )
