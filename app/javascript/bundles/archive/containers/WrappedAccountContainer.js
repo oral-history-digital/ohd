@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
 import WrappedAccount from '../components/WrappedAccount';
-//import { submitLogout, fetchAccount } from '../actions/accountActionCreators';
-//import { changeToEditView } from '../actions/archiveActionCreators';
-//import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { submitData } from '../actions/dataActionCreators';
+import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -11,15 +10,14 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: state.archive.editView
+        //editView: state.archive.editView
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    //submitLogout: () => dispatch(submitLogout()),
-    //fetchAccount: () => dispatch(fetchAccount()),
-    //changeToEditView: (bool) => dispatch(changeToEditView(bool)),
-    //hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
+    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedAccount);
