@@ -84,7 +84,7 @@ const data = (state = initialState, action) => {
                 return Object.assign({}, state, {
                     statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
                     [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
-                        if (key !== action.nestedId) {
+                        if (parseInt(key) !== action.id) {
                             return {...acc, [key]: state[action.dataType][key]}
                         }
                         return acc;
