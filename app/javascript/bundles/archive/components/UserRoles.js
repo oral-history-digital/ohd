@@ -21,7 +21,10 @@ export default class UserRoles extends React.Component {
     }
 
     addUserRole() {
-        if (admin(this.props, {type: 'UserRole', action: 'create'})) {
+        if (
+            admin(this.props, {type: 'UserRole', action: 'create'}) &&
+            !this.props.hideAdd
+        ) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
