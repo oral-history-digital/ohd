@@ -1,6 +1,7 @@
 import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import TasksContainer from '../containers/TasksContainer';
+import TasksOnlyStatusEditableContainer from '../containers/TasksOnlyStatusEditableContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
@@ -47,28 +48,15 @@ export default class WrappedAccount extends React.Component {
         //);
     //}
 
-    //add() {
-        //if (admin(this.props)) {
-            //return (
-                //<div
-                    //className='flyout-sub-tabs-content-ico-link'
-                    //title={t(this.props, `edit.${this.props.scope}.new`)}
-                    //onClick={() => this.props.openArchivePopup({
-                        //title: t(this.props, `edit.${this.props.scope}.new`),
-                        //content: this.form()
-                    //})}
-                //>
-                    //<i className="fa fa-plus"></i>
-                //</div>
-            //)
-        //}
-    //}
-
     roles() {
         return (
             <div className={'roles box'}>
-                <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                <UserRolesContainer userRoles={this.props.account.roles || []} userId={this.props.account.user_id} />
+                <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
+                <UserRolesContainer 
+                    userRoles={this.props.account.user_roles || []} 
+                    userId={this.props.account.user_id} 
+                    hideEdit={true}
+                />
             </div>
         )
     }
@@ -76,8 +64,14 @@ export default class WrappedAccount extends React.Component {
     tasks() {
         return (
             <div className={'tasks box'}>
-                <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                <TasksContainer tasks={this.props.account.tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
+                <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
+                <TasksOnlyStatusEditableContainer 
+                    data={this.props.account.tasks || []} 
+                    initialFormValues={{user_id: this.props.account.user_id}} 
+                    hideEdit={false}
+                    hideDelete={true}
+                    hideAdd={true}
+                />
             </div>
         )
     }
@@ -85,8 +79,14 @@ export default class WrappedAccount extends React.Component {
     supervisedTasks() {
         return (
             <div className={'tasks box'}>
-                <div className='title'>{t(this.props, 'supervised_tasks')}</div>
-                <TasksContainer tasks={this.props.account.supervised_tasks || []} initialFormValues={{user_id: this.props.account.userId}} />
+                <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
+                <TasksContainer 
+                    data={this.props.account.supervised_tasks || []} 
+                    initialFormValues={{user_id: this.props.account.user_id}} 
+                    hideEdit={false}
+                    hideAdd={true}
+                    hideDelete={true}
+                />
             </div>
         )
     }

@@ -1,18 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { loggedIn } from '../../../lib/utils';
 
 export default class InterviewData extends React.Component {
 
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            open: (this.props.account.email && !this.props.account.error) ? false : true
+            open: loggedIn(this.props) && this.props.open
         };
 
     }
 
     handleClick(){
-        this.setState({['open']: !this.state.open});
+        if (this.props.url && this.context.router.route.location.pathname !== this.props.url) {
+            this.setState({['open']: true});
+            this.context.router.history.push(this.props.url);
+        } else {
+            this.setState({['open']: !this.state.open});
+        }
     }
 
     render() {

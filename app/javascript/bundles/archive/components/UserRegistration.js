@@ -90,7 +90,7 @@ export default class UserRegistration extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}
@@ -105,7 +105,11 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'roles box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                    <UserRolesContainer userRoles={this.props.userRegistration.roles} userId={this.props.userRegistration.user_id} />
+                    <UserRolesContainer 
+                        userRoles={this.props.userRegistration.user_roles || []} 
+                        userId={this.props.userRegistration.user_id} 
+                        hideEdit={false}
+                    />
                 </div>
             )
         } else {
@@ -118,7 +122,11 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                    <TasksContainer tasks={this.props.userRegistration.tasks} initialFormValues={{user_id: this.props.userRegistration.user_id}} />
+                    <TasksContainer 
+                        data={this.props.userRegistration.tasks} 
+                        initialFormValues={{user_id: this.props.userRegistration.user_id}} 
+                        hideEdit={false}
+                    />
                 </div>
             )
         } else {

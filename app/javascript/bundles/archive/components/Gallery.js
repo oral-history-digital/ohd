@@ -30,12 +30,20 @@ export default class Gallery extends React.Component {
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props)) {
+                if (photo.workflow_state === 'public' || admin(this.props, photo)) {
                     photos.push(this.photo(photo));
                 }
             }
         } 
-        return photos;
+        if (photos.length > 0) {
+            return (
+                <div className={'img-gallery'}>
+                    {photos}
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     photo(photo) {
@@ -55,7 +63,7 @@ export default class Gallery extends React.Component {
     }
 
     addPhoto() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Photo'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -75,20 +83,13 @@ export default class Gallery extends React.Component {
     }
 
     render() {
-        if (this.renderPhotos().length > 0) {
-            return (
-                <div>
-                    <div className='explanation'>{t(this.props, 'interview_gallery_explanation')}</div>
-                    <div className={'img-gallery'}>
-                        {this.renderPhotos()}
-                        {this.addPhoto()}
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className='explanation'>{t(this.props, 'interview_empty_gallery_explanation')}</div>
-            ) 
-        }
-    }
+        let explanation = this.props.interview && this.props.interview.photos > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
+        return (
+            <div>
+                <div className='explanation'>{t(this.props, explanation)}</div>
+                {this.renderPhotos()}
+                {this.addPhoto()}
+            </div>
+        );
+    } 
 }

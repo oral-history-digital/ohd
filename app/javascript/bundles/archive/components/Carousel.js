@@ -27,7 +27,7 @@ export default class Carousel extends React.Component {
     }
 
     caption(photo) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Photo', action: 'update'})) {
             return <PhotoFormContainer photo={photo}/>;
         } else {
             return photo.captions[this.props.locale]
@@ -40,7 +40,7 @@ export default class Carousel extends React.Component {
     }
 
     delete(photo) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Photo', action: 'update'})) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -67,7 +67,7 @@ export default class Carousel extends React.Component {
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props)) {
+                if (photo.workflow_state === 'public' || admin(this.props, {type: 'Photo', action: 'update'})) {
                     photos.push(this.photo(photo));
                 }
             }

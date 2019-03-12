@@ -1,4 +1,4 @@
-class PersonSerializer < ActiveModel::Serializer
+class PersonSerializer < ApplicationSerializer
   attributes :id, :date_of_birth, :gender, :names, :name, :typology, :place_of_birth, :biographical_entries, :text
             # :histories
 

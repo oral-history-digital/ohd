@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,
+        authStatus: state.account,
         interview: getInterview(state),
         project: state.archive.project,
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree

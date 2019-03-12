@@ -1,4 +1,4 @@
-class BiographicalEntrySerializer < ActiveModel::Serializer
+class BiographicalEntrySerializer < ApplicationSerializer
 
   attributes :id, :person_id, 
     :text, 

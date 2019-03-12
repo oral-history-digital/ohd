@@ -9,9 +9,12 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: state.archive.editView,
         //
+        // editView should always be true on tasks
+        // because tasks can be seen only in the own account
+        // or if editView == true in some user administration area
         //
+        editView: true,
         //
         scope: 'task',
         detailsAttributes: ['name', 'desc', 'workflow_state', 'authorized_id', 'authorized_type'],
@@ -43,8 +46,7 @@ const mapStateToProps = (state) => {
                 optionsScope: 'workflow_states',
                 withEmpty: true,
             },
-        ],
-        hideEdit: false
+        ]
     }
 }
 

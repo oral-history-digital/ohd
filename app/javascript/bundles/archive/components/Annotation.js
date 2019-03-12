@@ -54,7 +54,7 @@ export default class Annotation extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}

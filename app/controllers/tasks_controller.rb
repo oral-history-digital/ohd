@@ -3,12 +3,16 @@ class TasksController < ApplicationController
   def create
     authorize Task
     @task = Task.create task_params
-    @task.update_attributes(supervisor_id: current_user_account.id)
+    @task.update_attributes(supervisor_id: current_user_account.user.id)
     clear_cache @task.user.user_registration
 
     respond_to do |format|
       format.json do
-        render json: data_json(@task.user.user_registration, 'processed')
+        render json: data_json(@task.user.user_registration, 
+                               msg: 'processed',
+                               reload_data_type: 'accounts',
+                               reload_id: "current"
+                              )
       end
     end
   end
@@ -21,7 +25,12 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@task.user.user_registration, 'processed')
+        render json: current_user_account && {
+          id: 'current',
+          data_type: 'accounts',
+          data: ::UserAccountSerializer.new(current_user_account),
+          msg: 'processed'
+        } || {} 
       end
     end
   end
@@ -51,7 +60,11 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json { 
-        render json: data_json(user_registration, 'processed')
+        render json: data_json(@task.user.user_registration, 
+                               msg: 'processed',
+                               reload_data_type: 'accounts',
+                               reload_id: "current"
+                              )
       }
     end
   end
@@ -66,7 +79,8 @@ class TasksController < ApplicationController
         :authorized_type,
         :authorized_id,
         :user_id,
-        :supervisor_id
+        :supervisor_id,
+        :workflow_state
     )
   end
 end

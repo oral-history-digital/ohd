@@ -78,7 +78,7 @@ class UserRegistrationsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_registration, 'processed')
+        render json: data_json(@user_registration, msg: 'processed')
       end
     end
   end
@@ -173,6 +173,14 @@ class UserRegistrationsController < ApplicationController
     @filters['workflow_state'] = params['workflow_state'] || 'unchecked'
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
+    end
+    # other attributes
+    %w(email default_locale).each do |att|
+      @filters[att] = params[att]
+      unless @filters[att].blank?
+        conditionals << "#{att} = ?"
+        condition_args << @filters[att]
+      end
     end
     # user name
     %w(last_name first_name).each do |name_part|

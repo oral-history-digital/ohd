@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
         joinDataStatus: state.data.statuses.permissions,
         joinDataScope: 'permissions',
         scope: 'role_permission',
-        detailsAttributes: ['name', 'desc', 'controller', 'action'],
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 elementType: 'select',

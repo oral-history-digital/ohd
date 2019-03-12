@@ -1,334 +1,354 @@
-# Русский перевод для https://github.com/plataformatec/devise/tree/v3.5.6
-# Другие переводы на http://github.com/plataformatec/devise/wiki/I18n
-
+---
 ru:
   devise:
     confirmations:
-      link: 'Вы не получили подтверждения доступа?'
-      resend: 'Запросить подтверждение'
-      send_instructions: 'На Ваш электронный адрес будет сразу отправлено письмо с дальнейшими инструкциями, как активировать доступ.'
-      confirmed: 'Ваш доступ был успешно активирован. Вы вошли в систему.'
-      invalid_token: 'Указанная ссылка больше недействительна. Вероятно, Ваш доступ уже активирован. Пожалуйста, воспользуйтесь функцией "Забыли пароль?", если вы не можете войти в систему.'
-      password_missing: 'Для подтверждения Вам необходимо выбрать пароль.'
-      password_confirmation_missing: 'Повторный пароль не совпадает с первоначальным.'
-      #no_confirm_instructions: "Didn't receive confirmation instructions?"
-      #send_paranoid_instructions: "Если ваш адрес email есть в нашей базе данных, то в течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
+      link: Вы не получили подтверждения доступа?
+      resend: Запросить подтверждение
+      send_instructions: На Ваш электронный адрес будет сразу отправлено письмо с
+        дальнейшими инструкциями, как активировать доступ.
+      confirmed: Ваш доступ был успешно активирован. Вы вошли в систему.
+      invalid_token: Указанная ссылка больше недействительна. Вероятно, Ваш доступ
+        уже активирован. Пожалуйста, воспользуйтесь функцией "Забыли пароль?", если
+        вы не можете войти в систему.
+      password_missing: Для подтверждения Вам необходимо выбрать пароль.
+      password_confirmation_missing: Повторный пароль не совпадает с первоначальным.
+      no_confirm_instructions: Keine Bestätigungsanleitung bekommen?
     failure:
-      already_authenticated: "Вы уже вошли в систему."
-      inactive: "Ваша учётная запись ещё не активирована."
-      invalid: "Неверный %{authentication_keys} или пароль."
-      locked: "Ваша учётная запись заблокирована."
-      last_attempt: "У Вас осталась еще одна попытка ввести пароль до блокировки."
-      not_found_in_database: "Неверный %{authentication_keys} или пароль."
-      timeout: "Ваш сеанс закончился. Пожалуйста, войдите в систему снова."
-      unauthenticated: "Вам необходимо войти в систему или зарегистрироваться."
-      unconfirmed: "Вы должны подтвердить вашу учётную запись."
+      already_authenticated: Вы уже вошли в систему.
+      inactive: Ваша учётная запись ещё не активирована.
+      invalid: Неверный %{authentication_keys} или пароль.
+      invalid_token: Der Anmelde-Token ist ungültig.
+      locked: Ваша учётная запись заблокирована.
+      not_found_in_database: Неверный %{authentication_keys} или пароль.
+      timeout: Ваш сеанс закончился. Пожалуйста, войдите в систему снова.
+      unauthenticated: Вам необходимо войти в систему или зарегистрироваться.
+      unconfirmed: Вы должны подтвердить вашу учётную запись.
+      last_attempt: У Вас осталась еще одна попытка ввести пароль до блокировки.
     mailer:
       confirmation_instructions:
-        subject: "Инструкции по подтверждению учётной записи."
+        subject: Инструкции по подтверждению учётной записи.
       reset_password_instructions:
-        subject: "Инструкции по восстановлению пароля."
+        subject: Инструкции по восстановлению пароля.
       unlock_instructions:
-        subject: "Инструкции по разблокировке учётной записи."
+        subject: Инструкции по разблокировке учётной записи.
       password_change:
-        subject: "Пароль был изменён."
+        subject: Пароль был изменён.
     omniauth_callbacks:
-      failure: "Вы не можете войти в систему с учётной записью из %{kind}, так как \"%{reason}\"."
-      success: "Вход в систему выполнен с учётной записью из %{kind}."
+      failure: Вы не можете войти в систему с учётной записью из %{kind}, так как
+        "%{reason}".
+      success: Вход в систему выполнен с учётной записью из %{kind}.
     passwords:
-      change: 'Изменить пароль'
-      forgot: 'Забыли Ваш пароль?'
-      password: 'Пароль'
-      password_confirmation: 'Повторить пароль'
-      submit: 'Изменить пароль сейчас'
-      resend: 'Изменить пароль'
-      link: 'Забыли пароль?'
-      no_token: "Эта страница доступна только при переходе с email для сброса пароля. Если Вы перешли по ссылке из письма, пожалуйста, убедитесь, что вы использовали полный URL."
-      send_instructions: "В течение нескольких минут вы получите письмо с инструкциями по восстановлению вашего пароля."
-      send_paranoid_instructions: "Если ваш адрес email есть в нашей базе данных, то в течение нескольких минут Вы получите письмо с инструкциями по восстановлению вашего пароля."
-      updated: "Ваш пароль успешно изменён. Теперь вы вошли в систему."
-      updated_not_active: "Пароль успешно изменён."
+      change: Изменить пароль
+      forgot: Забыли Ваш пароль?
+      password: Пароль
+      password_confirmation: Повторить пароль
+      submit: Изменить пароль сейчас
+      resend: Изменить пароль
+      link: Забыли пароль?
+      send_instructions: В течение нескольких минут вы получите письмо с инструкциями
+        по восстановлению вашего пароля.
+      updated: Ваш пароль успешно изменён. Теперь вы вошли в систему.
+      no_token: Эта страница доступна только при переходе с email для сброса пароля.
+        Если Вы перешли по ссылке из письма, пожалуйста, убедитесь, что вы использовали
+        полный URL.
+      send_paranoid_instructions: Если ваш адрес email есть в нашей базе данных, то
+        в течение нескольких минут Вы получите письмо с инструкциями по восстановлению
+        вашего пароля.
+      updated_not_active: Пароль успешно изменён.
     registrations:
-      link: 'Регистрация'
-      not_yet_registered: 'Ещё не зарегистрированы?'
-      link_to: 'К регистрации »'
-      submit: 'Отправить регистрацию'
-      activate: 'Активация доступа для'
-      activate_submit: 'отправить'
-      activate_text: 'Пожалуйста, выберите подходящий пароль для Вашего доступа.'
-      successful: 'Мы получили Вашу регистрацию.'
-      signed_up: 'Ваша регистрация взята на заметку. Как только мы обработаем Вашу регистрацию, Вы получите информацию с дальнейшими инструкциями.'
-      updated: 'Ваши данные для доступа были успешно изменены.'
-      destroyed: 'Ваши данные для доступа были успешно удалены.'
-      welcome: 'Добро пожаловать! Ваш доступ к архиву был только что активирован. Вы вошли в систему. Пожалуйста, держите наготове Ваши имя пользователя и пароль при дальнейшем посещении нашего сайта.'
-      signed_up_but_inactive: "Вы успешно зарегистрировались. Тем не менее, вы не можете войти, потому что ваша учетная запись ещё не активирована."
-      signed_up_but_locked: "Вы успешно зарегистрировались. Тем не менее, вы не можете войти, потому что ваша учетная запись заблокирована."
-      signed_up_but_unconfirmed: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
-      update_needs_confirmation: "Ваш аккаунт успешно обновлен, нонеобходимо подтвердить Ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите на ссылку \"Подтвердить\", чтобы завершить обновления email."
-    registration_fields:
-      tos_agreement: "Nutzungsbedingungen"
-      priv_agreement: "Datenschutzbestimmungen"
+      link: Регистрация
+      not_yet_registered: Ещё не зарегистрированы?
+      link_to: К регистрации »
+      submit: Отправить регистрацию
+      activate: Активация доступа для
+      activate_submit: отправить
+      activate_text: Пожалуйста, выберите подходящий пароль для Вашего доступа.
+      successful: Мы получили Вашу регистрацию.
+      signed_up: Ваша регистрация взята на заметку. Как только мы обработаем Вашу
+        регистрацию, Вы получите информацию с дальнейшими инструкциями.
+      updated: Ваши данные для доступа были успешно изменены.
+      destroyed: Ваши данные для доступа были успешно удалены.
+      welcome: Добро пожаловать! Ваш доступ к архиву был только что активирован. Вы
+        вошли в систему. Пожалуйста, держите наготове Ваши имя пользователя и пароль
+        при дальнейшем посещении нашего сайта.
+      signed_up_but_inactive: Вы успешно зарегистрировались. Тем не менее, вы не можете
+        войти, потому что ваша учетная запись ещё не активирована.
+      signed_up_but_locked: Вы успешно зарегистрировались. Тем не менее, вы не можете
+        войти, потому что ваша учетная запись заблокирована.
+      signed_up_but_unconfirmed: В течение нескольких минут вы получите письмо с инструкциями
+        по подтверждению вашей учётной записи.
+      update_needs_confirmation: Ваш аккаунт успешно обновлен, нонеобходимо подтвердить
+        Ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите
+        на ссылку "Подтвердить", чтобы завершить обновления email.
     sessions:
-      link: 'Войти'
-      login: 'Войти'
-      signed_in: 'Вы вошли в систему.'
-      signed_out: 'Вы вышли из системы.'
-      unauthenticated: 'Для данного действия необходимо войти в систему.'
-      unauthenticated_search: 'Для того, чтобы использовать функцию поиска, Вы должны войти в систему.'
-      unconfirmed: 'Чтобы войти в систему, Ваш доступ должен быть сначала активирован.'
-      locked: 'Доступ закрыт.'
-      invalid: 'Имя пользователя или пароль недействительны.'
-      invalid_token: 'Недействительный  код аутентификации.'
-      timeout: 'Ваше время нахождения на сайте истекло, пожалуйста, снова войдите в систему.'
-      inactive: 'Ваш доступ в данный момент деактивирован.'
-      remember_me: 'оставаться в системе'
-      logout: 'Выйти'
-      already_signed_out: "Выход из системы выполнен."
+      link: Войти
+      login: Войти
+      signed_in: Вы вошли в систему.
+      signed_out: Вы вышли из системы.
+      unauthenticated: Для данного действия необходимо войти в систему.
+      unauthenticated_search: Для того, чтобы использовать функцию поиска, Вы должны
+        войти в систему.
+      unconfirmed: Чтобы войти в систему, Ваш доступ должен быть сначала активирован.
+      locked: Доступ закрыт.
+      invalid: Имя пользователя или пароль недействительны.
+      invalid_token: Недействительный  код аутентификации.
+      timeout: Ваше время нахождения на сайте истекло, пожалуйста, снова войдите в
+        систему.
+      inactive: Ваш доступ в данный момент деактивирован.
+      remember_me: оставаться в системе
+      logout: Выйти
+      already_signed_out: Выход из системы выполнен.
     unlocks:
-      link: 'Реактивировать доступ'
-      send_instructions: 'На Ваш электронный адрес будет сразу отправлено письмо с дальнейшими инструкциями, как Вы можете реактивировать доступ.'
-      unlocked: 'Ваш доступ был успешно реактивирован. Вы вошли в систему.'
-      send_paranoid_instructions: "Если ваша учётная запись существует, то в течение нескольких минут вы получите письмо с инструкциями по её разблокировке."
-      unlocked: "Ваша учётная запись разблокирована. Теперь вы вошли в систему."
+      link: Реактивировать доступ
+      send_instructions: На Ваш электронный адрес будет сразу отправлено письмо с
+        дальнейшими инструкциями, как Вы можете реактивировать доступ.
+      unlocked: Ваша учётная запись разблокирована. Теперь вы вошли в систему.
+      send_paranoid_instructions: Если ваша учётная запись существует, то в течение
+        нескольких минут вы получите письмо с инструкциями по её разблокировке.
     user_interface:
       status:
-        not_signed_in: 'Вы не вошли в систему'
-
+        not_signed_in: Вы не вошли в систему
     labels:
-      send_now: 'Отправить сейчас'
+      send_now: Отправить сейчас
     authentication_keys:
-      login: 'Пользователь'
-      email: 'Электр. адрес'
-      password: 'Пароль'
-
+      login: Пользователь
+      email: Электр. адрес
+      password: Пароль
     workflow_states:
-      new_registration: 'Новая регистрация'
-      new_registrations: 'Новые регистрации'
-      unchecked: 'без ответа'
-      checked: 'проверен'
-      registered: 'зарегистрирован'
-      deactivated: 'деактивирован'
-      postponed: 'отложен'
-      rejected: 'отклонён'
-      all: 'все'
-
+      new_registration: Новая регистрация
+      new_registrations: Новые регистрации
+      unchecked: без ответа
+      checked: проверен
+      registered: зарегистрирован
+      deactivated: деактивирован
+      postponed: отложен
+      rejected: отклонён
+      all: все
     workflow_events:
-      register: 'регистрировать'
-      register_info: 'Пользователь получает на свой электронный адрес письмо со ссылкой, перейдя по которой он может активировать свой доступ.'
-      reject: 'отклонить'
-      reject_info: 'Запрос отклоняется на длительное время (письмо на электронный адрес не отправляется).'
-      resend_info: 'Повторно отправить данные'
-      resend_info_info: 'Ссылка для активации доступа будет повторно выслана пользователю (на его электр. адрес).'
-      deactivate: 'деактивировать'
-      deactivate_info: 'Доступ пользователя деактивируется (пользователь не получает письмо на электр. адрес и не может больше войти в систему).'
-      reactivate: 'восстановить доступ'
-      reactivate_info: 'Пользователь получает на свой электронный адрес письмо со ссылкой, перейдя по которой он может активировать свой доступ.'
-      postpone: 'отложить'
-      postpone_info: 'Обработка запроса отложена до окончательного рассмотрения неясностей(просьба написать отдельное электронное письмо и комментарий).'
-      activate: 'активировать'
-      activate_info: 'Доступ пользователя непосрдественно активируется (просьба предоставить пользователю в отдельном порядке информацию о данных для доступа).'
-      expire: 'просрочить'
-      expire_info: 'Отложить обработку запроса, т.к. пользователь не реагирует или не активирует свой доступ (письмо на электронный адрес не отправляется).'
-      remove: 'деактивировать'
-      remove_info: 'Доступ пользователя деактивируется (просба проинформировать пользователя в отдельном письме).'
-
+      register: регистрировать
+      register_info: Пользователь получает на свой электронный адрес письмо со ссылкой,
+        перейдя по которой он может активировать свой доступ.
+      reject: отклонить
+      reject_info: Запрос отклоняется на длительное время (письмо на электронный адрес
+        не отправляется).
+      resend_info: Повторно отправить данные
+      resend_info_info: Ссылка для активации доступа будет повторно выслана пользователю
+        (на его электр. адрес).
+      deactivate: деактивировать
+      deactivate_info: Доступ пользователя деактивируется (пользователь не получает
+        письмо на электр. адрес и не может больше войти в систему).
+      reactivate: восстановить доступ
+      reactivate_info: Пользователь получает на свой электронный адрес письмо со ссылкой,
+        перейдя по которой он может активировать свой доступ.
+      postpone: отложить
+      postpone_info: Обработка запроса отложена до окончательного рассмотрения неясностей(просьба
+        написать отдельное электронное письмо и комментарий).
+      activate: активировать
+      activate_info: Доступ пользователя непосрдественно активируется (просьба предоставить
+        пользователю в отдельном порядке информацию о данных для доступа).
+      expire: просрочить
+      expire_info: Отложить обработку запроса, т.к. пользователь не реагирует или
+        не активирует свой доступ (письмо на электронный адрес не отправляется).
+      remove: деактивировать
+      remove_info: Доступ пользователя деактивируется (просба проинформировать пользователя
+        в отдельном письме).
     registration_fields:
       fill_out_missing_fields_message: 'Пожалуйста, дополните следующие сведения:'
-      select: 'Пожалуйста, выберите'
-      appellation: 'Обращение'
-      first_name: 'Имя'
-      last_name: 'Фамилия'
-      job_description: 'Профессия'
-      email: 'Электр. адрес'
-      research_intentions: 'Цель изысканий'
-      comments: 'Уточнение цели'
-      organization: 'Учреждение'
-      school: 'Школа'
-      homepage: 'Интернет-страница учреждения'
-      street: 'Улица'
-      zipcode: 'Индекс'
-      city: 'Населённый пункт'
-      state: 'Федеральная земля'
-      country: 'Страна'
-      tos_agreement: 'Правила пользования сайтом'
-      tos_agreement_explanation: 'Я принимаю %{terms_of_use}.'
-      priv_agreement: 'Положения о защите персональных данных'
-      priv_agreement_explanation: 'Я принимаю %{privacy_policy}.'
-      agreed: 'приняты'
-      not_agreed: 'не приняты'
-      send_newsletter: 'Рассылка'
-      send_newsletter_explanation: 'Я хочу подписаться на рассылку проекта "%{project_name}".'
-      receive_newsletter: 'Рассылка'
-      newsletter_signup: 'Подписка на рассылку'
-      receive_newsletter_explanation: 'Я хочу подписаться на рассылку проекта "%{project_name}".'
-      requested_at: 'Дата запроса'
-      name: 'Имя'
-      adress: 'Адрес'
-      workflow_state: 'Статус регистрации'
-      login: 'Имя пользователя'
-      created_at: 'Дата регистрации'
-
+      select: Пожалуйста, выберите
+      appellation: Обращение
+      first_name: Имя
+      last_name: Фамилия
+      job_description: Профессия
+      email: Электр. адрес
+      research_intentions: Цель изысканий
+      comments: Уточнение цели
+      organization: Учреждение
+      school: Школа
+      homepage: Интернет-страница учреждения
+      street: Улица
+      zipcode: Индекс
+      city: Населённый пункт
+      state: Федеральная земля
+      country: Страна
+      tos_agreement: Правила пользования сайтом
+      tos_agreement_explanation: Я принимаю %{terms_of_use}.
+      priv_agreement: Положения о защите персональных данных
+      priv_agreement_explanation: Я принимаю %{privacy_policy}.
+      agreed: приняты
+      not_agreed: не приняты
+      send_newsletter: Рассылка
+      send_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
+      receive_newsletter: Рассылка
+      newsletter_signup: Подписка на рассылку
+      receive_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
+      requested_at: Дата запроса
+      name: Имя
+      adress: Адрес
+      workflow_state: Статус регистрации
+      login: Имя пользователя
+      created_at: Дата регистрации
     registration_values:
       appellation:
-        'Frau': 'Госпожа'
-        'Ms.': 'Госпожа'
-        'Ms': 'Госпожа'
-        'Herr': 'Господин'
-        'Mr.': 'Господин'
-        'Mr': 'Господин'
-        'Frau Dr': 'Госпожа др.'
-        'Herr Dr': 'Господин др.'
-        'Dr': 'Др.'
-        'Dr PhD': 'Др.'
-        'Frau PD Dr': 'Госпожа ПД др.'
-        'Herr PD Dr': 'Господин ПД др.'
-        'PD Dr': 'ПД др.'
-        'Frau Prof': 'Госпожа проф.'
-        'Herr Prof': 'Господин проф.'
-        'Herr Pro': 'Господин проф.'
-        'Prof': 'Проф.'
+        Frau: Госпожа
+        Ms.: Госпожа
+        Ms: Госпожа
+        Herr: Господин
+        Mr.: Господин
+        Mr: Господин
+        Frau Dr: Госпожа др.
+        Herr Dr: Господин др.
+        Dr: Др.
+        Dr PhD: Др.
+        Frau PD Dr: Госпожа ПД др.
+        Herr PD Dr: Господин ПД др.
+        PD Dr: ПД др.
+        Frau Prof: Госпожа проф.
+        Herr Prof: Господин проф.
+        Herr Pro: Господин проф.
+        Prof: Проф.
       job_description:
-        'Dozentin/Dozent': 'Доцент/Научный сотрудник'
-        'Dozent(in)/Forscher(in)': 'Доцент/Научный сотрудник'
-        'Dozent': 'Доцент/Научный сотрудник'
-        'Wissenschaftlerin/Wissenschaftler': 'Доцент/Научный сотрудник'
-        'Lecturer/Researcher': 'Доцент/Научный сотрудник'
-        'Lecturer': 'Доцент/Научный сотрудник'
-        'Filmemacherin/Filmemacher': 'Автор фильмов'
-        'Filmemacher(in)': 'Автор фильмов'
-        'Filmmaker': 'Автор фильмов'
-        'Journalistin/Journalist': 'Журналист'
-        'Journalist(in)': 'Журналист'
-        'Journalist': 'Журналист'
-        'Lehrerin/Lehrer': 'Учитель'
-        'Lehrer(in)': 'Учитель'
-        'Teacher': 'Учитель'
-        'Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten)': 'Сотрудник (Музеи/Мемориалы)'
-        'Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten)': 'Сотрудник(Музеи/Мемориалы)'
-        'Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten)': 'Сотрудник (Музеи/Мемориалы)'
-        'Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten)': 'Сотрудник (Музеи/Мемориалы)'
-        'Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten)': 'Сотрудник (Музеи/Мемориалы)'
-        'Mitarbeiter(in) (Museen/Gedenkstatten)':
-        'Mitarbeiter(in) (Museen/Gedenkstätten)': 'Сотрудник (Музеи/Мемориалы)'
-        'Staff Member (museums/memorial sites)': 'Сотрудник (Музеи/Мемориалы)'
-        'Staff Member (Museums/Memorial Sites)': 'Сотрудник (Музеи/Мемориалы)'
-        'Mitarbeit': 'Сотрудник (Музеи/Мемориалы)'
-        'Projektmitarbeiter': 'Сотрудничество'
-        'Mitarbeiterin': 'Сотрудничество'
-        'Schülerin/Schüler': 'Учащийся'
-        'Sch?lerin/Sch?ler': 'Учащийся'
-        'Sch\xC3\xBClerin/Sch\xC3\xBCler': 'Учащийся'
-        'Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n': 'Учащийся'
-        'Sch\xC3\xBCler(in)': 'Учащийся'
-        'Schüler(in)': 'Учащийся'
-        'Sch?ler(in)': 'Учащийся'
-        'School Student': 'Учащийся'
-        'Studentin/Student': 'Студент'
-        'Student(in)': 'Студент'
-        'University Student': 'Студент'
-        'Sonstiges': 'Прочее'
-        'k.A.': 'Прочее'
-        '': 'Прочее'
-        'Other': 'Прочее'
+        Dozentin/Dozent: Доцент/Научный сотрудник
+        Dozent(in)/Forscher(in): Доцент/Научный сотрудник
+        Dozent: Доцент/Научный сотрудник
+        Wissenschaftlerin/Wissenschaftler: Доцент/Научный сотрудник
+        Lecturer/Researcher: Доцент/Научный сотрудник
+        Lecturer: Доцент/Научный сотрудник
+        Filmemacherin/Filmemacher: Автор фильмов
+        Filmemacher(in): Автор фильмов
+        Filmmaker: Автор фильмов
+        Journalistin/Journalist: Журналист
+        Journalist(in): Журналист
+        Journalist: Журналист
+        Lehrerin/Lehrer: Учитель
+        Lehrer(in): Учитель
+        Teacher: Учитель
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Сотрудник (Музеи/Мемориалы)
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Сотрудник(Музеи/Мемориалы)
+        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Сотрудник (Музеи/Мемориалы)
+        Mitarbeiter(in) (Museen/Gedenkstatten): 
+        Mitarbeiter(in) (Museen/Gedenkstätten): Сотрудник (Музеи/Мемориалы)
+        Staff Member (museums/memorial sites): Сотрудник (Музеи/Мемориалы)
+        Staff Member (Museums/Memorial Sites): Сотрудник (Музеи/Мемориалы)
+        Mitarbeit: Сотрудник (Музеи/Мемориалы)
+        Projektmitarbeiter: Сотрудничество
+        Mitarbeiterin: Сотрудничество
+        Schülerin/Schüler: Учащийся
+        Sch?lerin/Sch?ler: Учащийся
+        Sch\xC3\xBClerin/Sch\xC3\xBCler: Учащийся
+        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Учащийся
+        Sch\xC3\xBCler(in): Учащийся
+        Schüler(in): Учащийся
+        Sch?ler(in): Учащийся
+        School Student: Учащийся
+        Studentin/Student: Студент
+        Student(in): Студент
+        University Student: Студент
+        Sonstiges: Прочее
+        k.A.: Прочее
+        '': Прочее
+        Other: Прочее
       research_intentions:
-        'Ausstellung': 'Выставка'
-        'Exhibition': 'Выставка'
-        'Bildungsarbeit': 'Просветительная работа'
-        'Teaching': 'Просветительная работа'
-        'Educational Work': 'Просветительная работа'
-        'Schulunterricht': 'Просветительная работа'
-        'Dissertation': 'Диссертация'
-        'Dissertation/Habilitation': 'Диссертация'
-        'Dokumentarfilm': 'Документальный фильм'
-        'Documentary Film': 'Документальный фильм'
-        'Documentary': 'Документальный фильм'
-        'Familienforschung': 'Семейные исследования'
-        'Genealogy': 'Семейные исследования'
-        'Genealogical Research': 'Семейные исследования'
-        'Kunstprojekt': 'Проект в области искусства'
-        'Art Project': 'Проект в области искусства'
-        'Persönliches Interesse': 'Личный интерес'
-        'Pers\xC3\xB6nliches Interesse': 'Личный интерес'
-        'Pers?nliches Interesse': 'Личный интерес'
-        'Pers?ches Interesse': 'Личный интерес'
-        'Private Interest/Other': 'Личный интерес'
-        'Personal Interest': 'Личный интерес'
-        'Personliches Interesse': 'Личный интерес'
-        'Schulprojekt/Referat': 'Школьный проект/реферат'
-        'School Project/Presentation': 'Школьный проект/реферат'
-        'Universitäre Lehre': 'Университетское преподавание'
-        'Universitäre Lehre/Studium': 'Университетское преподавание'
-        'University Teaching/Studies': 'Университетское преподавание'
-        'Universit\xC3\xA4re Lehre': 'Университетское преподавание'
-        'Universit?re Lehre': 'Университетское преподавание'
-        'Universit\xC3\xA4re Lehre/Studium': 'Университетское преподавание'
-        'University Course/Lecture': 'Университетское преподавание'
-        'Wissenschaftliche Publikation': 'Научная публикация'
-        'Scholarly Publication': 'Научная публикация'
-        'Publikation': 'Научная публикация'
-        'Publication': 'Научная публикация'
-        'Pressepublikation': 'Публикация в прессе'
-        'Publication in Press': 'Публикация в прессе'
-        'Press Publication': 'Публикация в прессе'
-        'Sonstiges': 'Прочее'
-        'Mitarbeit': 'Прочее'
-        'Projektmitarbeit': 'Прочее'
-        'Other': 'Прочее'
+        Ausstellung: Выставка
+        Exhibition: Выставка
+        Bildungsarbeit: Просветительная работа
+        Teaching: Просветительная работа
+        Educational Work: Просветительная работа
+        Schulunterricht: Просветительная работа
+        Dissertation: Диссертация
+        Dissertation/Habilitation: Диссертация
+        Dokumentarfilm: Документальный фильм
+        Documentary Film: Документальный фильм
+        Documentary: Документальный фильм
+        Familienforschung: Семейные исследования
+        Genealogy: Семейные исследования
+        Genealogical Research: Семейные исследования
+        Kunstprojekt: Проект в области искусства
+        Art Project: Проект в области искусства
+        Persönliches Interesse: Личный интерес
+        Pers\xC3\xB6nliches Interesse: Личный интерес
+        Pers?nliches Interesse: Личный интерес
+        Pers?ches Interesse: Личный интерес
+        Private Interest/Other: Личный интерес
+        Personal Interest: Личный интерес
+        Personliches Interesse: Личный интерес
+        Schulprojekt/Referat: Школьный проект/реферат
+        School Project/Presentation: Школьный проект/реферат
+        Universitäre Lehre: Университетское преподавание
+        Universitäre Lehre/Studium: Университетское преподавание
+        University Teaching/Studies: Университетское преподавание
+        Universit\xC3\xA4re Lehre: Университетское преподавание
+        Universit?re Lehre: Университетское преподавание
+        Universit\xC3\xA4re Lehre/Studium: Университетское преподавание
+        University Course/Lecture: Университетское преподавание
+        Wissenschaftliche Publikation: Научная публикация
+        Scholarly Publication: Научная публикация
+        Publikation: Научная публикация
+        Publication: Научная публикация
+        Pressepublikation: Публикация в прессе
+        Publication in Press: Публикация в прессе
+        Press Publication: Публикация в прессе
+        Sonstiges: Прочее
+        Mitarbeit: Прочее
+        Projektmitarbeit: Прочее
+        Other: Прочее
       state:
-        'Bayern': 'Бавария'
-        'Baden-Württemberg': 'Баден-Вюртемберг'
-        'Baden-W?rttemberg': 'Баден-Вюртемберг'
-        'Saarland': 'Саар'
-        'Hessen': 'Гессен'
-        'Rheinland-Pfalz': 'Рейнланд-Пфальц'
-        'Nordrhein-Westfalen': 'Северный Рейн-Вестфалия'
-        'Niedersachsen': 'Нижняя Саксония'
-        'Thüringen': 'Тюрингия'
-        'Th?ringen': 'Тюрингия'
-        'Sachsen-Anhalt': 'Саксония-Анхальт'
-        'Sachsen': 'Саксония'
-        'Brandenburg': 'Бранденбург'
-        'Berlin': 'Берлин'
-        'Mecklenburg-Vorpommern': 'Мекленбург-Передняя Померания'
-        'Hamburg': 'Гамбург'
-        'Bremen': 'Бремен'
-        'Schleswig-Holstein': 'Шлезвиг-Гольштейн'
-        'außerhalb Deutschlands': 'за пределами Германии'
-        'au?erhalb Deutschlands': 'за пределами Германии'
-        'au?rhalb Deutschlands': 'за пределами Германии'
-        'Outside Germany': 'за пределами ФРГ'
-        'outside Germany': 'за пределами ФРГ'
-
+        Bayern: Бавария
+        Baden-Württemberg: Баден-Вюртемберг
+        Baden-W?rttemberg: Баден-Вюртемберг
+        Saarland: Саар
+        Hessen: Гессен
+        Rheinland-Pfalz: Рейнланд-Пфальц
+        Nordrhein-Westfalen: Северный Рейн-Вестфалия
+        Niedersachsen: Нижняя Саксония
+        Thüringen: Тюрингия
+        Th?ringen: Тюрингия
+        Sachsen-Anhalt: Саксония-Анхальт
+        Sachsen: Саксония
+        Brandenburg: Бранденбург
+        Berlin: Берлин
+        Mecklenburg-Vorpommern: Мекленбург-Передняя Померания
+        Hamburg: Гамбург
+        Bremen: Бремен
+        Schleswig-Holstein: Шлезвиг-Гольштейн
+        außerhalb Deutschlands: за пределами Германии
+        au?erhalb Deutschlands: за пределами Германии
+        au?rhalb Deutschlands: за пределами Германии
+        Outside Germany: за пределами ФРГ
+        outside Germany: за пределами ФРГ
   activerecord:
     errors:
       models:
         user_account:
           attributes:
             password:
-              confirmation: 'не совпадает с первоначальным.'
-              too_short: 'слишком короткий.'
-              too_long: 'слишком длинный.'
+              confirmation: не совпадает с первоначальным.
+              too_short: слишком короткий.
+              too_long: слишком длинный.
         user_registration:
           attributes:
             email:
-              taken: "уже зарегистрирован. Пожалуйста, используйте функцию 'Забыли пароль?' на странице для входа, чтобы восстановить пароль."
+              taken: уже зарегистрирован. Пожалуйста, используйте функцию 'Забыли
+                пароль?' на странице для входа, чтобы восстановить пароль.
       messages:
-        blank: 'отсутствует'
+        blank: отсутствует
     attributes:
       user_account:
-        email: 'Электр. адрес'
-        login: 'Логин'
-        password: 'Пароль'
-        password_confirmation: 'Повторный пароль'
+        email: Электр. адрес
+        login: Логин
+        password: Пароль
+        password_confirmation: Повторный пароль
   errors:
     messages:
-      already_confirmed: "уже подтверждена. Пожалуйста, попробуйте войти в систему"
-      confirmation_period_expired: "должен быть подтвержден в течении %{period}, пожалуйста, запросите подтверждение ещё раз"
-      expired: "устарела. Пожалуйста, запросите новую"
-      not_found: "не найдена"
-      not_locked: "не заблокирована"
+      already_confirmed: уже подтверждена. Пожалуйста, попробуйте войти в систему
+      confirmation_period_expired: должен быть подтвержден в течении %{period}, пожалуйста,
+        запросите подтверждение ещё раз
+      expired: устарела. Пожалуйста, запросите новую
+      not_found: не найдена
+      not_locked: не заблокирована
       not_saved:
         one: "%{resource}: сохранение не удалось из-за %{count} ошибки"
+        other: "%{resource}: сохранение не удалось из-за %{count} ошибки"
         few: "%{resource}: сохранение не удалось из-за %{count} ошибок"
         many: "%{resource}: сохранение не удалось из-за %{count} ошибок"
-        other: "%{resource}: сохранение не удалось из-за %{count} ошибки"

@@ -7,7 +7,7 @@ class UserRolesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_role.user.user_registration, 'processed')
+        render json: data_json(@user_role.user.user_registration, msg: 'processed')
       end
     end
   end
@@ -21,7 +21,7 @@ class UserRolesController < ApplicationController
 
     respond_to do |format|
       format.json { 
-        render json: data_json(user_registration, 'processed')
+        render json: data_json(user_registration, msg: 'processed')
       }
     end
   end

@@ -31,6 +31,7 @@ const account = (state = {isLoggedIn: false}, action) => {
             return Object.assign({}, state, {
                 isLoggingIn: false,
                 isLoggedIn: true,
+                isLoggedOut: false,
                 loggedInAt: Date.now(),
                 firstName: action.firstName,
                 lastName: action.lastName,

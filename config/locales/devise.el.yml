@@ -1,72 +1,357 @@
+---
 el:
   devise:
     confirmations:
-      confirmed: "Ο λογαριασμός σας επιβεβαιώθηκε με επιτυχία. Είστε συνδεδεμένος/η."
-      send_instructions: "Σε λίγα λεπτά θα λάβετε οδηγίες για το πώς θα επιβεβαιώσετε το email σας."
-      send_paranoid_instructions: "Αν το email σας υπάρχει στη βάση δεδομένων μας, θα λάβετε email με οδηγίες για την επιβεβαίωση του λογαριασμού σας."
+      link: Zugangsbestätigung nicht erhalten?
+      resend: Bestätigung anfordern
+      send_instructions: Σε λίγα λεπτά θα λάβετε οδηγίες για το πώς θα επιβεβαιώσετε
+        το email σας.
+      confirmed: Ο λογαριασμός σας επιβεβαιώθηκε με επιτυχία. Είστε συνδεδεμένος/η.
+      invalid_token: Der angegebene Link ist nicht mehr gültig. Vermutlich ist Ihr
+        Zugang bereits freigeschaltet. Bitte verwenden Sie die "Passwort vergessen"
+        Funktion, falls Sie sich nicht anmelden können.
+      password_missing: Zur Bestätigung müssen Sie ein Passwort auswählen.
+      password_confirmation_missing: Die Passwort-Wiederholung stimmt nicht mit Ihrem
+        Passwort überein.
+      no_confirm_instructions: Keine Bestätigungsanleitung bekommen?
+      send_paranoid_instructions: Αν το email σας υπάρχει στη βάση δεδομένων μας,
+        θα λάβετε email με οδηγίες για την επιβεβαίωση του λογαριασμού σας.
     failure:
-      already_authenticated: "Είστε ήδη συνδεδεμένος."
-      inactive: "Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα."
-      invalid: "Μη έγκυρο email ή κωδικός."
-      locked: "Ο λογαριασμός σας είναι κλειδωμένος."
-      last_attempt: "Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί."
-      not_found_in_database: "Μη έγκυρo %{authentication_keys} ή κωδικός."
-      timeout: "Η σύνδεσή σας τερματίστηκε, παρακαλούμε συνδεθείτε ξανά."
-      unauthenticated: "Χρειάζεται να συνδεθείτε πριν να συνεχίσετε."
-      unconfirmed: "Απαιτείται η επιβεβαίωση του λογαριασμού σας πριν συνεχίσετε."
-      invalid_token: "Μη έγκυρος κωδικός πιστοποίησης."
+      already_authenticated: Είστε ήδη συνδεδεμένος.
+      inactive: Ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα.
+      invalid: Μη έγκυρο email ή κωδικός.
+      invalid_token: Μη έγκυρος κωδικός πιστοποίησης.
+      locked: Ο λογαριασμός σας είναι κλειδωμένος.
+      not_found_in_database: Μη έγκυρo %{authentication_keys} ή κωδικός.
+      timeout: Η σύνδεσή σας τερματίστηκε, παρακαλούμε συνδεθείτε ξανά.
+      unauthenticated: Χρειάζεται να συνδεθείτε πριν να συνεχίσετε.
+      unconfirmed: Απαιτείται η επιβεβαίωση του λογαριασμού σας πριν συνεχίσετε.
+      last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
       confirmation_instructions:
-        subject: "Οδηγίες επιβεβαίωσης"
+        subject: Οδηγίες επιβεβαίωσης
       reset_password_instructions:
-        subject: "Οδηγίες επαναφοράς του κωδικού"
+        subject: Οδηγίες επαναφοράς του κωδικού
       unlock_instructions:
-        subject: "Οδηγίες ενεργοποίησης"
+        subject: Οδηγίες ενεργοποίησης
     omniauth_callbacks:
-      failure: "Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι \"%{reason}\"."
-      success: "Επιτυχής έγκριση από το λογαριασμό %{kind}."
+      failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
+      success: Επιτυχής έγκριση από το λογαριασμό %{kind}.
     passwords:
-      change: 'Αλλάξτε τον κωδικό σας'
-      password: "Κωδικός"
-      password_confirmation: "Επανάληψη κωδικού"
-      forgot: "Ξεχάσατε τον κωδικό σας?"
-      no_token: "Δεν έχετε πρόσβαση σε αυτή την σελίδα εαν δεν ηρθατε μέσω email επαναφοράς κωδικού. Εαν ηρθατε μέσω email επαναφοράς κωδικού, παρακαλούμε να σιγουρευτείτε οτι χρησιμοποιήσατε τον πλήρη σύνδεσμο (URL) που σας δόθηκε."
-      send_instructions: "Παρακαλώ δώστε την ηλεκτρονική σας διεύθυνση, με την οποία έγινε η εγγραφή σας στο Αρχείο. Θα λάβετε στο E-Mail σας ένα σύνδεσμο για τον επανακαθορισμό του κωδικού σας."
-      send_paranoid_instructions: "Αν το email σας υπάρχει στη βάση δεδομένων μας, θα λάβετε οδηγίες επαναφοράς του κωδικού σας, μέσω email."
-      updated: "Ο κωδικός σας άλλαξε με επιτυχία. Μπορείτε να συνδεθείτε."
-      updated_not_active: "Ο κωδικός σας άλλαξε με επιτυχία."
+      change: Αλλάξτε τον κωδικό σας
+      forgot: Ξεχάσατε τον κωδικό σας?
+      password: Κωδικός
+      password_confirmation: Επανάληψη κωδικού
+      submit: Passwort jetzt ändern
+      resend: Passwort ändern
+      link: Passwort wiederherstellen
+      send_instructions: Παρακαλώ δώστε την ηλεκτρονική σας διεύθυνση, με την οποία
+        έγινε η εγγραφή σας στο Αρχείο. Θα λάβετε στο E-Mail σας ένα σύνδεσμο για
+        τον επανακαθορισμό του κωδικού σας.
+      updated: Ο κωδικός σας άλλαξε με επιτυχία. Μπορείτε να συνδεθείτε.
+      no_token: Δεν έχετε πρόσβαση σε αυτή την σελίδα εαν δεν ηρθατε μέσω email επαναφοράς
+        κωδικού. Εαν ηρθατε μέσω email επαναφοράς κωδικού, παρακαλούμε να σιγουρευτείτε
+        οτι χρησιμοποιήσατε τον πλήρη σύνδεσμο (URL) που σας δόθηκε.
+      send_paranoid_instructions: Αν το email σας υπάρχει στη βάση δεδομένων μας,
+        θα λάβετε οδηγίες επαναφοράς του κωδικού σας, μέσω email.
+      updated_not_active: Ο κωδικός σας άλλαξε με επιτυχία.
     registrations:
-      link: 'Εγγραφή'
-      destroyed: "Ο λογαριασμός σας διαγράφηκε με επιτυχία."
-      signed_up: "Καλωσήρθατε! Ο λογαριασμός σας δημιουργήθηκε με επιτυχία."
-      signed_up_but_inactive: "Ο λογαριασμός σας δημιουργήθηκε με επιτυχία, αλλά δεν έγινε σύνδεση επειδή ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα."
-      signed_up_but_locked: "Ο λογαριασμός σας δημιουργήθηκε με επιτυχία, αλλά δεν έγινε σύνδεση επειδή ο λογαριασμός σας έχει κλειδωθεί."
-      signed_up_but_unconfirmed: "Ένα μήνυμα που περιέχει τον σύνδεσμο επιβεβαίωσης έχει σταλθεί στο email σας. Ακολουθήστε τον σύνδεσμο για να ενεργοποιήσετε τον λογαριασμό σας."
-      update_needs_confirmation: "Ο λογαριασμός σας ενημερώθηκε με επιτυχία, αλλά χρειάζεται επιβεβαίωση της νέας διεύθυνσης email. Παρακαλούμε ελέγξτε τα email σας και ακολουθήστε τον σύνδεσμο επιβεβαίωσης ώστε να γίνει επαλήθευση της νέας διεύθυνσης email."
-      inactive_signed_up: "Ο λογαριασμός σας δημιουργήθηκε με επιτυχία. Όμως, δε μπορείτε να συνδεθείτε επειδή ο λογαριασμός σας είναι %{reason}."
-      updated: "Ανανεώσατε το λογαριασμό σας με επιτυχία."
+      link: Εγγραφή
+      not_yet_registered: Noch nicht registriert?
+      link_to: Zur Registrierung »
+      submit: Registrierung senden
       activate: 'Ενεργοποίηση του λογαριασμού για '
-      activate_submit: "Αποστολή"
-      activate_text: 'Για να ενεργοποιήσετε το λογαριασμό σας παρακαλώ επιλέξτε έναν κωδικό για την πρόσβασή σας.'
+      activate_submit: Αποστολή
+      activate_text: Για να ενεργοποιήσετε το λογαριασμό σας παρακαλώ επιλέξτε έναν
+        κωδικό για την πρόσβασή σας.
+      successful: Ihre Registrierung ist bei uns eingegangen.
+      signed_up: Καλωσήρθατε! Ο λογαριασμός σας δημιουργήθηκε με επιτυχία.
+      updated: Ανανεώσατε το λογαριασμό σας με επιτυχία.
+      destroyed: Ο λογαριασμός σας διαγράφηκε με επιτυχία.
+      welcome: Willkommen! Ihr Zugang zum Archiv wurde soeben freigeschaltet. Sie
+        sind jetzt angemeldet. Bitte halten Sie Ihren Benutzernamen und Ihr Passwort
+        bei Ihrem nächsten Besuch bereit.
+      signed_up_but_inactive: Ο λογαριασμός σας δημιουργήθηκε με επιτυχία, αλλά δεν
+        έγινε σύνδεση επειδή ο λογαριασμός σας δεν έχει ενεργοποιηθεί ακόμα.
+      signed_up_but_locked: Ο λογαριασμός σας δημιουργήθηκε με επιτυχία, αλλά δεν
+        έγινε σύνδεση επειδή ο λογαριασμός σας έχει κλειδωθεί.
+      signed_up_but_unconfirmed: Ένα μήνυμα που περιέχει τον σύνδεσμο επιβεβαίωσης
+        έχει σταλθεί στο email σας. Ακολουθήστε τον σύνδεσμο για να ενεργοποιήσετε
+        τον λογαριασμό σας.
+      update_needs_confirmation: Ο λογαριασμός σας ενημερώθηκε με επιτυχία, αλλά χρειάζεται
+        επιβεβαίωση της νέας διεύθυνσης email. Παρακαλούμε ελέγξτε τα email σας και
+        ακολουθήστε τον σύνδεσμο επιβεβαίωσης ώστε να γίνει επαλήθευση της νέας διεύθυνσης
+        email.
+      inactive_signed_up: Ο λογαριασμός σας δημιουργήθηκε με επιτυχία. Όμως, δε μπορείτε
+        να συνδεθείτε επειδή ο λογαριασμός σας είναι %{reason}.
       reasons:
-        inactive: "ανενεργός"
-        unconfirmed: "μη επιβεβαιωμένος. Σας είχε αποσταλεί email με οδηγίες"
-        locked: "κλειδωμένος"
+        inactive: ανενεργός
+        unconfirmed: μη επιβεβαιωμένος. Σας είχε αποσταλεί email με οδηγίες
+        locked: κλειδωμένος
     sessions:
-      signed_in: "Σύνδεση με επιτυχία."
-      signed_out: "Αποσύνδεση με επιτυχία."
-      already_signed_out: "Αποσύνδεση με επιτυχία."
+      link: Anmelden
+      login: Anmelden
+      signed_in: Σύνδεση με επιτυχία.
+      signed_out: Αποσύνδεση με επιτυχία.
+      unauthenticated: Für diese Aktion ist eine Anmeldung erforderlich.
+      unauthenticated_search: Um die Suche zu nutzen, müssen Sie sich erst anmelden.
+      unconfirmed: Ihr Zugang muss zuerst freigeschaltet werden, damit Sie sich anmelden
+        können.
+      locked: Ihr Zugang wurde gesperrt.
+      invalid: Username oder Passwort ist ungültig.
+      invalid_token: Ungültiger Authentifizierungscode.
+      timeout: Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.
+      inactive: Ihr Zugang ist zur Zeit deaktiviert.
+      remember_me: angemeldet bleiben
+      logout: abmelden
+      already_signed_out: Αποσύνδεση με επιτυχία.
     unlocks:
-      send_instructions: "Θα σας αποσταλούν οδηγίες ενεργοποίησης του λογαριασμού σας."
-      send_paranoid_instructions: "Αν ο λογαριασμός σας υπάρχει, θα σας αποσταλεί σε λίγα λεπτά ένα email με οδηγίες ενεργοποίησής του."
-      unlocked: "Ο λογαριασμός σας ενεργοποιήθηκε με επιτυχία. Είστε συνδεδεμένος/η."
+      link: Zugang reaktivieren
+      send_instructions: Θα σας αποσταλούν οδηγίες ενεργοποίησης του λογαριασμού σας.
+      unlocked: Ο λογαριασμός σας ενεργοποιήθηκε με επιτυχία. Είστε συνδεδεμένος/η.
+      send_paranoid_instructions: Αν ο λογαριασμός σας υπάρχει, θα σας αποσταλεί σε
+        λίγα λεπτά ένα email με οδηγίες ενεργοποίησής του.
+    user_interface:
+      status:
+        not_signed_in: nicht angemeldet
+    labels:
+      send_now: Jetzt zuschicken
+    authentication_keys:
+      login: Benutzer(in)
+      email: E-Mail
+      password: Passwort
+    workflow_states:
+      new_registration: Neuanmeldung
+      new_registrations: Neuanmeldungen
+      unchecked: unbeantwortet
+      checked: geprüft
+      registered: registriert
+      deactivated: deaktiviert
+      postponed: zurückgestellt
+      rejected: abgelehnt
+      all: alle
+    workflow_events:
+      register: registrieren
+      register_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
+      reject: ablehnen
+      reject_info: Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).
+      resend_info: Daten erneut senden
+      resend_info_info: Der Link für die Zugangsaktivierung wird dem Benutzer erneut
+        zugesandt (per E-Mail).
+      deactivate: deaktivieren
+      deactivate_info: Der Zugang des Nutzers wird deaktiviert (der Nutzer erhält
+        keine E-Mail und kann sich nicht mehr einloggen).
+      reactivate: wiederaufnehmen
+      reactivate_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
+      postpone: zurückstellen
+      postpone_info: Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte
+        separate E-Mail und Anmerkung schreiben).
+      activate: aktivieren
+      activate_info: Der Zugang des Nutzers wird direkt aktiviert (bitte den Nutzer
+        separat über seine Zugangsdaten informieren).
+      expire: verfallen lassen
+      expire_info: Die Anfrage zurückstellen, da der Nutzer nicht reagiert und seinen
+        Zugang nicht aktiviert (keine E-Mail).
+      remove: deaktivieren
+      remove_info: Der Zugang des Nutzers wird deaktiviert (bitte den Nutzer in einer
+        separaten E-Mail informieren).
+    registration_fields:
+      fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
+      select: Bitte auswählen
+      appellation: Anrede
+      first_name: Vorname
+      last_name: Nachname
+      job_description: Beruf
+      email: E-Mail
+      research_intentions: Recherche-Anliegen
+      comments: Präzisierung des Anliegens
+      organization: Institution
+      school: Schule
+      homepage: Homepage der Institution
+      street: Straße
+      zipcode: PLZ
+      city: Ort
+      state: Bundesland
+      country: Land
+      tos_agreement: Nutzungsbedingungen
+      tos_agreement_explanation: Ich stimme den %{terms_of_use} zu.
+      priv_agreement: Datenschutzbestimmungen
+      priv_agreement_explanation: Ich stimme den %{privacy_policy} zu.
+      agreed: zugestimmt
+      not_agreed: keine Zustimmung
+      send_newsletter: Newsletter
+      send_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
+        abonnieren.
+      receive_newsletter: Newsletter
+      newsletter_signup: Newsletter-Abonnement
+      receive_newsletter_explanation: Ich möchte den Newsletter des Projektes "%{project_name}"
+        abonnieren.
+      requested_at: Datum der Anfrage
+      name: Name
+      adress: Anschrift
+      workflow_state: Registrierungsstatus
+      login: Benutzername
+      created_at: Datum der Registrierung
+    registration_values:
+      appellation:
+        Frau: Frau
+        Ms.: Frau
+        Ms: Frau
+        Herr: Herr
+        Mr.: Herr
+        Mr: Herr
+        Frau Dr: Frau Dr
+        Herr Dr: Herr Dr
+        Dr: Dr
+        Dr PhD: Dr
+        Frau PD Dr: Frau PD Dr
+        Herr PD Dr: Herr PD Dr
+        PD Dr: PD Dr
+        Frau Prof: Frau Prof
+        Herr Prof: Herr Prof
+        Herr Pro: Herr Prof
+        Prof: Prof
+      job_description:
+        Dozentin/Dozent: Dozent(in)/Forscher(in)
+        Dozent(in)/Forscher(in): Dozent(in)/Forscher(in)
+        Dozent: Dozent(in)/Forscher(in)
+        Wissenschaftlerin/Wissenschaftler: Dozent(in)/Forscher(in)
+        Lecturer/Researcher: Dozent(in)/Forscher(in)
+        Lecturer: Dozent(in)/Forscher(in)
+        Filmemacherin/Filmemacher: Filmemacher(in)
+        Filmemacher(in): Filmemacher(in)
+        Filmmaker: Filmemacher(in)
+        Journalistin/Journalist: Journalist(in)
+        Journalist(in): Journalist(in)
+        Journalist: Journalist(in)
+        Lehrerin/Lehrer: Lehrer(in)
+        Lehrer(in): Lehrer(in)
+        Teacher: Lehrer(in)
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiter(in) (Museen/Gedenkstatten): 
+        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Staff Member (museums/memorial sites): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Staff Member (Museums/Memorial Sites): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeit: Mitarbeiter(in) (Museen/Gedenkstätten)
+        Projektmitarbeiter: Mitarbeit
+        Mitarbeiterin: Mitarbeit
+        Schülerin/Schüler: Schüler(in)
+        Sch?lerin/Sch?ler: Schüler(in)
+        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler(in)
+        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler(in)
+        Sch\xC3\xBCler(in): Schüler(in)
+        Schüler(in): Schüler(in)
+        Sch?ler(in): Schüler(in)
+        School Student: Schüler(in)
+        Studentin/Student: Student(in)
+        Student(in): Student(in)
+        University Student: Student(in)
+        Sonstiges: Sonstiges
+        k.A.: Sonstiges
+        '': Sonstiges
+        Other: Sonstiges
+      research_intentions:
+        Ausstellung: Ausstellung
+        Exhibition: Ausstellung
+        Bildungsarbeit: Bildungsarbeit
+        Teaching: Bildungsarbeit
+        Educational Work: Bildungsarbeit
+        Schulunterricht: Bildungsarbeit
+        Dissertation: Dissertation
+        Dissertation/Habilitation: Dissertation
+        Dokumentarfilm: Dokumentarfilm
+        Documentary Film: Dokumentarfilm
+        Documentary: Dokumentarfilm
+        Familienforschung: Familienforschung
+        Genealogy: Familienforschung
+        Genealogical Research: Familienforschung
+        Kunstprojekt: Kunstprojekt
+        Art Project: Kunstprojekt
+        Persönliches Interesse: Persönliches Interesse
+        Pers\xC3\xB6nliches Interesse: Persönliches Interesse
+        Pers?nliches Interesse: Persönliches Interesse
+        Pers?ches Interesse: Persönliches Interesse
+        Private Interest/Other: Persönliches Interesse
+        Personal Interest: Persönliches Interesse
+        Personliches Interesse: Persönliches Interesse
+        Schulprojekt/Referat: Schulprojekt/Referat
+        School Project/Presentation: Schulprojekt/Referat
+        Universitäre Lehre: Universitäre Lehre
+        Universitäre Lehre/Studium: Universitäre Lehre
+        University Teaching/Studies: Universitäre Lehre
+        Universit\xC3\xA4re Lehre: Universitäre Lehre
+        Universit?re Lehre: Universitäre Lehre
+        Universit\xC3\xA4re Lehre/Studium: Universitäre Lehre
+        University Course/Lecture: Universitäre Lehre
+        Wissenschaftliche Publikation: Wissenschaftliche Publikation
+        Scholarly Publication: Wissenschaftliche Publikation
+        Publikation: Wissenschaftliche Publikation
+        Publication: Wissenschaftliche Publikation
+        Pressepublikation: Pressepublikation
+        Publication in Press: Pressepublikation
+        Press Publication: Pressepublikation
+        Sonstiges: Sonstiges
+        Mitarbeit: Sonstiges
+        Projektmitarbeit: Sonstiges
+        Other: Sonstiges
+      state:
+        Bayern: Bayern
+        Baden-Württemberg: Baden-Württemberg
+        Baden-W?rttemberg: Baden-Württemberg
+        Saarland: Saarland
+        Hessen: Hessen
+        Rheinland-Pfalz: Rheinland-Pfalz
+        Nordrhein-Westfalen: Nordrhein-Westfalen
+        Niedersachsen: Niedersachsen
+        Thüringen: Thüringen
+        Th?ringen: Thüringen
+        Sachsen-Anhalt: Sachsen-Anhalt
+        Sachsen: Sachsen
+        Brandenburg: Brandenburg
+        Berlin: Berlin
+        Mecklenburg-Vorpommern: Mecklenburg-Vorpommern
+        Hamburg: Hamburg
+        Bremen: Bremen
+        Schleswig-Holstein: Schleswig-Holstein
+        außerhalb Deutschlands: außerhalb Deutschlands
+        au?erhalb Deutschlands: außerhalb Deutschlands
+        au?rhalb Deutschlands: außerhalb Deutschlands
+        Outside Germany: außerhalb Deutschlands
+        outside Germany: außerhalb Deutschlands
+  activerecord:
+    errors:
+      models:
+        user_account:
+          attributes:
+            password:
+              confirmation: und -wiederholung stimmen nicht überein.
+              too_short: ist zu kurz.
+              too_long: ist zu lang.
+        user_registration:
+          attributes:
+            email:
+              taken: ist bereits registriert. Bitte benutzen w&auml;hlen Sie 'Passwort
+                vergessen' auf der Anmelde-Seite um Ihr Passwort zurückzusetzen.
+      messages:
+        blank: fehlt
+    attributes:
+      user_account:
+        email: E-Mail
+        login: Login
+        password: Passwort
+        password_confirmation: Passwort-Wiederholung
   errors:
     messages:
-      already_confirmed: "έχει ήδη επιβεβαιωθεί, παρακαλούμε δοκιμάστε να ξανασυνδεθείτε"
-      confirmation_period_expired: "πρέπει να γίνει επιβεβαίωση μέσα σε %{period}, παρακαλούμε ζητήστε νέο email επιβεβαίωσης"
-      expired: "έχει λήξει, παρακαλούμε ζητήστε νέο"
-      not_found: "δεν βρέθηκε"
-      not_locked: "δεν είναι κλειδωμένο"
+      already_confirmed: έχει ήδη επιβεβαιωθεί, παρακαλούμε δοκιμάστε να ξανασυνδεθείτε
+      confirmation_period_expired: πρέπει να γίνει επιβεβαίωση μέσα σε %{period},
+        παρακαλούμε ζητήστε νέο email επιβεβαίωσης
+      expired: έχει λήξει, παρακαλούμε ζητήστε νέο
+      not_found: δεν βρέθηκε
+      not_locked: δεν είναι κλειδωμένο
       not_saved:
-        one: "1 σφάλμα εμπόδισε αυτό το %{resource} να αποθηκευτεί:"
+        one: '1 σφάλμα εμπόδισε αυτό το %{resource} να αποθηκευτεί:'
         other: "%{count} σφάλματα εμπόδισαν αυτό το %{resource} να αποθηκευτεί:"

@@ -5,7 +5,7 @@ class PermissionsController < ApplicationController
     @permission = Permission.create permission_params
     respond_to do |format|
       format.json do
-        render json: data_json(@permission, 'processed')
+        render json: data_json(@permission, msg: 'processed')
       end
     end
   end
@@ -16,7 +16,7 @@ class PermissionsController < ApplicationController
     @permission.update_attributes permission_params
     respond_to do |format|
       format.json do
-        render json: data_json(@permission, 'processed')
+        render json: data_json(@permission, msg: 'processed')
       end
     end
   end
@@ -66,8 +66,8 @@ class PermissionsController < ApplicationController
       permit(
         :name,
         :desc,
-        :controller,
-        :action
+        :klass,
+        :action_name
     )
   end
 

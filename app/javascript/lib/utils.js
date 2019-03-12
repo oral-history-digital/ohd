@@ -84,8 +84,8 @@ export function t(props, key) {
             return text 
         } else {
             // return `translation for ${props.locale}.${key} is missing!`;
-            keyArray = key.split('.')
-            text = keyArray[keyArray.length - 1]
+            keyArray = key ? key.split('.') : [];
+            text = keyArray[keyArray.length - 1];
             return text;
         }
     }
@@ -125,14 +125,41 @@ export function pluralize(word) {
     return pluralizedWord;
 }
 
-export function admin(props, obj) {
-    if (props.account && props.editView && (props.account.admin || props.account.permissions)) {
+export function camelcase(str) {
+    str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function loggedIn(props) {
+    return !!(!props.authStatus.isLoggedOut && props.account.email);
+}
+
+// props should contain:
+//   - account ~ state.data.accounts.current
+//   - editView ~ state.archive.editView
+//
+// obj can be the serialized json of e.g. an interview or a segment
+// 
+// but obj can also be sth. like {type: 'Segment', id: 2345} or {type: 'UserRegistration', action: 'update'}
+// so obj should contain a type and (id or action) 
+//
+export function admin(props, obj={}) {
+    if (props.account && props.editView) {
         if (
             props.account.admin ||
-            (props.account.permissions && props.account.permissions.filter(permission => permission.controller === obj.type && permission.action === obj.action).length > 0) ||
-            (props.account.tasks && props.account.tasks.filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0)
+            (obj.type && (obj.id || obj.action)) && (
+                //
+                // if obj is a task of current_user_account, he/she should be able to edit it 
+                (props.account.tasks && obj.type === 'Task' && Object.values(props.account.tasks).filter(task => task.id === obj.id).length > 0) || 
+                //
+                // if obj.type and/or id correspond to some role or task, current_user_account should be able to edit it
+                (props.account.permissions && Object.values(props.account.permissions).filter(permission => permission.klass === obj.type && permission.action_name === obj.action).length > 0) ||
+                (props.account.tasks && Object.values(props.account.tasks).filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0) 
+            )
         ) {
             return true;
+        } else {
+            return false;
         }
     } else {
         return false;

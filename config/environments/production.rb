@@ -28,7 +28,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   # Store files locally.
-  config.active_storage.service = :local
+  config.active_storage.service = :fu_server
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 

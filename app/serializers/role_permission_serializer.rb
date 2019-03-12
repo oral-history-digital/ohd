@@ -1,11 +1,11 @@
-class RolePermissionSerializer < ActiveModel::Serializer
+class RolePermissionSerializer < ApplicationSerializer
   attributes :id,
     :role_id,
     :permission_id,
     :name,
     :desc,
-    :controller,
-    :action,
+    :klass,
+    :action_name,
     :created_at
 
   def created_at
@@ -15,8 +15,8 @@ class RolePermissionSerializer < ActiveModel::Serializer
   [
     :name,
     :desc,
-    :controller,
-    :action
+    :klass,
+    :action_name
   ].each do |att|
     define_method att do 
       object.permission.send(att)

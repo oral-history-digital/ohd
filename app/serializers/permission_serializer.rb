@@ -1,9 +1,9 @@
-class PermissionSerializer < ActiveModel::Serializer
+class PermissionSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :desc,
-    :controller,
-    :action,
+    :klass,
+    :action_name,
     :created_at
 
   def created_at

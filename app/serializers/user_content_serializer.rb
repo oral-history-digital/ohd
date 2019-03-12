@@ -1,4 +1,4 @@
-class UserContentSerializer < ActiveModel::Serializer
+class UserContentSerializer < ApplicationSerializer
   attributes :id,
     :description,
     :user_id,

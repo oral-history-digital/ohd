@@ -4,7 +4,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
-import { t, admin, pluralize, parametrizedQuery, statifiedQuery } from '../../../lib/utils';
+import { t, admin, pluralize, parametrizedQuery, statifiedQuery, camelcase } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class WrappedDataList extends React.Component {
@@ -49,6 +49,7 @@ export default class WrappedDataList extends React.Component {
                         joinedData={this.props.joinedData}
                         form={this.form}
                         hideEdit={this.props.hideEdit}
+                        hideDelete={this.props.hideDelete}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -73,7 +74,7 @@ export default class WrappedDataList extends React.Component {
     }
 
     add() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: camelcase(this.props.scope), action: 'create'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

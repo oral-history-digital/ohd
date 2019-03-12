@@ -17,6 +17,12 @@ const mapStateToProps = (state) => {
         searchableAttributes: [
             {attributeName: 'first_name'}, 
             {attributeName: 'last_name'}, 
+            {attributeName: 'email'}, 
+            {
+                attributeName: 'default_locale', 
+                type: 'select',
+                values: state.archive.locales,
+            },
             {attributeName: 'workflow_state', type: 'select', values: ['all', 'unchecked', 'checked', 'registered', 'postponed', 'rejected']}
         ]
     }

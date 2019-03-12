@@ -66,14 +66,14 @@ const data = (state = initialState, action) => {
             }
         case REMOVE_DATA:
             if (action.nestedId) {
-                let obj = state[action.dataType][action.id][action.nestedDataType];
+                let nestedData = state[action.dataType][action.id][action.nestedDataType];
                 return Object.assign({}, state, {
                     statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [action.nestedDataType]: Object.keys(obj).reduce((acc, key) => {
-                                if (key !== action.nestedId) {
-                                    return {...acc, [key]: obj[key]}
+                            [action.nestedDataType]: Object.keys(nestedData).reduce((acc, key) => {
+                                if (parseInt(key) !== action.nestedId) {
+                                    return {...acc, [key]: nestedData[key]}
                                 }
                                 return acc;
                             }, {})
@@ -84,7 +84,7 @@ const data = (state = initialState, action) => {
                 return Object.assign({}, state, {
                     statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
                     [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
-                        if (key !== action.nestedId) {
+                        if (parseInt(key) !== action.id) {
                             return {...acc, [key]: state[action.dataType][key]}
                         }
                         return acc;

@@ -144,7 +144,7 @@ export default class InterviewPreview extends React.Component {
     }
 
     renderExportCheckbox() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
                 <input type='checkbox' />
             </div>

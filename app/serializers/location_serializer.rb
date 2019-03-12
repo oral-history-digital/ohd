@@ -1,4 +1,4 @@
-class LocationSerializer < ActiveModel::Serializer
+class LocationSerializer < ApplicationSerializer
   attributes :id,
              :latitude,
              :longitude,

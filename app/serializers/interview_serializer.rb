@@ -1,4 +1,4 @@
-class InterviewSerializer < ActiveModel::Serializer
+class InterviewSerializer < ApplicationSerializer
   attributes :id,
              :archive_id,
              :collection_id,
@@ -131,8 +131,10 @@ class InterviewSerializer < ActiveModel::Serializer
   def anonymous_title
     I18n.available_locales.inject({}) do |mem, locale|
       name_parts = []
-      name_parts << object.interviewees.first.first_name(locale) unless object.interviewees.first.first_name(locale).blank?
-      name_parts << "#{(object.interviewees.first.last_name(locale).blank? ? '' : object.interviewees.first.last_name(locale)).strip.chars.first}."
+      unless  object.interviewees.blank?
+        name_parts << object.interviewees.first.first_name(locale) unless object.interviewees.first.first_name(locale).blank?
+        name_parts << "#{(object.interviewees.first.last_name(locale).blank? ? '' : object.interviewees.first.last_name(locale)).strip.chars.first}."
+      end
       mem[locale] = name_parts.join(' ')
       mem
     end

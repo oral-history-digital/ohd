@@ -1,4 +1,4 @@
-class UserAccountSerializer < ActiveModel::Serializer
+class UserAccountSerializer < ApplicationSerializer
   attributes :id,
     :email,
     :login,
@@ -14,12 +14,11 @@ class UserAccountSerializer < ActiveModel::Serializer
     #:country,
     #:receive_newsletter,
     #:newsletter_signup,
-    :admin
-
-  has_many :tasks
-  has_many :supervised_tasks
-  has_many :permissions
-  has_many :roles
+    :admin,
+    :tasks,
+    :supervised_tasks,
+    :user_roles,
+    :permissions
 
   def first_name
     object.user && object.user.first_name
@@ -35,6 +34,22 @@ class UserAccountSerializer < ActiveModel::Serializer
 
   def user_id
     object.user.id
+  end
+
+  def user_roles
+    object.user ? object.user.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
+  end
+
+  def tasks
+    object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+  end
+
+  def supervised_tasks
+    object.user ? object.user.supervised_tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+  end
+
+  def permissions
+    object.user ? object.user.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem} : {}
   end
 
 end

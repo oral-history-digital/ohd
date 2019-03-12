@@ -47,7 +47,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
             return (
                 <div className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}

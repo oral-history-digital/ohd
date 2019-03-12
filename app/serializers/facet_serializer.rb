@@ -1,4 +1,4 @@
-class FacetSerializer < ActiveModel::Serializer
+class FacetSerializer < ApplicationSerializer
   attributes :id,
              :name,
              :subfacets

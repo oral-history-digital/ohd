@@ -135,12 +135,12 @@ export default class Segment extends React.Component {
 
     renderLinks(locale) {
         if (
-            admin(this.props) || 
+            admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
             (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
 
             return (
                 <div className={icoCss}>
@@ -159,7 +159,7 @@ export default class Segment extends React.Component {
     }
 
     edit(locale) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Segment', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -178,7 +178,7 @@ export default class Segment extends React.Component {
     }
 
     editHeadings(locale) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Segment', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

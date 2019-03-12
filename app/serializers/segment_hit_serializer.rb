@@ -1,4 +1,4 @@
-class SegmentHitSerializer < ActiveModel::Serializer
+class SegmentHitSerializer < ApplicationSerializer
   include IsoHelpers
 
   attributes :id,

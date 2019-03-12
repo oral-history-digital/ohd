@@ -1,4 +1,4 @@
-class PhotoSerializer < ActiveModel::Serializer
+class PhotoSerializer < ApplicationSerializer
   include IsoHelpers
 
   attributes :id, 

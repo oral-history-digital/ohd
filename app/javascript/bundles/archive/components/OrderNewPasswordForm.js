@@ -14,9 +14,10 @@ export default class OrderNewPasswordForm extends React.Component {
         this.state = {
             showErrors: false, 
             values: {
+                email: this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : null
             },
             errors: {
-                email: true,
+                email: !(this.props.account.email && this.props.account.email.includes('@'))
             }
         };
 
