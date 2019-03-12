@@ -24,5 +24,6 @@ module Archive
     config.datacite = config_for("datacite")
 
     config.i18n.available_locales = config.project["available_locales"]
+    config.i18n.default_locale = config.project["default_locale"].try(:to_sym) || config.i18n.default_locale
   end
 end
