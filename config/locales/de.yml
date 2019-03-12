@@ -247,7 +247,6 @@ de:
       edit: Foto bearbeiten
       delete: Foto löschen
     user_registration:
-<<<<<<< HEAD
       show: 'Details'
       edit: 'Bearbeiten'
     role: 
@@ -264,24 +263,6 @@ de:
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
       admin: 'Berechtigungen bearbeiten'
-=======
-      show: Details
-      edit: Bearbeiten
-    role:
-      new: Rolle hinzufügen
-      edit: Rolle bearbeiten
-      delete: Rolle löschen
-      admin: Rollen bearbeiten
-    role_permission:
-      new: Erlaubnis hinzufügen
-      edit: Erlaubnis bearbeiten
-      delete: Erlaubnis löschen
-    permission:
-      new: Erlaubnis hinzufügen
-      edit: Erlaubnis bearbeiten
-      delete: Erlaubnis löschen
-      admin: Erlaubnisse bearbeiten
->>>>>>> 747fe64c63b59fbb607a815c103539ca771c8abf
     user_role:
       show: Beschreibung
       edit: Bearbeiten
@@ -511,20 +492,12 @@ de:
         other: Aufgaben
         supervised_other: Betreute Aufgaben
       permission:
-<<<<<<< HEAD
         one: 'Berechtigung'
         other: 'Berechtigungen'
       role_permission:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
 
-=======
-        one: Erlaubnis
-        other: Erlaubnisse
-      role_permission:
-        one: Zur Rolle gehörende Erlaubnis
-        other: Zur Rolle gehörende Erlaubnisse
->>>>>>> 747fe64c63b59fbb607a815c103539ca771c8abf
     attributes:
       history:
         forced_labor_details: Zwangsarbeitdetails
@@ -657,21 +630,12 @@ de:
         name: Name
         desc: Beschreibung
       role_permission:
-<<<<<<< HEAD
         name: 'Name'
         desc: 'Beschreibung'
         permission_id: 'Berechtigung'
         controller: 'Controller'
         action: 'Action'
         created_at: 'angelegt'
-=======
-        name: Name
-        desc: Beschreibung
-        permission_id: Erlaubnis
-        controller: Controller
-        action: Action
-        created_at: angelegt
->>>>>>> 747fe64c63b59fbb607a815c103539ca771c8abf
       permission:
         name: Name
         desc: Beschreibung
