@@ -8,6 +8,7 @@ class UserAccount < ActiveRecord::Base
   #attr_accessible :email, :password, :password_confirmation, :remember_me
 
   devise :database_authenticatable,
+         :confirmable,
          :rememberable,
          :recoverable,
          :trackable
@@ -55,6 +56,14 @@ class UserAccount < ActiveRecord::Base
     self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
+  def first_name=(name)
+    user.update_attribute :first_name, name
+  end
+
+  def last_name=(name)
+    user.update_attribute :last_name, name
+  end
+
   def tags
     #user.tags
     []
@@ -71,19 +80,19 @@ class UserAccount < ActiveRecord::Base
   # Confirm a user by setting it's confirmed_at to actual time. If the user
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
-  def confirm!(password, password_confirmation)
-    reset_password(password, password_confirmation)
-    unless_confirmed do
-      self.confirmation_token = nil
-      self.confirmed_at = Time.now
-      self.deactivated_at = nil
+  #def confirm!(password, password_confirmation)
+    #reset_password(password, password_confirmation)
+    #unless_confirmed do
+      #self.confirmation_token = nil
+      #self.confirmed_at = Time.now
+      #self.deactivated_at = nil
 
-      unless self.user_registration.nil?
-        self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
-      end
-      save(validate: false)
-    end
-  end
+      #unless self.user_registration.nil?
+        #self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
+      #end
+      #save(validate: false)
+    #end
+  #end
 
   # Verifies whether a user is confirmed or not
   def confirmed?

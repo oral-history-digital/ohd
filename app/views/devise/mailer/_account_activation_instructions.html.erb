@@ -1,0 +1,29 @@
+<% 
+  url = activate_user_registration_url(id: @user_account.confirmation_token, protocol: 'https', locale: @user_account.user_registration.default_locale)
+  case @user_account.user_registration.default_locale
+  when :en 
+-%>
+    <p>Dear <%= @user_account.display_name %>,</p>
+    <p>we confirm your account registration to our archive. Your username is: <%= @user_account.email %></p>
+    <p>To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:</p>
+    <p><%= link_to 'Activate your access now', url %></p>
+    <br/>
+    <p>Best regards,</p>
+    <p>The archive team "<%= Project.project_name['en'] %>"</p>
+  <% when :ru -%>
+    <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
+    <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>
+    <p>Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:</p>
+    <p><%= link_to 'Активировать доступ сейчас', url %></p>
+    <br/>
+    <p>С уважением,</p>
+    <p>Команда архива "<%= Project.project_name['ru'] %>"</p>
+  <% else -%>
+    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
+    <p>wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @user_account.email %></p>
+    <p>Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang hier zu aktivieren und ein neues Passwort zu wählen:</p>
+    <p><%= link_to 'Zugang jetzt aktivieren', url %></p>
+    <br/>
+    <p>Mit freundlichen Grüßen,</p>
+    <p>Das Archiv-Team "<%= Project.project_name['de'] %>"</p>
+<% end -%>

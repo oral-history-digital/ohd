@@ -73,6 +73,7 @@ class UserRegistrationsController < ApplicationController
   def update
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
+    @bla = 'blabla'
     @user_registration.update_attributes(user_registration_params)
     clear_cache @user_registration
 

@@ -5,7 +5,11 @@ Rails.application.routes.draw do
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
-    resources :accounts, only: [:show, :update]
+    resources :accounts, only: [:show, :update] do
+      member do
+        get :confirm_new_email
+      end
+    end
     resources :user_registrations do
       member do
         post :confirm

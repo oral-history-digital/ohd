@@ -197,9 +197,9 @@ EVAL
     raise "Could not create a valid user for #{self.inspect}" unless self.user.valid?
     self.processed_at = Time.now
     save
-    unless @skip_mail_delivery
-      UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
-    end
+    #unless @skip_mail_delivery
+      #UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
+    #end
   end
 
   def activate
@@ -224,9 +224,10 @@ EVAL
       self.register
     else
       self.user_account.reactivate!
-      if self.user_account.valid? and !@skip_mail_delivery
-        UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
-      end
+      user_account.resend_confirmation_instructions
+      #if self.user_account.valid? and !@skip_mail_delivery
+        #UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
+      #end
     end
   end
 
@@ -240,10 +241,11 @@ EVAL
     unless checked?
       raise "Dieser Zugang ist nicht freigegeben worden (aktueller Stand: '#{I18n.t(workflow_state, :scope => 'workflow_states')}')"
     end
-    user_account.generate_confirmation_token if user_account.confirmation_token.blank?
-    user_account.confirmation_sent_at = Time.now
-    user_account.save
-    UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
+    user_account.resend_confirmation_instructions
+    #user_account.generate_confirmation_token if user_account.confirmation_token.blank?
+    #user_account.confirmation_sent_at = Time.now
+    #user_account.save
+    #UserAccountMailer.with(user_account: self.user_account).account_activation_instructions.deliver
   end
 
   def full_name

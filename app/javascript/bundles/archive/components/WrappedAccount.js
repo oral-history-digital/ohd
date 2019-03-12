@@ -61,6 +61,12 @@ export default class WrappedAccount extends React.Component {
                         attribute: 'last_name',
                         validate: function(v){return v.length > 1} 
                     },
+                    {
+                        attribute: 'email',
+                        elementType: 'input',
+                        type: 'email',
+                        validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
+                    },
                 ]}
             />
         );
