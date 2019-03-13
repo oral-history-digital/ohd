@@ -27,7 +27,7 @@ class UserRegistrationsController < ApplicationController
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.with(user_account: @user_registration.user_account).account_activation_instructions.deliver
+        @user_registration.user_account.resend_confirmation_instructions
       end
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
@@ -56,7 +56,7 @@ class UserRegistrationsController < ApplicationController
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    @user_account.confirm!(password, password_confirmation)
+    @user_account.confirm_with_password!(password, password_confirmation)
     if @user_account.errors.empty?
       @user_account.reset_password_token = nil
       flash[:alert] = t('welcome', :scope => 'devise.registrations')
@@ -73,7 +73,6 @@ class UserRegistrationsController < ApplicationController
   def update
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
-    @bla = 'blabla'
     @user_registration.update_attributes(user_registration_params)
     clear_cache @user_registration
 

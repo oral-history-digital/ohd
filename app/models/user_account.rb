@@ -1,11 +1,6 @@
 require 'devise'
 
 class UserAccount < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  #devise :database_authenticatable, :registerable,
-         #:recoverable, :rememberable, :trackable, :validatable
-  #attr_accessible :email, :password, :password_confirmation, :remember_me
 
   devise :database_authenticatable,
          :confirmable,
@@ -80,19 +75,19 @@ class UserAccount < ActiveRecord::Base
   # Confirm a user by setting it's confirmed_at to actual time. If the user
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
-  #def confirm!(password, password_confirmation)
-    #reset_password(password, password_confirmation)
-    #unless_confirmed do
-      #self.confirmation_token = nil
-      #self.confirmed_at = Time.now
-      #self.deactivated_at = nil
+  def confirm_with_password!(password, password_confirmation)
+    reset_password(password, password_confirmation)
+    unless_confirmed do
+      self.confirmation_token = nil
+      self.confirmed_at = Time.now
+      self.deactivated_at = nil
 
-      #unless self.user_registration.nil?
-        #self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
-      #end
-      #save(validate: false)
-    #end
-  #end
+      unless self.user_registration.nil?
+        self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
+      end
+      save(validate: false)
+    end
+  end
 
   # Verifies whether a user is confirmed or not
   def confirmed?
