@@ -103,7 +103,7 @@ export default class RegisterForm extends React.Component {
                         type: 'checkbox',
                         validate: function(v){return v !== false && v !== '0'},
                         help: (
-                            <a href={conditionsLink} target="_blank" title="Externer Link">
+                            <a href={conditionsLink} target="_blank" title="Externer Link" rel="noopener">
                                 {t(this.props, 'user_registration.tos_agreement')}
                             </a>
                         )
@@ -115,7 +115,7 @@ export default class RegisterForm extends React.Component {
                         type: 'checkbox',
                         validate: function(v){return v !== false && v !== '0'},
                         help: (
-                            <a href={privacyLink} target="_blank" title="Externer Link">
+                            <a href={privacyLink} target="_blank" title="Externer Link" rel="noopener">
                                 {t(this.props, 'user_registration.priv_agreement')}
                             </a>
                         )

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  root :to => redirect('/de')
-  root to: "home#archive", locale: :de
+  root :to => redirect("/#{Project.default_locale}")
+  root to: "home#archive", locale: Project.default_locale.to_sym
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
