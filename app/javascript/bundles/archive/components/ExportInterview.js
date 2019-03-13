@@ -31,12 +31,28 @@ export default class ExportInterviewInfo extends React.Component {
         return `${archiveId}: ${t(this.props, msg)}`
     }
 
+    exportDOI() {
+        this.props.submitDois(this.props.archiveIds, this.props.locale)
+        this.props.closeArchivePopup();
+    }
+
     doiButton() {
-        return (
-            <button onClick={() => this.props.submitDois(this.props.archiveIds, this.props.locale)}>
-                {t(this.props, 'export_doi')}
-            </button>
-        )
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={t(this.props, 'export_doi')}
+            onClick={() => this.props.openArchivePopup({
+                title: `${t(this.props, 'export_doi')}`,
+                content: (
+                    <div>
+                        <div className='any-button' onClick={() => this.exportDOI()}>
+                            {t(this.props, 'export_doi')}
+                        </div>
+                    </div>
+                )
+            })}
+        >
+            {t(this.props, 'export_doi')}
+        </div>
     }
 
     render() {
