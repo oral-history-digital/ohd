@@ -345,8 +345,8 @@ de:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart.
-      bulk_protocols: Lade die zip-Vorlage herunter, komprimiere deine rtf-Dateien
-        in diese zip-Datei und lade sie hoch. Der Text wird im Protokoll-Feld angezeigt.
+      bulk_protocols: Komprimiere deine iProtokoll-rtf-Dateien
+        in eine zip-Datei und lade sie hoch. Der Text wird im Protokoll-Feld angezeigt.
         Dateinamen müssen dem Muster ID_Sprache.rtf folgen, z. B. za123_de.rtf.
   admin:
     change_to_normal_view: Nutzeransicht
