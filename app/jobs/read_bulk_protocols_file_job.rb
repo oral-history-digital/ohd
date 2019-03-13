@@ -1,4 +1,4 @@
-class ReadProtocolsFileJob < ApplicationJob
+class ReadBulkProtocolsFileJob < ApplicationJob
   include IsoHelpers
   queue_as :default
 
@@ -29,6 +29,8 @@ class ReadProtocolsFileJob < ApplicationJob
       translation.update_attribute :observations, text
 
       File.delete(rtf) if File.exist?(rtf)
+    rescue StandardError => e
+      logger.info([e.message, name_parts.first])
     end
     File.delete(file_path) if File.exist?(file_path)
     AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now

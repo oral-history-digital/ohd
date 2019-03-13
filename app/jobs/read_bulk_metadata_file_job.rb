@@ -1,4 +1,4 @@
-class ReadCampscapeFileJob < ApplicationJob
+class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, receiver)
