@@ -58,10 +58,13 @@ namespace :users do
       reg.city = 'Berlin'
       reg.state = 'Berlin'
       reg.country = 'Deutschland'
+      reg.default_locale = 'de'
       reg.save
       reg.register!
       User.where(id: reg.user.id).update_all admin: true
       account.password = account.password_confirmation = "bla4bla"
+      account.confirmed_at = DateTime.now
+      account.skip_confirmation!
       account.save
       puts "created user: #{reg.user.reload}"
     end
