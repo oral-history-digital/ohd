@@ -112,19 +112,17 @@ export default class FlyoutTabs extends React.Component {
                             title={t(this.props, 'person_info')}
                             open={true}
                             content={<div><PersonDataContainer/><InterviewRegistryReferencesContainer/></div>}/> 
-                        <InterviewDataContainer
-                            title={t(this.props, 'interview_info')}
-                            open={true}
-                            content={ <InterviewInfoContainer/> }/>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            <InterviewDataContainer
+                                title={t(this.props, 'interview_info')}
+                                open={true}
+                                content={ <InterviewInfoContainer/> }/>
+                        </AuthShowContainer>
                         <AuthShowContainer ifLoggedIn={true}>
                             <InterviewDataContainer
-                                title={t(this.props, 'contributors')}
+                                title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <InterviewContributorsContainer/> }/>
-                            <InterviewDataContainer
-                                title={t(this.props, 'textmaterials')}
-                                open={true}
-                                content={ <InterviewTextMaterialsContainer/> }/>
+                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
                         </AuthShowContainer>
                         {this.assignSpeakersForm()}
                         {/* <InterviewDataContainer
