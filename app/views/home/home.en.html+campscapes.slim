@@ -1,0 +1,31 @@
+.home-text
+  h1 The Interview Archive "Accessing Campscapes"
+
+  p
+    | Westerbork was established in 1940 as a camp for Jewish refugees
+      from Germany. In the wake of the Nazi occupation of the Netherlands,
+      it came to serve as a transit camp from which over 100,000 Jews,
+      resistance fighters, Sinti and Roma were deported to the Nazi
+      extermination camps. Only 5,000 of them survived the war.
+      After the war, Westerbork acquired yet another function as an
+      internment camp for alleged Nazi collaborators. 
+
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/en/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{current_user_account ? interview.short_title(:en) : interview.anonymous_title(:en)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:en]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:en)} #{(interview.translated) ? I18n.t('status.translated', locale: :en) : ''}
+        
