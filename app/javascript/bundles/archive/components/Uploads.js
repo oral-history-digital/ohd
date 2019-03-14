@@ -21,15 +21,25 @@ export default class Uploads extends React.Component {
     explanations() {
         if (this.state.explanation) {
             return (
-                <p className='explanation'>
-                    {t(this.props, `upload.explanation.${this.state.explanation}`)}
-                </p>
+                <div>
+                    <p className='explanation'>
+                        {t(this.props, `upload.explanation.${this.state.explanation}`)}
+                    </p>
+                    {this.downloadLink(this.state.explanation)}
+                </div>
             )
         } else {
             return null;
         }
     }
 
+    downloadLink(explanation) {
+        if (explanation === 'bulk_metadata') {
+            return (<a href={`/${this.state.explanation}.csv`} download>{`${this.state.explanation}.csv`}</a>);
+        } else {
+            return null;
+        }
+    }
     returnToForm() {
         this.props.returnToForm('uploads');
     }
