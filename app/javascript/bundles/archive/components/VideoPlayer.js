@@ -69,20 +69,20 @@ export default class VideoPlayer extends React.Component {
         // this will run only if tape_count < 10!!
         switch (this.props.project) {
             case 'mog': {
-                return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_0${this.props.interview.tape_count}_0${this.props.tape}_720p.mp4`
+                return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_720p.mp4`
             }
             case 'zwar': {
                 switch (this.props.interview.media_type) {
                     case 'video': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_sd720p.mp4`
+                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_sd720p.mp4`
                     }
                     case 'audio': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}_256k.mp3`
+                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_256k.mp3`
                     }
                 }
             }
             case 'hagen': {
-                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}_0${this.props.interview.tape_count}_0${this.props.tape}.mp3`
+                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}.mp3`
             }
         }
     }

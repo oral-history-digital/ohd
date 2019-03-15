@@ -165,7 +165,7 @@ class InterviewSerializer < ApplicationSerializer
   end
   
   def tape_count
-    object.tapes.count
+    format("%02d", object.tapes.count)
   end
 
   def references
