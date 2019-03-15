@@ -135,7 +135,9 @@ export default class Facet extends React.Component {
 
     renderSubfacets() {
         return this.sortedSubfacets().filter(subfacetId => {
-            return this.props.data.subfacets[subfacetId].name[this.props.locale].toLowerCase().includes(this.state.filter.toLowerCase());
+            let subfacetName = this.props.data.subfacets[subfacetId].name[this.props.locale];
+            if (subfacetName) 
+                return subfacetName.toLowerCase().includes(this.state.filter.toLowerCase());
         }).map((subfacetId, index) => {
             if ((this.props.inputField && this.props.data.subfacets[subfacetId].count) || !this.props.inputField ) {
                 let checkedState = false;
