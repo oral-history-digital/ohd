@@ -24,9 +24,11 @@ class ReadBulkProtocolsFileJob < ApplicationJob
       text = yomu.text
 
       interview = Interview.find_by_archive_id(name_parts.first)
-      locale = ISO_639.find(name_parts.last).send(Project.alpha)
-      translation = interview.translations.find_or_create_by(locale: locale)
-      translation.update_attribute :observations, text
+      if interview
+        locale = ISO_639.find(name_parts.last).send(Project.alpha)
+        translation = interview.translations.find_or_create_by(locale: locale)
+        translation.update_attribute :observations, text
+      end
 
       File.delete(rtf) if File.exist?(rtf)
     rescue StandardError => e
