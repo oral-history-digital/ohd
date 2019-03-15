@@ -1,0 +1,33 @@
+.home-text
+  h1 The Interview Archive "Accessing Campscapes"
+
+  p
+    | Westerbork wurde 1940 als Lager für jüdische
+      Flüchtlinge aus Deutschland gegründet. Nach der
+      nationalsozialistischen Besetzung der Niederlande
+      diente es als Durchgangslager, aus dem über 100.000
+      Juden, Widerstandskämpfer, Sinti und Roma in die
+      nationalsozialistischen Vernichtungslager deportiert
+      wurden. Nur 5.000 von ihnen überlebten den Krieg. Nach
+      dem Krieg bekam Westerbork eine weitere Funktion als
+      Internierungslager für mutmaßliche Nazi-Kollaborateure. 
+
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{current_user_account ? interview.short_title(:de) : interview.anonymous_title(:de)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:de]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:de)} #{(interview.translated) ? I18n.t('status.translated', locale: :de) : ''}
+        

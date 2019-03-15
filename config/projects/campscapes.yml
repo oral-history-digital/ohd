@@ -2,6 +2,7 @@ default: &default
 
   available_locales:
     - en
+    - de
     # - alias
 
   default_locale: en
