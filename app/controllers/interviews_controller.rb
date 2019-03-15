@@ -93,14 +93,13 @@ class InterviewsController < ApplicationController
 
     # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
     uri = URI.parse(Rails.configuration.datacite['url'])
-    header = {"Content-Type": "application/vnd.api+json"}
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
 
     params[:archive_ids].each do |archive_id|
       authorize Interview.find_by_archive_id(archive_id)
 
-      request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/json'})
+      request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/vnd.api+json'})
       request.basic_auth(Rails.configuration.datacite['client_id'], Rails.configuration.datacite['password'])
       request.body = doi_json(archive_id)
 
