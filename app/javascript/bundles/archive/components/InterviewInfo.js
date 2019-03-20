@@ -45,7 +45,7 @@ export default class InterviewInfo extends React.Component {
                     {this.tapes()}
                     {this.language()}
                     {this.collection()}
-                    {this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")}
+                    {/*this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")*/}
                 </div>
             );
         }
