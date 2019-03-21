@@ -180,8 +180,8 @@ class UserAccount < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login_string = conditions.delete(:login)
-      where(conditions.to_hash).where(["lower(login) = :value OR lower(email) = :value", { :value => login_string.downcase }]).first
-    elsif conditions.has_key?(:login) || conditions.has_key?(:email)
+      where(["lower(login) = :value OR lower(email) = :value", { :value => login_string.downcase }]).first
+    elsif conditions.has_key?(:email)
       where(conditions.to_hash).first
     end
   end
