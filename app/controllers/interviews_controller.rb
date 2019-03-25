@@ -97,13 +97,16 @@ class InterviewsController < ApplicationController
     http.use_ssl = true
 
     params[:archive_ids].each do |archive_id|
-      authorize Interview.find_by_archive_id(archive_id)
+      interview = Interview.find_by_archive_id(archive_id)
+      authorize interview
 
       request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/vnd.api+json'})
       request.basic_auth(Rails.configuration.datacite['client_id'], Rails.configuration.datacite['password'])
       request.body = doi_json(archive_id)
 
       response = http.request(request)
+      interview.update_attributes doi_status: response.code
+
       results[archive_id] = response.code
     end
 

@@ -45,7 +45,8 @@ class InterviewSerializer < ApplicationSerializer
              :contributions,
              :registry_references,
              :photos,
-             :observations
+             :observations,
+             :doi_status
 
   def transitions_to
     object.current_state.events.map{|e| e.first}
@@ -226,4 +227,7 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
   
+  def doi_status
+    [201, 422].include?(object.doi_status.to_i) ? 'created' : nil
+  end
 end
