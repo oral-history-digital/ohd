@@ -78,8 +78,7 @@ de:
   called: Abruf
   download: Download
   download_user_statistics: Benutzerstatistik runterladen
-  export: Export
-  export_doi: DOI
+  back: Zurück
   export_search_results: Suchergebnisse exportieren
   language_de: Deutsch
   language_elde: Griechisch mit deutscher Übersetzung
@@ -290,7 +289,12 @@ de:
   text_materials: Textmaterialien
   grid: Raster
   list: Liste
+  export: Export
   doi:
+    title: DOI registrieren
+    text1: Die Interviews  
+    text2:  werden bei Datacite registriert. 
+    ok: Bestätigen
     name: doi
     created: Erfolgreich veröffentlicht!
     already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!

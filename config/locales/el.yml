@@ -76,8 +76,7 @@ el:
   called: τελευταία επίσκεψη
   download: Αποθήκευση
   download_user_statistics: Benutzerstatistik runterladen
-  export: Export
-  export_doi: DOI
+  back: Zurück
   export_search_results: Suchergebnisse exportieren
   language_de: Deutsch
   language_elde: ελληνική με γερμανική μετάφραση
@@ -289,7 +288,12 @@ el:
   text_materials: Textmaterialien
   grid: Raster
   list: Liste
+  export: Export
   doi:
+    title: DOI registrieren
+    text1: Die Interviews  
+    text2:  werden bei Datacite registriert. 
+    ok: Bestätigen
     name: DOI
     created: Created!
     already_registered: already_registered

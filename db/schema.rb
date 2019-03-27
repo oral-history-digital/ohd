@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_14_130209) do
+ActiveRecord::Schema.define(version: 2019_03_21_094003) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(version: 2019_03_14_130209) do
     t.datetime "indexed_at"
     t.integer "language_id"
     t.string "workflow_state", default: "unshared"
+    t.string "doi_status"
   end
 
   create_table "language_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

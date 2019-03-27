@@ -227,7 +227,4 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
   
-  def doi_status
-    [201, 422].include?(object.doi_status.to_i) ? 'created' : nil
-  end
 end
