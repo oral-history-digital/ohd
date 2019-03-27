@@ -12,7 +12,7 @@ export default class InterviewData extends React.Component {
         super(props, context);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            open: loggedIn(this.props) && this.props.open
+            open: !loggedIn(this.props) || this.props.open
         };
 
     }

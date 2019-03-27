@@ -177,6 +177,21 @@ export default class WrapperPage extends React.Component {
         return css;
     }
 
+    renderLogos() {
+        if(this.props.project =='zwar') {
+            return (
+                <div className='home-content-logos' style={{paddingLeft: 0}}>
+                    <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                        <img src="/packs/fu-logo-3x.png" />
+                    </a>
+                    <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
+                        <img src="/packs/evz-off-co-d-hd-s.jpg" />
+                    </a>
+                </div>
+            )
+        }
+    }
+
     renderExternalLinks() {
         if (this.props.locale && this.props.externalLinks) {
             let links = this.props.externalLinks;
@@ -253,6 +268,7 @@ export default class WrapperPage extends React.Component {
                                 {this.renderExternalLinks()}
                             </ul>
                             <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
+                            {this.renderLogos()}
                         </footer>
                         <div className={this.compensationCss()}/>
                     </div>
