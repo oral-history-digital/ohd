@@ -35,12 +35,12 @@ export default class UserRegistrations extends React.Component {
     }
 
     userRegistrations() {
-        if (this.props.userRegistrations) {
+        if (this.props.userRegistrations && Object.keys(this.props.userRegistrations).length > 0) {
             return Object.keys(this.props.userRegistrations).sort(function(a, b){return b-a}).map((c, index) => {
                 return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
             })
         } else {
-            return null;
+            return (<div className="content-search-legend"><p>0 {t(this.props, 'user_registration_results')}</p></div>);
         }
     }
 

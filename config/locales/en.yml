@@ -111,6 +111,7 @@ en:
   photo_results: Search results in photos
   biographicalentry_results: Search results in biographical entries
   person_results: Search results for persons
+  user_registration_results: Suchergebnisse für Benutzer
   segment_hits: Number of search hits
   no_interviews_results: No interviews found.
   interview_id: Interview ID

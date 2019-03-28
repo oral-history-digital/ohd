@@ -81,47 +81,59 @@ export default class WrappedAccount extends React.Component {
     }
 
     roles() {
-        return (
-            <div className={'roles box'}>
-                <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
-                <UserRolesContainer 
-                    userRoles={this.props.account.user_roles || []} 
-                    userId={this.props.account.user_id} 
-                    hideEdit={true}
-                    hideAdd={true}
-                />
-            </div>
-        )
+        if (this.props.account.user_roles && Object.keys(this.props.account.user_roles).length > 0) {
+            return (
+                <div className={'roles box'}>
+                    <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
+                    <UserRolesContainer 
+                        userRoles={this.props.account.user_roles || {}} 
+                        userId={this.props.account.user_id} 
+                        hideEdit={true}
+                        hideAdd={true}
+                    />
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     tasks() {
-        return (
-            <div className={'tasks box'}>
-                <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
-                <TasksOnlyStatusEditableContainer 
-                    data={this.props.account.tasks || []} 
-                    initialFormValues={{user_id: this.props.account.user_id}} 
-                    hideEdit={false}
-                    hideDelete={true}
-                    hideAdd={true}
-                />
-            </div>
-        )
+        if (this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0) {
+            return (
+                <div className={'tasks box'}>
+                    <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
+                    <TasksOnlyStatusEditableContainer 
+                        data={this.props.account.tasks || {}} 
+                        initialFormValues={{user_id: this.props.account.user_id}} 
+                        hideEdit={false}
+                        hideDelete={true}
+                        hideAdd={true}
+                    />
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     supervisedTasks() {
-        return (
-            <div className={'tasks box'}>
-                <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
-                <TasksContainer 
-                    data={this.props.account.supervised_tasks || []} 
-                    initialFormValues={{user_id: this.props.account.user_id}} 
-                    hideEdit={false}
-                    hideAdd={true}
-                    hideDelete={true}
-                />
-            </div>
-        )
+        if (this.props.account.supervised_tasks && Object.keys(this.props.account.supervised_tasks).length > 0) {
+            return (
+                <div className={'tasks box'}>
+                    <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
+                    <TasksContainer 
+                        data={this.props.account.supervised_tasks || {}} 
+                        initialFormValues={{user_id: this.props.account.user_id}} 
+                        hideEdit={false}
+                        hideAdd={true}
+                        hideDelete={true}
+                    />
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
 

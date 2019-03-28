@@ -64,7 +64,7 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def created_at
-    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M Uhr')
+    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M')
   end
 
   def activated_at
