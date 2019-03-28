@@ -45,7 +45,8 @@ class InterviewSerializer < ApplicationSerializer
              :contributions,
              :registry_references,
              :photos,
-             :observations
+             :observations,
+             :doi_status
 
   def transitions_to
     object.current_state.events.map{|e| e.first}

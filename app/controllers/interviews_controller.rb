@@ -97,14 +97,23 @@ class InterviewsController < ApplicationController
     http.use_ssl = true
 
     params[:archive_ids].each do |archive_id|
-      authorize Interview.find_by_archive_id(archive_id)
+      interview = Interview.find_by_archive_id(archive_id)
+      authorize interview
 
-      request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/vnd.api+json'})
-      request.basic_auth(Rails.configuration.datacite['client_id'], Rails.configuration.datacite['password'])
-      request.body = doi_json(archive_id)
+      unless interview.doi_status == 'created'
+        request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/vnd.api+json'})
+        request.basic_auth(Rails.configuration.datacite['client_id'], Rails.configuration.datacite['password'])
+        request.body = doi_json(archive_id)
 
-      response = http.request(request)
-      results[archive_id] = response.code
+        response = http.request(request)
+
+        status = response.code == 201 ? 'created' : JSON.parse(response.body)['errors'][0]['title']
+        interview.update_attributes doi_status: status
+      else
+        status = 'created'
+      end
+
+      results[archive_id] = status
     end
 
     respond_to do |format|
@@ -230,20 +239,13 @@ class InterviewsController < ApplicationController
     xml = render_to_string(template: "/interviews/show.xml", layout: false)
     {
       "data": {
+        "id": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",
         "type": "dois",
         "attributes": {
           "doi": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(xml)
-        },
-        "relationships": {
-          "client": {
-            "data": {
-              "type": "clients",
-              "id": "demo.datacite"
-            }
-          }
         }
       }
     }.to_json

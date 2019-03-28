@@ -27,32 +27,44 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
-    xml.contributor contributorType: "DataCollector" do 
-      @interview.interviewers.each do |interviewer|
-        xml.contributorName "#{interviewer.last_name(@locale)}, #{interviewer.first_name(@locale)}(Interviewfuehrung)"
+    if @interview.interviewers.length > 0
+      xml.contributor contributorType: "DataCollector" do 
+        @interview.interviewers.each do |interviewer|
+          xml.contributorName "#{interviewer.last_name(@locale)}, #{interviewer.first_name(@locale)}(Interviewfuehrung)"
+        end
       end
     end
-    xml.contributor contributorType: "DataCollector" do 
-      @interview.cinematographers.each do |cinematographer|
-        xml.contributorName "#{cinematographer.last_name(@locale)}, #{cinematographer.first_name(@locale)}(Kamera)"
+    if @interview.cinematographers.length > 0
+      xml.contributor contributorType: "DataCollector" do 
+        @interview.cinematographers.each do |cinematographer|
+          xml.contributorName "#{cinematographer.last_name(@locale)}, #{cinematographer.first_name(@locale)}(Kamera)"
+        end
       end
     end
-    xml.contributor contributorType: "DataCollector" do 
-      xml.contributorName "#{Project.cooperation_partner} (Kooperationspartner)"
-    end
-    xml.contributor contributorType: "DataCurator" do 
-      @interview.transcriptors.each do |transcriptor|
-        xml.contributorName "#{transcriptor.last_name(@locale)}, #{transcriptor.first_name(@locale)}(Transkripteur)"
+    if !Project.cooperation_partner.blank?
+      xml.contributor contributorType: "DataCollector" do 
+        xml.contributorName "#{Project.cooperation_partner} (Kooperationspartner)"
       end
     end
-    xml.contributor contributorType: "DataCurator" do 
-      @interview.translators.each do |translator|
-        xml.contributorName "#{translator.last_name(@locale)}, #{translator.first_name(@locale)}(Übersetzer)"
+    if @interview.transcriptors.length > 0
+      xml.contributor contributorType: "DataCurator" do 
+        @interview.transcriptors.each do |transcriptor|
+          xml.contributorName "#{transcriptor.last_name(@locale)}, #{transcriptor.first_name(@locale)}(Transkripteur)"
+        end
       end
     end
-    xml.contributor contributorType: "DataCurator" do 
-      @interview.segmentators.each do |segmentator|
-        xml.contributorName "#{segmentator.last_name(@locale)}, #{segmentator.first_name(@locale)}(Erschließer)"
+    if @interview.translators.length > 0
+      xml.contributor contributorType: "DataCurator" do 
+        @interview.translators.each do |translator|
+          xml.contributorName "#{translator.last_name(@locale)}, #{translator.first_name(@locale)}(Übersetzer)"
+        end
+      end
+    end
+    if @interview.segmentators.length > 0
+      xml.contributor contributorType: "DataCurator" do 
+        @interview.segmentators.each do |segmentator|
+          xml.contributorName "#{segmentator.last_name(@locale)}, #{segmentator.first_name(@locale)}(Erschließer)"
+        end
       end
     end
     xml.contributor contributorType: "ProjectLeader" do 
@@ -75,7 +87,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     end
   end
 
-  xml.language @interview.language.code
+  xml.language ISO_639.find(@interview.language.code.split(/[\/-]/)[0]).alpha2
 
   xml.resourceType resourceTypeGeneral: "Audiovisual" do 
     xml.text! "#{@interview.video}-Interview"

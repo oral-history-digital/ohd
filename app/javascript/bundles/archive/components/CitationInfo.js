@@ -20,6 +20,16 @@ export default class CitationInfoInfo extends React.Component {
         return "";
     }
 
+    doi(withCalled=false) {
+        if (this.props.interview.doi_status === 'created') {
+            let doi = `https://doi.org/${this.props.projectDoi}/${this.props.projectName}.${this.props.interview.archive_id}`;
+            let called = withCalled ? ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})` : '';
+            return `${doi}${called}`;
+        } else {
+            return '';
+        }
+    }
+
     render() {
         if (this.props.interview) {
             let citation = `${this.props.interview.short_title[this.props.locale]},
@@ -27,12 +37,12 @@ export default class CitationInfoInfo extends React.Component {
             ${this.props.interview.archive_id},  
             ${this.props.interview.interview_date}, 
             ${this.project()}, 
-            ${t(this.props, 'doi')}: ${this.props.projectDoi}/${this.props.interview.archive_id} (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
+            ${t(this.props, 'doi')}: ${this.doi(true)}`
 
             return (
                 <div>
                     {this.content(t(this.props, 'citation'), citation)}
-                    {this.content(t(this.props, 'doi'), `${this.props.projectDoi}/${this.props.interview.archive_id}`)}
+                    {this.content(t(this.props, 'doi'), `${this.doi(false)}`)}
                 </div>
             );
         } else {
