@@ -201,7 +201,7 @@ class UserRegistrationsController < ApplicationController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
-    @user_registrations = policy_scope(UserRegistration).where(conditions).order("created_at DESC").paginate page: params[:page] || 1
+    @user_registrations = policy_scope(UserRegistration).includes(user: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
   end
 
   def translate_field_or_value(field, value=nil)

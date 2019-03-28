@@ -29,14 +29,14 @@ export default class UserRegistrations extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            this.props.setQueryParams('userRegistrations', {page: this.props.query.page + 1});
+            this.props.setQueryParams('user_registrations', {page: this.props.query.page + 1});
             this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
         }
     }
 
     userRegistrations() {
         if (this.props.userRegistrations) {
-            return Object.keys(this.props.userRegistrations).map((c, index) => {
+            return Object.keys(this.props.userRegistrations).sort(function(a, b){return b-a}).map((c, index) => {
                 return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
             })
         } else {
