@@ -91,6 +91,13 @@ export function t(props, key) {
     }
 }
 
+export function iOS() {
+    // detect if user agent is iOS in order to exclude it from having a datalist
+    // https://stackoverflow.com/a/9039885
+    let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    return iOS;
+}
+
 export function fullname(props, person, withBirthName=false, locale=props.locale) {
     if (person) {
         try {
