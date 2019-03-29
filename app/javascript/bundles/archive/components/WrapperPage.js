@@ -11,6 +11,7 @@ import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
+import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 import hagenLogo from '../../../images/hagen-logo.gif'
 
@@ -180,7 +181,7 @@ export default class WrapperPage extends React.Component {
     renderLogos() {
         if(this.props.project =='zwar') {
             return (
-                <div className='home-content-logos' style={{paddingLeft: 0}}>
+                <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
                     <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
                         <img src="/packs/fu-logo-3x.png" />
                     </a>
@@ -267,7 +268,19 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
+                            {/* <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p> */}
+                            <p>{`Im Rahmen des Projekts ${this.props.projectName && this.props.projectName[this.props.locale]} sind nebem diesem Archiv eine Projekt-Website, die Lernplattform "Lernen mit Interviews" sowie ein Forum für Lehrende zugänglich:`}</p>
+                            <div style={{display: 'inline-block'}}>
+                                <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}}></img>
+                                <select style={{color: '#9f403f', marginTop: 5, fontSize: 14}} onChange={(e) => window.open(e.target.value, '_blank')}>
+                                    <option defaultValue>Archiv</option>
+                                    <option value="https://zwangsarbeit-archiv.de/">Projekt-Website</option>
+                                    <option value="https://lernen-mit-interviews.de/">Lernen mit Interviews</option>
+                                    <option value="https://forum.lernen-mit-interviews.de/">Forum für Lehrende</option>
+                                </select>
+                            </div>
+                            <p></p>
+                            <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin </p>
                             {this.renderLogos()}
                         </footer>
                         <div className={this.compensationCss()}/>
