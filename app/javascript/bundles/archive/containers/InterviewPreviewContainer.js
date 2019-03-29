@@ -4,6 +4,7 @@ import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { addRemoveArchiveId } from '../actions/archiveActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -13,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
       query: state.search.archive.query,
       segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
       project: state.archive.project,
-      editView: state.archive.editView,
+      editView: getCookie('editView'),
       account: state.data.accounts.current,
     }
 }

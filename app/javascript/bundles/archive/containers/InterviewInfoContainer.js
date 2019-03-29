@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         collections: state.archive.collections,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         interview: getInterview(state),
         people: state.data.people,
         peopleStatus: state.data.statuses.people,

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PersonPropertiesRegistryReferenceType from '../components/PersonPropertiesRegistryReferenceType';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -11,7 +12,7 @@ const mapStateToProps = (state) => {
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
         account: state.data.accounts.current,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
     }
 }
 

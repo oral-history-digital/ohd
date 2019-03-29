@@ -2,17 +2,14 @@
 
 import request from 'superagent';
 import Loader from '../../../lib/loader'
+import { setCookie } from '../../../lib/utils'
 
 import { 
     SET_LOCALE,
     SET_ARCHIVE_ID,
 
-    //UPLOAD_TRANSCRIPT_URL,
-    //UPLOADED_TRANSCRIPT,
-
     CHANGE_TO_EDIT_VIEW,
 
-    //EXPORT_DOI,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
@@ -38,10 +35,17 @@ export function submitTranscript(params) {
     }
 }
 
+const editView = (bool) => ({
+    type: CHANGE_TO_EDIT_VIEW,
+    editView: bool
+});
+
 export function changeToEditView(bool) {
-    return {
-        type: CHANGE_TO_EDIT_VIEW,
-        editView: bool
+    return dispatch => {
+        dispatch(editView(bool));
+        // remove cookie through negative expiration time:
+        let expireDays = bool ? 3 : -1;
+        setCookie('editView', bool, expireDays);
     }
 }
 

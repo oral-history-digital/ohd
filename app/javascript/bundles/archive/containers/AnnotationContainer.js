@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: state.archive.editView
+        editView: getCookie('editView')
     }
 }
 

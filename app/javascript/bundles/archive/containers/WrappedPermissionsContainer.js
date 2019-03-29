@@ -6,6 +6,7 @@ import {
 } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -13,7 +14,7 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         data: state.data.permissions,
         dataStatus: state.data.statuses.permissions,
         resultPagesCount: state.data.statuses.permissions.resultPagesCount,

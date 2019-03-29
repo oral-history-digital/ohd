@@ -3,13 +3,13 @@ import InterviewRegistryReferences from '../components/InterviewRegistryReferenc
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         interview: getInterview(state),
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,

@@ -5,6 +5,7 @@ import { submitLogout } from '../actions/accountActionCreators';
 import { changeToEditView } from '../actions/archiveActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -13,7 +14,7 @@ const mapStateToProps = (state) => {
         authStatus: state.account,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,
-        editView: state.archive.editView
+        editView: getCookie('editView')
     }
 }
 
