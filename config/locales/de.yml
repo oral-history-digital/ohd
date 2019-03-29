@@ -144,7 +144,7 @@ de:
   annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
   annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
     angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich
-    den den <a class="conditions-link" href="http://www.occupation-memories.org/de/archive/terms_user_comments"
+    den den <a class="conditions-link" href="%{link}"
     target="_blank">Richtlinien für Anmerkungen</a> zu.
   save: speichern
   cancel: abbrechen

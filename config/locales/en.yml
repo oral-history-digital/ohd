@@ -142,7 +142,8 @@ en:
   max_300: 300 characters available
   annotation_explanation: Annotations can be viewed in your workbook.
   annotation_confirmation: I would like this annotation to be published and displayed
-    to all logged-in archive users. I agree with the guidelines for remarks.
+    to all logged-in archive users. I agree with the <a class="conditions-link" href="%{link}"
+    target="_blank">guidelines for remarks</a>.
   save: Save
   cancel: Cancel
   assign_speakers: Sprecher zuordnen

@@ -143,7 +143,7 @@ el:
   annotation_explanation: Μπορείτε να δείτε τις σημειώσεις σας στον προσωπικό σας
     φάκελο
   annotation_confirmation: Επιθυμώ να δημοσιευτεί το σχόλιό μου σε όλους τους χρήστες.
-    Συμφωνώ με τις  <a class="conditions-link" href="http://www.occupation-memories.org/archive/terms_user_comments"
+    Συμφωνώ με τις  <a class="conditions-link" href="%{link}"
     target="_blank">οδηγίες συγγραφής σχολίων</a>.
   save: αποθηκεύστε
   cancel: διακοπή
