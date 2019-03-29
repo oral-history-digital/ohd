@@ -69,7 +69,7 @@ export function getInterviewee(props) {
     }
 }
 
-export function t(props, key) {
+export function t(props, key, params) {
     let text;
     let keyArray;
     let cmd = `text = props.translations.${props.locale}.${key}`
@@ -81,7 +81,12 @@ export function t(props, key) {
         text = keyArray[keyArray.length - 1]
     } finally {
         if (typeof(text) === 'string') {
-            return text 
+            if(params) {
+                for (let [key, value] of Object.entries(params)) {
+                    text = text.replace(`%{${key}}`, value)
+                }
+            }
+            return text
         } else {
             // return `translation for ${props.locale}.${key} is missing!`;
             keyArray = key ? key.split('.') : [];
