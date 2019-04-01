@@ -86,8 +86,8 @@ ru:
   language_rude: Russisch mit deutscher Übersetzung
   language_el: Griechisch
   more: подробнее
-  segment: Ausschnitt
-  publish: An die Redaktion zur Veröffentlichung absenden
+  segment: Сегмент
+  publish: Опубликовать
   login: Войти
   login_name: логин
   logout: Выйти
@@ -143,10 +143,10 @@ ru:
   annotation_for_chapter: Ihre Anmerkung zum Kapitel
   max_300: 300 verfügbare Zeichen
   annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
-  annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
-    angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich
-    den den <a class="conditions-link" href="http://www.occupation-memories.org/de/archive/terms_user_comments"
-    target="_blank">Richtlinien für Anmerkungen</a> zu.
+  annotation_confirmation: Вы действительно хотите опубликовать Ваш Контент
+        так, чтобы он был виден всем пользователям архива? В таком случае, настоящим
+        Вы принимаете наши <a class="conditions-link" href="%{link}"
+    target="_blank">Правила публикации комментариев</a>.
   save: speichern
   cancel: abbrechen
   assign_speakers: Sprecher zuordnen
@@ -238,8 +238,8 @@ ru:
   call_search: Suche aufrufen
   call_interview_reference: Interview aufrufen
   call_user_annotation: Stelle im Interview aufrufen
-  title: Titel
-  description: Beschreibung
+  title: Название
+  description: Описание
   edit:
     interview:
       new: Neues Interview

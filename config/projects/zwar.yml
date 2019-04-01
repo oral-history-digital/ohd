@@ -68,7 +68,7 @@ default: &default
     annotation_guidelines:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     team:
       de: 'http://www.zwangsarbeit-archiv.de/team'
       en: 'http://www.zwangsarbeit-archiv.de/en/team'
