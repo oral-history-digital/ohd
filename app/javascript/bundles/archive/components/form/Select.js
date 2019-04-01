@@ -68,7 +68,7 @@ export default class Select extends React.Component {
                         t(this.props, `${this.props.scope}.${this.props.attribute}.${value}`)
                     val = value;
                 } else {
-                    text = value.name[this.props.locale] || value.name;
+                    text = value.name[this.props.locale] || (typeof value.name === 'string') && value.name;
                     val = value.value || value.id;
                 }
                 return (
