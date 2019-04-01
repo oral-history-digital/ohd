@@ -4,7 +4,7 @@ import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 

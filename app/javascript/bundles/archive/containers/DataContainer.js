@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Data from '../components/Data';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -10,7 +11,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        //editView: getCookie('editView')
+        editView: getCookie('editView')
     }
 }
 

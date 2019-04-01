@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Annotation from '../components/Annotation';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 

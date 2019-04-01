@@ -3,6 +3,7 @@ import Carousel from '../components/Carousel';
 import { getInterview } from '../../../lib/utils';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {

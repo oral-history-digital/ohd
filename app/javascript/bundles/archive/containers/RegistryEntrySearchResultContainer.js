@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RegistryEntrySearchResult from '../components/RegistryEntrySearchResult';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 

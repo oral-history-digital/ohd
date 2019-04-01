@@ -3,7 +3,7 @@ import InterviewContributors from '../components/InterviewContributors';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
