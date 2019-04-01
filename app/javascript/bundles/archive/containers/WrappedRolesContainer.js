@@ -2,11 +2,10 @@ import { connect } from 'react-redux';
 
 import WrappedDataList from '../components/WrappedDataList';
 import RolePermissionsContainer from '../containers/RolePermissionsContainer';
-import { 
-    setQueryParams, 
-} from '../actions/searchActionCreators';
+import { setQueryParams } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
