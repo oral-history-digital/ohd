@@ -101,7 +101,10 @@ export default class UserRegistration extends React.Component {
     }
 
     roles() {
-        if (this.props.userRegistration.user_id) {
+        if (
+            this.props.userRegistration.user_id &&
+            admin(this.props, {type: 'UserRole', action: 'create'}) 
+        ) {
             return (
                 <div className={'roles box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
@@ -118,7 +121,10 @@ export default class UserRegistration extends React.Component {
     }
 
     tasks() {
-        if (this.props.userRegistration.user_id) {
+        if (
+            this.props.userRegistration.user_id &&
+            admin(this.props, {type: 'Task', action: 'create'}) 
+        ) {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
