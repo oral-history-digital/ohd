@@ -66,6 +66,7 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
+    @locale = projectified(params[:locale])
     respond_to do |format|
       format.json do
         render json: data_json(@interview)
@@ -78,7 +79,6 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = params[:lang].to_sym
-        @locale = projectified(params[:locale])
         @orig_lang = projectified(@interview.language.code)
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
