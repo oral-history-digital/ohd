@@ -7,34 +7,22 @@ export default class ExportInterviewInfo extends React.Component {
         return Object.keys(this.props.doiResult).map((archiveId) => {
             return (
                 <div>
-                    {this.codeToMsg(archiveId)}
+                    {`${archiveId}: ${this.props.doiResult[archiveId]}`}
                 </div>
             )
         }) 
     }
 
-    codeToMsg(archiveId) {
-        //let msg; 
-        //switch (parseInt(this.props.doiResult[archiveId])) {
-            //case 201:
-                //msg = 'doi.created';
-                ////return t(this.props, 'doi.created');
-                //break;
-            //case 400:
-                //msg = 'doi.bad';
-                //break;
-            //case 422:
-                //msg = 'doi.already_registered';
-                ////return t(this.props, 'doi.already_registered');
-                //break;
-        //}
-        //return `${archiveId}: ${t(this.props, msg)}`
-        return `${archiveId}: ${this.props.doiResult[archiveId]}`
-    }
-
     exportDOI() {
         this.props.submitDois(this.props.archiveIds, this.props.locale)
         this.props.closeArchivePopup();
+    }
+
+    links(archiveIds) {
+        return archiveIds.map((archiveId, i) => [
+            i > 0 && ", ",
+            <a href={`/${this.props.locale}/interviews/${archiveId}.xml`} target='_blank' key={`link-to-${archiveId}`}>{archiveId}</a>
+        ])
     }
 
     doiButton() {
@@ -46,7 +34,9 @@ export default class ExportInterviewInfo extends React.Component {
                 title: title,
                 content: (
                     <div>
-                        {t(this.props, 'doi.text1') + ' ' + this.props.archiveIds.join(', ') + ' ' + t(this.props, 'doi.text2')}
+                        {t(this.props, 'doi.text1') + ' '}
+                        {this.links(this.props.archiveIds)}
+                        {' ' + t(this.props, 'doi.text2')}
                         <div className='any-button' onClick={() => this.exportDOI()}>
                             {t(this.props, 'doi.ok')}
                         </div>
