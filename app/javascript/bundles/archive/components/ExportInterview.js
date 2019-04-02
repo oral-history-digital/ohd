@@ -46,7 +46,7 @@ export default class ExportInterviewInfo extends React.Component {
                 title: title,
                 content: (
                     <div>
-                        {t(this.props, 'doi.text1') + this.props.archiveIds.join(', ') + t(this.props, 'doi.text2')}
+                        {t(this.props, 'doi.text1') + ' ' + this.props.archiveIds.join(', ') + ' ' + t(this.props, 'doi.text2')}
                         <div className='any-button' onClick={() => this.exportDOI()}>
                             {t(this.props, 'doi.ok')}
                         </div>

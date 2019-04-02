@@ -107,7 +107,7 @@ class InterviewsController < ApplicationController
 
         response = http.request(request)
 
-        status = response.code == 201 ? 'created' : JSON.parse(response.body)['errors'][0]['title']
+        status = response.code == '201' ? 'created' : JSON.parse(response.body)['errors'][0]['title']
         interview.update_attributes doi_status: status
       else
         status = 'created'
