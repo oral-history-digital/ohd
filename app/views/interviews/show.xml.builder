@@ -27,44 +27,22 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
-    if @interview.interviewers.length > 0
-      xml.contributor contributorType: "DataCollector" do 
-        @interview.interviewers.each do |interviewer|
-          xml.contributorName "#{interviewer.last_name(@locale)}, #{interviewer.first_name(@locale)}(Interviewfuehrung)"
-        end
-      end
-    end
-    if @interview.cinematographers.length > 0
-      xml.contributor contributorType: "DataCollector" do 
-        @interview.cinematographers.each do |cinematographer|
-          xml.contributorName "#{cinematographer.last_name(@locale)}, #{cinematographer.first_name(@locale)}(Kamera)"
+    [
+      %w(interviewers Interviewführung), 
+      %w(cinematographers Kamera),
+      %w(transcriptors Transkripteur),
+      %w(translators Übersetzer),
+      %w(segmentators Erschließer)
+    ].each do |contributors, contribution|
+      if @interview.send(contributors).length > 0
+        xml.contributor contributorType: "DataCollector" do 
+          xml.contributorName @interview.send(contributors).map{|contributor| "#{contributor.last_name(@locale)}, #{contributor.first_name(@locale)}"}.join('; ') + " (#{contribution})"
         end
       end
     end
     if !Project.cooperation_partner.blank?
       xml.contributor contributorType: "DataCollector" do 
         xml.contributorName "#{Project.cooperation_partner} (Kooperationspartner)"
-      end
-    end
-    if @interview.transcriptors.length > 0
-      xml.contributor contributorType: "DataCurator" do 
-        @interview.transcriptors.each do |transcriptor|
-          xml.contributorName "#{transcriptor.last_name(@locale)}, #{transcriptor.first_name(@locale)}(Transkripteur)"
-        end
-      end
-    end
-    if @interview.translators.length > 0
-      xml.contributor contributorType: "DataCurator" do 
-        @interview.translators.each do |translator|
-          xml.contributorName "#{translator.last_name(@locale)}, #{translator.first_name(@locale)}(Übersetzer)"
-        end
-      end
-    end
-    if @interview.segmentators.length > 0
-      xml.contributor contributorType: "DataCurator" do 
-        @interview.segmentators.each do |segmentator|
-          xml.contributorName "#{segmentator.last_name(@locale)}, #{segmentator.first_name(@locale)}(Erschließer)"
-        end
       end
     end
     xml.contributor contributorType: "ProjectLeader" do 
