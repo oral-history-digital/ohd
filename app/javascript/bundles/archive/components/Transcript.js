@@ -133,7 +133,8 @@ export default class Transcript extends React.Component {
             if (this.props.originalLocale) {
                 return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
-                return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+                return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_translation');
+                // return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
             }
         } else {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
