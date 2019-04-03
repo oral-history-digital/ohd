@@ -531,8 +531,8 @@ ru:
         one: Mitwirkende/r
         other: Mitwirkende
       registry_references:
-        one: Erwähnung
-        other: Erwähnungen
+        one: Упоминание
+        other: Упоминания
       registry_entries:
         one: Регистр
         other: Регистр

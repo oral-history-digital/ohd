@@ -477,8 +477,8 @@ en:
         one: Mitwirkende/r
         other: Mitwirkende
       registry_references:
-        one: Erwähnung
-        other: Erwähnungen
+        one: Mention
+        other: Mentions
       registry_entries:
         one: Index Term
         other: Index Terms
