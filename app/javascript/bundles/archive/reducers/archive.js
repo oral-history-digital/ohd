@@ -1,6 +1,7 @@
 import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
+    SET_VIEW_MODE,
 
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
@@ -16,6 +17,7 @@ const initialState = {
     locale: 'de',
     locales: ['de', 'el'],
     archiveId: null,
+    viewMode: 'grid',
 
     homeContent: "",
     externalLinks: {},
@@ -35,6 +37,10 @@ const archive = (state = initialState, action) => {
         case SET_ARCHIVE_ID:
             return Object.assign({}, state, {
                 archiveId: action.archiveId
+            })
+        case SET_VIEW_MODE:
+            return Object.assign({}, state, {
+                viewMode: action.viewMode
             })
         case UPDATE_SELECTED_ARCHIVE_IDS:
             if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {

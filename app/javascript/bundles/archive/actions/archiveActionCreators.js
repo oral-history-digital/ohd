@@ -7,6 +7,7 @@ import { setCookie } from '../../../lib/utils'
 import { 
     SET_LOCALE,
     SET_ARCHIVE_ID,
+    SET_VIEW_MODE,
 
     CHANGE_TO_EDIT_VIEW,
 
@@ -22,6 +23,11 @@ export const setLocale = (locale) => ({
 export const setArchiveId = (archiveId) => ({
     type: SET_ARCHIVE_ID,
     archiveId: archiveId,
+});
+
+export const setViewMode = (viewMode) => ({
+    type: SET_VIEW_MODE,
+    viewMode: viewMode,
 });
 
 const uploadedTranscript = (json) => ({

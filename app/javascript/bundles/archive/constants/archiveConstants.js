@@ -45,6 +45,7 @@ export const TRANSCRIPT_SCROLL = 'TRANSCRIPT_SCROLL';
 
 export const SET_LOCALE = 'SET_LOCALE';
 export const SET_ARCHIVE_ID = 'SET_ARCHIVE_ID';
+export const SET_VIEW_MODE = 'SET_VIEW_MODE';
 export const DEFAULT_LOCATION = [37.9838, 23.7275];
 
 export const OPEN_POPUP = 'OPEN_POPUP';
