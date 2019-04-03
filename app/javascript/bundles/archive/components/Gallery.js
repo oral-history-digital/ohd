@@ -83,7 +83,7 @@ export default class Gallery extends React.Component {
     }
 
     render() {
-        let explanation = this.props.interview && this.props.interview.photos > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
+        let explanation = this.props.interview && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
         return (
             <div>
                 <div className='explanation'>{t(this.props, explanation)}</div>
