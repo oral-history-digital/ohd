@@ -89,6 +89,11 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
+    handleTabClick(tabIndex) {
+        this.props.setViewMode(['grid', 'list'][tabIndex])
+    }
+
+
     renderPagination() {
         if (this.props.resultPagesCount > 1) {
             return (
@@ -232,7 +237,8 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={0}
+                        defaultIndex={['grid', 'list'].indexOf(this.props.viewMode)}
+                        onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
                             <Tab className='search-results-tab'>

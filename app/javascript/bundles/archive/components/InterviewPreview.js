@@ -75,13 +75,20 @@ export default class InterviewPreview extends React.Component {
     renderSegments() {
         return this.props.segments.foundSegments.map( (segment, index) => {
             return (
-                <div key={"segment-wrapper" + segment.id}>
-                <FoundSegmentContainer
-                    data={segment}
-                    key={"segment-" + segment.id}
-                    tape_count={this.props.interview.tape_count}
-                />
-                </div>
+                <Link 
+                    key={"segment-wrapper" + segment.id}
+                    onClick={() => {
+                        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        this.props.setTapeAndTime(1, 0);
+                    }}
+                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                >
+                    <FoundSegmentContainer
+                        data={segment}
+                        key={"segment-" + segment.id}
+                        tape_count={this.props.interview.tape_count}
+                    />
+                </Link>
             )
         })
     }
