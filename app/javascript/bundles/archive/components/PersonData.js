@@ -3,6 +3,7 @@ import { t, fullname, admin, getInterviewee } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
@@ -91,7 +92,7 @@ export default class PersonData extends React.Component {
                 </div>
             );
         } else {
-            return t(this.props, 'no_interviewee');
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         }
     }
 

@@ -41,6 +41,7 @@ export default class InterviewInfo extends React.Component {
                 <div>
                     {this.content(t(this.props, 'date'), this.props.interview.interview_date, "")}
                     {this.placeOfInterview()}
+                    {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.media_type}`), "")}
                     {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "")}
                     {this.tapes()}
                     {this.language()}

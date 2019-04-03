@@ -38,7 +38,9 @@ export default class InterviewSearchForm extends React.Component {
                                className="search-input"
                                value={this.state.value}
                                onChange={this.handleChange}
-                               placeholder={t(this.props, 'enter_search_field')}/>
+                               placeholder={t(this.props, 'enter_search_field')}
+                               autoFocus
+                               />
                     </label>
                     <input type="submit" value="" className={'search-button'}/>
                 </form>

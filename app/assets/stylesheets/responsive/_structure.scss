@@ -553,15 +553,15 @@ a.search-result-link {
 .search-result-img {
   overflow: hidden;
   img {
-    -webkit-transform: scale(1);
-    transform: scale(1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
     -webkit-transition: .4s ease-in-out;
     transition: .4s ease-in-out;
   }
   &:hover {
     img {
-      -webkit-transform: scale(1.1);
-      transform: scale(1.1);
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
     }
   }
 }

@@ -64,7 +64,7 @@ ru:
   transcript_header: Транскрипт интервью
   translation_header: Перевод интервью
   tapes: Записи
-  without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
+  without_translation: Это интервью не переведено на немецкий язык.
   without_transcript: Dieses Interview wurde noch nicht transkribiert.
   without_index: Die Überschriften dieses Interviews wurde noch nicht ins Deutsche
     übersetzt.
@@ -324,23 +324,23 @@ ru:
     upload_transcript: Transkript hochladen
     administration: Verwaltung
     indexing: освое́ние
-  edit_interview_reference: Gespeichertes Interview Bearbeiten
-  edit_user_annotation: Gespeicherte Anmerkung bearbeiten
-  edit_search: Gespeicherte Suche bearbeiten
-  query: Suchkriterien
-  delete: Löschen
-  delete_user_content: Aus Arbeitsmappe entfernen
+  edit_interview_reference: Редактирование сохраненного интервью
+  edit_user_annotation: Редактировать сохраненный комментарий
+  edit_search: Редактирование сохраненного поиска
+  query: Поисковый запрос
+  delete: уничтожение
+  delete_user_content: Удалить из рабочей тетради
   choose: Пожалуйста, выберите...
   enter_search_field: Поиск в архиве
   enter_field: Ключевое понятие
   enter_field_hagen: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Gespeicherte Suchergebnisse
-  saved_interviews: Gespeicherte Interviews
-  saved_annotations: Gespeicherte Anmerkungen
+  saved_searches: Сохраненные результаты поиска
+  saved_interviews: Сохраненные интервью
+  saved_annotations: Сохраненные комментарии
   text_materials: текстовые материалы
-  grid: Raster
-  list: Liste
-  export: Export
+  grid: Вид на сетку
+  list: Вид списка
+  export: Экспорт
   doi:
     title: DOI registrieren
     text1: Die Interviews  
@@ -531,8 +531,8 @@ ru:
         one: Mitwirkende/r
         other: Mitwirkende
       registry_references:
-        one: Erwähnung
-        other: Erwähnungen
+        one: Упоминание
+        other: Упоминания
       registry_entries:
         one: Регистр
         other: Регистр
@@ -630,7 +630,7 @@ ru:
         transcript_language: Transkript Sprache
         translation_one_language: Übersetzung 1 Sprache
         translation_two_language: Übersetzung 2 Sprache
-        annotations: Anmerkungen
+        annotations: Комментарии
         tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
           erschliessen?
         tape_count: Geamtzahl der Tapes
