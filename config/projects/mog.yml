@@ -9,7 +9,7 @@ default: &default
     - el
     #- alias
 
-  default_locale: all
+  default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
