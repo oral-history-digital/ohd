@@ -43,7 +43,7 @@ class PersonSerializer < ApplicationSerializer
   #end
 
   def biographical_entries
-    object.biographical_entries.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.project_id}-biographical_entry-#{c.id}-#{c.updated_at}"){BiographicalEntrySerializer.new(c)}; mem}
+    object.biographical_entries.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}"){BiographicalEntrySerializer.new(c)}; mem}
   end
 
   def place_of_birth

@@ -7,7 +7,7 @@ class SearchesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def facets
-    json = Rails.cache.fetch "#{Project.project_id}-search-facets-#{RegistryEntry.maximum(:updated_at)}" do
+    json = Rails.cache.fetch "#{Project.cache_key_prefix}-search-facets-#{RegistryEntry.maximum(:updated_at)}" do
       {facets: Project.search_facets_hash}.to_json
     end
 
@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result| 
-            Rails.cache.fetch("#{Project.project_id}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
+            Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
               registry_entry = ::RegistryEntrySerializer.new(result).as_json 
               ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
               {registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb}
@@ -102,7 +102,7 @@ class SearchesController < ApplicationController
 
   # https://github.com/sunspot/sunspot#stored-fields
   def all_interviews_titles
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_titles") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_titles") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -119,7 +119,7 @@ class SearchesController < ApplicationController
   # hagen only
   # in order to being able to get a dropdown list in search field
   def all_interviews_pseudonyms
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_pseudonyms") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_pseudonyms") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -132,7 +132,7 @@ class SearchesController < ApplicationController
   end
 
   def all_interviews_places_of_birth
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_places_of_birth") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_places_of_birth") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -218,7 +218,7 @@ class SearchesController < ApplicationController
     #   mem[interview.archive_id] = {
     #     total: segsearch.total,
     #     segments: segsearch.hits.map do |hit| 
-    #       # Rails.cache.fetch("#{Project.project_id}-segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
+    #       # Rails.cache.fetch("#{Project.cache_key_prefix}-segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
     #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
     #       segment[:transcripts] = highlighted_transcripts(hit, interview)
     #       segment

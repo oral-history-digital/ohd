@@ -35,7 +35,7 @@ class PermissionsController < ApplicationController
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = #Rails.cache.fetch "#{Project.project_id}-permissions-visible-for-#{current_user_account.id}-#{extra_params}-#{Permission.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "#{Project.cache_key_prefix}-permissions-visible-for-#{current_user_account.id}-#{extra_params}-#{Permission.maximum(:updated_at)}" do
           {
             data: permissions.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'permissions',
