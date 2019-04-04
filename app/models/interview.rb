@@ -404,7 +404,7 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_file(file_path, tape_id, file_column_names, file_column_languages)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, file_column_names, file_column_languages)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
       sheet.each(file_column_names) do |row|
@@ -416,11 +416,20 @@ class Interview < ActiveRecord::Base
                 locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) 
             end
           end
+          #TODO: update duration
         end
       end
     end
   rescue  Roo::HeaderRowNotFoundError
     'header_row_not_found'
+  end
+
+  def create_or_update_segments_from_vtt(file_path, tape_id)
+    extension = File.extname(file_path).strip.downcase[1..-1]
+    webvtt = extension == 'vtt' ? WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
+    webvtt.cues.each do |cue|
+      segment = Segment.find_or_create_by interview_id: id, timecode: cue.start, tape_id: tape_id, duration: (Time.parse(cue.end.to_s) - Time.parse(cue.start.to_s))
+    end
   end
 
   #def duration

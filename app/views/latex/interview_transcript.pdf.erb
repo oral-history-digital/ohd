@@ -31,7 +31,7 @@
            
 \newpage
 
-<%= render partial: "./latex/observation" if @interview.observations(@locale) %>
+<%= render partial: "./latex/observation" if @interview.observations(@locale) && Project.name != 'zwar' %>
 
 <%# set title of  tableofcontents: %>
 \renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
