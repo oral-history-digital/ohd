@@ -103,6 +103,7 @@ class RegistryReferencesController < ApplicationController
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-locations-#{interview.id}-#{interview.updated_at}" do
           segment_ref_locations = RegistryReference.segments_for_interview(interview.id).with_locations.first(100)
           {
             archive_id: params[:archive_id],
