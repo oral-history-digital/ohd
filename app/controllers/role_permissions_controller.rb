@@ -28,7 +28,7 @@ class RolePermissionsController < ApplicationController
   #def index
     #respond_to do |format|
       #format.json do
-        #json = Rails.cache.fetch "#{Project.project_id}-role_permissions-visible-for-#{current_user.id}-#{RolePermission.maximum(:updated_at)}" do
+        #json = Rails.cache.fetch "#{Project.cache_key_prefix}-role_permissions-visible-for-#{current_user.id}-#{RolePermission.maximum(:updated_at)}" do
           #{
             #data: policy_scope(RolePermission).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             #data_type: 'role_permissions'

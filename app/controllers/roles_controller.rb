@@ -29,7 +29,7 @@ class RolesController < ApplicationController
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = #Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "#{Project.cache_key_prefix}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
           {
             data: roles.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'roles',

@@ -83,7 +83,7 @@ class RegistryEntriesController < ApplicationController
             ]
           end
 
-        json = Rails.cache.fetch "#{Project.project_id}-#{Project.project_id}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
           registry_entries = registry_entries.includes(registry_names: :translations)
           {
             data: registry_entries.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
@@ -121,7 +121,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: parent.id,
           data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{Project.project_id}-registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
+          data: Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
         }, status: :ok 
       end
     end

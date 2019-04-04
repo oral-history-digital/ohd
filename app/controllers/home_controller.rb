@@ -17,7 +17,7 @@ class HomeController < ApplicationController
       end
       format.json do
         locales = Project.available_locales.reject{|i| i == 'alias'}
-        json = Rails.cache.fetch("#{Project.project_id}-static-content") do 
+        json = Rails.cache.fetch("#{Project.cache_key_prefix}-static-content") do 
           {
             external_links: Project.external_links,
             translations: translations,

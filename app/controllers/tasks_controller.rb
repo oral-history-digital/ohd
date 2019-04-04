@@ -40,7 +40,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{Project.project_id}-tasks-visible-for-#{current_user.id}-#{Task.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-tasks-visible-for-#{current_user.id}-#{Task.maximum(:updated_at)}" do
           {
             data: tasks.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'tasks'
