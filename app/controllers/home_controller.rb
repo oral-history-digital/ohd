@@ -37,6 +37,7 @@ class HomeController < ApplicationController
             project_doi: Project.project_doi,
             archive_domain: Project.archive_domain,
             locales: Project.available_locales,
+            media_streams: Project.media_streams,
             hidden_registry_entry_ids: Project.hidden_registry_entry_ids,
           }
         end

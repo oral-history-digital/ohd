@@ -72,7 +72,8 @@ const archive = (state = initialState, action) => {
                 hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,
-                projectDomain: action.projectDomain
+                projectDomain: action.projectDomain,
+                mediaStreams: action.mediaStreams,
             })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {

@@ -12,10 +12,16 @@ export default class VideoPlayer extends React.Component {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
         this.tracksVisible = false;
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTapeChange = this.handleTapeChange.bind(this);
+        this.handleResolutionChange = this.handleResolutionChange.bind(this);
     }
 
     componentDidMount() {
+        // set resolution to default as defined in project conf
+        if (this.props.mediaStreams) {
+            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
+            this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, initialResolution);
+        }
         if (this.video) {
             this.setVideoTime()
             this.setVideoStatus()
@@ -26,7 +32,13 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        // set resolution as soon as mediaStreams are available
+        if(!prevProps.mediaStreams && this.props.mediaStreams) {
+            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
+            this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, initialResolution);
+        }
+
         if (this.video) {
             this.setVideoTime()
             this.setVideoStatus()
@@ -34,8 +46,17 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    handleChange(e) {
-        this.props.setTapeAndTime(parseInt(e.target.value), 0);
+    componentWillUnmount() {
+        // reset resolution to undefined, otherwise changing video to audio or audio to video will crash
+        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, undefined);
+    }
+
+    handleTapeChange(e) {
+        this.props.setTapeAndTimeAndResolution(parseInt(e.target.value), 0, this.props.resolution);
+    }
+
+    handleResolutionChange(e) {
+        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, e.target.value, this.video.paused ? 'pause' : 'play');
     }
 
     setVideoTime() {
@@ -64,26 +85,16 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-
     src() {
         // this will run only if tape_count < 10!!
-        switch (this.props.project) {
-            case 'mog': {
-                return `${this.props.interview.src_base}/${this.props.archiveId}/${this.props.archiveId}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_720p.mp4`
-            }
-            case 'zwar': {
-                switch (this.props.interview.media_type) {
-                    case 'video': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_sd720p.mp4`
-                    }
-                    case 'audio': {
-                        return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}_256k.mp3`
-                    }
-                }
-            }
-            case 'hagen': {
-                return `${this.props.interview.src_base}/${this.props.archiveId.toUpperCase()}_${this.props.interview.tape_count}_${("0" + this.props.tape).slice(-2)}.mp3`
-            }
+        if(this.props.mediaStreams && this.props.resolution) {
+            let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
+                url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
+                url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
+                url = url.replace(/\#\{tape_number\}/g, this.props.tape);
+                return url;
+        } else {
+        return null;
         }
     }
 
@@ -195,6 +206,25 @@ export default class VideoPlayer extends React.Component {
         return options;
     }
 
+    resolutionSelector(){
+        let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
+        if (resolutions.length > 1) {
+
+            let options = [];
+            for(var i = 0; i < resolutions.length; i++) {
+                options.push(<option value={resolutions[i]} key={'resolution' + i}>{resolutions[i]}</option>);
+            }
+            return (
+                <select value={this.props.resolution} onChange={this.handleResolutionChange} className={'resolutionselector'}>
+                    {options}
+                </select>
+            )
+        }
+        else {
+            return null;
+        }
+    }
+
     mediaElement() {
         let _this = this;
         return(
@@ -247,9 +277,10 @@ export default class VideoPlayer extends React.Component {
                             {fullname(this.props, getInterviewee(this.props), true)}
                         </h1>
                         <div className="video-icons-container">
-                            <select value={this.props.tape} onChange={this.handleChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
+                            <select value={this.props.tape} onChange={this.handleTapeChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
                                 {this.tapeSelector()}
                             </select>
+                            {this.resolutionSelector()}
                             {this.annotateOnSegmentLink()}
                             {this.rememberInterviewLink()}
                         </div>

@@ -10,6 +10,13 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
 
+  media_streams:
+    defaults:
+      audio: 480p
+    audio:
+      default: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number)_240p.mp3
+
+
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interview'
