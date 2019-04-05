@@ -12,6 +12,7 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
+  
   media_streams:
     defaults:
       video: 480p
