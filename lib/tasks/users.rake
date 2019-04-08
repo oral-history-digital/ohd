@@ -39,6 +39,7 @@ namespace :users do
 
     admins.each do |login, name_parts|
       account = UserAccount.create login: login, email: login
+      account.skip_confirmation!
       #next if account.nil?
       reg = account.build_user_registration
       reg.appellation = name_parts[0]
@@ -64,7 +65,6 @@ namespace :users do
       User.where(id: reg.user.id).update_all admin: true
       account.password = account.password_confirmation = "bla4bla"
       account.confirmed_at = DateTime.now
-      account.skip_confirmation!
       account.save
       puts "created user: #{reg.user.reload}"
     end
