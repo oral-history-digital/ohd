@@ -15,6 +15,14 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha3_terminologic'
 
+  media_streams:
+    defaults:
+      video: 480p
+    video:
+      240p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number)_240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number)_480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number)_720p.mp4
+
   # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
   contribution_types:
     interviewee: 'Informants'

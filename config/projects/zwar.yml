@@ -5,13 +5,26 @@ default: &default
     - en
     - ru
     # - alias
-
+  
   default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
+  
+  media_streams:
+    defaults:
+      video: 480p
+      audio: 192k
+    video:
+      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
+    audio:
+      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
 
   contribution_types:
     interviewee: 'interviewee'

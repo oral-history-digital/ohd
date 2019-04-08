@@ -33,6 +33,7 @@ function receiveStaticContent(json){
         projectName: json.project_name,
         projectDomain: json.project_domain,
         archiveDomain: json.archive_domain,
+        mediaStreams: json.media_streams,
         receivedAt: Date.now()
     }
 }
