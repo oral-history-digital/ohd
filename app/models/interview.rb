@@ -1,4 +1,5 @@
 require 'globalize'
+require 'webvtt'
 require "#{Rails.root}/lib" + '/reference_tree.rb'
 
 
@@ -404,19 +405,13 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, file_column_names, file_column_languages)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      sheet.each(file_column_names) do |row|
-        if row['timecode'] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
-          segment = Segment.find_or_create_by interview_id: id, timecode: row['timecode'], tape_id: tape_id
-          %w(transcript translation_one translation_two).each do |t|
-            if file_column_languages[t]
-              segment.update_attributes text: row[t], 
-                locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) 
-            end
-          end
-          #TODO: update duration
+      sheet.each(timecode: 'Timecode', transcript: 'Transkript') do |row|
+        if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
+          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
+          segment.update_attributes text: row[:transcript], locale: locale
         end
       end
     end
@@ -424,11 +419,12 @@ class Interview < ActiveRecord::Base
     'header_row_not_found'
   end
 
-  def create_or_update_segments_from_vtt(file_path, tape_id)
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale)
     extension = File.extname(file_path).strip.downcase[1..-1]
-    webvtt = extension == 'vtt' ? WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
+    webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
-      segment = Segment.find_or_create_by interview_id: id, timecode: cue.start, tape_id: tape_id, duration: (Time.parse(cue.end.to_s) - Time.parse(cue.start.to_s))
+      segment = Segment.find_or_create_by interview_id: id, timecode: cue.start.to_s, tape_id: tape_id, duration: (Time.parse(cue.end.to_s) - Time.parse(cue.start.to_s))
+      segment.update_attributes text: cue.text, locale: locale
     end
   end
 

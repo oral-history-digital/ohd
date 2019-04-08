@@ -44,13 +44,8 @@ export default class UploadTranscript extends React.Component {
                 <Form 
                     scope='transcript'
                     onSubmit={this.props.submitData}
-                    submitText='edit.upload_transcript'
-                    values={{
-                        // set default values in form`s own values as well:
-                        '[file_column_names]timecode': 'Timecode',
-                        '[file_column_names]transcript': 'Transkript',
-                        '[file_column_names]translation_one': 'Übersetzung'
-                    }}
+                    submitText='edit.upload_transcript.title'
+                    values={{ }}
                     elements={[
                         {
                             elementType: 'select',
@@ -67,58 +62,32 @@ export default class UploadTranscript extends React.Component {
                             validate: function(v){return v instanceof File},
                             //handlechangecallback: this.handleFileChange
                         },
-                        { 
-                            attribute: '[file_column_names]timecode',
-                            label: t(this.props, 'activerecord.attributes.transcript.timecode'),
-                            value: 'Timecode'
-                        },
-                        { 
-                            attribute: '[file_column_names]transcript',
-                            label: t(this.props, 'activerecord.attributes.transcript.transcript'),
-                            value: 'Transkript'
+                        {
+                            elementType: 'select',
+                            attribute: 'interview_original_language_id',
+                            label: t(this.props, 'activerecord.attributes.transcript.interview_original_language_id'),
+                            values: this.props.languages,
+                            withEmpty: true,
+                            validate: function(v){return v !== ''} 
                         },
                         {
                             elementType: 'select',
-                            attribute: '[file_column_languages]transcript',
-                            label: t(this.props, 'activerecord.attributes.transcript.transcript_language'),
+                            attribute: 'transcript_language_id',
+                            label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
                             values: this.props.languages,
                             withEmpty: true,
                             validate: function(v){return v !== ''} 
                         },
                         { 
-                            attribute: '[file_column_names]translation_one',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_one'),
-                            value: 'Übersetzung'
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: '[file_column_languages]translation_one',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_one_language'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            //validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: '[file_column_names]translation_two',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_two'),
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: '[file_column_languages]translation_two',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_two_language'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            //validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: '[file_column_names]annotations',
-                            label: t(this.props, 'activerecord.attributes.transcript.annotations')
-                        },
-                        { 
                             attribute: 'tape_and_archive_id_from_file',
                             elementType: 'input',
                             type: 'checkbox',
-                            handlechangecallback: this.handleTapeAndArchiveIdFromFileChange
+                            handlechangecallback: this.handleTapeAndArchiveIdFromFileChange,
+                            help: (
+                                <p>
+                                    {t(this.props, 'edit.upload_transcript.tape_and_archive_id_from_file_explanation')}
+                                </p>
+                            )
                         },
                         { 
                             attribute: 'archive_id',

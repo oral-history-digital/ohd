@@ -269,7 +269,9 @@ en:
       show: Beschreibung
       edit: Bearbeiten
       new: Hinzufügen
-    upload_transcript: Transkript hochladen
+    upload_transcript: 
+      title: Transkript hochladen
+      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
     administration: administration
     indexing: curation/ indexing
   edit_interview_reference: Edit saved interview
@@ -568,14 +570,8 @@ en:
         collection_id: Sammlung
         archive_id: Archiv-ID
         data: Transkriptdatei
-        timecode: Spaltenüberschrift für Timecode
-        transcript: Spaltenüberschrift für Transkript
-        translation_one: Spaltenüberschrift für Übersetzung 1
-        translation_two: Spaltenüberschrift für Übersetzung 2
-        transcript_language: Transkript Sprache
-        translation_one_language: Übersetzung 1 Sprache
-        translation_two_language: Übersetzung 2 Sprache
-        annotations: Anmerkungen
+        interview_original_language_id: Interview Sprache
+        transcript_language_id: Sprache der Transkriptdatei
         tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
           erschliessen?
         tape_count: Geamtzahl der Tapes

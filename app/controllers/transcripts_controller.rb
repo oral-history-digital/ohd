@@ -24,13 +24,12 @@ class TranscriptsController < ApplicationController
     end
 
     interview = Interview.find_or_create_by archive_id: archive_id
-    #interview = Interview.find_or_create_by collection_id: transcript_params[:collection_id], archive_id: archive_id
-    interview.update_attributes collection_id: transcript_params[:collection_id], language_id: file_column_languages[:transcript]
+    interview.update_attributes collection_id: transcript_params[:collection_id], language_id: transcript_params[:interview_original_language_id]
     
     tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
+    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code).send(Project.alpha) 
 
-    #interview.create_or_update_segments_from_file(file_path, tape.id, file_column_names, file_column_languages)
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, file_column_names, file_column_languages, current_user_account)
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account)
 
     respond_to do |format|
       format.json do
@@ -50,26 +49,11 @@ class TranscriptsController < ApplicationController
       permit(
         :collection_id,
         :archive_id,
+        :interview_original_language_id,
+        :transcript_language_id,
         :tape_count,
         :tape_number,
-        file_column_names: [:timecode, :transcript, :translation_one, :translation_two, :annotations],
-        file_column_languages: [:transcript, :translation_one, :translation_two],
     )
-  end
-
-  def file_column_names
-    column_names = transcript_params[:file_column_names].to_h
-    column_names || {
-      timecode: "timecode",
-      transcript: "transcript",
-      translation_one: "translation_one",
-      translation_two: "translation_two",
-      annotation: "annotations",
-    } 
-  end
-
-  def file_column_languages
-    transcript_params[:file_column_languages].to_h
   end
 
   def extract_archive_id_and_tape_media_id(file)

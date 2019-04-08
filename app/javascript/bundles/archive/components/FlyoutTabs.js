@@ -199,7 +199,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab('edit.interview.new', 'erklärung', `/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {this.subTab('edit.upload_transcript', 'erklärung', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {this.subTab('edit.upload_transcript.title', 'erklärung', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
                         {this.subTab('edit.upload.upload', 'erklärung', `/${this.props.locale}/uploads/new`, {type: 'Interview', action: 'update'})}
                         {this.subTab('edit.person.new', 'erklärung', `/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
                     </div>
