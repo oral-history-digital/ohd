@@ -178,6 +178,10 @@ video::cue {
 	font-family: $font-family;
 }
 
+.fix-video video:not(:fullscreen)::cue {
+  visibility: hidden;
+}
+
 span.breadcrumb
 {
   color: grey;
