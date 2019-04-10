@@ -69,9 +69,7 @@ export default class UserContentForm extends React.Component {
 
     valid() {
         return this.state.title &&
-            this.state.title.length > 1 &&
-            this.state.description &&
-            this.state.description.length > 1
+            this.state.title.length > 1
     }
 
     setErrors() {
