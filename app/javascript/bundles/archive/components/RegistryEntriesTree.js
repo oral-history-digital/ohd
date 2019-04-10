@@ -13,6 +13,7 @@ export default class RegistryEntriesTree extends React.Component {
 
     componentDidMount() {
         this.loadRootRegistryEntry();
+        window.scrollTo(0, 1);
     }
 
     componentDidUpdate() {
@@ -65,7 +66,7 @@ export default class RegistryEntriesTree extends React.Component {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <div className='wrapper-content'>
+                        <div className='wrapper-content register'>
                             <h1 className='registry-entries-title'>
                                 {t(this.props, 'registry')}
                             </h1>
