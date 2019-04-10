@@ -106,7 +106,9 @@ export default class Form extends React.Component {
             >
 
                 {this.props.elements.map((props, index) => {
-                    return this.elementComponent(props);
+                    if(props.condition === undefined || props.condition === true) {
+                        return this.elementComponent(props);
+                    }
                 })}
 
                 <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
