@@ -2,6 +2,7 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
+import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { t } from '../../../lib/utils';
 
 export default class UploadTranscript extends React.Component {
@@ -111,6 +112,9 @@ export default class UploadTranscript extends React.Component {
                             validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
                         },
                     ]}
+                    subForm={ContributionFormContainer}
+                    subFormProps={{withSpeakerDesignation: true}}
+                    subFormScope='contribution'
                 />
             )
         }

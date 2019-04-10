@@ -25,11 +25,14 @@ class TranscriptsController < ApplicationController
 
     interview = Interview.find_or_create_by archive_id: archive_id
     interview.update_attributes collection_id: transcript_params[:collection_id], language_id: transcript_params[:interview_original_language_id]
+    contribution_data = JSON.parse(transcript_params[:contributions])
+    create_contributions(interview, contribution_data)
     
     tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code).send(Project.alpha) 
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account)
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, contribution_data)
+    #interview.create_or_update_segments_from_vtt(file_path, tape.id, locale, contribution_data)
 
     respond_to do |format|
       format.json do
@@ -53,6 +56,7 @@ class TranscriptsController < ApplicationController
         :transcript_language_id,
         :tape_count,
         :tape_number,
+        :contributions #: [:person_id, :contribution_type, :speaker_designation]
     )
   end
 
@@ -62,5 +66,12 @@ class TranscriptsController < ApplicationController
     tape_media_id = "#{filename_tokens[0]}_#{filename_tokens[1]}_#{filename_tokens[2]}".upcase
     [archive_id, tape_media_id]
   end
+
+  def create_contributions(interview, contribution_data)
+    contribution_data.each do |c|
+      Contribution.create interview_id: interview.id, contribution_type: c['contribution_type'], person_id: c['person_id']
+    end
+  end
+
 
 end

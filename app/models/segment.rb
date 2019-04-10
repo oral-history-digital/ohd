@@ -76,6 +76,58 @@ class Segment < ActiveRecord::Base
 
   before_validation :do_before_validation_on_create, :on => :create
 
+  class << self
+    def create_or_update_by(opts={})
+      segment = find_or_create_by(opts.select{|k,v| [:interview_id, :timecode, :tape_id].include?(k)})
+      assign_speakers_and_update_text(segment, opts)
+    end
+
+    # this methods substitutes speaker_designations (e.g. *CG:*) 
+    # if these speaker_designations do not occur at the beginning of the text, a new segment will be created for each occurence
+    #
+    def assign_speakers_and_update_text(segment, opts)
+      speaker_designations = opts[:contribution_data].map{|d| d['speaker_designation']}
+      # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
+      all_speakers_regexp = Regexp.new(speaker_designations.map{|d| "(#{Regexp.quote(d)})"}.join('|'))
+
+      splitted_text = opts[:text].split(all_speakers_regexp).reject(&:empty?)
+      time_per_char = calculate_time_per_char(speaker_designations, opts)
+
+      while !splitted_text.empty?
+        if splitted_text.length.even?
+          speaker_designation = splitted_text.shift
+          text = splitted_text.shift
+          segment.update_attributes text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+        else
+          text = splitted_text.shift
+          segment.update_attributes text: text, locale: opts[:locale], speaker_id: (segment.prev && segment.prev.speaker_id) || nil
+        end
+
+        unless splitted_text.empty?
+          segment = segment.next && segment.next.timecode < opts[:next_timecode] ? segment.next : 
+            create(interview_id: opts[:interview_id], tape_id: opts[:tape_id], timecode: (Time.parse(segment.timecode) + segment.text.length * time_per_char).strftime("%H:%M.%S.%L"))
+        end
+      end
+    end
+
+    def calculate_time_per_char(speaker_designations, opts)
+      # this regexp has  no capture groups!!
+      all_speakers_regexp = Regexp.new(speaker_designations.map{|d| Regexp.quote(d)}.join('|'))
+      clean_text = opts[:text].gsub(all_speakers_regexp, '')
+      duration = Time.parse(opts[:next_timecode]) - Time.parse(opts[:timecode])
+      duration/clean_text.length
+    end
+  end
+
+  def initials(locale)
+    inits = []
+    if !text(locale).blank?
+      raw_initials = text(locale)[/\*\w+:\*/]
+      inits << raw_initials[/\w+/] if raw_initials
+    end
+    inits
+  end
+
   def identifier
     id
   end
@@ -213,15 +265,6 @@ class Segment < ActiveRecord::Base
       ids << base_media_id + (media_index + range_size).to_s.rjust(4,'0')
     end
     ids
-  end
-
-  def initials(locale)
-    inits = []
-    if !text(locale).blank?
-      raw_initials = text(locale)[/\*\w+:\*/]
-      inits << raw_initials[/\w+/] if raw_initials
-    end
-    inits
   end
 
   def time

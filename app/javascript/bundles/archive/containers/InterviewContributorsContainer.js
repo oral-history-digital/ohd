@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import InterviewContributors from '../components/InterviewContributors';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData, submitData } from '../actions/dataActionCreators';
 
 import { getInterview, getCookie } from '../../../lib/utils';
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    submitData: (params) => dispatch(submitData(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewContributors);

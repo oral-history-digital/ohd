@@ -405,13 +405,20 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      sheet.each(timecode: 'Timecode', transcript: 'Transkript') do |row|
+      sheet.each_with_index(timecode: 'Timecode', transcript: 'Transkript') do |row, index|
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
-          segment = Segment.find_or_create_by interview_id: id, timecode: row[:timecode], tape_id: tape_id
-          segment.update_attributes text: row[:transcript], locale: locale
+          Segment.create_or_update_by({ 
+            interview_id: id, 
+            timecode: row[:timecode], 
+            next_timecode: sheet.row(index+1) && sheet.row(index+1)[:timecode], 
+            tape_id: tape_id,
+            text: row[:transcript], 
+            locale: locale,
+            contribution_data: contribution_data
+          })
         end
       end
     end
@@ -419,12 +426,19 @@ class Interview < ActiveRecord::Base
     'header_row_not_found'
   end
 
-  def create_or_update_segments_from_vtt(file_path, tape_id, locale)
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)
     extension = File.extname(file_path).strip.downcase[1..-1]
     webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
-      segment = Segment.find_or_create_by interview_id: id, timecode: cue.start.to_s, tape_id: tape_id, duration: (Time.parse(cue.end.to_s) - Time.parse(cue.start.to_s))
-      segment.update_attributes text: cue.text, locale: locale
+      Segment.create_or_update_by({ 
+        interview_id: id, 
+        timecode: cue.start.to_s,
+        next_timecode: cue.end.to_s,
+        tape_id: tape_id,
+        text: cue.text, 
+        locale: locale,
+        contribution_data: contribution_data
+      })
     end
   end
 
