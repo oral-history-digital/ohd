@@ -45,6 +45,11 @@ default: &default
 
   project_id: 'mog'
 
+  # used in PDFs
+  # give the color code as fractions of 255
+  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
+  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
+
   project_shortname: 'MOG'
 
   project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.

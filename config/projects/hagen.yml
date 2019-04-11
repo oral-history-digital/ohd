@@ -29,6 +29,11 @@ default: &default
 
   project_id: 'hagen'
 
+  # used in PDFs
+  # give the color code as fractions of 255
+  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
+  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
+
   project_shortname: 'LUSIR'
 
   project_initials: 'DG'

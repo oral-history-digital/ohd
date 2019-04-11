@@ -19,6 +19,10 @@ module Project
       @project_config['cache_key_prefix'] ||= project_id
     end
 
+    def primary_color_rgb
+      @project_config['primary_color_rgb'] ||= '0.560784314, 0.125490196, 0.109803922'
+    end
+
     def name
       project_id
     end
