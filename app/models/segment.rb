@@ -87,9 +87,14 @@ class Segment < ActiveRecord::Base
     #
     def assign_speakers_and_update_text(segment, opts)
       speaker_designations = opts[:contribution_data].map{|d| d['speaker_designation']}
+      #
       # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
+      #
       all_speakers_regexp = Regexp.new(speaker_designations.map{|d| "(#{Regexp.quote(d)})"}.join('|'))
 
+      # 
+      # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
+      #
       splitted_text = opts[:text].split(all_speakers_regexp).reject(&:empty?)
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
@@ -100,9 +105,13 @@ class Segment < ActiveRecord::Base
           segment.update_attributes text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
         else
           text = splitted_text.shift
-          segment.update_attributes text: text, locale: opts[:locale], speaker_id: (segment.prev && segment.prev.speaker_id) || nil
+          segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
         end
 
+        # if there is another speaker_designation in the text
+        # check whether there is  an automatically generated segment (from reading in the transcript in another language)
+        # or create it
+        #
         unless splitted_text.empty?
           segment = segment.next && segment.next.timecode < opts[:next_timecode] ? segment.next : 
             create(interview_id: opts[:interview_id], tape_id: opts[:tape_id], timecode: (Time.parse(segment.timecode) + segment.text.length * time_per_char).strftime("%H:%M.%S.%L"))
