@@ -128,15 +128,6 @@ class Segment < ActiveRecord::Base
     end
   end
 
-  def initials(locale)
-    inits = []
-    if !text(locale).blank?
-      raw_initials = text(locale)[/\*\w+:\*/]
-      inits << raw_initials[/\w+/] if raw_initials
-    end
-    inits
-  end
-
   def identifier
     id
   end

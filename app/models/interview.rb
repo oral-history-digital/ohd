@@ -321,15 +321,6 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def initials
-    locale = projectified(language.code)
-    inits = []
-    segments.includes(:translations).where("segment_translations.locale": locale).each do |segment|
-      inits << segment.initials(locale)
-    end
-    inits.flatten.uniq
-  end
-
   def title
     localized_hash(true)
   end

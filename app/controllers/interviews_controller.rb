@@ -50,7 +50,8 @@ class InterviewsController < ApplicationController
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    AssignSpeakersJob.perform_later(@interview, speakers)
+    contribution_data = JSON.parse(update_speakers_params[:contributions])
+    AssignSpeakersJob.perform_later(@interview, contribution_data)
 
     respond_to do |format|
       format.json do
@@ -167,24 +168,6 @@ class InterviewsController < ApplicationController
     end
   end
 
-  def initials
-    @interview = Interview.find_by_archive_id(params[:id])
-    authorize @interview
-    respond_to do |format|
-      format.json do
-        json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-initials-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
-          {
-            data: @interview.initials,
-            nested_data_type: 'initials',
-            data_type: 'interviews',
-            archive_id: params[:id]
-          }
-        end.to_json
-        render plain: json
-      end
-    end
-  end
-
   def ref_tree
     @interview = Interview.find_by_archive_id(params[:id])
     authorize @interview
@@ -221,16 +204,7 @@ class InterviewsController < ApplicationController
   end
 
   def update_speakers_params
-    params.require(:update_speaker).
-      permit(
-        #:split_segments,
-        #:cut_initials,
-        speakers: {}
-    )
-  end
-
-  def speakers
-    update_speakers_params[:speakers].to_h
+    params.require(:update_speaker).permit(:contributions)
   end
 
   def doi_json(archive_id)
