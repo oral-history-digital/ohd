@@ -96,7 +96,7 @@ export default class Form extends React.Component {
                     <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
                     {this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
                         return (
-                            <p>
+                            <p key={`${this.props.scope}-${this.props.subScope}-${index}`} >
                                 <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
                                 {this.deleteSubScopeValue(index)}
                             </p>
