@@ -72,13 +72,31 @@ export default class Form extends React.Component {
         return !errors;
     }
 
+    deleteSubScopeValue(index) {
+        return <span
+            className='flyout-sub-tabs-content-ico-link'
+            title={t(this.props, 'delete')}
+            onClick={() => {
+                let subScopeValues = this.state.values[pluralize(this.props.subFormScope)];
+                this.setState({ 
+                    values: Object.assign({}, this.state.values, {
+                        [pluralize(this.props.subFormScope)]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                    })
+                })
+            }}
+        >
+            <i className="fa fa-trash-o"></i>
+        </span>
+    }
+
     selectedSubScopeValues() {
         if (this.props.subFormScope && this.state.values[pluralize(this.props.subFormScope)]) {
             return this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
                 return (
-                    <div className='sub-scope-value'>
-                        {this.props.subScopeRepresentation(value)}
-                    </div>
+                    <p>
+                        <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
+                        {this.deleteSubScopeValue(index)}
+                    </p>
                 )
             })
         }
