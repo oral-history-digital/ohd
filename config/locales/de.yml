@@ -319,6 +319,8 @@ de:
     rejected: abgelehnt
     registered: registriert
   contributions:
+    title: Mitwirkende
+    add: Mitwirkende(n) zufügen
     interviewee: Interviewte(r)
     interviewer: Interview
     transcriptor: Transkript
@@ -520,6 +522,7 @@ de:
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
+        speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
         name: Name
         countries: Interviews in

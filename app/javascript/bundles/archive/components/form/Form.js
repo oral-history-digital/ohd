@@ -91,14 +91,19 @@ export default class Form extends React.Component {
 
     selectedSubScopeValues() {
         if (this.props.subFormScope && this.state.values[pluralize(this.props.subFormScope)]) {
-            return this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
-                return (
-                    <p>
-                        <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
-                        {this.deleteSubScopeValue(index)}
-                    </p>
-                )
-            })
+            return (
+                <div>
+                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
+                    {this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
+                        return (
+                            <p>
+                                <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
+                                {this.deleteSubScopeValue(index)}
+                            </p>
+                        )
+                    })}
+                </div>
+            )
         }
     }
 
@@ -127,7 +132,7 @@ export default class Form extends React.Component {
                     })}
                 >
                     <div>
-                        {t(this.props, `add.${this.props.subFormScope}`)}
+                        {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
                         <i className="fa fa-plus"></i>
                     </div>
                 </div>

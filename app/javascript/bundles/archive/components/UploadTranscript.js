@@ -20,11 +20,11 @@ export default class UploadTranscript extends React.Component {
 
     showContribution(value) {
         return (
-            <p>
-                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)])}</span>&#44;&#32;
-                <span>{t(this.props, value.contribution_type)}</span>&#44;&#32;
+            <span>
+                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
+                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
                 <span>{value.speaker_designation}</span>
-            </p>
+            </span>
         )
     }
 
