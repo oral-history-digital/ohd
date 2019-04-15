@@ -3,7 +3,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import { t } from '../../../lib/utils';
+import { t, fullname } from '../../../lib/utils';
 
 export default class UploadTranscript extends React.Component {
 
@@ -14,7 +14,18 @@ export default class UploadTranscript extends React.Component {
         };
 
         this.handleTapeAndArchiveIdFromFileChange = this.handleTapeAndArchiveIdFromFileChange.bind(this);
+        this.showContribution = this.showContribution.bind(this);
         //this.handleFileChange = this.handleFileChange.bind(this);
+    }
+
+    showContribution(value) {
+        return (
+            <p>
+                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)])}</span>&#44;&#32;
+                <span>{t(this.props, value.contribution_type)}</span>&#44;&#32;
+                <span>{value.speaker_designation}</span>
+            </p>
+        )
     }
 
     returnToForm() {
@@ -115,6 +126,7 @@ export default class UploadTranscript extends React.Component {
                     subForm={ContributionFormContainer}
                     subFormProps={{withSpeakerDesignation: true}}
                     subFormScope='contribution'
+                    subScopeRepresentation={this.showContribution}
                 />
             )
         }

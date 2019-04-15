@@ -72,6 +72,18 @@ export default class Form extends React.Component {
         return !errors;
     }
 
+    selectedSubScopeValues() {
+        if (this.props.subFormScope && this.state.values[pluralize(this.props.subFormScope)]) {
+            return this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
+                return (
+                    <div className='sub-scope-value'>
+                        {this.props.subScopeRepresentation(value)}
+                    </div>
+                )
+            })
+        }
+    }
+
     handleSubFormSubmit(params) {
         let scope = Object.keys(params)[0];
         let nestedValues = this.state.values[pluralize(scope)] || [];
@@ -96,7 +108,10 @@ export default class Form extends React.Component {
                         content: React.createElement(this.props.subForm, this.props.subFormProps)
                     })}
                 >
-                    <i className="fa fa-plus"></i>
+                    <div>
+                        {t(this.props, `add.${this.props.subFormScope}`)}
+                        <i className="fa fa-plus"></i>
+                    </div>
                 </div>
             )
         }
@@ -140,6 +155,7 @@ export default class Form extends React.Component {
                     return this.elementComponent(props);
                 })}
 
+                {this.selectedSubScopeValues()}
                 {this.openSubForm()}
 
                 <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
