@@ -2,9 +2,9 @@
 \fancyfoot{}
 \fancyhead[L]{\includegraphics[height=12mm]{<%= "#{Project.project_shortname}-Archiv-PDF-Logo-#{@locale}.png" %>}
   \vspace*{0.2cm}
-  \newline{\fontsize{8}{10}\selectfont{\textcolor{mogBlue} {<%= header_text %> }}}
+  \newline{\fontsize{8}{10}\selectfont{\textcolor{primaryColor} {<%= header_text %> }}}
   \vspace*{0.1cm}
 }
-\fancyfoot[L]{\fontsize{8}{10}\selectfont{\textcolor{mogBlue}{\copyright 2018 Freie Universität Berlin}}
-  \newline{\fontsize{8}{10}\selectfont{\textcolor{mogBlue}{www.occupation-memories.org}}}}
-\fancyfoot[R]{\fontsize{8}{10}\selectfont{\textcolor{mogBlue}\thepage}}
+\fancyfoot[L]{\fontsize{8}{10}\selectfont{\textcolor{primaryColor}{\copyright 2018 Freie Universität Berlin}}
+  \newline{\fontsize{8}{10}\selectfont{\textcolor{primaryColor}{<%= Project.archive_domain %>}}}}
+\fancyfoot[R]{\fontsize{8}{10}\selectfont{\textcolor{primaryColor}\thepage}}

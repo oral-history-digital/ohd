@@ -5,14 +5,14 @@ default: &default
     - en
     - ru
     # - alias
-
+  
   default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
-
+  
   media_streams:
     defaults:
       video: 480p
@@ -34,7 +34,7 @@ default: &default
     segmentator: 'segmentation'
     cinematographer: 'Camera recorder'
     quality_manager: 'Quality management interviewing'
-    proofreader: 'proof_reading'
+    proofreader: 'proof_reading' 
 
   upload_types:
     - bulk_metadata
@@ -44,8 +44,6 @@ default: &default
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
     en: 'Forced Labor 1939-1945. Memory and History'
     ru: 'Принудительный труд 1939-1945. Воспоминания и история'
-
-  cache_key_prefix: 'zwar-staging'
 
   project_id: 'zwar'
 
@@ -68,7 +66,7 @@ default: &default
   leader: "Apostolopoulos, Nicolas; Pickhan, Gertrud"
   manager: "Tausendfreund, Doris; Pagenstecher, Cord"
   hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
-  funder_names:
+  funder_names: 
     - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
@@ -88,7 +86,7 @@ default: &default
     annotation_guidelines:
       de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-      #ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     team:
       de: 'http://www.zwangsarbeit-archiv.de/team'
       en: 'http://www.zwangsarbeit-archiv.de/en/team'
@@ -164,7 +162,7 @@ default: &default
         male: 'male'
     - id: 'collection_id'
       source: 'collection'
-      use_as_facet: true
+      use_as_facet: true 
     - id: 'media_type'
       source: 'interview'
       use_as_facet: true
@@ -216,3 +214,4 @@ staging:
 
 test:
   <<: *default
+
