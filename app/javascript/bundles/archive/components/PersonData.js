@@ -59,7 +59,9 @@ export default class PersonData extends React.Component {
     }
 
     history() {
-        if(this.props.project === 'mog'){
+        // Why only in mog, Rico?
+        //if(this.props.project === 'mog'){
+        if(true){
             return (
                 <AuthShowContainer ifLoggedIn={true}>
                     <p>

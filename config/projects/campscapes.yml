@@ -23,8 +23,8 @@ default: &default
     proofreader: 'proof_reading' 
 
   upload_types:
-    - campscape
-    - protocols
+    - bulk_metadata
+    - bulk_texts
 
   project_name: # Will be used in titles, emails, etc.
     en: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'

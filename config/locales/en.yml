@@ -347,14 +347,14 @@ en:
   upload:
     type:
       bulk_metadata: Massenimport von Metadaten
-      bulk_protocols: Massenimport von Interviewprotokollen
+      bulk_texts: Massenimport von Textdateien (Protokolle oder Biografien)
     explanation:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart.
-      bulk_protocols: Lade die zip-Vorlage herunter, komprimiere deine rtf-Dateien
-        in diese zip-Datei und lade sie hoch. Der Text wird im Protokoll-Feld angezeigt.
-        Dateinamen müssen dem Muster ID_Sprache.rtf folgen, z. B. za123_de.rtf.
+      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
+        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
+        Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
     types:
       bulk_metadata: Bulk Metadata Import
       bulk_protocols: Bulk Protocol Import
