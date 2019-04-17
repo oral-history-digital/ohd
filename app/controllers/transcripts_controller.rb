@@ -25,7 +25,7 @@ class TranscriptsController < ApplicationController
 
     interview = Interview.find_or_create_by archive_id: archive_id
     interview.update_attributes collection_id: transcript_params[:collection_id], language_id: transcript_params[:interview_original_language_id]
-    contribution_data = JSON.parse(transcript_params[:contributions])
+    contribution_data = transcript_params[:contributions] ? JSON.parse(transcript_params[:contributions]) :[]
     create_contributions(interview, contribution_data)
     
     tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id

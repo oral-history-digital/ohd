@@ -233,7 +233,7 @@ el:
       delete: Anmerkung löschen
     upload:
       upload: Upload
-      processing: 'Wird bearbeitet: '
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
       return: Weiterer Upload
     update_speaker:
       cut_initials: Initialen herausschneiden
@@ -356,6 +356,9 @@ el:
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
+      transcript:
+        Unterstützt werden .ods, .vtt, .srt.
+        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. Die Reihenfolge oder Nummer der Spalten ist egal.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht

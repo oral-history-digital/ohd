@@ -95,7 +95,7 @@ class Segment < ActiveRecord::Base
       # 
       # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
       #
-      splitted_text = opts[:text].split(all_speakers_regexp).reject(&:empty?)
+      splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text].split(all_speakers_regexp).reject(&:empty?)  
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
       while !splitted_text.empty?

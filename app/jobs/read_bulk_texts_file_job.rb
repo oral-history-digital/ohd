@@ -32,14 +32,17 @@ class ReadBulkTextsFileJob < ApplicationJob
         when 'protocoll'
           interview.update_attributes observations: text, locale: locale
         when 'bg'
-          text = text.sub(/Kurzbiografie.*\n+/, '')
-          text_parts = text.split(/\n+/)
-          is_text_with_dates = check_for_dates(text_parts)
-          date = nil
-          while !text_parts.empty? && !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/)
-            date = text_parts.shift if is_text_with_dates
-            entry = text_parts.shift
-            BiographicalEntry.create(person_id: interview.interviewees.first.id, locale: locale, text: entry, start_date: date)
+          # do not append biographical entries again and again
+          if interview.interviewees.first.biographical_entries.empty?
+            text = text.sub(/Kurzbiografie.*\n+/, '')
+            text_parts = text.split(/\n+/)
+            is_text_with_dates = check_for_dates(text_parts)
+            date = nil
+            while !text_parts.empty? && !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/)
+              date = text_parts.shift if is_text_with_dates
+              entry = text_parts.shift
+              BiographicalEntry.create(person_id: interview.interviewees.first.id, locale: locale, text: entry, start_date: date)
+            end
           end
         else
           logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"

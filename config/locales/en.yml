@@ -232,7 +232,7 @@ en:
       delete: Anmerkung löschen
     upload:
       upload: Upload
-      processing: 'Wird bearbeitet: '
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
       return: Weiterer Upload
     update_speaker:
       cut_initials: Initialen herausschneiden
@@ -346,24 +346,17 @@ en:
     translated: with German translation
   upload:
     type:
-      bulk_metadata: Massenimport von Metadaten
-      bulk_texts: Massenimport von Textdateien (Protokolle oder Biografien)
-    explanation:
-      bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
-        als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
-        sowie Feldart.
-      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
-        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
-        Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
-    types:
       bulk_metadata: Bulk Metadata Import
-      bulk_protocols: Bulk Protocol Import
-    explanations:
+      bulk_texts: Bulk Text Import (protocolls and biographies)
+    explanation:
       bulk_metadata: Download this spreadsheet template, fill in your data, save as
         csv and upload. Keep column number and names as well as field types.
-      bulk_protocols: Download zip template, compress your rtf files into this zip
-        file and upload. Plain text will be pasted into protocol field. File names
-        must be like ID_Language.rtf, eg. za123_de.rtf.
+      bulk_texts: Compress your protocoll- or biography-files into a zip
+        file and upload. No subfolders in the zip-archive allowed. File names
+        must be like ArchiveId_type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
+      transcript:
+        Unterstützt werden .ods, .vtt, .srt.
+        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. Die Reihenfolge oder Nummer der Spalten ist egal.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht

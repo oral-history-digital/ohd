@@ -39,8 +39,7 @@ export default class UploadTranscript extends React.Component {
             return (
                 <div>
                     <p>
-                        {t(this.props, 'edit.upload.processing')}
-                        {this.props.processing}
+                        {t(this.props, 'edit.upload.processing', {archiveId: this.props.processing})}
                     </p>
                     <div 
                         className='return-to-upload'
@@ -53,81 +52,86 @@ export default class UploadTranscript extends React.Component {
         } else {
             let _this = this;
             return (
-                <Form 
-                    scope='transcript'
-                    onSubmit={this.props.submitData}
-                    submitText='edit.upload_transcript.title'
-                    values={{ }}
-                    elements={[
-                        {
-                            elementType: 'select',
-                            attribute: 'collection_id',
-                            values: this.props.collections,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''},
-                            individualErrorMsg: 'empty'
-                        },
-                        { 
-                            attribute: 'data',
-                            elementType: 'input',
-                            type: 'file',
-                            validate: function(v){return v instanceof File},
-                            //handlechangecallback: this.handleFileChange
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: 'interview_original_language_id',
-                            label: t(this.props, 'activerecord.attributes.transcript.interview_original_language_id'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''} 
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: 'transcript_language_id',
-                            label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: 'tape_and_archive_id_from_file',
-                            elementType: 'input',
-                            type: 'checkbox',
-                            handlechangecallback: this.handleTapeAndArchiveIdFromFileChange,
-                            help: (
-                                <p>
-                                    {t(this.props, 'edit.upload_transcript.tape_and_archive_id_from_file_explanation')}
-                                </p>
-                            )
-                        },
-                        { 
-                            attribute: 'archive_id',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.archiveId,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3,4}$/.test(v)}
-                        },
-                        { 
-                            attribute: 'tape_count',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.tapeCount,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                        },
-                        { 
-                            attribute: 'tape_number',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.tapeNumber,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                        },
-                    ]}
-                    subForm={ContributionFormContainer}
-                    subFormProps={{withSpeakerDesignation: true}}
-                    subFormScope='contribution'
-                    subScopeRepresentation={this.showContribution}
-                />
+                <div>
+                    <p className='explanation'>
+                        {t(this.props, `upload.explanation.transcript`)}
+                    </p>
+                    <Form 
+                        scope='transcript'
+                        onSubmit={this.props.submitData}
+                        submitText='edit.upload_transcript.title'
+                        values={{ }}
+                        elements={[
+                            {
+                                elementType: 'select',
+                                attribute: 'collection_id',
+                                values: this.props.collections,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''},
+                                individualErrorMsg: 'empty'
+                            },
+                            { 
+                                attribute: 'data',
+                                elementType: 'input',
+                                type: 'file',
+                                validate: function(v){return v instanceof File},
+                                //handlechangecallback: this.handleFileChange
+                            },
+                            {
+                                elementType: 'select',
+                                attribute: 'interview_original_language_id',
+                                label: t(this.props, 'activerecord.attributes.transcript.interview_original_language_id'),
+                                values: this.props.languages,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
+                            {
+                                elementType: 'select',
+                                attribute: 'transcript_language_id',
+                                label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
+                                values: this.props.languages,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
+                            { 
+                                attribute: 'tape_and_archive_id_from_file',
+                                elementType: 'input',
+                                type: 'checkbox',
+                                handlechangecallback: this.handleTapeAndArchiveIdFromFileChange,
+                                help: (
+                                    <p>
+                                        {t(this.props, 'edit.upload_transcript.tape_and_archive_id_from_file_explanation')}
+                                    </p>
+                                )
+                            },
+                            { 
+                                attribute: 'archive_id',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.archiveId,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3,4}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_count',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.tapeCount,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_number',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.tapeNumber,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                        ]}
+                        subForm={ContributionFormContainer}
+                        subFormProps={{withSpeakerDesignation: true}}
+                        subFormScope='contribution'
+                        subScopeRepresentation={this.showContribution}
+                    />
+                </div>
             )
         }
     }
