@@ -15,11 +15,10 @@ export default class InterviewPreview extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        let openState = false;
+        let detailedState = false;
         this.state = {
-            open: openState,
-            class: openState ? "accordion active" : "accordion",
-            panelClass: openState ? "panel open" : "panel"
+            open: detailedState,
+            divClass: detailedState ? "interview-preview search-result detailed" : "interview-preview search-result",
         };
     }
 
@@ -28,14 +27,12 @@ export default class InterviewPreview extends React.Component {
         if (this.state.open) {
             this.setState({
                 ['open']: false,
-                ['class']: "accordion",
-                ['panelClass']: "panel"
+                ['divClass']: "interview-preview search-result",
             });
         } else {
             this.setState({
                 ['open']: true,
-                ['class']: "accordion active",
-                ['panelClass']: "panel open"
+                ['divClass']: "interview-preview search-result detailed",
             });
         }
     }
@@ -52,17 +49,26 @@ export default class InterviewPreview extends React.Component {
         return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
     }
 
+    renderBadge() {
+        if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
+            return (
+                <div className={'badge'}  onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.props.segments.foundSegments.length}`}>
+                <i className="fa fa-align-justify" aria-hidden="true" />
+                &nbsp;
+                {this.props.segments.foundSegments.length}
+                </div>
+            )
+        }
+    }
+
     renderSlider(){
         if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
             let settings = {
                 infinite: false,
             };
             return (
-                <div>
-                    <div className={this.state.class + ' hits-count'} onClick={this.handleClick}>
-                        <small>{t(this.props, 'segment_hits')}: {this.props.segments.foundSegments.length}</small>
-                    </div>
-                    <div className={this.state.panelClass + ' archive-search-found-segments'}>
+                <div className='slider'>
+                    <div className={'archive-search-found-segments'}>
                         <Slider {...settings}>
                         { this.renderSegments() }
                         </Slider>
@@ -84,6 +90,8 @@ export default class InterviewPreview extends React.Component {
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                 >
                     <FoundSegmentContainer
+                        index={index+1}
+                        foundSegmentsAmount={this.props.segments.foundSegments.length}
                         data={segment}
                         key={"segment-" + segment.id}
                         tape_count={this.props.interview.tape_count}
@@ -102,7 +110,6 @@ export default class InterviewPreview extends React.Component {
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
                     <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
-                    {/* <small className={(this.props.totalFoundSegments == 0)? 'hidden' : 'visible'}><br/>{t(this.props, 'segment_hits')}: {this.props.foundSegments.length}/{this.props.totalFoundSegments}</small> */}
                 </div>
             );
         }
@@ -162,7 +169,8 @@ export default class InterviewPreview extends React.Component {
 
     render() {
         return (
-            <div className='interview-preview search-result'>
+            <div className={this.state.divClass}>
+                {this.renderBadge()}
                 <Link className={'search-result-link'}
                     onClick={() => {
                         this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});

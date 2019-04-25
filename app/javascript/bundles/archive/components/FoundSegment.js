@@ -63,6 +63,9 @@ export default class Segment extends React.Component {
         }
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
+                <div className={'hits-count'}>
+                    <small>{this.props.index}/{this.props.foundSegmentsAmount}</small>
+                </div>
                 <p className="content-search-timecode">
                     {this.heading()}
                     {this.tape()}
