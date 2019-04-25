@@ -83,7 +83,7 @@ class UserContent < ActiveRecord::Base
   # referenced object (=default title) but may be overridden by the
   # end user.
   def title
-    user_title || default_title(I18n.locale)
+    user_title #|| default_title(I18n.locale)
   end
 
   def user_title
