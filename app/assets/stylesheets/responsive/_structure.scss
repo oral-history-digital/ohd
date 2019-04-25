@@ -627,6 +627,10 @@ a.search-result-link {
   color: $primary-color;
 }
 
+.detailed .search-result-name {
+  margin-right: 60px;
+}
+
 .search-result-data, .archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
   font-size: $font-size-medium;
   line-height:$line-height-medium;
