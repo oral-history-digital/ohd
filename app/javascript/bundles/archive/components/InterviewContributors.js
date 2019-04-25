@@ -5,24 +5,6 @@ import PersonContainer from '../containers/PersonContainer';
 
 export default class InterviewContributors extends React.Component {
 
-    componentDidMount() {
-        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
-            this.loadAllPeople();
-        }
-    }
-
-    componentDidUpdate() {
-        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
-            this.loadAllPeople();
-        }
-    }
-
-    loadAllPeople() {
-        if (!this.props.peopleStatus.all) {
-            this.props.fetchData('people');
-        }
-    }
-
     contributors() {
         let contributors = [];
         if (
@@ -49,7 +31,7 @@ export default class InterviewContributors extends React.Component {
                     title={t(this.props, 'edit.contribution.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.contribution.new'),
-                        content: <ContributionFormContainer interview={this.props.interview} />
+                        content: <ContributionFormContainer interview={this.props.interview} submitData={this.props.submitData} />
                     })}
                 >
                     <i className="fa fa-plus"></i>

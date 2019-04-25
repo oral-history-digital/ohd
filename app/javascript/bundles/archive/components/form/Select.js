@@ -43,6 +43,33 @@ export default class Select extends React.Component {
         }
     }
 
+    selectTextAndValueFunction(value, props) {
+        if (typeof value === 'string') {
+            if (props.optionsScope) { 
+                return function(value, props) {
+                    return {
+                        text: t(props, `${props.optionsScope}.${value}`),
+                        value: value
+                    }
+                }
+            } else {
+                return function(value, props) {
+                    return {
+                        text: t(props, `${props.scope}.${props.attribute}.${value}`),
+                        value: value
+                    }
+                }
+            }
+        } else {
+            return function(value, props) {
+                return {
+                    text: value.name[props.locale] || (typeof value.name === 'string') && value.name,
+                    value: value.value || value.id
+                }
+            }
+        }
+    }
+
     options() {
         let opts = [];
         let values;
@@ -60,22 +87,22 @@ export default class Select extends React.Component {
         }
 
         if (values) {
-            opts = values.map((value, index) => {
-                let val, text;
-                if (typeof value === 'string') {
-                    text = this.props.optionsScope ? 
-                        t(this.props, `${this.props.optionsScope}.${value}`) :
-                        t(this.props, `${this.props.scope}.${this.props.attribute}.${value}`)
-                    val = value;
-                } else {
-                    text = value.name[this.props.locale] || (typeof value.name === 'string') && value.name;
-                    val = value.value || value.id;
+            let getTextAndValue = this.selectTextAndValueFunction(values[0], this.props);
+            let _this = this;
+            opts = values.
+                sort(function(a,b){
+                    let textA = getTextAndValue(a, _this.props).text;
+                    let textB = getTextAndValue(b, _this.props).text;
+                    return((textA > textB) - (textA < textB))
+                }).
+                map((value, index) => {
+                    let textAndValue = getTextAndValue(value, this.props);
+                    return (
+                        <option value={textAndValue.value} key={`${this.props.scope}-${index}`}>
+                            {textAndValue.text}
+                        </option>
+                    )
                 }
-                return (
-                    <option value={val} key={`${this.props.scope}-${index}`}>
-                        {text}
-                    </option>
-                )}
             )
         }
 

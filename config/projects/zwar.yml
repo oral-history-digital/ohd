@@ -38,7 +38,7 @@ default: &default
 
   upload_types:
     - bulk_metadata
-    - bulk_protocols
+    - bulk_texts
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'

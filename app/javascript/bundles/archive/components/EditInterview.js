@@ -29,7 +29,7 @@ export default class EditInterview extends React.Component {
             )
         } else {
             return (
-                <InterviewFormContainer submitText='edit.interview.new' />
+                <InterviewFormContainer submitText='edit.interview.new' withContributions={true} />
             )
         }
     }

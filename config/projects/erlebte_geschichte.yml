@@ -1,16 +1,30 @@
 default: &default
 
   available_locales:
-    - en
     - de
+    - en
+    - ru
     # - alias
-
-  default_locale: en
+  
+  default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
+  
+  media_streams:
+    defaults:
+      video: 480p
+      audio: 192k
+    video:
+      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
+    audio:
+      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
 
   contribution_types:
     interviewee: 'interviewee'
@@ -24,45 +38,67 @@ default: &default
 
   upload_types:
     - bulk_metadata
-    - bulk_texts
+    - bulk_protocols
 
   project_name: # Will be used in titles, emails, etc.
-    en: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'
+    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
+    en: 'Forced Labor 1939-1945. Memory and History'
+    ru: 'Принудительный труд 1939-1945. Воспоминания и история'
 
-  project_id: 'campscapes'
+  project_id: 'zwar'
 
   # used in PDFs
   # give the color code as fractions of 255
   # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
-  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
+  primary_color_rgb: '0.560784314, 0.125490196, 0.109803922'
 
-  project_shortname: 'CAMPSCAPES'
+  project_shortname: 'ZWAR'
 
-  project_initials: 'CS' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+  project_initials: 'ZA' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
-  project_domain: ''
+  project_domain: 'zwangsarbeit-archiv.de'
 
-  archive_domain: ''
+  archive_domain: 'archiv.zwangsarbeit-archiv.de'
 
-  project_doi: ''
+  project_doi: '10.5072'
+
+  cooperation_partner: "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
+  leader: "Apostolopoulos, Nicolas; Pickhan, Gertrud"
+  manager: "Tausendfreund, Doris; Pagenstecher, Cord"
+  hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
+  funder_names: 
+    - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
+      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/index.html'
     request_for_use: #nutzungsantrag:
+      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
+      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      ru: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
     annotation_guidelines:
+      de: 'http://www.zwangsarbeit-archiv.de/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     team:
+      de: 'http://www.zwangsarbeit-archiv.de/team'
       en: 'http://www.zwangsarbeit-archiv.de/en/team'
+      #ru: 'http://www.zwangsarbeit-archiv.de/ru/team'
     contact: #kontakt:
+      de: 'http://www.zwangsarbeit-archiv.de/kontakt'
       en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/kontakt'
     legal_info: #impressum:
+      de: 'http://www.zwangsarbeit-archiv.de/impressum'
       en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
+      ru: 'http://www.zwangsarbeit-archiv.de/ru/impressum'
 
   # Please mount the CIFS storage server locally like this (read-only for normal users!):
   # sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
@@ -103,11 +139,20 @@ default: &default
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
   person_properties:
+    - id: 'person_reference'
+      source: 'registry_entry'
+    - id: 'forced_labor_groups'
+      source: 'registry_entry'
+      use_as_facet: true
+      display_on_landing_page: true`
+    - id: 'forced_labor_fields'
+      source: 'registry_entry'
+      use_as_facet: true
     - id: 'language_id'
       source: 'language'
       use_as_facet: true
-    - id: 'media_type'
-      source: 'interview'
+    - id: 'year_of_birth'
+      source: 'person'
       use_as_facet: true
     - id: 'gender'
       source: 'person'
@@ -115,13 +160,31 @@ default: &default
       values:
         female: 'female'
         male: 'male'
-    - id: 'year_of_birth'
-      source: 'person'
-      use_as_facet: true
-      use_as_facet: false
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 
+    - id: 'media_type'
+      source: 'interview'
+      use_as_facet: true
+    - id: 'birth_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
+      display_on_landing_page: false
+    - id: 'forced_labor_habitations'
+      source: 'registry_entry'
+      # use_as_facet: true
+    - id: 'home_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
+    - id: 'forced_labor_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
+    - id: 'deportation_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
+    - id: 'return_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a
@@ -134,6 +197,11 @@ default: &default
   uses_map: true
 
   has_newsletter: true
+
+  hidden_registry_entry_ids:
+    - 28205
+    - 28221
+    - 28237
 
 development:
   <<: *default

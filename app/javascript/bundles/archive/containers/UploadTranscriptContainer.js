@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         processing: state.data.statuses.uploads.processing, 
         lastModified: state.data.statuses.uploads.lastModified, 
+        people: state.data.people,
     }
 }
 
