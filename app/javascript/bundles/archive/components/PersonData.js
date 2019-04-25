@@ -58,22 +58,21 @@ export default class PersonData extends React.Component {
         }
     }
 
-    history() {
-        // Why only in mog, Rico?
-        //if(this.props.project === 'mog'){
-        if(true){
-            return (
-                <AuthShowContainer ifLoggedIn={true}>
-                    <p>
-                        <span className="flyout-content-label">{t(this.props, 'history')}:</span>
-                        {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
-                    </p>
-                </AuthShowContainer>
-            )
-        } else {
-            return null;
-        }
+    history() { 
+        return (
+          <AuthShowContainer ifLoggedIn={true}>
+            <p>
+              <span className="flyout-content-label">
+                {t(this.props, "history")}:
+              </span>
+              {this.download(this.props.interview.lang)}
+              {this.download(
+                this.props.locale,
+                this.props.interview.lang === this.props.locale
+              )}
+            </p>
+          </AuthShowContainer>
+        );
     }
 
     info() {
