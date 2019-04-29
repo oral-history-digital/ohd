@@ -61,7 +61,7 @@ class TranscriptsController < ApplicationController
   end
 
   def extract_archive_id_and_tape_media_id(file)
-    filename_tokens = (File.basename(file.original_filename, '.ods') || '').split('_')
+    filename_tokens = (File.basename(file.original_filename, File.extname(file.original_filename)) || '').split('_')
     archive_id = filename_tokens.first
     tape_media_id = "#{filename_tokens[0]}_#{filename_tokens[1]}_#{filename_tokens[2]}".upcase
     [archive_id, tape_media_id]
