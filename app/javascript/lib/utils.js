@@ -192,7 +192,7 @@ export function queryToText(query, props) {
     let queryText = "";
     for (let [k, value] of Object.entries(query)) {
         {
-            if (value.length) {
+            if (value.length && props.facets) {
                 let key = t(props, 'search_facets.' + k.replace('[]',''));
                 let nextElement = queryText == "" ? "" : " - "
                 queryText = queryText + nextElement + key + ": ";

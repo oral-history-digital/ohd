@@ -20,7 +20,7 @@ export default class VideoPlayer extends React.Component {
         // set resolution to default as defined in project conf
         if (this.props.mediaStreams) {
             let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
-            this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, initialResolution);
+            this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
         }
         if (this.video) {
             this.setVideoTime()
@@ -36,7 +36,7 @@ export default class VideoPlayer extends React.Component {
         // set resolution as soon as mediaStreams are available
         if(!prevProps.mediaStreams && this.props.mediaStreams) {
             let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
-            this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, initialResolution);
+            this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
         }
 
         if (this.video) {
@@ -87,7 +87,7 @@ export default class VideoPlayer extends React.Component {
 
     src() {
         // this will run only if tape_count < 10!!
-        if(this.props.mediaStreams && this.props.resolution) {
+        if(this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.media_type][this.props.resolution]) {
             let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
                 url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
                 url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
