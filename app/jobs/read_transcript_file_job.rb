@@ -7,6 +7,8 @@ class ReadTranscriptFileJob < ApplicationJob
     # only ods is tested
     when 'ods', 'xlsx', 'xlsm','xls', 'xlm', 'csv'
       interview.create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
+    when 'odt'
+      interview.create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
     when 'vtt', 'srt'
       interview.create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)
     end

@@ -94,6 +94,10 @@ export default class UploadTranscript extends React.Component {
                                 validate: function(v){return v !== ''} 
                             },
                             { 
+                                attribute: 'tape_duration',
+                                validate: function(v){return v !== ''} 
+                            },
+                            { 
                                 attribute: 'tape_and_archive_id_from_file',
                                 elementType: 'input',
                                 type: 'checkbox',
