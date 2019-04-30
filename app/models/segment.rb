@@ -101,10 +101,10 @@ class Segment < ActiveRecord::Base
       while !splitted_text.empty?
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
-          text = splitted_text.shift
+          text = splitted_text.shift.gsub(/\n+/, '')
           segment.update_attributes text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
         else
-          text = splitted_text.shift
+          text = splitted_text.shift.gsub(/\n+/, '')
           segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
         end
 
@@ -114,7 +114,7 @@ class Segment < ActiveRecord::Base
         #
         unless splitted_text.empty?
           segment = segment.next && segment.next.timecode < opts[:next_timecode] ? segment.next : 
-            create(interview_id: opts[:interview_id], tape_id: opts[:tape_id], timecode: (Time.parse(segment.timecode) + segment.text.length * time_per_char).strftime("%H:%M.%S.%L"))
+            create(interview_id: opts[:interview_id], tape_id: opts[:tape_id], timecode: (Time.parse(segment.timecode) + text.length * time_per_char).strftime("%H:%M.%S.%L"))
         end
       end
     end
@@ -122,7 +122,7 @@ class Segment < ActiveRecord::Base
     def calculate_time_per_char(speaker_designations, opts)
       # this regexp has  no capture groups!!
       all_speakers_regexp = Regexp.new(speaker_designations.map{|d| Regexp.quote(d)}.join('|'))
-      clean_text = opts[:text].gsub(all_speakers_regexp, '')
+      clean_text = opts[:text].gsub(all_speakers_regexp, '').gsub(/\n+/, '')
       duration = Time.parse(opts[:next_timecode]) - Time.parse(opts[:timecode])
       duration/clean_text.length
     end

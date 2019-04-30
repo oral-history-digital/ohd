@@ -405,7 +405,7 @@ class Interview < ActiveRecord::Base
           Segment.create_or_update_by({ 
             interview_id: id, 
             timecode: row[:timecode], 
-            next_timecode: parsed_sheet[index+1] && parsed_sheet[index+1][:timecode], 
+            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode, 
             tape_id: tape_id,
             text: row[:transcript], 
             locale: locale,
@@ -416,6 +416,20 @@ class Interview < ActiveRecord::Base
     end
   rescue  Roo::HeaderRowNotFoundError
     'header_row_not_found'
+  end
+
+  def create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
+    data = File.read file_path
+    text = Yomu.read :text, data
+    Segment.create_or_update_by({ 
+      interview_id: id, 
+      timecode: Timecode.new(0).timecode, 
+      next_timecode: Timecode.new(Tape.find(tape_id).duration).timecode, 
+      tape_id: tape_id,
+      text: text, 
+      locale: locale,
+      contribution_data: contribution_data
+    })
   end
 
   def create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)

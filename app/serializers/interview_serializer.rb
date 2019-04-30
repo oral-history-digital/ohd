@@ -204,12 +204,12 @@ class InterviewSerializer < ApplicationSerializer
   def last_segments_ids
     tape_counter = 0
     object.tapes.inject({}) do |mem, tape|
-      tape_counter += 1
       begin
+        tape_counter += 1
         mem[tape_counter] = tape.segments.last.id
         mem
       rescue
-        0
+        mem
       end
     end
   end
@@ -217,12 +217,12 @@ class InterviewSerializer < ApplicationSerializer
   def first_segments_ids
     tape_counter = 0
     object.tapes.inject({}) do |mem, tape|
-      tape_counter += 1
       begin
+        tape_counter += 1
         mem[tape_counter] = tape.segments.where.not(timecode: '00:00:00.000').first.id
         mem
       rescue
-        0
+        mem
       end
     end
   end

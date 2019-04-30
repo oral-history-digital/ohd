@@ -576,6 +576,7 @@ de:
           erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Nummer dieses Tapes
+        tape_duration: Dauer dieses Tapes (in Sek.)
       upload:
         type: Art des Uploads
         data: Datei

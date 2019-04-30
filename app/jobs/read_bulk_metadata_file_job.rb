@@ -77,7 +77,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
    
   def archive_id
-    number = Interview.last ? (Interview.last.id + 1) : 1
+    number = Interview.last ? (Interview.maximum(:archive_id)[/\d+/].to_i + 1) : 1
     "new#{format("%04d", number)}"
   end
 
@@ -122,7 +122,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
     if group
       report << "    Added to group #{group.localized_hash[:en]}."
-    else
+    elsif name.length > 2
       group = RegistryEntry.create_with_parent_and_name(forced_labor_groups.id, name[0..200]) 
       report << "    Created group #{group.localized_hash[:en]} and added interview to it."
     end
@@ -142,20 +142,23 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
     if country
       report << "    Added to country #{country.localized_hash[:en]}."
-    else
+    elsif country_name.length > 0 # might be only e.g. D 
       country = RegistryEntry.create_with_parent_and_name(places.id, country_name[0..200]) 
       report << "    Created country #{country.localized_hash[:en]} and added interview to it."
     end
 
-    # find or create place registry_entry as a child of country
-    country.descendants.each do |c| 
-      place = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
+    if country
+      # find or create place registry_entry as a child of country
+      country.descendants.each do |c| 
+        place = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
+      end
     end
 
     if place
       report << "    Added to place #{place.localized_hash[:en]}."
-    else
-      place = RegistryEntry.create_with_parent_and_name(country.id, name[0..200]) 
+    elsif name.length > 1
+      parent_place = country || places
+      place = RegistryEntry.create_with_parent_and_name(parent_place.id, name[0..200]) 
       report << "    Created place #{place.localized_hash[:en]} and added interview to it."
     end
     place
