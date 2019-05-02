@@ -37,6 +37,18 @@ export default class Segment extends React.Component {
         }
     }
 
+    counter() {
+        if(this.props.index && this.props.foundSegmentsAmount){
+            return (
+                <div className={'hits-count'}>
+                        <div>{this.props.index}/{this.props.foundSegmentsAmount}</div>
+                    </div>
+            )
+        } else {
+            return null;
+        }
+    }
+
     transcript() {
         let segment = this.props.data.text[this.props.locale];
         if (!segment || segment.length === 0){
@@ -63,9 +75,7 @@ export default class Segment extends React.Component {
         }
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
-                <div className={'hits-count'}>
-                    <small>{this.props.index}/{this.props.foundSegmentsAmount}</small>
-                </div>
+                {this.counter()}
                 <p className="content-search-timecode">
                     {this.heading()}
                     {this.tape()}
