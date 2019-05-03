@@ -85,6 +85,7 @@ const search = (state = initialState, action) => {
                 [action.scope]: Object.assign({}, state[action.scope], {
                     query: {},
                 }),
+                'interviews': (action.scope === 'archive') ? {} : state['interviews'],
             })
         case REQUEST_FACETS:
             return Object.assign({}, state, {
