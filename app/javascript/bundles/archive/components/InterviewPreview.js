@@ -40,6 +40,8 @@ export default class InterviewPreview extends React.Component {
     componentDidMount() {
         if(this.props.fulltext) {
             this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        } else {
+            this.props.searchInInterview({fulltext: '', id: this.props.interview.archive_id});
         }
     }
 
