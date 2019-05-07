@@ -47,7 +47,6 @@ export default class InterviewForm extends React.Component {
                 attribute: 'interview_date',
                 value: this.props.interview && this.props.interview.interview_date,
                 elementType: 'input',
-                type: 'date'
             },
             { 
                 attribute: 'observations',

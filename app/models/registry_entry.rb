@@ -1047,7 +1047,7 @@ class RegistryEntry < ActiveRecord::Base
     to_s(locale, true)
   end
 
-  def to_s(locale = I18n.default_locale, with_fallback = false)
+  def to_s(locale = I18n.default_locale, with_fallback = true)
     # Order names by type and position.
     names_with_position = {}
     registry_names.each do |name|

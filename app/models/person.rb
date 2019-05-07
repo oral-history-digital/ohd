@@ -52,11 +52,8 @@ class Person < ApplicationRecord
   end
 
   def place_of_birth
-    if registry_references.length > 0
-      if registry_references.where(registry_reference_type_id: 4).length > 0
-        registry_references.where(registry_reference_type_id: 4).first.registry_entry
-      end
-    end
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'birth_location')).first
+    ref && ref.registry_entry
   end
 
   def year_of_birth
