@@ -14,6 +14,7 @@ import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 import hagenLogo from '../../../images/hagen-logo.gif'
+import campscapesLogo from '../../../images/campscapes.png'
 
 import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
@@ -179,17 +180,34 @@ export default class WrapperPage extends React.Component {
     }
 
     renderLogos() {
-        if(this.props.project =='zwar') {
-            return (
-                <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                    <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
-                        <img src="/packs/fu-logo-3x.png" />
-                    </a>
-                    <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
-                        <img src="/packs/evz-off-co-d-hd-s.jpg" />
-                    </a>
-                </div>
-            )
+        switch(this.props.project) {
+            case 'zwar':
+                return (
+                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
+                        <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                            <img src="/packs/fu-logo-3x.png" />
+                        </a>
+                        <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
+                            <img src="/packs/evz-off-co-d-hd-s.jpg" />
+                        </a>
+                    </div>
+                )
+            break;
+            case 'campscapes':
+                return (
+                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
+                        <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                            <img src="/packs/fu-logo-3x.png" />
+                        </a>
+                        <a href="http://heranet.info/" target="_blank" title="Humanities in the European Research Area" rel="noopener">
+                            <img src="/packs/heralogot.png" />
+                        </a>
+                        <a  href="https://ec.europa.eu/programmes/horizon2020/en">
+                            <img src="/packs/EU-logo.jpg" alt="Logo eu" style={{maxHeight: 66, maxWidth: 100}}/>
+                        </a>
+                    </div>
+                )
+                break;
         }
     }
 
@@ -224,6 +242,39 @@ export default class WrapperPage extends React.Component {
         }
     }
 
+    renderProjectSpecificFooter() {
+        switch(this.props.project){
+            case 'zwar':
+                if (this.props.locale === 'de') {
+                    return (
+                        <div>
+                            <p>Im Rahmen des Projekts Zwangsarbeit 1939-1945. Erinnerungen und Geschichte sind nebem diesem Archiv eine Projekt-Website, die Lernplattform "Lernen mit Interviews" sowie ein Forum für Lehrende zugänglich:</p>
+                            <div style={{display: 'inline-block'}}>
+                            {/* lieber ein div, das sich ausklappt, dann sind normale <a>-Links möglich */}
+                                <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}} />
+                                <select style={{color: '#9f403f', marginTop: 5, fontSize: 14}} onChange={(e) => window.open(e.target.value, '_blank')}>
+                                    <option defaultValue>Archiv: Vollständige Interviews</option>
+                                    <option value="https://zwangsarbeit-archiv.de/">Infos: Geschichte und Projekt</option>
+                                    <option value="https://lernen-mit-interviews.de/">Bildung: Lernen mit Interviews</option>
+                                    <option value="https://forum.lernen-mit-interviews.de/">Forum: Für Lehrende</option>
+                                </select>
+                            </div>
+                            <p></p>
+                            <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin </p>
+                        </div>
+                    )
+                }
+            break;
+            case 'campscapes':
+                return (
+                    <div>
+                        <p>Created by Freie Universität Berlin within the HERA-funded project Accessing Campscapes. Inclusive Strategies for Using European Conflicted Heritage</p>
+                        <p>This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 649307</p>
+                    </div>
+                )
+        }
+    }
+
     render() {
         let logoSrc = '';
         switch(this.props.project) {
@@ -246,6 +297,9 @@ export default class WrapperPage extends React.Component {
             case 'hagen':
                 logoSrc = hagenLogo;
                 break;
+            case 'campscapes':
+            logoSrc = campscapesLogo;
+            break;
         }
 
         return (
@@ -263,24 +317,12 @@ export default class WrapperPage extends React.Component {
 
                         {this.messages()}
                         {this.props.children}
-
                         <footer>
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            {/* <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p> */}
-                            <p>{`Im Rahmen des Projekts ${this.props.projectName && this.props.projectName[this.props.locale]} sind nebem diesem Archiv eine Projekt-Website, die Lernplattform "Lernen mit Interviews" sowie ein Forum für Lehrende zugänglich:`}</p>
-                            <div style={{display: 'inline-block'}}>
-                                <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}}></img>
-                                <select style={{color: '#9f403f', marginTop: 5, fontSize: 14}} onChange={(e) => window.open(e.target.value, '_blank')}>
-                                    <option defaultValue>Archiv</option>
-                                    <option value="https://zwangsarbeit-archiv.de/">Projekt-Website</option>
-                                    <option value="https://lernen-mit-interviews.de/">Lernen mit Interviews</option>
-                                    <option value="https://forum.lernen-mit-interviews.de/">Forum für Lehrende</option>
-                                </select>
-                            </div>
-                            <p></p>
-                            <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin </p>
+                            <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
+                            { this.renderProjectSpecificFooter() }
                             {this.renderLogos()}
                         </footer>
                         <div className={this.compensationCss()}/>
