@@ -95,7 +95,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def gender(name)
-    %w(m male man männlich mann).include?(name.downcase) ? 'male' : 'female'
+    if name
+      %w(m male man männlich mann).include?(name.downcase) ? 'male' : 'female'
+    end
   end
    
   def archive_id
