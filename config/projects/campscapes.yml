@@ -135,7 +135,11 @@ default: &default
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 
-    - id: 'forced_labor_groups'
+    - id: 'groups'
+      source: 'registry_entry'
+      use_as_facet: true
+      display_on_landing_page: true`
+    - id: 'group_details'
       source: 'registry_entry'
       use_as_facet: true
       display_on_landing_page: true`
