@@ -63,15 +63,15 @@ default: &default
   external_links:
     conditions: #nutzungsbedingungen:
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-    request_for_use: #nutzungsantrag:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    # request_for_use: #nutzungsantrag:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team:
-      en: 'http://www.zwangsarbeit-archiv.de/en/team'
+    # annotation_guidelines:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    # team:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/team'
     contact: #kontakt:
       en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     legal_info: #impressum:
