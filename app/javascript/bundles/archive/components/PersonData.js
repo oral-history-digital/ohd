@@ -44,8 +44,14 @@ export default class PersonData extends React.Component {
         }
     }
 
+    existsPublicBiography(lang) {
+        let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
+        let firstEntry = getInterviewee(this.props).biographical_entries[firstKey];
+        return !!firstKey && !!firstEntry.text[lang] && firstEntry.workflow_state === 'public';
+    }
+
     download(lang, condition) {
-        if (!condition) {
+        if (!condition && this.existsPublicBiography(lang)) {
             return (
                 <a className='flyout-download-link-lang'
                     href={"/" + this.props.locale + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>

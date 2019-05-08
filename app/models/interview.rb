@@ -286,11 +286,8 @@ class Interview < ActiveRecord::Base
   end
 
   def place_of_interview
-    if registry_references.length > 0
-      if registry_references.where(registry_reference_type_id: 8).length > 0
-        registry_references.where(registry_reference_type_id: 8).first.registry_entry
-      end
-    end
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+    ref && ref.registry_entry
   end
 
   def localized_hash(use_full_title=false)

@@ -12,6 +12,19 @@ default: &default
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
 
+  media_streams:
+    defaults:
+      video: 480p
+      audio: 192k
+    video:
+      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
+    audio:
+      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
+
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interview'
@@ -122,6 +135,18 @@ default: &default
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 
+    - id: 'forced_labor_groups'
+      source: 'registry_entry'
+      use_as_facet: true
+      display_on_landing_page: true`
+    - id: 'camps'
+      source: 'registry_entry'
+      use_as_facet: true
+      display_on_landing_page: true`
+    - id: 'interview_location'
+      source: 'registry_reference_type'
+      use_as_facet: false
+      display_on_landing_page: false
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a
