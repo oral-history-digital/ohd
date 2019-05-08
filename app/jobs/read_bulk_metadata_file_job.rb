@@ -60,12 +60,16 @@ class ReadBulkMetadataFileJob < ApplicationJob
         Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: Project.contribution_types['interviewee']
 
         # create camp and reference it
-        camp = data[32] && find_or_create_camp(data[32])
+        camp = data[32] && RegistryEntry.find_or_create_descendant('camps', data[32])
         create_reference(camp.id, interview, interview) if camp
 
         # create group and reference it
-        group = data[9] && find_or_create_group(data[9])
+        group = data[8] && RegistryEntry.find_or_create_descendant('groups', data[8])
         create_reference(group.id, interview, interview) if group
+
+        # create group_details and reference it
+        group_details = data[9] && RegistryEntry.find_or_create_descendant('group_details', data[9])
+        create_reference(group.id, interview, interview) if group_details
 
         # create birth location and reference it
         birth_location_type = RegistryReferenceType.find_by_code('birth_location')
@@ -123,41 +127,41 @@ class ReadBulkMetadataFileJob < ApplicationJob
     language
   end
 
-  def find_or_create_group(name)
-    group = nil
-    forced_labor_groups = RegistryEntry.find_by_entry_code('forced_labor_groups')
+  #def find_or_create_group(name)
+    #group = nil
+    #forced_labor_groups = RegistryEntry.find_by_entry_code('forced_labor_groups')
     
-    # the following group_names contain only the first registry_name of a registry_entry with all it s translations!!
-    forced_labor_groups.children.each do |c| 
-      group = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
-    end
+    ## the following group_names contain only the first registry_name of a registry_entry with all it s translations!!
+    #forced_labor_groups.children.each do |c| 
+      #group = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
+    #end
 
-    if group
-      report << "    Added to group #{group.localized_hash[:en]}."
-    elsif name.length > 2
-      group = RegistryEntry.create_with_parent_and_name(forced_labor_groups.id, name[0..200]) 
-      report << "    Created group #{group.localized_hash[:en]} and added interview to it."
-    end
-    group
-  end
+    #if group
+      #report << "    Added to group #{group.localized_hash[:en]}."
+    #elsif name.length > 2
+      #group = RegistryEntry.create_with_parent_and_name(forced_labor_groups.id, name[0..200]) 
+      #report << "    Created group #{group.localized_hash[:en]} and added interview to it."
+    #end
+    #group
+  #end
 
-  def find_or_create_camp(name)
-    camp = nil
-    camps = RegistryEntry.find_by_entry_code('camps')
+  #def find_or_create_camp(name)
+    #camp = nil
+    #camps = RegistryEntry.find_by_entry_code('camps')
     
-    # the following camp_names contain only the first registry_name of a registry_entry with all it s translations!!
-    camps.children.each do |c| 
-      camp = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
-    end
+    ## the following camp_names contain only the first registry_name of a registry_entry with all it s translations!!
+    #camps.children.each do |c| 
+      #camp = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
+    #end
 
-    if camp
-      report << "    Added to camp #{camp.localized_hash[:en]}."
-    elsif name.length > 2
-      camp = RegistryEntry.create_with_parent_and_name(camps.id, name[0..200]) 
-      report << "    Created camp #{camp.localized_hash[:en]} and added interview to it."
-    end
-    camp
-  end
+    #if camp
+      #report << "    Added to camp #{camp.localized_hash[:en]}."
+    #elsif name.length > 2
+      #camp = RegistryEntry.create_with_parent_and_name(camps.id, name[0..200]) 
+      #report << "    Created camp #{camp.localized_hash[:en]} and added interview to it."
+    #end
+    #camp
+  #end
 
   def find_or_create_place(name, country_name)
     place = nil

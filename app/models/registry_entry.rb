@@ -204,6 +204,19 @@ class RegistryEntry < ActiveRecord::Base
       registry_entry
     end
 
+    def find_or_create_descendant(parent_code, descendant_name)
+      descendant = nil
+      parent = find_by_entry_code parent_code
+      parent.children.each do |c| 
+        descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
+      end
+
+      if descendant.nil? && descendant_name.length > 2
+        descendant = RegistryEntry.create_with_parent_and_name(parent.id, descendant_name[0..200]) 
+      end
+      descendant
+    end
+
     # This is not a translated class but it can accept localized descriptors.
     def with_locale(locale)
       previous_locale, self.locale = self.locale, locale
