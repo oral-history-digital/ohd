@@ -20,6 +20,8 @@ end
 
 # create forced_labor_groups registry_entry as a child of root
 forced_labor_groups = RegistryEntry.create_with_parent_and_name(root.id, 'forced_labor_groups')
+groups = RegistryEntry.create_with_parent_and_name(root.id, 'Group', 'groups')
+group_details = RegistryEntry.create_with_parent_and_name(root.id, 'Group Details', 'group_details')
 
 # create camps registry_entry as a child of root
 camps = RegistryEntry.create_with_parent_and_name(root.id, 'Camps and detention facilities', 'camps') 
