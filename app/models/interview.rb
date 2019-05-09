@@ -1,7 +1,7 @@
 require 'globalize'
 require 'webvtt'
-require "#{Rails.root}/lib" + '/reference_tree.rb'
-
+require "#{Rails.root}/lib/reference_tree.rb"
+require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ActiveRecord::Base
   include IsoHelpers
@@ -452,21 +452,21 @@ class Interview < ActiveRecord::Base
   # Sets the duration either as an integer in seconds,
   # or applies a timecode by parsing. Even sub-timecodes
   # such as HH:MM are allowed.
-  #def duration=(seconds_or_timecode)
-    #time = seconds_or_timecode.to_i
-    #if seconds_or_timecode.is_a?(String)
-      #unless seconds_or_timecode.index(':').nil?
-        #case seconds_or_timecode.count(':.')
-          #when 2
-            #seconds_or_timecode << '.00'
-          #when 1
-            #seconds_or_timecode << ':00.00'
-        #end
-        #time = Timecode.new(seconds_or_timecode).time
-      #end
-    #end
-    #write_attribute :duration, time
-  #end
+  def duration=(seconds_or_timecode)
+    time = seconds_or_timecode.to_i
+    if seconds_or_timecode.is_a?(String)
+      unless seconds_or_timecode.index(':').nil?
+        case seconds_or_timecode.count(':.')
+          when 2
+            seconds_or_timecode << '.00'
+          when 1
+            seconds_or_timecode << ':00.00'
+        end
+        time = Timecode.new(seconds_or_timecode).time
+      end
+    end
+    write_attribute :duration, time
+  end
 
   # add the duration of all existing tapes
   def recalculate_duration!
