@@ -109,9 +109,11 @@ export default class Segment extends React.Component {
     userAnnotations() {
         if (this.state.contentType == 'annotations') {
             return this.props.data.user_annotation_ids.map((uId, index) => {
-                    return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
+                    if(this.props.userContents && this.props.userContents[uId] && this.props.userContents[uId].description) {
+                        return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
                                 {this.props.userContents[uId].description}
                             </p>
+                    }
             })
         }
     }
