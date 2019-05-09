@@ -41,6 +41,7 @@ default: &default
 
   project_name: # Will be used in titles, emails, etc.
     en: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'
+    de: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'
 
   project_id: 'campscapes'
 
@@ -55,7 +56,7 @@ default: &default
 
   project_domain: ''
 
-  archive_domain: ''
+  archive_domain: 'http://testimonies.campscapes.org'
 
   project_doi: ''
 

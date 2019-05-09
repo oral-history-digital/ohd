@@ -60,9 +60,10 @@ class Person < ApplicationRecord
     date_of_birth.blank? ? '?' : date_of_birth[/19\d{2}/]
   end
 
-  def name
+  def name(last_name_as_inital=false)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = "#{first_name(locale)} #{last_name(locale)}" if Project.available_locales.include?( locale.to_s )
+      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
+      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if Project.available_locales.include?( locale.to_s )
       mem
     end
   end
