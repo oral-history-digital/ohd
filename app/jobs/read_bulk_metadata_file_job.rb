@@ -69,7 +69,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             create_reference(place.id, interview, interview, interview_location_type.id) if place
           end
         rescue StandardError => e
-          log("#{e.message}: #{e.bactrace}")
+          log("#{e.message}: #{e.backtrace}")
         end
       end
     end
