@@ -9,8 +9,8 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     existsPublicTranscript(lang) {
-        let firstEntry = this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1][0]];
-        return !!firstEntry && !!firstEntry.text[lang] && interview.workflow_state === 'public';
+        let firstEntry = this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
+        return !!firstEntry && !!firstEntry.text[lang] && this.props.interview.workflow_state === 'public';
     }
 
     download(lang, condition) {
