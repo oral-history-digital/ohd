@@ -184,7 +184,7 @@ export default class WrapperPage extends React.Component {
             case 'zwar':
                 return (
                     <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                        <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
                             <img src="/packs/fu-logo-3x.png" />
                         </a>
                         <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
@@ -196,7 +196,7 @@ export default class WrapperPage extends React.Component {
             case 'campscapes':
                 return (
                     <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                        <a href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
                             <img src="/packs/fu-logo-3x.png" />
                         </a>
                         <a href="http://heranet.info/" target="_blank" title="Humanities in the European Research Area" rel="noopener">
