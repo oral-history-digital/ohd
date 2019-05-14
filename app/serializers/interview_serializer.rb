@@ -36,6 +36,7 @@ class InterviewSerializer < ApplicationSerializer
              :person_names,
              :place_of_interview,
              :year_of_birth,
+             :segments,
              :last_segments_ids,
              :first_segments_ids,
 
@@ -200,6 +201,11 @@ class InterviewSerializer < ApplicationSerializer
   # def duration
   #   object.duration.timecode
   # end
+
+  def segments
+    # this is a dummy! It will be filled later.
+    {}
+  end
 
   def last_segments_ids
     tape_counter = 0

@@ -11,35 +11,23 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def read_file(file_path)
     I18n.locale = :en
-    report << ""
-    report << "Import Report for file #{file_path.split('/').last}:"
 
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
     csv.each_with_index do |data, index|
       unless index == 0
         begin
-          unless data[1].blank?
-            report << ""
-            report << "  Interview from line #{data[0]}:"
-
+          unless data[0].blank? && data[1].blank? && data[2].blank?
             interviewee = Person.where(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7]).first
             if interviewee
-              report << "    Used existing Person #{interviewee.id}, #{interviewee.name[:en]} as interviewee."
             else
               interviewee = Person.create first_name: data[1] && data[1][0..200], birth_name: data[2] && data[2][0..200], last_name: data[3] && data[3][0..200], other_first_names: data[4] && data[4][0..200], gender: gender(data[5]), date_of_birth: data[6] || data[7]
-              report << "    Created Person #{interviewee.id}, #{interviewee.name[:en]} as interviewee."
             end
 
             short_bio = interviewee.biographical_entries.where(text: data[12]).first
             interviewee.biographical_entries << BiographicalEntry.create(text: data[12]) unless short_bio || data[12].blank?
 
             interview_date = Date.parse(data[18]) rescue nil
-            if interview_date
-              interview_date = interview_date.strftime("%d.%m.%Y")
-              interview = interviewee.interviews.where(interview_date: interview_date).first 
-            else
-              interview = interviewee.interviews.first 
-            end
+            interview = Interview.find_by_archive_id(data[0])
 
             interview_data = {
               interview_date: interview_date,
@@ -52,10 +40,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             if interview
               interview.update_attributes interview_data
-              report << "    Updated existing interview #{interview.id}."
             else
               interview = Interview.create interview_data
-              report << "    Created interview #{interview.id}."
             end
 
             Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: Project.contribution_types['interviewee']
@@ -83,8 +69,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             create_reference(place.id, interview, interview, interview_location_type.id) if place
           end
         rescue StandardError => e
-          logger.info("*** ERROR reading metadata: #{e.message}!!!")
-          logger.info("*** #{e.backtrace}")
+          log("#{e.message}: #{e.backtrace}")
         end
       end
     end
@@ -112,10 +97,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
     end
 
     if collection
-      report << "    Added to collection #{collection.localized_hash[:en]}."
     else
       collection = Collection.create(name: name[0..200])
-      report << "    Created collection #{collection.localized_hash[:en]} and added interview to it."
     end
     collection
   end
@@ -128,9 +111,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       language = Language.create(code: lang.alpha3, name: lang.english_name) unless language
     end
     if language
-      report << "    Used #{language.code}." 
     else
-      report << "    No Language for #{name}." 
     end
     language
   end
@@ -147,10 +128,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
     end
 
     if country
-      report << "    Added to country #{country.localized_hash[:en]}."
     elsif country_name && country_name.length > 0 # might be only e.g. D 
       country = RegistryEntry.create_with_parent_and_name(places.id, country_name[0..200]) 
-      report << "    Created country #{country.localized_hash[:en]} and added interview to it."
     end
 
     if country
@@ -161,11 +140,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
     end
 
     if place
-      report << "    Added to place #{place.localized_hash[:en]}."
     elsif name && name.length > 1
       parent_place = country || places
       place = RegistryEntry.create_with_parent_and_name(parent_place.id, name[0..200]) 
-      report << "    Created place #{place.localized_hash[:en]} and added interview to it."
     end
     place
   end
@@ -174,4 +151,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
     RegistryReference.create registry_entry_id: registry_entry_id, ref_object_id: ref_object.id, ref_object_type:ref_object.class.name, registry_reference_type_id: ref_type_id, ref_position: 0, original_descriptor: "", ref_details: "", ref_comments: "", ref_info: "", workflow_state: "checked", interview_id: interview.id
   end
 
+  def log(text, error=true)
+    File.open(File.join(Rails.root, 'tmp', 'metadata_import.log'), 'a') do |f|
+      f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
+    end
+  end
 end
