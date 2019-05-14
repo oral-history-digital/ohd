@@ -20,7 +20,7 @@ class SearchesController < ApplicationController
 
   def registry_entry
     search = RegistryEntry.search do 
-      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all registry_entries (this is a comment)" : params[:fulltext]
+      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllRegistryEntriesThisIsAComment" : params[:fulltext]
       #order_by(:names, :asc)
       paginate page: params[:page] || 1, per_page: 200
     end
@@ -48,7 +48,7 @@ class SearchesController < ApplicationController
 
   def search(model, order)
     model.search do 
-      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do
+      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]  do
         (Project.available_locales + [:orig]).each do |locale|
           highlight :"text_#{locale}"
         end
@@ -191,42 +191,6 @@ class SearchesController < ApplicationController
       # TODO: sort linguistically
       paginate page: params[:page] || 1, per_page: 12
     end
-
-    # number_of_found_segments = search.hits.inject({}) do |mem, hit|
-    #   segsearch = Segment.search do
-    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]
-    #     with(:archive_id, hit.instance.archive_id)
-    #   end
-    #   mem[hit.instance.archive_id] = segsearch.total
-    #   mem
-    # end
-
-    # found_segments = search.hits.inject({}) do |mem, hit|
-    #   segsearch = Segment.search do
-    #     adjust_solr_params do |params|
-    #       params[:rows] = 5
-    #     end
-    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext] do
-    #       highlight :transcript
-    #       highlight :translation
-    #     end
-    #     with(:archive_id, hit.instance.archive_id)
-    #   end
-
-    #   interview = hit.instance
-      
-    #   mem[interview.archive_id] = {
-    #     total: segsearch.total,
-    #     segments: segsearch.hits.map do |hit| 
-    #       # Rails.cache.fetch("#{Project.cache_key_prefix}-segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
-    #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-    #       segment[:transcripts] = highlighted_transcripts(hit, interview)
-    #       segment
-    #       # end
-    #     end
-    #   }
-    #   mem
-    # end
 
     respond_to do |format|
       format.html do
