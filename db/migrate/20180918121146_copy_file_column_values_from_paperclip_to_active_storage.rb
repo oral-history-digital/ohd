@@ -1,3 +1,6 @@
+require 'net/http'
+require 'uri'
+
 Dir[Rails.root.join("app/models/**/*.rb")].sort.each { |file| require file }
 
 class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration[5.2]
@@ -98,8 +101,14 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
 
   def byte_size(instance, attachment)
     if Project.name.to_sym == :mog
-      response = http.request_head(instance.src)
-      file_size = response['content-length']
+      url = instance.src
+      url_base = url.split('/')[2]
+      url_path = '/'+url.split('/')[3..-1].join('/')
+      Net::HTTP.start(url_base) do |http|
+        response = http.request_head(URI.escape(url_path))
+        file_size = response['content-length']
+        file_size.to_i
+      end
     else
       instance.send("#{attachment}_file_size"),
     end
