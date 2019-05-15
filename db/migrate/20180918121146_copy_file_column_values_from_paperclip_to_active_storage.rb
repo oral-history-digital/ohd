@@ -110,7 +110,7 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
         file_size.to_i
       end
     else
-      instance.send("#{attachment}_file_size"),
+      instance.send("#{attachment}_file_size")
     end
   end
 end
