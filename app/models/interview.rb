@@ -379,6 +379,16 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def translated
+    # the attribute 'translated' is wrong on many interviews in zwar.
+    # this is why we use the languages-array for checking
+    if Project.name == 'zwar'
+      (self.languages.size > 1) && ('de'.in? self.languages)
+    else
+      read_attribute :translated
+    end
+  end
+
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
     segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
