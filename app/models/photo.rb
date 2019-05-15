@@ -54,13 +54,13 @@ class Photo < ActiveRecord::Base
 
   # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
   #
-  #def src(image_name)
-    #"http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder(image_name)}/#{image_name}.jpg"
-  #end
+  def src(image_name)
+    "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder(image_name)}/#{image_name}.jpg"
+  end
 
-  #def sub_folder(image_name)
-    #((image_name.split('_').last().to_i / 1000) * 1000).to_s;
-  #end
+  def sub_folder(image_name)
+    ((image_name.split('_').last().to_i / 1000) * 1000).to_s;
+  end
 
   # TODO: fit this again to be used in zwar?
   #def photo_file_name=(filename)

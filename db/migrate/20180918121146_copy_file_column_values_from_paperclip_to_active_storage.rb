@@ -42,7 +42,7 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
                   key(instance, attachment),
                   instance.send("#{attachment}_file_name"),
                   instance.send("#{attachment}_content_type"),
-                  instance.send("#{attachment}_file_size"),
+                  byte_size(instance, attachment),
                   checksum(instance, attachment),
                   DateTime.now
                 )
@@ -91,7 +91,17 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
     else
       # in mog image-files are not named like in zwar!!
       # they should be renamed and moved for unification when leaving dedalo
-      raise "fit file url to mog or whatever"
+      #raise "fit file url to mog or whatever"
+      Digest::MD5.base64digest(Net::HTTP.get(URI(instance.src)))
+    end
+  end
+
+  def byte_size(instance, attachment)
+    if Project.name.to_sym == :mog
+      response = http.request_head(instance.src)
+      file_size = response['content-length']
+    else
+      instance.send("#{attachment}_file_size"),
     end
   end
 end
