@@ -2,7 +2,7 @@
 
 * Auf da01: Export dump:
   ```sh
-  mysqldump -uzwar_archiv -pRuardyorj1 zwar_archiv_production user_account_ips user_accounts user_contents user_registrations users > dump20181211-selective.sql 
+  mysqldump -uzwar_archiv -p zwar_archiv_production user_account_ips user_accounts user_contents user_registrations users > dump20181211-selective.sql 
   ```
 * SCP da01 > local
   ```sh
