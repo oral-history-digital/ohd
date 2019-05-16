@@ -48,7 +48,7 @@ export default class InterviewTabs extends React.Component {
                     <TabList className={'content-tabs-nav'}>
                         <Tab className={'content-tabs-nav-link'}><i
                             className="fa fa-file-text-o"></i><span>{t(this.props, 'transcript')}</span></Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.interview.lang === this.props.locale ? 'hidden' : ''}`}><i
+                        <Tab className={`content-tabs-nav-link ${this.props.interview.lang === 'de' ? 'hidden' : ''}`}><i
                             className="fa fa-clone"></i><span>{t(this.props, 'translation')}</span></Tab>
                         <Tab className={`content-tabs-nav-link ${this.props.project == 'hagen' ? 'hidden' : ''}`}><i
                             className="fa fa-list"></i><span>{t(this.props, 'table_of_contents')}</span></Tab>
