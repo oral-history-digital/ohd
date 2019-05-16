@@ -131,6 +131,10 @@ export default class WrapperPage extends React.Component {
         }
     };
 
+    handleLogoClick(e) {
+        e.preventDefault();
+        this.context.router.history.push(`/${this.props.locale}`);
+    }
 
     onResize(dimensions) {
         this.mqSync();
@@ -308,7 +312,7 @@ export default class WrapperPage extends React.Component {
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')} target='_blank' rel="noopener">
+                            <a className="logo-link" href={`/${this.props.locale}`} onClick={(e) => this.handleLogoClick(e)} title={t(this.props, 'home')}>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
                                 {/* <span className="logo-text">{this.props.project}</span> */}

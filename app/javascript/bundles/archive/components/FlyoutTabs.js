@@ -47,22 +47,19 @@ export default class FlyoutTabs extends React.Component {
 
     handleTabClick(tabIndex) {
         if (tabIndex === 0) {
-            // home
-            this.context.router.history.push(`/${this.props.locale}`);
-        } else if (tabIndex === 1) {
             // account
             this.context.router.history.push(`/${this.props.locale}/accounts/current`);
-        } else if (tabIndex > 1 && tabIndex < this.props.locales.length + 2) {
+        } else if (tabIndex > 0 && tabIndex < this.props.locales.length + 1) {
             // locales (language switchers)
-            this.switchLocale(this.props.locales[tabIndex - 2]);
-        } else if (tabIndex === this.props.locales.length + 2) {
+            this.switchLocale(this.props.locales[tabIndex - 1]);
+        } else if (tabIndex === this.props.locales.length + 1) {
             // arrchive-search
             let url = `/${this.props.locale}/searches/archive`;
             this.context.router.history.push(url);
-        } else if (tabIndex === this.props.locales.length + 3) {
+        } else if (tabIndex === this.props.locales.length + 2) {
             // interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
-        } else if (tabIndex === this.props.locales.length + 4) {
+        } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`/${this.props.locale}/registry_entries`);
         }
@@ -327,7 +324,6 @@ export default class FlyoutTabs extends React.Component {
             >
                 <div className='scroll-flyout'>
                     <TabList className='flyout'>
-                        <Tab className='flyout-top-nav' key='home'>{t(this.props, 'home')}</Tab>
                         {this.loginTab()}
                         {this.localeTabs()}
                         <Tab className='flyout-tab' key='archive-search'>{t(this.props, 'archive_search')}</Tab>
@@ -338,9 +334,6 @@ export default class FlyoutTabs extends React.Component {
                         {this.userContentTab()}
                     </TabList>
 
-                    <TabPanel key='home'>
-                        <AccountContainer/>
-                    </TabPanel>
                     <TabPanel key='account'>
                         <AccountContainer/>
                     </TabPanel>
