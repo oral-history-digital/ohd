@@ -156,6 +156,8 @@ class Interview < ActiveRecord::Base
                                      #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
                                      #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
 
+  #has_one_attached :still_image
+
   searchable do
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
