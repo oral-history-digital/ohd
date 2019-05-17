@@ -12,21 +12,19 @@ class ReadBulkPhotoFileJob < ApplicationJob
   def read_file(file_path)
     I18n.locale = :en
 
-    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
-      #unless index == 0
-        begin
-          unless data[0].blank? 
-            interview = Interview.find_by_archive_id(data[0])
+      begin
+        unless data[0].blank? 
+          interview = Interview.find_by_archive_id(data[0])
 
-            photo = Photo.create(interview_id: interview.id, photo_file_name: data[1], photo_content_type: data[2], photo_file_size: data[3])
-            photo.photo.attach(io: file(data), filename: data[1], metadata: {title: data[4]})
-            photo.write_iptc_metadata({title: data[4]})
+          photo = Photo.create(interview_id: interview.id, photo_file_name: data[1], photo_content_type: data[2], photo_file_size: data[3])
+          photo.photo.attach(io: file(data), filename: data[1], metadata: {title: data[4]})
+          photo.write_iptc_metadata({title: data[4]}) if data[4]
 
-          end
-        rescue StandardError => e
-          log("#{e.message}: #{e.backtrace}")
         end
+      rescue StandardError => e
+        log("#{e.message}: #{e.backtrace}")
       end
     end
   end
@@ -39,6 +37,6 @@ class ReadBulkPhotoFileJob < ApplicationJob
 
   def file(data)
     # TODO: generalize this for future tasks
-    File.open("../unpublished_exported_from_zwar_platform/photos/#{data[0]}/#{data[1]}")
+    File.open("../unpublished_exported_from_zwar_platform/files/#{data[0]}/photos/#{data[1]}")
   end
 end
