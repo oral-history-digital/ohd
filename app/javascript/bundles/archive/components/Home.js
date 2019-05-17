@@ -33,7 +33,7 @@ export default class Home extends React.Component {
     content() {
         return (
                 <WrapperPageContainer
-                    tabIndex={0}>
+                    tabIndex={-1}>
                     <div className='wrapper-content home-content'
                         dangerouslySetInnerHTML = {{__html: this.props.homeContent}}
                     />
