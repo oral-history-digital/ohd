@@ -201,9 +201,9 @@ class RegistryEntry < ActiveRecord::Base
     def create_with_parent_and_names(parent_id, names, code=nil)
       registry_entry = RegistryEntry.create entry_code: code, entry_desc: code, workflow_state: "public", list_priority: false
       RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
-      names.split(',').each do |name_w_locale|
+      names.split(',').each_with_index do |name_w_locale, index|
         locale, name = name_w_locale.split('-')
-        RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale
+        RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
       end
       registry_entry
     end
