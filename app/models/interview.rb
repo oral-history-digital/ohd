@@ -628,16 +628,6 @@ class Interview < ActiveRecord::Base
     @quality || 2.0
   end
 
-  def set_contributor_fields!
-    set_contributor_field_from('interviewers', 'interview_contributors')
-    set_contributor_field_from('transcriptors', 'transcript_contributors')
-    set_contributor_field_from('translators', 'translation_contributors')
-    set_contributor_field_from('proofreaders', 'proofreading_contributors')
-    set_contributor_field_from('segmentators', 'segmentation_contributors')
-    set_contributor_field_from('researchers', 'documentation_contributors')
-    save
-  end
-
   # segmented, researched, proofread
   def set_workflow_flags!
     if segments.size > 0
@@ -693,26 +683,5 @@ class Interview < ActiveRecord::Base
     changed
   end
 end
-
-  private
-
-  def set_contributor_field_from(field, association)
-    field_contributors = self.send(association)
-
-    # Build one contributor list per locale.
-    contributors_per_locale = {}
-    field_contributors.each do |contributor|
-      contributor.translations.each do |t|
-        contributors_per_locale[t.locale] ||= []
-        contributors_per_locale[t.locale] << [t.last_name, t.first_name].compact.join(t.locale == :ru ? ' ' : ', ')
-      end
-    end
-
-    contributors_per_locale.each do |locale, contributors|
-      self.class.with_locale(locale) do
-        self.send "#{field}=", contributors.join('; ')
-      end
-    end
-  end
 
 end
