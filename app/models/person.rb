@@ -7,7 +7,7 @@ class Person < ApplicationRecord
            :as => :ref_object,
            :dependent => :destroy
 
-  has_many :contributions
+  has_many :contributions, dependent: :destroy
   has_many :interviews,
     -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
     through: :contributions
