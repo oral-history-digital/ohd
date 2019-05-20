@@ -3,7 +3,6 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def perform(file_path, receiver)
     read_file(file_path)
-    File.delete(file_path) if File.exist?(file_path)
     Interview.reindex
     Rails.cache.redis.keys("#{Project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
@@ -68,6 +67,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             place = find_or_create_place(data[20], data[21])
             create_reference(place.id, interview, interview, interview_location_type.id) if place
           end
+          File.delete(file_path) if File.exist?(file_path)
         rescue StandardError => e
           log("#{e.message}: #{e.backtrace}")
         end
@@ -129,7 +129,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
     if country
     elsif country_name && country_name.length > 0 # might be only e.g. D 
-      country = RegistryEntry.create_with_parent_and_name(places.id, country_name[0..200]) 
+      country = RegistryEntry.create_with_parent_and_names(places.id, country_name[0..200]) 
     end
 
     if country
@@ -142,7 +142,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     if place
     elsif name && name.length > 1
       parent_place = country || places
-      place = RegistryEntry.create_with_parent_and_name(parent_place.id, name[0..200]) 
+      place = RegistryEntry.create_with_parent_and_names(parent_place.id, name[0..200]) 
     end
     place
   end
