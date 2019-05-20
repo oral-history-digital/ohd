@@ -102,7 +102,7 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()){
-            let tabIndex = this.props.locales.length + 3;
+            let tabIndex = this.props.locales.length + 2;
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>

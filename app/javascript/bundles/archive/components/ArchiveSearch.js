@@ -221,7 +221,7 @@ export default class ArchiveSearch extends React.Component {
     render() {
         return (
             <WrapperPageContainer
-                tabIndex={ this.props.locales.length + 2 }
+                tabIndex={ this.props.locales.length + 1 }
             >
                 <div className='wrapper-content interviews'>
                     <h1 className="search-results-title">{t(this.props, (this.props.project === 'mog') ? 'archive_results' : 'interviews')}</h1>
