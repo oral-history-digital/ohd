@@ -21,7 +21,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       name_parts = File.basename(text_file_name, File.extname(text_file_name)).split('_')
       archive_id = name_parts.first
       kind = name_parts[1] # protocoll or biographie (bg)
-      locale = name_parts[2] ? ISO_639.find(name_partsþ[2]).send(Project.alpha) : 'de'
+      locale = name_parts[2] ? ISO_639.find(name_parts[2]).send(Project.alpha) : 'de'
 
       data = File.read text_file_name
       text = Yomu.read :text, data
