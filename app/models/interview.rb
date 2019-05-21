@@ -134,12 +134,6 @@ class Interview < ActiveRecord::Base
            dependent: :destroy
 
   translates :observations
-  # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
-  #translates :first_name, :other_first_names, :last_name, :birth_name,
-             #:return_date, :forced_labor_details,
-             #:interviewers, :transcriptors, :translators,
-             #:proofreaders, :segmentators, :researchers
-
   #validate :has_standard_name
 
   #def has_standard_name
@@ -148,15 +142,11 @@ class Interview < ActiveRecord::Base
     #end
   #end
 
-  #validates_associated :collection
-  #validates_presence_of :archive_id
-  #validates_uniqueness_of :archive_id
-  # TODO: reuse this for zwar?
-  #validates_attachment_content_type :still_image,
-                                     #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                     #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  validates_associated :collection
+  validates_presence_of :archive_id
+  validates_uniqueness_of :archive_id
 
-  #has_one_attached :still_image
+  has_one_attached :still_image
 
   searchable do
     integer :language_id, :stored => true, :references => Language
@@ -575,57 +565,6 @@ class Interview < ActiveRecord::Base
         :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
         :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
-  end
-
-  def still_image_file_name=(filename)
-    # assign the photo - but skip this part on subsequent changes of the file name
-    # (because the filename gets assigned in the process of assigning the file)
-    if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
-      # construct the import file path
-      filepath = File.join(Project.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
-      if File.exists?(filepath)
-        if @assigned_filename != filename
-          @assigned_filename = filename
-          File.open(filepath, 'r') do |file|
-            self.still_image = file
-          end
-        else
-          puts "\n\n@@@@ WARN: Problem assigning filename = #{filename}\nCurrent still_image = #{read_attribute(:still_image_file_name)}\nAssigned Filename = #{@assigned_filename}\n@@@@ ENDWARN\n\n"
-        end
-      else
-        write_attribute :still_image_file_name, nil
-      end
-    else
-      write_attribute :still_image_file_name, filename
-    end
-  end
-
-  def import_time
-
-    e = id
-    i = Import.for_interview(id).first
-
-    @import_time ||= begin
-      import = Import.for_interview(id).first
-      import.nil? ? Time.gm(2009, 1, 1) : import.time
-    rescue
-          DateTime.now
-    end
-  end
-
-  # Sets the migration version for import
-  def import_migration=(version)
-    @migration = version
-  end
-
-  # interview.qm_value from quality attribute of export
-  def quality=(level)
-    @quality = level.to_f
-  end
-
-  def quality
-    @quality || 2.0
   end
 
   # segmented, researched, proofread
