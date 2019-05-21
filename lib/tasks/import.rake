@@ -55,6 +55,32 @@ namespace :import do
     end
   end
 
+  task registry_entries: :environment do
+    file_path = "../unpublished_exported_from_zwar_platform/registry_entries.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        # check if parent exists
+        parent = RegistryEntry.find_by_id(data[2])
+        if parent 
+          parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
+          if parent_names == data[3]
+            registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[1]).id
+            puts "*** registry_entry #{registry_entry_id} with parent created"
+          else
+            puts "*** registry_entry #{data[0]} with parent #{data[2]} not found and not created"
+            puts "TO CREATE: #{data[0]}, #{data[2]}"
+          end
+        elsif data[2].nil?
+          registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[1] || []).id
+          puts "*** registry_entry #{registry_entry_id} without parent created"
+        end
+      rescue StandardError => e
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
   task contributions: :environment do
     file_path = "../unpublished_exported_from_zwar_platform/contributions.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
