@@ -1,7 +1,26 @@
 namespace :import do
 
+  task languages: :environment do
+    file_path = "/data/applications/zwar_archive/current/languages.csv"
+    #file_path = "../unpublished_exported_from_zwar_platform/languages.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        lang = ISO_639.find(data[1])
+        if lang
+          language = Language.find_by_code(lang.alpha3) 
+          interview = Interview.find_by_archive_id(data[0])
+          interview.update_attributes language_id: language.id
+        end
+      rescue StandardError => e
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
   task registry_references: :environment do
-    file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
+    file_path = "/data/applications/zwar_archive/current/registry_references.csv"
+    #file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
       begin
@@ -10,26 +29,57 @@ namespace :import do
           interview = Interview.find_by_archive_id(data[0])
           registry_reference_type = data[3] && RegistryReferenceType.find_by_code(data[3])
           if interview && data[1] == 'Person'
-            registry_entry = RegistryEntry.find_by_id(data[4])
-            registry_entry = RegistryEntry.joins(registry_names: :translations).where("registry_name_translations.descriptor": data[5] && data[5].split(',').first && data[5].split(',').first.split('-').last).first unless registry_entry
-            if registry_entry 
-              names = registry_entry.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
-              registry_entry_id = data[4] if names == data[5]
-            else
-              # check if parent exists
-              parent = RegistryEntry.find_by_id(data[6])
-              if parent 
-                parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
-                if parent_names == data[7]
-                  registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[5]).id
-                  puts "*** registry_entry #{registry_entry_id} with parent created"
-                else
-                  puts "*** registry_entry #{data[4]} with parent #{data[6]} not found and not created"
-                  puts "TO CREATE: #{data[4]}, #{data[6]}"
+
+            registry_entry = nil
+            if data[5]
+              data[5].split('#').each do |name_w_locale| 
+                locale, names = name_w_locale.split('::')
+                names = names.split(';')
+                names.each do |name|
+                  registry_entry = RegistryEntry.joins(registry_names: :translations).where("registry_name_translations.descriptor": name).first unless registry_entry
                 end
-              elsif data[6].nil?
-                registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[5] || []).id
-                puts "*** registry_entry #{registry_entry_id} without parent created"
+              end
+            end
+            registry_entry_id = registry_entry && registry_entry.id
+            puts "*** registry_entry #{data[4]} #{registry_entry ? '' : 'NOT'} found by name"
+
+            unless registry_entry 
+              registry_entry = RegistryEntry.find_by_id(data[4])
+              puts "*** registry_entry #{data[4]} #{registry_entry ? '' : 'NOT'} found by id"
+
+              if registry_entry
+                registry_entry_names = registry_entry.registry_names.map{|rn| rn.translations.map{|t| t.descriptor.split(';')}}.flatten
+                found = false
+                if data[5]
+                  data[5].split('#').each do |name_w_locale| 
+                    locale, names = name_w_locale.split('::')
+                    names = names.split(';')
+                    names.each do |name|
+                      found = true if registry_entry_names.include?(name) 
+                    end
+                  end
+                end
+                registry_entry_id = data[4] if found #data_name_de && name_de =~ Regexp.new(Regexp.escape(data_name_de))
+
+                puts "*** registry_entry names: #{registry_entry_names}"
+                puts "*** data: #{data[5]}"
+                puts "*** #{registry_entry_id ? 'match' : 'no match'}"
+              else
+                # check if parent exists
+                parent = RegistryEntry.find_by_id(data[6])
+                if parent 
+                  parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
+                  if parent_names == data[7]
+                    registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[5]).id
+                    puts "*** registry_entry #{registry_entry_id} with parent created"
+                  else
+                    puts "*** registry_entry #{data[4]} with parent #{data[6]} not found and not created"
+                    puts "TO CREATE: #{data[4]}, #{data[6]}"
+                  end
+                elsif data[6].nil?
+                  registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[5] || []).id
+                  puts "*** registry_entry #{registry_entry_id} without parent created"
+                end
               end
             end
 
@@ -43,8 +93,11 @@ namespace :import do
                 registry_reference_type_id: registry_reference_type && registry_reference_type.id,
                 registry_entry_id: registry_entry_id
               )
-              puts "*** registry_entry referenced"
+              puts "*** registry_entry #{registry_entry_id} referenced"
+            else
+              puts "*** registry_entry #{data[4]} NOT referenced"
             end
+            puts "*************************************************"
           else
             puts "interview #{data[0]} not found"
           end
