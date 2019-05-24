@@ -252,7 +252,7 @@ export default class WrapperPage extends React.Component {
                 if (this.props.locale === 'de') {
                     return (
                         <div>
-                            <p>Im Rahmen des Projekts Zwangsarbeit 1939-1945. Erinnerungen und Geschichte sind nebem diesem Archiv eine Projekt-Website, die Lernplattform "Lernen mit Interviews" sowie ein Forum für Lehrende zugänglich:</p>
+                            <p>Weitere Angebote:</p>
                             <div style={{display: 'inline-block'}}>
                             {/* lieber ein div, das sich ausklappt, dann sind normale <a>-Links möglich */}
                                 <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}} />
