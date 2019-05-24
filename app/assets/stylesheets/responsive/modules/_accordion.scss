@@ -132,7 +132,7 @@ a.flyout-download-link-lang {
   text-align: right;
   padding: 0;
 }
-span.registry-reference:not(:last-child) {
+span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-child) {
   margin-right: 15px;
   padding-right: 10px;
   border-right: 1px solid $gray-light;
