@@ -52,8 +52,14 @@ class Photo < ActiveRecord::Base
     self.send("#{change}!")
   end
 
-  # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
-  #
+  def write_iptc_metadata(metadata)
+    file = MiniExiftool.new file_path
+    metadata.each do |k,v|
+      file[k] = v
+    end
+    file.save
+  end
+
   def src
     "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder}/#{photo_file_name}.jpg"
   end

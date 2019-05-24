@@ -21,7 +21,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       name_parts = File.basename(text_file_name, File.extname(text_file_name)).split('_')
       archive_id = name_parts.first
       kind = name_parts[1] # protocoll or biographie (bg)
-      locale = ISO_639.find(name_parts.last).send(Project.alpha)
+      locale = name_parts[2] ? ISO_639.find(name_parts[2]).send(Project.alpha) : 'de'
 
       data = File.read text_file_name
       text = Yomu.read :text, data
@@ -29,7 +29,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       interview = Interview.find_by_archive_id(archive_id)
       if interview
         case kind
-        when 'protocoll'
+        when 'protocoll', 'pk', 'prot'
           interview.update_attributes observations: text, locale: locale
         when 'bg'
           # do not append biographical entries again and again

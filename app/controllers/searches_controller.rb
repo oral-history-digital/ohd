@@ -201,7 +201,7 @@ class SearchesController < ApplicationController
             all_interviews_titles: all_interviews_titles,
             all_interviews_pseudonyms: all_interviews_pseudonyms,
             all_interviews_places_of_birth: all_interviews_places_of_birth,
-            all_interviews_count: Interview.count,
+            all_interviews_count: search.total,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
             interviews: search.results.map{|i| cache_single(i)},

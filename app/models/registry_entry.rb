@@ -194,13 +194,17 @@ class RegistryEntry < ActiveRecord::Base
 
   class << self
     def descendant_ids(entry_code, entry_dedalo_code=nil)
-      entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)
+      entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_entry_code(entry_code)
+      entry ? entry.descendants.map(&:id) : []
     end
 
-    def create_with_parent_and_name(parent_id, name, code=nil)
-      registry_entry = RegistryEntry.create entry_code: code || name, entry_desc: name, workflow_state: "public", list_priority: false
-      RegistryHierarchy.create ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true
-      RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name.gsub('_', ' ')
+    def create_with_parent_and_names(parent_id, names, code=nil)
+      registry_entry = RegistryEntry.create entry_code: code, entry_desc: code, workflow_state: "public", list_priority: false
+      RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
+      names.split(',').each_with_index do |name_w_locale, index|
+        locale, name = name_w_locale.split('-')
+        RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
+      end
       registry_entry
     end
 
@@ -212,7 +216,7 @@ class RegistryEntry < ActiveRecord::Base
       end
 
       if descendant.nil? && descendant_name.length > 2
-        descendant = RegistryEntry.create_with_parent_and_name(parent.id, descendant_name[0..200]) 
+        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name[0..200]) 
       end
       descendant
     end
