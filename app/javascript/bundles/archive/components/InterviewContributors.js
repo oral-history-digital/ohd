@@ -6,7 +6,7 @@ import PersonContainer from '../containers/PersonContainer';
 export default class InterviewContributors extends React.Component {
 
     contributors() {
-        let contributors = [];
+        let contributionTypes = {};
         if (
             this.props.interview &&
             this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
@@ -15,12 +15,21 @@ export default class InterviewContributors extends React.Component {
         ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                if (contribution !== 'fetched') {
-                    (contribution.contribution_type !== 'interviewee') && contributors.push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
+                if (contribution !== 'fetched' && contribution.contribution_type !== 'interviewee') {
+                    if (!contributionTypes[contribution.contribution_type]) {
+                        contributionTypes[contribution.contribution_type] = [<span className='flyout-content-label'>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
+                    }
+                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-${contribution.id}`} />)
                 }
             }
         } 
-        return contributors;
+        return Object.keys(contributionTypes).map((key, index) => {
+            return (
+              <div>
+                <p>{contributionTypes[key]}</p>
+              </div>
+            );
+        })
     }
 
     addContribution() {

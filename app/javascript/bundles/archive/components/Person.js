@@ -59,14 +59,11 @@ export default class Person extends React.Component {
     render() {
         if (this.props.contribution) {
             return (
-                <div>
-                    <p>
-                        <span className='flyout-content-label'>{t(this.props, `contributions.${this.props.contribution.contribution_type}`)}:</span>
-                        <span className='flyout-content-data'>{fullname(this.props, this.props.data)}</span>
-                        {this.buttons()}
-                    </p>
-                </div>
-            )
+              <span className="flyout-content-data">
+                {fullname(this.props, this.props.data)}
+                {this.buttons()}
+              </span>
+            );
         } else {
             // search result with highlight:
             return (
