@@ -1,26 +1,53 @@
 namespace :import do
 
-  task languages: :environment do
-    file_path = "/data/applications/zwar_archive/current/languages.csv"
-    #file_path = "../unpublished_exported_from_zwar_platform/languages.csv"
+  desc 'all'
+  task :all => [
+    'import:tapes',
+    'import:languages',
+    'import:registry_references',
+    'import:contributions'
+  ] do
+    puts 'complete.'
+  end
+
+  task tapes: :environment do
+    #file_path = "/data/applications/zwar_archive/current/tapes.csv"
+    #file_path = "../unpublished_exported_from_zwar_platform/tapes.csv"
+    file_path = "za026-tapes.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
       begin
-        lang = ISO_639.find(data[1])
-        if lang
-          language = Language.find_by_code(lang.alpha3) 
-          interview = Interview.find_by_archive_id(data[0])
-          interview.update_attributes language_id: language.id
-        end
+        interview = Interview.find_by_archive_id(data[0])
+        # [interview.archive_id, tape.media_id, tape.duration, tape.filename, tape.workflow_state, tape.indexed_at]
+        Tape.create interview_id: interview.id, media_id: data[1], duration: data[2], filename: data[3], workflow_state: data[4]
       rescue StandardError => e
         puts ("#{e.message}: #{e.backtrace}")
       end
     end
   end
 
+  task languages: :environment do
+    #file_path = "/data/applications/zwar_archive/current/languages.csv"
+    file_path = "../unpublished_exported_from_zwar_platform/languages.csv"
+    #file_path = "za026-language.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        language = Language.find_by_code(data[1]) 
+        interview = Interview.find_by_archive_id(data[0])
+        interview.update_attributes language_id: language.id
+        binding.pry
+      rescue StandardError => e
+        puts "#{data[0]}: #{data[1]}"
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
   task registry_references: :environment do
-    file_path = "/data/applications/zwar_archive/current/registry_references.csv"
+    #file_path = "/data/applications/zwar_archive/current/registry_references.csv"
     #file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
+    file_path = "za026-registry_references.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
       begin
@@ -135,7 +162,8 @@ namespace :import do
   end
 
   task contributions: :environment do
-    file_path = "../unpublished_exported_from_zwar_platform/contributions.csv"
+    #file_path = "../unpublished_exported_from_zwar_platform/contributions.csv"
+    file_path = "za026-contributions.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
       begin
