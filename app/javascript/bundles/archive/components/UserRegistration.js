@@ -66,7 +66,7 @@ export default class UserRegistration extends React.Component {
                 title={t(this.props, 'edit.user_registration.show')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.user_registration.show'),
-                    content: this.details()
+                    content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
                 })}
             >
                 <i className="fa fa-eye"></i>
@@ -74,27 +74,27 @@ export default class UserRegistration extends React.Component {
         )
     }
 
-    edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_registration.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.user_registration.edit'),
-                    content: <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
-    }
+    // edit() {
+    //     return (
+    //         <div
+    //             className='flyout-sub-tabs-content-ico-link'
+    //             title={t(this.props, 'edit.user_registration.edit')}
+    //             onClick={() => this.props.openArchivePopup({
+    //                 title: t(this.props, 'edit.user_registration.edit'),
+    //                 content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
+    //             })}
+    //         >
+    //             <i className="fa fa-pencil"></i>
+    //         </div>
+    //     )
+    // }
 
     buttons() {
         if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}
-                    {this.edit()}
+                    {/* {this.edit()} */}
                 </div>
             )
         }
