@@ -1,6 +1,6 @@
 require 'acts-as-dag'
 require 'tsort'
-require 'i18n/core_ext/string/interpolate'
+# require 'i18n/core_ext/string/interpolate'
 
 class RegistryEntry < ActiveRecord::Base
   include IsoHelpers

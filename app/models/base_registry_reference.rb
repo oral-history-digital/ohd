@@ -1,4 +1,4 @@
-require 'i18n/core_ext/string/interpolate'
+# require 'i18n/core_ext/string/interpolate'
 
 class BaseRegistryReference < ActiveRecord::Base
   self.abstract_class = true
