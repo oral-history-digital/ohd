@@ -31,6 +31,11 @@ default: &default
     translator: 'Translated'
     segmentator: 'Indexed'
 
+  upload_types:
+    - bulk_metadata
+    - bulk_texts
+    - bulk_photo
+
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation in Griechenland'
     en: 'Memories of the Occupation of Greece'
