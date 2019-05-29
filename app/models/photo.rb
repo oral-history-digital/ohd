@@ -26,7 +26,7 @@ class Photo < ActiveRecord::Base
     File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
   end
 
-  searchable do
+  searchable auto_index: false do
     string :archive_id, :multiple => true, :stored => true do
       interview.archive_id
     end
