@@ -71,6 +71,7 @@ group :development do
   gem 'thin'
   gem 'foreman'
   gem 'progress_bar'
+  gem 'rb-readline'
 end
 
 #gem 'puma'
