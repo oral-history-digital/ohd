@@ -21,7 +21,7 @@ class Person < ApplicationRecord
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      contributions.map{|c| c.interview.archive_id }
+      contributions.map{|c| c.interview && c.interview.archive_id }.compact
     end
 
     # dummy method, necessary for generic search

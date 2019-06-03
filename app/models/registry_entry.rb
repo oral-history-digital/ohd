@@ -1081,7 +1081,7 @@ class RegistryEntry < ActiveRecord::Base
         translated_descriptor = translated_descriptor.dup
         translated_descriptor.gsub!(';', '/') if locale.to_sym == :alias
         names_with_position[name_type] ||= []
-        names_with_position[name_type][name.name_position] = translated_descriptor
+        names_with_position[name_type][name.name_position || 0] = translated_descriptor
       end
     end
 
