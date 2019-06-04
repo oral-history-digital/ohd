@@ -17,7 +17,7 @@ export default class InterviewContributors extends React.Component {
                 let contribution = this.props.interview.contributions[c];
                 if (contribution !== 'fetched' && contribution.contribution_type !== 'interviewee') {
                     if (!contributionTypes[contribution.contribution_type]) {
-                        contributionTypes[contribution.contribution_type] = [<span className='flyout-content-label'>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
+                        contributionTypes[contribution.contribution_type] = [<span key={`contribution-${contribution.id}`} className='flyout-content-label'>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
                     }
                     contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-${contribution.id}`} />)
                 }
