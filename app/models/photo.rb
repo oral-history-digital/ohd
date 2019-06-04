@@ -28,7 +28,7 @@ class Photo < ActiveRecord::Base
 
   searchable auto_index: false do
     string :archive_id, :multiple => true, :stored => true do
-      interview.archive_id
+      interview ? interview.archive_id : nil
     end
     string :workflow_state
     integer :id, :stored => true
