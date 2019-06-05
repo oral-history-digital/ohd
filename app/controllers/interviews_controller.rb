@@ -3,8 +3,8 @@ class InterviewsController < ApplicationController
   layout 'responsive'
 
   skip_before_action :authenticate_user_account!, only: [:show, :doi_contents]
-  skip_after_action :verify_authorized, only: [:show, :doi_contents]
-  skip_after_action :verify_policy_scoped, only: [:show, :doi_contents]
+  skip_after_action :verify_authorized, only: [:show, :doi_contents, :metadata]
+  skip_after_action :verify_policy_scoped, only: [:show, :doi_contents, :metadata]
 
   def new
     authorize Interview
@@ -85,6 +85,13 @@ class InterviewsController < ApplicationController
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.html
+    end
+  end
+
+  def metadata
+    @interview = Interview.find_by_archive_id(params[:id])
+    @locale = projectified(params[:locale])
+    respond_to do |format|
       format.xml
     end
   end
