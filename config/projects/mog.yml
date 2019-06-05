@@ -151,6 +151,13 @@ default: &default
       use_as_facet: true
       entry_dedalo_code: "hierarchy1_246"
 
+  pdf_registry_entry_codes
+    - 'thematic'
+    - 'centers_of_depriviation_of_liberty'
+    - 'organizations'
+    - 'places'
+    - 'periods'
+
 development:
   <<: *default
 

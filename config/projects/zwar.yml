@@ -204,6 +204,11 @@ default: &default
     - 28221
     - 28237
 
+  pdf_registry_entry_codes
+    - camps
+    - companies
+    - people
+
 development:
   <<: *default
 
