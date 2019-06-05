@@ -6,6 +6,7 @@ require "#{Rails.root}/lib/timecode.rb"
 class Interview < ActiveRecord::Base
   include IsoHelpers
   include Workflow
+  include OaiRepository::Set
 
   belongs_to :collection
 
@@ -146,7 +147,7 @@ class Interview < ActiveRecord::Base
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
 
-  has_one_attached :still_image
+  #has_one_attached :still_image
 
   searchable do
     integer :language_id, :stored => true, :references => Language
@@ -530,10 +531,12 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def anonymous_title(locale)
+  def anonymous_title(locale=Project.default_locale)
     name_parts = []
-    name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
-    name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
+    unless interviewees.blank?
+      name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
+      name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
+    end
     name_parts.join(' ')
   end
 
@@ -607,20 +610,100 @@ class Interview < ActiveRecord::Base
                 else
                   # remove all tasks that don't have anyone assigned
                   unless self.tasks.for_workflow('Research').empty?
-                  research_task = self.tasks.for_workflow('Research').first
-                  if research_task.responsible.nil?
-                    research_task.destroy
-                    true
-                  else
-                    false
+                    research_task = self.tasks.for_workflow('Research').first
+                    if research_task.responsible.nil?
+                      research_task.destroy
+                      true
+                    else
+                      false
+                    end
                   end
                 end
+      skip_versioning!
+      update_attribute :segmentation_state, 'qm'
+      save
+      changed
     end
-    skip_versioning!
-    update_attribute :segmentation_state, 'qm'
-    save
-    changed
   end
-end
 
+  def oai_dc_identifier
+    archive_id
+    "oai:#{Project.name}:#{archive_id}"
+  end
+
+  def oai_dc_creator
+    anonymous_title
+  end
+
+  def oai_dc_subject
+    if self.respond_to?(:typology)
+      "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
+    else
+      [
+        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}",
+        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}"
+      ].join(';')
+    end
+  end
+
+  def oai_dc_description
+    "Lebensgeschichtliches #{self.video}-Interview in #{self.language.name.downcase}er Sprache mit Transkription, deutscher Übersetzung, Erschließung, Kurzbiografie und Fotografien"
+  end
+
+  def oai_dc_publisher
+    "Interview-Archiv \"#{Project.project_name['de']}\""
+  end
+
+  def oai_dc_contributor
+    oai_contributors = [
+      %w(interviewers Interviewführung), 
+      %w(cinematographers Kamera),
+      %w(transcriptors Transkripteur),
+      %w(translators Übersetzer),
+      %w(segmentators Erschließer)
+    ].inject([]) do |mem, (contributors, contribution)|
+      if self.send(contributors).length > 0
+        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(Project.default_locale)}, #{contributor.first_name(Project.default_locale)}"}.join('; ')
+      end
+      mem
+    end
+    if !Project.cooperation_partner.blank?
+      oai_contributors << "Kooperationspartner: #{Project.cooperation_partner}"
+    end
+    oai_contributors << "Projektleiter: #{Project.leader}"
+    oai_contributors << "Projektmanager: #{Project.manager}"
+    oai_contributors << "Hosting Institution: #{Project.hosting_institution}"
+    oai_contributors.join('. ')
+  end
+
+  def oai_dc_date
+    self.interview_date && Date.parse(self.interview_date).strftime("%d.%m.%Y")
+  end
+
+  #def oai_dc_type
+  #end
+
+  def oai_dc_format
+    self.video
+  end
+
+  #def oai_dc_source
+  #end
+
+  def oai_dc_language
+    self.language.name
+  end
+
+  #def oai_dc_relation
+  #end
+
+  #def oai_dc_coverage
+  #end
+
+  #def oai_dc_rights
+  #end
+
+  def type
+    'Interview'
+  end
 end

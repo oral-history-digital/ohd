@@ -28,6 +28,7 @@ gem 'fastercsv'
 gem 'roo', "~> 2.7.0"
 gem 'yomu'
 gem 'webvtt-ruby'
+gem 'oai_repository', git: 'https://github.com/grgr/oai_repository'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'open4'
