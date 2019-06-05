@@ -105,9 +105,11 @@ class RegistryReferencesController < ApplicationController
 
         json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-locations-#{interview.id}-#{interview.updated_at}" do
           segment_ref_locations = RegistryReference.segments_for_interview(interview.id).with_locations.first(100)
+          ref_locations = RegistryReference.for_interview(interview.id).with_locations
           {
             archive_id: params[:archive_id],
             segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
+            ref_locations: ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
           }.to_json
         end
         render plain: json
