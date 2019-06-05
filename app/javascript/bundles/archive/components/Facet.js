@@ -123,14 +123,23 @@ export default class Facet extends React.Component {
         return this.props.data.subfacets[subfacetId].priority;
     }
 
-    // sort first alphabetically, then put prioritized down in the list (like "others"/"sonstige")
     sortedSubfacets() {
         let _this = this;
-        return Object.keys(this.props.data.subfacets).sort(function (a, b) {
-            return (_this.localDescriptor(a) > _this.localDescriptor(b)) ? 1 : ((_this.localDescriptor(b) > _this.localDescriptor(a)) ? -1 : 0);
-        }).sort(function (a, b) {
-            return (_this.priority(a) > _this.priority(b)) ? 1 : ((_this.priority(b) > _this.priority(a)) ? -1 : 0);
-        });
+        // if the Facet is about time periods, sort by years ( by doing: .replace(/[^\d]/g, '') )
+        if(this.props.data.name['de'].trim() === 'Zeitperioden') {
+            return Object.keys(this.props.data.subfacets).sort(function (a, b) {
+                return (_this.localDescriptor(a).replace(/[^\d]/g, '') > _this.localDescriptor(b).replace(/[^\d]/g, '')) ? 1 : ((_this.localDescriptor(b).replace(/[^\d]/g, '') > _this.localDescriptor(a).replace(/[^\d]/g, '')) ? -1 : 0);
+            })
+        }
+        // everything else
+        // sort first alphabetically, then put prioritized down in the list (like "others"/"sonstige")
+        else {
+            return Object.keys(this.props.data.subfacets).sort(function (a, b) {
+                return (_this.localDescriptor(a) > _this.localDescriptor(b)) ? 1 : ((_this.localDescriptor(b) > _this.localDescriptor(a)) ? -1 : 0);
+            }).sort(function (a, b) {
+                return (_this.priority(a) > _this.priority(b)) ? 1 : ((_this.priority(b) > _this.priority(a)) ? -1 : 0);
+            });
+        }
     }
 
     renderSubfacets() {

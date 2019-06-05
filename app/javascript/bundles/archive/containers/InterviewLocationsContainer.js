@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import InterviewLocations from '../components/InterviewLocations';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { fetchLocations } from '../actions/locationsActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
 
 import { getInterview } from '../../../lib/utils';
 
@@ -31,7 +32,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
-    fetchLocations: archiveId => dispatch(fetchLocations(archiveId))
+    fetchLocations: archiveId => dispatch(fetchLocations(archiveId)),
+    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
 })
 
 // Don't forget to actually use connect!

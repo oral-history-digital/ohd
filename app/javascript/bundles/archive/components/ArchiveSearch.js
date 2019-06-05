@@ -249,10 +249,10 @@ export default class ArchiveSearch extends React.Component {
                                 <i className="fa fa-th-list"></i>
                                 <span>{t(this.props, 'list')}</span>
                             </Tab>
-                            <Tab className={'search-results-tab' + (this.props.project === 'zwar' && ' hidden' || '')}>
+                            {/* <Tab className={'search-results-tab' + (this.props.project === 'zwar' && ' hidden' || '')}>
                                 <i className="fa fa-map-o"></i>
                                 <span>{t(this.props, 'places')}</span>
-                            </Tab>
+                            </Tab> */}
                         </TabList>
                         <TabPanel>
                             {this.content('grid')}
@@ -266,9 +266,9 @@ export default class ArchiveSearch extends React.Component {
                             {/* </div> */}
                             {this.content('list')}
                         </TabPanel>
-                        <TabPanel>
+                        {/* <TabPanel>
                             <ArchiveLocationsContainer/>
-                        </TabPanel>
+                        </TabPanel> */}
                     </Tabs>
                 </div>
             </WrapperPageContainer>

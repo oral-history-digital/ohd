@@ -15,7 +15,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     collection(){
-        if(this.props.collections){
+        if(this.props.collections && this.props.collections[0]){
             let collection_id = this.props.interview.collection_id;
             let collection_name = this.props.collections.filter(collection => collection.value === collection_id)[0].name[this.props.locale];
             return this.content(t(this.props, 'activerecord.models.collection.one'), collection_name, "")

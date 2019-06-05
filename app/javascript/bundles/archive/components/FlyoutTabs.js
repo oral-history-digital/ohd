@@ -131,6 +131,7 @@ export default class FlyoutTabs extends React.Component {
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.renderPhotos()}
                             {/* {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()} */}
+                            {this.renderMap()}
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 open={true}
