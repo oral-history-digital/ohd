@@ -10,7 +10,15 @@ class LastHeadingSerializer < ApplicationSerializer
 
   def time
     # timecode as seconds 
-    Time.parse(object.timecode).seconds_since_midnight
+    object.try(:timecode) ? Time.parse(object.timecode).seconds_since_midnight : nil
+  end
+
+  def interview_id
+    object.try(:interview_id) ? object.interview_id : nil
+  end
+
+  def last_heading
+    object.try(:last_heading) ? object.last_heading : nil
   end
 
 end
