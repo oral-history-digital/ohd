@@ -21,7 +21,7 @@ export default class ExportInterviewInfo extends React.Component {
     links(archiveIds) {
         return archiveIds.map((archiveId, i) => [
             i > 0 && ", ",
-            <a href={`/${this.props.locale}/interviews/${archiveId}.xml`} target='_blank' key={`link-to-${archiveId}`}>{archiveId}</a>
+            <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' key={`link-to-${archiveId}`}>{archiveId}</a>
         ])
     }
 

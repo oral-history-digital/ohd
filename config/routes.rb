@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       resources :interviews do
         member do 
           get :doi_contents
+          get :metadata
           get :headings
           get :initials
           #get :references
@@ -154,5 +155,7 @@ Rails.application.routes.draw do
 
   get 'photos/src/:name' => 'photos#src'
   get 'photos/thumb/:name' => 'photos#thumb'
+
+  mount OaiRepository::Engine => "/oai_repository"
 
 end
