@@ -171,8 +171,8 @@ class InterviewSerializer < ApplicationSerializer
           archive_id: object.archive_id,
           desc: ref.registry_entry.localized_hash,
           # exclude dedalo default location (Valencia)
-          latitude: ref.registry_entry.latitude == 39.462571 ? nil : ref.registry_entry.latitude.to_f,
-          longitude: ref.registry_entry.longitude == -0.376295 ? nil : ref.registry_entry.longitude.to_f
+          latitude: ref.registry_entry.latitude == '39.462571' ? nil : ref.registry_entry.latitude.to_f,
+          longitude: ref.registry_entry.longitude == '-0.376295' ? nil : ref.registry_entry.longitude.to_f
       }
     end
   end
