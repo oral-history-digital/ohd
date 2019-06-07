@@ -118,6 +118,11 @@ default: &default
 
   has_newsletter: false
 
+  pdf_registry_entry_codes:
+    - camps
+    - companies
+    - people
+
 development:
   <<: *default
 
