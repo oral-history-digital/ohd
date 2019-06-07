@@ -187,7 +187,7 @@ class Interview < ActiveRecord::Base
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         title = full_title(locale).mb_chars.normalize(:kd)
         Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
@@ -202,7 +202,7 @@ class Interview < ActiveRecord::Base
     # find them through fulltext search 
     # e.g.: 'Kamera Hans Peter'
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -214,7 +214,7 @@ class Interview < ActiveRecord::Base
 
     # biographical entries texts
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"biography_#{locale}" do
         if interviewees.first
           interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -226,7 +226,7 @@ class Interview < ActiveRecord::Base
 
     # photo caption texts
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end

@@ -165,6 +165,11 @@ default: &default
 
   has_newsletter: true
 
+  pdf_registry_entry_codes:
+    - camps
+    - companies
+    - people
+
 development:
   <<: *default
 
