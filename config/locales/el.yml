@@ -128,6 +128,7 @@ el:
   interviewee_name: Όνομα
   periods: Χρονικές περίοδοι
   keywords: Λέξεις-κλειδιά
+  keywords_mog: Λέξεις-κλειδιά
   registry: Register
   annotations: σημειώσεις
   reset: επαναφορά
