@@ -255,7 +255,7 @@ export default class FlyoutTabs extends React.Component {
         let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='registry'>
-                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry_mog')}
+                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
             </Tab>
         );
     }
