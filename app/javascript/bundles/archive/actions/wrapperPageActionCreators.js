@@ -27,6 +27,8 @@ function receiveStaticContent(json){
         languages: json.languages,
         uploadTypes: json.upload_types,
         locales: json.locales,
+        viewModes: json.view_modes,
+        viewMode: json.view_mode,
         project: json.project,
         projectDoi: json.project_doi,
         hiddenRegistryEntryIds: json.hidden_registry_entry_ids,

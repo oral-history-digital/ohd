@@ -17,6 +17,7 @@ const initialState = {
     locale: 'de',
     locales: ['de', 'el'],
     archiveId: null,
+    viewModes: ['grid', 'list'],
     viewMode: 'grid',
 
     homeContent: "",
@@ -67,6 +68,8 @@ const archive = (state = initialState, action) => {
                 languages: action.languages,
                 uploadTypes: action.uploadTypes,
                 locales: action.locales,
+                viewMode: state.viewMode || action.viewMode,
+                viewModes: action.viewModes,
                 project: action.project,
                 projectDoi: action.projectDoi,
                 hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,

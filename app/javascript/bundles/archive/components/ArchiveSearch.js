@@ -49,7 +49,7 @@ export default class ArchiveSearch extends React.Component {
                     this.props.foundInterviews.map((interview, index) => {
                         return <InterviewPreviewContainer
                             interview={interview}
-                            key={"interview-" + interview.archive_id}
+                            key={"interview-" + interview.archive_id + "-" + index}
                         />;
                     })
                 )
@@ -70,7 +70,7 @@ export default class ArchiveSearch extends React.Component {
                             {this.props.foundInterviews.map((interview, index) => {
                                 return <InterviewListRowContainer
                                     interview={interview}
-                                    key={"interview-row-" + interview.archive_id}
+                                    key={"interview-row-" + interview.archive_id + "-" + index}
                                 />;
                             })}
                         </tbody>
@@ -90,7 +90,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     handleTabClick(tabIndex) {
-        this.props.setViewMode(['grid', 'list'][tabIndex])
+        this.props.setViewMode(this.props.viewModes[tabIndex])
     }
 
 
@@ -218,6 +218,30 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
+    searchResultTabs() {
+        let _this = this;
+        return _this.props.viewModes.map(function(viewMode, i) {
+            let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
+            return (
+                <Tab className={'search-results-tab ' + visibility} key={i}>
+                    {/* <i className="fa fa-th"></i> */}
+                    <span>{t(_this.props, viewMode)}</span>
+                </Tab>
+            )   
+        })
+    }
+
+    tabPanels() {
+        let _this = this
+        return this.props.viewModes.map(function(viewMode, i) {
+            return (
+                <TabPanel key={i}>
+                    {_this.content(viewMode)}
+                </TabPanel>
+            )
+        })
+    }
+
     render() {
         return (
             <WrapperPageContainer
@@ -237,38 +261,13 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={['grid', 'list'].indexOf(this.props.viewMode)}
+                        defaultIndex={this.props.viewModes.indexOf(this.props.viewMode)}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
-                            <Tab className='search-results-tab'>
-                                <i className="fa fa-th"></i>
-                                <span>{t(this.props, 'grid')}</span>
-                            </Tab>
-                            <Tab className='search-results-tab'>
-                                <i className="fa fa-th-list"></i>
-                                <span>{t(this.props, 'list')}</span>
-                            </Tab>
-                            {/* <Tab className={'search-results-tab' + (this.props.project === 'zwar' && ' hidden' || '')}>
-                                <i className="fa fa-map-o"></i>
-                                <span>{t(this.props, 'places')}</span>
-                            </Tab> */}
+                            {this.searchResultTabs()}
                         </TabList>
-                        <TabPanel>
-                            {this.content('grid')}
-                        </TabPanel>
-                        <TabPanel>
-                            {/* <div> */}
-                                {/* <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div> */}
-                                {/* {this.renderPagination()} */}
-                                {/* <ArchiveLocationsContainer/> */}
-                                {/* {this.renderPagination()} */}
-                            {/* </div> */}
-                            {this.content('list')}
-                        </TabPanel>
-                        {/* <TabPanel>
-                            <ArchiveLocationsContainer/>
-                        </TabPanel> */}
+                        {this.tabPanels()}
                     </Tabs>
                 </div>
             </WrapperPageContainer>
