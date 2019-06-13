@@ -54,7 +54,7 @@ class SearchesController < ApplicationController
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && current_user_account.admin?) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user.user.roles?(Interview, :update))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
