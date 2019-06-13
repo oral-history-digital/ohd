@@ -17,7 +17,7 @@ class Person < ApplicationRecord
 
   validates :gender, inclusion: %w(male female), allow_nil: true
 
-  translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names
+  translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names, fallbacks_for_empty_translations: true
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
