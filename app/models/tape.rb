@@ -56,6 +56,10 @@ class Tape < ActiveRecord::Base
     media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
   end
 
+  def next
+    Tape.where(interview_id: interview.id).where('lower(media_id) = ?', "#{interview.archive_id}_#{format( '%02d', total_number_of_tapes)}_#{format( '%02d', number + 1)}".downcase).first
+  end
+
   def media_file(extension, subdirectories=false)
     if subdirectories
       "#{interview.archive_id.upcase}/#{interview.archive_id.upcase}_archive/data/av/#{extension}/#{media_id.upcase}.#{extension}"

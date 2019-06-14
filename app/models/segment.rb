@@ -78,7 +78,7 @@ class Segment < ActiveRecord::Base
 
   class << self
     def create_or_update_by(opts={})
-      segment = find_or_create_by(opts.select{|k,v| [:interview_id, :timecode, :tape_id].include?(k)})
+      segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       assign_speakers_and_update_text(segment, opts)
     end
 
@@ -86,6 +86,8 @@ class Segment < ActiveRecord::Base
     # if these speaker_designations do not occur at the beginning of the text, a new segment will be created for each occurence
     #
     def assign_speakers_and_update_text(segment, opts)
+      tape = Tape.find opts[:tape_id]
+
       speaker_designations = opts[:contribution_data].map{|d| d['speaker_designation']}
       #
       # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
@@ -97,6 +99,11 @@ class Segment < ActiveRecord::Base
       #
       splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text].split(all_speakers_regexp).reject(&:empty?)  
       time_per_char = calculate_time_per_char(speaker_designations, opts)
+
+      # clean erraneously added blanks
+      while splitted_text.first =~ /^[\n+|\s+]$/
+        splitted_text.shift
+      end
 
       while !splitted_text.empty?
         if splitted_text.length.even?
@@ -113,8 +120,20 @@ class Segment < ActiveRecord::Base
         # or create it
         #
         unless splitted_text.empty?
-          segment = segment.next && segment.next.timecode < opts[:next_timecode] ? segment.next : 
-            create(interview_id: opts[:interview_id], tape_id: opts[:tape_id], timecode: (Time.parse(segment.timecode) + text.length * time_per_char).strftime("%H:%M.%S.%L"))
+          next_time = Timecode.new(segment.timecode).time + text.length * time_per_char
+          if segment.next && segment.next.timecode < opts[:next_timecode]
+            segment = segment.next 
+          else
+            # if the calculated start-time for the next segment is bigger than the actual tape`s time
+            # associate to the next tape
+            # set time  of next segment to zero or a given shift
+            #
+            if next_time > tape.duration
+              tape = tape.next
+              next_time = tape.time_shift
+            end
+            segment = create(interview_id: opts[:interview_id], tape_id: tape.id, timecode: Timecode.new(next_time).timecode)
+          end
         end
       end
     end
@@ -123,9 +142,10 @@ class Segment < ActiveRecord::Base
       # this regexp has  no capture groups!!
       all_speakers_regexp = Regexp.new(speaker_designations.map{|d| Regexp.quote(d)}.join('|'))
       clean_text = opts[:text].gsub(all_speakers_regexp, '').gsub(/\n+/, '')
-      duration = Time.parse(opts[:next_timecode]) - Time.parse(opts[:timecode])
+      duration = Timecode.new(opts[:next_timecode]).time - Timecode.new(opts[:timecode]).time
       duration/clean_text.length
     end
+
   end
 
   def identifier
@@ -268,7 +288,7 @@ class Segment < ActiveRecord::Base
   end
 
   def time
-    @time ||= Time.parse(timecode).seconds_since_midnight
+    @time ||= Timecode.new(timecode).time
   end
 
   def next

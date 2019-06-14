@@ -11,6 +11,7 @@ export default class UploadTranscript extends React.Component {
         super(props);
         this.state = {
             hideTapeAndArchiveInputs: false, 
+            tapeDurationsSet: false
         };
 
         this.handleTapeAndArchiveIdFromFileChange = this.handleTapeAndArchiveIdFromFileChange.bind(this);
@@ -62,28 +63,12 @@ export default class UploadTranscript extends React.Component {
                         submitText='edit.upload_transcript.title'
                         values={{ }}
                         elements={[
-                            {
-                                elementType: 'select',
-                                attribute: 'collection_id',
-                                values: this.props.collections,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''},
-                                individualErrorMsg: 'empty'
-                            },
                             { 
                                 attribute: 'data',
                                 elementType: 'input',
                                 type: 'file',
                                 validate: function(v){return v instanceof File},
                                 //handlechangecallback: this.handleFileChange
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: 'interview_original_language_id',
-                                label: t(this.props, 'activerecord.attributes.transcript.interview_original_language_id'),
-                                values: this.props.languages,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''} 
                             },
                             {
                                 elementType: 'select',
@@ -94,8 +79,12 @@ export default class UploadTranscript extends React.Component {
                                 validate: function(v){return v !== ''} 
                             },
                             { 
-                                attribute: 'tape_duration',
-                                validate: function(v){return v !== ''} 
+                                attribute: 'tape_durations',
+                                validate: function(v){return v !== ''}, 
+                                //handlechangecallback: this.handleTapeDurationsChange,
+                            },
+                            { 
+                                attribute: 'time_shifts',
                             },
                             { 
                                 attribute: 'tape_and_archive_id_from_file',
@@ -120,14 +109,14 @@ export default class UploadTranscript extends React.Component {
                                 hidden: this.state.hideTapeAndArchiveInputs,
                                 //value: this.state.dummy,
                                 //value: this.state.tapeCount,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                                //validate: function(v){return _this.state.tapeDurationsSet || _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
                             },
                             { 
                                 attribute: 'tape_number',
                                 hidden: this.state.hideTapeAndArchiveInputs,
                                 //value: this.state.dummy,
                                 //value: this.state.tapeNumber,
-                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                                //validate: function(v){return _this.state.tapeDurationsSet || _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
                             },
                         ]}
                         subForm={ContributionFormContainer}
@@ -151,6 +140,16 @@ export default class UploadTranscript extends React.Component {
                 //tapeCount: dummy,
                 //tapeNumber: dummy,
                 hideTapeAndArchiveInputs: checked
+            })
+        }
+    }
+
+    handleTapeDurationsChange(name, value) {
+        debugger;
+        if (name === 'tape_durations') {
+        debugger;
+            this.setState({ 
+                tapeDurationsSet: /\d+/.test(value)
             })
         }
     }

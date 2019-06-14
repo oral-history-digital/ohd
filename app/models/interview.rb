@@ -423,8 +423,8 @@ class Interview < ActiveRecord::Base
     text = Yomu.read :text, data
     Segment.create_or_update_by({ 
       interview_id: id, 
-      timecode: Timecode.new(0).timecode, 
-      next_timecode: Timecode.new(Tape.find(tape_id).duration).timecode, 
+      timecode: Timecode.new(tapes.inject(0){|sum, t| sum + Timecode.new(t.time_shift).time }).timecode, 
+      next_timecode: Timecode.new(duration).timecode,
       tape_id: tape_id,
       text: text, 
       locale: locale,
