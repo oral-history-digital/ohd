@@ -356,8 +356,10 @@ en:
         file and upload. No subfolders in the zip-archive allowed. File names
         must be like ArchiveId_type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
       transcript:
-        Unterstützt werden .ods, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. Die Reihenfolge oder Nummer der Spalten ist egal.
+        Unterstützt werden .ods, .odt, .vtt, .srt.
+        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+      tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
+      time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht

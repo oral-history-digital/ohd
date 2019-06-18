@@ -421,8 +421,10 @@ ru:
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
-        Unterstützt werden .ods, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. Die Reihenfolge oder Nummer der Spalten ist egal.
+        Unterstützt werden .ods, .odt, .vtt, .srt.
+        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+      tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
+      time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
