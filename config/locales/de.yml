@@ -361,8 +361,6 @@ de:
       transcript:
         Unterstützt werden .ods, .odt, .vtt, .srt.
         Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
-      tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
-      time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
@@ -579,7 +577,8 @@ de:
           erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Nummer dieses Tapes
-        tape_duration: Dauer dieses Tapes (in Sek.)
+        tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
+        time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
       upload:
         type: Art des Uploads
         data: Datei
