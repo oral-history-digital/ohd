@@ -129,7 +129,9 @@ de:
   interviewee_name: Name
   periods: Zeitperioden
   keywords: Registereinträge
+  keywords_mog: Schlagworte
   registry: Register
+  registry_mog: Thesaurus
   annotations: Anmerkungen
   reset: zurücksetzen
   transcript: Transkript

@@ -255,7 +255,7 @@ export default class FlyoutTabs extends React.Component {
         let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='registry'>
-                {t(this.props, 'registry')}
+                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
             </Tab>
         );
     }
@@ -263,7 +263,7 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTabPanel() {
         return (
             <TabPanel key={'tabpanel-registry-entries'}>
-                <div className='flyout-tab-title'>{t(this.props, 'registry')}</div>
+                <div className='flyout-tab-title'>{t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}</div>
                 <div className='flyout-sub-tabs-container'>
                     <RegistryEntrySearchFormContainer />
                     <div>

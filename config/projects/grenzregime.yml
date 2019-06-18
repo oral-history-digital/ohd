@@ -6,6 +6,11 @@ default: &default
     - ru
     # - alias
   
+  # grid, list and/or map
+  view_modes:
+    - grid
+    - list
+    
   default_locale: de
 
   # use 2- or 3-letter country-code

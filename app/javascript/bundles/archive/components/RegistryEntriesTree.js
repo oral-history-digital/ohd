@@ -68,7 +68,7 @@ export default class RegistryEntriesTree extends React.Component {
                     <AuthShowContainer ifLoggedIn={true}>
                         <div className='wrapper-content register'>
                             <h1 className='registry-entries-title'>
-                                {t(this.props, 'registry')}
+                                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
                             </h1>
                             {this.content()}
                         </div>

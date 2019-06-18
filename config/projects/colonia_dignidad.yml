@@ -5,6 +5,11 @@ default: &default
     - en
     - ru
     # - alias
+
+  # grid, list and/or map
+  view_modes:
+    - grid
+    - list
   
   default_locale: de
 

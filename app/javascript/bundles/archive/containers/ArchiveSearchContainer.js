@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         isArchiveSearching: state.search.isArchiveSearching,
         project: state.archive.project,
+        viewModes: state.archive.viewModes,
         viewMode: state.archive.viewMode,
     }
 }

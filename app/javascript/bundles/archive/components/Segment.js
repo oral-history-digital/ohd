@@ -152,7 +152,7 @@ export default class Segment extends React.Component {
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
                     </div>
-                    <div className={referenceCss} title={t(this.props, 'keywords')}
+                    <div className={referenceCss} title={t(this.props, (this.props.project === 'mog') ? 'keywords_mog' : 'keywords')}
                          onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
                     </div>
                 </div>
