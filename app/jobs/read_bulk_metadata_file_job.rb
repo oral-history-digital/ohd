@@ -129,7 +129,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
     if country
     elsif country_name && country_name.length > 0 # might be only e.g. D 
-      country = RegistryEntry.create_with_parent_and_names(places.id, country_name[0..200]) 
+      country = RegistryEntry.create_with_parent_and_names(places.id, "#{I18n.default_locale}::#{country_name.gsub(' ', ';')}") 
     end
 
     if country
@@ -142,7 +142,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     if place
     elsif name && name.length > 1
       parent_place = country || places
-      place = RegistryEntry.create_with_parent_and_names(parent_place.id, name[0..200]) 
+      place = RegistryEntry.create_with_parent_and_names(parent_place.id, "#{I18n.default_locale}::#{name.gsub(' ', ';')}") 
     end
     place
   end
