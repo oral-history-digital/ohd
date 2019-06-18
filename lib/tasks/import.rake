@@ -46,8 +46,8 @@ namespace :import do
 
   task registry_references: :environment do
     #file_path = "/data/applications/zwar_archive/current/registry_references.csv"
-    #file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
-    file_path = "za026-registry_references.csv"
+    file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
+    #file_path = "za026-registry_references.csv"
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
     csv.each_with_index do |data, index|
       begin
@@ -59,7 +59,7 @@ namespace :import do
 
             registry_entry = nil
             if data[5]
-              data[5].split('#').each do |name_w_locale| 
+              data[5].gsub("\"", '').split('#').each do |name_w_locale| 
                 locale, names = name_w_locale.split('::')
                 names = names.split(';')
                 names.each do |name|
@@ -78,7 +78,7 @@ namespace :import do
                 registry_entry_names = registry_entry.registry_names.map{|rn| rn.translations.map{|t| t.descriptor.split(';')}}.flatten
                 found = false
                 if data[5]
-                  data[5].split('#').each do |name_w_locale| 
+                  data[5].gsub("\"", '').split('#').each do |name_w_locale| 
                     locale, names = name_w_locale.split('::')
                     names = names.split(';')
                     names.each do |name|
@@ -95,16 +95,16 @@ namespace :import do
                 # check if parent exists
                 parent = RegistryEntry.find_by_id(data[6])
                 if parent 
-                  parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
-                  if parent_names == data[7]
-                    registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[5]).id
+                  parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('::')}}.join(';')
+                  if parent_names == data[7].gsub("\"", '')
+                    registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[5].gsub("\"", '')).id
                     puts "*** registry_entry #{registry_entry_id} with parent created"
                   else
                     puts "*** registry_entry #{data[4]} with parent #{data[6]} not found and not created"
                     puts "TO CREATE: #{data[4]}, #{data[6]}"
                   end
                 elsif data[6].nil?
-                  registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[5] || []).id
+                  registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[5].gsub("\"", '') || []).id
                   puts "*** registry_entry #{registry_entry_id} without parent created"
                 end
               end
