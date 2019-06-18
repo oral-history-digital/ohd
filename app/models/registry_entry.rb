@@ -198,12 +198,22 @@ class RegistryEntry < ActiveRecord::Base
       entry ? entry.descendants.map(&:id) : []
     end
 
-    def create_with_parent_and_names(parent_id, names, code=nil)
+    #
+    # names_w_locales is a string like "de::Herr;Heinz;Huber#en::Mister;Heinz;Huber"
+    # so # is the delimiter between different language versions
+    # :: delimits between locale and the words
+    # ; delimits between the different names of a registry_entry
+    # name positions are given by the order
+    #
+    def create_with_parent_and_names(parent_id, names_w_locales, code=nil)
       registry_entry = RegistryEntry.create entry_code: code, entry_desc: code, workflow_state: "public", list_priority: false
       RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
-      names.split(',').each_with_index do |name_w_locale, index|
-        locale, name = name_w_locale.split('-')
-        RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
+
+      names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
+        locale, names = name_w_locale.split('::')
+        names.split(';').each_with_index do |name, index|
+          RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
+        end
       end
       registry_entry
     end
