@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_25_115509) do
+ActiveRecord::Schema.define(version: 2019_06_12_141840) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -413,6 +413,7 @@ ActiveRecord::Schema.define(version: 2019_04_25_115509) do
     t.integer "duration"
     t.string "workflow_state", default: "digitized"
     t.string "filename"
+    t.integer "time_shift", default: 0
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state"
   end
 
@@ -458,7 +459,7 @@ ActiveRecord::Schema.define(version: 2019_04_25_115509) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip"
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", default: "", null: false
