@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ExportInterview from '../components/ExportInterview';
+import AdminActions from '../components/AdminActions';
 import { submitDois } from '../actions/archiveActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 
@@ -18,4 +18,4 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExportInterview);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminActions);

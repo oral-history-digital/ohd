@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from '../../../lib/utils';
 
-export default class ExportInterviewInfo extends React.Component {
+export default class AdminActions extends React.Component {
 
     messages() {
         return Object.keys(this.props.doiResult).map((archiveId) => {

@@ -19,7 +19,7 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
-import ExportInterviewContainer from '../containers/ExportInterviewContainer';
+import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin, loggedIn } from '../../../lib/utils';
 
@@ -136,7 +136,7 @@ export default class FlyoutTabs extends React.Component {
                                 title={t(this.props, 'citation')}
                                 open={true}
                                 content={<CitationInfoContainer/>}/>
-                            {this.renderExport([this.props.archiveId])}
+                            {this.renderAdminActions([this.props.archiveId])}
                         </AuthShowContainer>
                     </div>
                 </TabPanel>
@@ -146,11 +146,11 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
-    renderExport(archiveIds) {
+    renderAdminActions(archiveIds) {
         if (admin(this.props, {type: 'Interview', action: 'dois'})) {
             return <InterviewDataContainer
                 title={t(this.props, 'export')}
-                content={<ExportInterviewContainer archiveIds={archiveIds} />}
+                content={<AdminActionsContainer archiveIds={archiveIds} />}
             /> 
         } else {
             return null;
@@ -343,7 +343,7 @@ export default class FlyoutTabs extends React.Component {
                         <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
                         <ArchiveSearchFormContainer/>
                         <div className='flyout-sub-tabs-container flyout-video'>
-                            {this.renderExport(this.props.selectedArchiveIds)}
+                            {this.renderAdminActions(this.props.selectedArchiveIds)}
                         </div>
                     </TabPanel>
                     {this.interviewTabPanel()}
