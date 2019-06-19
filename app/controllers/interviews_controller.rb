@@ -100,7 +100,12 @@ class InterviewsController < ApplicationController
         render action: 'index'
       end
       format.json do 
-        render json: {msg: 'deleted'}, status: :ok
+        json = {
+          archive_id: params[:id],
+          data_type: 'interviews',
+          msg: 'deleted'
+        }
+        render json: json, status: :ok
       end
     end
   end

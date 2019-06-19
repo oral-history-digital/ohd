@@ -8,22 +8,35 @@ export default class AdminActions extends React.Component {
         router: PropTypes.object
     }
 
-    messages() {
+    doiResults() {
         if (Object.keys(this.props.doiResult).length > 0) {
-            return Object.keys(this.props.doiResult).map((archiveId) => {
+            return <h4>DOI Status:</h4> + Object.keys(this.props.doiResult).map((archiveId) => {
                 return (
                     <div>
-                        <h4>DOI:</h4>
                         {`${archiveId}: ${this.props.doiResult[archiveId]}`}
                     </div>
                 )
             }) 
-        }
+        } 
+    }
+
+    messages() {
+        return this.props.archiveIds.map((archiveId) => {
+            if (archiveId !== 'dummy') {
+                return (
+                    <div>
+                        {`${archiveId}: ${this.props.statuses[archiveId]}`}
+                    </div>
+                )
+            }
+        })
     }
 
     deleteInterviews() {
         this.props.archiveIds.forEach((archiveId) => {
-            this.props.deleteData('interviews', archiveId);
+            if (archiveId !== 'dummy') {
+                this.props.deleteData('interviews', archiveId);
+            }
         });
         this.props.closeArchivePopup();
         this.context.router.history.push(`/${this.props.locale}/searches/archive`);
@@ -85,12 +98,21 @@ export default class AdminActions extends React.Component {
         </div>
     }
 
+    reset() {
+        return <a onClick={() => {
+            
+            this.props.addRemoveArchiveId(-1)}
+        }> {t(this.props, 'reset')}</a>;
+    }
+
     render() {
         return (
             <div>
-                {this.messages()}
+                {this.doiResults()}
                 {this.doiButton()}
+                {this.messages()}
                 {this.deleteButton()}
+                {this.reset()}
             </div>
         );
     }

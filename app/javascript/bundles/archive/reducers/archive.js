@@ -25,7 +25,7 @@ const initialState = {
 
     editView: false,
     doiResult: {},
-    selectedArchiveIds: []
+    selectedArchiveIds: ['dummy']
 }
 
 const archive = (state = initialState, action) => {
@@ -44,7 +44,9 @@ const archive = (state = initialState, action) => {
                 viewMode: action.viewMode
             })
         case UPDATE_SELECTED_ARCHIVE_IDS:
-            if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
+            if(action.archiveId === -1) {
+                return Object.assign({}, state, { selectedArchiveIds: ['dummy'] })
+            } else if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
                 return Object.assign({}, state, { selectedArchiveIds: [...state.selectedArchiveIds, action.archiveId] })
             } else {
                 return Object.assign({}, state, { selectedArchiveIds: state.selectedArchiveIds.filter(archiveId => archiveId !== action.archiveId) })

@@ -162,7 +162,7 @@ export default class InterviewPreview extends React.Component {
     renderExportCheckbox() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
-                <input type='checkbox' />
+                <input type='checkbox' className='export-checkbox' checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} />
             </div>
         } else {
             return null;
@@ -170,32 +170,36 @@ export default class InterviewPreview extends React.Component {
     }
 
     render() {
-        return (
-            <div className={this.state.divClass}>
-                {this.renderBadge()}
-                <Link className={'search-result-link'}
-                    onClick={() => {
-                        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-                        this.props.setTapeAndTime(1, 0);
-                    }}
-                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-                >
-                    <div className="search-result-img">
-                        <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
-                    </div>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
-                    </AuthShowContainer>
+        if (this.props.statuses && this.props.statuses[this.props.interview.archive_id] !== 'deleted') {
+            return (
+                <div className={this.state.divClass}>
+                    {this.renderBadge()}
+                    <Link className={'search-result-link'}
+                        onClick={() => {
+                            this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.setTapeAndTime(1, 0);
+                        }}
+                        to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                    >
+                        <div className="search-result-img">
+                            <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                        </div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
+                        </AuthShowContainer>
 
-                    {this.interviewDetails()}
-                </Link>
-                {this.renderSlider()}
-                {this.renderExportCheckbox()}
-            </div>
-        );
+                        {this.interviewDetails()}
+                    </Link>
+                    {this.renderSlider()}
+                    {this.renderExportCheckbox()}
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
 

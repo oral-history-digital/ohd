@@ -67,29 +67,37 @@ const data = (state = initialState, action) => {
         case REMOVE_DATA:
             if (action.nestedId) {
                 let nestedData = state[action.dataType][action.id][action.nestedDataType];
-                return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
-                    [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [action.nestedDataType]: Object.keys(nestedData).reduce((acc, key) => {
-                                if (key !== action.nestedId.toString()) {
-                                    return {...acc, [key]: nestedData[key]}
-                                }
-                                return acc;
-                            }, {})
+                if(nestedData) {
+                    return Object.assign({}, state, {
+                        statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
+                        [action.dataType]: Object.assign({}, state[action.dataType], {
+                            [action.id]: Object.assign({}, state[action.dataType][action.id], {
+                                [action.nestedDataType]: Object.keys(nestedData).reduce((acc, key) => {
+                                    if (key !== action.nestedId.toString()) {
+                                        return {...acc, [key]: nestedData[key]}
+                                    }
+                                    return acc;
+                                }, {})
+                            })
                         })
                     })
-                })
+                } else {
+                    return state;
+                }
             } else {
-                return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
-                    [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
-                        if (key !== action.id.toString()) {
-                            return {...acc, [key]: state[action.dataType][key]}
-                        }
-                        return acc;
-                    }, {})
-                })
+                if(state[action.dataType]) {
+                    return Object.assign({}, state, {
+                        statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
+                        [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
+                            if (key !== action.id.toString()) {
+                                return {...acc, [key]: state[action.dataType][key]}
+                            }
+                            return acc;
+                        }, {})
+                    })
+                } else {
+                    return state;
+                }
             }
         case REQUEST_DATA:
             if (action.nestedDataType) {
@@ -156,7 +164,7 @@ const data = (state = initialState, action) => {
                 let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 if (action.msg)
-                    statuses = updateStatus(statuses, action.dataType, {[action.msg]: action.id});
+                    statuses = updateStatus(statuses, action.dataType, {[action.id]: action.msg});
                 return Object.assign({}, state, {
                     statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
