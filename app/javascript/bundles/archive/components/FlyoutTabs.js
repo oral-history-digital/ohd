@@ -54,8 +54,7 @@ export default class FlyoutTabs extends React.Component {
             this.switchLocale(this.props.locales[tabIndex - 1]);
         } else if (tabIndex === this.props.locales.length + 1) {
             // arrchive-search
-            let url = `/${this.props.locale}/searches/archive`;
-            this.context.router.history.push(url);
+            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
         } else if (tabIndex === this.props.locales.length + 2) {
             // interview
             this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
@@ -149,7 +148,7 @@ export default class FlyoutTabs extends React.Component {
     renderAdminActions(archiveIds) {
         if (admin(this.props, {type: 'Interview', action: 'dois'})) {
             return <InterviewDataContainer
-                title={t(this.props, 'export')}
+                title={t(this.props, 'admin_actions')}
                 content={<AdminActionsContainer archiveIds={archiveIds} />}
             /> 
         } else {

@@ -88,6 +88,23 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def destroy 
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+    @interview.destroy
+
+    clear_cache @interview
+
+    respond_to do |format|
+      format.html do
+        render action: 'index'
+      end
+      format.json do 
+        render json: {msg: 'deleted'}, status: :ok
+      end
+    end
+  end
+
   def metadata
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = projectified(params[:locale])
@@ -217,7 +234,7 @@ class InterviewsController < ApplicationController
   def doi_json(archive_id)
     @interview = Interview.find_by_archive_id(archive_id)
     @locale = projectified(params[:locale])
-    xml = render_to_string(template: "/interviews/show.xml", layout: false)
+    xml = render_to_string(template: "/interviews/metadata.xml", layout: false)
     {
       "data": {
         "id": "#{Rails.configuration.datacite['prefix']}/#{Project.name}.#{archive_id}",

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import AdminActions from '../components/AdminActions';
 import { submitDois } from '../actions/archiveActionCreators';
+import { deleteData } from '../actions/dataActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
@@ -14,6 +15,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     submitDois: (params, locale) => dispatch(submitDois(params, locale)),
+    deleteData: (dataType, id, nestedDataType, nestedId, skipRemove, locale) => dispatch(deleteData(dataType, id, nestedDataType, nestedId, skipRemove, locale)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })

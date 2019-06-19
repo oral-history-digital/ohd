@@ -293,7 +293,7 @@ el:
   text_materials: Textmaterialien
   grid: Raster
   list: Liste
-  export: Export
+  admin_actions: Aktionen
   doi:
     title: DOI registrieren
     text1: Die Interviews  
@@ -303,6 +303,9 @@ el:
     created: Created!
     already_registered: already_registered
     bad: Etwas stimmt nicht
+  delete_interviews:
+    title: Interviews löschen
+    confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
   workflow_states:
     unshared: nicht öffentlich
     unpublish: nicht öffentlich

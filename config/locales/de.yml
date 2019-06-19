@@ -295,7 +295,7 @@ de:
   text_materials: Textmaterialien
   grid: Raster
   list: Liste
-  export: Export
+  admin_actions: Aktionen
   doi:
     title: DOI registrieren
     text1: Die Interviews  
@@ -305,6 +305,9 @@ de:
     created: Erfolgreich veröffentlicht!
     already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!
     bad: Etwas stimmt nicht
+  delete_interviews:
+    title: Interviews löschen
+    confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
   workflow_states:
     unshared: nicht öffentlich
     unpublish: nicht öffentlich
