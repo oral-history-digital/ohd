@@ -20,7 +20,7 @@ class TranscriptsController < ApplicationController
       archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
       interview = find_or_create_interview(archive_id)
       tape = find_or_create_tape(tape_media_id, interview)
-      tape.update_attribute :duration, tape_duration
+      tape.update_attribute :duration, transcript_params[:tape_durations]
     else
       archive_id = transcript_params[:archive_id].downcase
       interview = find_or_create_interview(archive_id)
