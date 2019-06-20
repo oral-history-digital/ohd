@@ -131,6 +131,7 @@ en:
   registry: Index
   annotations: Annotations
   reset: Reset
+  set_all: check all
   transcript: Transcript
   translation: German Translation
   segmentation: Segmentierung

@@ -99,10 +99,11 @@ export default class AdminActions extends React.Component {
     }
 
     reset() {
-        return <a onClick={() => {
-            
-            this.props.addRemoveArchiveId(-1)}
-        }> {t(this.props, 'reset')}</a>;
+        return <a onClick={() => { this.props.addRemoveArchiveId(-1)} }> {t(this.props, 'reset')}</a>;
+    }
+
+    setAll() {
+        return <a onClick={() => { this.props.setArchiveIds(Object.keys(this.props.archiveSearchResults))} }> {t(this.props, 'set_all')}</a>;
     }
 
     render() {
@@ -113,6 +114,7 @@ export default class AdminActions extends React.Component {
                 {this.messages()}
                 {this.deleteButton()}
                 {this.reset()}
+                {this.setAll()}
             </div>
         );
     }

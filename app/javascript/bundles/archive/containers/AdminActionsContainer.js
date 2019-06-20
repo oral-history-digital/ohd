@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import AdminActions from '../components/AdminActions';
-import { submitDois } from '../actions/archiveActionCreators';
-import { addRemoveArchiveId } from '../actions/archiveActionCreators';
+import { 
+    submitDois, 
+    addRemoveArchiveId,
+    setArchiveIds
+} from '../actions/archiveActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 
@@ -11,13 +14,15 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         statuses: state.data.statuses.interviews,
-        doiResult: state.archive.doiResult
+        doiResult: state.archive.doiResult,
+        archiveSearchResults: state.search.interviews
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     submitDois: (params, locale) => dispatch(submitDois(params, locale)),
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
+    setArchiveIds: (archiveIds) => dispatch(setArchiveIds(archiveIds)),
     deleteData: (dataType, id, nestedDataType, nestedId, skipRemove, locale) => dispatch(deleteData(dataType, id, nestedDataType, nestedId, skipRemove, locale)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())

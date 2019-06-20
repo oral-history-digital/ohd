@@ -132,6 +132,7 @@ el:
   registry: Register
   annotations: σημειώσεις
   reset: επαναφορά
+  set_all: Alle checken
   transcript: Απομαγνητοφωνημένο κείμενο
   translation: Μετάφραση
   segmentation: Ιστορική επεξεργασία

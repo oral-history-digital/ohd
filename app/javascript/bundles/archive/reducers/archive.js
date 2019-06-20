@@ -10,7 +10,8 @@ import {
 
     //EXPORT_DOI,
     RECEIVE_RESULT,
-    UPDATE_SELECTED_ARCHIVE_IDS
+    UPDATE_SELECTED_ARCHIVE_IDS,
+    SET_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -43,6 +44,8 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 viewMode: action.viewMode
             })
+        case SET_SELECTED_ARCHIVE_IDS:
+            return Object.assign({}, state, { selectedArchiveIds: ['dummy'].concat(action.archiveIds) })
         case UPDATE_SELECTED_ARCHIVE_IDS:
             if(action.archiveId === -1) {
                 return Object.assign({}, state, { selectedArchiveIds: ['dummy'] })

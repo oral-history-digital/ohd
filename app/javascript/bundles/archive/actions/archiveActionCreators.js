@@ -12,7 +12,8 @@ import {
     CHANGE_TO_EDIT_VIEW,
 
     RECEIVE_RESULT,
-    UPDATE_SELECTED_ARCHIVE_IDS
+    UPDATE_SELECTED_ARCHIVE_IDS,
+    SET_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
 
 export const setLocale = (locale) => ({
@@ -82,6 +83,17 @@ const updateSelectedArchiveIds = (archiveId) => ({
 export function addRemoveArchiveId(archiveId) {
     return dispatch => {
         dispatch(updateSelectedArchiveIds(archiveId))
+    }
+};
+
+const setSelectedArchiveIds = (archiveIds) => ({
+    type: SET_SELECTED_ARCHIVE_IDS,
+    archiveIds: archiveIds
+});
+
+export function setArchiveIds(archiveIds) {
+    return dispatch => {
+        dispatch(setSelectedArchiveIds(archiveIds))
     }
 };
 
