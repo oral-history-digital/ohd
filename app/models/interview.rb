@@ -21,8 +21,11 @@ class Interview < ActiveRecord::Base
            #:dependent => :destroy
 
   has_many :tapes,
-           -> {includes(:interview)},
-           :dependent => :destroy,
+           -> {
+                  includes(:interview).
+                  order(:media_id)
+           },
+           dependent: :destroy,
            inverse_of: :interview
 
   has_many :annotations,
@@ -386,6 +389,16 @@ class Interview < ActiveRecord::Base
     vtt = "WEBVTT\n"
     segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
     vtt
+  end
+
+  def to_ods(locale, tape_number=1)
+    CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
+      csv << %w(Timecode Transkript)
+
+      tapes[tape_number.to_i - 1].segments.each do |segment|
+        csv << [segment.timecode, segment.text(locale)]
+      end
+    end
   end
 
   def transcript_locales

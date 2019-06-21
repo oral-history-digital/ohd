@@ -278,6 +278,8 @@ de:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+    downloads:
+      title: Downloads
     administration: Verwaltung
     indexing: Erschliessung
   edit_interview_reference: Gespeichertes Interview Bearbeiten

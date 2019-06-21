@@ -84,6 +84,10 @@ class InterviewsController < ApplicationController
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
+      format.ods do
+        locale = ISO_639.find(@interview.language.code).send(Project.alpha)
+        send_data @interview.to_ods(locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet"#, :disposition => "attachment"
+      end
       format.html
     end
   end

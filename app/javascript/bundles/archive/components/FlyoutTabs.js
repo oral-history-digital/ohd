@@ -167,8 +167,8 @@ export default class FlyoutTabs extends React.Component {
         }
     }
      
-    subTab(title, content, url, obj) {
-        if (admin(this.props, obj)) {
+    subTab(title, content, url, obj, condition=true) {
+        if (admin(this.props, obj) && condition) {
             return (
                 <div className='flyout-sub-tabs-container flyout-video'>
                     <InterviewDataContainer
@@ -195,15 +195,33 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-indexing'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
-                        {this.subTab('edit.interview.new', 'erklärung', `/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {this.subTab('edit.upload_transcript.title', 'erklärung', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
-                        {this.subTab('edit.upload.upload', 'erklärung', `/${this.props.locale}/uploads/new`, {type: 'Interview', action: 'update'})}
-                        {this.subTab('edit.person.new', 'erklärung', `/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
+                        {this.subTab('edit.interview.new', 'description', `/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
+                        {this.subTab('edit.upload_transcript.title', 'description', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId)}
+                        {this.subTab('edit.upload.upload', 'description', `/${this.props.locale}/uploads/new`, {type: 'Interview', action: 'update'})}
+                        {this.subTab('edit.person.new', 'description', `/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
                     </div>
                 </TabPanel>
             )
         } else {
             return <TabPanel key='tabpanel-indexing'/>;
+        }
+    }
+
+    downloads() {
+        if (this.props.archiveId) {
+            let links = [];
+            for (var i=1; i<parseInt(this.props.interview.tape_count); i++) {
+                links.push(<p><a href={`/${this.props.locale}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>{`${t(this.props, 'tape')} ${i}`}</a></p>);
+            }
+            return (
+                <div>
+                    <h4>{this.props.archiveId}:</h4>
+                    {links}
+                </div>
+            );
+        } else {
+            return null;
         }
     }
 
