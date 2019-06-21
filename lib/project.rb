@@ -67,82 +67,74 @@ module Project
     
     def search_facets_hash
       @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
-        case facet['source']
-        when 'registry_entry'
-          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet['id'])).as_json
-        when 'registry_reference_type'
-          mem[facet['id'].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet['id'])).as_json
-        when 'person'
-          if facet['id'] == 'year_of_birth'
-            mem[facet['id'].to_sym] = {
-              name: localized_hash_for("search_facets", facet['id']),
+        case facet["source"]
+        when "registry_entry"
+          mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet["id"])).as_json
+        when "registry_reference_type"
+          mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet["id"])).as_json
+        when "person"
+          if facet["id"] == "year_of_birth"
+            facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+            mem[facet["id"].to_sym] = {
+              name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
-                I18n.available_locales.map{|l| h[l] = key}
+                I18n.available_locales.map { |l| h[l] = key }
                 subfacets[key] = {
                   name: h,
-                  count: 0
+                  count: 0,
                 }
                 subfacets
-              end
+              end,
             }
-          else
-            mem[facet['id'].to_sym] = {
-              name: localized_hash_for("search_facets", facet['id']),
-              subfacets: facet['values'].inject({}) do |subfacets, (key, value)|
+          else #gender
+            facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+            mem[facet["id"].to_sym] = {
+              name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+              subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
                 subfacets[value] = {
                   name: localized_hash_for("search_facets", key),
-                  count: 0
+                  count: 0,
                 }
                 subfacets
-              end
+              end,
             }
           end
-        when 'interview'
-          mem[facet['id'].to_sym] = {
-            name: localized_hash_for("search_facets", facet['id']),
+        when "interview"
+          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+          mem[facet["id"].to_sym] = {
+            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet['id'])] = {
-                name: interview.send("localized_hash_for_" + facet['id']),
-                count: 0
+              subfacets[interview.send(facet["id"]).to_s] = {
+                name: interview.send("localized_hash_for_" + facet["id"]),
+                count: 0,
               }
               subfacets
-            end
+            end,
           }
-        when 'collection'
-          mem[facet['id'].to_sym] = {
-            name: localized_hash_for("search_facets", facet['id']),
+        when "collection"
+          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+          mem[facet["id"].to_sym] = {
+            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet['id'])] = {
-                name: interview.collection ? interview.collection.localized_hash : {en: 'no collection'},
-                count: 0
+              subfacets[interview.send(facet["id"])] = {
+                name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
+                count: 0,
               }
               subfacets
-            end
+            end,
           }
-        when 'language'
-          mem[facet['id'].to_sym] = {
-            name: localized_hash_for("search_facets", facet['id']),
+        when "language"
+          mem[facet["id"].to_sym] = {
+            name: localized_hash_for("search_facets", facet["id"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet['id'])] = {
-                name: interview.language ? interview.language.localized_hash : {en: 'no language'},
-                count: 0
+              subfacets[interview.send(facet["id"])] = {
+                name: interview.language ? interview.language.localized_hash : { en: "no language" },
+                count: 0,
               }
               subfacets
-            end
+            end,
           }
-          # media_type is not valid as source anymore. is now covered by 'interview'
-        # when 'media_type'
-        #   mem[facet['id'].to_sym] = {
-        #     name: localized_hash_for("search_facets", facet['id']),
-        #     subfacets: Interview.all.inject({}) do |subfacets, interview|
-        #       subfacets[interview.send(facet['id'])] = {
-        #         name: interview.localized_hash_for_media_type,
-        #         count: 0
-        #       }
-        #       subfacets
-        #     end
-        #   }
         end
         mem.with_indifferent_access
       end
@@ -232,4 +224,3 @@ module Project
   #end
 
 end
-

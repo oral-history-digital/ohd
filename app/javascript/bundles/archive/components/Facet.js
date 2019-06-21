@@ -126,7 +126,7 @@ export default class Facet extends React.Component {
     sortedSubfacets() {
         let _this = this;
         // if the Facet is about time periods, sort by years ( by doing: .replace(/[^\d]/g, '') )
-        if(this.props.data.name['de'].trim() === 'Zeitperioden') {
+        if(this.props.data.name['de'] && this.props.data.name['de'].trim() === 'Zeitperioden') {
             return Object.keys(this.props.data.subfacets).sort(function (a, b) {
                 return (_this.localDescriptor(a).replace(/[^\d]/g, '') > _this.localDescriptor(b).replace(/[^\d]/g, '')) ? 1 : ((_this.localDescriptor(b).replace(/[^\d]/g, '') > _this.localDescriptor(a).replace(/[^\d]/g, '')) ? -1 : 0);
             })

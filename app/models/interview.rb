@@ -314,6 +314,20 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def country_of_birth
+    interviewees.first.place_of_birth && interviewees.first.place_of_birth.parents.first.id.to_i
+  end
+
+  def localized_hash_for_country_of_birth
+    I18n.available_locales.inject({}) do |mem, locale|
+      if(interviewees && interviewees.first && interviewees.first.place_of_birth)
+        translation = interviewees.first.place_of_birth.parents.first.registry_names.first.translations.where(locale: locale)
+        translation[0]&& translation[0]['descriptor'] && mem[locale] =translation[0]['descriptor']
+      end
+      mem
+    end
+  end
+
   def title
     localized_hash(true)
   end
