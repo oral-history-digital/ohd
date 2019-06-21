@@ -124,6 +124,9 @@ default: &default
     - id: 'camps'
       source: 'registry_entry'
       use_as_facet: true
+      facet_label:
+          en: 'Camp'
+          de: 'Lager'
       display_on_landing_page: true
     - id: 'language_id'
       source: 'language'
@@ -144,28 +147,23 @@ default: &default
     - id: 'year_of_birth'
       source: 'person'
       use_as_facet: false
-      use_as_facet: false
+    - id: 'country_of_birth'
+      source: 'interview'
+      use_as_facet: true
     - id: 'collection_id'
       source: 'collection'
       use_as_facet: true 
+      facet_label:
+          en: 'Collection'
+          de: 'Sammlung'
     - id: 'group_details'
       source: 'registry_entry'
       use_as_facet: false
-      display_on_landing_page: true`
+      display_on_landing_page: true
     - id: 'interview_location'
       source: 'registry_reference_type'
       use_as_facet: false
       display_on_landing_page: false
-
-  # NB: The map has not yet been generalized to work for all historical
-  # contexts. It relies on ZWAR-specific registry data structures (i.e. a
-  # three-level location hierarchy, companies, camps and specific registry
-  # reference types like "forced labor locations").
-  # If you want to use the map for a different historical context then a
-  # generic map will have to be specified by the project responsibles first.
-  # Therefore set this to "false" for all projects except ZWAR unless
-  # you also change the corresponding map code.
-  uses_map: true
 
   has_newsletter: true
 

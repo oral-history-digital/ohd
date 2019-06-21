@@ -4,7 +4,6 @@ class UnauthorizedController < ActionController::Metal
   def self.call(env)
     raise "unauthorized"
     #@respond ||= action(:respond)
-    #binding.pry
     #@respond.call(env)
   end
 

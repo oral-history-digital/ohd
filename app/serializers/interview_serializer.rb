@@ -36,6 +36,7 @@ class InterviewSerializer < ApplicationSerializer
              :person_names,
              :place_of_interview,
              :year_of_birth,
+             :country_of_birth,
              :segments,
              :last_segments_ids,
              :first_segments_ids,
