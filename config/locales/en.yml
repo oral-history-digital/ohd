@@ -412,6 +412,7 @@ en:
     female: female
     male: male
   search_facets:
+    country_of_birth: Country Of Birth
     forced_labor_fields: Deployment Area
     forced_labor_groups: Forced Labor Group
     periods: Time periods
