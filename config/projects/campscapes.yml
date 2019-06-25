@@ -134,6 +134,12 @@ default: &default
       id: language
       source: language
       use_as_column: true
+      facet_label: 
+        de: Sprache
+        en: Language
+    - 
+      id: language_id
+      source: language
       use_as_facet: true
       facet_label: 
         de: Sprache
