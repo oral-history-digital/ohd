@@ -69,13 +69,12 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'thin'
+  gem 'puma'
   gem 'foreman'
   gem 'progress_bar'
   gem 'rb-readline'
 end
 
-#gem 'puma'
 #
 group :development, :test do
   gem 'rspec'
