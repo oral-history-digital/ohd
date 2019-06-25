@@ -27,11 +27,11 @@ export default class Register extends React.Component {
                     </h1>
                     <p>
                         {t(this.props, 'user_registration.registration_text_one')}
-                        <a href={conditionsLink} target="_blank" title="">
+                        <a href={conditionsLink} target="_blank" title="" rel="noopener">
                             {t(this.props, 'user_registration.tos_agreement')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_two')}
-                        <a href={privacyLink} target="_blank" title="">
+                        <a href={privacyLink} target="_blank" title="" rel="noopener">
                             {t(this.props, 'user_registration.priv_agreement_alias')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_three')}

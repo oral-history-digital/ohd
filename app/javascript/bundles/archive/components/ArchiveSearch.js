@@ -39,6 +39,16 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
+    listHeader() {
+        let props = this.props
+        return props.listColumns.map(function(column, i){
+            let label = (column['facet_label'] && column['facet_label'][props.locale] ) || t(props, column['id'])
+            return (
+                <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
+            )
+        })
+    }
+
     foundInterviews(displayType) {
         if (this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
@@ -54,16 +64,13 @@ export default class ArchiveSearch extends React.Component {
                     })
                 )
             }
-            else {
+            else if (displayType === 'list') {
                 return (
                     <table style={{padding: '0 20px', width: '100%'}}>
                         <thead>
                             <tr>
-                                {/* <td>Archive ID</td> */}
                                 <td><strong>{t(this.props, 'interviewee_name')}</strong></td>
-                                <td><strong>{t(this.props, 'search_facets.media_type')}</strong></td>
-                                <td><strong>{t(this.props, 'duration')}</strong></td>
-                                <td><strong>{t(this.props, 'language')}</strong></td>
+                                {this.listHeader()}
                             </tr>
                         </thead>
                         <tbody>

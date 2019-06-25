@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
         project: state.archive.project,
         viewModes: state.archive.viewModes,
         viewMode: state.archive.viewMode,
+        listColumns: state.archive.listColumns,
     }
 }
 

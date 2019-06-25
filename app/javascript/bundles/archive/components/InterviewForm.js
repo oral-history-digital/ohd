@@ -55,7 +55,7 @@ export default class InterviewForm extends React.Component {
             },
             { 
                 attribute: 'video',
-                value: this.props.interview && this.props.interview.media_type.toLowerCase() === 'video',
+                value: this.props.interview && this.props.interview.video,
                 elementType: 'input',
                 type: 'checkbox'
             },

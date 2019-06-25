@@ -16,10 +16,12 @@ import {
 
 const initialState = {
     locale: 'de',
-    locales: ['de', 'el'],
+    locales: ['de', 'en'],
     archiveId: null,
     viewModes: ['grid', 'list'],
     viewMode: 'grid',
+
+    listColumns: [{"id":"camps", "source":"registry_entry", "use_as_facet": true, "display_on_landing_page": true, "use_as_column": true}],
 
     homeContent: "",
     externalLinks: {},
@@ -75,6 +77,7 @@ const archive = (state = initialState, action) => {
                 locales: action.locales,
                 viewMode: state.viewMode || action.viewMode,
                 viewModes: action.viewModes,
+                listColumns: action.listColumns,
                 project: action.project,
                 projectDoi: action.projectDoi,
                 hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,

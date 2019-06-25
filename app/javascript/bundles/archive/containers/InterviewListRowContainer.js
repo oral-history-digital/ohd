@@ -9,6 +9,7 @@ const mapStateToProps = (state, ownProps) => {
       fulltext: state.search.query && state.search.query.fulltext || '',
       locale: state.archive.locale,
       translations: state.archive.translations,
+      listColumns: state.archive.listColumns,
     }
 }
 

@@ -19,7 +19,7 @@ export default class VideoPlayer extends React.Component {
     componentDidMount() {
         // set resolution to default as defined in project conf
         if (this.props.mediaStreams) {
-            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
+            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.video ? 'video' : 'audio']
             this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
         }
         if (this.video) {
@@ -35,7 +35,7 @@ export default class VideoPlayer extends React.Component {
     componentDidUpdate(prevProps) {
         // set resolution as soon as mediaStreams are available
         if(!prevProps.mediaStreams && this.props.mediaStreams) {
-            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
+            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.video ? 'video' : 'audio']
             this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
         }
 
@@ -87,8 +87,8 @@ export default class VideoPlayer extends React.Component {
 
     src() {
         // this will run only if tape_count < 10!!
-        if(this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.media_type][this.props.resolution]) {
-            let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
+        if(this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.video ? 'video' : 'audio'][this.props.resolution]) {
+            let url = this.props.mediaStreams[this.props.interview.video ? 'video' : 'audio'][this.props.resolution];
                 url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
                 url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
                 url = url.replace(/\#\{tape_number\}/g, this.props.tape);
@@ -207,7 +207,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     resolutionSelector(){
-        let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
+        let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.video ? 'video' : 'audio'])
         if (resolutions.length > 1) {
 
             let options = [];
