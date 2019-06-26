@@ -18,6 +18,13 @@ class AssignSpeakersJob < ApplicationJob
         Segment.assign_speakers_and_update_text(segment, opts)
       end
     end
+
+    WebNotificationsChannel.broadcast_to(
+      receiver,
+      title: 'edit.update_speaker.processed',
+      archive_id: interview.archive_id
+    )
+
   end
 
 end

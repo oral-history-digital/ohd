@@ -51,7 +51,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
     contribution_data = JSON.parse(update_speakers_params[:contributions])
-    AssignSpeakersJob.perform_later(@interview, contribution_data)
+    AssignSpeakersJob.perform_later(@interview, contribution_data, current_user_account)
 
     respond_to do |format|
       format.json do

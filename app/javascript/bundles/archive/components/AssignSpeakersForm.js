@@ -28,7 +28,7 @@ export default class AssignSpeakersForm extends React.Component {
     msg() {
         let msg;
         if (this.props.initialsStatus.processing_speaker_update === this.props.interview.archive_id) {
-            msg = 'edit.update_speaker.processing_speakers_update';
+            msg = 'edit.update_speaker.processing';
         } 
         return msg;
     }

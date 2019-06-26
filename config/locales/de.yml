@@ -244,7 +244,8 @@ de:
       cut_initials: Initialen herausschneiden
       split_segments: Segmente bei Sprecherwechsel schneiden
       speaker_for_initials: 'Sprecher für: '
-      processing_speaker_update: Die Sprecher werden zugeordnet
+      processing: Die Sprecher werden zugeordnet
+      processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
       no_initials_found: In dem Transkript wurden keine Initialen gefunden
     photo:
       new: Foto hinzufügen
@@ -279,6 +280,12 @@ de:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_photo:
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_texts:
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_metadata:
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
     downloads:
       title: Downloads
