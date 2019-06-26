@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ActionCable from 'actioncable';
 
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
@@ -34,6 +35,10 @@ export default class WrapperPage extends React.Component {
         router: PropTypes.object
     }
 
+    componentWillMount() {
+        this.createSocket()
+    }
+
     componentDidMount() {
         if(this.props.locale !== this.context.router.route.match.params.locale) {
             this.props.setLocale(this.context.router.route.match.params.locale);
@@ -51,6 +56,20 @@ export default class WrapperPage extends React.Component {
         } else {
             document.body.classList.remove('noScroll');
         }
+    }
+
+    createSocket() {
+        let cable = ActionCable.createConsumer('/cable');
+
+        this.notifications = cable.subscriptions.create({
+            channel: "WebNotificationsChannel"
+        }, {
+            //connected: () => {},
+            received: (data) => {
+                console.log(data)
+            },
+            //create: function(content) {}
+        });
     }
 
     // Checks CSS value in active media query and syncs Javascript functionality
