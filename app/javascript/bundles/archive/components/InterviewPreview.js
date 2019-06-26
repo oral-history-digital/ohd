@@ -107,8 +107,8 @@ export default class InterviewPreview extends React.Component {
         if (this.props.project === 'zwar') {
             return (
                 <div className={'search-result-data'}>
-                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
-                    <span>{this.props.interview.languages_array[this.props.locale]}</span>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                    <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
                     <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
@@ -127,7 +127,7 @@ export default class InterviewPreview extends React.Component {
         else if (this.props.project === 'hagen') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
                 </div>
             )
         }

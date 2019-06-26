@@ -1,70 +1,71 @@
 module Project
-
   class << self
-
     def project_config
       @project_config ||= Rails.configuration.project
     end
 
     def method_missing(n)
-      if project_config.has_key? n.to_s 
-        project_config[n.to_s] 
-      else 
+      if project_config.has_key? n.to_s
+        project_config[n.to_s]
+      else
         #raise "#{self} does NOT have a key named #{n}"
         nil
       end
     end
 
     def cache_key_prefix
-      @project_config['cache_key_prefix'] ||= project_id
+      @project_config["cache_key_prefix"] ||= project_id
     end
 
     def primary_color_rgb
-      @project_config['primary_color_rgb'] ||= '0.560784314, 0.125490196, 0.109803922'
+      @project_config["primary_color_rgb"] ||= "0.560784314, 0.125490196, 0.109803922"
     end
 
     def name
       project_id
     end
 
-    
     def keys
       project_config.keys
     end
-    
+
     def person_properties
-      project_config['person_properties']
+      project_config["person_properties"]
     end
-    
+
     def search_facets
-      person_properties.select{|c| c['use_as_facet'] }
+      person_properties.select { |c| c["use_as_facet"] }
     end
-    
+
+    def list_columns
+      person_properties.select { |c| c["use_as_column"] }
+    end
+
     %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "#{m}_search_facets" do
-        person_properties.select{|c| c['use_as_facet'] && c['source'] == m }
+        person_properties.select { |c| c["use_as_facet"] && c["source"] == m }
       end
     end
 
     # used for metadata that is not used as facet
     %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "person_properties_#{m}" do
-        person_properties.select{|c| c['source'] == m }
+        person_properties.select { |c| c["source"] == m }
       end
     end
-    
+
     def search_facets_names
-      person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id']}
+      person_properties.select { |c| c["use_as_facet"] }.map { |c| c["id"] }
     end
-    
+
     def min_to_max_birth_year_range
       Rails.cache.fetch("#{Project.cache_key_prefix}-min_to_max_birth_year") do
-        first = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
-        last = (Interview.all.map{|i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
+        first = (Interview.all.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
+        last = (Interview.all.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
         (first..last)
       end
     end
-    
+
     def search_facets_hash
       @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
         case facet["source"]
@@ -140,9 +141,9 @@ module Project
       end
     end
 
-    def localized_hash_for(specifier, key=nil)
+    def localized_hash_for(specifier, key = nil)
       I18n.available_locales.inject({}) do |desc, locale|
-        desc[locale] = I18n.t([specifier, key].compact.join('.'), locale: locale)
+        desc[locale] = I18n.t([specifier, key].compact.join("."), locale: locale)
         desc
       end
     end
@@ -158,69 +159,69 @@ module Project
     end
 
     #def archive_facet_category_ids
-      #person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
-    #end 
+    #person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
+    #end
 
     #def archive_category_ids
-      #person_properties.map{|c| c['id'].to_sym }
-    #end 
+    #person_properties.map{|c| c['id'].to_sym }
+    #end
 
     #def is_category?(category_id)
-      #category_id = category_id.to_sym
-      #archive_category_ids.include? category_id
-    #end 
+    #category_id = category_id.to_sym
+    #archive_category_ids.include? category_id
+    #end
 
     #def category_config(category_id)
-      #category_id = category_id.to_s
-      #person_properties.detect{|c| c['id'] == category_id}
-    #end 
+    #category_id = category_id.to_s
+    #person_properties.detect{|c| c['id'] == category_id}
+    #end
 
     #def category_object(category_id)
-      #category_config = category_config(category_id)
-      #category_object = case category_config['source']
-                        #when 'registry_entry'
-                          #RegistryEntry.find_by_entry_code(category_config['name'])
-                          ##RegistryEntry.find_by_name(category_config['name'])
-                        #when 'registry_reference_type'
-                          #RegistryReferenceType.find_by_code(category_id.to_s.singularize)
-                        #else
-                          #raise 'Category configuration error.'
-                        #end
-      #raise 'Category object not found' if category_object.blank?
-      #category_object
+    #category_config = category_config(category_id)
+    #category_object = case category_config['source']
+    #when 'registry_entry'
+    #RegistryEntry.find_by_entry_code(category_config['name'])
+    ##RegistryEntry.find_by_name(category_config['name'])
+    #when 'registry_reference_type'
+    #RegistryReferenceType.find_by_code(category_id.to_s.singularize)
+    #else
+    #raise 'Category configuration error.'
+    #end
+    #raise 'Category object not found' if category_object.blank?
+    #category_object
     #end
 
     #def category_name(category_id, locale = I18n.locale)
-      #category_object = begin category_object(category_id) rescue nil end
-      #category_object.blank? ? '[Category Configuration Error]' : category_object.localized_hash
-      ## TODO: update to be conform with other projects
-      ##category_object.blank? ? '[Category Configuration Error]' : category_object.to_s(locale)
+    #category_object = begin category_object(category_id) rescue nil end
+    #category_object.blank? ? '[Category Configuration Error]' : category_object.localized_hash
+    ## TODO: update to be conform with other projects
+    ##category_object.blank? ? '[Category Configuration Error]' : category_object.to_s(locale)
     #end
 
   end
 
   #module CategoryExtension
-    #def self.included(base)
-      #Project.archive_category_ids.each do |category_id|
-        #base.class_eval <<-CAT
-          #def #{category_id}
-            #RegistryEntry.find_all_by_category('#{category_id}', self)
-          #end
+  #def self.included(base)
+  #Project.archive_category_ids.each do |category_id|
+  #base.class_eval <<-CAT
+  #def #{category_id}
+  #RegistryEntry.find_all_by_category('#{category_id}', self)
+  #end
 
-          #def #{category_id.to_s.singularize}_ids
-            #self.#{category_id}.map(&:id)
-          #end
+  #def #{category_id.to_s.singularize}_ids
+  #self.#{category_id}.map(&:id)
+  #end
 
-          #def #{category_id.to_s.singularize}_names(locale = I18n.default_locale)
-            #if self.#{category_id}.empty?
-              #nil
-            #else
-              #self.#{category_id}.map{|c| c.to_s(locale).sub(/, ---$/, '')}.join(I18n.locale == :ru ? ' / ' : '; ')
-            #end
-          #end
-        #CAT
-      #end
-    #end
+  #def #{category_id.to_s.singularize}_names(locale = I18n.default_locale)
+  #if self.#{category_id}.empty?
+  #nil
+  #else
+  #self.#{category_id}.map{|c| c.to_s(locale).sub(/, ---$/, '')}.join(I18n.locale == :ru ? ' / ' : '; ')
+  #end
+  #end
+  #CAT
+  #end
+  #end
   #end
 
 end

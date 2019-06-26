@@ -120,50 +120,80 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties:
-    - id: 'camps'
-      source: 'registry_entry'
-      use_as_facet: true
-      facet_label:
-          en: 'Camp'
-          de: 'Lager'
+  person_properties: 
+    - 
+      id: camps
+      source: registry_entry
       display_on_landing_page: true
-    - id: 'language_id'
-      source: 'language'
+      facet_label: 
+        de: Lager
+        en: Camp
+      use_as_column: true
       use_as_facet: true
-    - id: 'groups'
-      source: 'registry_entry'
+    - 
+      id: language
+      source: language
+      use_as_column: true
+      facet_label: 
+        de: Sprache
+        en: Language
+    - 
+      id: language_id
+      source: language
       use_as_facet: true
+      facet_label: 
+        de: Sprache
+        en: Language
+    - 
+      id: groups
+      source: registry_entry
       display_on_landing_page: true
-    - id: 'media_type'
-      source: 'interview'
-      use_as_facet: false
-    - id: 'gender'
-      source: 'person'
-      use_as_facet: false
-      values:
-        female: 'female'
-        male: 'male'
-    - id: 'year_of_birth'
-      source: 'person'
-      use_as_facet: false
-    - id: 'country_of_birth'
-      source: 'interview'
+      use_as_column: true
       use_as_facet: true
-    - id: 'collection_id'
-      source: 'collection'
-      use_as_facet: true 
-      facet_label:
-          en: 'Collection'
-          de: 'Sammlung'
-    - id: 'group_details'
-      source: 'registry_entry'
+      facet_label: 
+        de: Gruppe
+        en: Group
+    - 
+      id: media_type
+      source: interview
       use_as_facet: false
+    - 
+      id: gender
+      source: person
+      use_as_facet: false
+      values: 
+        female: female
+        male: male
+    - 
+      id: year_of_birth
+      source: person
+      use_as_facet: false
+    - 
+      id: country_of_birth
+      source: interview
+      use_as_facet: true
+      use_as_column: true
+      facet_label: 
+        de: Herkunftsland
+        en: Country of Birth
+    - 
+      id: collection_id
+      source: collection
+      facet_label: 
+        de: Sammlung
+        en: Collection
+      use_as_column: true
+      use_as_facet: true
+    - 
+      id: group_details
+      source: registry_entry
       display_on_landing_page: true
-    - id: 'interview_location'
-      source: 'registry_reference_type'
       use_as_facet: false
+    - 
+      id: interview_location
+      source: registry_reference_type
       display_on_landing_page: false
+      use_as_facet: false
 
   has_newsletter: true
 

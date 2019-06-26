@@ -39,6 +39,7 @@ class HomeController < ApplicationController
             locales: Project.available_locales,
             view_modes: Project.view_modes,
             view_mode: Project.view_modes[0],
+            list_columns: Project.list_columns,
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: Project.hidden_registry_entry_ids,
           }

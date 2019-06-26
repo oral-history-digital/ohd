@@ -24,8 +24,6 @@ export default class InterviewListRow extends React.Component {
         )
     }
 
-
-
     typologies(){
         let interviewee =  this.props.interview.interviewees && this.props.interview.interviewees[0];
         if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
@@ -37,9 +35,14 @@ export default class InterviewListRow extends React.Component {
         }
     }
 
-
-
-
+    column(){
+        let props = this.props
+        return props.listColumns.map(function(column, i){
+            return (
+                <td key={i}>{(props.interview[column['id']] && props.interview[column['id']][props.locale])}</td>
+            )
+        })
+    }
 
     render() {
         return (
@@ -61,9 +64,7 @@ export default class InterviewListRow extends React.Component {
                         </AuthShowContainer>
                     </Link>
                 </td>
-                <td>{this.props.interview.video_array[this.props.locale]}</td>
-                <td>{this.props.interview.formatted_duration}</td>
-                <td>{this.props.interview.languages_array[this.props.locale]}</td>
+                {this.column()}
             </tr>
         );
     }

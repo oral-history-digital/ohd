@@ -12,7 +12,6 @@ default: &default
   # grid, list and/or map
   view_modes:
     - grid
-    - list
 
   default_locale: de
 
@@ -127,34 +126,40 @@ default: &default
   # - Interview partner properties will be used as search facets when setting the facet property to 'true'. The order of
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
-  person_properties:
-    - id: 'person_reference'
-      source: 'registry_entry'
-      descriptor: 'Person'
-    - id: 'gender'
-      source: 'person'
-      use_as_facet: true
-      values:
-        female: 'Woman'
-        male: 'Man'
-    - id: 'year_of_birth'
-      source: 'person'
-      use_as_facet: true
-    - id: 'typology'
-      source: 'person'
+  person_properties: 
+    - 
+      id: person_reference
+      source: registry_entry
+      descriptor: Person
+    - 
+      id: gender
+      source: person
       use_as_facet: true
       values: 
-        resistance: 'Resistance'
-        retaliation: 'Retaliation'
-        concentration_camp: 'Concentration camp'
-        persecution_of_jews: 'Persecution of Jews'
-        occupation: 'Occupation'
-        flight: 'Flight'
-        collaboration: 'Collaboration'
-    - id: 'periods'
-      source: 'registry_entry'
+        female: Woman
+        male: Man
+    - 
+      id: year_of_birth
+      source: person
       use_as_facet: true
-      entry_dedalo_code: "hierarchy1_246"
+    - 
+      id: typology
+      source: person
+      use_as_facet: true
+      values: 
+        collaboration: Collaboration
+        concentration_camp: "Concentration camp"
+        flight: Flight
+        occupation: Occupation
+        persecution_of_jews: "Persecution of Jews"
+        resistance: Resistance
+        retaliation: Retaliation
+    - 
+      id: periods
+      source: registry_entry
+      entry_dedalo_code: hierarchy1_246
+      use_as_facet: true
+
 
   pdf_registry_entry_codes:
     - 'thematic'
