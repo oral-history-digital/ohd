@@ -32,19 +32,35 @@ en:
     for your understanding.
   observation: Interviewsituation
   tape: Tape
-  legend_title: Legende der Transkriptionszeichen
-  legend_missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben,
-    Erklärung von Dialekt
-  legend_comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher
-    Wörter/Passagen
-  legend_pause_1: kurze Pause bis 1 Sekunde
-  legend_pause_2: mittlere Pause bis 2 Sekunden
-  legend_pause_3: längere Pause bis 3 Sekunden
-  legend_pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
-  legend_assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung
-    / einer Satzstruktur.
-  legend_omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei
-    Buchstaben wegfallen
+  word: word
+  italic: italic
+  text: text
+  or: or
+  legend:
+    title: Glossary of Signs and Symbols
+    mog:
+      missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt
+      comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen
+      pause_1: kurze Pause bis 1 Sekunde
+      pause_2: mittlere Pause bis 2 Sekunden
+      pause_3: längere Pause bis 3 Sekunden
+      pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
+      assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.
+      omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen
+    zwar:
+      adress: replaces information about the current residential address or telephone number of the interviewees
+      broken_word: unfinished word or sentence, usually accompanied by a brief silence
+      silence: long silence of the interviewee (without interruption by the interviewer)
+      unclear: incomprehensible statement
+      unsure: uncertain transcription of a word
+      break: interruption of the recording (for example at the request of the interviewee, technical breaks or other interference from the outside)
+      italic: statements in the interview in German or in a language variant, which
+        the interviewee meant to be German; Statements in other languages
+        that are not (main) language of the interview (does not apply to
+        bilingual interviews), but without naming the original language
+      quote: quotations, direct speech, book and other titles are in quotation marks in accordance with the rules applicable in the original languages
+      annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
+      tape_end: end of tape
   interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   archive_id: Archiv-ID

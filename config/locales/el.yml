@@ -33,17 +33,42 @@ el:
     Vielen Dank für Ihr Verständnis.
   observation: Περιγραφή συνέντευξης
   tape: Ταινία
-  legend_title: Σύμβολα απομαγνητοφώνησης
-  legend_missed: ακατανόητες λέξεις, ελλιπείς λέξεις και συλλαβές, Εξήγηση λέξεων,
-    εκφράσεων διαλέκτου
-  legend_comment: Σχόλια του απομαγνητοφωνητή, μεταφράσεις ξένων λέξεων και αποσπασμάτων
-    κειμένου
-  legend_pause_1: Σύντομη παύση έως ένα δευτερόλεπτο
-  legend_pause_2: Παύση μέχρι δύο δευτερόλεπτα
-  legend_pause_3: Μεγαλύτερη παύση μέχρι 3 δευτερόλεπτα
-  legend_pause_4: Μεγάλη παύση από 4 δευτερόλεπτα και πάνω
-  legend_assert: Διακοπή μιας σκέψης, πρότασης, λέξης, έκφρασης.
-  legend_omission: Η απόστροφος σηματοδοτεί την ένωση δύο λέξεων, όταν λείπουν συλλαβές
+  word: word
+  italic: italic
+  text: text
+  or: or
+  legend:
+    title: Σύμβολα απομαγνητοφώνησης
+    mog:
+      missed: ακατανόητες λέξεις, ελλιπείς λέξεις και συλλαβές, Εξήγηση λέξεων,
+        εκφράσεων διαλέκτου
+      comment: Σχόλια του απομαγνητοφωνητή, μεταφράσεις ξένων λέξεων και αποσπασμάτων
+        κειμένου
+      pause_1: Σύντομη παύση έως ένα δευτερόλεπτο
+      pause_2: Παύση μέχρι δύο δευτερόλεπτα
+      pause_3: Μεγαλύτερη παύση μέχρι 3 δευτερόλεπτα
+      pause_4: Μεγάλη παύση από 4 δευτερόλεπτα και πάνω
+      assert: Διακοπή μιας σκέψης, πρότασης, λέξης, έκφρασης.
+      omission: Η απόστροφος σηματοδοτεί την ένωση δύο λέξεων, όταν λείπουν συλλαβές
+    zwar:
+      adress: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
+      broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
+      silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
+      unclear: unverständliche Aussage 
+      unsure: unsichere Transkription eines Wortes
+      break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner/- innen, technische Pausen, aufgrund von Störungen von außen)
+      italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
+        welche die Interviewpartner/-innen für Deutsch hielten; Aussagen in
+        weiteren Sprachen, die nicht (Haupt-)Sprache des Interviews sind
+        (betrifft nicht zweisprachige Interviews), allerdings ohne Benennung
+        der Originalsprache
+      quote: Zitate, wörtliche Rede, Buch- und sonstige Titel werden in
+        Anführungszeichen gemäß den in den Originalsprachen geltenden
+        Regeln gesetzt
+      annotation: Anmerkungen der Transkribierenden, Lektoren, Übersetzer/-innen;
+        Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
+        Bezeichnung nonverbalen Verhaltens
+      tape_end: Band-Ende
   interview_with: Συνέντευξη με
   selected_registry_entry: Ausgewählter Registereintrag
   archive_id: Κωδικός συνέντευξης
