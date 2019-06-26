@@ -18,8 +18,9 @@ class ReadTranscriptFileJob < ApplicationJob
 
     WebNotificationsChannel.broadcast_to(
       receiver,
-      title: 'transcript_file_processed',
-      file: File.basename(file_path)
+      title: 'edit.upload_transcript.processed',
+      file: File.basename(file_path),
+      archive_id: interview.archive_id
     )
 
     AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now

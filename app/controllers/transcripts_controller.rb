@@ -31,7 +31,7 @@ class TranscriptsController < ApplicationController
     contribution_data = transcript_params[:contributions] ? JSON.parse(transcript_params[:contributions]) : []
     create_contributions(interview, contribution_data)
     
-    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code).send(Project.alpha) 
+    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
 
     ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, contribution_data)
 
