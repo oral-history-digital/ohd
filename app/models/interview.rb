@@ -117,7 +117,9 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           -> { includes(:translations).order([:tape_number, :timecode]) },
+           # be careful here! segments from different tapes may be mixed.
+           # to really have segments ordered do sth. like tape.segments ...
+           -> { includes(:translations).order(:timecode) },
            dependent: :destroy
            #inverse_of: :interview
 

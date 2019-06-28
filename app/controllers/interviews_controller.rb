@@ -187,9 +187,9 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
-          segments = Segment.
+          segments = @interview.segments.
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
+              where.not(timecode: '00:00:00.000')
           {
             data: segments.with_heading.map {|s| Rails.cache.fetch("#{Project.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}"){::HeadingSerializer.new(s).as_json}},
             nested_data_type: 'headings',

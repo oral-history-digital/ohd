@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_12_141840) do
+ActiveRecord::Schema.define(version: 2019_06_28_085426) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -414,6 +414,7 @@ ActiveRecord::Schema.define(version: 2019_06_12_141840) do
     t.string "workflow_state", default: "digitized"
     t.string "filename"
     t.integer "time_shift", default: 0
+    t.integer "number", default: 1
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state"
   end
 

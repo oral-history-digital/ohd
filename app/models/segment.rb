@@ -48,8 +48,6 @@ class Segment < ActiveRecord::Base
     includes(:tape, :translations).
     order(:id)}
 
-  scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
-
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
     .order(media_id: :desc)

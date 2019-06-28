@@ -4,7 +4,7 @@ class Tape < ActiveRecord::Base
   belongs_to :interview, inverse_of: :tapes
 
   has_many  :segments,
-            -> { order('media_id ASC, timecode ASC')},
+            -> { order('timecode ASC')},
            :dependent => :destroy,
            inverse_of: :tape
 
@@ -48,12 +48,12 @@ class Tape < ActiveRecord::Base
     media_id.upcase
   end
 
-  def number
-    @number ||= media_id[/\d+$/]
-  end
-
   def total_number_of_tapes
-    media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
+    if Project.name.to_sym == :mog
+      interview.tapes.count
+    else
+      media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
+    end
   end
 
   def next
