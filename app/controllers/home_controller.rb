@@ -42,6 +42,7 @@ class HomeController < ApplicationController
             list_columns: Project.list_columns,
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: Project.hidden_registry_entry_ids,
+            fullname_on_landing_page: Project.fullname_on_landing_page,
           }
         end
         home_content = {}
