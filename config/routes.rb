@@ -64,7 +64,7 @@ Rails.application.routes.draw do
           get :doi_contents
           get :metadata
           get :headings
-          get :initials
+          get :speaker_designations
           #get :references
           get :ref_tree
         end

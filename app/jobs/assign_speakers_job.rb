@@ -2,26 +2,33 @@ class AssignSpeakersJob < ApplicationJob
   include IsoHelpers
   queue_as :default
 
-  def perform(interview, speakers)
-    interview.segments.each do |segment|
-      next_timecode = segment.next && segment.next.timecode
-      segment.translations.each do|translation|
-        opts = {
-          text: translation.text,
-          locale: translation.locale,
-          interview_id: segment.interview_id,
-          tape_id: segment.tape_id,
-          timecode: segment.timecode,
-          next_timecode: next_timecode,
-          contribution_data: speakers
-        }
-        Segment.assign_speakers_and_update_text(segment, opts)
+  def perform(interview, speakers, contribution_data, receiver)
+    if speakers.length > 0
+      interview.segments.each do |segment|
+        segment.update_attribute :speaker_id, speakers[segment.speaker] if segment.speaker
+      end
+    else
+      interview.segments.each do |segment|
+        next_timecode = segment.next && segment.next.timecode
+        segment.translations.each do|translation|
+          opts = {
+            text: translation.text,
+            locale: translation.locale,
+            interview_id: segment.interview_id,
+            tape_id: segment.tape_id,
+            timecode: segment.timecode,
+            next_timecode: next_timecode,
+            contribution_data: contribution_data
+          }
+          Segment.assign_speakers_and_update_text(segment, opts)
+        end
       end
     end
 
     WebNotificationsChannel.broadcast_to(
       receiver,
       title: 'edit.update_speaker.processed',
+      #msg: interview.speaker_designations.empty? ? 'edit.update_speaker.second_step_explanation' : 'edit.update_speaker.first_step_explanation'
       archive_id: interview.archive_id
     )
 

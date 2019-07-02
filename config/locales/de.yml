@@ -262,12 +262,14 @@ de:
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Upload
     update_speaker:
-      cut_initials: Initialen herausschneiden
-      split_segments: Segmente bei Sprecherwechsel schneiden
-      speaker_for_initials: 'Sprecher für: '
+      first_step_explanation: 'Es wurden Segmente mit Sprecherbezeichnungen aber ohne eindeutige Sprecherzuweisung gefunden: '
+      second_step_explanation: Sind noch weitere Sprecherauszeichnungen im Transkript? 
+        Durch Eingabe dieser Auszeichnungen (z.B. *CG:*) und eindeutige Zuweisung zu eine[r|m] Mitwirkenden können sie herausgeschnitten werden. 
+        Zudem werden Segmente mit Sprecherwechsel gespalten. 
+      speaker_for_speaker_designation: 'Sprecher für: '
       processing: Die Sprecher werden zugeordnet
       processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
-      no_initials_found: In dem Transkript wurden keine Initialen gefunden
+      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecherbezeichnungen gefunden
     photo:
       new: Foto hinzufügen
       edit: Foto bearbeiten

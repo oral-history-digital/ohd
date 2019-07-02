@@ -271,7 +271,7 @@ export default class WrapperPage extends React.Component {
                     {this.state.notifications.map((notification, index) => {
                         return (
                             <p key={`notification-${index}`}>
-                                {t(this.props, notification.title, {file: notification.file})}
+                                {t(this.props, notification.title, {file: notification.file, archiveId: notification.archive_id})}
                                 <Link
                                     to={'/' + this.props.locale + '/interviews/' + notification.archive_id}>
                                     {notification.archive_id}

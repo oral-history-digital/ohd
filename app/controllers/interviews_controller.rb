@@ -50,17 +50,41 @@ class InterviewsController < ApplicationController
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    contribution_data = JSON.parse(update_speakers_params[:contributions])
-    AssignSpeakersJob.perform_later(@interview, contribution_data, current_user_account)
+    contribution_data = update_speakers_params[:contributions] && JSON.parse(update_speakers_params[:contributions])
+    
+    # speakers are people designated through column speaker in segment.
+    # contributors (contribution_data) are people designated through column speaker_id
+    #
+    AssignSpeakersJob.perform_later(@interview, speakers, contribution_data, current_user_account)
 
     respond_to do |format|
       format.json do
         render json: {
-          msg: "processing_speaker_update",
+          msg: "processing",
           id: @interview.archive_id,
           data_type: 'interviews',
-          nested_data_type: 'initials'
+          nested_data_type: 'speaker_designations'
         }, status: :ok
+      end
+    end
+  end
+
+  def speaker_designations
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+          {
+            data: @interview.speaker_designations,
+            nested_data_type: 'speaker_designations',
+            data_type: 'interviews',
+            archive_id: params[:id],
+            msg: @interview.speaker_designations.empty? ? 'second_step_explanation' : 'first_step_explanation'
+          }
+        end.to_json
+        render plain: json
       end
     end
   end
@@ -238,7 +262,15 @@ class InterviewsController < ApplicationController
   end
 
   def update_speakers_params
-    params.require(:update_speaker).permit(:contributions)
+    params.require(:update_speaker).
+      permit(
+        'contributions',
+        speakers: {}
+    )
+  end
+
+  def speakers
+    update_speakers_params[:speakers].to_h
   end
 
   def doi_json(archive_id)

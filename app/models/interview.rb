@@ -416,6 +416,17 @@ class Interview < ActiveRecord::Base
       end
     end
   end
+ 
+  # 
+  # speaker designations from column speaker of table segments
+  #
+  def speaker_designations
+    speakers = []
+    segments.find_each(batch_size: 200) do |segment|
+      speakers << segment.speaker_designation
+    end
+    speakers.flatten.uniq.compact.reject{|s| s == false}
+  end
 
   def transcript_locales
     language.code.split(/[\/-]/)

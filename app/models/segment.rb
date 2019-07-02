@@ -269,6 +269,13 @@ class Segment < ActiveRecord::Base
     (read_attribute(:media_id) || '').upcase
   end
 
+  #
+  # only return speaker attribute if no speaker_id is set
+  #
+  def speaker_designation
+    speaker_id.blank? && speaker
+  end
+
   # return a range of media ids up to and not including the segment's media id
   def media_ids_up_to(segment)
     segment = nil if (segment.tape != self.tape) || (segment.media_id < self.media_id)
