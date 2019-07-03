@@ -102,6 +102,22 @@ class RegistryEntriesController < ApplicationController
     end
   end
 
+  def merge
+    @registry_entry = RegistryEntry.find(params[:id])
+    authorize @registry_entry
+    #policy_scope RegistryEntry
+    RegistryEntry.merge({id: params[:id], ids: params[:merge_registry_entry][:ids]})
+
+    respond_to do |format|
+      format.json do
+        render json: {
+            data_type: 'registry_entries',
+            msg: 'processing'
+          }, status: :ok
+      end
+    end
+  end
+
   def destroy 
     @registry_entry = RegistryEntry.find(params[:id])
     authorize @registry_entry

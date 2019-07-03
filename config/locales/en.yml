@@ -511,6 +511,7 @@ en:
         actions:
           show: Registereintrag anzeigen
           index: Registereinträge anzeigen
+          merge: Registereinträge zusammenführen
           show_tree: Alle Einträge zeigen
           show_search_results: Suchergebnisse zeigen
       biographical_entry:
