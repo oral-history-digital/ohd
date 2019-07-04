@@ -26,19 +26,11 @@ class RegistryEntry < ActiveRecord::Base
 
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
-
-  #has_many :parents,
-           #through: :parent_registry_hierarchies
 
   has_many :child_registry_hierarchies,
            foreign_key: :ancestor_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
-
-  #has_many :children,
-           #through: :child_registry_hierarchies
 
   has_many :registry_entry_relations
   has_many :related_registry_entries, 
@@ -61,7 +53,6 @@ class RegistryEntry < ActiveRecord::Base
     -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
     :through => :links_as_descendant,
     :source => :ancestor
-
 
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
@@ -155,7 +146,6 @@ class RegistryEntry < ActiveRecord::Base
 
   def self.merge(opts={})
     merge_to_id = opts[:id]
-    binding.pry
     where(id: JSON.parse(opts[:ids])).each do |registry_entry|
       registry_entry.move_associated_to(merge_to_id)
       binding.pry
@@ -166,8 +156,22 @@ class RegistryEntry < ActiveRecord::Base
   def move_associated_to merge_to_id
     registry_entry_relations.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
     registry_references.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
-    parent_registry_hierarchies.each{|r| r.update_attribute(:descendant_id, merge_to_id) unless RegistryHierarchy.where(ancestor_id: r.ancestor_id, descendant_id: merge_to_id).exists?}
-    child_registry_hierarchies.each{|r| r.update_attribute(:ancestor_id, merge_to_id) unless RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: r.descendant_id).exists?}
+
+    child_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:ancestor_id, merge_to_id) 
+      end
+    end
+
+    parent_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:descendant_id, merge_to_id) 
+      end
+    end
   end
 
   # method should be one of 'children' or 'parents'
