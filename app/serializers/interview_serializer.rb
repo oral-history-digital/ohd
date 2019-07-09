@@ -21,7 +21,7 @@ class InterviewSerializer < ApplicationSerializer
                #:citation_media_id,
                #:citation_timecode,
                #:indexed_at,
-               :languages,
+               :language,
                :language_id,
                :lang,
                :title,
