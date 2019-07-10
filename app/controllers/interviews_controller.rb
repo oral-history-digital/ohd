@@ -60,7 +60,8 @@ class InterviewsController < ApplicationController
           msg: "processing",
           id: @interview.archive_id,
           data_type: 'interviews',
-          nested_data_type: 'texts_to_mark'
+          nested_data_type: 'mark_text',
+          extra_params: "for_interviews_#{params[:id]}"
         }, status: :ok
       end
     end

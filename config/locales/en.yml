@@ -61,6 +61,7 @@ en:
       quote: quotations, direct speech, book and other titles are in quotation marks in accordance with the rules applicable in the original languages
       annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
       tape_end: end of tape
+  mark_texts: Text chiffrieren
   interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   archive_id: Archiv-ID
@@ -206,6 +207,10 @@ en:
   title: Title
   description: Description
   edit:
+    text:
+      new: Text auswählen
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processed: Die Verarbeitung ist abgeschlossen.
     interview:
       new: Neues Interview
       edit: Interview bearbeiten
@@ -364,6 +369,9 @@ en:
     Transcribed / described: Transkript
     Translated: Übersetzung
     Indexed: Erschließung
+  texts:
+    add: Text hinzufügen
+    title: Ausgewählete Textpassagen
   tasks:
     Interview: Interview
     BiographicalEntry: Biographie
@@ -712,6 +720,10 @@ en:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+      mark_text:
+        locale: Sprache
+      text:
+        text_to_mark: zu chiffrierender Text
     errors:
       default:
         select: Bitte auswählen

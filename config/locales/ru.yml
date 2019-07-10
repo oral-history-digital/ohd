@@ -59,6 +59,7 @@ ru:
       quote: цитае́ ты, прямае́ я речь, название книги и т.п. в кавые́ чках
       annotation: примечае́ ния редае́ ктора и перевое́ дчика; добавлее́ ния, pасшифровка аббревиатур; невербальные жесты
       tape_end: конец кассеты
+  mark_texts: Text chiffrieren
   interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   archive_id: Archiv-ID
@@ -255,6 +256,10 @@ ru:
   title: Название
   description: Описание
   edit:
+    text:
+      new: Text auswählen
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processed: Die Verarbeitung ist abgeschlossen.
     interview:
       new: Neues Interview
       edit: Interview bearbeiten
@@ -413,6 +418,9 @@ ru:
     Transcribed / described: Transkript
     Translated: Übersetzung
     Indexed: Erschließung
+  texts:
+    add: Text hinzufügen
+    title: Ausgewählete Textpassagen
   tasks:
     Interview: Interview
     BiographicalEntry: Biographie
@@ -773,6 +781,10 @@ ru:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+      mark_text:
+        locale: Sprache
+      text:
+        text_to_mark: zu chiffrierender Text
     errors:
       default:
         select: Bitte auswählen

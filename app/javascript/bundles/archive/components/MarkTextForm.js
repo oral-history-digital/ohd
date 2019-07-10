@@ -54,7 +54,7 @@ export default class MarkTextForm extends React.Component {
             return (
                 <div>
                     <p>
-                        {t(this.props, 'edit.update_speaker.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`])}
+                        {t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`])}
                     </p>
                 </div>
             )
