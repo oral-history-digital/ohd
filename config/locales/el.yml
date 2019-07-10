@@ -51,7 +51,7 @@ el:
       assert: Διακοπή μιας σκέψης, πρότασης, λέξης, έκφρασης.
       omission: Η απόστροφος σηματοδοτεί την ένωση δύο λέξεων, όταν λείπουν συλλαβές
     zwar:
-      adress: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
+      address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
       silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
       unclear: unverständliche Aussage 

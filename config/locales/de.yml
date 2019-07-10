@@ -49,7 +49,7 @@ de:
       assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.
       omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen
     zwar:
-      adress: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
+      address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
       silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
       unclear: unverständliche Aussage 
