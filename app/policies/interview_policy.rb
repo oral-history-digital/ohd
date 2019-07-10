@@ -29,4 +29,8 @@ class InterviewPolicy < ApplicationPolicy
     dois?
   end
 
+  def mark_texts?
+    dois?
+  end
+
 end

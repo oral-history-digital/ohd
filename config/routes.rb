@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
       put 'update_speakers/:id', to: 'interviews#update_speakers'
+      put 'mark_texts/:id', to: 'interviews#mark_texts'
       put 'merge_registry_entries/:id', to: 'registry_entries#merge'
 
       resources :interviews do
