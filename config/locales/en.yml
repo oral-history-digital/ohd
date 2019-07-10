@@ -211,6 +211,7 @@ en:
       new: Text auswählen
       processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
       processed: Die Verarbeitung ist abgeschlossen.
+      return: Weitere Textpassage auswählen
     interview:
       new: Neues Interview
       edit: Interview bearbeiten
