@@ -73,7 +73,7 @@ export default class Interview extends React.Component {
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {this.props.interviews[this.props.archiveId].anonymous_title[this.props.locale]}
+                                {this.props.interviews[this.props.match.params.archiveId].anonymous_title[this.props.locale]}
                             </h1>
                         </div>
                         <div className='video-element'>
@@ -102,7 +102,7 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()){
-            let tabIndex = this.props.locales.length + 3;
+            let tabIndex = this.props.locales.length + 2;
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>

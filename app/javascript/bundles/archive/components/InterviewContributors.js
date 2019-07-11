@@ -5,26 +5,8 @@ import PersonContainer from '../containers/PersonContainer';
 
 export default class InterviewContributors extends React.Component {
 
-    componentDidMount() {
-        if (admin(this.props)) {
-            this.loadAllPeople();
-        }
-    }
-
-    componentDidUpdate() {
-        if (admin(this.props)) {
-            this.loadAllPeople();
-        }
-    }
-
-    loadAllPeople() {
-        if (!this.props.peopleStatus.all) {
-            this.props.fetchData('people');
-        }
-    }
-
     contributors() {
-        let contributors = [];
+        let contributionTypes = {};
         if (
             this.props.interview &&
             this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
@@ -33,28 +15,32 @@ export default class InterviewContributors extends React.Component {
         ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                //if (
-                    //contribution && 
-                    //(Object.values(this.props.contributionTypes).indexOf(contribution.contribution_type) > -1 || 
-                    //admin(this.props))
-                //)
-                if (contribution !== 'fetched') {
-                    (contribution.contribution_type !== 'interviewee') && contributors.push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-${contribution.id}`} />);
+                if (contribution !== 'fetched' && contribution.contribution_type !== 'interviewee') {
+                    if (!contributionTypes[contribution.contribution_type]) {
+                        contributionTypes[contribution.contribution_type] = [<span key={`contribution-${contribution.id}`} className='flyout-content-label'>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
+                    }
+                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-${contribution.id}`} />)
                 }
             }
         } 
-        return contributors;
+        return Object.keys(contributionTypes).map((key, index) => {
+            return (
+              <div>
+                <p>{contributionTypes[key]}</p>
+              </div>
+            );
+        })
     }
 
     addContribution() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.contribution.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.contribution.new'),
-                        content: <ContributionFormContainer interview={this.props.interview} />
+                        content: <ContributionFormContainer interview={this.props.interview} submitData={this.props.submitData} />
                     })}
                 >
                     <i className="fa fa-plus"></i>

@@ -12,7 +12,10 @@ html
     /<meta name="robots" content="noindex,nofollow,noarchive" />
     /<meta name="keywords" content="<%= Project.meta_keywords[I18n.locale.to_s] %>" />
 
-    script src="https://cdn.polyfill.io/v2/polyfill.min.js"
+    /script src="https://cdn.polyfill.io/v2/polyfill.min.js"
+
+    javascript:
+      var developmentMode = "#{Rails.env == 'development' ? true : false}"
 
     == javascript_pack_tag 'application' 
 
@@ -20,6 +23,7 @@ html
     == stylesheet_pack_tag 'application'
     == javascript_include_tag 'responsive'
 
+    = action_cable_meta_tag 
     == favicon_link_tag "/favicon-#{Project.project_config['project_id']}.ico"
 
 

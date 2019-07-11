@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, getInterviewee } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class CitationInfoInfo extends React.Component {
@@ -14,26 +14,33 @@ export default class CitationInfoInfo extends React.Component {
     }
 
     project(){
-        if (this.props.projectName && this.props.projectDomain){
-            return `${t(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", ${this.props.archiveDomain}`;
+        if (this.props.projectName && this.props.archiveDomain){
+            return `${t(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", https://${this.props.archiveDomain}`;
         }
         return "";
     }
 
+    doi(withCalled=false) {
+        if (this.props.interview.doi_status === 'created') {
+            let doi = `https://doi.org/${this.props.projectDoi}/${this.props.project}.${this.props.interview.archive_id}`;
+            let called = withCalled ? ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})` : '';
+            return `, ${t(this.props, 'doi')}: ${doi}${called}`;
+        } else {
+            return '';
+        }
+    }
+
     render() {
         if (this.props.interview) {
-            let citation = `${fullname(this.props, getInterviewee(this.props))},
+            let citation = `${this.props.interview.short_title[this.props.locale]},
             ${t(this.props, 'interview')} 
             ${this.props.interview.archive_id},  
-            ${this.props.interview.interview_date},
-            ${this.project()},
-            ${t(this.props, 'doi')}: ${this.props.projectDoi + this.props.interview.archive_id}, 
-            (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
+            ${this.props.interview.interview_date}, 
+            ${this.project()}${this.doi(true)}`
 
             return (
                 <div>
                     {this.content(t(this.props, 'citation'), citation)}
-                    {this.content(t(this.props, 'doi'), this.props.projectDoi + this.props.interview.archive_id)}
                 </div>
             );
         } else {

@@ -1,6 +1,6 @@
 # ecoding: utf-8
 #
-class UserRegistrationSerializer < ActiveModel::Serializer
+class UserRegistrationSerializer < ApplicationSerializer
   attributes :id,
     :first_name,
     :last_name,
@@ -31,7 +31,7 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     :state,
     :country,
     :transitions_to,
-    :roles,
+    :user_roles,
     :tasks
 
   def user_id
@@ -51,16 +51,20 @@ class UserRegistrationSerializer < ActiveModel::Serializer
     object.current_state.events.map{|e| e.first}
   end
 
-  def roles
-    object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  def user_roles
+    object.user ? object.user.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
   end
+
+  #def roles
+    #object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
+  #end
 
   def tasks
     object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
   end
 
   def created_at
-    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M Uhr')
+    object.created_at && object.created_at.strftime('%d.%m.%Y %H:%M')
   end
 
   def activated_at

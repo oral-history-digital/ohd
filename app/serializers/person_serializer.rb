@@ -1,4 +1,4 @@
-class PersonSerializer < ActiveModel::Serializer
+class PersonSerializer < ApplicationSerializer
   attributes :id, :date_of_birth, :gender, :names, :name, :typology, :place_of_birth, :biographical_entries, :text
             # :histories
 
@@ -38,12 +38,12 @@ class PersonSerializer < ActiveModel::Serializer
     end
   end
 
-  #def histories
-    #object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.project_id}-history-#{c.id}-#{c.updated_at}"){HistorySerializer.new(c)}; mem}
-  #end
+  def histories
+    object.histories.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-history-#{c.id}-#{c.updated_at}"){HistorySerializer.new(c)}; mem}
+  end
 
   def biographical_entries
-    object.biographical_entries.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.project_id}-biographical_entry-#{c.id}-#{c.updated_at}"){BiographicalEntrySerializer.new(c)}; mem}
+    object.biographical_entries.inject({}){|mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}"){BiographicalEntrySerializer.new(c)}; mem}
   end
 
   def place_of_birth

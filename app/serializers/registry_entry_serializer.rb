@@ -1,4 +1,4 @@
-class RegistryEntrySerializer < ActiveModel::Serializer
+class RegistryEntrySerializer < ApplicationSerializer
   attributes :id,
              :latitude,
              :longitude,
@@ -22,11 +22,13 @@ class RegistryEntrySerializer < ActiveModel::Serializer
   end
 
   def latitude
-    object.latitude.to_f
+    # exclude dedalo default location (Valencia)
+    object.latitude == '39.462571' ? nil : object.latitude.to_f
   end
 
   def longitude
-    object.longitude.to_f
+    # exclude dedalo default location (Valencia)
+    object.longitude == '-0.376295' ? nil : object.longitude.to_f
   end
 
   def registry_references

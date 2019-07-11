@@ -135,7 +135,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       input name="user_registration[tos_agreement]" type="hidden" value="0"
       input#user_registration_tos_agreement name="user_registration[tos_agreement]" type="checkbox" value="1"
       p.help-block
-        a href="" target="_blank" title=("Externer Link") = I18n.backend.translate(locale, 'conditions_accept')
+        a href="" target="_blank" rel="noopener" title=("Externer Link") = I18n.backend.translate(locale, 'conditions_accept')
   .form-group
     .form-label
       label for="user_registration_priv_agreement" = I18n.backend.translate(locale, 'notes_on_privacy') + "*"
@@ -143,7 +143,7 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       input name="user_registration[priv_agreement]" type="hidden" value="0"
       input#user_registration_priv_agreement name="user_registration[priv_agreement]" type="checkbox" value="1"
       p.help-block
-        a href="" target="_blank" title=("Externer Link") = I18n.backend.translate(locale, 'notes_on_privacy_accept')
+        a href="" target="_blank" rel="noopener" title=("Externer Link") = I18n.backend.translate(locale, 'notes_on_privacy_accept')
   .form-group
     input data-disable-with=("Registrierung senden") name="commit" type="submit" value=("#{I18n.backend.translate(locale, 'send_registration')}")
     input#user_registration_default_locale name="user_registration[default_locale]" type="hidden" value="de"

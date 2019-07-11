@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_many :tasks
   has_many :supervised_tasks,
            class_name: 'Task',
-           as: :supervisor
+           foreign_key: :supervisor_id
 
   delegate :email, :login,
            :to => :user_account
@@ -29,12 +29,12 @@ class User < ActiveRecord::Base
     #!supervised_tasks.where(authorized: record).blank?
   end
 
-  def permissions?(controller, action)
-    !permissions.where(controller: controller, action: action).blank?
+  def permissions?(klass, action_name)
+    !permissions.where(klass: klass, action_name: action_name).blank?
   end
 
-  def roles?(controller, action)
-    !roles.joins(:permissions).where("permissions.controller": controller, "permissions.action": action).blank?
+  def roles?(klass, action_name)
+    !roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
   end
 
   def to_s

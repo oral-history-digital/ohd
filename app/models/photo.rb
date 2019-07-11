@@ -26,9 +26,9 @@ class Photo < ActiveRecord::Base
     File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
   end
 
-  searchable do
+  searchable auto_index: false do
     string :archive_id, :multiple => true, :stored => true do
-      interview.archive_id
+      interview ? interview.archive_id : nil
     end
     string :workflow_state
     integer :id, :stored => true
@@ -52,15 +52,21 @@ class Photo < ActiveRecord::Base
     self.send("#{change}!")
   end
 
-  # TODO: sth. like the following might help when migrating images from dedalo to some FU-server
-  #
-  #def src(image_name)
-    #"http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder(image_name)}/#{image_name}.jpg"
-  #end
+  def write_iptc_metadata(metadata)
+    file = MiniExiftool.new file_path
+    metadata.each do |k,v|
+      file[k] = v
+    end
+    file.save
+  end
 
-  #def sub_folder(image_name)
-    #((image_name.split('_').last().to_i / 1000) * 1000).to_s;
-  #end
+  def src
+    "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder}/#{photo_file_name}.jpg"
+  end
+
+  def sub_folder
+    ((photo_file_name.split('_').last().to_i / 1000) * 1000).to_s;
+  end
 
   # TODO: fit this again to be used in zwar?
   #def photo_file_name=(filename)

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PersonData from '../components/PersonData';
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
@@ -8,11 +8,11 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         interview: interview,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

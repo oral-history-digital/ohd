@@ -2,7 +2,7 @@ import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
-import { t } from '../../../../lib/utils';
+import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
 
@@ -17,6 +17,7 @@ export default class Form extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubFormSubmit = this.handleSubFormSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -50,7 +51,7 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors[element.attribute] = element.validate && !element.value ? true : false
+            errors[element.attribute] = element.validate && !(element.value || (this.props.data && this.props.data[element.attribute])) ? true : false
         })
         this.setState({ errors: errors });
     }
@@ -71,6 +72,74 @@ export default class Form extends React.Component {
         return !errors;
     }
 
+    deleteSubScopeValue(index) {
+        return <span
+            className='flyout-sub-tabs-content-ico-link'
+            title={t(this.props, 'delete')}
+            onClick={() => {
+                let subScopeValues = this.state.values[pluralize(this.props.subFormScope)];
+                this.setState({ 
+                    values: Object.assign({}, this.state.values, {
+                        [pluralize(this.props.subFormScope)]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                    })
+                })
+            }}
+        >
+            <i className="fa fa-trash-o"></i>
+        </span>
+    }
+
+    selectedSubScopeValues() {
+        if (this.props.subFormScope && this.state.values[pluralize(this.props.subFormScope)]) {
+            return (
+                <div>
+                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
+                    {this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
+                        return (
+                            <p key={`${this.props.scope}-${this.props.subScope}-${index}`} >
+                                <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
+                                {this.deleteSubScopeValue(index)}
+                            </p>
+                        )
+                    })}
+                </div>
+            )
+        }
+    }
+
+    handleSubFormSubmit(params) {
+        let scope = Object.keys(params)[0];
+        let nestedValues = this.state.values[pluralize(scope)] || [];
+        this.setState({ 
+            values: Object.assign({}, this.state.values, {
+                [pluralize(scope)]: [...nestedValues, params[scope]]
+                //[pluralize(scope)]: Object.assign([...nestedValues], {[nestedValues.length]: params[scope]})
+            })
+        })
+    }
+
+    openSubForm() {
+        if (this.props.subForm) {
+            this.props.subFormProps.submitData = this.handleSubFormSubmit;
+
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, `edit.${this.props.subFormScope}.new`)}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, `edit.${this.props.subFormScope}.new`),
+                        content: React.createElement(this.props.subForm, this.props.subFormProps)
+                    })}
+                >
+                    <div>
+                        {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
+                        <i className="fa fa-plus"></i>
+                    </div>
+                </div>
+            )
+        }
+    }
+
     components() {
         return {
             select: SelectContainer,
@@ -86,6 +155,7 @@ export default class Form extends React.Component {
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
         props['value'] = this.state.values[props.attribute] || props.value;
+        props['data'] = this.props.data;
 
         // set defaults for the possibillity to shorten elements list
         if (!props.elementType) {
@@ -105,8 +175,13 @@ export default class Form extends React.Component {
             >
 
                 {this.props.elements.map((props, index) => {
-                    return this.elementComponent(props);
+                    if(props.condition === undefined || props.condition === true) {
+                        return this.elementComponent(props);
+                    }
                 })}
+
+                {this.selectedSubScopeValues()}
+                {this.openSubForm()}
 
                 <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
             </form>

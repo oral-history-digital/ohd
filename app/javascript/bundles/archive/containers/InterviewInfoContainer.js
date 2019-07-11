@@ -3,7 +3,7 @@ import InterviewInfo from '../components/InterviewInfo';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         collections: state.archive.collections,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         interview: getInterview(state),
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
         personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,
-        account: state.account,
+        account: state.data.accounts.current,
     }
 }
 

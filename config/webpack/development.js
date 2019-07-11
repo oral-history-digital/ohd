@@ -6,7 +6,8 @@ const { settings, output } = require('./configuration.js')
 
 module.exports = merge(sharedConfig, {
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  // https://webpack.js.org/configuration/devtool/
+  devtool: 'eval-source-map',
 
   stats: {
     errorDetails: true

@@ -10,7 +10,8 @@
     position: relative;
     margin: 0 auto;
     max-width: 100% !important;
-    max-height: 80% !important;
+    max-height: 650px;
+    //max-height: 80% !important;
   }
   .slider-text {
     display: block;
@@ -60,7 +61,7 @@
     /////
   }
   .slick-arrow {
-    bottom: -20px;
+    bottom: -12px;
     position: absolute;
     top: auto !important;
     font-size: auto !important;
@@ -89,19 +90,9 @@
 
 .hits-count {
   // background-color: rgba(232,232,228, 0.95);
-  margin-top: 14px;
+  margin-top: 0;
   padding: 0 8px 0 0;
   cursor: pointer;
-  &::before {
-    font-family: FontAwesome;
-    content: "\f067";
-    float: left;
-    padding-right: 4px;
-    // font-size: $font-size-large;
-  }
-  &.active::before {
-    content: "\f068";
-  }
 }
 
 .slick-list {
@@ -175,6 +166,10 @@ video::cue {
 	padding: 1%;
 	margin: 0 3%;
 	font-family: $font-family;
+}
+
+.fix-video video:not(:fullscreen)::cue {
+  visibility: hidden;
 }
 
 span.breadcrumb

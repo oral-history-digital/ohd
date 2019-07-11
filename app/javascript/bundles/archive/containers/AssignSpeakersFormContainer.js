@@ -10,11 +10,10 @@ const mapStateToProps = (state) => {
         locales: state.archive.locales,
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
-        account: state.account,
-        processing: state.data.statuses.initials.processing, 
+        account: state.data.accounts.current,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
-        initialsStatus: state.data.statuses.initials,
+        speakerDesignationsStatus: state.data.statuses.speaker_designations,
     }
 }
 

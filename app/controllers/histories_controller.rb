@@ -58,11 +58,11 @@ class HistoriesController < ApplicationController
   end
 
   def clear_person_cache(person)
-    Rails.cache.delete "#{Project.project_id}-person-#{person.id}-#{person.updated_at}"
+    Rails.cache.delete "#{Project.cache_key_prefix}-person-#{person.id}-#{person.updated_at}"
   end
 
   def clear_history_cache id, updated_at
-    Rails.cache.delete "#{Project.project_id}-history-#{id}-#{updated_at}"
+    Rails.cache.delete "#{Project.cache_key_prefix}-history-#{id}-#{updated_at}"
   end
 
 end

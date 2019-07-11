@@ -8,8 +8,13 @@ export default class InterviewTextMaterials extends React.Component {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
+    existsPublicTranscript(lang) {
+        let firstEntry = this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
+        return !!firstEntry && !!firstEntry.text[lang] && this.props.interview.workflow_state === 'public';
+    }
+
     download(lang, condition) {
-        if (condition) {
+        if (condition && this.existsPublicTranscript(lang)) {
             // let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
                 <a href={`${this.to()}.pdf?lang=${lang}`} className='flyout-content-data'>

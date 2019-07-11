@@ -66,7 +66,7 @@ export default class UserRegistration extends React.Component {
                 title={t(this.props, 'edit.user_registration.show')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.user_registration.show'),
-                    content: this.details()
+                    content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
                 })}
             >
                 <i className="fa fa-eye"></i>
@@ -74,38 +74,45 @@ export default class UserRegistration extends React.Component {
         )
     }
 
-    edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_registration.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.user_registration.edit'),
-                    content: <UserRegistrationFormContainer userRegistration={this.props.userRegistration} />
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
-    }
+    // edit() {
+    //     return (
+    //         <div
+    //             className='flyout-sub-tabs-content-ico-link'
+    //             title={t(this.props, 'edit.user_registration.edit')}
+    //             onClick={() => this.props.openArchivePopup({
+    //                 title: t(this.props, 'edit.user_registration.edit'),
+    //                 content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
+    //             })}
+    //         >
+    //             <i className="fa fa-pencil"></i>
+    //         </div>
+    //     )
+    // }
 
     buttons() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}
-                    {this.edit()}
+                    {/* {this.edit()} */}
                 </div>
             )
         }
     }
 
     roles() {
-        if (this.props.userRegistration.user_id) {
+        if (
+            this.props.userRegistration.user_id &&
+            admin(this.props, {type: 'UserRole', action: 'create'}) 
+        ) {
             return (
                 <div className={'roles box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                    <UserRolesContainer userRoles={this.props.userRegistration.roles} userId={this.props.userRegistration.user_id} />
+                    <UserRolesContainer 
+                        userRoles={this.props.userRegistration.user_roles || []} 
+                        userId={this.props.userRegistration.user_id} 
+                        hideEdit={false}
+                    />
                 </div>
             )
         } else {
@@ -114,11 +121,18 @@ export default class UserRegistration extends React.Component {
     }
 
     tasks() {
-        if (this.props.userRegistration.user_id) {
+        if (
+            this.props.userRegistration.user_id &&
+            admin(this.props, {type: 'Task', action: 'create'}) 
+        ) {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                    <TasksContainer tasks={this.props.userRegistration.tasks} userId={this.props.userRegistration.user_id} />
+                    <TasksContainer 
+                        data={this.props.userRegistration.tasks} 
+                        initialFormValues={{user_id: this.props.userRegistration.user_id}} 
+                        hideEdit={false}
+                    />
                 </div>
             )
         } else {

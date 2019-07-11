@@ -19,8 +19,8 @@ class UserContentsController < ApplicationController
   end
 
   def destroy 
+    authorize(UserContent)
     @user_content = UserContent.find(params[:id])
-    authorize @user_content
     @user_content.destroy
 
     respond_to do |format|

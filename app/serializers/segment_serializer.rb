@@ -1,11 +1,13 @@
-class SegmentSerializer < ActiveModel::Serializer
+class SegmentSerializer < ApplicationSerializer
   include IsoHelpers
 
   attributes :id,
              :interview_id,
              :interview_archive_id,
+             :sort_key,
              :time,
              :tape_nbr,
+             :tape_count,
              :text,
              :mainheading,
              :subheading,
@@ -38,6 +40,10 @@ class SegmentSerializer < ActiveModel::Serializer
   def tape_nbr
     #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
     object.tape_number || object.tape.number
+  end
+
+  def tape_count
+    object.interview.tapes.count
   end
 
   def annotations

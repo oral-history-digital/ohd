@@ -15,11 +15,10 @@ export default class InterviewPreview extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        let openState = false;
+        let detailedState = false;
         this.state = {
-            open: openState,
-            class: openState ? "accordion active" : "accordion",
-            panelClass: openState ? "panel open" : "panel"
+            open: detailedState,
+            divClass: detailedState ? "interview-preview search-result detailed" : "interview-preview search-result",
         };
     }
 
@@ -28,14 +27,12 @@ export default class InterviewPreview extends React.Component {
         if (this.state.open) {
             this.setState({
                 ['open']: false,
-                ['class']: "accordion",
-                ['panelClass']: "panel"
+                ['divClass']: "interview-preview search-result",
             });
         } else {
             this.setState({
                 ['open']: true,
-                ['class']: "accordion active",
-                ['panelClass']: "panel open"
+                ['divClass']: "interview-preview search-result detailed",
             });
         }
     }
@@ -43,6 +40,8 @@ export default class InterviewPreview extends React.Component {
     componentDidMount() {
         if(this.props.fulltext) {
             this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        } else {
+            this.props.searchInInterview({fulltext: '', id: this.props.interview.archive_id});
         }
     }
 
@@ -52,17 +51,26 @@ export default class InterviewPreview extends React.Component {
         return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
     }
 
+    renderBadge() {
+        if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
+            return (
+                <div className={'badge'}  onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.props.segments.foundSegments.length}`}>
+                <i className="fa fa-align-justify" aria-hidden="true" />
+                &nbsp;
+                {this.props.segments.foundSegments.length}
+                </div>
+            )
+        }
+    }
+
     renderSlider(){
         if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
             let settings = {
                 infinite: false,
             };
             return (
-                <div>
-                    <div className={this.state.class + ' hits-count'} onClick={this.handleClick}>
-                        <small>{t(this.props, 'segment_hits')}: {this.props.segments.foundSegments.length}</small>
-                    </div>
-                    <div className={this.state.panelClass + ' archive-search-found-segments'}>
+                <div className='slider'>
+                    <div className={'archive-search-found-segments'}>
                         <Slider {...settings}>
                         { this.renderSegments() }
                         </Slider>
@@ -75,13 +83,22 @@ export default class InterviewPreview extends React.Component {
     renderSegments() {
         return this.props.segments.foundSegments.map( (segment, index) => {
             return (
-                <div key={"segment-wrapper" + segment.id}>
-                <FoundSegmentContainer
-                    data={segment}
-                    key={"segment-" + segment.id}
-                    tape_count={this.props.interview.tape_count}
-                />
-                </div>
+                <Link 
+                    key={"segment-wrapper" + segment.id}
+                    onClick={() => {
+                        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        this.props.setTapeAndTime(1, 0);
+                    }}
+                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                >
+                    <FoundSegmentContainer
+                        index={index+1}
+                        foundSegmentsAmount={this.props.segments.foundSegments.length}
+                        data={segment}
+                        key={"segment-" + segment.id}
+                        tape_count={this.props.interview.tape_count}
+                    />
+                </Link>
             )
         })
     }
@@ -90,12 +107,11 @@ export default class InterviewPreview extends React.Component {
         if (this.props.project === 'zwar') {
             return (
                 <div className={'search-result-data'}>
-                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
-                    <span>{this.props.interview.languages_array[this.props.locale]}</span>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                    <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
                     <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
-                    {/* <small className={(this.props.totalFoundSegments == 0)? 'hidden' : 'visible'}><br/>{t(this.props, 'segment_hits')}: {this.props.foundSegments.length}/{this.props.totalFoundSegments}</small> */}
                 </div>
             );
         }
@@ -111,7 +127,7 @@ export default class InterviewPreview extends React.Component {
         else if (this.props.project === 'hagen') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{this.props.interview.video_array[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.formatted_duration}</span><br/>
                 </div>
             )
         }
@@ -144,9 +160,9 @@ export default class InterviewPreview extends React.Component {
     }
 
     renderExportCheckbox() {
-        if (admin(this.props) && this.props.editView) {
-            <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
-                <input type='checkbox' />
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            return <div onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
+                <input type='checkbox' className='export-checkbox' checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} />
             </div>
         } else {
             return null;
@@ -154,31 +170,36 @@ export default class InterviewPreview extends React.Component {
     }
 
     render() {
-        return (
-            <div className='interview-preview search-result'>
-                <Link className={'search-result-link'}
-                    onClick={() => {
-                        this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-                        this.props.setTapeAndTime(1, 0);
-                    }}
-                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-                >
-                    <div className="search-result-img">
-                        <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
-                    </div>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
-                    </AuthShowContainer>
+        if (this.props.statuses && this.props.statuses[this.props.interview.archive_id] !== 'deleted') {
+            return (
+                <div className={this.state.divClass}>
+                    {this.renderBadge()}
+                    <Link className={'search-result-link'}
+                        onClick={() => {
+                            this.props.searchInInterview({fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.setTapeAndTime(1, 0);
+                        }}
+                        to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                    >
+                        <div className="search-result-img">
+                            <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                        </div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
+                        </AuthShowContainer>
 
-                    {this.interviewDetails()}
-                </Link>
-                {this.renderSlider()}
-                {this.renderExportCheckbox()}
-            </div>
-        );
+                        {this.interviewDetails()}
+                    </Link>
+                    {this.renderSlider()}
+                    {this.renderExportCheckbox()}
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
 

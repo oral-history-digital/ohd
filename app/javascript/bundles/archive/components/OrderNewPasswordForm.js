@@ -14,9 +14,10 @@ export default class OrderNewPasswordForm extends React.Component {
         this.state = {
             showErrors: false, 
             values: {
+                email: this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : null
             },
             errors: {
-                email: true,
+                email: !(this.props.account.email && this.props.account.email.includes('@'))
             }
         };
 
@@ -70,7 +71,7 @@ export default class OrderNewPasswordForm extends React.Component {
                 <InputContainer 
                     scope='user_registration' 
                     attribute='email' 
-                    value={this.props.account.email.includes('@') ? this.props.account.email : ''}
+                    value={this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : ''}
                     type='text' 
                     showErrors={this.state.showErrors}
                     validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}} 

@@ -2,7 +2,12 @@ default: &default
 
   available_locales:
     - en
+    - de
     # - alias
+
+  # grid, list and/or map
+  view_modes:
+    - list
 
   default_locale: en
 
@@ -10,6 +15,19 @@ default: &default
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
+
+  media_streams:
+    defaults:
+      video: 480p
+      audio: 192k
+    video:
+      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
+    audio:
+      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
 
   contribution_types:
     interviewee: 'interviewee'
@@ -22,13 +40,19 @@ default: &default
     proofreader: 'proof_reading' 
 
   upload_types:
-    - campscape
-    - protocols
+    - bulk_metadata
+    - bulk_texts
 
   project_name: # Will be used in titles, emails, etc.
     en: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'
+    de: 'Accessing Campscapes: Inclusive Strategies for Using European Conflicted Heritage.'
 
   project_id: 'campscapes'
+
+  # used in PDFs
+  # give the color code as fractions of 255
+  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
+  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
 
   project_shortname: 'CAMPSCAPES'
 
@@ -36,7 +60,7 @@ default: &default
 
   project_domain: ''
 
-  archive_domain: ''
+  archive_domain: 'http://testimonies.campscapes.org'
 
   project_doi: ''
 
@@ -44,15 +68,15 @@ default: &default
   external_links:
     conditions: #nutzungsbedingungen:
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
-    request_for_use: #nutzungsantrag:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
+    # request_for_use: #nutzungsantrag:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
       en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
-    annotation_guidelines:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
-    team:
-      en: 'http://www.zwangsarbeit-archiv.de/en/team'
+    # annotation_guidelines:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
+    # team:
+    #   en: 'http://www.zwangsarbeit-archiv.de/en/team'
     contact: #kontakt:
       en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
     legal_info: #impressum:
@@ -96,63 +120,87 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties:
-    - id: 'person_reference'
-      source: 'registry_entry'
-    - id: 'language_id'
-      source: 'language'
+  person_properties: 
+    - 
+      id: camps
+      source: registry_entry
+      display_on_landing_page: true
+      facet_label: 
+        de: Lager
+        en: Camp
+      use_as_column: true
       use_as_facet: true
-    - id: 'media_type'
-      source: 'interview'
+    - 
+      id: language
+      source: language
+      use_as_column: true
+      facet_label: 
+        de: Sprache
+        en: Language
+    - 
+      id: language_id
+      source: language
       use_as_facet: true
-    - id: 'gender'
-      source: 'person'
+      facet_label: 
+        de: Sprache
+        en: Language
+    - 
+      id: groups
+      source: registry_entry
+      display_on_landing_page: true
+      use_as_column: true
       use_as_facet: true
-      values:
-        female: 'female'
-        male: 'male'
-    - id: 'year_of_birth'
-      source: 'person'
-      use_as_facet: true
-    - id: 'birth_location'
-      source: 'registry_reference_type'
+      facet_label: 
+        de: Gruppe
+        en: Group
+    - 
+      id: media_type
+      source: interview
       use_as_facet: false
-    - id: 'forced_labor_groups'
-      source: 'registry_entry'
+    - 
+      id: gender
+      source: person
+      use_as_facet: false
+      values: 
+        female: female
+        male: male
+    - 
+      id: year_of_birth
+      source: person
+      use_as_facet: false
+    - 
+      id: country_of_birth
+      source: interview
       use_as_facet: true
-    - id: 'forced_labor_fields'
-      source: 'registry_entry'
+      use_as_column: true
+      facet_label: 
+        de: Herkunftsland
+        en: Country of Birth
+    - 
+      id: collection_id
+      source: collection
+      facet_label: 
+        de: Sammlung
+        en: Collection
+      use_as_column: true
       use_as_facet: true
-    - id: 'forced_labor_habitations'
-      source: 'registry_entry'
-      # use_as_facet: true
-    - id: 'home_location'
-      source: 'registry_reference_type'
+    - 
+      id: group_details
+      source: registry_entry
+      display_on_landing_page: true
       use_as_facet: false
-    - id: 'forced_labor_location'
-      source: 'registry_reference_type'
+    - 
+      id: interview_location
+      source: registry_reference_type
+      display_on_landing_page: false
       use_as_facet: false
-    - id: 'deportation_location'
-      source: 'registry_reference_type'
-      use_as_facet: false
-    - id: 'return_location'
-      source: 'registry_reference_type'
-      use_as_facet: false
-    - id: 'collection_id'
-      source: 'collection'
-      use_as_facet: true 
-
-  # NB: The map has not yet been generalized to work for all historical
-  # contexts. It relies on ZWAR-specific registry data structures (i.e. a
-  # three-level location hierarchy, companies, camps and specific registry
-  # reference types like "forced labor locations").
-  # If you want to use the map for a different historical context then a
-  # generic map will have to be specified by the project responsibles first.
-  # Therefore set this to "false" for all projects except ZWAR unless
-  # you also change the corresponding map code.
-  uses_map: true
 
   has_newsletter: true
+
+  pdf_registry_entry_codes:
+    - camps
+    - companies
+    - people
 
 development:
   <<: *default

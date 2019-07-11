@@ -15,11 +15,11 @@ export default class ActivateAccount extends React.Component {
 
     render() {
         return (
-                <WrapperPageContainer tabIndex={0}>
-                    <div className='wrapper-content register'>
-                        {this.content()}
-                    </div>
-                </WrapperPageContainer>
+            <WrapperPageContainer tabIndex={0}>
+                <div className='wrapper-content register'>
+                    {this.content()}
+                </div>
+            </WrapperPageContainer>
         )
     }
 

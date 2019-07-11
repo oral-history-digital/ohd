@@ -1,6 +1,6 @@
 require 'acts-as-dag'
 require 'tsort'
-require 'i18n/core_ext/string/interpolate'
+# require 'i18n/core_ext/string/interpolate'
 
 class RegistryEntry < ActiveRecord::Base
   include IsoHelpers
@@ -26,12 +26,10 @@ class RegistryEntry < ActiveRecord::Base
 
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
 
   has_many :child_registry_hierarchies,
            foreign_key: :ancestor_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
 
   has_many :registry_entry_relations
@@ -52,9 +50,9 @@ class RegistryEntry < ActiveRecord::Base
   has_dag_links :link_class_name => 'RegistryHierarchy'
 
   has_many :main_registers,
-           -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
-           :through => :links_as_descendant,
-           :source => :ancestor
+    -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
+    :through => :links_as_descendant,
+    :source => :ancestor
 
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
@@ -146,6 +144,36 @@ class RegistryEntry < ActiveRecord::Base
     end.flatten.uniq.join(' ')
   end
 
+  def self.merge(opts={})
+    merge_to_id = opts[:id]
+    where(id: JSON.parse(opts[:ids])).each do |registry_entry|
+      registry_entry.move_associated_to(merge_to_id)
+      binding.pry
+      registry_entry.destroy
+    end
+  end
+
+  def move_associated_to merge_to_id
+    registry_entry_relations.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
+    registry_references.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
+
+    child_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:ancestor_id, merge_to_id) 
+      end
+    end
+
+    parent_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:descendant_id, merge_to_id) 
+      end
+    end
+  end
+
   # method should be one of 'children' or 'parents'
   #
   def alphanum_sorted_ids(method, locale)
@@ -194,14 +222,41 @@ class RegistryEntry < ActiveRecord::Base
 
   class << self
     def descendant_ids(entry_code, entry_dedalo_code=nil)
-      entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code).descendants.map(&:id) : find_by_entry_code(entry_code).descendants.map(&:id)
+      entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_entry_code(entry_code)
+      entry ? entry.descendants.map(&:id) : []
     end
 
-    def create_with_parent_and_name(parent_id, name, code=nil)
-      registry_entry = RegistryEntry.create entry_code: code || name, entry_desc: name, workflow_state: "public", list_priority: false
-      RegistryHierarchy.create ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true
-      RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name.gsub('_', ' ')
+    #
+    # names_w_locales is a string like "de::Herr;Heinz;Huber#en::Mister;Heinz;Huber"
+    # so # is the delimiter between different language versions
+    # :: delimits between locale and the words
+    # ; delimits between the different names of a registry_entry
+    # name positions are given by the order
+    #
+    def create_with_parent_and_names(parent_id, names_w_locales, code=nil)
+      registry_entry = RegistryEntry.create entry_code: code, entry_desc: code, workflow_state: "public", list_priority: false
+      RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
+
+      names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
+        locale, names = name_w_locale.split('::')
+        names.split(';').each_with_index do |name, index|
+          RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
+        end
+      end
       registry_entry
+    end
+
+    def find_or_create_descendant(parent_code, descendant_name)
+      descendant = nil
+      parent = find_by_entry_code parent_code
+      parent.children.each do |c| 
+        descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
+      end
+
+      if descendant.nil? && descendant_name.length > 2
+        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name[0..200]) 
+      end
+      descendant
     end
 
     # This is not a translated class but it can accept localized descriptors.
@@ -1047,7 +1102,7 @@ class RegistryEntry < ActiveRecord::Base
     to_s(locale, true)
   end
 
-  def to_s(locale = I18n.default_locale, with_fallback = false)
+  def to_s(locale = I18n.default_locale, with_fallback = true)
     # Order names by type and position.
     names_with_position = {}
     registry_names.each do |name|
@@ -1064,7 +1119,7 @@ class RegistryEntry < ActiveRecord::Base
         translated_descriptor = translated_descriptor.dup
         translated_descriptor.gsub!(';', '/') if locale.to_sym == :alias
         names_with_position[name_type] ||= []
-        names_with_position[name_type][name.name_position] = translated_descriptor
+        names_with_position[name_type][name.name_position || 0] = translated_descriptor
       end
     end
 
@@ -1318,32 +1373,33 @@ class RegistryEntry < ActiveRecord::Base
                         links_as_ancestor.find_by_descendant_id(registry_entry.id)
                       end
       case delta_record[:action]
-        when 'add'
-          # When the link already exists we make it direct, otherwise we add a new link.
-          if existing_link.nil?
-            association << registry_entry
-          else
-            existing_link.make_direct
-            existing_link.save!
-          end
-
-        when 'remove'
-          raise(ActiveRecord::RecordNotFound) if existing_link.nil?
-          # When the link is destroyable then destroy it, otherwise make it indirect.
-          if (existing_link.destroyable?)
-            # We cannot use the association.delete() method as
-            # this won't trigger the destroy callback on the link
-            # which leaves the DAG in an inconsistent state.
-            existing_link.destroy
-          else
-            existing_link.make_indirect
-            existing_link.save!
-          end
-
+      when 'add'
+        # When the link already exists we make it direct, otherwise we add a new link.
+        if existing_link.nil?
+          association << registry_entry
         else
-          raise "Unknown delta action: #{delta_record[:action]}"
+          existing_link.make_direct
+          existing_link.save!
+        end
+
+      when 'remove'
+        raise(ActiveRecord::RecordNotFound) if existing_link.nil?
+        # When the link is destroyable then destroy it, otherwise make it indirect.
+        if (existing_link.destroyable?)
+          # We cannot use the association.delete() method as
+          # this won't trigger the destroy callback on the link
+          # which leaves the DAG in an inconsistent state.
+          existing_link.destroy
+        else
+          existing_link.make_indirect
+          existing_link.save!
+        end
+
+      else
+        raise "Unknown delta action: #{delta_record[:action]}"
       end
     end
   end
+
 
 end

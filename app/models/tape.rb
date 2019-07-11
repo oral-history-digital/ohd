@@ -4,7 +4,7 @@ class Tape < ActiveRecord::Base
   belongs_to :interview, inverse_of: :tapes
 
   has_many  :segments,
-            -> { order('media_id ASC, timecode ASC')},
+            -> { order('timecode ASC')},
            :dependent => :destroy,
            inverse_of: :tape
 
@@ -48,12 +48,16 @@ class Tape < ActiveRecord::Base
     media_id.upcase
   end
 
-  def number
-    @number ||= media_id[/\d+$/]
+  def total_number_of_tapes
+    if Project.name.to_sym == :mog
+      interview.tapes.count
+    else
+      media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
+    end
   end
 
-  def total_number_of_tapes
-    media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
+  def next
+    Tape.where(interview_id: interview.id).where('lower(media_id) = ?', "#{interview.archive_id}_#{format( '%02d', total_number_of_tapes)}_#{format( '%02d', number + 1)}".downcase).first
   end
 
   def media_file(extension, subdirectories=false)

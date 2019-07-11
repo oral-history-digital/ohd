@@ -13,6 +13,7 @@ export default class RegistryEntriesTree extends React.Component {
 
     componentDidMount() {
         this.loadRootRegistryEntry();
+        window.scrollTo(0, 1);
     }
 
     componentDidUpdate() {
@@ -47,27 +48,63 @@ export default class RegistryEntriesTree extends React.Component {
         }
     }
 
+    mergeRegistryEntries() {
+        let id;
+        let ids = [];
+        this.props.foundRegistryEntries.results.map((result, index) => {
+            if (index === 0) {
+                id = result.registry_entry.id;
+            } else {
+                ids.push(result.registry_entry.id);
+            }
+        })
+        this.props.submitData({merge_registry_entry: {id: id, ids: ids}}, this.props.locale);
+    }
+
+    mergeRegistryEntriesConfirm() {
+        let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={title}
+            onClick={() => this.props.openArchivePopup({
+                title: title,
+                content: (
+                    <div>
+                        <div className='any-button' onClick={() => this.mergeRegistryEntries()}>
+                            {t(this.props, 'ok')}
+                        </div>
+                    </div>
+                )
+            })}
+        >
+            {title}
+        </div>
+    }
+
     content() {
         if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
             return <RegistryEntriesContainer registryEntryParent={this.props.registryEntries[1]} />;
         } else {
             return (
-                <ul className={'registry-entries-ul'}>
-                    {this.foundRegistryEntries()}
-                </ul>
-                )
+                <div>
+                    {this.mergeRegistryEntriesConfirm()}
+                    <ul className={'registry-entries-ul'}>
+                        {this.foundRegistryEntries()}
+                    </ul>
+                </div>
+            )
         }
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 4;
+        let tabIndex = this.props.locales.length + 3;
         if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <div className='wrapper-content'>
+                        <div className='wrapper-content register'>
                             <h1 className='registry-entries-title'>
-                                {t(this.props, 'activerecord.models.registry_entries.other')}
+                                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
                             </h1>
                             {this.content()}
                         </div>

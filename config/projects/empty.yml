@@ -6,6 +6,11 @@ default: &default
     - ru
     # - alias
 
+  # grid, list and/or map
+  view_modes:
+    - grid
+    - list
+
   default_locale: de
 
   # use 2- or 3-letter country-code
@@ -25,11 +30,16 @@ default: &default
     - protocols
 
   project_name: # Will be used in titles, emails, etc.
-    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte.'
-    en: 'Forced Labor 1939-1945. Memory and History.'
-    ru: 'Принудительный труд 1939-1945. Воспоминания и история.'
+    de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'
+    en: 'Forced Labor 1939-1945. Memory and History'
+    ru: 'Принудительный труд 1939-1945. Воспоминания и история'
 
   project_id: 'empty'
+
+  # used in PDFs
+  # give the color code as fractions of 255
+  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
+  primary_color_rgb: '0.560784314, 0.125490196, 0.109803922'
 
   project_shortname: 'EM'
 
@@ -37,7 +47,7 @@ default: &default
 
   project_domain: 'zwangsarbeit-archiv.de'
 
-  archive_domain: 'zwangsarbeit-archiv.de/archiv'
+  archive_domain: 'archiv.zwangsarbeit-archiv.de'
 
   project_doi: 'BITTE EINGÜGEN'
 
@@ -141,6 +151,11 @@ default: &default
   uses_map: true
 
   has_newsletter: true
+
+  pdf_registry_entry_codes:
+    - camps
+    - companies
+    - people
 
 development:
   <<: *default

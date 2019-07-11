@@ -16,18 +16,9 @@ class HomeController < ApplicationController
         render :template => '/react/app.html'
       end
       format.json do
-        # include timestamp in cache-key if sth. of the static content changed!!!
-        #
-        json = Rails.cache.fetch("#{Project.project_id}-static-content") do 
-          locales = Project.available_locales.reject{|i| i == 'alias'}
-          home_content = {}
-          locales.each do |i|
-            I18n.locale = i
-            template = "/home/home.#{i}.html+#{Project.name == 'empty' ? 'zwar' : Project.name}"
-            home_content[i] = render_to_string(template: template, layout: false)
-          end
+        locales = Project.available_locales.reject{|i| i == 'alias'}
+        json = Rails.cache.fetch("#{Project.cache_key_prefix}-static-content") do 
           {
-            home_content: home_content,
             external_links: Project.external_links,
             translations: translations,
             country_keys: locales.inject({}) do |mem, locale|
@@ -45,11 +36,22 @@ class HomeController < ApplicationController
             project_domain: Project.project_domain,
             project_doi: Project.project_doi,
             archive_domain: Project.archive_domain,
-            locales: Project.available_locales
-          }.to_json
+            locales: Project.available_locales,
+            view_modes: Project.view_modes,
+            view_mode: Project.view_modes[0],
+            list_columns: Project.list_columns,
+            media_streams: Project.media_streams,
+            hidden_registry_entry_ids: Project.hidden_registry_entry_ids,
+          }
         end
-
-        render plain: json
+        home_content = {}
+        locales.each do |i|
+          I18n.locale = i
+          template = "/home/home.#{i}.html+#{Project.name == 'empty' ? 'zwar' : Project.name}"
+          home_content[i] = render_to_string(template: template, layout: false)
+        end
+        json[:home_content] = home_content
+        render plain: json.to_json
       end
     end
   end

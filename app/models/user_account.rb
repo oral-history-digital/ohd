@@ -1,33 +1,26 @@
 require 'devise'
 
 class UserAccount < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  #devise :database_authenticatable, :registerable,
-         #:recoverable, :rememberable, :trackable, :validatable
-  #attr_accessible :email, :password, :password_confirmation, :remember_me
-
-  # Virtual attribute for authenticating by either login or email
-  # This is in addition to a real persisted field like 'login'
-  attr_accessor :login
 
   devise :database_authenticatable,
+         :confirmable,
          :rememberable,
          :recoverable,
          :trackable
 
   has_one :user
   has_many :tasks, through: :user
+  has_many :supervised_tasks, through: :user
   has_many :permissions, through: :user
+  has_many :roles, through: :user
 
   has_one :user_registration
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
 
-  validates :login, presence: :true, uniqueness: { case_sensitive: false }
-  # Only allow letter, number, underscore and punctuation.
-  validates_format_of :login, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
+  validates_uniqueness_of :login
+  validates_presence_of :login
   validates_uniqueness_of :email
   validates_presence_of :email
   validates_format_of :email, :with => Devise.email_regexp
@@ -58,6 +51,14 @@ class UserAccount < ActiveRecord::Base
     self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
+  def first_name=(name)
+    user.update_attribute :first_name, name
+  end
+
+  def last_name=(name)
+    user.update_attribute :last_name, name
+  end
+
   def tags
     #user.tags
     []
@@ -74,7 +75,7 @@ class UserAccount < ActiveRecord::Base
   # Confirm a user by setting it's confirmed_at to actual time. If the user
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
-  def confirm!(password, password_confirmation)
+  def confirm_with_password!(password, password_confirmation)
     reset_password(password, password_confirmation)
     unless_confirmed do
       self.confirmation_token = nil
@@ -179,8 +180,8 @@ class UserAccount < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login_string = conditions.delete(:login)
-      where(conditions.to_hash).where(["lower(login) = :value OR lower(email) = :value", { :value => login_string.downcase }]).first
-    elsif conditions.has_key?(:login) || conditions.has_key?(:email)
+      where(["lower(login) = :value OR lower(email) = :value", { :value => login_string.downcase }]).first
+    elsif conditions.has_key?(:email)
       where(conditions.to_hash).first
     end
   end

@@ -60,7 +60,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
         } 
         if (registryEntries.length > 0) {
             return registryEntries;
-        } else if (!admin(this.props)){
+        } else if (!admin(this.props, {type: 'RegistryEntry', action: 'create'})){
             return (
                 <span>---</span>
             )
@@ -68,7 +68,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
     }
 
     addRegistryReference() {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

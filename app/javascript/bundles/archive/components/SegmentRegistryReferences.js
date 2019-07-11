@@ -38,6 +38,10 @@ export default class SegmentRegistryReferences extends React.Component {
 
     registryReferences() {
         let registryReferences = [];
+
+        // only show registryEntries once, even if they have multiple references
+        let usedRegistryEntryIds = [];
+
         if (
             this.props.segment && 
             this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`] &&
@@ -46,7 +50,7 @@ export default class SegmentRegistryReferences extends React.Component {
             for (var c in this.props.segment.registry_references) {
                 let registryReference = this.props.segment.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryEntry && registryReference !== 'fetched') {
+                if (registryEntry && usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && registryReference !== 'fetched') {
                     registryReferences.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
@@ -57,6 +61,7 @@ export default class SegmentRegistryReferences extends React.Component {
                             setOpenReference={this.props.setOpenReference}
                         />
                     );
+                    usedRegistryEntryIds.push(registryEntry.id);
                 }
             }
         } 
@@ -65,7 +70,7 @@ export default class SegmentRegistryReferences extends React.Component {
 
     addRegistryReference() {
         // TODO: fit this for MOG - id of root entry will be different
-        if (admin(this.props) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (admin(this.props, {type: 'RegistryReference', action: 'create'}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

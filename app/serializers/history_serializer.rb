@@ -1,4 +1,4 @@
-class HistorySerializer < ActiveModel::Serializer
+class HistorySerializer < ApplicationSerializer
 
   attributes :id, :person_id, :forced_labor_details, :return_date, :deportation_date, :punishment, :liberation_date
 

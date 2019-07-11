@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, name=nil)
-    Rails.cache.fetch("#{Project.project_id}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}") do
       raw = "#{name || data.class.name}Serializer".constantize.new(data)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
@@ -75,19 +75,19 @@ class ApplicationController < ActionController::Base
   #
   # single instance structure for data-reducer
   #
-  def data_json(data, msg=nil)
+  def data_json(data, opts={})
     identifier = (data.class.name.underscore == 'interview') ? :archive_id : :id
     json = {
       "#{identifier}": data.send(identifier),
       data_type: data.class.name.underscore.pluralize,
       data: cache_single(data)
     }
-    json.update(msg: msg) if msg
+    json.update(opts)
     json
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{Project.project_id}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
+    Rails.cache.delete "#{Project.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
   end
 
 end

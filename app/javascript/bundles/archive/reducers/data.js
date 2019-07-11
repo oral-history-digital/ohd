@@ -8,7 +8,9 @@ import {
 } from '../constants/archiveConstants';
 
 const initialState = {
+    accounts: {current: {}}, 
     statuses: {
+        accounts: {},
         interviews: {},
         segments: {},
         doi_contents: {},
@@ -23,7 +25,8 @@ const initialState = {
         annotations: {},
         uploads: {},
         biographical_entries: {},
-        initials: {},
+        speaker_designations: {},
+        mark_text: {},
         user_registrations: {resultPagesCount: 1},
         roles: {},
         permissions: {},
@@ -64,30 +67,38 @@ const data = (state = initialState, action) => {
             }
         case REMOVE_DATA:
             if (action.nestedId) {
-                let obj = state[action.dataType][action.id][action.nestedDataType];
-                return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
-                    [action.dataType]: Object.assign({}, state[action.dataType], {
-                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
-                            [action.nestedDataType]: Object.keys(obj).reduce((acc, key) => {
-                                if (key !== action.nestedId) {
-                                    return {...acc, [key]: obj[key]}
-                                }
-                                return acc;
-                            }, {})
+                let nestedData = state[action.dataType][action.id][action.nestedDataType];
+                if(nestedData) {
+                    return Object.assign({}, state, {
+                        statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}), 
+                        [action.dataType]: Object.assign({}, state[action.dataType], {
+                            [action.id]: Object.assign({}, state[action.dataType][action.id], {
+                                [action.nestedDataType]: Object.keys(nestedData).reduce((acc, key) => {
+                                    if (key !== action.nestedId.toString()) {
+                                        return {...acc, [key]: nestedData[key]}
+                                    }
+                                    return acc;
+                                }, {})
+                            })
                         })
                     })
-                })
+                } else {
+                    return state;
+                }
             } else {
-                return Object.assign({}, state, {
-                    statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
-                    [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
-                        if (key !== action.nestedId) {
-                            return {...acc, [key]: state[action.dataType][key]}
-                        }
-                        return acc;
-                    }, {})
-                })
+                if(state[action.dataType]) {
+                    return Object.assign({}, state, {
+                        statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}), 
+                        [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {
+                            if (key !== action.id.toString()) {
+                                return {...acc, [key]: state[action.dataType][key]}
+                            }
+                            return acc;
+                        }, {})
+                    })
+                } else {
+                    return state;
+                }
             }
         case REQUEST_DATA:
             if (action.nestedDataType) {
@@ -109,7 +120,7 @@ const data = (state = initialState, action) => {
             }
         case RECEIVE_DATA:
             if (action.extraId) {
-                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
                     statuses: statuses,
@@ -124,7 +135,7 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.nestedId) {
-                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {
                     statuses: statuses,
@@ -137,10 +148,8 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.nestedDataType) {
-                let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
-                if (action.msg)
-                    statuses = updateStatus(statuses, action.nestedDataType, {[action.msg]: action.id});
                 let nestedData = (state[action.dataType] && state[action.dataType][action.id] && state[action.dataType][action.id][action.nestedDataType]) || {};
                 return Object.assign({}, state, {
                     statuses: statuses,
@@ -151,10 +160,8 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.id) {
-                let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.id]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
-                if (action.msg)
-                    statuses = updateStatus(statuses, action.dataType, {[action.msg]: action.id});
                 return Object.assign({}, state, {
                     statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
@@ -162,7 +169,7 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.extraParams) {
-                let statuses = updateStatus(state.statuses, action.dataType, {[action.extraParams]: `fetched-${new Date()}`}); 
+                let statuses = updateStatus(state.statuses, action.dataType, {[action.extraParams]: action.msg || `fetched-${new Date()}`}); 
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
                 statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {
@@ -170,7 +177,7 @@ const data = (state = initialState, action) => {
                     [action.dataType]: (action.page === '1') ? action.data : Object.assign({}, state[action.dataType], action.data)
                 })
             } else if (action.dataType) {
-                let statuses = updateStatus(state.statuses, action.dataType, {all: `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.dataType, {all: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`}); 
                 statuses = updateStatus(statuses, action.dataType, {resultPagesCount: action.resultPagesCount}); 
                 return Object.assign({}, state, {

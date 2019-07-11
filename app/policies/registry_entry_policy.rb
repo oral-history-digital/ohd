@@ -4,4 +4,9 @@ class RegistryEntryPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def merge?
+    user.admin? || user.permissions?(record.class.name, :update) || user.tasks?(record) 
+  end
+
 end

@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
 import AuthShow from '../components/AuthShow';
-import { fetchAccount } from '../actions/accountActionCreators';
+import { fetchData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
-        account: state.account,
-        editView: state.archive.editView
+        authStatus: state.account,
+        account: state.data.accounts.current,
+        accountsStatus: state.data.statuses.accounts,
+        editView: getCookie('editView')
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchAccount: () => dispatch(fetchAccount()),
+    fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthShow);

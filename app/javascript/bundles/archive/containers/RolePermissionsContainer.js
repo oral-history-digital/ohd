@@ -3,19 +3,22 @@ import { connect } from 'react-redux';
 import DataList from '../components/DataList';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        account: state.account,
-        editView: state.archive.editView,
-        //data: state.data.permissions,
+        account: state.data.accounts.current,
+        editView: getCookie('editView'),
+        //
+        //
+        //
         joinDataStatus: state.data.statuses.permissions,
         joinDataScope: 'permissions',
         scope: 'role_permission',
-        detailsAttributes: ['name', 'desc', 'controller', 'action'],
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 elementType: 'select',

@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
     @person = Person.create person_params
     respond_to do |format|
       format.json do
-        render json: data_json(@person, 'processed')
+        render json: data_json(@person, msg: 'processed')
       end
     end
   end
@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
       extra_params = params[:contributors_for_interview] ?  "contributors_for_interview_#{params[:contributors_for_interview]}" : nil
 
       format.json do
-        json = Rails.cache.fetch "#{Project.project_id}-people-#{extra_params ? extra_params : 'all'}-#{Person.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-people-#{extra_params ? extra_params : 'all'}-#{Person.maximum(:updated_at)}" do
           people = (
             params[:contributors_for_interview] ?
               Interview.find(params[:contributors_for_interview]).contributors :

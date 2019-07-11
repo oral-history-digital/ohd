@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import Person from '../components/Person';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
         translations: state.archive.translations,
-        account: state.account,
-        editView: state.archive.editView
+        account: state.data.accounts.current,
+        editView: getCookie('editView')
     }
 }
 

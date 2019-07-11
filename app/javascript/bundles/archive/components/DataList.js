@@ -2,7 +2,7 @@ import React from 'react';
 //import Observer from 'react-intersection-observer'
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
-import { t, admin, pluralize, parametrizedQuery } from '../../../lib/utils';
+import { t, admin, pluralize, parametrizedQuery, camelcase } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class WrappedDataLists extends React.Component {
@@ -18,7 +18,7 @@ export default class WrappedDataLists extends React.Component {
 
     loadJoinData() {
          if (
-            !this.props.joinDataStatus.all
+            this.props.joinDataStatus && !this.props.joinDataStatus.all
          ) {
             this.props.fetchData(this.props.joinDataScope, null, null, this.props.locale, null);
          }
@@ -34,6 +34,8 @@ export default class WrappedDataLists extends React.Component {
                         detailsAttributes={this.props.detailsAttributes}
                         form={this.form}
                         hideEdit={this.props.hideEdit}
+                        hideDelete={this.props.hideDelete}
+                        editView={this.props.editView}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -58,7 +60,10 @@ export default class WrappedDataLists extends React.Component {
     }
 
     add() {
-        if (admin(this.props)) {
+        if (
+            admin(this.props, {type: camelcase(this.props.scope), action: 'create'}) && 
+            !this.props.hideAdd
+        ) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

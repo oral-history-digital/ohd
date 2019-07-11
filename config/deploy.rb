@@ -18,11 +18,11 @@ set :repo_url, "git@gitlab.cedis.fu-berlin.de:dis/zwar-archive.git"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/project.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunspot.yml", "config/datacite.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
-append :linked_dirs, "solr", "node_modules"
+append :linked_dirs, "solr", "node_modules", "tmp" #tmp is important for pids like delayed_job
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -31,4 +31,20 @@ append :linked_dirs, "solr", "node_modules"
 # set :local_user, -> { `git config user.name`.chomp }
 
 # Default value for keep_releases is 5
- set :keep_releases, 2
+set :keep_releases, 2
+
+# Which project file from the projects directory to copy to config/project.yml.
+# Overwrite this in stage configuration, please.
+set :project_yml, 'empty.yml'
+
+namespace :deploy do
+  desc 'Copy correct project file into config directory'
+
+  task :copy_project_file do
+    on roles(:app) do
+      execute :cp, release_path.join('config', 'projects', "#{fetch(:project_yml)}"), release_path.join('config', 'project.yml')
+    end
+  end
+
+  before :updated, 'copy_project_file'
+end

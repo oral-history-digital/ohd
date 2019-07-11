@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
 
+  root :to => redirect("/#{Project.default_locale}")
+  root to: "home#archive", locale: Project.default_locale.to_sym
+
   resources :projects
-  root :to => redirect('/de')
-  root to: "home#archive", locale: :de
 
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
+    resources :accounts, only: [:show, :update] do
+      member do
+        get :confirm_new_email
+      end
+    end
     resources :user_registrations do
       member do
         post :confirm
@@ -33,8 +39,6 @@ Rails.application.routes.draw do
         resources :biographical_entries, only: [:destroy]
       end
 
-      get 'account' => 'accounts#show'
-
       %w{archive  faq_archive_contents faq_index faq_searching faq_technical map_tutorial}.each do |site|
         get site, to: "home##{site}", as: site
         get '/',  to: "home#archive", as: :home
@@ -56,12 +60,15 @@ Rails.application.routes.draw do
       #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
       put 'update_speakers/:id', to: 'interviews#update_speakers'
+      put 'mark_texts/:id', to: 'interviews#mark_texts'
+      put 'merge_registry_entries/:id', to: 'registry_entries#merge'
 
       resources :interviews do
         member do 
           get :doi_contents
+          get :metadata
           get :headings
-          get :initials
+          get :speaker_designations
           #get :references
           get :ref_tree
         end
@@ -152,5 +159,7 @@ Rails.application.routes.draw do
 
   get 'photos/src/:name' => 'photos#src'
   get 'photos/thumb/:name' => 'photos#thumb'
+
+  mount OaiRepository::Engine => "/oai_repository"
 
 end

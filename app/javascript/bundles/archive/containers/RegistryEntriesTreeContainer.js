@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryEntriesTree from '../components/RegistryEntriesTree';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    submitData: (params, locale) => dispatch(submitData(params, locale)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
 })
 

@@ -249,7 +249,7 @@ header.site-header {
   position: relative;
   padding: 30px 5%;
   height: auto;
-  background: $gray-darkest;
+  background: $gray-darker;
   color: #fff;
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
@@ -282,7 +282,7 @@ h1.video-title {
     padding-top: 5px;
   }
 }
-.tapeselector {
+.tapeselector, .resolutionselector {
   float: left;
   margin-right: 20px;
   font-family: FiraSans;
@@ -553,20 +553,21 @@ a.search-result-link {
 .search-result-img {
   overflow: hidden;
   img {
-    -webkit-transform: scale(1);
-    transform: scale(1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
     -webkit-transition: .4s ease-in-out;
     transition: .4s ease-in-out;
   }
   &:hover {
     img {
-      -webkit-transform: scale(1.1);
-      transform: scale(1.1);
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
     }
   }
 }
 
 .search-result {
+  position: relative;
   width: 100%;
   @include screen-m {
     width: 50%;
@@ -580,16 +581,54 @@ a.search-result-link {
     width: 100%;
     display: block;
   }
+  .badge {
+    background-color: #fff;
+    color: #666;
+    cursor: pointer;
+    height: 35px;
+    padding: 5px;
+    position: absolute;
+    right: 20px;
+    text-align: center;
+    top: 0px;
+    vertical-align: middle;
+    width: 60px;
+    z-index: 1;
+  }
+}
+
+.slider {
+  transition: max-height 0.2s ease-out;
+  // display: none;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.detailed .slider {
+  max-height: 250px;
+  transition: max-height 0.4s ease-in;
+  transition-delay: 0.1s;
 }
 
 .search-result-img {
   margin-bottom: 10px;
+  transition: max-height 0.4s ease;
+  max-height: 250px;
+}
+
+.detailed .search-result-img {
+  max-height: 0;
+  overflow: hidden;
 }
 
 .search-result-name {
   font-size: $font-size-large;
   line-height: $line-height-large;
   color: $primary-color;
+}
+
+.detailed .search-result-name {
+  margin-right: 60px;
 }
 
 .search-result-data, .archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
@@ -602,6 +641,10 @@ a.search-result-link {
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
+}
+
+.detailed .search-result-data {
+  display: none;
 }
 
 .search-result-data-inf {
@@ -638,6 +681,10 @@ a.search-result-link {
     padding: 15px 5% 30px 5%;
     background-color: #ddd;
   }
+  .search-results-container {
+    margin: 0 0 0 -20px;
+    padding: 40px 5%;
+  }
 }
 .home-content-logos {
   padding:40px 5%;
@@ -652,6 +699,10 @@ a.search-result-link {
     @include screen-m {
       width: 15%;
       margin: 0 3%;
+    }
+    &.fu-logo {
+      width: 225px !important;
+      height: 63px !important;
     }
     img {
       width: 100%;
@@ -839,5 +890,12 @@ $color4 : lightgrey;
   }
 }
   
-
+.notifications{
+  border: 1px solid red;
+  margin: 10px;
+  padding: 5px 5px 0 5px;
+  p {
+    color: red;
+  }
+}
   

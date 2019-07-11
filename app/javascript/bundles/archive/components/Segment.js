@@ -43,7 +43,7 @@ export default class Segment extends React.Component {
 
     transcript() {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
-        return (this.props.data.text) ? this.props.data.text[locale] : ''
+        return (this.props.data.text) ? (this.props.data.text[locale] || this.props.data.text['de']) : ''
     }
 
     toggleAdditionalContent(type) {
@@ -109,9 +109,11 @@ export default class Segment extends React.Component {
     userAnnotations() {
         if (this.state.contentType == 'annotations') {
             return this.props.data.user_annotation_ids.map((uId, index) => {
-                    return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
+                    if(this.props.userContents && this.props.userContents[uId] && this.props.userContents[uId].description) {
+                        return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
                                 {this.props.userContents[uId].description}
                             </p>
+                    }
             })
         }
     }
@@ -125,7 +127,7 @@ export default class Segment extends React.Component {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             let tabIndex = this.props.originalLocale ? 0 : 1;
             return (
-                <div className="content-trans-speaker-link" title={fullname(this.props, this.props.data.speaking_person)}
+                <div className="content-trans-speaker-link" title={this.props.data.speaking_person ? fullname(this.props, this.props.data.speaking_person) : this.props.data.speaker}
                      onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                     <i className={speakerCss}></i>
                 </div>
@@ -135,12 +137,12 @@ export default class Segment extends React.Component {
 
     renderLinks(locale) {
         if (
-            admin(this.props) || 
+            admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
             (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
 
             return (
                 <div className={icoCss}>
@@ -150,7 +152,7 @@ export default class Segment extends React.Component {
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className="fa fa-sticky-note-o"></i>
                     </div>
-                    <div className={referenceCss} title={t(this.props, 'keywords')}
+                    <div className={referenceCss} title={t(this.props, (this.props.project === 'mog') ? 'keywords_mog' : 'keywords')}
                          onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
                     </div>
                 </div>
@@ -159,7 +161,7 @@ export default class Segment extends React.Component {
     }
 
     edit(locale) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Segment', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -178,7 +180,7 @@ export default class Segment extends React.Component {
     }
 
     editHeadings(locale) {
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'Segment', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

@@ -69,9 +69,7 @@ export default class UserContentForm extends React.Component {
 
     valid() {
         return this.state.title &&
-            this.state.title.length > 1 &&
-            this.state.description &&
-            this.state.description.length > 1
+            this.state.title.length > 1
     }
 
     setErrors() {
@@ -175,7 +173,7 @@ export default class UserContentForm extends React.Component {
                 let key = 'conditions';
                 let link = links[key][locale];
                 return <div className={'annotation-confirmation-text help-block'}
-                            dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation')}}>
+                            dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation', {link: this.props.externalLinks.annotation_guidelines[this.props.locale]})}}>
                 </div>
             }
         }

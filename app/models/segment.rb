@@ -48,8 +48,6 @@ class Segment < ActiveRecord::Base
     includes(:tape, :translations).
     order(:id)}
 
-  scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
-
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
     .order(media_id: :desc)
@@ -58,7 +56,7 @@ class Segment < ActiveRecord::Base
 
 
   # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
-  translates :mainheading, :subheading, :text
+  translates :mainheading, :subheading, :text, :spec
 
   validates_presence_of :timecode#, :media_id
 
@@ -75,6 +73,78 @@ class Segment < ActiveRecord::Base
   #after_create :reassign_user_content
 
   before_validation :do_before_validation_on_create, :on => :create
+
+  class << self
+    def create_or_update_by(opts={})
+      segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
+      assign_speakers_and_update_text(segment, opts)
+    end
+
+    # this methods substitutes speaker_designations (e.g. *CG:*) 
+    # if these speaker_designations do not occur at the beginning of the text, a new segment will be created for each occurence
+    #
+    def assign_speakers_and_update_text(segment, opts)
+      tape = Tape.find opts[:tape_id]
+
+      speaker_designations = opts[:contribution_data].map{|d| d['speaker_designation']}
+      #
+      # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
+      #
+      all_speakers_regexp = Regexp.new(speaker_designations.map{|d| "(#{Regexp.quote(d)})"}.join('|'))
+
+      # 
+      # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
+      #
+      splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text].split(all_speakers_regexp).reject(&:empty?)  
+      time_per_char = calculate_time_per_char(speaker_designations, opts)
+
+      # clean erraneously added blanks
+      while splitted_text.first =~ /^[\n+|\s+]$/
+        splitted_text.shift
+      end
+
+      while !splitted_text.empty?
+        if splitted_text.length.even?
+          speaker_designation = splitted_text.shift
+          text = splitted_text.shift.gsub(/\n+/, '')
+          segment.update_attributes text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+        else
+          text = splitted_text.shift.gsub(/\n+/, '')
+          segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
+        end
+
+        # if there is another speaker_designation in the text
+        # check whether there is  an automatically generated segment (from reading in the transcript in another language)
+        # or create it
+        #
+        unless splitted_text.empty?
+          next_time = Timecode.new(segment.timecode).time + text.length * time_per_char
+          if segment.next && segment.next.timecode < opts[:next_timecode]
+            segment = segment.next 
+          else
+            # if the calculated start-time for the next segment is bigger than the actual tape`s time
+            # associate to the next tape
+            # set time  of next segment to zero or a given shift
+            #
+            if next_time > tape.duration
+              tape = tape.next
+              next_time = tape.time_shift
+            end
+            segment = create(interview_id: opts[:interview_id], tape_id: tape.id, timecode: Timecode.new(next_time).timecode)
+          end
+        end
+      end
+    end
+
+    def calculate_time_per_char(speaker_designations, opts)
+      # this regexp has  no capture groups!!
+      all_speakers_regexp = Regexp.new(speaker_designations.map{|d| Regexp.quote(d)}.join('|'))
+      clean_text = opts[:text].gsub(all_speakers_regexp, '').gsub(/\n+/, '')
+      duration = Timecode.new(opts[:next_timecode]).time - Timecode.new(opts[:timecode]).time
+      duration/clean_text.length
+    end
+
+  end
 
   def identifier
     id
@@ -101,6 +171,7 @@ class Segment < ActiveRecord::Base
     string :archive_id, :stored => true
     string :media_id, :stored => true
     string :timecode
+    string :sort_key
 
     # dummy method, necessary for generic search
     string :workflow_state do
@@ -165,13 +236,18 @@ class Segment < ActiveRecord::Base
     text(ISO_639.find(locale).send(Project.alpha))
   end
 
-  def transcripts
-    # TODO: rm Nokogiri parser after segment sanitation
-    translations.inject({}) do |mem, translation|
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "") : ''
-      #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
+  def transcripts(allowed_to_see_all=false)
+    hide_original = translations.where(spec: 'with_replacements').count > 0 && !allowed_to_see_all
+    selected_translations = hide_original ? translations.where(spec: 'with_replacements') : translations
+    selected_translations.inject({}) do |mem, translation|
+      # TODO: rm Nokogiri parser after segment sanitation
+      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
       mem
     end
+  end
+
+  def sort_key
+    "#{tape_id}.#{timecode}"
   end
 
   def orig_lang
@@ -194,6 +270,17 @@ class Segment < ActiveRecord::Base
     (read_attribute(:media_id) || '').upcase
   end
 
+  #
+  # only return speaker attribute if no speaker_id is set
+  #
+  def speaker_designation
+    speaker_id.blank? && speaker
+  end
+
+  def create_or_update_marked_copy(text, locale, specification)
+    translations.find_or_create_by(locale: 'bs', spec: specification).update_attribute(:text, text)
+  end
+
   # return a range of media ids up to and not including the segment's media id
   def media_ids_up_to(segment)
     segment = nil if (segment.tape != self.tape) || (segment.media_id < self.media_id)
@@ -210,17 +297,8 @@ class Segment < ActiveRecord::Base
     ids
   end
 
-  def initials(locale)
-    inits = []
-    if !text(locale).blank?
-      raw_initials = text(locale)[/\*\w+:\*/]
-      inits << raw_initials[/\w+/] if raw_initials
-    end
-    inits
-  end
-
   def time
-    @time ||= Time.parse(timecode).seconds_since_midnight
+    @time ||= Timecode.new(timecode).time
   end
 
   def next

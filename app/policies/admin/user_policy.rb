@@ -13,7 +13,7 @@ class Admin::UserPolicy < ApplicationPolicy
       if user.admin?
         scope.where(admin: true).order(last_name: :asc)
       else
-        []
+        scope.none
       end
     end
   end

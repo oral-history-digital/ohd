@@ -16,6 +16,7 @@ class CreateBiographicalEntries < ActiveRecord::Migration[5.2]
     end
 
     if Project.name.to_sym == :mog
+      raise "*** Check histories first!!"
       History.find_each do |history|
         BiographicalEntry.create( 
           text: history.forced_labor_details, 
@@ -24,7 +25,7 @@ class CreateBiographicalEntries < ActiveRecord::Migration[5.2]
           person_id: history.person_id
         )
       end
-      History.destroy_all
+      #History.destroy_all
     end
   end
 end

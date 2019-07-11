@@ -1,6 +1,7 @@
 import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
+    SET_VIEW_MODE,
 
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
@@ -9,20 +10,25 @@ import {
 
     //EXPORT_DOI,
     RECEIVE_RESULT,
-    UPDATE_SELECTED_ARCHIVE_IDS
+    UPDATE_SELECTED_ARCHIVE_IDS,
+    SET_SELECTED_ARCHIVE_IDS
 } from '../constants/archiveConstants';
 
 const initialState = {
     locale: 'de',
-    locales: ['de', 'el'],
+    locales: ['de', 'en'],
     archiveId: null,
+    viewModes: ['grid', 'list'],
+    viewMode: 'grid',
+
+    listColumns: [{"id":"camps", "source":"registry_entry", "use_as_facet": true, "display_on_landing_page": true, "use_as_column": true}],
 
     homeContent: "",
     externalLinks: {},
 
-    editView: true,
+    editView: false,
     doiResult: {},
-    selectedArchiveIds: []
+    selectedArchiveIds: ['dummy']
 }
 
 const archive = (state = initialState, action) => {
@@ -36,8 +42,16 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 archiveId: action.archiveId
             })
+        case SET_VIEW_MODE:
+            return Object.assign({}, state, {
+                viewMode: action.viewMode
+            })
+        case SET_SELECTED_ARCHIVE_IDS:
+            return Object.assign({}, state, { selectedArchiveIds: ['dummy'].concat(action.archiveIds) })
         case UPDATE_SELECTED_ARCHIVE_IDS:
-            if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
+            if(action.archiveId === -1) {
+                return Object.assign({}, state, { selectedArchiveIds: ['dummy'] })
+            } else if(state.selectedArchiveIds.indexOf(action.archiveId) === -1) {
                 return Object.assign({}, state, { selectedArchiveIds: [...state.selectedArchiveIds, action.archiveId] })
             } else {
                 return Object.assign({}, state, { selectedArchiveIds: state.selectedArchiveIds.filter(archiveId => archiveId !== action.archiveId) })
@@ -61,11 +75,16 @@ const archive = (state = initialState, action) => {
                 languages: action.languages,
                 uploadTypes: action.uploadTypes,
                 locales: action.locales,
+                viewMode: state.viewMode || action.viewMode,
+                viewModes: action.viewModes,
+                listColumns: action.listColumns,
                 project: action.project,
                 projectDoi: action.projectDoi,
+                hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,
-                projectDomain: action.projectDomain
+                projectDomain: action.projectDomain,
+                mediaStreams: action.mediaStreams,
             })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {

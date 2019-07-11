@@ -9,11 +9,23 @@ default: &default
     - el
     #- alias
 
-  default_locale: all
+  # grid, list and/or map
+  view_modes:
+    - grid
+
+  default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha3_terminologic'
+
+  media_streams:
+    defaults:
+      video: 480p
+    video:
+      240p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_720p.mp4
 
   # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
   contribution_types:
@@ -22,6 +34,11 @@ default: &default
     transcriptor: 'Transcribed / described'
     translator: 'Translated'
     segmentator: 'Indexed'
+
+  upload_types:
+    - bulk_metadata
+    - bulk_texts
+    - bulk_photo
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Erinnerungen an die Okkupation in Griechenland'
@@ -37,11 +54,25 @@ default: &default
 
   project_id: 'mog'
 
+  # used in PDFs
+  # give the color code as fractions of 255
+  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
+  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
+
   project_shortname: 'MOG'
 
   project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
   project_doi: '10.17169/mog.'
+
+  cooperation_partner: "Nationale Kapodistrias-Universität Athen"
+  leader: "Apostolopoulos, Nicolas; Fleischer, Hagen"
+  manager: "Athanasiadou, Ozeni; Droumpouki, Anna Maria; Nägel, Verena"
+  hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
+  funder_names: 
+    - "Auswärtiges Amt der Bundesrepublik Deutschland"
+    - "Stavros Niarchos Foundation"
+    - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
@@ -95,34 +126,47 @@ default: &default
   # - Interview partner properties will be used as search facets when setting the facet property to 'true'. The order of
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
-  person_properties:
-    - id: 'person_reference'
-      source: 'registry_entry'
-      descriptor: 'Person'
-    - id: 'gender'
-      source: 'person'
-      use_as_facet: true
-      values:
-        female: 'Woman'
-        male: 'Man'
-    - id: 'year_of_birth'
-      source: 'person'
-      use_as_facet: true
-    - id: 'typology'
-      source: 'person'
+  person_properties: 
+    - 
+      id: person_reference
+      source: registry_entry
+      descriptor: Person
+    - 
+      id: gender
+      source: person
       use_as_facet: true
       values: 
-        resistance: 'Resistance'
-        retaliation: 'Retaliation'
-        concentration_camp: 'Concentration camp'
-        persecution_of_jews: 'Persecution of Jews'
-        occupation: 'Occupation'
-        flight: 'Flight'
-        collaboration: 'Collaboration'
-    - id: 'periods'
-      source: 'registry_entry'
+        female: Woman
+        male: Man
+    - 
+      id: year_of_birth
+      source: person
       use_as_facet: true
-      entry_dedalo_code: "hierarchy1_246"
+    - 
+      id: typology
+      source: person
+      use_as_facet: true
+      values: 
+        collaboration: Collaboration
+        concentration_camp: "Concentration camp"
+        flight: Flight
+        occupation: Occupation
+        persecution_of_jews: "Persecution of Jews"
+        resistance: Resistance
+        retaliation: Retaliation
+    - 
+      id: periods
+      source: registry_entry
+      entry_dedalo_code: hierarchy1_246
+      use_as_facet: true
+
+
+  pdf_registry_entry_codes:
+    - 'thematic'
+    - 'centers_of_depriviation_of_liberty'
+    - 'organizations'
+    - 'places'
+    - 'periods'
 
 development:
   <<: *default

@@ -28,7 +28,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   # Store files locally.
-  config.active_storage.service = :local
+  config.active_storage.service = :fu_server
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -69,7 +69,9 @@ Rails.application.configure do
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
+  # If you're using I18n (>= 1.1.0) and Rails (< 5.2.2), this should be
+  # 'config.i18n.fallbacks = [I18n.default_locale]'.
+  config.i18n.fallbacks = [I18n.default_locale]
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
@@ -90,7 +92,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { host: Project.project_domain, protocol: 'https' }
+  config.action_mailer.default_url_options = { host: Project.archive_domain, protocol: Project.name == 'campscapes' ? 'http' : 'https' }
 
   config.action_mailer.delivery_method = :smtp
 

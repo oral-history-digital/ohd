@@ -4,7 +4,7 @@ import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import { t } from '../../../lib/utils';
+import { t, iOS } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class ArchiveSearchForm extends React.Component {
@@ -45,6 +45,10 @@ export default class ArchiveSearchForm extends React.Component {
         params = this.getValueFromDataList(params, event);
         params = this.prepareQuery(params);
         params['page'] = 1;
+        // close flyout if in XS oder S resolution
+        if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
+            this.props.hideFlyoutTabs();
+        }
         this.submit(params);
     }
 
@@ -202,13 +206,17 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     renderDataList() {
-        return (
-            <datalist id="allInterviewTitles">
-                <select>
-                    {this.renderOptions()}
-                </select>
-            </datalist>
-        );
+        if( !iOS() ) {
+            return (
+                <datalist id="allInterviewTitles">
+                    <select>
+                        {this.renderOptions()}
+                    </select>
+                </datalist>
+            );
+        } else {
+            return null;
+        }
     }
 
     renderOptions() { 

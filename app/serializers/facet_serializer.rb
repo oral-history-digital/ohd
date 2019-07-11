@@ -1,32 +1,33 @@
-class FacetSerializer < ActiveModel::Serializer
+class FacetSerializer < ApplicationSerializer
   attributes :id,
              :name,
              :subfacets
 
   def name
-    object.localized_hash
+    facet_label_hash = Project.person_properties.select { |c| c["id"] == object.entry_code }[0]["facet_label"]
+    facet_label_hash || object.localized_hash
   end
 
   def subfacets
     case object.class.name
-    when 'RegistryEntry'
+    when "RegistryEntry"
       object.children.inject({}) do |mem, child|
         mem[child.id] = {
           name: child.localized_hash,
           count: 0,
-          priority: child.list_priority
+          priority: child.list_priority,
         }
         mem
       end
-    when 'RegistryReferenceType'
+    when "RegistryReferenceType"
       object.registry_references.inject({}) do |mem, ref|
         mem[ref.registry_entry_id] = {
           name: ref.registry_entry.localized_hash,
-          count: 0
+          count: 0,
         }
         mem
       end
-    when 'Person'
+    when "Person"
     end
   end
 end

@@ -1,5 +1,5 @@
 <% 
-  interviewee_name = @interview.interviewees.first.name[@locale]
+  interviewee_name = @interview.interviewees.last.name(true)[@locale]
   title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_header' : 'translation_header', locale: @locale)} #{interviewee_name}"
   header_text = "#{I18n.t('transcript', locale: @locale)}:  #{I18n.t('interview_with', locale: @locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
   tape = 0
@@ -31,7 +31,7 @@
            
 \newpage
 
-<%= render partial: "./latex/observation" if @interview.observations(@locale) %>
+<%= render partial: "./latex/observation" if @interview.observations(@locale) && Project.name != 'zwar' %>
 
 <%# set title of  tableofcontents: %>
 \renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}

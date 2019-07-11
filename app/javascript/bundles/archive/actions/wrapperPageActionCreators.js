@@ -27,11 +27,16 @@ function receiveStaticContent(json){
         languages: json.languages,
         uploadTypes: json.upload_types,
         locales: json.locales,
+        viewModes: json.view_modes,
+        viewMode: json.view_mode,
+        listColumns: json.list_columns,
         project: json.project,
         projectDoi: json.project_doi,
+        hiddenRegistryEntryIds: json.hidden_registry_entry_ids,
         projectName: json.project_name,
         projectDomain: json.project_domain,
         archiveDomain: json.archive_domain,
+        mediaStreams: json.media_streams,
         receivedAt: Date.now()
     }
 }

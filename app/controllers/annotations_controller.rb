@@ -10,7 +10,7 @@ class AnnotationsController < ApplicationController
     #@annotation.submit! if @annotation.private? && params[:publish]
 
     clear_cache @annotation.segment
-    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    Rails.cache.delete "#{Project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
 
     respond_to do |format|
       format.json do
@@ -34,7 +34,7 @@ class AnnotationsController < ApplicationController
     @annotation.update_attributes annotation_params
 
     clear_cache @annotation.segment
-    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    Rails.cache.delete "#{Project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
 
     respond_to do |format|
       format.json do
@@ -57,7 +57,7 @@ class AnnotationsController < ApplicationController
     @annotation.destroy
 
     clear_cache @annotation.segment
-    Rails.cache.delete "#{Project.project_id}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    Rails.cache.delete "#{Project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
 
     respond_to do |format|
       format.json do

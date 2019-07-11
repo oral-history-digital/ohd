@@ -1,5 +1,247 @@
 namespace :import do
 
+  desc 'all'
+  task :all => [
+    'import:tapes',
+    'import:languages',
+    'import:registry_references',
+    'import:contributions'
+  ] do
+    puts 'complete.'
+  end
+
+  task tapes: :environment do
+    #file_path = "/data/applications/zwar_archive/current/tapes.csv"
+    #file_path = "../unpublished_exported_from_zwar_platform/tapes.csv"
+    file_path = "za026-tapes.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        interview = Interview.find_by_archive_id(data[0])
+        # [interview.archive_id, tape.media_id, tape.duration, tape.filename, tape.workflow_state, tape.indexed_at]
+        Tape.create interview_id: interview.id, media_id: data[1], duration: data[2], filename: data[3], workflow_state: data[4]
+      rescue StandardError => e
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
+  task languages: :environment do
+    #file_path = "/data/applications/zwar_archive/current/languages.csv"
+    file_path = "../unpublished_exported_from_zwar_platform/languages.csv"
+    #file_path = "za026-language.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        language = Language.find_by_code(data[1]) 
+        interview = Interview.find_by_archive_id(data[0])
+        interview.update_attributes language_id: language.id
+        binding.pry
+      rescue StandardError => e
+        puts "#{data[0]}: #{data[1]}"
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
+  task registry_references: :environment do
+    #file_path = "/data/applications/zwar_archive/current/registry_references.csv"
+    file_path = "../unpublished_exported_from_zwar_platform/registry_references.csv"
+    #file_path = "za026-registry_references.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        unless data[1] == 'Segment'
+          # za026;Person;26;forced_labor_location;28400
+          interview = Interview.find_by_archive_id(data[0])
+          registry_reference_type = data[3] && RegistryReferenceType.find_by_code(data[3])
+          if interview && data[1] == 'Person'
+
+            registry_entry = nil
+            if data[5]
+              data[5].gsub("\"", '').split('#').each do |name_w_locale| 
+                locale, names = name_w_locale.split('::')
+                names = names.split(';')
+                names.each do |name|
+                  registry_entry = RegistryEntry.joins(registry_names: :translations).where("registry_name_translations.descriptor": name).first unless registry_entry
+                end
+              end
+            end
+            registry_entry_id = registry_entry && registry_entry.id
+            puts "*** registry_entry #{data[4]} #{registry_entry ? '' : 'NOT'} found by name"
+
+            unless registry_entry 
+              registry_entry = RegistryEntry.find_by_id(data[4])
+              puts "*** registry_entry #{data[4]} #{registry_entry ? '' : 'NOT'} found by id"
+
+              if registry_entry
+                registry_entry_names = registry_entry.registry_names.map{|rn| rn.translations.map{|t| t.descriptor.split(';')}}.flatten
+                found = false
+                if data[5]
+                  data[5].gsub("\"", '').split('#').each do |name_w_locale| 
+                    locale, names = name_w_locale.split('::')
+                    names = names.split(';')
+                    names.each do |name|
+                      found = true if registry_entry_names.include?(name) 
+                    end
+                  end
+                end
+                registry_entry_id = data[4] if found #data_name_de && name_de =~ Regexp.new(Regexp.escape(data_name_de))
+
+                puts "*** registry_entry names: #{registry_entry_names}"
+                puts "*** data: #{data[5]}"
+                puts "*** #{registry_entry_id ? 'match' : 'no match'}"
+              else
+                # check if parent exists
+                parent = RegistryEntry.find_by_id(data[6])
+                if parent 
+                  parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('::')}}.join(';')
+                  if parent_names == data[7].gsub("\"", '')
+                    registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[5].gsub("\"", '')).id
+                    puts "*** registry_entry #{registry_entry_id} with parent created"
+                  else
+                    puts "*** registry_entry #{data[4]} with parent #{data[6]} not found and not created"
+                    puts "TO CREATE: #{data[4]}, #{data[6]}"
+                  end
+                elsif data[6].nil?
+                  registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[5].gsub("\"", '') || []).id
+                  puts "*** registry_entry #{registry_entry_id} without parent created"
+                end
+              end
+            end
+
+            if registry_entry_id
+              RegistryReference.create(
+                interview_id: interview.id,
+                ref_object_id: interview.id,
+                ref_object_type: 'Interview',
+                ref_position: 0,
+                workflow_state: 'preliminary',
+                registry_reference_type_id: registry_reference_type && registry_reference_type.id,
+                registry_entry_id: registry_entry_id
+              )
+              puts "*** registry_entry #{registry_entry_id} referenced"
+            else
+              puts "*** registry_entry #{data[4]} NOT referenced"
+            end
+            puts "*************************************************"
+          else
+            puts "interview #{data[0]} not found"
+          end
+        end
+      rescue StandardError => e
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
+  task registry_entries: :environment do
+    file_path = "../unpublished_exported_from_zwar_platform/registry_entries.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        # check if parent exists
+        parent = RegistryEntry.find_by_id(data[2])
+        if parent 
+          parent_names = parent.registry_names.map{|rn| rn.translations.map{|t| [t.locale, t.descriptor].join('-')}}.join(',')
+          if parent_names == data[3]
+            registry_entry_id = RegistryEntry.create_with_parent_and_names(parent.id, data[1]).id
+            puts "*** registry_entry #{registry_entry_id} with parent created"
+          else
+            puts "*** registry_entry #{data[0]} with parent #{data[2]} not found and not created"
+            puts "TO CREATE: #{data[0]}, #{data[2]}"
+          end
+        elsif data[2].nil?
+          registry_entry_id = RegistryEntry.create_with_parent_and_names(nil, data[1] || []).id
+          puts "*** registry_entry #{registry_entry_id} without parent created"
+        end
+      rescue StandardError => e
+        puts ("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
+  task contributions: :environment do
+    #file_path = "../unpublished_exported_from_zwar_platform/contributions.csv"
+    file_path = "za026-contributions.csv"
+    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00", force_quotes: true })
+    csv.each_with_index do |data, index|
+      begin
+        unless data[0].blank? 
+
+          # en
+          I18n.locale = :en 
+          person = Person.find_or_create_by(first_name: data[2], last_name: data[3])
+          history = person.histories.first || History.create(person_id: person.id)
+          history.update_attributes(
+            return_date: data[20],
+            forced_labor_details: data[21],
+          )
+          person.update_attributes(
+            birth_name: data[19],
+            other_first_names: data[22] # middle_names
+          )
+
+          # de
+          I18n.locale = :de 
+          person.update_attributes(first_name: data[0], last_name: data[1])
+          history.update_attributes(
+            return_date: data[16],
+            forced_labor_details: data[17],
+          )
+          person.update_attributes(
+            birth_name: data[15],
+            other_first_names: data[18] # middle_names
+          )
+
+          # ru
+          I18n.locale = :ru 
+          person.update_attributes(first_name: data[4], last_name: data[5])
+          history.update_attributes(
+            return_date: data[24],
+            forced_labor_details: data[25],
+          )
+          person.update_attributes(
+            birth_name: data[23],
+            other_first_names: data[26] # middle_names
+          )
+
+          # untranslated
+          person.update_attributes(
+            gender: data[7],
+            alias_names: data[8],
+            date_of_birth: data[9],
+          )
+
+          history.update_attributes(
+            deportation_date: data[10],
+            #forced_labor_industry: data[11],
+            #forced_labor_habitation_details: data[12],
+            punishment: data[13],
+            liberation_date: data[14]
+          )
+
+          contributions = data[6] && data[6].split(',')
+          contributions.each do |contribution|
+            archive_id, contribution_type = contribution.split('-')
+            interview = Interview.find_by_archive_id(archive_id)
+            if interview
+              Contribution.find_or_create_by(
+                person_id: person.id,
+                interview_id: interview.id,
+                contribution_type: contribution_type
+              )
+            else
+              puts "interview #{archive_id} not found"
+            end
+          end
+        end
+      rescue StandardError => e
+        log("#{e.message}: #{e.backtrace}")
+      end
+    end
+  end
+
   namespace :setup do
     desc 'complete setup of a new project'
     task :all => [:environment, 'solr:start', :prepare_new_project, 'solr:delete:all']

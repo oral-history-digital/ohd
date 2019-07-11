@@ -5,7 +5,7 @@ class RolesController < ApplicationController
     @role = Role.create role_params
     respond_to do |format|
       format.json do
-        render json: data_json(@role, 'processed')
+        render json: data_json(@role, msg: 'processed')
       end
     end
   end
@@ -16,7 +16,7 @@ class RolesController < ApplicationController
     @role.update_attributes role_params
     respond_to do |format|
       format.json do
-        render json: data_json(@role, 'processed')
+        render json: data_json(@role, msg: 'processed')
       end
     end
   end
@@ -29,7 +29,7 @@ class RolesController < ApplicationController
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = Rails.cache.fetch "#{Project.project_id}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "#{Project.cache_key_prefix}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
           {
             data: roles.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'roles',
@@ -37,7 +37,7 @@ class RolesController < ApplicationController
             page: params[:page], 
             result_pages_count: roles.total_pages
           }
-        end
+        #end
         render json: json
       end
     end

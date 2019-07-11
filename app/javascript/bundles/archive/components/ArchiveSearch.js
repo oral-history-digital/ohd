@@ -39,6 +39,16 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
+    listHeader() {
+        let props = this.props
+        return props.listColumns.map(function(column, i){
+            let label = (column['facet_label'] && column['facet_label'][props.locale] ) || t(props, column['id'])
+            return (
+                <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
+            )
+        })
+    }
+
     foundInterviews(displayType) {
         if (this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
@@ -49,28 +59,25 @@ export default class ArchiveSearch extends React.Component {
                     this.props.foundInterviews.map((interview, index) => {
                         return <InterviewPreviewContainer
                             interview={interview}
-                            key={"interview-" + interview.archive_id}
+                            key={"interview-" + interview.archive_id + "-" + index}
                         />;
                     })
                 )
             }
-            else {
+            else if (displayType === 'list') {
                 return (
                     <table style={{padding: '0 20px', width: '100%'}}>
                         <thead>
                             <tr>
-                                {/* <td>Archive ID</td> */}
                                 <td><strong>{t(this.props, 'interviewee_name')}</strong></td>
-                                <td><strong>{t(this.props, 'search_facets.media_type')}</strong></td>
-                                <td><strong>{t(this.props, 'duration')}</strong></td>
-                                <td><strong>{t(this.props, 'language')}</strong></td>
+                                {this.listHeader()}
                             </tr>
                         </thead>
                         <tbody>
                             {this.props.foundInterviews.map((interview, index) => {
                                 return <InterviewListRowContainer
                                     interview={interview}
-                                    key={"interview-row-" + interview.archive_id}
+                                    key={"interview-row-" + interview.archive_id + "-" + index}
                                 />;
                             })}
                         </tbody>
@@ -88,6 +95,11 @@ export default class ArchiveSearch extends React.Component {
             this.props.searchInArchive(url, query);
         }
     }
+
+    handleTabClick(tabIndex) {
+        this.props.setViewMode(this.props.viewModes[tabIndex])
+    }
+
 
     renderPagination() {
         if (this.props.resultPagesCount > 1) {
@@ -213,10 +225,34 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
+    searchResultTabs() {
+        let _this = this;
+        return _this.props.viewModes.map(function(viewMode, i) {
+            let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
+            return (
+                <Tab className={'search-results-tab ' + visibility} key={i}>
+                    {/* <i className="fa fa-th"></i> */}
+                    <span>{t(_this.props, viewMode)}</span>
+                </Tab>
+            )   
+        })
+    }
+
+    tabPanels() {
+        let _this = this
+        return this.props.viewModes.map(function(viewMode, i) {
+            return (
+                <TabPanel key={i}>
+                    {_this.content(viewMode)}
+                </TabPanel>
+            )
+        })
+    }
+
     render() {
         return (
             <WrapperPageContainer
-                tabIndex={ this.props.locales.length + 2 }
+                tabIndex={ this.props.locales.length + 1 }
             >
                 <div className='wrapper-content interviews'>
                     <h1 className="search-results-title">{t(this.props, (this.props.project === 'mog') ? 'archive_results' : 'interviews')}</h1>
@@ -232,37 +268,13 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={0}
+                        defaultIndex={this.props.viewModes.indexOf(this.props.viewMode)}
+                        onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
-                            <Tab className='search-results-tab'>
-                                <i className="fa fa-th"></i>
-                                <span>{t(this.props, 'grid')}</span>
-                            </Tab>
-                            <Tab className='search-results-tab'>
-                                <i className="fa fa-th-list"></i>
-                                <span>{t(this.props, 'list')}</span>
-                            </Tab>
-                            <Tab className={'search-results-tab' + (this.props.project === 'zwar' && ' hidden' || '')}>
-                                <i className="fa fa-map-o"></i>
-                                <span>{t(this.props, 'places')}</span>
-                            </Tab>
+                            {this.searchResultTabs()}
                         </TabList>
-                        <TabPanel>
-                            {this.content('grid')}
-                        </TabPanel>
-                        <TabPanel>
-                            {/* <div> */}
-                                {/* <div className='search-results-explanation'>{t(this.props, 'archive_map_explanation')}</div> */}
-                                {/* {this.renderPagination()} */}
-                                {/* <ArchiveLocationsContainer/> */}
-                                {/* {this.renderPagination()} */}
-                            {/* </div> */}
-                            {this.content('list')}
-                        </TabPanel>
-                        <TabPanel>
-                            <ArchiveLocationsContainer/>
-                        </TabPanel>
+                        {this.tabPanels()}
                     </Tabs>
                 </div>
             </WrapperPageContainer>

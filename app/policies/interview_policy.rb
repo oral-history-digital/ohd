@@ -6,15 +6,15 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def dois?
-    user.admin? || user.permissions?(record.class_name.underscore, :update) || user.tasks?(record) 
+    user.admin? || user.permissions?(record.class.name, :update) || user.tasks?(record) 
   end
 
   def doi_contents?
     show?
   end
 
-  def initials?
-    show?
+  def speaker_designations?
+    dois?
   end
 
   def ref_tree?
@@ -26,7 +26,11 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def update_speakers?
-    show?
+    dois?
+  end
+
+  def mark_texts?
+    dois?
   end
 
 end

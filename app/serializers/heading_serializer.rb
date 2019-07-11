@@ -1,4 +1,4 @@
-class HeadingSerializer < ActiveModel::Serializer
+class HeadingSerializer < ApplicationSerializer
   include IsoHelpers
 
   attributes :id,

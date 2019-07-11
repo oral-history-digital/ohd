@@ -8,7 +8,6 @@ class UserRegistrationsController < ApplicationController
   before_action :filter_user_registrations, only: [:index]
 
   respond_to :json, :html
-  layout 'responsive'
 
   def new
     @user_registration = UserRegistration.new
@@ -28,7 +27,7 @@ class UserRegistrationsController < ApplicationController
       @user_registration = UserRegistration.where(email: @user_registration.email).first
       if @user_registration.checked?
         # re-send the activation instructions
-        UserAccountMailer.with(user_account: @user_registration.user_account).account_activation_instructions.deliver
+        @user_registration.user_account.resend_confirmation_instructions
       end
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
@@ -57,7 +56,7 @@ class UserRegistrationsController < ApplicationController
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
 
-    @user_account.confirm!(password, password_confirmation)
+    @user_account.confirm_with_password!(password, password_confirmation)
     if @user_account.errors.empty?
       @user_account.reset_password_token = nil
       flash[:alert] = t('welcome', :scope => 'devise.registrations')
@@ -79,7 +78,7 @@ class UserRegistrationsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_registration, 'processed')
+        render json: data_json(@user_registration, msg: 'processed')
       end
     end
   end
@@ -175,6 +174,14 @@ class UserRegistrationsController < ApplicationController
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
       conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
     end
+    # other attributes
+    %w(email default_locale).each do |att|
+      @filters[att] = params[att]
+      unless @filters[att].blank?
+        conditionals << "#{att} = ?"
+        condition_args << @filters[att]
+      end
+    end
     # user name
     %w(last_name first_name).each do |name_part|
       @filters[name_part] = params[name_part]
@@ -194,7 +201,7 @@ class UserRegistrationsController < ApplicationController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
-    @user_registrations = policy_scope(UserRegistration).where(conditions).order("created_at DESC").paginate page: params[:page] || 1
+    @user_registrations = policy_scope(UserRegistration).includes(user: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
   end
 
   def translate_field_or_value(field, value=nil)

@@ -2,25 +2,24 @@ import { connect } from 'react-redux';
 
 import WrappedDataList from '../components/WrappedDataList';
 import RolePermissionsContainer from '../containers/RolePermissionsContainer';
-import { 
-    setQueryParams, 
-} from '../actions/searchActionCreators';
+import { setQueryParams } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        account: state.account,
-        editView: state.archive.editView,
+        account: state.data.accounts.current,
+        editView: getCookie('editView'),
         data: state.data.roles,
         dataStatus: state.data.statuses.roles,
         resultPagesCount: state.data.statuses.roles.resultPagesCount,
         query: state.search.roles.query,
         scope: 'role',
-        baseTabIndex: 10,
+        baseTabIndex: 5,
         detailsAttributes: ['name', 'desc'],
         formElements: [
             {

@@ -6,21 +6,22 @@ import {
 } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        account: state.account,
-        editView: state.archive.editView,
+        account: state.data.accounts.current,
+        editView: getCookie('editView'),
         data: state.data.permissions,
         dataStatus: state.data.statuses.permissions,
         resultPagesCount: state.data.statuses.permissions.resultPagesCount,
         query: state.search.permissions.query,
         scope: 'permission',
-        baseTabIndex: 11,
-        detailsAttributes: ['name', 'desc', 'controller', 'action'],
+        baseTabIndex: 5,
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 attribute: 'name',
@@ -31,11 +32,11 @@ const mapStateToProps = (state) => {
                 attribute: 'desc',
             },
             {
-                attribute: 'controller',
+                attribute: 'klass',
                 validate: function(v){return v.length > 1} 
             },
             {
-                attribute: 'action',
+                attribute: 'action_name',
                 validate: function(v){return v.length > 1} 
             },
         ]

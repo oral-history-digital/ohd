@@ -49,19 +49,25 @@ export default class DataSearchForm extends React.Component {
         this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
     }
 
-    optionsForSelect(attributeName, opts) {
-        return opts.map((value, index) => {
+    optionsForSelect(attributeName, values) {
+        let opts = values.map((value, index) => {
             return (
                 <option value={value} key={`${attributeName}-option-${index}`}>
                     {t(this.props, `${pluralize(attributeName)}.${value}`)}
                 </option>
             )
         })
+        opts.unshift(
+            <option value='' key={`${this.props.scope}-choose`}>
+                {t(this.props, 'choose')}
+            </option>
+        )
+        return opts;
     }
 
     searchFormElement(element) {
         let opts = {
-            className: "search-input" ,
+            className: "search-input full" ,
             name: element.attributeName,
             value: this.props.query[element.attributeName],
             onChange: this.handleChange,

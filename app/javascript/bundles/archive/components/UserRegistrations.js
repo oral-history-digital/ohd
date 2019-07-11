@@ -29,23 +29,23 @@ export default class UserRegistrations extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            this.props.setQueryParams('userRegistrations', {page: this.props.query.page + 1});
+            this.props.setQueryParams('user_registrations', {page: this.props.query.page + 1});
             this.props.fetchData('user_registrations', null, null, this.props.locale, parametrizedQuery(this.props.query));
         }
     }
 
     userRegistrations() {
-        if (this.props.userRegistrations) {
-            return Object.keys(this.props.userRegistrations).map((c, index) => {
+        if (this.props.userRegistrations && Object.keys(this.props.userRegistrations).length > 0) {
+            return Object.keys(this.props.userRegistrations).sort(function(a, b){return b-a}).map((c, index) => {
                 return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
             })
         } else {
-            return null;
+            return (<div className="content-search-legend"><p>0 {t(this.props, 'user_registration_results')}</p></div>);
         }
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 9;
+        let tabIndex = this.props.locales.length + 4;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>

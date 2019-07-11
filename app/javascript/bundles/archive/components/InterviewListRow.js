@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 
 import { t } from '../../../lib/utils';
 
+import AuthShowContainer from '../containers/AuthShowContainer';
+
 export default class InterviewListRow extends React.Component {
 
     constructor(props) {
@@ -22,8 +24,6 @@ export default class InterviewListRow extends React.Component {
         )
     }
 
-
-
     typologies(){
         let interviewee =  this.props.interview.interviewees && this.props.interview.interviewees[0];
         if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
@@ -35,9 +35,14 @@ export default class InterviewListRow extends React.Component {
         }
     }
 
-
-
-
+    column(){
+        let props = this.props
+        return props.listColumns.map(function(column, i){
+            return (
+                <td key={i}>{(props.interview[column['id']] && props.interview[column['id']][props.locale])}</td>
+            )
+        })
+    }
 
     render() {
         return (
@@ -51,12 +56,15 @@ export default class InterviewListRow extends React.Component {
                         to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
                         element='tr'
                     >
-                        {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
+                        </AuthShowContainer>
                     </Link>
                 </td>
-                <td>{this.props.interview.video_array[this.props.locale]}</td>
-                <td>{this.props.interview.formatted_duration}</td>
-                <td>{this.props.interview.languages_array[this.props.locale]}</td>
+                {this.column()}
             </tr>
         );
     }

@@ -5,9 +5,10 @@
       {
         "modules": false,
         "targets": {
-          "browsers": "> 1%"
+          "browsers": "> 0.25%"
         },
         "useBuiltIns": "entry",
+        "corejs": 2,
         "forceAllTransforms": true
       }
     ],

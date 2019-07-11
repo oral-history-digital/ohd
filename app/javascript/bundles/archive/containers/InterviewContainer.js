@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: state.archive.locales,
         translations: state.archive.translations,
-        account: state.account,
+        account: state.data.accounts.current,
         interviews: state.data.interviews,
         interviewsStatus: state.data.statuses.interviews,
         people: state.data.people,

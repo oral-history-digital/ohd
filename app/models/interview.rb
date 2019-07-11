@@ -1,10 +1,12 @@
 require 'globalize'
-require "#{Rails.root}/lib" + '/reference_tree.rb'
-
+require 'webvtt'
+require "#{Rails.root}/lib/reference_tree.rb"
+require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ActiveRecord::Base
   include IsoHelpers
   include Workflow
+  include OaiRepository::Set
 
   belongs_to :collection
 
@@ -19,8 +21,11 @@ class Interview < ActiveRecord::Base
            #:dependent => :destroy
 
   has_many :tapes,
-           -> {includes(:interview)},
-           :dependent => :destroy,
+           -> {
+                  includes(:interview).
+                  order(:media_id)
+           },
+           dependent: :destroy,
            inverse_of: :interview
 
   has_many :annotations,
@@ -112,7 +117,9 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           -> { includes(:translations).order([:tape_number, :timecode]) },
+           # be careful here! segments from different tapes may be mixed.
+           # to really have segments ordered do sth. like tape.segments ...
+           -> { includes(:translations).order(:timecode) },
            dependent: :destroy
            #inverse_of: :interview
 
@@ -133,12 +140,6 @@ class Interview < ActiveRecord::Base
            dependent: :destroy
 
   translates :observations
-  # ZWAR_MIGRATE:the following translates is necessary to migrate zwar correctly
-  #translates :first_name, :other_first_names, :last_name, :birth_name,
-             #:return_date, :forced_labor_details,
-             #:interviewers, :transcriptors, :translators,
-             #:proofreaders, :segmentators, :researchers
-
   #validate :has_standard_name
 
   #def has_standard_name
@@ -147,13 +148,11 @@ class Interview < ActiveRecord::Base
     #end
   #end
 
-  #validates_associated :collection
-  #validates_presence_of :archive_id
-  #validates_uniqueness_of :archive_id
-  # TODO: reuse this for zwar?
-  #validates_attachment_content_type :still_image,
-                                     #:content_type => ['image/jpeg', 'image/jpg', 'image/png'],
-                                     #:if => Proc.new{|i| !i.still_image_file_name.blank? && !i.still_image_content_type.blank? }
+  validates_associated :collection
+  validates_presence_of :archive_id
+  validates_uniqueness_of :archive_id
+
+  #has_one_attached :still_image
 
   searchable do
     integer :language_id, :stored => true, :references => Language
@@ -193,7 +192,7 @@ class Interview < ActiveRecord::Base
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         title = full_title(locale).mb_chars.normalize(:kd)
         Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
@@ -208,7 +207,7 @@ class Interview < ActiveRecord::Base
     # find them through fulltext search 
     # e.g.: 'Kamera Hans Peter'
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -220,7 +219,7 @@ class Interview < ActiveRecord::Base
 
     # biographical entries texts
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"biography_#{locale}" do
         if interviewees.first
           interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -232,7 +231,7 @@ class Interview < ActiveRecord::Base
 
     # photo caption texts
     #
-    I18n.available_locales.each do |locale|
+    Project.available_locales.each do |locale|
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
@@ -255,8 +254,12 @@ class Interview < ActiveRecord::Base
     self.send("#{change}!")
   end
 
-  def self.random_featured
-    researched.with_still_image.order("RAND()").first || first
+  def self.random_featured(n = 1)
+    if n == 1
+      researched.with_still_image.order(Arel.sql('RAND()')).first || first
+    else
+      researched.with_still_image.order(Arel.sql('RAND()')).first(n) || first(n)
+    end
   end
 
   def identifier
@@ -281,11 +284,8 @@ class Interview < ActiveRecord::Base
   end
 
   def place_of_interview
-    if registry_references.length > 0
-      if registry_references.where(registry_reference_type_id: 8).length > 0
-        registry_references.where(registry_reference_type_id: 8).first.registry_entry
-      end
-    end
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+    ref && ref.registry_entry
   end
 
   def localized_hash(use_full_title=false)
@@ -316,13 +316,18 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def initials
-    locale = projectified(language.code)
-    inits = []
-    segments.includes(:translations).where("segment_translations.locale": locale).each do |segment|
-      inits << segment.initials(locale)
+  def country_of_birth
+    interviewees.first.place_of_birth && interviewees.first.place_of_birth.parents.first.id.to_i
+  end
+
+  def localized_hash_for_country_of_birth
+    I18n.available_locales.inject({}) do |mem, locale|
+      if(interviewees && interviewees.first && interviewees.first.place_of_birth)
+        translation = interviewees.first.place_of_birth.parents.first.registry_names.first.translations.where(locale: locale)
+        translation[0]&& translation[0]['descriptor'] && mem[locale] =translation[0]['descriptor']
+      end
+      mem
     end
-    inits.flatten.uniq
   end
 
   def title
@@ -386,10 +391,41 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def translated
+    # the attribute 'translated' is wrong on many interviews in zwar.
+    # this is why we use the languages-array for checking
+    if Project.name == 'zwar'
+      (self.languages.size > 1) && ('de'.in? self.languages)
+    else
+      read_attribute :translated
+    end
+  end
+
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
     segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
     vtt
+  end
+
+  def to_ods(locale, tape_number=1)
+    CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
+      csv << %w(Timecode Transkript)
+
+      tapes[tape_number.to_i - 1].segments.each do |segment|
+        csv << [segment.timecode, segment.text(locale)]
+      end
+    end
+  end
+ 
+  # 
+  # speaker designations from column speaker of table segments
+  #
+  def speaker_designations
+    speakers = []
+    segments.find_each(batch_size: 200) do |segment|
+      speakers << segment.speaker_designation
+    end
+    speakers.flatten.uniq.compact.reject{|s| s == false}
   end
 
   def transcript_locales
@@ -400,23 +436,56 @@ class Interview < ActiveRecord::Base
     language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_file(file_path, tape_id, file_column_names, file_column_languages)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      sheet.each(file_column_names) do |row|
-        if row['timecode'] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
-          segment = Segment.find_or_create_by interview_id: id, timecode: row['timecode'], tape_id: tape_id
-          %w(transcript translation_one translation_two).each do |t|
-            if file_column_languages[t]
-              segment.update_attributes text: row[t], 
-                locale: ISO_639.find(Language.find(file_column_languages[t]).code).send(Project.alpha) 
-            end
-          end
+      parsed_sheet = sheet.parse(timecode: 'Timecode', transcript: 'Transkript')
+      parsed_sheet.each_with_index do |row, index|
+        if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
+          Segment.create_or_update_by({ 
+            interview_id: id, 
+            timecode: row[:timecode], 
+            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode, 
+            tape_id: tape_id,
+            text: row[:transcript], 
+            locale: locale,
+            contribution_data: contribution_data
+          })
         end
       end
     end
   rescue  Roo::HeaderRowNotFoundError
     'header_row_not_found'
+  end
+
+  def create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
+    data = File.read file_path
+    text = Yomu.read :text, data
+    Segment.create_or_update_by({ 
+      interview_id: id, 
+      timecode: Timecode.new(tapes.inject(0){|sum, t| sum + Timecode.new(t.time_shift).time }).timecode, 
+      next_timecode: Timecode.new(duration).timecode,
+      tape_id: tape_id,
+      text: text, 
+      locale: locale,
+      contribution_data: contribution_data
+    })
+  end
+
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)
+    extension = File.extname(file_path).strip.downcase[1..-1]
+    webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
+    webvtt.cues.each do |cue|
+      Segment.create_or_update_by({ 
+        interview_id: id, 
+        timecode: cue.start.to_s,
+        next_timecode: cue.end.to_s,
+        tape_id: tape_id,
+        text: cue.text, 
+        locale: locale,
+        contribution_data: contribution_data
+      })
+    end
   end
 
   #def duration
@@ -502,10 +571,12 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def anonymous_title(locale)
+  def anonymous_title(locale=Project.default_locale)
     name_parts = []
-    name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
-    name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
+    unless interviewees.blank?
+      name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
+      name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
+    end
     name_parts.join(' ')
   end
 
@@ -537,67 +608,6 @@ class Interview < ActiveRecord::Base
         :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
         :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
-  end
-
-  def still_image_file_name=(filename)
-    # assign the photo - but skip this part on subsequent changes of the file name
-    # (because the filename gets assigned in the process of assigning the file)
-    if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
-      # construct the import file path
-      filepath = File.join(Project.archive_management_dir, archive_id, 'stills', (filename || '').split('/').last.to_s)
-      if File.exists?(filepath)
-        if @assigned_filename != filename
-          @assigned_filename = filename
-          File.open(filepath, 'r') do |file|
-            self.still_image = file
-          end
-        else
-          puts "\n\n@@@@ WARN: Problem assigning filename = #{filename}\nCurrent still_image = #{read_attribute(:still_image_file_name)}\nAssigned Filename = #{@assigned_filename}\n@@@@ ENDWARN\n\n"
-        end
-      else
-        write_attribute :still_image_file_name, nil
-      end
-    else
-      write_attribute :still_image_file_name, filename
-    end
-  end
-
-  def import_time
-
-    e = id
-    i = Import.for_interview(id).first
-
-    @import_time ||= begin
-      import = Import.for_interview(id).first
-      import.nil? ? Time.gm(2009, 1, 1) : import.time
-    rescue
-          DateTime.now
-    end
-  end
-
-  # Sets the migration version for import
-  def import_migration=(version)
-    @migration = version
-  end
-
-  # interview.qm_value from quality attribute of export
-  def quality=(level)
-    @quality = level.to_f
-  end
-
-  def quality
-    @quality || 2.0
-  end
-
-  def set_contributor_fields!
-    set_contributor_field_from('interviewers', 'interview_contributors')
-    set_contributor_field_from('transcriptors', 'transcript_contributors')
-    set_contributor_field_from('translators', 'translation_contributors')
-    set_contributor_field_from('proofreaders', 'proofreading_contributors')
-    set_contributor_field_from('segmentators', 'segmentation_contributors')
-    set_contributor_field_from('researchers', 'documentation_contributors')
-    save
   end
 
   # segmented, researched, proofread
@@ -640,41 +650,100 @@ class Interview < ActiveRecord::Base
                 else
                   # remove all tasks that don't have anyone assigned
                   unless self.tasks.for_workflow('Research').empty?
-                  research_task = self.tasks.for_workflow('Research').first
-                  if research_task.responsible.nil?
-                    research_task.destroy
-                    true
-                  else
-                    false
+                    research_task = self.tasks.for_workflow('Research').first
+                    if research_task.responsible.nil?
+                      research_task.destroy
+                      true
+                    else
+                      false
+                    end
                   end
                 end
-    end
-    skip_versioning!
-    update_attribute :segmentation_state, 'qm'
-    save
-    changed
-  end
-end
-
-  private
-
-  def set_contributor_field_from(field, association)
-    field_contributors = self.send(association)
-
-    # Build one contributor list per locale.
-    contributors_per_locale = {}
-    field_contributors.each do |contributor|
-      contributor.translations.each do |t|
-        contributors_per_locale[t.locale] ||= []
-        contributors_per_locale[t.locale] << [t.last_name, t.first_name].compact.join(t.locale == :ru ? ' ' : ', ')
-      end
-    end
-
-    contributors_per_locale.each do |locale, contributors|
-      self.class.with_locale(locale) do
-        self.send "#{field}=", contributors.join('; ')
-      end
+      skip_versioning!
+      update_attribute :segmentation_state, 'qm'
+      save
+      changed
     end
   end
 
+  def oai_dc_identifier
+    archive_id
+    "oai:#{Project.name}:#{archive_id}"
+  end
+
+  def oai_dc_creator
+    anonymous_title
+  end
+
+  def oai_dc_subject
+    if self.respond_to?(:typology)
+      "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
+    else
+      [
+        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}",
+        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}"
+      ].join(';')
+    end
+  end
+
+  def oai_dc_description
+    "Lebensgeschichtliches #{self.video}-Interview in #{self.language.name.downcase}er Sprache mit Transkription, deutscher Übersetzung, Erschließung, Kurzbiografie und Fotografien"
+  end
+
+  def oai_dc_publisher
+    "Interview-Archiv \"#{Project.project_name['de']}\""
+  end
+
+  def oai_dc_contributor
+    oai_contributors = [
+      %w(interviewers Interviewführung), 
+      %w(cinematographers Kamera),
+      %w(transcriptors Transkripteur),
+      %w(translators Übersetzer),
+      %w(segmentators Erschließer)
+    ].inject([]) do |mem, (contributors, contribution)|
+      if self.send(contributors).length > 0
+        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(Project.default_locale)}, #{contributor.first_name(Project.default_locale)}"}.join('; ')
+      end
+      mem
+    end
+    if !Project.cooperation_partner.blank?
+      oai_contributors << "Kooperationspartner: #{Project.cooperation_partner}"
+    end
+    oai_contributors << "Projektleiter: #{Project.leader}"
+    oai_contributors << "Projektmanager: #{Project.manager}"
+    oai_contributors << "Hosting Institution: #{Project.hosting_institution}"
+    oai_contributors.join('. ')
+  end
+
+  def oai_dc_date
+    self.interview_date && Date.parse(self.interview_date).strftime("%d.%m.%Y")
+  end
+
+  #def oai_dc_type
+  #end
+
+  def oai_dc_format
+    self.video
+  end
+
+  #def oai_dc_source
+  #end
+
+  def oai_dc_language
+    self.language.name
+  end
+
+  #def oai_dc_relation
+  #end
+
+  #def oai_dc_coverage
+  #end
+
+  #def oai_dc_rights
+  #end
+
+  def type
+    'Interview'
+  end
 end

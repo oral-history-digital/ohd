@@ -8,6 +8,7 @@ import {
     TRANSCRIPT_TIME_CHANGE,
 
     SET_TAPE_AND_TIME,
+    SET_TAPE_AND_TIME_AND_RESOLUTION,
     SET_ACTUAL_SEGMENT,
 } from '../constants/archiveConstants';
 
@@ -17,6 +18,7 @@ const initialState = {
     videoStatus: 'pause',
     transcriptTime: 0,
     transcriptScrollEnabled: false,
+    resolution: undefined,
 }
 
 
@@ -49,7 +51,16 @@ const interview = (state = initialState, action) => {
         case SET_TAPE_AND_TIME:
             return Object.assign({}, state, {
                 videoTime: action.videoTime,
+                transcriptTime: action.transcriptTime,
                 tape: action.tape,
+            })
+        case SET_TAPE_AND_TIME_AND_RESOLUTION:
+            return Object.assign({}, state, {
+                videoTime: action.videoTime,
+                transcriptTime: action.transcriptTime,
+                tape: action.tape,
+                resolution: action.resolution,
+                videoStatus: action.videoStatus,
             })
         case SET_INTERVIEW_TAB_INDEX:
             return Object.assign({}, state, {

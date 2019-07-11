@@ -4,7 +4,7 @@ import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -14,8 +14,8 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         userContents: state.data.user_contents,
         statuses: state.data.statuses.segments,
-        account: state.account,
-        editView: state.archive.editView
+        account: state.data.accounts.current,
+        editView: getCookie('editView')
     }
 }
 

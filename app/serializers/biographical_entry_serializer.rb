@@ -1,4 +1,4 @@
-class BiographicalEntrySerializer < ActiveModel::Serializer
+class BiographicalEntrySerializer < ApplicationSerializer
 
   attributes :id, :person_id, 
     :text, 
@@ -13,8 +13,8 @@ class BiographicalEntrySerializer < ActiveModel::Serializer
 
   [:text, :end_date, :start_date].each do |entry|
     define_method entry do
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(entry, locale) if Project.available_locales.include?( locale.to_s )
+      object.translations.inject({}) do |mem, translation|
+        mem[translation.locale] = object.send(entry, translation.locale) 
         mem
       end
     end

@@ -29,13 +29,13 @@ export default class EditInterview extends React.Component {
             )
         } else {
             return (
-                <InterviewFormContainer submitText='edit.interview.new' />
+                <InterviewFormContainer submitText='edit.interview.new' withContributions={true} />
             )
         }
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 5;
+        let tabIndex = this.props.locales.length + 4;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>

@@ -18,7 +18,7 @@
 
 \usepackage{xcolor}
 \definecolor{textGrey}{rgb}{0.3,0.3,0.3}
-\definecolor{mogBlue}{rgb}{0,0.43529411764705883,0.7176470588235294}
+\definecolor{primaryColor}{rgb}{<%= "#{Project.primary_color_rgb}" %>}
 
 \usepackage{graphicx}
 \graphicspath{ {<%= "#{Rails.root}/app/assets/images/pdf/" %>} }

@@ -2,7 +2,8 @@ import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+import ContributionFormContainer from '../containers/ContributionFormContainer';
+import { t, fullname } from '../../../lib/utils';
 
 export default class UploadTranscript extends React.Component {
 
@@ -10,10 +11,22 @@ export default class UploadTranscript extends React.Component {
         super(props);
         this.state = {
             hideTapeAndArchiveInputs: false, 
+            tapeDurationsSet: false
         };
 
         this.handleTapeAndArchiveIdFromFileChange = this.handleTapeAndArchiveIdFromFileChange.bind(this);
+        this.showContribution = this.showContribution.bind(this);
         //this.handleFileChange = this.handleFileChange.bind(this);
+    }
+
+    showContribution(value) {
+        return (
+            <span>
+                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
+                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
+                <span>{value.speaker_designation}</span>
+            </span>
+        )
     }
 
     returnToForm() {
@@ -27,8 +40,7 @@ export default class UploadTranscript extends React.Component {
             return (
                 <div>
                     <p>
-                        {t(this.props, 'edit.upload.processing')}
-                        {this.props.processing}
+                        {t(this.props, 'edit.upload.processing', {archiveId: this.props.processing})}
                     </p>
                     <div 
                         className='return-to-upload'
@@ -41,108 +53,78 @@ export default class UploadTranscript extends React.Component {
         } else {
             let _this = this;
             return (
-                <Form 
-                    scope='transcript'
-                    onSubmit={this.props.submitData}
-                    submitText='edit.upload_transcript'
-                    values={{
-                        // set default values in form`s own values as well:
-                        '[file_column_names]timecode': 'Timecode',
-                        '[file_column_names]transcript': 'Transkript',
-                        '[file_column_names]translation_one': 'Übersetzung'
-                    }}
-                    elements={[
-                        {
-                            elementType: 'select',
-                            attribute: 'collection_id',
-                            values: this.props.collections,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''},
-                            individualErrorMsg: 'empty'
-                        },
-                        { 
-                            attribute: 'data',
-                            elementType: 'input',
-                            type: 'file',
-                            validate: function(v){return v instanceof File},
-                            //handlechangecallback: this.handleFileChange
-                        },
-                        { 
-                            attribute: '[file_column_names]timecode',
-                            label: t(this.props, 'activerecord.attributes.transcript.timecode'),
-                            value: 'Timecode'
-                        },
-                        { 
-                            attribute: '[file_column_names]transcript',
-                            label: t(this.props, 'activerecord.attributes.transcript.transcript'),
-                            value: 'Transkript'
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: '[file_column_languages]transcript',
-                            label: t(this.props, 'activerecord.attributes.transcript.transcript_language'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: '[file_column_names]translation_one',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_one'),
-                            value: 'Übersetzung'
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: '[file_column_languages]translation_one',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_one_language'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            //validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: '[file_column_names]translation_two',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_two'),
-                        },
-                        {
-                            elementType: 'select',
-                            attribute: '[file_column_languages]translation_two',
-                            label: t(this.props, 'activerecord.attributes.transcript.translation_two_language'),
-                            values: this.props.languages,
-                            withEmpty: true,
-                            //validate: function(v){return v !== ''} 
-                        },
-                        { 
-                            attribute: '[file_column_names]annotations',
-                            label: t(this.props, 'activerecord.attributes.transcript.annotations')
-                        },
-                        { 
-                            attribute: 'tape_and_archive_id_from_file',
-                            elementType: 'input',
-                            type: 'checkbox',
-                            handlechangecallback: this.handleTapeAndArchiveIdFromFileChange
-                        },
-                        { 
-                            attribute: 'archive_id',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.archiveId,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3,4}$/.test(v)}
-                        },
-                        { 
-                            attribute: 'tape_count',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.tapeCount,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                        },
-                        { 
-                            attribute: 'tape_number',
-                            hidden: this.state.hideTapeAndArchiveInputs,
-                            //value: this.state.dummy,
-                            //value: this.state.tapeNumber,
-                            validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
-                        },
-                    ]}
-                />
+                <div>
+                    <p className='explanation'>
+                        {t(this.props, `upload.explanation.transcript`)}
+                    </p>
+                    <Form 
+                        scope='transcript'
+                        onSubmit={this.props.submitData}
+                        submitText='edit.upload_transcript.title'
+                        values={{ }}
+                        elements={[
+                            { 
+                                attribute: 'data',
+                                elementType: 'input',
+                                type: 'file',
+                                validate: function(v){return v instanceof File},
+                                //handlechangecallback: this.handleFileChange
+                            },
+                            {
+                                elementType: 'select',
+                                attribute: 'transcript_language_id',
+                                label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
+                                values: this.props.languages,
+                                withEmpty: true,
+                                validate: function(v){return v !== ''} 
+                            },
+                            { 
+                                attribute: 'tape_durations',
+                                validate: function(v){return v !== ''}, 
+                                //handlechangecallback: this.handleTapeDurationsChange,
+                            },
+                            { 
+                                attribute: 'time_shifts',
+                            },
+                            { 
+                                attribute: 'tape_and_archive_id_from_file',
+                                elementType: 'input',
+                                type: 'checkbox',
+                                handlechangecallback: this.handleTapeAndArchiveIdFromFileChange,
+                                help: (
+                                    <p>
+                                        {t(this.props, 'edit.upload_transcript.tape_and_archive_id_from_file_explanation')}
+                                    </p>
+                                )
+                            },
+                            { 
+                                attribute: 'archive_id',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.archiveId,
+                                validate: function(v){return _this.state.hideTapeAndArchiveInputs || /^[A-z]{2,3}\d{3,4}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_count',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.tapeCount,
+                                //validate: function(v){return _this.state.tapeDurationsSet || _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                            { 
+                                attribute: 'tape_number',
+                                hidden: this.state.hideTapeAndArchiveInputs,
+                                //value: this.state.dummy,
+                                //value: this.state.tapeNumber,
+                                //validate: function(v){return _this.state.tapeDurationsSet || _this.state.hideTapeAndArchiveInputs || /^\d{1}$/.test(v)}
+                            },
+                        ]}
+                        subForm={ContributionFormContainer}
+                        subFormProps={{withSpeakerDesignation: true}}
+                        subFormScope='contribution'
+                        subScopeRepresentation={this.showContribution}
+                    />
+                </div>
             )
         }
     }
@@ -162,6 +144,16 @@ export default class UploadTranscript extends React.Component {
         }
     }
 
+    handleTapeDurationsChange(name, value) {
+        debugger;
+        if (name === 'tape_durations') {
+        debugger;
+            this.setState({ 
+                tapeDurationsSet: /\d+/.test(value)
+            })
+        }
+    }
+
     //handleFileChange(name, file) {
         //if (name === 'data') {
             //let fileNameParts = file.name.replace(/\.[^/.]+$/, "").split('_')
@@ -174,7 +166,7 @@ export default class UploadTranscript extends React.Component {
     //}
 
     render() {
-        let tabIndex = this.props.locales.length + 6;
+        let tabIndex = this.props.locales.length + 4;
         let _this = this;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>

@@ -170,15 +170,8 @@ Example: Switch from `mog` to `zwar`:
     RAILS_ENV=production bundle exec rake solr:reindex:all
     ```
 
-2. On the server, change the base url for caching, e.g.:
-
-    ```ruby
-    # lib/tasks/cache.rake
-    
-    BASE_URL = 'http://160.45.168.36:94'
-    ```
-    then, do:
+2. Optionally, remove all redis cache key-value-pairs for the project, e.g.:
 
     ```bash
-    RAILS_ENV=production bundle exec rake cache:all
+    redis-cli --raw keys "mog-*" | sed -e 's/$/"/' | sed -e 's/^/"/' | xargs redis-cli del
     ```

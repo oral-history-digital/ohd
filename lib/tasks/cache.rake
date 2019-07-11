@@ -8,7 +8,7 @@ namespace :cache do
     project = Archive::Application.config.project["project_id"]
     case project.to_sym
       when :zwar
-        BASE_URL = 'https://responsive.zwangsarbeit-archiv.de'
+        BASE_URL = 'https://archiv.zwangsarbeit-archiv.de'
       when :hagen
         BASE_URL = 'http://da03.cedis.fu-berlin.de:81'
       when :mog

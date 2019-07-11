@@ -1,4 +1,4 @@
-class TaskSerializer < ActiveModel::Serializer
+class TaskSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :desc,
@@ -14,7 +14,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def authorized_type
-    object.authorized_type.underscore
+    object.authorized_type
   end
 
 end

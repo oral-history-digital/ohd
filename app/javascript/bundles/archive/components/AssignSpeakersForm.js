@@ -1,30 +1,42 @@
 import React from 'react';
 import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+import ContributionFormContainer from '../containers/ContributionFormContainer';
+import { t, fullname } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class AssignSpeakersForm extends React.Component {
 
     constructor(props) {
         super(props);
+        this.showContribution = this.showContribution.bind(this);
         this.state = {};
     }
 
     componentDidMount() {
-        this.loadInitials();
+        this.loadSpeakerDesignations();
     }
 
     componentDidUpdate() {
-        this.loadInitials();
+        this.loadSpeakerDesignations();
     }
 
-    loadInitials() {
+    loadSpeakerDesignations() {
         if (
-            !this.props.initialsStatus[`for_interviews_${this.props.archiveId}`] ||
-            this.props.initialsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'reload'
+            !this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] ||
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('interviews', this.props.archiveId, 'initials');
+            this.props.fetchData('interviews', this.props.archiveId, 'speaker_designations');
         }
+    }
+
+    showContribution(value) {
+        return (
+            <span>
+                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
+                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
+                <span>{value.speaker_designation}</span>
+            </span>
+        )
     }
 
     returnToForm() {
@@ -33,75 +45,71 @@ export default class AssignSpeakersForm extends React.Component {
 
     formElements() {
         let elements = [];
-        for (var i in this.props.interview.initials) {
+        for (var i in this.props.interview.speaker_designations) {
             elements.push({ 
                 elementType: 'select',
-                attribute: `[speakers]${this.props.interview.initials[i]}`,
-                label: `${t(this.props, 'edit.update_speaker.speaker_for_initials')} ${this.props.interview.initials[i]}`,
+                attribute: `[speakers]${this.props.interview.speaker_designations[i]}`,
+                label: `${t(this.props, 'edit.update_speaker.speaker_for_speaker_designation')} ${this.props.interview.speaker_designations[i]}`,
                 values: Object.values(this.props.people),
                 withEmpty: true,
-                //validate: function(v){return v !== ''} 
             });
         }
-        //elements.push({ 
-            //attribute: 'split_segments',
-            //elementType: 'input',
-            //type: 'checkbox',
-        //});
-        //elements.push({ 
-            //attribute: 'cut_initials',
-            //elementType: 'input',
-            //type: 'checkbox',
-        //});
         return elements;
     }
-        
+
+    form() {
+        return (
+            <Form 
+                scope='update_speaker'
+                onSubmit={this.props.submitData}
+                values={{
+                    id: this.props.interview.archive_id
+                }}
+                elements={this.formElements()}
+                subForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
+                subFormProps={{withSpeakerDesignation: true}}
+                subFormScope='contribution'
+                subScopeRepresentation={this.showContribution}
+            />
+        )
+    }
+
     msg() {
-        let msg;
-        if (this.props.initialsStatus.processing_speaker_update === this.props.interview.archive_id) {
-            //msg = this.props.processing_speakers_update;
-            msg = 'edit.update_speaker.processing_speakers_update';
-        } else if (Object.keys(this.props.interview.initials).length < 1) {
-            msg = 'edit.update_speaker.no_initials_found';
+        if (
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] &&
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching' 
+        ) {
+            return (
+                <div>
+                    <p>
+                        {t(this.props, 'edit.update_speaker.' + this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`])}
+                    </p>
+                </div>
+            )
         }
-        return msg;
+    }
+
+    //
+    // hidden speaker designations are those written in column 'speaker' from table 'segments'
+    //
+    allHiddenSpeakerDesignationsAssigned() {
+        return Object.keys(this.props.interview.speaker_designations).length < 1;
     }
 
     render() {
         if (
-            // initials used in this interview`s segments loaded?
-            this.props.initialsStatus[`for_interviews_${this.props.archiveId}`] &&
-            this.props.initialsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched' &&
-
-            // people loaded?
-            this.props.peopleStatus.all &&
-            this.props.peopleStatus.all.split('-')[0] === 'fetched'
+            // speaker designations used in this interview`s segments loaded?
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] &&
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching' 
         ) {
-
-            let msg = this.msg();
-            if (msg) {
-                return (
-                    <div>
-                        <p>
-                            {t(this.props, msg)}
-                        </p>
-                    </div>
-                )
-            } else {
-                let _this = this;
-                return (
-                    <Form 
-                        scope='update_speaker'
-                        onSubmit={this.props.submitData}
-                        values={{
-                            id: this.props.interview.archive_id
-                        }}
-                        elements={_this.formElements()}
-                    />
-                )
-            }
-        } else {
+            return (
+                <div>
+                    {this.msg()}
+                    {this.form()}
+                </div>
+            )
+         } else {
             return <div className="facets-spinner"><img src={spinnerSrc} /></div>;
-        }
+         }
     }
 }

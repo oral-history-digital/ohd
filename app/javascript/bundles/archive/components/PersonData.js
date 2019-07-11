@@ -3,6 +3,7 @@ import { t, fullname, admin, getInterviewee } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
+import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
@@ -43,8 +44,14 @@ export default class PersonData extends React.Component {
         }
     }
 
+    existsPublicBiography(lang) {
+        let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
+        let firstEntry = getInterviewee(this.props).biographical_entries[firstKey];
+        return !!firstKey && !!firstEntry.text[lang] && firstEntry.workflow_state === 'public';
+    }
+
     download(lang, condition) {
-        if (!condition) {
+        if (!condition && this.existsPublicBiography(lang)) {
             return (
                 <a className='flyout-download-link-lang'
                     href={"/" + this.props.locale + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
@@ -57,20 +64,21 @@ export default class PersonData extends React.Component {
         }
     }
 
-    history() {
-        if(this.props.project === 'mog'){
-            return (
-                <AuthShowContainer ifLoggedIn={true}>
-                    <p>
-                        <span className="flyout-content-label">{t(this.props, 'history')}:</span>
-                        {this.download(this.props.interview.lang)}
-                        {this.download(this.props.locale, (this.props.interview.lang === this.props.locale))}
-                    </p>
-                </AuthShowContainer>
-            )
-        } else {
-            return null;
-        }
+    history() { 
+        return (
+          <AuthShowContainer ifLoggedIn={true}>
+            <p>
+              <span className="flyout-content-label">
+                {t(this.props, "history")}:
+              </span>
+              {this.download(this.props.interview.lang)}
+              {this.download(
+                this.props.locale,
+                this.props.interview.lang === this.props.locale
+              )}
+            </p>
+          </AuthShowContainer>
+        );
     }
 
     info() {
@@ -91,13 +99,13 @@ export default class PersonData extends React.Component {
                 </div>
             );
         } else {
-            return t(this.props, 'no_interviewee');
+            return <img src={spinnerSrc} className="archive-search-spinner"/>;
         }
     }
 
     render() {
         let interviewee = getInterviewee(this.props);
-        if (admin(this.props)) {
+        if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
             return (
                 <div>
                     {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}

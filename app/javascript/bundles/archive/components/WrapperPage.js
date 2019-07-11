@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import ActionCable from 'actioncable';
 
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
@@ -11,8 +13,10 @@ import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
 import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
 import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
+import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
 import hagenLogo from '../../../images/hagen-logo.gif'
+import campscapesLogo from '../../../images/campscapes.png'
 
 import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
@@ -25,11 +29,16 @@ export default class WrapperPage extends React.Component {
         this.onResize = this.onResize.bind(this);
         this.state = {
             currentMQ: 'unknown',
+            notifications: []
         };
     }
 
     static contextTypes = {
         router: PropTypes.object
+    }
+
+    componentWillMount() {
+        this.createSocket()
     }
 
     componentDidMount() {
@@ -49,6 +58,21 @@ export default class WrapperPage extends React.Component {
         } else {
             document.body.classList.remove('noScroll');
         }
+    }
+
+    createSocket() {
+        let cable = ActionCable.createConsumer('/cable');
+
+        this.notifications = cable.subscriptions.create({
+            channel: "WebNotificationsChannel"
+        }, {
+            //connected: () => {},
+            received: (data) => {
+                console.log(data);
+                this.setState({notifications: [...this.state.notifications, data]})
+            },
+            //create: function(content) {}
+        });
     }
 
     // Checks CSS value in active media query and syncs Javascript functionality
@@ -129,6 +153,10 @@ export default class WrapperPage extends React.Component {
         }
     };
 
+    handleLogoClick(e) {
+        e.preventDefault();
+        this.context.router.history.push(`/${this.props.locale}`);
+    }
 
     onResize(dimensions) {
         this.mqSync();
@@ -177,6 +205,38 @@ export default class WrapperPage extends React.Component {
         return css;
     }
 
+    renderLogos() {
+        switch(this.props.project) {
+            case 'zwar':
+                return (
+                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
+                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                            <img src="/packs/fu-logo-3x.png" />
+                        </a>
+                        <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
+                            <img src="/packs/evz-off-co-d-hd-s.jpg" />
+                        </a>
+                    </div>
+                )
+            break;
+            case 'campscapes':
+                return (
+                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
+                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                            <img src="/packs/fu-logo-3x.png" />
+                        </a>
+                        <a href="http://heranet.info/" target="_blank" title="Humanities in the European Research Area" rel="noopener">
+                            <img src="/packs/heralogot.png" />
+                        </a>
+                        <a  href="https://ec.europa.eu/programmes/horizon2020/en">
+                            <img src="/packs/EU-logo.jpg" alt="Logo eu" style={{maxHeight: 66, maxWidth: 100}}/>
+                        </a>
+                    </div>
+                )
+                break;
+        }
+    }
+
     renderExternalLinks() {
         if (this.props.locale && this.props.externalLinks) {
             let links = this.props.externalLinks;
@@ -188,7 +248,7 @@ export default class WrapperPage extends React.Component {
                     return (
                         <li key={'external-link-' + key}>
                             <a href={link}
-                                target="_blank">
+                                target="_blank" rel="noopener">
                                 {t(props, key)}
                             </a>
                         </li>
@@ -205,6 +265,57 @@ export default class WrapperPage extends React.Component {
                     {t(this.props, 'devise.omniauth_callbacks.success')}
                 </p>
             )
+        } else if (this.state.notifications.length > 0) {
+            return (
+                <div className='notifications'>
+                    {this.state.notifications.map((notification, index) => {
+                        return (
+                            <p key={`notification-${index}`}>
+                                {t(this.props, notification.title, {file: notification.file, archiveId: notification.archive_id})}
+                                <Link
+                                    to={'/' + this.props.locale + '/interviews/' + notification.archive_id}>
+                                    {notification.archive_id}
+                                </Link>
+                            </p>
+                        )
+                    })}
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
+
+    renderProjectSpecificFooter() {
+        switch(this.props.project){
+            case 'zwar':
+                if (this.props.locale === 'de') {
+                    return (
+                        <div>
+                            <p>Weitere Angebote:</p>
+                            <div style={{display: 'inline-block'}}>
+                            {/* lieber ein div, das sich ausklappt, dann sind normale <a>-Links möglich */}
+                                <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}} />
+                                <select style={{color: '#9f403f', marginTop: 5, fontSize: 14}} onChange={(e) => window.open(e.target.value, '_blank')}>
+                                    <option defaultValue>Archiv: Vollständige Interviews</option>
+                                    <option value="https://zwangsarbeit-archiv.de/">Infos: Geschichte und Projekt</option>
+                                    <option value="https://lernen-mit-interviews.de/">Bildung: Lernen mit Interviews</option>
+                                    <option value="https://forum.lernen-mit-interviews.de/">Forum: Für Lehrende</option>
+                                </select>
+                            </div>
+                            <p></p>
+                            <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin </p>
+                        </div>
+                    )
+                }
+            break;
+            case 'campscapes':
+                return (
+                    <div>
+                        <p>Created by Freie Universität Berlin within the HERA-funded project Accessing Campscapes. Inclusive Strategies for Using European Conflicted Heritage</p>
+                        <p><a href='https://ec.europa.eu/programmes/horizon2020/en'>This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 649307</a></p>
+                    </div>
+                )
         }
     }
 
@@ -230,6 +341,9 @@ export default class WrapperPage extends React.Component {
             case 'hagen':
                 logoSrc = hagenLogo;
                 break;
+            case 'campscapes':
+            logoSrc = campscapesLogo;
+            break;
         }
 
         return (
@@ -238,21 +352,22 @@ export default class WrapperPage extends React.Component {
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
-                            <a className="logo-link" href={`http://${this.props.projectDomain}`} title={t(this.props, 'home')}>
+                            <a className="logo-link" href={`/${this.props.locale}`} onClick={(e) => this.handleLogoClick(e)} title={t(this.props, 'home')}>
                                 <img className="logo-img" src={logoSrc}>
                                 </img>
-                                <span className="logo-text">{this.props.project}</span>
+                                {/* <span className="logo-text">{this.props.project}</span> */}
                             </a>
                         </header>
 
                         {this.messages()}
                         {this.props.children}
-
                         <footer>
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
                             <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
+                            { this.renderProjectSpecificFooter() }
+                            {this.renderLogos()}
                         </footer>
                         <div className={this.compensationCss()}/>
                     </div>

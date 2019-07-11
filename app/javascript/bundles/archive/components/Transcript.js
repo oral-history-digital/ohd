@@ -97,16 +97,20 @@ export default class Transcript extends React.Component {
             segments(this.props) :
             this.shownSegmentsAround(activeId);
 
-        let speakerId;
+        let speaker, speakerId;
         let transcript = [];
 
         for (var segmentId in shownSegments) {
             let segment = shownSegments[segmentId];
             let interviewee = getInterviewee(this.props);
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
-            if (speakerId !== segment.speaker_id && segment.speaker_id !== null) {
+            if (
+                (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
+                (speaker !== segment.speaker && segment.speaker_id === null) 
+            ) {
                 segment.speakerIdChanged = true;
                 speakerId = segment.speaker_id;
+                speaker = segment.speaker;
             }
             let active = false;
             if (segment.time <= this.props.transcriptTime + 10 && segment.time >= this.props.transcriptTime - 5) {
@@ -129,7 +133,8 @@ export default class Transcript extends React.Component {
             if (this.props.originalLocale) {
                 return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
-                return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+                return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_translation');
+                // return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
             }
         } else {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;

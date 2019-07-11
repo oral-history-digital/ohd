@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import VideoPlayer from '../components/VideoPlayer';
-import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTime} from '../actions/videoPlayerActionCreators';
+import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution} from '../actions/videoPlayerActionCreators';
 import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
 
@@ -21,6 +21,8 @@ const mapStateToProps = (state) => {
         actualSegment: state.interview.actualSegment,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
+        mediaStreams: state.archive.mediaStreams,
+        resolution: state.interview.resolution,
     }
 }
 
@@ -28,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
     handleVideoTimeChange: time => dispatch(handleVideoTimeChange(time)),
     handleVideoEnded: () => dispatch(handleVideoEnded()),
     setNextTape: () => dispatch(setNextTape()),
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
+    setTapeAndTimeAndResolution: (tape, time, resolution) => dispatch(setTapeAndTimeAndResolution(tape, time, resolution)),
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params))
 })

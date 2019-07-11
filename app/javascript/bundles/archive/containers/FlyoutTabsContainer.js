@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
-import { fetchAccount } from '../actions/accountActionCreators';
 import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
@@ -15,9 +14,10 @@ const mapStateToProps = (state) => {
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: state.archive.locales,
-        editView: state.archive.editView,
+        editView: getCookie('editView'),
         translations: state.archive.translations,
-        account: state.account,
+        account: state.data.accounts.current,
+        authStatus: state.account,
         interview: getInterview(state),
         project: state.archive.project,
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
@@ -28,7 +28,6 @@ const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setLocale: locale => dispatch(setLocale(locale)),
     changeRegistryEntriesViewMode: bool => dispatch(changeRegistryEntriesViewMode(bool)),
-    fetchAccount: () => dispatch(fetchAccount()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlyoutTabs);

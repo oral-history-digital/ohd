@@ -12,7 +12,7 @@ export default class OrderNewPassword extends React.Component {
 
     error() {
         if (this.props.error) {
-            return <div className='errors'>{t(this.props, this.props.error)}</div>;
+            return <div className='errors' dangerouslySetInnerHTML={{__html: t(this.props, this.props.error)}} />;
         } 
     }
 

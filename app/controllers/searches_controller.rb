@@ -7,7 +7,7 @@ class SearchesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def facets
-    json = Rails.cache.fetch "#{Project.project_id}-search-facets-#{RegistryEntry.maximum(:updated_at)}" do
+    json = Rails.cache.fetch "#{Project.cache_key_prefix}-search-facets-#{RegistryEntry.maximum(:updated_at)}" do
       {facets: Project.search_facets_hash}.to_json
     end
 
@@ -20,7 +20,7 @@ class SearchesController < ApplicationController
 
   def registry_entry
     search = RegistryEntry.search do 
-      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all registry_entries (this is a comment)" : params[:fulltext]
+      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllRegistryEntriesThisIsAComment" : params[:fulltext]
       #order_by(:names, :asc)
       paginate page: params[:page] || 1, per_page: 200
     end
@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result| 
-            Rails.cache.fetch("#{Project.project_id}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
+            Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do 
               registry_entry = ::RegistryEntrySerializer.new(result).as_json 
               ancestors = result.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
               {registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb}
@@ -48,13 +48,13 @@ class SearchesController < ApplicationController
 
   def search(model, order)
     model.search do 
-      fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]  do
+      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]  do
         (Project.available_locales + [:orig]).each do |locale|
           highlight :"text_#{locale}"
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && current_user_account.admin?) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.user.roles?(Interview, :update))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : 'public')
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
@@ -70,7 +70,7 @@ class SearchesController < ApplicationController
 
   def interview
     models_and_order = [
-      [Segment, :timecode],
+      [Segment, :sort_key],
       [BiographicalEntry, :start_date],
       [Photo, :id],
       [Person, "name_#{locale}".to_sym]
@@ -102,7 +102,7 @@ class SearchesController < ApplicationController
 
   # https://github.com/sunspot/sunspot#stored-fields
   def all_interviews_titles
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_titles") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_titles") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -119,7 +119,7 @@ class SearchesController < ApplicationController
   # hagen only
   # in order to being able to get a dropdown list in search field
   def all_interviews_pseudonyms
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_pseudonyms") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_pseudonyms") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -132,7 +132,7 @@ class SearchesController < ApplicationController
   end
 
   def all_interviews_places_of_birth
-    Rails.cache.fetch("#{Project.project_id}-all_interviews_places_of_birth") do
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_places_of_birth") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
@@ -162,7 +162,8 @@ class SearchesController < ApplicationController
         desired_columns = [:archive_id, [:short_title,:de], :media_type]
         options = {}
         csv = CSV.generate(options) do |csv|
-          csv << desired_columns.map{|c| c.to_s}
+          # csv << desired_columns.map{|c| c.to_s}
+          csv << ["ID", "Titel", "Medientyp"]
           search.results.each do |interview|
             csv << desired_columns.map{ |c| interview.send(*c) }
           end
@@ -191,42 +192,6 @@ class SearchesController < ApplicationController
       paginate page: params[:page] || 1, per_page: 12
     end
 
-    # number_of_found_segments = search.hits.inject({}) do |mem, hit|
-    #   segsearch = Segment.search do
-    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext]
-    #     with(:archive_id, hit.instance.archive_id)
-    #   end
-    #   mem[hit.instance.archive_id] = segsearch.total
-    #   mem
-    # end
-
-    # found_segments = search.hits.inject({}) do |mem, hit|
-    #   segsearch = Segment.search do
-    #     adjust_solr_params do |params|
-    #       params[:rows] = 5
-    #     end
-    #     fulltext params[:fulltext].blank? ? "empty fulltext should not result in all segments (this is a comment)" : params[:fulltext] do
-    #       highlight :transcript
-    #       highlight :translation
-    #     end
-    #     with(:archive_id, hit.instance.archive_id)
-    #   end
-
-    #   interview = hit.instance
-      
-    #   mem[interview.archive_id] = {
-    #     total: segsearch.total,
-    #     segments: segsearch.hits.map do |hit| 
-    #       # Rails.cache.fetch("#{Project.project_id}-segment-#{hit.instance.id}-#{hit.instance.updated_at}") do 
-    #       segment = ::SegmentHitSerializer.new(hit.instance).as_json 
-    #       segment[:transcripts] = highlighted_transcripts(hit, interview)
-    #       segment
-    #       # end
-    #     end
-    #   }
-    #   mem
-    # end
-
     respond_to do |format|
       format.html do
         render :template => '/react/app.html'
@@ -236,7 +201,7 @@ class SearchesController < ApplicationController
             all_interviews_titles: all_interviews_titles,
             all_interviews_pseudonyms: all_interviews_pseudonyms,
             all_interviews_places_of_birth: all_interviews_places_of_birth,
-            all_interviews_count: Interview.count,
+            all_interviews_count: search.total,
             result_pages_count: search.results.total_pages,
             results_count: search.total,
             interviews: search.results.map{|i| cache_single(i)},

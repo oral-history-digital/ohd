@@ -108,7 +108,7 @@ export function deleteData(dataType, id, nestedDataType, nestedId, skipRemove=fa
     } else {
         return dispatch => {
             dispatch(removeData(id, dataType, nestedDataType, nestedId))
-            Loader.delete(url, dispatch, null);
+            Loader.delete(url, dispatch, receiveData);
         }
     }
 }

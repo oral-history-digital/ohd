@@ -1,0 +1,39 @@
+.home-text
+  h1 Campscapes Testimonies
+
+  p
+    | Audio- and video-recorded interviews are an
+      important source for the history of Nazi and
+      Stalinist camps. Conducted and archived in different
+      times, places and collections, many testimonies
+      are difficult to find. This testimony catalog
+      assists researchers, memorial museums, educators
+      and visitors in tracing interviews with survivors
+      of the Nazi camps Westerbork (Netherlands), 
+      Treblinka (Poland), Falstad (Norway), Jasenovac
+      (Croatia), Bergen-Belsen (Germany) and Lety
+      (Czech Republic) as well as Stalinist camp Jáchymov
+      (Czech Republic). Get more information on
+      the project on 
+    a[href="https://www.campscapes.org"] www.campscapes.org
+    | .
+
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/en/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{current_user_account ? interview.short_title(:en) : interview.anonymous_title(:en)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:en]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:en)} #{(interview.translated) ? I18n.t('status.translated', locale: :en) : ''}
+        

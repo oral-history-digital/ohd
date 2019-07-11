@@ -7,7 +7,7 @@ class Person < ApplicationRecord
            :as => :ref_object,
            :dependent => :destroy
 
-  has_many :contributions
+  has_many :contributions, dependent: :destroy
   has_many :interviews,
     -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
     through: :contributions
@@ -17,11 +17,11 @@ class Person < ApplicationRecord
 
   validates :gender, inclusion: %w(male female), allow_nil: true
 
-  translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names
+  translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names, fallbacks_for_empty_translations: true
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      contributions.map{|c| c.interview.archive_id }
+      contributions.map{|c| c.interview && c.interview.archive_id }.compact
     end
 
     # dummy method, necessary for generic search
@@ -52,20 +52,18 @@ class Person < ApplicationRecord
   end
 
   def place_of_birth
-    if registry_references.length > 0
-      if registry_references.where(registry_reference_type_id: 4).length > 0
-        registry_references.where(registry_reference_type_id: 4).first.registry_entry
-      end
-    end
+    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'birth_location')).first
+    ref && ref.registry_entry
   end
 
   def year_of_birth
     date_of_birth.blank? ? '?' : date_of_birth[/19\d{2}/]
   end
 
-  def name
+  def name(last_name_as_inital=false)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = "#{first_name(locale)} #{last_name(locale)}" if Project.available_locales.include?( locale.to_s )
+      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
+      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if Project.available_locales.include?( locale.to_s )
       mem
     end
   end
