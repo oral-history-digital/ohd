@@ -370,8 +370,8 @@ class Interview < ActiveRecord::Base
   Project.metadata_fields_registry_reference_type.each do |property|
     define_method property['id'] do 
       # join entries that reference interview as well as those that reference the interviewee
-      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id) +
-      interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
+      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property['id']).first.id).map(&:registry_entry_id) +
+      interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property['id']).first.id).map(&:registry_entry_id)
     end
   end
 
