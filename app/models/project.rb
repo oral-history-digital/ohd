@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
 
-  has_many :search_facets 
+  has_many :metadata_fields 
   has_many :external_links 
   has_many :registry_entry_projects
   has_many :registry_entries,
@@ -9,38 +9,17 @@ class Project < ApplicationRecord
   has_many :user_registrations,
     through: :user_registration_projects
 
-  class << self
-
-    def config
-      @config ||= Rails.configuration.project
-    end
-
-    def method_missing(n)
-      if config.has_key? n.to_s
-        config[n.to_s]
-      else
-        #raise "#{self} does NOT have a key named #{n}"
-        nil
-      end
-    end
-
-  end
-
-  def cache_key_prefix
-    @config["cache_key_prefix"] ||= project_id
+  # TODO: fit this method 
+  def actual
+    first
   end
 
   def name
     shortname.downcase
   end
 
-  def keys
-    project_config.keys
-  end
-
-  # TODO: fit this method 
-  def actual
-    first
+  def cache_key_prefix
+    name
   end
 
   %w(registry_entry registry_reference_type person interview).each do |m|
