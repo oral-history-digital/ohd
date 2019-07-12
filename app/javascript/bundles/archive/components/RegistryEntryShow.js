@@ -136,7 +136,6 @@ export default class RegistryEntryShow extends React.Component {
 
     breadCrumb() {
         let paths = []
-        // debugger;
         let bread_crumbs = this.props.registryEntry.bread_crumb;
         if (bread_crumbs) {
             Object.keys(bread_crumbs).map((id, key) => {

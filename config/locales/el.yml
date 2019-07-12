@@ -180,7 +180,7 @@ el:
   date_of_birth: Ημερομηνία γέννησης
   year_of_birth: Έτος γέννησης
   place_of_birth: Τόπος γέννησης
-  place_of_interview: Τόπος συνέντευξης
+  # place_of_interview: Τόπος συνέντευξης
   typology: Εμπειρία
   typologies: Εμπειρία
   history: Σύντομο βιογραφικό

@@ -99,7 +99,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
         if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId]) {
             return (
                 <p>
-                    <span className={'flyout-content-label'}>{this.props.label[this.props.locale] || this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</span>
+                    <span className={'flyout-content-label'}>{(this.props.label && this.props.label[this.props.locale]) || this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</span>
                     {this.registryEntries()}
                     {this.addRegistryReference()}
                 </p>

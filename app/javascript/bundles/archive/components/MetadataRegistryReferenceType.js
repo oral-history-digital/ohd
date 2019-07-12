@@ -2,9 +2,9 @@ import React from 'react';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
-import { t, admin } from '../../../lib/utils';
+import { t, admin, getInterviewee } from '../../../lib/utils';
 
-export default class PersonPropertiesRegistryReferenceType extends React.Component {
+export default class MetadataRegistryReferenceType extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -19,17 +19,39 @@ export default class PersonPropertiesRegistryReferenceType extends React.Compone
     }
 
     loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `references_for_interview=${this.props.interview.archive_id}&type_id=${this.props.referenceType.id}`);
+        let string = ''
+        let string2 = ''
+        switch(this.props.refObjectType) {
+            case 'person':
+                string = `references_for_person_${this.props.interview.interviewee_id}_type_id_${this.props.referenceType.id}`
+                string2 = `references_for_person=${this.props.interview.interviewee_id}&type_id=${this.props.referenceType.id}`
+                break
+            case 'interview':
+                string = `references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`
+                string2 = `references_for_interview=${this.props.interview.archive_id}&type_id=${this.props.referenceType.id}`
+                break;
+        }
+
+        if (!this.props.registryEntriesStatus[string]) {
+            this.props.fetchData('registry_entries', null, null, this.props.locale, string2);
         }
     }
 
     registryEntries() {
         let registryEntries = [];
+        let string = ''
+        switch(this.props.refObjectType) {
+            case 'person':
+                string = `references_for_person_${this.props.interview.interviewee_id}_type_id_${this.props.referenceType.id}`
+                break
+            case 'interview':
+                string = `references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`
+                break
+        }
         if (
             this.props.interview && 
-            this.props.registryEntriesStatus[`references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`] &&
-            this.props.registryEntriesStatus[`references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[string] &&
+            this.props.registryEntriesStatus[string].split('-')[0] === 'fetched'
         ) {
             for (var c in this.props.interview.registry_references) {  
                 let registryReference = this.props.interview.registry_references[c];
@@ -52,11 +74,11 @@ export default class PersonPropertiesRegistryReferenceType extends React.Compone
         } 
         if (registryEntries.length > 0) {
         return registryEntries;
-        } else if (!admin(this.props, {type: 'RegistryReference', action: 'create'})){
+        } else if (!admin(this.props, {type: 'RegistryReference', action: 'create'})) {
             return (
                 <span>---</span>
             )
-    }
+        }
     }
 
     addRegistryReference() {

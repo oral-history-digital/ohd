@@ -145,9 +145,7 @@ export default class UploadTranscript extends React.Component {
     }
 
     handleTapeDurationsChange(name, value) {
-        debugger;
         if (name === 'tape_durations') {
-        debugger;
             this.setState({ 
                 tapeDurationsSet: /\d+/.test(value)
             })

@@ -283,10 +283,10 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
-  def place_of_interview
-    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-    ref && ref.registry_entry
-  end
+  # def place_of_interview
+  #   ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+  #   ref && ref.registry_entry
+  # end
 
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
@@ -334,15 +334,18 @@ class Interview < ActiveRecord::Base
     localized_hash(true)
   end
 
+  # this method is only used for the first version of the map atm.
+  # for other purposes, use the person model
   def place_of_birth
-    return {
+    localized_hash = interviewees[0].try(:place_of_birth).try(:localized_hash) || Hash[I18n.available_locales.collect { |i| [i, ""] } ]
+    return localized_hash.merge ({
       descriptor: interviewees[0].try(:place_of_birth).try(:localized_hash),
       id: interviewees[0].try(:place_of_birth).try(:id),
       latitude: interviewees[0].try(:place_of_birth).try(:latitude),
       longitude: interviewees[0].try(:place_of_birth).try(:longitude),
       names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
       archive_id: archive_id
-    }
+    })
   end
 
   def reverted_short_title(locale)
@@ -364,9 +367,11 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  Project.registry_reference_type_search_facets.each do |facet|
-    define_method facet['id'] do 
-      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
+  Project.metadata_fields_registry_reference_type.each do |property|
+    define_method property['id'] do 
+      # join entries that reference interview as well as those that reference the interviewee
+      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id) +
+      interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
     end
   end
 

@@ -120,7 +120,7 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties:
+  metadata_fields:
     - id: 'language_id'
       source: 'language'
       use_as_facet: true

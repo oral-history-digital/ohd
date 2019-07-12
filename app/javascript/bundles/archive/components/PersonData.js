@@ -8,9 +8,9 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 export default class PersonData extends React.Component {
 
 
-    content(label, value, className) {
+    content(label, value, className, key='') {
         return (
-            <p>
+            <p key={`persondata-content-${key}`}>
                 <span className="flyout-content-label">{label}:</span>
                 <span className={"flyout-content-data " + className}>{value}</span>
             </p>
@@ -81,6 +81,21 @@ export default class PersonData extends React.Component {
         );
     }
 
+    detailViewFields() {
+        let _this = this
+        return _this.props.detailViewFields.map(function(column, i){
+            let field = _this.props.interview[column["id"]]
+            return(
+                _this.content(
+                    (column["facet_label"] && column["facet_label"][_this.props.locale]) || t(column["id"]) || column["id"], 
+                    (field && field[_this.props.locale]) || (typeof (field) !== 'object' && _this.props.interview[column["id"]]) || "---",
+                    "",
+                    i
+                )
+            )
+        });
+    }
+
     info() {
         let interviewee = getInterviewee(this.props);
         if (interviewee) {
@@ -96,6 +111,7 @@ export default class PersonData extends React.Component {
                         {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
                     {this.history()}
+                    {this.detailViewFields()}
                 </div>
             );
         } else {

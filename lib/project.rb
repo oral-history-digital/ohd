@@ -29,33 +29,37 @@ module Project
       project_config.keys
     end
 
-    def person_properties
-      project_config["person_properties"]
+    def metadata_fields
+      project_config["metadata_fields"]
     end
 
     def search_facets
-      person_properties.select { |c| c["use_as_facet"] }
+      metadata_fields.select { |c| c["use_as_facet"] }
     end
 
     def list_columns
-      person_properties.select { |c| c["use_as_column"] }
+      metadata_fields.select { |c| c["use_in_results_table"] }
+    end
+
+    def detail_view_fields
+      metadata_fields.select { |c| c["use_in_detail_view"] }
     end
 
     %w(registry_entry registry_reference_type person interview).each do |m|
       define_method "#{m}_search_facets" do
-        person_properties.select { |c| c["use_as_facet"] && c["source"] == m }
+        metadata_fields.select { |c| c["use_as_facet"] && c["source"] == m }
       end
     end
 
     # used for metadata that is not used as facet
     %w(registry_entry registry_reference_type person interview).each do |m|
-      define_method "person_properties_#{m}" do
-        person_properties.select { |c| c["source"] == m }
+      define_method "metadata_fields_#{m}" do
+        metadata_fields.select { |c| c["source"] == m }
       end
     end
 
     def search_facets_names
-      person_properties.select { |c| c["use_as_facet"] }.map { |c| c["id"] }
+      metadata_fields.select { |c| c["use_as_facet"] }.map { |c| c["id"] }
     end
 
     def min_to_max_birth_year_range
@@ -75,7 +79,7 @@ module Project
           mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet["id"])).as_json
         when "person"
           if facet["id"] == "year_of_birth"
-            facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+            facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
             mem[facet["id"].to_sym] = {
               name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
@@ -89,7 +93,7 @@ module Project
               end,
             }
           else #gender
-            facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+            facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
             mem[facet["id"].to_sym] = {
               name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
               subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
@@ -102,7 +106,7 @@ module Project
             }
           end
         when "interview"
-          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+          facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
           mem[facet["id"].to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
@@ -114,7 +118,7 @@ module Project
             end,
           }
         when "collection"
-          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
+          facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
           mem[facet["id"].to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
@@ -159,11 +163,11 @@ module Project
     end
 
     #def archive_facet_category_ids
-    #person_properties.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
+    #metadata_fields.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
     #end
 
     #def archive_category_ids
-    #person_properties.map{|c| c['id'].to_sym }
+    #metadata_fields.map{|c| c['id'].to_sym }
     #end
 
     #def is_category?(category_id)
@@ -173,7 +177,7 @@ module Project
 
     #def category_config(category_id)
     #category_id = category_id.to_s
-    #person_properties.detect{|c| c['id'] == category_id}
+    #metadata_fields.detect{|c| c['id'] == category_id}
     #end
 
     #def category_object(category_id)

@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
-import PersonPropertiesRegistryReferenceTypeContainer from '../containers/PersonPropertiesRegistryReferenceTypeContainer';
+import MetadataRegistryReferenceTypeContainer from '../containers/MetadataRegistryReferenceTypeContainer';
 
 export default class InterviewRegistryReferences extends React.Component {
 
@@ -19,12 +19,14 @@ export default class InterviewRegistryReferences extends React.Component {
             }
         }
         for (var r in this.props.personPropertiesRegistryReferenceType) {
-            if (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page']) {
+            if (this.props.personPropertiesRegistryReferenceType[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page'])) {
                 facets.push(  
-                    <PersonPropertiesRegistryReferenceTypeContainer
+                    // <span>{`this.props.registry-reference-type-search-facets-${r}`}</span>
+                    <MetadataRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     referenceType={this.props.personPropertiesRegistryReferenceType[r]} 
                     interview={this.props.interview}
+                    refObjectType={this.props.refObjectType}
                     />  
                 );
             }

@@ -6,7 +6,7 @@ class RegistryEntriesController < ApplicationController
   def create
     authorize RegistryEntry
     I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
-    @registry_entry = RegistryEntry.create_with_parent_and_name(registry_entry_params[:parent_id], registry_entry_params[:descriptor]) 
+    @registry_entry = RegistryEntry.create_with_parent_and_name(registry_entry_params[:parent_id], registry_entry_params[:descriptor])
     @registry_entry.reload.update_attributes registry_entry_params.slice(:latitude, :longitude, :notes)
     clear_cache @registry_entry.parents.first
 
@@ -64,8 +64,8 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        registry_entries, extra_params = 
-          if params[:children_for_entry] 
+        registry_entries, extra_params =
+          if params[:children_for_entry]
             [
               RegistryEntry.find(params[:children_for_entry]).children,
               "children_for_entry_#{params[:children_for_entry]}",
@@ -80,6 +80,10 @@ class RegistryEntriesController < ApplicationController
               Interview.find_by_archive_id(params[:references_for_interview]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
               "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}",
             ]
+          elsif params[:references_for_person]
+            [
+              Person.find(params[:references_for_person]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
+              "references_for_person_#{params[:references_for_person]}_type_id_#{params[:type_id]}",
             ]
           end
 
@@ -118,7 +122,7 @@ class RegistryEntriesController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @registry_entry = RegistryEntry.find(params[:id])
     authorize @registry_entry
 
@@ -138,7 +142,7 @@ class RegistryEntriesController < ApplicationController
           id: parent.id,
           data_type: "registry_entries",
           data: Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
-        }, status: :ok 
+        }, status: :ok
       end
     end
   end

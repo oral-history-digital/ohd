@@ -120,20 +120,20 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties: 
+  metadata_fields: 
     - 
       id: camps
       source: registry_entry
-      display_on_landing_page: true
       facet_label: 
         de: Lager
         en: Camp
-      use_as_column: true
+      display_on_landing_page: true
+      use_in_results_table: true
       use_as_facet: true
     - 
       id: language
       source: language
-      use_as_column: true
+      use_in_results_table: true
       facet_label: 
         de: Sprache
         en: Language
@@ -148,7 +148,7 @@ default: &default
       id: groups
       source: registry_entry
       display_on_landing_page: true
-      use_as_column: true
+      use_in_results_table: true
       use_as_facet: true
       facet_label: 
         de: Gruppe
@@ -161,6 +161,11 @@ default: &default
       id: gender
       source: person
       use_as_facet: false
+      use_in_detail_view: false
+      display_on_landing_page: true
+      facet_label:
+        de: Geschlecht
+        en: Gender
       values: 
         female: female
         male: male
@@ -168,21 +173,36 @@ default: &default
       id: year_of_birth
       source: person
       use_as_facet: false
+      display_on_landing_page: true
+      use_in_detail_view: true
+      facet_label:
+        de: Geburtsjahr
+        en: Year of Birth
     - 
       id: country_of_birth
       source: interview
       use_as_facet: true
-      use_as_column: true
+      use_in_results_table: true
+      use_in_detail_view: true
       facet_label: 
         de: Herkunftsland
         en: Country of Birth
+    - 
+      id: birth_location
+      source: registry_reference_type
+      ref_object_type: person
+      display_on_landing_page: true
+      use_as_facet: false
+      facet_label: 
+        de: Geburtsort
+        en: Place of Birth
     - 
       id: collection_id
       source: collection
       facet_label: 
         de: Sammlung
         en: Collection
-      use_as_column: true
+      use_in_results_table: true
       use_as_facet: true
     - 
       id: group_details
@@ -192,10 +212,12 @@ default: &default
     - 
       id: interview_location
       source: registry_reference_type
-      display_on_landing_page: false
+      ref_object_type: interview
       use_as_facet: false
+      display_on_landing_page: true
+      use_in_results_table: false
 
-  fullname_on_landing_page: false
+  fullname_on_landing_page: true
 
   has_newsletter: true
 
@@ -215,4 +237,3 @@ staging:
 
 test:
   <<: *default
-
