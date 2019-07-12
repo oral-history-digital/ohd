@@ -4,10 +4,10 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
              :registry_reference_ids,
              :registry_entry_id,
              :registry_entry_code,
-             :display_on_landing_page
+             :display_on_landing_page,
 
   def name
-    object.localized_hash
+    Project.person_properties_registry_reference_type.select{|p| p['id'] == object.code}.first['facet_label'] || object.localized_hash
   end
 
   def registry_entry_code

@@ -13,6 +13,7 @@ export default class InterviewRegistryReferences extends React.Component {
                         key={`this.props.registry-entry-search-facets-${this.props.registryEntrySearchFacets[r]['id']}`} 
                         parentEntryId={this.props.registryEntrySearchFacets[r]['id']} 
                         interview={this.props.interview} 
+                        label={this.props.registryEntrySearchFacets[r]['label']}
                         />
                 );
             }
@@ -31,23 +32,11 @@ export default class InterviewRegistryReferences extends React.Component {
         return facets;
     }
 
-    registryReferences() {
-        if (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType) {
+    render() {
+        if (this.props.interview && (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType)) {
             return (
                 <div>
                     {this.searchFacets()}
-                </div>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    render() {
-        if (this.props.interview) {
-            return (
-                <div>
-                    {this.registryReferences()}
                 </div>
             );
         } else {

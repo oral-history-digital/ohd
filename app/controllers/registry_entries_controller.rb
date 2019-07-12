@@ -1,8 +1,7 @@
 class RegistryEntriesController < ApplicationController
-
   skip_before_action :authenticate_user_account!, only: [:index, :show]
 
-  layout 'responsive'
+  layout "responsive"
 
   def create
     authorize RegistryEntry
@@ -15,10 +14,10 @@ class RegistryEntriesController < ApplicationController
       format.json do
         render json: {
           id: @registry_entry.id,
-          data_type: 'registry_entries',
+          data_type: "registry_entries",
           data: cache_single(@registry_entry),
-          reload_data_type: 'registry_entries',
-          reload_id: @registry_entry.parents.first.id
+          reload_data_type: "registry_entries",
+          reload_id: @registry_entry.parents.first.id,
         }
       end
     end
@@ -32,7 +31,7 @@ class RegistryEntriesController < ApplicationController
       format.json do
         render json: {
           id: @registry_entry.id,
-          data_type: 'registry_entries',
+          data_type: "registry_entries",
           data: cache_single(@registry_entry),
         }
       end
@@ -52,7 +51,7 @@ class RegistryEntriesController < ApplicationController
       format.json do
         render json: {
           id: @registry_entry.id,
-          data_type: 'registry_entries',
+          data_type: "registry_entries",
           data: cache_single(@registry_entry),
         }
       end
@@ -63,41 +62,42 @@ class RegistryEntriesController < ApplicationController
     policy_scope RegistryEntry
 
     respond_to do |format|
-      format.html{ render 'react/app' }
+      format.html { render "react/app" }
       format.json do
         registry_entries, extra_params = 
           if params[:children_for_entry] 
             [
               RegistryEntry.find(params[:children_for_entry]).children,
-             "children_for_entry_#{params[:children_for_entry]}"
+              "children_for_entry_#{params[:children_for_entry]}",
             ]
           elsif params[:references_for_segment]
             [
               Segment.find(params[:references_for_segment]).registry_entries,
-             "references_for_segment_#{params[:references_for_segment]}"
+              "references_for_segment_#{params[:references_for_segment]}",
             ]
           elsif params[:references_for_interview]
             [
               Interview.find_by_archive_id(params[:references_for_interview]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
-             "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}"
+              "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}",
+            ]
             ]
           end
 
         json = Rails.cache.fetch "#{Project.cache_key_prefix}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
           registry_entries = registry_entries.includes(registry_names: :translations)
           {
-            data: registry_entries.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'registry_entries',
-            extra_params: extra_params
+            data: registry_entries.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data_type: "registry_entries",
+            extra_params: extra_params,
           }
         end.to_json
         render plain: json
       end
       format.pdf do
-        @registry_entries = RegistryEntry.where(entry_code: Project.pdf_registry_entry_codes).map{|e| e.descendants.includes(registry_names: :translations)}.flatten.sort{|a,b| a.descriptor <=> b.descriptor}
+        @registry_entries = RegistryEntry.where(entry_code: Project.pdf_registry_entry_codes).map { |e| e.descendants.includes(registry_names: :translations) }.flatten.sort { |a, b| a.descriptor <=> b.descriptor }
         @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
-        pdf =   render_to_string(:template => '/registry_entries/index.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf"#, :disposition => "attachment"
+        pdf = render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
+        send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
     end
   end
@@ -131,13 +131,13 @@ class RegistryEntriesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render :action => 'index'
+        render :action => "index"
       end
       format.json do
         render json: {
           id: parent.id,
-          data_type: 'registry_entries',
-          data: Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}"){::RegistryEntrySerializer.new(parent).as_json},
+          data_type: "registry_entries",
+          data: Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
         }, status: :ok 
       end
     end
@@ -148,5 +148,4 @@ class RegistryEntriesController < ApplicationController
   def registry_entry_params
     params.require(:registry_entry).permit(:workflow_state, :parent_id, :registry_name_type_id, :name_position, :descriptor, :notes, :latitude, :longitude, :lang)
   end
-
 end

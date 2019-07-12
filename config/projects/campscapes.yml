@@ -195,6 +195,8 @@ default: &default
       display_on_landing_page: false
       use_as_facet: false
 
+  fullname_on_landing_page: false
+
   has_newsletter: true
 
   pdf_registry_entry_codes:
