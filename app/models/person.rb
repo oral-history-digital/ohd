@@ -53,9 +53,11 @@ class Person < ApplicationRecord
     end
   end
 
-  def place_of_birth
-    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: "birth_location")).first
-    ref && ref.registry_entry
+  Project.metadata_fields_registry_reference_type.select{|f| f['ref_object_type'] == 'person'}.each do |f|
+    define_method f["name"] do
+      ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f["name"])).first
+      ref && ref.registry_entry
+    end
   end
 
   def year_of_birth

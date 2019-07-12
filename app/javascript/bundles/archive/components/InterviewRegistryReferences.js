@@ -21,7 +21,6 @@ export default class InterviewRegistryReferences extends React.Component {
         for (var r in this.props.personPropertiesRegistryReferenceType) {
             if (this.props.personPropertiesRegistryReferenceType[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page'])) {
                 facets.push(  
-                    // <span>{`this.props.registry-reference-type-search-facets-${r}`}</span>
                     <MetadataRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     referenceType={this.props.personPropertiesRegistryReferenceType[r]} 

@@ -169,7 +169,7 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     # in order to fast access places of birth for all interviews
-    string :place_of_birth, :stored => true
+    string :birth_location, :stored => true
 
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
@@ -179,15 +179,15 @@ class Interview < ActiveRecord::Base
     end
     
     (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
-      integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+      integer facet["name"].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
     Project.person_search_facets.each do |facet|
-      string facet['id'].to_sym, :multiple => true, :stored => true
+      string facet["name"].to_sym, :multiple => true, :stored => true
     end
 
     Project.interview_search_facets.each do |facet|
-      string facet['id'].to_sym, :stored => true
+      string facet["name"].to_sym, :stored => true
     end
 
     # Create localized attributes so that we can order
@@ -317,13 +317,13 @@ class Interview < ActiveRecord::Base
   end
 
   def country_of_birth
-    interviewees.first.place_of_birth && interviewees.first.place_of_birth.parents.first.id.to_i
+    interviewees.first.birth_location && interviewees.first.birth_location.parents.first.id.to_i
   end
 
   def localized_hash_for_country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
-      if(interviewees && interviewees.first && interviewees.first.place_of_birth)
-        translation = interviewees.first.place_of_birth.parents.first.registry_names.first.translations.where(locale: locale)
+      if(interviewees && interviewees.first && interviewees.first.birth_location)
+        translation = interviewees.first.birth_location.parents.first.registry_names.first.translations.where(locale: locale)
         translation[0]&& translation[0]['descriptor'] && mem[locale] =translation[0]['descriptor']
       end
       mem
@@ -336,17 +336,17 @@ class Interview < ActiveRecord::Base
 
   # this method is only used for the first version of the map atm.
   # for other purposes, use the person model
-  def place_of_birth
-    localized_hash = interviewees[0].try(:place_of_birth).try(:localized_hash) || Hash[I18n.available_locales.collect { |i| [i, ""] } ]
-    return localized_hash.merge ({
-      descriptor: interviewees[0].try(:place_of_birth).try(:localized_hash),
-      id: interviewees[0].try(:place_of_birth).try(:id),
-      latitude: interviewees[0].try(:place_of_birth).try(:latitude),
-      longitude: interviewees[0].try(:place_of_birth).try(:longitude),
-      names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
-      archive_id: archive_id
-    })
-  end
+  # def birth_location
+  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[I18n.available_locales.collect { |i| [i, ""] } ]
+  #   return localized_hash.merge ({
+  #     descriptor: interviewees[0].try(:birth_location).try(:localized_hash),
+  #     id: interviewees[0].try(:birth_location).try(:id),
+  #     latitude: interviewees[0].try(:birth_location).try(:latitude),
+  #     longitude: interviewees[0].try(:birth_location).try(:longitude),
+  #     names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
+  #     archive_id: archive_id
+  #   })
+  # end
 
   def reverted_short_title(locale)
     locale = projectified(locale)
@@ -358,28 +358,29 @@ class Interview < ActiveRecord::Base
   end
 
   Project.registry_entry_search_facets.each do |facet|
-    define_method facet['id'] do 
+    define_method facet["name"] do 
       if Project.name.to_sym == :mog
-        segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) 
+        segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet["name"], facet['entry_dedalo_code'])).map(&:registry_entry_id) 
       else
-        registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+        registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet["name"])).map(&:registry_entry_id)
       end
     end
   end
 
   Project.metadata_fields_registry_reference_type.each do |property|
-    define_method property['id'] do 
+    define_method property["name"] do 
       # join entries that reference interview as well as those that reference the interviewee
-      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property['id']).first.id).map(&:registry_entry_id) +
-      interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property['id']).first.id).map(&:registry_entry_id)
+      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property["name"]).first.id).map(&:registry_entry_id) +
+      interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: property["name"]).first.id).map(&:registry_entry_id)
     end
   end
 
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
-  Project.person_search_facets.each do |facet|
-    define_method facet['id'] do 
+  # Project.person_search_facets.each do |facet|
+  Project.metadata_fields_person.each do |facet|
+    define_method facet["name"] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first && interviewees.first.send(facet['id'].to_sym) ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
+      interviewees.first && interviewees.first.send(facet["name"].to_sym) ? interviewees.first.send(facet["name"].to_sym).split(', ') : ''
     end
   end
   #def facet_category_ids(entry_code)

@@ -7,7 +7,7 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
              :display_on_landing_page,
              :ref_object_type,
              def name
-               Project.metadata_fields_registry_reference_type.select { |p| p["id"] == object.code }.first["facet_label"] || object.localized_hash
+               Project.metadata_fields_registry_reference_type.select { |p| p["name"] == object.code }.first["label"] || object.localized_hash
              end
 
   def registry_entry_code
@@ -15,10 +15,10 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
   end
 
   def display_on_landing_page
-    Project.metadata_fields_registry_reference_type.select { |p| p["id"] == object.code }.first["display_on_landing_page"]
+    Project.metadata_fields_registry_reference_type.select { |p| p["name"] == object.code }.first["display_on_landing_page"]
   end
 
   def ref_object_type
-    Project.metadata_fields_registry_reference_type.select { |p| p["id"] == object.code }.first["ref_object_type"]
+    Project.metadata_fields_registry_reference_type.select { |p| p["name"] == object.code }.first["ref_object_type"]
   end
 end

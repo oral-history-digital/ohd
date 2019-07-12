@@ -148,7 +148,6 @@ class RegistryEntry < ActiveRecord::Base
     merge_to_id = opts[:id]
     where(id: JSON.parse(opts[:ids])).each do |registry_entry|
       registry_entry.move_associated_to(merge_to_id)
-      binding.pry
       registry_entry.destroy
     end
   end
@@ -781,7 +780,7 @@ class RegistryEntry < ActiveRecord::Base
 
       # Create a hash from the results.
       results.inject({}) do |result, row|
-        result[row['id'].to_i] = row['child_count']
+        result[row["name"].to_i] = row['child_count']
         result
       end
     end

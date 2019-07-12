@@ -10,12 +10,12 @@ import { getInterview } from '../../../lib/utils';
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
-    let placeOfBirth = null;
+    let birthLocation = null;
     if (interview && interview.interview && interview.interview.interviewees){
-        placeOfBirth = interview.interview.interviewees[0].place_of_birth;
-        if (placeOfBirth) {
-            placeOfBirth['archive_id'] = state.archive.archiveId;
-            placeOfBirth['names'] = interview.interview.interviewees[0].names;
+        birthLocation = interview.interview.interviewees[0].birth_location;
+        if (birthLocation) {
+            birthLocation['archive_id'] = state.archive.archiveId;
+            birthLocation['names'] = interview.interview.interviewees[0].names;
         }
     }
 
@@ -23,7 +23,7 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         segments: interview && interview.segments,
         locations: state.locations,
-        placeOfBirth: placeOfBirth,
+        birthLocation: birthLocation,
         locale: state.archive.locale,
         translations: state.archive.translations,
         isFetchingLocations: state.archive.isFetchingLocations

@@ -39,11 +39,11 @@ export default class InterviewLocations extends React.Component {
         return segments[0];
     }
 
-    placeOfBirth(ref) {
+    birthLocation(ref) {
         if (ref.name[this.props.locale]) {
             return (
                 <p>
-                    {`${t(this.props, 'place_of_birth')}: ${ref.name[this.props.locale]}`}
+                    {`${t(this.props, 'birth_location')}: ${ref.name[this.props.locale]}`}
                 </p>
             )
         }
@@ -68,7 +68,7 @@ export default class InterviewLocations extends React.Component {
         } else if (ref.name) {
             return (
                 <div>
-                    {this.placeOfBirth(ref)}
+                    {this.birthLocation(ref)}
                     <div>
                         {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
                     </div>
@@ -88,20 +88,25 @@ export default class InterviewLocations extends React.Component {
         if (locations) {
             locations =  locations.filter(l => l.ref_object);
         }
-        if (locations && this.props.placeOfBirth) {
-            locations.push(this.props.placeOfBirth);
+        if (locations && this.props.birthLocation) {
+            locations.push(this.props.birthLocation);
         }
-        return (
-            <div>
-                <div className='explanation'>{t(this.props, 'interview_map_explanation')}</div>
-                <LocationsContainer
-                    data={locations}
-                    loaded={this.locationsLoaded()}
-                    handleClick={this.handleClick.bind(this)}
-                    popupContent={this.popupContent.bind(this)}
-                />
-            </div>
-        );
+        if (locations && locations.length > 0){
+            return (
+                <div>
+                    <div className='explanation'>{t(this.props, 'interview_map_explanation')}</div>
+                    <LocationsContainer
+                        data={locations}
+                        loaded={this.locationsLoaded()}
+                        handleClick={this.handleClick.bind(this)}
+                        popupContent={this.popupContent.bind(this)}
+                    />
+                </div>
+            );
+        }
+        else {
+            return null;
+        }
     }
 
 }

@@ -4,8 +4,8 @@ class FacetSerializer < ApplicationSerializer
              :subfacets
 
   def name
-    facet_label_hash = Project.metadata_fields.select { |c| c["id"] == object.entry_code }[0]["facet_label"]
-    facet_label_hash || object.localized_hash
+    label_hash = Project.metadata_fields.select { |c| c["name"] == object.entry_code }[0]["label"]
+    label_hash || object.localized_hash
   end
 
   def subfacets

@@ -146,79 +146,95 @@ default: &default
 
   metadata_fields: 
     - 
-      id: person_reference
+      name: person_reference
       source: registry_entry
     - 
-      id: forced_labor_groups
+      name: forced_labor_groups
       source: registry_entry
       display_on_landing_page: true
       use_as_facet: true
     - 
-      id: forced_labor_fields
+      name: forced_labor_fields
       source: registry_entry
       use_as_facet: true
     - 
-      id: language
+      name: language
       source: language
       use_in_results_table: true
-      facet_label:
+      label:
         de: Sprache
         en: Language
         ru: Язык
     - 
-      id: language_id
+      name: language_id
       source: language
       use_as_facet: true
-      facet_label:
+      label:
         de: Sprache
         en: Language
         ru: Язык
+    -
+      name: date_of_birth
+      source: person
+      use_in_detail_view: true
+      label:
+        de: Geburtsdatum
+        en: Date of Birth
     - 
-      id: year_of_birth
+      name: year_of_birth
       source: person
       use_as_facet: true
     - 
-      id: gender
+      name: gender
       source: person
       use_as_facet: true
       values: 
         female: female
         male: male
     - 
-      id: collection_id
+      name: collection_id
       source: collection
       use_as_facet: true
     - 
-      id: media_type
+      name: media_type
       source: interview
       use_in_results_table: true
       use_as_facet: true
-      facet_label:
+      label:
         de: Medientyp
         en: Media Type
         ru: Аудио/Видео
     - 
-      id: birth_location
+      name: birth_location
       source: registry_reference_type
+      ref_object_type: person
       display_on_landing_page: false
       use_as_facet: false
+      label:
+        de: Geburtsort
+        en: Place of Birth
     - 
-      id: forced_labor_habitations
+      name: forced_labor_habitations
       source: registry_entry
     - 
-      id: home_location
+      name: home_location
+      source: registry_reference_type
+      ref_object_type: person
+      use_in_detail_view: true
+      use_as_facet: false
+      label:
+        de: Herkunftsort
+        en: Home Location
+    - 
+      name: forced_labor_location
       source: registry_reference_type
       use_as_facet: false
     - 
-      id: forced_labor_location
+      name: deportation_location
       source: registry_reference_type
       use_as_facet: false
     - 
-      id: deportation_location
-      source: registry_reference_type
-      use_as_facet: false
-    - 
-      id: return_location
+      name: return_location
       source: registry_reference_type
       use_as_facet: false
 

@@ -106,15 +106,15 @@ default: &default
 
   smtp_server: 'mail.fu-berlin.de'
 
-  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", id: 637084(changes wwhen publish)
-  # Thematic: entry_dedalo_code: "ts1_1", id: 637018(changes when publish)
+  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", name: 637084(changes wwhen publish)
+  # Thematic: entry_dedalo_code: "ts1_1", name: 637018(changes when publish)
   # because thematic id changes: RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id is now used in InterviewController
   ref_tree_nodes:
     thematic: 
-      #id: 639654 #not used any more
+      #name: 639654 #not used any more
       entry_dedalo_code: "ts1_1"
     centers_of_deprevation_of_liberty:
-      id: 
+      name: 
       entry_dedalo_code: "on1_1129"
 
   # Interview partner properties usually depend on the historical context and must therefore be configured
@@ -128,22 +128,22 @@ default: &default
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
   metadata_fields: 
     - 
-      id: person_reference
+      name: person_reference
       source: registry_entry
       descriptor: Person
     - 
-      id: gender
+      name: gender
       source: person
       use_as_facet: true
       values: 
         female: Woman
         male: Man
     - 
-      id: year_of_birth
+      name: year_of_birth
       source: person
       use_as_facet: true
     - 
-      id: typology
+      name: typology
       source: person
       use_as_facet: true
       values: 
@@ -155,7 +155,7 @@ default: &default
         resistance: Resistance
         retaliation: Retaliation
     - 
-      id: periods
+      name: periods
       source: registry_entry
       entry_dedalo_code: hierarchy1_246
       use_as_facet: true

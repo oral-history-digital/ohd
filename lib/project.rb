@@ -59,7 +59,7 @@ module Project
     end
 
     def search_facets_names
-      metadata_fields.select { |c| c["use_as_facet"] }.map { |c| c["id"] }
+      metadata_fields.select { |c| c["use_as_facet"] }.map { |c| c["name"] }
     end
 
     def min_to_max_birth_year_range
@@ -74,14 +74,14 @@ module Project
       @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
         case facet["source"]
         when "registry_entry"
-          mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet["id"])).as_json
+          mem[facet["name"].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet["name"])).as_json
         when "registry_reference_type"
-          mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet["id"])).as_json
+          mem[facet["name"].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet["name"])).as_json
         when "person"
-          if facet["id"] == "year_of_birth"
-            facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-            mem[facet["id"].to_sym] = {
-              name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+          if facet["name"] == "year_of_birth"
+            label_hash = Project.metadata_fields.select { |c| c["name"] == facet["name"] }[0]["label"]
+            mem[facet["name"].to_sym] = {
+              name: label_hash || localized_hash_for("search_facets", facet["name"]),
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
                 I18n.available_locales.map { |l| h[l] = key }
@@ -93,9 +93,9 @@ module Project
               end,
             }
           else #gender
-            facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-            mem[facet["id"].to_sym] = {
-              name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+            label_hash = Project.metadata_fields.select { |c| c["name"] == facet["name"] }[0]["label"]
+            mem[facet["name"].to_sym] = {
+              name: label_hash || localized_hash_for("search_facets", facet["name"]),
               subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
                 subfacets[value] = {
                   name: localized_hash_for("search_facets", key),
@@ -106,23 +106,23 @@ module Project
             }
           end
         when "interview"
-          facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-          mem[facet["id"].to_sym] = {
-            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+          label_hash = Project.metadata_fields.select { |c| c["name"] == facet["name"] }[0]["label"]
+          mem[facet["name"].to_sym] = {
+            name: label_hash || localized_hash_for("search_facets", facet["name"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet["id"]).to_s] = {
-                name: interview.send("localized_hash_for_" + facet["id"]),
+              subfacets[interview.send(facet["name"]).to_s] = {
+                name: interview.send("localized_hash_for_" + facet["name"]),
                 count: 0,
               }
               subfacets
             end,
           }
         when "collection"
-          facet_label_hash = Project.metadata_fields.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-          mem[facet["id"].to_sym] = {
-            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+          label_hash = Project.metadata_fields.select { |c| c["name"] == facet["name"] }[0]["label"]
+          mem[facet["name"].to_sym] = {
+            name: label_hash || localized_hash_for("search_facets", facet["name"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet["id"])] = {
+              subfacets[interview.send(facet["name"])] = {
                 name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
                 count: 0,
               }
@@ -130,10 +130,10 @@ module Project
             end,
           }
         when "language"
-          mem[facet["id"].to_sym] = {
-            name: localized_hash_for("search_facets", facet["id"]),
+          mem[facet["name"].to_sym] = {
+            name: localized_hash_for("search_facets", facet["name"]),
             subfacets: Interview.all.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet["id"])] = {
+              subfacets[interview.send(facet["name"])] = {
                 name: interview.language ? interview.language.localized_hash : { en: "no language" },
                 count: 0,
               }
@@ -163,11 +163,11 @@ module Project
     end
 
     #def archive_facet_category_ids
-    #metadata_fields.select{|c| c['use_as_facet'] }.map{|c| c['id'].to_sym}
+    #metadata_fields.select{|c| c['use_as_facet'] }.map{|c| c["name"].to_sym}
     #end
 
     #def archive_category_ids
-    #metadata_fields.map{|c| c['id'].to_sym }
+    #metadata_fields.map{|c| c["name"].to_sym }
     #end
 
     #def is_category?(category_id)
@@ -177,7 +177,7 @@ module Project
 
     #def category_config(category_id)
     #category_id = category_id.to_s
-    #metadata_fields.detect{|c| c['id'] == category_id}
+    #metadata_fields.detect{|c| c["name"] == category_id}
     #end
 
     #def category_object(category_id)
