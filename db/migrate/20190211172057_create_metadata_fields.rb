@@ -1,0 +1,18 @@
+class CreateMetaDataFields < ActiveRecord::Migration[5.2]
+  def change
+    create_table :metadata_fields do |t|
+      t.integer :project_id
+      t.string :name 
+      t.boolean :use_as_facet
+      t.boolean :use_in_results_table
+      t.boolean :use_in_details_view
+      t.boolean :display_on_landing_page
+      t.string :ref_object_type
+      t.string :source
+      t.string :label
+      t.string :values
+
+      t.timestamps
+    end
+  end
+end
