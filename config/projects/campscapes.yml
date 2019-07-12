@@ -161,7 +161,7 @@ default: &default
       id: gender
       source: person
       use_as_facet: false
-      use_in_detail_view: false
+      use_in_detail_view: true
       display_on_landing_page: true
       facet_label:
         de: Geschlecht
