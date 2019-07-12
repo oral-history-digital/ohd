@@ -76,9 +76,12 @@ export function t(props, key, params) {
     try{
         eval(cmd);
     } catch (e) {
-        // text = `translation for ${props.locale}.${key} is missing!`;
-        keyArray = key.split('.')
-        text = keyArray[keyArray.length - 1]
+        if (developmentMode === 'true') {
+            text = `translation for ${props.locale}.${key} is missing!`;
+        } else {
+            keyArray = key.split('.')
+            text = keyArray[keyArray.length - 1]
+        }
     } finally {
         if (typeof(text) === 'string') {
             if(params) {
@@ -88,10 +91,13 @@ export function t(props, key, params) {
             }
             return text
         } else {
-            // return `translation for ${props.locale}.${key} is missing!`;
-            keyArray = key ? key.split('.') : [];
-            text = keyArray[keyArray.length - 1];
-            return text;
+            if (developmentMode === 'true') {
+                return `translation for ${props.locale}.${key} is missing!`;
+            } else {
+                keyArray = key ? key.split('.') : [];
+                text = keyArray[keyArray.length - 1];
+                return text;
+            }
         }
     }
 }

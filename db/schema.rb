@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_28_085426) do
+ActiveRecord::Schema.define(version: 2019_07_12_090507) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 2019_06_28_085426) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "text", limit: 16777215
+    t.string "spec", default: "original"
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id"
   end
 

@@ -25,12 +25,12 @@ class AssignSpeakersJob < ApplicationJob
       end
     end
 
-    WebNotificationsChannel.broadcast_to(
-      receiver,
-      title: 'edit.update_speaker.processed',
-      #msg: interview.speaker_designations.empty? ? 'edit.update_speaker.second_step_explanation' : 'edit.update_speaker.first_step_explanation'
-      archive_id: interview.archive_id
-    )
+    #WebNotificationsChannel.broadcast_to(
+      #receiver,
+      #title: 'edit.update_speaker.processed',
+      ##msg: interview.speaker_designations.empty? ? 'edit.update_speaker.second_step_explanation' : 'edit.update_speaker.first_step_explanation'
+      #archive_id: interview.archive_id
+    #)
 
   end
 

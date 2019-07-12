@@ -119,7 +119,7 @@ export default class Form extends React.Component {
     }
 
     openSubForm() {
-        if (this.props.subForm && this.props.subFormProps) {
+        if (this.props.subForm) {
             this.props.subFormProps.submitData = this.handleSubFormSubmit;
 
             return (

@@ -56,7 +56,7 @@ class Segment < ActiveRecord::Base
 
 
   # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
-  translates :mainheading, :subheading, :text
+  translates :mainheading, :subheading, :text, :spec
 
   validates_presence_of :timecode#, :media_id
 
@@ -236,11 +236,12 @@ class Segment < ActiveRecord::Base
     text(ISO_639.find(locale).send(Project.alpha))
   end
 
-  def transcripts
-    # TODO: rm Nokogiri parser after segment sanitation
-    translations.inject({}) do |mem, translation|
+  def transcripts(allowed_to_see_all=false)
+    hide_original = translations.where(spec: 'with_replacements').count > 0 && !allowed_to_see_all
+    selected_translations = hide_original ? translations.where(spec: 'with_replacements') : translations
+    selected_translations.inject({}) do |mem, translation|
+      # TODO: rm Nokogiri parser after segment sanitation
       mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
-      #mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^\S*:\S{1}/, "") : ''
       mem
     end
   end
@@ -274,6 +275,10 @@ class Segment < ActiveRecord::Base
   #
   def speaker_designation
     speaker_id.blank? && speaker
+  end
+
+  def create_or_update_marked_copy(text, locale, specification)
+    translations.find_or_create_by(locale: 'bs', spec: specification).update_attribute(:text, text)
   end
 
   # return a range of media ids up to and not including the segment's media id

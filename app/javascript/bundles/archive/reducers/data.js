@@ -26,6 +26,7 @@ const initialState = {
         uploads: {},
         biographical_entries: {},
         speaker_designations: {},
+        mark_text: {},
         user_registrations: {resultPagesCount: 1},
         roles: {},
         permissions: {},

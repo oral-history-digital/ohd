@@ -47,6 +47,26 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def mark_texts
+    @interview = Interview.find_by_archive_id params[:id]
+    authorize @interview
+    texts_to_mark = mark_text_params[:texts] && JSON.parse(mark_text_params[:texts]).map{|t| t['text_to_mark']}
+    
+    MarkTextJob.perform_later(@interview, texts_to_mark, mark_text_params[:locale], current_user_account)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          msg: "processing",
+          id: @interview.archive_id,
+          data_type: 'interviews',
+          nested_data_type: 'mark_text',
+          extra_params: "for_interviews_#{params[:id]}"
+        }, status: :ok
+      end
+    end
+  end
+
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
@@ -258,6 +278,14 @@ class InterviewsController < ApplicationController
         'translated',
         'observations',
         'workflow_state'
+    )
+  end
+
+  def mark_text_params
+    params.require(:mark_text).
+      permit(
+        'texts',
+        'locale'
     )
   end
 

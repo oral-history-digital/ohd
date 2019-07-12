@@ -14,6 +14,7 @@ import InterviewContributorsContainer from '../containers/InterviewContributorsC
 import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
 import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
 import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContainer';
+import MarkTextFormContainer from '../containers/MarkTextFormContainer';
 import GalleryContainer from '../containers/GalleryContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
@@ -132,6 +133,7 @@ export default class FlyoutTabs extends React.Component {
                                 content={ <div><InterviewInfoContainer refObjectType={'interview'}/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
                         </AuthShowContainer>
                         {this.assignSpeakersForm()}
+                        {this.markTextForm()}
                         {/* <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/> */}
@@ -169,6 +171,17 @@ export default class FlyoutTabs extends React.Component {
             return <InterviewDataContainer
                 title={t(this.props, 'assign_speakers')}
                 content={<AssignSpeakersFormContainer interview={this.props.interview} />}
+            />
+        } else {
+            return null;
+        }
+    }
+     
+    markTextForm() {
+        if (admin(this.props, {type: 'Interview', action: 'mark_texts'})) {
+            return <InterviewDataContainer
+                title={t(this.props, 'mark_texts')}
+                content={<MarkTextFormContainer interview={this.props.interview} />}
             />
         } else {
             return null;
