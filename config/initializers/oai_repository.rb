@@ -30,7 +30,10 @@ OaiRepository.setup do |config|
   # to be a ActiveRecord model class, but it should act like one.
   #
   # You must supply at least one model.
-  config.models = [ Interview ]
+  config.models = [ ]
+  # TODO: reuse the following line after having run project-migrations
+  # and created a project
+  #config.models = [ Interview ]
 
   # List the sets (and the ActiveRecord model they belong to). E.g.
   #
@@ -48,13 +51,16 @@ OaiRepository.setup do |config|
   #   }
   # ]
   #
-  config.sets = [
-     {
-       spec: 'class:interview',
-       name: 'Interviews',
-       model: Interview,
-     }
-  ]
+  config.sets = []
+  # TODO: reuse the following line after having run project-migrations
+  # and created a project
+  #config.sets = [
+     #{
+       #spec: 'class:interview',
+       #name: 'Interviews',
+       #model: Interview,
+     #}
+  #]
 
   # By default, an OAI repository must emit its records in OAI_DC (Dublin Core)
   # format. If you want to provide other output formats for your repository
