@@ -12,7 +12,7 @@ class CreateExternalLinks < ActiveRecord::Migration[5.2]
       end
 
       dir.down do
-        Post.drop_translation_table!
+        ExternalLink.drop_translation_table!
       end
     end
   end

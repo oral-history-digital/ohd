@@ -8,8 +8,8 @@ class Interview < ActiveRecord::Base
   include Workflow
   include OaiRepository::Set
 
+  belongs_to :project
   belongs_to :collection
-
   belongs_to :language
 
   has_many :photos,
@@ -41,42 +41,40 @@ class Interview < ActiveRecord::Base
            :through => :contributions
 
   has_many :interviewees,
-          #  -> {where("contributions.contribution_type = 'Informants'")}, ## MOG
-          #  -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
+           -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :interview_contributors,
   has_many :interviewers,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewer']}'")},
+           -> {where("contributions.contribution_type = 'interviewer'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :transcript_contributors,
   has_many :transcriptors,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['transcriptor']}'")},
+           -> {where("contributions.contribution_type = 'transcriptor'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :translation_contributors,
   has_many :translators,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['translator']}'")},
+           -> {where("contributions.contribution_type = 'translator'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   has_many :cinematographers,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['cinematographer']}'")},
+           -> {where("contributions.contribution_type = 'cinematographer'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   has_many :quality_managers,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['quality_manager']}'")},
+           -> {where("contributions.contribution_type = 'quality_manager'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -84,14 +82,14 @@ class Interview < ActiveRecord::Base
 
   #has_many :proofreading_contributors,
   has_many :proofreaders,
-           -> {where("contributions.contribution_type": Project.contribution_types['proofreader'])},
+           -> {where("contributions.contribution_type": 'proofreader')},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :segmentation_contributors,
   has_many :segmentators,
-           -> {where("contributions.contribution_type = '#{Project.contribution_types['segmentator']}'")},
+           -> {where("contributions.contribution_type = 'segmentator'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
@@ -163,7 +161,7 @@ class Interview < ActiveRecord::Base
     string :workflow_state
 
     # in order to find pseudonyms with fulltextsearch (hagen)
-    (text :pseudonym_string, :stored => true) if Project.project_id == 'hagen'
+    (text :pseudonym_string, :stored => true) if project.name == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -178,21 +176,21 @@ class Interview < ActiveRecord::Base
       end.join(' ')
     end
     
-    (Project.registry_entry_search_facets + Project.registry_reference_type_search_facets).each do |facet|
+    (project.registry_entry_search_facets + project.registry_reference_type_search_facets).each do |facet|
       integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
     end
 
-    Project.person_search_facets.each do |facet|
+    project.person_search_facets.each do |facet|
       string facet['id'].to_sym, :multiple => true, :stored => true
     end
 
-    Project.interview_search_facets.each do |facet|
+    project.interview_search_facets.each do |facet|
       string facet['id'].to_sym, :stored => true
     end
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    Project.available_locales.each do |locale|
+    project.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         title = full_title(locale).mb_chars.normalize(:kd)
         Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
@@ -207,7 +205,7 @@ class Interview < ActiveRecord::Base
     # find them through fulltext search 
     # e.g.: 'Kamera Hans Peter'
     #
-    Project.available_locales.each do |locale|
+    project.available_locales.each do |locale|
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -219,7 +217,7 @@ class Interview < ActiveRecord::Base
 
     # biographical entries texts
     #
-    Project.available_locales.each do |locale|
+    project.available_locales.each do |locale|
       text :"biography_#{locale}" do
         if interviewees.first
           interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -231,7 +229,7 @@ class Interview < ActiveRecord::Base
 
     # photo caption texts
     #
-    Project.available_locales.each do |locale|
+    project.available_locales.each do |locale|
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
@@ -290,7 +288,7 @@ class Interview < ActiveRecord::Base
 
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  if Project.available_locales.include?( locale.to_s )
+      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  if project.available_locales.include?( locale.to_s )
       mem
     end
   end
@@ -354,9 +352,9 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  Project.registry_entry_search_facets.each do |facet|
+  project.registry_entry_search_facets.each do |facet|
     define_method facet['id'] do 
-      if Project.name.to_sym == :mog
+      if project.name.to_sym == :mog
         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) 
       else
         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
@@ -364,14 +362,14 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  Project.registry_reference_type_search_facets.each do |facet|
+  project.registry_reference_type_search_facets.each do |facet|
     define_method facet['id'] do 
       registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
     end
   end
 
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
-  Project.person_search_facets.each do |facet|
+  project.person_search_facets.each do |facet|
     define_method facet['id'] do 
       # TODO: what if there are more intervviewees?
       interviewees.first && interviewees.first.send(facet['id'].to_sym) ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
@@ -394,7 +392,7 @@ class Interview < ActiveRecord::Base
   def translated
     # the attribute 'translated' is wrong on many interviews in zwar.
     # this is why we use the languages-array for checking
-    if Project.name == 'zwar'
+    if project.name == 'zwar'
       (self.languages.size > 1) && ('de'.in? self.languages)
     else
       read_attribute :translated
@@ -571,7 +569,7 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def anonymous_title(locale=Project.default_locale)
+  def anonymous_title(locale=project.default_locale)
     name_parts = []
     unless interviewees.blank?
       name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
@@ -668,7 +666,7 @@ class Interview < ActiveRecord::Base
 
   def oai_dc_identifier
     archive_id
-    "oai:#{Project.name}:#{archive_id}"
+    "oai:#{project.name}:#{archive_id}"
   end
 
   def oai_dc_creator
@@ -680,8 +678,8 @@ class Interview < ActiveRecord::Base
       "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
     else
       [
-        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}",
-        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(Project.default_locale)}.join(', ')}"
+        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
+        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
       ].join(';')
     end
   end
@@ -691,7 +689,7 @@ class Interview < ActiveRecord::Base
   end
 
   def oai_dc_publisher
-    "Interview-Archiv \"#{Project.project_name['de']}\""
+    "Interview-Archiv \"#{project.project_name['de']}\""
   end
 
   def oai_dc_contributor
@@ -703,16 +701,16 @@ class Interview < ActiveRecord::Base
       %w(segmentators Erschließer)
     ].inject([]) do |mem, (contributors, contribution)|
       if self.send(contributors).length > 0
-        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(Project.default_locale)}, #{contributor.first_name(Project.default_locale)}"}.join('; ')
+        "#{contribution}: " + self.send(contributors).map{|contributor| "#{contributor.last_name(project.default_locale)}, #{contributor.first_name(project.default_locale)}"}.join('; ')
       end
       mem
     end
-    if !Project.cooperation_partner.blank?
-      oai_contributors << "Kooperationspartner: #{Project.cooperation_partner}"
+    if !project.cooperation_partner.blank?
+      oai_contributors << "Kooperationspartner: #{project.cooperation_partner}"
     end
-    oai_contributors << "Projektleiter: #{Project.leader}"
-    oai_contributors << "Projektmanager: #{Project.manager}"
-    oai_contributors << "Hosting Institution: #{Project.hosting_institution}"
+    oai_contributors << "Projektleiter: #{project.leader}"
+    oai_contributors << "Projektmanager: #{project.manager}"
+    oai_contributors << "Hosting Institution: #{project.hosting_institution}"
     oai_contributors.join('. ')
   end
 

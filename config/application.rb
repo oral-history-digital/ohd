@@ -19,12 +19,12 @@ module Archive
     config.autoload_paths << Rails.root.join('lib')
 
     config.mapping_to_ascii = config_for("mapping_to_ascii")
-    #config.project = config_for("project")
+    config.project = config_for("project")
     config.datacite = config_for("datacite")
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    #config.i18n.available_locales = config.project["available_locales"]
-    config.i18n.available_locales = [:en, :de, :ru]
+    config.i18n.available_locales = config.project["available_locales"]
+    #config.i18n.available_locales = [:en, :de, :ru]
     config.i18n.default_locale = :de
     config.i18n.default_locale = config.project["default_locale"].try(:to_sym) || config.i18n.default_locale
     config.i18n.fallbacks = config.project["available_locales"] #[I18n.default_locale]
