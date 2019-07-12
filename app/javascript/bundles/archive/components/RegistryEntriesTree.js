@@ -48,15 +48,51 @@ export default class RegistryEntriesTree extends React.Component {
         }
     }
 
+    mergeRegistryEntries() {
+        let id;
+        let ids = [];
+        this.props.foundRegistryEntries.results.map((result, index) => {
+            if (index === 0) {
+                id = result.registry_entry.id;
+            } else {
+                ids.push(result.registry_entry.id);
+            }
+        })
+        this.props.submitData({merge_registry_entry: {id: id, ids: ids}}, this.props.locale);
+    }
+
+    mergeRegistryEntriesConfirm() {
+        let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={title}
+            onClick={() => this.props.openArchivePopup({
+                title: title,
+                content: (
+                    <div>
+                        <div className='any-button' onClick={() => this.mergeRegistryEntries()}>
+                            {t(this.props, 'ok')}
+                        </div>
+                    </div>
+                )
+            })}
+        >
+            {title}
+        </div>
+    }
+
     content() {
         if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
             return <RegistryEntriesContainer registryEntryParent={this.props.registryEntries[1]} />;
         } else {
             return (
-                <ul className={'registry-entries-ul'}>
-                    {this.foundRegistryEntries()}
-                </ul>
-                )
+                <div>
+                    {this.mergeRegistryEntriesConfirm()}
+                    <ul className={'registry-entries-ul'}>
+                        {this.foundRegistryEntries()}
+                    </ul>
+                </div>
+            )
         }
     }
 

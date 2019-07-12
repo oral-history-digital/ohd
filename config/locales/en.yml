@@ -32,19 +32,35 @@ en:
     for your understanding.
   observation: Interviewsituation
   tape: Tape
-  legend_title: Legende der Transkriptionszeichen
-  legend_missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben,
-    Erklärung von Dialekt
-  legend_comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher
-    Wörter/Passagen
-  legend_pause_1: kurze Pause bis 1 Sekunde
-  legend_pause_2: mittlere Pause bis 2 Sekunden
-  legend_pause_3: längere Pause bis 3 Sekunden
-  legend_pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
-  legend_assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung
-    / einer Satzstruktur.
-  legend_omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei
-    Buchstaben wegfallen
+  word: word
+  italic: italic
+  text: text
+  or: or
+  legend:
+    title: Glossary of Signs and Symbols
+    mog:
+      missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt
+      comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen
+      pause_1: kurze Pause bis 1 Sekunde
+      pause_2: mittlere Pause bis 2 Sekunden
+      pause_3: längere Pause bis 3 Sekunden
+      pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
+      assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.
+      omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen
+    zwar:
+      adress: replaces information about the current residential address or telephone number of the interviewees
+      broken_word: unfinished word or sentence, usually accompanied by a brief silence
+      silence: long silence of the interviewee (without interruption by the interviewer)
+      unclear: incomprehensible statement
+      unsure: uncertain transcription of a word
+      break: interruption of the recording (for example at the request of the interviewee, technical breaks or other interference from the outside)
+      italic: statements in the interview in German or in a language variant, which
+        the interviewee meant to be German; Statements in other languages
+        that are not (main) language of the interview (does not apply to
+        bilingual interviews), but without naming the original language
+      quote: quotations, direct speech, book and other titles are in quotation marks in accordance with the rules applicable in the original languages
+      annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
+      tape_end: end of tape
   interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   archive_id: Archiv-ID
@@ -234,13 +250,17 @@ en:
     upload:
       upload: Upload
       processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Upload
     update_speaker:
-      cut_initials: Initialen herausschneiden
-      split_segments: Segmente bei Sprecherwechsel schneiden
-      speaker_for_initials: 'Sprecher für: '
-      processing_speaker_update: Die Sprecher werden zugeordnet
-      no_initials_found: In dem Transkript wurden keine Initialen gefunden
+      first_step_explanation: 'Es wurden Segmente mit Sprecherbezeichnungen aber ohne eindeutige Sprecherzuweisung gefunden: '
+      second_step_explanation: Sind noch weitere Sprecherauszeichnungen im Transkript? 
+        Durch Eingabe dieser Auszeichnungen (z.B. *CG:*) und eindeutige Zuweisung zu eine[r|m] Mitwirkenden können sie herausgeschnitten werden. 
+        Zudem werden Segmente mit Sprecherwechsel gespalten. 
+      speaker_for_speaker_designation: 'Sprecher für: '
+      processing: Die Sprecher werden zugeordnet
+      processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
+      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecherbezeichnungen gefunden
     photo:
       new: Foto hinzufügen
       edit: Foto bearbeiten
@@ -274,6 +294,7 @@ en:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
     downloads:
       title: Downloads
     administration: administration
@@ -490,6 +511,7 @@ en:
         actions:
           show: Registereintrag anzeigen
           index: Registereinträge anzeigen
+          merge: Registereinträge zusammenführen
           show_tree: Alle Einträge zeigen
           show_search_results: Suchergebnisse zeigen
       biographical_entry:

@@ -63,14 +63,12 @@ class SegmentsController < ApplicationController
       format.json do
         json = Rails.cache.fetch("#{Project.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           {
-            data: @interview.tapes.inject({}) do |tapes, t|
-              segments_for_tape = Segment.
+            data: @interview.tapes.inject({}) do |tapes, tape|
+              segments_for_tape = tape.segments.
                 includes(:translations, :registry_references, :user_annotations, annotations: [:translations]).
-                for_interview_id(@interview.id).
-                where(tape_id: t.id).
-                where.not(timecode: '00:00:00.000')#.first(20)
+                where.not(timecode: '00:00:00.000').order(:timecode)#.first(20)
 
-              tapes[t.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+              tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
               tapes
             end,
             nested_data_type: 'segments',

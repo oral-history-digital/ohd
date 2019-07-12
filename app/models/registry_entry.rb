@@ -26,12 +26,10 @@ class RegistryEntry < ActiveRecord::Base
 
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
 
   has_many :child_registry_hierarchies,
            foreign_key: :ancestor_id,
-           dependent: :destroy,
            class_name: 'RegistryHierarchy'
 
   has_many :registry_entry_relations
@@ -52,9 +50,9 @@ class RegistryEntry < ActiveRecord::Base
   has_dag_links :link_class_name => 'RegistryHierarchy'
 
   has_many :main_registers,
-           -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
-           :through => :links_as_descendant,
-           :source => :ancestor
+    -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
+    :through => :links_as_descendant,
+    :source => :ancestor
 
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
@@ -144,6 +142,36 @@ class RegistryEntry < ActiveRecord::Base
         t.descriptor
       end
     end.flatten.uniq.join(' ')
+  end
+
+  def self.merge(opts={})
+    merge_to_id = opts[:id]
+    where(id: JSON.parse(opts[:ids])).each do |registry_entry|
+      registry_entry.move_associated_to(merge_to_id)
+      binding.pry
+      registry_entry.destroy
+    end
+  end
+
+  def move_associated_to merge_to_id
+    registry_entry_relations.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
+    registry_references.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
+
+    child_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:ancestor_id, merge_to_id) 
+      end
+    end
+
+    parent_registry_hierarchies.each do |rh| 
+      if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
+        rh.destroy_or_make_indirect
+      else
+        rh.update_attribute(:descendant_id, merge_to_id) 
+      end
+    end
   end
 
   # method should be one of 'children' or 'parents'
@@ -1345,32 +1373,33 @@ class RegistryEntry < ActiveRecord::Base
                         links_as_ancestor.find_by_descendant_id(registry_entry.id)
                       end
       case delta_record[:action]
-        when 'add'
-          # When the link already exists we make it direct, otherwise we add a new link.
-          if existing_link.nil?
-            association << registry_entry
-          else
-            existing_link.make_direct
-            existing_link.save!
-          end
-
-        when 'remove'
-          raise(ActiveRecord::RecordNotFound) if existing_link.nil?
-          # When the link is destroyable then destroy it, otherwise make it indirect.
-          if (existing_link.destroyable?)
-            # We cannot use the association.delete() method as
-            # this won't trigger the destroy callback on the link
-            # which leaves the DAG in an inconsistent state.
-            existing_link.destroy
-          else
-            existing_link.make_indirect
-            existing_link.save!
-          end
-
+      when 'add'
+        # When the link already exists we make it direct, otherwise we add a new link.
+        if existing_link.nil?
+          association << registry_entry
         else
-          raise "Unknown delta action: #{delta_record[:action]}"
+          existing_link.make_direct
+          existing_link.save!
+        end
+
+      when 'remove'
+        raise(ActiveRecord::RecordNotFound) if existing_link.nil?
+        # When the link is destroyable then destroy it, otherwise make it indirect.
+        if (existing_link.destroyable?)
+          # We cannot use the association.delete() method as
+          # this won't trigger the destroy callback on the link
+          # which leaves the DAG in an inconsistent state.
+          existing_link.destroy
+        else
+          existing_link.make_indirect
+          existing_link.save!
+        end
+
+      else
+        raise "Unknown delta action: #{delta_record[:action]}"
       end
     end
   end
+
 
 end

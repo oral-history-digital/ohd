@@ -50,17 +50,41 @@ class InterviewsController < ApplicationController
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    contribution_data = JSON.parse(update_speakers_params[:contributions])
-    AssignSpeakersJob.perform_later(@interview, contribution_data)
+    contribution_data = update_speakers_params[:contributions] && JSON.parse(update_speakers_params[:contributions])
+    
+    # speakers are people designated through column speaker in segment.
+    # contributors (contribution_data) are people designated through column speaker_id
+    #
+    AssignSpeakersJob.perform_later(@interview, speakers, contribution_data, current_user_account)
 
     respond_to do |format|
       format.json do
         render json: {
-          msg: "processing_speaker_update",
+          msg: "processing",
           id: @interview.archive_id,
           data_type: 'interviews',
-          nested_data_type: 'initials'
+          nested_data_type: 'speaker_designations'
         }, status: :ok
+      end
+    end
+  end
+
+  def speaker_designations
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+          {
+            data: @interview.speaker_designations,
+            nested_data_type: 'speaker_designations',
+            data_type: 'interviews',
+            archive_id: params[:id],
+            msg: @interview.speaker_designations.empty? ? 'second_step_explanation' : 'first_step_explanation'
+          }
+        end.to_json
+        render plain: json
       end
     end
   end
@@ -68,13 +92,15 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = projectified(params[:locale])
+    interview_locale = ISO_639.find(@interview.language.code).send(Project.alpha)
+
     respond_to do |format|
       format.json do
         render json: data_json(@interview)
       end
       format.vtt do
         vtt = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
-          @interview.to_vtt(params[:lang], params[:tape_number])
+          @interview.to_vtt(params[:lang] || interview_locale, params[:tape_number])
         end
         render plain: vtt
       end
@@ -85,8 +111,7 @@ class InterviewsController < ApplicationController
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.ods do
-        locale = ISO_639.find(@interview.language.code).send(Project.alpha)
-        send_data @interview.to_ods(locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet"#, :disposition => "attachment"
+        send_data @interview.to_ods(interview_locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet"#, :disposition => "attachment"
       end
       format.html
     end
@@ -186,9 +211,9 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.json do
         json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
-          segments = Segment.
+          segments = @interview.segments.
               includes(:translations, :annotations => [:translations]).#, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
-              for_interview_id(@interview.id).where.not(timecode: '00:00:00.000')
+              where.not(timecode: '00:00:00.000')
           {
             data: segments.with_heading.map {|s| Rails.cache.fetch("#{Project.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}"){::HeadingSerializer.new(s).as_json}},
             nested_data_type: 'headings',
@@ -237,7 +262,15 @@ class InterviewsController < ApplicationController
   end
 
   def update_speakers_params
-    params.require(:update_speaker).permit(:contributions)
+    params.require(:update_speaker).
+      permit(
+        'contributions',
+        speakers: {}
+    )
+  end
+
+  def speakers
+    update_speakers_params[:speakers].to_h
   end
 
   def doi_json(archive_id)

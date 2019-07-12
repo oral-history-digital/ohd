@@ -48,8 +48,6 @@ class Segment < ActiveRecord::Base
     includes(:tape, :translations).
     order(:id)}
 
-  scope :for_interview_id, ->(interview_id){ includes(:interview, :tape).where('segments.interview_id = ?', interview_id) }
-
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
     .order(media_id: :desc)
@@ -269,6 +267,13 @@ class Segment < ActiveRecord::Base
 
   def media_id
     (read_attribute(:media_id) || '').upcase
+  end
+
+  #
+  # only return speaker attribute if no speaker_id is set
+  #
+  def speaker_designation
+    speaker_id.blank? && speaker
   end
 
   # return a range of media ids up to and not including the segment's media id

@@ -14,6 +14,7 @@ module Archive
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_job.queue_adapter = :delayed_job
+    config.action_cable.mount_path = '/cable'
 
     config.autoload_paths << Rails.root.join('lib')
 

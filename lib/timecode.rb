@@ -6,7 +6,7 @@ class Timecode
       when String
         @timecode = time
         Timecode::parse_timecode(time)
-      when Fixnum, Float then time
+      when Integer, Float then time
       when NilClass then 0
       else nil
       end

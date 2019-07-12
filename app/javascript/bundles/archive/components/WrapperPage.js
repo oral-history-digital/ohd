@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import ActionCable from 'actioncable';
 
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
@@ -27,11 +29,16 @@ export default class WrapperPage extends React.Component {
         this.onResize = this.onResize.bind(this);
         this.state = {
             currentMQ: 'unknown',
+            notifications: []
         };
     }
 
     static contextTypes = {
         router: PropTypes.object
+    }
+
+    componentWillMount() {
+        this.createSocket()
     }
 
     componentDidMount() {
@@ -51,6 +58,21 @@ export default class WrapperPage extends React.Component {
         } else {
             document.body.classList.remove('noScroll');
         }
+    }
+
+    createSocket() {
+        let cable = ActionCable.createConsumer('/cable');
+
+        this.notifications = cable.subscriptions.create({
+            channel: "WebNotificationsChannel"
+        }, {
+            //connected: () => {},
+            received: (data) => {
+                console.log(data);
+                this.setState({notifications: [...this.state.notifications, data]})
+            },
+            //create: function(content) {}
+        });
     }
 
     // Checks CSS value in active media query and syncs Javascript functionality
@@ -243,6 +265,24 @@ export default class WrapperPage extends React.Component {
                     {t(this.props, 'devise.omniauth_callbacks.success')}
                 </p>
             )
+        } else if (this.state.notifications.length > 0) {
+            return (
+                <div className='notifications'>
+                    {this.state.notifications.map((notification, index) => {
+                        return (
+                            <p key={`notification-${index}`}>
+                                {t(this.props, notification.title, {file: notification.file, archiveId: notification.archive_id})}
+                                <Link
+                                    to={'/' + this.props.locale + '/interviews/' + notification.archive_id}>
+                                    {notification.archive_id}
+                                </Link>
+                            </p>
+                        )
+                    })}
+                </div>
+            )
+        } else {
+            return null;
         }
     }
 

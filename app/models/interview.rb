@@ -117,7 +117,9 @@ class Interview < ActiveRecord::Base
            :through => :registry_references
 
   has_many :segments,
-           -> { includes(:translations).order([:tape_number, :timecode]) },
+           # be careful here! segments from different tapes may be mixed.
+           # to really have segments ordered do sth. like tape.segments ...
+           -> { includes(:translations).order(:timecode) },
            dependent: :destroy
            #inverse_of: :interview
 
@@ -413,6 +415,17 @@ class Interview < ActiveRecord::Base
         csv << [segment.timecode, segment.text(locale)]
       end
     end
+  end
+ 
+  # 
+  # speaker designations from column speaker of table segments
+  #
+  def speaker_designations
+    speakers = []
+    segments.find_each(batch_size: 200) do |segment|
+      speakers << segment.speaker_designation
+    end
+    speakers.flatten.uniq.compact.reject{|s| s == false}
   end
 
   def transcript_locales

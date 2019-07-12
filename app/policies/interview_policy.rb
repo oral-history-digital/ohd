@@ -13,8 +13,8 @@ class InterviewPolicy < ApplicationPolicy
     show?
   end
 
-  def initials?
-    show?
+  def speaker_designations?
+    dois?
   end
 
   def ref_tree?
@@ -26,7 +26,7 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def update_speakers?
-    show?
+    dois?
   end
 
 end

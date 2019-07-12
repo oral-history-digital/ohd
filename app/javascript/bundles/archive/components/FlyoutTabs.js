@@ -212,7 +212,13 @@ export default class FlyoutTabs extends React.Component {
         if (this.props.archiveId) {
             let links = [];
             for (var i=1; i<parseInt(this.props.interview.tape_count); i++) {
-                links.push(<p><a href={`/${this.props.locale}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>{`${t(this.props, 'tape')} ${i}`}</a></p>);
+                links.push(
+                    <p>
+                        <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
+                        <a href={`/${this.props.locale}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
+                        <a href={`/${this.props.locale}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
+                    </p>
+                );
             }
             return (
                 <div>

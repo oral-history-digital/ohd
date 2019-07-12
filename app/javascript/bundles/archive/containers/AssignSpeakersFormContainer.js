@@ -11,10 +11,9 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        processing: state.data.statuses.initials.processing, 
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
-        initialsStatus: state.data.statuses.initials,
+        speakerDesignationsStatus: state.data.statuses.speaker_designations,
     }
 }
 

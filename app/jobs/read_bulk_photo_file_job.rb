@@ -8,6 +8,13 @@ class ReadBulkPhotoFileJob < ApplicationJob
     File.delete(file_path) if File.exist?(file_path)
     Interview.reindex
     Interview.all.each(&:touch)
+
+    WebNotificationsChannel.broadcast_to(
+      receiver,
+      title: 'edit.upload_bulk_photo.processed',
+      file: File.basename(file_path),
+    )
+
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
