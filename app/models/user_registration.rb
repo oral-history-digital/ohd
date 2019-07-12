@@ -8,6 +8,10 @@ class UserRegistration < ActiveRecord::Base
 
   has_one :user, :dependent => :destroy
 
+  has_many :user_registration_projects
+  has_many :projects,
+    through: :user_registration_projects
+
   validates_format_of :email,
                       :with => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
                       :on => :create

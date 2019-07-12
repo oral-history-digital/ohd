@@ -5,6 +5,9 @@ class Project < ApplicationRecord
   has_many :registry_entry_projects
   has_many :registry_entries,
     through: :registry_entry_projects
+  has_many :user_registration_projects
+  has_many :user_registrations,
+    through: :user_registration_projects
 
   class << self
 
