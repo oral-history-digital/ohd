@@ -54,6 +54,10 @@ class RegistryEntry < ActiveRecord::Base
     :through => :links_as_descendant,
     :source => :ancestor
 
+  has_many :registry_entry_projects
+  has_many :projects,
+    through: :registry_entry_projects
+
   # Every registry entry (except for the root entry) must have at least one parent.
   # Otherwise we get orphaned registry entries.
   attr_writer :do_not_validate_parents

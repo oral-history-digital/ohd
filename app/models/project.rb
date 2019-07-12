@@ -2,6 +2,9 @@ class Project < ApplicationRecord
 
   has_many :search_facets 
   has_many :external_links 
+  has_many :registry_entry_projects
+  has_many :registry_entries,
+    through: :registry_entry_projects
 
   class << self
 
