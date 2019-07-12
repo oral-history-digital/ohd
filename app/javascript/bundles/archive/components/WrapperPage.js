@@ -38,7 +38,7 @@ export default class WrapperPage extends React.Component {
     }
 
     componentWillMount() {
-        this.createSocket()
+        //this.createSocket()
     }
 
     componentDidMount() {
