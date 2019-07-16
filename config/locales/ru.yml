@@ -169,7 +169,7 @@ ru:
   date_of_birth: Дата рождения
   year_of_birth: Год рождения
   place_of_birth: Geburtsort
-  place_of_interview: Interviewort
+  # place_of_interview: Interviewort
   typology: Erfahrung
   typologies: Erfahrungen
   history: Краткая биография

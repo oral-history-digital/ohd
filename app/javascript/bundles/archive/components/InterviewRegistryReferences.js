@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
-import PersonPropertiesRegistryReferenceTypeContainer from '../containers/PersonPropertiesRegistryReferenceTypeContainer';
+import MetadataRegistryReferenceTypeContainer from '../containers/MetadataRegistryReferenceTypeContainer';
 
 export default class InterviewRegistryReferences extends React.Component {
 
@@ -13,17 +13,19 @@ export default class InterviewRegistryReferences extends React.Component {
                         key={`this.props.registry-entry-search-facets-${this.props.registryEntrySearchFacets[r]['id']}`} 
                         parentEntryId={this.props.registryEntrySearchFacets[r]['id']} 
                         interview={this.props.interview} 
+                        label={this.props.registryEntrySearchFacets[r]['label']}
                         />
                 );
             }
         }
         for (var r in this.props.registryReferenceTypeMetadataFields) {
-            if (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page']) {
+            if (this.props.registryReferenceTypeMetadataFields[r]['ref_object_type'] === this.props.refObjectType && this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page']) {
                 facets.push(  
-                    <PersonPropertiesRegistryReferenceTypeContainer
+                    <MetadataRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
                     referenceType={this.props.registryReferenceTypeMetadataFields[r]} 
                     interview={this.props.interview}
+                    refObjectType={this.props.refObjectType}
                     />  
                 );
             }
@@ -31,23 +33,23 @@ export default class InterviewRegistryReferences extends React.Component {
         return facets;
     }
 
-    registryReferences() {
-        if (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields) {
+    //registryReferences() {
+        //if (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields) {
+            //return (
+                //<div>
+                    //{this.searchFacets()}
+                //</div>
+            //);
+        //} else {
+            //return null;
+        //}
+    //}
+
+    render() {
+        if (this.props.interview && (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType)) {
             return (
                 <div>
                     {this.searchFacets()}
-                </div>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    render() {
-        if (this.props.interview) {
-            return (
-                <div>
-                    {this.registryReferences()}
                 </div>
             );
         } else {

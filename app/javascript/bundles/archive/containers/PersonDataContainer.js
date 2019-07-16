@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
         account: state.data.accounts.current,
+        detailViewFields: state.archive.detailViewFields,
     }
 }
 

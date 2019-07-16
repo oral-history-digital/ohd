@@ -179,7 +179,7 @@ de:
   date_of_birth: Geburtsdatum
   year_of_birth: Jahrgang
   place_of_birth: Geburtsort
-  place_of_interview: Interviewort
+  # place_of_interview: Interviewort
   typology: Erfahrung
   typologies: Erfahrungen
   history: Kurzbiografie

@@ -120,23 +120,23 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties:
-    - id: 'language_id'
+  metadata_fields:
+    - name: 'language_id'
       source: 'language'
       use_as_facet: true
-    - id: 'media_type'
+    - name: 'media_type'
       source: 'interview'
       use_as_facet: true
-    - id: 'gender'
+    - name: 'gender'
       source: 'person'
       use_as_facet: true
       values:
         female: 'female'
         male: 'male'
-    - id: 'year_of_birth'
+    - name: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-    - id: 'collection_id'
+    - name: 'collection_id'
       source: 'collection'
       use_as_facet: true 
 

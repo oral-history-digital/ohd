@@ -30,6 +30,7 @@ function receiveStaticContent(json){
         viewModes: json.view_modes,
         viewMode: json.view_mode,
         listColumns: json.list_columns,
+        detailViewFields: json.detail_view_fields,
         project: json.project,
         projectDoi: json.project_doi,
         hiddenRegistryEntryIds: json.hidden_registry_entry_ids,
@@ -37,6 +38,7 @@ function receiveStaticContent(json){
         projectDomain: json.project_domain,
         archiveDomain: json.archive_domain,
         mediaStreams: json.media_streams,
+        fullnameOnLandingPage:json.fullname_on_landing_page,
         receivedAt: Date.now()
     }
 }

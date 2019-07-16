@@ -131,15 +131,15 @@ class SearchesController < ApplicationController
     end
   end
 
-  def all_interviews_places_of_birth
-    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_places_of_birth") do
+  def all_interviews_birth_locations
+    Rails.cache.fetch("#{Project.cache_key_prefix}-all_interviews_birth_locations") do
       search = Interview.search do
         adjust_solr_params do |params|
           params[:rows] = Interview.all.size
         end
         with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       end
-      search.hits.map {|hit| hit.stored(:place_of_birth) }
+      search.hits.map {|hit| hit.stored(:birth_location) }
     end
   end
 
@@ -200,7 +200,7 @@ class SearchesController < ApplicationController
         render json: {
             all_interviews_titles: all_interviews_titles,
             all_interviews_pseudonyms: all_interviews_pseudonyms,
-            all_interviews_places_of_birth: all_interviews_places_of_birth,
+            all_interviews_birth_locations: all_interviews_birth_locations,
             all_interviews_count: search.total,
             result_pages_count: search.results.total_pages,
             results_count: search.total,

@@ -79,43 +79,43 @@ default: &default
 
   smtp_server: 'mail.fu-berlin.de'
 
-  person_properties:
-    # - id: 'person_reference'
+  metadata_fields:
+    # - name: 'person_reference'
     #   source: 'registry_entry'
-    - id: 'pseudonym'
-      source: 'registry_entry' # id: 12
+    - name: 'pseudonym'
+      source: 'registry_entry' # name: 12
       use_as_facet: false
-    - id: 'gender'
+    - name: 'gender'
       source: 'person'
       use_as_facet: true
       values:
         female: 'female'
         male: 'male'
-    - id: 'year_of_birth'
+    - name: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-    - id: 'interview_date'
+    - name: 'interview_date'
       source: 'interview' # or registry_reference_type?
       use_as_facet: true
-    - id: 'birth_location'
+    - name: 'birth_location'
       source: 'registry_reference_type'
       use_as_facet: true
-    - id: 'home_location'
+    - name: 'home_location'
       source: 'registry_reference_type'
       use_as_facet: true
-    - id: 'profession'
-      source: 'registry_entry' #id: 210
+    - name: 'profession'
+      source: 'registry_entry' #name: 210
       descriptor: 'Beruf'
       use_as_facet: true
-    - id: 'professional_position'
-      source: 'registry_entry' # id: 7
+    - name: 'professional_position'
+      source: 'registry_entry' # name: 7
       descriptor: 'Stellung im Beruf'
       use_as_facet: true
-    # - id: 'collection_id'
+    # - name: 'collection_id'
     #   source: 'collection'
     #   use_as_facet: true 
-    # - id: 'industry'
-    #   source: 'registry_entry' #id: 8
+    # - name: 'industry'
+    #   source: 'registry_entry' #name: 8
     #   descriptor: 'Wirtschaftsbereich'
     #   use_as_facet: true
 

@@ -8,10 +8,6 @@ class InterviewSerializer < ApplicationSerializer
                :media_type,
                :duration,
                :translated,
-               #:updated_at,
-               #:segmented,
-               #:researched,
-               #:proofread,
                :interview_date,
                :forced_labor_groups,
                :forced_labor_fields,
@@ -22,6 +18,7 @@ class InterviewSerializer < ApplicationSerializer
                #:citation_timecode,
                #:indexed_at,
                :language,
+               :interviewee_id,
                :languages,
                :language_id,
                :lang,
@@ -29,12 +26,11 @@ class InterviewSerializer < ApplicationSerializer
                :short_title,
                :anonymous_title,
                :still_url,
-               #:src,
                :src_base,
                :references,
                :formatted_duration,
                :person_names,
-               :place_of_interview,
+              #  :place_of_interview,
                :year_of_birth,
                :country_of_birth,
                :segments,
@@ -47,13 +43,28 @@ class InterviewSerializer < ApplicationSerializer
                :photos,
                :observations,
                :doi_status,
-             ] | Project.list_columns.inject([]) { |mem, i| mem << i["id"] }
+             #:updated_at,
+             #:segmented,
+             #:researched,
+             #:proofread,
+             #:inferior_quality,
+             #:original_citation,
+             #:translated_citation,
+             #:citation_media_id,
+             #:citation_timecode,
+             #:indexed_at,
+             #:src,
+             ] | Project.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
 
   def camps
     I18n.available_locales.inject({}) do |mem, locale|
       object.camps && mem[locale] = object.camps.map { |f| RegistryEntry.find(f).to_s(locale) }
       mem
     end
+  end
+
+  def gender
+    Project.localized_hash_for("search_facets", object.interviewees.first.gender)
   end
 
   def media_type
@@ -78,6 +89,10 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def interviewee_id
+    object.interviewees.first.id
+  end
+
   def transitions_to
     object.current_state.events.map { |e| e.first }
   end
@@ -87,7 +102,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def registry_references
-    object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+    i = object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+    p = object.interviewees.first && object.interviewees.first.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+    p ? i.merge(p) : i
   end
 
   def photos
@@ -156,9 +173,13 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def anonymous_title
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.anonymous_title(locale)
-      mem
+    if Project.fullname_on_landing_page
+      short_title
+    else
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.anonymous_title(locale)
+        mem
+      end
     end
   end
 
@@ -206,9 +227,13 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def place_of_interview
-    RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
-  end
+  # def place_of_interview
+  #   RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
+  # end
+
+  # def interview_location
+  #   self.place_of_interview
+  # end
 
   def formatted_duration
     # Time.at(object.duration).utc.strftime("%H:%M")

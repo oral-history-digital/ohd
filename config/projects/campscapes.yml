@@ -120,80 +120,104 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties: 
+  metadata_fields: 
     - 
-      id: camps
+      name: camps
       source: registry_entry
-      display_on_landing_page: true
-      facet_label: 
+      label: 
         de: Lager
         en: Camp
-      use_as_column: true
+      display_on_landing_page: true
+      use_in_results_table: true
       use_as_facet: true
     - 
-      id: language
+      name: language
       source: language
-      use_as_column: true
-      facet_label: 
+      use_in_results_table: true
+      label: 
         de: Sprache
         en: Language
     - 
-      id: language_id
+      name: language_id
       source: language
       use_as_facet: true
-      facet_label: 
+      label: 
         de: Sprache
         en: Language
     - 
-      id: groups
+      name: groups
       source: registry_entry
       display_on_landing_page: true
-      use_as_column: true
+      use_in_results_table: true
       use_as_facet: true
-      facet_label: 
+      label: 
         de: Gruppe
         en: Group
     - 
-      id: media_type
+      name: media_type
       source: interview
       use_as_facet: false
     - 
-      id: gender
+      name: gender
       source: person
       use_as_facet: false
+      use_in_detail_view: true
+      display_on_landing_page: true
+      label:
+        de: Geschlecht
+        en: Gender
       values: 
         female: female
         male: male
     - 
-      id: year_of_birth
+      name: year_of_birth
       source: person
       use_as_facet: false
+      display_on_landing_page: true
+      use_in_detail_view: true
+      label:
+        de: Geburtsjahr
+        en: Year of Birth
     - 
-      id: country_of_birth
+      name: country_of_birth
       source: interview
       use_as_facet: true
-      use_as_column: true
-      facet_label: 
+      use_in_results_table: true
+      use_in_detail_view: true
+      label: 
         de: Herkunftsland
         en: Country of Birth
     - 
-      id: collection_id
+      name: birth_location
+      source: registry_reference_type
+      ref_object_type: person
+      display_on_landing_page: true
+      use_as_facet: false
+      label: 
+        de: Geburtsort
+        en: Place of Birth
+    - 
+      name: collection_id
       source: collection
-      facet_label: 
+      label: 
         de: Sammlung
         en: Collection
-      use_as_column: true
+      use_in_results_table: true
       use_as_facet: true
     - 
-      id: group_details
+      name: group_details
       source: registry_entry
       display_on_landing_page: true
       use_as_facet: false
     - 
-      id: interview_location
+      name: interview_location
       source: registry_reference_type
-      display_on_landing_page: false
+      ref_object_type: interview
       use_as_facet: false
+      display_on_landing_page: true
+      use_in_results_table: false
+
+  fullname_on_landing_page: true
 
   has_newsletter: true
 
@@ -213,4 +237,3 @@ staging:
 
 test:
   <<: *default
-

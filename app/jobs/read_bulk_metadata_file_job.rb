@@ -6,11 +6,11 @@ class ReadBulkMetadataFileJob < ApplicationJob
     Interview.reindex
     Rails.cache.redis.keys("#{Project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
-    WebNotificationsChannel.broadcast_to(
-      receiver,
-      title: 'edit.upload_bulk_metadata.processed',
-      file: File.basename(file_path),
-    )
+    #WebNotificationsChannel.broadcast_to(
+      #receiver,
+      #title: 'edit.upload_bulk_metadata.processed',
+      #file: File.basename(file_path),
+    #)
 
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end

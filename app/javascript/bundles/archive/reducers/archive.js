@@ -20,8 +20,10 @@ const initialState = {
     archiveId: null,
     viewModes: ['grid', 'list'],
     viewMode: 'grid',
+    fullnameOnLandingPage: false,
 
-    listColumns: [{"id":"camps", "source":"registry_entry", "use_as_facet": true, "display_on_landing_page": true, "use_as_column": true}],
+    listColumns: [],
+    detailViewFields: [],
 
     homeContent: "",
     externalLinks: {},
@@ -77,6 +79,7 @@ const archive = (state = initialState, action) => {
                 locales: action.locales,
                 viewMode: state.viewMode || action.viewMode,
                 viewModes: action.viewModes,
+                detailViewFields: action.detailViewFields,
                 listColumns: action.listColumns,
                 project: action.project,
                 projectDoi: action.projectDoi,
@@ -85,6 +88,7 @@ const archive = (state = initialState, action) => {
                 archiveDomain: action.archiveDomain,
                 projectDomain: action.projectDomain,
                 mediaStreams: action.mediaStreams,
+                fullnameOnLandingPage: action.fullnameOnLandingPage,
             })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {

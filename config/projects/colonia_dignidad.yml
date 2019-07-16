@@ -143,51 +143,51 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  person_properties:
-    - id: 'person_reference'
+  metadata_fields:
+    - name: 'person_reference'
       source: 'registry_entry'
-    - id: 'forced_labor_groups'
+    - name: 'forced_labor_groups'
       source: 'registry_entry'
       use_as_facet: true
       display_on_landing_page: true`
-    - id: 'forced_labor_fields'
+    - name: 'forced_labor_fields'
       source: 'registry_entry'
       use_as_facet: true
-    - id: 'language_id'
+    - name: 'language_id'
       source: 'language'
       use_as_facet: true
-    - id: 'year_of_birth'
+    - name: 'year_of_birth'
       source: 'person'
       use_as_facet: true
-    - id: 'gender'
+    - name: 'gender'
       source: 'person'
       use_as_facet: true
       values:
         female: 'female'
         male: 'male'
-    - id: 'collection_id'
+    - name: 'collection_id'
       source: 'collection'
       use_as_facet: true 
-    - id: 'media_type'
+    - name: 'media_type'
       source: 'interview'
       use_as_facet: true
-    - id: 'birth_location'
+    - name: 'birth_location'
       source: 'registry_reference_type'
       use_as_facet: false
       display_on_landing_page: false
-    - id: 'forced_labor_habitations'
+    - name: 'forced_labor_habitations'
       source: 'registry_entry'
       # use_as_facet: true
-    - id: 'home_location'
+    - name: 'home_location'
       source: 'registry_reference_type'
       use_as_facet: false
-    - id: 'forced_labor_location'
+    - name: 'forced_labor_location'
       source: 'registry_reference_type'
       use_as_facet: false
-    - id: 'deportation_location'
+    - name: 'deportation_location'
       source: 'registry_reference_type'
       use_as_facet: false
-    - id: 'return_location'
+    - name: 'return_location'
       source: 'registry_reference_type'
       use_as_facet: false
 

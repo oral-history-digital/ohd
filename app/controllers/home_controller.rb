@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
-
-  layout 'responsive'
+  layout "responsive"
 
   skip_before_action :authenticate_user_account!
   skip_after_action :verify_authorized
@@ -13,7 +12,7 @@ class HomeController < ApplicationController
   def archive
     respond_to do |format|
       format.html do
-        render :template => '/react/app.html'
+        render :template => "/react/app.html"
       end
       format.json do
         locales = current_project.available_locales.reject{|i| i == 'alias'}
@@ -22,7 +21,7 @@ class HomeController < ApplicationController
             external_links: current_project.external_links,
             translations: translations,
             country_keys: locales.inject({}) do |mem, locale|
-              mem[locale] = ISO3166::Country.translations(locale).sort_by{|key, value| value}.to_h.keys
+              mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
               mem
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
@@ -42,6 +41,7 @@ class HomeController < ApplicationController
             list_columns: current_project.list_columns,
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: current_project.hidden_registry_entry_ids,
+            fullname_on_landing_page: current_project.fullname_on_landing_page,
           }
         end
         home_content = {}
@@ -75,15 +75,14 @@ class HomeController < ApplicationController
 
   def translations
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = instance_variable_get("@#{locale}") || 
-        instance_variable_set("@#{locale}", 
-                              YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
-                                YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]).merge(
-                                  countries: ISO3166::Country.translations(locale)
-                                )
-                             )
+      mem[locale] = instance_variable_get("@#{locale}") ||
+                    instance_variable_set("@#{locale}",
+                                          YAML.load_file(File.join(Rails.root, "config/locales/#{locale}.yml"))[locale.to_s].deep_merge(
+                      YAML.load_file(File.join(Rails.root, "config/locales/devise.#{locale}.yml"))[locale.to_s]
+                    ).merge(
+                      countries: ISO3166::Country.translations(locale),
+                    ))
       mem
     end
   end
-
 end

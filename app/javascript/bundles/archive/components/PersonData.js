@@ -8,32 +8,21 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 export default class PersonData extends React.Component {
 
 
-    content(label, value, className) {
+    content(label, value, className, key='') {
         return (
-            <p>
+            <p key={`persondata-content-${key}`}>
                 <span className="flyout-content-label">{label}:</span>
                 <span className={"flyout-content-data " + className}>{value}</span>
             </p>
         )
     }
 
-    dateOfBirth(){
-        let interviewee = getInterviewee(this.props);
-        if (interviewee.date_of_birth){
-            return this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "")
-        }
-    }
-
-    placeOfBirth(){
-        let interviewee = getInterviewee(this.props);
-        if (
-            interviewee.place_of_birth &&
-            interviewee.place_of_birth.name[this.props.locale] && 
-            interviewee.place_of_birth.name[this.props.locale] !== ""
-        ){
-            return this.content(t(this.props, 'place_of_birth'), interviewee.place_of_birth.name[this.props.locale], "" );
-        }
-    }
+    // dateOfBirth(){
+    //     let interviewee = getInterviewee(this.props);
+    //     if (interviewee.date_of_birth){
+    //         return this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "")
+    //     }
+    // }
 
     typologies(){
         let interviewee = getInterviewee(this.props);
@@ -81,6 +70,29 @@ export default class PersonData extends React.Component {
         );
     }
 
+    detailViewFields() {
+        let _this = this
+        return _this.props.detailViewFields.map(function(column, i){
+            let interviewee = getInterviewee(_this.props);
+            // first, I wrote this. Do we still need it?:
+            // let field = _this.props.interview[column["name"]]
+            if(column["source"] === 'person' && interviewee[column["name"]]){
+                return(
+                    _this.content(
+                        (column["label"] && column["label"][_this.props.locale]) || t(column["name"]) || column["name"], 
+                        interviewee[column["name"]] || "---",
+                        // first, I wrote this. Do we still need it?:
+                        // (field && field[_this.props.locale]) || (typeof (field) !== 'object' && _this.props.interview[column["name"]]) || _this.props.interview[column["name"]][0] || "---",
+                        "",
+                        i
+                    )
+                )
+            } else {
+                return null
+            }
+        });
+    }
+
     info() {
         let interviewee = getInterviewee(this.props);
         if (interviewee) {
@@ -88,14 +100,13 @@ export default class PersonData extends React.Component {
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                        {this.dateOfBirth()}
-                        {this.placeOfBirth()}
                         {this.typologies()}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
                     {this.history()}
+                    {this.detailViewFields()}
                 </div>
             );
         } else {

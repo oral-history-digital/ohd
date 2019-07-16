@@ -170,7 +170,7 @@ en:
   date_of_birth: Date of birth
   year_of_birth: Born in
   place_of_birth: Place of birth
-  place_of_interview: Interviewort
+  # place_of_interview: Interviewort
   typology: Experience background
   typologies: Erfahrungen
   history: Short biography

@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
         viewModes: state.archive.viewModes,
         viewMode: state.archive.viewMode,
         listColumns: state.archive.listColumns,
+        detailViewFields: state.archive.detailViewFields,
     }
 }
 

@@ -42,7 +42,7 @@ export default class ArchiveSearch extends React.Component {
     listHeader() {
         let props = this.props
         return props.listColumns.map(function(column, i){
-            let label = (column['facet_label'] && column['facet_label'][props.locale] ) || t(props, column['id'])
+            let label = (column['label'] && column['label'][props.locale] ) || t(props, column["name"])
             return (
                 <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
             )

@@ -167,7 +167,7 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     # in order to fast access places of birth for all interviews
-    string :place_of_birth, :stored => true
+    string :birth_location, :stored => true
 
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
@@ -288,10 +288,10 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
-  def place_of_interview
-    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-    ref && ref.registry_entry
-  end
+  # def place_of_interview
+  #   ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+  #   ref && ref.registry_entry
+  # end
 
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
@@ -322,13 +322,13 @@ class Interview < ActiveRecord::Base
   end
 
   def country_of_birth
-    interviewees.first.place_of_birth && interviewees.first.place_of_birth.parents.first.id.to_i
+    interviewees.first.birth_location && interviewees.first.birth_location.parents.first.id.to_i
   end
 
   def localized_hash_for_country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
-      if(interviewees && interviewees.first && interviewees.first.place_of_birth)
-        translation = interviewees.first.place_of_birth.parents.first.registry_names.first.translations.where(locale: locale)
+      if(interviewees && interviewees.first && interviewees.first.birth_location)
+        translation = interviewees.first.birth_location.parents.first.registry_names.first.translations.where(locale: locale)
         translation[0]&& translation[0]['descriptor'] && mem[locale] =translation[0]['descriptor']
       end
       mem
@@ -339,16 +339,19 @@ class Interview < ActiveRecord::Base
     localized_hash(true)
   end
 
-  def place_of_birth
-    return {
-      descriptor: interviewees[0].try(:place_of_birth).try(:localized_hash),
-      id: interviewees[0].try(:place_of_birth).try(:id),
-      latitude: interviewees[0].try(:place_of_birth).try(:latitude),
-      longitude: interviewees[0].try(:place_of_birth).try(:longitude),
-      names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
-      archive_id: archive_id
-    }
-  end
+  # this method is only used for the first version of the map atm.
+  # for other purposes, use the person model
+  # def birth_location
+  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[I18n.available_locales.collect { |i| [i, ""] } ]
+  #   return localized_hash.merge ({
+  #     descriptor: interviewees[0].try(:birth_location).try(:localized_hash),
+  #     id: interviewees[0].try(:birth_location).try(:id),
+  #     latitude: interviewees[0].try(:birth_location).try(:latitude),
+  #     longitude: interviewees[0].try(:birth_location).try(:longitude),
+  #     names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
+  #     archive_id: archive_id
+  #   })
+  # end
 
   def reverted_short_title(locale)
     locale = projectified(locale)

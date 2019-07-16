@@ -3,13 +3,15 @@ class Person < ApplicationRecord
   #serialize :typology, Array
 
   has_many :registry_references,
-           -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
+           -> { includes(registry_entry: { registry_names: :translations }, registry_reference_type: {}) },
            :as => :ref_object,
            :dependent => :destroy
 
+  has_many :registry_entries, :through => :registry_references
+
   has_many :contributions, dependent: :destroy
   has_many :interviews,
-    -> {where("contributions.contribution_type = '#{Project.contribution_types['interviewee']}'")},
+    -> { where("contributions.contribution_type = '#{Project.contribution_types["interviewee"]}'") },
     through: :contributions
 
   has_many :histories, dependent: :destroy
@@ -21,51 +23,52 @@ class Person < ApplicationRecord
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      contributions.map{|c| c.interview && c.interview.archive_id }.compact
+      contributions.map { |c| c.interview && c.interview.archive_id }.compact
     end
 
     # dummy method, necessary for generic search
     string :workflow_state do
-      'public'
+      "public"
     end
 
     (Project.available_locales + [:orig]).each do |locale|
       string :"name_#{locale}" do
-        "#{first_name(locale)} #{last_name(locale)}" 
+        "#{first_name(locale)} #{last_name(locale)}"
       end
     end
-    
+
     (Project.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
-        "#{first_name(locale)} #{last_name(locale)}" 
+        "#{first_name(locale)} #{last_name(locale)}"
       end
     end
     # contributions
-    # find them through fulltext search 
+    # find them through fulltext search
     # e.g.: 'Kamera Hans Peter'
     #
     I18n.available_locales.each do |locale|
       text :"contributions_#{locale}", stored: true do
-        contributions.map(&:contribution_type).uniq.map{|c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)]}.flatten.join(' ')
+        contributions.map(&:contribution_type).uniq.map { |c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)] }.flatten.join(" ")
       end
     end
   end
 
-  def place_of_birth
-    ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'birth_location')).first
-    ref && ref.registry_entry
-  end
-
-  def year_of_birth
-    date_of_birth.blank? ? '?' : date_of_birth[/19\d{2}/]
-  end
-
-  def name(last_name_as_inital=false)
-    I18n.available_locales.inject({}) do |mem, locale|
-      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
-      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if Project.available_locales.include?( locale.to_s )
-      mem
+  Project.metadata_fields_registry_reference_type.select{|f| f['ref_object_type'] == 'person'}.each do |f|
+    define_method f["name"] do
+      ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f["name"])).first
+      ref && ref.registry_entry
     end
   end
 
+  def year_of_birth
+    date_of_birth.blank? ? "?" : date_of_birth[/19\d{2}/]
+  end
+
+  def name(last_name_as_inital = false)
+    I18n.available_locales.inject({}) do |mem, locale|
+      inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
+      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if Project.available_locales.include?(locale.to_s)
+      mem
+    end
+  end
 end
