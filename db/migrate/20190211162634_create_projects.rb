@@ -1,5 +1,6 @@
 class CreateProjects < ActiveRecord::Migration[5.2]
   def change
+    drop_table :projects
     create_table :projects do |t|
       t.string :available_locales
       t.string :default_locale
@@ -8,7 +9,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.string :primary_color_rgb
       t.string :shortname # was project_id in project.yml
       t.string :initials
-      t.string :project_domain
+      t.string :domain
       t.string :archive_domain
       t.string :doi
       t.string :cooperation_partner
@@ -35,6 +36,19 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       end
     end
 
-    add_column :inteviews, :project_id, :integer
+    #add_column :interviews, :project_id, :integer
+
+    # create this project
+    attributes = Project.attribute_names.inject({}) do |mem, name| 
+      mem[name] = YAML::load_file('config/project.yml')['default'][name] || YAML::load_file('config/project.yml')['default']["project_#{name}"] #Rails.configuration.project[name] || Rails.configuration.project["project_#{name}"]
+      mem
+    end
+    project = Project.create attributes
+    binding.pry
+    connection.execute(<<-EOQ)
+      UPDATE interviews
+      SET project_id = #{project.id}
+    EOQ
+
   end
 end

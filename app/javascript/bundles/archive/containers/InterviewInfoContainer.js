@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
         registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
-        personPropertiesRegistryReferenceType: state.archive.personPropertiesRegistryReferenceType,
+        registryReferenceTypeMetadataFields: state.archive.registryReferenceTypeMetadataFields,
         account: state.data.accounts.current,
     }
 }

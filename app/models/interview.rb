@@ -161,7 +161,7 @@ class Interview < ActiveRecord::Base
     string :workflow_state
 
     # in order to find pseudonyms with fulltextsearch (hagen)
-    (text :pseudonym_string, :stored => true) if project.name == 'hagen'
+    #(text :pseudonym_string, :stored => true) if project.name == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -176,21 +176,28 @@ class Interview < ActiveRecord::Base
       end.join(' ')
     end
     
-    (project.registry_entry_search_facets + project.registry_reference_type_search_facets).each do |facet|
-      integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+    dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
+      (project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
+        mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
+        #integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+      end
     end
 
-    project.person_search_facets.each do |facet|
-      string facet['id'].to_sym, :multiple => true, :stored => true
+    dynamic_string :person_search_facets do
+      project.person_search_facets.inject({}) do |mem, facet|
+        mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
+      end
     end
 
-    project.interview_search_facets.each do |facet|
-      string facet['id'].to_sym, :stored => true
+    dynamic_string :interview_search_facets do
+      project.interview_search_facets.inject({}) do |mem, facet|
+        mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
+      end
     end
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    project.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         title = full_title(locale).mb_chars.normalize(:kd)
         Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
@@ -205,7 +212,7 @@ class Interview < ActiveRecord::Base
     # find them through fulltext search 
     # e.g.: 'Kamera Hans Peter'
     #
-    project.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -217,7 +224,7 @@ class Interview < ActiveRecord::Base
 
     # biographical entries texts
     #
-    project.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"biography_#{locale}" do
         if interviewees.first
           interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -229,7 +236,7 @@ class Interview < ActiveRecord::Base
 
     # photo caption texts
     #
-    project.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
@@ -352,27 +359,33 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  project.registry_entry_search_facets.each do |facet|
-    define_method facet['id'] do 
-      if project.name.to_sym == :mog
-        segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'], facet['entry_dedalo_code'])).map(&:registry_entry_id) 
-      else
-        registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet['id'])).map(&:registry_entry_id)
+  after_initialize do 
+    project.registry_entry_search_facets.each do |facet|
+      define_method facet.name do 
+        if project.name.to_sym == :mog
+          segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id) 
+        else
+          registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
+        end
       end
     end
   end
 
-  project.registry_reference_type_search_facets.each do |facet|
-    define_method facet['id'] do 
-      registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet['id']).first.id).map(&:registry_entry_id)
+  after_initialize do 
+    project.registry_reference_type_search_facets.each do |facet|
+      define_method facet.name do 
+        registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet.name).first.id).map(&:registry_entry_id)
+      end
     end
   end
 
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
-  project.person_search_facets.each do |facet|
-    define_method facet['id'] do 
-      # TODO: what if there are more intervviewees?
-      interviewees.first && interviewees.first.send(facet['id'].to_sym) ? interviewees.first.send(facet['id'].to_sym).split(', ') : ''
+  after_initialize do 
+    project.person_search_facets.each do |facet|
+      define_method facet.name do 
+        # TODO: what if there are more intervviewees?
+        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).split(', ') : ''
+      end
     end
   end
   #def facet_category_ids(entry_code)

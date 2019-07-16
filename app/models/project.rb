@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
 
+  has_many :interviews 
   has_many :metadata_fields 
   has_many :external_links 
   has_many :registry_entry_projects
@@ -8,6 +9,21 @@ class Project < ApplicationRecord
   has_many :user_registration_projects
   has_many :user_registrations,
     through: :user_registration_projects
+
+  class << self
+    def config
+      @config ||= {} #Rails.configuration.project
+    end
+
+    def method_missing(n, *args, &block)
+      if config.has_key? n.to_s
+        config[n.to_s]
+      else
+        #raise "#{self} does NOT have a key named #{n}"
+        nil
+      end
+    end
+  end
 
   # TODO: fit this method 
   def actual
@@ -24,19 +40,19 @@ class Project < ApplicationRecord
 
   %w(registry_entry registry_reference_type person interview).each do |m|
     define_method "#{m}_search_facets" do
-      search_facets.where(use_as_facet: true, facet_type: m.classify)
+      metadata_fields.where(use_as_facet: true, facet_type: m.classify)
     end
   end
 
   # used for metadata that is not used as facet
   %w(registry_entry registry_reference_type person interview).each do |m|
-    define_method "person_properties_#{m}" do
-      search_facets.where(facet_type: m.classify)
+    define_method "#{m}_metadata_fields" do
+      metadata_fields.where(facet_type: m.classify)
     end
   end
 
   def search_facets_names
-    person_properties.select { |c| c["use_as_facet"] }.map { |c| c["id"] }
+    metadata_fields.where(use_as_facet: true).map(&:name)
   end
 
   def min_to_max_birth_year_range
@@ -48,17 +64,18 @@ class Project < ApplicationRecord
   end
 
   def search_facets_hash
-    @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
+    @search_facets_hash ||= metadata_fields.inject({}) do |mem, facet|
       case facet["source"]
+        # TODO: unify entry_code and code to code
       when "registry_entry"
-        mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet["id"])).as_json
+        mem[facet.name.to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet.name)).as_json
       when "registry_reference_type"
-        mem[facet["id"].to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet["id"])).as_json
+        mem[facet.name.to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json
       when "person"
-        if facet["id"] == "year_of_birth"
-          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-          mem[facet["id"].to_sym] = {
-            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+        if facet.name == "year_of_birth"
+          facet_label_hash = facet.localized_hash
+          mem[facet.name.to_sym] = {
+            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
               h = {}
               I18n.available_locales.map { |l| h[l] = key }
@@ -70,9 +87,9 @@ class Project < ApplicationRecord
             end,
           }
         else #gender
-          facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-          mem[facet["id"].to_sym] = {
-            name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+          facet_label_hash = facet.localized_hash
+          mem[facet.name.to_sym] = {
+            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
               subfacets[value] = {
                 name: localized_hash_for("search_facets", key),
@@ -83,23 +100,23 @@ class Project < ApplicationRecord
           }
         end
       when "interview"
-        facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-        mem[facet["id"].to_sym] = {
-          name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+        facet_label_hash = facet.localized_hash
+        mem[facet.name.to_sym] = {
+          name: facet_label_hash || localized_hash_for("search_facets", facet.name),
           subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet["id"]).to_s] = {
-              name: interview.send("localized_hash_for_" + facet["id"]),
+            subfacets[interview.send(facet.name).to_s] = {
+              name: interview.send("localized_hash_for_" + facet.name),
               count: 0,
             }
             subfacets
           end,
         }
       when "collection"
-        facet_label_hash = Project.person_properties.select { |c| c["id"] == facet["id"] }[0]["facet_label"]
-        mem[facet["id"].to_sym] = {
-          name: facet_label_hash || localized_hash_for("search_facets", facet["id"]),
+        facet_label_hash = facet.localized_hash
+        mem[facet.name.to_sym] = {
+          name: facet_label_hash || localized_hash_for("search_facets", facet.name),
           subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet["id"])] = {
+            subfacets[interview.send(facet.name)] = {
               name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
               count: 0,
             }
@@ -107,10 +124,10 @@ class Project < ApplicationRecord
           end,
         }
       when "language"
-        mem[facet["id"].to_sym] = {
-          name: localized_hash_for("search_facets", facet["id"]),
+        mem[facet.name.to_sym] = {
+          name: localized_hash_for("search_facets", facet.name),
           subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet["id"])] = {
+            subfacets[interview.send(facet.name)] = {
               name: interview.language ? interview.language.localized_hash : { en: "no language" },
               count: 0,
             }

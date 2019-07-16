@@ -15,7 +15,8 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
   end
 
   def display_on_landing_page
-    Project.person_properties_registry_reference_type.select{|p| p['id'] == object.code}.first['display_on_landing_page']
+    MetadataField.where(name: object.code, source: 'registry_reference_type', display_on_landing_page: true).exists?
+    #Project.person_properties_registry_reference_type.select{|p| p['id'] == object.code}.first['display_on_landing_page']
   end
   
 end

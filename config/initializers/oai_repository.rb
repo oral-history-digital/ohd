@@ -1,6 +1,6 @@
 OaiRepository.setup do |config|
 
-  config.repository_name = Project.project_name[Project.default_locale]
+  config.repository_name = '' #Project.project_name[Project.default_locale]
 
   # The URL from which this OAI Repository is served.
   # If you're deploying to different hostnames (e.g. development, QA and

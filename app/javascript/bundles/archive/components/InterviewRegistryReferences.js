@@ -17,12 +17,12 @@ export default class InterviewRegistryReferences extends React.Component {
                 );
             }
         }
-        for (var r in this.props.personPropertiesRegistryReferenceType) {
-            if (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page']) {
+        for (var r in this.props.registryReferenceTypeMetadataFields) {
+            if (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page']) {
                 facets.push(  
                     <PersonPropertiesRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    referenceType={this.props.personPropertiesRegistryReferenceType[r]} 
+                    referenceType={this.props.registryReferenceTypeMetadataFields[r]} 
                     interview={this.props.interview}
                     />  
                 );
@@ -32,7 +32,7 @@ export default class InterviewRegistryReferences extends React.Component {
     }
 
     registryReferences() {
-        if (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType) {
+        if (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields) {
             return (
                 <div>
                     {this.searchFacets()}

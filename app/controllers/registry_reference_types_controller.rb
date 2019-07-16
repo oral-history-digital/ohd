@@ -49,7 +49,7 @@ class RegistryReferenceTypesController < ApplicationController
   end
 
   def index
-    @registry_reference_types = policy_scope(RegistryReferenceType).where(code: Project.person_properties_registry_reference_type.map{|f| f['id'] })
+    @registry_reference_types = policy_scope(RegistryReferenceType).where(code: current_project.registry_reference_type_metadata_fields.map(&:name))
 
     respond_to do |format|
       format.json do
